@@ -1,6 +1,6 @@
 # Event 012 Oracle Recon 3D subagent handoff
 
-Superseded by `012_africa_models_runtime_completion_2026-08-06.md`; the complete package is at `docs/assets/012_africa/models_3d/oracle_recon/`.
+This dated dependency handoff is historical evidence only and records the pre-Meshy 7 blocker. The retained package workspace is `docs/assets/012_africa/models_3d/oracle_recon/`; current Oracle status is governed by [`012_africa_oracle_recon_meshy7_redo.md`](012_africa_oracle_recon_meshy7_redo.md), the current model manifest, and the counter refresh handoff: local mesh/actions and replacement counter DDS are accepted and staged, while live validation remains pending.
 
 Status: `blocked` at dependency verification. The model package is incomplete.
 

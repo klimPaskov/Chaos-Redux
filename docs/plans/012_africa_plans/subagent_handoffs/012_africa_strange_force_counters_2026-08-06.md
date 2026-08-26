@@ -4,9 +4,11 @@ Date: 2026-08-06
 Owner: chaosx_icon_artist subtask
 Scope: counters only; no gameplay, GFX, localisation, entity, sound, or runtime files changed.
 
+> This 2026-08-06 counter-production handoff records retained asset evidence, not eight completed model packages or current runtime promotion. The current per-package manifests and the 2026-08-26 model handoffs supersede its blanket acceptance and parent-receipt wording.
+
 ## Result
 
-All eight requested unit packages have complete original counter art. The package root is docs/assets/012_africa/models_3d/<slug>/counters/. Each package includes:
+All eight requested unit folders retain original counter-art evidence. The package root is docs/assets/012_africa/models_3d/<slug>/counters/. Each package includes:
 
 - source/<slug>_imagegen.png and source/prompt.txt
 - processed/<slug>_alpha.png with approved chroma-key removal and no bright-green fringe
@@ -42,4 +44,4 @@ Large frame 0 uses the sampled vanilla infantry green palette (dominant RGB 73,1
 All 16 DDS outputs were decoded at native size and matched their target PNGs pixel-for-pixel. Each passed the complete legacy uncompressed BGRA header contract: DDS magic, 124-byte header, declared dimensions, 32-bit RGB|ALPHAPIXELS pixel format, zero fourCC, BGRA masks, DDSCAPS_TEXTURE, no mipmaps, and exact file length. Alpha extrema and frame bounds are recorded in every manifest. All 16 DDS hashes are unique; no copied or renamed vanilla counter was used.
 
 Combined review sheet: docs/assets/012_africa/models_3d/counters_contact_sheet.png.
-Parent promotion and wiring are complete. The 16 DDS files are installed in `gfx/interface/counters/divisions_large/` and `gfx/interface/counters/divisions_small/`, and `interface/012_africa_strange_force_counters.gfx` registers the base sprite rows plus the required `chaosx` aliases. A runtime path audit found zero missing counter textures.
+The 16 DDS files remain production evidence, and their presence or prior path audit does not establish family-wide promotion. Oracle Recon now has a parent-reviewed replacement counter staged at both runtime destinations with exact hashes recorded in its current manifest; live consumer validation remains open. Disaster Wardens uses the vanilla `infantry` model override and retains its counter as an optional bespoke presentation. Gorilla, Pan, Stone, Riverborn, Forest, and Plague remain blocked or unpromoted with their current model packages. `interface/012_africa_strange_force_counters.gfx` retains the stable Oracle rows, and the fail-closed package manifest prevents any all-eight readiness claim until every family is explicitly promoted. A runtime path audit finding zero missing counter textures is historical evidence, not an all-eight readiness receipt.
