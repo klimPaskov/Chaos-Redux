@@ -83,8 +83,7 @@ The tuning sources are:
 
 The effects and triggers are:
 
-- `common/scripted_effects/006_independence_wave_evolution_effects.txt`
-- `common/scripted_effects/006_independence_wave_evolution_incident_effects.txt`
+- `common/scripted_effects/006_independence_wave_evolution_effects.txt` (includes the paid incident-resolution effects)
 - `common/scripted_triggers/006_independence_wave_evolution_triggers.txt`
 - the `on_annex`, `on_puppet`, and `on_capitulation` blocks sourced from `common/on_actions/006_independence_wave_evolution_on_actions.txt` inside `common/on_actions/006_independence_wave_on_actions_registry.txt`
 - `events/006_independence_wave_support_events.txt`
