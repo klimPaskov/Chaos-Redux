@@ -527,3 +527,8 @@ The owner-patch source behavior remains as recorded in `subagent_handoffs/006_do
 ## Current package-admission amendment — 2026-08-06 IW-029 Bosnia promotion
 
 IW-029 BOS is the latest admitted vanilla-carrier package. The package uses states 104 and 804 in `RG-104`, preserves YUG as the former host, and requires `tag = YUG` in all three fixed setup/runtime proofs. The package is included in the current 23-attested / 22-group / 170-unattested boundary and 32-adapter dispatcher count, with nine adapter-only fail-closed rows. Its only remaining package evidence blocker is the MCP `ai_strategy_factor` result `PROBABILITY_SURFACE_EMPTY` for `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt`; no quantitative BOS AI claim is made until that adapter can discover the weighted surface.
+
+
+## Current source-layout amendment — 2026-08-26
+
+The 2026-08-26 evolution source-layout consolidation folds the paid five-family incident-resolution effects from common/scripted_effects/006_independence_wave_evolution_incident_effects.txt into common/scripted_effects/006_independence_wave_evolution_effects.txt. All 11 public effect identifiers and executable bodies were compared source-equivalent after line-ending normalization; the standalone effect and documentation files were removed, and the shared evolution documentation now points to the canonical receiver. This is a parser-surface reduction only: no effect ID, trigger, event, decision, ledger, admission, or runtime behavior changed. Handoff: subagent_handoffs/006_event6_evolution_registry_merge_2026-08-26.md.
