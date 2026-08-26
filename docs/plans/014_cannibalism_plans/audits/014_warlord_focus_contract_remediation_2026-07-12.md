@@ -1,5 +1,7 @@
 # Event 014 warlord focus-contract remediation
 
+> **Superseded historical proposal.** This audit predates the 2026-07-15 three-origin consolidation. Its former Prison Host and Lockhouse-origin language is rejected; prison, detention, and depot mechanics remain ordinary objectives and do not define a fourth origin.
+
 ## Outcome
 
 The shared 72-focus warlord tree no longer leaves its operation flags as inert promises. Its 79 `cannibalism_warlord_*` focus flags now feed state consumption, state intensification, state-accounted recruitment, origin operations, foreign seeding, synchronized attacks, convergence, submission, autonomy, resistance, or the existing Host Operating Order.

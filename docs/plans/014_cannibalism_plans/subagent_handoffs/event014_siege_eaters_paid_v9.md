@@ -1,77 +1,49 @@
 # Event 014 Siege Eaters paid v9 handoff
 
-Status: `blocked` at required Meshy route installation/verification. The model package is incomplete.
+> Historical blocked handoff. Superseded by the accepted installed Siege Eaters runtime receipt; retain this file for provider and adapter failure evidence only.
 
-## Outcome
+Status: `blocked` on a second uncommitted shared Blender-adapter dependency change. Provider production, accepted 1.10.3 preparation, and accepted 1.10.7 death-grounding evidence are preserved; runtime export is not complete.
 
-The new credential was present and the approved Meshy input passed its exact hash gate. The fresh live balance was 1,410 credits, enough for the 56-credit planned provider tranche. No paid call was made because the locked Meshy MCP route failed the mandatory process-cleanup health gate twice in succession.
+## Completed provider and preparation milestones
 
-The two failed probes each returned the expected `meshy-7` route response but left their own PowerShell wrapper and Node provider child alive after JSON-RPC completion. Only those exact probe-owned process IDs were terminated. No process belonging to another package or agent was touched. The route must prove zero newly surviving processes after two consecutive schema probes and the concurrent probe pair before provider work resumes.
+- Immutable sole Meshy input: `refs/original/meshy_input.png`, SHA-256 `1AC18B9B008CCCC70BC0AF30605CA72ADCC9030A1C233732559400C9A6744F75`; it was not replaced or modified.
+- Accepted Meshy 7 recovery generation: task `01a0345b-055f-787c-b99c-9b8051d5756b`, triangular PBR T-pose GLB+FBX, 30 credits. The first v9 task `01a03451-bb5f-7597-9284-e4ef69c641a2` consumed 30 credits but was rejected because it reconstructed the sole mace as two symmetric appendages.
+- Genuine provider rig: task `01a0345f-2dbd-7362-92e4-43280c2a9ed6`, 5 credits, archived as `provider/downloads/v9_rigged_model.fbx`, SHA-256 `92A838633704C4FA2771600EFF2D24E60EC1E3249992E05AF3A135F362A82816`.
+- Eight distinct dedicated Meshy animation sources were archived for idle, move, attack, defend, support attack, retreat, training, and death. The rig-bundled walking clip remains non-final comparison evidence only.
+- Adapter 1.10.3 preparation persisted the normalized geometry height at `7.351823806762695` m against the installed-vanilla target `7.351824797689915` m, delta `-0.0000009909272193908691` m within the `0.00007351824797689916` m tolerance after save/reopen.
+- Working geometry: 29,999 triangles, 14,968 vertices, zero non-manifold edges, zero degenerate faces, no negative scales, and zero zero-weight working vertices. The 24-bone working armature is `Armature.001`.
+- Seven licensed audio roles were revalidated as 44,100 Hz mono signed 16-bit PCM in `evidence/audio_sources/v9_audio_revalidation.json`.
+- Provider PBR maps from the accepted generation were packed into PDX normal/specular layouts and converted to 1024x1024 runtime DDS. Evidence and hashes are in `evidence/v9_texture_runtime.json`; raw grayscale roughness is not used as the runtime specular map.
 
-## Immutable approved input
+## Motion QA and authorized recovery
 
-- Path: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/refs/original/meshy_input.png`
-- SHA-256: `1AC18B9B008CCCC70BC0AF30605CA72ADCC9030A1C233732559400C9A6744F75`
-- Identity: living crazed horned-skull, bone-armored, painted cannibal with one two-handed spiked breaching mace.
-- Provider input count: exactly one.
-- Changed or replaced: no.
+The original attack action 237 (`Charged_Axe_Chop`) was rejected after phase renders showed one-hand mace control. Recovery action 128 (`Heavy_Hammer_Swing`), task `01a034a2-51dc-7093-b261-d46e5018d2ab`, also retained one-hand control and was rejected. Recovery action 102 (`Sword_Judgment`), task `01a034aa-55a2-7392-aff5-85884857938c`, was re-imported and rendered under committed adapter 1.10.7, then rejected because its wind-up, strike, and recovery remained one-handed. Distinct two-hand recovery action 327 (`kettlebell_swing`), task `01a034e4-f425-7751-9c34-80229a8c0c10`, is archived and was imported under 1.10.7; its phase QA remains pending.
 
-## Dependency and schema evidence
+The original death action 187 (`Knock_Down`) was rejected because its terminal frame remained airborne. Recovery action 8 (`Dead`), task `01a034a2-554d-7094-a50d-aa518fdb55bb`, provides substantive articulated collapse. Adapter 1.10.7 applied the allowed Hips/root-Z-only contact correction across 72 frames while retaining all body-motion keys; post-correction contact remained within `-0.0000276566` to `0.0000135899` m. A final terminal-frame render remains pending.
 
-- Meshy: official `@meshy-ai/meshy-mcp-server@0.4.0`, git head `d8c77d1cb897e345eb41d38b510b8391b1664346`, SDK 1.29.0, compatibility revision `meshy-7-v4`.
-- Exact generation model: `meshy-7`.
-- Blender: 5.1.2, build `ec6e62d40fa9`.
-- Blender adapter: `chaosx_blender_hoi4@1.10.0`.
-- io_pdx_mesh: 0.91.0, archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`.
-- Full lock, wrapper hashes, probe PIDs, and cleanup disposition: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/evidence/v9_dependency_route_audit.json`.
+All action attempts are genuine `meshy_animate` tasks. No local final motion, transform-only clip, action alias, alternate provider, model downgrade, or placeholder was used.
 
-## Credits and provider lineage
+Total v9 provider spend to date is 101 credits: 60 generation, 5 rig, 24 for the initial eight dedicated actions including move, and 12 for four recovery animation calls. Full task lineage and artifact hashes are in `evidence/v9_provider_lineage.json`.
 
-- Live balance: 1,410.
-- Estimated planned tranche: 30 generation + 5 rig + 21 seven custom animations = 56.
-- v9 paid calls: 0.
-- v9 credits consumed: 0.
-- v9 task IDs: none.
-- v9 response IDs: none.
-- Balance evidence: `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/provider/credits/v9_001_balance_and_route_preflight.json`.
+## Current blocker
 
-## Required model and action work still blocked
+Adapter 1.10.7 became authoritative at commit `a3e0a1497`; the fresh environment gate and health check passed, and Sword Judgment revalidation plus death grounding ran under that exact version. Immediately after the action-327 import, the next fresh retime call unexpectedly reported adapter `1.10.8`; the shared worker/config/dependency-lock files are again modified beyond the committed lock. The mixed 1.10.8 retime checkpoint is rejected. Further Blender inspection, mutation, export, and reimport are paused fail-closed until the new adapter bytes receive an authoritative committed hash and clean gate.
 
-No v9 GLB, FBX, provider texture set, accepted geometry, provider rig, or provider action source exists. Consequently no protected Blender source, normalized/repaired checkpoint, 30,000-triangle PDX candidate, texture conversion, `.mesh`, eight `.anim` files, previews, sound-frame synchronization, export evidence, or reimport proof could be produced.
+## Remaining work after the shared lock is committed
 
-The required distinct substantive action plan remains:
+- Re-run the exact environment gate and adapter health against the authoritative commit.
+- Render and accept or reject the Sword Judgment attack phases; only a coherent two-handed mace strike may become final.
+- Apply allowed contact/root correction to the recovery death action and prove collapse, impact, ground contact, and terminal settling without replacing provider body motion.
+- Relink the accepted PDX DDS maps in the final checkpoint.
+- Export one `.mesh` and eight distinct `.anim` files through checksum-locked `io_pdx_mesh`, then reimport the mesh with every animation and archive proof.
+- Record exact audio synchronization frames, final previews, action manifest, runtime identifiers, final manifest/checksums, and complete this handoff.
 
-- idle: action 335, `Axe_Breathe_and_Look_Around`
-- move: rig-included walking source
-- attack: action 237, `Charged_Axe_Chop`
-- defend: action 334, `Lower_Weapon_Look_Raise`
-- support_attack: action 241, `Weapon_Combo_2`
-- retreat: action 615, `Cautious_Crouch_Walk_Backward_inplace`
-- training: action 598, `kettlebell_swing_1`
-- death: action 187, `Knock_Down`
+## Counter and runtime boundary
 
-No local motion, transform-only clip, semantic alias, alternate provider, model downgrade, or placeholder was used.
+The bespoke counter package remains documented by `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_cannibal_counter_art_handoff.md`. Proposed consumer tokens are `GFX_unit_cannibal_siege_eaters_icon_medium`, `GFX_unit_cannibal_siege_eaters_icon_medium_white`, and `GFX_unit_cannibal_siege_eaters_icon_small`.
 
-## Preserved sound and counter companions
-
-Seven licensed audio roles remain preserved as signed 16-bit PCM, 44,100 Hz, mono under `audio/derived/`: selection, movement, idle vocal, maul swing, heavy impact, training, and death. Their Internet source pages, creators, licenses, immutable originals, transformations, checksums, and probe receipts remain in `evidence/audio_sources/sound_design_v8.json` and `evidence/audio_sources/ffprobe_and_hash_receipt.json`. Exact synchronization frames are unresolved because the real v9 actions do not exist.
-
-The bespoke vanilla-green counter handoff remains `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_cannibal_counter_art_handoff.md` with consumer tokens `GFX_unit_cannibal_siege_eaters_icon_medium`, `GFX_unit_cannibal_siege_eaters_icon_medium_white`, and `GFX_unit_cannibal_siege_eaters_icon_small`. Counter pixels and runtime GFX were outside this owned package and were not changed.
-
-## Files changed
-
-- `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/job.yaml`
-- `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/manifest.json`
-- `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/history.jsonl`
-- `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/evidence/v9_dependency_route_audit.json`
-- `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/provider/credits/v9_001_balance_and_route_preflight.json`
-- `docs/assets/014_cannibalism/models_3d/cannibal_siege_eaters/runtime/handoff.md`
-- `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_siege_eaters_paid_v9.md`
-
-## Parent/shared-tool follow-up
-
-Repair the repository-owned Meshy wrapper process-tree cleanup without changing this package's approved input. Re-run the full dependency gate and require the consecutive and concurrent schema probes to leave zero newly surviving processes. Only then resume the pre-authorized generation/rig/animation plan. Runtime entity, GFX, sound definitions, file synchronization, and in-game QA remain parent-owned.
+Runtime entity/GFX/sound-definition wiring and in-game QA remain parent-owned. No in-game completion is claimed.
 
 ## Simplifications, omissions, and blockers
 
-The package is incomplete. No simplification or fallback was used. All missing model, animation, Blender, export, reimport, and synchronization outputs are explicitly blocked by the shared locked-route process cleanup failure.
+No simplification or fallback was used. The package remains incomplete solely because the shared uncommitted adapter dependency blocks the final motion-QA, texture-relink, export, and reimport chain.

@@ -1,6 +1,8 @@
 # Event 014 Cannibal Feast Guard 3D handoff
 
-Status: **3D package complete; parent runtime wiring pending**.
+Historical status notice: this handoff captured the package before parent runtime installation. Feast Guard is one of the seven current bespoke model packages; the old “runtime wiring pending” wording is historical and does not describe Bone Riders or Network Cadre, which use approved vanilla sprites.
+
+Status at handoff: **3D package complete; parent runtime wiring pending**.
 
 The completed package is `docs/assets/014_cannibalism/models_3d/cannibal_feast_guard/`. It contains the final PDX mesh, eight distinct Meshy-sourced PDX animations, three 1024 DDS textures, six legally sourced WAV files, provider and Blender checkpoints, grounded reimport reports and previews, and complete manifests. No gameplay, GFX, `.asset`, entity, localisation, or sound-definition source was edited.
 

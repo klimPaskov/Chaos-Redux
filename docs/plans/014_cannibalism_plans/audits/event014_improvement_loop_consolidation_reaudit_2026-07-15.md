@@ -2,6 +2,8 @@
 
 Date: 2026-07-15
 
+Historical-scope notice: this audit and its P0/P1/P2/P3 counts apply only to the frozen 2026-07-15 mechanics and presentation scope. They are not current full-package completion evidence. The 2026-08-26 decision explicitly approves vanilla `sprite = cavalry` for Bone Riders and vanilla `sprite = infantry` for Network Cadre, so their former custom-model work is superseded rather than an open blocker; current portrait, MCP, probability, provenance, live-consumer, super-event image, and catalog gates remain tracked in the current resume packet.
+
 Scope: final recursive improvement-loop and consolidation audit of the implemented Event 014 Cannibalism package. This pass reads the current source rather than treating an earlier completion report as proof. It covers the 23 dedicated merge-safe script, GUI, and localisation loader files, all twelve source-spec parts and their matrices, the canonical Event 014 documentation, both improvement-loop addenda, current asset manifests and production handoffs, and the current country, decision, focus, localisation/asset, spreadsheet, super-event, documentation, integration/catalog, and completion audits.
 
 ## Verdict

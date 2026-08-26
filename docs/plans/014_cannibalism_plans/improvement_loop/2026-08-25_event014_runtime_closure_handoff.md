@@ -1,6 +1,6 @@
 # Event 014 Runtime Closure Handoff
 
-Status date: 2026-08-25
+Status date: 2026-08-26 approved vanilla-visual reuse amendment
 
 Status: parent-written improvement-loop closure handoff; not an implementation completion claim.
 
@@ -10,9 +10,9 @@ The accepted Event 014 design is deep enough to stop broad expansion. The baseli
 
 The current open work is finalization rather than design depth:
 
-1. Promote the four blocked or pending custom model packages (`cannibal_bone_riders`, `cannibal_island_reavers`, `cannibal_scavenger_warband`, and `cannibal_network_cadre`) only after their source, provider-action, export/reimport, sourced-audio, counter, and parent-runtime contracts pass. No static, reused, transform-only, or source-lineage fallback is accepted.
-2. Finish parent-owned super-event sound-definition and dispatch wiring and retain the unique image/audio/source evidence.
-3. Re-run the bounded focus, decision/GUI, country, localisation, probability, completion, documentation, and spreadsheet audits after the final model/audio tranche. The fresh MCP continuation evidence currently records 108 unified focuses with zero connector crossings, 27 owned network-GUI elements, and an Event 014 entry lint boundary without selected blocking diagnostics.
+1. Keep Bone Riders on vanilla `sprite = cavalry` and Network Cadre on vanilla `sprite = infantry` under the approved 2026-08-26 visual-reuse decision. Their removed provider, Blender, and generated-model records remain historical lineage evidence only and are not pending custom-model packages. Island Reavers has an accepted v11 provider/remesh/rig/action/export/reimport/runtime handoff in `event014_island_reavers_v11_runtime_handoff.md`, and Scavenger Warband has the accepted v2 runtime handoff in `event014_scavenger_warband_v2_runtime_handoff.md`.
+2. The parent-owned super-event sound-definition and dispatch wiring is recorded as complete in `event014_super_event_audio_wiring_audit_2026-08-25.md`; retain the unique image/audio/source evidence.
+3. Re-run or close the bounded focus, decision/GUI, country, localisation, probability, completion, documentation, and spreadsheet audits according to their owning handoffs. The fresh Event 014 MCP continuation evidence records an entry lint boundary without blocking diagnostics, but large-workspace validation remains partial.
 4. Perform the parent final integration review and record any remaining live-validation boundary. No in-game runtime behavior is claimed by this handoff.
 
 ## Improvement-loop stop condition
@@ -25,4 +25,4 @@ The requested custom `chaosx_improvement_loop_planner` and several specialist au
 
 ## Simplifications and omissions
 
-No new mechanic was silently removed or replaced. The four unresolved model packages, final super-event audio wiring, audit reruns, and live-validation boundary remain explicit open items in the package status and completion ledger.
+No new mechanic was silently removed or replaced. The approved visual-reuse decision is an explicit scoped simplification: two gameplay formation consumers use vanilla sprites, while seven bespoke model packages remain under parent review. Open evidence gates are portrait-worker acceptance, partial Event/GUI MCP evidence, unresolved scenario-specific probability evidence, two bespoke-model provenance mismatches, parent live consumer validation, and super-event image/live review; no Bone Riders or Network Cadre custom-model blocker remains.

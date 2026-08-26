@@ -2,7 +2,7 @@
 
 ## Disposition
 
-The parent-owned Event 014 super-event audio integration is complete at the source and asset boundary. This is an integration audit, not a claim that the Event 014 goal is complete: four custom 3D unit packages remain outside the installed runtime set and live in-game validation remains user-owned.
+The parent-owned Event 014 super-event audio integration is complete at the source and asset boundary. This is an integration audit, not a claim that the Event 014 goal is complete: seven bespoke model packages remain subject to parent live review, the two former custom-model consumers use approved vanilla sprites, and live in-game validation remains user-owned.
 
 ## Accepted role and ID map
 
@@ -31,4 +31,4 @@ FFprobe on 2026-08-25 reported `pcm_s16le`, `44100 Hz`, two channels, and these 
 
 ## Remaining boundary
 
-No super-event audio-definition or dispatch patch is required by this audit. The four blocked unit packages now have source-derived audio definitions; their remaining Event 014 blockers are the documented Bone Riders compound horse/rider route, Island Reavers' missing accepted v8 rig/action package after a later geometry candidate (the earlier Meshy HTTP 402 recovery record is superseded evidence), Scavenger Warband user-review/action gate, Network Cadre provider-action gate, unresolved country/entity/action playback binding, and user-owned live runtime validation. Meshy balance was `10` credits on this continuation, below the paid generation/action work required to close those packages.
+No super-event audio-definition or dispatch patch is required by this audit. Bone Riders uses vanilla `sprite = cavalry` and Network Cadre uses vanilla `sprite = infantry` under the approved visual-reuse decision, so their former model/action/provider blockers are historical evidence only. The remaining Event 014 audio boundary is parent-owned live playback validation for the seven bespoke model packages and any country-level voice mappings. Island Reavers and Scavenger Warband action/entity/audio runtime wiring is recorded in their v11 and v2 handoffs. Meshy balance was `10` credits on this continuation, below the paid generation/action work required by the former custom-model scope.

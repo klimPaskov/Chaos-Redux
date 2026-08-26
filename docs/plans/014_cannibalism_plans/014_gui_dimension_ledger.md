@@ -81,7 +81,7 @@ The existing Containment, Network Alerts, and Warlord Command families retain th
 ## Interaction ownership
 
 - Gameplay clicks remain in decisions and missions.
-- GUI buttons only open, close, filter, sort, refresh, select a read-only scope, or toggle finished animations.
+- GUI buttons only open, close, filter, sort, refresh, or select a read-only scope. No animation toggle is part of the Event 014 GUI contract.
 - The network ledger reads `global.cannibalism_actor_countries` and `global.cannibalism_node_states` into country-scoped view arrays.
 - GUI state is cleared by the Event 014 country reset and global cleanup path.
 - AI does not use the human GUI. It uses the same decisions, triggers, costs, and scripted effects directly.

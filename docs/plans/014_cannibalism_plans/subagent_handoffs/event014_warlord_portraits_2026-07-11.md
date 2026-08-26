@@ -1,5 +1,7 @@
 # Event 014 Warlord Portrait Asset Handoff
 
+> **Superseded portrait-slot proposal.** The former Prison Host candidates are retained as historical asset evidence only and were not accepted as an origin. Current Event 014 origin slots are Island Host, Siege Commune, and March Host; no portrait, country, or route may expose a Prison Host identity.
+
 Date: 2026-07-11
 
 Subagent: `chaosx_generated_event_art`

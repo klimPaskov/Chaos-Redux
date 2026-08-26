@@ -1,5 +1,7 @@
 # Event 014 unified focus remediation handoff - 2026-07-12
 
+> **Historical implementation handoff.** The fourth-origin and Lockhouse-column references retained in this file are superseded by the 2026-07-15 three-origin correction. Prison and detention remain ordinary objectives, not a Prison Host route.
+
 ## Scope and outcome
 
 This tranche replaces the unified tree's generic capacity-only facade with live command, Larder, army, navy, air, cell, expansion, counterwar, and hostility consumers. All 208 focus-created domain flags have a concrete downstream cost, gate, duration, modifier, receipt, target rule, mission value, or terminal proof consumer. The eight non-domain final/package flags remain consumed by the existing terminal triggers and focus effects.
@@ -282,5 +284,4 @@ Audit result: **208/208 domain flags mapped; unresolved flags: none.**
 ## Simplifications, omissions, and blockers
 
 No simplification or fallback was used in the owned unified decision surface. No focus-created domain flag remains capacity-only. The only cross-file dependency is the root-owned accumulation of later absorbed origins/routes described above.
-
 

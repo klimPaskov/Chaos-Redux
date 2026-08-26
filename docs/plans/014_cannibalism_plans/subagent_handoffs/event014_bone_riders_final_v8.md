@@ -1,6 +1,8 @@
 # Event 014 Bone Riders final v8 handoff
 
-Status: incomplete and explicitly blocked at the Meshy compound-rig capability gate.
+Historical supersession notice: this v8 custom-model attempt is retained as failure and provenance evidence only. The 2026-08-26 approved visual-reuse decision assigns Bone Riders vanilla `sprite = cavalry`, so no custom model, action, entity, provider, or v8 completion is required.
+
+Historical status: incomplete and explicitly blocked at the Meshy compound-rig capability gate before the vanilla-visual decision.
 
 ## Completed
 

@@ -93,9 +93,9 @@ The weighted conclusion was routed to `chaosx_ai_probability_auditor` as require
 
 No probability compare is authorized because this addendum proposes no weight, factor, gate, or callback change.
 
-The installed package has no Technology Tree Viewer.
+The installed package has no Technology Tree Viewer UI.
 
-The nine hidden activation technologies can be inspected in source, but no fresh technology-tree inspect or render conclusion can be claimed from the currently installed MCP route.
+The nine hidden activation technologies can be inspected in source, and the fresh read-only `hoi4_tech_inspect` unlocks route returned partial reports for the Bone Riders and Network Cadre activation technologies; full helper projections remain deferred in the large workspace.
 
 No GUI or map surface is proposed by this addendum, so no GUI or map rewrite, inspection, or render was added to its scope.
 

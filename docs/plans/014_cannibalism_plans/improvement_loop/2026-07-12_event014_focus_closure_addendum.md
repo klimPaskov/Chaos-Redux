@@ -8,6 +8,8 @@ Disposition: H-01, H-02, H-03, and M-01 are accepted, implemented, audited, prom
 
 Correction: the 2026-07-15 origin revision removes the fourth origin package and its inherited-template stage. Only Island Reavers, Siege Eaters, and March Predation Columns remain in this contract.
 
+The former fourth-origin and Prison Host examples retained in the historical body are superseded by that correction. Current origins are Island Host, Siege Commune, and March Host, and prison remains an ordinary objective rather than an origin.
+
 Historical audit source: `docs/plans/014_cannibalism_plans/subagent_handoffs/event014_focus_tree_reaudit_2026-07-12.md`.
 
 Current closure sources are `docs/plans/014_cannibalism_plans/audits/event014_focus_tree_consolidation_reaudit_2026-07-15.md`, `docs/plans/014_cannibalism_plans/audits/event014_country_package_consolidation_reaudit_2026-07-15.md`, and `docs/plans/014_cannibalism_plans/audits/event014_improvement_loop_consolidation_reaudit_2026-07-15.md`.

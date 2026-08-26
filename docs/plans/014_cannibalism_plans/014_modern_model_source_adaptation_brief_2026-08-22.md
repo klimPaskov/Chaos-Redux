@@ -1,5 +1,7 @@
 # Event 014 modern model-source adaptation brief
 
+Status: **historical and superseded by the parent’s 2026-08-22 faithful-enhancement correction**. This three-job brief authorizes redesign in its historical text and must not be used to create a provider input. Current work must begin with actual sourced or user-supplied modern artwork and preserve its identity through faithful enhancement only.
+
 Date: 2026-08-22.
 
 This brief translates three modern portfolio artworks into substantially original ImageGen direction for later parent review.

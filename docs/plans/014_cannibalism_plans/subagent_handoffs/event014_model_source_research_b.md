@@ -6,6 +6,8 @@ Owner: `chaosx_asset_source_researcher`, modern visual-reference research only.
 
 ## Status
 
+The former adaptation-direction language is superseded by the parent’s current gate: an approved actual Internet-sourced or user-supplied artwork may receive faithful enhancement only, with no redesign or invented components.
+
 The corrected modern-artwork source set is complete for Bone Guard, Island Reavers, and Siege Eaters, subject to parent review of the exact adaptation directions.
 
 Each job has an attributed source-page snapshot, downloaded original, native-resolution processed PNG preview, repository-standard DDS evidence copy, active JSON manifest, and contact-sheet entry under `docs/assets/014_cannibalism/models_3d/`.
