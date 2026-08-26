@@ -508,7 +508,7 @@ No ideology or cosmetic flag variants are referenced.
 
 #### Focus, report, idea, and decision icons
 
-Wallonia's Level 2 lane uses eight package-specific `94x86` focus icons under `gfx/interface/goals/006_independence_wave/afx/`. Its three generation incidents use distinct `210x176` report cards under `gfx/event_pictures/006_independence_wave/afx/`. The nineteen base, shine, and report sprites are registered in `interface/006_independence_wave_wallonia_frisia_assets.gfx`; every focus and event consumes its exact registered sprite.
+Wallonia's Level 2 lane uses eight package-specific `94x86` focus icons under `gfx/interface/goals/006_independence_wave/afx/`. Its three generation incidents use distinct `210x176` report cards under `gfx/event_pictures/006_independence_wave/afx/`. The nineteen base, shine, and report sprites are registered in `interface/006_independence_wave_small_assets.gfx` (Wallonia/Frisia source block); every focus and event consumes its exact registered sprite.
 
 The full ImageGen sources, exact prompts, processed PNGs, contact sheets, decoded-equivalence proof, uniqueness results, hashes, manifest, and sprite handoff live under `docs/assets/006_independence_wave/afx_unique_assets_2026_07_16/`. The final package contains eleven separate source compositions and eleven validated runtime DDS files. No shared composition or placeholder substitutes for the country-specific art.
 
@@ -767,7 +767,7 @@ The Level 2 branches use a distinct installed visual package:
 - sixteen `94x86` focus icons under `gfx/interface/goals/006_independence_wave/rhineland_bavaria/`, one for every RHI and BAY country focus;
 - eight `64x64` route-institution idea icons under `gfx/interface/ideas/006_independence_wave/rhineland_bavaria/`, one for each accepted government route;
 - `gfx/event_pictures/006_independence_wave/rhineland_bavaria/report_event_006_rhi_corridor_incidents.dds` and `report_event_006_bay_state_incidents.dds`, both `210x176`;
-- normal and shine focus sprites, idea sprites, and report sprites in `interface/006_independence_wave_rhineland_bavaria_assets.gfx`; and
+- normal and shine focus sprites, idea sprites, and report sprites in `interface/006_independence_wave_small_assets.gfx` (Rhineland/Bavaria source block); and
 - source masters, processed PNGs, contact sheets, exact prompts, validation, and hashes under `docs/assets/006_independence_wave/rhi_bay_unique_assets_2026_07_16/`.
 
 All sixteen country focuses consume their package-specific normal sprites, all eight route ideas consume their package-specific idea sprites, and the incident events consume `GFX_report_event_006_rhi_corridor_incidents` or `GFX_report_event_006_bay_state_incidents`. The generated source set contains twenty-six unique compositions. Its final DDS set contains sixteen `94x86` focus icons, eight `64x64` idea icons, and two `210x176` report scenes; all twenty-six files passed the package's legacy BGRA, exact-dimension, alpha, decoded-equivalence, and uniqueness checks. The current post-wiring audits authorize exact IW-008 and IW-009 compile-time attestation and SCN-008 preflight; live host, anchor, reservation, Event 5, chaos-band, force, and transaction checks remain mandatory.

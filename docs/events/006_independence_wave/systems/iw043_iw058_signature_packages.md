@@ -152,7 +152,7 @@ The six shared stage-icon families are registered in `interface/006_independence
 - `GFX_idea_independence_wave_iw058_corridor`
 - `GFX_idea_independence_wave_iw058_diaspora`
 
-The twenty focus icon families are registered with matching `_shine` sprites in `interface/006_independence_wave_iw043_iw058_focus_icons.gfx`. Their final DDS files live under `gfx/interface/goals/006_independence_wave/volga_assyria/`; the exact crosswalk is authoritative in that GFX file and must be mirrored by the final asset manifest.
+The twenty focus icon families are registered with matching `_shine` sprites in `interface/006_independence_wave_small_assets.gfx` (IW-043/IW-058 source block). Their final DDS files live under `gfx/interface/goals/006_independence_wave/volga_assyria/`; the exact crosswalk is authoritative in that GFX source block and must be mirrored by the final asset manifest.
 
 ## Future plans
 
