@@ -62,4 +62,10 @@ The missing-burial-party search block at source line 6244 was evaluated with the
 
 This second evaluation proves only the shared outcome-weight arithmetic. It does not prove the `cannibalism_search_state` event target, active-node ownership, payment gate, or state-scope side effects.
 
+## Current MTTH adapter discovery
+
+`hoi4.probability_inspect` used adapter `event_mean_time_to_happen` against `events/014_cannibalism.txt` and returned `PROBABILITY_SOURCE_DISCOVERED` with `requested_adapter_empty`. The current source revision was `eca8b389f5a6692df1fbe911e5d2f6a15452eeb74caefc55b2bfff8cd5259d03`, the source hash was `43741ef93efa26aaceb965a672987f3f567226716ae7e9b1382c30bbd71bf945`, and the discovery artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f6927baf75e00c99f6d153e64f65eb30346e17e557185990a90b309fcd31cca7/ed069f14a6949ff1b101c137c110c43d63f7bdd9f706aa9cbe9e23c6e21a8f94/probability-inspect-43741ef93efa.json`.
+
+The adapter found no Event 014 MTTH candidates and suggested `event_option_ai_chance` for 40 event-option candidates and `random_list` for two source-matched candidates. This is adapter discovery evidence, not proof that the dynamic pre-fire timing contract or triggered-event lifecycle is complete; those remain source and live-runtime checks.
+
 No balance patch is justified. Any future weight or trigger change must rerun source-qualified inspection and the same named scenario evaluations, then use `hoi4.probability_compare` with identical pools and scenarios.
