@@ -1,0 +1,94 @@
+# Reusable alien_infantry entity.
+#
+# The model and all seven actions are exported Meshy/provider actions.  The
+# firearm is fused and skinned in the source mesh, so no local weapon attach,
+# parenting, or replacement motion is performed here.
+
+entity = {
+	name = "alien_infantry_entity"
+	pdxmesh = "alien_infantry_mesh"
+	default_state = "idle"
+
+	state = {
+		name = "idle"
+		animation = "idle"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { trigger_once = yes sound = { soundeffect = "alien_infantry_idle" } }
+	}
+	state = {
+		name = "move"
+		animation = "move"
+		animation_blend_time = 0.3
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0.0 sound = { soundeffect = "alien_infantry_move" } }
+		event = { time = 0.6333 sound = { soundeffect = "alien_infantry_move" } }
+	}
+	state = {
+		name = "attack"
+		animation = "attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		# Meshy V13 action 223 discharges at frame 145 (4.8000 s) and
+		# recovers by approximately frame 190.  The sourced laser sound is
+		# synchronized to that provider-authored firearm action.
+		event = { time = 4.8 sound = { soundeffect = "alien_infantry_laser_fire" } }
+	}
+	state = {
+		name = "defend"
+		animation = "defend"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "support_attack"
+		animation = "support_attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		# Meshy V13 action 234 fires at frame 50 (1.6333 s).
+		event = { time = 1.6333 sound = { soundeffect = "alien_infantry_laser_fire" } }
+	}
+	state = {
+		name = "retreat"
+		animation = "retreat"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0.0 sound = { soundeffect = "alien_infantry_move" } }
+		event = { time = 0.5 sound = { soundeffect = "alien_infantry_move" } }
+	}
+	state = {
+		name = "training"
+		animation = "idle"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "wounded"
+		animation = "defend"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+	}
+	state = {
+		name = "death"
+		animation = "death"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		event = { time = 0.0 sound = { soundeffect = "alien_infantry_death" } }
+	}
+
+	scale = 0.8
+}
+
+entity = { clone = "alien_infantry_entity" name = "alien_infantry_entity_snow" }
+entity = { clone = "alien_infantry_entity" name = "alien_infantry_entity_desert" }
