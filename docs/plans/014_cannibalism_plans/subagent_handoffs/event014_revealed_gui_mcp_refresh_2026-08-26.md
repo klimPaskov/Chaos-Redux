@@ -55,3 +55,15 @@ The response was wire-truncated and returned no state-specific validation or cli
 An additional single-state render targeted `cannibalism_warlord_command_window` with scenario `event014_targeted_warlord_hover_2026_08_26`, state `hover`, and resolution 1280x720. The call returned `GUI_RENDERED` with no blockers and produced `cannibalism_warlord_command_window-full.svg`: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/356eda9a5565ef7475fbeca05d9002dcef5a8fbdc5f659787da7ef3a485f6ca7/ed5581902a79efbcf5be12715eafe747d0a0853db4469b01095cf41557a6eb32/cannibalism_warlord_command_window-full.svg`.
 
 The response was wire-truncated and retained no hover-specific diagnostics or click-region metadata, so this is bounded hover-render evidence only.
+
+## Network ledger command refresh
+
+The exact-selector inspect targeted `cannibalism_network_window` with scenario `event014_targeted_network_current_2026_08_26` in workspace `mod_chaos_redux_ea3b2d67c2c0`.
+
+The call returned `GUI_INSPECTED` with status `ok`, `complete: true`, `skippedSourceCount: 0`, shared revision `4d5d96b9770c0c8d443d2336c68c5d73dbdd91fd4b6b660c012800793d2ff7ee`, and `inspectedElementCount: 27`.
+
+Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/faeb7f33f41c05bb2469f364f3d5a717e49b002cd1bf387080aabfec2df34458/bf0ce5627e6f39d17ddab4eff75912ccf245702ca1a0fbb9dc43f8e51f0b5460/gui-inspect.4d5d96b9770c0c8d.json`.
+
+The selected-window fidelity summary was modelled 246, approximated 10, ignored 33, missing 3, unsupported 16, and unresolved 3. The shared graph still contains 74,038 nodes, 158,241 edges, and 25,332 elements, while the fixed diagnostic ceilings retain unrelated index collisions and unattributed clipping, overlap, spacing, click-bounds, scripted-context, and dynamic-value findings.
+
+This refresh provides current source-selector coverage for the Network Ledger window but does not attribute the global diagnostics to Event 014 or prove state-specific click regions, hover/disabled behavior, long-text handling, multi-resolution scaling, or comparison behavior. No GUI rewrite is justified from this result.
