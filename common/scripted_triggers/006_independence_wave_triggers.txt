@@ -194,6 +194,16 @@ has_independence_wave_severe_instability = {
 	check_variable = { var = independence_wave_instability value = constant:independence_wave_instability_band.severe compare = greater_than_or_equals }
 }
 
+# Empty fixed-tag shells do not have a capital until their package states are
+# transferred. Use an owned-state query for current-capital control checks so
+# dormant shells fail closed without evaluating an invalid capital_scope target.
+has_independence_wave_current_capital_controlled_by_root = {
+	any_owned_state = {
+		is_capital = yes
+		is_controlled_by = ROOT
+	}
+}
+
 can_independence_wave_enter_provisional_phase = {
 	is_independence_wave_active_country = yes
 	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.emergency_founding }
