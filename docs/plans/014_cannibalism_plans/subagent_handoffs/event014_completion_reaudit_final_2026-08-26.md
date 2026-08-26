@@ -26,9 +26,7 @@ The completion claim is blocked by non-3D evidence and documentation gaps:
 2. Current weighted-logic certification is incomplete. Prior exact sub-pools are useful evidence, but decision, mission, MTTH, AI-strategy, dynamic selector, spread, convergence, reinfection, and terminal-route probabilities remain partial or unsupported by the adapter.
 3. The 56 Warlord portraits are explicitly source placeholders with `replacement_pending: true`; the requested HOI4-style finals remain user-owned, and static Hannibal/Wendigo portrait provenance remains unresolved.
 4. `Events!N15` and `Scenarios!F10` remain `Needs Testing` by design while the evidence gates are open.
-5. Improvement item `E014-IL-U1` is implemented and localised but still awaits parent acceptance and promotion into spec parts 4, 6, and 12.
-6. `docs/super_events/014_cannibalism/audio_research.md` still points to the removed `docs/assets/014_cannibalism/source_audio/` archive instead of the current `docs/assets/014_cannibalism/audio/super_events/` package.
-7. Full current shared-super-event chain MCP evidence and a current semantic event comparison are unavailable.
+5. Full current shared-super-event chain MCP evidence and a current semantic event comparison are unavailable.
 
 ## Requirement-by-requirement completion matrix
 
@@ -50,26 +48,24 @@ The completion claim is blocked by non-3D evidence and documentation gaps:
 | Event Details, evolutions, and terminal rows | Finished at source | Events Log scripted localisation gates Evolution III behind reveal. `common/scripted_effects/chaosx_events_log_effects.txt:1180-1204` registers separate `world_is_the_larder` and `no_thaw_will_come` rows under the Cannibalism owner with distinct primary/secondary ordering and super-event mappings. Lines 1329-1334 bind them to separate ordinary and Wendigo terminal flags. The catalog row contains distinct terminal descriptions. | No source gap found. Clickable-row, auto-selection, persistence, and live presentation remain runtime checks. |
 | Localisation | Finished for current source | The 2026-08-26 localisation audit counted 2,038 unique Event 014 keys, 44 scripted selectors, 110 event references, 127 decisions/missions, 13 categories, 66 GUI keys, and 204 focus nodes plus three tree names. It found zero missing/duplicate keys or broken dynamic calls and preserved UTF-8 BOM. The only current repair changed three invalid train tokens to registered `£GFX_train_texticon`. | GUI long-text/overflow behavior is blocked by the GUI renderer, not by missing localisation. The 56 source-placeholder portraits remain accurately described as pending in current overview/readme surfaces. |
 | Report/news and super-event art | Finished at asset/source boundary; presentation partial | Existing report/news packages retain independent source, processed, DDS, contact, manifest, and GFX evidence. The 2026-08-26 super-event pass produced four distinct native ImageGen action scenes at `457x328`, with source masters, processed PNGs, final DDS files, hashes, contact sheet, and stable `interface/chaosx_super_events.gfx` registrations for reveal, ordinary world end, global defeat, and Wendigo world end. | Shared news-chain MCP inspection timed out, and live super-event presentation remains user/parent-owned. This is not an art-production blocker. |
-| Super-event audio | Runtime/source wiring finished; canonical note stale | Constants map roles to ids 49, 50, 52, and 53 at `014_cannibalism_constants.txt:251-254`. `sound/chaosx_sound.asset:594-597` registers four unique WAVs and lines 1743-1769 register six settings-volume wrappers per id. The Event 014 emitters at `014_cannibalism_effects.txt:11418-11501` set the visible/audio ids and call the settings-aware helper behind reveal/terminal guards. The four final WAVs are 44.1 kHz stereo PCM with source, rights, hash, and derivative receipts. | Fixable documentation gap: `docs/super_events/014_cannibalism/audio_research.md:52-198` cites removed `docs/assets/014_cannibalism/source_audio/...` paths. That directory does not exist; the current package is `docs/assets/014_cannibalism/audio/super_events/{sources,evidence,final}/`. Reconcile paths, filenames, current derivatives, and the CC BY-SA deed reference without changing runtime wiring. |
+| Super-event audio | Finished at source; presentation partial | Constants map roles to ids 49, 50, 52, and 53 at `014_cannibalism_constants.txt:251-254`. `sound/chaosx_sound.asset:594-597` registers four unique WAVs and lines 1743-1769 register six settings-volume wrappers per id. The Event 014 emitters at `014_cannibalism_effects.txt:11418-11501` set the visible/audio ids and call the settings-aware helper behind reveal/terminal guards. The four final WAVs are 44.1 kHz stereo PCM with source, rights, hash, and derivative receipts, and the canonical research note now points to `docs/assets/014_cannibalism/audio/super_events/{sources,evidence,final}/`. | Shared-chain MCP inspection and live super-event presentation remain parent-owned evidence gates. |
 | Portraits | Blocked / pending user finals | Fifty-six distinct 156x210 Warlord alias packages and unique runtime DDS files are wired. The 2026-08-26 portrait handoff records source URLs, archived pages, crop/hash evidence, and stable aliases. | All 56 rows are explicitly `replacement_pending: true`; the current images are source placeholders, not the requested HOI4-style finals. The user must supply authorized RunPod finals. Static `hannibal.dds` and `hannibal_wendigo.dds` still lack a complete current original/crop/provenance/review package. Completion must not be claimed from file presence alone. |
-| Catalog and package documentation | Partial | The authoritative workbook row `Events!A15:N15` records Event 014, three evolution texts, both terminal descriptions, `Minor Fire-Once`, empty cluster, and `Needs Testing`. `Scenarios!A10:F10` records SCN-010 and the five types, also `Needs Testing`. The package manifest reverified at 43 rows with zero missing files, byte mismatches, line mismatches, or SHA-256 mismatches. | Keep both catalog statuses `Needs Testing` until the documented gates close. Promote `E014-IL-U1` and repair the stale audio note. Do not edit export CSVs directly; any workbook change belongs to the spreadsheet worker followed by the export script. |
+| Catalog and package documentation | Partial | The authoritative workbook row `Events!A15:N15` records Event 014, three evolution texts, both terminal descriptions, `Minor Fire-Once`, empty cluster, and `Needs Testing`. `Scenarios!A10:F10` records SCN-010 and the five types, also `Needs Testing`. The package manifest reverified at 43 rows with zero missing files, byte mismatches, line mismatches, or SHA-256 mismatches. `E014-IL-U1` is promoted in the current specs, and the canonical audio note uses the current package paths. | Keep both catalog statuses `Needs Testing` until the remaining evidence gates close. Do not edit export CSVs directly; any workbook change belongs to the spreadsheet worker followed by the export script. |
 | Cleanup and cross-event integration | Source pass; lifecycle evidence partial | Cleanup helpers clear mission runtime, actor/state arrays, spread callbacks, reusable-slot incarnation state, templates, activation technologies, unification state, and terminal state. `common/on_actions/014_cannibalism_on_actions.txt` uses additive `on_startup` and tag-scoped `on_daily_CXT`; it does not add a global daily/weekly/monthly scan. Cross-event integrations use the shared Deaths, Event 10 wasteland, Event 2 Wendigo, Chaos Meter, and Event 019 provider contracts. | Failure, release, global-victory, reinfection, and Event 019 provider 523 ownership transitions still lack a complete bounded sequence/lifecycle artifact. Provider normalized share and cleanup cannot be certified by the installed adapter. |
 
 ## Concrete fixable gaps
 
-### 1. Promote or reject `E014-IL-U1`
+### 1. Resolved — promote `E014-IL-U1`
 
-The current Bone Guard paid contract is already implemented and localised as a fixed three-stage progression: first successful payment fields Bone Riders, the second fields a Scavenged Elephant Column, and later payments field Bone Guards. All three consume the shared Bone Guard raised counter and cap. The improvement addendum records this at `event014_improvement_addendum_2026-08-26.md:15-23` and recommends **ACCEPT AND PROMOTE**.
+The current Bone Guard paid contract is implemented and localised as a fixed three-stage progression: first successful payment fields Bone Riders, the second fields a Scavenged Elephant Column, and later payments field Bone Guards. All three consume the shared Bone Guard raised counter and cap. The parent accepted and promoted this item into spec parts 4, 6, and 12; the addendum and current specs are the durable evidence. This was an original audit observation and is closed.
 
-The accepted specs still summarize the action only as `recruit Bone Guard`; spec part 6 retains that wording at line 456, while parts 4 and 12 do not state the first/second/later ordering or the shared-cap consequence. This directly conflicts with the acceptance criterion that accepted addendum behavior be promoted into the source specs.
+The accepted specs now record the first/second/later ordering and shared-cap consequence in parts 4, 6, and 12. No gameplay redesign is required for this item.
 
-Recommended owner action: accept or reject the addendum explicitly. If accepted, promote the seven-point contract into spec parts 4, 6, and 12 without changing gameplay. If rejected, queue a bounded gameplay redesign and keep Event 014 incomplete.
+### 2. Resolved — repair the canonical super-event audio research paths
 
-### 2. Repair the canonical super-event audio research paths
+`docs/super_events/014_cannibalism/audio_research.md` now lists the sources, rights evidence, final derivatives, and receipt under `docs/assets/014_cannibalism/audio/super_events/` with `sources/`, `evidence/`, `final/`, and `ffprobe_and_hash_receipt.json`. The old `source_audio/` path is absent by design. This was an original audit observation and is closed.
 
-`docs/super_events/014_cannibalism/audio_research.md` still lists sources and rights evidence under `docs/assets/014_cannibalism/source_audio/`, which is absent. The current audited package lives under `docs/assets/014_cannibalism/audio/super_events/` with `sources/`, `evidence/`, `final/`, and `ffprobe_and_hash_receipt.json`.
-
-Recommended owner action: update the research note to the current paths and filenames, retain the source URLs and rights language, and align its derivative metadata with the 2026-08-26 completion receipt. Runtime audio definitions do not need a patch.
+No runtime audio patch is required; retain the current note and receipt as the canonical record.
 
 ### 3. Close or explicitly defer the Event 014 GUI visual matrix
 
@@ -94,7 +90,7 @@ Recommended owner action: rerun the named probability auditor when the route is 
 - Approved and closed: Bone Riders uses vanilla cavalry; Network Cadre uses vanilla infantry. Do not request or reopen custom 3D work for them.
 - Implemented and promoted: additive constituent technology union and the 38-icon unified decision package.
 - Queued, unaccepted, and nonblocking: cross-origin joint operations, route-aware recovery case files, and inspection-access compacts from the older closure addendum.
-- Pending explicit parent disposition: `E014-IL-U1` only.
+- No pending parent disposition remains for `E014-IL-U1`; it is accepted and promoted into the current specs.
 - Rejected expansion: new Event 014 currencies, another lifecycle subsystem, broad extra cross-event mechanics, a new origin, Prison Host, or new unit-specific counterplay.
 - Current design simplification: the two approved vanilla visual consumers. It is explicit, source-wired, documented, and not a missing asset or completion blocker.
 
@@ -123,11 +119,9 @@ Skipped or blocked checks:
 
 ## Recommended completion order
 
-1. Accept and promote, or reject and replace, `E014-IL-U1`.
-2. Repair the stale canonical super-event audio research paths.
-3. Keep portrait finals/static provenance blocked until the portrait workflow supplies accepted replacements and receipts.
-4. Capture the five-window Event 014 GUI visual matrix with attributable worker/MCP evidence.
-5. Complete current named probability and lifecycle evidence without speculative balance edits.
-6. Retain `Needs Testing` in the workbook until those gates and user-owned live validation are closed, then let the spreadsheet worker update the workbook and regenerate exports.
+1. Keep portrait finals/static provenance blocked until the portrait workflow supplies accepted replacements and receipts.
+2. Capture the five-window Event 014 GUI visual matrix with attributable worker/MCP evidence.
+3. Complete current named probability and lifecycle evidence without speculative balance edits.
+4. Retain `Needs Testing` in the workbook until those gates and user-owned live validation are closed, then let the spreadsheet worker update the workbook and regenerate exports.
 
 Until those items are resolved or explicitly accepted as permanent evidence limitations, Event 014 should be reported as substantially implemented but incomplete, not finished.
