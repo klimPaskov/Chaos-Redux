@@ -6,6 +6,7 @@ Status: Narrow addendum required, broad expansion remains closed
 
 > Current disposition after commit `d77afae7e` (`fix: preserve alien landing registry ownership`): the severity-one registry ownership finding documented below is resolved at source by explicit owner and state event targets.
 > The registry analysis remains historical design rationale and acceptance guidance; do not repeat the registry patch.
+> Current documentation disposition after the 2026-08-26 reconciliation: the caller-owned registry rule and its cross-country/provider acceptance cases are promoted into `docs/specs/016_brilliant_scientist_specs/specs/016_alien_infantry_and_dhronda_addendum.md` and `docs/plans/016_brilliant_scientist_plans/016_alien_dhrondan_acceptance_scenarios.md`. The historical source list below retains its old paths for provenance only.
 > The Portal beachhead lifecycle remains queued, and the model/runtime and MCP limits remain open.
 
 Owner: Parent Event 016 implementation agent
@@ -246,27 +247,27 @@ Do not claim Portal lifecycle completion while the active marker has no owner.
 
 10. Prove cleanup neither refunds raid equipment nor changes extracted facilities, factories, native raid history, or unrelated state flags.
 
-## Severity-three finding: five DHR support-route markers remain disconnected
+## Severity-three finding: five DHR support-route markers are now connected
 
 The current 88-focus topology is complete and the accepted regime routes have direct rewards and existing downstream country or decision effects.
 
-The 2026-08-26 route-consumer tranche connected the four world-order markers that gate real decisions.
+The 2026-08-26 route-consumer tranche connected the four world-order markers that gate real decisions, and the follow-up survival-marker tranche connected the four opening survival markers to existing AI surfaces.
 
-Five support markers still have no downstream consumer:
+The five support markers now have downstream consumers:
 
 | Marker | Writer | Current direct reward | Disposition |
 | --- | --- | --- | --- |
-| `dhrondan_alien_components_standardized` | `DHR_standardize_alien_components`, `common/national_focus/016_dhrondan_focus_tree.txt:592` | Laser-production helper | Remove the dead marker or document it as a reserved external API hook. |
-| `dhrondan_laboratory_route_complete` | `DHR_a_two_world_research_complex`, line 641 | Laboratory-capacity helper | Remove the dead marker or document it as a reserved external API hook. |
-| `dhrondan_predictive_warfare_perfected` | `DHR_perfect_predictive_warfare`, line 795 | Custom technology and predictive-command effects | Remove the dead marker or document it as a reserved external API hook. |
-| `dhrondan_orbital_office_reassembled` | `DHR_reassemble_the_orbital_office`, line 812 | Orbital-support helper | Remove the dead marker or document it as a reserved external API hook. |
-| `dhrondan_access_map_exchange_ready` | `DHR_exchange_maps_for_access`, line 953 | Diplomatic-credit helper | Remove the dead marker or document it as a reserved external API hook. |
+| `dhrondan_alien_components_standardized` | `DHR_standardize_alien_components`, `common/national_focus/016_dhrondan_focus_tree.txt:592` | Landing-decision AI via `dhrondan_focus_has_standardized_components` | Dynamic weighted proof remains pending. |
+| `dhrondan_laboratory_route_complete` | `DHR_a_two_world_research_complex`, line 641 | Enclave decision trigger and AI via `dhrondan_focus_has_laboratory_route` | Dynamic weighted proof remains pending. |
+| `dhrondan_predictive_warfare_perfected` | `DHR_perfect_predictive_warfare`, line 795 | Reclamation decision trigger and AI via `dhrondan_focus_has_predictive_warfare` | Dynamic weighted proof remains pending. |
+| `dhrondan_orbital_office_reassembled` | `DHR_reassemble_the_orbital_office`, line 812 | Landing-decision AI via `dhrondan_focus_has_orbital_office` | Dynamic weighted proof remains pending. |
+| `dhrondan_access_map_exchange_ready` | `DHR_exchange_maps_for_access`, line 953 | Covenant compact target-root via `dhrondan_focus_has_access_map_exchange` | Dynamic weighted proof remains pending. |
 
-These flags do not justify five more decisions or another route layer because the focuses already deliver their promised rewards.
+These flags do not justify five more decisions or another route layer because the focuses already deliver their promised rewards and the existing consumers are sufficient.
 
-This cleanup is safely queued after the severity-one registry fix.
+The source and documentation repair is complete; the remaining work is dynamic weighted/runtime evidence.
 
-The parent should prefer removal unless another package already has an accepted consumer contract.
+The parent should preserve the stable readers and avoid duplicate consumers.
 
 ## Hard blocker: Alien Infantry effect, audio, and live acceptance remain incomplete
 
