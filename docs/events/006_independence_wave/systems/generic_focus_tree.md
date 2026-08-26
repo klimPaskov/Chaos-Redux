@@ -1,13 +1,12 @@
 # Event 006 generic focus tree
 
-The imported `common/national_focus/006_independence_wave*.txt` sources define the one shared Event 006 focus tree, `independence_wave_focus_tree` (318 unique focus definitions: 184 direct `focus = {}` nodes, 134 full `shared_focus = {}` definitions, and 27 main-tree `shared_focus = <id>` import roots; 345 raw source entries when imports are counted). The shared definitions and import roots are one reusable tree surface, not additional country trees. Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
+The imported `common/national_focus/006_independence_wave*.txt` sources define the one shared Event 006 focus tree, `independence_wave_focus_tree` (318 unique focus definitions: 184 direct `focus = {}` nodes, 134 full `shared_focus = {}` definitions, and 27 main-tree `shared_focus = <id>` import roots; 345 raw source entries when imports are counted). The Pacific package blocks are source-marked inside the main focus registry so the parser loads one fewer file without changing the shared tree. The shared definitions and import roots are one reusable tree surface, not additional country trees. Every admitted Event 006 release must publish either the full tree or a reviewed additive carrier overlay before package validation can succeed.
 
 | Source surface | Direct `focus` blocks | `shared_focus` blocks | Role |
 | --- | ---: | ---: | --- |
-| `006_independence_wave_focus.txt` | 184 | 23 | Main tree declaration and shared roots |
+| `006_independence_wave_focus.txt` | 184 | 43 | Main tree declaration, shared roots, and Pacific package modules |
 | `006_independence_wave_iw043_iw058_focus.txt` | 0 | 48 | Volga/Assyria package modules |
 | `006_independence_wave_iw093_iw098_focus.txt` | 0 | 43 | Asante/Sokoto package modules |
-| `006_independence_wave_pacific_focus.txt` | 0 | 20 | Pacific package modules |
 | **Resolved total** | **184 direct** | **134 full + 27 imports** | **One `independence_wave_focus_tree`** |
 
 ## Assignment contract
