@@ -35,3 +35,15 @@ Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9efbefec
 The result still reports global graph and validation truncation, so its 25 overlap, alignment, spacing, text-overflow, animation fallback/provenance, unresolved dynamic, and scripted-context diagnostics cannot be attributed to this Event 014 window. No GUI rewrite is justified.
 
 The Event 014 completion audit remains `PARTIAL / NOT COMPLETION-READY` until a bounded five-window matrix exposes attributable state and resolution evidence or the adapter limitation is explicitly accepted by the parent.
+
+## Early header command follow-up
+
+The exact-selector inspect targeted `cannibalism_early_header_window` with scenario `event014_targeted_early_current_2026_08_26` in workspace `mod_chaos_redux_ea3b2d67c2c0`.
+
+The call returned `GUI_INSPECTED` with status `ok`, `complete: true`, `skippedSourceCount: 0`, shared revision `28a47b94e0e8c2cbb1014a40ea91f43bec2ac6a812e32cde804f4c5b62838df7`, and `inspectedElementCount: 17`.
+
+The fidelity summary was modelled 149, approximated 7, ignored 9, missing 4, unsupported 2, and unresolved 6.
+
+Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e8f87a27d3e82880e2f466c30b7df60136b7a79a216c12368c94edcf21ed01ad/9b17c5ddaba374bdb4c659c40cb6438bc4e229bf7358b4e00919e53551f7ba1e/gui-inspect.28a47b94e0e8c2cb.json`.
+
+The source-selector result still carries the fixed global graph and validation ceilings, including unrelated index collisions and unattributed overlap, overflow, spacing, alignment, dynamic-value, and animation-fidelity diagnostics. This is current early-window reachability evidence, not a clean Event 014-specific visual acceptance result.
