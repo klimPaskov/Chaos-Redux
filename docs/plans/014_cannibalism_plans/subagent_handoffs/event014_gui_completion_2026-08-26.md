@@ -106,6 +106,8 @@ A second narrow normal-state retry covered `cannibalism_warlord_command_window` 
 
 A third narrow normal-state retry covered `cannibalism_revealed_command_window` under scenario `event014_targeted_revealed_normal_2026_08_26`. It returned `GUI_RENDERED` with no blockers and exposed `cannibalism_revealed_command_window-full.svg` at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7f441cea9faf5d200fedd25fd95fadad86bb775973942db14d40b7501c6effc9/df0ccf706f92d513b64730a561c85c76bcd9282746356fddd9c46d6d47798f04/cannibalism_revealed_command_window-full.svg`. Its response was wire-truncated and retained no validation checks, so it improves attributable normal-state coverage only.
 
+A fourth narrow normal-state retry covered `cannibalism_wendigo_command_window` under scenario `event014_targeted_wendigo_normal_2026_08_26`. It returned `GUI_RENDERED` with no blockers and exposed `cannibalism_wendigo_command_window-full.svg` at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/5dca062f0ceea5b6be78543b2af1390a739f0896c5517587b74aaa42190738c7/c1147862a72d029d8758fa6001bf4fb06b1b452fe027cf599528d524fb451000/cannibalism_wendigo_command_window-full.svg`. Its response was wire-truncated and retained no validation checks, so it improves attributable normal-state coverage only.
+
 For every exact selector, `hoi4.gui_render` was requested with:
 
 - states: normal, hover, selected, active, disabled, warning, completed, empty-list, full-list, minimum-value, maximum-value, long-text, and missing-localisation
