@@ -1,8 +1,12 @@
 # Alien infantry V13 Meshy firearm-preset handoff
 
-Status: the bounded 3D package is complete through actual-byte PDX export/reimport. The accepted output is a textured 59,999-triangle alien infantry mesh with its Meshy-authored 24-bone rig and seven distinct Meshy preset actions, including a genuine firearm sequence and a complete collapse death. Runtime wiring, the effect locator, live validation, and three sound-role blockers remain parent-owned or explicitly unresolved.
+Status: the bounded 3D package and its static runtime promotion are complete through actual-byte PDX export/reimport. The accepted output is a textured 59,999-triangle alien infantry mesh with its Meshy-authored 24-bone rig and seven distinct Meshy preset actions, including a genuine firearm sequence and a complete collapse death. The promoted entity/GFX/animation/sound references are source-level evidence only; the effect locator, strict audio-role gaps, live consumer validation, and live in-game acceptance remain parent-owned or explicitly unresolved.
 
 The detailed immutable package manifest is `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`. Machine-readable provider lineage is beside it in `provider_lineage.json`.
+
+## Routing and ownership
+
+This V13 package is routed through `chaosx_3d_model_pipeline`. Provider output and provider hashes remain evidence under `docs/assets`, while static runtime registration and final live-consumer acceptance are separate parent-owned gates.
 
 ## Accepted runtime candidates
 
@@ -30,22 +34,22 @@ The detailed immutable package manifest is `docs/assets/016_brilliant_scientist/
 ## Audio and counter status
 
 - CC0 source packages exist for laser discharge, movement, idle, and death with source pages, direct-download URLs, authors, licenses, original/derived hashes, and transformations in `evidence/audio/provenance/audio_sources.json`.
-- Proposed sync: laser discharge frame 145 / 4.800 seconds; support fire frame 50 / 1.633 seconds; move contacts frames 1 and 19; retreat contacts frames 1 and 16; death onset frame 1 and future impact near frame 80 / 2.633 seconds. These are handoff timings, not embedded runtime events.
+- Proposed sync: laser discharge frame 145 / 4.800 seconds; support fire frame 50 / 1.633 seconds; move contacts frames 1 and 19; retreat contacts frames 1 and 16; death onset frame 1 and future impact near frame 80 / 2.633 seconds. The promoted entity contains corresponding static event references, but these timings do not prove positional playback or live acceptance.
 - Selection/acknowledgement remains blocked because the nearest vanilla consumers are tag-wide. Distinct impact and special-action roles remain blocked because no defensible sourced candidates were accepted. No synthesized or placeholder audio was used.
 - Existing bespoke vanilla-green counters are complete and preserved: large 152x42 two-frame DDS SHA-256 `5F982AF84059CB980828E5CBE63489AABB13F04A2AABFBC81B9B01038193FC6A`; on-map 60x12 two-frame DDS SHA-256 `775980A00D618DCC675BFD12192F53C11ACAD7380D36B008A69FAA432CBDC07B`. Exact installed-vanilla definition/DDS/reference-family and palette evidence remain in `runtime/counter_handoff.md`.
 
 ## Parent-owned next steps and risks
 
-- Copy accepted mesh, animations, and DDS files from the evidence tree to final runtime paths. Do not point runtime consumers into `docs/assets`.
-- Bind seven distinct semantic states in the final entity/asset without aliasing roles, apply entity scale 0.8 exactly once, and wire proposed sound/effect timings.
+- Review the byte-identical mesh, animations, DDS files, and static registrations promoted by commit `0e724fb8a`; do not point runtime consumers into `docs/assets`.
+- Review the seven distinct semantic states in the promoted entity/asset without aliasing roles, verify entity scale 0.8 is applied exactly once, and review the proposed sound/effect timings.
 - Resolve a runtime muzzle/effect point. No locator was created because the adapter lacks a locator-authoring operation and manual firearm attachment/parenting was forbidden. The cyan muzzle cap is only visual evidence of the effect location.
 - Decide whether the explicit selection, impact, and special-audio blockers are acceptable or require a later licensed-source research tranche.
 - Review the somewhat patchy provider surface highlights in the final material proofs at game camera distance. The PBR maps resolve and reimport, but live aesthetic acceptance is not claimed.
-- Perform final entity/GFX/sound/gameplay wiring and user-owned live in-game validation. This handoff does not claim runtime integration.
+- Perform final entity/GFX/sound/gameplay review, resolve the supported effect-point route and strict audio-role gaps, and obtain user-owned live in-game validation. This handoff does not claim live runtime acceptance.
 
 ## Files changed by this finalization tranche
 
-- `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/runtime/sound_handoff.md`.
+- `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/runtime/handoff.md`, `crosswalk.md`, and `sound_handoff.md`.
 - `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`.
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/alien_infantry_v13_firearm_preset_handoff_2026-08-26.md`.
 

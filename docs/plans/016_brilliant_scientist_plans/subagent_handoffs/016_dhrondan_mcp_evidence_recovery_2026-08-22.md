@@ -1,5 +1,7 @@
 # Event 016 Alien Infantry and D’Rhonda MCP evidence recovery
 
+> Historical MCP recovery snapshot superseded for Alien Infantry provider/runtime status by the accepted V13 package and static runtime promotion recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Retain the partial event/technology/map artifacts and their limits, but do not use its pre-promotion missing-package or approval blocker as current status.
+
 Date: 2026-08-22
 
 Owner: parent implementation agent

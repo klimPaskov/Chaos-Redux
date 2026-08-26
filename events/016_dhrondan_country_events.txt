@@ -24,13 +24,26 @@ country_event = {
 	picture = GFX_report_event_016_dhrondan_diplomatic_compact
 	is_triggered_only = yes
 	trigger = {
-		dhrondan_compact_response_is_valid = yes
-		event_target:dhrondan_diplomatic_actor = {
-			NOT = { has_country_flag = dhrondan_diplomatic_offer_delivered }
+		OR = {
+			dhrondan_compact_response_is_valid = yes
+			AND = {
+				has_event_target = dhrondan_diplomatic_offer_target
+				event_target:dhrondan_diplomatic_offer_target = { tag = ROOT }
+				has_event_target = dhrondan_diplomatic_actor
+				event_target:dhrondan_diplomatic_actor = {
+					exists = yes
+					tag = DHR
+					has_country_flag = dhrondan_diplomatic_offer_active
+					NOT = { has_country_flag = dhrondan_diplomatic_offer_delivered }
+				}
+			}
 		}
 	}
 	immediate = {
-		event_target:dhrondan_diplomatic_actor = { set_country_flag = dhrondan_diplomatic_offer_delivered }
+		if = {
+			limit = { has_event_target = dhrondan_diplomatic_actor }
+			event_target:dhrondan_diplomatic_actor = { set_country_flag = dhrondan_diplomatic_offer_delivered }
+		}
 	}
 
 	option = {

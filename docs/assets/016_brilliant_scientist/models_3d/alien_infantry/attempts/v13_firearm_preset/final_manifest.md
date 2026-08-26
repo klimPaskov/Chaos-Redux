@@ -1,6 +1,8 @@
 # Alien infantry V13 firearm-preset final manifest
 
-Status: model, Meshy rig, seven distinct Meshy preset actions, PDX export, and actual-byte reimport evidence complete. Runtime entity/GFX/sound/effect wiring and live in-game acceptance remain parent-owned. The missing authored muzzle locator and the sourced-audio gaps for selection, impact, and special action are explicit blockers outside this package's completed 3D exports.
+Status: model, Meshy rig, seven distinct Meshy preset actions, PDX export, actual-byte reimport evidence, and static entity/GFX/animation/sound references are present. The missing authored muzzle locator, unbound particle/light definitions, strict audio-role gaps for selection/acknowledgement/impact/special action, and live in-game acceptance remain parent-owned blockers outside this package's completed 3D exports.
+
+Commit `0e724fb8a` promoted byte-identical V13 mesh, animation, texture, entity, GFX, and animation-registration files into the engine-facing runtime tree. This manifest remains provider evidence and does not by itself prove runtime playback or live game acceptance.
 
 ## Approved source and provider lineage
 
@@ -65,5 +67,5 @@ Every final action was imported from its exact Meshy FBX, received only per-fram
 - No engine muzzle/effect locator was authored because the locked adapter exposes no locator-create operation and manual firearm parenting is forbidden. The fused cyan muzzle cap supplies a clear visual effect point only. Parent must bind or create the runtime effect point without altering the accepted weapon integration.
 - Audio is sourced and licensed for laser discharge, movement, idle, and death. Per-subunit selection is blocked by tag-wide vanilla consumers; no accepted sourced impact or special-action candidate exists. See `runtime/sound_handoff.md` and `evidence/audio/provenance/audio_sources.json`.
 - Bespoke vanilla-green large and on-map counters already exist and were not overwritten. See `runtime/counter_handoff.md`; live display acceptance remains parent/user-owned.
-- Final runtime files must be copied out of `docs/assets`; no runtime consumer may point into this evidence tree.
-- Parent owns `.asset`/entity/GFX/sound/gameplay wiring, state-event timing, final runtime paths, and live in-game validation. This package does not claim in-game integration.
+- Commit `0e724fb8a` copied the accepted binary exports and static entity/GFX/animation registrations out of `docs/assets` into the engine-facing runtime tree; the promotion handoff records the byte-identical hashes, and no runtime consumer may point into this evidence tree.
+- Parent owns final review of the promoted `.asset`/entity/GFX/sound/gameplay consumers, supported effect-point binding, strict audio-role decisions, state-event timing review, and live in-game validation. This package does not claim live in-game acceptance.

@@ -1,6 +1,12 @@
 # Alien infantry 3D package manifest
 
-Status: **blocked — the current Meshy V10 lineage has a firearm-bearing 24-bone rig and five accepted genuine source roles, but no compliant firearm action, support attack, or muzzle locator; no runtime entity is wired**. Earlier V8/Quaternius exports and reimports remain historical evidence only.
+Status: **superseded historical package ledger**. The current authority is the Meshy V13 manifest at `attempts/v13_firearm_preset/final_manifest.md` and the promotion handoff at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Commit `0e724fb8a` promoted the byte-identical V13 mesh, seven animations, three DDS maps, entity/GFX/animation registrations, and four state sound references into the engine-facing runtime tree. The supported muzzle/effect locator is unavailable, registered particle/light definitions remain unbound, strict selection/acknowledgement/impact/special audio roles remain unresolved, and no live in-game acceptance is claimed.
+
+The sections below preserve V1 through V11, KayKit, and Quaternius production history for provenance and rejection evidence only. Do not use their blocked or unwired status statements as current runtime instructions, and do not start duplicate production from this ledger.
+
+## 2026-08-26 evidence workspace compaction after V13 promotion
+
+The ignored alien-infantry evidence payload was compacted after the accepted V13 Meshy package had been promoted and re-inspected from actual bytes. The cleanup removed 2,100 superseded source, provider-download, adapter-log, preview, checkpoint, and backup files totaling 3,399,046,220 bytes (3.166 GiB) and retained all tracked manifests, provenance, validation records, exports, seven accepted V13 reimport checkpoints, and the attack/death preview pair. The package now contains 78 files at approximately 50 MiB; the runtime mesh, seven `.anim` actions, three DDS maps, entity registration, sound registration, and gameplay wiring were not removed. Historical paths mentioned in the sections below are provenance-only and are not runtime dependencies.
 
 ## Authoritative source and input
 

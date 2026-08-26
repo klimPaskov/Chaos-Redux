@@ -31,6 +31,10 @@ This checklist is the parent-owned acceptance contract for the alien-infantry AP
 - Existing alien formations reinforce only from alien laser weapons.
 - Event 019 provider 508 grants its own receipt and landing access; provider cleanup removes only receipt 508 and does not use its former training or manpower ledger.
 - Every Event 019 provider-508 request or scenario actor creates at most one cohort and one 2,000-gun debit. Automatic generation narrows only its own selected-state target, anomalous scenarios keep the shared global intensity unchanged, a successful wrapper commits state history and cooldown once, and a failed or delayed same-tag rollback deletes the exact cohort and refunds once before stockpile verification.
+- Two independent caller countries can complete landings without cross-registering states: each `alien_infantry_landing_state_registry` contains only the states that caller successfully committed.
+- A revolt in caller country A counts and transfers only A's scoped landing states; caller country B's states receive no DHR core, claim, ownership, controller, capital, or cohort consequence.
+- Repeating registration for one successful transaction is idempotent, and revoking one receipt leaves the committed state in its original caller registry while blocking only future calls through that receipt.
+- Repeat the isolation check with one ordinary source and Event 019 provider 508 to prove deferred commit and provider cleanup preserve caller ownership and revoke only provider 508's receipt.
 - `Honor the D’Rhondan Accord` costs exactly 75 political power, removes ten Pact Strain, and observes its 180-day cooldown.
 
 ## Rebellion probability
@@ -67,9 +71,9 @@ This checklist is the parent-owned acceptance contract for the alien-infantry AP
 
 - `alien_infantry` and `alien_laser_weapon_equipment` are the authoritative provider-neutral unit and equipment identifiers across Event 016, Event 019, D’Rhonda, and documentation consumers.
 - Battalion, equipment, and tactic values match the binding specification exactly, and both tactics require an alien-infantry unit type.
-- The final Meshy input is the single approved transparent full-body reference. Native alpha failed, so the recorded background-removal fallback preserves the source soldier and has inspected clean edges.
-- `alien_infantry_entity` is calibrated against vanilla infantry scale and reimports through the installed PDX exporter with packed materials.
-- Idle, move, laser attack, defend, support attack, retreat, and death are genuine verified skeletal actions, not transform-only stand-ins.
+- The accepted V13 Meshy input is `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/refs/original/meshy_input_v13_tpose_right_pointing_colored.png`, SHA-256 `2D72EEB020C8989B463F214D4B5FC1C29C4AB313AEEE9F033B71E6DE1881BF3A`.
+- `alien_infantry_entity` calibration, the 59,999-triangle Meshy 7 mesh, packed materials, actual-byte PDX reimport evidence, and static entity/GFX/animation/sound registrations are recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and commit `0e724fb8a`; the supported effect point, strict audio roles, and live acceptance remain parent-owned.
+- Idle, move, laser attack, defend, support attack, retreat, and death are genuine distinct Meshy preset actions verified by actual-byte reimport, not transform-only stand-ins.
 - Verified laser-fire, movement, idle, and death audio has provenance, checksums, timing notes, and alien-only consumer bindings.
 - Large and on-map counters match the inspected vanilla-green reference family; all equipment, technology, tactic, project, decision, event, focus, flag, country-interface, portrait, and existing-achievement assets resolve through registered sprites.
 
@@ -79,4 +83,4 @@ This checklist is the parent-owned acceptance contract for the alien-infantry AP
 - The context-free improvement-loop addendum is resolved, explicitly queued with a reason, or rejected before near-completion review.
 - Focus-tree, decision/mission, country-package, localisation, event-completion, and AI-probability auditors return handoffs and all actionable findings are resolved or reported.
 - Event 016 specs, Event 019 coverage, shared API documentation, asset/model manifests, persistent-history documentation, and the event catalog workbook agree with the shipped identifiers and behavior; catalog CSV exports are regenerated from the workbook.
-- Completion remains withheld until model reimport evidence, MCP comparisons, asset resolution, auditor acceptance, and the user’s in-game acceptance exist.
+- Model export and actual-byte reimport evidence is complete in the V13 package, but completion remains withheld until runtime asset resolution, MCP comparisons, auditor acceptance, and the user’s in-game acceptance exist.

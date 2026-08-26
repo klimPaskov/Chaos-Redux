@@ -32,4 +32,4 @@ The required read-only `hoi4.map_inspect` route also completed with `MAP_INSPECT
 
 ## Remaining ownership work
 
-Transient Portal beachhead/extraction marker cleanup still requires a named containment/spread owner. Five DHR support-route markers remain documented future hooks rather than being consumed by duplicate decisions. Alien Infantry runtime entity acceptance remains blocked by the model handoff’s muzzle-locator, action-role, synchronization, and entity-wiring gates.
+Transient Portal beachhead/extraction marker cleanup still requires a named containment/spread owner. Five DHR support-route markers remain documented future hooks rather than being consumed by duplicate decisions. Alien Infantry static entity/GFX/animation/sound registration is promoted, while supported muzzle/effect-point binding, strict audio-role coverage, positional playback, and live acceptance remain blocked by the model handoff’s explicit gates.

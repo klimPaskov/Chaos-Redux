@@ -10,6 +10,9 @@ Mode: final read-only event-completion audit.
 > The historical E016-01 analysis below remains useful rationale and validation history, but its blocking disposition and repair instructions are superseded.
 > Event 016 remains incomplete because Portal beachhead lifecycle ownership, five D’Rhondan support flags, custom-unit model/entity gates, probability coverage, GUI/MCP limits, and live acceptance remain open.
 
+> Current Alien Infantry correction after commit `0e724fb8a` (`Wire Meshy alien infantry firearm runtime package`): the accepted Meshy V13 package supplies a firearm-bearing 24-bone model, seven exact action exports with actual-byte PDX reimports, and promoted static entity/GFX/animation/sound registrations. The current blockers are the unsupported muzzle locator, unbound particle/light effects, strict audio selection/acknowledgement/impact/special-role provenance, positional/runtime wiring, and user-owned live acceptance; the V13 package is not a live-game completion claim.
+> The E016-02 model-package wording below predates that promotion and is retained as audit history only where it says the Alien Infantry package or actions are absent.
+
 Overall status: **INCOMPLETE — custom-unit runtime blockers, queued lifecycle/design gaps, and mandatory validation gaps remain.**
 
 No gameplay, localisation, interface, asset, model, sound, workbook, specification, or source-document file was changed by this audit.
@@ -39,7 +42,7 @@ The required probability pass was routed to `chaosx_ai_probability_auditor` as `
 | World-end routes and super-events | Partial: static registry and dispatch aligned | Event 016 owns the two terminal world-end routes and six super-event dispatches; constants, shared world-end registry IDs, queue effects, localisation, report/news art, and terminal KRG focus/decision consumers align statically. No DHR super-event is required by the binding addendum. Fresh event rendering/comparison and live audio, queue, and fallout acceptance remain unavailable. |
 | Event Log, Event Details, localisation, docs, and catalog | Partial | Actor rebinding, four evolution rows, world-end rows, conditional DHR sovereignty detail clause, report/news sprites, and workbook row 17 are aligned. One DHR revolt tooltip is mechanically too narrow, six definite prose-contract violations remain, and historical completion handoffs overstate or predate the owner-target registry correction. |
 | CXT extension | Partial: static setup contract present | `common\on_actions\016_alien_infantry_cxt_on_actions.txt:9-16` registers the hidden carrier through one bounded startup country and `:18-29` supplies `on_daily_CXT`. `common\scripted_effects\016_alien_infantry_cxt_test_effects.txt:21-77` applies the project, equipment, subunit, locked template, and three test units idempotently. No live CXT consumer proof is available. |
-| Visual and audio assets | Blocked at runtime-model level | Report/news art, Kruger and DHR portrait packages, focus/decision/project/technology icons, flags, Alien Infantry counters/audio, and Portal Raider counters/audio have source, processing, checksum, and wiring handoffs. Alien Infantry and Portal Raider still fail their required model/entity/action acceptance contracts. |
+| Visual and audio assets | Blocked at runtime-model level | Report/news art, Kruger and DHR portrait packages, focus/decision/project/technology icons, flags, Alien Infantry counters/audio, and Portal Raider counters/audio have source, processing, checksum, and wiring handoffs. Alien Infantry has a promoted V13 static model/entity/action package but still lacks supported muzzle/effect binding, strict audio-role proof, positional/runtime acceptance, and live acceptance; Portal Raider still lacks its accepted model/entity/action package. |
 | Mandatory MCP validation | Partial and route-limited | Current Event `.47` inspect and DHR focus inspect/render artifacts exist with no blocking diagnostics, and current Directorate GUI inspect finds 22 Event 016 elements. Event rendering/comparison remains incomplete, current GUI render returned an internal error, global GUI diagnostics are truncated, and no accepted `event_compare` baseline revision exists. Source review and historical artifacts are not treated as equivalent full engine evidence. |
 
 ## Findings ordered by severity
@@ -60,11 +63,11 @@ The correction removes the source-level state-array ownership defect, but it doe
 
 Status: **asset/runtime completion blocker**.
 
-Alien Infantry has an accepted Meshy 7 lineage, protected source, vanilla scale evidence, packed working files, bespoke vanilla-green large and map counters, legally reusable sourced audio with source-page/license/checksum evidence, and verified idle, move, and laser-attack exports.
+Alien Infantry has an accepted Meshy 7 V13 lineage, protected source, vanilla scale evidence, packed working files, bespoke vanilla-green large and map counters, legally reusable sourced audio with source-page/license/checksum evidence, and seven exact action exports with actual-byte PDX reimports.
 
-`docs\plans\016_brilliant_scientist_plans\subagent_handoffs\alien_infantry_3d_model_handoff.md`, `016_alien_firearm_meshy_rig_and_free_animation_2026-08-25.md`, and `2026-08-25_alien_infantry_free_firearm_animation_followup.md` still block defend, support-attack, retreat, death, and a stable muzzle locator.
+The V13 package provides `alien_infantry_idle`, `alien_infantry_move`, `alien_infantry_laser_attack`, `alien_infantry_defend`, `alien_infantry_support_attack`, `alien_infantry_retreat`, and `alien_infantry_death`, and commit `0e724fb8a` promotes the static `alien_infantry_entity` plus GFX, animation, and sound references. The current runtime gate is not action absence: no supported Meshy/Blender-authored muzzle locator is available, so the registered `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` remain unbound; strict audio selection, acknowledgement, impact, and special-role provenance remain incomplete; positional effect/audio playback and live acceptance are unproved.
 
-The particle `alien_laser_muzzle_particle`, light `alien_laser_muzzle_flash`, and sound `alien_infantry_laser_fire` have no accepted entity/action binding, and there is no completed `.asset` entity/action-state consumer with final export, reimport, synchronization, and runtime proof.
+Use `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/runtime/handoff.md`, and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md` for the current package and promotion evidence. The older V8/V10/Quaternius handoffs remain historical evidence and do not override the V13 status.
 
 Portal Raider is also incomplete.
 
@@ -76,7 +79,7 @@ Portal Raider counters are separately complete and wired by `portal_raider_count
 
 The Portal Raider handoff’s instruction to seek new user approval for a normal provider recovery is stale against the current `AGENTS.md` and `chaos-redux-3d-model-pipeline` policy, which preauthorizes planned generation and failure-driven recovery while balance and provider capability permit it.
 
-Required next action: route both packages through `chaosx_3d_model_pipeline`, preserve all rejected evidence, complete every required semantic action and audio synchronization point, then have the parent wire and validate the entities and all unit/counter consumers.
+Required next action: keep Alien Infantry routed through `chaosx_3d_model_pipeline` for the locator/effect and strict-audio gaps, keep Portal Raider recovery routed through the same pipeline, preserve all rejected evidence, then have the parent wire and validate the entities and all unit/counter consumers.
 
 ### E016-03 — High: mandatory current event inspection, rendering, and comparison evidence is unavailable
 
@@ -254,7 +257,7 @@ The counter packages do not cure the incomplete unit-model consumers described i
 
 No fallback or simplification was introduced by this read-only audit.
 
-Existing omissions are explicitly retained: incomplete Alien Infantry actions and muzzle binding, rejected Portal Raider geometry and missing actions/entity, no Portal beachhead cleanup owner, five unowned DHR support markers, incomplete probability coverage, missing current MCP event comparisons, and no live acceptance.
+Existing omissions are explicitly retained: Alien Infantry muzzle/effect binding, strict audio-role provenance, positional/runtime and live acceptance, rejected Portal Raider geometry and missing actions/entity, no Portal beachhead cleanup owner, five unowned DHR support markers, incomplete probability coverage, missing current MCP event comparisons, and no live acceptance.
 
 The broad older KRG architecture that is absent from the DHR tree is not reopened here because the binding DHR addendum deliberately replaces it with the exact three-regime 88-focus package.
 
@@ -264,7 +267,7 @@ Historical completion claims that must not be used as release evidence are the p
 
 1. Verify E016-01 with the owner-target implementation through the two-provider DHR and Event 019 acceptance matrix, and update any remaining pre-`d77afae7e` audit wording without reapplying the source patch.
 2. Rerun the two-provider DHR state-flow and Event 019 conservation matrix through current event inspect/render/compare and the named probability auditor.
-3. Complete Alien Infantry and Portal Raider semantic model/action/audio packages, parent runtime wiring, and consumer validation.
+3. Complete Alien Infantry locator/effect and strict-audio evidence, parent runtime wiring, and consumer validation, while continuing the separate Portal Raider semantic model/action/audio package.
 4. Promote and implement the bounded Portal beachhead lifecycle owner.
 5. Obtain the explicit `chaosx_event_ui_worker` current Directorate handoff and current GUI visual evidence.
 6. Apply the seven definite localisation repairs and document or remove the five reserved DHR support markers.
@@ -274,6 +277,6 @@ Historical completion claims that must not be used as release evidence are the p
 
 Event 016 is **not complete** after `d77afae7e`.
 
-The static content breadth is substantial and most enumerated surfaces exist, and the accepted caller-country registry contract is corrected in source, but DHR transfer acceptance remains unproved, two required custom-unit runtime packages remain incomplete, the Portal active-beachhead lifecycle is unowned, five D’Rhondan support markers remain without consumers, and mandatory current MCP and probability evidence is incomplete.
+The static content breadth is substantial and most enumerated surfaces exist, and the accepted caller-country registry contract is corrected in source, but DHR transfer acceptance remains unproved, Alien Infantry final locator/effect/audio/runtime acceptance and the separate Portal Raider runtime package remain incomplete, the Portal active-beachhead lifecycle is unowned, five D’Rhondan support markers remain without consumers, and mandatory current MCP and probability evidence is incomplete.
 
 No source-only or historical artifact should be promoted as proof that those blockers are resolved.

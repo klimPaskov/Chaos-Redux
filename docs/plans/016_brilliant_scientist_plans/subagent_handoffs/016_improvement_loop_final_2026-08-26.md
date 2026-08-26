@@ -24,6 +24,7 @@ The current implementation baseline includes these controlling corrections:
 - Commit `6224387cf` reconciles the current registry, Portal, DHR, MCP, and completion-audit documentation without changing gameplay.
 - Commit `31a66c4f4` compacts the Event 016 asset workspace without deleting accepted runtime assets or provenance.
 - Commit `fc23d2736` records the reviewed V10 model-evidence cleanup while retaining the accepted and rejected evidence needed for recovery.
+- Commit `0e724fb8a` promotes the accepted Meshy V13 Alien Infantry firearm package into static runtime entity, GFX, animation, and sound registrations while leaving locator, strict-audio, positional/runtime, and live-acceptance gates open.
 
 The authoritative current audit is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_event_completion_audit_2026-08-26.md`. The current source correction and documentation map are `016_alien_dhrondan_country_scoped_registry_2026-08-26.md` and `016_documentation_registry_reconciliation_2026-08-26.md` in the same folder.
 
@@ -147,19 +148,19 @@ Evidence: `docs/specs/016_brilliant_scientist_specs/matrices/016_asset_inventory
 
 Disposition: do not create another report family, animated UI ornament, focus-icon route, achievement triplet, DHR portrait family, or super-event image to make the package feel larger. Preserve the cleaned source and provenance workspace until the model blockers and final user review are complete.
 
-The Alien Infantry and Portal Raider counters, equipment icon, particle, light, and sourced audio candidates do not satisfy either missing 3D runtime package.
+The Alien Infantry and Portal Raider counters, equipment icon, particle, light, and sourced audio candidates do not by themselves satisfy the remaining 3D runtime acceptance gates.
 
-### F016-IL-10: Alien Infantry Meshy V10 runtime package
+### F016-IL-10: Alien Infantry Meshy V13 runtime package
 
-Classification: **queue with reason**.
+Classification: **partial; queue remaining runtime acceptance with reason**.
 
-Evidence: `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_v10_runtime_handoff_2026-08-26.md` and the V10 rejection report under `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/provider/rejections/`.
+Evidence: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/runtime/handoff.md`, and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`.
 
-The accepted V10 facts are a firearm-bearing Meshy 7 model, stable 24-bone humanoid rig, and genuine source roles for `alien_infantry_idle`, `alien_infantry_move`, `alien_infantry_defend`, `alien_infantry_retreat`, and `alien_infantry_death`. Meshy actions 4, 104, and 98 all fail the required aim, discharge, recoil, and recovery gate. No distinct `alien_infantry_support_attack` exists. The 24-bone rig has no verified muzzle locator.
+The accepted V13 facts are a firearm-bearing Meshy 7 model, stable 24-bone humanoid rig, seven exact semantic action exports, and actual-byte PDX reimports for idle, move, laser attack, defend, support attack, retreat, and death. Commit `0e724fb8a` promotes the static `alien_infantry_entity` and its GFX, animation, and sound references.
 
-Disposition: keep provider recovery queued to the 3D pipeline until Meshy or another explicitly approved source route can supply a compliant firearm action, a distinct support-attack source, and a verifiable locator. Only after those gates pass may the pipeline pack materials, export and reimport `.mesh` and `.anim` bytes, synchronize particles, light, and audio, and hand the parent an entity package.
+Disposition: retain the V13 package as current provider/static-runtime evidence and keep final runtime acceptance queued through `chaosx_3d_model_pipeline` for a supported Meshy/Blender-authored muzzle locator, particle/light effect binding, strict audio selection/acknowledgement/impact/special-role provenance, positional/runtime review, and user-owned live acceptance. No locator may be inferred from the rig or substituted with a manual Blender parenting step.
 
-There is no accepted `alien_infantry_entity`, `.mesh`, `.anim`, or laser-audio binding. Idle, move, defend, retreat, and death source clips do not authorize a partial entity. No historical professional-source action, semantic alias, transform-only motion, manual Blender replacement, inferred muzzle, generic infantry entity, or static fallback animation may be wired.
+The static entity and action/audio references are promoted, but provider evidence does not prove live consumer acceptance. No historical professional-source action, semantic alias, transform-only motion, manual Blender replacement, inferred muzzle, generic infantry entity, or static fallback animation may be wired.
 
 ### F016-IL-11: Portal Raider model/runtime package
 
@@ -200,7 +201,7 @@ No prior accepted expansion is silently reopened.
 | `016_alien_dhrondan_post_tranche_ownership_addendum_2026-08-26.md` | Registry finding resolved at source. Portal lifecycle remains queued. Five DHR support hooks remain queued. Model and engine evidence remain blocked or partial. |
 | `016_krg_biological_stockpile_delivery_addendum.md` | Accepted and queued behind the native CBRN callback. No fallback is authorized. |
 | `016_portal_lifecycle_patch_2026-08-26.md` | Queued. It records the ownership gap and forbids an arbitrary cleanup patch. It does not approve exact lifecycle mechanics. |
-| Alien Infantry V10 and Portal Raider model handoffs | Queued or blocked as recorded. Neither provides an accepted runtime entity. |
+| Alien Infantry V13 and Portal Raider model handoffs | Alien Infantry's static entity/action registration is promoted, with locator/effect, strict-audio, positional/runtime, and live acceptance queued; Portal Raider remains rejected and unwired. |
 
 ## Explicit non-additions
 
@@ -219,7 +220,7 @@ No prior accepted expansion is silently reopened.
 1. Treat `d77afae7e` as the source fix and run the two-provider ordinary/Event 019 DHR transfer matrix without reopening the registry design.
 2. Keep the Portal beachhead lifecycle queued until a named owner and exact accepted lifecycle exist. Preserve permanent raid history separately from the transient active marker.
 3. Remove or explicitly reserve the five DHR support flags. Do not add new decisions solely to consume them.
-4. Keep Alien Infantry and Portal Raider runtime wiring blocked until their existing 3D action, locator, export, reimport, audio, and entity gates pass. Accept no fallback animation.
+4. Keep Alien Infantry final locator/effect/audio/positional/live acceptance and Portal Raider runtime wiring blocked until their remaining 3D gates pass. Accept no fallback animation.
 5. Complete the outstanding named probability comparisons, event and GUI evidence, dynamic transfer scenarios, technology projection where the tools permit it, and explicit Directorate UI-worker attestation.
 6. Leave the Event Log at four evolutions, no cluster, two world-end rows, and the conditional DHR detail clause. Leave the super-event inventory at six.
 7. Carry user-owned live HOI4 acceptance as open. Do not claim whole-event completion from source, MCP, asset, or model handoffs alone.

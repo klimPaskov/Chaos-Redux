@@ -1,5 +1,7 @@
 # Alien infantry 3D model production handoff
 
+> Superseded by the Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for earlier rejection evidence only.
+
 Status: **blocked — pose-correct V8 geometry and neutral FBX rig passed, but all three audited official Meshy firearm actions failed the mandatory firing sequence**. No `.mesh`, `.anim`, export/reimport proof, firing crosswalk, or runtime wiring is claimed.
 
 ## Source and exact-one input

@@ -1,5 +1,7 @@
 # Alien infantry firearm Meshy rig and free-animation handoff
 
+> Superseded by the Meshy V13 package and static runtime promotion recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`; retain this file for prior Quaternius/KayKit evidence only.
+
 Date: 2026-08-25  
 Owner: `chaosx_3d_model_pipeline` bounded Alien Infantry firearm tranche  
 Package: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/`  

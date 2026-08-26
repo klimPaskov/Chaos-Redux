@@ -1,5 +1,7 @@
 # Event 016 D’Rhonda and Alien Infantry completion audit — 2026-08-25
 
+> Historical completion snapshot superseded for Alien Infantry runtime status by the accepted V13 provider package and static runtime promotion recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_alien_infantry_meshy_runtime_promotion_2026-08-26.md`. Keep the audit evidence and its live/MCP limitations, but do not use its pre-promotion V8/V10/Quaternius action or missing-package statements as current status.
+
 ## Audit outcome
 
 **Overall status: incomplete.** The D’Rhondan contact gameplay, Alien Infantry public API, Event 019 provider migration, Event 016 log/detail registration, four-evolution identity, achievements, and existing Event 016 super-event/aftermath source surfaces are substantially implemented. Completion cannot be claimed because the Alien Infantry runtime model package is still missing four accepted semantic actions plus a supported muzzle locator and synchronized effects/audio, current MCP event evidence is partial or unavailable on several required chains, the current weighted rebellion surface did not receive a fresh completed probability pass, and live acceptance remains open.
