@@ -47,3 +47,7 @@ The fidelity summary was modelled 149, approximated 7, ignored 9, missing 4, uns
 Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e8f87a27d3e82880e2f466c30b7df60136b7a79a216c12368c94edcf21ed01ad/9b17c5ddaba374bdb4c659c40cb6438bc4e229bf7358b4e00919e53551f7ba1e/gui-inspect.28a47b94e0e8c2cb.json`.
 
 The source-selector result still carries the fixed global graph and validation ceilings, including unrelated index collisions and unattributed overlap, overflow, spacing, alignment, dynamic-value, and animation-fidelity diagnostics. This is current early-window reachability evidence, not a clean Event 014-specific visual acceptance result.
+
+A bounded render was also requested for the early header under scenario `event014_targeted_early_visual_states_2026_08_26`, covering `normal`, `hover`, `disabled`, and `long-text` states at 1280x720 and 1920x1080. The call returned `GUI_RENDERED` with no blockers and produced `cannibalism_early_header_window-full.svg`: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fcfae968916de2c03f1a02f42bf5dc720fcc83c255414d77af125652efc1ea15/80fa8237f37d08d2735a7cf923b92ee4d6cf4cf29474943c4ffbe15fe3a42dca/cannibalism_early_header_window-full.svg`.
+
+The response was wire-truncated and returned no state-specific validation or click-region metadata, so this improves attributable render coverage without closing the full visual matrix.
