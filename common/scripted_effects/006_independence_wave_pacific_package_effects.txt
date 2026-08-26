@@ -1001,6 +1001,12 @@ independence_wave_cleanup_iw_179_micronesia = {
 		clr_country_flag = independence_wave_emergency_military_route_excluded
 		clr_country_flag = independence_wave_patron_client_route_excluded
 		clr_country_flag = independence_wave_radical_sovereignty_route_excluded
+		# Setup assigns the shared Event 006 framework after the generic-tree
+		# preflight; restore vanilla FSM's generic tree on teardown.
+		if = {
+			limit = { has_focus_tree = independence_wave_focus_tree }
+			load_focus_tree = { tree = generic_focus keep_completed = no }
+		}
 		if = {
 			limit = { has_character = FSM_independence_wave_inter_island_congress_chair }
 			retire_character = FSM_independence_wave_inter_island_congress_chair
