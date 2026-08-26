@@ -48,10 +48,14 @@ The European regional name block at source line 4648 was evaluated as a complete
 
 The six-personality block at source line 4711 was evaluated as a complete six-candidate pool under `E014_WARLORD_PERSONALITIES_CURRENT_2026_08_26_RETRY`. `hoi4.probability_evaluate` returned `PROBABILITY_ANALYZED` with `analysisId = probability-0b60164f800cc68bea44b098`, six candidates, zero unresolved inputs, zero diagnostics, and exact conditional probability 1/6 per personality. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f4b87489a04fbf314495815561ce009e18591a9c6658d59b88e7bdceb20b2d94/73f7644d5ab6d826b2c3088f90b9f64eec8d0fb64691396b989c6c2a47421dd8/probability-0b60164f800cc68bea44b098.json`.
 
+The three-outcome forensic recovery block at source line 6202 was evaluated under `E014_FORENSIC_RECOVERY_WEIGHT_PROBES_2026_08_26` with baseline, open-policy, concealment, and combined states. `hoi4.probability_evaluate` returned `PROBABILITY_ANALYZED` with `analysisId = probability-e4aa1bc8082524f5bf8a6d04`, 12 scenario candidates, zero unresolved inputs, zero diagnostics, and exact conditional results. Baseline full/partial/failure was 35/45/20; open policy was 50/45/20; concealment was 35/45/35; and combined was 50/45/35, each normalized by its active total. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6135a7c60c57cc3afc0df90e8aa18bb102db7be4ff4aabf3a1ed53de5d11e856/8887e949f62ee28895a11b927df86f6230c3f6f88c4dfc6ab0fe3699d9d20dc3/probability-e4aa1bc8082524f5bf8a6d04.json`.
+
 ## Disposition
 
 This refresh strengthens current source-revision evidence for the opening-policy weights but does not certify normalized campaign probabilities, route dominance, or dynamic host selection.
 
 The random-list refresh strengthens two identity sub-pools, but it does not certify the aggregate seven-region selector, dynamic region assignment, or the three outcome blocks because those remain separate or variable-derived surfaces.
+
+The forensic recovery evaluation is a bounded weight proof only. It does not prove the cost trigger, active-node target, missing-burial state scope, or the live callback and cleanup sequence.
 
 No balance patch is justified. Any future weight or trigger change must rerun source-qualified inspection and the same named scenario evaluations, then use `hoi4.probability_compare` with identical pools and scenarios.
