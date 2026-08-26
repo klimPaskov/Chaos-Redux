@@ -175,11 +175,12 @@ content; never infer package identity from the tag alone.
 
 ## Provenance and loading contract
 
-`common/scripted_triggers/006_independence_wave_country_registry_triggers.txt`
-provides exact membership, Event 006 origin, Soviet origin, and safe Africa
-origin predicates. Event 006 content continues to require its own package and
-origin markers. Event 012 writes only `africa_priority_origin_*` and Africa
-package flags; it never calls the Event 006 origin effect.
+The country-registry section of
+`common/scripted_triggers/006_independence_wave_package_triggers.txt` provides
+exact membership, Event 006 origin, Soviet origin, and safe Africa origin
+predicates. Event 006 content continues to require its own package and origin
+markers. Event 012 writes only `africa_priority_origin_*` and Africa package
+flags; it never calls the Event 006 origin effect.
 
 `africa_priority_member_ensure_focus_tree_loaded` loads the Africa tree for a validated Event 012 package on a generic carrier or an approved Event 006 carrier only when the protected Event 006 origin and full Event 006 tree are absent.
 
