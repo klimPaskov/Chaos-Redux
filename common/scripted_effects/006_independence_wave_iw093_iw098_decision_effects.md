@@ -2,11 +2,12 @@
 
 ## Purpose
 
-`006_independence_wave_iw093_iw098_decision_effects.txt` owns the local paid
-decision ledger, project completion, staged-idea lifecycle, and reset cleanup
-for the Asante and Sokoto signature categories. It does not create formations,
-grant stockpiled equipment, set runtime content attestations, or proclaim a
-formable.
+The IW-093 and IW-098 helpers now live in the canonical
+`common/scripted_effects/006_independence_wave_decision_effects.txt` registry
+under the marked `MERGED SOURCE` section. They own the local paid decision
+ledger, project completion, staged-idea lifecycle, and reset cleanup for the
+Asante and Sokoto signature categories. They do not create formations, grant
+stockpiled equipment, set runtime content attestations, or proclaim a formable.
 
 ## Scope and transaction inputs
 
