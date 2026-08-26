@@ -465,6 +465,8 @@ Costs combine:
 - state control
 - commander capacity
 
+The Bone Guard action follows a fixed paid contract sequence for Warlords and unified CBL. The first successful transaction fields Bone Riders, the second fields the Scavenged Elephant Column, and later transactions field ordinary Bone Guards. Each outcome increments the shared Bone Guard raised counter and consumes the same exact Deaths-backed population and equipment reserve gate. The base cap of two is consumed by the first two outcomes, so ordinary Bone Guards require a cap upgrade. No outcome grants a free unit. A failed or partial population transaction preserves Larder, counters, sequence flags, and transaction flags, while rollback and slot release clear the sequence state and locked templates.
+
 ### Raid actions
 
 - seize depot
