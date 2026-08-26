@@ -4,8 +4,8 @@
 # Overview:
 # - Defines nine inactive Event 014 line sub-units, including one horse-mounted
 #   cavalry family that remains infantry equipment-bound.
-# - Each family has a distinct sprite token as an active map-model consumer
-#   contract for the parent entity and model wiring.
+# - Seven families use dedicated Event 014 sprite tokens; Bone Riders reuse
+#   the vanilla cavalry entity and Network Cadre reuses vanilla infantry.
 # - All families share the explicit cannibal irregular-infantry category while
 #   retaining ordinary infantry equipment and support compatibility.
 # - The deliberately extreme attack and speed profile is balanced by low
@@ -16,9 +16,9 @@
 #   through the locked Event 014 template contract.
 # - `common/on_actions/014_cannibalism_on_actions.txt` registers the same nine
 #   definitions with the bounded CXT test-country extension.
-# - The sprite tokens are consumer contracts for the parent model/entity work;
-#   this file intentionally does not create any mesh, animation, asset, GFX,
-#   counter, or sound file.
+# - Dedicated sprite tokens are consumer contracts for the parent model/entity
+#   work; the two vanilla-reuse families intentionally create no model files.
+#   This file itself creates no mesh, animation, asset, GFX, counter, or sound.
 #
 # Speed reference:
 # - Infantry equipment has a vanilla maximum speed of 4.
@@ -506,7 +506,8 @@ sub_units = {
 
 	cannibal_bone_riders = {
 		abbreviation = "BRD"
-		sprite = cannibal_bone_riders
+		# Reuse the vanilla cavalry entity; this unit's gameplay profile remains custom.
+		sprite = cavalry
 		map_icon_category = other
 		priority = @BONE_RIDERS_PRIORITY
 		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
@@ -727,7 +728,8 @@ sub_units = {
 
 	cannibal_network_cadre = {
 		abbreviation = "NCD"
-		sprite = cannibal_network_cadre
+		# Reuse the vanilla infantry entity; this courier formation has no custom model.
+		sprite = infantry
 		map_icon_category = infantry
 		priority = @NETWORK_CADRE_PRIORITY
 		ai_priority = @CANNIBAL_IRREGULAR_AI_PRIORITY
