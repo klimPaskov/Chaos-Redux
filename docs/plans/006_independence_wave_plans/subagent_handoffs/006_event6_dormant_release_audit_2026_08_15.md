@@ -6,6 +6,10 @@ This audit covers the Event 006 dormant-carrier preflight, package dispatch, all
 
 The pasted AXX/BAX/BBX invalid-capital failures exposed a package-wide pattern rather than three isolated files. I replaced every fixed numeric `capital_scope = { state = N }` check in the current Event 006 package-trigger files with the vanilla state-scope form `N = { is_capital = yes }`. The patch covers 118 checks in 34 files, including FER's 408/409 OR. Dynamic or controlled `capital_scope` checks were intentionally preserved.
 
+## Current supersession notice (2026-08-26)
+
+This dated audit retains its `exists = no` and joint expected-count findings as historical evidence only. Commit `7858a2b1f` supersedes the release wording with the dormant-country-scope predicate, and commit `d6abc3792` supersedes the unresolved joint-count overwrite with actual Event 005 plus Event 006 selected-count recomputation; use the current source-of-truth map and resume packet for routing.
+
 ## Severity-sorted findings
 
 ### High — fixed in this tranche: dormant carriers could still resolve `capital_scope`
@@ -16,7 +20,9 @@ Before this patch, runtime-ready, setup-initialization, prepared-origin, and FER
 
 After this patch, fixed state checks resolve a state scope that is always available, and `is_capital` verifies that the selected anchor is the live country's capital once the release exists. Existing `N = { is_owned_and_controlled_by = ROOT }` checks continue to prove ownership/control where present.
 
-### High — unresolved: joint partial allocation overwrites the shared expected-count contract
+### Historical finding — superseded: joint partial allocation overwrote the shared expected-count contract
+
+The following joint-count paragraphs preserve the 2026-08-15 diagnosis only; commit `d6abc3792` is the current source authority for the recomputation repair.
 
 The standalone allocator's pool-exhaustion branch intentionally lowers `global.independence_wave_plan_target_count` and `global.liberation_plan_expected_country_count` to the selected Event 006 subset when at least one candidate exists. The standalone executor then requires selected, instantiated, transferred, validated, initialized, and committed counts to match that selected subset, so a non-empty partial standalone package cannot commit unless every selected row passes all barriers.
 
@@ -69,7 +75,7 @@ The four remaining `capital_scope` checks inside package-trigger files are contr
 
 ## Lifecycle and release-gate notes
 
-- `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt` preflight explicitly requires `exists = no`, an execution adapter, content attestation, and the exact dormant package admission predicate; it does not resolve a dormant carrier's capital.
+- At the 2026-08-15 snapshot, `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt` preflight explicitly required `exists = no`, an execution adapter, content attestation, and the exact dormant package admission predicate; current routing uses the dormant-country-scope predicate and does not resolve a dormant carrier's capital.
 - `common/scripted_effects/006_independence_wave_execution_effects.txt` validates the reserved carrier as dormant before release and validates the fixed anchor and former host before any release effect runs.
 - The release pass creates the frozen country, sets its capital to the selected anchor, then dispatches package setup and live runtime gates. The state-scoped `is_capital` replacements therefore preserve the post-release contract without requiring an absent-country capital scope.
 - Failed metadata, instantiation, ownership transfer, setup, finalization, or origin-commit counts remain fail-closed; the standalone wrapper restores host capitals and aborts before mutation when execution has not started, and runs compensating rollback after mutation.
@@ -96,9 +102,9 @@ No AI weight or target score changed, so no probability target was altered. The 
 
 None introduced. This source-only trigger patch has no localisation identifiers or tooltip strings.
 
-### Cleanup and exploit risk
+### Cleanup and exploit risk (2026-08-15 snapshot; joint-count text superseded)
 
-The state-scope replacement removes invalid-target log noise without creating a release path for an unreserved tag. Zero-candidate allocation still fails closed, and non-empty partial standalone allocation still passes all count and cleanup barriers before commit. The joint expected-count overwrite remains a correctness failure risk, not a partial-release exploit, because central plan validation runs before ownership mutation.
+The state-scope replacement removes invalid-target log noise without creating a release path for an unreserved tag. Zero-candidate allocation still fails closed, and non-empty partial standalone allocation still passes all count and cleanup barriers before commit. At that snapshot, the joint expected-count overwrite was a correctness failure risk rather than a partial-release exploit because central plan validation ran before ownership mutation; the source overwrite is now repaired by `d6abc3792`, while joint execution remains unproven.
 
 ## Evidence and validation
 
@@ -108,9 +114,9 @@ The state-scope replacement removes invalid-target log noise without creating a 
 - Read-only `hoi4.event_render` returned `EVENT_RENDERED_PARTIAL` with no blocking diagnostics. Manifest: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e518a4ead46cba32e0cfbd32d5d4dac2b44523d3800d9d4885906493720148c7/858a2e321160c3fe1d4195c946886ed3b3dbe4957474224c79a66544352f278d/event-state-a0d209ec728f-manifest.json`; JSON: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e8f1fa321efd810b63083bae2b58cde1b6f92c1e0fedafbca99d66e2bd3c88ce/794d09cdd71fbf3180ab3c4cb74c644f1bd861b818895b9995ee2b11c949fae9/event-state-a0d209ec728f.json`; PNG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a78306fd5428e521da7b7c2c841f1d3f1366a83362800205bf6118edbdb5ea14/12f828d1aeb3187b7eab914b0b57d53fba3ad6e8c3ffcf63db96de2115c4554e/event-state-a0d209ec728f.png`.
 - No live Hearts of Iron IV process was launched, as required by the repository instructions; live triggering and save-state validation remain parent/user work.
 
-## Recommended follow-up
+## Historical recommended follow-up (superseded 2026-08-26)
 
-Keep the broad fixed-state patch and add a narrow allocator guard for joint plans so the partial Event 006 branch updates the shared expected count to Event 005 selected rows plus Event 006 selected rows, rather than Event 006 selected rows alone. Do not widen central attestation or Join as part of that repair.
+The 2026-08-15 recommendation was to keep the broad fixed-state patch and add a narrow allocator guard for joint plans so the partial Event 006 branch updated the shared expected count to Event 005 selected rows plus Event 006 selected rows, rather than Event 006 selected rows alone. Commit `d6abc3792` records that source repair; do not widen central attestation or Join as part of any remaining validation.
 
 ## Remaining uncertainty
 

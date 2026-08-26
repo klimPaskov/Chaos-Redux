@@ -6,6 +6,10 @@ Whole-event disposition: **HOLD / PARTIAL**.
 
 This audit does not edit gameplay, assets, localisation, the workbook or CSV mirrors, central package admission, or Git state.
 
+## Current supersession notice (2026-08-26)
+
+The release-gate, joint-count, and `.350` recruitment findings below are dated snapshot evidence only. Commit `7858a2b1f` supersedes the `exists = no` release wording with the dormant-country-scope predicate, and commit `d6abc3792` supersedes the unresolved joint expected-count overwrite with actual Event 005 plus Event 006 selected-count recomputation. Current `.350` behavior validates pre-defined package rosters and writes checkpoint flags, while additive NAV/GLC consumers are owned by startup history; do not use the stale passages below to drive new implementation.
+
 ## Executive disposition
 
 The post-IW-045 routing boundary remains 149 publishers, 40 runtime adapters, 32 content-attested selectable packages, 29 compatible reservation groups, and 161 unattested selectable rows out of 193 non-overlay rows.
@@ -14,17 +18,17 @@ The automatic ladder remains `3/4/5/7/10`, with World Collapse also targeting `1
 
 The accepted no-pre-event-surface rule is implemented and must be treated as closed rather than carried as a blocker.
 
-The dormant-carrier execution repair is source-coherent for standalone Event 006 execution: pre-release metadata and package preflight require a non-existing reserved carrier, release occurs before capital assignment and package setup, the selected anchor becomes the live capital, and setup/final validation precede durable commit.
+The dormant-carrier execution repair is source-coherent for standalone Event 006 execution: pre-release metadata and package preflight use the dormant-country-scope predicate, which accepts an absent tag or an existing empty startup shell and rejects living carriers, release occurs before capital assignment and package setup, the selected anchor becomes the live capital, and setup/final validation precede durable commit.
 
 The fixed numeric dormant-capital defect is also broadly repaired across the current package triggers, including FER's ordered 408/409 runtime anchors while vanilla history capital 563 remains permitted only before release.
 
-One new high-severity central blocker remains after those repairs: the Event 006 pool-exhaustion partial branch overwrites the shared joint-plan expected-country count with the Event 006 selected count only.
+At the 2026-08-15 snapshot, one high-severity central blocker remained after those repairs: the Event 006 pool-exhaustion partial branch overwrote the shared joint-plan expected-country count with the Event 006 selected count only.
 
 In a joint Event 005+006 plan, the wrapper first calculates `Event 005 selected + nominal Event 006 target`, but `006_independence_wave_package_allocator_effects.txt:124-138` later replaces that total with the Event 006 subset when the Event 006 pool exhausts.
 
 The shared lock and contract then require the complete package array, which still includes Event 005 rows, to equal the overwritten Event 006-only value.
 
-The expected outcome is a fail-closed joint-plan rejection before release, not a partial-release exploit, but the accepted joint Liberations path is not complete until the count is reconciled.
+The expected outcome at that snapshot was a fail-closed joint-plan rejection before release, not a partial-release exploit; the count was subsequently reconciled by `d6abc3792`, while the accepted joint Liberations path remains unproven at runtime.
 
 No package-local tranche among IW-047, IW-048, IW-050, IW-051, IW-052, IW-053, IW-054, IW-057, and IW-060 is ready for central promotion on the current evidence.
 
@@ -48,11 +52,11 @@ The instruction at `docs/plans/006_independence_wave_plans/006_source_of_truth_m
 
 ### Dormant/no-country execution — bounded source pass
 
-`common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:204-213` defines preflight on the frozen target country and begins with `exists = no`, followed by adapter, content-attestation, and origin-safety gates.
+At the 2026-08-15 snapshot, `common/scripted_triggers/006_independence_wave_package_dispatch_triggers.txt:204-213` defined preflight on the frozen target country and began with `exists = no`, followed by adapter, content-attestation, and origin-safety gates; current routing uses the dormant-country-scope predicate instead.
 
 `common/scripted_effects/006_independence_wave_execution_effects.txt:15-78` validates aligned metadata, the reserved dormant country, exact package ID, force mapping, reserved anchor, and living former host before release.
 
-The reserved country check at lines 63-69 explicitly requires `exists = no` and the same preflight predicate.
+At that snapshot, the reserved country check at lines 63-69 explicitly required `exists = no` and the same preflight predicate; this wording is superseded by the empty-startup-shell-capable dormant-country-scope check.
 
 `independence_wave_instantiate_frozen_countries` releases the frozen country before the state-transfer and finalizer passes.
 
@@ -86,9 +90,9 @@ Do not carry the old 408/409-versus-563 mismatch as an unresolved capital blocke
 
 FER remains blocked by identity/rights, institutional roster, neutral-symbol provenance, typed probability evidence, route-leadership disposition, and central admission.
 
-## High-severity central blocker
+## Historical high-severity central blocker (superseded 2026-08-26)
 
-### Joint Event 005+006 partial allocation corrupts the shared expected count
+### Historical finding — superseded: joint Event 005+006 partial allocation corrupted the shared expected count
 
 `common/scripted_effects/005_006_liberations_collision_effects.txt:1266-1270` sets `global.liberation_plan_expected_country_count` to the Event 005 selected count plus the nominal Event 006 target before calling the Event 006 allocator.
 
@@ -104,7 +108,7 @@ The current `audit_event6_allocator.py` pass does not exercise this cross-event 
 
 Recommended owner action: make the partial branch preserve the Event 005 contribution in joint mode, then rerun the shared release-contract audit and the same allocator scenarios through the probability auditor without widening package admission.
 
-## Completion status by surface
+## Completion status by surface (2026-08-15 snapshot; superseded where noted above)
 
 | Surface | Current status | Evidence and remaining boundary |
 | --- | --- | --- |
@@ -185,7 +189,7 @@ The shared worktree contained approximately 1470 status rows at the end of the a
 
 Current Event 006 changes include the no-pre-event retirement, dormant metadata fix, 118 fixed-state capital-check replacements, FER package work, package-local decision/localisation work, focus callbacks, IW-093/IW-098 constant-compatibility changes, and allocator partial-pool behavior.
 
-### Startup character recruitment relocation needs a current implementation receipt
+### Historical startup character recruitment relocation snapshot (superseded 2026-08-26)
 
 `events/006_independence_wave.txt` removes fifteen additive `recruit_character` calls from hidden checkpoint event `.350`.
 
@@ -197,7 +201,7 @@ However, `006_event6_roster_checkpoint_dm01_relocation_current_2026_08_15.md` st
 
 `006_dirty_gameplay_architect_review_2026-08-03.md:25` explicitly rejected recreating a broad static `history/general` recruitment source and required per-country history if recruitment moved out of hidden events.
 
-The proposed `006_iw057_fer_identity_roster_symbol_receipt_addendum_2026_08_15.md` instead treats startup recruitment through this `history/general` file as the current pre-event repair pattern.
+The proposed `006_iw057_fer_identity_roster_symbol_receipt_addendum_2026_08_15.md` instead treated startup recruitment through this `history/general` file as the current pre-event repair pattern.
 
 That is a real authority conflict rather than a source-only typo.
 

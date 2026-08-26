@@ -4,7 +4,7 @@
 
 IW-013 Basque Country reuses the vanilla `NAV` carrier and the installed-map País Vasco state 792 as its compact release anchor. Navarra 172 and French Basque 806 are optional territorial objectives after release. IW-015 Galicia reuses the vanilla `GLC` carrier and state 171 as its compact anchor. Neither package creates a country, history file, replacement tag, advisor, or new leader identity.
 
-Both carriers receive the shared Event 006 full framework because their vanilla carrier histories expose only the generic focus surface. The setup adapter preserves their vanilla history, flag, existing ruling-leader roster, and non-Event-006 identity surfaces. A synchronous Event 006 roster checkpoint recruits one additive sourced male corps-command consumer for each carrier: José Antonio Aguirre for NAV and Alfonso Daniel Castelao for GLC. These command roles do not replace the vanilla leaders or create advisor art.
+Both carriers receive the shared Event 006 full framework because their vanilla carrier histories expose only the generic focus surface. The setup adapter preserves their vanilla history, flag, existing ruling-leader roster, and non-Event-006 identity surfaces. Startup history supplies the additive sourced male corps-command consumers for NAV and GLC, while the synchronous Event 006 roster checkpoint validates those pre-defined package rosters and writes their checkpoint flags. These command roles do not replace the vanilla leaders or create advisor art.
 
 ## Runtime flow
 
@@ -41,7 +41,7 @@ The package adapters and dispatch hooks are source-wired, and the command-roster
 
 ## Current GLC identity gate
 
-Vanilla Galicia already owns Alfonso Daniel Castelao as a country leader, while Event 006 currently defines and recruits a second Castelao character as a corps commander. The role split is explicit in the source, but no accepted transfer or identity-ownership contract makes two live consumers of the same real person safe. The current GLC adapter therefore remains fail-closed; do not remove the corps-command gate, retire the vanilla leader, rename the character, or add central attestation without an owner-approved identity decision and a source-backed replacement or transfer packet. See `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw015_glc_duplicate_identity_audit_2026_08_14.md`.
+Vanilla Galicia already owns Alfonso Daniel Castelao as a country leader, while Event 006 defines a second Castelao character as a corps commander and startup history supplies that additive consumer. The role split is explicit in the source, but no accepted transfer or identity-ownership contract makes two live consumers of the same real person safe. The current GLC adapter therefore remains fail-closed; do not remove the corps-command gate, retire the vanilla leader, rename the character, or add central attestation without an owner-approved identity decision and a source-backed replacement or transfer packet. See `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw015_glc_duplicate_identity_audit_2026_08_14.md`.
 
 ## Current portrait-source policy
 

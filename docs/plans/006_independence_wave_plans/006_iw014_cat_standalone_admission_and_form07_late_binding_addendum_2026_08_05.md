@@ -2,15 +2,21 @@
 
 Date: 2026-08-05
 
-Status: proposed narrow improvement tranche
+Status: IW-014 ADMISSION IMPLEMENTED; FORM-07 REMAINS FAIL-CLOSED
 
 Owner after acceptance: parent implementation agent
 
 Planning owner: `chaosx_improvement_loop_planner`
 
-## Decision
+## Current disposition (2026-08-26)
 
-Admit `IW-014` Catalonia as a complete standalone Event 006 country package after a bounded source and audit pass.
+IW-014 Catalonia is implemented and centrally content-attested/admitted under the current Event 006 authority, while FORM-07 remains separately fail-closed behind its identity, flag, member, integration, and readiness gates.
+
+The dated proposed wording and 16-package arithmetic below are retained as implementation history only; they must not withdraw IW-014 from the current attestation set or reopen its completed admission work.
+
+## Accepted decision
+
+`IW-014` Catalonia is admitted as a complete standalone Event 006 country package after the bounded source and audit pass described by this addendum.
 
 Keep `FORM-07` Iberian Federation registered as CAT's future regional ambition, but keep every player-facing formable surface closed until the complete existing FORM-07 readiness contract passes.
 
@@ -22,7 +28,7 @@ It does not authorize a placeholder formable identity, provisional flag, generat
 
 ## Why this is the next tranche
 
-The current whole-event audit records 15 attested packages across 14 compatible reservation groups, 10 adapter-only packages, and 178 unattested selectable packages.
+At the 2026-08-05 planning snapshot, the whole-event audit recorded 15 attested packages across 14 compatible reservation groups, 10 adapter-only packages, and 178 unattested selectable packages.
 
 Nine of the ten adapter-only packages still depend on grounded portraits, identity research, historical flag review, complete rosters, or incomplete formable member packages.
 
@@ -38,7 +44,7 @@ It does not make successful formation of FORM-07 a prerequisite for Catalonia to
 
 Separating country admission from formable readiness therefore preserves the accepted country promise while keeping the unresolved formable honest.
 
-After a successful admission, the expected boundary is 16 attested packages, 15 compatible reservation groups, and 177 unattested selectable packages.
+The planning snapshot expected a 16-attestation, 15-group boundary after admission; current routing instead uses the 32-attestation, 29-group, 161-unattested authority in the source-of-truth map.
 
 The 14-country automatic band remains supported.
 
@@ -46,7 +52,7 @@ The 20-country automatic band remains fail-closed and still needs at least four 
 
 ## Prior addendum disposition and non-duplication
 
-The CAT package implementation handoff and the bounded FORM-07 adapter handoff are source-implemented but not admitted.
+The CAT package implementation handoff is source-implemented and superseded by the current IW-014 admission; the bounded FORM-07 adapter remains source-implemented but not admitted.
 
 Their unresolved work is the final FORM-07 X identity, flag family, identity adapter, complete admitted member set, and readiness audit.
 
@@ -62,9 +68,9 @@ No new focus route, GUI, decision family, formable design, country shell, or ass
 
 ## In-flight implementation warning
 
-At the planning snapshot, the shared worktree already contains an in-flight removal of `has_independence_wave_formable_commit_readiness = yes` from CAT's prepared-package proof and an in-flight addition of `IW-014` to central content attestation.
+At the 2026-08-05 planning snapshot, the shared worktree contained an in-flight removal of `has_independence_wave_formable_commit_readiness = yes` from CAT's prepared-package proof and an in-flight addition of `IW-014` to central content attestation.
 
-Those edits are not sufficient for admission.
+Those edits were not sufficient for admission at that snapshot; the current source-of-truth map records the subsequent IW-014 admission while preserving FORM-07's separate fail-closed gate.
 
 The same snapshot contains the recursive scripted trigger below, which must not survive:
 
@@ -78,7 +84,7 @@ The same snapshot also leaves `can_open_independence_wave_formable_branch` depen
 
 That would expose the shared formable focus lane before FORM-07 identity readiness exists.
 
-Central attestation must be treated as the final promotion step after the dependency repair and all acceptance scenarios pass.
+At the planning snapshot, central attestation was the final promotion step after the dependency repair and acceptance scenarios; current source evidence records IW-014 as admitted and leaves FORM-07 independently fail-closed.
 
 If any acceptance gate fails, remove `IW-014` from content attestation and preserve the existing dormant adapter.
 
@@ -210,6 +216,8 @@ The player may later open the shared formable focus lane if a fully implemented 
 
 ## Exact implementation surfaces
 
+The required-edit table below is the historical CAT admission work order; the IW-014 source and attestation edits are already reflected in the current authority, while the FORM-07 guards remain active.
+
 ### Required source edits
 
 | File | Required change | Stable identifiers |
@@ -240,7 +248,7 @@ The player may later open the shared formable focus lane if a fully implemented 
 
 Update `docs/events/006_independence_wave/catalonia_package.md` with the standalone admission boundary and the still-blocked FORM-07 identity contract.
 
-Update `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md` and `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md` only after the final audit proves the new 16-package boundary.
+The source-of-truth map and resume packet now record the 32-package authority; the historical 16-package update instruction is superseded by that current ledger.
 
 Write a current CAT country-package audit, decision and mission audit, focus-gate audit, localisation audit, and completion-audit handoff under `docs/plans/006_independence_wave_plans/subagent_handoffs/`.
 
@@ -491,7 +499,7 @@ No cleanup path may clear a vanilla CAT flag, vanilla character, vanilla portrai
 
 ### Allocator and scenario proof
 
-26. `.tools/audit_event6_allocator.py` reports 16 attestations, 15 compatible reservation groups, a valid 14-package witness, and the unchanged 6, 8, 10, 14, and 20 ladder.
+26. The dated CAT admission audit reported 16 attestations and 15 compatible reservation groups, while current routing retains the 32-attestation, 29-group authority and the unchanged `3/4/5/7/10` ladder.
 
 27. The allocator confirms that the 20-country band remains impossible and needs four more compatible attestations.
 
@@ -607,9 +615,9 @@ This tranche is accepted only when all of the following are true:
 
 - No unauthorized new asset exists.
 
-- Central attestation contains IW-014 exactly once only after the audit chain passes.
+- Central attestation contains IW-014 exactly once under the current admitted package authority.
 
-- The allocator reports 16 attestations and 15 compatible reservation groups.
+- The current allocator authority reports 32 attestations and 29 compatible reservation groups.
 
 - The 20-country band remains explicitly fail-closed.
 
@@ -633,9 +641,9 @@ After promotion, retain this addendum as implementation history and mark its dis
 
 ## Parent handoff
 
-Design problem: CAT's complete base package is blocked by optional FORM-07 identity readiness, while family registration also risks exposing an unready shared formable lane.
+Historical design problem: CAT's complete base package was blocked by optional FORM-07 identity readiness, while family registration also risked exposing an unready shared formable lane.
 
-Proposed expansion: admit CAT independently, guard the first formable focus and CAT's discovery-unlock writer with full commit readiness, preserve every later FORM-07 gate, normalize the small set of non-round CAT balance values, then attest IW-014 only after independent audits.
+Historical proposed expansion, implemented for IW-014: admit CAT independently, guard the first formable focus and CAT's discovery-unlock writer with full commit readiness, preserve every later FORM-07 gate, normalize the small set of non-round CAT balance values, and retain FORM-07 as a separate fail-closed surface.
 
 Research basis: the accepted IW-014 registry, accepted Mediterranean and Iberian institutional packet, installed state `165`, vanilla CAT history, vanilla `CAT_lluis_companys`, and installed CAT flag families.
 
@@ -647,4 +655,4 @@ Open questions: none for the bounded CAT admission design.
 
 Unresolved prior addendum: FORM-07 identity, flag, member admission, and final readiness remain unresolved and stay in their existing ownership.
 
-Plan disposition: remain in `docs/plans` until implementation and audits pass, then promote the durable dependency rule into specification parts 4, 5, 6, and 7.
+Plan disposition: IW-014 admission is implemented and admitted; retain this addendum as implementation history for the still-unresolved FORM-07 dependency rule and do not treat its dated 16-package criteria as current authority.

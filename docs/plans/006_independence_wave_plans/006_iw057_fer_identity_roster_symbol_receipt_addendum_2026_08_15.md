@@ -1,14 +1,20 @@
 # Event 006 IW-057 Far Eastern Republic identity, roster, and provisional-symbol receipt addendum
 
-Status: PROPOSED PACKAGE-LOCAL TRANCHE; NOT CENTRAL ADMISSION AUTHORITY
+Status: PACKAGE-LOCAL SOURCE TRANCHE PRESENT; CENTRAL ADMISSION BLOCKED
 
 Date: 2026-08-15
 
 Owner after acceptance: Event 006 parent implementation owner, with bounded portrait and non-portrait asset handoffs as specified below.
 
+## Current disposition (2026-08-26)
+
+The IW-057 package-local source tranche is present for its constants, triggers, effects, ideas, AI, decisions, category, localisation, and shared-focus callbacks, but IW-057 remains outside central runtime admission and package-count authority.
+
+The remaining central gates are the parent-owned identity and institutional-roster receipts, neutral-flag provenance, typed probability evidence, and route-leadership disposition; the proposed wording below is retained as dated implementation history and must not be read as an unimplemented package-core request.
+
 ## Decision
 
-The highest-impact bounded tranche after the IW-057 package-local political, project, AI, and capital-preflight implementation is to close its real-person identity evidence, opening command-roster consumer, and provisional-symbol receipt contract.
+The bounded tranche described here follows the IW-057 package-local political, project, AI, and capital-preflight implementation and records the remaining real-person identity, opening command-roster consumer, and provisional-symbol receipt contract.
 
 This tranche must remain inside IW-057 and must not add IW-057 to the shared runtime adapter, content attestation, normal or SCN-008 preflight, deterministic Join roster, or any active publisher count.
 
@@ -284,7 +290,7 @@ The required evidence sequence is `hoi4.probability_inspect`, scenario evaluatio
 
 ## Promotion rule
 
-This addendum must remain in `docs/plans/006_independence_wave_plans/` while it is proposed or partially implemented.
+Retain this addendum in `docs/plans/006_independence_wave_plans/` while package-local evidence or the central identity, roster, flag, probability, and route-leadership gates remain unresolved.
 
 After parent acceptance and implementation, promote the durable identity choice, cosmetic identifier, receipt semantics, lifecycle, and route-leadership disposition into the appropriate REG-05 and Event 006 specification sections and update the accepted candidate, binding, asset, and research matrices.
 
