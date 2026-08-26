@@ -1,5 +1,7 @@
 # Event 016 D’Rhondan route-consumer patch handoff — 2026-08-26
 
+> Historical route-consumer snapshot. The survival-marker section is superseded by `016_dhrondan_survival_marker_consumption_2026-08-26.md`, which wires the four opening survival markers into the live landing and enclave decision AI. The five route-support markers listed below were already consumed by the current decision and trigger sources when this snapshot was written.
+
 Status: narrow world-order consumer patch applied and audited. The accepted 88-focus tree remains unchanged. Generic route-support AI priorities remain unresolved because the required `chaosx_ai_probability_auditor` route is not callable in this runtime.
 
 ## Scope and references
