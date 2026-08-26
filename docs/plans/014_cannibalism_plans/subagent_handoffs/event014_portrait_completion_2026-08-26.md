@@ -30,6 +30,20 @@ Every source is modern fictional game/fantasy/concept artwork, not an archival p
 
 Canonical source families: HATE uses the Alkony review/source page and CMON tribe references; Diablo III uses the Creative Uncut official-art index and gallery pages; Elden Ring uses the Creative Uncut official-art index and gallery pages.
 
+## Final-source gate audit
+
+All 56 cells in the coverage matrix are backed by real direct Internet image references from modern fictional game or concept-art sources and have already been cropped, resized, hashed, and installed as unique source-placeholder PNG/DDS outputs. `source_reference_gate: PASS (56/56)`.
+
+`final_redistribution_gate: BLOCKED (56/56)`. None of the three source families publishes a permissive redistribution license or public-domain grant for the selected artwork. The HATE archive explicitly credits CMON/CoolMiniOrNot and Adrian Smith; the Creative Uncut archives identify Blizzard Entertainment or FromSoftware/Bandai Namco and their credited artists. Every source ID in the matrix is therefore an exact per-slot legal blocker, not a missing provenance row.
+
+| Source IDs | Exact blocker |
+|---|---|
+| H01-H16 | `copyrighted_reference_only_user_authorized`; no permissive redistribution license or public-domain basis asserted by the CMON/Alkony source. |
+| D01-D22 | `copyrighted_reference_only_user_authorized`; no permissive redistribution license or public-domain basis asserted by the Blizzard/Creative Uncut source. |
+| E01-E18 | `copyrighted_reference_only_user_authorized`; no permissive redistribution license or public-domain basis asserted by the FromSoftware/Bandai Namco/Creative Uncut source. |
+
+The exact slot-to-source mapping is the coverage matrix above; source titles, URLs, archived pages, and per-row hashes are in `docs/assets/portraits/014_cannibalism/manifest.md` and the package contracts. The current 56 DDS files must stay marked `source_placeholder_installed_user_final_pending` until the user supplies authorized HOI4-style replacements or a rights holder grants redistribution permission. No generic CC, archival, photo-real, AI-generated, or 3D substitute was installed.
+
 HATE primary page: https://alkony.enerla.net/english/the-nexus/board-games-nexus/board-game/hate-board-game-base-set-hate-board-game-coolminiornot-2019-board-game-base-set-review
 Diablo III gallery index: https://www.creativeuncut.com/art_diablo-3_a.html
 Elden Ring gallery index: https://www.creativeuncut.com/art_elden-ring_a.html
@@ -177,4 +191,3 @@ Native 156x210 contact-sheet review passed for distinct face/mask readability, u
 - No ImageGen was used because the brief required Internet-sourced modern game/fantasy/concept art and forbade generated-from-scratch substitution.
 - No RunPod or 3D workflow was operated. No gameplay, events, decisions, GUI, focuses, models, super-event art/audio, or general localization were edited.
 - No in-game launch or HOI4 MCP render was performed for this GFX-only handoff; parent/user owns live validation.
-
