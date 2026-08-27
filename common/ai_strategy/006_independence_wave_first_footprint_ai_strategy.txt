@@ -1,0 +1,85 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-095 DAHOMEY AI STRATEGY
+# ============================================================================
+# Package-local AI layers for the Dahomey first-footprint compact. The layers
+# are inert until the Event 006 setup receipt and parent-owned identity/rights
+# flag are both present. They do not alter the central package admission gate.
+# ============================================================================
+
+@CR_SC_IW095_ARMY = 92
+@CR_SC_IW095_INFANTRY = 46
+@CR_SC_IW095_SUPPORT = 58
+@CR_SC_IW095_ARTILLERY = 18
+@CR_SC_IW095_INFRASTRUCTURE = 72
+@CR_SC_IW095_DEFENSE = 88
+@CR_SC_IW095_EMERGENCY_ARMY = 118
+@CR_SC_IW095_EMERGENCY_INFANTRY = 74
+@CR_SC_IW095_EMERGENCY_SUPPORT = 64
+@CR_SC_IW095_EMERGENCY_DEFENSE = 96
+@CR_SC_IW095_FOUNDING_RESTRAINT = -260
+@CR_SC_IW095_SETTLED_RESTRAINT = -420
+
+independence_wave_iw095_dahomey_survival = {
+	allowed = {
+		original_tag = DAH
+		has_country_flag = independence_wave_iw_095_identity_rights_cleared
+	}
+	enable = {
+		is_independence_wave_dahomey_package = yes
+		has_country_flag = independence_wave_iw_095_setup_complete
+		has_country_flag = independence_wave_dah_ai_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW095_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW095_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW095_SUPPORT }
+	ai_strategy = { type = equipment_production_factor id = artillery value = @CR_SC_IW095_ARTILLERY }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW095_INFRASTRUCTURE }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW095_DEFENSE }
+}
+
+independence_wave_iw095_dahomey_host_restraint = {
+	allowed = {
+		original_tag = DAH
+		has_country_flag = independence_wave_iw_095_identity_rights_cleared
+	}
+	enable = {
+		is_independence_wave_dahomey_package = yes
+		has_country_flag = independence_wave_iw_095_setup_complete
+		has_independence_wave_living_former_host = yes
+		NOT = { has_country_flag = independence_wave_dah_host_ledgers_settled }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW095_FOUNDING_RESTRAINT }
+}
+
+independence_wave_iw095_dahomey_settled_compact = {
+	allowed = {
+		original_tag = DAH
+		has_country_flag = independence_wave_iw_095_identity_rights_cleared
+	}
+	enable = {
+		is_independence_wave_dahomey_package = yes
+		has_country_flag = independence_wave_dah_compact_stabilized
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW095_ARMY }
+	ai_strategy = { type = avoid_starting_wars value = @CR_SC_IW095_SETTLED_RESTRAINT }
+	ai_strategy = { type = build_building id = infrastructure value = @CR_SC_IW095_INFRASTRUCTURE }
+}
+
+independence_wave_iw095_dahomey_emergency_directorate = {
+	allowed = {
+		original_tag = DAH
+		has_country_flag = independence_wave_iw_095_identity_rights_cleared
+	}
+	enable = {
+		is_independence_wave_dahomey_package = yes
+		has_country_flag = independence_wave_dah_emergency_government
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = @CR_SC_IW095_EMERGENCY_ARMY }
+	ai_strategy = { type = equipment_production_factor id = infantry value = @CR_SC_IW095_EMERGENCY_INFANTRY }
+	ai_strategy = { type = equipment_production_factor id = support value = @CR_SC_IW095_EMERGENCY_SUPPORT }
+	ai_strategy = { type = build_building id = bunker value = @CR_SC_IW095_EMERGENCY_DEFENSE }
+}
