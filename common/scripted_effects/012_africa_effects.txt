@@ -569,7 +569,10 @@ africa_initialize_selected_host = {
 		# chaosx.nr12.1. Do not also queue the generic first-contact event for that
 		# same host; every other initialized host keeps the ordinary delayed path.
 		if = {
-			limit = { NOT = { africa_rsa_allied_branch_can_start = yes } }
+			limit = {
+				NOT = { africa_rsa_allied_branch_can_start = yes }
+				NOT = { has_country_flag = africa_triggerable_scenario_launch_queued }
+			}
 			country_event = {
 				id = chaosx.nr12.2
 				days = africa_first_contact_delay

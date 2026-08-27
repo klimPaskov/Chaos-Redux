@@ -25,6 +25,16 @@ country_event = {
 	immediate = {
 		africa_initialize_selected_host = yes
 		if = {
+			limit = { has_country_flag = africa_triggerable_scenario_launch_queued }
+			africa_triggerable_scenario_apply_opening = yes
+			if = {
+				limit = { NOT = { has_global_flag = africa_triggerable_scenario_launched } }
+				clr_global_flag = africa_triggerable_scenario_launch_active
+				set_global_flag = africa_triggerable_scenario_setup_failed
+			}
+			clr_country_flag = africa_triggerable_scenario_launch_queued
+		}
+		else_if = {
 			limit = {
 				tag = SAF
 				africa_rsa_allied_branch_can_start = yes

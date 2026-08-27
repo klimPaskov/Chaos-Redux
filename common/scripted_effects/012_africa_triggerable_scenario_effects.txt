@@ -1,0 +1,249 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 TRIGGERABLE SCENARIO EFFECTS
+# ============================================================================
+# The shared scenario window dispatches here for the Africa Is One row. A fresh
+# launch reuses Event 012's weighted African-capital host and commit barrier;
+# an existing host receives the same scenario opening in place. The effect never
+# manufactures a tag, skips the host target, or writes the terminal world-end
+# identity. World Is One prepares the existing terminal-campaign route while its
+# normal package, proof, and identity gates remain authoritative.
+# ============================================================================
+
+# Any scope. Copies the UI selectors into global launch state, then either
+# applies the opening to the committed host or queues the canonical Event 012
+# entry event for the weighted prefire host.
+africa_triggerable_scenario_launch_selected = {
+	initialize_triggerable_scenarios_settings = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenarios_selected
+				value = constant:triggerable_scenario_id.africa_is_one
+				compare = equals
+			}
+			africa_triggerable_scenario_can_launch = yes
+		}
+		set_global_flag = africa_triggerable_scenario_launch_active
+		clr_global_flag = africa_triggerable_scenario_setup_failed
+		set_variable = { global.africa_triggerable_scenario_type = triggerable_scenarios_africa_type }
+		set_variable = { global.africa_triggerable_scenario_intensity = triggerable_scenarios_intensity }
+		if = {
+			limit = {
+				has_global_flag = africa_event_active
+				NOT = { has_global_flag = africa_event_resolved }
+				africa_has_current_host = yes
+			}
+			event_target:africa_host = {
+				africa_triggerable_scenario_apply_opening = yes
+			}
+		}
+		else = {
+			africa_prepare_manual_event_fire = yes
+			if = {
+				limit = { has_event_target = africa_prefire_host }
+				event_target:africa_prefire_host = {
+					set_country_flag = africa_triggerable_scenario_launch_queued
+					set_temp_variable = { africa_triggerable_scenario_callback_days = constant:africa_triggerable_scenario_timing.opening_callback_days }
+					country_event = { id = chaosx.nr12.1 days = africa_triggerable_scenario_callback_days }
+				}
+			}
+			else = {
+				clr_global_flag = africa_triggerable_scenario_launch_active
+				set_global_flag = africa_triggerable_scenario_setup_failed
+			}
+		}
+	}
+	else = {
+		clr_global_flag = africa_triggerable_scenario_launch_active
+		set_global_flag = africa_triggerable_scenario_setup_failed
+	}
+}
+
+# COUNTRY scope on the Event 012 host. This is the one shared opening writer;
+# branch-specific setup below only changes the route that follows it.
+africa_triggerable_scenario_apply_opening = {
+	if = {
+		limit = {
+			africa_triggerable_scenario_host_scope_is_valid = yes
+			NOT = { has_country_flag = africa_triggerable_scenario_applied }
+		}
+		set_country_flag = africa_triggerable_scenario_applied
+		set_variable = { africa_triggerable_scenario_type = global.africa_triggerable_scenario_type }
+		set_variable = { africa_triggerable_scenario_intensity = global.africa_triggerable_scenario_intensity }
+		africa_triggerable_scenario_apply_starting_forces = yes
+		africa_triggerable_scenario_apply_value_deltas = yes
+		africa_clamp_host_values = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = africa_triggerable_scenario_type
+					value = constant:triggerable_scenario_africa_type.world_is_one
+					compare = equals
+				}
+			}
+			africa_triggerable_scenario_apply_world_is_one_opening = yes
+		}
+		else = {
+			africa_triggerable_scenario_apply_africa_is_one_opening = yes
+		}
+		set_global_flag = africa_triggerable_scenario_launched
+		clr_global_flag = africa_triggerable_scenario_launch_active
+		if = {
+			limit = { NOT = { has_variable = global.africa_triggerable_scenario_launch_count } }
+			set_variable = { global.africa_triggerable_scenario_launch_count = constant:africa_value.zero }
+		}
+		add_to_variable = { global.africa_triggerable_scenario_launch_count = constant:africa_value.one }
+		set_variable = { global.africa_triggerable_scenario_last_type = africa_triggerable_scenario_type }
+		set_variable = { global.africa_triggerable_scenario_last_intensity = africa_triggerable_scenario_intensity }
+		set_country_flag = africa_triggerable_scenario_notification_pending
+		set_temp_variable = { africa_triggerable_scenario_notification_days = constant:africa_triggerable_scenario_timing.notification_days }
+		country_event = { id = chaosx.triggerable_scenarios.11 days = africa_triggerable_scenario_notification_days }
+	}
+	else_if = {
+		limit = { has_global_flag = africa_triggerable_scenario_launch_active }
+		clr_global_flag = africa_triggerable_scenario_launch_active
+		set_global_flag = africa_triggerable_scenario_setup_failed
+	}
+}
+
+# COUNTRY scope on the host. The equipment package is deliberately intensity
+# driven and uses vanilla level-one equipment so it works for every mapped host.
+africa_triggerable_scenario_apply_starting_forces = {
+	if = {
+		limit = { check_variable = { africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.low } }
+		set_temp_variable = { africa_triggerable_scenario_manpower = constant:africa_triggerable_scenario_force.low_manpower }
+		set_temp_variable = { africa_triggerable_scenario_infantry_equipment = constant:africa_triggerable_scenario_force.low_infantry_equipment }
+		set_temp_variable = { africa_triggerable_scenario_support_equipment = constant:africa_triggerable_scenario_force.low_support_equipment }
+		set_temp_variable = { africa_triggerable_scenario_convoys = constant:africa_triggerable_scenario_force.low_convoys }
+	}
+	else_if = {
+		limit = { check_variable = { africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.high } }
+		set_temp_variable = { africa_triggerable_scenario_manpower = constant:africa_triggerable_scenario_force.high_manpower }
+		set_temp_variable = { africa_triggerable_scenario_infantry_equipment = constant:africa_triggerable_scenario_force.high_infantry_equipment }
+		set_temp_variable = { africa_triggerable_scenario_support_equipment = constant:africa_triggerable_scenario_force.high_support_equipment }
+		set_temp_variable = { africa_triggerable_scenario_convoys = constant:africa_triggerable_scenario_force.high_convoys }
+	}
+	else_if = {
+		limit = { check_variable = { africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_temp_variable = { africa_triggerable_scenario_manpower = constant:africa_triggerable_scenario_force.maximum_manpower }
+		set_temp_variable = { africa_triggerable_scenario_infantry_equipment = constant:africa_triggerable_scenario_force.maximum_infantry_equipment }
+		set_temp_variable = { africa_triggerable_scenario_support_equipment = constant:africa_triggerable_scenario_force.maximum_support_equipment }
+		set_temp_variable = { africa_triggerable_scenario_convoys = constant:africa_triggerable_scenario_force.maximum_convoys }
+	}
+	else = {
+		set_temp_variable = { africa_triggerable_scenario_manpower = constant:africa_triggerable_scenario_force.medium_manpower }
+		set_temp_variable = { africa_triggerable_scenario_infantry_equipment = constant:africa_triggerable_scenario_force.medium_infantry_equipment }
+		set_temp_variable = { africa_triggerable_scenario_support_equipment = constant:africa_triggerable_scenario_force.medium_support_equipment }
+		set_temp_variable = { africa_triggerable_scenario_convoys = constant:africa_triggerable_scenario_force.medium_convoys }
+	}
+	add_manpower = var:africa_triggerable_scenario_manpower
+	add_equipment_to_stockpile = { type = infantry_equipment_1 amount = var:africa_triggerable_scenario_infantry_equipment }
+	add_equipment_to_stockpile = { type = support_equipment_1 amount = var:africa_triggerable_scenario_support_equipment }
+	add_equipment_to_stockpile = { type = convoy_1 amount = var:africa_triggerable_scenario_convoys }
+}
+
+# COUNTRY scope on the host. The same ladder feeds the visible charter values,
+# consent, readiness, and terminal route preparation.
+africa_triggerable_scenario_apply_value_deltas = {
+	if = {
+		limit = { check_variable = { africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.low } }
+		set_temp_variable = { africa_triggerable_scenario_authority = constant:africa_triggerable_scenario_value_delta.low_authority }
+		set_temp_variable = { africa_triggerable_scenario_reach = constant:africa_triggerable_scenario_value_delta.low_reach }
+		set_temp_variable = { africa_triggerable_scenario_consent = constant:africa_triggerable_scenario_value_delta.low_consent }
+		set_temp_variable = { africa_triggerable_scenario_war_readiness = constant:africa_triggerable_scenario_value_delta.low_war_readiness }
+		set_temp_variable = { africa_triggerable_scenario_pressure = constant:africa_triggerable_scenario_value_delta.low_colonial_pressure }
+		set_temp_variable = { africa_triggerable_scenario_legitimacy = constant:africa_triggerable_scenario_value_delta.low_legitimacy }
+		set_temp_variable = { africa_triggerable_scenario_capacity = constant:africa_triggerable_scenario_value_delta.low_central_capacity }
+	}
+	else_if = {
+		limit = { check_variable = { africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.high } }
+		set_temp_variable = { africa_triggerable_scenario_authority = constant:africa_triggerable_scenario_value_delta.high_authority }
+		set_temp_variable = { africa_triggerable_scenario_reach = constant:africa_triggerable_scenario_value_delta.high_reach }
+		set_temp_variable = { africa_triggerable_scenario_consent = constant:africa_triggerable_scenario_value_delta.high_consent }
+		set_temp_variable = { africa_triggerable_scenario_war_readiness = constant:africa_triggerable_scenario_value_delta.high_war_readiness }
+		set_temp_variable = { africa_triggerable_scenario_pressure = constant:africa_triggerable_scenario_value_delta.high_colonial_pressure }
+		set_temp_variable = { africa_triggerable_scenario_legitimacy = constant:africa_triggerable_scenario_value_delta.high_legitimacy }
+		set_temp_variable = { africa_triggerable_scenario_capacity = constant:africa_triggerable_scenario_value_delta.high_central_capacity }
+	}
+	else_if = {
+		limit = { check_variable = { africa_triggerable_scenario_intensity = constant:triggerable_scenario_intensity.maximum } }
+		set_temp_variable = { africa_triggerable_scenario_authority = constant:africa_triggerable_scenario_value_delta.maximum_authority }
+		set_temp_variable = { africa_triggerable_scenario_reach = constant:africa_triggerable_scenario_value_delta.maximum_reach }
+		set_temp_variable = { africa_triggerable_scenario_consent = constant:africa_triggerable_scenario_value_delta.maximum_consent }
+		set_temp_variable = { africa_triggerable_scenario_war_readiness = constant:africa_triggerable_scenario_value_delta.maximum_war_readiness }
+		set_temp_variable = { africa_triggerable_scenario_pressure = constant:africa_triggerable_scenario_value_delta.maximum_colonial_pressure }
+		set_temp_variable = { africa_triggerable_scenario_legitimacy = constant:africa_triggerable_scenario_value_delta.maximum_legitimacy }
+		set_temp_variable = { africa_triggerable_scenario_capacity = constant:africa_triggerable_scenario_value_delta.maximum_central_capacity }
+	}
+	else = {
+		set_temp_variable = { africa_triggerable_scenario_authority = constant:africa_triggerable_scenario_value_delta.medium_authority }
+		set_temp_variable = { africa_triggerable_scenario_reach = constant:africa_triggerable_scenario_value_delta.medium_reach }
+		set_temp_variable = { africa_triggerable_scenario_consent = constant:africa_triggerable_scenario_value_delta.medium_consent }
+		set_temp_variable = { africa_triggerable_scenario_war_readiness = constant:africa_triggerable_scenario_value_delta.medium_war_readiness }
+		set_temp_variable = { africa_triggerable_scenario_pressure = constant:africa_triggerable_scenario_value_delta.medium_colonial_pressure }
+		set_temp_variable = { africa_triggerable_scenario_legitimacy = constant:africa_triggerable_scenario_value_delta.medium_legitimacy }
+		set_temp_variable = { africa_triggerable_scenario_capacity = constant:africa_triggerable_scenario_value_delta.medium_central_capacity }
+	}
+	add_to_variable = { africa_charter_authority = africa_triggerable_scenario_authority }
+	add_to_variable = { africa_continental_reach = africa_triggerable_scenario_reach }
+	add_to_variable = { africa_consent_commitment = africa_triggerable_scenario_consent }
+	add_to_variable = { africa_continental_war_readiness = africa_triggerable_scenario_war_readiness }
+	add_to_variable = { africa_colonial_pressure = africa_triggerable_scenario_pressure }
+	add_to_variable = { africa_restoration_legitimacy = africa_triggerable_scenario_legitimacy }
+	add_to_variable = { africa_central_capacity = africa_triggerable_scenario_capacity }
+}
+
+# COUNTRY scope on the host. Shared Africa-is-one state is intentionally
+# neutral about constitutional identity; normal focus and decision paths still
+# own route selection and cosmetic identity.
+africa_triggerable_scenario_apply_continental_opening = {
+	set_global_flag = africa_is_one
+	set_country_flag = africa_one_continent_many_peoples
+	set_country_flag = africa_continental_settlement_complete
+	set_country_flag = africa_unified_identity
+	set_country_flag = africa_continental_leader_frame_active
+	set_country_flag = africa_unification_milestone_log_pending
+	set_country_flag = africa_provisional_congress_convened
+	set_country_flag = africa_league_congress_unlocked
+	set_country_flag = africa_charter_league_declared
+	set_country_flag = africa_charter_league_formation_complete
+	set_variable = { africa_current_phase = constant:africa_action_phase.post_unification }
+	set_variable = { africa_selected_action_family = constant:africa_action_family.post_unification }
+	set_variable = { africa_selected_action_id = constant:africa_action.none }
+	if = {
+		limit = { has_country_flag = africa_action_quote_ready }
+		africa_clear_action_quote = yes
+	}
+	africa_world_emit_africa_is_one_super_event = yes
+}
+
+# COUNTRY scope on the host. This is the ordinary manual Africa Is One route:
+# it opens the Scramble response through the existing .309 callback.
+africa_triggerable_scenario_apply_africa_is_one_opening = {
+	africa_triggerable_scenario_apply_continental_opening = yes
+	set_global_flag = africa_scramble_response_pending
+	set_temp_variable = { africa_triggerable_scenario_callback_days = constant:africa_triggerable_scenario_timing.opening_callback_days }
+	country_event = { id = chaosx.nr12.309 days = africa_triggerable_scenario_callback_days }
+}
+
+# COUNTRY scope on the host. World Is One uses the installed world-order
+# initializer and exposes its terminal campaign route without asserting world_end
+# or bypassing external package/proof settlement.
+africa_triggerable_scenario_apply_world_is_one_opening = {
+	africa_triggerable_scenario_apply_continental_opening = yes
+	set_global_flag = africa_world_order_open
+	set_global_flag = africa_scramble_response_active
+	set_global_flag = africa_continental_wars_active
+	set_country_flag = africa_scramble_response_open
+	set_country_flag = africa_scramble_recognition_phase
+	set_country_flag = africa_world_order_council_open
+	set_country_flag = africa_world_terminal_campaign_active
+	set_country_flag = africa_triggerable_scenario_world_order_initialization_pending
+	clr_global_flag = africa_scramble_response_pending
+	set_variable = { africa_world_order_route = constant:africa_world_order_route.terminal_continental_campaign }
+	set_variable = { africa_current_phase = constant:africa_action_phase.terminal }
+	set_variable = { africa_selected_action_family = constant:africa_action_family.world_order }
+	set_variable = { africa_selected_action_id = constant:africa_action.none }
+	africa_clear_action_quote = yes
+	africa_world_emit_continental_wars_super_event = yes
+}

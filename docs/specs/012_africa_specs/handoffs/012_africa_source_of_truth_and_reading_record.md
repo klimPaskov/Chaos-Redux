@@ -58,9 +58,24 @@ The user brief in `Pasted text(3).txt` is the event-specific design authority. `
 - At package creation, Event 12 was a reserved `Minor Fire-Once` entry with status `To Be Reworked`.
 - At package creation, the Formables cluster row had no cluster ID or members. Its placeholder type was `Minor Repeatable` and its placeholder unlock tier was 3.
 - The user brief sets Event 12 to chaos tier 4 and member severity `Severe`.
-- No triggerable scenario is registered for Event 12. This package does not add one because the event already has a large normal campaign system and the user did not request a sandbox launch variant.
+- Historical catalog baseline, superseded on 2026-08-26: no triggerable scenario was registered for Event 12 because the package was scoped to the large normal campaign system and did not request a sandbox launch variant.
+- Current implementation evidence, 2026-08-26: Event 012 now owns the collision-free live registry row `SCN-011` because historical `SCN-008` is occupied by Every Banner Rises and raw slot `8` is Independence Wave. The row has Africa Is One and World Is One types with Low, Medium, High, and Maximum intensities. The fresh-host path reuses the weighted African-capital preflight and canonical `.1` commit barrier, while the existing-host path applies the opening through the committed host target without creating a second host or tag.
 
 The current release-candidate record uses Formables cluster `6`, registers Event 12 as a severe member, and keeps `chaosx.nr12.1` Fire-Once. The status and wording reconciliation is recorded in [`docs/events/012_africa/overview.md`](../../../events/012_africa/overview.md), while the workbook remains owned by the spreadsheet worker.
+
+## Current manual scenario reconciliation (2026-08-26)
+
+World Is One prepares the existing terminal continental-campaign route but does not force `world_end`, final proof, or terminal identity; normal package, proof, settlement, and identity gates remain authoritative. This scenario surface is not an achievement route, and the existing matrix rule that normal-play achievements reject forced scenario launches remains in force.
+
+The Event 012 state-flow inspection artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c7ebbb5952c854430fc2ebf6bd6f91d078dfa2a98d0c3620ad275c0bbe910d0f/18c28b833f50f0cc1ed902e239767f2b49c9477056160fcc8b043891540b35ee/event-state_flow-c6236d332a89.json` and state render manifest `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bea5f5b50879ee5618dc6a1a45723ccf418c154750fd1d78d6d95c38818836fb/7aea4c5a76bc7832fc636629b20e457e16606c6defbf97a061e44414e00d130a/event-state-5ddcdcc9836c-manifest.json` both returned partial evidence because large helper and lifecycle projections were deferred.
+
+The shared scenario-window inspect artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/80e987d63d5419a34d22b99318fd0aac882657368c593e53b9354c434122fbc1/f884f8a81f22a328916733ef3a26b3005f62a890bfd09ccc33278e5b82d93b89/gui-inspect.1127d767178a42d3.json` reported aggregate GUI diagnostics and overlaps, and the render artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d13cd1b2a95ae290a6780dd74e36467b4b468176fe962c9bcc17909ad9d59bca/795a938a46d714ec52f7a56710ae5c6c510d8aa9ce26e76427759d0fab156655/chaosx_scenarios_window-full.svg` returned a truncation warning; neither is a clean Event 012 acceptance result.
+
+The triggerable-scenario notification lint artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e62daacafa1bb343eb31bdab8456e0b50b6f0b81d7889207c2686693c85b18fc/8f4efe3f4a711464c76206f2570438f1fe8ada2ec0f20108800c83b106ff3d49/event-lint-c6236d332a89.json` returned partial evidence without a blocking diagnostic; large-workspace helper and lifecycle validation remained deferred.
+
+The direct weighted-pool inspection artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c8b68658fee4f2211817ed2f4bb14778a9b10b3bc208377d3232bc0eb7c06d17/65f0bcac9d860db01c26aac320866c48d46c8f083e709f058b33d02eefc8cb8f/probability-inspect-4d9a40dd681b.json` reports an incomplete pool with zero discoverable candidates. The required `chaosx_ai_probability_auditor` route was not callable in this environment, and no live in-game or save-state launch evidence was performed.
+
+The older 2026-08-11 handoffs that say the scenario reservation was retired remain historical records outside this reading-record patch scope. The current detailed source map, artifact references, and parent decisions are in [`012_africa_manual_scenario_implementation_2026-08-26.md`](../../../plans/012_africa_plans/subagent_handoffs/012_africa_manual_scenario_implementation_2026-08-26.md).
 
 ## Source conflicts resolved in the package
 

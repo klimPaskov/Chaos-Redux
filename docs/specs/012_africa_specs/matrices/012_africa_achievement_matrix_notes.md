@@ -12,7 +12,7 @@ Structural invariants are the current-state checks that the engine can observe d
 
 Rows 10, 16, 29, 30, and 40 retain their exact current owner semantics in the final reconciliation handoff: regional congress completion and represented live roster, settled Scramble core plus foreign-cession disqualifier, per-region rail/river/road/port receipts, active Event018 field/deposit plus local-processing receipts and concession clock, and symmetric Stoneborn/human current-generation member war. These are source contracts, not unresolved gameplay gaps.
 
-The retired fake Event012 `SCN-011` scenario reservation is not an achievement route and must not re-enter matrix acceptance claims. MCP exact/partial and user-owned playback evidence remains separately documented.
+Historical baseline, superseded on 2026-08-26: the retired fake Event012 `SCN-011` scenario reservation was not an achievement route and was excluded from matrix acceptance claims. Current reconciliation: `SCN-011` is now the live Event 012 manual scenario with Africa Is One and World Is One types at four intensities, but it remains outside the achievement matrix. Normal-play achievements must continue to reject forced scenario launches, and no scenario-specific achievement is added by this note. MCP exact/partial and user-owned playback evidence remains separately documented.
 
 Keys and title directions are working material. Final titles and descriptions belong to implementation localisation. The matrix gives exact campaign-state requirements, disqualifiers, visibility, difficulty, tracking needs, icon direction, and the reason each achievement deserves to exist.
 

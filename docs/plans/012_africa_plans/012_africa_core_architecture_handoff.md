@@ -13,9 +13,19 @@ Status: implementation contract, not a completion claim. This handoff records th
 - Logged evolutions are I at tier 4, II at tier 5, and III at tier 6. The requested fourth layer is post-unification world-order play, not a duplicate tier-6 evolution row.
 - `Africa is one` accepts integrated, autonomous-federal, loyal confederal/chartered, allied restored, and explicitly exempted relationships when their constitutional obligations are settled. It is not an annex-everything check.
 - South Africa joining the Allied framework requires its specified civil-war settlement. No branch may bypass that condition.
-- There is no Event 12 triggerable scenario. There are no blanket continent-wide cores or war goals.
+- Historical baseline, superseded by the 2026-08-26 manual-scenario handoff: this architecture record stated, “There is no Event 12 triggerable scenario.” The current live row is collision-free `SCN-011` Africa Is One; the prohibition on blanket continent-wide cores or war goals remains current.
 - No Event 12 `on_daily`, `on_weekly`, `on_monthly`, or equivalent whole-world recurring hook is permitted. A one-shot prefire scan is permitted; a bounded host-owned delayed callback is permitted.
 - A missing engine capability is a blocker to raise with the user. Do not silently substitute a weaker decision, static cost, generic host, or legacy faction implementation.
+
+### Current manual scenario delta (2026-08-26)
+
+The shared triggerable-scenario registry now owns Event 012 at live slot `SCN-011` because historical `SCN-008` is occupied by Every Banner Rises and raw slot `8` is Independence Wave. The row exposes Africa Is One and World Is One types at Low, Medium, High, and Maximum intensities.
+
+The fresh-host path calls `africa_prepare_manual_event_fire`, reuses the weighted African-capital host and frozen-contact builder, and queues `chaosx.nr12.1` so the canonical initialization commit remains the only host writer. The existing-host path resolves the committed `event_target:africa_host` and applies the same one-shot opening in place without a new tag, host, or global target.
+
+World Is One prepares the existing world-order package and terminal continental-campaign route. It does not set `world_end`, write final proof, or assert the terminal identity; package, proof, settlement, and identity gates remain authoritative.
+
+This is current source evidence, not a replacement for the accepted architecture boundaries or a gameplay completion claim. Read-only Event, GUI, and weighted-logic artifacts and their limitations are recorded in [`012_africa_manual_scenario_implementation_2026-08-26.md`](subagent_handoffs/012_africa_manual_scenario_implementation_2026-08-26.md).
 
 ## 2. Host preflight and commit barrier
 
