@@ -1,0 +1,465 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 006 IW-095 DAHOMEY PACKAGE EFFECTS
+# ============================================================================
+# Package-local first-footprint lifecycle for Dahomey (`DAH`) at the current
+# installed-map anchor, state 776. The package is deliberately fail-closed:
+# the setup entry requires the parent-owned identity/rights receipt, while
+# central admission, dispatch, attestation, SCN-008, flags, portraits, and
+# Join wiring remain outside this tranche.
+# ============================================================================
+
+independence_wave_remove_dahomey_package_ideas = {
+	remove_ideas = {
+		dah_fragmented_coastal_mandate
+		dah_dahomey_compact
+		dah_abomey_council_charter
+		dah_coastal_customs_service
+		dah_palm_market_register
+		dah_civic_guard_compact
+		dah_council_land_compact
+		dah_emergency_directorate
+		dah_west_african_trade_mission
+	}
+}
+
+independence_wave_remove_dahomey_route_ideas = {
+	remove_ideas = {
+		dah_abomey_council_charter
+		dah_coastal_customs_service
+		dah_palm_market_register
+		dah_civic_guard_compact
+		dah_council_land_compact
+		dah_emergency_directorate
+		dah_west_african_trade_mission
+	}
+}
+
+independence_wave_refresh_dahomey_compact_lifecycle = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes }
+		remove_ideas = { dah_fragmented_coastal_mandate dah_dahomey_compact }
+		if = {
+			limit = { has_stable_independence_wave_dahomey_compact = yes }
+			add_ideas = dah_dahomey_compact
+			set_country_flag = independence_wave_dah_compact_stabilized
+		}
+		else = {
+			add_ideas = dah_fragmented_coastal_mandate
+			clr_country_flag = independence_wave_dah_compact_stabilized
+		}
+	}
+}
+
+# Inputs: temporary `independence_wave_dah_council_delta` and
+# `independence_wave_dah_revenue_delta`.
+independence_wave_change_dahomey_compact_values = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes }
+		add_to_variable = { independence_wave_dah_council_cohesion = independence_wave_dah_council_delta }
+		add_to_variable = { independence_wave_dah_coastal_revenue = independence_wave_dah_revenue_delta }
+		clamp_variable = { var = independence_wave_dah_council_cohesion min = constant:independence_wave_dahomey_pressure.minimum max = constant:independence_wave_dahomey_pressure.maximum }
+		clamp_variable = { var = independence_wave_dah_coastal_revenue min = constant:independence_wave_dahomey_pressure.minimum max = constant:independence_wave_dahomey_pressure.maximum }
+		independence_wave_refresh_dahomey_compact_lifecycle = yes
+		independence_wave_refresh_country_state = yes
+	}
+}
+
+independence_wave_dahomey_apply_administrative_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_dahomey_apply_security_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_dahomey_apply_diplomatic_progress = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_value.minimum }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_minor_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_dahomey_apply_major_settlement = {
+	set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard }
+	set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_minor }
+	set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_standard_loss }
+	independence_wave_decision_apply_country_deltas = yes
+}
+
+independence_wave_dahomey_begin_project = {
+	clr_country_flag = independence_wave_dah_project_failure_applied
+}
+
+independence_wave_dahomey_apply_project_failure = {
+	if = {
+		limit = { NOT = { has_country_flag = independence_wave_dah_project_failure_applied } }
+		set_temp_variable = { independence_wave_decision_legitimacy_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_recognition_delta = constant:independence_wave_decision_effect.value_minor_loss }
+		set_temp_variable = { independence_wave_decision_capacity_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_security_delta = constant:independence_wave_decision_effect.value_standard_loss }
+		set_temp_variable = { independence_wave_decision_instability_delta = constant:independence_wave_decision_effect.value_major }
+		independence_wave_decision_apply_country_deltas = yes
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.standard_loss }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.standard_loss }
+		independence_wave_change_dahomey_compact_values = yes
+		set_country_flag = independence_wave_dah_project_failure_applied
+	}
+}
+
+independence_wave_dahomey_apply_former_host_settlement = {
+	if = {
+		limit = { has_independence_wave_living_former_host = yes var:independence_wave_former_host = { NOT = { has_war_with = ROOT } } }
+		set_temp_variable = { independence_wave_decision_host_claim_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_hostility_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_host_obligations_delta = constant:independence_wave_decision_effect.bilateral_standard_loss }
+		set_temp_variable = { independence_wave_decision_property_delta = constant:independence_wave_decision_effect.bilateral_major_loss }
+		set_temp_variable = { independence_wave_decision_population_delta = constant:independence_wave_value.minimum }
+		set_temp_variable = { independence_wave_decision_border_delta = constant:independence_wave_decision_effect.bilateral_standard }
+		set_temp_variable = { independence_wave_decision_host_pressure_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		set_temp_variable = { independence_wave_decision_reconquest_fear_delta = constant:independence_wave_decision_effect.bilateral_minor_loss }
+		independence_wave_decision_apply_host_deltas = yes
+	}
+}
+
+independence_wave_dahomey_reward_network_project = {
+	independence_wave_focus_reward_network_cooperation = yes
+	set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+	set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.major_gain }
+	independence_wave_change_dahomey_compact_values = yes
+	add_ideas = dah_west_african_trade_mission
+}
+
+independence_wave_ensure_dahomey_baseline_laws = {
+	if = { limit = { NOT = { has_idea = civilian_economy } } add_ideas = civilian_economy }
+	if = { limit = { NOT = { has_idea = export_focus } } add_ideas = export_focus }
+	if = { limit = { NOT = { has_idea = volunteer_only } } add_ideas = volunteer_only }
+}
+
+independence_wave_initialize_dahomey_politics = {
+	set_politics = { ruling_party = neutrality elections_allowed = no }
+	set_popularities = {
+		democratic = constant:independence_wave_dahomey_politics.start_democratic
+		communism = constant:independence_wave_dahomey_politics.start_communism
+		neutrality = constant:independence_wave_dahomey_politics.start_neutrality
+		fascism = constant:independence_wave_dahomey_politics.start_fascism
+	}
+	set_party_name = { ideology = democratic long_name = DAH_independence_wave_civic_party_long name = DAH_independence_wave_civic_party }
+	set_party_name = { ideology = communism long_name = DAH_independence_wave_labor_party_long name = DAH_independence_wave_labor_party }
+	set_party_name = { ideology = neutrality long_name = DAH_independence_wave_council_party_long name = DAH_independence_wave_council_party }
+	set_party_name = { ideology = fascism long_name = DAH_independence_wave_emergency_party_long name = DAH_independence_wave_emergency_party }
+	set_country_flag = independence_wave_dah_provisional_authority
+}
+
+independence_wave_install_dahomey_civic_government = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes has_independence_wave_constitutional_route = yes NOT = { has_independence_wave_dahomey_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.constitutional_republic }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_dahomey_politics.civic_democratic
+			communism = constant:independence_wave_dahomey_politics.civic_communism
+			neutrality = constant:independence_wave_dahomey_politics.civic_neutrality
+			fascism = constant:independence_wave_dahomey_politics.civic_fascism
+		}
+		independence_wave_remove_dahomey_route_ideas = yes
+		add_ideas = dah_abomey_council_charter
+		set_country_flag = independence_wave_dah_civic_government
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.minor_gain }
+		independence_wave_change_dahomey_compact_values = yes
+	}
+}
+
+independence_wave_install_dahomey_council_government = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes has_independence_wave_traditional_route = yes NOT = { has_independence_wave_dahomey_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.traditional_restoration }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = neutrality elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_dahomey_politics.council_democratic
+			communism = constant:independence_wave_dahomey_politics.council_communism
+			neutrality = constant:independence_wave_dahomey_politics.council_neutrality
+			fascism = constant:independence_wave_dahomey_politics.council_fascism
+		}
+		independence_wave_remove_dahomey_route_ideas = yes
+		add_ideas = dah_council_land_compact
+		set_country_flag = independence_wave_dah_council_government
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+		independence_wave_change_dahomey_compact_values = yes
+	}
+}
+
+independence_wave_install_dahomey_emergency_government = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes has_independence_wave_emergency_military_route = yes NOT = { has_independence_wave_dahomey_route_government = yes } }
+		set_temp_variable = { independence_wave_government_route_input = constant:independence_wave_government_route.emergency_military }
+		independence_wave_select_government_route = yes
+		set_politics = { ruling_party = neutrality elections_allowed = no }
+		set_popularities = {
+			democratic = constant:independence_wave_dahomey_politics.emergency_democratic
+			communism = constant:independence_wave_dahomey_politics.emergency_communism
+			neutrality = constant:independence_wave_dahomey_politics.emergency_neutrality
+			fascism = constant:independence_wave_dahomey_politics.emergency_fascism
+		}
+		independence_wave_remove_dahomey_route_ideas = yes
+		add_ideas = dah_emergency_directorate
+		set_country_flag = independence_wave_dah_emergency_government
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.minor_loss }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.decisive_gain }
+		independence_wave_change_dahomey_compact_values = yes
+	}
+}
+
+independence_wave_iw095_focus_convene_abomey_council = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes NOT = { has_country_flag = independence_wave_dah_council_convened } }
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.minor_gain }
+		independence_wave_change_dahomey_compact_values = yes
+		independence_wave_focus_reward_administration = yes
+		add_ideas = dah_abomey_council_charter
+		set_country_flag = independence_wave_dah_council_convened
+	}
+}
+
+independence_wave_iw095_focus_reopen_coastal_customs = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes NOT = { has_country_flag = independence_wave_dah_customs_reopened } }
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		independence_wave_change_dahomey_compact_values = yes
+		independence_wave_focus_reward_administration = yes
+		add_ideas = dah_coastal_customs_service
+		set_country_flag = independence_wave_dah_customs_reopened
+	}
+}
+
+independence_wave_iw095_focus_register_palm_market_revenue = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes NOT = { has_country_flag = independence_wave_dah_market_revenue_registered } }
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+		independence_wave_change_dahomey_compact_values = yes
+		independence_wave_focus_reward_public_settlement = yes
+		add_ideas = dah_palm_market_register
+		set_country_flag = independence_wave_dah_market_revenue_registered
+	}
+}
+
+independence_wave_iw095_focus_organize_civic_guard = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes NOT = { has_country_flag = independence_wave_dah_civic_guard_organized } }
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		independence_wave_change_dahomey_compact_values = yes
+		independence_wave_focus_reward_security_reform = yes
+		add_ideas = dah_civic_guard_compact
+		set_country_flag = independence_wave_dah_civic_guard_organized
+	}
+}
+
+independence_wave_iw095_focus_ratify_civic_compact = {
+	independence_wave_install_dahomey_civic_government = yes
+}
+
+independence_wave_iw095_focus_restore_council_authority = {
+	independence_wave_install_dahomey_council_government = yes
+}
+
+independence_wave_iw095_focus_authorize_emergency_directorate = {
+	independence_wave_install_dahomey_emergency_government = yes
+}
+
+independence_wave_iw095_focus_settle_former_host = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes NOT = { has_country_flag = independence_wave_dah_host_ledgers_settled } }
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.minor_gain }
+		independence_wave_change_dahomey_compact_values = yes
+		if = {
+			limit = { NOT = { has_independence_wave_dahomey_unsettled_host = yes } }
+			independence_wave_dahomey_apply_former_host_settlement = yes
+			independence_wave_focus_progress_host_negotiations = yes
+		}
+		set_country_flag = independence_wave_dah_host_ledgers_settled
+	}
+}
+
+independence_wave_iw095_focus_open_west_african_trade_mission = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes NOT = { has_country_flag = independence_wave_dah_west_african_trade_open } }
+		set_temp_variable = { independence_wave_dah_council_delta = constant:independence_wave_dahomey_pressure.standard_gain }
+		set_temp_variable = { independence_wave_dah_revenue_delta = constant:independence_wave_dahomey_pressure.major_gain }
+		independence_wave_change_dahomey_compact_values = yes
+		independence_wave_focus_reward_network_cooperation = yes
+		independence_wave_focus_reward_ambition = yes
+		independence_wave_dahomey_reward_network_project = yes
+		set_country_flag = independence_wave_dah_west_african_trade_open
+	}
+}
+
+# The custom roster receipt is intentionally separate from the shared roster
+# helper. It can only be published by the parent after the portrait/identity
+# review is accepted, so no generic DAH character is treated as proof.
+independence_wave_dahomey_checkpoint_roster = {
+	if = {
+		limit = { is_independence_wave_dahomey_package = yes has_independence_wave_dahomey_identity_rights_clearance = yes }
+		set_country_flag = independence_wave_dah_roster_checkpoint
+		set_country_flag = independence_wave_command_roster_ready
+	}
+}
+
+independence_wave_setup_iw_095_dahomey = {
+	clr_country_flag = independence_wave_package_setup_complete
+	clr_country_flag = independence_wave_iw_095_setup_complete
+	clr_country_flag = independence_wave_command_roster_ready
+	clr_country_flag = independence_wave_dah_roster_checkpoint
+	clr_country_flag = independence_wave_dah_project_failure_applied
+	clr_country_flag = independence_wave_dah_compact_crisis_resolved
+	clr_country_flag = independence_wave_dah_compact_crisis_failed
+	clr_country_flag = independence_wave_dah_provisional_authority
+	clr_country_flag = independence_wave_dah_council_convened
+	clr_country_flag = independence_wave_dah_customs_reopened
+	clr_country_flag = independence_wave_dah_market_revenue_registered
+	clr_country_flag = independence_wave_dah_civic_guard_organized
+	clr_country_flag = independence_wave_dah_host_ledgers_settled
+	clr_country_flag = independence_wave_dah_civic_government
+	clr_country_flag = independence_wave_dah_council_government
+	clr_country_flag = independence_wave_dah_emergency_government
+	clr_country_flag = independence_wave_dah_west_african_trade_open
+	clr_country_flag = independence_wave_dah_ai_profile
+	clr_country_flag = independence_wave_iw_095_lifecycle_initialized
+	independence_wave_remove_dahomey_package_ideas = yes
+	clear_variable = independence_wave_dah_council_cohesion
+	clear_variable = independence_wave_dah_coastal_revenue
+	clear_variable = independence_wave_dah_package_generation_id
+	if = {
+		limit = { can_initialize_independence_wave_iw_095_package = yes }
+		set_variable = { independence_wave_dah_package_generation_id = independence_wave_generation_id }
+		independence_wave_dahomey_checkpoint_roster = yes
+		independence_wave_ensure_dahomey_baseline_laws = yes
+		independence_wave_initialize_dahomey_politics = yes
+		set_variable = { independence_wave_dah_council_cohesion = constant:independence_wave_dahomey_pressure.council_cohesion_start }
+		set_variable = { independence_wave_dah_coastal_revenue = constant:independence_wave_dahomey_pressure.coastal_revenue_start }
+		independence_wave_refresh_dahomey_compact_lifecycle = yes
+		set_country_flag = independence_wave_iw_095_lifecycle_initialized
+		set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.full_framework }
+		independence_wave_assign_focus_framework = yes
+		independence_wave_focus_allow_constitutional_route = yes
+		independence_wave_focus_allow_traditional_route = yes
+		independence_wave_focus_allow_emergency_military_route = yes
+		clr_country_flag = independence_wave_route_popular_council_available
+		set_country_flag = independence_wave_radical_sovereignty_route_excluded
+		independence_wave_focus_allow_host_negotiation_route = yes
+		independence_wave_focus_allow_host_guarded_frontier_route = yes
+		independence_wave_focus_allow_host_association_route = yes
+		independence_wave_focus_allow_host_reclamation_route = yes
+		set_temp_variable = { independence_wave_power_struggle_input = constant:independence_wave_power_struggle.traditional_authority_vs_assembly }
+		independence_wave_focus_register_power_struggle = yes
+		independence_wave_focus_register_ambition_family = yes
+		independence_wave_focus_allow_league_route = yes
+		independence_wave_clear_reinforcement_pathways = yes
+		independence_wave_add_reinforce_integrate_militias = yes
+		independence_wave_add_reinforce_regional_guards = yes
+		independence_wave_add_reinforce_secure_depots = yes
+		independence_wave_add_reinforce_volunteer_corridors = yes
+		independence_wave_add_reinforce_professional_officers = yes
+		set_temp_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_095 }
+		independence_wave_load_force_package_mapping = yes
+		independence_wave_apply_dynamic_starting_force = yes
+		set_country_flag = independence_wave_dah_ai_profile
+		if = {
+			limit = { has_prepared_independence_wave_iw_095_package_setup = yes }
+			set_country_flag = independence_wave_iw_095_setup_complete
+			set_country_flag = independence_wave_package_setup_complete
+			set_temp_variable = { independence_wave_package_setup_success = constant:independence_wave_planner.selected }
+		}
+	}
+}
+
+independence_wave_dispatch_first_footprint_package_setup = {
+	if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_095 } } independence_wave_setup_iw_095_dahomey = yes }
+}
+
+independence_wave_validate_iw_095_dahomey = {
+	if = {
+		limit = { has_complete_independence_wave_iw_095_package_setup = yes is_independence_wave_exact_package_iw_095_runtime_ready = yes }
+		set_temp_variable = { independence_wave_package_final_validation_success = constant:independence_wave_planner.selected }
+	}
+}
+
+independence_wave_dispatch_first_footprint_package_final_validation = {
+	if = { limit = { check_variable = { independence_wave_setup_package_id = constant:independence_wave_package_id.iw_095 } } independence_wave_validate_iw_095_dahomey = yes }
+}
+
+independence_wave_cleanup_iw_095_dahomey = {
+	if = {
+		limit = {
+			original_tag = DAH
+			check_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_095 }
+			has_variable = independence_wave_dah_package_generation_id
+			check_variable = { var = independence_wave_dah_package_generation_id value = independence_wave_generation_id compare = equals }
+		}
+		remove_mission = independence_wave_iw095_reconcile_abomey_and_porto_novo
+		remove_decision = iw095_convene_abomey_council
+		remove_decision = iw095_reopen_coastal_customs
+		remove_decision = iw095_register_palm_and_market_revenue
+		remove_decision = iw095_organize_civic_guard
+		remove_decision = iw095_settle_former_host_ledgers
+		remove_decision = iw095_ratify_civic_compact
+		remove_decision = iw095_restore_council_authority
+		remove_decision = iw095_authorize_emergency_directorate
+		remove_decision = iw095_open_west_african_trade_mission
+		independence_wave_remove_dahomey_package_ideas = yes
+		set_politics = { ruling_party = democratic elections_allowed = yes }
+		set_popularities = {
+			democratic = constant:independence_wave_dahomey_politics.cleanup_democratic
+			communism = constant:independence_wave_dahomey_politics.cleanup_communism
+			neutrality = constant:independence_wave_dahomey_politics.cleanup_neutrality
+			fascism = constant:independence_wave_dahomey_politics.cleanup_fascism
+		}
+		clear_variable = independence_wave_dah_council_cohesion
+		clear_variable = independence_wave_dah_coastal_revenue
+		clear_variable = independence_wave_dah_package_generation_id
+		clr_country_flag = independence_wave_dah_project_failure_applied
+		clr_country_flag = independence_wave_dah_roster_checkpoint
+		clr_country_flag = independence_wave_command_roster_ready
+		clr_country_flag = independence_wave_iw_095_setup_complete
+		clr_country_flag = independence_wave_iw_095_lifecycle_initialized
+		clr_country_flag = independence_wave_dah_ai_profile
+		clr_country_flag = independence_wave_dah_provisional_authority
+		clr_country_flag = independence_wave_dah_compact_stabilized
+		clr_country_flag = independence_wave_dah_compact_crisis_resolved
+		clr_country_flag = independence_wave_dah_compact_crisis_failed
+		clr_country_flag = independence_wave_dah_council_convened
+		clr_country_flag = independence_wave_dah_customs_reopened
+		clr_country_flag = independence_wave_dah_market_revenue_registered
+		clr_country_flag = independence_wave_dah_civic_guard_organized
+		clr_country_flag = independence_wave_dah_host_ledgers_settled
+		clr_country_flag = independence_wave_dah_civic_government
+		clr_country_flag = independence_wave_dah_council_government
+		clr_country_flag = independence_wave_dah_emergency_government
+		clr_country_flag = independence_wave_dah_west_african_trade_open
+	}
+}
+
+independence_wave_dispatch_first_footprint_package_cleanup = {
+	independence_wave_cleanup_iw_095_dahomey = yes
+}
