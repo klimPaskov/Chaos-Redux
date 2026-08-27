@@ -4,7 +4,7 @@
 # Selected-state response implementation for Event 20. This file owns
 # population-scaled quotes, exact material debits, four local project lanes,
 # national capacity and burden, persistent local measures, countermeasure
-# progress, Doctor Wu's clinical bridge, and cleanup proof. It never changes a
+# progress, and cleanup proof. It never changes a
 # disease phase directly and never grants an instant cure.
 # ============================================================================
 
@@ -557,21 +557,6 @@ black_plague_register_response_country = {
 	if = {
 		limit = { NOT = { is_in_array = { array = global.black_plague_response_countries value = THIS } } }
 		add_to_array = { array = global.black_plague_response_countries value = THIS }
-	}
-}
-
-# COUNTRY scope. Event 163 calls this only after atomically committing its
-# host. Arrival exposes the bridge and refreshes bounded UI/capacity state; it
-# does not grant research progress or mark Doctor Wu's protocol as used.
-black_plague_on_doctor_wu_host_committed = {
-	set_country_flag = black_plague_doctor_wu_connection_received
-	black_plague_achievement_record_doctor_wu_link = yes
-	black_plague_recompute_country_response_capacity = yes
-	black_plague_update_country_crisis_board_availability = yes
-	add_to_variable = { disease_containment_board_dirty = constant:black_plague_response_value.one }
-	if = {
-		limit = { has_country_flag = disease_containment_board_open }
-		disease_containment_board_refresh_open_black_plague_board = yes
 	}
 }
 
@@ -1224,12 +1209,6 @@ black_plague_reset_current_state_response_deltas = {
 # multiplied once at each earned milestone, then subtracted without unary
 # variable negation.
 black_plague_apply_current_state_response_deltas = {
-	if = {
-		limit = { has_state_flag = black_plague_doctor_wu_foreign_treatment }
-		add_to_temp_variable = { black_plague_response_treatment_gain = constant:black_plague_response_result.doctor_wu_treatment }
-		add_to_temp_variable = { black_plague_response_mortality_reduction = constant:black_plague_response_result.doctor_wu_mortality }
-		add_to_temp_variable = { black_plague_response_containment_gain = constant:black_plague_response_result.doctor_wu_containment }
-	}
 	if = {
 		limit = {
 			ROOT = {
