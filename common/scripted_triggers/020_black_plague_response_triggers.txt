@@ -312,14 +312,6 @@ black_plague_country_has_operating_emergency_hospital = {
 	}
 }
 
-black_plague_country_is_doctor_wu_host = {
-	doctor_wu_has_current_host = yes
-	OR = {
-		doctor_wu_is_current_host = yes
-		has_country_flag = doctor_wu_foreign_access_active
-	}
-}
-
 black_plague_country_has_live_crisis_board_surface = {
 	OR = {
 		black_plague_country_has_strong_prevention = yes
@@ -541,16 +533,6 @@ black_plague_response_can_begin_countermeasure_program = {
 	}
 }
 
-black_plague_response_can_use_doctor_wu_protocol = {
-	black_plague_response_state_can_accept_actions = yes
-	black_plague_state_is_severe = yes
-	black_plague_response_treatment_lane_is_free = yes
-	ROOT = {
-		black_plague_country_is_doctor_wu_host = yes
-		NOT = { has_country_flag = black_plague_doctor_wu_protocol_used }
-	}
-}
-
 # ---------------------------------------------------------------------------
 # Cancellation predicates
 # ---------------------------------------------------------------------------
@@ -646,14 +628,6 @@ black_plague_response_warren_purge_project_is_active = {
 	check_variable = { var = black_plague_response_civil_lane_project value = constant:black_plague_response_project.purge_liberated_warrens compare = equals }
 }
 
-black_plague_response_doctor_wu_project_is_active = {
-	has_state_flag = black_plague_response_treatment_lane_active
-	has_variable = black_plague_response_treatment_lane_owner
-	has_variable = black_plague_response_treatment_lane_project
-	check_variable = { var = black_plague_response_treatment_lane_owner value = ROOT compare = equals }
-	check_variable = { var = black_plague_response_treatment_lane_project value = constant:black_plague_response_project.doctor_wu_protocol compare = equals }
-}
-
 # COUNTRY scope. The stored setup site is deliberately part of the contract so
 # a captured, cleared, or replaced site cannot complete the national program.
 black_plague_response_countermeasure_setup_record_is_active = {
@@ -712,13 +686,6 @@ black_plague_response_countermeasure_setup_is_invalid = {
 	OR = {
 		black_plague_response_active_state_project_is_invalid = yes
 		ROOT = { NOT = { black_plague_response_countermeasure_setup_record_is_active = yes } }
-	}
-}
-
-black_plague_response_doctor_wu_project_is_invalid = {
-	OR = {
-		black_plague_response_active_state_project_is_invalid = yes
-		ROOT = { NOT = { black_plague_country_is_doctor_wu_host = yes } }
 	}
 }
 
@@ -921,13 +888,4 @@ black_plague_can_pay_countermeasure_program = {
 		value = constant:black_plague_medical_reserve.countermeasure_entry_reserve
 		compare = greater_than_or_equals
 	}
-}
-
-black_plague_can_pay_doctor_wu_protocol = {
-	black_plague_country_has_response_capacity_one = yes
-	NOT = { num_of_civilian_factories_available_for_projects < constant:black_plague_response_factories.doctor_wu_protocol }
-	NOT = { has_manpower < constant:black_plague_response_cost_doctor_wu.manpower }
-	NOT = { has_equipment = { support_equipment < constant:black_plague_response_cost_doctor_wu.support_equipment } }
-	NOT = { has_equipment = { motorized_equipment < constant:black_plague_response_cost_doctor_wu.motorized_equipment } }
-	NOT = { has_fuel < constant:black_plague_response_cost_doctor_wu.fuel }
 }

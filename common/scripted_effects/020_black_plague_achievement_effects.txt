@@ -1,9 +1,9 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 020 ACHIEVEMENT TRACKING EFFECTS
 # ============================================================================
-# Historical tracking for the fourteen Black Plague achievements. These
+# Historical tracking for the thirteen Black Plague achievements. These
 # helpers run from Event 020's maintained state/country pulse and from the
-# weaponization, Doctor Wu, and Rat Nation transactions. They deliberately do
+# weaponization and Rat Nation transactions. They deliberately do
 # not add a world on_action or unlock an achievement directly.
 # ============================================================================
 
@@ -30,10 +30,6 @@ black_plague_achievement_initialize_runtime = {
 
 black_plague_achievement_record_weaponization_started = {
 	set_country_flag = black_plague_achievement_weaponization_started
-}
-
-black_plague_achievement_record_doctor_wu_link = {
-	set_country_flag = black_plague_achievement_doctor_wu_link_received
 }
 
 # STATE scope. Called once after the state mortality and phase transition have
@@ -120,36 +116,6 @@ black_plague_achievement_process_state_pulse = {
 			limit = { has_state_flag = black_plague_achievement_return_outbreak_state }
 			if = { limit = { OWNER = { exists = yes } } OWNER = { set_country_flag = black_plague_achievement_return_outbreak_cured } }
 			if = { limit = { CONTROLLER = { exists = yes } } CONTROLLER = { set_country_flag = black_plague_achievement_return_outbreak_cured } }
-		}
-		if = {
-			limit = { is_on_continent = europe }
-			OWNER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_europe } }
-			CONTROLLER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_europe } }
-		}
-		if = {
-			limit = { is_on_continent = asia }
-			OWNER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_asia } }
-			CONTROLLER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_asia } }
-		}
-		if = {
-			limit = { is_on_continent = africa }
-			OWNER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_africa } }
-			CONTROLLER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_africa } }
-		}
-		if = {
-			limit = { is_on_continent = north_america }
-			OWNER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_north_america } }
-			CONTROLLER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_north_america } }
-		}
-		if = {
-			limit = { is_on_continent = south_america }
-			OWNER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_south_america } }
-			CONTROLLER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_south_america } }
-		}
-		if = {
-			limit = { is_on_continent = australia }
-			OWNER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_australia } }
-			CONTROLLER = { if = { limit = { has_country_flag = black_plague_achievement_doctor_wu_link_received } set_country_flag = black_plague_achievement_doctor_wu_cured_australia } }
 		}
 	}
 
@@ -245,24 +211,6 @@ black_plague_achievement_process_country_pulse = {
 			}
 		}
 		set_country_flag = black_plague_achievement_findings_published
-	}
-	if = {
-		limit = { has_country_flag = black_plague_doctor_wu_connection_received }
-		black_plague_achievement_record_doctor_wu_link = yes
-	}
-	if = {
-		limit = {
-			has_country_flag = black_plague_doctor_wu_protocol_used
-			has_global_flag = black_plague_evolution_ii_active
-		}
-		set_country_flag = black_plague_achievement_doctor_wu_protocol_after_evolution_ii
-	}
-	if = {
-		limit = {
-			has_country_flag = black_plague_doctor_wu_protocol_used
-			has_global_flag = black_plague_evolution_ii_recorded
-		}
-		set_country_flag = black_plague_achievement_doctor_wu_protocol_after_evolution_ii
 	}
 	if = {
 		limit = {

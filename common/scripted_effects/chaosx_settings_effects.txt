@@ -4677,24 +4677,6 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
-		limit = { check_variable = { event_id = constant:doctor_wu_event.id } }
-		set_temp_variable = { doctor_wu_prefire_ready = constant:doctor_wu_value.zero }
-		doctor_wu_prepare_random_event_fire = yes
-		if = {
-			limit = {
-				OR = {
-					check_variable = { doctor_wu_prefire_ready < constant:doctor_wu_value.one }
-					NOT = { has_event_target = doctor_wu_prefire_host }
-					AND = {
-						has_event_target = doctor_wu_prefire_host
-						event_target:doctor_wu_prefire_host = { NOT = { doctor_wu_is_eligible_host = yes } }
-					}
-				}
-			}
-			set_temp_variable = { event_single_fire_allowed = constant:doctor_wu_value.zero }
-		}
-	}
-	if = {
 		limit = { check_variable = { event_id = constant:africa_event.id } }
 		set_temp_variable = { africa_prefire_ready = constant:africa_value.zero }
 		if = {
@@ -4789,18 +4771,6 @@ fire_event_by_temp_id_no_cluster = {
 				set_country_flag = brilliant_scientist_opening_chain_active
 				set_country_flag = brilliant_scientist_prefire_opening_pending
 				country_event = { id = chaosx.nr16.1 }
-			}
-		}
-		else_if = {
-			limit = {
-				check_variable = { event_fire_record_id = constant:doctor_wu_event.id }
-				has_event_target = doctor_wu_prefire_host
-				event_target:doctor_wu_prefire_host = { doctor_wu_is_eligible_host = yes }
-			}
-			event_target:doctor_wu_prefire_host = {
-				set_temp_variable = { events_log_history_actor_override = THIS }
-				set_temp_variable = { events_log_history_actor_override_active = constant:doctor_wu_value.one }
-				country_event = { id = chaosx.nr163.1 }
 			}
 		}
 		else_if = {

@@ -36,7 +36,6 @@ black_plague_reset_current_state_response_episode = {
 	clr_state_flag = black_plague_demolition_screening_failed
 	clr_state_flag = black_plague_emergency_hospital_lost
 	clr_state_flag = black_plague_cordon_released
-	clr_state_flag = black_plague_doctor_wu_incubation_revealed
 	clear_variable = black_plague_demolition_receiver_state
 }
 
@@ -320,21 +319,6 @@ black_plague_cancel_medical_reserve_batch = {
 	}
 }
 
-black_plague_begin_doctor_wu_protocol = {
-	black_plague_reset_response_payment = yes
-	set_temp_variable = { black_plague_response_payment_manpower = constant:black_plague_response_cost_doctor_wu.manpower }
-	set_temp_variable = { black_plague_response_payment_support = constant:black_plague_response_cost_doctor_wu.support_equipment }
-	set_temp_variable = { black_plague_response_payment_motorized = constant:black_plague_response_cost_doctor_wu.motorized_equipment }
-	set_temp_variable = { black_plague_response_payment_fuel = constant:black_plague_response_cost_doctor_wu.fuel }
-	black_plague_pay_response_cost = yes
-	FROM = {
-		set_temp_variable = { black_plague_response_project = constant:black_plague_response_project.doctor_wu_protocol }
-		set_temp_variable = { black_plague_response_project_burden = constant:black_plague_response_burden.doctor_wu_protocol }
-		black_plague_start_current_state_treatment_lane = yes
-	}
-	black_plague_recompute_country_response_capacity = yes
-}
-
 # ---------------------------------------------------------------------------
 # Project cancellation
 # ---------------------------------------------------------------------------
@@ -467,12 +451,6 @@ black_plague_cancel_warren_purge = {
 	black_plague_cancel_current_state_response_project = yes
 }
 
-black_plague_cancel_doctor_wu_protocol = {
-	set_temp_variable = { black_plague_response_project = constant:black_plague_response_project.doctor_wu_protocol }
-	set_temp_variable = { black_plague_response_lane = constant:black_plague_response_lane.treatment }
-	black_plague_cancel_current_state_response_project = yes
-}
-
 black_plague_cancel_countermeasure_setup = {
 	clr_country_flag = black_plague_countermeasure_setup_active
 	if = {
@@ -596,15 +574,6 @@ black_plague_finish_warren_purge = {
 	if = {
 		limit = { check_variable = { black_plague_response_lane_cleared = constant:black_plague_response_value.one } }
 		black_plague_apply_warren_purge_outcome = yes
-	}
-}
-
-black_plague_finish_doctor_wu_protocol = {
-	set_temp_variable = { black_plague_response_project = constant:black_plague_response_project.doctor_wu_protocol }
-	black_plague_clear_current_state_treatment_lane = yes
-	if = {
-		limit = { check_variable = { black_plague_response_lane_cleared = constant:black_plague_response_value.one } }
-		black_plague_apply_doctor_wu_protocol_outcome = yes
 	}
 }
 
@@ -916,25 +885,6 @@ black_plague_apply_countermeasure_setup_outcome = {
 	}
 	black_plague_add_countermeasure_progress = yes
 	black_plague_recompute_country_response_capacity = yes
-}
-
-black_plague_apply_doctor_wu_protocol_outcome = {
-	black_plague_reset_current_state_response_deltas = yes
-	set_temp_variable = { black_plague_response_treatment_gain = constant:black_plague_response_result.doctor_wu_treatment }
-	set_temp_variable = { black_plague_response_mortality_reduction = constant:black_plague_response_result.doctor_wu_mortality }
-	set_temp_variable = { black_plague_response_containment_gain = constant:black_plague_response_result.doctor_wu_containment }
-	black_plague_apply_current_state_response_deltas = yes
-	ROOT = {
-		set_temp_variable = { black_plague_countermeasure_gain = constant:black_plague_response_result.doctor_wu_countermeasure }
-		black_plague_record_countermeasure_findings = yes
-		set_country_flag = black_plague_doctor_wu_protocol_used
-		set_country_flag = black_plague_accelerated_cleanup_protocol
-		every_controlled_state = {
-			limit = { black_plague_state_is_incubating = yes }
-			set_state_flag = black_plague_doctor_wu_incubation_revealed
-		}
-		black_plague_recompute_country_response_capacity = yes
-	}
 }
 
 # ---------------------------------------------------------------------------

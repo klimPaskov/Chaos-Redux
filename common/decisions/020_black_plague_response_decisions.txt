@@ -6,7 +6,6 @@
 @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_CORDON_SETUP = 2
 @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_COUNTERMEASURE_SETUP = 6
 @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_DEMOLISH_LOST_BLOCKS = 6
-@CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_DOCTOR_WU_PROTOCOL = 2
 @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_EMERGENCY_HOSPITALS_SETUP = 4
 @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_FLEA_CONTROL = 2
 @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_PURGE_LIBERATED_WARRENS = 5
@@ -651,86 +650,4 @@ black_plague_response_category = {
 		}
 	}
 
-	black_plague_activate_doctor_wu_protocol = {
-		name = black_plague_activate_doctor_wu_protocol
-		desc = black_plague_activate_doctor_wu_protocol_desc
-		icon = GFX_decision_black_plague_doctor_wu_protocol
-		state_target = any_controlled_state
-		on_map_mode = decision_view_only
-		target_root_trigger = { black_plague_response_decisions_are_visible = yes }
-		target_trigger = { FROM = { black_plague_response_can_use_doctor_wu_protocol = yes } }
-		visible = { black_plague_response_decisions_are_visible = yes }
-		available = {
-			FROM = { black_plague_response_can_use_doctor_wu_protocol = yes }
-			black_plague_can_pay_doctor_wu_protocol = yes
-		}
-		custom_cost_trigger = { black_plague_can_pay_doctor_wu_protocol = yes }
-		custom_cost_text = black_plague_activate_doctor_wu_protocol_cost
-		modifier = { civilian_factory_use = @CR_SC_BLACK_PLAGUE_RESPONSE_FACTORIES_DOCTOR_WU_PROTOCOL }
-		days_remove = constant:black_plague_response_duration.doctor_wu_protocol
-		complete_effect = {
-			custom_effect_tooltip = black_plague_activate_doctor_wu_protocol_start_tt
-			hidden_effect = { black_plague_begin_doctor_wu_protocol = yes }
-		}
-		remove_effect = {
-			custom_effect_tooltip = black_plague_activate_doctor_wu_protocol_complete_tt
-			hidden_effect = { FROM = { black_plague_finish_doctor_wu_protocol = yes } }
-		}
-		cancel_trigger = {
-			FROM = {
-				OR = {
-					black_plague_response_doctor_wu_project_is_invalid = yes
-					NOT = { black_plague_response_doctor_wu_project_is_active = yes }
-				}
-			}
-		}
-		cancel_effect = { hidden_effect = { FROM = { black_plague_cancel_doctor_wu_protocol = yes } } }
-		ai_will_do = {
-			base = constant:black_plague_response_ai.critical
-			modifier = { factor = constant:black_plague_response_ai.doctor_wu_priority FROM = { black_plague_state_is_severe = yes } }
-		}
-	}
-
-	black_plague_request_doctor_wu_access = {
-		name = black_plague_request_doctor_wu_access
-		desc = black_plague_request_doctor_wu_access_desc
-		icon = GFX_decision_black_plague_doctor_wu_foreign_access
-		state_target = any_controlled_state
-		on_map_mode = decision_view_only
-		target_root_trigger = { black_plague_response_decisions_are_visible = yes doctor_wu_can_request_foreign_access = yes }
-		target_trigger = { FROM = { doctor_wu_foreign_request_state_is_valid = yes } }
-		visible = { black_plague_response_decisions_are_visible = yes doctor_wu_can_request_foreign_access = yes }
-		available = {
-			FROM = { doctor_wu_foreign_request_state_is_valid = yes }
-			has_equipment = { support_equipment > constant:doctor_wu_access.request_support_equipment }
-			has_equipment = { motorized_equipment > constant:doctor_wu_access.request_motorized_equipment }
-			has_equipment = { convoy_1 > constant:doctor_wu_access.request_convoys }
-			has_fuel > constant:doctor_wu_access.request_fuel
-		}
-		custom_cost_trigger = {
-			has_equipment = { support_equipment > constant:doctor_wu_access.request_support_equipment }
-			has_equipment = { motorized_equipment > constant:doctor_wu_access.request_motorized_equipment }
-			has_equipment = { convoy_1 > constant:doctor_wu_access.request_convoys }
-			has_fuel > constant:doctor_wu_access.request_fuel
-		}
-		custom_cost_text = black_plague_request_doctor_wu_access_cost
-		days_remove = constant:doctor_wu_access.request_duration_days
-		complete_effect = {
-			custom_effect_tooltip = black_plague_request_doctor_wu_access_start_tt
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.request_support_equipment }
-			remove_support_equipment_from_stockpile = yes
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.request_motorized_equipment }
-			remove_motorized_equipment_from_stockpile = yes
-			set_temp_variable = { equipment_stockpile_removal_amount = constant:doctor_wu_access.request_convoys }
-			remove_convoys_from_stockpile = yes
-			set_temp_variable = { doctor_wu_request_fuel_payment = constant:doctor_wu_access.request_fuel }
-			set_temp_variable = { fuel_stockpile_removal_amount = doctor_wu_request_fuel_payment }
-			remove_fuel_from_stockpile = yes
-			hidden_effect = { doctor_wu_send_foreign_access_request = yes }
-		}
-		ai_will_do = {
-			base = constant:black_plague_response_ai.strong
-			modifier = { factor = constant:black_plague_response_ai.critical FROM = { black_plague_state_is_severe = yes } }
-		}
-	}
 }
