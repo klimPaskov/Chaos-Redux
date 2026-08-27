@@ -974,11 +974,21 @@ liberation_release_validate_set_invariants = {
 					NOT = { is_in_array = { array = global.liberation_plan_countries value = event_target:liberation_validation_set_state_target } }
 					NOT = { is_in_array = { array = global.liberation_plan_hosts value = event_target:liberation_validation_set_state_host } }
 					NOT = {
-						event_target:liberation_validation_set_state_target = {
-							has_country_flag = liberation_release_reserved_country
-							check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
-							check_variable = { var = liberation_release_plan_owner value = liberation_validation_state_owner compare = equals }
-							check_variable = { var = liberation_release_package_id value = liberation_validation_state_package compare = equals }
+						OR = {
+							# An uninstantiated Event 006 tag cannot retain country flags or
+							# variables. Its aligned plan-array entry is the durable receipt.
+							AND = {
+								check_variable = { liberation_validation_state_owner = constant:liberation_plan_owner.independence_wave }
+								event_target:liberation_validation_set_state_target = {
+									is_liberation_release_current_reserved_country = yes
+								}
+							}
+							event_target:liberation_validation_set_state_target = {
+								has_country_flag = liberation_release_reserved_country
+								check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+								check_variable = { var = liberation_release_plan_owner value = liberation_validation_state_owner compare = equals }
+								check_variable = { var = liberation_release_package_id value = liberation_validation_state_package compare = equals }
+							}
 						}
 					}
 					NOT = {
@@ -1079,11 +1089,22 @@ liberation_release_validate_country_rows = {
 			limit = {
 				check_variable = { liberation_plan_validation_failure = constant:liberation_plan_reject_reason.none }
 				NOT = {
-					event_target:liberation_validation_country = {
-						has_country_flag = liberation_release_reserved_country
-						check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
-						check_variable = { var = liberation_release_plan_owner value = liberation_validation_row_owner compare = equals }
-						check_variable = { var = liberation_release_package_id value = liberation_validation_row_package compare = equals }
+					OR = {
+						# The country array is authoritative for an absent Event 006
+						# tag; existing shells and all Event 005 rows still require
+						# their durable reservation marker and metadata.
+						AND = {
+							check_variable = { liberation_validation_row_owner = constant:liberation_plan_owner.independence_wave }
+							event_target:liberation_validation_country = {
+								is_liberation_release_current_reserved_country = yes
+							}
+						}
+						event_target:liberation_validation_country = {
+							has_country_flag = liberation_release_reserved_country
+							check_variable = { var = liberation_release_plan_id value = global.liberation_plan_id compare = equals }
+							check_variable = { var = liberation_release_plan_owner value = liberation_validation_row_owner compare = equals }
+							check_variable = { var = liberation_release_package_id value = liberation_validation_row_package compare = equals }
+						}
 					}
 				}
 			}
