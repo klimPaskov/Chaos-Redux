@@ -234,6 +234,54 @@ genocide_add_historical_quiet_concentration_camp = {
 	genocide_ensure_concentration_camp_level = yes
 }
 
+# State scope, called from a fixed historical country's startup block. Activates
+# an existing low-intensity detention site without applying a decision shock or
+# pretending that later wartime escalation has already occurred.
+genocide_activate_historical_baseline_detention_site = {
+	if = {
+		limit = { NOT = { has_state_flag = camp_rework_site_active } }
+		set_state_flag = camp_rework_historical_baseline_registration
+		set_variable = { genocide_responsible_country = PREV }
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_concentration_site
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.detention }
+		camp_rework_register_active_site = yes
+		clr_state_flag = camp_rework_historical_baseline_registration
+	}
+}
+
+# State scope, called from the Soviet startup block. Historical quiet markers
+# are converted into operating gulag records so the shared monthly Deaths pulse
+# owns their population loss from the beginning of the scenario.
+genocide_activate_historical_baseline_gulag_site = {
+	if = {
+		limit = { NOT = { has_state_flag = camp_rework_site_active } }
+		set_state_flag = camp_rework_historical_baseline_registration
+		set_variable = { genocide_responsible_country = PREV }
+		set_state_flag = genocide_site_has_responsible_country
+		set_state_flag = genocide_gulag_site
+		set_state_flag = genocide_soviet_mass_repression_site
+		set_state_flag = genocide_atrocity_site_known_to_regime
+		if = {
+			limit = { concentration_camp > 0 }
+			set_building_level = { type = concentration_camp level = 0 }
+		}
+		if = {
+			limit = { NOT = { gulag_labor_camp_network > 0 } }
+			add_building_construction = {
+				type = gulag_labor_camp_network
+				level = 1
+				instant_build = yes
+			}
+		}
+		chaosx_refresh_camp_visual_anchor = yes
+		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.gulag }
+		camp_rework_register_active_site = yes
+		clr_state_flag = camp_rework_historical_baseline_registration
+	}
+}
+
 genocide_queue_historical_camp_flavor_event = {
 	if = {
 		limit = {
@@ -2094,6 +2142,13 @@ genocide_initialize_historical_german_sites = {
 			has_government = fascism
 		}
 		genocide_initialize_country_variables = yes
+		camp_rework_initialize_country_variables = yes
+		if = {
+			limit = { NOT = { has_country_flag = camp_rework_1936_baseline_initialized } }
+			set_country_flag = camp_rework_1936_baseline_initialized
+			set_variable = { racial_policy_radicalization = constant:camp_rework_1936_baseline.germany_racial_policy_radicalization }
+			set_variable = { ss_archive_control = constant:camp_rework_1936_baseline.germany_ss_archive_control }
+		}
 		53 = {
 			if = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
@@ -2101,6 +2156,7 @@ genocide_initialize_historical_german_sites = {
 				set_state_flag = genocide_historical_dachau_area
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
+			genocide_activate_historical_baseline_detention_site = yes
 		}
 		64 = {
 			if = {
@@ -2118,6 +2174,9 @@ genocide_initialize_historical_german_sites = {
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
+		camp_rework_recalculate_country_values = yes
+		camp_rework_refresh_lifecycle_ideas = yes
+		camp_rework_rebuild_display_values = yes
 		genocide_queue_historical_camp_flavor_event = yes
 	}
 }
@@ -2129,6 +2188,14 @@ genocide_initialize_historical_japanese_sites = {
 			has_government = fascism
 		}
 		genocide_initialize_country_variables = yes
+		camp_rework_initialize_country_variables = yes
+		if = {
+			limit = { NOT = { has_country_flag = camp_rework_1936_baseline_initialized } }
+			set_country_flag = camp_rework_1936_baseline_initialized
+			set_variable = { kwantung_autonomy = constant:camp_rework_1936_baseline.japan_kwantung_autonomy }
+			set_variable = { ishii_influence = constant:camp_rework_1936_baseline.japan_ishii_influence }
+			set_variable = { occupation_test_records = constant:camp_rework_1936_baseline.japan_occupation_test_records }
+		}
 		716 = {
 			if = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
@@ -2136,6 +2203,7 @@ genocide_initialize_historical_japanese_sites = {
 				set_state_flag = genocide_historical_manchurian_forced_labor
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
+			genocide_activate_historical_baseline_detention_site = yes
 		}
 		611 = {
 			if = {
@@ -2145,6 +2213,9 @@ genocide_initialize_historical_japanese_sites = {
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
 		}
+		camp_rework_recalculate_country_values = yes
+		camp_rework_refresh_lifecycle_ideas = yes
+		camp_rework_rebuild_display_values = yes
 		genocide_queue_historical_camp_flavor_event = yes
 	}
 }
@@ -2156,6 +2227,17 @@ genocide_initialize_historical_soviet_sites = {
 			has_government = communism
 		}
 		genocide_initialize_country_variables = yes
+		camp_rework_initialize_country_variables = yes
+		if = {
+			limit = { NOT = { has_country_flag = camp_rework_1936_baseline_initialized } }
+			set_country_flag = camp_rework_1936_baseline_initialized
+			set_variable = { nkvd_authority = constant:camp_rework_1936_baseline.soviet_nkvd_authority }
+			set_variable = { forced_labor_quota = constant:camp_rework_1936_baseline.soviet_forced_labor_quota }
+			set_variable = { grain_extraction_burden = constant:camp_rework_1936_baseline.soviet_grain_extraction_burden }
+			set_variable = { famine_pressure = constant:camp_rework_1936_baseline.soviet_famine_aftermath_pressure }
+			set_variable = { republic_fear = constant:camp_rework_1936_baseline.soviet_republic_fear }
+			set_variable = { old_movement_grievance = constant:camp_rework_1936_baseline.soviet_old_movement_grievance }
+		}
 		644 = {
 			if = {
 				limit = { NOT = { has_state_flag = genocide_historical_site_initialized } }
@@ -2163,6 +2245,7 @@ genocide_initialize_historical_soviet_sites = {
 				set_state_flag = genocide_historical_kolyma_gulag
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
+			genocide_activate_historical_baseline_gulag_site = yes
 		}
 		874 = {
 			if = {
@@ -2171,6 +2254,7 @@ genocide_initialize_historical_soviet_sites = {
 				set_state_flag = genocide_historical_magadan_gulag
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
+			genocide_activate_historical_baseline_gulag_site = yes
 		}
 		881 = {
 			if = {
@@ -2179,7 +2263,13 @@ genocide_initialize_historical_soviet_sites = {
 				set_state_flag = genocide_historical_karagandy_labor_camp
 				genocide_add_historical_quiet_concentration_camp = yes
 			}
+			genocide_activate_historical_baseline_gulag_site = yes
+			set_state_flag = camp_rework_soviet_famine_pressure
 		}
+		camp_rework_recalculate_country_values = yes
+		camp_rework_soviet_refresh_famine_states = yes
+		camp_rework_refresh_lifecycle_ideas = yes
+		camp_rework_rebuild_display_values = yes
 		genocide_queue_historical_camp_flavor_event = yes
 	}
 }

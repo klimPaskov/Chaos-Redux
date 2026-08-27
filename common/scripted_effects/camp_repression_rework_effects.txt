@@ -629,8 +629,11 @@ camp_rework_register_active_site = {
 	if = {
 		limit = {
 			var:genocide_responsible_country = {
-				tag = ROOT
 				camp_rework_country_is_eligible = yes
+			}
+			OR = {
+				var:genocide_responsible_country = { tag = ROOT }
+				has_global_flag = camp_rework_migration_in_progress
 			}
 		}
 		set_state_flag = genocide_site_has_responsible_country
@@ -674,7 +677,10 @@ camp_rework_register_active_site = {
 			camp_rework_classify_state_pool_for_root = yes
 		}
 		if = {
-			limit = { NOT = { has_global_flag = camp_rework_migration_in_progress } }
+			limit = {
+				NOT = { has_global_flag = camp_rework_migration_in_progress }
+				NOT = { has_state_flag = camp_rework_historical_baseline_registration }
+			}
 			camp_rework_apply_core_fallback_penalty = yes
 		}
 
@@ -2509,6 +2515,10 @@ camp_rework_clear_country_gui_action_display = {
 	set_variable = { display_camp_country_action_2_cost = 0 }
 	set_variable = { display_camp_country_action_3_cost = 0 }
 	set_variable = { display_camp_country_action_4_cost = 0 }
+	set_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.none }
+	set_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.none }
+	set_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.none }
+	set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.none }
 	clr_country_flag = camp_gui_country_action_1_available
 	clr_country_flag = camp_gui_country_action_2_available
 	clr_country_flag = camp_gui_country_action_3_available
@@ -2933,15 +2943,20 @@ camp_rework_rebuild_country_gui_actions = {
 		limit = { original_tag = GER }
 		set_variable = { display_camp_country_action_1_id = constant:camp_rework_action.germany_route_prisoner_labor_to_war_construction }
 		set_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.labor_project_pp }
+		set_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.labor_project }
 		set_variable = { display_camp_country_action_2_id = constant:camp_rework_action.germany_increase_guard_allocation_to_ss_sites }
 		set_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.guard_pp }
+		set_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.guard }
 		set_variable = { display_camp_country_action_3_id = constant:camp_rework_action.germany_destroy_auschwitz_evidence_before_retreat }
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.evidence_pp }
+		set_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.evidence }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.germany_dismantle_auschwitz_complex }
 		set_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.dismantle_pp }
+		set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.dismantlement }
 		if = {
 			limit = {
 				has_government = fascism
+				has_war = yes
 				NOT = { has_country_flag = camp_rework_expansion_frozen }
 				NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
 				check_variable = { camp_labor_output > 0 }
@@ -3006,10 +3021,13 @@ camp_rework_rebuild_country_gui_actions = {
 		set_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.review_pp }
 		set_variable = { display_camp_country_action_2_id = constant:camp_rework_action.japan_shut_down_prisoner_experiments }
 		set_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.dismantle_pp }
+		set_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.dismantlement }
 		set_variable = { display_camp_country_action_3_id = constant:camp_rework_action.japan_evacuate_pingfang_research_staff }
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.labor_project_pp }
+		set_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.labor_project }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.japan_open_epidemic_containment_office }
 		set_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.review_pp }
+		set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.labor_project }
 		if = {
 			limit = {
 				NOT = { has_country_flag = camp_rework_achievement_japan_internal_exposure }
@@ -3069,10 +3087,12 @@ camp_rework_rebuild_country_gui_actions = {
 		set_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.review_pp }
 		set_variable = { display_camp_country_action_2_id = constant:camp_rework_action.sov_emergency_famine_relief }
 		set_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.labor_project_pp }
+		set_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.labor_project }
 		set_variable = { display_camp_country_action_3_id = constant:camp_rework_action.sov_release_prisoners_for_military_service }
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.review_pp }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.sov_dismantle_overextended_gulags }
 		set_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.dismantle_pp }
+		set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.dismantlement }
 		if = {
 			limit = {
 				has_country_flag = SOV_paranoia_system_active_flag
@@ -3128,8 +3148,10 @@ camp_rework_rebuild_country_gui_actions = {
 		set_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.review_pp }
 		set_variable = { display_camp_country_action_3_id = constant:camp_rework_action.uk_dismantle_raj_detention_network }
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.dismantle_pp }
+		set_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.support_only }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.uk_allocate_additional_colonial_guards }
 		set_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.guard_pp }
+		set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.colonial_guard }
 		if = {
 			limit = {
 				OR = { has_active_camp_network = yes has_country_flag = camp_rework_crisis_exposed check_variable = { camp_evidence_states^num > 0 } check_variable = { colonial_legitimacy_damage > 0 } }
@@ -3189,6 +3211,7 @@ camp_rework_rebuild_country_gui_actions = {
 		set_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.review_pp }
 		set_variable = { display_camp_country_action_2_id = constant:camp_rework_action.usa_release_detainees_under_supervision }
 		set_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.guard_pp }
+		set_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.support_only }
 		set_variable = { display_camp_country_action_3_id = constant:camp_rework_action.usa_terminate_wartime_relocation_authority }
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.dismantle_pp }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.usa_establish_redress_commission }
@@ -3249,6 +3272,7 @@ camp_rework_rebuild_country_gui_actions = {
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.review_pp }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.fr_dismantle_north_africa_labor_network }
 		set_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.dismantle_pp }
+		set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.support_and_convoys }
 		if = {
 			limit = {
 				OR = { has_government = democratic has_country_flag = fr_focus_legacy_review_commission has_country_flag = free_france_focus_republican_reckoning }
@@ -3306,8 +3330,10 @@ camp_rework_rebuild_country_gui_actions = {
 		set_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.redress_pp }
 		set_variable = { display_camp_country_action_3_id = constant:camp_rework_action.ita_expand_transport_guard }
 		set_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.guard_pp }
+		set_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.transport_guard }
 		set_variable = { display_camp_country_action_4_id = constant:camp_rework_action.ita_raise_colonial_security_battalions }
 		set_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.guard_pp }
+		set_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.colonial_guard }
 		if = {
 			limit = {
 				OR = { has_active_camp_network = yes has_country_flag = camp_rework_crisis_exposed check_variable = { camp_evidence_states^num > 0 } check_variable = { postwar_colonial_claim_damage > 0 } }
@@ -3693,7 +3719,6 @@ camp_rework_gui_execute_country_action_4 = {
 # id in camp_selected_state_id; the routed payload performs its own final
 # validation and country-kit checks before applying costs or effects.
 camp_rework_route_country_specific_action = {
-	camp_rework_record_country_gui_action_cooldown = yes
 	if = {
 		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.reveal_country_directives } }
 		camp_rework_gui_reveal_country_directives = yes
@@ -3746,7 +3771,17 @@ camp_rework_route_country_specific_action = {
 		set_country_flag = camp_rework_dormant_legacy_closure_active
 	}
 	else = {
-		if = { limit = { original_tag = GER } camp_rework_dispatch_germany_action = yes }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_activate_detention_network }
+					check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
+					check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
+				}
+			}
+			camp_rework_dispatch_generic_action = yes
+		}
+		else_if = { limit = { original_tag = GER } camp_rework_dispatch_germany_action = yes }
 		else_if = { limit = { original_tag = JAP } camp_rework_dispatch_japan_action = yes }
 		else_if = { limit = { original_tag = SOV } camp_rework_dispatch_soviet_action = yes }
 		else_if = { limit = { original_tag = ENG } camp_rework_dispatch_uk_action = yes }
@@ -3756,6 +3791,7 @@ camp_rework_route_country_specific_action = {
 		else_if = { limit = { original_tag = BEL } camp_rework_dispatch_belgium_action = yes }
 		else = { camp_rework_dispatch_generic_action = yes }
 	}
+	camp_rework_record_country_gui_action_cooldown = yes
 	clear_variable = camp_rework_action_state_id
 	set_temp_variable = { camp_rework_action_id = 0 }
 	if = {
@@ -3798,8 +3834,6 @@ camp_rework_gui_expand_selected_pool = {
 					}
 					NOT = { has_political_power < constant:camp_rework_cost.expansion_pp }
 					check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-					command_power > constant:camp_rework_cost.expansion_command
-					has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 					has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 				}
@@ -4410,31 +4444,39 @@ camp_rework_run_versioned_migration = {
 					limit = { NOT = { has_variable = genocide_responsible_country } }
 					set_variable = { genocide_responsible_country = PREV }
 				}
-				set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback }
 				if = {
 					limit = {
-						is_controlled_by = PREV
-						NOT = { is_owned_by = PREV }
-						NOT = { is_core_of = PREV }
-					}
-					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.occupied_noncore }
-				}
-				else_if = {
-					limit = {
-						is_owned_and_controlled_by = PREV
-						NOT = { is_core_of = PREV }
-					}
-					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.noncore }
-				}
-				else_if = {
-					limit = {
 						OR = {
-							has_state_flag = camp_rework_periphery_pool
-							has_state_flag = camp_rework_political_opposition_pool
-							has_state_flag = camp_rework_prison_labor_pool
+							NOT = { has_variable = camp_state_pool_type }
+							check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.none }
 						}
 					}
-					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.periphery }
+					set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.core_fallback }
+					if = {
+						limit = {
+							is_controlled_by = PREV
+							NOT = { is_owned_by = PREV }
+							NOT = { is_core_of = PREV }
+						}
+						set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.occupied_noncore }
+					}
+					else_if = {
+						limit = {
+							is_owned_and_controlled_by = PREV
+							NOT = { is_core_of = PREV }
+						}
+						set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.noncore }
+					}
+					else_if = {
+						limit = {
+							OR = {
+								has_state_flag = camp_rework_periphery_pool
+								has_state_flag = camp_rework_political_opposition_pool
+								has_state_flag = camp_rework_prison_labor_pool
+							}
+						}
+						set_variable = { camp_state_pool_type = constant:camp_rework_pool_type.periphery }
+					}
 				}
 				if = {
 					limit = {
@@ -4956,18 +4998,12 @@ camp_rework_consume_expansion_resources = {
 	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.expansion_manpower }
 	multiply_temp_variable = { camp_cost_remove = -1 }
 	add_manpower = camp_cost_remove
-	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.infantry_equipment }
-	multiply_temp_variable = { camp_cost_remove = -1 }
-	add_equipment_to_stockpile = { type = infantry_equipment amount = camp_cost_remove }
 	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.support_equipment }
 	multiply_temp_variable = { camp_cost_remove = -1 }
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
 	set_temp_variable = { camp_cost_remove = constant:camp_rework_equipment_cost.trains }
 	multiply_temp_variable = { camp_cost_remove = -1 }
 	add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_cost_remove }
-	set_temp_variable = { camp_cost_remove = constant:camp_rework_cost.expansion_command }
-	multiply_temp_variable = { camp_cost_remove = -1 }
-	add_command_power = camp_cost_remove
 }
 
 camp_rework_consume_labor_project_resources = {

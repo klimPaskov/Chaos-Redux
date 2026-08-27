@@ -70,6 +70,12 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.activation_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
+			command_power > constant:camp_rework_cost.activation_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_activation_non_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
 		allowed = { always = yes }
 		visible = {
@@ -153,6 +159,12 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		custom_cost_text = camp_cost_expansion_non_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
 		allowed = { always = yes }
 		visible = {
@@ -175,8 +187,6 @@ camp_repression_network_category = {
 		available = {
 			camp_rework_country_can_expand_generic_labor = yes
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 			FROM = {
@@ -215,6 +225,12 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_labor_project_non_pp
 		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { always = yes }
 		visible = {
@@ -272,6 +288,12 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.labor_project_pp
+		custom_cost_trigger = {
+			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_labor_project_non_pp
 		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { always = yes }
 		visible = {
@@ -326,6 +348,12 @@ camp_repression_network_category = {
 	generic_allocate_additional_guards = {
 		icon = GFX_decision_generic_guard_allocation
 		cost = constant:camp_rework_cost.guard_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than }
+			command_power > constant:camp_rework_cost.guard_command
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+		}
+		custom_cost_text = camp_cost_guard_non_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { always = yes }
 		visible = {
@@ -390,6 +418,12 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
+		}
+		custom_cost_text = camp_cost_expansion_non_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { always = yes }
 		visible = {
@@ -421,8 +455,6 @@ camp_repression_network_category = {
 				camp_rework_country_under_ai_radicalized_cap = yes
 			}
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 			FROM = {
@@ -456,6 +488,16 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.restricted_method_pp
+		custom_cost_trigger = {
+			OR = {
+				camp_rework_country_can_apply_chemical_camp_method = yes
+				AND = {
+					camp_rework_country_can_use_radicalized_route = yes
+					camp_rework_country_has_biological_escalation_capacity = yes
+				}
+			}
+		}
+		custom_cost_text = camp_cost_restricted_method_non_pp
 		days_re_enable = constant:camp_rework_timing.suppression_days
 		allowed = { always = yes }
 		visible = {
@@ -538,6 +580,12 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.evidence_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
+			command_power > constant:camp_rework_cost.evidence_command
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_evidence_non_pp
 		days_re_enable = constant:camp_rework_timing.retreat_days
 		allowed = { always = yes }
 		visible = {
@@ -612,6 +660,11 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.dismantle_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_dismantlement_non_pp
 		days_remove = constant:camp_rework_timing.dismantle_days
 		allowed = { always = yes }
 		visible = {
@@ -664,6 +717,11 @@ camp_repression_network_category = {
 		state_target = any
 		on_map_mode = map_and_decisions_view
 		cost = constant:camp_rework_cost.dismantle_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_dismantlement_non_pp
 		days_remove = constant:camp_rework_timing.reform_days
 		allowed = { always = yes }
 		visible = {
