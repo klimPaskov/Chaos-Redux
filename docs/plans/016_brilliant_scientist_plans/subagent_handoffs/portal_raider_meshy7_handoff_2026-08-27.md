@@ -4,7 +4,7 @@
 
 Status: **blocked; fail closed**.
 
-The deterministic provider/source/evidence package is at `docs/assets/chaos_redux_3d_model_pilots/models_3d/portal_raider/`. Meshy 7 produced an excellent generic retro-futurist raider with helmet/goggles/respirator, durable transit gear, teleportation pack, and a complete integrated two-hand/shoulder laser rifle. Meshy also supplied a humanoid rig and all nine required provider-authored motions. However, the integrated backpack deforms catastrophically during the genuine firing action under the provider weights and every usable locked-adapter automatic transfer mode. The model therefore has no accepted runtime `.mesh` or `.anim` exports and no reimport proof.
+The deterministic provider/source/evidence package is at `docs/assets/chaos_redux_3d_model_pilots/models_3d/portal_raider/`. Meshy 7 produced an excellent generic retro-futurist raider with helmet/goggles/respirator, durable transit gear, teleportation pack, and a complete integrated two-hand/shoulder laser rifle. Meshy also supplied a humanoid rig and all nine required provider-authored motions. However, the integrated backpack deforms catastrophically during the genuine firing action under the provider weights and every previously usable locked-adapter automatic transfer mode. A bounded recovery pass added two materially different provider-authored firing actions, but the current locked adapter job-root mismatch prevented their permitted Blender import and deformation review. The model therefore still has no accepted runtime `.mesh` or `.anim` exports and no reimport proof.
 
 Do not wire this package as a completed unit model. No fallback motion, static action, semantic alias, transform-only action, procedural action, manual weapon attachment, or hand-authored replacement action was used.
 
@@ -37,6 +37,18 @@ Initial balance was 140 credits. Total consumed was 67: image-to-3D 30, remesh 5
 - Death `01a04319-9f6c-7c24-992a-8036cd944145`, action 183 `Shot_and_Fall_Backward`, provider candidate contains articulated collapse/impact/settling but is blocked with the shared rig.
 
 The exact GLB/FBX paths, byte sizes, and SHA-256 values for every action are in `provider/tasks/action_lineage.json`. All nine were immediately downloaded and checksummed.
+
+### Bounded recovery addendum
+
+The live intake balance was 13 credits. The parent authorized at most two 3-credit action attempts and prohibited any new model, remesh, or rig operation. This pass consumed exactly 6 credits and left a verified balance of 7.
+
+- Attack recovery: Meshy action 104 `Side_Shot`, task `01a04356-7d07-7d97-be58-87d36e8e33ac`, provider `SUCCEEDED`, 3 credits. GLB `provider/downloads/portal_raider_attack_recovery_side_shot.glb`, 14,031,476 bytes, SHA-256 `70AD0CFE0CA0A929F54BF00EBEDC584BC3A1920E333250E4EFAD220054FB6DCB`. FBX `provider/downloads/portal_raider_attack_recovery_side_shot.fbx`, 14,269,148 bytes, SHA-256 `F6B2CDE7356180FEB3C5363C1F88BAC0F01A2DBA6A49B5A3915EA6ABA348F51D`.
+- Support-attack recovery: Meshy action 98 `Run_and_Shoot`, task `01a04357-9629-7dda-8e2d-c548c34233df`, provider `SUCCEEDED`, 3 credits. GLB `provider/downloads/portal_raider_support_attack_recovery_run_and_shoot.glb`, 13,990,784 bytes, SHA-256 `C976C0CCD7F9BC36470C75FF1D01492A50074FDA3C462DD44FC3BFABDBBEAD23`. FBX `provider/downloads/portal_raider_support_attack_recovery_run_and_shoot.fbx`, 14,209,644 bytes, SHA-256 `6C00160D18C077B848CAB967D52779B3A30A427D82D09E023212A2B028C3CF5F`.
+- Exact machine records: `provider/tasks/animation_attack_recovery_side_shot.json` and `provider/tasks/animation_support_attack_recovery_run_and_shoot.json`. Raw balance/create/status/download evidence is in provider sequences 074–085.
+
+Both new candidates are downloaded but deliberately **unaccepted**. Dependency verification passed for official Meshy MCP 0.4.0, Blender 5.1.2, adapter 1.10.14, and io_pdx_mesh 0.91.0; live adapter health also passed under request `50aa3d16268b45b7a43d50ece7e15014`. The locked adapter override for `portal_raider`, however, resolves to the legacy shared package rather than `docs/assets/chaos_redux_3d_model_pilots/models_3d/portal_raider`. This recovery pass was forbidden from altering the override or using the earlier temporary-junction workaround, and unrestricted Blender is forbidden. Consequently no permitted import, semantic-phase inspection, firearm/backpack deformation comparison, cleanup, export, or reimport was possible for the recovery files.
+
+Lock/config evidence SHA-256 values: `.tools/3d_pipeline/config/dependencies.lock.json` `C27768297FB7AD5ACC9C555E7C83DC77856908E2C628BF16D9A420095C64266A`; `.tools/3d_pipeline/config/meshy_tool_schema.lock.json` `E45FE80F3B8AC49A365EA2D4221E82E969AE55279639F817BB6FA75407D1C233`; `.tools/3d_pipeline/config/blender_hoi4_adapter.json` `4BC97CA0B07580F5AA04B49E7B9FBD1C07EC88DF5C4D56CD3BA8846E630117AB`; installed io_pdx_mesh manifest `C6865CEB3CE323BD54255BB37FF860E03607BD2AABED4057E9DCBE04C29682EC`.
 
 ## Dependency and Blender evidence
 
@@ -73,6 +85,8 @@ Because attack is a hard requirement and the same integrated rig/geometry is sha
 
 The complete licensed generic audio package was copied with originals and transformation records into `evidence/audio/`. `licensing/source_ledger.md` records the exact Internet source pages and direct downloads for selection, six movement contacts, electrical idle, laser attack, metal impact, teleport arrival, and power-failure death. Licenses are CC0 except the idle hum (CC BY 4.0, Hansjörg Malthaner/Varkalandar) and death sound (CC BY 3.0, OptimusDu, Cough-E, Little Robot Sound Factory). `audio_manifest.md` records every original/derived checksum and the FFmpeg mono 44.1 kHz PCM normalization recipe.
 
+The recovery pass reopened the recorded source pages and rechecked all 12 derived WAVs with FFprobe. Every derived candidate is mono 44.1 kHz 16-bit PCM and every SHA-256 matches `audio_manifest.md`. Original source files, download URLs, attribution, license terms, transformations, and checksums remain in `evidence/audio/`; no audio was generated or synthesized.
+
 Exact runtime sync is blocked with the action package. Candidate-only inspection placed attack discharge near frame 145 at 30 FPS and support discharge near frame 50, but these are not runtime bindings. The full copy receipt and limitation are `evidence/audio/copy_provenance.md`.
 
 ## Bespoke counter
@@ -80,6 +94,8 @@ Exact runtime sync is blocked with the action package. Candidate-only inspection
 The complete bespoke counter package was copied into `evidence/counter/`, including original/alpha PNGs, processed two-frame strips, DDS outputs, roundtrip proofs, contact sheet, manifest, and `gfx_handoff.md`. Required tokens are `unit_portal_raider_icon` and `onmap_unit_portal_raider_icon`.
 
 The exact installed definitions were inspected in `interface/subuniticons.gfx`. The reference DDS files were the large `unit_infantry_icon.dds` and small `onmap_unit_infantry_icon.dds`; matching skill-local families were `units/land/counters_large` and `units/land/map_counters`. The package uses the sampled vanilla dominant green `(73,106,73)` and highlight anchors `(100,128,100)` / `(116,141,116)`, with the required green and selected-state frame behavior.
+
+Recovery verification reconfirmed `GFX_unit_infantry_icon_medium` and `GFX_unit_infantry_icon_medium_white` as two-frame consumers in installed `interface/subuniticons.gfx`. Vanilla reference SHA-256 values are `B33A8EAE4FE2E68D7769C7A2664153976132849B285713162AEFAAE58D520C23` for the large DDS and `58AB7821CE6D642443A5B56DA2B7E3831321797160EE38A2CB0DADBC77F766C` for the map DDS. The bespoke contact sheet was visually rechecked against those references; the final strips retain their documented frame sizes, selected-state ordering, green palette, border treatment, and alpha behavior.
 
 Counter DDS evidence checksums: large `4236DF5183605AF540D44339EED96F29B2B59A40D9F82E1472C5178963EF920E`; map `FB009C5EEED40C1AAD867D15C066422CB142AA24DC2C38D7311857BFA284D85E`. Parent-owned GFX/runtime validation remains outside this 3D worker.
 
