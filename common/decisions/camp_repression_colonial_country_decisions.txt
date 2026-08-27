@@ -240,6 +240,12 @@ camp_repression_network_category = {
 	uk_expand_raj_detention_districts = {
 		icon = GFX_decision_uk_raj_detention
 		cost = constant:camp_rework_cost.expansion_pp
+		custom_cost_trigger = {
+			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
+			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
+			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+		}
+		custom_cost_text = camp_cost_colonial_expansion_non_pp
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
 		allowed = { original_tag = ENG }
 		visible = {
@@ -253,7 +259,6 @@ camp_repression_network_category = {
 		}
 		available = {
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
 			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			OR = {

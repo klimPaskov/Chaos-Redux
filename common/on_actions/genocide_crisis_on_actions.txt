@@ -9,9 +9,27 @@
 on_actions = {
 	on_startup = {
 		effect = {
+			# on_startup has no country scope. Enter each fixed historical actor
+			# directly so its starting-site helpers receive the correct ROOT.
+			if = {
+				limit = { NOT = { has_global_flag = genocide_crisis_system_initialized } }
+				set_global_flag = genocide_crisis_system_initialized
+				if = {
+					limit = { GER = { exists = yes } }
+					GER = { genocide_initialize_historical_german_sites = yes }
+				}
+				if = {
+					limit = { JAP = { exists = yes } }
+					JAP = { genocide_initialize_historical_japanese_sites = yes }
+				}
+				if = {
+					limit = { SOV = { exists = yes } }
+					SOV = { genocide_initialize_historical_soviet_sites = yes }
+				}
+			}
 			random_country = {
 				limit = { exists = yes }
-				genocide_initialize_system_if_needed = yes
+				camp_rework_run_versioned_migration = yes
 			}
 		}
 	}

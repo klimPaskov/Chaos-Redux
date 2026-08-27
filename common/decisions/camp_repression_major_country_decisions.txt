@@ -52,6 +52,7 @@ genocide_crisis_category = {
 			OR = { is_ai = yes has_country_flag = genocide_decisions_visible }
 			original_tag = GER
 			has_government = fascism
+			has_war = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			check_variable = { camp_labor_output > 0 }
 		}
@@ -59,6 +60,7 @@ genocide_crisis_category = {
 			NOT = { has_country_flag = camp_gui_country_action_1_cooldown }
 			original_tag = GER
 			has_government = fascism
+			has_war = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			check_variable = { camp_labor_output > 0 }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment }
@@ -251,8 +253,6 @@ genocide_crisis_category = {
 		cost = constant:camp_rework_cost.expansion_pp
 		custom_cost_trigger = {
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 		}
@@ -284,8 +284,6 @@ genocide_crisis_category = {
 				}
 			}
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 		}
@@ -527,8 +525,6 @@ imperial_occupation_crisis = {
 		cost = constant:camp_rework_cost.expansion_pp
 		custom_cost_trigger = {
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 		}
@@ -553,8 +549,6 @@ imperial_occupation_crisis = {
 				}
 			}
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 		}
@@ -1078,8 +1072,6 @@ gulag_and_mass_repression_system = {
 		cost = constant:camp_rework_cost.expansion_pp
 		custom_cost_trigger = {
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 		}
@@ -1112,8 +1104,6 @@ gulag_and_mass_repression_system = {
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = { is_ai = no camp_rework_country_under_ai_project_cap = yes }
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 			FROM = {
@@ -1384,8 +1374,6 @@ gulag_and_mass_repression_system = {
 		cost = constant:camp_rework_cost.expansion_pp
 		custom_cost_trigger = {
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 		}
@@ -1415,8 +1403,6 @@ gulag_and_mass_repression_system = {
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = { is_ai = no camp_rework_soviet_under_ai_extreme_cap = yes }
 			check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.expansion_command
-			has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains }
 			FROM = {
@@ -1487,6 +1473,9 @@ gulag_and_mass_repression_system = {
 	}
 
 	sov_famine_pressure_cycle = {
+		# The monthly Soviet bridge activates this mission while both pressures are
+		# positive. For a non-selectable mission, available is its success condition:
+		# eliminating either pressure completes the cycle before the timeout.
 		icon = GFX_decision_sov_grain_confiscation
 		allowed = { always = no }
 		visible = { original_tag = SOV }

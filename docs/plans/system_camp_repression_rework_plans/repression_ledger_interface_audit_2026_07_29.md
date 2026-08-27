@@ -2,7 +2,7 @@
 
 ## Scope
 
-This audit covers only `repression_ledger_category_window` and `repression_ledger_window`, including the Overview, State Pools, Active Sites, Country Panel, and Discovery & Reform tabs.
+This audit covers only `repression_ledger_category_window` and `repression_ledger_window`, including the Overview, State Pools, Active Sites, Country System, and Evidence & Reform tabs.
 
 The Event Log, general Chaos Redux windows, disease-containment windows, and unrelated CBRN interfaces are outside this audit.
 
@@ -37,7 +37,7 @@ Final Ledger render:
 - Decorative textures, selected markers, warning overlays, status marks, and non-interactive text are click-through so they cannot intercept button clicks or tooltips.
 - The title, phase indicator, and close control have explicit non-overlapping bounds.
 - Tab labels are independent click-through text overlays, leaving room for the selected-tab emblem without label collisions.
-- The Discovery & Reform label uses a bounded two-line presentation instead of clipping or shrinking into the marker.
+- The Evidence & Reform label uses a bounded two-line presentation instead of clipping or shrinking into the marker.
 - Overview card text and burden icons use separate columns, with burden icons stacked vertically.
 - Discovery and reform card text leaves space for the 112 by 112 seals.
 - The selected-state summary starts beyond its emblem and has a two-line bound.
@@ -80,3 +80,49 @@ No interface surface in the stated scope was omitted.
 No fallback or unapproved simplification was introduced.
 
 The only validation boundary is that the offline MCP cannot execute scripted visibility or observe the interface inside the running game.
+
+## 2026-08-27 Five-Tab Correction Addendum
+
+The live source now matches the five-tab contract described by this audit.
+
+`State Pools` and `Active Sites` are separate named containers with separate click handlers, tab flags, panel-visibility triggers, six-row lists, and selection actions.
+
+The fifth `Evidence & Reform` tab is also a real panel with discovery, condemnation, attributed-deaths, and reform cards plus the existing evidence and reform seals.
+
+The compact decision-category presentation uses natural country-specific prose and sentence-based status text.
+
+It no longer uses separator bars, fake telemetry columns, or a static Japanese sentence outside the Japan branch.
+
+The `Country System` label uses a bounded two-line text box after the localisation audit identified its former 90-pixel single-line box as the only likely remaining text-overflow source.
+
+Fresh full-Ledger inspection:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a4aea950c875ffe646f6ecf80fd43f47b816c97f0f9d88b663ed7292d9a17ca5/419a5f98e0bf835ad9d14504eaba284e07f8cbc8c4ece571618742dd14db0c53/gui-inspect.f323d376d55c4e21.json`
+
+Fresh full-Ledger render:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b0179a2e4c0df19f733c338fc2bdf7d696c1236dd7cad8fa8ea08fc1d146f48b/c72eb7b994372a5107551192d7564eb62f4e40e25f416d989f4771eb7668c6bd/repression_ledger_window-full.svg`
+
+Fresh category render:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/329de700000bcf60f3ae6a5c6944feb02199e57371a007e6a3fa302231160374/4c69af5a36a7c76bd0c7148c33e6408914f4338bc3825dab42ef6ded13c048a6/repression_ledger_category_window-full.svg`
+
+The current MCP global graph still truncates repository-wide diagnostics and includes unrelated interface collisions and approximated visibility overlaps.
+
+The category inspection route later recovered and produced:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f1afef8e42da556ecad6b031986f53f1fafa4de7e401df0034cea9c2586587f9/5378150cbce4191e690a1384f4b60a690ece89d60af19fe9252d0ba7d755c5cc/gui-inspect.92f2da424dc00017.json`
+
+The matching final category render is:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/329de700000bcf60f3ae6a5c6944feb02199e57371a007e6a3fa302231160374/d8fc1bb8fd30d75db270da174c73bd6d478cad2a721127b4b0fa88607cb68752/repression_ledger_category_window-full.svg`
+
+The latest successful post-cost Ledger inspection is:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/93389e8403c4d0d12cd6bf7298f99f31f6cc38b10274e3b4a14aae9f5ad06e96/dc01afdd231d38eb710ba49d40cdcec73a938ac5b2c858a2af35cda1950f40d3/gui-inspect.8d6b6d473e40a3ba.json`
+
+The matching compact post-cost normal, long-text, and missing-localisation render at 1920 by 1080 is:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/125c3b778d52bee555772509f03a11c3fe23da527cd883fde7a3ee338475afbc/c7836af7bf903630ec97f86c24ef403f9e7b48032ac6d416fb6f1ea0366d1726/repression_ledger_window-full.svg`
+
+Final inspection and compact-render retries after the restricted-payload localisation additions reached the MCP's 180-second graph limit without producing newer artifacts; those additions did not alter `interface/camp_repression_ledger.gui`.

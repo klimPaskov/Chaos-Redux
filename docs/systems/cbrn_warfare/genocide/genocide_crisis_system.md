@@ -2,7 +2,7 @@
 
 ## Overview
 
-The camp repression rework connects detention sites, forced labor, gulags, experiment programs, contaminated killing sites, discovery, condemnation, reform, and postwar accountability into one optional network. Ordinary campaigns remain quiet until a government activates or inherits a network, expands it, loses control of it, exposes it publicly, or reaches a crisis threshold.
+The camp repression rework connects detention sites, forced labor, gulags, experiment programs, contaminated killing sites, discovery, condemnation, reform, and postwar accountability into one network. Germany, Japan, and the Soviet Union begin in 1936 with historically grounded low-intensity systems already operating, while other countries remain quiet until a government activates or inherits a network, expands it, loses control of it, exposes it publicly, or reaches a crisis threshold.
 
 The system preserves three established contracts:
 
@@ -15,7 +15,7 @@ The system never offers a protected-class target selector. State selection is ba
 ## Core Lifecycle
 
 1. A decision, event, historical marker, inherited network, or country bridge identifies a valid state pool.
-2. Dormant historical markers remain inert until a route activates them. They do not inflict recurring harm or create ordinary popups.
+2. Dormant historical markers remain inert until a route activates them, except for the bounded 1936 baselines documented below. Dormant locations do not inflict recurring harm or create ordinary popups.
 3. Activation stores the responsible country, site type, phase, evidence state, and country-kit pool; the state is added once to `global.genocide_active_camp_states`.
 4. The existing host-only Chaos Meter monthly pulse calls the camp dispatcher. No separate daily, weekly, or monthly world-country loop is used.
 5. The registered-state processor applies the resolved population loss once, reports it through the shared Deaths helpers, updates labor and resistance pressure, and deepens hidden evidence.
@@ -109,6 +109,8 @@ The first severe exposure can use a bounded report, news card, or super event. R
 
 ### Germany and Auschwitz
 
+Germany begins with the Dachau-area detention site operating at low intensity. The Sachsenhausen and Buchenwald historical locations remain dormant markers for later activation, so the 1936 baseline does not pretend that the later wartime camp system or Auschwitz program already exists.
+
 Germany prioritizes strict occupied-Poland prisoner-source states before wider occupied and non-core pools. Auschwitz is the shared destination node in state `88`; source-state transfers do not relabel the source as Auschwitz. The occupied-Poland expansion, eastern fortification labor, SS laboratory annex, and military-review branches use timed missions and resource costs.
 
 Auschwitz experiment pressure reads both `mengele_autonomy` and `mengele_permission_level`. Rejected authority blocks transfer; restricted, limited, full, and bypass authority produce distinct autonomy, evidence, project, and coup pressure. Facility registration marks the actual selected state. The cloning unlock remains gated and retried through the Mengele event pulse rather than completing a project directly. Capture of a qualifying laboratory state can feed the existing emergency Directorate revolt.
@@ -117,13 +119,17 @@ The associated Germany focus rewards use a consolidated lifecycle. The future-st
 
 ### Japan, Ishii, and Pingfang
 
+Japan begins with the Manchurian forced-labor precedent in state `716` operating at low intensity, while the North China precedent in state `611` remains dormant. The opening baseline gives the occupation administration a visible human and political cost without granting the later Pingfang experiments, outbreak system, or wartime escalation.
+
 Japan uses Shiro Ishii influence, Kwantung autonomy, experiment-site count, evidence depth in China, outbreak risk, and tribunal severity. State `328` is the Pingfang anchor. States `716` and `611` remain separate labor precedents.
 
 Manual and AI pool order is Chinese or Manchurian occupied states, then other colonial occupation states, then a desperate home-island fallback only when the foreign pools are empty. Subject-controlled states are valid and retain owner-linked Deaths attribution. Japan has a five-project dossier chain, Pingfang authority and records events, outbreak containment, army review, retreat evacuation, destruction, surrender, and tribunal outcomes. Obsolete Ishii and outbreak aliases migrate once into canonical values.
 
 ### Soviet Union, Gulags, Paranoia, and Famine
 
-The Soviet package uses the accepted northern, Siberian, Far Eastern, steppe, Central Asian, borderland, industrial, and political-opposition pools. `paranoia_pressure` is a projection of vanilla `SOV_paranoia`; the camp system never starts or maintains a second paranoia system.
+The Soviet Union begins with the Kolyma, Magadan, and Karagandy gulag records operating through the shared active-site registry. Their monthly harm enters the Deaths system from the first monthly pulse. Karagandy also carries the continuing aftermath of forced grain extraction: moderate famine pressure, reduced local manpower and output, supply strain, resistance, republic fear, and old-movement grievance are present without replaying a separate one-time famine death shock.
+
+The Soviet package uses the accepted northern, Siberian, Far Eastern, steppe, Central Asian, borderland, industrial, and political-opposition pools. `paranoia_pressure` remains a projection of vanilla `SOV_paranoia`; the camp system never starts or maintains a second paranoia system.
 
 Gulag expansion, prisoner transfers, NKVD authority, quota pressure, grain confiscation, famine relief, party review, military prisoner release, dismantlement, concealment, and admission of administrative collapse share one lifecycle. Famine pressure persists at country and state level and inflicts its monthly Deaths tick once.
 
@@ -173,17 +179,17 @@ The registered country and state arrays are bounded and clean stale entries. New
 
 ## Repression Ledger
 
-The Repression Ledger is a scripted GUI with five tabs:
+The Repression Ledger is a scripted GUI with five functional tabs:
 
 1. Overview: network phase, active sites, population loss, labor output, evidence, resistance, overextension, guard, rail, supply, legitimacy, and reform pressure.
-2. State Pools: ordered eligible states, pool type, ownership and control, responsible country, burden, block reason, and available actions.
-3. Active Sites: registered sites, site type and phase, population-loss band, output, resistance, evidence, and registration state.
-4. Country System: Germany, Japan, Soviet, British, American, French or Vichy, Italian, Belgian, generic, and restricted-method program readiness.
-5. Discovery & Reform: discovery state, cover-up pressure, tribunal exposure, reform work, and dismantlement controls.
+2. State Pools: ordered eligible territories, including pool type, ownership and control, responsible country, burden, block reason, and available activation orders.
+3. Active Sites: registered operating sites, site type and phase, population-loss band, output, resistance, evidence, and valid site actions.
+4. Country System: Germany, Japan, Soviet, British, American, French or Vichy, Italian, Belgian, generic, and restricted-method program readiness with real country-specific orders.
+5. Evidence & Reform: discovery state, evidence, foreign visibility, condemnation, tribunal exposure, attributed deaths, reform pressure, and closure status.
 
 The selected-state card displays a state name plus named site, phase, population-loss, output, resistance, evidence, registration, and enemy-proximity bands. It does not expose raw internal numeric fields. GUI arrays are rebuilt from bounded registered arrays and invalidate stale selected states.
 
-The header displays `[ROOT.GetName]: [GetCampCountryPanelName]` together with the current phase and discovery state. All 24 generated Ledger sprites have live consumers, including scripted visibility for the evidence and reform seals. The 32 country-action slots mirror the native cooldown gates of their normal decision counterparts.
+The category description uses explicit Germany, Japan, Soviet, and neutral localisation branches, so one country's institutional wording cannot appear in another country's interface. The compact header and the full Ledger use natural sentences and real GUI elements; they do not simulate columns or meters with separator characters. All 24 generated Ledger sprites have live consumers, including the evidence and reform seals. The 32 country actions mirror the native cooldown gates of their normal decision counterparts.
 
 ## Events, Super Events, and Achievements
 
