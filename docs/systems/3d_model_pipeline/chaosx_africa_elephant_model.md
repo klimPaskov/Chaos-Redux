@@ -1,27 +1,20 @@
-# Event 012 shared elephant model package
+# Event 012 elephant visual disposition
 
-The package preserves one shared oversized elephant body for the live Event 012 armoured elephant subunit. `chaosx_elephant` is a custom unit distinct from vanilla `elephantry`; its logistics and shock roles share this body and differ through the parent-owned formation and equipment contract. The rider is calibrated to one full installed vanilla infantry runtime model, so the exported creature is intentionally monumental rather than a miniature unit marker.
+The Event 012 armoured elephant formation reuses the installed vanilla elephantry visual by explicit user direction. Its gameplay identity remains custom through `chaosx_elephant`, its equipment, armour values, and technology bridge, but no custom Meshy model, rig, skeletal action set, or entity is required.
 
-## Runtime package
+## Active runtime
 
-The parent-owned runtime files live under `gfx/models/units/chaosx_elephants/`. The mesh is `chaosx_elephant_shared_base.mesh`, the packed maps are `elephant_shared_base_diff.dds`, `elephant_shared_base_spec.dds`, and `elephant_shared_base_n.dds`, and the six skeletal actions are registered by `animation_chaosx_elephants.asset`.
+- `common/units/012_africa_elephant_forces.txt` sets `sprite = elephantry` on `chaosx_elephant`.
+- Host and Action 102 member templates leave `override_model` unset, allowing mixed divisions to resolve each regiment's own visual instead of forcing an elephant entity over the full division.
+- The vanilla consumer is `infantry_rifle_entity` from `gfx/entities/units_infantry.asset`, backed by `generic_western_european_rifle_infantry_mesh` and its registered `elephantry_idle` and `elephantry_move` variants.
+- The former custom registrations in `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `gfx/models/units/chaosx_elephants/animation_chaosx_elephants.asset` are retired. Remaining custom binary files and the evidence workspace are retained only for provenance and must not be synchronized.
 
-`gfx/entities/chaosx_elephants.gfx` registers the mesh and action names. `gfx/entities/chaosx_elephants.asset` provides the shared entity with `scale = 0.8`; `common/units/012_africa_elephant_forces.txt` consumes it through `sprite = chaosx_elephant_shared_base`.
+## Historical evidence
 
-The exact source, checkpoints, provider lineage, scale crosswalk, reimport proofs, previews, and audio provenance remain in `docs/assets/012_africa/models_3d/elephant_shared_base/` and the tracked handoff under `docs/plans/012_africa_plans/subagent_handoffs/`.
+The superseded package record remains under `docs/assets/012_africa/models_3d/elephant_shared_base/` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_elephant_meshy7_redo.md`. It documents the prior reference cleanup, provider feasibility checks, and candidate files, but it is not a current production or promotion target.
 
-## Scale and actions
+## Gameplay and asset boundary
 
-The vanilla infantry source mesh is `7.3518242835` units high and uses entity scale `0.8`, giving an effective rider height of `5.8814594268`. The exported elephant source height is `33.5147094727` units. Parent consumers must apply the entity scale exactly once.
+The custom unit still consumes `chaosx_elephant_equipment_1`, keeps its armour and combat profile, and remains used by the host and Action 102 member formation helpers. Existing equipment art and any bespoke unit counter may remain as gameplay-facing identity assets, but they do not imply a custom 3D entity or custom animation package.
 
-The six real skeletal actions are `idle`, `move`, `deploy`, `supply_load`, `attack`, and `impact`. All six have exported `.anim` files and reimport proofs. The live unit uses the same action set for host and Action 102 member guards; future logistics and shock loadouts may continue to share this body without commissioning a second elephant model.
-
-## Audio
-
-`sound/chaosx_elephants_sound.asset` declares the six role-specific soundeffects and runtime WAVs under `sound/012_africa/elephant/`. The originals, licenses, transformations, checksums, and animation synchronization points are recorded in the job audio handoff. No audio was synthesized.
-
-The custom-unit counter companion is registered in `interface/chaosx_subuniticons.gfx` under both the shared body token and the live `chaosx_elephant` token. It uses `gfx/interface/counters/divisions_large/unit_elephant_shared_base_icon.dds` plus `gfx/interface/counters/divisions_small/onmap_unit_elephant_shared_base_icon.dds`, both with the installed two-frame land-counter contract.
-
-## Runtime status
-
-The model package does not add a new country tag or a second elephant model. Event 012 calls `africa_elephant_prepare_host_guard` for the preserved host and `africa_elephant_prepare_member_guard` for every promoted Action 102 member. The five member force profiles each include one `chaosx_elephant` regiment, while the host receives the two-battalion Africa Charter Elephant Guard. The provider shell's recorded open-boundary topology and the shared silhouette remain review items in the job manifest.
+The elephant achievement remains separately gated by its movement, supply, destruction, and war-purpose witnesses. Reusing the vanilla visual does not claim live campaign completion for those gameplay proofs.
