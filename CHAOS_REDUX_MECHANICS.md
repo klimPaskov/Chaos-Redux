@@ -1,6 +1,6 @@
 # Chaos Redux: Complete Mechanics Guide
 
-Last reconciled with the repository source on 2026-07-29.
+Last reconciled with the repository source on 2026-08-27.
 
 ## Table of Contents
 
@@ -8,6 +8,11 @@ Last reconciled with the repository source on 2026-07-29.
 2. [Dynamic Timer System](#dynamic-timer-system)
 3. [Event Classification](#event-classification)
 4. [Chaos Meter System](#chaos-meter-system)
+   - [Air Cleanliness](#air-cleanliness-contamination-system)
+   - [Deaths](#deaths-system)
+   - [Famine](#famine-mechanics)
+   - [Migration](#migration-mechanics)
+   - [Camp and Repression](#camp-and-repression-mechanics)
 5. [World End Scenario Mechanic](#world-end-scenario-mechanic)
 6. [Event Evolution and Event Logs](#event-evolution-and-event-logs)
 7. [Event Clusters](#event-clusters)
@@ -187,13 +192,13 @@ A global meter (0-1000+) that tracks world instability and drives system behavio
 
 ### Chaos Meter Window
 
-The Chaos Meter details window has five tabs:
+The Chaos Meter details window has five tabs and opens on **History**:
 
 1. **Status**: Current chaos value, current tier, and a short mechanics explanation.
 2. **History**: Scrollable chaos change log with filters and sorting.
-3. **Air Cleanliness**: Global air quality, contamination pressure, and threshold status.
+3. **Air Cleanliness**: Current contamination, clean-air remainder, source accounting, Air Winter status, and threshold state.
 4. **Condemnation**: Country-by-country responsibility for unconventional warfare use.
-5. **Deaths**: Total deaths, civilian/military split, and a recent death log.
+5. **Deaths**: Total deaths, civilian/military split, latest change, and sortable country totals with cause tooltips.
 
 <!-- IMAGE PLACEHOLDER: Chaos Meter window with all five tabs visible -->
 
@@ -243,41 +248,36 @@ Chaos changes can also happen from events.
 
 ### Air Cleanliness (Contamination) System
 
-Air cleanliness is a global pressure system shown in the Chaos Meter window.
+Air Cleanliness is a global atmospheric pressure system measured in basis points (`100 bp = 1%`) and shown in the Chaos Meter window. Each source family records the clamped change it actually applies, and its permanent source ledger remains clickable even after the source's current contribution falls to zero.
 
-- Chemical contamination in one state adds **+0.01%**.
-- One outbreak state adds about **+0.02%** (lower/higher by outbreak intensity).
-- A normal nuke adds **+0.2%**.
-- A thermonuclear strike adds **+1.5%**.
-- Natural recovery scales by contamination level while still reversible:
-  - below **25%**: **-0.03%** monthly
-  - **25%+**: **-0.02%** monthly
-  - **50%+**: **-0.01%** monthly
-  - **75%+**: **-0.005%** monthly
+Monthly pressure comes from chemical contaminated states (`+1 bp` per state), biological outbreak footprints whose contribution follows agent and intensity changes, active nuclear fallout (`+3 bp` per current fallout-intensity point), and a shared wildfire/volcanic smoke-and-ash reservoir capped at `+4 bp` per month. A normal nuclear strike seeds `+1.0` fallout intensity for `180` days, a thermonuclear strike seeds `+3.5` for `540` days, and repeated strikes stack to the current intensity cap of `7.0`; the fallout state then contributes through the monthly update rather than as a global amount applied at strike time.
+
+Natural recovery scales by contamination level while the atmosphere is still reversible: below **25%** it removes **3 bp** monthly, from **25%** it removes **2 bp**, from **50%** it removes **1 bp**, and from **75%** it removes **0.5 bp**.
 
 Threshold behavior:
 
-- **25%**: contamination and outbreak spread becomes easier.
+- **25%**: outbreak spread becomes easier.
 - **50%**: mild nuclear-winter periods can begin.
-- **75%**: stronger nuclear-winter periods can begin, with harsher global penalties.
-- **100%**: contamination becomes irreversible and states begin a long decline toward wasteland.
+- **75%**: severe nuclear-winter periods can begin and the Air Cleanliness Treaty layer becomes eligible.
+- **100%**: contamination becomes irreversible, global fallout pressure applies, states begin a long decline toward wasteland, and a Fallout request can be submitted when that route is enabled and no other world end is active.
 
 For chaos synchronization:
 
-- Every **+1%** contamination change adds **+1 chaos**.
-- Every **-1%** contamination recovery removes **1 chaos**.
+- Every net **+1%** contamination change adds **+1 chaos**.
+- Every net **-1%** contamination recovery removes **1 chaos**.
+- Sub-1% remainders are buffered between updates so only committed whole-percent deltas change Chaos.
 
-The tab uses a single current status line for stage/state, plus a short mechanics overview on the side.
-The tab also includes an enable/disable checkbox for the air cleanliness system.
+The Air Cleanliness tab shows contamination and clean-air values, the latest net change and recovery, current source footprint and record count, lifetime rises and falls, one status line, and the current Air Winter phase. It also contains a permanent source ledger ordered by first contribution; selecting a row opens a detail overlay with current contribution, lifetime additions, direct clearing, net change, observed pressure decay, latest changes, and first/latest observation dates.
+
+The tab includes an enable/disable checkbox for ordinary Air Cleanliness processing. A committed Fallout transition overrides both Air Cleanliness disable markers for effect consumption, fixes the atmosphere at `99%`, zeros later source and decay deltas, and retains the source history.
+
+At **75%**, the Air Cleanliness Treaty uses bounded invitations, receipts, and membership generations. Members gain shared sampling and can fund Global Cleaning Day or Joint Filter Convoy projects; unconventional weapon use expels a member, records permanent betrayal memory, and applies sanctions by current members. Fallout preserves membership and betrayal memory while cancelling active treaty projects, invitations, and relief routes.
 
 | Source | Basis points | Percent |
 | --- | --- | --- |
 | Chemical contamination in one state | `+1 bp` | `+0.01%` |
-| One outbreak state, low intensity | `+1 bp` | `+0.01%` |
-| One outbreak state, base intensity | `+2 bp` | `+0.02%` |
-| One outbreak state, high intensity | `+3 bp` | `+0.03%` |
-| Normal nuke | `+20 bp` | `+0.20%` |
-| Thermonuclear strike | `+150 bp` | `+1.50%` |
+| Biological outbreak state | Agent- and intensity-dependent footprint | Agent- and intensity-dependent footprint |
+| Active nuclear fallout | `+3 bp` per fallout-intensity point | `+0.03%` per intensity point |
 | Wildfire smoke and volcanic ash reservoir | up to `+4 bp` each month | up to `+0.04%` each month |
 
 | Monthly recovery band | Basis points | Percent |
@@ -291,10 +291,12 @@ The tab also includes an enable/disable checkbox for the air cleanliness system.
 | --- | --- | --- |
 | `25%` | `2500 bp` | Spread becomes easier |
 | `50%` | `5000 bp` | Mild nuclear-winter periods can begin |
-| `75%` | `7500 bp` | Stronger nuclear-winter periods can begin |
-| `100%` | `10000 bp` | Contamination becomes irreversible and the normal Fallout request route becomes eligible |
+| `75%` | `7500 bp` | Severe nuclear-winter periods can begin and the treaty layer becomes eligible |
+| `100%` | `10000 bp` | Contamination becomes irreversible and the Fallout request route becomes eligible when enabled |
 
-<!-- IMAGE PLACEHOLDER: Air Cleanliness tab with thresholds and status line -->
+Detailed implementation and source-ledger documentation: `docs/systems/air_cleanliness/air_contamination_mechanic.md` and `docs/systems/air_cleanliness/contamination_source_ledger.md`.
+
+<!-- IMAGE PLACEHOLDER: Air Cleanliness tab with source ledger and detail overlay -->
 
 ### Condemnation System
 
@@ -322,18 +324,65 @@ Detailed implementation and tuning reference: `docs/systems/cbrn_warfare/condemn
 
 ### Deaths System
 
-Strategic bombing, chemical and biological attacks, outbreaks, nuclear strikes, genocide-crisis site processing, and military casualties all feed a shared global deaths tracker.
+Strategic bombing, chemical and biological attacks, outbreaks, nuclear strikes and fallout, genocide-crisis site processing, famine mortality, validated forced-displacement harm, Black Plague state mortality, ghost-derivative decline, and military casualties all feed a shared global deaths tracker.
 
 - Death sources reduce real state population, not only recruitable manpower.
 - Population losses are scaled by state population, local conditions, and the kind of attack, so dense and poorly protected areas suffer more heavily.
-- Outbreak and contamination deaths happen gradually over time for as long as the state remains affected.
-- Nuclear strikes cause a heavy immediate death spike and can leave behind radioactive fallout that keeps killing civilians over time.
-- The **Deaths** tab shows total deaths, civilian deaths, military deaths, latest change, and a scrollable death log.
-- Death log entries show the affected country, death type as **Civilian** or **Military**, and can be filtered by type.
+- Outbreak, contamination, camp, and famine deaths happen gradually while their state remains affected and the relevant exposure or processing conditions continue.
+- Nuclear strikes cause an immediate death spike, while the fallout they seed can keep killing civilians through later state processing.
+- The **Deaths** tab shows total deaths, civilian deaths, military casualties, chaos generated from deaths, and the latest change.
+- Its bottom view is a scrollable country-totals list with each country's latest recorded update, sortable and filterable with cause tooltips.
+- The current deaths view has no enabled per-country drilldown log overlay; a country row can open diplomacy where that action is available.
 - The tab includes an enable/disable checkbox for the deaths system.
 - Every **1,000,000** total deaths adds **+1 chaos**.
 
-<!-- IMAGE PLACEHOLDER: Deaths tab with totals and recent log -->
+<!-- IMAGE PLACEHOLDER: Deaths tab with totals and country totals -->
+
+### Famine Mechanics
+
+Famine is an independent state-owned food-security system in the `famine_*` namespace that complements the Chaos Meter without becoming a second chaos counter. Its decision category stays hidden without a genuine food-security problem, while `famine_state_map_mode` is available from campaign start.
+
+The player-facing famine surface has exactly three values: **Food Security** (Stable, Supply Strain, Acute Shortage, Famine, or Catastrophic Famine), **Food Reserves**, and **Relief Access**. Food Security combines production, transport, extraction, need, environment, vulnerability, governance, and relief pressure; stage thresholds are `25`, `50`, `75`, and `100`, with lower recovery thresholds and confirmation windows preventing rapid oscillation.
+
+Initial incident registration is accounting and presentation only; it does not create a replacement incident event, random event pool, Event Log row, pacing transaction, or population transaction.
+
+Famine decisions cover reserve release, emergency imports, route repair, escorted relief convoys, emergency airlift, invited relief, famine evacuation, safer-state requisition, concealment, and extraction. Famine missions cover relief-route security and reserve failure, and are separate from migration mission slots.
+
+Severe famine stages can produce population-scaled mortality only after the required exposure period. The exact state-population transaction respects the protected population floor and records the loss once in Deaths as **From famine**; migration does not debit the same people again. Blockade famine requires a current war, isolation or maritime dependence, port or route disruption, convoy or escort shortage, inadequate local supply, and no relief corridor, so island status alone is insufficient.
+
+Famine can submit a proven survivor-flight request to Migration and publishes versioned food-safety facts for destination selection. Migration can return a versioned trapped-population demand receipt that famine incorporates into need and vulnerability. The ledgers and decision categories remain separate, and processing uses registered active states and host-local coordination rather than a whole-world scan.
+
+The famine source documentation records the core ledger as implemented while probability, adapter, mapmode, and completion audits remain evidence gates; this guide does not claim gameplay completion beyond the documented source and runtime surfaces.
+
+Detailed famine documentation: `docs/systems/famine_system.md` and `docs/systems/state_map_modes.md`.
+
+### Migration Mechanics
+
+Migration is an independent `migration_*` cohort, route, reception, and settlement system that complements Famine and the Chaos Meter without taking ownership of either system's primary ledger. Its decision category is hidden until genuine starting displacement or a large incident, two distinct incident episodes, or sustained flight, trapped-population, corridor, or reception evidence crosses the centralized threshold, while `migration_state_map_mode` is available from campaign start.
+
+The player-facing migration surface has exactly three values: **Displacement Load**, **Reception Capacity**, and **Border Policy**. Border policies range from humanitarian open and controlled reception through transit-only or quarantine controls to closed, violent, or forced-return handling when those routes are valid.
+
+Movement supports internal displacement, cross-border flight, organized evacuation, deportation, reception and controlled medical reception, transit, local integration, third-country resettlement, and voluntary or forced return. Movement itself is never a death: the exact transfer primitive debits the origin once, records any route deaths inside that same debit, and credits survivors only. Closed borders create trapped people rather than erasing them, while violent pushback or unsafe forced return can create **From forced displacement** deaths through the same transaction.
+
+Migration decisions cover departure, evacuation preparation and priority, corridor negotiation, reception, medical reception, distribution, transit, closure and enforcement, integration, resettlement, and returns. Migration missions cover corridor security, evacuation transport, reception observation, and safe return; famine relief missions remain famine-owned.
+
+Famine and Migration exchange versioned, proof-carrying adapters: famine can request survivor movement and publish destination food-safety projections, while migration can return trapped-population reception demand. Neither system reads the other's primary ledger, and both use sparse registered host or country processing rather than broad world scans. The retired Event 149 **Immigrations** incident package has no replacement event, event pool, log row, pacing logic, or flat population drain.
+
+The migration source documentation records the core ledger as implemented while probability, adapter, mapmode, and completion audits remain evidence gates; this guide does not claim gameplay completion beyond the documented source and runtime surfaces.
+
+Detailed migration documentation: `docs/systems/migration_system.md` and `docs/systems/state_map_modes.md`.
+
+### Camp and Repression Mechanics
+
+Camp and repression is the shared atrocity network linking concentration, extermination, gulag, experiment, and restricted chemical sites to real state population, Deaths, evidence, Condemnation, discovery, and reform. Dormant historical markers remain inert until escalation, while active sites register once in bounded state arrays and process through host-local monthly logic.
+
+The current package contains `84` player actions (`29` major, `43` colonial, and `12` generic), `41` missions, and four Ledger controls. The Repression Ledger is a five-tab interface: **Overview**, **State Pools**, **Active Sites**, **Country System**, and **Discovery & Reform**. Country packages cover Germany, Japan, the Soviet Union, the United Kingdom and Raj, the United States, France and Vichy, Italy, Belgium and the Congo, plus generic routes; fixed packages cannot be bypassed through a generic ideology shortcut.
+
+The generic crisis category only exposes eligible escalation and restricted-site actions and does not build concentration camps by decision. Restricted chemical and biological routes use bounded technology, stockpile, contamination, and capacity tiers, and the system has no protected-class selector. Site harm enters the shared Deaths pipeline and real state population once, while concealment keeps evidence hidden until discovery, inspection, occupation, or another disclosure route makes public Condemnation possible.
+
+Static contracts trace all `15` documented scenarios with `ScenarioContracts=15 Failed=0`; engine-runtime execution, rendered Ledger behavior, timed outcomes, AI behavior, and numeric deltas remain validation gaps recorded by the completion report. Optional authored Ledger animation remains queued and no unapproved fallback is claimed.
+
+Detailed lifecycle documentation: [Camps and Genocide Mechanics](#camps-and-genocide-mechanics), `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md`, and `docs/plans/system_camp_repression_rework_plans/completion_report.md`.
 
 ### Chaos Effects on Timing
 
@@ -749,6 +798,8 @@ What the player does:
 
 The camp and genocide crisis system models state repression, forced labor, extermination sites, gulag networks, experiment-linked atrocity sites, restricted chemical site escalation, evidence destruction, discovery, foreign response, and tribunal pressure.
 
+The current lifecycle contains `84` player actions (`29` major, `43` colonial, and `12` generic), `41` missions, four Ledger controls, and five live Ledger tabs: **Overview**, **State Pools**, **Active Sites**, **Country System**, and **Discovery & Reform**. Country packages cover Germany, Japan, the Soviet Union, the United Kingdom and Raj, the United States, France and Vichy, Italy, Belgium and the Congo, plus generic routes; fixed packages use their own route gates rather than a generic ideology shortcut.
+
 The key rule is separation between hidden internal damage and public condemnation:
 
 - Camp systems reduce real state population through the Chaos Meter Deaths system.
@@ -785,6 +836,8 @@ Country-specific categories handle:
 Restricted chemical site escalation uses existing sarin/soman tech, special-project, stockpile, contamination, Deaths, and discovery systems. It creates hidden evidence and delayed atrocity or cover-up condemnation instead of firing public chemical-use condemnation immediately.
 
 AI weights make fascist Germany, imperial Japan, and communist Soviet Union the primary users under historical or radicalized conditions. A separate AI strategy package adjusts broad behavior for active and exposed crisis regimes.
+
+Static contracts cover all `15` documented scenarios with `ScenarioContracts=15 Failed=0`. The completion report records engine-runtime execution, rendered Ledger behavior, timed outcomes, AI behavior, and numeric deltas as remaining validation gaps; optional authored Ledger animation is queued.
 
 ---
 
@@ -1083,7 +1136,9 @@ Supporting documentation:
 
 ### State Map Modes
 
-Custom map modes expose state-level disease, contamination, repression, and event-owned data. Rebuilds occur after committed transactions rather than during every intermediate mutation.
+Custom map modes expose five scripted state views: shared contamination and disease state, civilian deaths, Air Winter, famine food security, and migration lifecycle and reception pressure. Repression and other event-owned values remain represented through their owning interfaces rather than adding another mapmode registration. The famine and migration map modes are available from campaign start; their values come from state-local ledgers and owner-country projections rather than inferred route scans. Rebuilds occur after committed transactions rather than during every intermediate mutation.
+
+The famine map mode shows the five food-security stages and owner-level relief details, while the migration map mode prioritizes trapped population, active exodus, overcrowded reception, resettlement or return, and ordinary reception and can expose border policy, flight pressure, and reception ledgers to eligible viewers. The mapmode documentation records source and artifact evidence where the installed inspection route cannot provide complete scripted-mapmode runtime evidence.
 
 Supporting documentation: `docs/systems/state_map_modes.md`.
 
