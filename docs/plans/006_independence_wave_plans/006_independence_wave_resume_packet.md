@@ -56,6 +56,8 @@ This completed relocation does not change the no-pre-event invariant, the 32/29/
 
 The committed 2026-08-26 decision-cost localisation clarity pass is current bounded localisation evidence under `subagent_handoffs/006_event6_cost_localisation_clarity_2026-08-26.md` and commit `a4bbc030b`; it confirms no pre-event localisation leak and preserves cost mechanics, dynamic selectors, and the 32/29/40/161 boundary.
 
+The 2026-08-27 formable cost-localisation follow-up is current bounded evidence under `subagent_handoffs/006_event6_formable_commit_cost_loc_clarity_2026-08-27.md` and `subagent_handoffs/006_event6_form08_cost_tooltip_aliases_2026-08-27.md`, with commits `4f6e9689b` and `9adebbe20`; it removes non-consumed war support and duplicate transport charges from the shared formable commitment row and supplies the three missing FORM-08 cost tooltip aliases without changing payment logic or the no-pre-event boundary.
+
 The committed 2026-08-26 IW-024 Banat force-contract prose follow-up is current bounded documentation evidence under `subagent_handoffs/006_iw024_banat_force_contract_prose_followup_2026-08-26.md` and commit `2005d92c6`; it records the p24 `industrial_security` profile, mask `1095`, and five pathway contract without changing roles, admission, or runtime behavior.
 
 This source-layout reconciliation is recorded in `subagent_handoffs/006_event6_docs_source_layout_reconcile_2026-08-26.md`; it supersedes only the startup-path status in earlier documentation cleanup and leaves dated evidence bodies unchanged.
