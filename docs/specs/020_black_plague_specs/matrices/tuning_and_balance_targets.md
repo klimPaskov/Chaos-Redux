@@ -61,7 +61,6 @@ These are design targets, not fixed script constants. Final values should be cen
 | strong but wartime | 270 to 540 days |
 | weak or isolated | 360 to 720 days |
 | no samples | negligible until access route succeeds |
-| Doctor Wu rare bridge | large progress jump, never automatic state cleanup |
 
 ## Emergency burden
 

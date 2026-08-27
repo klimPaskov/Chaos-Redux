@@ -24,7 +24,6 @@ None found.
 
 `GetBlackPlagueCountermeasureStatus` evaluates in country scope and orders mutually meaningful states from most conclusive to least conclusive: completed programme, active programme, laboratory mobilisation, available findings, then the unconditional not-started fallback. Completion clears the active-programme flag in `black_plague_refresh_countermeasure_completion`, so the first branch remains a safe defensive priority.
 
-`GetBlackPlagueInternationalResponseStatus` also evaluates in country scope. It prioritises an active international medical mission, then an alliance exchange, then Doctor Wu access, followed by the unconditional independent-response fallback. The mission and exchange flags are timed and may coexist with Doctor Wu access, so the ordering gives the most active cooperative commitment priority.
 
 The category description calls both functions without an explicit namespace, matching vanilla decision-category scripted-localisation usage such as `[GetRousingProletariatDesc]`. The surrounding category description is country-scoped, so its naked country variables and country-flag triggers resolve against the viewing country. Global deaths use the explicit `global.` namespace.
 
@@ -44,7 +43,6 @@ The dedicated category has no `scripted_gui` field. This matches the requirement
 
 The text does not promise an instant cure. It states that completing the cure programme unlocks cure-capable cleanup and does not remove an active outbreak by itself.
 
-The line label is `International Coordination`, while the explanatory prose explicitly names foreign cooperation and the dynamic statuses distinguish international medical missions, alliance exchange, Doctor Wu access, and an independent response. This is semantically consistent, though the parent may prefer the literal label `International Cooperation` for exact terminology.
 
 ### File encoding concerns
 

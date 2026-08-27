@@ -14,7 +14,6 @@ The dedicated category owns fifteen existing actions without duplicating their I
 
 - Medical Reserve production.
 - Establishing the 0–100 countermeasure/cure programme.
-- Doctor Wu protocol activation and foreign-access requests.
 - Emergency Countermeasure Drive.
 - Publishing, exchanging, hoarding, or stealing findings.
 - International Medical Mission.

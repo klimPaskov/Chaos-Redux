@@ -8,7 +8,6 @@ Date: 2026-08-01
 
 The former absence findings for scoped defeat hooks, defeat metrics, resolver-owned reconstruction `.72`, and slot 087 presentation are superseded by the parent-owned tranche. Evidence is `common/on_actions/020_black_plague_on_actions.txt`, `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, `common/script_constants/020_black_plague_constants.txt`, `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html`, with final art/audio/text provenance in the 2026-08-01 slot-087 handoffs.
 
-The audit remains partial: broader narrative and route depth, generic crisis/Doctor Wu/route art, `.73` audience ownership, workbook/catalog alignment, release attribution, and live consumer validation remain open. The later parent tranche resolved the Crown/Seal native mission API gap. No 3D model work is required by the current boundary.
 
 ## Audit boundary and verdict
 
@@ -56,7 +55,6 @@ This auditor made no gameplay or asset changes; the only auditor-owned write is 
 | RTX focus tree | Playable compact shell, accepted depth missing | The tree has 38 connected focuses and three mutually exclusive government roots. Administration, plague mastery, captured knowledge, human population policy, continental campaign, and route-specific military tradeoffs are missing or compressed. The accepted target is approximately 70 to 100 focuses. |
 | Focus AI | Missing | Neither Event 20 focus tree defines focus-level `ai_will_do`, and no Event 20 focus-factor or AI national-focus plan was found. The current rat AI strategy controls templates and fronts, not route selection or terminal-route preparation. |
 | Rat country package | Partial | Country histories, dormant shell capitals, flags, static portraits, leaders, parties, ideas, locked templates, scripted forces, and rat-only AI templates exist. Natural Evolution III transfers one selected state to RTA at `common/scripted_effects/020_black_plague_rat_effects.txt:558-579`, below the accepted minimum connected basin of three states in `docs/specs/020_black_plague_specs/matrices/tuning_and_balance_targets.md:90-94`. Other missing accepted surfaces include the Fractured Instinct lifecycle spirit, advisors and high command, captured-knowledge and nest-industry progression, a stronger fictional Rat King identity, and the planned animated RTX portrait package. |
-| Two-dimensional event and UI assets | Partial | Current Event 20 art includes static rat portraits, flags, focus and decision icons, one scenario report image, and three super-event images including final slot 087 art. The accepted outbreak, severe-crisis, overseas-jump, first-emergence, and Rat Nation news images are absent. The unique Doctor Wu report image, dedicated weapon-delivery icon, animated RTX portrait, achievement icon triplets, crisis-seal animation, and readiness animation are absent or explicitly queued. |
 | 3D models | Out of scope and not a blocker | The user explicitly removed model production from the completion target. Existing infantry-entity consumers are not treated as an Event 20 completion defect in this audit. |
 | Documentation and catalog | Partial and stale | The live overview has been partly updated for the shared registries, but the spec README, core readiness report, several matrices, follow-up notes, system docs, and the workbook still describe earlier states. |
 
@@ -120,7 +118,6 @@ They remain accepted-plan omissions that prevent whole-spec completion.
 
 | Accepted item | Current disposition |
 | --- | --- |
-| State disease lifecycle, shared board, black base mapmode, cure, relapse, mortality, weaponization, and Doctor Wu bridge | Implemented for the core tranche. |
 | Five evolutions and Event Details evolution rows | Implemented mechanically. Player-facing evolution resolution events remain queued and unimplemented. |
 | Exactly one RTA carrier and one RTX Rat King | Implemented at tag and package level. Grace-period coexistence, internal state-marker consolidation, and a non-adjacent post-grace absorption fallback are implemented in the current working tree; task-specific lifecycle validation remains missing. |
 | Shared Diseases cluster | Implemented in the current working tree as ID 8 and a one-time required Severe Event 20 member. Workbook and older docs are not promoted. |
@@ -194,7 +191,6 @@ Missing accepted visual surfaces include:
 - `news_event_020_black_plague_overseas`
 - `report_event_020_rat_emergence`
 - `news_event_020_rat_nations`
-- a unique Doctor Wu report image
 - a dedicated weapon-delivery icon, because `interface/020_black_plague_weaponization.gfx:6` reuses military-acceleration art
 - a dedicated Royal Node Strike decision icon, because `common/decisions/020_black_plague_shared_response_decisions.txt:559` uses `GFX_decision_generic_army_support`
 - fourteen achievement icon triplets

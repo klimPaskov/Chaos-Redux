@@ -119,7 +119,6 @@ The following empty values appear intentional and should be retained unless thei
 
 Shared event-name localisation contains visible names for later numbered events, and shared debug and settings helpers select those names. Those keys are in scope only as registry destinations. Their standalone event prose, options, mechanics, and private localisation were not reviewed or approved.
 
-The current registered random-event effect contains regular numbered events through Event 98, with special constants for Events 12 through 20 and Doctor Wu or Event 163 handling. Event 100 has a source file but no matching event-name localisation and was not found in that registration surface. Treat it as unregistered or incomplete later-event content until its owner confirms otherwise.
 
 Shared system IDs 635 through 641 and 991 are intentionally retained even though they are greater than 20 because the event log consumes them as nonstandard system records.
 

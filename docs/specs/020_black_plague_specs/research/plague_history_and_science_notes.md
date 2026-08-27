@@ -71,8 +71,6 @@ Design translation:
 
 - masks and protective practice can be part of treatment and personnel safety
 - burial and cremation management can lower disease load and worker risk
-- Event 163 Doctor Wu can be a rare cross-event catalyst
-- the event connection should accelerate countermeasures without erasing local disease immediately
 
 Sources:
 

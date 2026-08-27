@@ -24,12 +24,10 @@ The implementation remains validation-blocked because the mandatory HOI4 MCP eve
 - A locked row displays `N/A` weight and a named `Requires` message.
 - Event Details displays the exact tier-coloured numeric `Chaos lvl:` value.
 - The workbook Events table contains a numeric `Chaos level` column with 98 registered normal-event rows populated.
-- Events 1-8 and 10-20 are level 1, Event 9 is level 2, and registered Event 163 is level 1.
 - The catalog exporter now emits 14 Event columns, including `Chaos level`, and regenerated all three CSV snapshots from the workbook.
 
 ## Meaningful source validation
 
-Targeted assertions confirmed the registry, Event 9 override, active-pool rejection, frozen repeatable recovery, Settings/Event Details/bulk manual gates, cluster-member path through the active-pool evaluator, Events 1-20 catalog assignments, and Event 163 catalog assignment.
 
 The localisation audit found no missing or duplicate feature keys, confirmed selector and parallel-array indices, confirmed the UTF-8 BOM, and retained the user-specified `Totalen Chaos` terminology after parent review.
 

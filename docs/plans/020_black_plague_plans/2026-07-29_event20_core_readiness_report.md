@@ -19,7 +19,6 @@ This report does not claim that the entire original content specification is com
 - Selected-state shared disease decisions with material, military, economic, and time costs.
 - Visible Rat Infestation and 0–100 national countermeasure progress.
 - Black base rendering for authorized established Black Plague states in the existing mapmode.
-- Doctor Wu host bridge.
 - Six-phase weaponization project, eighteen roles, four approaches, accidents, condemnation, and payload integration.
 - Five logged evolutions with dynamic active and pre-fire Event Details entries.
 - Reusable `RTA` Rat Nation and separate `RTX` Rat King packages with identity, AI, forces, decisions, origin archetypes, and focus trees.
@@ -39,9 +38,7 @@ The bounded implementation audits covered focus, country, decision, localisation
 Specific source checks found:
 
 - no unresolved Event 20 `constant:` reference;
-- no duplicate `black_plague_*` or `doctor_wu_*` scripted effect or trigger;
 - no unresolved custom Event 20 GFX reference or missing referenced DDS;
-- matching definitions and callers for the Event 20 root, pulse callbacks, scenario callbacks, Doctor Wu callbacks, and weaponization callbacks;
 - the reusable Rat Nation tag `RTA` and separate Rat King tag `RTX`, with matching country history, OOB, flags, portraits, leaders, AI, ideas, and locked zero-manpower templates;
 - valid focus prerequisites after correcting two impossible mutually exclusive route locks;
 - 52 Rat Nation and 71 Rat King focus nodes with complete title/description coverage, route-aware AI weights, registered regular and shine sprites, and no Event 020-owned missing icon diagnostics; fresh national focus inspections report no Event 020 geometry collisions, while generic vanilla palette diagnostics remain outside this package;
@@ -54,7 +51,6 @@ The HOI4 event inspection completed without a blocking focused diagnostic, but i
 ## Current tranche delta and unresolved surfaces
 
 The RTA hierarchy, RTX crises, Crown Strike, static defeat/aftermath surfaces, native last-response missions, dedicated weapon-delivery icon, source-frame Rat King portrait and Royal Burrows seal packages, Severe/Collapsed crisis seal, Rat King terminal-readiness seal, and three 44.1 kHz Event 020 WAVs are now present as implementation evidence, so the older broad “additional crisis and aftermath events” wording below is superseded.
-The remaining queued work is broader narrative and route-specific decision depth beyond the implemented RTA/RTX trees, dedicated crisis-report/Doctor Wu/aftermath art, rights attribution, model sound-definition wiring, counter review, and focused live validation. The target-continent commitment is now fail-closed at 20 eligible states, two capital targets, and two refuge targets per candidate; after the earned route opens, `black_plague_rat_king_close_the_harbors` and `black_plague_rat_king_silence_the_capitals` provide timed state-targeted operations with Dominion, Brood Mass, division-cap, factory, and time costs, with `.83`/`.84` success and `.85`/`.86` invalidation reports before the 180-day Crown-the-Continent mission. Defeat or King recreation calls `black_plague_rat_king_clear_terminal_target_state`, the idempotent target teardown that clears selection, crown, and report flags, resets target counters and per-state markers, and clears operation cooldowns and active flags. The active `.80-.86` Event 020 map is `.80` target selection, `.81`/`.82` Crown-the-Continent success/break, `.83`/`.84` harbor/capital success, and `.85`/`.86` harbor/capital invalidation. The six hierarchy icons and the organized-rat news strip are promoted; the shared-board crisis seal and final-order decision seal are promoted; the scoped actor hooks, defeat metrics/gate, `.72` coupling, slot-087 package wiring, the 52-node RTA plus 71-node RTX route surfaces, and the Crown/Seal native mission bridges are no longer queued.
 
 Current tranche evidence is `common/on_actions/020_black_plague_on_actions.txt` for the narrow actor hooks; `common/scripted_effects/020_black_plague_rat_effects.txt`, `common/scripted_triggers/020_black_plague_rat_triggers.txt`, and `common/script_constants/020_black_plague_constants.txt` for participant tracking, duration/peak metrics, and the explicit gate; `interface/020_black_plague_super_events.gfx`, `localisation/english/020_black_plague_super_events_l_english.yml`, `sound/chaosx_sound.asset`, and `music/chaosx_music_track_list.html` for slot-087 art/text/audio registration; and the resolver-owned `.72` dispatch in `common/scripted_effects/020_black_plague_rat_effects.txt`.
 
@@ -67,8 +63,6 @@ The following are explicitly outside this core-stabilization commit:
 - deeper route branches, additional accident/court narrative, and any further aftermath expansion;
 - broader route-specific narrative, court-crisis presentation, and aftermath depth beyond the implemented 52-node RTA and 71-node RTX trees and the currently wired continuing decisions;
 - additional source-frame crisis and evolution presentation beyond the promoted Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages;
-- a unique Doctor Wu report image;
-- broader crisis, Doctor Wu, route/hierarchy, and aftermath presentation beyond the promoted source-frame Rat King portrait, Royal Burrows seal, Severe/Collapsed crisis seal, and Rat King terminal-readiness seal packages;
 - state-clipped black fog, pending a verified safe engine rendering method;
 - broader nonessential narrative presentation beyond the promoted defeat-aftermath super-event 87 package.
 

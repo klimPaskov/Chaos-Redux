@@ -67,7 +67,6 @@ The force selector samples directly from the selected array and does not run the
 
 Manual `fire_event_by_id` and the event-details trigger path are availability/trigger operations, not weighted choices.
 
-`common\scripted_effects\chaosx_logic_effects.txt:572-670` is the shared active-pool gate and rejects unmet chaos tiers, disabled entries, fired non-repeatables, and special candidates lacking Fury, Tensions, White Peace, Utopia, Brilliant Scientist, Doctor Wu, Secret Alliance, Cannibalism, Random Faction, Resources, Independence Wave, or Africa context.
 
 The active-pool gate and the event-specific prefire contexts are separate; a positive stored weight does not prove dispatch readiness.
 

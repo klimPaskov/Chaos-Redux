@@ -45,7 +45,6 @@ A completion auditor should mark each item Complete, Partial, Blocked, or Missin
 - [ ] full countermeasure never instantly removes active disease
 - [ ] local cleanup remains required
 - [ ] knowledge sharing, hoarding, aid, and theft have costs and AI
-- [ ] Event 163 bridge accelerates but does not instantly cure
 - [ ] long special project has at least six phases and eighteen iteration roles
 - [ ] project branches and defensive conversion are distinct
 - [ ] stockpile accidents use the shared disease state machine

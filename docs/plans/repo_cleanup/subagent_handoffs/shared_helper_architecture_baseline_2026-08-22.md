@@ -157,7 +157,6 @@ The Event 019 provider dispatch is intentionally dynamic: `common/scripted_effec
 
 The same initializer calls `initialize_event_categories`, `initialize_all_events_array`, `initialize_event_chaos_level_registry`, `initialize_world_end_scenario_registry`, `initialize_default_disabled_events_for_rework_queue`, `count_total_events_plus_one`, `initialize_event_weights`, `calculate_dynamic_major_weight_gain`, `initialize_crisis_rescue_registry`, and `initialize_event_cluster_system`.
 
-`initialize_event_categories` still mixes hardcoded legacy IDs for major, fire-once, and repeatable categories with newer `constant:` IDs for Africa, cannibalism, utopia, brilliant scientist, Doctor Wu, and Black Plague. This is a real ownership inconsistency, but normalizing all IDs requires proving category membership, aliases, and historical saves; defer the broad registry migration.
 
 Event 6 has both `add_namespace = chaosx.nr6` and `add_namespace = chaosx.nr006` in `events/006_independence_wave.txt:5-6`. This alias is a migration hazard and should not be renamed as part of helper cleanup without checking all event, localisation, log, and dynamic references.
 

@@ -91,7 +91,6 @@ The following scripted triggers have exactly one source reference each—their o
 - `black_plague_country_has_treatment_target`
 - `black_plague_country_has_warren_purge_target`
 - `black_plague_country_has_countermeasure_target`
-- `black_plague_country_has_doctor_wu_target`
 
 No meta-effect or scripted-localisation construction of the `black_plague_country_has_*_target` identifier family was found.
 

@@ -28,6 +28,5 @@ spriteType = { name = "GFX_super_event_086_rat_king_takeover" texturefile = "gfx
 
 ## Remaining gaps
 
-- Optional Doctor Wu/weaponization report art was intentionally not generated because the requested required set is complete.
 - Custom Event20 flags, Rat King leader/commander/operative portraits, idea or national-spirit icons, focus icons, and decision icons are not part of this non-icon handoff. If gameplay references any of these, route them to the icon artist or source researcher with explicit asset rows.
 - Main agent must add the sprites to the correct existing/new `.gfx` files and connect event/super-event consumers. No `.gfx` file was edited here.

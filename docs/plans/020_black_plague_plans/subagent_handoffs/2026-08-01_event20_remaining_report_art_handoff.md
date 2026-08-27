@@ -8,7 +8,6 @@ The five final non-model report-card packages are wired into the existing Event 
 - `gfx/event_pictures/020_black_plague/report_event_020_rat_king_crisis.dds`
 - `gfx/event_pictures/020_black_plague/report_event_020_crown_strike.dds`
 - `gfx/event_pictures/020_black_plague/report_event_020_rat_king_aftermath.dds`
-- `gfx/event_pictures/020_black_plague/report_event_020_doctor_wu.dds`
 
 All five are validated 210x176, one-level, uncompressed BGRA DDS report cards with transparent corners.
 
@@ -16,7 +15,6 @@ All five are validated 210x176, one-level, uncompressed BGRA DDS report cards wi
 
 - `interface/020_black_plague_event_pictures.gfx` registers stable sprite names for all five textures.
 - `events/020_black_death.txt` assigns severe, Rat King crisis, Crown Strike, and aftermath cards to their existing Event 020 consumers.
-- `events/163_doctor_wu.txt` assigns the Doctor Wu bridge card to the three visible bridge events.
 
 Source and processed evidence, prompts, contact sheet, and the detailed manifest remain under `docs/assets/020_black_plague/`; that folder is ignored by the repository and is not a gameplay dependency.
 

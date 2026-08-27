@@ -291,7 +291,7 @@ A country can reintroduce the disease after natural eradication through a comple
 
 Event 20 remains registered as a Minor Fire-Once event. It should become enabled by default only after the rework is implemented and audited.
 
-The event belongs to the live **Diseases** cluster with **Severe** member severity. The registry assigns cluster ID `8`, and the cluster initially lists only Event 20 as a confirmed member. Event 41 Disease in Divisions and Event 163 Doctor Wu are related systems, but they remain outside the cluster until their own reworks define compatible cluster behavior.
+The event belongs to the live **Diseases** cluster with **Severe** member severity. The registry assigns cluster ID `8`, and the cluster lists Event 20 as its confirmed member.
 
 The live implementation has resolved the numeric cluster ID as `8`. The catalog and event overview retain this ID as the source for Event 20 cluster references.
 
