@@ -61,6 +61,17 @@ independence_wave_capture_wave_tuning = {
 independence_wave_begin_plan_contribution = {
 	independence_wave_reconcile_breakaway_sponsorship_queue = yes
 	independence_wave_capture_wave_tuning = yes
+	# Build a stable country-scope registry before any package readiness trigger
+	# or publisher runs. `every_possible_country` includes absent carriers, so
+	# the allocator can resolve both startup shells and not-yet-created tags
+	# through the same array-backed scope path used by Event 005.
+	clear_array = global.independence_wave_plan_possible_countries
+	every_possible_country = {
+		add_to_array = {
+			array = global.independence_wave_plan_possible_countries
+			value = THIS
+		}
+	}
 	set_temp_variable = { independence_wave_reservation_phase = constant:independence_wave_reservation_phase.anchors }
 	set_variable = { global.independence_wave_plan_selected_count = constant:independence_wave_planner.no_candidates }
 	set_variable = { global.independence_wave_plan_attempt_count = constant:independence_wave_planner.no_candidates }
@@ -1020,5 +1031,6 @@ independence_wave_clear_plan_contribution = {
 	clear_array = global.independence_wave_plan_sponsorship_generations
 	clear_array = global.independence_wave_plan_sponsorship_opening_strengths
 	clear_array = global.independence_wave_plan_sponsorship_routes
+	clear_array = global.independence_wave_plan_possible_countries
 	independence_wave_clear_frozen_evolution_plan_state = yes
 }
