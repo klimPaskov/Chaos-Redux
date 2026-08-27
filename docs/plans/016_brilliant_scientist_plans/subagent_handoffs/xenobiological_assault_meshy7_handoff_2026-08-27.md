@@ -251,3 +251,75 @@ These are proposals only. No runtime copies were synchronized. Selected-source-t
 7. Parent wires entity, `.asset`, `.gfx`, sounds, counters, live consumer, and runtime copies, then the user performs in-game validation.
 
 No fallback or simplification was promoted. The package is **blocked**, not fallback-complete.
+
+## Recovery audit addendum — 2026-08-27
+
+This addendum records the bounded existing-mesh recovery audit requested after the finishing pass above. No ImageGen, image-to-3D, new base model, local skeleton authoring, local weighting, local action authoring, transform-only motion, semantic action alias, gameplay wiring, entity wiring, GFX wiring, or sound-definition wiring was performed.
+
+### Files created or refreshed by this recovery audit
+
+- Refreshed dependency evidence: `.tools/3d_pipeline/reports/environment_report.json`, 20,372 bytes, SHA-256 `8AB8A91BED9AD3AAC98170CA684278D70CAB6F5E87C28164244BBE6EE5E94724` at the time of this audit. This shared generated report is not a runtime asset.
+- Blender adapter health request: `logs/adapter/1c923a29cfdf4b44ba0d953714814013.json`, SHA-256 `802F622FE3AD1FF156DE0C2D07EC29F389AD9B865533757E20E5A1ABAAB21EC1`; result `logs/adapter/1c923a29cfdf4b44ba0d953714814013.result.json`, SHA-256 `BC1D091E20047ED1ECC5E37BC7407E0806F5ADFE54E41B4672FA7D552E0FE072`.
+- Accepted static-checkpoint inspection request: `logs/adapter/5d00ac5f6d4c4d69aab56562d5f393fc.json`, SHA-256 `C6BB21C9CBD850E9DDFCC209899A805C75023B65829B5C724022AF64EFE6D318`; result `logs/adapter/5d00ac5f6d4c4d69aab56562d5f393fc.result.json`, SHA-256 `E1C081BA7AAF3130FFFC1AEF1FD2D20D614C3393BF1F6A512D63DFAEB7756489`.
+- Rejected-rig inspection request: `logs/adapter/d586a0cddf00485cbb13973237751e17.json`, SHA-256 `DC0F843E6799FC63702B4A22700DE47C6BD12FBD9783E2FBDD7B22749AED1A47`; result `logs/adapter/d586a0cddf00485cbb13973237751e17.result.json`, SHA-256 `F7DE371B0AF946262DD471AE1FD2C0BC2FDCC65634AF7C9759BE7B13F1DFF47E`.
+- This dated handoff was updated. No existing model, texture, audio, counter, checkpoint, provider download, job, manifest, runtime handoff, gameplay file, or runtime file was changed.
+
+### Current dependency and route evidence
+
+- `MESHY_API_KEY` hard gate passed without exposing or persisting the secret.
+- Repository verifier `python -B .tools/3d_pipeline/verify_environment.py --probe-meshy` returned zero findings at `2026-08-27T13:07:26Z`.
+- Current live Meshy balance: **13 credits**. The parent explicitly directed that no paid call be made, and none was made.
+- Official Meshy route: `@meshy-ai/meshy-mcp-server` 0.4.0, git head `d8c77d1cb897e345eb41d38b510b8391b1664346`, compatibility revision `meshy-7-v5`, schema revision `meshy-7-compat-live-declaration-2026-08-21`.
+- The verified exact image model remains `meshy-7`. No alias was used.
+- Locked production tools remain `meshy_check_balance`, `meshy_image_to_3d`, `meshy_get_task_status`, `meshy_download_model`, `meshy_remesh`, `meshy_rig`, `meshy_convert`, and `meshy_animate`.
+- Live `meshy_rig` accepts only `input_task_id` or `model_url` as the source selector. The package preserves neither a provider task ID nor an official provider model URL for the accepted geometry. A local GLB/FBX path is not an accepted rig input.
+- Live `meshy_animate` requires an accepted `rig_task_id` and integer `action_id`. The package has no accepted rig task ID.
+- Blender bridge `127.0.0.1:9876` was listening independently of process-presence checks.
+- Blender adapter health verified Blender 5.1.2, adapter `chaosx_blender_hoi4` 1.10.14, io_pdx_mesh 0.91.0, and both locked export functions.
+- Dependency lock SHA-256: `C27768297FB7AD5ACC9C555E7C83DC77856908E2C628BF16D9A420095C64266A`; Meshy schema lock SHA-256: `E45FE80F3B8AC49A365EA2D4221E82E969AE55279639F817BB6FA75407D1C233`; adapter config SHA-256: `4BC97CA0B07580F5AA04B49E7B9FBD1C07EC88DF5C4D56CD3BA8846E630117AB`.
+
+### Exact rig incompatibility evidence
+
+The accepted static checkpoint remains a clean, visually verified six-limb organism: two digitigrade legs, two ordinary grasping arms, and two elevated crab-claw appendages, plus two antennae. The fresh adapter inspection of `blender/checkpoints/03_unrigged_geometry_material_candidate.blend` reconfirmed one 30,000-triangle working mesh, 14,994 vertices, no boundary/non-manifold/degenerate geometry, no armature, and no actions.
+
+The fresh adapter inspection of `blender/source/chaosx_xenobiological_assault_rig_review_provider_source.blend` reconfirmed a standard 24-bone humanoid armature. Its bone list contains hips, a bilateral leg set, one bilateral arm set, spine, neck, head, and head-front/end bones. It contains no independent bones for either antenna and no second bilateral arm chain for the elevated crab-claw appendages. Therefore it cannot preserve or articulate the required six-limb anatomy.
+
+The rig candidate also retains an unparented `Icosphere` and a copied `Icosphere.001`; the visible working sphere has 42 zero-weight vertices. The provider character mesh itself reports normalized one-to-four-bone influences and no zero-weight vertices, but those numerical weight facts do not rescue the anatomically incomplete bone map. Its two recorded actions cover only frames 7 and 8 at 24 FPS, both with identical evaluated bounds. They provide no substantive motion and cannot satisfy any semantic role.
+
+This is a provider-rig failure, not authorization for local recovery. The parent explicitly forbade manual skeleton authoring, weighting, and animation, and the package remains fail-closed.
+
+### Required action disposition
+
+| Requested role | Provider evidence | Disposition |
+|---|---|---|
+| idle | proposed library ID 0 only; no accepted rig task/action artifact | `blocked` |
+| crawl/walk | proposed ID 112 only; the locked schema does not verify 112 and no action artifact exists | `blocked` |
+| attack | proposed library ID 4 only; no accepted rig task/action artifact or strike/recovery evidence | `blocked` |
+| defend | proposed ID 138 only; unverified by the lock and no action artifact exists | `blocked` |
+| support attack/leap | leap proposal 86 only; unverified by the lock and no crouch/launch/airborne/landing evidence exists | `blocked` |
+| retreat | absent from the existing job and provider evidence | `blocked` |
+| wounded | proposed ID 178 only; unverified by the lock and no recoil/withdrawal evidence exists | `blocked` |
+| articulated death | proposed ID 184 only; unverified by the lock and no collapse/impact/settling evidence exists | `blocked` |
+| ranged/chemical attack | existing anatomy shows no verified discharge organ, locator, or provider discharge action | `not_applicable`; omitted rather than invented |
+
+The job currently proposes one ID, 112, for both crawl and move. Even if that ID were later verified, one action may not be semantically aliased to both roles without distinct provider evidence. The current schema lock verifies only library IDs 0 (`idle`), 4 (`attack`), and 8 (`death`); all other numeric proposals remain unverified suggestions.
+
+At the current 13-credit balance, even a technically valid rig source would not cover the complete requested tranche: rigging is estimated at 5 credits and each required custom action at 3 credits, while the full non-aliased set exceeds the remaining balance. This budget fact is secondary to the harder missing-input and anatomy-capability blockers, and no paid attempt was made.
+
+### Audio verification
+
+The four immutable originals and four mechanical derivatives were rehashed and match `audio/source/provenance.md` and `audio/handoff.md`. Fresh `ffprobe` receipts reconfirm every derived WAV as `pcm_s16le`, 44.1 kHz, mono, 16-bit: ambient 33.097143 s, contact thud 0.391837 s, hiss 11.328005 s, and joint crack 6.793288 s. The source pages, direct-download URLs, creators, CC0/public-domain terms, allowed transformations, original hashes, and derived hashes remain recorded.
+
+Audio remains `needs_user_review` for source suitability and `blocked` for exact synchronization. There is no accepted provider action from which to derive foot-contact, strike, landing, wounded, or death-impact frames. Per-subunit selection is also blocked because the verified infantry voice consumer is tag/original-tag scoped, not isolated to `kruger_xenobiological_assault`.
+
+### Counter verification
+
+The exact installed definitions in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/interface/subuniticons.gfx` were rechecked. Cavalry and infantry large/map sprites each declare `noOfFrames = 2`. Fresh DDS-header inspection reconfirmed the cavalry and infantry large files as valid `DDS ` files with 124-byte DDS headers and 152x42 canvases, and the map files as 60x12 canvases. Their SHA-256 values match `counter/handoff.md`.
+
+The current consumer still declares `sprite = infantry` and `map_icon_category = armored`. The matching skill-local large and map contact sheets were visually reviewed. No bespoke `chaosx_icon_artist` source PNG, processed PNG, DDS round-trip, contact sheet, or parent review exists, so both required xenobiological counter surfaces remain `blocked`. No vanilla counter, recolor, renamed file, primitive drawing, or arbitrary-green substitute was created.
+
+### Export, synchronization, and completion state
+
+No `.mesh` or `.anim` export was attempted because there is no accepted anatomy-compatible rig or verified provider action. No action can be retargeted, cleaned, grounded, baked, exported, or reimported without violating the provider-motion gate. Final PDX diffuse/normal/packed-specular DDS files also remain absent. No runtime source was synchronized, so source-to-runtime hashes and synchronization status remain `not_applicable`.
+
+Final recovery status: **blocked**. Every required skeletal role is explicitly blocked except ranged/chemical attack, which is not applicable to the observed anatomy and was correctly omitted. Sourced audio evidence exists but cannot be frame-synchronized, and bespoke vanilla-green counters remain absent. No fallback or simplification was used.

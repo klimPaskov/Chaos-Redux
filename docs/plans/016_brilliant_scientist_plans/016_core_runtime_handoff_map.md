@@ -2,6 +2,10 @@
 
 Date: 2026-08-27
 
+## Existing-mesh animation recovery supersession, 2026-08-27
+
+The context-free 3D recovery tranche is recorded in `subagent_handoffs/2026-08-27_existing_mesh_animation_recovery_owner_report.md` and is the current package status. No new models were generated. Clone Infantry, Autonomous Robot, and Alien Infantry retain existing provider meshes and real actions, but incomplete firearm locator/effect or deformation gates prevent complete runtime promotion; Alien's unsupported training and wounded aliases were removed. Portal Raider, Paleogenetic Creature, Xenobiological Assault Organism, and Temporal Guard remain blocked or unwired for the exact reasons recorded in their dated handoffs. Live in-game validation was intentionally skipped at the user's request.
+
 ## Portal Raider Meshy 7 recovery update, 2026-08-27
 
 The user-approved recovery was executed and fail-closed. The source-informed model, rig, nine genuine provider-authored actions, audio provenance, and counter evidence are preserved in `docs/assets/chaos_redux_3d_model_pilots/models_3d/portal_raider` and the dated handoff `subagent_handoffs/portal_raider_meshy7_handoff_2026-08-27.md`. Every permitted automatic retarget route distorted the firearm-bearing pack during firing, so no runtime Portal Raider entity, actions, or sounds are promoted.

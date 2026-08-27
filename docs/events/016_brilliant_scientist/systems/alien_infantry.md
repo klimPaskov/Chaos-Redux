@@ -2,6 +2,8 @@
 
 `alien_infantry` is a shared land-unit database entry rather than a Kruger-owned or D’Rhondan-owned duplicate. Event 016, Event 019 provider 508, D’Rhondan contact, and future event packages consume the same subunit, equipment, technology, tactic, counter, entity, and sound identifiers through the source-counted contact API.
 
+The unit is spawn-only (`active = no`) and has no training or wounded animation state. Those states are not requested by the landing API and must not be represented by an idle/defend alias. The runtime entity therefore registers only the seven provider-authored actions that exist in the package: idle, move, laser attack, defend, support attack, retreat, and death.
+
 ## Unit and equipment contract
 
 Each battalion has two combat width, zero human manpower, 40 HP, 90 organisation, 0.75 recovery, 10 reconnaissance, 0.50 initiative, five suppression, and 0.04 supply consumption. It requires exactly 200 `alien_laser_weapon_equipment` and no Infantry Equipment, Support Equipment, or other ordinary equipment. The subunit has `active = no`, so a technology unlock does not expose it as a freely selectable division-designer battalion.
@@ -36,9 +38,9 @@ Both tactics are inactive until the predictive-warfare technology unlocks them, 
 
 ## Visual, model, and sound contract
 
-The source declarations use stable final paths. Static binary art is installed, and the accepted Alien Infantry V13 package is the current 3D source of truth for parent integration. Its immutable package record is `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, and the parent-facing handoff is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/alien_infantry_v13_firearm_preset_handoff_2026-08-26.md`. Historical Quaternius, V10, and V11 records remain preserved but do not control the V13 package.
+The source declarations use stable final paths. Static binary art and the seven provider-authored action files are installed, but the V13 package is not runtime-complete: the provider rig has no supported muzzle/effect locator, and the current recovery audit cannot certify positional particle/light playback or the complete sound-role contract. Its immutable package record is `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/attempts/v13_firearm_preset/final_manifest.md`, and the latest parent-facing recovery handoff is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-08-27_alien_infantry_v13_recovery_audit_handoff.md`. Historical Quaternius, V10, and V11 records remain preserved but do not control the V13 package.
 
-### Accepted V13 Meshy package
+### V13 Meshy package (static/action evidence; runtime gates open)
 
 - Approved Meshy input: `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/refs/original/meshy_input_v13_tpose_right_pointing_colored.png`, SHA-256 `2D72EEB020C8989B463F214D4B5FC1C29C4AB313AEEE9F033B71E6DE1881BF3A`.
 - The accepted Meshy 7 rig task is `01a03dcf-f0ba-7b67-b769-5a2678b03a40`, with 24 bones and a final 59,999-triangle mesh.
@@ -66,7 +68,7 @@ Every V13 action is a distinct Meshy preset action exported through io_pdx_mesh 
 - KRG laser-batch decision icon: `gfx/interface/decisions/016_brilliant_scientist/decisions/decision_alien_laser_batch.dds`, registered as `GFX_decision_brilliant_scientist_krg_alien_laser_batch` in `interface/016_brilliant_scientist_kruger_state_decisions.gfx`.
 - Sourced laser-fire, movement, idle, and death WAV files and their sound definitions are installed under `sound/shared_alien_system/alien_infantry/` and `sound/alien_infantry_sound.asset`.
 - Reusable `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` definitions are installed under `gfx/particles/alien_infantry/` and `gfx/entities/`.
-- Commit `0e724fb8a` promoted the V13 mesh, seven animations, entity/GFX/animation registrations, and four state sound references into the engine-facing runtime tree. The provider evidence remains under `docs/assets/`, no runtime consumer points into that evidence tree, and live in-game integration is not claimed.
+- Commit `0e724fb8a` promoted the V13 mesh, seven animations, entity/GFX/animation registrations, and four state sound references into the engine-facing runtime tree. The provider evidence remains under `docs/assets/`, no runtime consumer points into that evidence tree, and live in-game integration is not claimed. The current runtime entity deliberately omits unsupported training and wounded aliases; it must not be treated as a complete package until a supported locator/effect path and remaining audio gates are resolved.
 - The locked adapter exposes no supported muzzle-locator authoring operation, and the Meshy rig has no muzzle bone. The fused cyan muzzle cap is visual evidence only, so `alien_laser_muzzle_particle` and `alien_laser_muzzle_flash` remain registered but unbound; attack/support firing sound references are statically present, while positional playback and live acceptance remain unresolved.
 - Sourced audio currently covers laser discharge, movement, idle, and death. Per-subunit selection or acknowledgement remains blocked by tag-wide vanilla consumers, and no defensible sourced candidates were accepted for distinct impact or special-action roles; no synthesized or placeholder audio is accepted. The current timing crosswalk is recorded in `docs/assets/016_brilliant_scientist/models_3d/alien_infantry/runtime/sound_handoff.md` and does not replace live consumer evidence.
 
