@@ -6,7 +6,7 @@ All GUI labels in this file are working labels and implementation ids, not final
 
 ## Live implementation reconciliation, 2026-07-11
 
-The optional/deferred wording below records the original implementation plan. The full `repression_ledger_window` is live with Overview, State Pools, Active Sites, Country System, and Discovery & Reform tabs. The header displays `[ROOT.GetName]: [GetCampCountryPanelName]` plus phase and discovery state; all 32 Ledger country action slots use their native decision cooldown gates. All 24 ImageGen-derived static sprites have live consumers, including scripted visibility for evidence and reform seals. The maintained static presentation is not a fallback or simple-shape substitute. Only authored frame animation remains optional and queued.
+The full `repression_ledger_window` is live with Summary, Territories, Sites, Authority, and Records tabs. The tabs form one horizontal rail beneath a restrained status sentence; the content below uses four summary cards or a bounded two-column card grid. The category attachment uses a dedicated 52x40 decision-category medallion and two short, country-scoped lines rather than telemetry. All 32 Ledger country action slots continue to use their native decision cooldown gates. Authored frame animation remains optional and queued.
 
 ## Presentation principle
 
@@ -65,21 +65,14 @@ Recommended size target: close to the existing Chaos Redux movable window scale 
 
 ```text
 +--------------------------------------------------------------------------------+
-| Header: country name, current phase, close button                               |
-|--------------------------------------------------------------------------------|
-| Summary strip                                                                   |
-| Reach | Active sites | Labor output | Population loss pressure | Evidence risk  |
-| Stability drag | Resistance pressure | Guard burden | Rail burden | Reform       |
-|--------------------------------------------------------------------------------|
-| Left column: tabs and state pools          | Right panel: selected tab content   |
-|                                            |                                      |
-| [Overview]                                 | Overview cards                       |
-| [State Pools]                              | Active site list or pool list         |
-| [Active Sites]                             | Selected state card                   |
-| [Country System]                           | Country-specific values               |
-| [Discovery and Reform]                     | Discovery, tribunal, reform actions   |
-|--------------------------------------------------------------------------------|
-| Bottom action bar: expand, allocate guards, reduce quotas, dismantle, inspect   |
+| Country administration                                           Current phase |
+| One short sentence: operating sites, civilian losses, strain, surviving records |
+| [Summary] [Territories] [Sites] [Authority] [Records]                           |
+|                                                                                |
+| Two-column framed cards or one centered country-administration dossier          |
+|                                                                                |
+| Selected territory or site                                                     |
+| Contextual orders                                                              |
 +--------------------------------------------------------------------------------+
 ```
 
@@ -95,16 +88,16 @@ Cards:
 
 | Card id | Displayed values | Tooltip breakdown |
 | --- | --- | --- |
-| `repression_ledger_reach_card` | Network reach, active site count, phase | Sites by type, country-specific routes, dormant markers excluded |
-| `repression_ledger_output_card` | Labor output, construction pressure, resource pressure | Output by selected allocation, state pool, overextension penalty |
-| `repression_ledger_damage_card` | Monthly population loss pressure, stability drag, resistance pressure | Deaths-tab reason, state modifiers, radicalized or contaminated evidence flags |
-| `repression_ledger_burden_card` | Guard burden, rail burden, convoy burden, supply strain | Manpower, infantry equipment, support equipment, trains, trucks, convoys |
-| `repression_ledger_evidence_card` | Evidence risk band, discovery status, tribunal severity band | Evidence from sites, destroyed evidence, failed cover-up, liberated evidence |
-| `repression_ledger_reform_card` | Reform pressure, dismantlement progress, active review missions | Court review, postwar inquiry, colonial inspection, local administration route |
+| `repression_ledger_reach_card` | Operating site count and available territories | Sites by type and dormant markers excluded |
+| `repression_ledger_output_card` | Forced-labor contribution and administrative strain | Guard, transport, supply, allocation, and overextension breakdown |
+| `repression_ledger_damage_card` | Civilian-loss and resistance bands | Deaths-tab reason, state modifiers, radicalized or contaminated evidence flags |
+| `repression_ledger_evidence_card` | Surviving-record and closure-pressure bands | Records, failed concealment, liberated sites, inspections, redress, and dismantlement |
 
 ### State Pools tab
 
-Purpose: tell the player where actions will draw from without exposing protected-class target logic.
+Purpose: show the bounded territories where the administration can establish or extend detention without exposing protected-class target logic.
+
+The live surface uses six visibly framed cards in two columns and three rows. Each card carries only the state name; controller, responsibility, eligibility, and burden remain in its tooltip. Invisible full-width debug rows are forbidden.
 
 Columns:
 
@@ -134,6 +127,8 @@ Core fallback should display a severe warning band. The tooltip should explain t
 ### Active Sites tab
 
 Purpose: manage existing active states.
+
+The live surface uses the same six-card grid as Territories, with state details and evidence in tooltips. This keeps selection targets legible and prevents long status strings from bleeding across the window.
 
 Columns:
 
@@ -316,19 +311,12 @@ The category header must remain useful even without custom GUI.
 Required header structure:
 
 ```text
-Current phase: [GetCampNetworkPhaseName]
-Network reach: [?display_camp_network_reach]
-Active sites: [?display_camp_active_site_count]
-Labor output: [GetCampLaborOutputDisplay]
-Population loss pressure: [GetCampPopulationLossPressureName]
-Stability drag: [GetCampStabilityDragDisplay]
-Resistance pressure: [GetCampResistancePressureName]
-Evidence risk: [GetCampEvidenceBandName]
-Guard and transport burden: [GetCampBurdenSummary]
-Reform pressure: [GetCampReformPressureName]
+[GetCampCountryPanelName]
+[?display_camp_active_site_count] sites remain under state authority.
+Civilian losses are [GetCampPopulationLossPressureName]; surviving records are [GetCampEvidenceBandName].
 ```
 
-For countries with no active network but with reform or dormant route, replace output and damage lines with dormant or reform summaries. Do not show zero-heavy debug lines to ordinary players.
+For countries with no active administration but with a reform or dormant route, replace the active sentence with a country-scoped dormant or reform summary. Do not show separator bars, zero-heavy telemetry, developer explanations, or another country's institutions.
 
 ## State selection and target-management pattern
 
@@ -371,7 +359,7 @@ Static presentation is acceptable for the first implementation if the GUI still 
 
 | Asset id | Type | Size direction | Use |
 | --- | --- | --- | --- |
-| `GFX_decision_category_repression_ledger` | decision category icon | follow existing decision category pattern | category entry |
+| `GFX_decision_category_repair_repression_ledger` | decision category icon | dedicated 52x40 category-scale sprite | category entry |
 | `GFX_decision_open_repression_ledger` | decision icon | 32x32 | open GUI button |
 | `GFX_repression_ledger_window_bg` | UI panel | match existing Chaos Redux window scale | main GUI background |
 | `GFX_repression_ledger_tab_overview` | UI icon | compact tab icon | overview tab |
@@ -440,10 +428,12 @@ If debug UI is added, gate it behind existing debug setting or a development-onl
 
 ## Acceptance criteria for UI
 
-- Category header shows current values without requiring the custom GUI.
+- Category header identifies the responsible country administration and shows the human consequence without requiring the custom GUI.
 - Custom GUI, if implemented, opens only on player action.
 - Average player with no active route sees no category clutter.
-- Values are visible as consequence and management pressure, not as optimization curves.
+- Values are visible as consequences and recognizable conditions, not implementation telemetry or optimization curves.
+- Tabs remain on one horizontal rail and every selectable list entry has a visible card boundary.
+- Ordinary text remains inside its fixed box at long-text and minimum-resolution review states.
 - State list is bounded and does not show every world state.
 - Buttons have AI equivalents or decision equivalents.
 - Tooltips explain missing costs and blocked conditions.
