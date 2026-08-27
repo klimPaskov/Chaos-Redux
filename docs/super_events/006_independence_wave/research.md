@@ -80,9 +80,15 @@ The preserved source, exact interval, fades, loudness measurements, and wrapper 
 
 The accepted 1949 London Brass Players recording for **The League of New States** has no verified permission or waiver covering United States redistribution. No substitute is authorized. Audio ID 23, its sound wrappers, and firing therefore remain absent from runtime until the exact recording is cleared or the user approves a newly researched replacement; image and text dispatch for display slot 23 is registered.
 
-### 2026-08-06 pending replacement research
+### 2026-08-06 pending replacement research (superseded by 2026-08-27 rights re-verification)
 
-The accepted audio-23 recording remains blocked and absent from runtime. The current bounded research pass documents *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as a possible CC BY-SA 4.0 replacement, with preserved source and audition derivatives under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_v116_2026_08_06.md`. Worldwide redistribution is supported by the recorded Ministry of Defence permission basis, but attribution/ShareAlike integration, human audition, and explicit selection approval remain open. No runtime sound definition, wrapper, catalogue row, or firing dispatch was created, and this candidate is not an implicit fallback.
+The accepted audio-23 recording remains blocked and absent from runtime. The dated bounded research pass documents *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as a possible CC BY-SA 4.0 replacement, with preserved source and audition derivatives under `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_v116_2026_08_06.md`. Worldwide redistribution is supported by the recorded Ministry of Defence permission basis, but attribution/ShareAlike integration, human audition, and explicit selection approval remain open. No runtime sound definition, wrapper, catalogue row, or firing dispatch was created, and this candidate is not an implicit fallback.
+
+### 2026-08-27 rights re-verification
+
+The accepted London Brass Players recording remains blocked because its exact 1948 recording, first released in 1949, has no verified United States/worldwide redistribution permission or rights-holder waiver. The re-verification retains audio ID 23, its runtime WAV, sound wrappers, catalogue row, and firing assignment as absent.
+
+The same pass records *The Enola Foam March* and *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as research candidates only. Neither candidate is selected, promoted, copied to the runtime sound folder, or wired to the super-event; parent/user selection, human audition, attribution/ShareAlike treatment, and the Dutch official-source URL caveat remain open. Current evidence is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_rights_reverification_2026-08-27.md`.
 
 ## Primary implementation surfaces
 
