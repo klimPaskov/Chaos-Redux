@@ -64,6 +64,8 @@ The committed 2026-08-26 decision-cost localisation clarity pass is current boun
 
 The 2026-08-27 formable cost-localisation follow-up is current bounded evidence under `subagent_handoffs/006_event6_formable_commit_cost_loc_clarity_2026-08-27.md` and `subagent_handoffs/006_event6_form08_cost_tooltip_aliases_2026-08-27.md`, with commits `4f6e9689b` and `9adebbe20`; it removes non-consumed war support and duplicate transport charges from the shared formable commitment row and supplies the three missing FORM-08 cost tooltip aliases without changing payment logic or the no-pre-event boundary.
 
+The 2026-08-27 Event 006 localisation audit is committed as `075309ee4` with handoff `subagent_handoffs/006_event6_localisation_audit_2026-08-27.md`; it adds the missing FER administration-standard tooltip and blocked cost rows, bringing all 690 active custom-cost consumers to complete normal/tooltip/blocked coverage across 190 keys. The audit also confirms no active pre-event category, mission, cost, queue, callback, or history writer and leaves the dense Iceland and Wallonia/Frisia prose surfaces queued for owner-side presentation review.
+
 The committed 2026-08-26 IW-024 Banat force-contract prose follow-up is current bounded documentation evidence under `subagent_handoffs/006_iw024_banat_force_contract_prose_followup_2026-08-26.md` and commit `2005d92c6`; it records the p24 `industrial_security` profile, mask `1095`, and five pathway contract without changing roles, admission, or runtime behavior.
 
 This source-layout reconciliation is recorded in `subagent_handoffs/006_event6_docs_source_layout_reconcile_2026-08-26.md`; it supersedes only the startup-path status in earlier documentation cleanup and leaves dated evidence bodies unchanged.
