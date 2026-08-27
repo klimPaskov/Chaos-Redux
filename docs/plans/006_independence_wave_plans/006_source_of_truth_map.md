@@ -6,6 +6,10 @@ The current path authority for the 2026-08-26 small-file merge is `interface/006
 
 The whole-event disposition remains **HOLD / PARTIAL**.
 
+### IW-095 anchor rebinding clarification (2026-08-27)
+
+The accepted IW-095 research matrices retain public 763-state baseline identifiers `556` (candidate registry and package-research resolution) and `556 | 558` (state-anchor research) as research references only. The installed-map binding and runtime publisher/trigger authority explicitly rebind Dahomey to current state `776` (`776=FRA` before release) in `package_bindings/006_current_installed_map_package_bindings.csv`, and the binding audit identifies baseline state `556` as Bamako rather than Dahomey. Runtime code must therefore use state `776`; `556` must not be used as an execution anchor. This rebinding does not admit IW-095, widen its reservation group, or alter any readiness gate. Evidence and ownership boundaries are recorded in `subagent_handoffs/006_iw095_anchor_rebinding_reconciliation_2026-08-27.md`.
+
 ### Latest 2026-08-26 evidence refresh
 
 The startup registry is the committed current source at `history/general/006_independence_wave_character_recruitment_registry.txt`; commit `5895d0b69` records 25 guarded country blocks and 54 `recruit_character` calls, with IW-057 FER intentionally absent while its rights gate remains open.
