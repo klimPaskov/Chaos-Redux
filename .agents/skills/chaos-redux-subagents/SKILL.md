@@ -60,7 +60,7 @@ Use `chaosx_focus_tree_auditor` for focus tree audits and active small patches c
 
 Use `chaosx_decision_mission_auditor` for decision and mission audits and active small patches covering category lifecycle, objective quality, costs, tooltips, scripted GUI decision hooks, AI behavior, cleanup, balance, and exploit risk.
 
-Use `chaosx_event_ui_worker` to create or improve the dedicated scripted GUI window that one named Chaos Redux event or event-owned mechanic specifically adds. It uses the mandatory HOI4 MCP GUI inspect, render, rewrite, and post-change comparison workflow, then applies the full layout contract from `chaos-redux-decisions-missions`. It must never audit the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing interfaces.
+Use `chaosx_event_ui_worker` to create or improve the dedicated scripted GUI window that one named Chaos Redux event or event-owned mechanic specifically adds. It uses the mandatory HOI4 MCP GUI inspect, render, rewrite, and post-change comparison workflow, treats the production render as the one-to-one in-game visual view, and fixes every defect visible there under the full layout contract from `chaos-redux-decisions-missions`. It must never audit the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing interfaces.
 
 Use `chaosx_country_package_auditor` for country package audits and active small patches covering tags, custom-tag history, generated startup scientists, existing-country startup grants, states, leaders, portraits, flags, parties, focus loading, ideas, advisors, units, technologies, claims, cores, localisation, AI, formables, and playable setup.
 
@@ -86,7 +86,7 @@ The worker is patch-capable for the accepted event-owned `.gui`, presentation-on
 
 Do not route a GUI merely because an event appears in or opens it. The shared event log, event-details framework, settings UI, super-event framework, shared registries, utility/debug windows, and unrelated existing UIs remain out of scope. The prompt must identify the exact source or accepted specification proving event ownership.
 
-Mandatory evidence includes `hoi4.gui_inspect`, pre-change `hoi4.gui_render` full-window and relevant cropped, annotated, state, resolution, hierarchy, click-region, and comparison views, an in-scope `hoi4.gui_rewrite`, then post-change inspect/render comparison over the same relevant states and resolutions. Missing MCP routes block the work; source-only review is not equivalent.
+Mandatory evidence includes `hoi4.gui_inspect`, pre-change `hoi4.gui_render` full-window and relevant cropped, annotated, state, resolution, hierarchy, click-region, and comparison views, an in-scope `hoi4.gui_rewrite`, then post-change inspect/render comparison over the same relevant states and resolutions. The production renders are the one-to-one in-game visual review surface, so visible alignment, spacing, clipping, overflow, background, asset, text, state, and click-region defects block completion and may not be excused as renderer differences. Missing MCP routes block the work; source-only review is not equivalent.
 
 ## Repo explorer use gate
 
