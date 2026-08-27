@@ -1,5 +1,7 @@
 # Event 016 existing-mesh animation recovery owner report — 2026-08-27
 
+> Historical pre-manual-recovery report: the 2026-08-27 manual candidate handoff at `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-08-27_manual_existing_mesh_rig_recovery_final.md` supersedes this report's package-wide statements that no manual candidate or manual recovery existed, only for the dated local candidates and adapter evidence listed there. Provider rejection findings, runtime ownership boundaries, skipped live validation, and the blocked disposition remain retained below.
+
 ## Scope and disposition
 
 This tranche reused the existing Event 016 meshes only. No new base model, ImageGen reference, image-to-3D task, local rig, manual weapon attachment, manual weighting, transform-only motion, or simple semantic animation fallback was created. The user instructed that live in-game validation is out of scope for this pass; structural, provider, Blender, export/reimport, audio, and counter evidence was still reviewed where available.
