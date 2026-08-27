@@ -726,6 +726,14 @@ A category picture must remain presentation. Do not draw fake buttons, meters, v
 
 Use a full scripted GUI only when the player must manage a living system that cannot be read cleanly from ordinary decisions, category text, tooltips, and a category picture. Valid reasons include several interacting values, target selection, repeated map interaction, competing factions, a state-by-state formable display, or a persistent board whose state changes often.
 
+### Player-facing category text and attached displays
+
+Decision category descriptions, status summaries, scripted localisation, and compact attached displays must read as intentional game UI. Do not use repeated pipes or vertical bars, divider-character runs, ASCII or Unicode table rows, or other text separators to simulate columns, meters, ledger rows, buttons, or panel layout. Do not emit debug-style telemetry dumps such as `Label value | Label value | ...`, generic developer-state labels, raw variable names, or country-agnostic fallback prose that can leak another country's wording.
+
+Use short natural-language lines, properly wired icons or texticons, real meters or panels, and concise tooltips. Introduce a real scripted GUI only when a justified, functional layout gives the player interaction or state clarity that ordinary category text, decisions, tooltips, and pictures cannot provide. Category pictures and compact attached displays must not paint or textually simulate fake buttons, meters, ledger columns, or controls. Resolve country- or route-specific wording through explicit localisation branches with a neutral default fallback that cannot inherit another country's text, and verify the fallback in every supported context.
+
+This restriction applies to runtime player-facing text and art; internal Markdown audit tables may still use normal table syntax and must never be copied into localisation.
+
 ### Decision category picture reference workflow
 
 Before designing or auditing a category picture, inspect:
