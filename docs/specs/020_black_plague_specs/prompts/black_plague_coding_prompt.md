@@ -70,7 +70,7 @@ Implement AI equivalents and lifecycle cleanup. Run the decision and mission aud
 
 Create a distinct Black Plague disease identity separate from ordinary plague. Implement visible country countermeasure progress from 0 to 100 with diagnosis, treatment, production, transmission, cleanup, and completion milestones. Full progress reduces deaths and spread and unlocks final cleanup. It never instantly removes active disease.
 
-Implement sharing, hoarding, intelligence theft, foreign medical missions, and the Event 163 Doctor Wu bridge. Doctor Wu accelerates progress and treatment but does not clean every state instantly.
+Implement sharing, hoarding, intelligence theft, and international medical missions with real costs, state gates, and clear failure handling.
 
 Implement the long weaponization special project through the existing biowarfare project structure. Include at least six phases and the full eighteen-role iteration pool. Implement Safety-First, Military Acceleration, Dual-Use, and Defensive Conversion behavior. Add stockpile accidents, attribution, condemnation, retaliation, and existing delivery-system integration. Keep all biological weapon behavior abstract and nonprocedural.
 

@@ -22,7 +22,6 @@ The assigned implementation request conflicts with the event-completion-auditor 
 
 The audit therefore inspected the complete Part 9 contract and its dependent Part 4-Part 6 surfaces, mapped them against the live scenario and Event 20 systems, and recorded the blockers and required implementation order.
 
-The shared Black Plague response tranche and Doctor Wu files were inspected only as downstream providers and were not modified.
 
 ## Accepted-plan disposition
 
@@ -90,7 +89,6 @@ The implementation should promote Event 20 to `SCN-012`, not retain the planning
 | Achievements and scenario disqualification | Missing | No Event 20 achievement runtime exists and no permanent scenario disqualifier is consumed |
 | Scenario assets | No dedicated row art required | Part 9 correctly reuses the generic window |
 | Resulting Rat Nation and Rat King assets | Missing blocker | The repository has response-decision source art, but no Event 20 rat flags, portraits, focus icons, rat decision art, coronation report art, or final manifest |
-| Event documentation | Stale | `docs/events/020_black_plague/overview.md:127-130` still lists the response board, decisions, Doctor Wu bridge, evolutions, rat packages, scenario, logs, catalog, and workbook together as remaining tranches even though some response surfaces now exist |
 | Triggerable-scenario system documentation | Stale | `docs/systems/event_system/triggerable_scenarios.md` has no SCN-012 Event 20 row |
 | Catalog workbook | Stale | The `Events` row remains `Black Plague` / `To Be Reworked`, the `Clusters` sheet has no matching Black Plague row, and the `Scenarios` sheet has no Event 20 or SCN-012 row |
 

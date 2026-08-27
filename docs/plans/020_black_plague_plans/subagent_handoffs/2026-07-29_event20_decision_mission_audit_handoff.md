@@ -2,7 +2,6 @@
 
 ## Scope and result
 
-This audit covered the Black Plague response, shared response, weaponization, rat, and Doctor Wu decision surfaces plus their immediate triggers, effects, constants, localisation, and icon registrations.
 
 The human Black Plague entries remain inside `chaosx_disease_containment_category`.
 
@@ -15,7 +14,6 @@ No decision-owned scripted GUI was changed, so `hoi4.gui_inspect` and `hoi4.gui_
 ## Changed files and identifiers
 
 - `common/scripted_triggers/020_black_plague_shared_response_triggers.txt`: `black_plague_shared_can_armored_clearance`, `black_plague_shared_can_air_reconnaissance`, and `black_plague_shared_can_liberate_and_quarantine` now require an ordinary selectable response state with rat-occupation history.
-- `common/scripted_triggers/163_doctor_wu_triggers.txt`: `doctor_wu_can_request_foreign_access` now requires the current host to be a neighbour or faction partner.
 - `common/script_constants/020_black_plague_shared_response_constants.txt`: the large and metropolitan scaled material gates now match the actual 1.5x and 2x payment calculated by `black_plague_begin_shared_state_action`.
 - `common/decisions/020_black_plague_weaponization_decisions.txt`: `black_plague_weaponization_safety_first`, `black_plague_weaponization_military_acceleration`, `black_plague_weaponization_dual_use`, and `black_plague_weaponization_defensive_conversion` are mutually exclusive while a choice is running and cancel if the project can no longer continue.
 - `common/decisions/020_black_plague_weaponization_decisions.txt`: `black_plague_weaponization_deliver_payload` now targets `any_state`, blocks a second active delivery, and cancels when its actor or target becomes invalid.
@@ -31,9 +29,7 @@ The three shared anti-rat actions previously required `black_plague_shared_rat_s
 
 They now become available after the existing pulse restores a recaptured Rat state to its prior crisis phase and records `black_plague_liberated_rat_state`.
 
-Doctor Wu foreign access previously accepted any eligible Black Plague country despite localisation and comments promising neighbouring or allied access.
 
-It now requires `is_neighbor_of = event_target:doctor_wu_current_host` or `is_in_faction_with = event_target:doctor_wu_current_host`.
 
 The shared response gate could accept 61 support equipment for a large state even though the begin effect charged 90, and could accept 91 for a metropolitan state even though it charged 120.
 
@@ -59,7 +55,6 @@ Weapon approach selection is exclusive during its thirty-day timer, then marks o
 
 Weapon delivery consumes real stockpile, support equipment, command power, fuel, factory time, and a fourteen-day timer only after its completion guard still finds a valid enemy target.
 
-Doctor Wu foreign access remains a request and host-response chain, with the new diplomatic route check before the request may start.
 
 ## Mission quality notes
 
@@ -87,7 +82,6 @@ Weapon payload targets now require an existing enemy controller at war with ROOT
 
 The four weapon approaches cannot be selected simultaneously by the AI, and their existing approach-specific AI modifiers remain unchanged.
 
-Doctor Wu foreign access now enforces the advertised neighbour or faction-partner route before the requester spends its request materials.
 
 No dead-country target or closed-route bypass was found in the repaired response or weaponization paths.
 
@@ -131,7 +125,6 @@ Read the applicable vanilla effects, triggers, script-constants documentation, a
 
 Confirmed that all audited decision localisation and custom GFX references resolve, and confirmed that the touched localisation files have BOMs with no duplicate keys.
 
-Reviewed four representative state transitions: reclaimed Rat-state response, foreign Doctor Wu request, post-eradication enemy payload delivery, and competing weapon-approach activation.
 
 The focused HOI4 MCP event lint produced artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f43de795c14adccb8997c40973607732e42e39006ce941e69cf57b7a74a3aefe/179163c204b8b0f8d75f834dc1fb9756621cf40a69982c920261589a3c971dfd/event-lint-b9117f0642fd.json`.
 

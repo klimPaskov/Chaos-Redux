@@ -48,5 +48,4 @@ This file records the catalog wording contract for the live Event 020 rows. The 
 ## Related catalog notes
 
 - Event 41 Disease in Divisions can become a future Diseases cluster member only after its own rework.
-- Event 163 Doctor Wu is a cross-event medical interaction and should not automatically be a cluster member.
 - The Black Plague triggerable scenario is already a separate `SCN-012` row in the live scenario workbook. Keep its four intensity descriptions aligned with the shared scenario UI and launch report.

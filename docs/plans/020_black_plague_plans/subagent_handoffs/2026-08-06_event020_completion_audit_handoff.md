@@ -102,7 +102,6 @@ This evidence proves that the current source can be parsed into a large linked e
 2. The six tracked source PNGs under `docs/assets/portraits/020_black_plague/` are deleted; portrait source archives are permanent evidence and cannot be treated as disposable temporary workspace.
 3. All 55 tracked Event 020 asset records under `docs/assets/020_black_plague/` and all nine tracked records under `gfx/source/event20/` are deleted, contradicting handoffs that say ImageGen masters, prompts, manifests, contact sheets, and processed previews are retained.
 4. Current RTA/RTX flag binaries are modified while their durable review/provenance package is absent from the current asset tree.
-5. Broader dedicated crisis, Doctor Wu, route, reconstruction, and aftermath presentation remains queued where the accepted addendum still identifies reused art or compact presentation.
 
 ### Stale documentation
 

@@ -562,18 +562,6 @@ Achievements are difficult route and mastery goals. All titles are working label
 
 **Difficulty**: terminal challenge.
 
-### Achievement 14: Doctor Wu's Last House Call
-
-**Eligible**: human country that receives the Event 163 connection.
-
-**Goal**:
-
-- use Doctor Wu's accelerated protocol after Evolution II
-- cure infections on at least two continents
-- prevent any Rat King from appearing
-
-**Difficulty**: rare cross-event mastery.
-
 The achievement matrix gives exact tracking directions and icon concepts.
 
 ## Asset package overview

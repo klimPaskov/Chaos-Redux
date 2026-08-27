@@ -8,8 +8,6 @@ The moved surfaces are the national Black Plague actions in `black_plague_respon
 
 - `black_plague_produce_medical_reserve` (medical reserve)
 - `black_plague_establish_countermeasure_program`
-- `black_plague_activate_doctor_wu_protocol`
-- `black_plague_request_doctor_wu_access`
 - `black_plague_shared_emergency_countermeasure_drive`
 - `black_plague_shared_publish_findings`
 - `black_plague_shared_restricted_alliance_exchange`
@@ -32,7 +30,6 @@ The required canonical-source reads were attempted with `hoi4.probability_inspec
 
 | Surface | Adapter and candidate pool | Result | Artifact/evidence |
 | --- | --- | --- | --- |
-| `common/decisions/020_black_plague_response_decisions.txt` | `decision_ai_will_do`; `black_plague_produce_medical_reserve`, `black_plague_establish_countermeasure_program`, `black_plague_activate_doctor_wu_protocol`, `black_plague_request_doctor_wu_access` | `INTERNAL_ERROR`; blocker `Unexpected internal error`; `artifactCount = 0`; `filesScanned = []` | No MCP artifact. The no-candidate-pool retry returned the same exact result. |
 | `common/decisions/020_black_plague_shared_response_decisions.txt` | `decision_ai_will_do`; the ten ordinary dedicated actions from `black_plague_shared_publish_findings` through `black_plague_shared_memorial_biosecurity_charter` | `PROBABILITY_SURFACE_EMPTY`; blocker `No weighted blocks matched this request`; `artifactCount = 0`; `filesScanned = []` | No MCP artifact. The no-candidate-pool retry returned the same exact result. |
 | `common/decisions/020_black_plague_shared_response_decisions.txt` | `mission_ai_will_do`; `black_plague_shared_emergency_countermeasure_drive` | `INTERNAL_ERROR`; blocker `Unexpected internal error`; `artifactCount = 0`; `filesScanned = []` | No MCP artifact. The no-candidate-pool retry returned the same exact result. |
 
@@ -48,8 +45,6 @@ The following values are source-attested score inputs only. They are not normali
 | --- | ---: | --- |
 | `black_plague_produce_medical_reserve` | `constant:black_plague_response_ai.strong` (4) | `countermeasure_priority` (5) while the reserve variable is below the batch target; `war_pressure_factor` (0.60) while at war. |
 | `black_plague_establish_countermeasure_program` | `preferred` (2) | `countermeasure_priority` (5) in a severe state; `high_burden_factor` (0.35) when response capacity four is unavailable. |
-| `black_plague_activate_doctor_wu_protocol` | `critical` (12) | `doctor_wu_priority` (8) in a severe state. |
-| `black_plague_request_doctor_wu_access` | `strong` (4) | `critical` (12) in a severe state. |
 | `black_plague_shared_emergency_countermeasure_drive` | `critical` (12) | No `ai_will_do` modifier. Activation and cost gates remain separate. |
 | `black_plague_shared_publish_findings` | `strong` (4) | No `ai_will_do` modifier. |
 | `black_plague_shared_restricted_alliance_exchange` | `preferred` (2) | No `ai_will_do` modifier. |
@@ -68,7 +63,6 @@ The constants resolve in source to `cautious = 0.50`, `preferred = 2`, `strong =
 
 The intended ordinary-decision pool is the four decision IDs in the response source plus the ten ordinary shared country-level IDs. The intended mission pool is the one selectable mission ID. The canonical adapter did not return a discovered pool for either source, so every requested scenario has `poolComplete = unknown` rather than `true` or `false`.
 
-The scenarios require typed values for category visibility, system-start preparation, human versus AI ownership, `black_plague_strategic_response_category_is_visible`, severe-state presence, countermeasure progress and target variables, active and failed project flags, response-capacity availability, material/equipment/fuel affordability, selected-state validity, Doctor Wu host and foreign-access targets, shared-board disease selection, country knowledge visibility, war status, and the relevant `FROM` target scope. None of these factors received an engine-resolved canonical evaluation in this pass.
 
 ## Named scenarios
 
@@ -92,7 +86,6 @@ No valid before/after `hoi4.probability_compare` receipt exists for this categor
 
 ## Findings and recommendations
 
-- The source constants preserve non-flat urgency ordering. Doctor Wu activation is the strongest severe-state action (`critical` base with an additional severe multiplier), the emergency countermeasure drive is `critical`, and recovery/knowledge actions intentionally span cautious through strong. This is score-only evidence.
 - No positive-weight impossible target, dead choice, rank reversal, dominance, starvation, repetition, cooldown, or exploit conclusion is proven. The required availability, cost, target, and hidden-state inputs were not engine-resolved.
 - Do not convert `4`, `2`, `0.50`, `8`, or `12` into click percentages. Even with a complete pool, `ai_will_do` is a willingness score race, not a direct player-click chance.
 - Obtain a probability adapter route that can index repeated category blocks and target-gated decisions in the canonical files, or provide an engine-supported source fixture that preserves all decision and mission fields.

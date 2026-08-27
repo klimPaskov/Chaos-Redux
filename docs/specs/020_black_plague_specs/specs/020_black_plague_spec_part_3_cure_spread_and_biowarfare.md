@@ -43,7 +43,6 @@ The final names require implementation localisation. The stages should describe 
 - receiving foreign research exchange
 - stealing research from another country
 - successful special-project iterations that favor safety and treatment
-- rare event interaction with Event 163 Doctor Wu when that event is active and compatible
 - liberation and cleanup of a rat-controlled state
 - capturing a foreign biowarfare facility that has Black Plague research
 
@@ -129,20 +128,6 @@ Uses intelligence resources and creates diplomatic exposure. Failure can reveal 
 Creates a time-limited cooperative program. Countries contribute industry, supplies, or scientists. The global knowledge pool grows while the mission succeeds.
 
 The system should use existing diplomacy, intelligence, and disease mechanics where available instead of creating a full new international organization.
-
-## Event 163 Doctor Wu connection
-
-Event 163 is cataloged as a mysterious doctor who cures every disease. The Black Plague should support a rare, high-value connection without allowing an instant map cleanup.
-
-When Doctor Wu is active and reaches an eligible infected country, the event can:
-
-- grant a large countermeasure progress increase
-- reveal hidden Incubating states in the host country
-- improve treatment coverage in one selected Severe Crisis state
-- unlock an accelerated cleanup protocol
-- create a foreign request chain as other countries seek access
-
-Doctor Wu cannot remove the Black Plague modifier from every state in one effect. Local containment and cleanup remain required. This preserves the identity of both events while respecting the user's rule that the cure is not instantaneous.
 
 ## Spread engine
 
@@ -582,7 +567,6 @@ This surface is complete only when:
 - full progress lowers deaths and spread without instant removal
 - state cleanup requires local containment and low disease load
 - foreign sharing and theft use real costs and diplomacy
-- Doctor Wu can accelerate treatment without instant global cure
 - Evolution II opens port jumps through real route logic
 - the special project has several phases and a large iteration pool
 - safety, acceleration, dual-use, and defensive conversion choices have distinct consequences

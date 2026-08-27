@@ -19,7 +19,6 @@ Implement all fourteen planned achievements unless the parent explicitly records
 11. The Rat That Read
 12. Crown of One Continent
 13. The Pale Sovereign
-14. Doctor Wu's Last House Call
 
 These are working labels. Write final titles and descriptions from the directions in the achievement matrix. Do not reveal hidden event mechanics in ordinary event, decision, or focus text.
 
@@ -56,7 +55,6 @@ The set needs reliable tracking for:
 - absorbed Rat Nation count
 - Rat King candidate and transfer identity
 - government route, Sentience, continent control, and world-end scenario
-- Event 163 Doctor Wu bridge and continent cure set
 
 Tracking must not double-count repeated aid to one country, transferred rat units, or disease deaths already recorded by the shared Deaths system.
 

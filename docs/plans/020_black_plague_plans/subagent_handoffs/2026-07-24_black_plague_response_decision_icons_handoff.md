@@ -20,7 +20,6 @@ This handoff covers only visual production and evidence for the response decisio
 
 ## Icon set
 
-The eight existing source concepts are medical reserve, clean city rats, sealed food stores, clear sewers, flea control, transport purge, demolition, and emergency hospital. The seven generated additions are quarantine, cordon, treatment reserves, warren purge, countermeasure program, Doctor Wu protocol, and Doctor Wu foreign access.
 
 ## Processing evidence
 

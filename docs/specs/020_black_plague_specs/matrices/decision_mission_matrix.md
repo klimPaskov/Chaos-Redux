@@ -69,7 +69,6 @@ These are separate state decision entries shown only when Black Plague is select
 | Hoard the Protocol | progress milestone | opinion and cooperation loss | protects advantage | neighbors die and world threat grows |
 | Steal Foreign Progress | intelligence access | operative time, exposure | gains progress on success | can reveal own project |
 | International Medical Mission | several willing countries | industry, supplies, scientists | faster global progress | collapses if contributors withdraw |
-| Doctor Wu Protocol | Event 163 compatible | rare event access | large progress and treatment boost | no instant cleanup |
 
 ## Weaponization project actions
 

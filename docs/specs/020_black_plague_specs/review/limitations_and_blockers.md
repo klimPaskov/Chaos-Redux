@@ -25,7 +25,6 @@ All 16 supplied subagent contracts were read and their standards were applied ma
 
 ## Asset status
 
-The historical planning package supplied only inventories and prompts. The current Event 020 tranche promotes final report/news assets, slot-087 art, the source-frame Rat King portrait, the source-frame Royal Burrows seal, the Severe/Collapsed crisis seal, the Rat King terminal-readiness seal, and the dedicated weapon-delivery icon. Broader crisis-report, Doctor Wu, route/hierarchy, and aftermath presentation remains incomplete. Final asset provenance, release attribution, and live validation remain implementation-owned.
 
 ## Audio status
 

@@ -95,7 +95,6 @@ The two-tag correction remains authoritative: `RTA` is the sole reusable Rat Nat
 ## Remaining blockers and deviations
 
 - The RTA and RTX trees now have 52 and 71 nodes respectively. Route-specific decisions, the three hierarchy actions, and court operations are wired; remaining narrative depth is primarily report text, dedicated crisis art, model sound-definition wiring, counter review, and live route validation.
-- The accepted narrative and asset package still has queued outbreak, Rat Nation, weapon-delivery, and reconstruction surfaces. The shared-board rat-infestation source-frame badge, five evolution report cards, Severe Crisis, Doctor Wu, Crown Strike, Royal Node counterstrike icon, route crises, Rat King aftermath, Royal Burrow aftermath, the Royal Burrows seal animation, slot 087 art/text/audio wiring, and the Evolution IV Rat King portrait are promoted, but broader dedicated art/depth remains queued.
 - The state-clipped black fog enhancement remains unverified and is not used as a runtime prerequisite.
 - No in-game process was launched, per repository instructions, so scenario intensities, Royal Node outcomes, mission timeout behavior, and rat grace-period transfer still require live consumer validation.
 - No in-game process was launched, so the new scoped defeat hooks, metric gate, `.72` coupling, slot-087 trigger/audio, and `.73` audience behavior also require live consumer validation; `.73` prefers the saved defeat contributor, then a registered response country, then the first eligible human response host.

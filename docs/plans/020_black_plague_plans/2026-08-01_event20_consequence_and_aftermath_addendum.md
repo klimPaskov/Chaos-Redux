@@ -47,7 +47,6 @@ The snapshot includes the current Event 020 worktree tranche, including its unco
 | Surface | Current evidence | Remaining design gap |
 | --- | --- | --- |
 | Event chain | `events/020_black_death.txt` defines the accepted milestone allocation from `chaosx.nr20.2` through `.75`, plus `.90` and scheduler callbacks; events `.45`, `.57-.59`, `.64-.65`, and `.71-.75` are present | Most implemented milestones remain deliberately compact reports |
-| Event pictures | Origin reports use `GFX_report_event_020_black_plague_origin`, overseas infection uses `GFX_news_event_020_black_plague_overseas`, Rat emergence uses `GFX_report_event_020_rat_emergence`, Severe Crisis, route crises, Crown Strike, Doctor Wu, and Rat King aftermath use dedicated report cards, qualifying slot 087 uses `GFX_super_event_087_rat_king_defeat_aftermath`, and the Royal Burrows decision uses `GFX_decision_black_plague_seal_royal_burrows_animated` with its static fallback | Reconstruction `.72` shares the Rat King aftermath card; broader dedicated aftermath art and live validation remain open |
 | RTA tree | Read-only focus inspection reports 35 playable focuses with zero node intersections and two connector crossings; the three-way hierarchy roots, follow-ups, and `.45` acknowledgement are present | Generic vanilla icon inventory diagnostics remain, six dedicated hierarchy icons are not wired, and the accepted full route-tree depth is still larger than this compact playable shell |
 | RTA routes | Urban, Field, Dock, and War second lanes plus the three-way hierarchy now affect Brood Mass, division caps, spread routes, King candidacy, route-aware AI, and seven timed route operations across the RTA/RTX decision categories | Further report prose and dedicated route art remain optional presentation work |
 | RTX tree | Read-only focus inspection reports 50 playable focuses, including twelve route-policy focuses | The route policy consumers, crises, Crown Strike vulnerabilities, and AI plans are wired; deeper administration and cultural branches remain content work |
@@ -380,7 +379,6 @@ Do not regenerate or rename them.
 | `report_event_020_crown_strike` | report card, 210 by 176 | generated fictional documentary | `.54`, `.55`, `.64`, and `.65` |
 | `news_event_020_rat_king_defeat` | news strip, 397 by 153, black and white | generated fictional period-news | `.71` |
 | `report_event_020_rat_king_aftermath` | report card, 210 by 176 | generated fictional documentary | `.73`, `.74`, and `.75` |
-| `report_event_020_doctor_wu` | report card, 210 by 176 | generated period-documentary with the approved fictional Doctor Wu treatment | Event 163 Black Plague bridge reports |
 | `GFX_super_event_087_rat_king_defeat_aftermath` | super-event art, 457 by 328 | generated fictional art, final DDS `gfx/super_events/020_black_plague/super_event_087_rat_king_defeat_aftermath.dds` | qualifying global defeat only; registered in `interface/020_black_plague_super_events.gfx` |
 | `decision_strike_royal_node` | decision icon, 33 by 32 | generated icon | existing Royal Node strike |
 | `decision_strike_the_crown` | decision icon, 33 by 32 | generated icon | new Crown Strike mission |

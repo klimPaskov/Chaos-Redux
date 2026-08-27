@@ -126,7 +126,6 @@ The canonical fallback must be `chaosx.event_name.unknown`; the current literal 
 
 Do not synthesize `chaosx.event_name.100` through `chaosx.event_name.1000` merely to make the table compile; every destination must correspond to a registered system event, an explicitly supported history/provider ID, or the canonical unknown key.
 
-Keep Fallout history keys, CBRN action key 991, Doctor Wu 163, Event 006 history/evolution payload keys, and any other non-system selectors in explicit special branches until their source ID contract is documented.
 
 ### Reference proof and tests
 
@@ -202,7 +201,6 @@ No scheduler migration is implementation-ready while the required probability au
 
 The major list currently contains literal IDs 2, 25, 30, 44, 49, 70, 80, and 91.
 
-The fire-once list contains literal IDs plus constants such as `africa_event.id`, `cannibalism_event.id`, `utopia_manifesto_event.id`, `brilliant_scientist_event.id`, `doctor_wu_event.id`, and `black_plague_identity.event_id`.
 
 The repeatable list contains literal IDs plus `natural_disaster_event.id`, `random_faction_event.id`, `resources_found_event.id`, and `infantry_spawn_event.id`.
 

@@ -16,7 +16,6 @@ It registers `black_plague_rat_brood_category` and `black_plague_rat_king_court_
 
 `localisation/english/020_black_plague_weaponization_l_english.yml` updates `black_plague_weaponization_approach_cost` and `black_plague_weaponization_delivery_cost`, then adds the matching `_blocked` and `_tooltip` keys.
 
-`localisation/english/020_black_plague_response_l_english.yml` adds `black_plague_request_doctor_wu_access_cost_blocked` and `black_plague_request_doctor_wu_access_cost_tooltip`.
 
 ## Before and after
 
@@ -24,7 +23,6 @@ Before the patch, `black_plague_rat_brood_category` and `black_plague_rat_king_c
 
 After the patch, both categories are registered and use the existing `black_plague_rat_country_is_active` and `black_plague_rat_country_is_king` predicates, which already exclude retired carriers.
 
-Before the patch, the Doctor Wu access and weaponization custom-cost displays were missing engine-resolved blocked and hover variants.
 
 After the patch, each of those custom-cost families resolves normal, blocked, and hover localisation, with the actual materials, command power, fuel, civilian-factory commitment, and duration shown from the existing constants.
 
@@ -50,7 +48,6 @@ The Event 018 hidden evolution-clock missions intentionally have no normal title
 
 Event 020 now has complete cost variants for all 49 unique custom-cost keys across 52 call sites.
 
-The Doctor Wu request uses support equipment, motorized equipment, convoys, fuel, and a timed request.
 
 Weaponization approach decisions use support equipment, motorized equipment, command power, fuel, factory commitment, and duration.
 

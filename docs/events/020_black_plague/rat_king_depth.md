@@ -8,7 +8,7 @@ The Crown lane builds road tithes, wardens, brood ledgers, sanctioned migration 
 
 The Council lane builds a burrow census, common stores, mobile hospices, shared signal, veteran recall, and a charter of nests. It favors cohesion, hunger relief, sentience, and a resilient division cap without granting human manpower or ordinary equipment.
 
-The Hierophancy lane builds flea liturgy, sea breath, burial rations, ash strongholds, echoes of Doctor Wu, and a terminal omen. It trades hunger risk for dominion, overseas-capable reach, advanced formations, and sentience.
+The Hierophancy lane builds flea liturgy, sea breath, burial rations, ash strongholds, and a terminal omen. It trades hunger risk for dominion, overseas-capable reach, advanced formations, and sentience.
 
 Two shared late lanes sit beside the crisis and terminal branches. Royal Node Watch improves register cohesion and sentience after the first crisis. Crown Strike Preparations improves dominion, the non-human division cap, and terminal preparation while preserving the Evolution V route gate. The court's state-targeted Royal Strike uses the dedicated Royal Node sprite and the canonical exposure route, keeping the rat-side operation legible beside the shared human counterstrike.
 

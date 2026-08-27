@@ -65,7 +65,6 @@ The asset manifests are ignored by the current Git status but are updated in the
 | Current narrative overview | `docs/events/020_black_plague/overview.md`, `docs/events/020_black_plague/shared_response.md`, `docs/events/020_black_plague/rat_route_modules.md` | Current implementation-facing docs; shared-response future-work wording was corrected. |
 | Addendum and readiness baseline | `docs/plans/020_black_plague_plans/2026-08-01_event20_consequence_and_aftermath_addendum.md`, `docs/plans/020_black_plague_plans/2026-07-29_event20_core_readiness_report.md` | Reconciled working records with explicit implemented, partial, queued, and blocked dispositions. |
 | Super-events and audio | `docs/super_events/020_black_plague/research.md`, `docs/assets/020_black_plague/audio_manifest.md`, `interface/020_black_plague_super_events.gfx`, `sound/chaosx_sound.asset`, `music/chaosx_music_track_list.html` | Audio IDs 101, 102, and 103 are wired evidence; slot 087 is runtime-gated and has final art/text/audio registration. Release attribution, broader presentation depth, and live proof remain open. |
-| Asset provenance | `docs/assets/020_black_plague/event_art/manifest.md`, `docs/assets/020_black_plague/rat_identity_asset_manifest.md`, `docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-01_event20_super_event_087_art_handoff.md` | Three report/news assets and slot-087 final art are wired evidence; RTB-RTM flags are archival unused production; dedicated crisis/Crown/ordinary-aftermath/Doctor Wu/route assets remain queued where still required. |
 
 ## Plan and handoff dispositions
 
@@ -78,7 +77,6 @@ The asset manifests are ignored by the current Git status but are updated in the
 | 2026-08-01 live-wiring completion audit handoff | Historical audit snapshot retained with a superseded notice. Its actor/slot-087 absence claims are superseded by the second reconciliation; evolution/scenario/audience, broader assets, and live-validation findings remain open. |
 | 2026-08-01 decision/mission incremental audit | Historical audit snapshot retained. Native mission fields remain absent; current Crown Strike and Seal Royal Burrows shared actions are now named explicitly. |
 | 2026-08-01 RTA hierarchy runtime handoff | Current Package A evidence: hierarchy graph, consumers, AI, and the parent follow-on's three continuing actions are present. Dedicated icons and lack of live validation remain open. |
-| 2026-08-01 report/news art handoff | Current provenance handoff for the three promoted origin, emergence, and overseas assets. It does not supply the dedicated crisis, Crown, ordinary-aftermath, Doctor Wu, or ID 87 packages; slot 087 is covered by its separate final art handoff. |
 | 2026-08-01 content-tranche handoff | Current implementation evidence and integration boundary; it remains partial and is not a replacement for this disposition record. |
 | `rat_absorption_follow_up.md` | Already resolved/superseded by state-marker absorption; unchanged. |
 | Super-event 87 design | Final art, selected text, audio ID 103, sprite, and sound-wrapper package promoted behind the explicit runtime gate; release attribution, docs/workbook alignment, and live validation remain open. |
@@ -99,7 +97,6 @@ The asset manifests are ignored by the current Git status but are updated in the
 - The defeat resolver now has the accepted narrow `on_capitulation` and state-control participant hooks plus a contributor registry; the remaining mismatch is `.73` audience fallback to the first eligible human response host rather than the saved actor.
 - Reconstruction `.72` is now coupled to the same once-only eligibility gate in the defeat resolver; it remains separate from later `.74` sealing and lacks live proof.
 - ID 87 is no longer an unwired reservation: qualification tracking, final image, localisation, selected quote/cultural remark, audio ID 103, GFX registration, and sound/music records are present; release rights documentation and live validation remain.
-- Crisis, aftermath, Doctor Wu, and hierarchy consumers still need dedicated art or icons where the accepted asset inventory requires them; Crown Strike and Royal Burrow sealing use dedicated decision icons while several event reports still reuse generic art.
 - No live scenario or in-game validation proves the new route, crisis, Crown Strike, actor, or aftermath behavior.
 - The current shared timed state-action API may or may not satisfy the accepted “mission” design; parent decision required before any conversion.
 
