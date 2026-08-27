@@ -4,7 +4,7 @@
 
 `blocked`
 
-The generic Temporal Guard now has actual io_pdx_mesh `.mesh` bytes, eight distinct provider-authored `.anim` files, grounded export checkpoints, and parser/reimport proof for every action. It also has preserved, licensed sourced-audio originals and mechanically derived WAV candidates for every required sound role. The package is still blocked because the source-art/ImageGen authorization record is incomplete, runtime PDX DDS textures have not been produced or relinked, reimport previews therefore show missing material textures, and the mandatory bespoke vanilla-green large/on-map counter package has not been produced. Parent-owned runtime wiring has not started.
+The generic Temporal Guard has actual io_pdx_mesh `.mesh` bytes, eight distinct provider-authored `.anim` files, grounded export checkpoints, and parser/reimport proof for every exported action. The recovery pass produced and relinked the required 1024 PDX diffuse, packed normal, and packed specular DDS textures, re-exported the mesh, and reimported it with staged runtime textures and a five-phase idle action. It also has preserved, licensed sourced-audio originals and mechanically derived WAV candidates for every required sound role. The package remains blocked because the source-art/ImageGen authorization record is incomplete, the remesh/credit lineage is incomplete, dedicated provider-authored `support_attack` and `retreat` actions are absent, and the mandatory bespoke vanilla-green large/on-map counter package could not be produced under the explicit no-ImageGen recovery constraint. Parent-owned runtime wiring has not started.
 
 Package root: `docs/assets/chaos_redux_3d_model_pilots/models_3d/temporal_guard`
 
@@ -18,7 +18,7 @@ Parent consumer: `kruger_temporal_guard`
 - Blender `5.1.2`, build `ec6e62d40fa9`; adapter `chaosx_blender_hoi4` `1.10.14`; bridge `127.0.0.1:9876` listening.
 - `io_pdx_mesh` `0.91.0`; locked archive SHA-256 `A683DF08318CB700014C7FE9A3D15139E5FB2313C7E98715204263E48931F7C2`; installed manifest matched.
 - All adapter/config hashes matched `.tools/3d_pipeline/config/dependencies.lock.json`, `.tools/3d_pipeline/config/meshy_tool_schema.lock.json`, and `.tools/3d_pipeline/config/blender_hoi4_adapter.json`.
-- No paid provider operation was made in this resumed pass. Locked-rate estimate for prior lineage is 61 credits: generation 30, remesh 5, rig 5, and seven custom animations at 3 each; walking was rig-included. Actual prior consumption is not provable because pre/post balance receipts are absent.
+- No paid provider operation was made in this resumed pass. No balance or provider call was made after the parent directed finalization without further provider work. Locked-rate estimate for prior lineage is 61 credits: generation 30, remesh 5, rig 5, and seven custom animations at 3 each; walking was rig-included. Actual prior consumption is not provable because pre/post balance receipts are absent.
 
 ## Source and ImageGen provenance
 
@@ -38,7 +38,19 @@ Parent consumer: `kruger_temporal_guard`
 
 - One working mesh: 14,997 vertices, 30,000 triangles, zero degenerates, zero non-manifold edges, 38 loose boundary edges in ten closed small boundary components, no negative scale, one UV layer.
 - Rig `Armature.001`, 24 bones. All 14,997 deforming vertices are weighted; weight sums are approximately 1.0; zero zero-weight deforming vertices; 2,297 vertices exceed four influences and remain a performance/deformation review item.
-- One `PdxMeshAdvanced` material, but bindings still point to provider PNGs and raw metallic was bound as specular. No verified 1024 DDS diffuse, packed PDX normal, or packed PDX specular exists. Reimport staged no runtime textures and rendered magenta; material QA is blocked.
+- One `PdxMeshAdvanced` material. The recovery pass relinked `texture_0`, `texture_normal`, and `texture_specular` to `textures/dds/*.dds` through adapter request `93a8a704534048e897d293c75ec80aea`; inspection request `b68cc0ff028a4db086098f6a089faa8e` confirmed the exact DDS paths. The normal layout is `R=0, G=source normal R, B=0, A=source normal G`; the specular layout is `R=0, G=32, B=metallic, A=roughness`.
+- All three DDS files are 1024x1024, 4,194,432-byte, one-level legacy BGRA files with the required 128-byte header, `DDS_HEADER=124`, `DDS_PIXELFORMAT=32`, flags `65`, 32 bits per pixel, and `DDSCAPS_TEXTURE=4096`. Exact processed-PNG, DDS, pack-source, channel-layout, and relink evidence is in `blender/reports/textures_dds.json`.
+- Reimport request `bfc8b5d86ed548a9998237ac6987f4ce` staged all three runtime textures under `export/mesh/` with source/destination hash identity and rendered the material successfully; there is no missing-texture magenta state in `blender/previews/reimport_temporal_guard_material_relinked_idle_frame_025_front.png`.
+
+Selected material hashes and synchronization result:
+
+| Selected source | SHA-256 | Staged copy | Final synchronization |
+|---|---|---|---|
+| `textures/dds/texture_0.dds` | `82071750202D2435542841E8354313DDB4B46BFD4B23CEBA0308CE4DE6DB4044` | `export/mesh/texture_0.dds` | hash-identical |
+| `textures/dds/texture_normal.dds` | `508EF722D43C7E09E4BECB753AA88923B89BDE8734F8C0EF5F07B83ABA1AA30F` | `export/mesh/texture_normal.dds` | hash-identical |
+| `textures/dds/texture_specular.dds` | `DBFD8E36D649BFD7B75E371DA6B133E7EC7B31874A370CF815327542247BD37B` | `export/mesh/texture_specular.dds` | hash-identical |
+
+The staged `export/mesh/` copies are reimport evidence only. Parent-owned runtime synchronization into active `gfx/models/` paths has not occurred.
 - No firearm, firing action, muzzle locator, muzzle light/particle, or gunshot role is present.
 
 Vanilla calibration:
@@ -62,15 +74,21 @@ Every action was transferred from an exact receipt under `provider/tasks/receipt
 | temporal_anchor | `125 Charged_Spell_Cast`, SHA `7A1D84...D4CFE` | `01a04288-de40-777f-be17-dd4e11ce44fc` | 1–65 / 24 | gathering stance, two-hand charge/release, recovery | `62c413a469a943b7a86503d0c5256f52` / `50fd5bf151964169b8caced9adafc222` |
 | synchronization | `126 Charged_Spell_Cast_1`, SHA `D6C2E6...509FEA` | `01a04288-e67c-7a73-aa64-95c67a8b27d7` | 1–104 / 24 | distinct extended sweep/charge, high release, recovery | `ea0778706c7a4801803ec6806fc1a43b` / `ab013271efcf49a7b5df4f056203f416` |
 
+Required-role status beyond those exports:
+
+- `support_attack`: `blocked`; no dedicated provider-authored action receipt/export/reimport exists. `attack`, `defend`, or `entrain` was not reused as a semantic alias.
+- `retreat`: `blocked`; no dedicated provider-authored action receipt/export/reimport exists. `move` or `entrain` was not reused as a semantic alias.
+- The unit is explicitly non-firing and has no firearm, so the `attack` role is a genuine articulated melee/contact combo; firearm aim/discharge/recoil requirements do not apply.
+
 Multi-phase previews are under `blender/previews/`. `blender/previews/chaosx_temporal_guard_death_grounded_front.png` proves the corrected grounded settling pose.
 
 ## Export and reimport proof
 
-Mesh request `158e6b668ec243eca8e18b4f0d49ebb9` produced one 30,000-triangle stream with 38,906 seam-split vertices, below 65,535, with no warnings. Reimport position-weld diagnostics return 14,997 vertices, 38 loose boundary edges, zero degenerates, and zero non-manifold edges.
+Material-relinked mesh request `25d5231a154145f9a3a9aea5dfa41b9e` produced one 30,000-triangle stream with 38,906 seam-split vertices, below 65,535, with no warnings. Reimport request `bfc8b5d86ed548a9998237ac6987f4ce` returned 14,997 position-welded vertices, 38 loose boundary edges, zero degenerates, and zero non-manifold edges, plus a 24-bone rig and the five sampled idle phases.
 
 | Runtime file | Bytes | SHA-256 | Reimport evidence |
 |---|---:|---|---|
-| `export/mesh/chaosx_temporal_guard.mesh` | 3,475,160 | `8A89DB2FA18F286B511826DA2769810ABAD20AAFA1E92FE457A0CF1DCEA5EB71` | parsed with every action |
+| `export/mesh/chaosx_temporal_guard.mesh` | 3,475,175 | `EA0C72AAC11CDA1B1A46CF74C6DC6A38EF3DC9833EC35DFE984E82D7FFD59516` | material-relinked parse with idle plus prior action proofs |
 | `export/anim/chaosx_temporal_guard_idle.anim` | 76,627 | `C2BE045CF4079A647E012EFF8145B07CFE69CF3018E9F616FC898E90EF603563` | `f6d27a2092074c7e8061d040f86a5ff6` |
 | `export/anim/chaosx_temporal_guard_move.anim` | 26,707 | `E3839142F49EA48A5182DB4145CAF04A462EAFEE9ABB8F39B42FF53DE947DAE4` | `34b5953349644f2dbbcfb7aab56dc84a` |
 | `export/anim/chaosx_temporal_guard_attack.anim` | 48,211 | `F22DF39A34FADEF4ECA718102E966EA7AC704E3B3D89244D715D619CE406B3DF` | proof blend/previews exist |
@@ -99,25 +117,28 @@ Exact evidence is in `counters/gfx_handoff.md`.
 - On-map precedent `GFX_unit_infantry_icon_medium_white`: `onmap_unit_infantry_icon.dds`, two frames, 60x12 strip, 30x12 each, transparent unused canvas.
 - Matching skill-local land counter families/contact sheets were inspected.
 - Required generic tokens: `GFX_unit_temporal_guard_icon_medium` / `unit_temporal_guard_icon.dds` and `GFX_unit_temporal_guard_icon_medium_white` / `onmap_unit_temporal_guard_icon.dds`.
-- Blocker: no original PNG, processed strip, DDS, comparison sheet, manifest, icon-artist output, or approval exists. No vanilla reuse/recolor fallback was used.
+- Blocker: no original PNG, processed strip, DDS, comparison sheet, manifest, icon-artist output, or approval exists. The accepted counter workflow requires original ImageGen-backed art, but this recovery brief explicitly forbids ImageGen, so no counter generation subagent was launched. No vanilla reuse/recolor fallback was used.
 
 ## Proposed generic runtime ids
 
 - Entity `chaosx_temporal_guard_entity`; mesh registration `chaosx_temporal_guard_mesh`; mesh bytes `chaosx_temporal_guard.mesh`.
 - Actions `chaosx_temporal_guard_idle`, `chaosx_temporal_guard_move`, `chaosx_temporal_guard_attack`, `chaosx_temporal_guard_defend`, `chaosx_temporal_guard_entrain`, `chaosx_temporal_guard_death`, `chaosx_temporal_guard_temporal_anchor`, and `chaosx_temporal_guard_synchronization`.
+- Proposed required-but-blocked action ids: `chaosx_temporal_guard_support_attack` and `chaosx_temporal_guard_retreat`; parent must not bind either name to an existing semantic role.
+- Runtime material basenames `texture_0.dds`, `texture_normal.dds`, and `texture_specular.dds`; parent must synchronize from the selected `textures/dds/` hashes recorded below rather than from filenames alone.
 - Parent owns `.gfx`/`.asset`, entity, sound definition, localisation, and `kruger_temporal_guard` consumer wiring.
 
-## Files changed by this resumed pass
+## Files changed by the recovery pass
 
-- Added eight exact provider receipts; eight cumulative action checkpoints; eight grounded checkpoints; eight export-coordinate checkpoints; exporter/reimport proof scenes; adapter reports/logs; semantic/reimport previews.
-- Added one `.mesh`, eight `.anim` binaries, and their parser text dumps under `export/`.
-- Added five immutable audio originals, six derived WAV candidates, and `audio/provenance.md`.
-- Added `counters/gfx_handoff.md`, package `manifest.md`, and replaced this handoff.
+- Rebuilt `export/mesh/chaosx_temporal_guard.mesh` after DDS relink and updated its parser dump.
+- Added `textures/processed/{texture_0,texture_normal,texture_specular}.png`, `textures/dds/{texture_0,texture_normal,texture_specular}.dds`, packed provider companions `pdx_normal.png` and `pdx_specular.png`, and their pack reports.
+- Added staged hash-identical copies under `export/mesh/`, material relink/inspection/export/reimport adapter logs, `blender/checkpoints/reimport_temporal_guard_material_relinked_idle.blend`, and multi-phase reimport previews.
+- Added `blender/reports/textures_dds.json`, updated `manifest.md`, corrected final 44.1 kHz hashes/wording in `audio/provenance.md`, and refreshed this handoff.
 
 No gameplay, `.gfx`, `.asset`, entity, sound definition, localisation, skill, spreadsheet, other package, or unrelated documentation file was edited. No HOI4 process was launched.
 
 ## Validation, blockers, and remaining work
 
-- Completed: lock/hash checks, live balance, geometry/weight audit, vanilla numeric calibration, receipt/source-hash verification, eight source-motion transfers, multi-phase semantic review, root-Z contact correction, io_pdx export, parser/reimport for every action, licensed audio sourcing/conversion, and exact installed counter definition/DDS/reference inspection.
-- Blockers: missing source-art/ImageGen authorization/provenance; missing full remesh task/response and actual credit reconciliation; missing 1024 PDX DDS textures/relinked material proof; missing bespoke counters/icon-artist approval; parent in-game consumer validation.
+- Passed: dependency environment verification with no findings; adapter health; geometry/weight audit; vanilla numeric calibration; receipt/source-hash verification; eight source-motion transfers; multi-phase semantic review; root-Z contact correction; 1024 PDX DDS construction/header/hash checks; material relink and visual inspection; io_pdx mesh export; material-relinked mesh/idle reimport; prior parser/reimport evidence for all eight exported actions; licensed audio container/hash verification; and exact installed counter definition/DDS/reference inspection.
+- Failed or blocked: `support_attack` and `retreat` have no dedicated provider-authored sources; source-art/ImageGen authorization/provenance is incomplete; full remesh task/response and actual credit reconciliation are missing; bespoke counters/icon-artist approval are absent because ImageGen was forbidden for this recovery; parent runtime wiring and in-game consumer validation remain outstanding.
+- No paid operation, ImageGen call, image-to-3D call, new base-model generation, manual motion, skeleton authoring, weighting, weapon attachment, semantic alias, gameplay edit, GFX edit, entity edit, or sound-definition edit occurred.
 - This package must not be called complete or wired as final until those blockers are resolved. No fallback-complete claim or semantic alias was used.
