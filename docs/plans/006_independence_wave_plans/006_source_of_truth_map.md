@@ -70,6 +70,8 @@ The 2026-08-27 IW-048 UDM package audit remains HOLD / fail-closed in `subagent_
 
 The 2026-08-27 IW-050 Komi package audit is committed as `228bed2a9` with handoff `subagent_handoffs/006_iw050_komi_package_audit_2026-08-27.md`; the package remains package-local and evidence-blocked because its portrait/flag provenance, central adapter/attestation/preflight/Join, current MCP evidence, and SCN-008 admission are unresolved. The companion symbol audit `subagent_handoffs/006_iw050_komi_symbol_research_2026_08_27.md` finds no defensible pre-1936/1936 neutral Komi flag or emblem and authorizes no new runtime asset; later ASSR references remain needs-user-review only.
 
+The 2026-08-27 bounded weighted-logic audit is recorded in `subagent_handoffs/006_event6_probability_audit_round2_2026-08-27.md`; allocator, event, decision, mission, and structural MCP qualification returned `ARTIFACT_MANIFEST_INTEGRITY_FAILED` with no artifacts, while the AI-strategy source was discovered with `no_weighted_surfaces`. No evaluate, sweep, compare, simulation, or balance patch is authorized, and all current quantitative probability conclusions remain unresolved.
+
 The committed 2026-08-26 IW-024 Banat force-contract prose follow-up is current bounded documentation evidence under `subagent_handoffs/006_iw024_banat_force_contract_prose_followup_2026-08-26.md` and commit `2005d92c6`; it records the p24 `industrial_security` profile, mask `1095`, and five pathway contract without changing roles, admission, or runtime behavior.
 
 This source-layout reconciliation is recorded in `subagent_handoffs/006_event6_docs_source_layout_reconcile_2026-08-26.md`; it supersedes only the startup-path status in earlier documentation cleanup and leaves dated evidence bodies unchanged.
