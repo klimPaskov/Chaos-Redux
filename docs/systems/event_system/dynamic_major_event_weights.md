@@ -33,10 +33,7 @@ Excluded entries:
 - disabled events in `global.disabled_events`
 - fired non-repeatable events
 - fired major events
-- locked Event 91 before the revolution unlock flag
-- Holy Realm when no valid refuge host exists
-- Fury when no selectable country exists
-- automatic Tensions Rising while its availability trigger fails
+- events whose shared automatic-pool availability resolver returns a dynamic unavailability reason, including locked Event 91, Holy Realm without a refuge host, Fury without a selectable country, unavailable Tensions Rising or White Peace, and unavailable Utopia, Brilliant Scientist, Secret Alliance, Cannibalism, Random Faction, Resources Found, Independence Wave, Africa Is One, or Black Plague states
 - hidden helper, news, follow-up, bootstrap, scenario wrapper, or permanent-unavailable entries because they are not registered in the random-pool arrays
 
 Repeatable events remain in the non-major count after firing while they remain active.
@@ -46,6 +43,7 @@ Repeatable events remain in the non-major count after firing while they remain a
 The event-system helpers live in `common/scripted_effects/chaosx_logic_effects.txt`. Their behavior and ownership are documented in this system file because they are private to random-event selection and major-weight pacing.
 
 - `evaluate_random_event_active_pool_candidate`
+- `evaluate_event_pool_candidate_unavailability`
 - `count_dynamic_major_weight_pool_events`
 - `calculate_dynamic_major_weight_gain`
 - `apply_dynamic_major_weight_gain_after_minor`
