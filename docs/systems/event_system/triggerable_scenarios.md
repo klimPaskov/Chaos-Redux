@@ -45,6 +45,7 @@ Type controls cycle scenario-specific type variables:
 - Coalition Unmasked: Regional Ring, Ideological Front, Great-Power Sponsor, Unlikely Coalition, or Random Coalition.
 - The Hunger Lines: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, or Convergence.
 - The Unbidden Muster: The Barracks Overflow, The Arsenal Draw, The Generals' Muster, or The Impossible Host.
+- Africa Is One: Africa Is One or World Is One.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -139,6 +140,22 @@ The Convergence profile uses a scenario contract only for the natural Chaos and 
 The public scenario name, descriptions, type labels, and intensity warnings never name the hidden leader, the Wendigo branch, or either terminal route. If the alternate host already exists, the later in-world convergence transaction may discover it through the normal guarded Event 014 route.
 
 The catalog workbook records SCN-010 at `Scenarios!A10:F10`. Its public name, five type labels, five type descriptions, and four intensity descriptions mirror the final in-game localisation. Its status is `Fully Functional`.
+
+### SCN-011: Africa Is One
+
+The live registry row for Africa Is One is `SCN-011`. The historical `SCN-008` reservation is occupied by Every Banner Rises, while raw slot `8` is Independence Wave, so Event 012 does not reuse either historical identity.
+
+The row exposes two types, Africa Is One and World Is One, and four shared intensity stops: Low, Medium, High, and Maximum. Low supplies a limited emergency force and modest opening deltas, Medium supplies a regional package, High supplies a large force and broader deltas, and Maximum supplies the strongest opening package.
+
+On a fresh host, the launcher calls Event 012's manual preflight, reuses the weighted African-capital selector and frozen-contact builder, and queues the canonical `chaosx.nr12.1` entry for the commit barrier. On an existing host, it resolves the committed `event_target:africa_host` in place and applies the one-shot opening without creating a second host or tag.
+
+Africa Is One opens the continental systems and queues the existing Scramble response callback. World Is One initializes the existing world-order package and prepares the terminal continental-campaign route, but it does not force `world_end`, final proof, or terminal identity; normal package, proof, settlement, and identity gates remain authoritative.
+
+The source contract is implemented in `common/scripted_effects/012_africa_triggerable_scenario_effects.txt` and its Event 012 host helpers, registry dispatch, launch trigger, entry event, and localisation consumers. This source status is not a live-game completion claim.
+
+Read-only Event MCP inspection and render returned partial artifacts because large workspace helper and lifecycle projections were deferred. Shared GUI inspection reported aggregate workspace diagnostics and visible overlaps, and GUI render returned an MCP response-truncation warning, so those artifacts are not clean scenario acceptance evidence. Direct weighted-pool inspection reported `poolComplete=false` with zero discoverable candidates, and the dedicated `chaosx_ai_probability_auditor` route was not callable in this environment. No live in-game or save-state launch evidence is recorded here.
+
+The detailed artifact references and the remaining Event 012 asset/live blockers are recorded in [`docs/plans/012_africa_plans/subagent_handoffs/012_africa_manual_scenario_implementation_2026-08-26.md`](../../plans/012_africa_plans/subagent_handoffs/012_africa_manual_scenario_implementation_2026-08-26.md).
 
 ### SCN-013: The Unbidden Muster
 

@@ -410,6 +410,23 @@ africa_manual_event_is_available = {
 	}
 }
 
+# Any scope. The manual scenario uses the ordinary host selection contract when
+# Event 012 has not fired, while an existing committed host can replay the
+# scenario-specific opening without creating a second host or global target.
+africa_triggerable_scenario_can_launch = {
+	NOT = { has_global_flag = africa_triggerable_scenario_launch_active }
+	NOT = { has_global_flag = africa_triggerable_scenario_launched }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		AND = {
+			has_global_flag = africa_event_active
+			NOT = { has_global_flag = africa_event_resolved }
+			africa_has_current_host = yes
+		}
+		africa_manual_event_is_available = yes
+	}
+}
+
 # COUNTRY scope.
 africa_is_current_host = {
 	has_country_flag = africa_unifier_host
@@ -431,6 +448,17 @@ africa_has_current_host = {
 		has_country_flag = africa_host_commit_completed
 		has_variable = africa_host_generation
 	}
+}
+
+# COUNTRY scope on the committed host. This deliberately avoids the
+# africa_is_current_host ROOT comparison because the shared scenario window
+# can enter the host through event_target:africa_host from another country.
+africa_triggerable_scenario_host_scope_is_valid = {
+	has_country_flag = africa_unifier_host
+	has_country_flag = africa_host_commit_completed
+	has_variable = africa_host_generation
+	has_global_flag = africa_event_active
+	has_event_target = africa_host
 }
 
 # COUNTRY scope on a registered member or action target.

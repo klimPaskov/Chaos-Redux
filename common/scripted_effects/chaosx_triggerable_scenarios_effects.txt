@@ -51,6 +51,10 @@ initialize_triggerable_scenarios_settings = {
 		limit = { NOT = { has_variable = triggerable_scenarios_infantry_spawn_type } }
 		set_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario.type_conventional_flood }
 	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_africa_type } }
+		set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.africa_is_one }
+	}
 	independence_wave_scenario_initialize_settings = yes
 	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
@@ -87,6 +91,14 @@ triggerable_scenarios_initialize_registry = {
 	add_to_array = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.soviet_collapse_name
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.africa_is_one
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.africa_is_one_name
 	}
 	add_to_array = {
 		array = global.triggerable_scenario_all_ids
@@ -237,6 +249,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.cannibalism
 		}
 		add_to_array = {
@@ -305,6 +325,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.cannibalism_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -399,6 +427,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.black_plague_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -545,6 +581,14 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.cannibalism_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.africa_is_one
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.africa_is_one_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -681,6 +725,11 @@ select_triggerable_scenario_black_plague = {
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.black_plague }
 }
 
+select_triggerable_scenario_africa = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one }
+}
+
 set_triggerable_scenario_intensity_low = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
@@ -805,6 +854,14 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario.maximum_type }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one } }
+		subtract_from_variable = { triggerable_scenarios_africa_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_africa_type < constant:triggerable_scenario_africa_type.africa_is_one } }
+			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.world_is_one }
+		}
+	}
 }
 
 triggerable_scenario_type_next = {
@@ -879,6 +936,14 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_infantry_spawn_type > constant:infantry_spawn_scenario.maximum_type } }
 			set_variable = { triggerable_scenarios_infantry_spawn_type = constant:infantry_spawn_scenario.minimum_type }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one } }
+		add_to_variable = { triggerable_scenarios_africa_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_africa_type > constant:triggerable_scenario_africa_type.world_is_one } }
+			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.africa_is_one }
 		}
 	}
 }
@@ -986,6 +1051,16 @@ trigger_selected_chaosx_scenario = {
 		set_variable = { independence_wave_scenario_queued_belligerence_rule = triggerable_scenarios_independence_wave_belligerence_rule }
 		set_country_flag = independence_wave_scenario_launch_queued
 		country_event = { id = chaosx.triggerable_scenarios.8 days = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.africa_is_one
+				compare = equals
+			}
+		}
+		africa_triggerable_scenario_launch_selected = yes
 	}
 	else_if = {
 		limit = {

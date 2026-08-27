@@ -480,7 +480,7 @@ All current entries can be found in the event catalog spreadsheet.
 | `SCN-008` | Every Banner Rises | Launches the Event 006 frozen release transaction with selected political and war rules. |
 | `SCN-009` | Coalition Unmasked | Builds and reveals an Event 011 coalition around the current player. |
 | `SCN-010` | The Hunger Lines | Launches selected Event 014 crisis profiles. |
-| `SCN-011` | Africa Is One | Reserved placeholder that launches a neutral placeholder event. |
+| `SCN-011` | Africa Is One | Opens the Event 012 continental systems from a weighted African-capital host. Africa Is One queues the Scramble response; World Is One prepares the existing terminal-campaign route without forcing `world_end` or final proof. |
 | `SCN-012` | Black Plague Unbound | Seeds plague outbreaks, Rat Nations, and the Rat King without granting the terminal evolution. |
 | `SCN-013` | The Unbidden Muster | Launches the Event 019 formation crisis with conventional, specialist, claimant, or nonhuman profiles. |
 

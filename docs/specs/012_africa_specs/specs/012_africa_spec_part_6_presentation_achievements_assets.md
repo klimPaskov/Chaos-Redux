@@ -778,7 +778,7 @@ Final review must preserve and align:
 - event detail wording
 - evolution entries
 - super-event entries
-- triggerable scenario status if one is later approved
+- the live `SCN-011` triggerable-scenario status: `Africa Is One` and `World Is One` types with Low, Medium, High, and Maximum intensity stops; forced launches remain outside normal achievement acceptance
 
 The planning package does not invent a second scenario ID or cluster ID. The workbook remains owned by the spreadsheet worker.
 

@@ -74,3 +74,37 @@ country_event = {
 	hidden = yes
 	is_triggered_only = yes
 }
+
+country_event = {
+	id = chaosx.triggerable_scenarios.11
+	title = chaosx.triggerable_scenarios.11.t
+	desc = chaosx.triggerable_scenarios.11.d
+	picture = GFX_news_event_012_africa_africa_is_one
+	is_triggered_only = yes
+
+	trigger = {
+		africa_is_current_host = yes
+		has_country_flag = africa_triggerable_scenario_notification_pending
+	}
+
+	immediate = {
+		if = {
+			limit = { has_country_flag = africa_triggerable_scenario_world_order_initialization_pending }
+			africa_initialize_scramble_and_world_packages = yes
+			africa_refresh_bounded_external_target_roster = yes
+			# The shared initializer clears the route to its neutral package
+			# starting point. Reassert the selected World Is One branch after that
+			# package census so the terminal-campaign controls are live immediately.
+			set_variable = { africa_world_order_route = constant:africa_world_order_route.terminal_continental_campaign }
+			set_variable = { africa_current_phase = constant:africa_action_phase.terminal }
+			set_country_flag = africa_world_terminal_campaign_active
+			clr_country_flag = africa_triggerable_scenario_world_order_initialization_pending
+		}
+	}
+
+	option = {
+		name = chaosx.triggerable_scenarios.11.a
+		ai_chance = { base = 100 }
+		clr_country_flag = africa_triggerable_scenario_notification_pending
+	}
+}

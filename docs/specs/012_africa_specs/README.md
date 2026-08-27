@@ -27,6 +27,7 @@ This package contains accepted design, matrix criteria, planning, and handoff ma
 - 44 difficult achievement concepts
 - 64 AI profiles
 - 239 asset and animation work items
+- 1 triggerable scenario row (`SCN-011 Africa Is One`) with two types and four intensity stops
 - 9 installed model packages, including the shared armoured-elephant package
 - 18 installed frame-animation packages
 - 5 architecture, route, and state-flow diagrams
