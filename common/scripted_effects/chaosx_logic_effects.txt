@@ -60,6 +60,7 @@ initialize_event_system = {
     clear_array = global.events_log_events_view_unique_entries
     clear_array = global.events_log_events_view_weight_entries
 	clear_array = global.events_log_events_view_chaos_level_entries
+	clear_array = global.events_log_events_view_unavailability_reason_entries
     clear_array = global.events_log_open_event_detail_entries
 	clear_array = global.events_log_open_event_detail_chaos_level_entries
 	clear_array = global.events_log_open_event_detail_secondary_actor_entries
@@ -569,90 +570,249 @@ get_event_cap = {
     }
 }
 
+# Resolve the first dynamic reason an event cannot enter the automatic pool.
+# Input: temp variables event_id, event_required_chaos_level, and
+# event_required_chaos_level_is_met_value. The caller resolves the event
+# metadata first.
+# Output: event_pool_candidate_unavailability_reason and
+# event_required_chaos_level_is_met_value.
+# Disabled and already-fired unique events are intentionally outside this
+# resolver because the Events tab represents them as numeric zero states.
+evaluate_event_pool_candidate_unavailability = {
+	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
+	set_temp_variable = { event_pool_candidate_independence_context_injected = 0 }
+	if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			NOT = { check_variable = { event_cluster_liberations_member_availability_context > 0 } }
+		}
+		set_temp_variable = { event_pool_candidate_saved_cluster_id = event_cluster_id }
+		set_temp_variable = { event_pool_candidate_saved_member_id = event_cluster_member_event_id }
+		set_temp_variable = { event_cluster_id = constant:event_cluster_id.liberations }
+		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
+		set_temp_variable = { event_cluster_liberations_member_availability_context = 1 }
+		set_temp_variable = { event_pool_candidate_independence_context_injected = 1 }
+	}
+	if = {
+		limit = { check_variable = { event_required_chaos_level_is_met_value = 0 } }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.chaos_level }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:communism_spread_event_log.event_id }
+			NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.world_revolution }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:holy_realm_event_log.event_id }
+			NOT = { holy_realm_has_valid_refuge_host = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.holy_realm_refuge }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:fury_event_log.event_id }
+			NOT = { any_country = { fury_can_be_selected = yes } }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.fury_target }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:tensions_rising_event_log.event_id }
+			NOT = { is_tensions_rising_automatic_event_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.tensions_world_tension }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:white_peace_event_log.event_id }
+			NOT = { is_white_peace_automatic_event_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.white_peace_pair }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:utopia_manifesto_event.id }
+			NOT = { utopia_manifesto_automatic_event_is_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.utopia_host }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:brilliant_scientist_event.id } }
+		if = {
+			limit = { has_global_flag = brilliant_scientist_event_resolved }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_resolved }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_world_end }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_non_dormant_kruger_holder = yes }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_kruger_holder }
+		}
+		else_if = {
+			limit = { brilliant_scientist_has_pending_opening_transaction = yes }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_opening_pending }
+		}
+		else_if = {
+			limit = { NOT = { brilliant_scientist_has_any_eligible_host = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.brilliant_scientist_host }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:secret_alliance_event.id } }
+		if = {
+			limit = { NOT = { secret_alliance_target_is_valid = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_target }
+		}
+		else_if = {
+			limit = { has_global_flag = secret_alliance_active }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_active }
+		}
+		else_if = {
+			limit = { has_global_flag = secret_alliance_postwar_bloc_active }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_postwar }
+		}
+		else_if = {
+			limit = { has_global_flag = secret_alliance_scenario_launch_in_progress }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_launch }
+		}
+		else_if = {
+			limit = { NOT = { secret_alliance_scheduled_callbacks_are_drained = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_callbacks }
+		}
+		else_if = {
+			limit = { NOT = { secret_alliance_has_founder_pool_for_root = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.secret_alliance_founders }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:cannibalism_event.id } }
+		if = {
+			limit = { has_global_flag = cannibalism_system_started }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_started }
+		}
+		else_if = {
+			limit = { has_global_flag = cannibalism_global_victory }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_victory }
+		}
+		else_if = {
+			limit = { has_global_flag = cannibalism_cleanup_complete }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_cleanup }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_world_end }
+		}
+		else_if = {
+			limit = { NOT = { cannibalism_has_valid_origin_available = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.cannibalism_origin }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:random_faction_event.id }
+			NOT = { random_faction_has_dispatchable_context = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.random_faction_context }
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:resources_found_event.id }
+			NOT = { resources_found_is_eligible_discovery_owner = yes }
+		}
+		if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.resources_found_world_end }
+		}
+		else = {
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.resources_found_field }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.independence_wave_capacity }
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:africa_event.id } }
+		if = {
+			limit = { has_global_flag = africa_event_active }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_active }
+		}
+		else_if = {
+			limit = { has_global_flag = africa_event_resolved }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_resolved }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_world_end }
+		}
+		else_if = {
+			limit = { NOT = { africa_has_any_eligible_host = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.africa_host }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { event_id = constant:black_plague_identity.event_id } }
+		if = {
+			limit = { has_global_flag = black_plague_system_started }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_started }
+		}
+		else_if = {
+			limit = { has_global_flag = black_plague_terminal_takeover_complete }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_terminal }
+		}
+		else_if = {
+			limit = { has_global_flag = world_end }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_world_end }
+		}
+		else_if = {
+			limit = { NOT = { black_plague_has_valid_origin = yes } }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_origin }
+		}
+	}
+
+	if = {
+		limit = { check_variable = { event_pool_candidate_independence_context_injected > 0 } }
+		set_temp_variable = { event_cluster_id = event_pool_candidate_saved_cluster_id }
+		set_temp_variable = { event_cluster_member_event_id = event_pool_candidate_saved_member_id }
+		set_temp_variable = { event_cluster_liberations_member_availability_context = 0 }
+	}
+}
+
 # Check whether event_id is part of the current automatic random-event pool.
 evaluate_random_event_active_pool_candidate = {
 	# Input: temp variable event_id
 	# Output: temp variable event_active_pool_candidate_is_valid
 	set_temp_variable = { event_active_pool_candidate_is_valid = 1 }
 	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
-	set_temp_variable = { independence_wave_direct_availability_context_injected = 0 }
-	if = {
-		limit = {
-			check_variable = { event_id = constant:independence_wave_event.id }
-			NOT = { check_variable = { event_cluster_liberations_member_availability_context > 0 } }
-		}
-		set_temp_variable = { independence_wave_direct_availability_saved_cluster_id = event_cluster_id }
-		set_temp_variable = { independence_wave_direct_availability_saved_member_id = event_cluster_member_event_id }
-		set_temp_variable = { event_cluster_id = constant:event_cluster_id.liberations }
-		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
-		set_temp_variable = { event_cluster_liberations_member_availability_context = 1 }
-		set_temp_variable = { independence_wave_direct_availability_context_injected = 1 }
-	}
 	get_event_type = yes
 	get_event_required_chaos_level = yes
 	evaluate_event_required_chaos_level = yes
+	if = {
+		limit = {
+			NOT = { is_in_array = { global.disabled_events = event_id } }
+			NOT = {
+				AND = {
+					is_in_array = { global.fired_events = event_id }
+					NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+				}
+			}
+		}
+		evaluate_event_pool_candidate_unavailability = yes
+	}
 
 	if = {
 		limit = {
 			OR = {
-				check_variable = { event_required_chaos_level_is_met_value = 0 }
+				check_variable = { event_pool_candidate_unavailability_reason > constant:event_system_event_unavailability_reason.none }
 				is_in_array = { global.disabled_events = event_id }
-				AND = {
-					check_variable = { event_id = 91 }
-					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
-				}
-				AND = {
-					check_variable = { event_id = 3 }
-					NOT = { holy_realm_has_valid_refuge_host = yes }
-				}
-				AND = {
-					check_variable = { event_id = 7 }
-					NOT = { any_country = { fury_can_be_selected = yes } }
-				}
-				AND = {
-					check_variable = { event_id = constant:tensions_rising_event_log.event_id }
-					NOT = { is_tensions_rising_automatic_event_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:white_peace_event_log.event_id }
-					NOT = { is_white_peace_automatic_event_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:utopia_manifesto_event.id }
-					NOT = { utopia_manifesto_automatic_event_is_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:brilliant_scientist_event.id }
-					NOT = { brilliant_scientist_automatic_event_is_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:doctor_wu_event.id }
-					NOT = { doctor_wu_automatic_event_is_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:secret_alliance_event.id }
-					NOT = { secret_alliance_automatic_event_is_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:cannibalism_event.id }
-					NOT = { cannibalism_automatic_event_is_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:random_faction_event.id }
-					NOT = { random_faction_has_dispatchable_context = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:resources_found_event.id }
-					NOT = { resources_found_is_eligible_discovery_owner = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:independence_wave_event.id }
-					NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
-				}
-				AND = {
-					check_variable = { event_id = constant:africa_event.id }
-					NOT = { africa_automatic_event_is_available = yes }
-				}
 				AND = {
 					is_in_array = { global.fired_events = event_id }
 					NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
@@ -660,12 +820,6 @@ evaluate_random_event_active_pool_candidate = {
 			}
 		}
 		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
-	}
-	if = {
-		limit = { check_variable = { independence_wave_direct_availability_context_injected > 0 } }
-		set_temp_variable = { event_cluster_id = independence_wave_direct_availability_saved_cluster_id }
-		set_temp_variable = { event_cluster_member_event_id = independence_wave_direct_availability_saved_member_id }
-		set_temp_variable = { event_cluster_liberations_member_availability_context = 0 }
 	}
 }
 
@@ -769,7 +923,7 @@ apply_dynamic_major_weight_gain_after_minor = {
 			}
 			else_if = {
 				limit = {
-					check_variable = { event_id = 91 }
+					check_variable = { event_id = constant:communism_spread_event_log.event_id }
 					NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
 				}
 				set_temp_variable = { new_weight = 0 }

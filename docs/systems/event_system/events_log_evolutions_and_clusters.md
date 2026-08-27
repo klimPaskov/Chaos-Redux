@@ -83,6 +83,8 @@ Events-list metadata arrays:
 - `global.events_log_events_view_enabled_entries`
 - `global.events_log_events_view_unique_entries`
 - `global.events_log_events_view_weight_entries`
+- `global.events_log_events_view_chaos_level_entries`
+- `global.events_log_events_view_unavailability_reason_entries`
 
 The row id/type payload reuses:
 - `global.events_log_view_event_id_entries`

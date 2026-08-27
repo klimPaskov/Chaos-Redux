@@ -30,8 +30,9 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - If Event 17's stored leader no longer exists, the selected minor remains visible and neutral result text states that the country which led the faction at accession no longer exists. If no leader has been bound yet, the row uses an unresolved result instead of substituting a later live faction.
 
 ## Events tab behavior
-- Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event and as `N/A` when a normal eligibility gate such as the event Chaos level is not met.
-- Event rows show `ID`, `Type`, `Weight`, `Fired`, and enabled state on the top line; the event name is kept alone on the second line.
+- Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event and as `N/A` when a normal automatic-pool eligibility gate is not met.
+- Event rows show `ID`, `Type`, `Weight`, `Chaos lvl`, `Fired`, and enabled state on the top line; the event name is kept alone on the second line.
+- Hovering a normal event row shows only `Open event details`; hovering an N/A row adds one red second line explaining the first unmet automatic-pool requirement.
 - Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`, and one exact filter for each of the six event Chaos levels.
 - Sort options: `By Event ID`, `By Fired`, `By Weight`. `By Fired` hides events with zero logged firings.
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
@@ -42,7 +43,9 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - `global.events_log_events_view_chaos_level_entries` carries the registered internal tier beside each rebuilt Events-tab row.
 - `global.events_log_open_event_detail_chaos_level_entries` carries the same value into the movable Event Details window.
 - Event Details presents `Chaos lvl: <number>` with the existing colour and name for that tier.
-- A row below its required tier shows `N/A` for weight and a tooltip such as `Requires Gathering Storm` without changing the enabled checkbox.
+- A row below its required tier shows `N/A` for weight and a red tooltip line such as `Requires Gathering Storm` without changing the enabled checkbox.
+- The shared `evaluate_event_pool_candidate_unavailability` resolver owns the ordered automatic-pool reason contract used by both the Events tab and random event selection. Its current reasons cover Chaos level, World Revolution unlock, Holy Realm refuge host, Fury target, Tensions world tension, White Peace pair, Utopia host, Brilliant Scientist lifecycle and host gates, Secret Alliance target and lifecycle gates, Cannibalism lifecycle and origin gates, Random Faction dispatch context, Resources Found discovery fields, Independence Wave liberation capacity, Africa Is One lifecycle and host gates, and Black Plague lifecycle and origin gates.
+- Disabled events and already-fired unique events remain weight `0` and intentionally do not receive an N/A reason because they are state-controlled rather than dynamically unavailable.
 - The Chaos-level filters compare the aligned tier entry, so sorting and filtering preserve the event-to-level association.
 - Normal Event Details and bulk manual firing respect the level, while Force Trigger Mode may bypass it.
 
@@ -103,6 +106,7 @@ Events-tab metadata arrays:
 - `global.events_log_events_view_unique_entries`
 - `global.events_log_events_view_weight_entries`
 - `global.events_log_events_view_chaos_level_entries`
+- `global.events_log_events_view_unavailability_reason_entries`
 
 Source history arrays:
 - `global.events_log_history_sequence_entries`
@@ -179,6 +183,8 @@ Derived evolution view arrays:
 - `GetEventsLogHistoryTypeView`
 - `GetEventsLogEventTypeView`
 - `GetEventsLogHistoryEventName`
+- `GetEventsLogEventChaosLevelColored`
+- `GetEventsLogEventAvailabilityReason`
 - `GetEventsLogFilterType`
 - `GetEventsLogSortMode`
 - `GetEventsLogSortOrder`
@@ -194,7 +200,7 @@ These are defined in:
 
 ## Interactions with existing systems
 - `common/scripted_effects/chaosx_events_log_effects.txt` owns Event Logs history/evolution record insertion, actor sanitizing, default actor mapping, popup state, tab rebuilds, shared event-details rebuilds, event-detail evolution preview rows, and the registered world-end registry/view state.
-- `common/scripted_effects/chaosx_logic_effects.txt` still owns random-event selection, type handling, timers, and the fired-event handlers that call the Event Logs recorders.
+- `common/scripted_effects/chaosx_logic_effects.txt` still owns random-event selection, type handling, timers, and the fired-event handlers that call the Event Logs recorders. It also owns the shared automatic event-pool availability resolver consumed by both random selection and the Events tab rebuild.
 - `common/scripted_effects/chaosx_settings_effects.txt` still owns settings controls and event firing helpers, but should not collect new Event Logs history/evolution display logic.
 - Scripted GUI click routing stays in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`.
 - Event-name localisation reuses existing `chaosx.event_name.*` keys.

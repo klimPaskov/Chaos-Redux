@@ -73,11 +73,11 @@ Triggerable scenarios remain separate from normal event eligibility and do not r
 
 ## Event Details And Events Tab
 
-Event Details shows the exact numeric Chaos level with its existing tier colour, while the trigger tooltip names the required tier when the gate is locked.
+Event Details shows the exact numeric Chaos level with its existing tier colour, while an Events-tab row shows `Chaos lvl: <number>` beside Weight on its top line.
 
 The Events tab keeps the enabled checkbox independent from Chaos availability.
 
-When the current tier is too low, the row shows `N/A` instead of selectable weight and its details tooltip reports the required tier name.
+When the current tier is too low, the row shows `N/A` instead of selectable weight and its hover tooltip reports the required tier name in red. Other automatic-pool gates use the same hover line to report their first unmet requirement.
 
 The existing Events-tab filter cycles through the original event filters and six exact Chaos-level filters.
 

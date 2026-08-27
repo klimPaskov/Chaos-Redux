@@ -4304,6 +4304,7 @@ rebuild_events_log_events_view = {
     clear_array = global.events_log_events_view_unique_entries
     clear_array = global.events_log_events_view_weight_entries
 	clear_array = global.events_log_events_view_chaos_level_entries
+	clear_array = global.events_log_events_view_unavailability_reason_entries
 
     clear_array = temp_events_log_events_source_event_id_entries
     clear_array = temp_events_log_events_source_event_type_entries
@@ -4312,6 +4313,7 @@ rebuild_events_log_events_view = {
     clear_array = temp_events_log_events_source_unique_entries
     clear_array = temp_events_log_events_source_weight_entries
 	clear_array = temp_events_log_events_source_chaos_level_entries
+	clear_array = temp_events_log_events_source_unavailability_reason_entries
 
     set_temp_variable = { events_log_events_all_count = global.all_events^num }
     for_loop_effect = {
@@ -4465,62 +4467,33 @@ rebuild_events_log_events_view = {
                 }
                 get_event_weight = yes
                 set_temp_variable = { events_log_events_live_weight = event_weight }
-            }
+			}
 			evaluate_event_required_chaos_level = yes
-			if = {
-				limit = { check_variable = { event_required_chaos_level_is_met_value = 0 } }
-				set_temp_variable = { events_log_events_live_weight = -1 }
-			}
-
-            if = {
-                limit = {
-                    check_variable = { event_id = 91 }
-                    NOT = { has_global_flag = communism_spread_world_revolution_unlocked }
-                }
-                set_temp_variable = { events_log_events_live_weight = -1 }
-            }
+			set_temp_variable = { events_log_events_unavailability_reason = constant:event_system_event_unavailability_reason.none }
 			if = {
 				limit = {
-					check_variable = { event_id = 3 }
-					NOT = { holy_realm_has_valid_refuge_host = yes }
+					check_variable = { events_log_events_is_enabled > 0 }
+					NOT = {
+						AND = {
+							check_variable = { events_log_events_unique_flag > 0 }
+							check_variable = { events_log_events_fired_count > 0 }
+						}
+					}
 				}
-				set_temp_variable = { events_log_events_live_weight = -1 }
-			}
-			if = {
-				limit = {
-					check_variable = { event_id = constant:utopia_manifesto_event.id }
-					NOT = { utopia_manifesto_automatic_event_is_available = yes }
+				evaluate_event_pool_candidate_unavailability = yes
+				set_temp_variable = { events_log_events_unavailability_reason = event_pool_candidate_unavailability_reason }
+				if = {
+					limit = { check_variable = { events_log_events_unavailability_reason > constant:event_system_event_unavailability_reason.none } }
+					set_temp_variable = { events_log_events_live_weight = -1 }
 				}
-				set_temp_variable = { events_log_events_live_weight = -1 }
 			}
 			if = {
 				limit = {
-					check_variable = { event_id = constant:brilliant_scientist_event.id }
-					NOT = { brilliant_scientist_automatic_event_is_available = yes }
+					check_variable = { events_log_events_live_weight < 0 }
+					check_variable = { events_log_events_unavailability_reason = constant:event_system_event_unavailability_reason.none }
 				}
-				set_temp_variable = { events_log_events_live_weight = -1 }
+				set_temp_variable = { events_log_events_unavailability_reason = constant:event_system_event_unavailability_reason.unknown }
 			}
-			if = {
-				limit = {
-					check_variable = { event_id = constant:secret_alliance_event.id }
-					NOT = { secret_alliance_automatic_event_is_available = yes }
-				}
-				set_temp_variable = { events_log_events_live_weight = -1 }
-			}
-			if = {
-				limit = {
-					check_variable = { event_id = constant:cannibalism_event.id }
-					NOT = { cannibalism_automatic_event_is_available = yes }
-				}
-				set_temp_variable = { events_log_events_live_weight = -1 }
-			}
-            if = {
-                limit = {
-                    check_variable = { event_id = constant:tensions_rising_event_log.event_id }
-                    NOT = { is_tensions_rising_automatic_event_available = yes }
-                }
-                set_temp_variable = { events_log_events_live_weight = -1 }
-            }
 
             add_to_array = {
                 array = temp_events_log_events_source_event_id_entries
@@ -4550,7 +4523,11 @@ rebuild_events_log_events_view = {
 				array = temp_events_log_events_source_chaos_level_entries
 				value = event_required_chaos_level
 			}
-        }
+			add_to_array = {
+				array = temp_events_log_events_source_unavailability_reason_entries
+				value = events_log_events_unavailability_reason
+			}
+		}
     }
 
     set_temp_variable = { events_log_events_source_count = temp_events_log_events_source_event_id_entries^num }
@@ -4667,6 +4644,10 @@ rebuild_events_log_events_view = {
 			add_to_array = {
 				array = global.events_log_events_view_chaos_level_entries
 				value = temp_events_log_events_source_chaos_level_entries^events_log_events_best_index
+			}
+			add_to_array = {
+				array = global.events_log_events_view_unavailability_reason_entries
+				value = temp_events_log_events_source_unavailability_reason_entries^events_log_events_best_index
 			}
 
             set_variable = { temp_events_log_events_source_event_id_entries^events_log_events_best_index = -1 }
