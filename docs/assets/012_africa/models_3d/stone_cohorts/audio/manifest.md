@@ -2,7 +2,7 @@
 
 Package date: 2026-08-06.
 
-All originals are preserved under `audio/source/`. Detailed source-page and direct-download evidence is in `audio/evidence/source_research.md`.
+Revalidated again on 2026-08-27. All originals are preserved under `audio/source/`. Detailed source-page and direct-download evidence is in `audio/evidence/source_research.md`; the current codec/hash receipt is `audio/evidence/ffprobe_revalidation_2026-08-27.json`.
 
 ## Source ledger
 
@@ -13,16 +13,15 @@ All originals are preserved under `audio/source/`. Detailed source-page and dire
 
 ## Derived ledger
 
-Every WAV is mono 44,100 Hz PCM 32-bit float. Each derivative was mechanically trimmed from the stated source interval, normalized with FFmpeg `loudnorm=I=-20:TP=-2:LRA=7`, given a 0.03-second entry fade and 0.10-second exit fade, resampled, and channel-converted. No synthesis, generation, pitch alteration, layering, or invented audio was used.
+Every WAV was mechanically converted from the retained derivative to signed 16-bit PCM (`pcm_s16le`), 44,100 Hz, mono with metadata removed. The earlier trim, loudness normalization, and fades remain source-derived; no synthesis, generation, pitch alteration, layering, or invented audio was used. FFprobe revalidation reports `pcm_s16le`, 44,100 Hz, mono, 16 bits for every file.
 
 | Role / file | Source excerpt | Semantic consumer | Synchronization | SHA-256 |
 |---|---|---|---|---|
-| `chaosx_stone_cohorts_select.wav` | `quern_stones.ogg` 1.0–2.4 s | `selection/acknowledgement` | one-shot | `9e57db53e3f6b73f099d72c54f2d461207765941ccfc76b840d85668023251eb` |
-| `chaosx_stone_cohorts_idle.wav` | `quern_stones.ogg` 10.0–12.2 s | `chaosx_stone_idle` | frame 1 entry accent; 1–61 action | `729f14dede6b178678544bbd880a5c71498393f034c1c6684ef3c778cb5d4e49` |
-| `chaosx_stone_cohorts_move.wav` | `quern_stones.ogg` 20.0–21.6 s | `chaosx_stone_move` | frame 16; 1–31 loop | `9ecc737021ea144c452786879909f98ab422d62d6312468a8c8ab7401b810743` |
-| `chaosx_stone_cohorts_attack.wav` | `metal_clanging.ogg` 4.0–5.4 s | `chaosx_stone_attack` | frame 21; 1–41 action | `fa3dbe874bbccf33999071d479697eab4ceb8997562af230a8633f750c5cec2b` |
-| `chaosx_stone_cohorts_collapse_recovery.wav` | `metal_clanging.ogg` 8.0–9.5 s | `chaosx_stone_collapse_recovery` | frame 16; 1–31 action | `f44a0121d14af7a6ef28cc3caa538fd12c93e3518ea699ad3c78e35671c53b8a` |
-| `chaosx_stone_cohorts_death.wav` | `quern_stones.ogg` 45.0–47.2 s | `chaosx_stone_death` | frame 24; 1–46 action | `7ffbe2820f00621a1db3743edc6518b7f71f65da8b2e19906ea5e7f504c1d842` |
+| `chaosx_stone_cohorts_select.wav` | `quern_stones.ogg` 1.0–2.4 s | `selection/acknowledgement` | one-shot; exact engine selection consumer unresolved | `f31f41c0d58a037387ea73e17a9ba7a8d24b66963457523da0baffd837d2eaf0` |
+| `chaosx_stone_cohorts_idle.wav` | `quern_stones.ogg` 10.0–12.2 s | `chaosx_stone_idle` | provisional; resync to accepted provider action | `d18fb5226e6aecc5f5633376069dac7c518ed603409035405fe59905e9c0caad` |
+| `chaosx_stone_cohorts_move.wav` | `quern_stones.ogg` 20.0–21.6 s | `chaosx_stone_move` | provisional; resync to accepted provider action | `dcd1815b6d900e47e2bd574aed3438000f497c70342bd9be2949ca49211d2345` |
+| `chaosx_stone_cohorts_attack.wav` | `metal_clanging.ogg` 4.0–5.4 s | `chaosx_stone_attack` | provisional; resync to accepted provider action | `102b77c251e5056458d5e062a6734a43c1981976f1458f50f1e55912b85326cf` |
+| `chaosx_stone_cohorts_collapse_recovery.wav` | `metal_clanging.ogg` 8.0–9.5 s | `chaosx_stone_collapse_recovery` | provisional; resync to accepted provider action | `4b76b3c3342c17fd286d9c67c0c671c3aa81fe334456d2000ec54afd2709421e` |
+| `chaosx_stone_cohorts_death.wav` | `quern_stones.ogg` 45.0–47.2 s | `chaosx_stone_death` | provisional; resync to accepted provider action | `2c28148dc2bd58125fda0e2b3f594fb33cbe50a1153d20227e84ddb94e2fbe13` |
 
-The source-to-runtime hashes above were recomputed after all source copies and conversions; every selected source copy matches its recorded source hash and every derived file matches its final recorded hash.
-
+The source and derived hashes above were recomputed after conversion and matched on 2026-08-27. Source licensing and files pass. The actual installed vanilla land-unit selection consumer is the global `select_army` soundeffect in `sound/soundeffects.asset`; no per-subunit selection hook was found in the inspected unit/entity surface. The existing `scoped_sound_effect = "chaosx_stone_cohorts_select_sfx"` call is a formation-creation cue, not unit-selection evidence. Package status remains `blocked` for the mandatory selection role and because action synchronization must be rebuilt against accepted provider actions; the legacy locally authored action timings are not valid synchronization evidence.
