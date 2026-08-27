@@ -59,7 +59,7 @@ The FER AI weight remains `constant:independence_wave_decision_ai.standard`; no 
 
 ## Localisation and tooltip gaps
 
-The new key has one source reference and one English definition, and the touched localisation file retains its UTF-8 BOM. The package continues to use the established base custom-cost key convention without adding blocked or tooltip sibling keys; whether those siblings are needed should be decided with engine evidence rather than inferred from this narrow repair.
+The new key has one source reference and one English definition, and the touched localisation file retains its UTF-8 BOM. The FER custom-cost key now has matching `_tooltip` and `_blocked` siblings using the same dynamic transport selectors, so the normal, hover, and blocked cost surfaces remain icon-first and consistent.
 
 ## Cleanup and exploit-risk notes
 
