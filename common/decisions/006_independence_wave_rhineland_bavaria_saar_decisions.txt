@@ -584,13 +584,19 @@ independence_wave_ajx_saar_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { is_independence_wave_ajx_package = yes }
+				NOT = { has_country_flag = independence_wave_iw_010_setup_complete }
 				has_stable_independence_wave_ajx_compact = yes
 				capital_scope = { NOT = { is_controlled_by = ROOT } }
 			}
 		}
 		cancel_effect = {
 			if = {
-				limit = { is_independence_wave_ajx_package = yes has_stable_independence_wave_ajx_compact = yes }
+				limit = {
+					is_independence_wave_ajx_package = yes
+					has_country_flag = independence_wave_iw_010_setup_complete
+					has_stable_independence_wave_ajx_compact = yes
+					capital_scope = { is_controlled_by = ROOT }
+				}
 				set_country_flag = independence_wave_ajx_compact_crisis_resolved
 			}
 			else_if = {

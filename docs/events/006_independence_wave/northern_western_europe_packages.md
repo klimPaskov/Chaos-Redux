@@ -874,8 +874,10 @@ Two player-visible values begin at `30` and stabilize at `60`:
 Until both values reach the stable threshold, AJX carries
 `ajx_exposed_saar_industrial_compact`. Reaching the threshold swaps it for
 `ajx_balanced_saar_industrial_compact` and safely resolves the `480`-day
-founding mission. Timeout or loss of the capital applies the package failure
-transaction and records failure.
+founding mission while the setup receipt and capital remain valid. If setup is
+not complete or the capital is lost, the category and mission close without
+recording a successful stabilization; timeout or loss of the capital applies
+the package failure transaction and records failure.
 
 The shared power-struggle lane uses the AJX-specific
 `municipal_commission_vs_industrial_security` type. The player-visible balance
