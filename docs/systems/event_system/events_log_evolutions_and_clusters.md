@@ -70,7 +70,7 @@ Clusters tab supports:
 
 The Clusters tab lists clusters that can be inspected or controlled from the event log. Fired cluster entries belong in `History`.
 
-Cluster member rows are sorted by danger, with lower danger first. Roll chance displays `N/A` while the cluster is locked by chaos tier.
+Cluster member rows are sorted by danger, with lower danger first. Roll chance displays red `N/A` whenever the cluster cannot currently roll, with a reason-aware tooltip. A skipped-unavailable member is labelled red `Unavailable`, and its row tooltip exposes the stored automatic-event availability reason.
 
 ## Shortcuts
 - `Ctrl+Shift+E` toggles the Event Logs window.
@@ -89,6 +89,8 @@ Events-list metadata arrays:
 The row id/type payload reuses:
 - `global.events_log_view_event_id_entries`
 - `global.events_log_view_event_type_entries`
+
+Event Details cluster metadata uses aligned arrays for the selected event's cluster ID plus its minimum and maximum member severity. A single severity is shown directly. Repeated logical member rows, such as Natural Disasters seasons, appear as a severity range.
 
 Detail-window selection variables:
 - `events_log_selected_event_id`
@@ -123,6 +125,9 @@ Detail-window selection variables:
 - `global.events_log_view_cluster_sequence_entries`
 - `global.events_log_view_cluster_type_entries`
 - `global.events_log_cluster_view_enabled_entries`
+- `global.events_log_cluster_view_unavailability_reason_entries`
+- `global.events_log_cluster_member_unavailability_reason_entries`
+- `global.events_log_cluster_detail_member_unavailability_reason_entries`
 
 Generic evolution-disable contract:
 - UI toggles set `events_log_evolution_event_id`, `events_log_evolution_type`, and `events_log_evolution_stage`.

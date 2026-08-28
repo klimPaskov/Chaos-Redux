@@ -207,12 +207,6 @@ defined_text = {
 		trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.major } }
 		localization_key = chaosx.events_log.events.filter.major
 	}
-	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_1 } } localization_key = chaosx.events_log.events.filter.chaos_level_1 }
-	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_2 } } localization_key = chaosx.events_log.events.filter.chaos_level_2 }
-	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_3 } } localization_key = chaosx.events_log.events.filter.chaos_level_3 }
-	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_4 } } localization_key = chaosx.events_log.events.filter.chaos_level_4 }
-	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_5 } } localization_key = chaosx.events_log.events.filter.chaos_level_5 }
-	text = { trigger = { check_variable = { settings_events_log_events_filter_type = constant:events_log_event_filter.chaos_level_6 } } localization_key = chaosx.events_log.events.filter.chaos_level_6 }
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.events.filter.all
@@ -232,6 +226,10 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { settings_events_log_events_sort_mode = 2 } }
 		localization_key = chaosx.events_log.events.sort.mode.weight
+	}
+	text = {
+		trigger = { check_variable = { settings_events_log_events_sort_mode = 3 } }
+		localization_key = chaosx.events_log.events.sort.mode.chaos_level
 	}
 	text = {
 		trigger = { always = yes }
@@ -511,6 +509,116 @@ defined_text = {
 	text = {
 		trigger = { always = yes }
 		localization_key = chaosx.events_log.events.enabled.no
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailClusterName
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.wars compare = equals } }
+		localization_key = chaosx.event_cluster.wars.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.liberations compare = equals } }
+		localization_key = chaosx.event_cluster.liberations.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.diplomatic_panic compare = equals } }
+		localization_key = chaosx.event_cluster.diplomatic_panic.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.peace compare = equals } }
+		localization_key = chaosx.event_cluster.peace.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.natural_disasters compare = equals } }
+		localization_key = chaosx.event_cluster.natural_disasters.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.formables compare = equals } }
+		localization_key = chaosx.event_cluster.formables.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.economy_positive compare = equals } }
+		localization_key = chaosx.event_cluster.economy_positive.name
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = constant:event_cluster_id.diseases compare = equals } }
+		localization_key = chaosx.event_cluster.diseases.name
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.event_cluster.invalid.name
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailClusterMinSeverity
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_min_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.low compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.low
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_min_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.medium compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.medium
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_min_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.high compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.high
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_min_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.severe compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.severe
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.member.danger.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailClusterMaxSeverity
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_max_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.low compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.low
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_max_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.medium compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.medium
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_max_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.high compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.high
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_max_danger_entries^events_log_open_event_detail_index value = constant:event_cluster_member_danger.severe compare = equals } }
+		localization_key = chaosx.events_log.cluster.member.danger.severe
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.cluster.member.danger.unknown
+	}
+}
+
+defined_text = {
+	name = GetEventsLogDetailClusterLine
+	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_cluster_id_entries^events_log_open_event_detail_index value = 0 compare = less_than_or_equals } }
+		localization_key = chaosx.events_log.window.event_details.cluster.none
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_open_event_detail_cluster_min_danger_entries^events_log_open_event_detail_index
+				value = global.events_log_open_event_detail_cluster_max_danger_entries^events_log_open_event_detail_index
+				compare = less_than
+			}
+		}
+		localization_key = chaosx.events_log.window.event_details.cluster.range
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = chaosx.events_log.window.event_details.cluster.single
 	}
 }
 
@@ -6087,7 +6195,7 @@ defined_text = {
 		localization_key = chaosx.events_log.window.event_details.communism_spread
 	}
 	text = {
-		trigger = { check_variable = { var = event_id value = 2 compare = equals } }
+		trigger = { check_variable = { var = event_id value = constant:zombie_outbreak_event.id compare = equals } }
 		localization_key = chaosx.events_log.window.event_details.zombie_outbreak
 	}
 	text = {
@@ -11433,9 +11541,9 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = {
-				var = global.events_log_cluster_view_tier_entries^events_log_cluster_index
-				value = global.events_log_cluster_view_unlock_tier_entries^events_log_cluster_index
-				compare = less_than
+				var = global.events_log_cluster_view_available_entries^events_log_cluster_index
+				value = 0
+				compare = less_than_or_equals
 			}
 		}
 		localization_key = chaosx.event_cluster.roll.na
@@ -11469,9 +11577,9 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = {
-				var = events_log_selected_cluster_tier
-				value = events_log_selected_cluster_unlock_tier
-				compare = less_than
+				var = events_log_selected_cluster_available
+				value = 0
+				compare = less_than_or_equals
 			}
 		}
 		localization_key = chaosx.event_cluster.roll.na
@@ -11480,6 +11588,28 @@ defined_text = {
 		trigger = { always = yes }
 		localization_key = chaosx.event_cluster.roll.selected.percent
 	}
+}
+
+defined_text = {
+	name = GetEventsLogClusterRollTooltip
+	text = { trigger = { check_variable = { global.events_log_cluster_view_unavailability_reason_entries^events_log_cluster_index = constant:event_cluster_unavailability_reason.definition_missing } } localization_key = chaosx.events_log.cluster.na_reason.definition_missing }
+	text = { trigger = { check_variable = { global.events_log_cluster_view_unavailability_reason_entries^events_log_cluster_index = constant:event_cluster_unavailability_reason.disabled } } localization_key = chaosx.events_log.cluster.na_reason.disabled }
+	text = { trigger = { check_variable = { global.events_log_cluster_view_unavailability_reason_entries^events_log_cluster_index = constant:event_cluster_unavailability_reason.chaos_level } } localization_key = chaosx.events_log.cluster.na_reason.chaos_level }
+	text = { trigger = { check_variable = { global.events_log_cluster_view_unavailability_reason_entries^events_log_cluster_index = constant:event_cluster_unavailability_reason.already_fired } } localization_key = chaosx.events_log.cluster.na_reason.already_fired }
+	text = { trigger = { check_variable = { global.events_log_cluster_view_unavailability_reason_entries^events_log_cluster_index = constant:event_cluster_unavailability_reason.cooldown } } localization_key = chaosx.events_log.cluster.na_reason.cooldown }
+	text = { trigger = { check_variable = { global.events_log_cluster_view_unavailability_reason_entries^events_log_cluster_index = constant:event_cluster_unavailability_reason.no_available_members } } localization_key = chaosx.events_log.cluster.na_reason.no_available_members }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.window.details.open_cluster.tt }
+}
+
+defined_text = {
+	name = GetEventsLogSelectedClusterRollTooltip
+	text = { trigger = { check_variable = { events_log_selected_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.definition_missing } } localization_key = chaosx.events_log.cluster.na_reason.definition_missing }
+	text = { trigger = { check_variable = { events_log_selected_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.disabled } } localization_key = chaosx.events_log.cluster.na_reason.disabled }
+	text = { trigger = { check_variable = { events_log_selected_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.chaos_level } } localization_key = chaosx.events_log.cluster.na_reason.chaos_level }
+	text = { trigger = { check_variable = { events_log_selected_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.already_fired } } localization_key = chaosx.events_log.cluster.na_reason.already_fired }
+	text = { trigger = { check_variable = { events_log_selected_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.cooldown } } localization_key = chaosx.events_log.cluster.na_reason.cooldown }
+	text = { trigger = { check_variable = { events_log_selected_cluster_unavailability_reason = constant:event_cluster_unavailability_reason.no_available_members } } localization_key = chaosx.events_log.cluster.na_reason.no_available_members }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.cluster.roll.tt }
 }
 
 defined_text = {
@@ -12635,6 +12765,44 @@ defined_text = {
 }
 
 defined_text = {
+	name = GetEventsLogClusterMemberAvailabilityReason
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.chaos_level } } localization_key = chaosx.events_log.cluster.member.na_reason.chaos_level }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.fury_target } } localization_key = chaosx.events_log.events.na_reason.fury_target }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.tensions_world_tension } } localization_key = chaosx.events_log.events.na_reason.tensions_world_tension }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.white_peace_pair } } localization_key = chaosx.events_log.events.na_reason.white_peace_pair }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.random_faction_context } } localization_key = chaosx.events_log.events.na_reason.random_faction_context }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.resources_found_world_end } } localization_key = chaosx.events_log.events.na_reason.resources_found_world_end }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.resources_found_field } } localization_key = chaosx.events_log.events.na_reason.resources_found_field }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.independence_wave_capacity } } localization_key = chaosx.events_log.events.na_reason.independence_wave_capacity }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.africa_active } } localization_key = chaosx.events_log.events.na_reason.africa_active }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.africa_resolved } } localization_key = chaosx.events_log.events.na_reason.africa_resolved }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.africa_world_end } } localization_key = chaosx.events_log.events.na_reason.africa_world_end }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.africa_host } } localization_key = chaosx.events_log.events.na_reason.africa_host }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.black_plague_started } } localization_key = chaosx.events_log.events.na_reason.black_plague_started }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.black_plague_terminal } } localization_key = chaosx.events_log.events.na_reason.black_plague_terminal }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.black_plague_world_end } } localization_key = chaosx.events_log.events.na_reason.black_plague_world_end }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.black_plague_origin } } localization_key = chaosx.events_log.events.na_reason.black_plague_origin }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.zombie_outbreak_started } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_started }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.zombie_outbreak_disabled } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_disabled }
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.events.na_reason.unknown }
+}
+
+defined_text = {
+	name = GetEventsLogClusterMemberTooltipReason
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_cluster_detail_member_status_entries^events_log_cluster_detail_member_index
+				value = constant:event_cluster_member_status.skipped_unavailable
+				compare = equals
+			}
+		}
+		localization_key = chaosx.events_log.cluster.member.unavailable_reason
+	}
+	text = { trigger = { always = yes } localization_key = chaosx.events_log.events.na_reason.none }
+}
+
+defined_text = {
 	name = GetEventsLogClusterMemberDanger
 	text = {
 		trigger = {
@@ -12785,6 +12953,8 @@ defined_text = {
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_terminal compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_terminal }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_world_end compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_world_end }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_origin compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_origin }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.zombie_outbreak_started compare = equals } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_started }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.zombie_outbreak_disabled compare = equals } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_disabled }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.unknown compare = equals } } localization_key = chaosx.events_log.events.na_reason.unknown }
 	text = { trigger = { always = yes } localization_key = chaosx.events_log.events.na_reason.none }
 }

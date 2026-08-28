@@ -611,6 +611,17 @@ evaluate_event_pool_candidate_unavailability = {
 		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.chaos_level }
 	}
 	else_if = {
+		limit = { check_variable = { event_id = constant:zombie_outbreak_event.id } }
+		if = {
+			limit = { has_global_flag = has_zombie_outbreak }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.zombie_outbreak_started }
+		}
+		else_if = {
+			limit = { has_global_flag = zombie_system_disabled }
+			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.zombie_outbreak_disabled }
+		}
+	}
+	else_if = {
 		limit = {
 			check_variable = { event_id = constant:communism_spread_event_log.event_id }
 			NOT = { has_global_flag = communism_spread_world_revolution_unlocked }

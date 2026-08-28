@@ -19,7 +19,7 @@ Primary evidence is indexed in [the static acceptance report](../../../plans/018
 - [x] Event ID remains 18.
 - [x] Canonical entry uses the `chaosx.nr18.1` root.
 - [x] Event remains Minor Repeatable.
-- [x] Event is assigned to Economy (pos), cluster 7.
+- [x] Event is assigned to Positive Economy, cluster 7.
 - [x] Cluster member severity is Medium.
 - [x] Event is enabled by default only after the rework is implementation-ready.
 - [x] Baseline works when all four evolutions are disabled.

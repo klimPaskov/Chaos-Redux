@@ -12,8 +12,8 @@ The registered clusters are:
 - **Peace** (`constant:event_cluster_id.peace = 4`): settlements, ceasefires, exhaustion, negotiations, and related de-escalation shocks.
 - **Natural Disasters** (`constant:event_cluster_id.natural_disasters = 5`): repeated Event 013 disaster seasons that grow from local incidents into varied, regional, and abnormal sequences as chaos rises.
 - **Formables** (`constant:event_cluster_id.formables = 6`): negotiated restoration and union projects. Africa Is One is its required Severe member: a protection-first Charter League can grow through aid, guarantees, liberation recognition, consent, constitutional routes, and rival settlements without instant annexation or continent-wide cores. The repeatable cluster can accept later formable members without changing Event 12's Fire-Once identity.
-- **Economy (pos)** (`constant:event_cluster_id.economy_positive = 7`): beneficial economic shocks with persistent development choices, represented by the repeatable Resources Found field system.
-- **Diseases** (`constant:event_cluster_id.diseases = 8`): severe disease outbreaks with public state conditions, transport and occupation spread, and response work that requires sustained containment. Event 020, Black Plague, is the first required member.
+- **Positive Economy** (`constant:event_cluster_id.economy_positive = 7`): beneficial economic shocks with persistent development choices, represented by the repeatable Resources Found field system.
+- **Diseases** (`constant:event_cluster_id.diseases = 8`): severe disease outbreaks with public state conditions, transport and occupation spread, and response work that requires sustained containment. Event 020, Black Plague, is the required High-severity member, while Event 002, Zombie Outbreak, is an optional Severe member.
 
 ## Runtime Flow
 
@@ -59,7 +59,7 @@ Important constants:
 - `event_cluster_natural_disasters.cooldown_days = 120`
 - `event_cluster_formables.unlock_tier = 3`
 - `event_cluster_formables.cooldown_days = 120`
-- `event_cluster_economy_positive.unlock_tier = 0`
+- `event_cluster_economy_positive.unlock_tier = 3`
 - `event_cluster_economy_positive.cooldown_days = 120`
 - `event_cluster_diseases.unlock_tier = 0`
 - `event_cluster_roll.minimum` and `event_cluster_roll.maximum` define the shared percentile roll range
@@ -68,7 +68,7 @@ Important constants:
 - `event_cluster_member_order.*` defines random order scoring between danger bands
 - `event_cluster_member_cooldown_min.*` and `event_cluster_member_cooldown_max.*` define delay ranges between queued members
 
-The default tier roll chances are 5% at Calm World, 10% at Gathering Storm, 15% at Rising Chaos, 25% at Chaos Tier, 35% at Totalen Chaos, and 50% at World Collapse. A cluster that is still locked by chaos tier displays `N/A` for its roll chance.
+The default tier roll chances are 5% at Calm World, 10% at Gathering Storm, 15% at Rising Chaos, 25% at Chaos Tier, 35% at Totalen Chaos, and 50% at World Collapse. Any cluster that cannot currently roll displays red `N/A`; its tooltip reports whether the cause is its unlock tier, disabled state, cooldown, completed one-time state, missing definition, or lack of an available member.
 
 The cluster roll and member participation roll are separate. A selected member can cause the cluster roll, while each optional member still rolls its own participation chance. Required members fire when valid.
 
@@ -76,26 +76,31 @@ Current membership:
 
 | Cluster | Member | Danger | Participation |
 | --- | --- | --- | --- |
-| Wars | Event 4, Random War | High | Required member when selected or manually queued |
-| Liberations | Event 6, Independence Wave | Low | Auto-disabled placeholder member |
-| Liberations | Event 5, Soviet Union Collapse | Severe | Optional member, fire-once, gated by Soviet crisis eligibility |
+| Wars | Event 4, Random War | Low | Required member when selected or manually queued |
+| Wars | Event 7, Fury | High | Optional member, 70% participation, gated by Fury target eligibility |
+| Liberations | Event 6, Independence Wave opening | Low | Optional logical member from Calm World |
+| Liberations | Event 6, Independence Wave escalation | Medium | Optional logical member from Gathering Storm |
+| Liberations | Event 6, Independence Wave crisis | High | Optional logical member from Rising Chaos |
+| Liberations | Event 5, Soviet Union Collapse | High | Optional member, fire-once, gated by Soviet crisis eligibility |
 | Diplomatic Panic | Event 8, Tensions Rising | Medium | Required member when selected or manually queued |
 | Diplomatic Panic | Event 17, Random faction | Low | Optional member, 65% participation, gated by dynamic faction eligibility |
-| Peace | Event 9, White Peace | Low | Required member when selected or manually queued |
+| Peace | Event 9, White Peace opening | Low | Required member when selected or manually queued |
+| Peace | Event 9, White Peace follow-up | Medium | Optional logical member from Gathering Storm with 60% participation |
 | Natural Disasters | Event 13, opening local season | Low | Required first logical slot |
 | Natural Disasters | Event 13, additional early season | Low | 85% optional participation from tier 0 |
 | Natural Disasters | Event 13, Wider Disaster Seasons varied season | Medium | 60% optional participation from Gathering Storm, tier 1 |
 | Natural Disasters | Event 13, Regional Cascades season | High | 60% optional participation from Rising Chaos, tier 2 |
 | Natural Disasters | Event 13, Abnormal Paths season | Severe | 35% optional participation from Chaos, tier 3 |
 | Formables | Event 12, Africa Is One | Severe | Required member at Chaos Tier 4. The repeatable cluster unlocks at Chaos Tier 3 |
-| Economy (pos) | Event 18, Resources Found | Medium | Required repeatable member |
-| Diseases | Event 20, Black Plague | Severe | Required one-time member. Uses the shared disease response category and state-targeted containment loop |
+| Positive Economy | Event 18, Resources Found | Medium | Required repeatable member |
+| Diseases | Event 20, Black Plague | High | Required one-time member. Uses the shared disease response category and state-targeted containment loop |
+| Diseases | Event 2, Zombie Outbreak | Severe | Optional member from Rising Chaos with 60% participation; unavailable while the outbreak is active or the zombie system is disabled |
 
 When Event 17 is queued as a Diplomatic Panic member, its normal pre-fire helper builds the weighted eligible-minor pool and saves its own `random_faction_target_country`. The cluster route does not prefer the current player or reuse another member's actor as the Event 17 target.
 
 The Natural Disasters rows are logical Event 013 season slots. They are not Event 046, 051, 099, 043, or 120 members. When Event 013 is the selected trigger event, only the first matching slot is promoted to required status. Later duplicate slots keep their optional participation rolls. Every slot that fires calls the Event 013 public API and creates one Event 013 history row for that genuine season. The cluster itself retains one separate cluster history row and uses the first prepared affected country as its actor. Each logical slot persists its exact target state and country, evolution, severity, presentation policies, and scaling context before it enters the pending queue, so overlapping cluster launches cannot borrow another slot's disaster context.
 
-Resources Found is the single Economy (pos) member. The cluster uses the same Event 018 pre-fire preparation as ordinary automatic firing, so it chooses one valid owner and exact owned/controlled state before dispatch. A fresh discovery and a repeat enrichment are both valid outcomes. The cluster remains Medium danger even when an enabled evolution later deepens that field. Cluster danger classifies the beneficial economic entry and does not reveal its hidden escalation paths.
+Resources Found is the single Positive Economy member. The cluster uses the same Event 018 pre-fire preparation as ordinary automatic firing, so it chooses one valid owner and exact owned/controlled state before dispatch. A fresh discovery and a repeat enrichment are both valid outcomes. The cluster remains Medium danger even when an enabled evolution later deepens that field. Cluster danger classifies the beneficial economic entry and does not reveal its hidden escalation paths.
 
 ## Member Order And Cooldown
 
@@ -122,10 +127,11 @@ Cooldown between queued members shortens as chaos increases:
 Cluster history is stored separately from normal event history:
 
 - `global.events_log_cluster_*` arrays store cluster rows.
-- `global.events_log_cluster_member_*` arrays store member event status and danger.
+- `global.events_log_cluster_member_*` arrays store member event status, danger, and the first unmet availability reason.
 - The event log has a **Clusters** tab with the registered cluster catalogue.
 - The catalogue supports filter, sort mode, and sort order controls. Cluster filters are `All`, `Available`, `Unavailable`, `Enabled`, and `Disabled`.
-- Opening a catalogue row shows the current cluster details, readiness, roll chance, enabled state, and member availability.
+- Opening a catalogue row shows the current cluster details, readiness, roll chance, enabled state, and member availability. The row omits redundant enabled/disabled text because the checkbox already exposes that state.
+- A skipped-unavailable member is labelled red `Unavailable`; hovering its row reports the first unmet automatic-event requirement.
 - Fired cluster rows appear in the **History** tab and open the same cluster details window with the historical member results.
 - Clicking a member row opens that member's normal event details.
 - The cluster details window sorts member rows by danger level from lower danger to higher danger.

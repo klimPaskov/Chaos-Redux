@@ -31,10 +31,10 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 
 ## Events tab behavior
 - Each event row shows the current live selection weight from `global.event_weights`, presented as `0` when the event is disabled or is an already-fired unique event and as `N/A` when a normal automatic-pool eligibility gate is not met.
-- Event rows show `ID`, `Type`, `Weight`, `Chaos lvl`, `Fired`, and enabled state on the top line; the event name is kept alone on the second line.
+- Event rows show `ID`, `Type`, `Weight`, `Chaos lvl`, and `Fired` on the top line. Enabled state remains available through the row checkbox and Event Details, while the event name stays alone on the second line.
 - Hovering a normal event row shows only `Open event details`; hovering an N/A row adds one red second line explaining the first unmet automatic-pool requirement.
-- Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`, and one exact filter for each of the six event Chaos levels.
-- Sort options: `By Event ID`, `By Fired`, `By Weight`. `By Fired` hides events with zero logged firings.
+- Filter options: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, and `Major`.
+- Sort options: `By Event ID`, `By Fired`, `By Weight`, and `By Chaos Level`. `By Fired` hides events with zero logged firings.
 - The `Events` tab rebuilds when a new event is logged while the tab is open, keeping live weights and fired counts current.
 - The `Fire Selected` button sits next to the window `Close` button and is only visible on the Events tab. Clicking it manually fires every currently selected event through `events_log_fire_all_selected_events`, which reuses the same manual dispatch path as the single event-detail trigger button. Candidates are pre-filtered by `events_log_fire_candidate_is_available`: disabled events, Chaos-locked events outside Force Trigger Mode, already-fired major or fire-once events, Event 12 without `africa_manual_event_is_available`, and Event 17 without `random_faction_has_manual_dispatchable_context` are skipped. Per-event readiness gates inside the fire helper still apply. The button is disabled when no selected event is currently fireable. Views are rebuilt afterwards through `events_log_refresh_bulk_enable_views`.
 
@@ -44,10 +44,12 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - `global.events_log_open_event_detail_chaos_level_entries` carries the same value into the movable Event Details window.
 - Event Details presents `Chaos lvl: <number>` with the existing colour and name for that tier.
 - A row below its required tier shows `N/A` for weight and a red tooltip line such as `Requires Gathering Storm` without changing the enabled checkbox.
-- The shared `evaluate_event_pool_candidate_unavailability` resolver owns the ordered automatic-pool reason contract used by both the Events tab and random event selection. Its current reasons cover Chaos level, World Revolution unlock, Holy Realm refuge host, Fury target, Tensions world tension, White Peace pair, Utopia host, Brilliant Scientist lifecycle and host gates, Secret Alliance target and lifecycle gates, Cannibalism lifecycle and origin gates, Random Faction dispatch context, Resources Found discovery fields, Independence Wave liberation capacity, Africa Is One lifecycle and host gates, and Black Plague lifecycle and origin gates.
+- The shared `evaluate_event_pool_candidate_unavailability` resolver owns the ordered automatic-pool reason contract used by both the Events tab and random event selection. Its current reasons cover Chaos level, Zombie Outbreak active/disabled state, World Revolution unlock, Holy Realm refuge host, Fury target, Tensions world tension, White Peace pair, Utopia host, Brilliant Scientist lifecycle and host gates, Secret Alliance target and lifecycle gates, Cannibalism lifecycle and origin gates, Random Faction dispatch context, Resources Found discovery fields, Independence Wave liberation capacity, Africa Is One lifecycle and host gates, and Black Plague lifecycle and origin gates.
 - Disabled events and already-fired unique events remain weight `0` and intentionally do not receive an N/A reason because they are state-controlled rather than dynamically unavailable.
-- The Chaos-level filters compare the aligned tier entry, so sorting and filtering preserve the event-to-level association.
+- The Chaos-level sort compares the aligned tier entry, so the event-to-level association remains intact in either order.
 - Normal Event Details and bulk manual firing respect the level, while Force Trigger Mode may bypass it.
+
+Event Details also resolves the selected event's cluster membership from the shared cluster registry and its severity from the cluster's member rows. A single member severity is shown directly. If one event owns several logical member rows with different severities, Event Details shows the minimum-to-maximum range. Events outside the cluster registry omit the cluster line entirely.
 
 ## Event Details world-end catalog
 
@@ -72,7 +74,7 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - The main `Evolutions` tab rows open the same evolution-details popup reliably even on actor-scoped rows, because the click is resolved back on the player scope before the detail state is written.
 
 ## Clusters tab behavior
-- Cluster rows show the cluster catalogue, not only fired clusters.
+- Cluster rows show the cluster catalogue, not only fired clusters. Their top line reports availability but omits the redundant enabled/disabled value; the checkbox and Cluster Details retain enabled state.
 - Filter options: `All`, `Available`, `Unavailable`, `Enabled`, `Disabled`.
 - Sort options: `By Cluster ID`, `By Type`, `By Roll`, `By Fired`.
 - Order options: `Ascending`, `Descending`.
@@ -80,7 +82,8 @@ The Event Logs window tracks fired automatic events in a dedicated popup and exp
 - Actor flags render when a fired cluster recorded an actor country.
 - Clicking a cluster row opens the movable cluster-details window.
 - The cluster-details window shows cluster metadata, actor country, fired/skipped member counts, current or historical member status, and each member event's danger.
-- The cluster-details window puts current/unlock tier on one line and roll/member count on the next line. Roll displays `N/A` while the cluster is locked by chaos tier.
+- The cluster-details window puts current/unlock tier on one line and roll/member count on the next line. Roll displays red `N/A` whenever the cluster cannot currently roll, and its tooltip identifies the blocking state.
+- A member that fails its automatic-event availability checks shows red `Unavailable` instead of `Skipped: unavailable`; hovering the member row explains the first unmet requirement.
 - Cluster rows and cluster details use the same checkbox pattern as event rows. Disabling a cluster blocks automatic cluster firing but does not block manual triggering.
 - The footer bulk checkbox appears only on the Events and Clusters tabs. On Events, a normal click toggles all registered events through `global.disabled_events`, while Shift-click toggles only the fully reworked default-enabled allowlist and leaves every other event's state unchanged. On Clusters it toggles all registered clusters through `global.disabled_event_clusters`.
 - Event rows start checked only when their event is in the reworked-event default enable allowlist. Unreworked events are seeded into `global.disabled_events` during event-system initialization, so they start unchecked and cannot fire automatically until re-enabled.
@@ -134,6 +137,9 @@ Selected and open Event Details secondary-actor state:
 - `global.events_log_open_event_detail_secondary_actor_entries`
 - `global.events_log_open_event_detail_has_secondary_actor_entries`
 - `global.events_log_open_event_detail_chaos_level_entries`
+- `global.events_log_open_event_detail_cluster_id_entries`
+- `global.events_log_open_event_detail_cluster_min_danger_entries`
+- `global.events_log_open_event_detail_cluster_max_danger_entries`
 
 World-end registry and Event Details state:
 
@@ -167,6 +173,9 @@ Source cluster arrays:
 - `global.events_log_cluster_member_event_id_entries`
 - `global.events_log_cluster_member_status_entries`
 - `global.events_log_cluster_member_danger_entries`
+- `global.events_log_cluster_member_unavailability_reason_entries`
+- `global.events_log_cluster_view_unavailability_reason_entries`
+- `global.events_log_cluster_detail_member_unavailability_reason_entries`
 - `global.disabled_event_clusters`
 
 Derived evolution view arrays:

@@ -21,7 +21,7 @@ Generated on 2026-08-10.
 - The source corpus read log records every supplied Markdown, TOML, and CSV source.
 - The planning-stage improvement review preserves its original executor limitation as history, and its current note points to the completed independent closure handoff.
 - The acceptance matrix records all 363 accepted implementation requirements under the documented static proof boundary. Fresh independently reviewed five-phase action evidence closes the cave-monster 3D package within the user-approved no-HOI4 boundary; the current final audit withholds formal Event 018 completion only at the mandatory probability evidence gate.
-- The package reflects the direct user requirement that Event 018 is an Economy (pos), cluster 7, member at Medium severity.
+- The package reflects the direct user requirement that Event 018 is a Positive Economy, cluster 7, member at Medium severity.
 
 ## File inventory
 

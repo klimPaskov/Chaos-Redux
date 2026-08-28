@@ -79,9 +79,9 @@ The Events tab keeps the enabled checkbox independent from Chaos availability.
 
 When the current tier is too low, the row shows `N/A` instead of selectable weight and its hover tooltip reports the required tier name in red. Other automatic-pool gates use the same hover line to report their first unmet requirement.
 
-The existing Events-tab filter cycles through the original event filters and six exact Chaos-level filters.
+The Events-tab filter cycles through the event-state and event-type filters only.
 
-The rebuilt Events view carries the event Chaos tier in an aligned array, so filtering and sorting cannot associate one event with another event's requirement.
+`By Chaos Level` is an Events-tab sort mode. The rebuilt Events view carries the event Chaos tier in an aligned array, so sorting cannot associate one event with another event's requirement.
 
 ## Event 1-20 Assignments
 
@@ -134,5 +134,4 @@ No new sprite registration or `.gfx` entry is required.
 ## Future Plans
 
 - Assign higher event Chaos levels as more registered events receive completed balance and progression reviews.
-- Add Chaos level as an optional Events-tab sort mode if the catalogue grows enough for that ordering to become useful.
 - Add a compact locked-reason icon only if future Event Details metadata can no longer present the tier status clearly.

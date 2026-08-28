@@ -427,7 +427,7 @@ Event 139 is a lone hunted creature. Event 018 is an underground labor crisis th
 
 ## Event cluster behavior
 
-Event 018 is assigned to Economy (pos), cluster 7, at Medium severity. Cluster entry may start the ordinary baseline discovery. Field creation, enrichment, history, and later evolutions remain owned by Event 018.
+Event 018 is assigned to Positive Economy, cluster 7, at Medium severity. Cluster entry may start the ordinary baseline discovery. Field creation, enrichment, history, and later evolutions remain owned by Event 018.
 
 ## Terminal and aftermath completion standard
 

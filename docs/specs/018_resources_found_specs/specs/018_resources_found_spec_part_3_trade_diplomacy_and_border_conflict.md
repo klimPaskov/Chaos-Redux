@@ -444,7 +444,7 @@ Claimants become more aggressive when the state is already disputed, the owner i
 
 ### Event cluster membership
 
-Event 018 is a member of Economy (pos), cluster 7, at Medium severity. Cluster selection may enter through the ordinary baseline discovery. Resource-field persistence, trade, and later subterranean escalation remain owned by Event 018 and its evolution paths.
+Event 018 is a member of Positive Economy, cluster 7, at Medium severity. Cluster selection may enter through the ordinary baseline discovery. Resource-field persistence, trade, and later subterranean escalation remain owned by Event 018 and its evolution paths.
 
 ### Tensions Rising, Event 8
 
