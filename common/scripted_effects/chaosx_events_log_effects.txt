@@ -1554,6 +1554,8 @@ toggle_events_log_popup = {
 		clear_array = global.events_log_open_event_detail_cluster_id_entries
 		clear_array = global.events_log_open_event_detail_cluster_min_danger_entries
 		clear_array = global.events_log_open_event_detail_cluster_max_danger_entries
+		clear_array = global.events_log_open_event_detail_cluster_activation_entries
+		clear_array = global.events_log_open_event_detail_cluster_activation_mode_entries
         clear_array = global.events_log_open_event_detail_fired_entries
         clear_array = global.events_log_open_event_detail_enabled_entries
         clear_array = global.events_log_open_event_detail_unique_entries
@@ -1599,6 +1601,8 @@ toggle_events_log_popup = {
 		clear_array = global.events_log_open_event_detail_cluster_id_entries
 		clear_array = global.events_log_open_event_detail_cluster_min_danger_entries
 		clear_array = global.events_log_open_event_detail_cluster_max_danger_entries
+		clear_array = global.events_log_open_event_detail_cluster_activation_entries
+		clear_array = global.events_log_open_event_detail_cluster_activation_mode_entries
         clear_array = global.events_log_open_event_detail_fired_entries
         clear_array = global.events_log_open_event_detail_enabled_entries
         clear_array = global.events_log_open_event_detail_unique_entries
@@ -1889,6 +1893,8 @@ events_log_rebuild_open_event_details_view = {
 	clear_array = global.events_log_open_event_detail_cluster_id_entries
 	clear_array = global.events_log_open_event_detail_cluster_min_danger_entries
 	clear_array = global.events_log_open_event_detail_cluster_max_danger_entries
+	clear_array = global.events_log_open_event_detail_cluster_activation_entries
+	clear_array = global.events_log_open_event_detail_cluster_activation_mode_entries
     clear_array = global.events_log_open_event_detail_fired_entries
     clear_array = global.events_log_open_event_detail_enabled_entries
     clear_array = global.events_log_open_event_detail_unique_entries
@@ -1937,6 +1943,10 @@ events_log_rebuild_open_event_details_view = {
 		set_temp_variable = { events_log_open_detail_cluster_id = 0 }
 		set_temp_variable = { events_log_open_detail_cluster_min_danger = 0 }
 		set_temp_variable = { events_log_open_detail_cluster_max_danger = 0 }
+		set_temp_variable = { events_log_open_detail_cluster_activation = -1 }
+		set_temp_variable = { events_log_open_detail_cluster_activation_mode = 0 }
+		set_temp_variable = { events_log_open_detail_cluster_matching_rows = 0 }
+		set_temp_variable = { events_log_open_detail_cluster_matching_row_index = -1 }
 		event_belongs_to_cluster = yes
 		set_temp_variable = { events_log_open_detail_cluster_id = event_cluster_candidate_id }
 		if = {
@@ -1955,6 +1965,8 @@ events_log_rebuild_open_event_details_view = {
 							compare = equals
 						}
 					}
+					add_to_temp_variable = { events_log_open_detail_cluster_matching_rows = 1 }
+					set_temp_variable = { events_log_open_detail_cluster_matching_row_index = events_log_open_detail_cluster_member_index }
 					set_temp_variable = { events_log_open_detail_cluster_member_danger = temp_event_cluster_member_danger_entries^events_log_open_detail_cluster_member_index }
 					if = {
 						limit = {
@@ -1971,10 +1983,29 @@ events_log_rebuild_open_event_details_view = {
 					}
 				}
 			}
+			if = {
+				limit = { check_variable = { events_log_open_detail_cluster_matching_rows > 1 } }
+				set_temp_variable = { events_log_open_detail_cluster_activation_mode = 2 }
+			}
+			else_if = {
+				limit = { check_variable = { events_log_open_detail_cluster_matching_rows = 1 } }
+				set_temp_variable = { events_log_open_detail_cluster_activation_mode = 1 }
+				set_temp_variable = { event_cluster_trigger_event_id = event_id }
+				set_temp_variable = { event_cluster_trigger_member_row_index = events_log_open_detail_cluster_matching_row_index }
+				set_temp_variable = { event_cluster_trigger_member_row_id = temp_event_cluster_member_row_id_entries^events_log_open_detail_cluster_matching_row_index }
+				event_cluster_get_current_activation_breakdown = yes
+				if = {
+					limit = { check_variable = { event_cluster_activation_breakdown_available > 0 } }
+					set_temp_variable = { events_log_open_detail_cluster_activation = event_cluster_activation_chance }
+				}
+				set_temp_variable = { event_id = global.events_log_open_event_detail_entries^events_log_open_detail_index }
+			}
 		}
 		add_to_array = { array = global.events_log_open_event_detail_cluster_id_entries value = events_log_open_detail_cluster_id }
 		add_to_array = { array = global.events_log_open_event_detail_cluster_min_danger_entries value = events_log_open_detail_cluster_min_danger }
 		add_to_array = { array = global.events_log_open_event_detail_cluster_max_danger_entries value = events_log_open_detail_cluster_max_danger }
+		add_to_array = { array = global.events_log_open_event_detail_cluster_activation_entries value = events_log_open_detail_cluster_activation }
+		add_to_array = { array = global.events_log_open_event_detail_cluster_activation_mode_entries value = events_log_open_detail_cluster_activation_mode }
 
         set_temp_variable = { events_log_open_detail_enabled = 1 }
         if = {
@@ -3008,6 +3039,8 @@ events_log_close_all_event_details_entries = {
 	clear_array = global.events_log_open_event_detail_cluster_id_entries
 	clear_array = global.events_log_open_event_detail_cluster_min_danger_entries
 	clear_array = global.events_log_open_event_detail_cluster_max_danger_entries
+	clear_array = global.events_log_open_event_detail_cluster_activation_entries
+	clear_array = global.events_log_open_event_detail_cluster_activation_mode_entries
     clear_array = global.events_log_open_event_detail_fired_entries
     clear_array = global.events_log_open_event_detail_enabled_entries
     clear_array = global.events_log_open_event_detail_unique_entries
@@ -4739,6 +4772,8 @@ initialize_events_log_settings = {
 	clear_array = global.events_log_open_event_detail_cluster_id_entries
 	clear_array = global.events_log_open_event_detail_cluster_min_danger_entries
 	clear_array = global.events_log_open_event_detail_cluster_max_danger_entries
+	clear_array = global.events_log_open_event_detail_cluster_activation_entries
+	clear_array = global.events_log_open_event_detail_cluster_activation_mode_entries
     clear_array = global.events_log_open_event_detail_fired_entries
     clear_array = global.events_log_open_event_detail_enabled_entries
     clear_array = global.events_log_open_event_detail_unique_entries

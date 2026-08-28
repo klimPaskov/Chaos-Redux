@@ -1,369 +1,451 @@
-# Chaos Redux Event Cluster System Prompt
+# Chaos Redux Event Cluster System Contract
 
-Implement an event cluster system for Chaos Redux.
+## Contract status and scope
 
-Follow `AGENTS.md`, the `chaos-redux-events` skill, and the relevant event-system, UI, localisation, documentation, and spreadsheet rules. Do not use fallback behavior, simplified versions, or placeholder logic. Keep iterating until the event cluster system is fully implemented and wired into the existing Chaos Redux event framework.
+This file is the accepted source contract for the Dynamic Severity-Aware Cluster Overhaul.
 
-## Goal
+Event clusters are a catalogue and dispatch layer above ordinary Chaos Redux random-event selection.
 
-Add event clusters as a new layer above individual random events.
+The cluster layer may narrow ordinary event eligibility, but it never replaces the event system's fireability contract.
 
-An event cluster represents a linked group of events that can fire together as one broader incident, cascade, crisis, or thematic sequence.
+This contract covers automatic selection, normal manual firing, manual cluster forcing, member eligibility, severity, activation and participation chance, queue state, history, pacing, Event Logs, Settings, catalog presentation, and acceptance evidence.
 
-Instead of always firing a single selected event, the event system should sometimes fire a cluster. When a cluster fires, all events inside that cluster are treated as fired for weighting purposes, and the player should be able to inspect the cluster through the event log and settings UI.
+The event catalog workbook schema and its formula prose remain unchanged.
 
-Clusters should make Chaos Redux feel more connected. Related events should be able to arrive as a combined wave rather than always appearing as isolated events.
+## 1. Ordinary event-system authority
 
-## 1. Core concept
+Ordinary event-system eligibility is authoritative for every automatic trigger, manual trigger, required row, optional row, and delayed member dispatch.
 
-A cluster is a hidden grouping of existing events.
+Cluster logic can only narrow that eligibility.
 
-If an event belongs to a cluster, then when that event would be selected, there should be a chance that the whole cluster fires instead of only that one event.
+The ordinary event system remains responsible for event toggles, normal trigger and target requirements, Event Chaos level, fire-once or repeatable state, stored weight and cap state, force context, and every event-specific fireability condition.
 
-The cluster should not replace the normal event system. It should sit on top of it.
+Required status means 100 percent participation after the row is eligible.
 
-Basic behavior:
+Required status never bypasses event fireability.
 
-- event selection works normally first
-- if the selected event belongs to one or more clusters, the system checks whether a cluster should fire
-- if the cluster roll fails, the original event fires normally
-- if the cluster roll succeeds, the cluster fires instead
-- the triggering event is processed as part of the cluster unless it has become invalid before firing
-- the cluster checks each member event's own eligibility before processing it
-- the cluster may skip optional member events based on chaos tier, validity, cooldown, and participation chance
-- firing or processing a member event updates that event's weight as if it had individually fired
+An ineligible required row is not forced to fire, and its history snapshot carries N/A with the canonical invalidation reason.
 
-## 2. Cluster chance, member chance, and chaos scaling
+When the selected trigger event is rejected by the ordinary event system, the cluster does not roll.
 
-There are two different chances:
+The rejected selection continues through ordinary standalone handling, which may reject it again under the same event-system rules.
 
-1. **Cluster roll chance**: the chance that the selected event turns into a cluster firing instead of firing alone.
-2. **Member participation chance**: the chance that an eligible optional member event fires when the cluster fires.
+Automatic cluster activation is therefore a conversion of an already valid automatic selection, not a second event picker.
 
-Cluster roll chance should start low and increase as the Chaos Meter rises.
+Manual cluster forcing may bypass cluster-specific gates such as the cluster unlock tier, cluster cooldown, cluster enable state, and the automatic activation roll.
 
-Design intent:
+Manual cluster forcing cannot fire a trigger or member that the equivalent event-system force context rejects.
 
-- Calm World: clusters that are not unlocked show 0% roll chance
-- Gathering Storm: clusters are possible but uncommon
-- Rising Chaos: clusters become noticeable
-- Chaos Tier: clusters become a real risk
-- Totalen Chaos: clusters become much more likely
-- World Collapse: same as in totalen chaos
+Manual cluster forcing does not borrow automatic fatigue or previous-participation memory, and it does not write automatic-roll memory.
 
-Member participation chance is controlled per event inside the cluster.
+## 2. Event Chaos Levels and member severity
 
-Rules:
+Event Chaos Levels remain an independent event property with the existing six tiers and existing assignments.
 
-- required member events fire when valid
-- optional member events roll separately when the cluster fires
-- more dangerous optional events should usually have lower participation chance than safer events
-- eligible optional member events should not be weighted so low that they almost never appear
-- default minimum participation chance for an eligible optional member event should be 50%, unless a cluster definition gives a clear reason to block or gate it
-- the event that caused the cluster roll should be treated as required for that firing, unless it becomes invalid during cluster setup
+The normal event-system check for an event Chaos Level occurs before a cluster can activate that event automatically.
 
-Use existing Chaos Redux chaos tier logic where appropriate. Values can be tuned, but the distinction between cluster roll chance and member participation chance must remain clear.
+Member severity supplies a separate cluster-member floor.
 
-## 3. Event weight and pacing behavior when a cluster fires
+The severity floor mapping is:
 
-When a cluster fires, every member event inside the cluster should update its own fired state and post-fire availability as though that event had fired normally.
+| Member severity | Severity floor | Existing tier name |
+| --- | --- | --- |
+| Low | T0 | Calm World |
+| Medium | T1 | Gathering Storm |
+| High | T2 | Rising Chaos |
+| Severe | T3 | Chaos Tier |
 
-The cluster itself, not each child member, should update global pacing. A fired cluster counts as one event for timer compression and one dynamic major-gain application or major-weight reset, no matter how many member events fire inside it.
+The effective member minimum is the greater of the severity floor and the declared member minimum.
 
-Required behavior:
+In formula form:
 
-### Fire-once events
+    effective_member_min = max(severity_floor, declared_member_min)
 
-If a fire-once event is inside a fired cluster, its weight should go to `0` permanently, just as if it had fired by itself.
+The effective member minimum is an additional cluster constraint and does not replace the event's own Event Chaos Level.
 
-It should not be able to fire again later.
+A cluster-only floor or escalation-support failure uses a cluster-specific row status while retaining no event-system failure reason, so it cannot be mistaken for failure of the event's independent Chaos Level.
 
-### Repeatable events
+High and Severe non-trigger members require at least one other base-eligible member.
 
-If a repeatable event is inside a fired cluster, it should apply its own repeatable-event fired behavior.
+The trigger row is exempt from that support requirement.
 
-It should still be able to recover weight later, but only up to the reduced cap that would normally apply after firing.
+A cluster with only one configured member is exempt from that support requirement.
 
-### Major events
+Eligibility uses two passes to avoid circular support.
 
-If major events are allowed inside clusters, define the rules clearly.
+Pass one evaluates the trigger and every configured logical row against the ordinary event-system contract and the effective member minimum without applying the High or Severe support requirement.
 
-Preferred behavior:
+Pass two applies the support requirement to High and Severe non-trigger rows using the pass-one base-eligible set.
 
-- major events should only be placed in clusters intentionally
-- major-event cluster behavior must respect existing major event reset rules once at the cluster level
+The logical row count used by activation chance is the count of rows that remain eligible after the two-pass evaluation.
 
-Do not let clusters bypass major-event pacing or multiply major-event pacing by member count.
+The severity corrections are:
 
-## 4. Repeatable clusters
+| Event | Cluster role | Correct member severity |
+| --- | --- | --- |
+| Fury | Trigger-capable optional member | Medium |
+| Tensions Rising | Trigger or required member in Diplomatic Panic | Low |
+| Black Plague | Required member in Diseases | Severe |
 
-Clusters themselves can be either one-time or repeatable.
+## 3. Activation chance
 
-A repeatable cluster should be able to fire more than once if at least some of its events are repeatable or otherwise still valid.
+Activation chance is rolled only for an eligible automatic trigger that belongs to an eligible cluster.
 
-Rules for repeatable clusters:
+The activation tier bases are:
 
-- repeatable clusters can fire again after cooldown or weight recovery
-- they should not endlessly spam
-- they should respect event weight state for member events
-- if all member events are unavailable, the cluster should not fire
-- if only some member events remain valid, the cluster can either fire only valid members or be blocked, depending on the cluster definition
+| Current tier | Player-facing tier | Base |
+| --- | --- | ---: |
+| T0 | Calm World | 5 |
+| T1 | Gathering Storm | 10 |
+| T2 | Rising Chaos | 15 |
+| T3 | Chaos Tier | 25 |
+| T4 | Totalen Chaos | 35 |
+| T5 | World Collapse | 50 |
 
-Make the system flexible enough to support both one-time clusters and repeatable clusters.
+The trigger severity factors are:
 
-## 5. Cluster membership rules
+| Trigger severity | Factor |
+| --- | ---: |
+| Low | 1.35 |
+| Medium | 1.15 |
+| High | 0.85 |
+| Severe | 0.65 |
 
-Create a clear way to define which events belong to a cluster.
+The eligible logical-count factors are:
 
-A cluster should have:
+| Eligible logical rows | Factor |
+| --- | ---: |
+| 1 | 1.40 |
+| 2 | 1.30 |
+| 3 | 1.20 |
+| 4 | 1.10 |
+| 5 or more | 1.00 |
 
-- a stable cluster ID
-- player-facing name
-- short description
-- member event IDs
-- cluster type, such as one-time or repeatable
-- base cluster roll chance or chance profile
-- chaos scaling behavior
-- optional cooldown or gating rules
-- optional cluster-specific trigger rules
-- optional event ordering rules
+Fatigue uses a score clamped to 0 through 4.
 
-Each member event should be able to define:
+The fatigue factor is 0.90^score.
 
-- member event ID
-- whether it is required or optional when the cluster fires
-- member participation chance if optional
-- minimum chaos tier to appear inside the cluster
-- danger level, such as low, medium, high, or severe
-- cluster order, usually from least dangerous to most dangerous
-- optional member-specific trigger rules
-- skip behavior if the event is unavailable, exhausted, disabled, or blocked by its own chaos requirement
+The previous optional-participation factor is:
 
-Cluster unlock and member event eligibility are separate.
+| Previous optional participation ratio | Factor |
+| --- | ---: |
+| 25 percent or less | 1.40 |
+| More than 25 percent through 50 percent | 1.30 |
+| More than 50 percent through 75 percent | 1.15 |
+| More than 75 percent | 1.00 |
+| Zero optional denominator | Neutral factor 1.00 |
 
-A cluster can become available at one chaos tier while some member events only become eligible later. If a member event requires a higher chaos tier than the current world state, it should be skipped for that cluster firing unless the cluster definition explicitly says otherwise.
+The previous ratio excludes the trigger and all required rows.
 
-The system should be easy to extend with new clusters later.
+The previous ratio uses actually dispatched eligible optional rows from the last completed automatic batch.
 
-Do not hardcode everything in one-off logic that only works for the first cluster.
+The ratio denominator is the number of optional rows considered eligible in that batch.
 
-## 6. Cluster firing behavior
+When that denominator is zero, the previous-participation factor is neutral.
 
-When a cluster fires, it should not feel like a random technical dump of events.
+The activation formula is:
 
-Decide how the player experiences it.
+    activation_chance = clamp(round(base × trigger_severity_factor × eligible_count_factor × fatigue_factor × previous_participation_factor), 1, 90)
 
-Preferred behavior:
+The displayed starting chance is the computed automatic activation chance before the activation roll.
 
-- show a cluster-facing popup or log entry first
-- then fire or queue member events in a controlled order
-- order member events from least dangerous to more dangerous unless the cluster defines a stronger narrative order
-- roll optional member events before presentation so the cluster log can show what happened and what was skipped
-- avoid overwhelming the player with too many popups at once
-- keep the cluster readable in logs
-- make sure event details remain accessible for each member event
+An activation chance is never recomputed for a historical row.
 
-If a cluster contains many events, consider pacing or grouping the presentation so it does not become annoying.
+Fatigue increases by one after a successful automatic cluster activation.
 
-The system should preserve the identity of individual events while making the cluster feel like one connected incident.
+Fatigue decreases by one after a valid automatic activation roll fails.
 
-## 7. Event log integration
+Fatigue does not change for a gated attempt, a failed preflight, or a manual cluster force.
 
-Add event clusters to the event logs.
+A valid failed roll proceeds through ordinary standalone handling for the selected trigger and does not apply cluster pacing or a cluster cooldown update.
 
-The event log UI should support a clusters view.
+## 4. Optional member participation
 
-This clusters view should show the registered cluster catalogue. Fired cluster rows belong in History.
+The trigger row is guaranteed and fires first synchronously after ordinary eligibility succeeds.
 
-The clusters view should be switchable from the existing event log interface.
+Required rows are guaranteed after ordinary eligibility succeeds.
 
-The cluster entries should be clickable.
+Optional rows are evaluated after the trigger and required rows.
 
-Clicking a cluster log entry should open a cluster details window.
+Optional rows are ordered by Low, Medium, High, then Severe severity.
 
-## 8. Cluster details window
+Rows within the same severity use random order.
 
-The cluster details window should show:
+The optional-member table is indexed by current Chaos tier and member severity.
 
-- cluster name
-- cluster description
-- whether it is one-time or repeatable
-- chaos tier at time of firing
-- date fired
-- actor or affected country if relevant
-- list of member events
-- which member events fired or were processed
-- any member events skipped and why, if relevant
-- summary of cluster consequences
+| Current tier | Low | Medium | High | Severe |
+| --- | ---: | ---: | ---: | ---: |
+| Calm World | 70 | 35 | 15 | 5 |
+| Gathering Storm | 80 | 40 | 20 | 10 |
+| Rising Chaos | 90 | 45 | 25 | 15 |
+| Chaos Tier | 95 | 50 | 30 | 20 |
+| Totalen Chaos | 99 | 60 | 40 | 25 |
+| World Collapse | 100 | 75 | 50 | 30 |
 
-The list of member events should appear as log-style entries.
+For each eligible optional row, the participation formula is:
 
-Each member event entry should be clickable.
+    optional_member_chance = clamp(round(table_value × eligible_count_factor × 0.95^(accepted_optional_rows)), 1, 100)
 
-Clicking a member event inside the cluster details window should open the normal event details window for that event.
+accepted_optional_rows counts optional rows already accepted in the current cluster batch.
 
-This means the player can inspect the cluster first, then drill down into each event.
+The decay exponent increments only after an optional row is accepted.
 
-The cluster can be triggerable, just like with normal events.
+A rejected optional roll, an ineligible optional row, and a skipped invalidated row do not increment the decay exponent.
 
-## 9. Settings UI integration
+Required and trigger rows do not consume optional participation decay.
 
-Add cluster controls to the settings UI under the cluster heading.
+## 5. Stable rows, batches, and dispatch state
 
-The cluster settings content should mirror the existing trigger-events content where appropriate.
+Every configured member row has a stable logical row identity that remains distinct even when several rows use the same event ID.
 
-The player should be able to trigger clusters by ID.
+Opening duplicate rows for Events 6, 9, and 13 have explicit primary trigger rows.
 
-Required behavior:
+The primary trigger row is the first synchronous row for that activation, while later duplicate staged rows retain their own role, severity, declared minimum, chance, and status.
 
-- show a cluster trigger section
-- allow entering or selecting a cluster ID
-- allow manually triggering that cluster
-- show clear tooltip text
-- make errors or invalid IDs understandable
-- keep the UI consistent with existing manual event-trigger controls
+Every activation receives a batch identity that binds the cluster, trigger row, member rows, history context, and delayed dispatch context.
 
-This should be useful for testing, debugging, sandbox play, and showcase use.
+Queued state preserves the batch, cluster, logical row, trigger, history, and member runtime context needed to recheck and dispatch that exact row.
 
-Do not load cluster content in a confusing or unrelated settings panel. Keep it under the correct cluster heading.
+Delayed dispatch rechecks ordinary event-system fireability immediately before firing.
 
-## 10. Event log and settings naming
+If a queued row fails that recheck, it is invalidated and recorded as skipped with N/A and the first canonical reason from the ordinary event-system resolver.
 
-Use clear wording.
+Invalidation never substitutes another event, another row, or another batch context.
 
-Suggested terms:
+Overlapping batches remain isolated by batch identity and aligned row context.
 
-- `Event Clusters`
-- `Clusters`
-- `Cluster Log`
-- `Cluster Details`
-- `Trigger Cluster by ID`
-- `Members`
-- `Cluster Fired`
-- `Repeatable Cluster`
-- `One-Time Cluster`
+One batch cannot borrow a target, actor, event-specific context, history sequence, or staged payload from another batch.
 
-Avoid wording that makes clusters sound like world-end scenarios or triggerable scenarios. These are part of the random event ecosystem, not separate manual gameplay scenarios by default.
+Runtime state is versioned and non-destructive.
 
-## 11. Balance and pacing expectations
+Adding or migrating batch fields must preserve prior successful history snapshots instead of rewriting them from current state.
 
-Clusters should add tension and connectedness without breaking the existing event pacing.
+## 5.1. Explicit state transitions
 
-Design expectations:
+An automatic candidate transitions from ordinary-pool selection to ordinary event-system eligibility, then to cluster-only gates, then to two-pass base eligibility, then to activation chance and roll.
 
-- low base cluster roll chance
-- chaos-scaled cluster chance increase
-- member events keep their own eligibility rules
-- cluster unlock does not automatically unlock every member event
-- optional members use participation chance, not guaranteed firing
-- more dangerous optional members usually have lower chance and later order
-- eligible optional members should normally have at least 50% participation chance
-- cooldowns where needed
-- respect member event weights
-- no free bypass of fire-once limits
-- no unlimited repeatable spam
-- cluster firing should feel special
-- clusters should not replace normal single-event firing
+A trigger rejected by ordinary event-system eligibility exits cluster evaluation before any cluster roll and continues through standalone handling.
 
-If a cluster fires, it should feel like related events are converging without dumping every possible member event into the player at once.
+A cluster-gated or preflight-failed attempt exits without changing automatic fatigue or previous-participation memory.
 
-## 12. Documentation
+A valid failed activation roll transitions to ordinary standalone handling after decreasing fatigue by one and without applying cluster pacing or cooldown.
 
-Update the relevant documentation.
+A successful activation transitions to batch preparation, synchronous trigger dispatch, required-row eligibility and guaranteed dispatch, optional severity-ordered rolls, delayed fireability rechecks, history snapshot commit, one pacing update, and one cooldown update.
 
-The docs should explain:
+An optional row transitions from base-eligible to accepted or rejected, and only an accepted optional row increments the current-batch decay count.
 
-- what event clusters are
-- how cluster roll chance works
-- how member participation chance works
-- how chaos scaling affects clusters
-- how member event danger, ordering, and eligibility work
-- how member events are handled
-- how fire-once and repeatable member events update their weights
-- how repeatable clusters work
-- how cluster logs work
-- how the cluster details window works
-- how manual cluster triggering works
-- how future clusters should be added
+A queued row that fails its delayed recheck transitions to skipped and invalidated with N/A and its canonical reason.
 
-If the existing event system docs or mechanics guide describes random event selection, update it so clusters are included. Update the CHAOS_REDUX_MECHANICS.md specifically.
+A manual cluster force transitions from selected cluster to cluster-only gate bypass, equivalent event-system force-context checks, batch preparation, and dispatch without an activation roll or automatic-memory update.
 
-## 13. Spreadsheet updates
+## 6. Pacing, cooldown, and history
 
-Update the event catalog or related spreadsheet structure if relevant.
+A successful cluster activation applies one cluster pacing update and one cluster cooldown update for the complete batch.
 
-Add enough information so event clusters can be tracked.
+The number of member rows that dispatch does not multiply pacing or cooldown updates.
 
-Possible spreadsheet fields:
+The cluster pacing path counts a repeatable or one-time cluster once for global timer compression and dynamic major-event gain.
 
-- cluster ID
-- cluster name
-- member event IDs
-- cluster type
-- base cluster roll chance profile
-- chaos scaling profile
-- repeatable or one-time
-- member required or optional status
-- member participation chance
-- member minimum chaos tier inside the cluster
-- member danger level
-- member cluster order
-- description
-- notes
+A major cluster, when intentionally registered, uses its major pacing path once and resets major-event weights once.
 
-Do not let the spreadsheet fall out of sync with the implemented cluster system.
+Each dispatched member still applies its own ordinary fired-state, fire-once, repeatable recovery, and event-history behavior through the shared event handlers.
 
-## 14. Localisation and tooltips
+Automatic memory is separate from manual memory.
 
-Add clear localisation for all new UI and log text.
+Manual activation records Manual and no roll for the activation chance and roll fields and does not modify fatigue or previous-participation memory.
 
-Tooltips should explain:
+Only a successful cluster activation creates a cluster history row.
 
-- what event clusters are
-- why a cluster can fire instead of a single event
-- how chaos affects cluster roll chance
-- how optional member participation works
-- why some cluster members may be skipped until higher chaos
-- how member events are handled
-- how repeatable clusters differ from one-time clusters
-- how to trigger a cluster by ID from settings
+The successful cluster history row snapshots the activation chance, activation roll, trigger, batch, tier, and actor or context fields that are valid for that activation.
 
-Keep player-facing text concise but understandable.
+Each member snapshot stores its chance, roll, role, severity, effective minimum, status, and canonical reason.
 
-## 15. Extensibility requirements
+Guaranteed trigger and required rows store 100 percent and Guaranteed after eligibility succeeds.
 
-The system should be built so new clusters can be added later without rewriting the framework.
+Ineligible or invalidated rows store N/A for chance and roll fields and preserve their canonical reason.
 
-Future cluster creation should only require defining the cluster data, member events, localisation, and any special gating.
+Manual rows store Manual and no roll rather than a fabricated percentage.
 
-Avoid one-off hardcoding that only works for the first cluster.
+A successful activation creates its history row before delayed members dispatch, so queued member status, canonical reason, final chance, and roll remain provisional until that batch settles.
 
-## 16. Final validation
+After batch settlement, the historical snapshot is immutable and is never recomputed from current Chaos tier, fatigue, member definitions, event weights, or current event-system availability.
 
-Before finishing, verify that:
+Normal member event history is recorded only when that member actually dispatches.
 
-- events can belong to clusters
-- a selected event can roll into a cluster instead of firing alone
-- base cluster roll chance is low
-- cluster chance increases with chaos tier
-- optional member participation chance works
-- cluster unlock and member minimum chaos tier are handled separately
-- more dangerous events usually fire later in the cluster order
-- eligible optional members normally have at least 50% participation chance
-- fire-once member events are permanently removed after cluster firing
-- repeatable member events apply their own repeatable weight reduction and recovery rules
-- repeatable clusters can fire more than once when valid
-- invalid or exhausted clusters do not fire
-- cluster firing counts once for major-event pacing
-- event logs have a cluster view
-- cluster log entries are clickable
-- cluster details window shows member events
-- member events in the cluster details window are clickable
-- clicking member events opens the normal event details window
-- settings UI has a cluster heading with trigger-by-ID content
-- manual cluster triggering works
-- invalid manual cluster IDs are handled clearly
-- localisation and tooltips are updated
-- documentation is updated
-- spreadsheet or catalog tracking is updated where relevant
-- no placeholder, fallback, or simplified behavior remains
+The separate cluster history row records the broad activation and its complete member result snapshot.
+
+## 7. Event selection and manual behavior
+
+Automatic selection first uses the ordinary active event pool.
+
+The selected trigger must pass ordinary event-system eligibility before cluster lookup and activation chance evaluation.
+
+If it belongs to a cluster, the cluster applies its own unlock, cooldown, enable state, two-pass member eligibility, and activation rules.
+
+If the cluster roll fails, the selected trigger continues through ordinary standalone dispatch.
+
+If the cluster activates, the trigger, required rows, and accepted optional rows use the batch dispatch order defined above.
+
+Normal manual event firing continues to use the event-system manual or force context.
+
+Manual cluster forcing starts from the selected cluster, bypasses only cluster-specific gates, and still evaluates every trigger and member through the equivalent event-system force context.
+
+Manual cluster forcing has no activation roll and does not seed or consume automatic activation memory.
+
+An event-system rejection blocks that trigger or member even when cluster-specific gates were bypassed.
+
+## 8. Event Logs, catalog, and Settings contract
+
+The Clusters tab lists the registered cluster catalogue, while History lists only successful cluster activations.
+
+The cluster catalogue and the Settings activation summary use the exact copy Varies by member whenever a single cluster-level chance cannot represent all member rows.
+
+Cluster details expose the member role, member severity, effective member minimum, ordinary event-system availability, and starting chance.
+
+Unique event details show the current trigger-specific activation chance.
+
+Duplicate staged IDs show Varies by row because one event ID can represent several logical member rows.
+
+By Roll is the live automatic-pool-weighted mean of distinct eligible trigger events.
+
+The weighted mean is:
+
+    by_roll = sum(trigger_event_weight × trigger_activation_chance) / sum(trigger_event_weight)
+
+The mean uses only distinct trigger events that are eligible in the current automatic pool and have positive live event-system weight.
+
+Unavailable rows and rows with zero live weight display N/A instead of zero for the roll or activation field.
+
+The cluster sort modes include By Cluster ID, By Type, By Roll, By Unlock Tier, By Member Count, and By Fired.
+
+Sort order remains Ascending or Descending.
+
+Cluster history rows open immutable historical details, while catalogue rows open current details.
+
+The current detail view may show current availability and current starting chance.
+
+The historical detail view shows the saved snapshot and does not recompute it.
+
+Clicking a member row opens the member event's ordinary details without replacing the cluster batch or historical context.
+
+Settings may force a selected cluster through its manual path, but the result remains subject to the event-system force context for every dispatched trigger and member.
+
+No new visual assets are required.
+
+Existing Event Logs and Settings sprites, buttons, checkboxes, fonts, and flag surfaces remain the visual surface.
+
+## 9. Registered cluster families
+
+The current registry artifacts define these cluster families and preserve stable cluster IDs.
+
+| Cluster | Confirmed ID | Current member pattern |
+| --- | --- | --- |
+| Wars | event_cluster_id.wars | Event 4 Random War with optional Fury support |
+| Liberations | event_cluster_id.liberations | Event 6 opening, escalation, and crisis rows with optional Event 5 Soviet Union Collapse |
+| Diplomatic Panic | event_cluster_id.diplomatic_panic | Event 8 Tensions Rising with optional Event 17 Random Faction |
+| Peace | event_cluster_id.peace | Event 9 opening and follow-up rows |
+| Natural Disasters | event_cluster_id.natural_disasters | Event 13 opening and staged seasonal rows |
+| Formables | event_cluster_id.formables | Event 12 Africa Is One |
+| Positive Economy | event_cluster_id.economy_positive | Event 18 Resources Found |
+| Diseases | event_cluster_id.diseases | Event 20 Black Plague with optional Event 2 Zombie Outbreak |
+
+The first logical rows for Events 6, 9, and 13 are the explicit primary trigger rows for their respective duplicate staged groups.
+
+The member registry remains the authority for each row's declared minimum, role, and current event mapping.
+
+The effective minimum and severity rules in this contract apply to every registered and future row.
+
+## 10. Worked examples
+
+### Low-severity small-cluster activation
+
+Suppose the current tier is T0 Calm World, the selected trigger has Low severity, two logical rows are eligible after the two-pass check, fatigue is zero, and the previous automatic batch had 20 percent optional participation.
+
+The factors are base 5, trigger severity 1.35, eligible count 1.30, fatigue 1.00, and previous participation 1.40.
+
+    round(5 × 1.35 × 1.30 × 1.00 × 1.40) = round(12.285) = 12
+
+The activation chance is 12 percent after the 1 through 90 clamp.
+
+The Low-severity optional row uses the Calm World table value 70.
+
+With no accepted optional row yet, its participation chance is round(70 × 1.30 × 0.95^0) = 91 percent after the 1 through 100 clamp.
+
+The trigger dispatches first and synchronously, and the required row dispatches next after it passes ordinary fireability.
+
+### Optional decay
+
+In the same batch, if the first optional row was accepted, the accepted optional count becomes one before the next optional row is evaluated.
+
+A Medium-severity optional row at Calm World uses table value 35 and the same two-row count factor of 1.30.
+
+    round(35 × 1.30 × 0.95^1) = round(43.225) = 43
+
+The second row therefore has a 43 percent participation chance.
+
+If the first optional row was rejected or invalidated, the accepted count remains zero and the second row uses round(35 × 1.30) = 46 percent.
+
+### High-severity support
+
+Suppose a High-severity optional row passes the ordinary event-system check and its effective minimum, but no other configured row is base-eligible in pass one.
+
+The row is removed in pass two because it lacks another base-eligible member.
+
+The trigger is still eligible and may continue through an ordinary standalone event path when no cluster activation occurs.
+
+## 11. Acceptance scenarios
+
+1. An eligible automatic trigger reaches cluster evaluation, receives the formula result, and records the activation roll without changing ordinary event eligibility.
+2. A trigger rejected by the event system does not roll its cluster and continues through ordinary standalone handling.
+3. A required row receives 100 percent and Guaranteed only after ordinary eligibility succeeds.
+4. A High or Severe non-trigger row requires another pass-one base-eligible row, while the trigger and a sole configured member remain exempt.
+5. A duplicate Event 6, 9, or 13 group identifies one stable primary trigger row and preserves separate logical rows for later stages.
+6. Optional rows use the tier and severity table, apply the eligible-count factor, and increment decay only after accepted optional dispatch.
+7. A valid failed automatic roll decreases fatigue by one, while a gated attempt, failed preflight, or manual force leaves fatigue unchanged.
+8. A successful automatic activation increases fatigue by one, updates pacing and cooldown once, and records the previous-participation source only after the batch completes.
+9. A delayed row that becomes invalid is skipped with N/A and its canonical reason without borrowing another batch's context.
+10. Overlapping batches retain separate cluster, batch, row, trigger, history, and event-specific contexts.
+11. Manual cluster forcing bypasses cluster-only gates but cannot dispatch an event rejected by the equivalent event-system force context.
+12. Historical activation and member values remain unchanged when current tier, weights, definitions, availability, or fatigue later change.
+13. The catalog and Settings activation copy use Varies by member, duplicate staged event details use Varies by row, and unique event details show the current trigger-specific chance.
+14. By Roll uses the live automatic-pool-weighted mean of distinct eligible trigger events and returns N/A for unavailable or zero-weight rows.
+15. By Unlock Tier and By Member Count sort the registered cluster catalogue with stable tie handling.
+16. Fury is Medium, Tensions Rising is Low, and Black Plague is Severe in every cluster-facing presentation.
+17. Event Chaos Level assignments and workbook schema or formula prose remain unchanged.
+18. The event-log and Settings surfaces reuse existing assets without a new visual asset requirement.
+
+## 12. Artifact ownership and external validation
+
+The runtime implementation artifacts are common/script_constants/event_cluster_constants.txt, common/scripted_effects/chaosx_event_cluster_effects.txt, common/scripted_effects/chaosx_events_log_effects.txt, common/scripted_effects/chaosx_logic_effects.txt, common/scripted_effects/chaosx_settings_effects.txt, common/scripted_guis/chaosx_scripted_gui_events_log.txt, common/scripted_localisation/chaosx_scripted_localisation_events_log.txt, common/scripted_localisation/chaosx_scripted_localisation_settings.txt, interface/chaosx_events_log_popup.gui, and localisation/english/chaosx_gui_l_english.yml.
+
+This document and event_clusters.md define the documentation contract for those artifacts.
+
+events_log_window.md, events_log_evolutions_and_clusters.md, event_chaos_levels.md, and dynamic_major_event_weights.md define the linked Event Logs, Chaos Level, selection, and pacing surfaces.
+
+No new visual asset or catalog workbook schema is part of this overhaul.
+
+The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+
+Source documentation must therefore not claim engine evidence from those routes.
+
+Source review, static checks, and parent-owned runtime validation remain separate evidence classes.
+
+## Completion checklist
+
+- [x] Ordinary event-system eligibility remains authoritative for automatic, required, optional, and delayed dispatch, while manual cluster force matches the existing single-event force context and remains subject to dispatcher rejection.
+- [x] Trigger rejection skips cluster rolling and continues ordinary standalone handling.
+- [x] Required rows are guaranteed only after eligibility and never bypass fireability.
+- [x] Severity floors, declared minimums, two-pass support, trigger exemption, and sole-member exemption are implemented.
+- [x] Activation bases, factors, fatigue, previous-participation ratio, rounding, and clamps match this contract.
+- [x] Optional table values, accepted-row decay, ordering, and guaranteed dispatch match this contract.
+- [x] Stable logical rows, primary duplicate trigger rows, batch state, delayed rechecks, invalidation, overlapping-batch isolation, and versioned history are implemented.
+- [x] Successful cluster pacing and cooldown update exactly once, and manual memory remains isolated.
+- [x] Successful history snapshots include activation and member fields without recomputation, and delayed invalidation settles chance and roll to N/A sentinels.
+- [x] Event Logs and Settings expose the required chance, availability, role, severity, effective minimum, sort, and N/A behavior in source.
+- [x] Fury, Tensions Rising, and Black Plague use the corrected severities.
+- [x] Workbook schema and formula prose remain unchanged.
+- [x] No new visual assets are requested or required.
+- [x] MCP route failure is recorded as a limitation and no engine evidence is claimed.
+- [ ] Probability inspect, evaluate, sweeps, seeded simulation, sequence analysis, and before/after comparison produce accepted MCP artifacts.
+- [ ] Event inspect, render, and comparison produce accepted MCP artifacts.
+- [ ] Event Log catalogue, current detail, automatic history, and manual history pass GUI inspect/render at 1920 by 1080 and 1366 by 768.

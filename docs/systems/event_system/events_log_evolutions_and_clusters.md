@@ -1,180 +1,215 @@
 # Events Log Evolutions, Events List, and Detail Windows
 
 ## Purpose
-This UI exposes `History`, `Evolutions`, `Events`, and `Clusters` tabs for fired entries, progression milestones, defined event chains, and the event cluster catalogue.
-It also adds clickable detail windows for:
-- history entries (shared event detail window),
-- evolution entries (evolution detail window),
-- events-list entries (shared event detail window),
-- cluster catalogue entries and fired cluster history entries (cluster detail window with clickable member events).
 
-The zombie outbreak event has authored gameplay text in the event-details window, and its related evolution milestones can be opened directly from both the history-details overlay and the events-tab detail window. Event 17 also has authored result text, exact sequence-bound selected-minor and chosen-leader context, and three evolution previews.
+This UI exposes History, Evolutions, Events, and Clusters tabs for fired entries, progression milestones, defined event chains, and the event cluster catalogue.
+
+It also provides clickable detail windows for history entries, evolution entries, event-list entries, and cluster catalogue or history entries.
+
+The cluster detail window is a current-state view for catalogue rows and an immutable snapshot view for successful history rows.
+
+The shared event detail window also carries authored gameplay text for Zombie Outbreak and War Contagion, with stage previews for their event-owned evolution paths.
+
+Event 17 detail text preserves the selected minor and original faction leader from the exact history sequence, uses neutral lost-result wording when the leader was deleted, and uses unresolved wording when no leader was bound for that history row.
+
+Event 17 exposes ordered previews for Regional Bloc Race, Pressured Neutrality, and Collapse of Neutrality, while its history evolution rows show only stages that actually recorded.
+
+Evolution detail rows use their specific stage title and retain the generic evolution label only as fallback text.
+
+The workbook Evo I through Evo V fields mirror the complete description bodies shown by the evolution detail popup, while titles remain in the title selector.
 
 ## Step-by-step behavior
-1. Opening the popup (`toggle_events_log_popup`) initializes all three tab-state groups:
-   - history controls,
-   - evolution controls,
-   - events-list controls (`settings_events_log_events_*`).
-2. Clicking `History` rebuilds `global.events_log_view_*` from fired history.
-3. Clicking `Evolutions` rebuilds `global.events_log_evolution_view_*`.
-4. Clicking `Events` rebuilds a catalogue view using `global.all_events` plus runtime metadata:
-   - fired count per event (from history log arrays),
-   - enabled/disabled state (from `global.disabled_events`),
-   - unique flag (major/fire-once vs repeatable).
-   - live selection weight for each row (zeroed for disabled events and already-fired unique events).
-5. The square toggle button in each `Events` row instantly enables/disables the event and rebuilds the list.
-6. When a new event is recorded while the `Events` tab is open, the catalogue view rebuilds so live weight values stay current.
-7. Clicking `Clusters` rebuilds `global.events_log_cluster_view_*` from registered cluster definitions.
-8. Logged evolution rows are pure history rows. They stay clickable, but their enable/disable checkbox is gone because the evolution already happened.
-9. Event-preview evolution rows inside the shared event-details popup still keep their checkbox, because that list is used to control future progression.
-10. Clicking any event row from either `History` or `Events` opens the same large movable detail window, centered on screen when opened.
-11. Clicking a cluster catalogue row opens current cluster details in the same large movable layout. Fired cluster rows appear in `History` and open the historical cluster details.
-12. Cluster rows and cluster details include an enable/disable checkbox. The cluster details window also has a manual trigger button.
-13. The footer bulk checkbox appears on Events and Clusters only. It toggles all events from the Events tab and all clusters from the Clusters tab.
-14. That shared event detail window shows runtime context when it exists:
-   - fired-on date,
-   - log number,
-   - actor flag beside the title once the event has actually fired,
-   - latest reached evolution stage.
-15. Event `2` (`Zombie Outbreak`) renders gameplay-useful description text in that detail window.
-16. Event `4` (`Random War`) renders War Contagion detail text and stage previews.
-17. Event `17` (`Random faction`) renders the selected minor and original chosen faction leader from the exact history sequence. A deleted leader uses neutral lost-result wording, while a row not yet bound to a successful signature uses unresolved wording.
-18. Event `17` exposes three ordered previews for Regional Bloc Race, Pressured Neutrality, and Collapse of Neutrality. Its history evolution rows still show only stages that actually recorded.
-19. If the selected event has logged or preview evolutions, the event detail window shows a clickable evolution list under the description text.
-20. Clicking a related evolution entry, or an entry from the `Evolutions` tab, opens the evolution detail popup with:
-	   - evolution title and summary,
-	   - logged actor country link,
-	   - a portrait panel only when that evolution family has an authored portrait mapping or an intentional placeholder treatment for the selected stage,
-	   - stage-specific modifier breakdown for the zombie horde.
-21. Beneath the evolution preview, Event Details rebuilds a registered world-end list from the stable scenario registry for the selected owner event.
-22. Each terminal branch has one clickable row and one persistent checkbox. Multiple branches owned by the same event remain separate, and registered hidden identities remain eligible for view rows while unregistered routes stay absent.
-23. Clicking a world-end row opens the scenario details popup; toggling it changes only that scenario's automatic eligibility and rebuilds the selected event's rows.
 
-Evolution rows use the specific stage title for that milestone, such as `Triangular Incident` or `Four Fronts`, and keep generic type labels only as fallback text. The shared type selector maps the Death and Secret Alliance evolution constants to their dedicated labels rather than the generic `Evolution` fallback.
+1. Opening the popup initializes history, evolution, event-list, and cluster controls.
+2. Clicking History rebuilds the fired history view.
+3. Clicking Evolutions rebuilds the recorded evolution view.
+4. Clicking Events rebuilds the event catalogue from the normal event registry and live metadata.
+5. Clicking Clusters rebuilds the cluster catalogue from the registered cluster definitions.
+6. The Events row checkbox changes event enable state without changing Event Chaos availability.
+7. Cluster row and detail checkboxes change cluster enable state without granting event-system bypasses.
+8. Clicking an event row opens the shared event detail window.
+9. Clicking a cluster catalogue row opens current cluster details.
+10. Clicking a successful cluster history row opens its saved cluster details.
+11. Clicking a cluster member opens ordinary event details while preserving the cluster context.
+12. The Events and Clusters footer bulk checkbox controls only the active tab's registry.
+13. Event detail windows show current event metadata for catalogue rows and selected history metadata for fired rows.
+14. Evolution rows remain inspection rows and do not inherit cluster activation chance.
+15. World-end rows remain controlled by the world-end registry and are independent from cluster member rows.
 
-The workbook `Evo I` through `Evo V` fields mirror the complete description bodies shown by the evolution detail popup. Titles remain in the title selector and must not be copied into a description field as a substitute for prose.
+Evolution rows can open their own evolution detail popup, and event detail evolution previews remain clickable when the selected event exposes logged or preview stages.
+
+The evolution detail popup shows the evolution title, summary, logged actor link, and an authored portrait panel only when the selected evolution family and stage have an authored portrait mapping or intentional placeholder treatment.
+
+The zombie evolution detail path also exposes its stage-specific modifier breakdown.
+
+World-end detail rows remain below the evolution preview and preserve independent scenario toggles and terminal-readiness gates.
 
 ## Events tab sorting and filtering
-Events tab supports:
-- Filter: `All`, `Enabled`, `Disabled`, `Repeatable`, `Fire-Once`, `Major`
-- Sort mode: `By Event ID`, `By Fired`, `By Weight`
-- Sort order: `Ascending`, `Descending`
 
-`By Fired` shows only events with at least one logged firing. Sorting uses deterministic tie-breaking by event id.
+The Events tab filters All, Enabled, Disabled, Repeatable, Fire-Once, and Major.
+
+The Events tab sorts By Event ID, By Fired, By Weight, and By Chaos Level.
+
+By Fired hides events with no logged firing.
+
+Sorting uses aligned event metadata and stable event-ID tie handling.
+
+A normal event-system eligibility failure displays N/A instead of zero and reports the first canonical reason.
+
+Disabled events and already-fired unique events retain zero because their state is intentional.
 
 ## Clusters tab sorting and filtering
-Clusters tab supports:
-- Filter: `All`, `Available`, `Unavailable`, `Enabled`, `Disabled`
-- Sort mode: `By Cluster ID`, `By Type`, `By Roll`, `By Fired`
-- Sort order: `Ascending`, `Descending`
 
-The Clusters tab lists clusters that can be inspected or controlled from the event log. Fired cluster entries belong in `History`.
+The Clusters tab filters All, Available, Unavailable, Enabled, and Disabled.
 
-Cluster member rows are sorted by danger, with lower danger first. Roll chance displays red `N/A` whenever the cluster cannot currently roll, with a reason-aware tooltip. A skipped-unavailable member is labelled red `Unavailable`, and its row tooltip exposes the stored automatic-event availability reason.
+The Clusters tab sorts By Cluster ID, By Type, By Roll, By Unlock Tier, By Member Count, and By Fired.
 
-## Shortcuts
-- `Ctrl+Shift+E` toggles the Event Logs window.
-- `Ctrl+E` opens the Event Logs window directly on the Events tab.
-- `Ctrl+Shift+T` shows the Event Timer window.
+Sort order is Ascending or Descending.
+
+By Roll is the live automatic-pool-weighted mean of distinct eligible trigger events.
+
+    by_roll = sum(trigger_event_weight × trigger_activation_chance) / sum(trigger_event_weight)
+
+Only distinct trigger events that pass current automatic-pool eligibility and have positive live weight contribute.
+
+When no eligible positive-weight trigger exists, the cluster displays N/A.
+
+The catalogue and Settings activation summary use Varies by member where member rows have different computed chances.
+
+A unique event detail shows the current trigger-specific activation chance.
+
+A duplicate staged event ID shows Varies by row because one event ID can represent multiple logical rows.
+
+Cluster member rows expose role, severity, declared minimum, effective minimum, ordinary event-system availability, starting chance, final chance, roll, status, and canonical reason.
+
+Member rows display trigger and required guarantees as 100 percent and Guaranteed after eligibility.
+
+Manual rows display Manual and no roll.
+
+Ineligible or invalidated rows display N/A and retain their canonical reason.
+
+## Cluster eligibility and dispatch
+
+The ordinary event-system eligibility contract applies to automatic triggers, manual triggers, required rows, optional rows, and delayed rows.
+
+A selected trigger rejected by the ordinary event system does not roll a cluster and continues through ordinary standalone handling.
+
+The cluster can narrow eligibility with its own unlock, cooldown, enable, severity, two-pass support, and participation rules.
+
+Required status guarantees participation after eligibility and never bypasses event-system fireability.
+
+Manual cluster forcing may bypass cluster-only gates and the automatic activation roll, but it cannot dispatch a trigger or member rejected by the equivalent event-system force context.
+
+The trigger fires first synchronously after eligibility.
+
+Required rows follow after eligibility.
+
+Optional rows follow in Low, Medium, High, then Severe severity order, with random order within a severity.
+
+The optional participation chance uses the current tier and severity table, the eligible-count factor, and 0.95 decay per accepted optional row.
+
+The decay count increases only after an optional row is accepted in the current batch.
+
+High and Severe non-trigger rows require another pass-one base-eligible row.
+
+Trigger rows and sole configured members are exempt from that support requirement.
+
+## Stable state and history
+
+Events 6, 9, and 13 have explicit stable primary trigger rows for their opening duplicate groups.
+
+Every activation receives a stable batch identity.
+
+Queued cluster state preserves cluster, batch, logical row, trigger, history, and event-specific runtime context.
+
+Delayed dispatch rechecks ordinary event-system fireability immediately before firing.
+
+An invalid delayed row is skipped and invalidated with N/A and its first canonical reason.
+
+Overlapping batches remain isolated and cannot borrow a target, actor, history sequence, staged payload, or row context.
+
+Probability state is versioned and non-destructive.
+
+Only a successful cluster activation creates a cluster history row.
+
+The history row snapshots activation chance, activation roll, trigger, tier, batch, actor, and valid context.
+
+Each member snapshot stores chance, roll, role, severity, effective minimum, status, and canonical reason.
+
+Queued member settlement fields remain provisional in the successful activation's history row until that batch completes.
+
+After batch settlement, historical values never recompute from current Chaos tier, fatigue, member definitions, live weights, or event-system availability.
+
+Automatic fatigue and previous-participation memory exclude manual forcing.
+
+A successful cluster activation applies one pacing and one cooldown update regardless of member count.
+
+## Detail-window selection state
+
+The selected cluster state includes events_log_selected_cluster_sequence, events_log_selected_cluster_id, events_log_selected_cluster_type, events_log_selected_cluster_tier, events_log_selected_cluster_unlock_tier, events_log_selected_cluster_roll_chance, events_log_selected_cluster_available, events_log_selected_cluster_enabled, events_log_selected_cluster_unavailability_reason, events_log_selected_cluster_date, events_log_selected_cluster_trigger_event_id, events_log_selected_cluster_actor, events_log_selected_cluster_has_actor, events_log_selected_cluster_member_count, events_log_selected_cluster_fired_count, and events_log_selected_cluster_skipped_count.
+
+The cluster source and detail arrays retain stable row, role, severity, effective minimum, chance, roll, trigger, batch, status, and reason values.
+
+The selected detail view uses current values for catalogue rows.
+
+The selected detail view uses saved values for successful history rows.
 
 ## Data integration
-Events-list metadata arrays:
-- `global.events_log_events_view_fired_entries`
-- `global.events_log_events_view_enabled_entries`
-- `global.events_log_events_view_unique_entries`
-- `global.events_log_events_view_weight_entries`
-- `global.events_log_events_view_chaos_level_entries`
-- `global.events_log_events_view_unavailability_reason_entries`
 
-The row id/type payload reuses:
-- `global.events_log_view_event_id_entries`
-- `global.events_log_view_event_type_entries`
+Events-list metadata arrays include global.events_log_events_view_fired_entries, global.events_log_events_view_enabled_entries, global.events_log_events_view_unique_entries, global.events_log_events_view_weight_entries, global.events_log_events_view_chaos_level_entries, and global.events_log_events_view_unavailability_reason_entries.
 
-Event Details cluster metadata uses aligned arrays for the selected event's cluster ID plus its minimum and maximum member severity. A single severity is shown directly. Repeated logical member rows, such as Natural Disasters seasons, appear as a severity range.
+Cluster catalogue arrays include global.events_log_cluster_view_id_entries, global.events_log_cluster_view_type_entries, global.events_log_cluster_view_tier_entries, global.events_log_cluster_view_trigger_event_id_entries, global.events_log_cluster_view_member_count_entries, global.events_log_cluster_view_unlock_tier_entries, global.events_log_cluster_view_roll_chance_entries, global.events_log_cluster_view_available_entries, global.events_log_cluster_view_enabled_entries, and global.events_log_cluster_view_unavailability_reason_entries.
 
-Detail-window selection variables:
-- `events_log_selected_event_id`
-- `events_log_selected_event_type`
-- `events_log_history_selected_actor`
-- `events_log_history_selected_has_actor`
-- `events_log_history_selected_secondary_actor`
-- `events_log_history_selected_has_secondary_actor`
-- `events_log_selected_evolution_type`
-- `events_log_selected_evolution_tier`
-- `events_log_selected_evolution_stage`
-- `events_log_selected_evolution_event_id`
-- `events_log_selected_evolution_event_type`
-- `events_log_selected_evolution_actor`
-- `events_log_selected_evolution_has_actor`
-- `events_log_selected_evolution_has_portrait`
-- `events_log_selected_evolution_date`
-- `events_log_selected_cluster_sequence`
-- `events_log_selected_cluster_id`
-- `events_log_selected_cluster_type`
-- `events_log_selected_cluster_tier`
-- `events_log_selected_cluster_unlock_tier`
-- `events_log_selected_cluster_roll_chance`
-- `events_log_selected_cluster_available`
-- `events_log_selected_cluster_enabled`
-- `events_log_selected_cluster_actor`
-- `events_log_selected_cluster_has_actor`
-- `events_log_selected_cluster_member_count`
-- `events_log_selected_cluster_fired_count`
-- `events_log_selected_cluster_skipped_count`
-- `global.events_log_view_cluster_id_entries`
-- `global.events_log_view_cluster_sequence_entries`
-- `global.events_log_view_cluster_type_entries`
-- `global.events_log_cluster_view_enabled_entries`
-- `global.events_log_cluster_view_unavailability_reason_entries`
-- `global.events_log_cluster_member_unavailability_reason_entries`
-- `global.events_log_cluster_detail_member_unavailability_reason_entries`
+Cluster member history arrays include global.events_log_cluster_member_cluster_sequence_entries, global.events_log_cluster_member_event_id_entries, global.events_log_cluster_member_status_entries, global.events_log_cluster_member_danger_entries, global.events_log_cluster_member_unavailability_reason_entries, global.events_log_cluster_member_row_id_entries, global.events_log_cluster_member_role_entries, global.events_log_cluster_member_severity_entries, global.events_log_cluster_member_declared_min_tier_entries, global.events_log_cluster_member_effective_min_tier_entries, global.events_log_cluster_member_base_chance_entries, global.events_log_cluster_member_final_chance_entries, global.events_log_cluster_member_roll_entries, global.events_log_cluster_member_trigger_entries, and global.events_log_cluster_member_batch_id_entries.
 
-Generic evolution-disable contract:
-- UI toggles set `events_log_evolution_event_id`, `events_log_evolution_type`, and `events_log_evolution_stage`.
-- Gameplay scripts can reuse the same three variables and then check `is_current_evolution_enabled = yes`.
-- Disabled stages are stored as dynamic global flags, so new evolution chains do not need new constants or bespoke toggle infrastructure.
+Probability-state arrays include global.event_cluster_probability_state_cluster_id_entries, global.event_cluster_probability_state_fatigue_entries, global.event_cluster_probability_state_success_count_entries, global.event_cluster_probability_state_manual_count_entries, global.event_cluster_probability_state_last_optional_fired_entries, global.event_cluster_probability_state_last_optional_eligible_entries, global.event_cluster_probability_state_last_participation_ratio_entries, global.event_cluster_probability_state_last_activation_chance_entries, global.event_cluster_probability_state_last_activation_roll_entries, global.event_cluster_probability_state_last_activation_tier_entries, global.event_cluster_probability_state_last_activation_result_entries, global.event_cluster_probability_state_last_effective_member_count_entries, global.event_cluster_probability_state_last_trigger_row_id_entries, and global.event_cluster_probability_state_last_history_sequence_entries.
+
+Pending queues include event_cluster_pending_member_event_id_entries, event_cluster_pending_member_batch_index_entries, event_cluster_pending_member_batch_id_entries, event_cluster_pending_member_cluster_id_entries, event_cluster_pending_member_row_id_entries, event_cluster_pending_member_trigger_entries, and event_cluster_pending_member_history_sequence_entries.
+
+Detail selection variables include events_log_selected_event_id, events_log_selected_event_type, events_log_history_selected_actor, events_log_history_selected_has_actor, events_log_history_selected_secondary_actor, events_log_history_selected_has_secondary_actor, events_log_selected_evolution_type, events_log_selected_evolution_tier, events_log_selected_evolution_stage, events_log_selected_evolution_event_id, events_log_selected_evolution_event_type, events_log_selected_evolution_actor, events_log_selected_evolution_has_actor, events_log_selected_evolution_has_portrait, events_log_selected_evolution_date, events_log_selected_cluster_sequence, events_log_selected_cluster_id, events_log_selected_cluster_type, events_log_selected_cluster_tier, events_log_selected_cluster_unlock_tier, events_log_selected_cluster_roll_chance, events_log_selected_cluster_available, events_log_selected_cluster_enabled, events_log_selected_cluster_actor, events_log_selected_cluster_has_actor, events_log_selected_cluster_member_count, events_log_selected_cluster_fired_count, and events_log_selected_cluster_skipped_count.
+
+The shared event detail view also uses global.events_log_view_cluster_id_entries, global.events_log_view_cluster_sequence_entries, and global.events_log_view_cluster_type_entries for selected event cluster metadata.
+
+## Generic evolution-disable contract
+
+Evolution controls set events_log_evolution_event_id, events_log_evolution_type, and events_log_evolution_stage before checking is_current_evolution_enabled.
+
+Disabled stages are stored as dynamic global flags, so new evolution chains reuse the same toggle infrastructure.
+
+## Evolution and world-end separation
+
+Evolution preview rows represent progression milestones and use their existing enablement and display rules.
+
+Evolution history rows show only milestones that actually recorded.
+
+World-end entries remain terminal scenario registry rows and preserve their independent toggle and selection rules.
+
+Neither surface supplies cluster activation chance or optional participation values.
+
+## Shortcuts
+
+Ctrl+Shift+E toggles the Event Logs window.
+
+Ctrl+E opens the Event Logs window directly on the Events tab.
+
+Ctrl+Shift+T shows the Event Timer window.
 
 ## UI assets and wiring
-GUI files touched:
-- `interface/chaosx_events_log_popup.gui`
-- `common/scripted_effects/chaosx_events_log_effects.txt`
-- `common/scripted_guis/chaosx_scripted_gui_events_log.txt`
-- `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-- `localisation/english/chaosx_gui_l_english.yml`
 
-Sprites currently used:
-- `GFX_sort_button_100x29`
-- `GFX_chaosx_sort_button_100x29_2`
-- `GFX_chaosx_arrow_left`
-- `GFX_chaosx_arrow_right`
-- `GFX_chaosx_chaos_meter_entry`
-- `GFX_chaosx_checkbox_checked`
-- `GFX_chaosx_checkbox_unchecked`
-- `GFX_flag_small2`
-- `GFX_diplo_countrylist_flag_frame`
-- `GFX_tiled_window_2b_border`
-- `GFX_portrait_ZZZ_leader_2`
-- `GFX_portrait_ZZZ_leader_3`
-- `GFX_portrait_ZZZ_leader_4`
-- `GFX_portrait_communist_rebels`
-- `GFX_portrait_THR_refuge_bodhisattva`
-- `GFX_portrait_THR_bodhisattva_pramudita`
-- `GFX_portrait_THR_arhat_administration`
-- `GFX_portrait_THR_buddha_mandate_animated`
-- `GFX_portrait_THR_divine_sovereignty`
-- `GFX_portrait_THR_empty_seat_animated`
-- `GFX_portrait_DTH_zol`
-- `GFX_portrait_DTH_zol_world_end_animated`
-- `GFX_soviet_collapse_evolution_portraits_animated`
-- `GFX_portrait_unknown`
-- `GFX_fury_leader_flame_overlay_animated`
+The window reuses existing Event Logs and Settings sprites, buttons, checkboxes, fonts, flags, row backgrounds, and Chaos tier colours.
 
-New art required:
-- None for the current event, evolution, or world-end catalog implementation. Evolution details use the portrait layout only when `has_events_log_selected_evolution_authored_portrait` resolves true for the selected evolution type and stage. Fury deliberately uses vanilla's `GFX_portrait_unknown` missing portrait with the existing `GFX_fury_leader_flame_overlay_animated` overlay. Soviet Collapse secession and high-chaos evolution details use `GFX_soviet_collapse_evolution_portraits_animated`, a portrait-sized loop of the existing Soviet Collapse portrait set. Death's island-report and mainland-reveal evolutions use the normal Zol portrait, while Last Shores and whole-world-consumed use the animated world-end Zol portrait. Stages without a portrait treatment keep the wide text body. World-end rows reuse the existing event-log row background and checkbox sprites.
+No new visual assets are required.
 
-Evolution enable checks:
-- `is_current_evolution_enabled` checks both the player disable toggle and, when `events_log_evolution_tier` is set, whether the campaign has reached that chaos tier. Event-specific record helpers should set `events_log_evolution_tier` before calling it, and should only set their recorded flags after the entry actually records.
+The layout and click routing remain in interface/chaosx_events_log_popup.gui and the existing Event Logs scripted GUI and localisation paths.
 
-If new art is required later:
-- Put textures in `gfx/interface/`.
-- Register them in `interface/chaosx.gfx`.
+Existing evolution detail portrait consumers include GFX_portrait_ZZZ_leader_2, GFX_portrait_ZZZ_leader_3, GFX_portrait_ZZZ_leader_4, GFX_portrait_communist_rebels, GFX_portrait_THR_refuge_bodhisattva, GFX_portrait_THR_bodhisattva_pramudita, GFX_portrait_THR_arhat_administration, GFX_portrait_THR_buddha_mandate_animated, GFX_portrait_THR_divine_sovereignty, GFX_portrait_THR_empty_seat_animated, GFX_portrait_DTH_zol, GFX_portrait_DTH_zol_world_end_animated, GFX_soviet_collapse_evolution_portraits_animated, GFX_portrait_unknown, and GFX_fury_leader_flame_overlay_animated.
+
+No new art is needed for the cluster catalogue, cluster details, or the current event, evolution, and world-end catalog surfaces.
+
+Evolution families without a portrait treatment keep the wide text body, while an authored portrait or intentional placeholder is selected only through the existing stage mapping.
+
+## External validation limitation
+
+The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+
+This document records the contract and source references only and does not claim engine evidence from those routes.

@@ -55,6 +55,40 @@ event_cluster_member_status = {
 	skipped_chaos_tier = 4
 	skipped_participation = 5
 	available = 6
+	guaranteed = 7
+	manual = 8
+	not_applicable = 9
+	skipped_runtime = 10
+	skipped_escalation_support = 11
+}
+
+event_cluster_cooldown_days = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wars = 120
+	liberations = 90
+	diplomatic_panic = 120
+	peace = 120
+	natural_disasters = 120
+	formables = 120
+	economy_positive = 120
+	diseases = 120
+}
+
+event_cluster_event013_context = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	sentinel = 0
+	baseline_first_slot = 1
+	evolution_i_slot = 3
+	evolution_ii_slot = 4
+	evolution_iii_slot = 5
 }
 
 event_cluster_member_danger = {
@@ -67,6 +101,59 @@ event_cluster_member_danger = {
 	medium = 2
 	high = 3
 	severe = 4
+}
+
+event_cluster_member_primary_trigger = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	no = 0
+	yes = 1
+}
+
+# Stable logical row IDs. These IDs are persisted in cluster history and the
+# pending queue, so duplicate event IDs remain distinguishable across saves.
+event_cluster_member_row_id = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	wars_random_war = 1001
+	wars_fury = 1002
+	liberations_independence_opening = 2001
+	liberations_independence_escalation = 2002
+	liberations_independence_crisis = 2003
+	liberations_soviet_collapse = 2004
+	diplomatic_panic_tensions = 3001
+	diplomatic_panic_faction = 3002
+	peace_white_peace_opening = 4001
+	peace_white_peace_followup = 4002
+	natural_disasters_opening = 5001
+	natural_disasters_early = 5002
+	natural_disasters_varied = 5003
+	natural_disasters_regional = 5004
+	natural_disasters_abnormal = 5005
+	formables_africa = 6001
+	economy_resources = 7001
+	diseases_black_plague = 8001
+	diseases_zombie = 8002
+}
+
+# Severity floors are intentionally separate from each row's declared floor.
+# The effective floor is max(declared row floor, this severity floor).
+event_cluster_member_severity_floor = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	low = 0
+	medium = 1
+	high = 2
+	severe = 3
 }
 
 event_cluster_roll_chance_default = {
@@ -100,7 +187,6 @@ event_cluster_wars = {
 	}
 
 	unlock_tier = 1
-	cooldown_days = 120
 }
 
 event_cluster_liberations = {
@@ -110,7 +196,6 @@ event_cluster_liberations = {
 	}
 
 	unlock_tier = 0
-	cooldown_days = 90
 }
 
 event_cluster_diplomatic_panic = {
@@ -120,7 +205,6 @@ event_cluster_diplomatic_panic = {
 	}
 
 	unlock_tier = 0
-	cooldown_days = 120
 }
 
 event_cluster_peace = {
@@ -130,7 +214,6 @@ event_cluster_peace = {
 	}
 
 	unlock_tier = 0
-	cooldown_days = 120
 }
 
 event_cluster_natural_disasters = {
@@ -140,7 +223,6 @@ event_cluster_natural_disasters = {
 	}
 
 	unlock_tier = 0
-	cooldown_days = 120
 }
 
 event_cluster_formables = {
@@ -150,7 +232,6 @@ event_cluster_formables = {
 	}
 
 	unlock_tier = 3
-	cooldown_days = 120
 }
 
 event_cluster_unavailability_reason = {
@@ -175,7 +256,6 @@ event_cluster_economy_positive = {
 	}
 
 	unlock_tier = 3
-	cooldown_days = 120
 }
 
 event_cluster_diseases = {
@@ -185,35 +265,165 @@ event_cluster_diseases = {
 	}
 
 	unlock_tier = 0
-	cooldown_days = 120
 }
 
-event_cluster_member_participation = {
+# Authoritative optional-member participation matrix. Columns are Low,
+# Medium, High, and Severe member severity; rows are current Chaos tiers.
+event_cluster_member_participation_matrix = {
 	schema = {
 		any_key = yes
 		data = fixed_point
 	}
 
-	required = 100
-	default_optional = 50
-	high = 85
-	medium = 60
-	low = 35
-	random_war = 100
-	fury = 70
-	soviet_collapse = 100
-	independence_wave = 35
-	tensions_rising = 100
-	random_faction = 65
-	white_peace = 100
-	white_peace_followup = 60
-	natural_disaster_early_repeat = 85
-	natural_disaster_varied_repeat = 60
-	natural_disaster_regional_repeat = 60
-	natural_disaster_abnormal_repeat = 35
-	black_plague = 100
-	zombie_outbreak = 60
-	resources_found = 100
+	calm_low = 70
+	calm_medium = 35
+	calm_high = 15
+	calm_severe = 5
+	gathering_low = 80
+	gathering_medium = 40
+	gathering_high = 20
+	gathering_severe = 10
+	rising_low = 90
+	rising_medium = 45
+	rising_high = 25
+	rising_severe = 15
+	chaos_low = 95
+	chaos_medium = 50
+	chaos_high = 30
+	chaos_severe = 20
+	totalen_low = 99
+	totalen_medium = 60
+	totalen_high = 40
+	totalen_severe = 25
+	collapse_low = 100
+	collapse_medium = 75
+	collapse_high = 50
+	collapse_severe = 30
+}
+
+event_cluster_activation_severity_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	low = 1.35
+	medium = 1.15
+	high = 0.85
+	severe = 0.65
+}
+
+event_cluster_activation_eligible_count_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	one = 1.40
+	two = 1.30
+	three = 1.20
+	four = 1.10
+	five_plus = 1.00
+}
+
+event_cluster_activation_fatigue_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	score_0 = 1.00
+	score_1 = 0.90
+	score_2 = 0.81
+	score_3 = 0.729
+	score_4 = 0.6561
+}
+
+event_cluster_activation_participation_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	up_to_25 = 1.40
+	over_25_to_50 = 1.30
+	over_50_to_75 = 1.15
+	over_75 = 1.00
+	neutral = 1.00
+}
+
+event_cluster_activation_participation_threshold = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	quarter = 0.25
+	half = 0.50
+	three_quarters = 0.75
+}
+
+event_cluster_member_optional_decay = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	factor = 0.95
+}
+
+event_cluster_probability_bounds = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	activation_minimum = 1
+	activation_maximum = 90
+	member_minimum = 1
+	member_maximum = 100
+}
+
+event_cluster_probability_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	version = 1
+	fatigue_minimum = 0
+	fatigue_maximum = 4
+	success_fatigue_delta = 1
+	failed_roll_fatigue_delta = 1
+}
+
+event_cluster_activation_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	success = 1
+	roll_failed = 2
+	gated = 3
+	runtime_failed = 4
+}
+
+event_cluster_catalogue_sort_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	cluster_id = 0
+	type = 1
+	roll = 2
+	fired = 3
+	unlock_tier = 4
+	member_count = 5
+	minimum = 0
+	maximum = 5
 }
 
 event_cluster_member_order = {

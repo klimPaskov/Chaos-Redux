@@ -54,9 +54,13 @@ The event-system helpers live in `common/scripted_effects/chaosx_logic_effects.t
 
 ## Cluster Pacing
 
-Clusters still apply global pacing once. One-time and repeatable clusters count as one minor global pacing event, so `apply_dynamic_major_weight_gain_after_minor` runs once for the whole cluster. Member events fire in `event_cluster_member_fire_context`, which suppresses additional timer or major-gain updates.
+Each successful cluster activation applies global pacing once for the complete batch. One-time and repeatable clusters count as one minor global pacing event, so `apply_dynamic_major_weight_gain_after_minor` runs once regardless of the number of dispatched members. Member events fire in `event_cluster_member_fire_context`, which suppresses additional timer or major-gain updates.
 
-Major clusters use the major pacing path and reset major weights once for the cluster.
+An intentionally registered major cluster uses the major pacing path and resets major weights once for the cluster.
+
+A valid failed cluster activation roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.
+
+Gated attempts and failed preflight do not change cluster automatic-memory state, and manual cluster forcing does not seed or consume automatic activation memory.
 
 ## UI And Localisation
 

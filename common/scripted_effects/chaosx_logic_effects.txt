@@ -575,8 +575,9 @@ get_event_cap = {
 # metadata first.
 # Output: event_pool_candidate_unavailability_reason and
 # event_required_chaos_level_is_met_value.
-# Disabled and already-fired unique events are intentionally outside this
-# resolver because the Events tab represents them as numeric zero states.
+# Disabled and already-fired unique events are resolved by the shared pool
+# wrapper because the Events tab represents them as numeric zero states while
+# cluster history needs their canonical rejection reason.
 evaluate_event_pool_candidate_unavailability = {
 	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
 	set_temp_variable = { event_pool_candidate_independence_context_injected = 0 }
@@ -820,8 +821,10 @@ evaluate_event_pool_candidate_unavailability = {
 # Check whether event_id is part of the current automatic random-event pool.
 evaluate_random_event_active_pool_candidate = {
 	# Input: temp variable event_id
-	# Output: temp variable event_active_pool_candidate_is_valid
+	# Output: event_active_pool_candidate_is_valid and the canonical
+	# event_pool_candidate_unavailability_reason.
 	set_temp_variable = { event_active_pool_candidate_is_valid = 1 }
+	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
 	set_temp_variable = { event_type = constant:event_system_event_type.unknown }
 	get_event_type = yes
 	get_event_required_chaos_level = yes
@@ -851,6 +854,17 @@ evaluate_random_event_active_pool_candidate = {
 			}
 		}
 		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+	}
+	if = {
+		limit = { is_in_array = { global.disabled_events = event_id } }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.disabled }
+	}
+	else_if = {
+		limit = {
+			is_in_array = { global.fired_events = event_id }
+			NOT = { check_variable = { event_type = constant:event_system_event_type.repeatable } }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.already_fired }
 	}
 }
 
