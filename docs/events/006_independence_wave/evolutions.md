@@ -79,7 +79,7 @@ Canonical global flags:
 The tuning sources are:
 
 - `common/script_constants/006_independence_wave_constants_registry.txt`
-- `common/mtth/006_independence_wave_evolution_mtth.txt`
+- `common/mtth/chaosx_mtth_variables.txt` (the Event 006 evolution interval is kept under its source marker)
 
 The effects and triggers are:
 
