@@ -6,7 +6,7 @@ Scope: documentation-only reconciliation of the historical 2026-08-26 full-spec 
 
 The accepted decision/mission matrix receipt `006_event6_decision_mission_matrix_implementation_receipt_2026-08-26.md` is committed by `40647acbb` and provides the current one-to-one source crosswalk for all 80 matrix rows.
 
-The startup character recruitment registry is current authority after `35ab74212`, preserving the 25 guarded country blocks and 54 recruitment calls without changing roster semantics.
+The startup character recruitment registry is current authority after `5895d0b69`, preserving the 25 guarded country blocks and 54 recruitment calls without changing roster semantics.
 
 The historical gap map now records those two source-layout closures in a dated authority note, marks the 80-row surface as source-complete crosswalk but runtime-unverified, removes the stale startup-registry blocker, and prioritizes typed probability evidence, isolated MCP acceptance, and independently attested package/formable breadth.
 

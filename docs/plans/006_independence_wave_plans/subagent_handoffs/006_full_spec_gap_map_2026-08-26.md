@@ -14,7 +14,7 @@ That boundary is not the accepted whole specification. The largest substantive s
 
 ## Post-audit authority reconciliation — 2026-08-28
 
-The 2026-08-26 decision/mission implementation receipt is now committed in `40647acbb` and is the current one-to-one source crosswalk for all 80 accepted matrix rows. It supersedes only the missing-receipt wording in this historical audit; direct decision/mission and GUI MCP evidence, probability evidence, runtime execution, and whole-event completion remain unverified or blocked as recorded below. The startup recruitment registry was likewise promoted as the current authority in `35ab74212`, so the two source-layout tasks listed as the former highest safe gaps are closed and must not be reopened without a new defect.
+The 2026-08-26 decision/mission implementation receipt is now committed in `40647acbb` and is the current one-to-one source crosswalk for all 80 accepted matrix rows. It supersedes only the missing-receipt wording in this historical audit; direct decision/mission and GUI MCP evidence, probability evidence, runtime execution, and whole-event completion remain unverified or blocked as recorded below. The startup recruitment registry was likewise promoted as the current authority in `5895d0b69`, so the two source-layout tasks listed as the former highest safe gaps are closed and must not be reopened without a new defect.
 
 ## Status legend
 
@@ -92,7 +92,7 @@ The required offline wiki pages and the installed vanilla documentation for even
 | FORM-48 implementation plan | Bounded framework implemented; operational reachability remains blocked by the exact HBX/HAW/FSM member contract and unadmitted FSM. |
 | Super-event 23 research plan | Blocked on the accepted exact recording. A fallback has not been approved. |
 | Catalog reconciliation | Implemented for the current `Needs Testing` / `Needs Testing` / `Partially Available` wording. |
-| Startup-character registry consolidation | Completed and committed as `35ab74212` with `006_event6_character_recruitment_registry_merge_2026-08-26.md`; the merged registry is current authority and no recruitment semantics changed. |
+| Startup-character registry consolidation | Completed and committed as `5895d0b69` with `006_event6_character_recruitment_registry_merge_2026-08-26.md`; the merged registry is current authority and no recruitment semantics changed. |
 
 No accepted addendum was found that authorizes bulk package generation, generic identity substitution, universal historical flags, fabricated formable members, an audio fallback, or a source-score-only balance conclusion.
 
