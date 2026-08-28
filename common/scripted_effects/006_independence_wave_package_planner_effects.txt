@@ -58,17 +58,35 @@ independence_wave_capture_wave_tuning = {
 	}
 }
 
+# Rebuild the temporary country-scope registry used by the automatic-package
+# readiness wrappers. The event-pool capacity probe runs before a live plan is
+# opened, so it cannot rely on the durable plan registry below.
+independence_wave_prepare_runtime_possible_country_registry = {
+	clear_temp_array = independence_wave_runtime_possible_countries
+	every_possible_country = {
+		add_to_temp_array = {
+			array = independence_wave_runtime_possible_countries
+			value = THIS
+		}
+	}
+}
+
 independence_wave_begin_plan_contribution = {
 	independence_wave_reconcile_breakaway_sponsorship_queue = yes
 	independence_wave_capture_wave_tuning = yes
-	# Build a stable country-scope registry before any package readiness trigger
+	# Build stable country-scope registries before any package readiness trigger
 	# or publisher runs. `every_possible_country` includes absent carriers, so
 	# the allocator can resolve both startup shells and not-yet-created tags
 	# through the same array-backed scope path used by Event 005.
 	clear_array = global.independence_wave_plan_possible_countries
+	clear_temp_array = independence_wave_runtime_possible_countries
 	every_possible_country = {
 		add_to_array = {
 			array = global.independence_wave_plan_possible_countries
+			value = THIS
+		}
+		add_to_temp_array = {
+			array = independence_wave_runtime_possible_countries
 			value = THIS
 		}
 	}
@@ -1032,5 +1050,6 @@ independence_wave_clear_plan_contribution = {
 	clear_array = global.independence_wave_plan_sponsorship_opening_strengths
 	clear_array = global.independence_wave_plan_sponsorship_routes
 	clear_array = global.independence_wave_plan_possible_countries
+	clear_temp_array = independence_wave_runtime_possible_countries
 	independence_wave_clear_frozen_evolution_plan_state = yes
 }

@@ -580,6 +580,7 @@ get_event_cap = {
 evaluate_event_pool_candidate_unavailability = {
 	set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.none }
 	set_temp_variable = { event_pool_candidate_independence_context_injected = 0 }
+	set_temp_variable = { event_pool_candidate_independence_capacity_registry_prepared = 0 }
 	if = {
 		limit = {
 			check_variable = { event_id = constant:independence_wave_event.id }
@@ -591,6 +592,19 @@ evaluate_event_pool_candidate_unavailability = {
 		set_temp_variable = { event_cluster_member_event_id = constant:independence_wave_event.id }
 		set_temp_variable = { event_cluster_liberations_member_availability_context = 1 }
 		set_temp_variable = { event_pool_candidate_independence_context_injected = 1 }
+	}
+	# The automatic pool asks the Liberations capacity trigger before the Event
+	# 006 allocator opens its plan. Seed the absent-country-safe temporary
+	# registry here so the existing package readiness wrappers can resolve both
+	# live tags and not-yet-created carriers during that pre-selection probe.
+	if = {
+		limit = {
+			check_variable = { event_id = constant:independence_wave_event.id }
+			check_variable = { event_required_chaos_level_is_met_value > 0 }
+			can_liberation_release_reset_plan = yes
+		}
+		independence_wave_prepare_runtime_possible_country_registry = yes
+		set_temp_variable = { event_pool_candidate_independence_capacity_registry_prepared = 1 }
 	}
 	if = {
 		limit = { check_variable = { event_required_chaos_level_is_met_value = 0 } }
@@ -775,6 +789,11 @@ evaluate_event_pool_candidate_unavailability = {
 			limit = { NOT = { black_plague_has_valid_origin = yes } }
 			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_origin }
 		}
+	}
+
+	if = {
+		limit = { check_variable = { event_pool_candidate_independence_capacity_registry_prepared > 0 } }
+		clear_temp_array = independence_wave_runtime_possible_countries
 	}
 
 	if = {
