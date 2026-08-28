@@ -594,9 +594,10 @@ evaluate_event_pool_candidate_unavailability = {
 		set_temp_variable = { event_pool_candidate_independence_context_injected = 1 }
 	}
 	# The automatic pool asks the Liberations capacity trigger before the Event
-	# 006 allocator opens its plan. Seed the absent-country-safe temporary
-	# registry here so the existing package readiness wrappers can resolve both
-	# live tags and not-yet-created carriers during that pre-selection probe.
+	# 006 allocator opens its plan. Seed the durable absent-country-safe registry
+	# here so the same package readiness wrappers can resolve both live tags and
+	# not-yet-created carriers during that pre-selection probe and the later live
+	# allocation pass.
 	if = {
 		limit = {
 			check_variable = { event_id = constant:independence_wave_event.id }
@@ -804,6 +805,7 @@ evaluate_event_pool_candidate_unavailability = {
 
 	if = {
 		limit = { check_variable = { event_pool_candidate_independence_capacity_registry_prepared > 0 } }
+		clear_array = global.independence_wave_plan_possible_countries
 		clear_temp_array = independence_wave_runtime_possible_countries
 	}
 
