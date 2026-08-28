@@ -128,8 +128,31 @@ independence_wave_join_observe_war_entry = {
 independence_wave_join_try_package = {
 	set_temp_variable = { independence_wave_join_probe_country_row_start = global.liberation_plan_countries^num }
 	set_temp_variable = { independence_wave_join_probe_state_row_start = global.liberation_plan_states^num }
+	# The package loader and reservation publisher are nested dynamic effects.
+	# Seed their complete candidate transaction contract before dispatch so the
+	# Join probe can verify the exact footprint after the publisher returns.
+	set_temp_variable = { independence_wave_candidate_package_id = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_reservation_group = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_region = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_depth = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_archetype = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_disposition = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_uses_registered_tag = constant:independence_wave_planner.no_candidates }
 	set_temp_variable = { independence_wave_candidate_requested_territory = constant:liberation_territory_level.extended }
 	set_temp_variable = { independence_wave_candidate_force_level = constant:liberation_force_level.viable }
+	set_temp_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_candidate_highest_territory = constant:liberation_territory_level.anchor }
+	set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+	set_temp_variable = { liberation_candidate_state_row_start = constant:liberation_release_limit.minimum }
+	set_temp_variable = { liberation_candidate_plan_owner = constant:liberation_plan_owner.independence_wave }
+	set_temp_variable = { liberation_candidate_package_id = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { liberation_candidate_reservation_group = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { liberation_candidate_territory_level = constant:liberation_territory_level.anchor }
+	set_temp_variable = { liberation_candidate_force_level = constant:liberation_force_level.fragile }
+	set_temp_variable = { independence_wave_setup_package_id = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_optional_country_row_valid = constant:independence_wave_planner.no_candidates }
+	set_temp_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.no_candidates }
 	if = {
 		limit = {
 			check_variable = {

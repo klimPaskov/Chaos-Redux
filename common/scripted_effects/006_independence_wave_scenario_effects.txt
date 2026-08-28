@@ -384,6 +384,31 @@ independence_wave_scenario_attempt_ranked_packages = {
 	for_each_loop = {
 		array = global.independence_wave_scenario_ranked_package_ids
 		value = independence_wave_scenario_dispatch_package_id
+		# Both the ranked loader and the reservation publisher are nested dynamic
+		# effects. Seed the shared candidate transaction contract so preflight and
+		# exact-footprint checks see the package values after those calls return.
+		set_temp_variable = { independence_wave_candidate_package_id = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_reservation_group = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_region = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_depth = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_archetype = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_disposition = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_uses_registered_tag = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_requested_territory = constant:liberation_territory_level.anchor }
+		set_temp_variable = { independence_wave_candidate_force_level = constant:liberation_force_level.fragile }
+		set_temp_variable = { independence_wave_candidate_country_reserved = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_anchor_reserved = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_candidate_highest_territory = constant:liberation_territory_level.anchor }
+		set_temp_variable = { liberation_candidate_reject_reason = constant:liberation_plan_reject_reason.none }
+		set_temp_variable = { liberation_candidate_state_row_start = constant:liberation_release_limit.minimum }
+		set_temp_variable = { liberation_candidate_plan_owner = constant:liberation_plan_owner.independence_wave }
+		set_temp_variable = { liberation_candidate_package_id = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { liberation_candidate_reservation_group = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { liberation_candidate_territory_level = constant:liberation_territory_level.anchor }
+		set_temp_variable = { liberation_candidate_force_level = constant:liberation_force_level.fragile }
+		set_temp_variable = { independence_wave_setup_package_id = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_optional_country_row_valid = constant:independence_wave_planner.no_candidates }
+		set_temp_variable = { independence_wave_host_can_lose_state = constant:independence_wave_planner.no_candidates }
 		# Scenario preflight shares the normal execution attestation trigger.
 		# Temporary variables are unscoped, so this bridge remains visible while
 		# the candidate-country scope checks the immutable content authority.
