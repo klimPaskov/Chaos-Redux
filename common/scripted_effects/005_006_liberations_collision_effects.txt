@@ -1048,17 +1048,20 @@ soviet_collapse_joint_release_one_frozen_country = {
 			remove_core_of = event_target:soviet_collapse_joint_execution_country
 		}
 	}
-	event_target:soviet_collapse_joint_execution_former_host = {
-		release = event_target:soviet_collapse_joint_execution_country
-		if = {
-			limit = {
-				event_target:soviet_collapse_joint_execution_country = {
-					is_subject_of = event_target:soviet_collapse_joint_execution_former_host
+	event_target:soviet_collapse_joint_execution_country = {
+		event_target:soviet_collapse_joint_execution_former_host = {
+			# `release` accepts a scope-stack target. Keep the candidate country as
+			# PREV, matching the vanilla every_possible_country release pattern;
+			# passing an event_target directly leaves an absent candidate uninstantiated.
+			release = PREV
+			if = {
+				limit = {
+					PREV = { is_subject_of = THIS }
 				}
-			}
-			set_autonomy = {
-				target = event_target:soviet_collapse_joint_execution_country
-				autonomy_state = autonomy_free
+				set_autonomy = {
+					target = PREV
+					autonomy_state = autonomy_free
+				}
 			}
 		}
 	}

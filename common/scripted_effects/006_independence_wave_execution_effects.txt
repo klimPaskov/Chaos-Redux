@@ -500,17 +500,21 @@ independence_wave_release_one_frozen_country = {
 				}
 			}
 		}
-		event_target:independence_wave_execution_former_host = {
-			release = event_target:independence_wave_execution_country
-			if = {
-				limit = {
-					event_target:independence_wave_execution_country = {
-						is_subject_of = event_target:independence_wave_execution_former_host
+		event_target:independence_wave_execution_country = {
+			event_target:independence_wave_execution_former_host = {
+				# `release` accepts a scope-stack target. Keep the candidate country
+				# as PREV, matching the vanilla every_possible_country release
+				# pattern; passing an event_target directly is not a valid release
+				# target and leaves absent candidates uninstantiated.
+				release = PREV
+				if = {
+					limit = {
+						PREV = { is_subject_of = THIS }
 					}
-				}
-				set_autonomy = {
-					target = event_target:independence_wave_execution_country
-					autonomy_state = autonomy_free
+					set_autonomy = {
+						target = PREV
+						autonomy_state = autonomy_free
+					}
 				}
 			}
 		}
