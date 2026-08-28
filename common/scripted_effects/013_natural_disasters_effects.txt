@@ -11240,7 +11240,7 @@ natural_disaster_register_abnormal_gui_card = {
 					flag = natural_disaster_abnormal_notice_cooldown
 					days = @ND_ABNORMAL_NOTICE_COOLDOWN_DAYS
 				}
-				PREV = { save_event_target_as = natural_disaster_abnormal_notice_state }
+				set_variable = { natural_disaster_abnormal_notice_state = PREV }
 				country_event = { id = chaosx.nr13.4 }
 			}
 		}
@@ -11642,12 +11642,13 @@ natural_disaster_open_abnormal_gui = {
 	clr_country_flag = natural_disaster_abnormal_history_view
 	clear_variable = natural_disaster_gui_requested_sequence_id
 	if = {
-		limit = { has_event_target = natural_disaster_abnormal_notice_state }
-		event_target:natural_disaster_abnormal_notice_state = {
+		limit = { has_variable = natural_disaster_abnormal_notice_state }
+		var:natural_disaster_abnormal_notice_state = {
 			set_temp_variable = { natural_disaster_gui_notice_sequence = natural_disaster_sequence_id }
 		}
 		set_variable = { natural_disaster_gui_requested_sequence_id = natural_disaster_gui_notice_sequence }
 	}
+	clear_variable = natural_disaster_abnormal_notice_state
 	natural_disaster_rebuild_abnormal_gui_view = yes
 	if = {
 		limit = { check_variable = { natural_disaster_gui_state_entries^num > 0 } }

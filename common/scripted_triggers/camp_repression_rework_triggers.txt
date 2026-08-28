@@ -1342,8 +1342,13 @@ is_bel_core_fallback_pool_state = {
 	always = no
 }
 
+# Decision-category highlight pre-passes can evaluate state triggers before a
+# country ROOT exists. Keep the full actor-specific pool test dormant until the
+# caller supplies its country context.
 camp_rework_state_matches_country_kit_pool = {
-	OR = {
+	if = {
+		limit = { country_exists = ROOT }
+		OR = {
 		AND = {
 			ROOT = { original_tag = GER }
 			OR = {
@@ -1434,7 +1439,9 @@ camp_rework_state_matches_country_kit_pool = {
 				is_generic_player_selectable_camp_pool_state = yes
 			}
 		}
+		}
 	}
+	else = { always = no }
 }
 
 camp_rework_country_has_chemical_chlorine_activation_capacity = {

@@ -2787,7 +2787,9 @@ infantry_spawn_scenario_create_dynamic_actor_from_selected_region = {
 	set_temp_variable = {
 		infantry_spawn_scenario_dynamic_actor_created = constant:infantry_spawn_scenario_value.zero
 	}
-	save_event_target_as = infantry_spawn_scenario_parent_country
+	clear_global_event_target = infantry_spawn_scenario_parent_country
+	clear_global_event_target = infantry_spawn_scenario_dynamic_actor
+	save_global_event_target_as = infantry_spawn_scenario_parent_country
 	set_temp_variable = {
 		infantry_spawn_scenario_dynamic_actor_preflight = constant:infantry_spawn_scenario_value.one
 	}
@@ -2829,7 +2831,7 @@ infantry_spawn_scenario_create_dynamic_actor_from_selected_region = {
 		}
 		create_dynamic_country = {
 			original_tag = ROOT
-			save_event_target_as = infantry_spawn_scenario_dynamic_actor
+			save_global_event_target_as = infantry_spawn_scenario_dynamic_actor
 			set_country_flag = infantry_spawn_scenario_dynamic_breakaway
 			set_variable = {
 				infantry_spawn_scenario_former_parent = event_target:infantry_spawn_scenario_parent_country
@@ -2876,6 +2878,8 @@ infantry_spawn_scenario_create_dynamic_actor_from_selected_region = {
 	}
 	else = { set_global_flag = infantry_spawn_triggerable_scenario_setup_failed }
 	clear_temp_array = infantry_spawn_scenario_selected_revolt_states
+	clear_global_event_target = infantry_spawn_scenario_dynamic_actor
+	clear_global_event_target = infantry_spawn_scenario_parent_country
 }
 
 # Country scope. This is the designed one-state/all-island route, not a
