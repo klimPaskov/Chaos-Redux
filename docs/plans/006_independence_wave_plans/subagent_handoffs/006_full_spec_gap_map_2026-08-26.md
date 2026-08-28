@@ -10,7 +10,11 @@ Event 006 remains **HOLD / PARTIAL**.
 
 The current admitted source boundary is internally coherent and substantially implemented: 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, 161 unattested selectable rows out of 193 non-overlay rows, eight adapter-only fail-closed rows, and the exact `3/4/5/7/10` automatic ladder with World Collapse also targeting 10. The maintained allocator, country API, flag-family, FORM-16, Statehood Ledger semantic, and SCN-008 matrix validators pass this bounded source.
 
-That boundary is not the accepted whole specification. The largest substantive shortfall remains country-package breadth: 161 selectable research rows are not content-attested. The 48-family formable design is also not implemented across all families, the accepted 80-row decision/mission design lacks a current one-to-one acceptance receipt, weighted behavior lacks complete typed same-scenario evidence, super-event 23 remains rights-blocked and unwired, and visual/GUI acceptance remains partial. These are not optional live-QA observations; they are source, rights, MCP, or acceptance-evidence requirements preserved by Part 7.
+That boundary is not the accepted whole specification. The largest substantive shortfall remains country-package breadth: 161 selectable research rows are not content-attested. The 48-family formable design is also not implemented across all families, the accepted 80-row decision/mission source crosswalk now has a committed receipt but lacks complete runtime and probability evidence, weighted behavior lacks complete typed same-scenario evidence, super-event 23 remains rights-blocked and unwired, and visual/GUI acceptance remains partial. These are not optional live-QA observations; they are source, rights, MCP, or acceptance-evidence requirements preserved by Part 7.
+
+## Post-audit authority reconciliation — 2026-08-28
+
+The 2026-08-26 decision/mission implementation receipt is now committed in `40647acbb` and is the current one-to-one source crosswalk for all 80 accepted matrix rows. It supersedes only the missing-receipt wording in this historical audit; direct decision/mission and GUI MCP evidence, probability evidence, runtime execution, and whole-event completion remain unverified or blocked as recorded below. The startup recruitment registry was likewise promoted as the current authority in `35ab74212`, so the two source-layout tasks listed as the former highest safe gaps are closed and must not be reopened without a new defect.
 
 ## Status legend
 
@@ -55,7 +59,7 @@ The required offline wiki pages and the installed vanilla documentation for even
 | Join the Independence Wave | `events/006_independence_wave_support_events.txt:23-64` defines `.36-.39`; `docs/events/006_independence_wave/join_wave.md:19` records the 32-ID first-success order. | **Source-complete for admitted boundary; runtime-unverified** | Inspect succeeded only partially; render timed out. No same-revision compare exists. |
 | Five evolutions | Part 2 lines 370-577; `events/006_independence_wave_support_events.txt:103,126,149,172,195` defines `.360-.364`; decision entry calls exist in `common/decisions/006_independence_wave_shared_decisions.txt:41,85,129,175,220`. | **Source-wired; runtime/probability unverified** | Evolution inspect/render requests timed out. Complete typed MTTH/timing and actor-update evidence is not available. |
 | Statehood mechanics and visibility | Part 3 lines 5-350; shared values/effects/triggers/decisions; `interface/006_independence_wave.gui:10`; maintained GUI matrix passes five tabs, five recognition states, three dependency states, four League states, four formable states, cleanup variables, and four static/animated sibling pairs. | **Source/static complete; visual acceptance partial** | The semantic validator explicitly does not prove render, hierarchy, resolution, click regions, overflow, transitions, or save/load. Existing event-owned UI worker handoffs exist, so missing worker routing is not the defect; complete MCP pre/post visual evidence is. |
-| Accepted 80-row decisions and missions | `docs/specs/006_independence_wave_specs/matrices/006_decision_mission_map.csv` contains 80 rows; shared and package registries provide broad founding, government, recognition, security, host, patron, network, League, border, formable, and high-chaos actions. The current audit authority at `subagent_handoffs/006_event6_completion_audit_current3_2026-08-25.md:24` records the missing receipt. | **Genuinely missing acceptance receipt / partial source** | No current one-to-one matrix proves all 80 rows have exact consumer IDs, visible/blocked requirements, dynamic cost, duration, success/failure/partial behavior, AI, cleanup, localisation, icon, and clutter disposition. Recent lifecycle and cost fixes are bounded and do not close this full map. The installed MCP exposes no decision/mission inspector. |
+| Accepted 80-row decisions and missions | `docs/specs/006_independence_wave_specs/matrices/006_decision_mission_map.csv` contains 80 rows; `subagent_handoffs/006_event6_decision_mission_matrix_implementation_receipt_2026-08-26.md` is the committed one-to-one source crosswalk. Shared and package registries provide broad founding, government, recognition, security, host, patron, network, League, border, formable, and high-chaos actions. | **Source-complete crosswalk; runtime-unverified** | The receipt proves current source IDs, visibility-or-activation, availability, AI blocks, terminal effects, mission lifecycle markers, title/description keys, and cost localisation for all 80 rows. The installed MCP exposes no decision/mission inspector, and GUI rendering remains blocked, so no runtime UI, probability, balance, or live-execution claim follows. |
 | Shared focus framework, route depth, overlays, AI, icons/localisation | Part 4 and Part 7 lines 787-795; current source at `common/national_focus/006_independence_wave_focus.txt:38`; current authority at `006_source_of_truth_map.md:413,417,460`; `docs/events/006_independence_wave/overview.md:13`. | **Geometry source-complete; whole-focus partial** | Current geometry is 184 focuses and 195 connectors with zero crossings, intersections, long connectors, too-close same-row pairs, or Event 006 layout diagnostics. Broader route-depth, package-differentiation, AI-probability, negative-idea lifecycle, icon, and localisation acceptance remains bounded by package breadth and incomplete typed evidence. |
 | Dynamic starting forces and reinforcement routes | Part 5 lines 207-280 and Part 7 lines 295-321; 40 runtime adapters and accepted per-package profiles in current source. | **Source-complete for admitted packages; genuinely missing for breadth** | No serious-fighting-country claim is extended to unattested rows. Package-local force-profile ambiguities remain explicit admission blockers. |
 | 24 AI profiles, route validity, resource safety, League/host/patron behavior | `matrices/006_ai_strategy_matrix.csv` has 24 accepted profiles; source contains focus, decision, mission, event-option, allocator, strategy-factor, and custom-pool weights. The AI addendum is `006_admitted_package_ai_evidence_tranche_addendum_2026_08_13.md` with status EXECUTED / EVIDENCE-BLOCKED. | **Blocked / partial** | Complete typed eligible pools, normalized results, sweeps/sequences, and same-scenario comparisons are missing. No source score is treated as quantitative probability evidence. See the dedicated probability section below. |
@@ -138,25 +142,21 @@ The mandatory Event 006 weighted pass was routed to `chaosx_ai_probability_audit
 
 No safe owner balance patch is justified from this evidence. Zero-weight rows in a bounded fixture are not proof of runtime starvation, and the exact allocator fixture results do not support a campaign-level claim.
 
-## Three highest-impact safely implementable next gaps
+## Three highest-impact safely implementable next gaps after the 2026-08-28 reconciliation
 
-### 1. Close the accepted 80-row decision/mission traceability gap
-
-Build one maintained receipt keyed by every row in `006_decision_mission_map.csv` and map each row to exact decision/mission/category IDs, owning actor/package, phase and visibility, blocked requirements, dynamic cost and duration, success/failure/partial result, AI score surface, cleanup/annexation behavior, localisation, icon, and GUI consumer. Patch only exact source defects proved by that receipt, then route every weighted delta through the probability auditor using the same named scenarios.
-
-This is the largest safe shared gameplay tranche because it does not invent content, widen package admission, select a balance target, or require new identity/assets. It closes an accepted whole-event requirement used by every admitted package. The installed MCP has no decision/mission inspection route, so source assertions and maintained fixtures must be explicit and must not be mislabeled engine evidence.
-
-### 2. Resolve the startup recruitment source authority atomically
-
-Parent-review the untracked combined registry against the two deleted HEAD inputs, verify the 55 call identities/scopes, dormant-carrier timing, retry/idempotency, cleanup ownership, and deliberate FER exclusion, then either promote the combined registry with one current handoff or restore the two authoritative inputs and remove the candidate. Reconcile the authority map/resume packet after that single decision.
-
-This is a safe source-layout patch because the current structural comparison is equivalent and the pending state is explicitly documented. It must not change roster semantics or be bundled with package admission. A fresh event inspect/render/compare should follow if the MCP route becomes available.
-
-### 3. Complete the current typed allocator and 24-profile probability evidence contract before any weight edit
+### 1. Complete the current typed allocator and 24-profile probability evidence contract before any weight edit
 
 Expose a current source-linked typed adapter/fixture for the central allocator and admission pool covering all 32 admitted candidates, 29 reservation groups, exact host/anchor/collision gates, target-count ladder, and the 161 unattested rows. Materialize the accepted 24 profile/scenario inputs for other current weighted surfaces so each declared nonempty case produces an evaluable eligible pool, then run inspect, evaluate, sweep/sequence/simulation where applicable, render, and same-scenario compare. If the adapter returns a precise unsupported-surface result, preserve it as a blocker; if it proves an exact defect, the owning gameplay worker may make one bounded constants/trigger/weight patch and the probability auditor must compare the same scenarios.
 
 This is safe because it does not choose new balance targets or promote packages. It is higher impact than another package-local expansion: every admitted package, decision family, route, League choice, evolution, and scenario depends on truthful weighted behavior. The current route is adapter/timeout-blocked; no weight patch should precede a complete typed baseline.
+
+### 2. Resume isolated Event 006 event and GUI acceptance when the MCP artifact route is repaired
+
+Repeat the exact root, Join, evolution, Statehood Ledger, and formable-state-puzzle inspect/render/compare calls against a clean artifact manifest. Keep the existing source and semantic validators as bounded evidence, and patch only defects isolated by a current render or state projection.
+
+### 3. Reduce the remaining package and formable breadth blockers one independently attested family at a time
+
+Use the accepted identity, rights, symbol, portrait, map, force, focus, decision, AI, cleanup, asset, and admission packet for one named row or formable family before any central promotion. Do not bulk-generate or infer missing members from neighboring packages.
 
 ## High-impact gaps that are not safe to patch next
 
@@ -179,10 +179,10 @@ This is safe because it does not choose new balance targets or promote packages.
 
 Finished or source-complete surfaces: the bounded 32-package allocator/transaction contract, exact ladder, no-pre-event invariant, registry API, static SCN-008 32-cell matrix, focus geometry, FORM-16 static contract, Statehood semantic matrix, structural flag-family coverage, bounded achievements, super-event 24 source package, and current catalog alignment.
 
-Partial or runtime-unverified surfaces: complete event-chain MCP evidence, Join render, evolutions/timing, decisions/missions, whole focus acceptance, League AI and GUI, formable GUI, scenario breadth, animations in isolated states, achievement reachability, and documentation freshness.
+Partial or runtime-unverified surfaces: complete event-chain MCP evidence, Join render, evolutions/timing, decision/mission runtime UI and probability behavior, whole focus acceptance, League AI and GUI, formable GUI, scenario breadth, animations in isolated states, achievement reachability, and documentation freshness.
 
-Blocked surfaces: complete probability evidence, super-event 23 rights/audio/firing, grounded portrait and sensitive-identity gates, historical-symbol owner decisions, several map/force/archetype questions, startup recruitment source authority, and MCP compare/render routes.
+Blocked surfaces: complete probability evidence, super-event 23 rights/audio/firing, grounded portrait and sensitive-identity gates, historical-symbol owner decisions, several map/force/archetype questions, and MCP compare/render routes.
 
-Genuinely missing surfaces: 161 package attestations and their complete package content; a current one-to-one 80-row decision/mission acceptance receipt; full 48-family formable consumer/operational coverage; and complete typed AI/probability scenario coverage.
+Genuinely missing surfaces: 161 package attestations and their complete package content; full 48-family formable consumer/operational coverage; and complete typed AI/probability scenario coverage. The 80-row decision/mission source crosswalk is no longer genuinely missing, but its runtime UI and probability evidence remain incomplete.
 
 No simplification or fallback was introduced by this audit.
