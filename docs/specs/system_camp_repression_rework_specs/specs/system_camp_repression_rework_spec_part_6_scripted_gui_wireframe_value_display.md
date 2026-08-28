@@ -6,11 +6,11 @@ All GUI labels in this file are working labels and implementation ids, not final
 
 ## Live implementation reconciliation, 2026-07-11
 
-The full `repression_ledger_window` is live with Summary, Territories, Sites, Authority, and Records tabs. The tabs form one horizontal rail beneath a restrained status sentence; the content below uses four summary cards or a bounded two-column card grid. The category attachment uses a dedicated 52x40 decision-category medallion and two short, country-scoped lines rather than telemetry. All 32 Ledger country action slots continue to use their native decision cooldown gates. Authored frame animation remains optional and queued.
+The full `repression_ledger_window` is live under the fixed player-facing title `Repression and Camps System`, with Summary, Territories, Sites, Authority, and Records tabs. The tabs form one centered horizontal rail beneath a restrained status sentence; the content below uses four summary cards or a bounded, centered two-column card grid with equal outer margins. The category attachment uses a dedicated 52x40 decision-category medallion and two short, country-scoped lines rather than telemetry. Country-specific institutional names belong in the Authority tab and phase line, not in the system title. All 32 country action slots continue to use their native decision cooldown gates. Authored frame animation remains optional and queued.
 
 ## Presentation principle
 
-The average player should not manage this system unless their country has active sites, inherited reform work, discovery pressure, or a country-specific crisis. The GUI should feel like a ledger and command surface for a state system that already exists. It should not appear as a gamey optimization board for maximizing deaths.
+The average player should not manage this system unless their country has active sites, inherited reform work, discovery pressure, or a country-specific crisis. The GUI should feel like an administrative command surface for a state system that already exists. It should not appear as a gamey optimization board for maximizing deaths.
 
 Use two presentation layers:
 
@@ -341,7 +341,7 @@ AI does not use selected-state UI. AI evaluates all valid states through hidden 
 
 ## Warning and animation states
 
-Animated assets are optional but recommended for the ledger because state changes matter. If animation is implemented, follow the frame-animation skill. The final game asset must be a frame sheet with static fallback, not a GIF.
+Animated assets are optional but recommended for the interface because state changes matter. If animation is implemented, follow the frame-animation skill. The final game asset must be a frame sheet with static fallback, not a GIF.
 
 Recommended visual states:
 

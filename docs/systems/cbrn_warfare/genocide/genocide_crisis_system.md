@@ -1,4 +1,4 @@
-# Camp Repression Network, Deaths, Discovery, and the Repression Ledger
+# Repression and Camps System, Deaths, and Discovery
 
 ## Overview
 
@@ -165,9 +165,9 @@ Generic authoritarian users require a real occupation, resistance, wartime, doct
 
 ## Player Actions and Dispatcher
 
-The final 2026-07-11 inventory contains 84 player actions: 29 Germany/Japan/Soviet actions, 43 U.K./U.S./France/Italy/Belgium actions, and 12 generic actions. The closing actions are `fr_support_refugee_and_rescue_networks`, `bel_negotiate_colonial_strike_settlement`, and `generic_inspect_active_site`. The same files contain 41 missions; Ledger show, hide, open, and close are four separate controls. The final decision/mission re-audit passed, and all 32 Ledger country action slots use the same native cooldown gates as their corresponding normal decisions.
+The final 2026-07-11 inventory contains 84 player actions: 29 Germany/Japan/Soviet actions, 43 U.K./U.S./France/Italy/Belgium actions, and 12 generic actions. The closing actions are `fr_support_refugee_and_rescue_networks`, `bel_negotiate_colonial_strike_settlement`, and `generic_inspect_active_site`. The same files contain 41 missions; system show, hide, open, and close are four separate controls. The final decision/mission re-audit passed, and all 32 country action slots in the system use the same native cooldown gates as their corresponding normal decisions.
 
-All country actions use `camp_rework_route_country_specific_action`. State actions persist their target through the normal country variable `camp_rework_action_state_id`; `camp_rework_prepare_selected_action_state` resolves the pointer, while `camp_rework_dispatch_prepare_colonial_selection` and `camp_rework_dispatch_restore_colonial_selection` adapt subject-controlled states to the existing country payloads without overwriting the player's Ledger selection.
+All country actions use `camp_rework_route_country_specific_action`. State actions persist their target through the normal country variable `camp_rework_action_state_id`; `camp_rework_prepare_selected_action_state` resolves the pointer, while `camp_rework_dispatch_prepare_colonial_selection` and `camp_rework_dispatch_restore_colonial_selection` adapt subject-controlled states to the existing country payloads without overwriting the player's system selection.
 
 Restricted chemical, biological, radicalized, and extermination routes use the strict helper family in `common/scripted_triggers/camp_repression_rework_triggers.txt`: `camp_rework_country_can_use_radicalized_route`, `camp_rework_germany_can_use_restricted_method_route`, `camp_rework_japan_can_use_restricted_method_route`, `camp_rework_country_can_use_restricted_method_route`, `camp_rework_country_has_explicit_extreme_doctrine_route`, and `camp_rework_fixed_country_can_use_extermination_route`. Fixed country packages require their own program or explicit doctrine route; the generic ideology shortcut cannot unlock them. Chemical and biological actions also require their actual technology, facility, and stockpile capacity.
 
@@ -177,9 +177,9 @@ Country initialization resolves active-site, radicalized-site, experiment-site, 
 
 The registered country and state arrays are bounded and clean stale entries. New and released countries initialize through release, puppet, and state-control hooks. Ordinary monthly work uses the existing Chaos Meter host pulse; the only broad state passes are bounded initialization or explicit one-shot presentation operations.
 
-## Repression Ledger
+## Repression and Camps System
 
-The Repression Ledger is a scripted GUI with five functional tabs:
+The Repression and Camps System is a scripted GUI with five functional tabs:
 
 1. Overview: network phase, active sites, population loss, labor output, evidence, resistance, overextension, guard, rail, supply, legitimacy, and reform pressure.
 2. State Pools: ordered eligible territories, including pool type, ownership and control, responsible country, burden, block reason, and available activation orders.
@@ -189,7 +189,7 @@ The Repression Ledger is a scripted GUI with five functional tabs:
 
 The selected-state card displays a state name plus named site, phase, population-loss, output, resistance, evidence, registration, and enemy-proximity bands. It does not expose raw internal numeric fields. GUI arrays are rebuilt from bounded registered arrays and invalidate stale selected states.
 
-The category description uses explicit Germany, Japan, Soviet, and neutral localisation branches, so one country's institutional wording cannot appear in another country's interface. The compact header and the full Ledger use natural sentences and real GUI elements; they do not simulate columns or meters with separator characters. All 24 generated Ledger sprites have live consumers, including the evidence and reform seals. The 32 country actions mirror the native cooldown gates of their normal decision counterparts.
+The category description uses explicit Germany, Japan, Soviet, and neutral localisation branches, so one country's institutional wording cannot appear in another country's interface. The compact header and popup use the fixed player-facing title `Repression and Camps System`; country-specific institutional names appear only inside the Authority tab and the compact phase line. The interface uses natural sentences and real GUI elements rather than simulated columns or telemetry separators. Its two-column card layouts use equal outer margins, the tab rail is centered, and Records uses bounded 24-pixel status marks instead of seals that cross card boundaries. The 32 country actions mirror the native cooldown gates of their normal decision counterparts.
 
 ## Events, Super Events, and Achievements
 
@@ -235,7 +235,7 @@ Country packages:
 - `events/japan_ishii.txt`
 - `events/soviet_gulag.txt`
 
-Ledger and presentation:
+System interface and presentation:
 
 - `common/scripted_guis/camp_repression_ledger_scripted_gui.txt`
 - `common/scripted_localisation/camp_repression_ledger_scripted_localisation.txt`
@@ -246,7 +246,7 @@ Ledger and presentation:
 
 ## Assets
 
-Runtime decision, idea, project, Ledger, report, news, super-event, and achievement textures live under:
+Runtime decision, idea, project, system-interface, report, news, super-event, and achievement textures live under:
 
 - `gfx/interface/camp_repression/`
 - `gfx/event_pictures/system_camp_repression_rework/`
@@ -255,9 +255,9 @@ Runtime decision, idea, project, Ledger, report, news, super-event, and achievem
 
 Registrations live in `interface/camp_repression_rework.gfx`, `interface/special_projects/biowarfare.gfx`, `interface/chaosx_super_events.gfx`, and `interface/chaosx_achievements.gfx`. Source, manifests, contact sheets, generation prompts, and validation records live in `docs/assets/system_camp_repression_rework/`.
 
-The final static package contains 24 Ledger UI assets; 102 processed package icons covering decisions, ideas, projects, and achievement variants; 27 report, news, and super-event identities; and five unique super-event audio tracks. Achievement ids `60` through `69` each have normal, grey, and not-eligible variants.
+The final static package contains 24 system UI assets; 102 processed package icons covering decisions, ideas, projects, and achievement variants; 27 report, news, and super-event identities; and five unique super-event audio tracks. Achievement ids `60` through `69` each have normal, grey, and not-eligible variants.
 
-The Ledger sprites derive from frozen ImageGen sources in `docs/assets/system_camp_repression_rework/source/ui_imagegen/`. The prompts are recorded in `docs/assets/system_camp_repression_rework/prompts/repression_ledger_imagegen_prompts.md`, and `docs/assets/system_camp_repression_rework/tools/build_ledger_ui_assets.py` is the deterministic processor. Optional authored frame animation remains queued. The maintained static UI is the accepted current presentation, not a simple-shape or header-only fallback.
+The system sprites derive from frozen ImageGen sources in `docs/assets/system_camp_repression_rework/source/ui_imagegen/`. The prompts are recorded in `docs/assets/system_camp_repression_rework/prompts/repression_ledger_imagegen_prompts.md`, and `docs/assets/system_camp_repression_rework/tools/build_ledger_ui_assets.py` is the deterministic processor. Optional authored frame animation remains queued. The maintained static UI is the accepted current presentation, not a simple-shape or header-only fallback.
 
 ## Documentation and Workbook Alignment
 
@@ -276,4 +276,4 @@ The final decision/mission audit passed. All 15 Part 7 and cross-cutting scenari
 
 ## Further Extensions
 
-Future additions can deepen postwar tribunal negotiations, successor-state archive diplomacy, prisoner rehabilitation, reparations, resistance rescue networks, and multilateral inspection regimes. They should reuse the responsibility, evidence, Deaths, Ledger, and dismantlement contracts rather than create parallel systems.
+Future additions can deepen postwar tribunal negotiations, successor-state archive diplomacy, prisoner rehabilitation, reparations, resistance rescue networks, and multilateral inspection regimes. They should reuse the responsibility, evidence, Deaths, repression-system, and dismantlement contracts rather than create parallel systems.

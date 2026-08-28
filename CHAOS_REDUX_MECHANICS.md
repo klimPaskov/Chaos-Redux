@@ -376,11 +376,11 @@ Detailed migration documentation: `docs/systems/migration_system.md` and `docs/s
 
 Camp and repression is the shared atrocity network linking concentration, extermination, gulag, experiment, and restricted chemical sites to real state population, Deaths, evidence, Condemnation, discovery, and reform. Dormant historical markers remain inert until escalation, while active sites register once in bounded state arrays and process through host-local monthly logic.
 
-The current package contains `84` player actions (`29` major, `43` colonial, and `12` generic), `41` missions, and four Ledger controls. The Repression Ledger is a five-tab interface: **Overview**, **State Pools**, **Active Sites**, **Country System**, and **Discovery & Reform**. Country packages cover Germany, Japan, the Soviet Union, the United Kingdom and Raj, the United States, France and Vichy, Italy, Belgium and the Congo, plus generic routes; fixed packages cannot be bypassed through a generic ideology shortcut.
+The current package contains `84` player actions (`29` major, `43` colonial, and `12` generic), `41` missions, and four system controls. The **Repression and Camps System** is a five-tab interface: **Summary**, **Territories**, **Sites**, **Authority**, and **Records**. Country packages cover Germany, Japan, the Soviet Union, the United Kingdom and Raj, the United States, France and Vichy, Italy, Belgium and the Congo, plus generic routes; fixed packages cannot be bypassed through a generic ideology shortcut.
 
 The generic crisis category only exposes eligible escalation and restricted-site actions and does not build concentration camps by decision. Restricted chemical and biological routes use bounded technology, stockpile, contamination, and capacity tiers, and the system has no protected-class selector. Site harm enters the shared Deaths pipeline and real state population once, while concealment keeps evidence hidden until discovery, inspection, occupation, or another disclosure route makes public Condemnation possible.
 
-Static contracts trace all `15` documented scenarios with `ScenarioContracts=15 Failed=0`; engine-runtime execution, rendered Ledger behavior, timed outcomes, AI behavior, and numeric deltas remain validation gaps recorded by the completion report. Optional authored Ledger animation remains queued and no unapproved fallback is claimed.
+Static contracts trace all `15` documented scenarios with `ScenarioContracts=15 Failed=0`; engine-runtime execution, rendered system-interface behavior, timed outcomes, AI behavior, and numeric deltas remain validation gaps recorded by the completion report. Optional authored system-interface animation remains queued and no unapproved fallback is claimed.
 
 Detailed lifecycle documentation: [Camps and Genocide Mechanics](#camps-and-genocide-mechanics), `docs/systems/cbrn_warfare/genocide/genocide_crisis_system.md`, and `docs/plans/system_camp_repression_rework_plans/completion_report.md`.
 
@@ -798,7 +798,7 @@ What the player does:
 
 The camp and genocide crisis system models state repression, forced labor, extermination sites, gulag networks, experiment-linked atrocity sites, restricted chemical site escalation, evidence destruction, discovery, foreign response, and tribunal pressure.
 
-The current lifecycle contains `84` player actions (`29` major, `43` colonial, and `12` generic), `41` missions, four Ledger controls, and five live Ledger tabs: **Overview**, **State Pools**, **Active Sites**, **Country System**, and **Discovery & Reform**. Country packages cover Germany, Japan, the Soviet Union, the United Kingdom and Raj, the United States, France and Vichy, Italy, Belgium and the Congo, plus generic routes; fixed packages use their own route gates rather than a generic ideology shortcut.
+The current lifecycle contains `84` player actions (`29` major, `43` colonial, and `12` generic), `41` missions, four system controls, and five live **Repression and Camps System** tabs: **Summary**, **Territories**, **Sites**, **Authority**, and **Records**. Country packages cover Germany, Japan, the Soviet Union, the United Kingdom and Raj, the United States, France and Vichy, Italy, Belgium and the Congo, plus generic routes; fixed packages use their own route gates rather than a generic ideology shortcut.
 
 The key rule is separation between hidden internal damage and public condemnation:
 
@@ -837,7 +837,7 @@ Restricted chemical site escalation uses existing sarin/soman tech, special-proj
 
 AI weights make fascist Germany, imperial Japan, and communist Soviet Union the primary users under historical or radicalized conditions. A separate AI strategy package adjusts broad behavior for active and exposed crisis regimes.
 
-Static contracts cover all `15` documented scenarios with `ScenarioContracts=15 Failed=0`. The completion report records engine-runtime execution, rendered Ledger behavior, timed outcomes, AI behavior, and numeric deltas as remaining validation gaps; optional authored Ledger animation is queued.
+Static contracts cover all `15` documented scenarios with `ScenarioContracts=15 Failed=0`. The completion report records engine-runtime execution, rendered system-interface behavior, timed outcomes, AI behavior, and numeric deltas as remaining validation gaps; optional authored system-interface animation is queued.
 
 ---
 
