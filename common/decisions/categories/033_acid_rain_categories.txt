@@ -1,11 +1,29 @@
-# CHAOS REDUX - EVENT 033 ACID RAIN DECISION CATEGORIES
+# CHAOS REDUX - EVENT 033 ACID RAIN DECISION CATEGORY
+#
+# The runtime owns country registration, warning/exposure lifecycle flags,
+# project commitments, urgent receipts, and aftermath cleanup. This category
+# only exposes the current national response surface and closes after every
+# Event 33 activity flag, commitment, project, evacuation, and aftercare state
+# has cleared.
 
 chaosx_acid_rain_decision_category = {
-    visible = {
-        is_ai = no
-        has_global_flag = acid_rain
-    }
-    icon = GFX_decision_category_acid
-    scripted_gui = acid_rain_decisions_scripted_gui
-    priority = 99
+	visible = {
+		OR = {
+			acid_rain_runtime_is_active = yes
+			has_country_flag = acid_rain_recovery_tail_active
+			has_country_flag = acid_rain_national_action_active
+			check_variable = { acid_rain_active_projects > constant:acid_rain_runtime.zero }
+			check_variable = { acid_rain_evacuations_active > constant:acid_rain_runtime.zero }
+			check_variable = { acid_rain_committed_manpower > constant:acid_rain_runtime.zero }
+			check_variable = { acid_rain_committed_civilian_factories > constant:acid_rain_runtime.zero }
+			any_controlled_state = {
+				acid_rain_state_is_frozen_valid = yes
+				has_state_flag = acid_rain_aftercare_unresolved
+			}
+		}
+	}
+	visible_when_empty = no
+	icon = GFX_decision_category_acid
+	scripted_gui = acid_rain_decisions_scripted_gui
+	priority = 99
 }

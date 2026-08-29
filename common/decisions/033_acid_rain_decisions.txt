@@ -1,231 +1,933 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 033 ACID RAIN NATIONAL RESPONSE DECISIONS
+# ============================================================================
+#
+# This file owns the public decision surface only. The Event 33 runtime owns
+# quotes, debits, temporary reservations, active receipts, completion, cancel
+# cleanup, preparedness changes, and state consequences. Every complete effect
+# below selects a matrix row and calls the runtime API; it never scans the
+# world or substitutes a mortality effect.
+#
+# The quote effects must populate the acid_rain_quote_* variables before the
+# cost trigger is evaluated and again immediately before the start effect.
+# All zero-valued quote fields must remain zero so the shared dynamic cost
+# localisation can hide them and keep every action at four or fewer spendable
+# cost families.
+
+@acid_rain_ai_project_shelter = 120
+@acid_rain_ai_project_water = 115
+@acid_rain_ai_project_medical = 105
+@acid_rain_ai_project_transport = 90
+@acid_rain_ai_urgent_shelter = 160
+@acid_rain_ai_urgent_water = 150
+@acid_rain_ai_urgent_medical = 145
+@acid_rain_ai_urgent_transport = 135
+@acid_rain_ai_urgent_evacuation = 180
+@acid_rain_ai_recovery_transport = 140
+@acid_rain_ai_recovery_decontaminate = 150
+@acid_rain_ai_recovery_industry = 100
+@acid_rain_ai_recovery_demobilize = 80
+@acid_rain_ai_threat_regional = 1.25
+@acid_rain_ai_threat_exposed = 1.50
+@acid_rain_ai_threat_severe = 1.75
+@acid_rain_ai_low_component = 1.30
+@acid_rain_ai_arrival_risk = 0.70
+@acid_rain_ai_war_reserve_pressure = 0.75
+@acid_rain_ai_strong_cbrn = 0.75
+@acid_rain_ai_global_layer = 1.20
+@acid_rain_ai_island_route = 1.20
+@acid_rain_ai_capital_target = 2.00
+@acid_rain_ai_superstorm_target = 1.50
+@acid_rain_ai_water_aftermath = 2.00
+@acid_rain_ai_transport_aftermath = 1.75
+@acid_rain_ai_industry_aftermath = 1.50
+@acid_rain_evacuation_cap_low = 2
+@acid_rain_evacuation_cap_established = 4
+@acid_rain_evacuation_cap_great_power = 8
+
 chaosx_acid_rain_decision_category = {
-    chaosx_acid_rain_timeout = {
-        available = {
-            hidden_trigger = {
-                OR = {
-                    is_ai = yes
-                    NOT = { has_global_flag = acid_rain }
-                }
-            }
-        }
-        activation = {
-            hidden_trigger = {
-                is_ai = no
-                has_global_flag = acid_rain
-            }
-        }
-        days_mission_timeout = 30
-        fixed_random_seed = no
-        is_good = no
-        icon = GFX_decision_acid
 
-        timeout_effect = {
-            every_state = {
-                limit = { has_dynamic_modifier = { modifier = acid_rain_state } }
-                remove_dynamic_modifier = { modifier = acid_rain_state } # just in case set times don't line up correctly
-            }
+	# -------------------------------------------------------------------------
+	# Four repeatable preparedness projects. Each decision represents the next
+	# tier of one component, so no wall of sixteen tier buttons is exposed.
+	# -------------------------------------------------------------------------
+	chaosx_acid_rain_project_shelter = {
+		name = chaosx_acid_rain_project_shelter
+		desc = chaosx_acid_rain_project_shelter_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+			NOT = { has_country_flag = acid_rain_project_shelter_active }
+			check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_project_slot = yes
+			NOT = { has_country_flag = acid_rain_project_shelter_active }
+			check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_project_dynamic_cost
+		fire_only_once = no
+		days_remove = var:acid_rain_quote_duration_days?1
+		complete_effect = {
+			set_variable = { acid_rain_selected_project = constant:acid_rain_project.shelter }
+			acid_rain_refresh_project_quote = yes
+			acid_rain_start_project = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_project_shelter
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = acid_rain_water_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = acid_rain_medical_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_shelter_tier value = acid_rain_transport_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_arrival_risk has_country_flag = acid_rain_country_project_arrival_risk }
+			modifier = { factor = @acid_rain_ai_war_reserve_pressure has_country_flag = acid_rain_country_wartime_reserve_pressure }
+			modifier = { factor = @acid_rain_ai_global_layer check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
+		}
+	}
 
-            if = { limit = { check_variable = { global.acid_rain_continent = 1 } }
-            random_state = {
-                limit = { is_on_continent = europe }
-                custom_effect_tooltip = effect_tooltip_acid_rain_states
-                add_dynamic_modifier = { modifier = acid_rain_state days = 14 } # would be better to use constant value, sadly doesn't allow it
-                hidden_effect = {
-                    every_neighbor_state = {
-                        limit = { is_on_continent = europe }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                    }
-                }
-            }
-            every_country = {
-                limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                country_event = { id = chaosx.nr33.2 days = 1 }
-            }
-        } else_if = { limit = { check_variable = { global.acid_rain_continent = 2 } }
-        random_state = {
-            limit = { is_on_continent = middle_east }
-            custom_effect_tooltip = effect_tooltip_acid_rain_states
-            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-            hidden_effect = {
-                every_neighbor_state = {
-                    limit = { is_on_continent = middle_east }
-                    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                }
-            }
-        }
-        every_country = {
-            limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-            country_event = { id = chaosx.nr33.2 days = 1 }
-        }
-    } else_if = { limit = { check_variable = { global.acid_rain_continent = 3 } }
-    random_state = {
-        limit = { is_on_continent = asia }
-        custom_effect_tooltip = effect_tooltip_acid_rain_states
-        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-        hidden_effect = {
-            every_neighbor_state = {
-                limit = { is_on_continent = asia }
-                add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-            }
-        }
-    }
-    every_country = {
-        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-        country_event = { id = chaosx.nr33.2 days = 1 }
-    }
-} else_if = { limit = { check_variable = { global.acid_rain_continent = 4 } }
-random_state = {
-    limit = { is_on_continent = africa }
-    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-    hidden_effect = {
-        every_neighbor_state = {
-            limit = { is_on_continent = africa }
-            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-        }
-    }
-}
-every_country = {
-    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-    country_event = { id = chaosx.nr33.2 days = 1 }
-}
-} else_if = { limit = { check_variable = { global.acid_rain_continent = 5 } }
-random_state = {
-    limit = { is_on_continent = australia }
-    custom_effect_tooltip = effect_tooltip_acid_rain_states
-    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-    hidden_effect = {
-        every_neighbor_state = {
-            limit = { is_on_continent = australia }
-            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-        }
-    }
-}
-every_country = {
-    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-    country_event = { id = chaosx.nr33.2 days = 1 }
-}
-} else_if = { limit = { check_variable = { global.acid_rain_continent = 6 } }
-random_state = {
-    limit = { is_on_continent = north_america }
-    custom_effect_tooltip = effect_tooltip_acid_rain_states
-    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-    hidden_effect = {
-        every_neighbor_state = {
-            limit = { is_on_continent = north_america }
-            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-        }
-    }
-}
-every_country = {
-    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-    country_event = { id = chaosx.nr33.2 days = 1 }
-}
-} else_if = { limit = { check_variable = { global.acid_rain_continent = 7 } }
-random_state = {
-    limit = { is_on_continent = south_america }
-    custom_effect_tooltip = effect_tooltip_acid_rain_states
-    add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-    hidden_effect = {
-        every_neighbor_state = {
-            limit = { is_on_continent = south_america }
-            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-        }
-    }
-}
-every_country = {
-    limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-    country_event = { id = chaosx.nr33.2 days = 1 }
-}
-}
-activate_mission = chaosx_acid_rain_timeout
-}
-}
-chaosx_acid_clouds_timeout = {
-    available = {
-        hidden_trigger = {
-            is_ai = yes
-        }
-    }
-    activation = {
-        hidden_trigger = {
-            is_ai = no
-            has_global_flag = acid_rain
-        }
-    }
-    days_mission_timeout = global.acid_clouds_time
-    is_good = no
-    icon = GFX_decision_acid
+	chaosx_acid_rain_project_water = {
+		name = chaosx_acid_rain_project_water
+		desc = chaosx_acid_rain_project_water_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+			NOT = { has_country_flag = acid_rain_project_water_active }
+			check_variable = { var = acid_rain_water_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_project_slot = yes
+			NOT = { has_country_flag = acid_rain_project_water_active }
+			check_variable = { var = acid_rain_water_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_project_dynamic_cost
+		fire_only_once = no
+		days_remove = var:acid_rain_quote_duration_days?1
+		complete_effect = {
+			set_variable = { acid_rain_selected_project = constant:acid_rain_project.water }
+			acid_rain_refresh_project_quote = yes
+			acid_rain_start_project = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_project_water
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_water_tier value = acid_rain_shelter_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_water_tier value = acid_rain_medical_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_water_tier value = acid_rain_transport_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_island_route has_country_flag = acid_rain_country_island_heavy }
+			modifier = { factor = @acid_rain_ai_arrival_risk has_country_flag = acid_rain_country_project_arrival_risk }
+			modifier = { factor = @acid_rain_ai_war_reserve_pressure has_country_flag = acid_rain_country_wartime_reserve_pressure }
+			modifier = { factor = @acid_rain_ai_global_layer check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
+		}
+	}
 
-    timeout_effect = {
-        every_state = {
-            limit = { OR = { has_dynamic_modifier = { modifier = acid_rain_state } has_dynamic_modifier = { modifier = acid_clouds_state } } }
-            hidden_effect = { remove_dynamic_modifier = { modifier = acid_rain_state } }
-            remove_dynamic_modifier = { modifier = acid_clouds_state }
-        }
-        if = {
-            limit = {
-                is_in_array = { global.acid_rain_continents = 1 }
-                is_in_array = { global.acid_rain_continents = 2 }
-                is_in_array = { global.acid_rain_continents = 3 }
-                is_in_array = { global.acid_rain_continents = 4 }
-                is_in_array = { global.acid_rain_continents = 5 }
-                is_in_array = { global.acid_rain_continents = 6 }
-                is_in_array = { global.acid_rain_continents = 7 }
-            }
-            clr_global_flag = acid_rain
-            news_event = { id = chaosx.news.38 days = 2 }
-        } else = {
-            while_loop_effect = {
-                limit = { is_in_array = { global.acid_rain_continents = global.acid_rain_continent } }
-                set_variable_to_random = {
-                    var = global.acid_rain_continent
-                    min = 1
-                    max = 7
-                    integer = yes
-                }
-            }
-            add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-            clear_variable = global.acid_clouds_time
-            get_num_acid_states_in_continent = yes
-            if = { limit = { check_variable = { global.acid_rain_continent = 1 } }
-            every_state = {
-                limit = { is_on_continent = europe }
-                add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-            }
-        } else_if = { limit = { check_variable = { global.acid_rain_continent = 2 } }
-        every_state = {
-            limit = { is_on_continent = middle_east }
-            add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-        }
-    }else_if = { limit = { check_variable = { global.acid_rain_continent = 3 } }
-    every_state = {
-        limit = { is_on_continent = asia }
-        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-    }
-}else_if = { limit = { check_variable = { global.acid_rain_continent = 4 } }
-every_state = {
-    limit = { is_on_continent = africa }
-    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-}
-}else_if = { limit = { check_variable = { global.acid_rain_continent = 5 } }
-every_state = {
-    limit = { is_on_continent = australia }
-    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-}
-}else_if = { limit = { check_variable = { global.acid_rain_continent = 6 } }
-every_state = {
-    limit = { is_on_continent = north_america }
-    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-}
-}else_if = { limit = { check_variable = { global.acid_rain_continent = 7 } }
-every_state = {
-    limit = { is_on_continent = south_america }
-    add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-}
-}
-activate_mission = chaosx_acid_clouds_timeout
-activate_mission = chaosx_acid_rain_timeout
-}
-}
-}
+	chaosx_acid_rain_project_medical = {
+		name = chaosx_acid_rain_project_medical
+		desc = chaosx_acid_rain_project_medical_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+			NOT = { has_country_flag = acid_rain_project_medical_active }
+			check_variable = { var = acid_rain_medical_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_project_slot = yes
+			NOT = { has_country_flag = acid_rain_project_medical_active }
+			check_variable = { var = acid_rain_medical_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_project_dynamic_cost
+		fire_only_once = no
+		days_remove = var:acid_rain_quote_duration_days?1
+		complete_effect = {
+			set_variable = { acid_rain_selected_project = constant:acid_rain_project.medical }
+			acid_rain_refresh_project_quote = yes
+			acid_rain_start_project = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_project_medical
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_medical_tier value = acid_rain_shelter_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_medical_tier value = acid_rain_water_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_medical_tier value = acid_rain_transport_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_strong_cbrn has_country_flag = acid_rain_country_strong_cbrn_protection }
+			modifier = { factor = @acid_rain_ai_arrival_risk has_country_flag = acid_rain_country_project_arrival_risk }
+			modifier = { factor = @acid_rain_ai_war_reserve_pressure has_country_flag = acid_rain_country_wartime_reserve_pressure }
+			modifier = { factor = @acid_rain_ai_global_layer check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
+		}
+	}
+
+	chaosx_acid_rain_project_transport = {
+		name = chaosx_acid_rain_project_transport
+		desc = chaosx_acid_rain_project_transport_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+			NOT = { has_country_flag = acid_rain_project_transport_active }
+			check_variable = { var = acid_rain_transport_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_project_slot = yes
+			NOT = { has_country_flag = acid_rain_project_transport_active }
+			check_variable = { var = acid_rain_transport_tier value = constant:acid_rain_project.max_tier compare = less_than }
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_project_dynamic_cost
+		fire_only_once = no
+		days_remove = var:acid_rain_quote_duration_days?1
+		complete_effect = {
+			set_variable = { acid_rain_selected_project = constant:acid_rain_project.transport }
+			acid_rain_refresh_project_quote = yes
+			acid_rain_start_project = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_project_transport
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_transport_tier value = acid_rain_shelter_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_transport_tier value = acid_rain_water_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_low_component check_variable = { var = acid_rain_transport_tier value = acid_rain_medical_tier compare = less_than } }
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_arrival_risk has_country_flag = acid_rain_country_project_arrival_risk }
+			modifier = { factor = @acid_rain_ai_war_reserve_pressure has_country_flag = acid_rain_country_wartime_reserve_pressure }
+			modifier = { factor = @acid_rain_ai_global_layer check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
+			modifier = {
+				factor = 1.25
+				any_controlled_state = { rail_way < constant:acid_rain_runtime.two }
+			}
+		}
+	}
+
+	# -------------------------------------------------------------------------
+	# Five urgent action families. Water and evacuation choose their land or
+	# island route inside the same runtime action effect, so neither family has
+	# duplicate visible buttons or a mixed train-plus-convoy debit.
+	# -------------------------------------------------------------------------
+	chaosx_acid_rain_urgent_shelter = {
+		name = chaosx_acid_rain_urgent_shelter
+		desc = chaosx_acid_rain_urgent_shelter_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_action_slot = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_urgent_cost.shelter_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.urgent_shelter }
+			acid_rain_refresh_urgent_action_quote = yes
+			acid_rain_start_urgent_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_urgent_shelter
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+		}
+	}
+
+	chaosx_acid_rain_urgent_water = {
+		name = chaosx_acid_rain_urgent_water
+		desc = chaosx_acid_rain_urgent_water_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_action_slot = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_urgent_cost.water_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.urgent_water_land }
+			acid_rain_refresh_urgent_action_quote = yes
+			acid_rain_start_urgent_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_urgent_water
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_island_route has_country_flag = acid_rain_country_island_heavy }
+		}
+	}
+
+	chaosx_acid_rain_urgent_medical = {
+		name = chaosx_acid_rain_urgent_medical
+		desc = chaosx_acid_rain_urgent_medical_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_action_slot = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_urgent_cost.medical_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.urgent_medical }
+			acid_rain_refresh_urgent_action_quote = yes
+			acid_rain_start_urgent_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_urgent_medical
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_strong_cbrn has_country_flag = acid_rain_country_strong_cbrn_protection }
+		}
+	}
+
+	chaosx_acid_rain_urgent_transport = {
+		name = chaosx_acid_rain_urgent_transport
+		desc = chaosx_acid_rain_urgent_transport_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		available = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_country_action_is_not_stale = yes
+			acid_rain_country_has_free_action_slot = yes
+			OR = {
+				has_country_flag = acid_rain_country_warning_active
+				has_country_flag = acid_rain_country_exposure_active
+				has_country_flag = acid_rain_country_severe_forecast_active
+			}
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_urgent_cost.transport_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.urgent_transport }
+			acid_rain_refresh_urgent_action_quote = yes
+			acid_rain_start_urgent_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_urgent_transport
+			modifier = { factor = @acid_rain_ai_threat_regional has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = @acid_rain_ai_threat_exposed has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = 1.25 has_war = yes }
+			modifier = { factor = 1.25 any_controlled_state = { rail_way < constant:acid_rain_runtime.two } }
+		}
+	}
+
+	chaosx_acid_rain_urgent_evacuate = {
+		name = chaosx_acid_rain_urgent_evacuate
+		desc = chaosx_acid_rain_urgent_evacuate_desc
+		icon = GFX_decision_acid
+		visible = {
+			acid_rain_country_has_runtime_record = yes
+			acid_rain_runtime_is_active = yes
+			OR = {
+				has_country_flag = acid_rain_country_severe_forecast_active
+				any_controlled_state = {
+					acid_rain_state_is_frozen_valid = yes
+					has_variable = acid_rain_target_generation
+					check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+					OR = {
+						has_state_flag = acid_rain_severe_cell_target
+						has_state_flag = acid_rain_superstorm_target
+					}
+				}
+			}
+		}
+		available = {
+			acid_rain_country_action_is_not_stale = yes
+			OR = {
+				AND = {
+					OR = { acid_rain_country_is_fragile = yes acid_rain_country_is_limited = yes }
+					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_low compare = less_than }
+				}
+				AND = {
+					acid_rain_country_is_established = yes
+					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_established compare = less_than }
+				}
+				AND = {
+					acid_rain_country_is_great_power = yes
+					check_variable = { var = acid_rain_evacuations_active value = @acid_rain_evacuation_cap_great_power compare = less_than }
+				}
+			}
+		}
+		state_target = any_controlled_state
+		target_root_trigger = {
+			acid_rain_country_action_is_not_stale = yes
+		}
+		target_trigger = {
+			FROM = {
+				acid_rain_state_is_frozen_valid = yes
+				has_variable = acid_rain_target_generation
+				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+				OR = {
+					has_state_flag = acid_rain_severe_cell_target
+					has_state_flag = acid_rain_superstorm_target
+				}
+				NOT = { has_state_flag = acid_rain_action_lock }
+				is_fully_controlled_by = ROOT
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_urgent_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_urgent_cost.evacuation_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.urgent_evacuate_land }
+			acid_rain_refresh_urgent_action_quote = yes
+			acid_rain_start_urgent_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_urgent_evacuation
+			modifier = { factor = @acid_rain_ai_threat_severe has_country_flag = acid_rain_country_severe_forecast_active }
+			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
+			modifier = { factor = @acid_rain_ai_superstorm_target FROM = { has_state_flag = acid_rain_superstorm_target } }
+			modifier = { factor = @acid_rain_ai_low_component FROM = { check_variable = { var = acid_rain_shelter_tier value = constant:acid_rain_runtime.two compare = less_than } } }
+			modifier = { factor = @acid_rain_ai_island_route FROM = { acid_rain_state_is_island_capable = yes } }
+		}
+	}
+
+	# -------------------------------------------------------------------------
+	# Four recovery actions. The first three use the same frozen state target
+	# list and let the runtime quote helper reject an action with no matching
+	# recorded burden. The final action closes national emergency apparatus.
+	# -------------------------------------------------------------------------
+	chaosx_acid_rain_recovery_transport = {
+		name = chaosx_acid_rain_recovery_transport
+		desc = chaosx_acid_rain_recovery_transport_desc
+		icon = GFX_decision_acid
+		visible = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
+			}
+		}
+		available = {
+			acid_rain_country_has_free_action_slot = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+		}
+		state_target = any_controlled_state
+		target_root_trigger = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				acid_rain_state_is_frozen_valid = yes
+				has_state_flag = acid_rain_aftercare_unresolved
+				has_variable = acid_rain_target_generation
+				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+				NOT = { has_state_flag = acid_rain_action_lock }
+				is_fully_controlled_by = ROOT
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_recovery_cost.transport_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_transport }
+			acid_rain_refresh_recovery_action_quote = yes
+			acid_rain_start_recovery_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_recovery_transport
+			modifier = { factor = @acid_rain_ai_transport_aftermath FROM = { rail_way < constant:acid_rain_runtime.two } }
+			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
+		}
+	}
+
+	chaosx_acid_rain_recovery_decontaminate = {
+		name = chaosx_acid_rain_recovery_decontaminate
+		desc = chaosx_acid_rain_recovery_decontaminate_desc
+		icon = GFX_decision_acid
+		visible = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
+			}
+		}
+		available = {
+			acid_rain_country_has_free_action_slot = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+		}
+		state_target = any_controlled_state
+		target_root_trigger = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				acid_rain_state_is_frozen_valid = yes
+				has_state_flag = acid_rain_aftercare_unresolved
+				has_variable = acid_rain_target_generation
+				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+				NOT = { has_state_flag = acid_rain_action_lock }
+				is_fully_controlled_by = ROOT
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_recovery_cost.decontaminate_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_decontaminate_land }
+			acid_rain_refresh_recovery_action_quote = yes
+			acid_rain_start_recovery_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_recovery_decontaminate
+			modifier = { factor = @acid_rain_ai_water_aftermath FROM = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.two compare = greater_than } } }
+			modifier = { factor = @acid_rain_ai_island_route FROM = { acid_rain_state_is_island_capable = yes } }
+		}
+	}
+
+	chaosx_acid_rain_recovery_industry = {
+		name = chaosx_acid_rain_recovery_industry
+		desc = chaosx_acid_rain_recovery_industry_desc
+		icon = GFX_decision_acid
+		visible = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
+			}
+		}
+		available = {
+			acid_rain_country_has_free_action_slot = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+		}
+		state_target = any_controlled_state
+		target_root_trigger = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				any_controlled_state = { has_state_flag = acid_rain_aftercare_unresolved }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				acid_rain_state_is_frozen_valid = yes
+				has_state_flag = acid_rain_aftercare_unresolved
+				has_variable = acid_rain_target_generation
+				check_variable = { var = acid_rain_target_generation value = global.acid_rain_generation_id compare = equals }
+				NOT = { has_state_flag = acid_rain_action_lock }
+				is_fully_controlled_by = ROOT
+			}
+		}
+		on_map_mode = map_and_decisions_view
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_recovery_cost.industry_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_industry }
+			acid_rain_refresh_recovery_action_quote = yes
+			acid_rain_start_recovery_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_recovery_industry
+			modifier = { factor = @acid_rain_ai_industry_aftermath FROM = { has_state_flag = acid_rain_state_damage_receipt } }
+			modifier = { factor = @acid_rain_ai_capital_target FROM = { is_capital = yes } }
+			modifier = { factor = 0 FROM = { check_variable = { var = acid_rain_state_aftermath_tier value = constant:acid_rain_runtime.zero compare = equals } } }
+		}
+	}
+
+	chaosx_acid_rain_recovery_demobilize = {
+		name = chaosx_acid_rain_recovery_demobilize
+		desc = chaosx_acid_rain_recovery_demobilize_desc
+		icon = GFX_decision_acid
+		visible = {
+			OR = {
+				has_country_flag = acid_rain_recovery_tail_active
+				check_variable = { acid_rain_committed_manpower > constant:acid_rain_runtime.zero }
+				check_variable = { acid_rain_committed_civilian_factories > constant:acid_rain_runtime.zero }
+			}
+		}
+		available = {
+			NOT = { acid_rain_runtime_is_active = yes }
+			acid_rain_country_has_free_action_slot = yes
+			NOT = {
+				OR = {
+					has_country_flag = acid_rain_country_warning_active
+					has_country_flag = acid_rain_country_exposure_active
+					has_country_flag = acid_rain_country_severe_forecast_active
+				}
+			}
+			check_variable = { acid_rain_active_projects = constant:acid_rain_runtime.zero }
+			check_variable = { acid_rain_evacuations_active = constant:acid_rain_runtime.zero }
+		}
+		custom_cost_trigger = {
+			has_variable = acid_rain_quote_duration_days
+			has_variable = acid_rain_quote_political_power
+			has_variable = acid_rain_quote_civilian_factories
+			has_variable = acid_rain_quote_manpower
+			has_variable = acid_rain_quote_support
+			has_variable = acid_rain_quote_train
+			has_variable = acid_rain_quote_convoy
+			has_variable = acid_rain_quote_motorized
+			has_variable = acid_rain_quote_fuel
+			check_variable = { var = acid_rain_quote_duration_days value = constant:acid_rain_runtime.zero compare = greater_than }
+			NOT = { has_political_power < acid_rain_quote_political_power }
+			NOT = { has_manpower < acid_rain_quote_manpower }
+			NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+			NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+			NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+			NOT = { has_fuel < acid_rain_quote_fuel }
+		}
+		custom_cost_text = acid_rain_recovery_action_dynamic_cost
+		fire_only_once = no
+		days_remove = constant:acid_rain_recovery_cost.demobilize_days
+		complete_effect = {
+			set_variable = { acid_rain_selected_action = constant:acid_rain_action.recovery_demobilize }
+			acid_rain_refresh_recovery_action_quote = yes
+			acid_rain_start_recovery_action = yes
+		}
+		ai_will_do = {
+			base = @acid_rain_ai_recovery_demobilize
+			modifier = { factor = 0 has_country_flag = acid_rain_country_warning_active }
+			modifier = { factor = 0 has_country_flag = acid_rain_country_exposure_active }
+			modifier = { factor = 0 has_country_flag = acid_rain_country_severe_forecast_active }
+		}
+	}
 }
