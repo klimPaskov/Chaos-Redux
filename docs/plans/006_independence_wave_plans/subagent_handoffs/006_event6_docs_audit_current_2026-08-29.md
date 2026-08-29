@@ -8,7 +8,23 @@ Parent: `/root`.
 
 Scope: reconcile the accepted Event 006 specification area, event-facing documentation, working plans, source-of-truth map, resume packet, asset and super-event manifests, prompt files, catalog/export evidence, and dated handoffs.
 
-Status: documentation authority is reconciled within this scope. Event 006 remains **HOLD / PARTIAL**. No gameplay, localisation-source, binary-asset, GUI, super-event, spreadsheet, or completion claim is made by this handoff.
+Status: this dated handoff contains an earlier broad documentation audit plus the narrow current reconciliation below. Event 006 remains **HOLD / PARTIAL**. No gameplay, localisation-source, binary-asset, GUI, super-event, spreadsheet, or completion claim is made by this handoff.
+
+## Narrow current reconciliation (2026-08-29)
+
+This addendum supersedes only current-facing recruitment, portrait, localisation, and SCN-008 publication wording in this handoff; the dated historical paragraphs remain traceability and are not rewritten.
+
+The post-P0 completion audit at `006_event6_post_p0_completion_audit_2026-08-29.md` records P0 commits `3ce4b3468` and `713306f2e`. Together they close the SCN-008 success-only publication boundary at source/static level: the sole delayed `.80` result follows the successful `chaosx.nr6.2` report, while failed or invalid generations clear the committed receipt and scenario summary without publishing a result. Fresh MCP and live-runtime evidence remain unavailable, and Event 006 remains **HOLD / PARTIAL** with 32 content-attested selectable packages and 161 unattested selectable rows.
+
+No callable `mcp__hoi4_agent_tools__...` route is available in this runtime for a fresh read-only Event 006 event, focus, GUI, probability, or map inspection, so the post-P0 source/static handoff remains the applicable evidence boundary.
+
+Direct current source inspection confirms 25 guarded `every_possible_country` blocks and 65 `recruit_character` calls in `history/general/006_independence_wave_character_recruitment_registry.txt`, plus 58 `portraits` blocks in `common/characters/006_independence_wave_characters_registry.txt`. The current portrait authority is `006_event6_portrait_consumer_reconciliation_2026-08-29.md`, recorded by commit `3dbf918b5`; it reconciles eleven ideology-specific consumers to six existing grounded `source_placeholder` identities without new art, binaries, or GFX definitions. The prior 54-call and 47-reference figures remain historical snapshots and do not widen central attestation or clear any package gate.
+
+The current localisation evidence is zero indented key rows across the nine named Event 006 localisation files, with 95 cost-key rows still containing numeric literals without a dynamic constant token; player-facing process wording remains under review. No localisation source was edited by this narrow documentation reconciliation.
+
+The exact current documentation changes are `docs/events/006_independence_wave/overview.md:5-11,29`, `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md:65-69,71,113,129`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md:53-59,81,113,129,301`, and `docs/specs/006_independence_wave_specs/quality/spec_acceptance_checklist.md:7-13`. The dated handoff itself is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_docs_audit_current_2026-08-29.md`.
+
+No accepted design semantics were changed. No gameplay, asset, localisation, workbook/CSV, generated file, `.gitignore`, or unrelated natural-disaster file was changed by this narrow reconciliation.
 
 ## Executive disposition
 
@@ -35,12 +51,12 @@ The current non-portrait asset audit confirms `interface\006_independence_wave_s
 | Resume routing | `docs\plans\006_independence_wave_plans\006_independence_wave_resume_packet.md` | Current resume packet updated 2026-08-29. It points to current source paths and the latest release and catalog evidence. |
 | Event-facing summary | `docs\events\006_independence_wave\overview.md` | Current summary updated 2026-08-29. Portrait counts, central-admission wording, absent-country release evidence, and catalog status now match the current evidence ledger. |
 | Event system documentation | `docs\events\006_independence_wave\systems\` | Existing mechanic docs remain source-facing evidence. The country-registry wrapper reference now points to `common\scripted_effects\006_independence_wave_effects.txt` and its Markdown documentation. |
-| Portrait authority | `docs\plans\006_independence_wave_plans\subagent_handoffs\006_event6_portrait_consumer_audit_2026-08-28.md` and the current portrait manifests | Current evidence is 110 supplied PNG/DDS pairs, 70 runtime DDS files, 38 exact supplied runtime matches, 64 unique GFX portrait pairs, and 47 resolved character-registry references. NAV Aguirre and GLC Castelao are the only current `styled_final` consumers. |
+| Portrait authority | `docs\plans\006_independence_wave_plans\subagent_handoffs\006_event6_portrait_consumer_reconciliation_2026-08-29.md` and the current portrait manifests | Current source inspection confirms 58 portrait blocks; commit `3dbf918b5` reconciles eleven ideology-specific consumers to six existing grounded `source_placeholder` identities without new art or binaries. The earlier 110/70/38/64/47 audit counts remain dated evidence. NAV Aguirre and GLC Castelao are the only current `styled_final` consumers. |
 | Asset and super-event manifests | `docs\assets\006_independence_wave\generated_event_scenes_manifest.md`, `docs\assets\006_independence_wave\super_events\audio\production_manifest.md`, and `docs\super_events\006_independence_wave\research.md` | Manifests remain evidence surfaces. Ordinary super-event 24 is source-wired, while super-event 23 remains rights-blocked with no approved replacement or runtime audio. No manifest grants admission by itself. |
 | Current non-portrait asset audit | `docs\plans\006_independence_wave_plans\subagent_handoffs\006_event6_assets_audit_current_2026-08-29.md` and the current asset manifests | The consolidated `interface\006_independence_wave_small_assets.gfx` receiver is current and package path claims were reconciled. Technical asset coverage is strong, but the audit's strict grayscale, flag ownership, source/rights, emblem, animation-manifest, and super-event rights findings remain unresolved. |
 | Catalog authority | `docs\spreadsheets\chaos_redux_events_catalog.xlsx`, `docs\spreadsheets\chaos_redux_events_catalog.csv`, `docs\spreadsheets\chaos_redux_clusters_catalog.csv`, and `docs\spreadsheets\chaos_redux_scenarios_catalog.csv` | Read-only export rows report Event 006 `Needs Testing`, SCN-008 `Needs Testing`, and Liberations `Partially Available`. The 2026-08-29 premise repair aligns Event Details, `Events!C7`, and `Clusters!D3`. The workbook remains the only editable catalog source. |
 | Current source repair | `docs\plans\006_independence_wave_plans\subagent_handoffs\006_event6_absent_scope_release_repair_2026-08-29.md` and commit `caccec722` | Source repair is bounded and static. The selected absent tag is scoped through `every_possible_country` before the former host and `release = PREV`. No live receipt is claimed. |
-| Current working tree exception | `common\characters\006_independence_wave_characters_registry.txt` and `history\general\006_independence_wave_character_recruitment_registry.txt` | These gameplay files have uncommitted parent-owned changes. The observed working tree contains 65 actual `recruit_character` calls and 58 portrait blocks, while the committed documentation authority remains 54 calls. This discrepancy is not promoted by this documentation pass. |
+| Current recruitment and portrait source evidence | `common\characters\006_independence_wave_characters_registry.txt` and `history\general\006_independence_wave_character_recruitment_registry.txt` | Direct current source inspection confirms 25 guarded country blocks, 65 `recruit_character` calls, and 58 portrait blocks. These gameplay files remain outside this documentation-only patch, and the counts do not promote a package or change the 32-attested/161-unattested **HOLD / PARTIAL** boundary. |
 
 ## Plan disposition table
 
@@ -79,12 +95,13 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 | Handoff family | Disposition |
 | --- | --- |
 | `006_event6_absent_scope_release_repair_2026-08-29.md` | Current source-repair handoff. It records the candidate-first scope order and static-only boundary. |
+| `006_event6_post_p0_completion_audit_2026-08-29.md` | Current P0 source/static evidence. Commits `3ce4b3468` and `713306f2e` close SCN-008 success-only publication; fresh MCP and live-runtime evidence remain unavailable. |
 | `006_event6_pre_event_overlay_gate_and_capital_scope_repair_2026-08-28.md`, `006_event6_dynamic_release_target_repair_2026-08-28.md`, `006_event6_post_182ed53_completion_gap_audit_2026-08-28.md`, and `006_event6_admitted_mission_lifecycle_guards_2026-08-28.md` | Current bounded source-repair evidence. These handoffs have distinct scopes and are not duplicates. |
-| `006_event6_package_manifest_portrait_authority_reconciliation_2026-08-28.md`, `006_event6_portrait_authority_checklist_reconciliation_2026-08-28.md`, and `006_event6_portrait_consumer_audit_2026-08-28.md` | Current portrait and manifest evidence. The 2026-08-26 hash ledger and earlier portrait gap handoffs remain dated traceability. |
+| `006_event6_portrait_consumer_reconciliation_2026-08-29.md` | Current portrait-consumer evidence recorded by commit `3dbf918b5`; it supersedes the earlier 47-reference routing count without changing portrait bytes, GFX, or package admission. The 2026-08-26 hash ledger and earlier portrait gap handoffs remain dated traceability. |
 | `006_event6_catalog_xlsx_repair_2026-08-28.md` | Current workbook readability and export-refresh evidence before the 2026-08-29 premise repair. |
 | `006_event6_event_details_premise_catalog_repair_2026-08-29.md` | Current Event Details and catalog premise repair. It removes exact thresholds and rival-compact values from public text, corrects `Clusters!D3`, and records the refreshed workbook and CSV exports. |
 | `006_event6_assets_audit_current_2026-08-29.md` | Current read-only non-portrait asset audit. Its stale package-GFX path findings are reconciled by this pass, while its technical, source, rights, emblem, animation, and cross-event blockers remain open. |
-| `006_event6_localisation_audit_current_2026-08-29.md` | Current read-only localisation audit. It reports malformed leading-whitespace keys and dynamic-cost disclosure gaps without editing source. |
+| `006_event6_localisation_audit_current_2026-08-29.md` | Current read-only localisation audit. Its earlier 1,880-leading-whitespace structural count is superseded by the post-P0 zero-row source evidence; its 95 numeric-cost rows and process-wording review remain open without source edits here. |
 | `006_event6_full_spec_gap_map_authority_reconciliation_2026-08-28.md` and `006_full_spec_gap_map_2026-08-26.md` | Current gap-map evidence with separate dated scopes. The 2026-08-29 map and resume override are the latest routing authority. |
 | `006_iw057_fer_country_package_audit_2026-08-28.md`, `006_iw057_fer_probability_audit_2026-08-28.md`, `006_iw057_fer_portrait_gate_2026-08-28.md`, `006_iw057_fer_symbol_source_gate_2026-08-28.md`, and the IW-073, IW-086, and IW-095 package handoffs dated 2026-08-28 | Current package-local or read-only evidence. They do not promote central admission. |
 | `006_event6_docs_authority_cleanup_2026_08_26.md`, `006_event6_docs_source_layout_reconcile_2026-08-26.md`, `006_event6_docs_current_status_reconcile_2026-08-26.md`, and `006_event6_documentation_registry_merge_reconciliation_2026-08-26.md` | Earlier documentation reconciliations retained for their bounded evidence. This audit supersedes them for the latest status, portrait, catalog, and absent-country release routing. |
@@ -92,7 +109,7 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 
 ## Contradictions resolved
 
-- `docs\events\006_independence_wave\overview.md` no longer presents the 2026-08-22 38-installed/13-unmapped portrait snapshot as current and now cites the 2026-08-28 consumer revalidation.
+- `docs\events\006_independence_wave\overview.md` no longer presents the 2026-08-22 38-installed/13-unmapped or 2026-08-28 47-reference portrait snapshots as current and now cites the 2026-08-29 consumer reconciliation.
 - `docs\events\006_independence_wave\systems\country_registry.md` now names the existing wrapper source and Markdown documentation instead of the deleted `common\scripted_effects\006_independence_wave_country_registry_effects.txt` path.
 - `docs\specs\006_independence_wave_specs\README.md`, `quality\simplifications_omissions_and_blockers.md`, `quality\catalog_alignment_handoff.md`, `specs\006_independence_wave_spec_part_7_ai_balance_assets_and_acceptance.md`, the source map, the resume packet, and the CAT plan now distinguish current export status from older `Partially Available` and `Unavailable` snapshots.
 - `docs\specs\006_independence_wave_specs\quality\spec_acceptance_checklist.md` now distinguishes the package-local IW-095 implementation from the queued central first-footprint admission addendum.
@@ -106,8 +123,8 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 
 ## Contradictions still open
 
-- The working tree character and recruitment changes show 65 actual `recruit_character` calls and 58 portrait blocks, while the committed authority still records 54 calls. Parent review must accept or reject those uncommitted gameplay changes before any portrait manifest, source map, or checklist promotion.
-- The current 2026-08-29 localisation audit reports 1,880 leading-whitespace keys across nine dedicated Event 006 localisation files, 140 numeric cost strings without dynamic constant tokens, and dense prose surfaces requiring owner review. These are unresolved source-localisation defects and this audit did not edit localisation files.
+- Direct current source inspection confirms 25 guarded country blocks, 65 actual `recruit_character` calls, and 58 portrait blocks; these counts are now the current documentation routing evidence, while gameplay ownership and central package admission remain unchanged.
+- The post-P0 localisation evidence records zero indented key rows across nine dedicated Event 006 localisation files, 95 numeric cost strings without dynamic constant tokens, and dense prose surfaces requiring owner review. These remain unresolved source-localisation defects and this narrow audit did not edit localisation files.
 - The current non-portrait asset audit leaves ASSET-004 strict grayscale, the Event 5/Event 6 AEX basename collision, 48 unapproved NWE ideology aliases, incomplete ASSET-046 emblem coverage, BWX and fourteen chunk-3 flag source or review gates, the animation `play_on_show` mismatch, and super-event 23 rights unresolved. These are owner or approval blockers rather than documentation contradictions.
 - The current uncommitted war-support eligibility changes and Join achievement hook identified by the parent completion audit have no completed owner handoff, idempotence proof, or same-scenario probability compare in this documentation pass.
 - The required HOI4 MCP event, focus, GUI, probability, and map routes are unavailable in this runtime. No fresh engine artifact is claimed. The prior `ARTIFACT_MANIFEST_INTEGRITY_FAILED` and `Transport closed` limitations remain evidence boundaries.
@@ -120,7 +137,7 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 - The 2026-08-26 documentation handoffs are distinct bounded reconciliations, but this audit supersedes them as the latest cross-surface status packet.
 - `006_event6_completion_audit_current_2026-08-29.md` was authored before the separate Event Details/catalog repair. Its Event Details/C7 finding is stale for that surface and should be refreshed by the parent, while its package, probability, GUI, and other completion findings remain evidence within their stated limits.
 - `006_event6_assets_audit_current_2026-08-29.md` remains current for non-portrait technical and rights findings, but its stale package-GFX path list is resolved by the current asset-manifest updates. Its source, rights, emblem, flag, animation, and cross-event findings are not superseded.
-- The 2026-08-26 portrait consumer closure, 2026-08-25 portrait gap re-audit, and 2026-08-22 supplied-runtime handoffs are historical hash, gap, and wiring evidence. The 2026-08-28 portrait consumer audit is current count authority.
+- The 2026-08-26 portrait consumer closure, 2026-08-25 portrait gap re-audit, 2026-08-22 supplied-runtime handoffs, and 2026-08-28 portrait consumer audit are historical hash, gap, and wiring evidence. The 2026-08-29 portrait consumer reconciliation handoff and direct 58-block source inspection are current portrait routing authority.
 - Older focus geometry handoffs are dated evidence. The 2026-08-25 shared geometry closure is current geometry authority.
 - Older ordinary super-event 23 audio research handoffs are dated rights research. The 2026-08-27 rights reverification is current rights evidence.
 - Older catalog mirror and status handoffs are process history. The 2026-08-28 workbook repair handoff plus read-only workbook/export rows are current catalog evidence.
@@ -142,7 +159,7 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 ## Recommended parent decisions
 
 1. Preserve the separate 2026-08-29 premise-only Event Details and catalog repair as current. Do not repeat the superseded exact-threshold or rival-value wording task, and preserve the current `Needs Testing`, `Needs Testing`, and `Partially Available` export statuses unless the parent intentionally changes them.
-2. Decide whether the uncommitted 65-call and 58-portrait-block character changes are accepted. If accepted, route portrait-consumer and manifest reconciliation before updating the committed counts. If rejected, the owner of those gameplay changes must revert or revise them.
+2. Preserve the current 25-guarded-block, 65-call, and 58-portrait-block source counts for documentation routing, while the parent retains ownership of any gameplay acceptance or commit decision for those source files.
 3. Route the uncommitted war-support eligibility changes and Join achievement hook through their gameplay owners, including the required probability audit and idempotence or reachability evidence.
 4. Provide a working HOI4 MCP route or accept the recorded evidence gap before claiming fresh event, focus, GUI, probability, or map acceptance.
 5. Decide whether the remaining Markdown hard-wrap candidates merit a separate formatting-only cleanup pass.
@@ -154,7 +171,7 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 - Have the parent reconcile uncommitted gameplay counts before updating any current manifest or acceptance ledger.
 - Preserve every unresolved MCP, live-runtime, rights, probability, and package-admission limitation in the next handoff.
 
-## Files changed by this audit
+## Files changed by the earlier broad 2026-08-29 audit
 
 - `docs\events\006_independence_wave\overview.md`
 - `docs\events\006_independence_wave\systems\country_registry.md`
@@ -187,7 +204,7 @@ Every top-level Event 006 plan in `docs\plans\006_independence_wave_plans\` has 
 - `docs\assets\006_independence_wave\iw043_iw058_generated_visuals_2026_07_18\manifests\asset_manifest.json` (ignored asset metadata path)
 - `docs\plans\006_independence_wave_plans\subagent_handoffs\006_event6_docs_audit_current_2026-08-29.md`
 
-No gameplay or spreadsheet file was changed by this audit. No plan was promoted, rejected, deleted, or marked complete by this audit. The existing resume packet was updated in place at `docs\plans\006_independence_wave_plans\006_independence_wave_resume_packet.md`.
+No gameplay or spreadsheet file was changed by the earlier broad audit. No plan was promoted, rejected, deleted, or marked complete by that audit. The existing resume packet was updated in place at `docs\plans\006_independence_wave_plans\006_independence_wave_resume_packet.md`.
 
 ## Validation and skipped validation
 

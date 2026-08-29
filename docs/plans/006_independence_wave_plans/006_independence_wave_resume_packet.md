@@ -50,6 +50,14 @@ The current catalog/export authority is the editable workbook `docs/spreadsheets
 
 The current non-portrait asset audit is `subagent_handoffs/006_event6_assets_audit_current_2026-08-29.md`. It confirms that `interface/006_independence_wave_small_assets.gfx` is the canonical receiver for the consolidated Event 006 sprite blocks and that the package manifests now use that path. ASSET-004 strict grayscale, the AEX cross-event basename collision, 48 unapproved NWE ideology aliases, incomplete ASSET-046 emblem coverage, BWX and fourteen chunk-3 flag source gates, and the animation `play_on_show` mismatch remain open and are not admission evidence.
 
+### Current post-P0 and recruitment/portrait authority (2026-08-29)
+
+The post-P0 completion audit at `subagent_handoffs/006_event6_post_p0_completion_audit_2026-08-29.md` records P0 commits `3ce4b3468` and `713306f2e`. Those commits close the SCN-008 success-only publication boundary at source/static level: the delayed `.80` result follows the successful `chaosx.nr6.2` report, while failed and invalid generations clear the committed receipt and scenario summary without dispatching a public result. This bounded publication closure does not change the 32 content-attested, 161 unattested, or **HOLD / PARTIAL** authority, and fresh MCP/live-runtime evidence remains unavailable.
+
+Direct source inspection at current HEAD confirms 25 guarded `every_possible_country` blocks and 65 `recruit_character` calls in `history/general/006_independence_wave_character_recruitment_registry.txt`, plus 58 `portraits` blocks in `common/characters/006_independence_wave_characters_registry.txt`. The current portrait authority is `subagent_handoffs/006_event6_portrait_consumer_reconciliation_2026-08-29.md`, recorded by commit `3dbf918b5`; it reconciles eleven ideology-specific consumers to six existing grounded `source_placeholder` identities without new art, binaries, or GFX definitions. The prior 54-call and 47-reference figures are historical snapshots and must not be used as current routing. These source and portrait counts do not widen central attestation or clear any package gate.
+
+The post-P0 audit records that the nine named Event 006 localisation files now have zero indented key rows after the current source repair. A current audit indicator still finds 95 cost-key rows containing numeric literals without a dynamic constant token, and player-facing process wording remains under review. No localisation source was edited by this documentation pass.
+
 ### IW-108 Buganda ownership/source gate (2026-08-27)
 
 IW-108 Buganda is the next first-footprint row, but it remains research and ownership preparation only and must not receive an Event 006 gameplay or asset patch yet. Existing Event 012 Buganda ownership and consumers already use `africa_priority_member_origin_is_buganda`, `africa_priority_member_package_is_buganda`, and `africa_priority_buganda_sovereign`, with the Buganda decisions and ideas in `common/decisions/012_africa_priority_member_decisions.txt` and `common/ideas/012_africa_priority_member_ideas.txt`; copying the IW-095 package-local pattern risks duplicate recruitment and mechanics on UGA. Durable source evidence identifies Daudi Cwa II in a 1913 Jules Leclercq source with a Public Domain Mark, but the source-locked repaint and independent likeness-style crosswalk remains `needs_user_review`; current UGA Buganda flag and portrait review also remains `needs_user_review`, with the source-locked portrait consumer at `interface/012_africa_priority_member_characters.gfx` and current 156x210, 131,168-byte DDS evidence carrying runtime-concept hash prefix `c73ca793` and source-locked archival-placeholder SHA-256 `b7dfc91bf2a62e9d55df61eb96589b113826422e8d6aa41a620fccbcf5257951`. A package-local research/ownership packet must establish the non-duplicating UGA contract, identity, rights, flag, portrait, and consumer boundaries before any IW-108 gameplay or asset work. The Event 006 boundary remains 32 content-attested packages across 29 compatible reservation groups, 40 adapters, and 161 unattested selectable rows, and nothing is visible before Event 006 fires. Handoff: `subagent_handoffs/006_event6_iw108_buganda_ownership_source_gate_2026-08-27.md`.
@@ -70,7 +78,7 @@ The 2026-08-26 focus and Kosovo decision registry continuation folds the 20 Paci
 
 Resume from a partial implementation boundary, not from a completion claim.
 
-### Latest 2026-08-27 evidence refresh
+### Historical 2026-08-27 evidence refresh (superseded for recruitment and portrait counts)
 
 The startup registry is the committed current source at `history/general/006_independence_wave_character_recruitment_registry.txt`; commit `5895d0b69` records 25 guarded country blocks and 54 `recruit_character` calls, with IW-057 FER intentionally absent while its rights gate remains open.
 
@@ -102,7 +110,7 @@ The hidden `chaosx.nr6.1` root, committed-only public report, and hidden trigger
 
 The 2026-08-22 retired-crisis neutralization replaces every legacy crisis effect body with an empty compatibility stub, so stale calls cannot recreate costs, cooldowns, resistance, queues, or history. Its handoff is `subagent_handoffs/006_event6_retired_crisis_neutralization_2026-08-22.md`.
 
-### Startup-character source-layout status (2026-08-26)
+### Historical startup-character source-layout status (2026-08-26; superseded by the 2026-08-29 source inspection)
 
 The current source uses `history/general/006_independence_wave_character_recruitment_registry.txt`, which combines the two former startup files `history/general/006_independence_wave_character_recruitment.txt` and `history/general/006_independence_wave_additional_character_recruitment.txt` without changing their 25 guarded country blocks or 54 recruitment calls.
 
@@ -118,7 +126,7 @@ The committed 2026-08-26 decision-cost localisation clarity pass is current boun
 
 The 2026-08-27 formable cost-localisation follow-up is current bounded evidence under `subagent_handoffs/006_event6_formable_commit_cost_loc_clarity_2026-08-27.md` and `subagent_handoffs/006_event6_form08_cost_tooltip_aliases_2026-08-27.md`, with commits `4f6e9689b` and `9adebbe20`; it removes non-consumed war support and duplicate transport charges from the shared formable commitment row and supplies the three missing FORM-08 cost tooltip aliases without changing payment logic or the no-pre-event boundary.
 
-The 2026-08-27 Event 006 localisation audit is historical bounded evidence under commit `075309ee4` and handoff `subagent_handoffs/006_event6_localisation_audit_2026-08-27.md`. The current 2026-08-29 localisation audit reports 1,880 leading-whitespace keys across nine dedicated Event 006 localisation files, which are structurally unsafe until their owners remove the indentation. It also records 140 numeric cost strings without dynamic constant tokens and dense prose surfaces requiring owner review. No localisation source repair is claimed by this documentation pass. Current evidence: `subagent_handoffs/006_event6_localisation_audit_current_2026-08-29.md`.
+The 2026-08-27 Event 006 localisation audit is historical bounded evidence under commit `075309ee4` and handoff `subagent_handoffs/006_event6_localisation_audit_2026-08-27.md`. The post-P0 audit records that the nine named Event 006 localisation files now have zero indented key rows after the current source repair. A current audit indicator still finds 95 cost-key rows containing numeric literals without a dynamic constant token, and player-facing process wording remains under review. No localisation source was edited by this documentation pass. Current evidence: `subagent_handoffs/006_event6_post_p0_completion_audit_2026-08-29.md` and `subagent_handoffs/006_event6_localisation_audit_current_2026-08-29.md`.
 
 The 2026-08-27 IW-048 UDM package audit remains HOLD / fail-closed in `subagent_handoffs/006_iw048_udm_package_audit_2026_08_27.md`; Boris Berman identity and portrait rights, the `industrial_security` versus `industrial_breakaway` force contract, state-399 host-retention proof, current MCP evidence, typed probability comparison, and Technology Tree Viewer evidence remain unresolved. No UDM central adapter, attestation, Join path, fallback asset, or admission change is authorized.
 
@@ -290,7 +298,7 @@ Its evidence handoff is `subagent_handoffs/006_current_parent_tranche_2026_08_21
 
 The 2026-08-22 portrait-consumer tranche adds the exact gated IW-051 YAK Pavel Pevznyak consumer, bringing the installed supplied set to 38 and leaving 13 files intentionally unmapped. Its handoff is `subagent_handoffs/006_event6_portrait_consumer_gap_2026-08-22.md`; YAK remains package-local and fail-closed.
 
-The 2026-08-28 portrait-consumer revalidation confirms 38 installed exact-match consumers and 13 intentionally unmapped identity/role/rights/consumer-gated candidates. It changes no runtime portrait bytes, package gate, or asset state, and promotes no source placeholder or styled candidate. Current evidence is `subagent_handoffs/006_event6_portrait_consumer_audit_2026-08-28.md`, with the detailed 38-row hash ledger in `subagent_handoffs/006_event6_portrait_consumer_closure_2026-08-26.md`.
+The 2026-08-28 portrait-consumer revalidation remains dated evidence for 38 installed exact-match consumers and 13 intentionally unmapped identity, role, rights, or consumer-gated candidates. It changes no runtime portrait bytes, package gate, or asset state, and promotes no source placeholder or styled candidate. Its 47-reference authority is superseded by the current 58-block source inspection and `subagent_handoffs/006_event6_portrait_consumer_reconciliation_2026-08-29.md`, recorded by commit `3dbf918b5`.
 
 The 2026-08-22 release-scope correction applies `PREV` to admitted package setup and force proofs and saves the initialized Event 006 country as the opening-division owner.
 
