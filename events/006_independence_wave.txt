@@ -573,7 +573,6 @@ country_event = {
 			set_variable = { global.independence_wave_scenario_territory_level = independence_wave_wave_territory_level }
 			set_variable = { global.independence_wave_scenario_force_level = independence_wave_wave_force_level }
 			set_variable = { global.independence_wave_scenario_last_failure = constant:liberation_plan_reject_reason.stale_plan }
-			country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
 		}
 	}
 }
@@ -586,19 +585,15 @@ country_event = {
 	desc = chaosx.triggerable_scenarios.80.d
 	picture = GFX_report_event_006_asset_001_wave_summary
 	is_triggered_only = yes
+	trigger = {
+		has_global_flag = independence_wave_scenario_committed
+		NOT = { has_global_flag = independence_wave_scenario_failed }
+		NOT = { has_global_flag = independence_wave_scenario_finalization_failed }
+	}
 
 	option = {
 		name = chaosx.triggerable_scenarios.80.a
-		trigger = {
-			OR = {
-				has_global_flag = independence_wave_scenario_committed
-				check_variable = {
-					var = global.independence_wave_scenario_blocked_package_ids^num
-					value = constant:independence_wave_scenario_registry.no_packages
-					compare = greater_than
-				}
-			}
-		}
+		trigger = { has_global_flag = independence_wave_scenario_committed }
 		set_variable = { global.independence_wave_scenario_last_summary_date = global.date }
 		set_variable = { independence_wave_scenario_ledger_index = constant:independence_wave_scenario_registry.first_array_index }
 		set_variable = { independence_wave_scenario_ledger_display_index = constant:independence_wave_scenario_registry.one }

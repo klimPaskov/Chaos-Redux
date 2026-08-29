@@ -42,3 +42,14 @@ The mandatory `hoi4.gui_inspect`, `hoi4.gui_render`, and event/probability MCP r
 The parent must remove the failure-side `.80` dispatch from `events/006_independence_wave.txt` and gate `chaosx.triggerable_scenarios.80` option `.a` on the current successful `independence_wave_scenario_committed` receipt rather than blocked-row presence. The parent should preserve the successful `chaosx.nr6.2` then delayed `.80` order, run a final global census of `.80` dispatches and `independence_wave_scenario_ledger_visible` setters, and perform the required event MCP inspection if the route becomes available.
 
 No simplification, fallback wording, asset substitution, or unrelated source change was made in this tranche.
+
+## Parent event completion
+
+The parent-owned event surface is now closed for the same publication contract.
+`events/006_independence_wave.txt:chaosx.triggerable_scenarios.8` no longer dispatches `.80` from its invalid-queue failure branch.
+`chaosx.triggerable_scenarios.80` has a committed, non-failed scenario trigger, and option `.a` requires the same committed receipt instead of a non-empty blocked array.
+The only `.80` dispatch in the source is the successful `independence_wave_trigger_scenario` branch, immediately after `chaosx.nr6.2`.
+The only `independence_wave_scenario_ledger_visible` setter remains option `.80.a`, under that committed trigger.
+
+Parent validation after the event patch passed the strict allocator, country API, flag, FORM-16, SCN-008 scenario matrix, and GUI semantic source matrix audits.
+The mandatory HOI4 event, GUI, and probability MCP routes remain unavailable, so this handoff contains source/static evidence only and makes no engine or live-save claim.
