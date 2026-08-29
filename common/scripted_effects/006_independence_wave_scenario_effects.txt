@@ -1265,6 +1265,7 @@ independence_wave_scenario_freeze_summary = {
 			}
 			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
 			has_global_flag = independence_wave_scenario_committed
+			has_global_flag = liberation_release_joint_plan_executed
 		}
 		for_each_loop = {
 			array = global.independence_wave_plan_selected_package_ids
@@ -1365,6 +1366,16 @@ independence_wave_trigger_scenario = {
 		limit = {
 			check_variable = { global.liberation_plan_phase = constant:liberation_plan_phase.committed }
 			NOT = { has_global_flag = independence_wave_execution_failed }
+			NOT = { has_global_flag = independence_wave_scenario_failed }
+			NOT = { has_global_flag = independence_wave_scenario_finalization_failed }
+			has_variable = global.independence_wave_scenario_last_plan_id
+			check_variable = {
+				var = global.independence_wave_scenario_last_plan_id
+				value = global.liberation_plan_id
+				compare = equals
+			}
+			check_variable = { global.liberation_plan_owner = constant:liberation_plan_owner.independence_wave }
+			has_global_flag = liberation_release_joint_plan_executed
 		}
 		set_global_flag = independence_wave_scenario_committed
 		clear_variable = global.independence_wave_scenario_last_failure
@@ -1379,6 +1390,8 @@ independence_wave_trigger_scenario = {
 		country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
 	}
 	else = {
+		# A failed or rolled-back generation can never retain the publication receipt.
+		clr_global_flag = independence_wave_scenario_committed
 		set_global_flag = independence_wave_scenario_failed
 		if = {
 			limit = { has_variable = global.independence_wave_execution_last_failure }
@@ -1419,6 +1432,8 @@ independence_wave_trigger_scenario = {
 			}
 			else = { liberation_release_abort_plan = yes }
 		}
-		country_event = { id = chaosx.triggerable_scenarios.80 days = 1 }
+		# Failure diagnostics are intentionally discarded before returning. The
+		# public ledger is published only by the committed branch above.
+		independence_wave_scenario_reset_summary = yes
 	}
 }
