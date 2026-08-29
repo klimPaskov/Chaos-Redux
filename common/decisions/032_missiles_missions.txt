@@ -1,0 +1,324 @@
+# Event 032 Missiles timed missions.
+#
+# Missions are activated by the ordinary decisions in 032_missiles_decisions.txt. The Event 032
+# core owns the state, site, operation, warning, and restoration flags consumed here. Every
+# cancellation and timeout aborts and cleans the active operation receipt so no reserved missile,
+# payload, site, or target remains stranded.
+
+@m32_mission_survey_days = 120
+@m32_mission_secondary_days = 180
+@m32_mission_repair_days = 120
+@m32_mission_recovery_days = 105
+@m32_mission_precision_days = 14
+@m32_mission_strategic_days = 21
+@m32_mission_saturation_days = 30
+@m32_mission_counterforce_days = 18
+@m32_mission_warning_days = 14
+@m32_mission_network_days = 150
+@m32_mission_ai_low = 1
+@m32_mission_ai_medium = 4
+@m32_mission_ai_high = 8
+
+missiles_program_management_category = {
+	missiles_launch_state_survey_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
+		days_mission_timeout = @m32_mission_survey_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_survey_complete }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_manage_program = yes }
+				NOT = { has_country_flag = missiles_program_phase_establishment }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = missiles_survey_mission_success_tt
+			hidden_effect = { missiles_establish_secondary_site = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = missiles_survey_mission_cancelled_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_survey_mission_timeout_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		ai_will_do = { base = @m32_mission_ai_high }
+	}
+
+	missiles_secondary_site_construction_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		days_mission_timeout = @m32_mission_secondary_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_secondary_site_established }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_manage_program = yes }
+				NOT = { has_country_flag = missiles_program_phase_expansion }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = missiles_secondary_site_mission_success_tt
+			hidden_effect = { missiles_establish_secondary_site = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = missiles_secondary_site_mission_cancelled_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_secondary_site_mission_timeout_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		ai_will_do = { base = @m32_mission_ai_medium modifier = { factor = 2 has_war = yes } }
+	}
+
+	missiles_site_repair_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		days_mission_timeout = @m32_mission_repair_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_site_repair_complete }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_manage_program = yes }
+				NOT = { has_country_flag = missiles_program_phase_incident }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = missiles_site_repair_mission_success_tt
+			hidden_effect = { missiles_restore_readiness = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = missiles_site_repair_mission_cancelled_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_site_repair_mission_timeout_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		ai_will_do = { base = @m32_mission_ai_high modifier = { factor = 2 has_war = yes } }
+	}
+
+	missiles_site_recovery_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		days_mission_timeout = @m32_mission_recovery_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_site_recovery_complete }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_manage_program = yes }
+				NOT = { has_country_flag = missiles_program_phase_rogue }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = missiles_site_recovery_mission_success_tt
+			hidden_effect = { missiles_send_loyal_forces = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = missiles_site_recovery_mission_cancelled_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_site_recovery_mission_timeout_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		ai_will_do = { base = @m32_mission_ai_high modifier = { factor = 2 has_war = yes } }
+	}
+
+	missiles_precision_strike_preparation_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		days_mission_timeout = @m32_mission_precision_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_operation_ready }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_prepare_operation = yes }
+				NOT = { has_event_target = missiles_selected_target }
+				NOT = { event_target:missiles_selected_target = { missiles_target_is_valid = yes } }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = missiles_precision_preparation_success_tt }
+		cancel_effect = {
+			custom_effect_tooltip = missiles_preparation_cancelled_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_preparation_timeout_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		ai_will_do = { base = @m32_mission_ai_high }
+	}
+
+	missiles_strategic_barrage_preparation_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		days_mission_timeout = @m32_mission_strategic_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_operation_ready }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_prepare_operation = yes }
+				NOT = { has_event_target = missiles_selected_target }
+				NOT = { event_target:missiles_selected_target = { missiles_target_is_valid = yes } }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = missiles_strategic_preparation_success_tt }
+		cancel_effect = {
+			custom_effect_tooltip = missiles_preparation_cancelled_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_preparation_timeout_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		ai_will_do = { base = @m32_mission_ai_medium modifier = { factor = 2 has_war = yes } }
+	}
+
+	missiles_saturation_barrage_preparation_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		days_mission_timeout = @m32_mission_saturation_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_operation_ready }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_prepare_operation = yes }
+				NOT = { has_event_target = missiles_selected_target }
+				NOT = { event_target:missiles_selected_target = { missiles_target_is_valid = yes } }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = missiles_saturation_preparation_success_tt }
+		cancel_effect = {
+			custom_effect_tooltip = missiles_preparation_cancelled_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_preparation_timeout_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		ai_will_do = { base = @m32_mission_ai_low modifier = { factor = 5 has_war = yes } }
+	}
+
+	missiles_counterforce_strike_preparation_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		days_mission_timeout = @m32_mission_counterforce_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_operation_ready }
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_prepare_operation = yes }
+				NOT = { has_event_target = missiles_selected_target }
+				NOT = { event_target:missiles_selected_target = { missiles_target_is_valid = yes } }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = missiles_counterforce_preparation_success_tt }
+		cancel_effect = {
+			custom_effect_tooltip = missiles_preparation_cancelled_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_preparation_timeout_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		ai_will_do = { base = @m32_mission_ai_high modifier = { factor = 3 has_war = yes } }
+	}
+
+	missiles_warning_verification_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
+		days_mission_timeout = @m32_mission_warning_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = { has_country_flag = missiles_warning_verified }
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = missiles_program_phase_retaliation }
+				NOT = { has_country_flag = missiles_warning_active }
+			}
+		}
+		complete_effect = { custom_effect_tooltip = missiles_warning_verification_success_tt }
+		cancel_effect = {
+			custom_effect_tooltip = missiles_warning_verification_cancelled_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_warning_verification_timeout_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		ai_will_do = { base = @m32_mission_ai_urgent }
+	}
+
+	missiles_retaliation_network_restoration_mission = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		days_mission_timeout = @m32_mission_network_days
+		is_good = no
+		fire_only_once = no
+		activation = { always = no }
+		available = {
+			NOT = { has_country_flag = missiles_retaliation_network_severed }
+			has_country_flag = missiles_command_control_secure
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { missiles_country_can_manage_program = yes }
+				NOT = { has_country_flag = missiles_program_phase_retaliation }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = missiles_network_restoration_success_tt
+			hidden_effect = { missiles_restore_retaliation_network = yes }
+		}
+		cancel_effect = {
+			custom_effect_tooltip = missiles_network_restoration_cancelled_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = missiles_network_restoration_timeout_tt
+			hidden_effect = { missiles_abort_operation = yes missiles_cleanup_operation = yes }
+		}
+		ai_will_do = { base = @m32_mission_ai_high }
+	}
+}

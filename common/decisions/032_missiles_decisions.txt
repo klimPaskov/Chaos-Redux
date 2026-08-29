@@ -1,0 +1,946 @@
+# Event 032 Missiles ordinary decisions.
+#
+# The Event 032 core owns program records, phase flags, target/site validation, resource
+# receipts, operation resolution, incident records, and cleanup. This file owns the ordinary
+# decision entry points, player-facing costs, phase visibility, and AI willingness.
+#
+# Required core phase flags:
+# missiles_program_phase_establishment, missiles_program_phase_maintenance,
+# missiles_program_phase_expansion, missiles_program_phase_operations,
+# missiles_program_phase_prepared, missiles_program_phase_incident,
+# missiles_program_phase_rogue, and missiles_program_phase_retaliation.
+
+@m32_pp_none = 0
+@m32_command_low = 8
+@m32_command_standard = 15
+@m32_command_high = 25
+@m32_command_low_negative = -8
+@m32_command_standard_negative = -15
+@m32_command_high_negative = -25
+@m32_fuel_low = 250
+@m32_fuel_standard = 450
+@m32_fuel_high = 700
+@m32_fuel_low_negative = -250
+@m32_fuel_standard_negative = -450
+@m32_fuel_high_negative = -700
+@m32_support_low = 40
+@m32_support_standard = 80
+@m32_support_high = 140
+@m32_support_low_negative = -40
+@m32_support_standard_negative = -80
+@m32_support_high_negative = -140
+@m32_manpower_low = 300
+@m32_manpower_standard = 700
+@m32_manpower_high = 1200
+@m32_manpower_low_negative = -300
+@m32_manpower_standard_negative = -700
+@m32_manpower_high_negative = -1200
+@m32_train_low = 1
+@m32_train_standard = 2
+@m32_train_low_negative = -1
+@m32_train_standard_negative = -2
+@m32_air_xp_low = 15
+@m32_air_xp_low_negative = -15
+@m32_army_xp_low = 15
+@m32_army_xp_low_negative = -15
+@m32_reenable_short = 35
+@m32_reenable_medium = 70
+@m32_reenable_long = 120
+@m32_ai_low = 1
+@m32_ai_medium = 4
+@m32_ai_high = 8
+@m32_ai_urgent = 14
+
+missiles_program_management_category = {
+	missiles_survey_launch_state = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_establishment
+			missiles_country_can_manage_program = yes
+			NOT = { has_active_mission = missiles_launch_state_survey_mission }
+			FROM = { missiles_state_is_valid_site_target = yes }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_establishment
+			missiles_country_can_manage_program = yes
+		}
+		target_trigger = {
+			FROM = { missiles_state_is_valid_site_target = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_survey_requirements_tt
+				FROM = { missiles_state_is_valid_site_target = yes }
+			}
+		}
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_low
+			has_equipment = { support_equipment > @m32_support_low }
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_survey
+		days_re_enable = @m32_reenable_short
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = missiles_survey_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				add_fuel = @m32_fuel_low_negative
+				activate_mission = missiles_launch_state_survey_mission
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 0 NOT = { missiles_country_can_manage_program = yes } }
+			modifier = { factor = 2 is_major = yes }
+		}
+	}
+
+	missiles_establish_command_authority = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			has_country_flag = missiles_program_phase_establishment
+			missiles_country_can_manage_program = yes
+			NOT = { has_country_flag = missiles_rogue_command_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_command_authority_requirements_tt
+				has_command_power > @m32_command_standard
+			}
+		}
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_manpower > @m32_manpower_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_command_authority
+		days_re_enable = @m32_reenable_medium
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = missiles_command_authority_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_manpower = @m32_manpower_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				missiles_secure_launch_codes = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_urgent
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	missiles_replenish_operational_reserve = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			has_country_flag = missiles_program_phase_maintenance
+			missiles_country_can_manage_program = yes
+			NOT = { has_active_mission = missiles_site_repair_mission }
+		}
+		available = { missiles_country_can_manage_program = yes }
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_low
+			has_equipment = { support_equipment > @m32_support_standard }
+			has_fuel > @m32_fuel_standard
+		}
+		custom_cost_text = missiles_cost_replenish
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_replenish_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				add_fuel = @m32_fuel_standard_negative
+				missiles_replenish_reserve = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 3 has_war = yes }
+			modifier = { factor = 2 is_major = yes }
+		}
+	}
+
+	missiles_restore_launch_readiness = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = {
+			has_country_flag = missiles_program_phase_maintenance
+			missiles_country_can_manage_program = yes
+		}
+		available = { missiles_country_can_manage_program = yes }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_equipment = { support_equipment > @m32_support_low }
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_readiness
+		days_re_enable = @m32_reenable_short
+		complete_effect = {
+			custom_effect_tooltip = missiles_readiness_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				add_fuel = @m32_fuel_low_negative
+				missiles_restore_readiness = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 3 has_war = yes }
+		}
+	}
+
+	missiles_improve_guidance_and_maintenance = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = {
+			has_country_flag = missiles_program_phase_maintenance
+			missiles_country_can_manage_program = yes
+		}
+		available = { missiles_country_can_manage_program = yes }
+		custom_cost_trigger = {
+			has_air_experience > @m32_air_xp_low
+			has_equipment = { support_equipment > @m32_support_standard }
+			has_manpower > @m32_manpower_low
+		}
+		custom_cost_text = missiles_cost_guidance
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_guidance_effect_tt
+			hidden_effect = {
+				add_air_experience = @m32_air_xp_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				add_manpower = @m32_manpower_low_negative
+				missiles_improve_guidance = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 2 has_war = yes }
+		}
+	}
+
+	missiles_secure_launch_authority = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			has_country_flag = missiles_program_phase_maintenance
+			missiles_country_can_manage_program = yes
+			NOT = { has_country_flag = missiles_rogue_command_active }
+		}
+		available = { missiles_country_can_manage_program = yes }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_secure_codes
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_secure_codes_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				missiles_secure_launch_codes = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 3 NOT = { has_country_flag = missiles_command_control_secure } }
+		}
+	}
+
+	missiles_harden_launch_site = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_expansion
+			missiles_country_can_manage_program = yes
+			FROM = { missiles_site_can_upgrade = yes }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_expansion
+			missiles_country_can_manage_program = yes
+		}
+		target_trigger = { FROM = { missiles_site_can_upgrade = yes } }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_site_upgrade_requirements_tt
+				FROM = { missiles_site_can_upgrade = yes }
+			}
+		}
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_standard
+			has_equipment = { support_equipment > @m32_support_standard }
+			has_equipment = { train_equipment > @m32_train_low }
+		}
+		custom_cost_text = missiles_cost_harden_site
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_harden_site_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_standard_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				add_equipment_to_stockpile = { type = train_equipment amount = @m32_train_low_negative }
+				FROM = { missiles_harden_site = yes }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 2 has_war = yes }
+			modifier = { factor = 2 FROM = { is_capital = no } }
+		}
+	}
+
+	missiles_expand_launch_capacity = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_expansion
+			missiles_country_can_manage_program = yes
+			FROM = { missiles_site_can_launch = yes }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_expansion
+			missiles_country_can_manage_program = yes
+		}
+		target_trigger = { FROM = { missiles_site_can_launch = yes } }
+		available = { FROM = { missiles_site_can_launch = yes } }
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_standard
+			has_equipment = { support_equipment > @m32_support_high }
+			has_fuel > @m32_fuel_standard
+		}
+		custom_cost_text = missiles_cost_expand_capacity
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_expand_capacity_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_standard_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_high_negative }
+				add_fuel = @m32_fuel_standard_negative
+				FROM = { missiles_expand_capacity = yes }
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 3 has_war = yes }
+		}
+	}
+
+	missiles_establish_secondary_launch_site = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_expansion
+			missiles_country_can_manage_program = yes
+			NOT = { has_active_mission = missiles_secondary_site_construction_mission }
+			FROM = { missiles_state_is_valid_site_target = yes }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_expansion
+			missiles_country_can_manage_program = yes
+		}
+		target_trigger = { FROM = { missiles_state_is_valid_site_target = yes } }
+		available = { FROM = { missiles_state_is_valid_site_target = yes } }
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_high
+			has_equipment = { support_equipment > @m32_support_high }
+			has_equipment = { train_equipment > @m32_train_standard }
+			has_fuel > @m32_fuel_standard
+		}
+		custom_cost_text = missiles_cost_secondary_site
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_secondary_site_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_high_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_high_negative }
+				add_equipment_to_stockpile = { type = train_equipment amount = @m32_train_standard_negative }
+				add_fuel = @m32_fuel_standard_negative
+				activate_mission = missiles_secondary_site_construction_mission
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 3 has_war = yes }
+			modifier = { factor = 0 NOT = { missiles_country_can_manage_program = yes } }
+		}
+	}
+
+	missiles_select_target_country = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		target_array = global.enabled_countries_list
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_operations
+			missiles_country_can_prepare_operation = yes
+			NOT = { has_country_flag = missiles_target_selected }
+		}
+		target_trigger = { FROM = { missiles_target_is_valid = yes } }
+		visible = {
+			NOT = { is_ai = yes }
+			has_country_flag = missiles_program_phase_operations
+			missiles_country_can_prepare_operation = yes
+			NOT = { has_country_flag = missiles_target_selected }
+		}
+		available = { FROM = { missiles_target_is_valid = yes } }
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = missiles_select_target_effect_tt
+			hidden_effect = { missiles_select_target = yes }
+		}
+		ai_will_do = { base = 0 }
+	}
+
+	missiles_prepare_precision_strike = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_operations
+			missiles_country_can_prepare_operation = yes
+			OR = { has_country_flag = missiles_target_selected is_ai = yes }
+			NOT = { has_active_mission = missiles_precision_strike_preparation_mission }
+			FROM = { missiles_target_is_valid = yes }
+		}
+		target_root_trigger = {
+			has_country_flag = missiles_program_phase_operations
+			missiles_country_can_prepare_operation = yes
+		}
+		target_trigger = { FROM = { missiles_target_is_valid = yes } }
+		available = { FROM = { missiles_target_is_valid = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_fuel > @m32_fuel_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_precision_strike
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_precision_strike_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_fuel = @m32_fuel_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				missiles_prepare_precision_strike = yes
+				activate_mission = missiles_precision_strike_preparation_mission
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 3 has_war = yes }
+			modifier = { factor = 0 NOT = { missiles_country_can_prepare_operation = yes } }
+		}
+	}
+
+	missiles_prepare_strategic_barrage = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_operations
+			missiles_country_can_prepare_operation = yes
+			OR = { has_country_flag = missiles_target_selected is_ai = yes }
+			FROM = { missiles_target_is_valid = yes }
+		}
+		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
+		target_trigger = { FROM = { missiles_target_is_valid = yes } }
+		available = { FROM = { missiles_target_is_valid = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_fuel > @m32_fuel_standard
+			has_equipment = { support_equipment > @m32_support_standard }
+		}
+		custom_cost_text = missiles_cost_strategic_barrage
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_strategic_barrage_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_fuel = @m32_fuel_standard_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				missiles_prepare_strategic_barrage = yes
+				activate_mission = missiles_strategic_barrage_preparation_mission
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_medium
+			modifier = { factor = 4 has_war = yes }
+		}
+	}
+
+	missiles_prepare_saturation_barrage = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_operations
+			has_country_flag = missiles_evolution_saturation_arsenals
+			missiles_country_can_prepare_operation = yes
+			OR = { has_country_flag = missiles_target_selected is_ai = yes }
+			FROM = { missiles_target_is_valid = yes }
+		}
+		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
+		target_trigger = { FROM = { missiles_target_is_valid = yes } }
+		available = { FROM = { missiles_target_is_valid = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_high
+			has_fuel > @m32_fuel_high
+			has_equipment = { support_equipment > @m32_support_high }
+		}
+		custom_cost_text = missiles_cost_saturation_barrage
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_saturation_barrage_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_high_negative
+				add_fuel = @m32_fuel_high_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_high_negative }
+				missiles_prepare_saturation_barrage = yes
+				activate_mission = missiles_saturation_barrage_preparation_mission
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 5 has_war = yes }
+			modifier = { factor = 0 NOT = { has_country_flag = missiles_evolution_saturation_arsenals } }
+		}
+	}
+
+	missiles_prepare_counterforce_strike = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_operations
+			missiles_country_can_prepare_operation = yes
+			OR = { has_country_flag = missiles_target_selected is_ai = yes }
+			FROM = { missiles_target_is_valid = yes }
+		}
+		target_root_trigger = { has_country_flag = missiles_program_phase_operations missiles_country_can_prepare_operation = yes }
+		target_trigger = { FROM = { missiles_target_is_valid = yes } }
+		available = { FROM = { missiles_target_is_valid = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_fuel > @m32_fuel_standard
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_counterforce_strike
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_counterforce_strike_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_fuel = @m32_fuel_standard_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				missiles_prepare_counterforce_strike = yes
+				activate_mission = missiles_counterforce_strike_preparation_mission
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_high
+			modifier = { factor = 4 has_war = yes }
+		}
+	}
+
+	missiles_integrate_special_payload = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		visible = {
+			has_country_flag = missiles_program_phase_operations
+			has_country_flag = missiles_evolution_special_warheads
+			missiles_country_can_prepare_operation = yes
+			NOT = { has_country_flag = missiles_special_payload_selected }
+		}
+		available = { missiles_country_can_prepare_operation = yes }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_fuel > @m32_fuel_low
+			has_equipment = { support_equipment > @m32_support_standard }
+		}
+		custom_cost_text = missiles_cost_special_payload
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_special_payload_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_fuel = @m32_fuel_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				missiles_integrate_special_payload = yes
+			}
+		}
+		ai_will_do = {
+			base = @m32_ai_low
+			modifier = { factor = 4 has_war = yes }
+			modifier = { factor = 0 NOT = { has_country_flag = missiles_evolution_special_warheads } }
+		}
+	}
+
+	missiles_launch_prepared_operation = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		visible = {
+			has_country_flag = missiles_program_phase_prepared
+			has_country_flag = missiles_operation_ready
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = missiles_launch_requirements_tt
+				any_controlled_state = { missiles_site_can_launch = yes }
+			}
+		}
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = missiles_launch_prepared_effect_tt
+			hidden_effect = { missiles_commit_operation = yes }
+		}
+		ai_will_do = {
+			base = @m32_ai_urgent
+			modifier = { factor = 3 has_war = yes }
+		}
+	}
+
+	missiles_abort_prepared_operation = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = { has_country_flag = missiles_program_phase_prepared }
+		available = { has_country_flag = missiles_operation_active }
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_abort_operation_effect_tt
+			hidden_effect = {
+				missiles_abort_operation = yes
+				missiles_cleanup_operation = yes
+			}
+		}
+		ai_will_do = { base = @m32_ai_medium }
+	}
+
+	missiles_inspect_incident = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
+		visible = { has_country_flag = missiles_program_phase_incident }
+		available = { has_country_flag = missiles_incident_active }
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = missiles_inspect_incident_effect_tt
+			hidden_effect = { missiles_inspect_incident = yes }
+		}
+		ai_will_do = { base = @m32_ai_high }
+	}
+
+	missiles_compensate_neutral_victim = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			has_country_flag = missiles_neutral_incident_active
+		}
+		available = { has_country_flag = missiles_neutral_incident_active }
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_compensation
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_compensate_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				missiles_compensate_neutral_victim = yes
+			}
+		}
+		ai_will_do = { base = @m32_ai_high }
+	}
+
+	missiles_suspend_damaged_site = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_incident
+			FROM = { missiles_site_can_repair = yes }
+			NOT = { has_active_mission = missiles_site_repair_mission }
+		}
+		target_root_trigger = { has_country_flag = missiles_program_phase_incident }
+		target_trigger = { FROM = { missiles_site_can_repair = yes } }
+		available = { FROM = { missiles_site_can_repair = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_equipment = { support_equipment > @m32_support_standard }
+			has_manpower > @m32_manpower_low
+		}
+		custom_cost_text = missiles_cost_suspend_site
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_suspend_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				add_manpower = @m32_manpower_low_negative
+				FROM = { missiles_suspend_damaged_site = yes }
+				activate_mission = missiles_site_repair_mission
+			}
+		}
+		ai_will_do = { base = @m32_ai_urgent modifier = { factor = 3 has_war = yes } }
+	}
+
+	missiles_rotate_emergency_codes = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			has_country_flag = missiles_program_phase_rogue
+			has_country_flag = missiles_rogue_command_active
+		}
+		available = { has_country_flag = missiles_rogue_command_active }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_rotate_codes
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_rotate_codes_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_fuel = @m32_fuel_low_negative
+				missiles_rotate_emergency_codes = yes
+			}
+		}
+		ai_will_do = { base = @m32_ai_urgent }
+	}
+
+	missiles_isolate_rogue_site = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			has_country_flag = missiles_program_phase_rogue
+			FROM = { missiles_site_can_launch = yes }
+		}
+		target_root_trigger = { has_country_flag = missiles_program_phase_rogue }
+		target_trigger = { FROM = { missiles_site_can_launch = yes } }
+		available = { FROM = { missiles_site_can_launch = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_equipment = { support_equipment > @m32_support_low }
+		}
+		custom_cost_text = missiles_cost_isolate_site
+		days_re_enable = @m32_reenable_short
+		complete_effect = {
+			custom_effect_tooltip = missiles_isolate_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_low_negative }
+				FROM = { missiles_isolate_site = yes }
+			}
+		}
+		ai_will_do = { base = @m32_ai_high }
+	}
+
+	missiles_send_loyal_forces = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			has_country_flag = missiles_program_phase_rogue
+			has_country_flag = missiles_rogue_command_active
+			NOT = { has_active_mission = missiles_site_recovery_mission }
+		}
+		available = { has_country_flag = missiles_rogue_command_active }
+		custom_cost_trigger = {
+			has_manpower > @m32_manpower_high
+			has_equipment = { infantry_equipment > @m32_support_high }
+			has_command_power > @m32_command_standard
+		}
+		custom_cost_text = missiles_cost_loyal_forces
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_loyal_forces_effect_tt
+			hidden_effect = {
+				add_manpower = @m32_manpower_high_negative
+				add_equipment_to_stockpile = { type = infantry_equipment amount = @m32_support_high_negative }
+				add_command_power = @m32_command_standard_negative
+				activate_mission = missiles_site_recovery_mission
+			}
+		}
+		ai_will_do = { base = @m32_ai_high modifier = { factor = 2 has_war = yes } }
+	}
+
+	missiles_negotiate_with_command = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
+		visible = { has_country_flag = missiles_program_phase_rogue has_country_flag = missiles_rogue_command_active }
+		available = { has_country_flag = missiles_rogue_command_active }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_manpower > @m32_manpower_low
+		}
+		custom_cost_text = missiles_cost_negotiate_command
+		days_re_enable = @m32_reenable_medium
+		complete_effect = {
+			custom_effect_tooltip = missiles_negotiate_command_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_manpower = @m32_manpower_low_negative
+				missiles_negotiate_with_command = yes
+			}
+		}
+		ai_will_do = { base = @m32_ai_medium modifier = { factor = 2 NOT = { has_war = yes } } }
+	}
+
+	missiles_scuttle_rogue_site = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = { has_country_flag = missiles_program_phase_rogue FROM = { missiles_site_can_launch = yes } }
+		target_root_trigger = { has_country_flag = missiles_program_phase_rogue }
+		target_trigger = { FROM = { missiles_site_can_launch = yes } }
+		available = { FROM = { missiles_site_can_launch = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_high
+			has_manpower > @m32_manpower_low
+		}
+		custom_cost_text = missiles_cost_scuttle_site
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_scuttle_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_high_negative
+				add_manpower = @m32_manpower_low_negative
+				FROM = { missiles_scuttle_site = yes }
+			}
+		}
+		ai_will_do = { base = @m32_ai_medium modifier = { factor = 3 has_war = yes } }
+	}
+
+	missiles_verify_warning = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_theory
+		visible = {
+			has_country_flag = missiles_program_phase_retaliation
+			has_country_flag = missiles_warning_active
+			NOT = { has_active_mission = missiles_warning_verification_mission }
+		}
+		available = { has_country_flag = missiles_warning_active }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_verify_warning
+		days_re_enable = @m32_reenable_short
+		complete_effect = {
+			custom_effect_tooltip = missiles_verify_warning_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_fuel = @m32_fuel_low_negative
+				missiles_verify_warning = yes
+				activate_mission = missiles_warning_verification_mission
+			}
+		}
+		ai_will_do = { base = @m32_ai_urgent }
+	}
+
+	missiles_delay_retaliation = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
+		available = { has_country_flag = missiles_warning_active }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_delay_retaliation
+		days_re_enable = @m32_reenable_short
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = missiles_delay_retaliation_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_fuel = @m32_fuel_low_negative
+				missiles_delay_retaliation = yes
+			}
+		}
+		ai_will_do = { base = @m32_ai_high modifier = { factor = 3 NOT = { has_country_flag = missiles_warning_verified } } }
+	}
+
+	missiles_sever_retaliation_network = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
+		available = { has_country_flag = missiles_warning_active }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_fuel > @m32_fuel_standard
+		}
+		custom_cost_text = missiles_cost_sever_network
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_sever_network_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_fuel = @m32_fuel_standard_negative
+				missiles_sever_network = yes
+				activate_mission = missiles_retaliation_network_restoration_mission
+			}
+		}
+		ai_will_do = { base = @m32_ai_high modifier = { factor = 3 NOT = { has_country_flag = missiles_warning_verified } } }
+	}
+
+	missiles_isolate_retaliation_site = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active FROM = { missiles_site_can_launch = yes } }
+		target_root_trigger = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
+		target_trigger = { FROM = { missiles_site_can_launch = yes } }
+		available = { FROM = { missiles_site_can_launch = yes } }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_low
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_isolate_retaliation_site
+		days_re_enable = @m32_reenable_short
+		complete_effect = {
+			custom_effect_tooltip = missiles_isolate_retaliation_site_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_low_negative
+				add_fuel = @m32_fuel_low_negative
+				FROM = { missiles_isolate_site = yes }
+			}
+		}
+		ai_will_do = { base = @m32_ai_high }
+	}
+
+	missiles_accept_retaliation_response = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_weaponization
+		visible = { has_country_flag = missiles_program_phase_retaliation has_country_flag = missiles_warning_active }
+		available = { has_country_flag = missiles_warning_active any_controlled_state = { missiles_site_can_launch = yes } }
+		complete_effect = {
+			custom_effect_tooltip = missiles_accept_retaliation_effect_tt
+			hidden_effect = { missiles_commit_operation = yes }
+		}
+		ai_will_do = { base = @m32_ai_urgent modifier = { factor = 0 NOT = { has_country_flag = missiles_warning_verified } } }
+	}
+
+	missiles_restore_retaliation_network = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_deployment
+		visible = {
+			has_country_flag = missiles_program_phase_retaliation
+			has_country_flag = missiles_retaliation_network_severed
+			NOT = { has_active_mission = missiles_retaliation_network_restoration_mission }
+		}
+		available = { has_country_flag = missiles_retaliation_network_severed }
+		custom_cost_trigger = {
+			has_command_power > @m32_command_standard
+			has_equipment = { support_equipment > @m32_support_standard }
+			has_fuel > @m32_fuel_low
+		}
+		custom_cost_text = missiles_cost_restore_network
+		days_re_enable = @m32_reenable_long
+		complete_effect = {
+			custom_effect_tooltip = missiles_restore_network_effect_tt
+			hidden_effect = {
+				add_command_power = @m32_command_standard_negative
+				add_equipment_to_stockpile = { type = support_equipment amount = @m32_support_standard_negative }
+				add_fuel = @m32_fuel_low_negative
+				activate_mission = missiles_retaliation_network_restoration_mission
+			}
+		}
+		ai_will_do = { base = @m32_ai_high }
+	}
+}
