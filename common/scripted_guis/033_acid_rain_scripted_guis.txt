@@ -1,24 +1,189 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 033 ACID RAIN SCRIPTED GUIS
+# CHAOS REDUX - EVENT 033 ACID RAIN READ-ONLY SCRIPTED GUI
+# ============================================================================
+# The existing decision-category attachment keeps its stable scripted-GUI id,
+# while this file points it at the dedicated Event 033 world window. The only
+# effect is the explicit read-model projection helper. All other entries read
+# presentation variables and never mutate fronts, states, counters, costs,
+# targets, deaths, contamination, timers, or global gameplay state.
 # ============================================================================
 
 scripted_gui = {
 	acid_rain_decisions_scripted_gui = {
 		context_type = decision_category
+		window_name = "acid_rain_world_window"
 
-		window_name = "acid_rain_decisions_container"
-
-		properties = {
-			placeholder_acid_rain_map = {
-				image = "GFX_acid_rain_[?global.acid_rain_continent|.0]"
-				frame = 1
-			}
-		}
-		ai_enabled = {
-			always = no
-		}
 		visible = {
 			is_ai = no
+			check_variable = { global.acid_rain_gui_window_visible > 0 }
+		}
+
+		effects = {
+			acid_rain_world_refresh_click = {
+				acid_rain_gui_refresh_read_only = yes
+			}
+		}
+
+		triggers = {
+			acid_rain_world_refresh_click_enabled = {
+				check_variable = { global.acid_rain_gui_refresh_enabled > 0 }
+			}
+			acid_rain_world_close_click_enabled = { always = yes }
+
+			acid_rain_map_region_overlay_1_visible = { check_variable = { global.acid_rain_gui_region_1_visible > 0 } }
+			acid_rain_map_region_overlay_2_visible = { check_variable = { global.acid_rain_gui_region_2_visible > 0 } }
+			acid_rain_map_region_overlay_3_visible = { check_variable = { global.acid_rain_gui_region_3_visible > 0 } }
+			acid_rain_map_region_overlay_4_visible = { check_variable = { global.acid_rain_gui_region_4_visible > 0 } }
+			acid_rain_map_region_overlay_5_visible = { check_variable = { global.acid_rain_gui_region_5_visible > 0 } }
+			acid_rain_map_region_overlay_6_visible = { check_variable = { global.acid_rain_gui_region_6_visible > 0 } }
+			acid_rain_map_region_overlay_7_visible = { check_variable = { global.acid_rain_gui_region_7_visible > 0 } }
+			acid_rain_map_visited_veil_visible = { check_variable = { global.acid_rain_gui_visited_layer_active > 0 } }
+			acid_rain_map_ordinary_veil_visible = { check_variable = { global.acid_rain_gui_ordinary_layer_active > 0 } }
+			acid_rain_map_warning_veil_visible = { check_variable = { global.acid_rain_gui_warning_layer_active > 0 } }
+			acid_rain_map_global_veil_visible = { check_variable = { global.acid_rain_gui_global_layer_active > 0 } }
+
+			acid_rain_map_front_1_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_1_warning > 0 } }
+				NOT = { check_variable = { global.acid_rain_gui_front_1_severe > 0 } }
+			}
+			acid_rain_map_front_1_warning_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_1_warning > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_1_severe > 0 } }
+			}
+			acid_rain_map_front_1_severe_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_1_severe > 0 }
+			}
+			acid_rain_map_front_2_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_2_warning > 0 } }
+				NOT = { check_variable = { global.acid_rain_gui_front_2_severe > 0 } }
+			}
+			acid_rain_map_front_2_warning_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_2_warning > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_2_severe > 0 } }
+			}
+			acid_rain_map_front_2_severe_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_2_severe > 0 }
+			}
+			acid_rain_map_front_3_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_3_warning > 0 } }
+				NOT = { check_variable = { global.acid_rain_gui_front_3_severe > 0 } }
+			}
+			acid_rain_map_front_3_warning_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_3_warning > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_3_severe > 0 } }
+			}
+			acid_rain_map_front_3_severe_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_3_severe > 0 }
+			}
+
+			acid_rain_front_card_1_visible = { check_variable = { global.acid_rain_gui_front_1_visible > 0 } }
+			acid_rain_front_card_2_visible = { check_variable = { global.acid_rain_gui_front_2_visible > 0 } }
+			acid_rain_front_card_3_visible = { check_variable = { global.acid_rain_gui_front_3_visible > 0 } }
+			acid_rain_front_card_1_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_1_warning > 0 } }
+				NOT = { check_variable = { global.acid_rain_gui_front_1_severe > 0 } }
+			}
+			acid_rain_front_card_1_warning_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_1_warning > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_1_severe > 0 } }
+			}
+			acid_rain_front_card_1_severe_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_1_severe > 0 }
+			}
+			acid_rain_front_card_2_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_2_warning > 0 } }
+				NOT = { check_variable = { global.acid_rain_gui_front_2_severe > 0 } }
+			}
+			acid_rain_front_card_2_warning_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_2_warning > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_2_severe > 0 } }
+			}
+			acid_rain_front_card_2_severe_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_2_severe > 0 }
+			}
+			acid_rain_front_card_3_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_3_warning > 0 } }
+				NOT = { check_variable = { global.acid_rain_gui_front_3_severe > 0 } }
+			}
+			acid_rain_front_card_3_warning_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_3_warning > 0 }
+				NOT = { check_variable = { global.acid_rain_gui_front_3_severe > 0 } }
+			}
+			acid_rain_front_card_3_severe_marker_visible = {
+				check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+				check_variable = { global.acid_rain_gui_front_3_severe > 0 }
+			}
+
+			acid_rain_global_card_visible = {
+				check_variable = { global.acid_rain_gui_global_layer_active > 0 }
+				NOT = {
+					OR = {
+						check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+						check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+						check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+					}
+				}
+			}
+			acid_rain_empty_card_visible = {
+				NOT = { check_variable = { global.acid_rain_gui_global_layer_active > 0 } }
+				NOT = {
+					OR = {
+						check_variable = { global.acid_rain_gui_front_1_visible > 0 }
+						check_variable = { global.acid_rain_gui_front_2_visible > 0 }
+						check_variable = { global.acid_rain_gui_front_3_visible > 0 }
+					}
+				}
+			}
+			acid_rain_global_superstorm_1_visible = { check_variable = { global.acid_rain_gui_superstorm_1_visible > 0 } }
+			acid_rain_global_superstorm_2_visible = { check_variable = { global.acid_rain_gui_superstorm_2_visible > 0 } }
+			acid_rain_global_superstorm_3_visible = { check_variable = { global.acid_rain_gui_superstorm_3_visible > 0 } }
+
+			acid_rain_coverage_fill_1_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 0 } }
+			acid_rain_coverage_fill_2_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 10 } }
+			acid_rain_coverage_fill_3_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 20 } }
+			acid_rain_coverage_fill_4_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 30 } }
+			acid_rain_coverage_fill_5_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 40 } }
+			acid_rain_coverage_fill_6_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 50 } }
+			acid_rain_coverage_fill_7_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 60 } }
+			acid_rain_coverage_fill_8_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 70 } }
+			acid_rain_coverage_fill_9_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 80 } }
+			acid_rain_coverage_fill_10_visible = { check_variable = { global.acid_rain_gui_coverage_percent > 90 } }
+
+			acid_rain_region_completed_1_visible = { check_variable = { global.acid_rain_gui_region_1_completed > 0 } }
+			acid_rain_region_completed_2_visible = { check_variable = { global.acid_rain_gui_region_2_completed > 0 } }
+			acid_rain_region_completed_3_visible = { check_variable = { global.acid_rain_gui_region_3_completed > 0 } }
+			acid_rain_region_completed_4_visible = { check_variable = { global.acid_rain_gui_region_4_completed > 0 } }
+			acid_rain_region_completed_5_visible = { check_variable = { global.acid_rain_gui_region_5_completed > 0 } }
+			acid_rain_region_completed_6_visible = { check_variable = { global.acid_rain_gui_region_6_completed > 0 } }
+			acid_rain_region_completed_7_visible = { check_variable = { global.acid_rain_gui_region_7_completed > 0 } }
+		}
+
+		properties = {
+			acid_rain_preparedness_component_pip_1 = { frame = acid_rain_gui_component_1_tier }
+			acid_rain_preparedness_component_pip_2 = { frame = acid_rain_gui_component_2_tier }
+			acid_rain_preparedness_component_pip_3 = { frame = acid_rain_gui_component_3_tier }
+			acid_rain_preparedness_component_pip_4 = { frame = acid_rain_gui_component_4_tier }
+		}
+
+		ai_enabled = {
+			always = no
 		}
 	}
 }
