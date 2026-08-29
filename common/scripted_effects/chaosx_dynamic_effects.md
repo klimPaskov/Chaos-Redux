@@ -12,6 +12,7 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 - [clear_special_chaos_country_civilian_effects](#clear_special_chaos_country_civilian_effects)
 - [refresh_world_threat_state](#refresh_world_threat_state)
 - [union_compatible_researched_technologies_from_donor](#union_compatible_researched_technologies_from_donor)
+- [call_natural_disaster](#call_natural_disaster)
 - [apply_state_population_loss_without_recruitable_manpower_gain](#apply_state_population_loss_without_recruitable_manpower_gain)
 - [apply_exact_state_civilian_population_loss](#apply_exact_state_civilian_population_loss)
 - [stockpile_debit_helpers](#stockpile_debit_helpers)
@@ -158,6 +159,28 @@ FROM = { save_event_target_as = technology_union_donor }
 union_compatible_researched_technologies_from_donor = yes
 ```
 
+## call_natural_disaster
+
+Purpose: provide the stable country-scope gateway for callers that need to start a natural-disaster sequence.
+
+Scope: country.
+
+Contract: callers set the documented `natural_disaster_call_*` temporary inputs and any required regular event targets, then call `call_natural_disaster = yes`. The gateway delegates validation, target resolution, delayed work, impact, reports, aftermath, and cleanup to the Event 013 owner.
+
+Outputs: `natural_disaster_call_result`, `natural_disaster_call_reject_reason`, `natural_disaster_call_sequence_id`, `natural_disaster_call_primary_job_count`, `natural_disaster_call_skipped_primary_count`, and the documented resolved-target proofs.
+
+Defaults: invalid or incomplete input fails closed and queues no work. The gateway resets public call inputs after each call while leaving result and proof outputs available to the caller.
+
+Full input, target, origin, authority, and scaling details are documented in [`natural_disasters_overview`](../../docs/events/013_natural_disasters/overview.md).
+
+Example:
+
+```txt
+set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.earthquake }
+set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.random_valid }
+call_natural_disaster = yes
+```
+
 ## apply_state_population_loss_without_recruitable_manpower_gain
 
 Purpose: remove real state population without retaining the recruitable-manpower credit that HOI4 attaches to a negative state-scope `add_manpower` effect.
@@ -237,7 +260,6 @@ The following APIs are useful to other systems but are not declared in this regi
 
 | capability | authoritative_source | reference |
 | --- | --- | --- |
-| `natural_disaster_dispatch` | [`013_natural_disasters_effects.txt`](013_natural_disasters_effects.txt) | [`natural_disasters_overview`](../../docs/events/013_natural_disasters/overview.md) |
 | `independence_wave_ledger` | [`006_independence_wave_iberian_package_effects.txt`](006_independence_wave_iberian_package_effects.txt) | [`independence_wave_effects`](006_independence_wave_effects.md) |
 | `custom_technology_grants` | [`016_brilliant_scientist_custom_technology_api_effects.txt`](016_brilliant_scientist_custom_technology_api_effects.txt) | [`custom_technology_api`](../../docs/events/016_brilliant_scientist/systems/custom_technology_api.md) |
 | `clone_system` | [`clone_system_effects.txt`](clone_system_effects.txt) | [`clone_equipment_and_infantry`](../../docs/systems/3d_model_pipeline/clone_equipment_and_infantry.md) |
@@ -252,6 +274,6 @@ The following APIs are useful to other systems but are not declared in this regi
 
 Add a helper here only when its contract is neutral and its callers cross subsystem or event-family boundaries. Give it a descriptive name based on its behavior, not the event that first needed it.
 
-Keep one-event orchestration, event-specific selectors, lifecycle state, and private adapters in the owning source file. If a public gateway is owned by one event, keep its stable neutral name at that owner boundary and list it in `owner_owned_apis` rather than moving its implementation into this shared registry.
+Keep one-event orchestration, event-specific selectors, lifecycle state, and private adapters in the owning source file. A cross-event public gateway may remain in this registry while delegating its owner-specific runtime to the owning source file.
 
 When a shared helper changes, update its contract here and audit every call site. When an owner API changes, update the owner documentation and change only the corresponding index row here.
