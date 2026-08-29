@@ -17,6 +17,110 @@ Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID 24 is
 
 Historical package boundary (2026-08-01): the allocator admitted fourteen packages across thirteen compatible reservation groups and fourteen distinct anchors, including IW-018 ARX and IW-173 HAW. FORM-48 has its HBX carrier and HAW member admitted, while IW-179 FSM remains withdrawn; the hidden-formable route therefore remains dormant and no synthetic readiness flag or ordinary formable substitutes for the missing complete carrier/member set. IW-043 CHU and IW-058 ASY remain outside runtime attestation even though Luka Semyonovich Spasov has a v45 visual PASS and parent-owned runtime replacement.
 
+## Text package authority (2026-08-29)
+
+The current text audit preserves both accepted packages without reopening quote selection. The current Event 006 localisation audit reports that the runtime Wilson and Hosea quotation strings match the implementation-ready values below at `localisation/english/006_independence_wave_l_english.yml:115` and `:119`. No localisation edit is required in this tranche.
+
+### The League of New States, slot 23
+
+Role: first durable Event 006 league becomes an active diplomatic or military institution after a successful congress, minimum founding membership, charter adoption, and leadership selection.
+
+Approved title: **The League of New States**.
+
+Approved description:
+
+> Delegates from the newest states have ratified a common charter and chosen the league's leadership. The signatories promise arbitration, mutual aid, and collective resistance to any former host or foreign patron that attempts to extinguish a member.
+>
+> The league can speak for its members, bargain in their name, and coordinate shared aid or mobilization.
+
+Approved button: **Small states, one covenant.** This is original Event 006 wording and is not presented as an external quotation.
+
+Selected main quote: **“A general association of nations must be formed under specific covenants...”**
+
+Attribution: Woodrow Wilson, *Fourteen Points*, Point XIV, 8 January 1918.
+
+Primary source: [Yale Avalon Project, President Woodrow Wilson's Fourteen Points](https://avalon.law.yale.edu/20th_century/wilson14.asp). The page identifies the 8 January 1918 document and reproduces the full Point XIV sentence.
+
+Independent corroboration: [U.S. National Archives, President Woodrow Wilson's 14 Points](https://www.archives.gov/milestone-documents/president-woodrow-wilsons-14-points). The page identifies Wilson's 8 January 1918 address to Congress and reproduces the same Point XIV wording.
+
+Attribution confidence: **High**. The speaker, document, point number, date, and selected wording are independently traceable.
+
+Quote rights: the 1918 historical address and the short excerpt are public-domain historical text in the United States. No modern copyrighted work is used. The source-page transcripts are provenance sources, not a blanket licence for unrelated page content.
+
+Considered quote candidates:
+
+| Candidate | Fit and source result | Decision |
+| --- | --- | --- |
+| `A general association of nations must be formed under specific covenants...` | Exact opening of Point XIV in both the Yale and National Archives transcripts. It names the institutional act and covenant structure without forcing one charter ideology. | **Selected; high confidence.** |
+| `mutual guarantees of political independence and territorial integrity to great and small states alike` | Exact continuation of Point XIV. It strongly supports sovereign equality but loses the institutional reveal. | Backup fragment only. |
+| Full Point XIV sentence | Source-accurate and public historical text, but too long for the fixed quote box once the attribution is included. | Not selected; source context only. |
+
+Backup button: **Great and small states alike.** This is a short exact Point XIV fragment, but it reads as a citation fragment rather than a reaction and is less specific to the newly ratified league.
+
+Implementation-ready slot-23 text:
+
+```yaml
+chaosx_super_event.23.t: "The League of New States"
+chaosx_super_event.23.d: "Delegates from the newest states have ratified a common charter and chosen the league's leadership. The signatories promise arbitration, mutual aid, and collective resistance to any former host or foreign patron that attempts to extinguish a member.\n\nThe league can speak for its members, bargain in their name, and coordinate shared aid or mobilization."
+chaosx_super_event.23.a: "Small states, one covenant."
+chaosx_super_event.23.q: "\"A general association of nations must be formed under specific covenants...\"\n §Y-Woodrow Wilson, Fourteen Points, Point XIV, 8 January 1918-§!"
+```
+
+### Every Border a Casus Belli, slot 24
+
+Role: global threat escalation in which radical or militarized Event 006 governments turn sudden sovereignty into coordinated claims, ultimatums, arms shipments, sponsorship of breakaways, and synchronized war.
+
+Approved title: **Every Border a Casus Belli**.
+
+Approved description:
+
+> New-state governments coordinate claims, ultimatums, arms shipments, and mobilization schedules across several regions. Their border commands follow shared timetables, and governments pledge arms or troops to support one another's territorial demands.
+>
+> Former hosts reinforce several fronts as they prepare for wars that may begin on the same day.
+
+Approved button: **They have sown the wind.** This is a short allusion to Hosea 8:7 KJV and is documented as an allusion rather than an independent original line.
+
+Selected main quote: **“For they have sown the wind, and they shall reap the whirlwind...”**
+
+Attribution: Hosea 8:7, King James Version.
+
+Primary source: [BibleGateway, Hosea 8:7, King James Version](https://www.biblegateway.com/passage/?search=Hosea%208%3A7&version=KJV). The page displays the selected wording, shows the continuation after `whirlwind:`, and labels the KJV text public domain.
+
+Attribution confidence: **High** for the canonical reference, translation, and wording. No uncertain human speaker, composition date, or delivery place should be added to the in-game attribution.
+
+Quote rights: the source page identifies the KJV text as public domain. The selected excerpt is short and precisely cited, with no modern song, film, book, or game copyright risk.
+
+Considered quote candidates:
+
+| Candidate | Fit and source result | Decision |
+| --- | --- | --- |
+| `For they have sown the wind, and they shall reap the whirlwind...` | Exact beginning of Hosea 8:7 KJV. The cause-to-amplified-consequence image matches coordinated claims and support arrangements becoming a larger war system. | **Selected; high confidence.** |
+| `they shall reap the whirlwind...` | Exact shorter fragment from the same verse. It preserves consequence but drops the active subject and causal setup. | Backup quote only. |
+| Full Hosea 8:7 | Source-accurate context, but the later clauses exceed the intended quote-box economy and dilute the escalation beat. | Not selected; source context only. |
+
+Backup button: **They shall reap the whirlwind.** This is an exact short KJV fragment, but it repeats the quote's consequence clause and is less immediate as a reaction.
+
+The title is original Event 006 wording built around the common legal phrase `casus belli`; it is not presented as a quotation.
+
+Implementation-ready slot-24 text:
+
+```yaml
+chaosx_super_event.24.t: "Every Border a Casus Belli"
+chaosx_super_event.24.d: "New-state governments coordinate claims, ultimatums, arms shipments, and mobilization schedules across several regions. Their border commands follow shared timetables, and governments pledge arms or troops to support one another's territorial demands.\n\nFormer hosts reinforce several fronts as they prepare for wars that may begin on the same day."
+chaosx_super_event.24.a: "They have sown the wind."
+chaosx_super_event.24.q: "\"For they have sown the wind, and they shall reap the whirlwind...\"\n §Y-Hosea 8:7, King James Version-§!"
+```
+
+### Text and wiring disposition
+
+The text package is **approved-ready with no text blocker**. The ASCII `...` omission marks are intentional because the current quote font lacks a Unicode ellipsis glyph, and they accurately mark omitted source continuation.
+
+The current static fit evidence estimates the Wilson quote with full attribution at four lines and the Hosea quote at three lines within the fixed quote box. Both titles and buttons fit their fixed surfaces. No integrated live render is claimed by this research note.
+
+Slot 24 remains source-wired with its accepted image, text, audio, wrapper, and factual predicate; end-to-end reachability is partial under the Event 006 package and league gates. Slot 23 has its image and text dispatch registered, but audio ID `23`, wrappers, and firing remain absent because the accepted London Brass Players recording lacks verified United States/worldwide redistribution permission.
+
+Do not process or wire the London Brass Players recording. Do not substitute *The Enola Foam March*, *Toujours en Tête*, or any other candidate without explicit parent/user approval, human audition, and a new rights-complete audio note. The audio hold does not authorize changing the Wilson quote, button, title, or description.
+
 ## Every Border a Casus Belli
 
 The public package is fixed to the accepted design:
@@ -29,7 +133,7 @@ The public package is fixed to the accepted design:
 - audio: the final 110 seconds of Tchaikovsky's *1812 Overture, Op. 49*,
 United States Marine Band, conducted by Col. Jason K. Fettig, 26 May 2019, transcription by MGySgt Donald Patterson.
 
-The exact player-facing strings live in `localisation/english/006_independence_wave_super_event_l_english.yml`. Scripted localisation resolves all five slot-24 fields before generic slots.
+The exact player-facing strings live in `localisation/english/006_independence_wave_l_english.yml`. Scripted localisation resolves all five slot-24 fields before generic slots.
 
 ## Qualification contract
 
