@@ -39,7 +39,8 @@ The mandatory `hoi4.gui_inspect`, `hoi4.gui_render`, and event/probability MCP r
 
 ## Parent follow-up and remaining boundary
 
-The parent must remove the failure-side `.80` dispatch from `events/006_independence_wave.txt` and gate `chaosx.triggerable_scenarios.80` option `.a` on the current successful `independence_wave_scenario_committed` receipt rather than blocked-row presence. The parent should preserve the successful `chaosx.nr6.2` then delayed `.80` order, run a final global census of `.80` dispatches and `independence_wave_scenario_ledger_visible` setters, and perform the required event MCP inspection if the route becomes available.
+The parent event patch and source census are recorded in the completion section below.
+The only remaining boundary is the unavailable required event MCP inspection; no parent gameplay patch is pending in this tranche.
 
 No simplification, fallback wording, asset substitution, or unrelated source change was made in this tranche.
 
