@@ -1,0 +1,109 @@
+# ============================================================================
+# CHAOS REDUX - UNIVERSAL DISCOUNTED-COST FRAMEWORK CONSTANTS
+# ============================================================================
+# Shared registry, fixed-point arithmetic, family masks, resource kinds, and
+# transaction-state values for source-driven cost quotes. Event owners supply
+# ordinary current prices and own the lifecycle that registers or clears a
+# source; these constants keep the adapter contract synchronized.
+# ============================================================================
+
+universal_cost_framework = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	negative_one = -1
+	basis = 10000
+	baseline_sale_ratio = 5000
+	evolution_i_sale_ratio = 2500
+	default_rounding_quantum = 1
+	source_all_mask = 0
+	eligibility_bit_count = 30
+	max_eligibility_mask_exclusive = 1073741824
+	invalid_index = -1
+	default_source_priority = 500
+	max_source_priority = 999999
+	priority_sentinel = 1000000
+	black_friday_source_id = 26
+	black_friday_source_priority = 500
+	black_friday_default_ratio = 5000
+	transaction_state_recorded = 1
+	transaction_state_refunded = 2
+	transaction_state_refund_partial = 3
+	transaction_state_settled = 4
+	result_no_op = 0
+	result_success = 1
+	result_partial = 2
+	result_rejected = 3
+}
+
+# A family mask is a positive bit mask. The zero value means every family.
+# Keep custom family bits within the thirty-bit range used by the matcher.
+universal_cost_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	political_power = 1
+	command_power = 2
+	manpower = 4
+	fuel = 8
+	infantry_equipment = 16
+	support_equipment = 32
+	motorized_equipment = 64
+	train_equipment = 128
+	convoy = 256
+	factory_commitment = 512
+	technology = 1024
+	advisor = 2048
+	idea = 4096
+	operation = 8192
+	equipment_design = 16384
+}
+
+# Resource kinds with native debit/credit branches in the shared payment
+# helpers. The adapter may record additional kinds, but must own their actual
+# payment and refund effects.
+universal_cost_resource_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	political_power = 1
+	command_power = 2
+	manpower = 3
+	fuel = 4
+	infantry_equipment = 5
+	support_equipment = 6
+	motorized_equipment = 7
+	train_equipment = 8
+	convoy = 9
+	civilian_factory_commitment = 100
+	military_factory_commitment = 101
+	dockyard_commitment = 102
+	technology = 103
+	advisor = 104
+	idea = 105
+	operation = 106
+	equipment_design = 107
+	custom_adapter = 199
+}
+
+# A component ledger uses a numeric state because each component must retain
+# an independent one-time refund marker while still allowing unsupported
+# owner-adapter components to remain pending.
+universal_cost_component_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	not_refunded = 0
+	refunded = 1
+}
