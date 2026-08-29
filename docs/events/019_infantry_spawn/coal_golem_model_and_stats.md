@@ -1,8 +1,10 @@
 # Coal Golem Model and Combat Statistics
 
+> **Non-gating visual-extension boundary (2026-08-22):** Provider 503 and the `coal_golem` unit are part of the live Event 19 registry through the existing `sprite = infantry` unit definition and parent-owned counter assets. This document's custom 3D model and rigging package is a separate future visual extension; no Event 19 specification requires it for provider, unit, or event completion. The rigging failure remains an explicit asset-production blocker for that optional extension, not a current Event 19 completion blocker.
+
 This document records the oversized coal-golem 3D model contract and the current battalion comparison against the installed vanilla light, medium, and heavy tank battalion definitions.
 
-## Model contract
+## Future non-gating model contract
 
 The coal golem is a single heavy humanoid model with anthracite coal plates, dark iron braces, restrained ember seams, and a furnace chest core.
 
@@ -72,7 +74,7 @@ Tank production cannot be reduced to one equivalent resource total because the f
 
 ## Asset and icon wiring
 
-The intended model runtime path is `gfx/models/units/019_infantry_spawn/coal_golem/coal_golem.mesh` with animation assets in the same folder and a parent-owned entity definition using the `coal_golem` sprite token; those runtime files remain blocked by provider rigging failure.
+The optional future model path is `gfx/models/units/019_infantry_spawn/coal_golem/coal_golem.mesh` with animation assets in the same folder and a parent-owned entity definition using the `coal_golem` sprite token; those runtime files remain blocked by provider rigging failure. This does not block the live provider 503 `coal_golem` unit, whose current source definition uses `sprite = infantry` and whose existing counter assets remain the active visual contract.
 
 The large counter is `gfx/interface/counters/divisions_large/unit_coal_golem_icon.dds` and is registered as `GFX_unit_coal_golem_icon_medium` in `interface/chaosx_subuniticons.gfx`.
 

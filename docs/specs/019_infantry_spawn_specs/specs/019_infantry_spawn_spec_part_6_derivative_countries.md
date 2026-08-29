@@ -260,7 +260,7 @@ Lifecycle:
 
 ## Starting economy and supply
 
-Derivative countries begin with local assets, not a generic economy grant.
+Derivative countries begin with local assets, not a generic economy grant. The current implementation records this opening state through `infantry_spawn_derivative_reconcile_starting_local_assets` after the derivative owns its opening states and private Event 19 ledger.
 
 The creation effect should evaluate:
 
@@ -272,7 +272,11 @@ The creation effect should evaluate:
 - family sustainment needs
 - captured stockpiles
 
-The country can receive a temporary emergency production or sustainment modifier, but it should not create factories from nothing unless the family’s supernatural identity explicitly justifies a bounded effect.
+The opening audit persists the owned-state count, factories, population, infrastructure, qualifying railways, ports, supply nodes, local resources, research slots, fuel ratio, standard stockpiles, Event 19 equipment debt, manpower liability, active formations, and owner-published custom-equipment token and amount arrays. It scores the evidence as fragile, strained, or viable from `constant:infantry_spawn_derivative_opening_asset` and never creates factories, infrastructure, supply assets, or a generic economy grant.
+
+A fragile result adds the temporary `infantry_spawn_derivative_local_asset_shortfall` idea. The opening inventory focus calls `infantry_spawn_derivative_resolve_opening_local_asset_shortfall`, which removes that temporary idea and sets `infantry_spawn_derivative_local_asset_shortfall_resolved` while retaining the opening measurements. The source contract is implemented in `common/scripted_effects/019_infantry_spawn_derivative_package_effects.txt` and documented in `docs/events/019_infantry_spawn/overview.md`.
+
+The temporary opening burden is the fragile local-asset shortfall idea until the inventory focus resolves it. This contract does not create emergency factories, infrastructure, supply assets, or a generic production or sustainment grant; any future family-specific relief remains an owner-scoped plan rather than an Event 19 default.
 
 ## Shared focus tree scale
 

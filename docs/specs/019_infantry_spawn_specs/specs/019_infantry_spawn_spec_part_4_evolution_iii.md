@@ -1,6 +1,8 @@
 # Event 19 Infantry Spawn
 ## Part 4: Evolution III, random divisions, and claimant generals
 
+> **Current UI boundary (2026-08-22):** This part preserves the accepted Evolution III design. References below to the Muster Board, interface, or scripted GUI are historical design terminology after the accepted decision-only conversion. The live player surface is ordinary decisions and decision categories only; see `../review/decision_only_surface_addendum_2026-08-05.md`.
+
 ## Evolution III: Command Fracture
 
 ### Identity change
@@ -35,7 +37,7 @@ A country with unresolved Evolution I or II generations receives the crisis laye
 - officer susceptibility records can generate the first claimant
 - the random formation request system changes to full composition randomness
 - existing advanced or narrow lots can become symbols of claimant authority
-- the country receives the Muster Board interface and claimant tab
+- the country receives the Formation Ledger decision category and claimant-file decisions
 
 Existing divisions do not have their templates scrambled retroactively. The new randomness applies to future requested lots unless a specific reorganization choice deliberately subjects an old lot to random recomposition.
 
@@ -45,7 +47,7 @@ A country first reached under Evolution III does not receive a normal automatic 
 
 It receives:
 
-- the crisis category and Muster Board
+- the crisis category and decision-based Formation Ledger surface
 - a starting Muster Control value based on national context
 - a starting Army Congestion value based on existing force and supply conditions
 - one free but bounded initial formation draw or one emergency claimant offer, depending on war state
@@ -709,18 +711,18 @@ Possible interactions:
 
 The system should keep rival dynamics event-driven and readable. It should not create a permanent grand strategy minigame for every country.
 
-## Evolution III UI transition
+## Evolution III decision-surface transition
 
-The decision category becomes a scripted Muster Board with four areas.
+The decision category provides the four former management areas through ordinary decisions and shared selection-cache effects; no Event 19 scripted GUI is runtime-wired.
 
-- Overview
-- Formation Lots
-- Command
-- Request controls
+- overview and lot accounting decisions
+- selected-lot management decisions
+- claimant and command-file decisions
+- request and sustainment decisions
 
-The Command area appears only when a claimant exists. The Anomalous Registry area remains hidden until Evolution IV.
+The claimant decisions appear only when a claimant exists. Anomalous-family decisions remain hidden until Evolution IV.
 
-An animated warning border can pulse when revolt risk is critical. It requires real source frames, a static fallback, and frame-sheet wiring.
+The former animated warning border and frame-sheet requirements remain archival asset provenance and are not runtime controls.
 
 ## Evolution III AI
 
@@ -763,7 +765,7 @@ AI profile weights react to ideology, war, stability, military strength, supply,
 Evolution III is satisfied when:
 
 - normal automatic unit spawning stops by default
-- the decision and scripted GUI crisis becomes the primary way to generate units
+- the decision-category crisis becomes the primary way to generate units
 - battalion count and combat composition can be fully random within safe verified pools
 - all eligible vanilla combat battalions and support companies can participate
 - composition, quality, and coherence are separate concepts

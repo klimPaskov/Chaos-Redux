@@ -79,15 +79,51 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.decision_cooldown_days
 		allowed = { always = yes }
 		visible = {
-			camp_rework_country_uses_generic_kit = yes
+			OR = {
+				camp_rework_country_uses_generic_kit = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					camp_rework_country_has_generic_activation_pool = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			OR = {
 				is_ai = yes
 				has_country_flag = camp_rework_managed_network_visible
 			}
-			camp_rework_country_can_activate_generic = yes
+			OR = {
+				camp_rework_country_can_activate_generic = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					camp_rework_country_has_generic_activation_pool = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 		}
 		target_root_trigger = {
-			camp_rework_country_can_activate_generic = yes
+			OR = {
+				camp_rework_country_can_activate_generic = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					camp_rework_country_has_generic_activation_pool = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			OR = {
 				is_ai = no
 				camp_rework_country_under_ai_site_cap = yes
@@ -98,16 +134,46 @@ camp_repression_network_category = {
 			OR = {
 				is_ai = no
 				FROM = { is_generic_ai_priority_camp_pool_state = yes }
+				FROM = {
+					humanitarian_state_is_valid = yes
+					has_variable = migration_current_cohort_id
+					NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+				}
 			}
 			FROM = {
-				camp_rework_state_can_accept_responsibility_from_root = yes
-				is_generic_player_selectable_camp_pool_state = yes
-				NOT = { is_valid_camp_active_site_state = yes }
-				NOT = { concentration_camp > 0 }
+				OR = {
+					AND = {
+						camp_rework_state_can_accept_responsibility_from_root = yes
+						is_generic_player_selectable_camp_pool_state = yes
+						NOT = { is_valid_camp_active_site_state = yes }
+						NOT = { concentration_camp > 0 }
+					}
+					AND = {
+						humanitarian_state_is_valid = yes
+						camp_rework_state_can_accept_responsibility_from_root = yes
+						is_generic_player_selectable_camp_pool_state = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+						NOT = { is_valid_camp_active_site_state = yes }
+						NOT = { concentration_camp > 0 }
+					}
+				}
 			}
 		}
 		available = {
-			camp_rework_country_can_activate_generic = yes
+			OR = {
+				camp_rework_country_can_activate_generic = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					camp_rework_country_has_generic_activation_pool = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			OR = {
 				is_ai = no
 				camp_rework_country_under_ai_site_cap = yes
@@ -116,9 +182,21 @@ camp_repression_network_category = {
 			command_power > constant:camp_rework_cost.activation_command
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
 			FROM = {
-				camp_rework_state_can_accept_responsibility_from_root = yes
-				is_generic_player_selectable_camp_pool_state = yes
-				NOT = { is_valid_camp_active_site_state = yes }
+				OR = {
+					AND = {
+						camp_rework_state_can_accept_responsibility_from_root = yes
+						is_generic_player_selectable_camp_pool_state = yes
+						NOT = { is_valid_camp_active_site_state = yes }
+					}
+					AND = {
+						humanitarian_state_is_valid = yes
+						camp_rework_state_can_accept_responsibility_from_root = yes
+						is_generic_player_selectable_camp_pool_state = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+						NOT = { is_valid_camp_active_site_state = yes }
+					}
+				}
 			}
 		}
 		complete_effect = {
@@ -234,33 +312,93 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { always = yes }
 		visible = {
-			camp_rework_country_uses_generic_kit = yes
+			OR = {
+				camp_rework_country_uses_generic_kit = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					camp_rework_country_has_generic_activation_pool = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			check_variable = { camp_labor_output > 0 }
 		}
 		target_root_trigger = {
-			camp_rework_country_can_expand_generic_labor = yes
+			OR = {
+				camp_rework_country_can_expand_generic_labor = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_active_camp_network = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			check_variable = { camp_labor_output > 0 }
 			NOT = { has_country_flag = generic_labor_project_active }
 		}
 		target_trigger = {
 			FROM = {
-				is_valid_camp_active_site_state = yes
-				infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
-				camp_rework_state_is_actor_responsible_controlled = yes
+				OR = {
+					AND = {
+						is_valid_camp_active_site_state = yes
+						infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+						camp_rework_state_is_actor_responsible_controlled = yes
+					}
+					AND = {
+						humanitarian_state_is_valid = yes
+						is_valid_camp_active_site_state = yes
+						infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
 			}
 		}
 		available = {
-			camp_rework_country_can_expand_generic_labor = yes
+			OR = {
+				camp_rework_country_can_expand_generic_labor = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_active_camp_network = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			NOT = { has_country_flag = generic_labor_project_active }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment }
 			num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
 			FROM = {
-				is_valid_camp_active_site_state = yes
-				infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
-				camp_rework_state_is_actor_responsible_controlled = yes
+				OR = {
+					AND = {
+						is_valid_camp_active_site_state = yes
+						infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+						camp_rework_state_is_actor_responsible_controlled = yes
+					}
+					AND = {
+						humanitarian_state_is_valid = yes
+						is_valid_camp_active_site_state = yes
+						infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
 			}
 		}
 		complete_effect = {
@@ -297,32 +435,92 @@ camp_repression_network_category = {
 		days_re_enable = constant:camp_rework_timing.standard_action_days
 		allowed = { always = yes }
 		visible = {
-			camp_rework_country_uses_generic_kit = yes
+			OR = {
+				camp_rework_country_uses_generic_kit = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_active_camp_network = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			OR = { is_ai = yes has_country_flag = camp_rework_managed_network_visible }
 			check_variable = { camp_labor_output > 0 }
 		}
 		target_root_trigger = {
-			camp_rework_country_can_expand_generic_labor = yes
+			OR = {
+				camp_rework_country_can_expand_generic_labor = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_active_camp_network = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			check_variable = { camp_labor_output > 0 }
 			NOT = { has_country_flag = generic_labor_project_active }
 		}
 		target_trigger = {
 			FROM = {
-				is_valid_camp_active_site_state = yes
-				camp_rework_state_is_actor_responsible_controlled = yes
-				camp_rework_state_has_extractable_resources = yes
+				OR = {
+					AND = {
+						is_valid_camp_active_site_state = yes
+						camp_rework_state_is_actor_responsible_controlled = yes
+						camp_rework_state_has_extractable_resources = yes
+					}
+					AND = {
+						humanitarian_state_is_valid = yes
+						is_valid_camp_active_site_state = yes
+						camp_rework_state_is_actor_responsible_controlled = yes
+						camp_rework_state_has_extractable_resources = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
 			}
 		}
 		available = {
-			camp_rework_country_can_expand_generic_labor = yes
+			OR = {
+				camp_rework_country_can_expand_generic_labor = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_active_camp_network = yes
+					FROM = {
+						humanitarian_state_is_valid = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
+			}
 			NOT = { has_country_flag = generic_labor_project_active }
 			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
 			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
 			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment }
 			FROM = {
-				is_valid_camp_active_site_state = yes
-				camp_rework_state_has_extractable_resources = yes
-				camp_rework_state_is_actor_responsible_controlled = yes
+				OR = {
+					AND = {
+						is_valid_camp_active_site_state = yes
+						camp_rework_state_has_extractable_resources = yes
+						camp_rework_state_is_actor_responsible_controlled = yes
+					}
+					AND = {
+						humanitarian_state_is_valid = yes
+						is_valid_camp_active_site_state = yes
+						camp_rework_state_has_extractable_resources = yes
+						camp_rework_state_is_actor_responsible_controlled = yes
+						has_variable = migration_current_cohort_id
+						NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+					}
+				}
 			}
 		}
 		complete_effect = {

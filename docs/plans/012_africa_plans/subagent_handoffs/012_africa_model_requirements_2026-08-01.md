@@ -6,9 +6,11 @@ Status: historical baseline for the deferred country packages and remaining unit
 
 > Superseding implementation note (2026-08-06): `unit_identity_elephant_logistics` and `unit_identity_elephant_shock` (matrix rows 203–204) now use the shared `chaosx_elephant` model/entity, custom unit/equipment/technology bridge, counters, sounds, and host/Action 102 consumers documented in `docs/events/012_africa/elephant_warfare.md` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_elephant_unit_wiring_2026-08-05.md`. Rows 197–202 and 205–212 remain deferred; the achievement route remains runtime-evidence-gated rather than model-gated.
 
+> Superseding parent decision (2026-08-27): rows 203–204 retain the custom `chaosx_elephant` gameplay unit but reuse the installed vanilla `elephantry` visual. The custom elephant Meshy/entity/action requirement is retired; rows 205–212 remain the custom strange-force model boundary.
+
 ## Production boundary
 
-Event 012's current gameplay core is model-safe. The model-dependent action selectors remain behind `africa_strange_formation_package_ready`, three model-gated achievement rows remain closed, and the elephant achievement remains runtime-evidence-gated with its static model/entity consumer present. No generic infantry, recoloured vanilla entity, static portrait, or 2D formation substitute is allowed to satisfy these rows.
+Event 012's current gameplay core is model-safe. The model-dependent action selectors remain behind `africa_strange_formation_package_ready`, three model-gated achievement rows remain closed, and the elephant achievement remains runtime-evidence-gated with its vanilla elephantry visual consumer present. Custom strange-force rows still require their own approved meshes and actions; the explicit elephant reuse decision is not a substitute for those rows.
 
 Use the Chaos Redux 3D model pipeline for every package. Each job needs one approved reference image, a vanilla scale crosswalk, source and final texture evidence, a real exported `.mesh`, a real exported `.anim` for every requested action, reimport evidence, and a parent-owned runtime consumer review. Runtime wiring remains parent-owned after the model handoff.
 

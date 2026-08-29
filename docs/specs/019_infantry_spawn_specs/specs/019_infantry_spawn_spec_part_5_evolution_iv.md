@@ -1,6 +1,8 @@
 # Event 19 Infantry Spawn
 ## Part 5: Evolution IV and the Chaos unit registry
 
+> **Current UI boundary (2026-08-22):** This part preserves the accepted Evolution IV design. References below to the Muster Board or registry tab are historical design terminology after the accepted decision-only conversion. The live player surface is ordinary decisions and decision categories only; see `../review/decision_only_surface_addendum_2026-08-05.md`.
+
 ## Evolution IV: Anomalous Muster
 
 ### Identity change
@@ -28,7 +30,7 @@ The evolution can also be forced by the triggerable scenario’s anomalous type.
 
 A country with an active Evolution III crisis gains:
 
-- the Anomalous Registry area in the Muster Board
+- the Anomalous Registry decision group
 - family eligibility display
 - trainable versus spawn-only rules
 - family-specific sustainment and containment actions
@@ -40,7 +42,7 @@ Existing ordinary random lots remain ordinary. They do not transform into zombie
 
 ## Pre-fire evolved opening
 
-A country entering Event 19 for the first time under Evolution IV receives the Muster Board and registry but does not automatically gain every available Chaos unit.
+A country entering Event 19 for the first time under Evolution IV receives the ordinary decision category and registry-backed decision groups but does not automatically gain every available Chaos unit.
 
 The starting package depends on:
 
@@ -85,16 +87,7 @@ pre-fire incident.
 
 The registry provides one source of truth for Event 19 compatibility. It can also support future systems that need to know whether a unit is trainable, spawn-only, derivative-capable, or isolated from its parent event. The live provider contract is version 4.
 
-The event-agnostic Chaos family contract should remain a shared, documented
-scripted system. This implementation uses exactly one dedicated Event 19
-registry code file for the ordinary table and the three baseline zombie, ghost,
-and golem bindings. The installed mutated zombie, elephant, Africa strange,
-additional ghost, cave, rat, and CBRN families register through owner-side
-adapters in their existing integration surfaces. Registry constants and
-triggers belong in the existing Event 19 constants and trigger files, and
-startup calls belong in existing parent on-actions. A future family keeps its
-complete registration and provider callbacks in its own existing integration
-surface. Do not create family-specific or additional Event 19 registry files.
+The event-agnostic Chaos family contract remains a shared, documented scripted system. This implementation uses exactly one dedicated Event 19 registry code file for the ordinary table and the three baseline zombie, ghost, and golem bindings. The installed mutated zombie, elephant, Africa strange, additional ghost, cave, rat, CBRN, Event 016 project-force, and Event 014 cannibal families register through owner-side adapters in their existing integration surfaces. Registry constants and triggers belong in the existing Event 19 constants and trigger files, and startup calls belong in existing parent on-actions. A future family keeps its complete registration and provider callbacks in its own existing integration surface. Do not create family-specific or additional Event 19 registry files.
 
 ### Required registry fields
 
@@ -169,14 +162,11 @@ This prevents accidental inclusion of:
 - units whose equipment cannot be represented safely
 - units that would trigger an unrelated world-end or country package
 
-The developer adding a new family defines one complete generic provider
-registration and its Event 19 callbacks in that family's own integration
-surface, adds one startup registration call to the family's existing parent
-on-action, and updates its documentation. Event 19's generic query and
-generation logic requires no family-list, localisation-map, picture-map, or
-registry-file edit. This is one external registration row plus the complete
-provider callbacks, including derivative setup and cleanup. It never adds another
-Event 19 registry file.
+The developer adding a new family defines one complete generic provider registration and its Event 19 callbacks in that family's own integration surface, adds one startup registration call to the family's existing parent on-action, and updates its documentation. Event 19's generic query and generation logic requires no family-list, localisation-map, equipment-map, picture-map, or registry-file edit. This is one external registration row plus the complete provider callbacks, including derivative setup and cleanup. It never adds another Event 19 registry file.
+
+The runtime provider contract contains thirteen callbacks: eligibility evaluation, template construction, unit spawning, sustainment reconciliation, equipment-token resolution, custom-equipment publication, presentation-token publication, management evaluation, payment, refund, derivative setup, public-package removal, and derivative cleanup. `event19_get_equipment_token` maps a stable owner-side obligation profile to its concrete equipment token and specialist-salvage policy. `event19_publish_custom_equipment_tokens` publishes every non-generic stockpile token touched by provider payment or refund so Event 19 can prove exact pre-payment restoration and post-payment structural isolation. `event19_get_presentation` supplies the family-name, request-cost, and sustainment-cost localisation-key tokens consumed by decisions and frozen lifecycle records. Missing callbacks, mappings, or tokens fail closed and never select an Event 19 fallback family or equipment type.
+
+Ordinary resource profiles 100-129 remain Event 19-owned. Custom profiles 130-148 are stable constants in the owning provider packages and are resolved together with the recorded family/provider identity; the live publishers expose 20 custom equipment-token identifiers because providers 504 and 522 share profile 142. A future owner allocates its stable profile values in its own constants, publishes exact obligation rows from `event19_reconcile_sustainment`, and implements the two equipment callbacks in the same owner package. Event 19 does not gain a new custom-equipment switch or family-list row.
 
 The initial visual profiles are exact owned bindings. Profile 1 belongs only to
 family 501 and provider 501, profile 2 only to family 502 and provider 502, and

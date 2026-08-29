@@ -1,5 +1,7 @@
 # Event 019 Simple Muster Board Background Rebuild
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI asset handoff is retained only as historical provenance. The accepted Event 19 runtime is decisions-only with no scripted GUI; the background replacement and runtime claims below are not active wiring instructions.
+
 ## Scope
 
 Replaced only the Event 019 Muster Board background art. The old overbuilt panel was regenerated as a simple, calm, deliberate neutral surface with one broad central paper/map field, quiet edge framing, one shallow header band, and one shallow lower action band.

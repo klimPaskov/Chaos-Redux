@@ -71,7 +71,7 @@ The 102 actions are 96 implemented rows plus six deliberate runtime-gated rows (
 
 The 16 priority packages and matching polity rows are implemented on existing carriers, with dormant conditional behavior for accepted state/origin gates. The other 199 polity rows remain queued in the controlled pool.
 
-The visual ledger remains 239 rows: 84 `installed_runtime`, 28 `installed_dormant`, 10 `deferred_runtime_gated`, and 117 `deferred_controlled_pool`; nine model packages, 18 animations, and four super-event roles have installed source/runtime evidence. Sixteen historical source-cropped male portraits remain accepted placeholders and are not implementation blockers.
+The historical visual ledger remains 239 rows: 84 `installed_runtime`, 28 `installed_dormant`, 10 `deferred_runtime_gated`, and 117 `deferred_controlled_pool`; nine model package workspaces, 18 animations, and four super-event roles have source or provenance evidence, but current model promotion is mixed and governed by per-package manifests. Sixteen historical source-cropped male portraits remain accepted placeholders and are not implementation blockers.
 
 ## Non-negotiable runtime contracts
 

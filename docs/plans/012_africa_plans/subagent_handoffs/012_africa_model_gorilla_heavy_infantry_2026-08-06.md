@@ -1,6 +1,6 @@
 # Event 012 gorilla heavy infantry 3D model handoff
 
-Superseded by `012_africa_models_runtime_completion_2026-08-06.md`; the complete package is at `docs/assets/012_africa/models_3d/gorilla_heavy_infantry/`.
+This dated dependency handoff is historical evidence only. The retained package workspace is `docs/assets/012_africa/models_3d/gorilla_heavy_infantry/`; current blocked status is governed by its manifest and the current model-runtime reconciliation.
 
 Status: `blocked` at dependency verification.
 

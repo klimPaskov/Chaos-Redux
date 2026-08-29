@@ -1,5 +1,7 @@
 # Event 019 Identity-Neutral Muster Asset Handoff
 
+> **Historical UI boundary (2026-08-22):** This asset handoff remains provenance evidence. Its former Muster Board consumer is archival, and the accepted Event 19 runtime is decisions-only with no scripted GUI.
+
 Date: 2026-07-16
 
 Status: complete

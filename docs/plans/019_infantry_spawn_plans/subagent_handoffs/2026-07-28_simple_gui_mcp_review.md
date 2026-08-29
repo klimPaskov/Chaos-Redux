@@ -1,5 +1,7 @@
 # Event 019 simple Muster Board GUI review
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI review is retained only as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; the GUI artifacts and runtime claims below are not active implementation instructions.
+
 > Superseded by the compact 960x640 correction in `event19_compact_background_handoff.md` and the parent review handoff `2026-07-28_compact_gui_mcp_review.md`. The 1120x760 dimensions and evidence below are historical only.
 
 ## Scope

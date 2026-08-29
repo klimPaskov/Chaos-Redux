@@ -1,5 +1,7 @@
 # Cohort Visit History Ledger Handoff
 
+> **Superseded historical identifier banner (2026-08-25):** Any `fm_*` or `famine_migration_*` identifier quoted in this historical handoff is source-snapshot terminology only and is superseded; current authorities use separate `famine_*`, `migration_*`, or narrow neutral `civilian_transfer_*`/`humanitarian_*` names; see [source_of_truth_map.md](../source_of_truth_map.md).
+
 ## Scope and ownership
 
 This tranche adds a sparse, aligned global receipt ledger for exact famine and migration cohort visits.
@@ -105,6 +107,10 @@ Set the history request from the explicit cohort ID already carried by the trans
 If a caller creates a cohort only after the transfer, the creation seed is separate and the destination bind/arrival path must submit the first destination receipt after the exact transfer succeeds.
 
 The helper must not be called on a rejected route, a conservation residual, a zero survivor credit, or a destination selected only as a candidate.
+
+## Parent review disposition
+
+Accepted and wired. Cohort creation seeds the true origin; the exact transfer core records a positive-survivor destination before host overwrite; transfer-first evacuation owners record the first destination from safe/forced bind or safe rebind only while the same chain proves `famine_migration_transfer_result = valid` and positive `famine_migration_transfer_survivor_credit`; and every terminal live-row removal cleans the aligned history rows. The duplicate call after a core-recorded destination is intentionally absorbed by the consecutive-duplicate no-op. No candidate-only, rejected, residual, or zero-survivor path records a visit.
 
 ### Safe resettlement rebind
 

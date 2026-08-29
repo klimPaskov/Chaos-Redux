@@ -34,6 +34,18 @@ Treat every event as a contract across some or all of these surfaces:
 
 If a task seems to need custom one-off plumbing, first check whether the same behavior should become generic for future events.
 
+### Owner-side unit-family coverage
+
+When an event or its owning system adds a land sub-unit or equipment-backed special family, declare its consumer disposition before wiring it: standalone provider family, support attachment under an existing provider, or intentionally parent-owned and not independently consumable.
+
+A standalone family must register idempotently from the owner's existing startup path and expose the complete owner-side provider callback contract required by the shared consumer, including eligibility, template or spawn construction, sustainment, equipment-token resolution and publication, presentation, management, derivative setup, public-package removal, and cleanup where those surfaces apply. A support attachment must identify its provider and remain in the same provider-owned transaction or template. A parent-owned disposition must state the engine or consumer constraint and retain its unlock, equipment, sustainment, and cleanup behavior in the parent package.
+
+Wire CXT coverage for every new land sub-unit or concrete equipment type through `docs/testing/chaosx_test_country.md`. Add a modifier-free hidden-idea carrier whose ID names the matching idempotent `_apply` setup effect, bounded startup registration, guarded tag-scoped daily repair, and weekly maintenance only when recurring work is not already covered by the shared CXT hooks.
+
+Before completion, run a full inventory over all installed land sub-unit definitions under `common/units/` and concrete equipment definitions under `common/units/equipment/`, including support definitions, then cross-check provider or parent-owned dispositions, owner registrations, concrete equipment tokens, presentation and localisation tokens, CXT registrations and synchronizers, and duplicate or missing IDs. Every entry must be covered or explicitly blocked with the engine reason.
+
+Do not extend a central consumer-maintained family list, equipment switch, or localisation selector when an owner-side provider contract can supply the data. A missing provider or malformed registry row is a blocking integration failure, not permission to substitute a generic family.
+
 ### Custom subagent use during event implementation
 
 For large or multi-surface event work, use project subagents to keep the main implementation pass focused.
@@ -90,7 +102,10 @@ new tag. Use the `chaosx_country_*` collection that matches the region or
 origin, then record the consuming event's own provenance and package identity
 before loading content. Do not create a duplicate tag for an Event 006 or
 Soviet Collapse carrier, and do not treat event-text mentions as tag
-collisions. After changing a protected carrier or its references, perform a fresh repository-wide collision scan against vanilla, installed Workshop mods, and sibling local mods. The legacy country-tag auditors under `.tools/archive/` are provenance only and are not current acceptance tools.
+collisions. After changing a protected carrier or its references, perform a
+fresh repository-wide collision scan against vanilla, installed Workshop mods,
+and sibling local mods. The legacy country-tag auditors under `.tools/archive/`
+are provenance only and are not current acceptance tools.
 
 Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes.
 
@@ -154,6 +169,16 @@ Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_s
 - triggerable scenario launch variants when the event has a manual sandbox or challenge setup
 - connection with other events (meaning that events are not standalone and actually interact with each other)
 
+## Chaos source handling
+
+Implement event-owned Chaos changes only on concrete outcomes defined by the spec, using the shared Chaos Meter and history path. Common hooks include meaningful movement success, special Chaos-country growth, spread, failed containment, actual use of dangerous capabilities, and durable containment or defeat.
+
+Use one-shot milestones or thresholds where needed so routine growth cannot farm Chaos. Do not duplicate generic sources such as wars, annexations, deaths, contamination, or nuclear use unless the event adds a separate consequence that the generic source does not represent.
+
+Evolution state itself always gives zero Chaos. Eligibility, activation, stage advancement, logging, or unlocking content changes nothing until evolved behavior actually causes a concrete consequence.
+
+Before completion, check that mapped event-owned changes fire at the intended outcome, do not repeat incorrectly, and appear through the shared Chaos History path.
+
 ### Evolution implementation
 
 The implementation must preserve the design split between baseline stages and evolutions.
@@ -167,6 +192,7 @@ For actual evolutions, the usual pattern is:
 3. set the shared evolution context variables
 4. record the evolution log entry through the shared pipeline
 5. unlock or adjust the new behavior, tag, decision set, focus branch, or rare variant
+6. do not change Chaos for the evolution state itself. Any Chaos change must come from a separate concrete consequence
 
 Event evolutions that gate content must respect the enable and disable UI. If an evolution is disabled, the gated path must have a clean alternate route or must be safely skipped. Do not leave required baseline progression locked behind a disabled evolution.
 
@@ -242,7 +268,7 @@ Hidden or easter-egg world-end scenarios may retain a stable internal registry i
 
 Triggerable scenarios are manual sandbox or challenge setups launched from the Chaos Redux settings UI. They are separate from the normal random-event timer, chaos-tier eligibility, evolution pacing, and automatic source-event prerequisites.
 
-Core rule: a triggerable scenario is always directly fireable from the scenario UI unless the launch would be impossible or conflict with an active terminal state. It creates instant chaos from setup controls, not from live Chaos Meter progression.
+Core rule: a triggerable scenario is always directly fireable from the scenario UI unless the launch would be impossible or conflict with an active terminal state. It creates instant chaos from setup controls, not from live Chaos Meter progression. After launch, ordinary event behavior resumes.
 
 Use this contract when adding a scenario for an event:
 
@@ -371,6 +397,7 @@ Frequently-needed companion files:
 - `common/script_constants/*.txt`
 - `common/scripted_triggers/*.txt`
 - `common/scripted_effects/*.txt`
+- the shared Chaos Meter path when the event owns Chaos-changing outcomes
 - `common/decisions/<event_id>_<event_slug>_decisions.txt` for event-owned decisions. Keep all decision categories owned by the same event in that event file unless a verified engine constraint requires root-only or separate placement
 - `common/decisions/categories/<event_id>_<event_slug>_categories.txt` for event-owned decision category definitions
 - shared or cross-event decision systems under `common/decisions/` and `common/decisions/categories/` with clear subsystem filenames, without fake event ids or unnecessary `chaosx_` prefixes. `common/decisions/chaosx_decisions.txt` and `common/decisions/categories/chaosx_decisions_categories.txt` are reserved for shared or legacy root-only hooks
@@ -403,6 +430,7 @@ Touch the relevant systems in the same change:
 - ideas or dynamic modifiers if the event creates persistent gameplay state
 - AI strategies or templates if the event changes how AI should respond
 - special-country exclusions if the event touches broad civilian, political, migration, or ideology systems
+- Chaos Meter hooks when the event owns Chaos-changing outcomes
 - shared country classification when the event creates or manages chaos countries: register every such country in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt`, document it in `common/scripted_triggers/chaosx_dynamic_triggers.md`, also register/document it in `is_actual_nonhuman_country` when it is actually nonhuman, and avoid adding separate event-local classification triggers for the same concept
 - and much more
 
@@ -584,13 +612,14 @@ Event doc structure:
 3. Trigger and runtime flow.
 4. Main gameplay effects.
 5. Supporting systems touched.
-6. AI behavior if relevant.
-7. Baseline progression, evolution tracks, and escalation flow if relevant.
-8. World-end and super-event integration if relevant.
-9. Connections with other events if relevant.
-10. Asset wiring and sprite expectations if relevant.
-11. Limitations if any.
-12. Open tuning notes and future expansion ideas.
+6. Event-owned Chaos changes when relevant.
+7. AI behavior if relevant.
+8. Baseline progression, evolution tracks, and escalation flow if relevant.
+9. World-end and super-event integration if relevant.
+10. Connections with other events if relevant.
+11. Asset wiring and sprite expectations if relevant.
+12. Limitations if any.
+13. Open tuning notes and future expansion ideas.
 
 ### Docs and gameplay must stay aligned
 
@@ -771,3 +800,5 @@ Before closing an event task, verify:
 18. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
 19. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
 20. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.
+21. Every new land sub-unit or equipment-backed special family has an explicit provider, support-attachment, or parent-owned disposition, owner-side registration and callback coverage, CXT coverage, and full unit-inventory audit.
+22. Mapped event-owned Chaos changes are tied to concrete outcomes, guarded against repeat farming, and do not double count shared sources.

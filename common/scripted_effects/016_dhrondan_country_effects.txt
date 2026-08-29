@@ -56,7 +56,7 @@ dhrondan_capture_revolt_inputs = {
 			}
 		}
 	}
-	while = {
+	while_loop_effect = {
 		limit = {
 			check_variable = {
 				var = dhrondan_revolt_arrivals_remaining
@@ -365,7 +365,7 @@ dhrondan_flood_fill_initial_enclave_component = {
 		set_state_flag = dhrondan_initial_enclave_component
 	}
 	set_temp_variable = { dhrondan_initial_enclave_component_expanded = constant:dhrondan_value.one }
-	while = {
+	while_loop_effect = {
 		limit = { check_variable = { dhrondan_initial_enclave_component_expanded > constant:dhrondan_value.zero } }
 		set_temp_variable = { dhrondan_initial_enclave_component_expanded = constant:dhrondan_value.zero }
 		every_owned_state = {
@@ -435,7 +435,7 @@ dhrondan_deploy_initial_cohorts = {
 	set_temp_variable = { alien_infantry_initial_force_mode = constant:alien_infantry_landing.one }
 	set_temp_variable = { dhrondan_initial_spawn_attempts = constant:dhrondan_value.zero }
 	dhrondan_prepare_initial_enclave_components = yes
-	while = {
+	while_loop_effect = {
 		limit = { any_owned_state = { has_state_flag = dhrondan_initial_enclave_candidate } }
 		dhrondan_deploy_next_initial_enclave_cohort = yes
 	}
@@ -444,7 +444,7 @@ dhrondan_deploy_initial_cohorts = {
 		clr_state_flag = dhrondan_initial_enclave_component
 		clr_state_flag = dhrondan_initial_enclave_seed
 	}
-	while = {
+	while_loop_effect = {
 		limit = {
 			check_variable = { dhrondan_initial_cohorts_remaining > constant:dhrondan_value.zero }
 			check_variable = { dhrondan_initial_spawn_attempts < constant:dhrondan_initial_force.spawn_loop_safety_cap }

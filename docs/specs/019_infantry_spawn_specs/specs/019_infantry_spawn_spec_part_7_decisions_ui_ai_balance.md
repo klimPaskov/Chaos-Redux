@@ -27,7 +27,7 @@ The category appears when the country has an unresolved generation, live or unac
 
 ### Closeout state
 
-After all lots are resolved and no active claimant, opening, deferred transaction, running operation, or relevant cooldown remains, the decision category closes.
+After all lots are resolved and no active claimant, opening, deferred transaction, running operation, or relevant cooldown remains, the decision category closes peacefully. The shared relevance trigger also hides the Formation Management and claimant categories after a completed takeover or achievement-marked claimant or derivative revolt, even if another claimant row remains.
 
 The parent-side derivative revolt marker and Board close are written only after the exact transfer or one-state takeover reaches its final ownership, ledger, control, core, and diplomacy proof; pre-commit recovery and post-commit quarantine do not record a successful revolt.
 
@@ -438,7 +438,7 @@ Effect direction:
 - lowers revolt risk over time
 - expensive in army experience, equipment, and political stability
 - starts the same dedicated response lock whether invoked from the decision,
-  Muster Board, or AI path
+  selected-lot decision, or AI path
 
 ### Meet the Demand
 

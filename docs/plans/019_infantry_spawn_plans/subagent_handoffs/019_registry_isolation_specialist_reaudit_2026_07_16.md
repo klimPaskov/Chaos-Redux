@@ -1,11 +1,6 @@
 # Event 019 registry and isolation specialist re-audit
 
-> **Historical provider-contract notice (2026-08-09):** This re-audit's
-> three-provider and eight-callback counts predate the expanded 18-ID provider
-> census and the management-cost display/profile-cache callback. Retain its
-> isolation findings as historical evidence only; use `source_of_truth_map.md`,
-> `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and
-> `.tmp/event19_docs_curator_current.md` for current contract status.
+> **Historical provider-contract notice (2026-08-09, current boundary 2026-08-22):** This re-audit's three-provider and eight-callback counts predate the current 19-provider census and thirteen-callback contract. Retain its isolation findings as historical evidence only; use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_dynamic_unit_provider_api_completion_2026-08-22.md` for current contract status.
 
 > Registry-extension supersession notice: the dated statement that every
 > future provider must be added to the sole Event 19 registry file predates the

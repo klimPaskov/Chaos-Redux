@@ -1,5 +1,7 @@
 # Repo Explorer Handoff
 
+> **Superseded historical identifier banner (2026-08-25):** Any `fm_*` or `famine_migration_*` identifier quoted in this historical handoff is source-snapshot terminology only and is superseded; current authorities use separate `famine_*`, `migration_*`, or narrow neutral `civilian_transfer_*`/`humanitarian_*` names; see [source_of_truth_map.md](../source_of_truth_map.md).
+
 ## Scope read
 
 - Parent task: perform a read-only cross-check of the two current engine-native scripted mapmodes, identify invalid scope or consumer contracts, verify live famine/migration data sources, and hand off only actionable corrections.

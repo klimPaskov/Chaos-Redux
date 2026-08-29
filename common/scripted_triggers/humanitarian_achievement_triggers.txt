@@ -1,0 +1,180 @@
+# ============================================================================
+# CHAOS REDUX - HUMANITARIAN ACHIEVEMENT CONTRACTS
+# ============================================================================
+# These predicates consume persistent evidence written by the shared food,
+# cohort, route, and decision transactions. None completes from a stage flag
+# alone, and all fail closed for debug, forced, or scenario shortcuts.
+# ============================================================================
+
+humanitarian_achievement_possible_campaign_is_valid = {
+	is_ai = no
+	is_special_chaos_country = no
+	uses_normal_civilian_systems = yes
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+	NOT = { has_country_flag = humanitarian_achievement_debug_or_scenario_disqualified }
+	NOT = { has_global_flag = humanitarian_achievement_debug_or_scenario_disqualified }
+}
+
+humanitarian_achievement_natural_campaign_is_valid = {
+	is_ai = no
+	is_special_chaos_country = no
+	uses_normal_civilian_systems = yes
+	has_country_flag = humanitarian_achievement_tracking_initialized
+	check_variable = { var = humanitarian_achievement_initial_core_population value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+	NOT = { has_country_flag = humanitarian_achievement_debug_or_scenario_disqualified }
+	NOT = { has_global_flag = humanitarian_achievement_debug_or_scenario_disqualified }
+}
+
+humanitarian_achievement_break_the_blockade_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	has_country_flag = humanitarian_achievement_blockade_famine_proven
+	has_country_flag = humanitarian_achievement_blockade_relief_restored
+	has_country_flag = humanitarian_achievement_blockade_relief_donor_proven
+	has_country_flag = humanitarian_achievement_blockade_recovered
+	has_country_flag = humanitarian_achievement_blockade_recovery_proven
+	has_country_flag = humanitarian_achievement_blockade_survival_met
+	check_variable = { var = humanitarian_achievement_blockade_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_blockade_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_blockade_relief_state_id value = humanitarian_achievement_blockade_state_id compare = equals }
+	check_variable = { var = humanitarian_achievement_blockade_relief_generation value = humanitarian_achievement_blockade_generation compare = equals }
+	NOT = { has_country_flag = humanitarian_achievement_blockade_forced_removal }
+	NOT = { has_country_flag = humanitarian_achievement_blockade_predatory_requisition }
+	NOT = { has_country_flag = humanitarian_achievement_blockade_concealed_mortality }
+	NOT = { has_country_flag = humanitarian_achievement_blockade_wasteland }
+	NOT = { has_country_flag = humanitarian_achievement_blockade_self_route_exploit }
+}
+
+humanitarian_achievement_no_one_left_at_the_gate_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	has_country_flag = humanitarian_achievement_gate_terminal_completed
+	has_country_flag = humanitarian_achievement_gate_terminal_all_protected
+	has_country_flag = humanitarian_achievement_gate_terminal_all_resolved
+	has_country_flag = humanitarian_achievement_gate_durable_outcome
+	has_country_flag = humanitarian_achievement_gate_reception_safe
+	check_variable = { var = humanitarian_achievement_gate_terminal_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_gate_terminal_origin_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_gate_terminal_front_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_gate_terminal_counterpart_country_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_gate_terminal_valid_people value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_gate_terminal_protected_people value = humanitarian_achievement_gate_terminal_valid_people compare = equals }
+	check_variable = { var = humanitarian_achievement_gate_terminal_qualifying_cohort_ids^num value = humanitarian_achievement_gate_terminal_protected_cohort_ids^num compare = equals }
+	check_variable = { var = humanitarian_achievement_gate_terminal_qualifying_cohort_ids^num value = humanitarian_achievement_gate_terminal_resolved_cohort_ids^num compare = equals }
+	NOT = { has_country_flag = humanitarian_achievement_gate_violent_pushback_used }
+	NOT = { has_country_flag = humanitarian_achievement_gate_forced_return_used }
+	NOT = { has_country_flag = humanitarian_achievement_gate_protected_internment_used }
+	NOT = { has_country_flag = humanitarian_achievement_gate_protected_forced_labor_used }
+}
+
+humanitarian_achievement_roads_home_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	has_country_flag = humanitarian_achievement_major_cohort_displaced_long_enough
+	has_country_flag = humanitarian_achievement_return_cause_ended
+	has_country_flag = humanitarian_achievement_return_origin_food_safe
+	has_country_flag = humanitarian_achievement_return_origin_housing_safe
+	has_country_flag = humanitarian_achievement_return_route_safe
+	has_country_flag = humanitarian_achievement_return_protection_safe
+	has_country_flag = humanitarian_achievement_return_large_majority
+	check_variable = { var = humanitarian_achievement_major_cohort_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_major_cohort_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_return_cohort_id value = humanitarian_achievement_major_cohort_id compare = equals }
+	check_variable = { var = humanitarian_achievement_return_generation value = humanitarian_achievement_major_cohort_generation compare = equals }
+	OR = {
+		check_variable = { var = id value = humanitarian_achievement_major_cohort_origin_country_id compare = equals }
+		check_variable = { var = id value = humanitarian_achievement_major_cohort_host_country_id compare = equals }
+	}
+	NOT = { has_country_flag = humanitarian_achievement_major_cohort_forced_return_used }
+	NOT = { has_country_flag = humanitarian_achievement_return_ledger_failed }
+}
+
+humanitarian_achievement_bread_across_the_front_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	has_country_flag = famine_achievement_corridor_front_proven
+	has_country_flag = famine_achievement_corridor_target_proven
+	has_country_flag = famine_achievement_corridor_held_full_term
+	has_country_flag = famine_achievement_corridor_resolved_crisis
+	check_variable = { var = famine_achievement_corridor_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = famine_achievement_corridor_origin_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = famine_achievement_corridor_front_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = famine_achievement_corridor_counterpart_country_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	NOT = { has_country_flag = famine_achievement_corridor_attacked }
+	NOT = { has_country_flag = famine_achievement_corridor_manufactured_crisis }
+}
+
+humanitarian_achievement_hungry_not_contagious_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	has_country_flag = migration_achievement_outbreak_exposed_cohort_received
+	has_country_flag = migration_achievement_controlled_medical_reception_used
+	has_country_flag = migration_achievement_medical_reception_no_outbreak
+	has_country_flag = migration_achievement_medical_reception_not_overloaded
+	has_country_flag = migration_achievement_medical_reception_durable_outcome
+	check_variable = { var = migration_achievement_medical_cohort_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = migration_achievement_medical_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = migration_achievement_medical_origin_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = migration_achievement_medical_host_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	NOT = { is_in_array = { array = humanitarian_achievement_protected_internment_cohort_ids value = migration_achievement_medical_cohort_id } }
+	NOT = { is_in_array = { array = humanitarian_achievement_protected_forced_labor_cohort_ids value = migration_achievement_medical_cohort_id } }
+	NOT = { has_country_flag = migration_achievement_medical_internment_used }
+	NOT = { has_country_flag = migration_achievement_medical_forced_labor_used }
+	NOT = { has_country_flag = migration_achievement_medical_forced_return_used }
+}
+
+humanitarian_achievement_a_place_at_the_table_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	check_variable = {
+		var = humanitarian_achievement_distinct_origin_count
+		value = constant:humanitarian_achievement_threshold.integration_distinct_origins
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = migration_integrated_population
+		value = humanitarian_achievement_integration_population_target
+		compare = greater_than_or_equals
+	}
+	has_stability > constant:humanitarian_achievement_threshold.integration_stability
+	has_country_flag = humanitarian_achievement_receiving_states_food_safe
+	check_variable = { var = humanitarian_achievement_receiving_state_count value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_receiving_state_safe_count value = humanitarian_achievement_receiving_state_count compare = equals }
+	check_variable = { var = humanitarian_achievement_receiving_state_ids^num value = humanitarian_achievement_receiving_state_count compare = equals }
+	check_variable = { var = humanitarian_achievement_receiving_integration_state_ids^num value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_receiving_integration_state_ids^num value = humanitarian_achievement_receiving_integration_cohort_ids^num compare = equals }
+	NOT = { has_country_flag = humanitarian_achievement_transfer_cycle_detected }
+	NOT = { has_country_flag = humanitarian_achievement_integration_disqualified }
+}
+
+humanitarian_achievement_the_grain_stayed_home_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	has_country_flag = humanitarian_achievement_extraction_shock_proven
+	has_country_flag = humanitarian_achievement_extraction_suspended_before_catastrophic
+	has_country_flag = humanitarian_achievement_extraction_state_recovered
+	has_country_flag = humanitarian_achievement_alternative_logistics_proven
+	has_country_flag = humanitarian_achievement_alternative_logistics_same_state_proven
+	check_variable = { var = humanitarian_achievement_extraction_state_id value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	check_variable = { var = humanitarian_achievement_extraction_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	NOT = { has_country_flag = humanitarian_achievement_requisitioned_strained_state }
+}
+
+humanitarian_achievement_the_country_did_not_empty_is_complete = {
+	humanitarian_achievement_natural_campaign_is_valid = yes
+	check_variable = {
+		var = humanitarian_achievement_severe_core_state_count
+		value = constant:humanitarian_achievement_threshold.severe_core_state_count
+		compare = greater_than_or_equals
+	}
+	check_variable = { var = humanitarian_achievement_severe_core_state_ids^num value = humanitarian_achievement_severe_core_state_count compare = equals }
+	check_variable = { var = humanitarian_achievement_recovered_core_state_count value = humanitarian_achievement_severe_core_state_count compare = equals }
+	check_variable = { var = humanitarian_achievement_recovered_core_state_ids^num value = humanitarian_achievement_recovered_core_state_count compare = equals }
+	check_variable = { var = humanitarian_achievement_threat_generation value = constant:humanitarian_achievement_value.zero compare = greater_than }
+	has_country_flag = humanitarian_achievement_threatened_war_proven
+	has_country_flag = humanitarian_achievement_threatened_displacement_proven
+	has_country_flag = humanitarian_achievement_national_threatened_share_met
+	has_country_flag = humanitarian_achievement_all_famine_states_recovered
+	has_country_flag = humanitarian_achievement_all_major_cohorts_resolved
+	is_subject = no
+	exists = yes
+	NOT = { has_country_flag = humanitarian_achievement_core_floor_breached }
+	NOT = { has_country_flag = humanitarian_achievement_tag_switch_disqualified }
+	NOT = { has_country_flag = humanitarian_achievement_annexed_disqualified }
+}

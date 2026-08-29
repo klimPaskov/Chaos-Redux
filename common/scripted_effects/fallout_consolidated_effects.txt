@@ -4031,7 +4031,22 @@ air_winter_apply_state_population_loss = {
 			if = {
 				limit = { check_variable = { state_civilian_population_loss_applied > constant:air_winter_runtime.zero } }
 				add_to_variable = { air_winter_population_loss_memory = state_civilian_population_loss_applied }
-				famine_migration_adapt_air_winter_state = yes
+				# Supply the exact Air Cleanliness/winter receipt. These values are
+				# source-owned state ledgers from this cycle; the adapter does not
+				# infer food, environment, route, policy, or identity from deaths.
+				OWNER = { save_event_target_as = famine_adapter_actor }
+				set_temp_variable = { famine_adapter_state_proven = THIS.id }
+				set_temp_variable = { famine_adapter_food_proven = air_winter_phase }
+				set_temp_variable = { famine_adapter_environment_proven = air_winter_phase }
+				set_temp_variable = { famine_adapter_transport_proven = air_winter_shelter_capacity }
+				set_temp_variable = { famine_adapter_policy_proven = air_winter_adaptation }
+				set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+				set_temp_variable = { famine_adapter_cause_proven = state_civilian_population_loss_reason }
+				set_temp_variable = { famine_adapter_source_proven = air_winter_phase }
+				set_temp_variable = { famine_adapter_generation = global.air_winter_cycle_id }
+				set_temp_variable = { famine_adapter_revision = air_winter_population_loss_memory }
+				set_temp_variable = { famine_adapter_request_id = global.date }
+				famine_adapt_air_winter_state = yes
 			}
 		}
 	}
@@ -43161,8 +43176,8 @@ fallout_commit_current_player_primary_target = {
 		set_variable = { fallout_player_assignment_generation = global.fallout_transition_generation }
 		if = {
 			limit = { NOT = { tag = PREV } }
-			PREV = { famine_migration_achievement_record_tag_switch = yes }
-			famine_migration_achievement_record_tag_switch = yes
+			PREV = { humanitarian_achievement_record_tag_switch = yes }
+			humanitarian_achievement_record_tag_switch = yes
 			change_tag_from = PREV
 		}
 	}
@@ -76695,7 +76710,7 @@ fallout_event_747_choose_ai_branch_and_schedule_result = {
 	set_temp_variable = { fallout_event_747_ai_score = constant:fallout_event_747_threshold.ai_humanitarian_priority }
 	if = { limit = { OR = { check_variable = { fallout_government_archetype = constant:fallout_government_archetype.quarantine_state } check_variable = { fallout_government_archetype = constant:fallout_government_archetype.religious_refuge } } } add_to_temp_variable = { fallout_event_747_ai_score = constant:fallout_event_747_threshold.ai_quarantine_bonus } }
 	if = { limit = { check_variable = { var = fallout_survival_current_entries^3 value = constant:fallout_event_747_threshold.ai_humanitarian_medicine_threshold compare = greater_than_or_equals } } add_to_temp_variable = { fallout_event_747_ai_score = constant:fallout_event_747_threshold.ai_continuity_bonus } }
-	if = { limit = { check_variable = { var = fallout_event_747_ai_score value = fallout_event_747_ai_best_score compare = greater_than } fallout_event_747_humanitarian_service_branch_affordable = yes } set_temp_variable = { fallout_event_747_ai_best_score = fallout_event_747_ai_score } set_temp_variable = { fallout_event_747_requested_branch = constant:fallout_event_747_branch.humanitarian_service } }
+	if = { limit = { check_variable = { var = fallout_event_747_ai_score value = fallout_event_747_ai_best_score compare = greater_than } fallout_event_747_migration_service_branch_affordable = yes } set_temp_variable = { fallout_event_747_ai_best_score = fallout_event_747_ai_score } set_temp_variable = { fallout_event_747_requested_branch = constant:fallout_event_747_branch.humanitarian_service } }
 	if = { limit = { check_variable = { fallout_event_747_requested_branch > constant:fallout_event_747_branch.none } } fallout_event_747_schedule_result = yes }
 	else = { fallout_event_cancel_opening_ordinary_receipt = yes }
 	set_temp_variable = { fallout_event_747_ai_score = 0 }
@@ -76728,9 +76743,9 @@ fallout_event_747_record_history = {
 			else_if = { limit = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.isolation_doctrine } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.isolation_doctrine_success } }
 			else_if = { limit = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.isolation_doctrine } check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.isolation_doctrine_partial } }
 			else_if = { limit = { check_variable = { fallout_event_747_selected_branch = constant:fallout_event_747_branch.isolation_doctrine } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.isolation_doctrine_failure } }
-			else_if = { limit = { check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.humanitarian_service_success } }
-			else_if = { limit = { check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.humanitarian_service_partial } }
-			else = { set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.humanitarian_service_failure } }
+			else_if = { limit = { check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.migration_service_success } }
+			else_if = { limit = { check_variable = { fallout_event_747_result_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.migration_service_partial } }
+			else = { set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.migration_service_failure } }
 		}
 		else_if = { limit = { check_variable = { fallout_event_747_history_stage = constant:fallout_event_runtime.two } check_variable = { fallout_event_747_callback_outcome = constant:fallout_event_outcome_type.success } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.callback_success } }
 		else_if = { limit = { check_variable = { fallout_event_747_history_stage = constant:fallout_event_runtime.two } check_variable = { fallout_event_747_callback_outcome = constant:fallout_event_outcome_type.partial } } set_temp_variable = { fallout_event_747_history_payload = constant:fallout_event_747_log.callback_partial } }
@@ -120421,14 +120436,14 @@ fallout_regress_country_technology = {
 			brilliant_scientist_robot_formations_tech = 0
 			brilliant_scientist_paleogenetic_formations_tech = 0
 			brilliant_scientist_xenobiological_formations_tech = 0
-			brilliant_scientist_exotic_guard_tech = 0
+			brilliant_scientist_alien_infantry_tech = 0
 			brilliant_scientist_temporal_guard_tech = 0
 			brilliant_scientist_portal_warfare_weaponization_tech = 0
 			brilliant_scientist_clone_formations_weaponization_tech = 0
 			brilliant_scientist_robot_formations_weaponization_tech = 0
 			brilliant_scientist_paleogenetic_formations_weaponization_tech = 0
 			brilliant_scientist_xenobiological_formations_weaponization_tech = 0
-			brilliant_scientist_exotic_guard_weaponization_tech = 0
+			brilliant_scientist_alien_predictive_warfare_tech = 0
 			brilliant_scientist_temporal_guard_weaponization_tech = 0
 			cbrn_air_rack_chlorine_lightweight_tech = 0
 			cbrn_air_rack_chlorine_long_range_tech = 0

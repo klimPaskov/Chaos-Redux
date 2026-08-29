@@ -1,0 +1,105 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION FORCED-MOVEMENT TRIGGERS
+# ============================================================================
+# Read-only, fail-closed predicates for owner-submitted exact deportation and
+# camp-prison transfers. These checks require explicit scopes and policy
+# metadata; they never select a destination or scan the world.
+# ============================================================================
+
+migration_forced_transfer_live_ledger_arrays_are_aligned = {
+	has_variable = global.migration_cohort_count
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_origins^num compare = equals }
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_hosts^num compare = equals }
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_destinations^num compare = equals }
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_owners^num compare = equals }
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_amounts^num compare = equals }
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_sources^num compare = equals }
+	check_variable = { var = global.migration_cohort_ids^num value = global.migration_cohort_statuses^num compare = equals }
+	check_variable = { var = global.migration_cohort_count value = global.migration_cohort_ids^num compare = equals }
+}
+
+migration_forced_transfer_contract_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		migration_forced_transfer_live_ledger_arrays_are_aligned = yes
+		check_variable = { var = migration_forced_transfer_request_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_origin_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_destination_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_actor_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_transaction_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_requested_people value = constant:humanitarian_population.zero compare = greater_than }
+		check_variable = { var = migration_forced_transfer_transaction_id value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = migration_forced_transfer_cause value = constant:migration_forced_movement_cause.deportation_camp_prison_transfer compare = equals }
+		check_variable = { var = migration_forced_transfer_custody_status value = constant:migration_forced_movement_custody.forced compare = equals }
+		check_variable = { var = migration_forced_transfer_source_pressure_owner_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_reception_owner_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		has_event_target = migration_forced_transfer_origin
+		has_event_target = migration_forced_transfer_destination
+		has_event_target = migration_forced_transfer_actor
+		has_event_target = migration_forced_transfer_source_owner
+		has_event_target = migration_forced_transfer_pressure_owner
+		has_event_target = migration_forced_transfer_reception_owner
+		event_target:migration_forced_transfer_origin = {
+		humanitarian_state_is_valid = yes
+	}
+		event_target:migration_forced_transfer_destination = {
+		humanitarian_state_is_valid = yes
+		NOT = { state = event_target:migration_forced_transfer_origin }
+		check_variable = { var = migration_forced_transfer_destination_food_safe_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+		check_variable = { var = migration_forced_transfer_destination_reception_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+	}
+		event_target:migration_forced_transfer_actor = {
+		humanitarian_country_is_valid = yes
+	}
+		event_target:migration_forced_transfer_source_owner = {
+		humanitarian_country_is_valid = yes
+	}
+		event_target:migration_forced_transfer_pressure_owner = {
+		humanitarian_country_is_valid = yes
+	}
+		event_target:migration_forced_transfer_reception_owner = {
+		humanitarian_country_is_valid = yes
+	}
+	}
+}
+
+migration_forced_transfer_route_death_request_is_valid = {
+	hidden_trigger = {
+		OR = {
+			check_variable = { var = migration_forced_transfer_route_deaths_requested value = constant:humanitarian_population.zero compare = equals }
+			AND = {
+				check_variable = { var = migration_forced_transfer_route_deaths_requested value = constant:humanitarian_population.zero compare = greater_than }
+				check_variable = { var = migration_forced_transfer_route_death_proven value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+				check_variable = { var = migration_forced_transfer_route_death_reason value = constant:chaos_meter_deaths_reason.forced_displacement compare = equals }
+				check_variable = { var = migration_forced_transfer_log_deaths value = constant:humanitarian_runtime.one compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+migration_forced_transfer_staged_cohort_proof_is_valid = {
+	hidden_trigger = {
+		migration_forced_transfer_live_ledger_arrays_are_aligned = yes
+		check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals }
+		check_variable = { var = migration_forced_transfer_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+		migration_cohort_origin_resolution_is_valid = yes
+		event_target:migration_cohort_origin = {
+			state = event_target:migration_forced_transfer_origin
+		}
+		check_variable = { var = migration_cohort_resolved_amount value = migration_forced_transfer_requested_people compare = equals }
+		check_variable = { var = migration_cohort_resolved_status value = constant:migration_cohort_status.active compare = equals }
+	}
+}
+
+migration_forced_transfer_bound_cohort_proof_is_valid = {
+	hidden_trigger = {
+		migration_forced_transfer_live_ledger_arrays_are_aligned = yes
+		check_variable = { var = migration_cohort_forced_bind_result value = constant:civilian_transfer_route_result.valid compare = equals }
+		check_variable = { var = migration_forced_transfer_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+		has_event_target = migration_route_destination
+		event_target:migration_route_destination = {
+		humanitarian_state_is_valid = yes
+		state = event_target:migration_forced_transfer_destination
+	}
+	}
+}

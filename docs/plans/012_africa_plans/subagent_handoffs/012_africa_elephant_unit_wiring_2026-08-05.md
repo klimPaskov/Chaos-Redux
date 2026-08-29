@@ -1,5 +1,7 @@
 # Event 012 armoured elephant unit wiring handoff — 2026-08-05
 
+> Superseded parent decision (2026-08-27): the custom 3D entity and animation package described below is retired. The active unit uses vanilla `elephantry` through its sub-unit sprite, and host/member templates no longer set the custom `override_model`.
+
 The parent runtime tranche consumes the approved shared model package as one custom `chaosx_elephant` subunit. No country tag, cosmetic tag, second body, or transform-only substitute was added.
 
 ## Runtime consumers
@@ -13,7 +15,7 @@ The parent runtime tranche consumes the approved shared model package as one cus
 
 ## Asset bindings
 
-`chaosx_elephant` keeps its subunit sprite token, and every host/member division template explicitly sets `override_model = chaosx_elephant_shared_base_entity`. The six installed skeletal actions, sound package, and scale `0.8` therefore apply to every spawned consumer. The large and on-map counters reuse the inspected two-frame DDS package and are exposed under both the shared body and `chaosx_elephant` subunit icon tokens. The equipment/technology icon handoff is `012_africa_elephant_equipment_icon_2026-08-05.md` and the final runtime DDS is `gfx/interface/technologies/012_africa/chaosx_elephant_equipment.dds`.
+`chaosx_elephant` now uses `sprite = elephantry`, and host/member division templates leave `override_model` unset so mixed formations resolve their ordinary sub-unit visuals. The installed vanilla `infantry_rifle_entity` supplies the elephant idle/move variants and its standard state animation family. The large and on-map counters reuse the inspected two-frame DDS package and are exposed under the `chaosx_elephant` subunit icon tokens. The equipment/technology icon handoff is `012_africa_elephant_equipment_icon_2026-08-05.md` and the final runtime DDS is `gfx/interface/technologies/012_africa/chaosx_elephant_equipment.dds`.
 
 ## Mechanics
 
@@ -21,4 +23,4 @@ The unlock bridge grants vanilla `elephantry` and custom `chaosx_africa_elephant
 
 ## Review status
 
-Static source wiring and filesystem bindings are complete for this tranche. The achievement `africa_elephants_crossed_the_desert` remains runtime-evidence-gated until a live campaign proves movement, supply, destruction, and the required war-purpose witness. Further elephant loadouts must reuse this body and add a fresh documented consumer.
+Static gameplay wiring remains complete for this tranche, with the visual consumer intentionally delegated to vanilla. The achievement `africa_elephants_crossed_the_desert` remains runtime-evidence-gated until a live campaign proves movement, supply, destruction, and the required war-purpose witness. Further elephant loadouts must reuse the vanilla elephantry consumer and add a fresh documented gameplay consumer.

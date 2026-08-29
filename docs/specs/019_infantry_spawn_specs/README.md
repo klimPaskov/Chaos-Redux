@@ -1,10 +1,12 @@
 # Event 19 Infantry Spawn Planning Package
 
-> **Current-state routing (2026-07-18):** This source specification is paired with the implemented and resolved near-completion addendum at `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`. Older references below to a closure without an addendum or to two pending owner decisions are historical. Exactly two engine-constrained substitutes were approved: exact recorded-formation recreate/prove/delete and controlled one-formation combat trials. The addendum findings were implemented. The 27 fixed technical identity slots are 20 claimant army/muster scenes, 6 fantastical massed-host scenes, and 1 neutral unassigned muster scene, never an individual focal person. Their stable `GFX_portrait_*` names remain engine and UI terminology, not a description of the depicted content.
+> **Historical design routing (2026-07-18):** This source specification preserves the accepted design and the bounded 2026-07-18 near-completion tranche. Older closure language remains historical. Exactly two engine-constrained substitutes were approved for that tranche: exact recorded-formation recreate/prove/delete and controlled one-formation combat trials. The 27 fixed technical identity slots are 20 claimant army/muster scenes, 6 fantastical massed-host scenes, and 1 neutral unassigned muster scene, never an individual focal person. Their stable `GFX_portrait_*` names remain engine and UI terminology, not a description of the depicted content.
 
-> **Current implementation extension (2026-08-09):** The accepted design remains the source specification, while the implemented provider bridge now covers 18 static Event 19 provider IDs (`501-514`, `518`, `520-522`). Event 016 adds the separate Germany/Mengele-gated Aryan clone provider 522 beside providers 504-510; it never aliases provider 504. The shared manifest profiles 130-148 carry exact custom equipment obligations, provider 521 remains combat-only on the CBRN side, and provider 513 remains dormant until Event 012 sets its package-ready flag. Event 19 MCP inspection is partial and normalized dynamic provider-pool odds remain unresolved, so the older `Fully Functional` and no-closure language below is historical for the 2026-07-18 tranche and must not be used as current provider-lifecycle proof.
+> **Current implementation extension (2026-08-22):** The accepted design remains the source specification, while the implemented provider bridge covers 19 Event 19 provider IDs (`501-514`, `518`, `520-523`) and all 50 installed custom combat units. Event 016 adds the separate Germany/Mengele-gated Aryan clone provider 522 beside providers 504-510; it never aliases provider 504. Event 014 owns provider 523 for all nine cannibal irregular combat bodies. Custom manifest profiles 130-148 live in the owning provider constants and resolve dynamically to 20 verified local equipment-token identifiers because the clone and Aryan-clone providers share profile 142 while retaining separate provider identities; provider 521 remains combat-only on the CBRN side, and the 43 support-only CBRN, chemical-tank, and Livens definitions remain explicitly parent-owned. Event 19 MCP inspection is partial and normalized dynamic provider-pool odds remain unresolved, so the older `Fully Functional` and no-closure language below is historical for the 2026-07-18 tranche and must not be used as current provider-lifecycle proof.
 
-> The provider bridge also exposes a presentation-only `event19_get_management_cost_display` profile-cache callback alongside each provider's ten gameplay callbacks. Ledger-backed zero-debit adapters must identify that boundary in the player-facing tooltip, and the single Event 19 registry rule remains unchanged.
+> Every provider exposes thirteen runtime callbacks. `event19_get_presentation` supplies family-name, request-cost, and sustainment-cost localisation tokens; `event19_get_equipment_token` resolves an obligation profile to its concrete equipment token and specialist policy; and `event19_publish_custom_equipment_tokens` enrolls every custom stockpile touched by payment or refund in the exact snapshot verifier. A future owner adds one registration surface and this complete callback package without editing an Event 19 family or equipment list. The single Event 19 registry-file rule remains unchanged.
+
+> **Current runtime boundary (2026-08-22):** Event 19 is ID `19`, `Minor Repeatable`, unclustered, and nonterminal. The live scenario is `SCN-013` because proposed `SCN-008` is owned by Independence Wave. The player-facing surface is ordinary decisions and decision categories only; no Event 19 scripted GUI is runtime-wired. Former Muster Board GUI designs, prompts, handoffs, and asset rows remain archival provenance and must not be routed as active GUI work. The current provider extension remains subject to unresolved decision/localisation integration, probability-pool, and final cross-surface documentation gates.
 
 This folder is the source planning package for Chaos Redux Event ID `19`, **Infantry Spawn**.
 
@@ -32,67 +34,19 @@ The design keeps the event repeatable, prevents free equipment farming, separate
 
 ## Live source-of-truth map
 
-- This folder owns the accepted Event 19 design. Event 19 is ID `19`, `Minor
-  Repeatable`, unclustered, nonterminal, and has no fixed derivative tag.
-- `docs/events/019_infantry_spawn/overview.md` owns the canonical implemented-system
-  explanation.
-- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` owns the direct
-  scenario contract. The live identity is `SCN-013`; proposed `SCN-008`
-  collided with Independence Wave.
-- `docs/systems/cbrn_warfare/chaos_unit_family_registry.md` owns registry contract version 4.
-  Event 19 has exactly one dedicated registry code file:
-  `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`.
-- `common/scripted_triggers/chaosx_dynamic_triggers.md` owns the shared special
-  and nonhuman classifier documentation, and
-  `docs/achievements/019_infantry_spawn/achievements.md` owns the eleven
-  achievement proof contracts.
-- The accepted near-completion addendum named above owns the disposition of its
-  three findings. Dated implementation and audit evidence lives under
-  `docs/plans/019_infantry_spawn_plans/subagent_handoffs/`.
-- `docs/assets/019_infantry_spawn/manifest.md` and `gfx_handoff.md` are the asset
-  worker's live evidence surfaces. The 27 fixed identity scenes are separate
-  from the 7/18 regional flag candidate. The current approved candidate chain
-  is 91 unmodified full-flag ImageGen raws, 91 deterministic 820 by 520 spot
-  masters, 273 native PNGs, and 273 runtime TGAs. The independent remediation
-  re-audit is PASS and clears the regional asset gate for parent-owned package
-  promotion. See
-  `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`.
-  The machine JSON retains its immutable literal
-  `candidate_requires_independent_visual_review` processor-state value. Parent
-  workbook/catalog export and reconciliation are complete, Event 19 and SCN-013
-  now read `Fully Functional`, and package inventory is complete at 33/33
-  current files. The final completion audit is PASS with P0/P1/P2 = 0, so no
-  closure gate remains.
-- `review/decision_only_surface_addendum_2026-08-05.md` is the accepted current
-  UI-surface decision. It supersedes the earlier scripted-GUI implementation
-  handoffs while preserving their source-art provenance as archival evidence.
-- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable
-  catalog source. Event 19 and SCN-013 are `Fully Functional`; the exported CSVs
-  match those promoted workbook rows and remain generated outputs rather than
-  source documents.
+- This folder owns the accepted Event 19 design. Event 19 is ID `19`, `Minor Repeatable`, unclustered, nonterminal, and has no fixed derivative tag.
+- `docs/events/019_infantry_spawn/overview.md` owns the canonical implemented-system explanation.
+- `docs/events/019_infantry_spawn/systems/triggerable_scenario.md` owns the direct scenario contract. The live identity is `SCN-013` because proposed `SCN-008` collided with Independence Wave.
+- `docs/systems/cbrn_warfare/chaos_unit_family_registry.md` owns registry contract version 4. Event 19 has exactly one dedicated registry code file, `common/scripted_effects/019_infantry_spawn_unit_registry_effects.txt`.
+- `common/scripted_triggers/chaosx_dynamic_triggers.md` owns the shared special and nonhuman classifier documentation, and `docs/achievements/019_infantry_spawn/achievements.md` owns the eleven achievement proof contracts.
+- The accepted near-completion addendum named above owns the disposition of its three findings. Dated implementation and audit evidence lives under `docs/plans/019_infantry_spawn_plans/subagent_handoffs/`.
+- `docs/assets/019_infantry_spawn/manifest.md` and `gfx_handoff.md` preserve historical asset evidence. Their former Muster Board rows are archival because the accepted runtime is decisions-only, and the restored package retains their regional raw/master/validation paths as provenance records. The 2026-07-18 remediation PASS is bounded to that asset tranche and does not establish current provider completion.
+- `review/decision_only_surface_addendum_2026-08-05.md` is the accepted current UI-surface decision. It supersedes the earlier scripted-GUI implementation handoffs while preserving their source-art provenance as archival evidence.
+- `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is the only editable catalog source. The workbook and generated CSVs retain the 2026-07-18 historical `Fully Functional` snapshot for Event 19 and SCN-013, but that snapshot is not current provider-lifecycle proof.
 
-The live focus-tree, decision/mission, country-package, localisation,
-registry/scenario, evolution-counter, and AI, balance, performance, isolation,
-scenario-safety, and exploit specialist audits are clean. The live-final AI
-reaudit reports zero P0, P1, or P2 findings. All gameplay specialist gates are
-therefore closed. Its evidence is
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_ai_balance_performance_live_final_reaudit_2026_07_16.md`.
+The 2026-07-18 specialist audits are historical tranche evidence. The current provider-extension handoffs record localisation completion, an unresolved decision/localisation integration pass, unresolved normalized provider odds, and bounded MCP event evidence. The final whole-event completion gate is open for the current extension.
 
-The owner-approved Event 19-only deterministic spot-colour flattening exception
-is now the current regional source route. The 7/18 raws, spot masters, native
-PNG/TGA ladders, validation JSON, and checksum file are the current evidence.
-The independent remediation re-audit handoff
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-is PASS and clears the regional asset gate for parent-owned package promotion.
-The machine JSON's literal `candidate_requires_independent_visual_review` value
-remains an immutable processor-state record and is superseded for approval by
-that PASS handoff. The seven retained GHOST_BASE prompt records were recovered
-exactly from the original archive and independently matched by the parent. The
-7/16 `regional_variants/` composites, motif/composite notes, validation/checksum
-pair, and contact sheets remain archival superseded evidence. Workbook/catalog
-export and reconciliation, the 33/33 package inventory, and the final
-completion audit are complete. Event 19 and SCN-013 now read `Fully Functional`.
-The three accepted exceptions and no-other-fallback rule remain explicit.
+The asset manifest and historical remediation handoff retain the 7/18 regional evidence and three accepted engine-constrained exceptions. Their completion statements remain bounded to that asset tranche and do not close the current provider-extension gate. The seven retained GHOST_BASE prompt records and 7/16 superseded composites remain historical provenance.
 
 ## Reading order
 

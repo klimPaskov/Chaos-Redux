@@ -1,5 +1,7 @@
 # Event 019 independent decision and mission specialist audit — 2026-07-16
 
+> **Historical UI boundary (2026-08-22):** This dated decision/mission audit retains former Muster Board and scripted-GUI findings as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; use the current decision-only surface handoff and source-of-truth map for active UI routing.
+
 ## Audit report block
 
 | Field | Result |

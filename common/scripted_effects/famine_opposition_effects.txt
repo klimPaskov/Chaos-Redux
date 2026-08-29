@@ -1,0 +1,302 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE OPPOSITION EFFECTS
+# ============================================================================
+# A state-scoped, one-shot weighted pool for catastrophic famine caused by an
+# active requisition/extraction transaction. It selects at most one existing
+# channel and fails closed when no credible candidate is present. The pool is
+# deliberately sparse: it is called only by an owning severe-famine state
+# transaction and never performs a country or world scan.
+#
+# Candidate registry for hoi4.probability_inspect/custom_weighted_pool:
+#   party_democratic, party_communism, party_fascism, party_neutrality,
+#   local_resistance, national_autonomy, project_movement.
+# Party candidates require positive current party_popularity_100 and cannot be
+# the ruling government. Local resistance requires has_active_resistance and
+# positive resistance. National autonomy requires an owner core plus a live
+# owner autonomy_ratio above the independent sentinel. project_movement is
+# declared for completeness but has a fixed zero authority proof and weight.
+# ============================================================================
+
+famine_opposition_initialize_pool = {
+	set_variable = { famine_opposition_pool_complete = constant:famine_opposition_runtime.pool_complete }
+	set_variable = { famine_opposition_resolution_status = constant:famine_opposition_runtime.zero }
+	set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.none }
+	set_variable = { famine_opposition_total_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_party_democratic_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_party_communism_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_party_fascism_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_party_neutrality_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_local_resistance_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_national_autonomy_weight = constant:famine_opposition_weight.zero }
+	set_variable = { famine_opposition_project_movement_weight = constant:famine_opposition_weight.zero }
+}
+
+famine_opposition_collect_context = {
+	set_temp_variable = { famine_opposition_severity_score = famine_food_security_score }
+	clamp_temp_variable = {
+		var = famine_opposition_severity_score
+		min = constant:famine_food_score.catastrophic_threshold
+		max = constant:famine_food_score.maximum
+	}
+	set_temp_variable = { famine_opposition_responsibility_score = famine_component_extraction }
+	if = {
+		limit = { has_state_flag = famine_extraction_active }
+		add_to_temp_variable = { famine_opposition_responsibility_score = constant:famine_opposition_weight.responsibility_extraction_bonus }
+	}
+	if = {
+		limit = { genocide_state_has_atrocity_evidence = yes }
+		add_to_temp_variable = { famine_opposition_responsibility_score = constant:famine_opposition_weight.visible_evidence_bonus }
+	}
+	if = {
+		limit = { genocide_state_has_active_camps = yes }
+		add_to_temp_variable = { famine_opposition_responsibility_score = constant:famine_opposition_weight.coercion_evidence_bonus }
+	}
+	clamp_temp_variable = {
+		var = famine_opposition_responsibility_score
+		min = constant:famine_opposition_weight.zero
+		max = constant:famine_opposition_weight.maximum
+	}
+	set_temp_variable = { famine_opposition_repression_score = famine_component_governance }
+	add_to_temp_variable = { famine_opposition_repression_score = famine_component_extraction }
+	clamp_temp_variable = {
+		var = famine_opposition_repression_score
+		min = constant:famine_opposition_weight.zero
+		max = constant:famine_opposition_weight.maximum
+	}
+	set_temp_variable = { famine_opposition_country_context_score = constant:famine_opposition_weight.zero }
+	if = {
+		limit = { CONTROLLER = { has_war = yes } }
+		add_to_temp_variable = { famine_opposition_country_context_score = constant:famine_opposition_weight.party_country_context_bonus }
+	}
+	set_temp_variable = { famine_opposition_severity_contribution = famine_opposition_severity_score }
+	multiply_temp_variable = { famine_opposition_severity_contribution = constant:famine_opposition_weight.severity_scale }
+	set_temp_variable = { famine_opposition_responsibility_contribution = famine_opposition_responsibility_score }
+	multiply_temp_variable = { famine_opposition_responsibility_contribution = constant:famine_opposition_weight.responsibility_scale }
+	set_temp_variable = { famine_opposition_repression_contribution = famine_opposition_repression_score }
+	multiply_temp_variable = { famine_opposition_repression_contribution = constant:famine_opposition_weight.repression_scale }
+}
+
+famine_opposition_prepare_party_weights = {
+	CONTROLLER = { set_temp_variable = { famine_opposition_party_support = party_popularity_100@democratic } }
+	if = {
+		limit = { famine_opposition_party_democratic_candidate_is_valid = yes }
+		set_temp_variable = { famine_opposition_party_weight = famine_opposition_party_support }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_severity_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_responsibility_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_repression_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_country_context_score }
+		add_to_temp_variable = { famine_opposition_party_weight = constant:famine_opposition_weight.party_base }
+		clamp_temp_variable = { var = famine_opposition_party_weight min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.maximum }
+		set_variable = { famine_opposition_party_democratic_weight = famine_opposition_party_weight }
+	}
+	CONTROLLER = { set_temp_variable = { famine_opposition_party_support = party_popularity_100@communism } }
+	if = {
+		limit = { famine_opposition_party_communism_candidate_is_valid = yes }
+		set_temp_variable = { famine_opposition_party_weight = famine_opposition_party_support }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_severity_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_responsibility_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_repression_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_country_context_score }
+		add_to_temp_variable = { famine_opposition_party_weight = constant:famine_opposition_weight.party_base }
+		clamp_temp_variable = { var = famine_opposition_party_weight min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.maximum }
+		set_variable = { famine_opposition_party_communism_weight = famine_opposition_party_weight }
+	}
+	CONTROLLER = { set_temp_variable = { famine_opposition_party_support = party_popularity_100@fascism } }
+	if = {
+		limit = { famine_opposition_party_fascism_candidate_is_valid = yes }
+		set_temp_variable = { famine_opposition_party_weight = famine_opposition_party_support }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_severity_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_responsibility_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_repression_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_country_context_score }
+		add_to_temp_variable = { famine_opposition_party_weight = constant:famine_opposition_weight.party_base }
+		clamp_temp_variable = { var = famine_opposition_party_weight min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.maximum }
+		set_variable = { famine_opposition_party_fascism_weight = famine_opposition_party_weight }
+	}
+	CONTROLLER = { set_temp_variable = { famine_opposition_party_support = party_popularity_100@neutrality } }
+	if = {
+		limit = { famine_opposition_party_neutrality_candidate_is_valid = yes }
+		set_temp_variable = { famine_opposition_party_weight = famine_opposition_party_support }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_severity_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_responsibility_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_repression_contribution }
+		add_to_temp_variable = { famine_opposition_party_weight = famine_opposition_country_context_score }
+		add_to_temp_variable = { famine_opposition_party_weight = constant:famine_opposition_weight.party_base }
+		clamp_temp_variable = { var = famine_opposition_party_weight min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.maximum }
+		set_variable = { famine_opposition_party_neutrality_weight = famine_opposition_party_weight }
+	}
+}
+
+famine_opposition_prepare_local_weights = {
+	if = {
+		limit = { famine_opposition_local_resistance_candidate_is_valid = yes }
+		set_temp_variable = { famine_opposition_local_weight = constant:famine_opposition_weight.local_base }
+		set_temp_variable = { famine_opposition_local_resistance_score = resistance }
+		multiply_temp_variable = { famine_opposition_local_resistance_score = constant:famine_opposition_weight.local_resistance_scale }
+		add_to_temp_variable = { famine_opposition_local_weight = famine_opposition_local_resistance_score }
+		add_to_temp_variable = { famine_opposition_local_weight = constant:famine_opposition_weight.local_proven_bonus }
+		add_to_temp_variable = { famine_opposition_local_weight = famine_opposition_severity_contribution }
+		add_to_temp_variable = { famine_opposition_local_weight = famine_opposition_responsibility_contribution }
+		add_to_temp_variable = { famine_opposition_local_weight = famine_opposition_repression_contribution }
+		clamp_temp_variable = { var = famine_opposition_local_weight min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.maximum }
+		set_variable = { famine_opposition_local_resistance_weight = famine_opposition_local_weight }
+	}
+	if = {
+		limit = { famine_opposition_national_autonomy_candidate_is_valid = yes }
+		set_temp_variable = { famine_opposition_autonomy_weight = constant:famine_opposition_weight.autonomy_base }
+		add_to_temp_variable = { famine_opposition_autonomy_weight = famine_opposition_severity_contribution }
+		add_to_temp_variable = { famine_opposition_autonomy_weight = famine_opposition_responsibility_contribution }
+		add_to_temp_variable = { famine_opposition_autonomy_weight = famine_opposition_repression_contribution }
+		add_to_temp_variable = { famine_opposition_autonomy_weight = constant:famine_opposition_weight.autonomy_context_bonus }
+		clamp_temp_variable = { var = famine_opposition_autonomy_weight min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.maximum }
+		set_variable = { famine_opposition_national_autonomy_weight = famine_opposition_autonomy_weight }
+	}
+	if = {
+		limit = { famine_opposition_project_movement_candidate_is_valid = yes }
+		set_variable = { famine_opposition_project_movement_weight = constant:famine_opposition_weight.project_authority_proven }
+	}
+}
+
+famine_opposition_apply_general_consequence = {
+	set_temp_variable = { famine_opposition_stability_delta = constant:famine_opposition_weight.stability_loss_base }
+	set_temp_variable = { famine_opposition_stability_severity_delta = famine_opposition_severity_score }
+	multiply_temp_variable = { famine_opposition_stability_severity_delta = constant:famine_opposition_weight.stability_loss_per_severity }
+	add_to_temp_variable = { famine_opposition_stability_delta = famine_opposition_stability_severity_delta }
+	set_temp_variable = { famine_opposition_stability_responsibility_delta = famine_opposition_responsibility_score }
+	multiply_temp_variable = { famine_opposition_stability_responsibility_delta = constant:famine_opposition_weight.stability_loss_per_responsibility }
+	add_to_temp_variable = { famine_opposition_stability_delta = famine_opposition_stability_responsibility_delta }
+	clamp_temp_variable = {
+		var = famine_opposition_stability_delta
+		min = constant:famine_opposition_weight.stability_loss_floor
+		max = constant:famine_opposition_weight.stability_loss_ceiling
+	}
+	CONTROLLER = {
+		add_stability = var:famine_opposition_stability_delta
+		if = {
+			limit = { NOT = { has_variable = famine_opposition_blame_memory } }
+			set_variable = { famine_opposition_blame_memory = constant:famine_opposition_weight.zero }
+		}
+		add_to_variable = { famine_opposition_blame_memory = famine_opposition_responsibility_score }
+	}
+	set_variable = { famine_opposition_last_resolution_stage_date = famine_food_stage_started_date }
+	if = {
+		limit = { NOT = { has_variable = famine_opposition_resolution_count } }
+		set_variable = { famine_opposition_resolution_count = constant:famine_opposition_runtime.zero }
+	}
+	add_to_variable = { famine_opposition_resolution_count = constant:famine_opposition_runtime.one }
+}
+
+famine_opposition_apply_selected_channel = {
+	if = {
+		limit = { check_variable = { var = famine_opposition_selected_channel value = constant:famine_opposition_channel.party_democratic compare = equals } }
+		set_temp_variable = { famine_opposition_party_delta = constant:famine_opposition_weight.party_popularity_base }
+		set_temp_variable = { famine_opposition_party_severity_delta = famine_opposition_severity_score }
+		multiply_temp_variable = { famine_opposition_party_severity_delta = constant:famine_opposition_weight.party_popularity_per_severity }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_severity_delta }
+		set_temp_variable = { famine_opposition_party_responsibility_delta = famine_opposition_responsibility_score }
+		multiply_temp_variable = { famine_opposition_party_responsibility_delta = constant:famine_opposition_weight.party_popularity_per_responsibility }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_responsibility_delta }
+		clamp_temp_variable = { var = famine_opposition_party_delta min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.party_popularity_ceiling }
+		CONTROLLER = { add_popularity = { ideology = democratic popularity = var:famine_opposition_party_delta } }
+	}
+	if = {
+		limit = { check_variable = { var = famine_opposition_selected_channel value = constant:famine_opposition_channel.party_communism compare = equals } }
+		set_temp_variable = { famine_opposition_party_delta = constant:famine_opposition_weight.party_popularity_base }
+		set_temp_variable = { famine_opposition_party_severity_delta = famine_opposition_severity_score }
+		multiply_temp_variable = { famine_opposition_party_severity_delta = constant:famine_opposition_weight.party_popularity_per_severity }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_severity_delta }
+		set_temp_variable = { famine_opposition_party_responsibility_delta = famine_opposition_responsibility_score }
+		multiply_temp_variable = { famine_opposition_party_responsibility_delta = constant:famine_opposition_weight.party_popularity_per_responsibility }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_responsibility_delta }
+		clamp_temp_variable = { var = famine_opposition_party_delta min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.party_popularity_ceiling }
+		CONTROLLER = { add_popularity = { ideology = communism popularity = var:famine_opposition_party_delta } }
+	}
+	if = {
+		limit = { check_variable = { var = famine_opposition_selected_channel value = constant:famine_opposition_channel.party_fascism compare = equals } }
+		set_temp_variable = { famine_opposition_party_delta = constant:famine_opposition_weight.party_popularity_base }
+		set_temp_variable = { famine_opposition_party_severity_delta = famine_opposition_severity_score }
+		multiply_temp_variable = { famine_opposition_party_severity_delta = constant:famine_opposition_weight.party_popularity_per_severity }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_severity_delta }
+		set_temp_variable = { famine_opposition_party_responsibility_delta = famine_opposition_responsibility_score }
+		multiply_temp_variable = { famine_opposition_party_responsibility_delta = constant:famine_opposition_weight.party_popularity_per_responsibility }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_responsibility_delta }
+		clamp_temp_variable = { var = famine_opposition_party_delta min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.party_popularity_ceiling }
+		CONTROLLER = { add_popularity = { ideology = fascism popularity = var:famine_opposition_party_delta } }
+	}
+	if = {
+		limit = { check_variable = { var = famine_opposition_selected_channel value = constant:famine_opposition_channel.party_neutrality compare = equals } }
+		set_temp_variable = { famine_opposition_party_delta = constant:famine_opposition_weight.party_popularity_base }
+		set_temp_variable = { famine_opposition_party_severity_delta = famine_opposition_severity_score }
+		multiply_temp_variable = { famine_opposition_party_severity_delta = constant:famine_opposition_weight.party_popularity_per_severity }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_severity_delta }
+		set_temp_variable = { famine_opposition_party_responsibility_delta = famine_opposition_responsibility_score }
+		multiply_temp_variable = { famine_opposition_party_responsibility_delta = constant:famine_opposition_weight.party_popularity_per_responsibility }
+		add_to_temp_variable = { famine_opposition_party_delta = famine_opposition_party_responsibility_delta }
+		clamp_temp_variable = { var = famine_opposition_party_delta min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.party_popularity_ceiling }
+		CONTROLLER = { add_popularity = { ideology = neutrality popularity = var:famine_opposition_party_delta } }
+	}
+	if = {
+		limit = { check_variable = { var = famine_opposition_selected_channel value = constant:famine_opposition_channel.local_resistance compare = equals } }
+		set_temp_variable = { famine_opposition_resistance_delta = constant:famine_opposition_weight.resistance_base }
+		set_temp_variable = { famine_opposition_resistance_severity_delta = famine_opposition_severity_score }
+		multiply_temp_variable = { famine_opposition_resistance_severity_delta = constant:famine_opposition_weight.resistance_per_severity }
+		add_to_temp_variable = { famine_opposition_resistance_delta = famine_opposition_resistance_severity_delta }
+		set_temp_variable = { famine_opposition_resistance_responsibility_delta = famine_opposition_responsibility_score }
+		multiply_temp_variable = { famine_opposition_resistance_responsibility_delta = constant:famine_opposition_weight.resistance_per_responsibility }
+		add_to_temp_variable = { famine_opposition_resistance_delta = famine_opposition_resistance_responsibility_delta }
+		clamp_temp_variable = { var = famine_opposition_resistance_delta min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.resistance_ceiling }
+		add_resistance = var:famine_opposition_resistance_delta
+	}
+	if = {
+		limit = { check_variable = { var = famine_opposition_selected_channel value = constant:famine_opposition_channel.national_autonomy compare = equals } }
+		set_temp_variable = { famine_opposition_autonomy_delta = constant:famine_opposition_weight.autonomy_base_effect }
+		set_temp_variable = { famine_opposition_autonomy_severity_delta = famine_opposition_severity_score }
+		multiply_temp_variable = { famine_opposition_autonomy_severity_delta = constant:famine_opposition_weight.autonomy_per_severity }
+		add_to_temp_variable = { famine_opposition_autonomy_delta = famine_opposition_autonomy_severity_delta }
+		set_temp_variable = { famine_opposition_autonomy_responsibility_delta = famine_opposition_responsibility_score }
+		multiply_temp_variable = { famine_opposition_autonomy_responsibility_delta = constant:famine_opposition_weight.autonomy_per_responsibility }
+		add_to_temp_variable = { famine_opposition_autonomy_delta = famine_opposition_autonomy_responsibility_delta }
+		clamp_temp_variable = { var = famine_opposition_autonomy_delta min = constant:famine_opposition_weight.zero max = constant:famine_opposition_weight.autonomy_effect_ceiling }
+		meta_effect = {
+			text = {
+				OWNER = {
+					add_autonomy_score = { value = [FAMINE_OPPOSITION_AUTONOMY_DELTA] }
+				}
+			}
+			FAMINE_OPPOSITION_AUTONOMY_DELTA = "[?famine_opposition_autonomy_delta|.2]"
+		}
+	}
+}
+
+famine_resolve_opposition_channel = {
+	if = {
+		limit = { famine_opposition_resolution_is_valid = yes }
+		famine_opposition_initialize_pool = yes
+		famine_opposition_collect_context = yes
+		famine_opposition_prepare_party_weights = yes
+		famine_opposition_prepare_local_weights = yes
+		set_variable = { famine_opposition_total_weight = famine_opposition_party_democratic_weight }
+		add_to_variable = { famine_opposition_total_weight = famine_opposition_party_communism_weight }
+		add_to_variable = { famine_opposition_total_weight = famine_opposition_party_fascism_weight }
+		add_to_variable = { famine_opposition_total_weight = famine_opposition_party_neutrality_weight }
+		add_to_variable = { famine_opposition_total_weight = famine_opposition_local_resistance_weight }
+		add_to_variable = { famine_opposition_total_weight = famine_opposition_national_autonomy_weight }
+		add_to_variable = { famine_opposition_total_weight = famine_opposition_project_movement_weight }
+		if = {
+			limit = { check_variable = { var = famine_opposition_total_weight value = constant:famine_opposition_weight.zero compare = greater_than } }
+			random_list = {
+				var:famine_opposition_party_democratic_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.party_democratic } }
+				var:famine_opposition_party_communism_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.party_communism } }
+				var:famine_opposition_party_fascism_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.party_fascism } }
+				var:famine_opposition_party_neutrality_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.party_neutrality } }
+				var:famine_opposition_local_resistance_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.local_resistance } }
+				var:famine_opposition_national_autonomy_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.national_autonomy } }
+				var:famine_opposition_project_movement_weight = { set_variable = { famine_opposition_selected_channel = constant:famine_opposition_channel.project_movement } }
+			}
+			set_variable = { famine_opposition_resolution_status = constant:famine_opposition_runtime.selected }
+			famine_opposition_apply_selected_channel = yes
+		}
+		else = { set_variable = { famine_opposition_resolution_status = constant:famine_opposition_runtime.fail_closed } }
+		famine_opposition_apply_general_consequence = yes
+	}
+}

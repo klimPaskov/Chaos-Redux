@@ -1,0 +1,383 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION RECEPTION CAPACITY EFFECTS
+# ============================================================================
+# Migration-owned people-unit reception service adapters and sparse-capacity
+# recalculation.  Candidates are registered explicitly by state owners and
+# recalculated only for a dirty country during the existing host pulse.  The
+# transport component below is availability evidence; it never proves a route.
+# ============================================================================
+
+migration_register_reception_candidate_state = {
+	migration_initialize_runtime = yes
+	set_temp_variable = { migration_reception_candidate_result = constant:migration_capacity.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.migration_reception_candidate_states
+						value = THIS
+					}
+				}
+			}
+			add_to_array = { array = global.migration_reception_candidate_states value = THIS }
+		}
+		set_variable = { global.migration_reception_candidate_states_count = global.migration_reception_candidate_states^num }
+		set_state_flag = migration_reception_candidate_active
+		if = { limit = { NOT = { has_variable = migration_reception_candidate_revision } } set_variable = { migration_reception_candidate_revision = constant:migration_capacity.revision_increment } }
+		OWNER = {
+			migration_register_active_country = yes
+			migration_mark_reception_capacity_dirty = yes
+		}
+		set_temp_variable = { migration_reception_candidate_result = constant:migration_capacity.one }
+	}
+}
+
+migration_unregister_reception_candidate_state = {
+	migration_initialize_runtime = yes
+	if = {
+		limit = {
+			is_in_array = {
+				array = global.migration_reception_candidate_states
+				value = THIS
+			}
+		}
+		remove_from_array = { array = global.migration_reception_candidate_states value = THIS }
+		set_variable = { global.migration_reception_candidate_states_count = global.migration_reception_candidate_states^num }
+	}
+	clr_state_flag = migration_reception_candidate_active
+	OWNER = { migration_mark_reception_capacity_dirty = yes }
+	if = { limit = { has_event_target = migration_previous_controller } event_target:migration_previous_controller = { migration_mark_reception_capacity_dirty = yes } }
+}
+
+# COUNTRY scope.  Dirty is a write-only callback consumed by the sparse host
+# pulse; it is never a recurring country-wide scan.
+migration_mark_reception_capacity_dirty = {
+	if = {
+		limit = { humanitarian_country_is_valid = yes }
+		if = { limit = { NOT = { has_variable = migration_reception_capacity_revision } } set_variable = { migration_reception_capacity_revision = constant:migration_capacity.zero } }
+		if = { limit = { NOT = { has_variable = migration_reception_capacity_schema_version } } set_variable = { migration_reception_capacity_schema_version = constant:migration_capacity.schema_version } }
+		set_variable = { migration_reception_capacity_dirty = constant:migration_capacity.one }
+		migration_register_active_country = yes
+	}
+}
+
+# STATE scope. Other mechanics call this seam after a state projection changes.
+# Migration alone decides whether the state is a registered reception candidate
+# and therefore whether its owner must be dirtied.
+migration_mark_reception_capacity_dirty_if_candidate = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			has_state_flag = migration_reception_candidate_active
+		}
+		OWNER = { migration_mark_reception_capacity_dirty = yes }
+	}
+}
+
+# STATE scope.  The decision owner supplies a positive people-unit service
+# amount and explicit proof.  The adapter never writes civilian factories or
+# population and can be adjusted idempotently.
+migration_set_reception_shelter_service = {
+	set_temp_variable = { migration_reception_shelter_service_result = constant:migration_capacity.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = migration_reception_shelter_service_request value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_reception_shelter_service_request_proven value = constant:migration_capacity.one compare = greater_than }
+		}
+		set_variable = { migration_reception_shelter_capacity = migration_reception_shelter_service_request }
+		set_variable = { migration_reception_shelter_service_proven = constant:migration_capacity.one }
+		migration_register_reception_candidate_state = yes
+		set_temp_variable = { migration_reception_shelter_service_result = constant:migration_capacity.one }
+	}
+	set_temp_variable = { migration_reception_shelter_service_request = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_reception_shelter_service_request_proven = constant:migration_capacity.zero }
+}
+
+migration_set_reception_medical_service = {
+	set_temp_variable = { migration_reception_medical_service_result = constant:migration_capacity.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = migration_reception_medical_service_request value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_reception_medical_service_request_proven value = constant:migration_capacity.one compare = greater_than }
+		}
+		set_variable = { migration_reception_medical_capacity = migration_reception_medical_service_request }
+		set_variable = { migration_reception_medical_service_proven = constant:migration_capacity.one }
+		migration_register_reception_candidate_state = yes
+		set_temp_variable = { migration_reception_medical_service_result = constant:migration_capacity.one }
+	}
+	set_temp_variable = { migration_reception_medical_service_request = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_reception_medical_service_request_proven = constant:migration_capacity.zero }
+}
+
+migration_clear_reception_shelter_service = {
+	clear_variable = migration_reception_shelter_capacity
+	clear_variable = migration_reception_shelter_service_proven
+	OWNER = { migration_mark_reception_capacity_dirty = yes }
+}
+
+migration_clear_reception_medical_service = {
+	clear_variable = migration_reception_medical_capacity
+	clear_variable = migration_reception_medical_service_proven
+	OWNER = { migration_mark_reception_capacity_dirty = yes }
+}
+
+# COUNTRY scope.  The loop is over the explicit candidate registry only.  A
+# missing adapter, unsafe food state, or absent candidate contributes no safe
+# service.  Registry alignment is the only candidate-count poison; an unsafe
+# registered state is excluded while other proven candidates remain usable.
+migration_recalculate_reception_capacity = {
+	migration_initialize_runtime = yes
+	set_variable = { migration_reception_capacity_schema_version = constant:migration_capacity.schema_version }
+	set_temp_variable = { migration_capacity_candidate_count = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_invalid_candidate_count = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_safe_candidate_count = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_candidate_population = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_safe_population = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_shelter_total = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_medical_total = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_transport_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_food_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_shelter_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_infrastructure_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_medical_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_governance_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_administration_quality_total = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_outbreak_population = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_contamination_population = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_penalty_factor = constant:migration_capacity.one }
+	set_temp_variable = { migration_capacity_outbreak_factor = constant:migration_capacity.one }
+	set_temp_variable = { migration_capacity_contamination_factor = constant:migration_capacity.one }
+	set_temp_variable = { migration_capacity_load_factor = constant:migration_capacity.one }
+	set_temp_variable = { migration_capacity_load_pressure = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_service = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_gross = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_cap = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_administration_throughput = num_of_civilian_factories }
+	divide_temp_variable = { migration_capacity_administration_throughput = constant:migration_capacity.administration_full_civilian_factories }
+	clamp_temp_variable = { var = migration_capacity_administration_throughput min = constant:migration_capacity.zero max = constant:migration_capacity.one }
+	save_event_target_as = migration_capacity_country
+	set_temp_variable = { migration_capacity_index = global.migration_reception_candidate_states^num }
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = global.migration_reception_candidate_states_count }
+				NOT = { check_variable = { var = global.migration_reception_candidate_states_count value = global.migration_reception_candidate_states^num compare = equals } }
+			}
+		}
+		set_temp_variable = { migration_capacity_invalid_candidate_count = constant:migration_capacity.one }
+	}
+	while_loop_effect = {
+		limit = { check_variable = { var = migration_capacity_index value = constant:migration_capacity.zero compare = greater_than } }
+		subtract_from_temp_variable = { migration_capacity_index = constant:humanitarian_runtime.array_index_increment }
+		var:global.migration_reception_candidate_states^migration_capacity_index = {
+			if = {
+				limit = {
+					OWNER = { tag = event_target:migration_capacity_country }
+					humanitarian_state_is_valid = yes
+				}
+				add_to_temp_variable = { migration_capacity_candidate_count = constant:migration_capacity.one }
+				set_temp_variable = { migration_capacity_state_population = state_population_k }
+				multiply_temp_variable = { migration_capacity_state_population = constant:migration_capacity.people_per_k }
+				add_to_temp_variable = { migration_capacity_candidate_population = migration_capacity_state_population }
+				migration_consume_famine_food_safety = yes
+				if = {
+					limit = { migration_reception_candidate_is_valid = yes }
+					add_to_temp_variable = { migration_capacity_safe_candidate_count = constant:migration_capacity.one }
+					add_to_temp_variable = { migration_capacity_safe_population = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_shelter_total = migration_reception_shelter_capacity }
+					add_to_temp_variable = { migration_capacity_medical_total = migration_reception_medical_capacity }
+					set_temp_variable = { migration_capacity_food_quality = constant:migration_capacity.food_quality_stable }
+					if = { limit = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.supply_strain compare = equals } } set_temp_variable = { migration_capacity_food_quality = constant:migration_capacity.food_quality_supply_strain } }
+					if = { limit = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.acute_shortage compare = equals } } set_temp_variable = { migration_capacity_food_quality = constant:migration_capacity.food_quality_acute_shortage } }
+					if = { limit = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.famine compare = equals } } set_temp_variable = { migration_capacity_food_quality = constant:migration_capacity.food_quality_famine } }
+					if = { limit = { check_variable = { var = famine_to_migration_food_stage value = constant:famine_food_stage.catastrophic_famine compare = equals } } set_temp_variable = { migration_capacity_food_quality = constant:migration_capacity.food_quality_catastrophic } }
+					set_temp_variable = { migration_capacity_shelter_quality = migration_reception_shelter_capacity }
+					divide_temp_variable = { migration_capacity_shelter_quality = migration_capacity_state_population }
+					clamp_temp_variable = { var = migration_capacity_shelter_quality min = constant:migration_capacity.shelter_quality_floor max = constant:migration_capacity.one }
+					set_temp_variable = { migration_capacity_medical_quality = migration_reception_medical_capacity }
+					divide_temp_variable = { migration_capacity_medical_quality = migration_capacity_state_population }
+					clamp_temp_variable = { var = migration_capacity_medical_quality min = constant:migration_capacity.medical_quality_floor max = constant:migration_capacity.one }
+					set_temp_variable = { migration_capacity_infrastructure_quality = building_level@infrastructure }
+					divide_temp_variable = { migration_capacity_infrastructure_quality = constant:migration_capacity.infrastructure_max_level }
+					clamp_temp_variable = { var = migration_capacity_infrastructure_quality min = constant:migration_capacity.infrastructure_quality_floor max = constant:migration_capacity.one }
+					set_temp_variable = { migration_capacity_transport_quality = constant:migration_capacity.max_component }
+					subtract_from_temp_variable = { migration_capacity_transport_quality = famine_to_migration_transport_component }
+					divide_temp_variable = { migration_capacity_transport_quality = constant:migration_capacity.max_component }
+					clamp_temp_variable = { var = migration_capacity_transport_quality min = constant:migration_capacity.transport_quality_floor max = constant:migration_capacity.one }
+					set_temp_variable = { migration_capacity_governance_quality = constant:migration_capacity.max_component }
+					subtract_from_temp_variable = { migration_capacity_governance_quality = famine_to_migration_governance_component }
+					divide_temp_variable = { migration_capacity_governance_quality = constant:migration_capacity.max_component }
+					clamp_temp_variable = { var = migration_capacity_governance_quality min = constant:migration_capacity.governance_quality_floor max = constant:migration_capacity.one }
+					set_temp_variable = { migration_capacity_administration_quality = migration_capacity_governance_quality }
+					add_to_temp_variable = { migration_capacity_administration_quality = migration_capacity_administration_throughput }
+					divide_temp_variable = { migration_capacity_administration_quality = constant:migration_capacity.safe_factor_divisor }
+					clamp_temp_variable = { var = migration_capacity_administration_quality min = constant:migration_capacity.governance_quality_floor max = constant:migration_capacity.one }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_food_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = constant:migration_capacity.weight_food }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_quality_total = migration_capacity_quality_weighted }
+					add_to_temp_variable = { migration_capacity_food_quality_total = migration_capacity_quality_weighted }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_shelter_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = constant:migration_capacity.weight_shelter }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_quality_total = migration_capacity_quality_weighted }
+					add_to_temp_variable = { migration_capacity_shelter_quality_total = migration_capacity_quality_weighted }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_infrastructure_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = constant:migration_capacity.weight_infrastructure }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_quality_total = migration_capacity_quality_weighted }
+					add_to_temp_variable = { migration_capacity_infrastructure_quality_total = migration_capacity_quality_weighted }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_transport_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = constant:migration_capacity.weight_transport }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_quality_total = migration_capacity_quality_weighted }
+					add_to_temp_variable = { migration_capacity_transport_quality_total = migration_capacity_quality_weighted }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_medical_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = constant:migration_capacity.weight_medical }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_quality_total = migration_capacity_quality_weighted }
+					add_to_temp_variable = { migration_capacity_medical_quality_total = migration_capacity_quality_weighted }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_administration_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = constant:migration_capacity.weight_administration }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_quality_total = migration_capacity_quality_weighted }
+					add_to_temp_variable = { migration_capacity_administration_quality_total = migration_capacity_quality_weighted }
+					set_temp_variable = { migration_capacity_quality_weighted = migration_capacity_governance_quality }
+					multiply_temp_variable = { migration_capacity_quality_weighted = migration_capacity_state_population }
+					add_to_temp_variable = { migration_capacity_governance_quality_total = migration_capacity_quality_weighted }
+					if = { limit = { check_variable = { var = migration_outbreak_context_proven value = constant:migration_capacity.zero compare = greater_than } } add_to_temp_variable = { migration_capacity_outbreak_population = migration_capacity_state_population } }
+					if = { limit = { OR = { has_global_flag = air_contamination_threshold_75 has_global_flag = air_contamination_threshold_100 has_global_flag = fallout_air_contamination_permanent_99 has_dynamic_modifier = chem_state_contamination } } add_to_temp_variable = { migration_capacity_contamination_population = migration_capacity_state_population } }
+				}
+			}
+		}
+	}
+	set_variable = { migration_reception_candidate_count = migration_capacity_candidate_count }
+	set_variable = { migration_reception_invalid_candidate_count = migration_capacity_invalid_candidate_count }
+	set_variable = { migration_reception_safe_candidate_count = migration_capacity_safe_candidate_count }
+	set_variable = { migration_reception_candidate_population = migration_capacity_candidate_population }
+	set_variable = { migration_reception_safe_population = migration_capacity_safe_population }
+	set_temp_variable = { migration_capacity_safe_state_fraction = migration_capacity_safe_candidate_count }
+	if = { limit = { check_variable = { var = migration_capacity_candidate_count value = constant:migration_capacity.zero compare = greater_than } } divide_temp_variable = { migration_capacity_safe_state_fraction = migration_capacity_candidate_count } }
+	set_temp_variable = { migration_capacity_safe_population_fraction = migration_capacity_safe_population }
+	if = { limit = { check_variable = { var = migration_capacity_candidate_population value = constant:humanitarian_population.zero compare = greater_than } } divide_temp_variable = { migration_capacity_safe_population_fraction = migration_capacity_candidate_population } }
+	set_variable = { migration_reception_safe_state_fraction = migration_capacity_safe_state_fraction }
+	set_variable = { migration_reception_safe_population_fraction = migration_capacity_safe_population_fraction }
+	set_variable = { migration_reception_food_quality = constant:migration_capacity.zero }
+	set_variable = { migration_reception_shelter_quality = constant:migration_capacity.zero }
+	set_variable = { migration_reception_infrastructure_quality = constant:migration_capacity.zero }
+	set_variable = { migration_reception_transport_availability = constant:migration_capacity.zero }
+	set_variable = { migration_reception_medical_quality = constant:migration_capacity.zero }
+	set_variable = { migration_reception_governance_quality = constant:migration_capacity.zero }
+	set_variable = { migration_reception_administration_quality = constant:migration_capacity.zero }
+	set_variable = { migration_reception_load_pressure = constant:migration_capacity.zero }
+	set_variable = { migration_reception_war_factor = constant:migration_capacity.one }
+	set_variable = { migration_reception_outbreak_factor = constant:migration_capacity.one }
+	set_variable = { migration_reception_contamination_factor = constant:migration_capacity.one }
+	if = {
+		limit = { check_variable = { var = migration_capacity_safe_candidate_count value = constant:migration_capacity.zero compare = greater_than } }
+		set_temp_variable = { migration_capacity_quality_average = migration_capacity_quality_total }
+		divide_temp_variable = { migration_capacity_quality_average = migration_capacity_safe_population }
+		divide_temp_variable = { migration_capacity_quality_average = constant:migration_capacity.quality_weight_sum }
+		set_temp_variable = { migration_capacity_safe_state_factor = migration_capacity_safe_candidate_count }
+		divide_temp_variable = { migration_capacity_safe_state_factor = constant:migration_capacity.target_safe_state_count }
+		clamp_temp_variable = { var = migration_capacity_safe_state_factor min = constant:migration_capacity.zero max = constant:migration_capacity.one }
+		set_temp_variable = { migration_capacity_safe_factor = migration_capacity_safe_state_factor }
+		multiply_temp_variable = { migration_capacity_safe_factor = migration_capacity_safe_population_fraction }
+		set_variable = { migration_reception_food_quality = migration_capacity_food_quality_total }
+		divide_variable = { migration_reception_food_quality = migration_capacity_safe_population }
+		set_variable = { migration_reception_shelter_quality = migration_capacity_shelter_quality_total }
+		divide_variable = { migration_reception_shelter_quality = migration_capacity_safe_population }
+		set_variable = { migration_reception_infrastructure_quality = migration_capacity_infrastructure_quality_total }
+		divide_variable = { migration_reception_infrastructure_quality = migration_capacity_safe_population }
+		set_variable = { migration_reception_transport_availability = migration_capacity_transport_quality_total }
+		divide_variable = { migration_reception_transport_availability = migration_capacity_safe_population }
+		set_variable = { migration_reception_medical_quality = migration_capacity_medical_quality_total }
+		divide_variable = { migration_reception_medical_quality = migration_capacity_safe_population }
+		set_variable = { migration_reception_governance_quality = migration_capacity_governance_quality_total }
+		divide_variable = { migration_reception_governance_quality = migration_capacity_safe_population }
+		set_variable = { migration_reception_administration_quality = migration_capacity_administration_quality_total }
+		divide_variable = { migration_reception_administration_quality = migration_capacity_safe_population }
+		if = {
+			limit = { has_war = yes }
+			subtract_from_temp_variable = { migration_capacity_penalty_factor = constant:migration_capacity.war_penalty }
+		}
+		if = {
+			limit = { check_variable = { var = migration_capacity_candidate_population value = constant:humanitarian_population.zero compare = greater_than } }
+			set_temp_variable = { migration_capacity_outbreak_share = migration_capacity_outbreak_population }
+			divide_temp_variable = { migration_capacity_outbreak_share = migration_capacity_candidate_population }
+			set_temp_variable = { migration_capacity_outbreak_factor = constant:migration_capacity.one }
+			set_temp_variable = { migration_capacity_outbreak_severity = migration_capacity_outbreak_share }
+			multiply_temp_variable = { migration_capacity_outbreak_severity = constant:migration_capacity.outbreak_penalty }
+			subtract_from_temp_variable = { migration_capacity_outbreak_factor = migration_capacity_outbreak_severity }
+			set_temp_variable = { migration_capacity_contamination_share = migration_capacity_contamination_population }
+			divide_temp_variable = { migration_capacity_contamination_share = migration_capacity_candidate_population }
+			set_temp_variable = { migration_capacity_contamination_factor = constant:migration_capacity.one }
+			set_temp_variable = { migration_capacity_contamination_severity = migration_capacity_contamination_share }
+			multiply_temp_variable = { migration_capacity_contamination_severity = constant:migration_capacity.contamination_penalty }
+			subtract_from_temp_variable = { migration_capacity_contamination_factor = migration_capacity_contamination_severity }
+		}
+		clamp_temp_variable = { var = migration_capacity_penalty_factor min = constant:migration_capacity.minimum_hazard_factor max = constant:migration_capacity.one }
+		clamp_temp_variable = { var = migration_capacity_outbreak_factor min = constant:migration_capacity.minimum_hazard_factor max = constant:migration_capacity.one }
+		clamp_temp_variable = { var = migration_capacity_contamination_factor min = constant:migration_capacity.minimum_hazard_factor max = constant:migration_capacity.one }
+		set_variable = { migration_reception_war_factor = migration_capacity_penalty_factor }
+		set_variable = { migration_reception_outbreak_factor = migration_capacity_outbreak_factor }
+		set_variable = { migration_reception_contamination_factor = migration_capacity_contamination_factor }
+		set_temp_variable = { migration_capacity_gross = migration_capacity_candidate_population }
+		multiply_temp_variable = { migration_capacity_gross = constant:migration_capacity.capacity_population_share }
+		multiply_temp_variable = { migration_capacity_gross = migration_capacity_quality_average }
+		multiply_temp_variable = { migration_capacity_gross = migration_capacity_safe_factor }
+		round_temp_variable = migration_capacity_gross
+		set_temp_variable = { migration_capacity_cap = migration_capacity_candidate_population }
+		multiply_temp_variable = { migration_capacity_cap = constant:migration_capacity.capacity_population_share_max }
+		clamp_temp_variable = { var = migration_capacity_gross min = constant:humanitarian_population.zero max = migration_capacity_cap }
+		set_temp_variable = { migration_capacity_service = migration_capacity_gross }
+		multiply_temp_variable = { migration_capacity_service = migration_capacity_penalty_factor }
+		multiply_temp_variable = { migration_capacity_service = migration_capacity_outbreak_factor }
+		multiply_temp_variable = { migration_capacity_service = migration_capacity_contamination_factor }
+		if = {
+			limit = { has_variable = migration_reception_load check_variable = { var = migration_capacity_gross value = constant:migration_capacity.minimum_load_denominator_people compare = greater_than } }
+			set_temp_variable = { migration_capacity_load_pressure = migration_reception_load }
+			divide_temp_variable = { migration_capacity_load_pressure = migration_capacity_gross }
+			clamp_temp_variable = { var = migration_capacity_load_pressure min = constant:migration_capacity.zero max = constant:migration_capacity.one }
+			set_variable = { migration_reception_load_pressure = migration_capacity_load_pressure }
+			set_temp_variable = { migration_capacity_load_factor = constant:migration_capacity.one }
+			set_temp_variable = { migration_capacity_load_penalty = migration_capacity_load_pressure }
+			multiply_temp_variable = { migration_capacity_load_penalty = constant:migration_capacity.load_penalty }
+			subtract_from_temp_variable = { migration_capacity_load_factor = migration_capacity_load_penalty }
+			clamp_temp_variable = { var = migration_capacity_load_factor min = constant:migration_capacity.minimum_load_factor max = constant:migration_capacity.one }
+			multiply_temp_variable = { migration_capacity_service = migration_capacity_load_factor }
+		}
+	}
+	set_variable = { migration_reception_capacity_gross = migration_capacity_gross }
+	set_variable = { migration_reception_capacity = migration_capacity_service }
+	if = {
+		limit = {
+			check_variable = { var = migration_capacity_safe_candidate_count value = constant:migration_capacity.zero compare = greater_than }
+			check_variable = { var = migration_capacity_invalid_candidate_count value = constant:migration_capacity.zero compare = equals }
+			check_variable = { var = migration_capacity_shelter_total value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_capacity_medical_total value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_capacity_service value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { migration_reception_capacity_valid = constant:migration_capacity.one }
+	}
+	else = {
+		set_variable = { migration_reception_capacity_valid = constant:migration_capacity.zero }
+		set_variable = { migration_reception_capacity = constant:humanitarian_population.zero }
+	}
+	if = { limit = { NOT = { has_variable = migration_reception_capacity_revision } } set_variable = { migration_reception_capacity_revision = constant:migration_capacity.zero } }
+	add_to_variable = { migration_reception_capacity_revision = constant:migration_capacity.revision_increment }
+	set_variable = { migration_reception_capacity_last_refresh = global.date }
+	set_variable = { migration_reception_capacity_dirty = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_candidate_count = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_invalid_candidate_count = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_safe_candidate_count = constant:migration_capacity.zero }
+	set_temp_variable = { migration_capacity_safe_population = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_shelter_total = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_medical_total = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_capacity_quality_total = constant:migration_capacity.zero }
+}

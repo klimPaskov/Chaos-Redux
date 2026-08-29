@@ -1,0 +1,19 @@
+# Event 26 goal prompt
+
+Implement Chaos Redux Event 26, Black Friday, from the complete specification package at `docs/specs/026_black_friday_specs/`. Replace the current desert-industry Event 26 while preserving `chaosx.nr26.1` as the canonical entry and keeping ID 26 classified as Minor Fire-Once. Remove every stale desert script, localisation key, news reference, sprite reference, event-name mapping, debug mapping, comment, document entry, and catalog row.
+
+Event 26 becomes available at Gathering Storm, 200 chaos. Automatic selection must reserve it globally, remove it from further selection, and resolve the current event timer without recording a fire. The reservation waits for the first in-game Friday at 200 chaos or higher. Selection on an eligible Friday may activate the event that day. Friday activation records one event, applies minor pacing and dynamic major gain once, broadcasts one report to each human player, and snapshots the sale rate. The baseline is 50 percent off. At 600 chaos or higher, Evolution I applies 75 percent off when enabled. Later chaos changes do not alter the snapshot. The sale expires on the next daily tick.
+
+Use the existing bounded global event-system daily pulse. Do not add a new daily country-wide scan. Preserve all pending, active, achievement, and refundable-payment state across save and reload. Implement disable, re-enable, manual and forced launches, multiplayer, tag changes, joining players, and terminal cleanup exactly as specified. Reservation must not create history. Activation must not reset a timer already running from the earlier selection.
+
+Create a reusable universal cost source and transaction framework through `chaosx_scripted_system_architect`. Black Friday multiplies the ordinary current payable cost after ordinary modifiers and before final quantization. Use deterministic upward rounding. Every positive cost remains at least one registered quantum. Zero stays zero. Rewards, penalties, casualties, upkeep, time, cooldowns, and non-cost requirements are not discounted.
+
+Build the full cost surface registry against the final implementation commit. Audit every reachable Vanilla and Chaos Redux voluntary purchase or commitment, across every family listed in the specs. Cover each surface through a verified native modifier, the shared quote and payment adapter, or complete normal, 50 percent, and 75 percent static variants. Record exact evidence for every engine-inaccessible surface. A handpicked sample is not acceptable.
+
+Displayed and paid prices must agree. Refunds return the amount actually paid. Static variants must behave as one logical action, share completion and cooldown state, and expose one player and AI candidate. Preserve all route locks, targets, requirements, cooldowns, reserve floors, project rules, and action limits.
+
+Implement the actorless history row, truthful Event list status, Event Details premise, Evolution I preview and log, human-player active status, cost-source text, debug mappings, required art, and the Event 26 achievement. Use the achievement contract in the specs and the final cost-family registry.
+
+Run the required HOI4 MCP event and probability workflows. Use the decision, probability, localisation, spreadsheet, and completion subagents with `fork_context=false`. Update Event 26 and universal-cost documentation. Edit only the authoritative XLSX catalog, resolve the duplicate Black Friday row, export all CSV snapshots through the repository exporter, and mark the row `Needs Testing` until live validation passes.
+
+Run Part 8 acceptance scenarios. Keep Event 26 disabled by default during implementation. Re-enable it only when all cost rows, assets, localisation, logs, docs, audits, catalog fields, and tests are complete. Report every blocker, inaccessible engine surface, omission, and simplification. Do not use unapproved fallbacks or claim universal coverage without the completed registry.

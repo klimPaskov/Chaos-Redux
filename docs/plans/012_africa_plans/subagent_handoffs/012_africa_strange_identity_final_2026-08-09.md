@@ -1,10 +1,12 @@
 # Event 012 strange-force identity final handoff — 2026-08-09
 
+> This 2026-08-09 identity handoff records static icon and counter evidence, not model, audio, or in-game completion. Current model manifests and the 2026-08-26 model handoffs supersede its blanket counter-acceptance wording.
+
 ## Outcome
 
-The eight strange-force units have complete static identity packages for technology, decision, focus/goal, large division emblem, and small division emblem surfaces. Existing bespoke vanilla-green large and on-map counters for the same eight units were re-audited and accepted from their prior counter manifests. No visual motif required regeneration after contact-sheet review.
+The eight strange-force units have static identity evidence for technology, decision, focus/goal, large division emblem, and small division emblem surfaces. Existing bespoke vanilla-green large and on-map counter files remain retained evidence, but current counter acceptance and promotion are package-specific. No visual motif required regeneration after contact-sheet review; this does not establish model or runtime readiness.
 
-The completed units are Gorilla Heavy Infantry, Pan Sappers, Stone Cohorts, Riverborn, Forest Giants, Oracle Recon, Disaster Wardens, and Plague Carriers.
+The identity-evidence rows are Gorilla Heavy Infantry, Pan Sappers, Stone Cohorts, Riverborn, Forest Giants, Oracle Recon, Disaster Wardens, and Plague Carriers; their current model/package statuses remain mixed and are not implied by this static-identity handoff.
 
 ## Changed or created asset evidence
 
@@ -20,7 +22,7 @@ The completed units are Gorilla Heavy Infantry, Pan Sappers, Stone Cohorts, Rive
 
 Every identity DDS has the exact requested dimensions: technology 64x64, decision 32x32, focus 94x86, large emblem 76x42, and small emblem 30x12. Every identity DDS uses the validated legacy uncompressed BGRA 32-bit header with DDS magic, 124-byte header, 32-byte pixel format, RGB masks `0xff0000/0xff00/0xff`, alpha mask `0xff000000`, texture caps `0x1000`, and exact `128 + width*height*4` length. Decoded identity PNGs equal their exact-size processed PNGs pixel-for-pixel.
 
-The sixteen existing counter DDS files decode pixel-for-pixel to the prior round-trip previews. Their per-unit manifests record the installed vanilla counter definition, two-frame canvas and frame order, sampled dominant green `(73,106,73)`, green range `(20,34,21)` through `(154,175,147)`, and neutral grayscale map family. The canonical reference contact sheets and individual references were inspected before accepting the counters.
+The sixteen existing counter DDS files decode pixel-for-pixel to the prior round-trip previews. Their per-unit manifests record the installed vanilla counter definition, two-frame canvas and frame order, sampled dominant green `(73,106,73)`, green range `(20,34,21)` through `(154,175,147)`, and neutral grayscale map family. The canonical reference contact sheets and individual references were inspected, but current package manifests still control promotion; Oracle's counter replacement is pending, Disaster's counter is optional beside vanilla infantry, and blocked units are not promoted.
 
 Alpha-intermediate files retain source-scale canvases by design; exact target-size processed PNGs are the runtime inputs. Source PNGs are retained native ImageGen/chroma-key assets and all target alpha extrema are recorded in the manifest.
 
@@ -35,12 +37,12 @@ Promote or verify the runtime DDS files under these exact roots:
 - `gfx/interface/counters/divisions_large/`
 - `gfx/interface/counters/divisions_small/`
 
-Retain the review/manifests under `docs/assets/012_africa/strange_force_identity_icons/` and the prior counter evidence under `docs/assets/012_africa/models_3d/<unit>/counters/` until parent promotion is complete. These are the exact evidence roots referenced by the handoff.
+Retain the review/manifests under `docs/assets/012_africa/strange_force_identity_icons/` and the prior counter evidence under `docs/assets/012_africa/models_3d/<unit>/counters/` as evidence until package-specific promotion decisions are complete. These are the exact evidence roots referenced by the handoff.
 
 ## Parent-owned integration and remaining review
 
 No gameplay, localisation, or `.gfx` file was edited. Parent must register the technology, decision, goal, and emblem sprites in the proposed `interface/012_africa_strange_force_icons.gfx` and validate consumer references. Existing counter registration remains in `interface/012_africa_strange_force_counters.gfx`.
 
-Original provider prompt files were absent, so the prompt record is an audit reconstruction rather than provenance recovery. Focus and some decision/emblem sprites are reserved package surfaces with no current direct consumer; the parent should keep them registered only where the gameplay/UI integration requires them. Model/entity, audio, and final runtime acceptance remain parent-owned gates.
+Original provider prompt files were absent, so the prompt record is an audit reconstruction rather than provenance recovery. Focus and some decision/emblem sprites are reserved package surfaces with no current direct consumer; the parent should keep them registered only where the gameplay/UI integration requires them. Model/entity, audio, counter, and final runtime acceptance remain parent-owned gates, and the shared strange-force manifest contract stays closed until all eight manifests are promoted atomically.
 
 No simplification was made to the requested icon dimensions or DDS surfaces. The only explicit limitation is unavailable original prompt provenance and parent-owned final `.gfx` wiring.

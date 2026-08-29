@@ -1,5 +1,7 @@
 # Goal Prompt: Complete Event 19 Infantry Spawn Rework
 
+> **Archival implementation prompt (2026-08-22):** This prompt preserves the original full-design request and must not be executed as a current work order. The accepted runtime surface is decisions-only with no Event 19 scripted GUI. Use `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md`, `docs/events/019_infantry_spawn/overview.md`, and the current 2026-08-22 provider handoffs for active status, dispositions, and remaining parent decisions.
+
 Implement Chaos Redux Event ID `19`, Infantry Spawn, from `docs/specs/019_infantry_spawn_specs/` to its fullest extent. Preserve ID 19 and Minor Repeatable classification. The request prefix `017` is not the event ID. Read the package, `AGENTS.md`, relevant skills, local code, offline wiki pages, vanilla documentation, and current precedents.
 
 Replace the flat infantry loop with the full generation system. Evaluate every valid country. Use diminishing coverage so large countries gain more units while a smaller share of states is selected. Implement weighted formation lots, equipment accounting, Muster Control, Army Congestion, integration, demobilization, AI, and exploit protection.

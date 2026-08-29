@@ -10,6 +10,8 @@
 > asset, specialist, and final-audit handoffs for current closure evidence; the
 > body below remains a dated evidence record only.
 
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this dated audit predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old proof discussion remains historical evidence only.
+
 Date: 2026-07-16  
 Event: `019_infantry_spawn` / `chaosx.nr19.1`  
 Mode: report-only final audit; no gameplay, localisation, asset, workbook, specification, or shared-system edits by this auditor

@@ -1,0 +1,88 @@
+# State-level reveal evidence. Registry membership alone is not a player-facing
+# crisis: it may exist for stable monitoring, migration-driven reassessment, or
+# a historical candidate. The first visible problem is supply strain.
+famine_state_has_visible_food_problem = {
+	hidden_trigger = {
+		OR = {
+			has_state_flag = famine_food_stage_supply_strain
+			has_state_flag = famine_food_stage_acute_shortage
+			has_state_flag = famine_food_stage_famine
+			has_state_flag = famine_food_stage_catastrophic
+			AND = {
+				has_variable = famine_food_stage
+				check_variable = { var = famine_food_stage value = constant:famine_food_stage.supply_strain compare = greater_than_or_equals }
+			}
+		}
+	}
+}
+
+# A genuine starting food problem can reveal the category before the sparse
+# scheduler publishes phase flags.
+famine_decision_problem_is_active = {
+	hidden_trigger = {
+		OR = {
+			has_country_flag = famine_decision_active
+			has_country_flag = famine_decision_emerging
+			has_country_flag = famine_decision_resolution
+			any_owned_state = { famine_state_has_visible_food_problem = yes }
+		}
+	}
+}
+
+# Country-level response-role selectors keep the category legible without
+# deleting any decision. Each selector mirrors the underlying state-target
+# contract and is used only to hide a lower-priority sibling while the
+# higher-priority response is still actionable.
+famine_decision_has_reserve_response_target = {
+	any_controlled_state = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = famine_food_security_active
+		has_state_flag = famine_food_reserve_initialized
+		check_variable = { var = famine_food_pressure value = constant:humanitarian_population.zero compare = greater_than }
+		check_variable = { var = famine_food_reserve_amount value = constant:famine_mission_contract.minimum_relief_grant compare = greater_than }
+	}
+}
+
+famine_decision_has_sea_relief_target = {
+	any_controlled_state = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = famine_food_security_active
+		check_variable = { var = famine_blockade_island_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		famine_blockade_proof = yes
+		OR = {
+			AND = {
+				famine_relief_contract_is_valid = yes
+				check_variable = { var = famine_relief_route_mode value = constant:famine_relief_route_mode.sea compare = equals }
+			}
+			AND = {
+				NOT = { has_state_flag = famine_relief_contract_active }
+				famine_relief_has_sea_candidate = yes
+			}
+		}
+	}
+}
+
+famine_decision_has_evacuation_response_target = {
+	migration_decision_famine_evacuation_country_is_available = yes
+	any_controlled_state = {
+		has_state_flag = famine_food_security_active
+		migration_decision_famine_evacuation_state_is_available = yes
+	}
+}
+
+famine_decision_has_concealment_response_target = {
+	OR = {
+		has_government = fascism
+		has_government = communism
+		has_government = neutrality
+	}
+	any_controlled_state = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = famine_food_security_active
+		NOT = { has_state_flag = famine_crisis_concealed }
+		OR = {
+			NOT = { has_variable = famine_profile_extraction }
+			NOT = { check_variable = { var = famine_profile_extraction value = constant:famine_food_component.zero compare = greater_than } }
+		}
+	}
+}

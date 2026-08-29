@@ -1,5 +1,7 @@
 # Event 019 compact Muster Board background handoff
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI asset handoff is retained only as historical provenance. The accepted Event 19 runtime is decisions-only with no scripted GUI; the background package and runtime claims below are not active wiring instructions.
+
 Status: complete.
 
 ## Deliverables

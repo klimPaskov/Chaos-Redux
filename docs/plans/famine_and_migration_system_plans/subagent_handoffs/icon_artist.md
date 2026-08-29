@@ -1,5 +1,7 @@
 # Icon artist handoff: famine and migration system
 
+> **Superseded historical snapshot (2026-08-25):** This standalone handoff records pre-split icon paths, sprite names, and package counts and is retained as provenance only. Its combined category identity and `fm_*` consumers are not current instructions. Use [source_of_truth_map.md](../source_of_truth_map.md) and [completion_report.md](../completion_report.md) for current status; declared asset closure remains incomplete because the physical inventory, manifest coverage, provenance, and category-image edge checks still require parent resolution.
+
 Status: complete for the assigned icon surfaces and the Deaths texticon follow-up; current GFX/localisation wiring is present, while visual runtime validation remains parent-owned.
 
 ## Delivered files

@@ -1,31 +1,88 @@
-# Famine and migration mapmode validation
+# Famine and Migration Mapmode Validation
 
-## Accepted scope
+Status: current two-mapmode source and tool evidence after mechanic separation.
 
-The shared system owns exactly two engine-native scripted state mapmodes: `famine_state_map_mode` and `migration_state_map_mode`. No third route, reception, cohort, or return mapmode and no full scripted GUI is authorized.
+## Accepted boundary
 
-The famine mapmode reads the live food-security stage, normalized score, exposure duration, eight component ledgers, and recorded famine deaths. The migration mapmode combines displacement origins, trapped populations, exact state reception load, overcrowding, resettlement outcomes, and return outcomes. It does not invent route geometry or move population.
+The implementation adds exactly two dedicated scripted state mapmodes:
 
-## GUI MCP evidence
+- `famine_state_map_mode`
+- `migration_state_map_mode`
 
-The pre-change `hoi4.gui_inspect` request used window `mapmodes` and scenario `famine_migration_mapmodes_prechange` at 1920x1080 and UI scale 1. It returned `GUI_INSPECTED` and retained artifact `gui-inspect.c5caf2b7c631d4b9.json`, SHA-256 `56eb29f6db23450b8faa388f5577aed5f53b0bb94aca74b50a56cc0222f8de15`, shared revision `c5caf2b7c631d4b9240cdf6bdb3c941c8a63232da6af82c1deac12cb99c4550c`. The offline graph approximated or missed the hardcoded `mapmodes` window and inspected zero elements. Its global graph diagnostics were truncated after unrelated workspace-wide collisions and unresolved references.
+Both buttons are intentionally visible and understandable from campaign start. This does not reveal either decision category. Famine and migration decisions remain independently hidden until their own problem evidence is present.
 
-An intermediate post-change explorer retry retained `gui-inspect.96e4822a03aa7c97.json`; like the pre-change artifact, it resolved no elements for the engine-hardcoded `mapmodes` window and therefore could not prove button layout or click regions.
+No combined mapmode, third route/reception mapmode, full shared scripted GUI, map rewrite, event ID, event-pool row, or event-pacing pulse exists.
 
-The final post-change `hoi4.gui_inspect` request used scenario `famine_migration_mapmodes_post_change`. It returned `GUI_INSPECTED`, status `ok`, and one artifact after 59.8 seconds. The client response exposed the workspace ID but not the artifact URI or element diagnostics, so it does not supersede the documented hardcoded-window limitation.
+## Famine mapmode
 
-The final post-change `hoi4.gui_render` request used the same scenario, normal/hover/selected/warning states, and 1920x1080 plus 2560x1440 at UI scale 1. It returned `GUI_RENDERED`, status `ok`, and one artifact after 54.6 seconds. The client response again exposed no artifact URI or raster payload. Earlier requests timed out or returned `ARTIFACT_STORAGE_LIMIT`. The successful route proves that the mandatory renderer accepted the post-change source request, but the unavailable linked payload remains an exact blocker to visual and click-region comparison; source and DDS review are not presented as equivalent engine-render evidence.
+The bottom state fill is the primary Food Security classification:
 
-## Map MCP evidence
+1. stable supply;
+2. supply strain;
+3. acute shortage;
+4. famine;
+5. catastrophic famine.
 
-The broader system map inspection covers the historical-profile anchors and state consumers. Spain's previously unmapped historical profile was closed with an exact 22-state inspection of IDs 41, 165-178, and 788-794. The retained artifact is `map-inspect.a672f4ba67035c47.json`, revision `a672f4ba67035c4776c1660e9f5783507574fd4263329b240f0856996adcb38b`, SHA-256 `01e2214cf4c25a9f39d32a7317c205984140281c120885e91905db7f2982c723`; all 22 requested states were inspected. The route also repeated unrelated map-building and port-position diagnostics and a malformed Event 14 localisation diagnostic; none belongs to these mapmode files.
+The complementary top border is famine-owned. It distinguishes proven blockade exposure, exact relief route/delivery state where the famine contract owns that receipt, and pressure severity without replacing the stage fill. Catastrophic famine remains visually unmistakable.
 
-The final `hoi4.map_render` state-layer request included coastlines, ports, supply nodes, and railways at scale 1. It returned `MAP_RENDERED`, status `ok`, revision `080b7a870be68fd95ec8ed8cb464c2508b35d6b41abb1ea8c43f28a32c779841`, and passed validation with no blockers. The 5632x2048 PNG artifact is `map-state.png`, SHA-256 `52b108966ee8fa0c47ca7458c9be87112fed5d84a5836a4c5f9bb313cb021685`; the linked JSON and HTML representations have SHA-256 values `375a72c749a85d60ac8b179999f6385600238e0af6413930b5e920942df58b29` and `b6ae05fb6a49c9893898f4f1970f3eed75510c6a676d48e10aec85afeb10f04e`. This proves the complete state and transport substrate consumed by both mapmodes without changing map data.
+The authorized tooltip explains current stage and, for the owner/controller, the exact score, reserves, capacity/need/logistics, pressure components, exposure, blockade clauses, relief status, and recorded famine deaths. Public viewers receive qualitative state rather than private ledgers.
 
-## Static asset evidence
+## Migration mapmode
 
-The two button families provide separate selected and deselected 20x18 DDS consumers under `gfx/interface/mapmode/custom/`. Each file is a one-level legacy uncompressed BGRA8 texture with native alpha and no mipmaps. The decoded DDS payloads match the processed RGBA PNGs byte-for-byte. The exact manifest, prompts, reference inspection, and contact sheets live under `docs/assets/famine_and_migration_system/mapmode/`, with the subagent handoff at `docs/plans/famine_and_migration_system_plans/subagent_handoffs/mapmode_icon_artist.md`.
+The bottom state fill uses deterministic migration lifecycle priority:
 
-## Source validation
+1. trapped population;
+2. overcrowded reception;
+3. organized evacuation;
+4. active exodus;
+5. preparing to leave;
+6. return readiness;
+7. return transfer/outcome;
+8. resettlement transfer/outcome;
+9. transit;
+10. reception.
 
-The two definitions use the existing `scripted_map_modes` container, daily visual refresh, state top and bottom layers, and the established exact per-mode sprite naming contract. Color, opacity, thickness, and highlight values are centralized in `common/script_constants/state_map_modes_constants.txt`. Tooltips reveal exact ledgers only to the state's owner or controller; public viewers receive qualitative stage or role information. Script, constants, scripted-localisation, and GFX brace counts remain balanced, and the English mapmode localisation retains its UTF-8 BOM.
+The complementary top border is migration-owned. It shows trapped or overcrowded obligation, restrictive border policy on an active migration state, exact evacuation-corridor status, normalized reception-load share, or normalized flight-pressure share.
+
+It does not show famine relief, food reserves, food stages, or credited relief delivery. A neutral humanitarian corridor is displayed here only when its operation is migration evacuation, while the famine mapmode consumes famine-relief corridor receipts.
+
+The owner/controller tooltip explains Displacement Load as the primary value, Reception Capacity and Border Policy as supporting values, exact state load, cohort/endpoint role, latest driver, route/corridor proof, integration, resettlement, and return facts. It fails closed on missing or ambiguous identity.
+
+## Runtime producers and cleanup
+
+Famine colors consume only `famine_*` state variables, flags, and triggers plus the famine side of the neutral corridor contract. Migration colors consume only `migration_*` state/country ledgers plus the evacuation side of that neutral corridor contract.
+
+Every colored migration role has a bounded producer and terminal cleanup in migration core, decision, presentation, capacity, corridor, or transfer completion paths. Every famine stage/blockade/relief value is produced and retired through the famine state registry. Neither mapmode performs population movement, death accounting, route selection, or simulation.
+
+Both modes use `update_daily = yes` for visual refresh. That engine mapmode refresh is not a gameplay state scan or event pacing pulse.
+
+## Static assets
+
+The two button families provide selected and deselected 20×18 DDS textures under `gfx/interface/mapmode/custom/`:
+
+- `famine_state_map_mode_selected.dds`
+- `famine_state_map_mode_deselected.dds`
+- `migration_state_map_mode_selected.dds`
+- `migration_state_map_mode_deselected.dds`
+
+They are registered in `interface/mapmodes_interface.gfx`. Production sources, processed images, round-trip evidence, prompts, and contact sheets are recorded under `docs/assets/famine_and_migration_system/mapmode/`. No third button family exists.
+
+## Mandatory HOI4 MCP evidence
+
+### Map route
+
+The current bounded `hoi4.map_inspect` call returned `MAP_INSPECTED` for representative states 1, 64, 282, 290, and 452 at shared revision `24d421bcc68e84bfc6455b892b1ac5855b0ef47d0a746d0ce4a5a91e7851640`. Definitions, geometry, state membership, adjacency, supply, and railway substrate checks passed. The JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a75193c5b26cd1180f60405e66b535e35ff3e96ad25d03aeeded209441129c2f/60deb73e299b4ab6ff6bc342e905d5758b8a18037e0444c2bdc859a58a4dfec6/map-inspect.24d421bcc68e84bf.json`; the overview is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/06862ee46ae6ff2778002719a3bbd5bcd567fefa7fd3c1da0f612bd363b84d11/b04a6c5d1ff423af5c952585d61d898aebacec114217214d4839c21d5974539b/map-overview.24d421bcc68e84bf.png`. The route cannot execute custom scripted-mapmode color or tooltip branches. Its workspace-wide validation also surfaced unrelated `MAP_BUILDING_POSITION_INVALID` and `MAP_PORT_ADJACENT_SEA_INVALID` diagnostics after truncation. Those diagnostics are outside this map-neutral feature and are not treated as mapmode evidence.
+
+Earlier successful state-layer map renders prove the underlying state, coastline, port, supply-node, railway, and adjacency representation. The installed map renderer does not render dynamic scripted mapmode states, so those artifacts are not presented as color/tooltip proof.
+
+### GUI route
+
+The current `hoi4.gui_inspect` requests resolved `MapmodesInterface_Ingame` separately under scenarios `famine_mapmode_button_start` and `migration_mapmode_button_start`. Both returned `GUI_INSPECTED`, inspected 101 elements, and recorded shared revision `336679d372c52421672486b9d9669ee1c6a13611e875173b5069539fa9946f3a`. The famine artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c66a568ef6355fef49c8e79834fb3e17af6bfd205bef15f60613b3c31efeace7/7e69181397c82dcff3fcbca3a29f6c7b87eccfbc3e5f3f415eabfae76575ec2d/gui-inspect.336679d372c52421.json`; the migration artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2c8cb70c105f50b00654cd023815ebe79190059132311638fce0119c13d8999f/dd31f736876714c8cbd95ece7e41f19e52f7bf5048e6a73076182c9201541ff8/gui-inspect.336679d372c52421.json`.
+
+The matching `hoi4.gui_render` requests covered 1920x1080 and 2560x1440 plus normal, hover, selected, and missing-localisation states for each separate scenario. Both returned `GUI_RENDERED`. The famine artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b917c62bdfce4541d5f58ddc41eaf6ed5884f630a57a3ea88effd5f0cd3cf003/f1478e2488eafb2c91003afba1245a7753ba63e4e171a66f1c7bc9a9f5de4cc3/MapmodesInterface_Ingame-full.svg`; the migration artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b917c62bdfce4541d5f58ddc41eaf6ed5884f630a57a3ea88effd5f0cd3cf003/d72f3f29f41bf35e26d0edd302e2b243d58e9f54e55ff4c273b87cf9c959bae7/MapmodesInterface_Ingame-full.svg`. The GUI route therefore provides current source-graph and static layout evidence for the two separately named mapmode-button scenarios. It still cannot inject a selected custom mapmode—the attempted `selectedMapMode` scenario field was rejected—and it does not execute state-scoped scripted color or tooltip branches. This is not dynamic mapmode or live click proof.
+
+## Remaining presentation blocker
+
+There is no installed MCP route that executes the scripted state-color branches for these custom mapmodes. The current GUI route resolves and renders the button-window layout but cannot inject the active custom mapmode or evaluate state-scoped color and tooltip logic. Final dynamic color, tooltip expansion, selected-button behavior, and live click-region evidence therefore remain unavailable to the agent. No fallback or third UI surface was added.
+
+A final capability inventory on 2026-08-26 confirmed that the installed HOI4 server exposes only `hoi4.map_inspect`, `hoi4.map_render`, and `hoi4.map_rewrite` for map data, plus `hoi4.gui_inspect`, `hoi4.gui_render`, and `hoi4.gui_rewrite` for interfaces. A fresh map query for scripted-mapmode execution again returned `MAP_INSPECTED`; no execution, active-mapmode injection, scripted-color evaluation, or state-tooltip evaluation route was exposed. The blocker is therefore an absent tool capability, not an untried supported route.

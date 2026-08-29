@@ -1,5 +1,7 @@
 # Asset Production Prompt for Event 19 Infantry Spawn
 
+> **Archival asset prompt (2026-08-22):** This prompt preserves the original asset-production request and must not create or wire a new Event 19 scripted GUI. The accepted runtime surface is decisions-only. Former Muster Board backgrounds, animation sheets, static fallbacks, and GUI-specific source packages remain archival provenance under `docs/assets/019_infantry_spawn/`; use the top-level manifest, GFX handoff, source-of-truth map, and current provider handoffs for active status.
+
 ## Task
 
 Produce the complete visual asset package for Chaos Redux Event ID `19`, Infantry Spawn, from the accepted specification in `docs/specs/019_infantry_spawn_specs/`.
@@ -178,7 +180,9 @@ Core idea or UI value icons:
 
 Decision icons are 32 by 32. Idea and national-spirit icons are 64 by 64. Decision-category size must follow the verified existing project pattern.
 
-## Muster Board UI art
+## Archived Muster Board UI art
+
+The following UI-art section is retained as historical production provenance only and is not an active runtime requirement.
 
 Create only the artwork required by the final layout:
 

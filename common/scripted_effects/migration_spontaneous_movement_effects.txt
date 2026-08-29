@@ -1,0 +1,324 @@
+# CHAOS REDUX - SPONTANEOUS MIGRATION MOVEMENT EFFECTS
+# ============================================================================
+# The sparse registered-displacement-state job owns spontaneous movement.
+# This file derives one bounded request from live population and flight
+# pressure, selects an adjacent safe destination through the shared complete
+# weighted selector, performs exactly one exact civilian transfer, and records
+# only the measured survivor credit. A failed selection creates trapped
+# population only; it never debits population or invents route deaths.
+# ============================================================================
+
+# STATE scope. Clears only this owner’s persisted pacing variables when the
+# shared displacement registry retires the state. Trapped population remains
+# owned by the shared migration cleanup contract.
+migration_cleanup_spontaneous_movement_state = {
+	clear_variable = migration_spontaneous_movement_last_date
+	clear_variable = migration_spontaneous_movement_cooldown_until_date
+}
+
+# STATE scope. The destination selector writes these proof values as normal
+# variables on the selected destination state. Clear them through the current
+# chain-local route target on every owner exit, including no-selection and
+# failed-transfer exits. Missing targets are a safe no-op.
+migration_spontaneous_movement_cleanup_destination_proofs = {
+	if = {
+		limit = { has_event_target = migration_route_destination }
+		event_target:migration_route_destination = {
+			clear_variable = migration_destination_food_safe_proven
+			clear_variable = migration_destination_reception_proven
+		}
+	}
+}
+
+# STATE scope. Derive a people-denominated cohort from the live origin state.
+# Formula: request = clamp(flight_pressure * pressure_share, effective_min,
+# movable_population), where movable_population is live population minus the
+# protected origin floor and effective_min is lowered only when the live
+# movable pool is smaller than the configured minimum request.
+migration_spontaneous_movement_calculate_request = {
+	set_temp_variable = { migration_spontaneous_movement_request_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_spontaneous_movement_population = state_population_k }
+	multiply_temp_variable = { migration_spontaneous_movement_population = constant:humanitarian_population.people_per_k }
+	round_temp_variable = migration_spontaneous_movement_population
+	set_temp_variable = { migration_spontaneous_movement_protected_floor = migration_spontaneous_movement_population }
+	multiply_temp_variable = { migration_spontaneous_movement_protected_floor = constant:migration_spontaneous_movement.protected_origin_share }
+	round_temp_variable = migration_spontaneous_movement_protected_floor
+	set_temp_variable = { migration_spontaneous_movement_movable_population = migration_spontaneous_movement_population }
+	subtract_from_temp_variable = { migration_spontaneous_movement_movable_population = migration_spontaneous_movement_protected_floor }
+	clamp_temp_variable = {
+		var = migration_spontaneous_movement_movable_population
+		min = constant:humanitarian_population.zero
+	}
+	set_temp_variable = { migration_spontaneous_movement_request = migration_flight_pressure }
+	multiply_temp_variable = { migration_spontaneous_movement_request = constant:migration_spontaneous_movement.request_pressure_share }
+	round_temp_variable = migration_spontaneous_movement_request
+	clamp_temp_variable = {
+		var = migration_spontaneous_movement_request
+		min = constant:humanitarian_population.zero
+		max = constant:migration_spontaneous_movement.maximum_request_people
+	}
+	set_temp_variable = { migration_spontaneous_movement_effective_minimum = constant:migration_spontaneous_movement.minimum_request_people }
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_spontaneous_movement_movable_population
+				value = migration_spontaneous_movement_effective_minimum
+				compare = less_than
+			}
+		}
+		set_temp_variable = { migration_spontaneous_movement_effective_minimum = migration_spontaneous_movement_movable_population }
+	}
+	clamp_temp_variable = {
+		var = migration_spontaneous_movement_request
+		min = migration_spontaneous_movement_effective_minimum
+		max = migration_spontaneous_movement_movable_population
+	}
+	round_temp_variable = migration_spontaneous_movement_request
+	if = {
+		limit = { check_variable = { var = migration_spontaneous_movement_request value = constant:humanitarian_population.zero compare = greater_than } }
+		set_temp_variable = { migration_spontaneous_movement_request_result = constant:civilian_transfer_route_result.valid }
+	}
+}
+
+# STATE scope. Persists the one-date/cooldown guard before the route draw. A
+# save/reload therefore cannot replay the same day’s attempt.
+migration_spontaneous_movement_mark_attempt = {
+	set_variable = { migration_spontaneous_movement_last_date = global.date }
+	set_variable = { migration_spontaneous_movement_cooldown_until_date = global.date }
+	add_to_variable = { migration_spontaneous_movement_cooldown_until_date = constant:migration_spontaneous_movement.cooldown_days }
+}
+
+# STATE scope. Add only the positive amount needed to bring the trapped ledger
+# up to this request. Existing trapped people are never accumulated again on a
+# retry, and no population authority is touched.
+migration_spontaneous_movement_trap_request = {
+	if = {
+		limit = { NOT = { has_variable = migration_trapped_population } }
+		set_variable = { migration_trapped_population = constant:humanitarian_population.zero }
+	}
+	set_temp_variable = { migration_spontaneous_movement_trapped_delta = migration_spontaneous_movement_request }
+	subtract_from_temp_variable = { migration_spontaneous_movement_trapped_delta = migration_trapped_population }
+	clamp_temp_variable = {
+		var = migration_spontaneous_movement_trapped_delta
+		min = constant:humanitarian_population.zero
+	}
+	if = {
+		limit = { check_variable = { var = migration_spontaneous_movement_trapped_delta value = constant:humanitarian_population.zero compare = greater_than } }
+		set_temp_variable = { migration_trapped_request_amount = migration_spontaneous_movement_trapped_delta }
+		migration_register_trapped_population = yes
+	}
+}
+
+# STATE scope. Persist one exact, chain-proven closed-border rejection after a
+# normal spontaneous selector failure. The receipt contains the untransferred
+# request, origin/destination/actor ids, authoritative policy cause, flight
+# generation, and transaction date. It never debits population, adds deaths,
+# or calls a Condemnation adapter whose current contract lacks these fields.
+# A same-generation receipt is left untouched so replay is idempotent.
+migration_spontaneous_movement_record_closed_border_rejection = {
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_closed_border_preflight_result
+				value = constant:migration_destination_selection_runtime.one
+				compare = equals
+			}
+			has_event_target = migration_spontaneous_closed_border_destination
+			has_event_target = migration_spontaneous_closed_border_actor
+			check_variable = {
+				var = migration_spontaneous_movement_request
+				value = constant:humanitarian_population.zero
+				compare = greater_than
+			}
+			has_variable = migration_flight_request_generation
+			check_variable = {
+				var = migration_flight_request_generation
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+			event_target:migration_spontaneous_closed_border_destination = {
+				humanitarian_state_is_valid = yes
+				migration_destination_selection_reception_policy_blocks_admission = yes
+				OWNER = { tag = event_target:migration_spontaneous_closed_border_actor }
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_spontaneous_rejection_receipt_proven }
+					NOT = {
+						check_variable = {
+							var = migration_spontaneous_rejection_receipt_proven
+							value = constant:humanitarian_runtime.one
+							compare = equals
+						}
+					}
+					NOT = { has_variable = migration_spontaneous_rejection_generation }
+					NOT = {
+						check_variable = {
+							var = migration_spontaneous_rejection_generation
+							value = migration_flight_request_generation
+							compare = equals
+						}
+					}
+				}
+			}
+			set_variable = { migration_spontaneous_rejection_receipt_proven = constant:humanitarian_runtime.one }
+			set_variable = { migration_spontaneous_rejection_source = constant:humanitarian_pressure_source.cross_border_flight }
+			set_variable = { migration_spontaneous_rejection_blocker = event_target:migration_spontaneous_closed_border_destination.migration_reception_policy }
+			set_variable = { migration_spontaneous_rejection_blocker_policy_proven = constant:humanitarian_runtime.one }
+			set_variable = { migration_spontaneous_rejection_amount = migration_spontaneous_movement_request }
+			set_variable = { migration_spontaneous_rejection_origin_state_id = THIS.id }
+			set_variable = { migration_spontaneous_rejection_destination_state_id = event_target:migration_spontaneous_closed_border_destination.id }
+			set_variable = { migration_spontaneous_rejection_actor_id = event_target:migration_spontaneous_closed_border_actor.id }
+			set_variable = { migration_spontaneous_rejection_origin_owner_id = event_target:migration_spontaneous_origin_owner.id }
+			set_variable = { migration_spontaneous_rejection_generation = migration_flight_request_generation }
+			set_variable = { migration_spontaneous_rejection_transaction_id = global.date }
+		}
+	}
+}
+
+# STATE scope. Stable public request adapter. It queues pressure for the
+# registry owner and never records a cohort before an exact debit.
+migration_spontaneous_movement_submit_request = {
+	set_temp_variable = { migration_spontaneous_movement_submit_result = constant:civilian_transfer_route_result.invalid }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = migration_displacement_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = migration_displacement_request_amount value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = migration_displacement_request_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			check_variable = { var = migration_displacement_owner_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+			OR = {
+				check_variable = { var = migration_spontaneous_movement_source_request value = constant:humanitarian_pressure_source.internal_displacement compare = equals }
+				AND = {
+					check_variable = { var = migration_spontaneous_movement_source_request value = constant:humanitarian_pressure_source.cross_border_flight compare = equals }
+					check_variable = { var = migration_displacement_border_policy_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+				}
+			}
+		}
+		# This adapter supplies the flight lane only; the canonical migration
+		# pressure endpoint consumes the same proof envelope and result contract.
+		set_temp_variable = { migration_pressure_request_proven = migration_displacement_request_proven }
+		set_temp_variable = { migration_pressure_request_amount = migration_displacement_request_amount }
+		set_temp_variable = { migration_pressure_request_source = migration_spontaneous_movement_source_request }
+		set_temp_variable = { migration_pressure_request_actor_proven = migration_displacement_request_actor_proven }
+		migration_apply_flight_request = yes
+		set_temp_variable = { migration_movement_request_result = migration_pressure_request_result }
+		if = {
+			limit = { check_variable = { var = migration_movement_request_result value = constant:humanitarian_runtime.one compare = equals } }
+			set_state_flag = migration_displacement_active
+			migration_register_active_state = yes
+			set_temp_variable = { migration_spontaneous_movement_submit_result = constant:civilian_transfer_route_result.valid }
+		}
+	}
+	set_temp_variable = { migration_spontaneous_movement_source_request = constant:humanitarian_pressure_source.unknown }
+}
+
+# STATE scope. One exact spontaneous owner transaction. The selector is the
+# existing complete internal-first/foreign-fallback weighted pool. The owner
+# saves origin and owner identity first, so the destination selector receives
+# the actual origin owner even when the sparse registry is running under the
+# global-host ROOT. Cause classification is based on the actual destination
+# owner, not on the request wrapper that created flight pressure.
+migration_process_spontaneous_movement_owner = {
+	set_temp_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.invalid }
+	if = {
+		limit = { migration_spontaneous_movement_state_is_ready = yes }
+		migration_spontaneous_movement_calculate_request = yes
+		if = {
+			limit = { check_variable = { var = migration_spontaneous_movement_request_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+			migration_spontaneous_movement_mark_attempt = yes
+			save_event_target_as = civilian_transfer_origin
+			OWNER = {
+				save_event_target_as = migration_spontaneous_origin_owner
+				save_event_target_as = migration_destination_selection_actor
+			}
+			set_temp_variable = { migration_destination_selection_actor_override_proven = constant:migration_destination_selection_runtime.one }
+			migration_destination_selection_preflight_closed_border_rejection = yes
+			migration_select_general_safe_evacuation_destination = yes
+			set_temp_variable = { migration_destination_selection_actor_override_proven = constant:migration_destination_selection_runtime.zero }
+			if = {
+				limit = { check_variable = { var = migration_destination_selection_result value = constant:migration_destination_selection_runtime.one compare = equals } }
+				event_target:migration_route_destination = { save_event_target_as = civilian_transfer_route_destination }
+				set_temp_variable = { migration_spontaneous_movement_source = constant:humanitarian_pressure_source.cross_border_flight }
+				if = {
+					limit = {
+						event_target:migration_route_destination = {
+							OWNER = { tag = event_target:migration_spontaneous_origin_owner }
+						}
+					}
+					set_temp_variable = { migration_spontaneous_movement_source = constant:humanitarian_pressure_source.internal_displacement }
+				}
+				event_target:civilian_transfer_origin = {
+					set_temp_variable = { migration_cohort_record_request_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_cohort_record_amount = migration_spontaneous_movement_request }
+					set_temp_variable = { migration_cohort_record_owner_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_cohort_record_source = migration_spontaneous_movement_source }
+					migration_record_displaced_cohort = yes
+					if = {
+						limit = { check_variable = { var = migration_cohort_record_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+						event_target:migration_route_destination = {
+							set_temp_variable = { migration_cohort_destination_food_safe_proven = constant:humanitarian_runtime.one }
+							set_temp_variable = { migration_cohort_destination_reception_proven = constant:humanitarian_runtime.one }
+						}
+						set_temp_variable = { migration_cohort_id_request = migration_cohort_id_result }
+						set_temp_variable = { civilian_transfer_people = migration_spontaneous_movement_request }
+						set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_minimum_origin_remaining = migration_spontaneous_movement_protected_floor }
+						set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
+						set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_runtime.zero }
+						set_temp_variable = { civilian_transfer_target_country = OWNER }
+						set_temp_variable = { civilian_transfer_has_target_country = constant:humanitarian_runtime.one }
+						set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_spontaneous_exodus }
+						set_temp_variable = { civilian_transfer_bind_mode = constant:migration_core_reconciliation.transfer_bind_safe }
+						set_temp_variable = { civilian_transfer_source_reception_required = constant:migration_core_reconciliation.transfer_source_reception_not_required }
+						set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
+						if = { limit = { has_variable = migration_trapped_population } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+						civilian_transfer_execute_transaction = yes
+					if = {
+					limit = {
+						check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
+						check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+					}
+					if = {
+						limit = {
+							NOT = { has_variable = migration_trapped_population }
+							NOT = { check_variable = { var = migration_flight_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+						}
+						migration_unregister_active_state = yes
+					}
+					else_if = {
+						limit = {
+							check_variable = { var = migration_trapped_population value = constant:humanitarian_population.zero compare = equals }
+							NOT = { check_variable = { var = migration_flight_pressure value = constant:humanitarian_population.zero compare = greater_than } }
+						}
+						migration_unregister_active_state = yes
+					}
+					set_temp_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.valid }
+				}
+				else_if = {
+					limit = {
+						NOT = { check_variable = { var = civilian_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } }
+						check_variable = { var = migration_cohort_id_result value = constant:humanitarian_population.zero compare = greater_than }
+					}
+					set_temp_variable = { migration_staged_cohort_abort_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_cohort_id_request = migration_cohort_id_result }
+					migration_abort_staged_cohort_record = yes
+				}
+			}
+			}
+			}
+			else = {
+				migration_spontaneous_movement_trap_request = yes
+				migration_spontaneous_movement_record_closed_border_rejection = yes
+				set_temp_variable = { migration_spontaneous_movement_owner_result = constant:civilian_transfer_route_result.trapped }
+			}
+		}
+	}
+	migration_spontaneous_movement_cleanup_destination_proofs = yes
+}

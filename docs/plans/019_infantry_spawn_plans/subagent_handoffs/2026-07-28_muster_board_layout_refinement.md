@@ -1,5 +1,7 @@
 # Event 019 Muster Board Layout Refinement Handoff
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI layout handoff is retained only as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; all layout and runtime claims below are superseded.
+
 > Superseded by the user-directed compact-background correction recorded in `event19_compact_background_handoff.md` and `2026-07-28_compact_gui_mcp_review.md`. The six-well rail, authored slot/plate zones, and 1120x760 dimensions described below are historical context only.
 
 The regenerated board background remains wired through the existing `GFX_infantry_spawn_muster_board_background` identifier and remains the only runtime background asset. This handoff documented an earlier authored-zone layout; the current correction replaces it with one restrained header band, one broad central paper field, and one narrow lower action band without decorative slots or wells.

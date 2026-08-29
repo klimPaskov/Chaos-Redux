@@ -1,6 +1,6 @@
 # Riverborn 3D model package handoff
 
-Superseded by `012_africa_models_runtime_completion_2026-08-06.md`; the complete package is at `docs/assets/012_africa/models_3d/riverborn/`.
+This dated dependency handoff is historical evidence only. The retained package workspace is `docs/assets/012_africa/models_3d/riverborn/`; current blocked generation/recovery status is governed by its manifest and the current model-runtime reconciliation.
 
 ## Status
 

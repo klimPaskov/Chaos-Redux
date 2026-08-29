@@ -1,5 +1,7 @@
 # 2026-07-28 GUI Background Rebuild Handoff
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI asset handoff is retained only as historical provenance. The accepted Event 19 runtime is decisions-only with no scripted GUI; the background replacement and runtime claims below are not active wiring instructions.
+
 ## Scope
 
 Replaced the static runtime background for the direct scripted-GUI Infantry Spawn Muster Board. This handoff covers exactly one asset: `GFX_infantry_spawn_muster_board_background`.

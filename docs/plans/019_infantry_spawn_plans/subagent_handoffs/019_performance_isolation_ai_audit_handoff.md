@@ -1,5 +1,7 @@
 # Event 019 performance, isolation, and AI audit handoff
 
+> **Historical UI boundary (2026-08-22):** This audit preserves former scripted-GUI mutation-lock evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; the current transaction surface is the ordinary decision and mission system.
+
 > **Superseded findings notice (2026-07-15):** The two P1 findings below are
 > preserved as the original audit record, not as current defects. Lifetime-ledger
 > work was replaced by bounded, cursor-driven compaction and independently

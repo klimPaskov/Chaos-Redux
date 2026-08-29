@@ -21,6 +21,8 @@
 @dhr_ai_world_threshold = 0.5
 @dhr_tree_priority = 100
 @dhr_bonus_use = 1
+@dhr_research_half = 0.5
+@dhr_research_full = 1.0
 
 focus_tree = {
 	id = dhrondan_focus_tree
@@ -125,7 +127,7 @@ focus_tree = {
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
 		completion_reward = {
 			set_country_flag = dhrondan_landing_beacons_restored
-			add_tech_bonus = { name = DHR_restore_the_landing_beacons bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = radar_tech }
+			add_tech_bonus = { name = DHR_restore_the_landing_beacons bonus = @dhr_research_half uses = @dhr_bonus_use category = radar_tech }
 		}
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
@@ -194,7 +196,7 @@ focus_tree = {
 		ai_will_do = {
 			base = @dhr_ai_preferred
 			modifier = { factor = @dhr_ai_route_factor has_war = yes }
-			modifier = { factor = @dhr_ai_route_factor war_support > @dhr_ai_world_threshold }
+			modifier = { factor = @dhr_ai_route_factor has_war_support > @dhr_ai_world_threshold }
 		}
 	}
 
@@ -307,7 +309,7 @@ focus_tree = {
 		ai_will_do = {
 			base = @dhr_ai_preferred
 			modifier = { factor = @dhr_ai_route_factor has_war = no }
-			modifier = { factor = @dhr_ai_route_factor stability > @dhr_ai_world_threshold }
+			modifier = { factor = @dhr_ai_route_factor has_stability > @dhr_ai_world_threshold }
 		}
 	}
 
@@ -346,7 +348,7 @@ focus_tree = {
 		prerequisite = { focus = DHR_audit_every_command_node }
 		available = { dhrondan_focus_is_synod = yes }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_STABILITY }
-		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small add_tech_bonus = { name = DHR_publish_the_survival_equations bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = computing_tech } }
+		completion_reward = { add_stability = constant:dhrondan_focus_bonus.stability_small add_tech_bonus = { name = DHR_publish_the_survival_equations bonus = @dhr_research_half uses = @dhr_bonus_use category = computing_tech } }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -420,7 +422,7 @@ focus_tree = {
 		ai_will_do = {
 			base = @dhr_ai_preferred
 			modifier = { factor = @dhr_ai_route_factor has_war = no }
-			modifier = { factor = @dhr_ai_route_factor stability < @dhr_ai_world_threshold }
+			modifier = { factor = @dhr_ai_route_factor has_stability < @dhr_ai_world_threshold }
 		}
 	}
 
@@ -528,7 +530,7 @@ focus_tree = {
 		cost = @dhr_cost_standard
 		prerequisite = { focus = DHR_inventory_the_expedition_stores }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
-		completion_reward = { dhrondan_focus_open_laboratory_program = yes add_tech_bonus = { name = DHR_relight_the_field_laboratories bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = electronics } }
+		completion_reward = { dhrondan_focus_open_laboratory_program = yes add_tech_bonus = { name = DHR_relight_the_field_laboratories bonus = @dhr_research_half uses = @dhr_bonus_use category = electronics } }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -564,7 +566,7 @@ focus_tree = {
 		cost = @dhr_cost_long
 		prerequisite = { focus = DHR_recover_the_laser_forges }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
-		completion_reward = { add_tech_bonus = { name = DHR_crystal_growth_chambers bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = electronics } set_country_flag = dhrondan_crystal_growth_chambers_active }
+		completion_reward = { add_tech_bonus = { name = DHR_crystal_growth_chambers bonus = @dhr_research_full uses = @dhr_bonus_use category = electronics } set_country_flag = dhrondan_crystal_growth_chambers_active }
 		ai_will_do = { base = @dhr_ai_standard }
 	}
 
@@ -576,7 +578,7 @@ focus_tree = {
 		cost = @dhr_cost_long
 		prerequisite = { focus = DHR_convert_terrestrial_workshops }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
-		completion_reward = { add_tech_bonus = { name = DHR_the_twenty_element_substitution bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = industry } set_country_flag = dhrondan_twenty_element_substitution_mastered }
+		completion_reward = { add_tech_bonus = { name = DHR_the_twenty_element_substitution bonus = @dhr_research_full uses = @dhr_bonus_use category = industry } set_country_flag = dhrondan_twenty_element_substitution_mastered }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -626,7 +628,7 @@ focus_tree = {
 		prerequisite = { focus = DHR_feed_the_landing_reserve }
 		prerequisite = { focus = DHR_the_exoplanetary_materials_board }
 		search_filters = { FOCUS_FILTER_RESEARCH }
-		completion_reward = { add_tech_bonus = { name = DHR_join_the_scattered_laboratories bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = computing_tech } set_country_flag = dhrondan_scattered_laboratories_joined }
+		completion_reward = { add_tech_bonus = { name = DHR_join_the_scattered_laboratories bonus = @dhr_research_full uses = @dhr_bonus_use category = computing_tech } set_country_flag = dhrondan_scattered_laboratories_joined }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -666,7 +668,7 @@ focus_tree = {
 		cost = @dhr_cost_standard
 		prerequisite = { focus = DHR_restore_the_predictive_staff }
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
-		completion_reward = { add_tech_bonus = { name = DHR_map_the_probability_front bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = land_doctrine } army_experience = constant:dhrondan_focus_reward.army_experience_small }
+		completion_reward = { add_tech_bonus = { name = DHR_map_the_probability_front bonus = @dhr_research_half uses = @dhr_bonus_use category = land_doctrine } army_experience = constant:dhrondan_focus_reward.army_experience_small }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -678,7 +680,7 @@ focus_tree = {
 		cost = @dhr_cost_standard
 		prerequisite = { focus = DHR_restore_the_predictive_staff }
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
-		completion_reward = { add_tech_bonus = { name = DHR_encode_the_enemy_reaction bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = encryption_tech } add_command_power = constant:dhrondan_focus_reward.command_power_small }
+		completion_reward = { add_tech_bonus = { name = DHR_encode_the_enemy_reaction bonus = @dhr_research_half uses = @dhr_bonus_use category = encryption_tech } add_command_power = constant:dhrondan_focus_reward.command_power_small }
 		ai_will_do = { base = @dhr_ai_standard }
 	}
 
@@ -715,7 +717,7 @@ focus_tree = {
 		prerequisite = { focus = DHR_train_human_signal_teams }
 		prerequisite = { focus = DHR_rebuild_the_expeditionary_cadres }
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
-		completion_reward = { dhrondan_focus_set_predictive_sight = yes add_tech_bonus = { name = DHR_fire_control_by_forecast bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = infantry_weapons } }
+		completion_reward = { dhrondan_focus_set_predictive_sight = yes add_tech_bonus = { name = DHR_fire_control_by_forecast bonus = @dhr_research_half uses = @dhr_bonus_use category = infantry_weapons } }
 		ai_will_do = { base = @dhr_ai_urgent }
 	}
 
@@ -763,7 +765,7 @@ focus_tree = {
 		cost = @dhr_cost_long
 		prerequisite = { focus = DHR_the_thousand_branch_wargame }
 		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
-		completion_reward = { add_tech_bonus = { name = DHR_command_without_surprise bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = land_doctrine } set_country_flag = dhrondan_command_without_surprise }
+		completion_reward = { add_tech_bonus = { name = DHR_command_without_surprise bonus = @dhr_research_full uses = @dhr_bonus_use category = land_doctrine } set_country_flag = dhrondan_command_without_surprise }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -833,7 +835,7 @@ focus_tree = {
 		cost = @dhr_cost_long
 		prerequisite = { focus = DHR_reassemble_the_orbital_office }
 		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_RESEARCH }
-		completion_reward = { air_experience = constant:dhrondan_focus_reward.air_experience_small add_tech_bonus = { name = DHR_adapt_the_gravity_fighters bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = air_equipment } }
+		completion_reward = { air_experience = constant:dhrondan_focus_reward.air_experience_small add_tech_bonus = { name = DHR_adapt_the_gravity_fighters bonus = @dhr_research_full uses = @dhr_bonus_use category = air_equipment } }
 		ai_will_do = { base = @dhr_ai_standard }
 	}
 
@@ -880,7 +882,7 @@ focus_tree = {
 		cost = @dhr_cost_long
 		prerequisite = { focus = DHR_salvage_the_shuttle_docks }
 		search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_RESEARCH }
-		completion_reward = { navy_experience = constant:dhrondan_focus_reward.navy_experience_small add_tech_bonus = { name = DHR_form_the_exile_flotilla bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = naval_equipment } }
+		completion_reward = { navy_experience = constant:dhrondan_focus_reward.navy_experience_small add_tech_bonus = { name = DHR_form_the_exile_flotilla bonus = @dhr_research_half uses = @dhr_bonus_use category = naval_equipment } }
 		ai_will_do = { base = @dhr_ai_standard }
 	}
 
@@ -937,7 +939,7 @@ focus_tree = {
 		cost = @dhr_cost_standard
 		prerequisite = { focus = DHR_open_the_translation_bureaus }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL }
-		completion_reward = { add_tech_bonus = { name = DHR_listen_to_the_human_airwaves bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = decryption_tech } set_country_flag = dhrondan_human_airwaves_monitored }
+		completion_reward = { add_tech_bonus = { name = DHR_listen_to_the_human_airwaves bonus = @dhr_research_half uses = @dhr_bonus_use category = decryption_tech } set_country_flag = dhrondan_human_airwaves_monitored }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -985,7 +987,7 @@ focus_tree = {
 		cost = @dhr_cost_long
 		prerequisite = { focus = DHR_exchange_maps_for_access }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_POLITICAL_CHARACTER }
-		completion_reward = { add_tech_bonus = { name = DHR_recruit_two_world_operatives bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = encryption_tech } set_country_flag = dhrondan_two_world_operatives_available }
+		completion_reward = { add_tech_bonus = { name = DHR_recruit_two_world_operatives bonus = @dhr_research_full uses = @dhr_bonus_use category = encryption_tech } set_country_flag = dhrondan_two_world_operatives_available }
 		ai_will_do = { base = @dhr_ai_standard }
 	}
 
@@ -1078,7 +1080,7 @@ focus_tree = {
 		prerequisite = { focus = DHR_define_the_two_worlds_question }
 		available = { dhrondan_focus_is_synod = yes }
 		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_RESEARCH }
-		completion_reward = { dhrondan_focus_mark_origin_host_reclamation = yes add_tech_bonus = { name = DHR_calculate_the_reclamation_zones bonus = constant:dhrondan_focus_bonus.research_half uses = @dhr_bonus_use category = computing_tech } custom_effect_tooltip = DHR_reclamation_declaration_effect }
+		completion_reward = { dhrondan_focus_mark_origin_host_reclamation = yes add_tech_bonus = { name = DHR_calculate_the_reclamation_zones bonus = @dhr_research_half uses = @dhr_bonus_use category = computing_tech } custom_effect_tooltip = DHR_reclamation_declaration_effect }
 		ai_will_do = { base = @dhr_ai_preferred }
 	}
 
@@ -1214,7 +1216,7 @@ focus_tree = {
 		mutually_exclusive = { focus = DHR_offer_a_shared_horizon }
 		available = { dhrondan_focus_is_in_crisis = yes }
 		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_INTERNAL_AFFAIRS }
-		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_medium add_tech_bonus = { name = DHR_break_the_separatist_ciphers bonus = constant:dhrondan_focus_bonus.research_full uses = @dhr_bonus_use category = decryption_tech } }
+		completion_reward = { add_command_power = constant:dhrondan_focus_reward.command_power_medium add_tech_bonus = { name = DHR_break_the_separatist_ciphers bonus = @dhr_research_full uses = @dhr_bonus_use category = decryption_tech } }
 		ai_will_do = {
 			base = @dhr_ai_standard
 			modifier = { factor = @dhr_ai_route_factor dhrondan_focus_is_imperial = yes }

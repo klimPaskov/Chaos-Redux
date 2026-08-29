@@ -2,6 +2,10 @@
 
 > Visual and registry supersession notice: every human-portrait roster, presentation, leader/council-art, contact-sheet, and asset-count claim in the body predates the final army/host-scene regeneration. Current fixed slots show twenty regional claimant armies/musters, six derivative massed hosts, and one neutral unassigned muster with no individual focal human/person; see `019_full_portrait_regeneration_handoff_2026_07_16.md`, `019_neutral_unassigned_muster_asset_handoff_2026_07_16.md`, and the current 27-row crosswalk. The male gameplay identity correction remains governed by `019_male_claimant_identity_correction_handoff_2026_07_16.md`. Any future-provider statement requiring an edit to the sole Event 19 registry file is also superseded: future registration and callbacks live in the family's existing integration surface and require only its parent startup call. Other implementation audit findings remain historical evidence.
 
+> **Historical UI boundary (2026-08-22):** Former Muster Board and scripted-GUI findings in this packet are archival evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; use the current decision-only addendum and source-of-truth map for active UI routing.
+
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this dated packet predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old proof discussion remains historical evidence only.
+
 Date: 2026-07-16
 
 ## Authority and limits

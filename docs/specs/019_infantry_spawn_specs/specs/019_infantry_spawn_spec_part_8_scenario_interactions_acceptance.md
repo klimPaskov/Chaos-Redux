@@ -1,6 +1,8 @@
 # Event 19 Infantry Spawn
 ## Part 8: Triggerable scenario, cross-event integration, presentation, and acceptance
 
+> **Current UI and status boundary (2026-08-22):** This part preserves accepted scenario and presentation design. Former Muster Board and GUI asset references are archival provenance only. The live scenario is `SCN-013`, and the player-facing Event 19 surface is decisions-only with no scripted GUI.
+
 ## Triggerable scenario
 
 ### Registry identity
@@ -422,8 +424,8 @@ Required major asset families:
 - decision category icon
 - decision icons
 - idea and national spirit icons
-- Muster Board panel and state icons
-- three animated UI packages with static fallbacks
+- former Muster Board panel and state icons (archival provenance only; no runtime consumer)
+- three former animated UI packages with static fallbacks (archival provenance only; no runtime consumer)
 - 20 fixed claimant portrait-slot assets displaying distinct regional army/muster scenes with no individual focal person
 - derivative country flags
 - six fixed derivative portrait-slot assets displaying massed zombie, ghost, or golem hosts; councils use exactly three formations/cohorts
@@ -548,10 +550,8 @@ The implementation is not complete unless every item below is finished or explic
 ### UI and assets
 
 - phased decision category
-- Muster Board
-- selected-lot management
-- claimant and registry tabs
-- three real frame-sheet animations and static fallbacks
+- ordinary decision-based lot management; no Event 19 scripted GUI
+- former Muster Board, selected-lot, claimant-tab, registry-tab, and animation requirements remain historical design evidence only
 - no missing visible asset
 
 ### AI and balance

@@ -1,0 +1,70 @@
+# COUNTRY scope. Famine phase projection reads only owned food-security state
+# facts. It is safe for a starting save with an already-active food problem and
+# does not inspect migration cohorts or reception load.
+famine_refresh_decision_phase_from_country = {
+	set_temp_variable = { famine_decision_phase_food_crisis = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_decision_phase_resolution_seen = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			any_owned_state = { famine_state_has_visible_food_problem = yes }
+		}
+		set_temp_variable = { famine_decision_phase_food_crisis = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = { has_country_flag = famine_decision_resolution }
+		set_temp_variable = { famine_decision_phase_resolution_seen = constant:humanitarian_runtime.one }
+	}
+	if = {
+		limit = {
+			check_variable = { var = famine_decision_phase_food_crisis value = constant:humanitarian_runtime.one compare = equals }
+			NOT = { has_country_flag = famine_decision_active }
+			NOT = { has_country_flag = famine_decision_resolution }
+		}
+		set_country_flag = famine_decision_emerging
+		clr_country_flag = famine_decision_dormant
+	}
+	if = {
+		limit = {
+			has_country_flag = famine_decision_active
+			check_variable = { var = famine_decision_phase_food_crisis value = constant:humanitarian_runtime.zero compare = equals }
+		}
+		set_country_flag = famine_decision_resolution
+		clr_country_flag = famine_decision_active
+		clr_country_flag = famine_decision_emerging
+		clr_country_flag = famine_decision_dormant
+	}
+	if = {
+		limit = {
+			has_country_flag = famine_decision_emerging
+			check_variable = { var = famine_decision_phase_food_crisis value = constant:humanitarian_runtime.zero compare = equals }
+			NOT = { has_country_flag = famine_mission_route_active }
+			NOT = { has_country_flag = famine_mission_relief_active }
+		}
+		set_country_flag = famine_decision_dormant
+		clr_country_flag = famine_decision_emerging
+	}
+	if = {
+		limit = {
+			check_variable = { var = famine_decision_phase_food_crisis value = constant:humanitarian_runtime.one compare = equals }
+			has_country_flag = famine_decision_resolution
+		}
+		set_country_flag = famine_decision_active
+		clr_country_flag = famine_decision_resolution
+		clr_country_flag = famine_decision_emerging
+		clr_country_flag = famine_decision_dormant
+	}
+	if = {
+		limit = {
+			check_variable = { var = famine_decision_phase_resolution_seen value = constant:humanitarian_runtime.one compare = equals }
+			has_country_flag = famine_decision_resolution
+			check_variable = { var = famine_decision_phase_food_crisis value = constant:humanitarian_runtime.zero compare = equals }
+			NOT = { has_country_flag = famine_mission_route_active }
+			NOT = { has_country_flag = famine_mission_relief_active }
+		}
+		set_country_flag = famine_decision_dormant
+		clr_country_flag = famine_decision_resolution
+		clr_country_flag = famine_decision_active
+		clr_country_flag = famine_decision_emerging
+	}
+}
+

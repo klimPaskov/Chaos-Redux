@@ -1,0 +1,155 @@
+# ============================================================================
+# CHAOS REDUX - HUMANITARIAN RUNTIME DISPATCH ON ACTIONS
+# ============================================================================
+# The existing host-only chaos-meter daily coordinator invokes the separate
+# famine and migration registries through narrow neutral dispatchers. Lifecycle
+# callbacks here touch the documented callback scopes and enqueue bounded
+# owner-specific reassessment or cleanup work.
+# No callback here introduces a new periodic world-wide iteration.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				famine_register_cxt_test_content = yes
+				migration_register_cxt_test_content = yes
+			}
+			# The achievement baseline is a one-time existing-country setup pass,
+			# not a recurring scheduler or a population scan. It runs before the
+			# first daily food evaluation can apply famine mortality.
+			every_country = {
+				limit = { exists = yes }
+				humanitarian_achievement_seed_initial_core_baseline = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				# on_startup does not run when a save is loaded. The CXT repair
+				# path therefore repeats only the missing write-once baseline.
+				humanitarian_achievement_seed_initial_core_baseline = yes
+				famine_register_cxt_test_content = yes
+				migration_register_cxt_test_content = yes
+				if = {
+				limit = { check_variable = { var = chaosx_test_country_extension_registration_added value = constant:humanitarian_runtime.zero compare = greater_than } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			# FROM.FROM is the state; ROOT is the new controller and FROM the old.
+			FROM = { save_event_target_as = migration_previous_controller }
+			# Corridor identity is invalidated before generic state registration
+			# cleanup; control transfer is never submitted as an attack receipt.
+			FROM.FROM = {
+				humanitarian_corridor_handle_state_control_change = yes
+				humanitarian_handle_state_control_change = yes
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			# The former country scope is bounded to its owned states. State-control
+			# callbacks handle states that changed hands before this hook executes.
+			FROM = {
+				humanitarian_achievement_record_annexation = yes
+				every_owned_state = { humanitarian_cleanup_state_registration = yes }
+				famine_cleanup_country_registration = yes
+				migration_cleanup_country_registration = yes
+			}
+		}
+	}
+
+	on_war_relation_added = {
+		effect = {
+			ROOT = {
+				humanitarian_mark_country_war_reassessment = yes
+				humanitarian_corridor_revalidate_sparse_country = yes
+			}
+			FROM = {
+				humanitarian_mark_country_war_reassessment = yes
+				humanitarian_corridor_revalidate_sparse_country = yes
+			}
+		}
+	}
+
+	on_peace = {
+		effect = {
+			# Offline on-actions documentation defines THIS as the country that
+			# is no longer at war; this hook therefore uses the ambient scope.
+			humanitarian_mark_country_peace_reassessment = yes
+			humanitarian_corridor_revalidate_sparse_country = yes
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			ROOT = {
+				humanitarian_mark_country_peace_reassessment = yes
+				humanitarian_corridor_revalidate_sparse_country = yes
+			}
+			FROM = {
+				humanitarian_mark_country_peace_reassessment = yes
+				humanitarian_corridor_revalidate_sparse_country = yes
+			}
+		}
+	}
+
+	on_naval_invasion = {
+		effect = {
+			# The documented callback exposes THIS as the invaded state and ROOT
+			# as the invading country, an exact receipt suitable for the corridor.
+			ROOT = { save_event_target_as = humanitarian_corridor_exact_attacker }
+			humanitarian_corridor_handle_exact_state_attack = yes
+		}
+	}
+
+	on_units_paradropped_in_state = {
+		effect = {
+			# This once-per-operation callback exposes ROOT as the exact state and
+			# FROM as the dropping country, avoiding per-unit duplicate receipts.
+			FROM = { save_event_target_as = humanitarian_corridor_exact_attacker }
+			ROOT = { humanitarian_corridor_handle_exact_state_attack = yes }
+		}
+	}
+
+	on_nuke_drop = {
+		effect = {
+			# ROOT is the launcher and FROM is the nuked state in the documented
+			# callback scope. Preserve ROOT before entering FROM.
+			ROOT = { save_event_target_as = humanitarian_corridor_nuke_launcher }
+			FROM = {
+				humanitarian_corridor_handle_nuke_drop = yes
+				OWNER = { migration_show_report_nuclear_evacuation = yes }
+				if = {
+					limit = { NOT = { is_owned_and_controlled_by = OWNER } }
+					CONTROLLER = { migration_show_report_nuclear_evacuation = yes }
+				}
+				set_temp_variable = { famine_pressure_request_amount = state_population_k }
+				multiply_temp_variable = { famine_pressure_request_amount = constant:humanitarian_population.people_per_k }
+				multiply_temp_variable = { famine_pressure_request_amount = constant:famine_adapter_pressure.nuclear_strike_population_fraction }
+				round_temp_variable = famine_pressure_request_amount
+				set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { famine_pressure_request_actor_proven = constant:humanitarian_runtime.one }
+				famine_request_nuclear_pressure = yes
+				set_temp_variable = { migration_pressure_request_amount = state_population_k }
+				multiply_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.people_per_k }
+				multiply_temp_variable = { migration_pressure_request_amount = constant:migration_adapter_pressure.nuclear_strike_population_fraction }
+				round_temp_variable = migration_pressure_request_amount
+				set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+				set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
+				migration_request_nuclear_pressure = yes
+				humanitarian_handle_nuclear_state_change = yes
+			}
+		}
+	}
+}

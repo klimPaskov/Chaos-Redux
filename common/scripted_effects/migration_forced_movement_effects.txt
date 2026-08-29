@@ -1,0 +1,308 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION FORCED-MOVEMENT EFFECTS
+# ============================================================================
+# The camp owner submits one explicit source, fixed destination, actor,
+# transaction identity, amount, and custody policy. This file stages one
+# aligned cohort row and delegates the population, reception, bind, and ledger
+# commit to the shared exact-transfer transaction. A valid positive finalize
+# receipt then emits one
+# responsible-actor deportation condemnation; neither post-success receipt
+# changes population, cohort amount, custody, or route-death accounting.
+# Failed validation or failed credit removes the staged row and leaves no
+# movement receipt. Route deaths are an optional, separately proven slice of
+# the exact debit; movement itself never registers as death.
+# ============================================================================
+
+# Remove the one staged row when binding, destination validation, or the exact
+# population transaction fails. The destination and source-owner selection
+# pointers are cleared as well so a failed attempt cannot replay a stale row.
+migration_forced_transfer_cleanup_staged_cohort = {
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_forced_transfer_cohort_id
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { migration_staged_cohort_abort_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { migration_cohort_id_request = migration_forced_transfer_cohort_id }
+		migration_abort_staged_cohort_record = yes
+		if = {
+			limit = { has_event_target = migration_forced_transfer_destination }
+			event_target:migration_forced_transfer_destination = {
+				if = {
+					limit = {
+						has_variable = migration_current_cohort_id
+						check_variable = {
+							var = migration_current_cohort_id
+							value = migration_forced_transfer_cohort_id
+							compare = equals
+						}
+					}
+					clear_variable = migration_current_cohort_id
+					clr_state_flag = migration_cohort_selection_ambiguous
+				}
+			}
+		}
+		if = {
+			limit = {
+				has_variable = migration_current_cohort_id
+				check_variable = {
+					var = migration_current_cohort_id
+					value = migration_forced_transfer_cohort_id
+					compare = equals
+				}
+			}
+			clear_variable = migration_current_cohort_id
+			clr_state_flag = migration_cohort_selection_ambiguous
+		}
+		if = {
+			limit = { has_event_target = migration_forced_transfer_source_owner }
+			event_target:migration_forced_transfer_source_owner = {
+				if = {
+					limit = {
+						has_variable = migration_current_country_cohort_id
+						check_variable = {
+							var = migration_current_country_cohort_id
+							value = migration_forced_transfer_cohort_id
+							compare = equals
+						}
+					}
+					clear_variable = migration_current_country_cohort_id
+					clr_country_flag = migration_country_cohort_selection_ambiguous
+				}
+			}
+		}
+	}
+}
+
+# Exact owner contract for deportation/camp-prison transfer. The caller must
+# submit all request proof before this effect is entered; no destination or
+# actor is selected here. A durable last-transaction signature on the origin
+# state rejects a replay and makes a matching retry a no-op.
+migration_execute_forced_transfer_exact = {
+	migration_initialize_runtime = yes
+	set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.invalid }
+	set_temp_variable = { migration_forced_transfer_cohort_id = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_forced_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_forced_transfer_route_deaths = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_forced_transfer_survivor_credit = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_forced_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+	set_temp_variable = { migration_forced_transfer_conservation_ledger = constant:humanitarian_population.zero }
+	set_temp_variable = { civilian_transfer_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { civilian_transfer_actual_origin_debit = constant:humanitarian_population.zero }
+	set_temp_variable = { civilian_transfer_destination_actual_credit = constant:humanitarian_population.zero }
+	set_temp_variable = { civilian_transfer_source_reception_applied = constant:humanitarian_population.zero }
+	set_temp_variable = { civilian_transfer_destination_reception_applied = constant:humanitarian_population.zero }
+	set_temp_variable = { civilian_transfer_finalize_result = constant:migration_core_reconciliation.transfer_finalize_invalid }
+	set_temp_variable = { migration_forced_transfer_origin_state_id = THIS.id }
+	set_temp_variable = { migration_forced_transfer_destination_state_id = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_forced_transfer_actor_id = constant:humanitarian_runtime.zero }
+	if = {
+		limit = { NOT = { has_variable = migration_forced_transfer_route_deaths_requested } }
+		set_temp_variable = { migration_forced_transfer_route_deaths_requested = constant:humanitarian_population.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = migration_forced_transfer_route_death_proven } }
+		set_temp_variable = { migration_forced_transfer_route_death_proven = constant:humanitarian_runtime.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = migration_forced_transfer_route_death_reason } }
+		set_temp_variable = { migration_forced_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
+	}
+	if = {
+		limit = { NOT = { has_variable = migration_forced_transfer_log_deaths } }
+		set_temp_variable = { migration_forced_transfer_log_deaths = constant:humanitarian_runtime.zero }
+	}
+	save_event_target_as = migration_forced_transfer_origin
+	ROOT = {
+		save_event_target_as = migration_forced_transfer_actor
+	}
+	OWNER = {
+		save_event_target_as = migration_forced_transfer_source_owner
+		save_event_target_as = migration_forced_transfer_pressure_owner
+	}
+	if = {
+		limit = { has_event_target = migration_forced_transfer_destination }
+		event_target:migration_forced_transfer_destination = {
+			set_temp_variable = { migration_destination_food_safe_proven = migration_forced_transfer_destination_food_safe_proven }
+			set_temp_variable = { migration_destination_reception_proven = migration_forced_transfer_destination_reception_proven }
+			set_temp_variable = { migration_forced_transfer_destination_state_id = THIS.id }
+			OWNER = {
+				save_event_target_as = migration_forced_transfer_reception_owner
+			}
+			save_event_target_as = migration_route_destination
+			save_event_target_as = civilian_transfer_route_destination
+		}
+	}
+	set_temp_variable = { migration_forced_transfer_actor_id = event_target:migration_forced_transfer_actor.id }
+	if = {
+		limit = { migration_forced_transfer_contract_is_valid = yes }
+		if = {
+			limit = { NOT = { migration_forced_transfer_route_death_request_is_valid = yes } }
+			set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.invalid }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_forced_transfer_last_transaction_id
+				check_variable = {
+					var = migration_forced_transfer_transaction_id
+					value = migration_forced_transfer_last_transaction_id
+					compare = less_than
+				}
+			}
+			set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.invalid }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_forced_transfer_last_transaction_id
+				check_variable = {
+					var = migration_forced_transfer_transaction_id
+					value = migration_forced_transfer_last_transaction_id
+					compare = equals
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = migration_forced_transfer_last_destination_state_id value = migration_forced_transfer_destination_state_id compare = equals }
+					check_variable = { var = migration_forced_transfer_last_actor_id value = migration_forced_transfer_actor_id compare = equals }
+					check_variable = { var = migration_forced_transfer_last_requested_people value = migration_forced_transfer_requested_people compare = equals }
+				}
+				set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.already_applied }
+				set_temp_variable = { migration_forced_transfer_actual_origin_debit = migration_forced_transfer_last_actual_origin_debit }
+				set_temp_variable = { migration_forced_transfer_route_deaths = migration_forced_transfer_last_route_deaths }
+				set_temp_variable = { migration_forced_transfer_survivor_credit = migration_forced_transfer_last_survivor_credit }
+				set_temp_variable = { migration_forced_transfer_destination_actual_credit = migration_forced_transfer_last_destination_credit }
+				set_temp_variable = { migration_forced_transfer_conservation_ledger = migration_forced_transfer_last_conservation_ledger }
+			}
+			else = {
+				set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.invalid }
+			}
+		}
+		else = {
+			set_temp_variable = { migration_cohort_record_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_cohort_record_amount = migration_forced_transfer_requested_people }
+			set_temp_variable = { migration_cohort_record_owner_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_cohort_record_source = constant:humanitarian_pressure_source.deportation }
+			migration_record_displaced_cohort = yes
+			set_temp_variable = { migration_forced_transfer_cohort_id = migration_cohort_id_result }
+			set_temp_variable = { migration_cohort_id_request = migration_forced_transfer_cohort_id }
+			migration_resolve_cohort_origin = yes
+			if = {
+				limit = { migration_forced_transfer_staged_cohort_proof_is_valid = yes }
+				event_target:migration_forced_transfer_destination = {
+					set_temp_variable = { migration_cohort_forced_bind_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_cohort_forced_bind_actor_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_cohort_forced_bind_policy_proven = constant:humanitarian_runtime.one }
+				}
+				if = {
+					limit = { migration_forced_transfer_staged_cohort_proof_is_valid = yes }
+					set_temp_variable = { migration_cohort_id_request = migration_forced_transfer_cohort_id }
+					set_temp_variable = { civilian_transfer_people = migration_forced_transfer_requested_people }
+					set_temp_variable = { civilian_transfer_minimum_origin_remaining = migration_forced_transfer_minimum_origin_remaining }
+					set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_border_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_transport_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_safety_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_actor_proven = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_route_deaths_requested = migration_forced_transfer_route_deaths_requested }
+					set_temp_variable = { civilian_transfer_route_death_reason = migration_forced_transfer_route_death_reason }
+					set_temp_variable = { civilian_transfer_log_deaths = migration_forced_transfer_log_deaths }
+					set_temp_variable = { civilian_transfer_target_country = event_target:migration_forced_transfer_actor }
+					set_temp_variable = { civilian_transfer_has_target_country = constant:humanitarian_runtime.one }
+					set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_deportation }
+					set_temp_variable = { civilian_transfer_bind_mode = constant:migration_core_reconciliation.transfer_bind_forced }
+					set_temp_variable = { civilian_transfer_source_reception_required = constant:migration_core_reconciliation.transfer_source_reception_not_required }
+					if = { limit = { has_variable = migration_flight_pressure } set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one } }
+					if = { limit = { has_variable = migration_trapped_population } set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one } }
+					civilian_transfer_execute_transaction = yes
+					set_temp_variable = { migration_forced_transfer_actual_origin_debit = civilian_transfer_actual_origin_debit }
+					set_temp_variable = { migration_forced_transfer_route_deaths = civilian_transfer_route_deaths }
+					set_temp_variable = { migration_forced_transfer_survivor_credit = civilian_transfer_survivor_credit }
+					set_temp_variable = { migration_forced_transfer_destination_actual_credit = civilian_transfer_destination_actual_credit }
+					set_temp_variable = { migration_forced_transfer_conservation_ledger = civilian_transfer_conservation_ledger }
+					if = {
+						limit = { check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals } }
+						if = {
+							limit = {
+								check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+								check_variable = { var = migration_forced_transfer_destination_actual_credit value = migration_forced_transfer_survivor_credit compare = equals }
+								check_variable = { var = migration_forced_transfer_transaction_id value = constant:humanitarian_runtime.zero compare = greater_than }
+								check_variable = { var = migration_forced_transfer_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+							}
+							set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.valid }
+							# Condemnation is emitted only from this new valid-positive
+							# transaction branch. Replay, failure, and zero-survivor paths
+							# never enter this scope, so the actor receipt cannot duplicate.
+							event_target:migration_forced_transfer_actor = {
+								event_target:migration_forced_transfer_origin = { save_event_target_as = migration_condemnation_state }
+								set_temp_variable = { migration_condemnation_state_proven = event_target:migration_forced_transfer_origin.id }
+								set_temp_variable = { migration_condemnation_cohort_id = migration_forced_transfer_cohort_id }
+								set_temp_variable = { migration_condemnation_people_amount = migration_forced_transfer_actual_origin_debit }
+								set_temp_variable = { migration_condemnation_route_proven = migration_forced_transfer_actual_origin_debit }
+								set_temp_variable = { migration_condemnation_actor_proven = event_target:migration_forced_transfer_actor.id }
+								set_temp_variable = { migration_condemnation_cause_proven = migration_forced_transfer_route_death_reason }
+								set_temp_variable = { migration_condemnation_generation = migration_forced_transfer_transaction_id }
+								set_temp_variable = { migration_condemnation_revision = migration_forced_transfer_cohort_id }
+								set_temp_variable = { migration_condemnation_request_id = global.date }
+								set_temp_variable = { condemnation_civilian_deaths = constant:humanitarian_population.zero }
+								set_temp_variable = { condemnation_contamination_value = constant:humanitarian_population.zero }
+								migration_condemn_deportation = yes
+								set_variable = { migration_forced_transfer_last_condemnation_transaction_id = migration_forced_transfer_transaction_id }
+								set_variable = { migration_forced_transfer_last_condemnation_cohort_id = migration_forced_transfer_cohort_id }
+								set_variable = { migration_forced_transfer_last_condemnation_survivor_credit = migration_forced_transfer_survivor_credit }
+								set_variable = { migration_forced_transfer_last_condemnation_origin_state_id = migration_forced_transfer_origin_state_id }
+								set_variable = { migration_forced_transfer_last_condemnation_destination_state_id = migration_forced_transfer_destination_state_id }
+							}
+						}
+						else = {
+							set_temp_variable = { migration_forced_transfer_result = constant:migration_forced_movement_result.no_surviving_cohort }
+						}
+						set_variable = { migration_forced_transfer_last_transaction_id = migration_forced_transfer_transaction_id }
+						set_variable = { migration_forced_transfer_last_destination_state_id = migration_forced_transfer_destination_state_id }
+						set_variable = { migration_forced_transfer_last_actor_id = migration_forced_transfer_actor_id }
+						set_variable = { migration_forced_transfer_last_requested_people = migration_forced_transfer_requested_people }
+						set_variable = { migration_forced_transfer_last_actual_origin_debit = migration_forced_transfer_actual_origin_debit }
+						set_variable = { migration_forced_transfer_last_route_deaths = migration_forced_transfer_route_deaths }
+						set_variable = { migration_forced_transfer_last_survivor_credit = migration_forced_transfer_survivor_credit }
+						set_variable = { migration_forced_transfer_last_destination_credit = migration_forced_transfer_destination_actual_credit }
+						set_variable = { migration_forced_transfer_last_conservation_ledger = migration_forced_transfer_conservation_ledger }
+						set_variable = { migration_forced_transfer_last_result = migration_forced_transfer_result }
+						if = {
+							limit = { check_variable = { var = migration_forced_transfer_result value = constant:migration_forced_movement_result.valid compare = equals } }
+							event_target:migration_forced_transfer_destination = {
+								set_variable = { migration_forced_transfer_last_transaction_id = migration_forced_transfer_transaction_id }
+								set_variable = { migration_forced_transfer_last_origin_state_id = migration_forced_transfer_origin_state_id }
+								set_variable = { migration_forced_transfer_last_destination_state_id = THIS.id }
+								set_variable = { migration_forced_transfer_last_actor_id = event_target:migration_forced_transfer_actor.id }
+								set_variable = { migration_forced_transfer_last_source_owner_id = event_target:migration_forced_transfer_source_owner.id }
+								set_variable = { migration_forced_transfer_last_reception_owner_id = event_target:migration_forced_transfer_reception_owner.id }
+								set_variable = { migration_forced_transfer_last_pressure_owner_id = event_target:migration_forced_transfer_pressure_owner.id }
+								set_variable = { migration_forced_transfer_last_cause = migration_forced_transfer_cause }
+								set_variable = { migration_forced_transfer_last_custody_status = migration_forced_transfer_custody_status }
+								set_variable = { migration_forced_transfer_last_requested_people = migration_forced_transfer_requested_people }
+								set_variable = { migration_forced_transfer_last_actual_origin_debit = migration_forced_transfer_actual_origin_debit }
+								set_variable = { migration_forced_transfer_last_route_deaths = migration_forced_transfer_route_deaths }
+								set_variable = { migration_forced_transfer_last_survivor_credit = migration_forced_transfer_survivor_credit }
+								set_variable = { migration_forced_transfer_last_destination_credit = migration_forced_transfer_destination_actual_credit }
+								set_variable = { migration_forced_transfer_last_conservation_ledger = migration_forced_transfer_conservation_ledger }
+								set_state_flag = migration_forced_transfer_recorded
+							}
+						}
+					}
+					else_if = {
+						limit = { NOT = { check_variable = { var = civilian_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals } } }
+						migration_forced_transfer_cleanup_staged_cohort = yes
+					}
+				}
+				else = {
+					migration_forced_transfer_cleanup_staged_cohort = yes
+				}
+			}
+			else = {
+				migration_forced_transfer_cleanup_staged_cohort = yes
+			}
+		}
+	}
+}

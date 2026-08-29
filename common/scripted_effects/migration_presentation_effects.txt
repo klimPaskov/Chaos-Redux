@@ -1,0 +1,996 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION PRESENTATION EFFECTS
+# ============================================================================
+# State-scope presentation adapters for migration and civilian movement. The
+# helpers consume exact receipts, reception loads, trapped ledgers, or an
+# explicitly proven owner input and convert a people/denominator pair into a
+# clamped population share. They never debit, credit, kill, or otherwise alter
+# population. Owners call the refresh only for a registered state after the
+# authoritative transaction or lifecycle update has completed.
+# ============================================================================
+
+# STATE SCOPE. Removes only this subsystem's flow presentation modifiers and
+# derived flags. Food-stage modifiers and all authoritative migration ledgers
+# are owned by the core refresh and are intentionally untouched.
+migration_presentation_clear_state = {
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_preparing_to_leave } } remove_dynamic_modifier = { modifier = migration_state_preparing_to_leave } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_exodus } } remove_dynamic_modifier = { modifier = migration_state_exodus } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_organized_evacuation } } remove_dynamic_modifier = { modifier = migration_state_organized_evacuation } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_depopulated_districts } } remove_dynamic_modifier = { modifier = migration_state_depopulated_districts } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_reception } } remove_dynamic_modifier = { modifier = migration_state_reception } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_overcrowded } } remove_dynamic_modifier = { modifier = migration_state_overcrowded } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_trapped_border } } remove_dynamic_modifier = { modifier = migration_state_trapped_border } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_transit } } remove_dynamic_modifier = { modifier = migration_state_transit } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_return_readiness } } remove_dynamic_modifier = { modifier = migration_state_return_readiness } }
+		if = { limit = { has_dynamic_modifier = { modifier = migration_state_return } } remove_dynamic_modifier = { modifier = migration_state_return } }
+
+		clr_state_flag = migration_presentation_preparing_to_leave
+		clr_state_flag = migration_presentation_active_exodus
+		clr_state_flag = migration_presentation_organized_evacuation
+		clr_state_flag = migration_presentation_depopulated_districts
+		clr_state_flag = migration_presentation_reception
+		clr_state_flag = migration_presentation_overcrowded
+		clr_state_flag = migration_presentation_trapped_population
+		clr_state_flag = migration_presentation_transit
+		clr_state_flag = migration_presentation_return_readiness
+		clr_state_flag = migration_presentation_resettlement_return
+
+		set_variable = { migration_presentation_preparing_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_active_exodus_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_organized_evacuation_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_depopulated_districts_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_reception_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_overcrowded_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_trapped_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_transit_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_return_readiness_share = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_resettlement_return_share = constant:migration_presentation.zero }
+
+		set_variable = { migration_presentation_preparing_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_preparing_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_active_exodus_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_active_exodus_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_organized_evacuation_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_organized_evacuation_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_depopulated_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_depopulated_non_core_manpower = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_depopulated_building_slots = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_reception_supplies = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_reception_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_reception_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_overcrowded_supplies = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_overcrowded_attrition = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_overcrowded_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_trapped_supplies = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_trapped_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_transit_supplies = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_transit_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_transit_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_return_readiness_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_return_readiness_speed = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_resettlement_return_production = constant:migration_presentation.zero }
+		set_variable = { migration_presentation_resettlement_return_speed = constant:migration_presentation.zero }
+		force_update_dynamic_modifier = yes
+	}
+}
+
+# Internal helper. The caller provides temporary input values so this helper
+# can be reused without creating a second persistent population ledger.
+# migration_presentation_input_proven, _input_people, and
+# _input_denominator are temporary values; the result is the temporary
+# migration_presentation_share in the inclusive range [0, 1].
+migration_presentation_compute_share = {
+	set_temp_variable = { migration_presentation_share = constant:migration_presentation.zero }
+	if = {
+		limit = {
+			check_variable = { var = migration_presentation_input_proven value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_people value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_denominator value = constant:migration_presentation.zero compare = greater_than }
+		}
+		set_temp_variable = { migration_presentation_share = migration_presentation_input_people }
+		divide_temp_variable = { migration_presentation_share = migration_presentation_input_denominator }
+		clamp_temp_variable = {
+			var = migration_presentation_share
+			min = constant:migration_presentation.share_min
+			max = constant:migration_presentation.share_max
+		}
+	}
+}
+
+# The following record effects persist bounded presentation projections for
+# phases that have no authoritative live state ledger. Owners set the phase
+# input values plus exact generation and role metadata; all persisted phases
+# except preparing also require a positive cohort id. Depopulation accumulates each
+# newer exact transfer generation once. These projections are presentation
+# receipts only and never change population.
+migration_presentation_record_preparing_projection = {
+	set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_preparing_cohort_id = constant:migration_presentation.zero }
+	if = {
+		limit = {
+			has_variable = migration_presentation_input_preparing_proven
+			has_variable = migration_presentation_input_preparing_people
+			has_variable = migration_presentation_input_preparing_denominator
+			has_variable = migration_presentation_input_generation
+			has_variable = migration_presentation_input_role
+			check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_role value = constant:migration_presentation.zero compare = greater_than }
+			OR = {
+				NOT = { has_variable = migration_presentation_input_cohort_id }
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = equals }
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			}
+		}
+		set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_preparing_proven }
+		set_temp_variable = { migration_presentation_input_people = migration_presentation_input_preparing_people }
+		set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_preparing_denominator }
+		if = {
+			limit = {
+				has_variable = migration_presentation_input_cohort_id
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_preparing_cohort_id = migration_presentation_input_cohort_id }
+		}
+	}
+	migration_presentation_compute_share = yes
+	if = {
+		limit = { check_variable = { var = migration_presentation_share value = constant:migration_presentation.zero compare = greater_than } }
+		set_variable = { migration_presentation_preparing_projection_people = migration_presentation_input_people }
+		set_variable = { migration_presentation_preparing_projection_denominator = migration_presentation_input_denominator }
+		set_variable = { migration_presentation_preparing_projection_share = migration_presentation_share }
+		set_variable = { migration_presentation_preparing_projection_cohort_id = migration_presentation_preparing_cohort_id }
+		set_variable = { migration_presentation_preparing_projection_generation = migration_presentation_input_generation }
+		set_variable = { migration_presentation_preparing_projection_role = migration_presentation_input_role }
+		set_state_flag = migration_presentation_preparing_projection_active
+	}
+	clear_variable = migration_presentation_input_preparing_proven
+	clear_variable = migration_presentation_input_preparing_people
+	clear_variable = migration_presentation_input_preparing_denominator
+}
+
+migration_presentation_record_organized_evacuation_projection = {
+	set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+	if = {
+		limit = {
+			has_variable = migration_presentation_input_organized_evacuation_proven
+			has_variable = migration_presentation_input_organized_evacuation_people
+			has_variable = migration_presentation_input_organized_evacuation_denominator
+			has_variable = migration_presentation_input_cohort_id
+			has_variable = migration_presentation_input_generation
+			has_variable = migration_presentation_input_role
+			check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+		}
+		set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_organized_evacuation_proven }
+		set_temp_variable = { migration_presentation_input_people = migration_presentation_input_organized_evacuation_people }
+		set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_organized_evacuation_denominator }
+	}
+	migration_presentation_compute_share = yes
+	if = {
+		limit = { check_variable = { var = migration_presentation_share value = constant:migration_presentation.zero compare = greater_than } }
+		set_variable = { migration_presentation_organized_projection_people = migration_presentation_input_people }
+		set_variable = { migration_presentation_organized_projection_denominator = migration_presentation_input_denominator }
+		set_variable = { migration_presentation_organized_projection_share = migration_presentation_share }
+		set_variable = { migration_presentation_organized_projection_cohort_id = migration_presentation_input_cohort_id }
+		set_variable = { migration_presentation_organized_projection_generation = migration_presentation_input_generation }
+		set_variable = { migration_presentation_organized_projection_role = migration_presentation_input_role }
+		set_state_flag = migration_presentation_organized_projection_active
+	}
+	clear_variable = migration_presentation_input_organized_evacuation_proven
+	clear_variable = migration_presentation_input_organized_evacuation_people
+	clear_variable = migration_presentation_input_organized_evacuation_denominator
+}
+
+migration_presentation_record_depopulated_projection = {
+	# The core transfer generation is monotonic and is written only after the
+	# exact debit receipt succeeds. It is the idempotency key for this state;
+	# the accumulated people value is presentation history, never population.
+	set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_depopulated_projection_accept = constant:migration_presentation.zero }
+	if = {
+		limit = {
+			has_variable = migration_presentation_input_depopulated_districts_proven
+			has_variable = migration_presentation_input_depopulated_districts_people
+			has_variable = migration_presentation_input_depopulated_districts_denominator
+			has_variable = migration_presentation_input_cohort_id
+			has_variable = migration_presentation_input_generation
+			has_variable = migration_presentation_input_role
+			check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_role value = constant:migration_presentation.zero compare = greater_than }
+		}
+		set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_depopulated_districts_proven }
+		set_temp_variable = { migration_presentation_input_people = migration_presentation_input_depopulated_districts_people }
+		set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_depopulated_districts_denominator }
+	}
+	migration_presentation_compute_share = yes
+	if = {
+		limit = { check_variable = { var = migration_presentation_share value = constant:migration_presentation.zero compare = greater_than } }
+		if = {
+			limit = { NOT = { has_variable = migration_presentation_depopulated_projection_last_generation } }
+			set_temp_variable = { migration_presentation_depopulated_projection_accept = constant:migration_presentation.one }
+		}
+		else_if = {
+			limit = { check_variable = { var = migration_presentation_input_generation value = migration_presentation_depopulated_projection_last_generation compare = greater_than } }
+			set_temp_variable = { migration_presentation_depopulated_projection_accept = constant:migration_presentation.one }
+		}
+		if = {
+			limit = { check_variable = { var = migration_presentation_depopulated_projection_accept value = constant:migration_presentation.one compare = equals } }
+			if = {
+				limit = { NOT = { has_variable = migration_presentation_depopulated_projection_people } }
+				set_variable = { migration_presentation_depopulated_projection_people = constant:migration_presentation.zero }
+			}
+			add_to_variable = { migration_presentation_depopulated_projection_people = migration_presentation_input_people }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = migration_presentation_depopulated_projection_denominator }
+						check_variable = { var = migration_presentation_depopulated_projection_denominator value = constant:migration_presentation.zero compare = less_than }
+						check_variable = { var = migration_presentation_depopulated_projection_denominator value = constant:migration_presentation.zero compare = equals }
+					}
+				}
+				set_variable = { migration_presentation_depopulated_projection_denominator = migration_presentation_input_denominator }
+			}
+			set_variable = { migration_presentation_depopulated_projection_last_generation = migration_presentation_input_generation }
+			set_variable = { migration_presentation_depopulated_projection_cohort_id = migration_presentation_input_cohort_id }
+			set_variable = { migration_presentation_depopulated_projection_generation = migration_presentation_input_generation }
+			set_variable = { migration_presentation_depopulated_projection_role = migration_presentation_input_role }
+		}
+		if = {
+			limit = {
+				has_variable = migration_presentation_depopulated_projection_people
+				has_variable = migration_presentation_depopulated_projection_denominator
+				check_variable = { var = migration_presentation_depopulated_projection_people value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_depopulated_projection_denominator value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_depopulated_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_depopulated_projection_denominator }
+			migration_presentation_compute_share = yes
+			set_variable = { migration_presentation_depopulated_projection_share = migration_presentation_share }
+			set_state_flag = migration_presentation_depopulated_projection_active
+		}
+	}
+	clear_variable = migration_presentation_input_depopulated_districts_proven
+	clear_variable = migration_presentation_input_depopulated_districts_people
+	clear_variable = migration_presentation_input_depopulated_districts_denominator
+}
+
+migration_presentation_record_transit_projection = {
+	set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+	if = {
+		limit = {
+			has_variable = migration_presentation_input_transit_proven
+			has_variable = migration_presentation_input_transit_people
+			has_variable = migration_presentation_input_transit_denominator
+			has_variable = migration_presentation_input_cohort_id
+			has_variable = migration_presentation_input_generation
+			has_variable = migration_presentation_input_role
+			check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_transit compare = equals }
+		}
+		set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_transit_proven }
+		set_temp_variable = { migration_presentation_input_people = migration_presentation_input_transit_people }
+		set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_transit_denominator }
+	}
+	migration_presentation_compute_share = yes
+	if = {
+		limit = { check_variable = { var = migration_presentation_share value = constant:migration_presentation.zero compare = greater_than } }
+		set_variable = { migration_presentation_transit_projection_people = migration_presentation_input_people }
+		set_variable = { migration_presentation_transit_projection_denominator = migration_presentation_input_denominator }
+		set_variable = { migration_presentation_transit_projection_share = migration_presentation_share }
+		set_variable = { migration_presentation_transit_projection_cohort_id = migration_presentation_input_cohort_id }
+		set_variable = { migration_presentation_transit_projection_generation = migration_presentation_input_generation }
+		set_variable = { migration_presentation_transit_projection_role = migration_presentation_input_role }
+		set_state_flag = migration_presentation_transit_projection_active
+	}
+	clear_variable = migration_presentation_input_transit_proven
+	clear_variable = migration_presentation_input_transit_people
+	clear_variable = migration_presentation_input_transit_denominator
+}
+
+migration_presentation_record_return_readiness_projection = {
+	set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+	if = {
+		limit = {
+			has_variable = migration_presentation_input_return_readiness_proven
+			has_variable = migration_presentation_input_return_readiness_people
+			has_variable = migration_presentation_input_return_readiness_denominator
+			has_variable = migration_presentation_input_cohort_id
+			has_variable = migration_presentation_input_generation
+			has_variable = migration_presentation_input_role
+			check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_role value = constant:migration_presentation.zero compare = greater_than }
+		}
+		set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_return_readiness_proven }
+		set_temp_variable = { migration_presentation_input_people = migration_presentation_input_return_readiness_people }
+		set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_return_readiness_denominator }
+	}
+	migration_presentation_compute_share = yes
+	if = {
+		limit = { check_variable = { var = migration_presentation_share value = constant:migration_presentation.zero compare = greater_than } }
+		set_variable = { migration_presentation_return_readiness_projection_people = migration_presentation_input_people }
+		set_variable = { migration_presentation_return_readiness_projection_denominator = migration_presentation_input_denominator }
+		set_variable = { migration_presentation_return_readiness_projection_share = migration_presentation_share }
+		set_variable = { migration_presentation_return_readiness_projection_cohort_id = migration_presentation_input_cohort_id }
+		set_variable = { migration_presentation_return_readiness_projection_generation = migration_presentation_input_generation }
+		set_variable = { migration_presentation_return_readiness_projection_role = migration_presentation_input_role }
+		set_state_flag = migration_presentation_return_readiness_projection_active
+	}
+	clear_variable = migration_presentation_input_return_readiness_proven
+	clear_variable = migration_presentation_input_return_readiness_people
+	clear_variable = migration_presentation_input_return_readiness_denominator
+}
+
+migration_presentation_record_resettlement_return_projection = {
+	set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+	set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+	if = {
+		limit = {
+				 has_variable = migration_presentation_input_resettlement_return_proven
+			has_variable = migration_presentation_input_resettlement_return_people
+			has_variable = migration_presentation_input_resettlement_return_denominator
+			has_variable = migration_presentation_input_cohort_id
+			has_variable = migration_presentation_input_generation
+			has_variable = migration_presentation_input_role
+			check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+			check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+			OR = {
+				check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_resettlement compare = equals }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return compare = equals }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_forced_return compare = equals }
+			}
+		}
+		set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_resettlement_return_proven }
+		set_temp_variable = { migration_presentation_input_people = migration_presentation_input_resettlement_return_people }
+		set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_resettlement_return_denominator }
+	}
+	migration_presentation_compute_share = yes
+	if = {
+		limit = { check_variable = { var = migration_presentation_share value = constant:migration_presentation.zero compare = greater_than } }
+		set_variable = { migration_presentation_resettlement_projection_people = migration_presentation_input_people }
+		set_variable = { migration_presentation_resettlement_projection_denominator = migration_presentation_input_denominator }
+		set_variable = { migration_presentation_resettlement_projection_share = migration_presentation_share }
+		set_variable = { migration_presentation_resettlement_projection_cohort_id = migration_presentation_input_cohort_id }
+		set_variable = { migration_presentation_resettlement_projection_generation = migration_presentation_input_generation }
+		set_variable = { migration_presentation_resettlement_projection_role = migration_presentation_input_role }
+		set_state_flag = migration_presentation_resettlement_projection_active
+	}
+	clear_variable = migration_presentation_input_resettlement_return_proven
+	clear_variable = migration_presentation_input_resettlement_return_people
+	clear_variable = migration_presentation_input_resettlement_return_denominator
+}
+
+# Exact terminal cleanup for presentation-only projections. Call this before
+# the core state is retired; unrelated role projections remain independent
+# until this explicit all-projection cleanup is requested.
+migration_presentation_clear_preparing_projection = {
+	clear_variable = migration_presentation_preparing_projection_people
+	clear_variable = migration_presentation_preparing_projection_denominator
+	clear_variable = migration_presentation_preparing_projection_share
+	clear_variable = migration_presentation_preparing_projection_cohort_id
+	clear_variable = migration_presentation_preparing_projection_generation
+	clear_variable = migration_presentation_preparing_projection_role
+	clr_state_flag = migration_presentation_preparing_projection_active
+}
+
+migration_presentation_clear_organized_evacuation_projection = {
+	clear_variable = migration_presentation_organized_projection_people
+	clear_variable = migration_presentation_organized_projection_denominator
+	clear_variable = migration_presentation_organized_projection_share
+	clear_variable = migration_presentation_organized_projection_cohort_id
+	clear_variable = migration_presentation_organized_projection_generation
+	clear_variable = migration_presentation_organized_projection_role
+	clr_state_flag = migration_presentation_organized_projection_active
+}
+
+migration_presentation_clear_depopulated_projection = {
+	clear_variable = migration_presentation_depopulated_projection_people
+	clear_variable = migration_presentation_depopulated_projection_denominator
+	clear_variable = migration_presentation_depopulated_projection_share
+	clear_variable = migration_presentation_depopulated_projection_cohort_id
+	clear_variable = migration_presentation_depopulated_projection_generation
+	clear_variable = migration_presentation_depopulated_projection_last_generation
+	clear_variable = migration_presentation_depopulated_projection_role
+	clr_state_flag = migration_presentation_depopulated_projection_active
+}
+
+migration_presentation_clear_transit_projection = {
+	clear_variable = migration_presentation_transit_projection_people
+	clear_variable = migration_presentation_transit_projection_denominator
+	clear_variable = migration_presentation_transit_projection_share
+	clear_variable = migration_presentation_transit_projection_cohort_id
+	clear_variable = migration_presentation_transit_projection_generation
+	clear_variable = migration_presentation_transit_projection_role
+	clr_state_flag = migration_presentation_transit_projection_active
+}
+
+migration_presentation_clear_return_readiness_projection = {
+	clear_variable = migration_presentation_return_readiness_projection_people
+	clear_variable = migration_presentation_return_readiness_projection_denominator
+	clear_variable = migration_presentation_return_readiness_projection_share
+	clear_variable = migration_presentation_return_readiness_projection_cohort_id
+	clear_variable = migration_presentation_return_readiness_projection_generation
+	clear_variable = migration_presentation_return_readiness_projection_role
+	clr_state_flag = migration_presentation_return_readiness_projection_active
+}
+
+migration_presentation_clear_resettlement_return_projection = {
+	clear_variable = migration_presentation_resettlement_projection_people
+	clear_variable = migration_presentation_resettlement_projection_denominator
+	clear_variable = migration_presentation_resettlement_projection_share
+	clear_variable = migration_presentation_resettlement_projection_cohort_id
+	clear_variable = migration_presentation_resettlement_projection_generation
+	clear_variable = migration_presentation_resettlement_projection_role
+	clr_state_flag = migration_presentation_resettlement_projection_active
+}
+
+migration_presentation_clear_all_projections = {
+	migration_presentation_clear_preparing_projection = yes
+	migration_presentation_clear_organized_evacuation_projection = yes
+	migration_presentation_clear_depopulated_projection = yes
+	migration_presentation_clear_transit_projection = yes
+	migration_presentation_clear_return_readiness_projection = yes
+	migration_presentation_clear_resettlement_return_projection = yes
+}
+
+# STATE SCOPE. Rebuilds all ten population-scaled presentation phases for one
+# valid state. Inputs with the presentation_input_ prefix are one-shot state
+# variables supplied by an owner that has exact people and denominator proof,
+# except active exodus, which is derived only from the current equal flight pair.
+# Existing core projections are consumed read-only where their semantics are
+# already authoritative. No recurring world scan is performed here.
+migration_presentation_refresh_state = {
+	set_temp_variable = { migration_presentation_refresh_result = constant:migration_presentation.zero }
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		migration_presentation_clear_state = yes
+
+		set_temp_variable = { migration_presentation_population_denominator = state_population_k }
+		multiply_temp_variable = { migration_presentation_population_denominator = constant:migration_presentation.people_per_k }
+		round_temp_variable = migration_presentation_population_denominator
+
+		# Preparing to leave is a transient owner projection. Prefer its
+		# persisted exact receipt so an unrelated refresh cannot erase the
+		# phase; the direct input remains a one-shot compatibility path.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_presentation_preparing_projection_active
+				has_variable = migration_presentation_preparing_projection_people
+				has_variable = migration_presentation_preparing_projection_denominator
+				has_variable = migration_presentation_preparing_projection_generation
+				has_variable = migration_presentation_preparing_projection_role
+				check_variable = { var = migration_presentation_preparing_projection_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_preparing_projection_role value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_preparing_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_preparing_projection_denominator }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_presentation_input_preparing_proven
+				has_variable = migration_presentation_input_preparing_people
+				has_variable = migration_presentation_input_preparing_denominator
+				has_variable = migration_presentation_input_generation
+				has_variable = migration_presentation_input_role
+				check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_presentation.zero compare = greater_than }
+				OR = {
+					NOT = { has_variable = migration_presentation_input_cohort_id }
+					check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = equals }
+					check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				}
+			}
+			set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_preparing_proven }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_input_preparing_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_preparing_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_preparing_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_preparing_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_preparing_to_leave
+			set_variable = { migration_presentation_preparing_production = migration_presentation_preparing_share }
+			multiply_variable = { migration_presentation_preparing_production = constant:migration_presentation.preparing_production }
+			clamp_variable = { var = migration_presentation_preparing_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_preparing_speed = migration_presentation_preparing_share }
+			multiply_variable = { migration_presentation_preparing_speed = constant:migration_presentation.preparing_speed }
+			clamp_variable = { var = migration_presentation_preparing_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Active exodus is a live paired flight obligation, not a completed departure receipt.
+		# Both core flight ledgers must be positive and equal; any mismatch fails closed.
+		# The paired amount is presentation-only here and is divided by the live state denominator.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_displacement_active
+				NOT = { has_state_flag = migration_presentation_organized_projection_active }
+				NOT = { has_variable = migration_presentation_input_organized_evacuation_proven }
+				has_variable = migration_flight_pressure
+				check_variable = { var = migration_flight_pressure value = constant:migration_presentation.zero compare = greater_than }
+				has_variable = migration_state_flight_population
+				check_variable = { var = migration_state_flight_population value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_flight_pressure value = migration_state_flight_population compare = equals }
+				check_variable = { var = migration_presentation_population_denominator value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_flight_pressure }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_population_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_active_exodus_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_active_exodus_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_active_exodus
+			set_variable = { migration_presentation_active_exodus_production = migration_presentation_active_exodus_share }
+			multiply_variable = { migration_presentation_active_exodus_production = constant:migration_state_modifier.exodus_production }
+			clamp_variable = { var = migration_presentation_active_exodus_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_active_exodus_speed = migration_presentation_active_exodus_share }
+			multiply_variable = { migration_presentation_active_exodus_speed = constant:migration_state_modifier.exodus_speed }
+			clamp_variable = { var = migration_presentation_active_exodus_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Organized evacuation is a prepared/mission/request projection tied to
+		# an exact cohort and generation. It remains active until the owner clears
+		# that projection after the debit; a completed origin receipt alone does
+		# not recreate this phase.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_presentation_organized_projection_active
+				has_variable = migration_presentation_organized_projection_people
+				has_variable = migration_presentation_organized_projection_denominator
+				has_variable = migration_presentation_organized_projection_cohort_id
+				has_variable = migration_presentation_organized_projection_generation
+				has_variable = migration_presentation_organized_projection_role
+				check_variable = { var = migration_presentation_organized_projection_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_organized_projection_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_organized_projection_role value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_organized_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_organized_projection_denominator }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_presentation_input_organized_evacuation_proven
+				has_variable = migration_presentation_input_organized_evacuation_people
+				has_variable = migration_presentation_input_organized_evacuation_denominator
+				has_variable = migration_presentation_input_cohort_id
+				has_variable = migration_presentation_input_generation
+				has_variable = migration_presentation_input_role
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+			}
+			set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_organized_evacuation_proven }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_input_organized_evacuation_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_organized_evacuation_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_organized_evacuation_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_organized_evacuation_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_organized_evacuation
+			set_variable = { migration_presentation_organized_evacuation_production = migration_presentation_organized_evacuation_share }
+			multiply_variable = { migration_presentation_organized_evacuation_production = constant:migration_presentation.organized_production }
+			clamp_variable = { var = migration_presentation_organized_evacuation_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_organized_evacuation_speed = migration_presentation_organized_evacuation_share }
+			multiply_variable = { migration_presentation_organized_evacuation_speed = constant:migration_presentation.organized_speed }
+			clamp_variable = { var = migration_presentation_organized_evacuation_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Depopulated districts are cumulative exact debit history. Prefer the
+		# durable owner receipt; no current projection is guessed from flight
+		# pressure or a completed departure share.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_presentation_depopulated_projection_active
+				has_variable = migration_presentation_depopulated_projection_people
+				has_variable = migration_presentation_depopulated_projection_denominator
+				has_variable = migration_presentation_depopulated_projection_role
+				has_variable = migration_presentation_depopulated_projection_cohort_id
+				has_variable = migration_presentation_depopulated_projection_generation
+				check_variable = { var = migration_presentation_depopulated_projection_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_depopulated_projection_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_depopulated_projection_role value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_depopulated_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_depopulated_projection_denominator }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_presentation_input_depopulated_districts_proven
+				has_variable = migration_presentation_input_depopulated_districts_people
+				has_variable = migration_presentation_input_depopulated_districts_denominator
+				has_variable = migration_presentation_input_cohort_id
+				has_variable = migration_presentation_input_generation
+				has_variable = migration_presentation_input_role
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_depopulated_districts_proven }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_input_depopulated_districts_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_depopulated_districts_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_depopulated_districts_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_depopulated_districts_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_depopulated_districts
+			set_variable = { migration_presentation_depopulated_production = migration_presentation_depopulated_districts_share }
+			multiply_variable = { migration_presentation_depopulated_production = constant:migration_presentation.depopulated_production }
+			clamp_variable = { var = migration_presentation_depopulated_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_depopulated_non_core_manpower = migration_presentation_depopulated_districts_share }
+			multiply_variable = { migration_presentation_depopulated_non_core_manpower = constant:migration_presentation.depopulated_non_core_manpower }
+			clamp_variable = { var = migration_presentation_depopulated_non_core_manpower min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_depopulated_building_slots = migration_presentation_depopulated_districts_share }
+			multiply_variable = { migration_presentation_depopulated_building_slots = constant:migration_presentation.depopulated_building_slots }
+			clamp_variable = { var = migration_presentation_depopulated_building_slots min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Reception is exact live survivor load divided by the current state
+		# population. The destination credit itself is never recreated here.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_reception_context_active
+				has_variable = migration_state_reception_load
+				check_variable = { var = migration_state_reception_load value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_population_denominator value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_state_reception_load }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_population_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_reception_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_reception_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_reception
+			set_variable = { migration_presentation_reception_supplies = migration_presentation_reception_share }
+			multiply_variable = { migration_presentation_reception_supplies = constant:migration_state_modifier.reception_local_supplies }
+			clamp_variable = { var = migration_presentation_reception_supplies min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_reception_production = migration_presentation_reception_share }
+			multiply_variable = { migration_presentation_reception_production = constant:migration_state_modifier.reception_production }
+			clamp_variable = { var = migration_presentation_reception_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_reception_speed = migration_presentation_reception_share }
+			multiply_variable = { migration_presentation_reception_speed = constant:migration_presentation.reception_speed }
+			clamp_variable = { var = migration_presentation_reception_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Overcrowding uses the same exact state load, but is gated by the core
+		# owner-capacity breach flag rather than a guessed local threshold.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_overcrowded_context_active
+				has_variable = migration_state_reception_load
+				check_variable = { var = migration_state_reception_load value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_population_denominator value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_state_reception_load }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_population_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_overcrowded_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_overcrowded_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_overcrowded
+			set_variable = { migration_presentation_overcrowded_supplies = migration_presentation_overcrowded_share }
+			multiply_variable = { migration_presentation_overcrowded_supplies = constant:migration_state_modifier.overcrowded_local_supplies }
+			clamp_variable = { var = migration_presentation_overcrowded_supplies min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_overcrowded_attrition = migration_presentation_overcrowded_share }
+			multiply_variable = { migration_presentation_overcrowded_attrition = constant:migration_state_modifier.overcrowded_attrition }
+			clamp_variable = { var = migration_presentation_overcrowded_attrition min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_overcrowded_speed = migration_presentation_overcrowded_share }
+			multiply_variable = { migration_presentation_overcrowded_speed = constant:migration_presentation.overcrowded_speed }
+			clamp_variable = { var = migration_presentation_overcrowded_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Trapped population uses only the exact trapped ledger and live state
+		# denominator. Route deaths remain in the core Deaths channel.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_population_trapped
+				has_variable = migration_state_trapped_population
+				check_variable = { var = migration_state_trapped_population value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_population_denominator value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_state_trapped_population }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_population_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_trapped_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_trapped_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_trapped_population
+			set_variable = { migration_presentation_trapped_supplies = migration_presentation_trapped_share }
+			multiply_variable = { migration_presentation_trapped_supplies = constant:migration_state_modifier.trapped_local_supplies }
+			clamp_variable = { var = migration_presentation_trapped_supplies min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_trapped_speed = migration_presentation_trapped_share }
+			multiply_variable = { migration_presentation_trapped_speed = constant:migration_state_modifier.trapped_speed }
+			clamp_variable = { var = migration_presentation_trapped_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Transit is not inferred from destination population or the flight
+		# pressure projection. Prefer the persisted exact hosted-cohort receipt;
+		# the direct input remains a one-shot compatibility path.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_presentation_transit_projection_active
+				has_variable = migration_presentation_transit_projection_people
+				has_variable = migration_presentation_transit_projection_denominator
+				has_variable = migration_presentation_transit_projection_cohort_id
+				has_variable = migration_presentation_transit_projection_generation
+				has_variable = migration_presentation_transit_projection_role
+				check_variable = { var = migration_presentation_transit_projection_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_transit_projection_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_transit_projection_role value = constant:migration_core_reconciliation.transfer_projection_role_transit compare = equals }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_transit_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_transit_projection_denominator }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_presentation_input_transit_proven
+				has_variable = migration_presentation_input_transit_people
+				has_variable = migration_presentation_input_transit_denominator
+				has_variable = migration_presentation_input_cohort_id
+				has_variable = migration_presentation_input_generation
+				has_variable = migration_presentation_input_role
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_transit compare = equals }
+			}
+			set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_transit_proven }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_input_transit_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_transit_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_transit_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_transit_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_transit
+			set_variable = { migration_presentation_transit_supplies = migration_presentation_transit_share }
+			multiply_variable = { migration_presentation_transit_supplies = constant:migration_presentation.transit_supplies }
+			clamp_variable = { var = migration_presentation_transit_supplies min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_transit_production = migration_presentation_transit_share }
+			multiply_variable = { migration_presentation_transit_production = constant:migration_presentation.transit_production }
+			clamp_variable = { var = migration_presentation_transit_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_transit_speed = migration_presentation_transit_share }
+			multiply_variable = { migration_presentation_transit_speed = constant:migration_presentation.transit_speed }
+			clamp_variable = { var = migration_presentation_transit_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Return readiness is a transient exact eligible-cohort projection. A
+		# policy flag alone is insufficient; retain the receipt across unrelated
+		# refreshes until the owner records the exact terminal transition.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_presentation_return_readiness_projection_active
+				has_variable = migration_presentation_return_readiness_projection_people
+				has_variable = migration_presentation_return_readiness_projection_denominator
+				has_variable = migration_presentation_return_readiness_projection_role
+				has_variable = migration_presentation_return_readiness_projection_cohort_id
+				has_variable = migration_presentation_return_readiness_projection_generation
+				check_variable = { var = migration_presentation_return_readiness_projection_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_return_readiness_projection_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_return_readiness_projection_role value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_return_readiness_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_return_readiness_projection_denominator }
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_presentation_input_return_readiness_proven
+				has_variable = migration_presentation_input_return_readiness_people
+				has_variable = migration_presentation_input_return_readiness_denominator
+				has_variable = migration_presentation_input_cohort_id
+				has_variable = migration_presentation_input_generation
+				has_variable = migration_presentation_input_role
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_role value = constant:migration_presentation.zero compare = greater_than }
+			}
+			set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_return_readiness_proven }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_input_return_readiness_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_return_readiness_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_return_readiness_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_return_readiness_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_return_readiness
+			set_variable = { migration_presentation_return_readiness_production = migration_presentation_return_readiness_share }
+			multiply_variable = { migration_presentation_return_readiness_production = constant:migration_presentation.return_readiness_production }
+			clamp_variable = { var = migration_presentation_return_readiness_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_return_readiness_speed = migration_presentation_return_readiness_share }
+			multiply_variable = { migration_presentation_return_readiness_speed = constant:migration_presentation.return_readiness_speed }
+			clamp_variable = { var = migration_presentation_return_readiness_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		# Resettlement/return prefers an exact survivor-credit or durable-outcome
+		# receipt. The core counters remain a read-only fallback only while their
+		# exact context flags are active; this presentation helper never increments
+		# a population counter.
+		set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+		set_temp_variable = { migration_presentation_input_denominator = constant:migration_presentation.zero }
+		if = {
+			limit = {
+				has_state_flag = migration_presentation_resettlement_projection_active
+				has_variable = migration_presentation_resettlement_projection_people
+				has_variable = migration_presentation_resettlement_projection_denominator
+				has_variable = migration_presentation_resettlement_projection_cohort_id
+				has_variable = migration_presentation_resettlement_projection_generation
+				has_variable = migration_presentation_resettlement_projection_role
+				check_variable = { var = migration_presentation_resettlement_projection_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_resettlement_projection_generation value = constant:migration_presentation.zero compare = greater_than }
+				OR = {
+					check_variable = { var = migration_presentation_resettlement_projection_role value = constant:migration_core_reconciliation.transfer_projection_role_resettlement compare = equals }
+					check_variable = { var = migration_presentation_resettlement_projection_role value = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return compare = equals }
+					check_variable = { var = migration_presentation_resettlement_projection_role value = constant:migration_core_reconciliation.transfer_projection_role_forced_return compare = equals }
+				}
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_resettlement_projection_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_resettlement_projection_denominator }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_state_flag = migration_state_resettlement_context_active
+					has_state_flag = migration_return_context_active
+				}
+				has_variable = migration_presentation_input_resettlement_return_proven
+				has_variable = migration_presentation_input_resettlement_return_people
+				has_variable = migration_presentation_input_resettlement_return_denominator
+				has_variable = migration_presentation_input_cohort_id
+				has_variable = migration_presentation_input_generation
+				has_variable = migration_presentation_input_role
+				check_variable = { var = migration_presentation_input_cohort_id value = constant:migration_presentation.zero compare = greater_than }
+				check_variable = { var = migration_presentation_input_generation value = constant:migration_presentation.zero compare = greater_than }
+				OR = {
+					check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_resettlement compare = equals }
+					check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return compare = equals }
+					check_variable = { var = migration_presentation_input_role value = constant:migration_core_reconciliation.transfer_projection_role_forced_return compare = equals }
+				}
+			}
+			set_temp_variable = { migration_presentation_input_proven = migration_presentation_input_resettlement_return_proven }
+			set_temp_variable = { migration_presentation_input_people = migration_presentation_input_resettlement_return_people }
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_input_resettlement_return_denominator }
+		}
+		else_if = {
+			limit = {
+				OR = {
+					has_state_flag = migration_state_resettlement_context_active
+					has_state_flag = migration_return_context_active
+				}
+				check_variable = { var = migration_presentation_population_denominator value = constant:migration_presentation.zero compare = greater_than }
+				OR = {
+					AND = {
+						has_variable = migration_state_resettled_population
+						check_variable = { var = migration_state_resettled_population value = constant:migration_presentation.zero compare = greater_than }
+					}
+					AND = {
+						has_variable = migration_state_returned_population
+						check_variable = { var = migration_state_returned_population value = constant:migration_presentation.zero compare = greater_than }
+					}
+				}
+			}
+			set_temp_variable = { migration_presentation_input_proven = constant:migration_presentation.one }
+			set_temp_variable = { migration_presentation_input_people = constant:migration_presentation.zero }
+			if = {
+				limit = { has_variable = migration_state_resettled_population }
+				set_temp_variable = { migration_presentation_input_people = migration_state_resettled_population }
+			}
+			if = {
+				limit = {
+					has_variable = migration_state_returned_population
+					check_variable = { var = migration_state_returned_population value = migration_presentation_input_people compare = greater_than }
+				}
+				set_temp_variable = { migration_presentation_input_people = migration_state_returned_population }
+			}
+			set_temp_variable = { migration_presentation_input_denominator = migration_presentation_population_denominator }
+		}
+		migration_presentation_compute_share = yes
+		set_variable = { migration_presentation_resettlement_return_share = migration_presentation_share }
+		if = {
+			limit = { check_variable = { var = migration_presentation_resettlement_return_share value = constant:migration_presentation.zero compare = greater_than } }
+			set_state_flag = migration_presentation_resettlement_return
+			set_variable = { migration_presentation_resettlement_return_production = migration_presentation_resettlement_return_share }
+			multiply_variable = { migration_presentation_resettlement_return_production = constant:migration_state_modifier.return_production }
+			clamp_variable = { var = migration_presentation_resettlement_return_production min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+			set_variable = { migration_presentation_resettlement_return_speed = migration_presentation_resettlement_return_share }
+			multiply_variable = { migration_presentation_resettlement_return_speed = constant:migration_presentation.resettlement_return_speed }
+			clamp_variable = { var = migration_presentation_resettlement_return_speed min = constant:migration_presentation.modifier_min max = constant:migration_presentation.modifier_max }
+		}
+
+		if = { limit = { has_state_flag = migration_presentation_preparing_to_leave } add_dynamic_modifier = { modifier = migration_state_preparing_to_leave } }
+		if = { limit = { has_state_flag = migration_presentation_active_exodus } add_dynamic_modifier = { modifier = migration_state_exodus } }
+		if = { limit = { has_state_flag = migration_presentation_organized_evacuation } add_dynamic_modifier = { modifier = migration_state_organized_evacuation } }
+		if = { limit = { has_state_flag = migration_presentation_depopulated_districts } add_dynamic_modifier = { modifier = migration_state_depopulated_districts } }
+		if = { limit = { has_state_flag = migration_presentation_reception } add_dynamic_modifier = { modifier = migration_state_reception } }
+		if = { limit = { has_state_flag = migration_presentation_overcrowded } add_dynamic_modifier = { modifier = migration_state_overcrowded } }
+		if = { limit = { has_state_flag = migration_presentation_trapped_population } add_dynamic_modifier = { modifier = migration_state_trapped_border } }
+		if = { limit = { has_state_flag = migration_presentation_transit } add_dynamic_modifier = { modifier = migration_state_transit } }
+		if = { limit = { has_state_flag = migration_presentation_return_readiness } add_dynamic_modifier = { modifier = migration_state_return_readiness } }
+		if = { limit = { has_state_flag = migration_presentation_resettlement_return } add_dynamic_modifier = { modifier = migration_state_return } }
+		force_update_dynamic_modifier = yes
+		set_temp_variable = { migration_presentation_refresh_result = constant:migration_presentation.one }
+
+		# One-shot owner inputs are consumed after a successful state refresh.
+		clear_variable = migration_presentation_input_preparing_proven
+		clear_variable = migration_presentation_input_preparing_people
+		clear_variable = migration_presentation_input_preparing_denominator
+		clear_variable = migration_presentation_input_active_exodus_proven
+		clear_variable = migration_presentation_input_active_exodus_people
+		clear_variable = migration_presentation_input_active_exodus_denominator
+		clear_variable = migration_presentation_input_organized_evacuation_proven
+		clear_variable = migration_presentation_input_organized_evacuation_people
+		clear_variable = migration_presentation_input_organized_evacuation_denominator
+		clear_variable = migration_presentation_input_depopulated_districts_proven
+		clear_variable = migration_presentation_input_depopulated_districts_people
+		clear_variable = migration_presentation_input_depopulated_districts_denominator
+		clear_variable = migration_presentation_input_transit_proven
+		clear_variable = migration_presentation_input_transit_people
+		clear_variable = migration_presentation_input_transit_denominator
+		clear_variable = migration_presentation_input_return_readiness_proven
+		clear_variable = migration_presentation_input_return_readiness_people
+		clear_variable = migration_presentation_input_return_readiness_denominator
+		clear_variable = migration_presentation_input_resettlement_return_proven
+		clear_variable = migration_presentation_input_resettlement_return_people
+		clear_variable = migration_presentation_input_resettlement_return_denominator
+		clear_variable = migration_presentation_input_cohort_id
+		clear_variable = migration_presentation_input_generation
+		clear_variable = migration_presentation_input_role
+	}
+}

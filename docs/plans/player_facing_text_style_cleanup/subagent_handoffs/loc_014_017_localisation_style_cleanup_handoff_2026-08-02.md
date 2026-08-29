@@ -54,7 +54,7 @@ The slot 49 and slot 52 descriptions now match the selected wording in `docs/pla
 
 `localisation/english/016_brilliant_scientist_containment_l_english.yml` changed `chaosx.nr16.31.laboratory_uprising.d`, `chaosx.nr16.31.institutional_takeover.d`, `chaosx.nr16.31.noncountry_crisis.d`, and `brilliant_scientist_sovereignty_policy_clause_military_seizure`.
 
-`localisation/english/016_brilliant_scientist_country_l_english.yml` changed `brilliant_scientist_exotic_guard_weaponization_tech_desc`.
+`localisation/english/016_brilliant_scientist_country_l_english.yml` changed the alien-infantry weaponization technology description.
 
 The same country file contains shared-worktree advisor and country-package additions that were not authored by this pass and were left intact.
 

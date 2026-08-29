@@ -1,5 +1,7 @@
 # Decision and Mission Implementation Prompt for Event 19 Infantry Spawn
 
+> **Superseded UI prompt (2026-08-22):** This prompt preserves the former scripted-GUI design and must not route a GUI implementation. The accepted Event 19 runtime surface is ordinary decisions and decision categories only, with no Event 19 scripted GUI. Use `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md`, `docs/events/019_infantry_spawn/overview.md`, and `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` for the current UI contract.
+
 ## Task
 
 Implement the phased Event 19 decision, mission, and scripted GUI system from the accepted specification.
@@ -129,7 +131,9 @@ Read family behavior from the Chaos unit registry.
 - future families use registry mode
 - containment, sustainment, and derivative risk use family-specific helpers
 
-## Muster Board
+## Archived Muster Board GUI design
+
+The following section is retained as historical design provenance only. It is not a runtime requirement after the accepted decisions-only conversion.
 
 Implement a movable scripted GUI with:
 

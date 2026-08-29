@@ -1,23 +1,6 @@
 # Event 19 Planning Completion Audit
 
-> **Planning-only and superseded for live status (2026-07-18):** This audit
-> proves specification coverage, not current runtime completion. The later
-> near-completion addendum at
-> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`
-> identified and routed additional implementation findings, which have since
-> been implemented. The current focus-tree, decision/mission, country-package,
-> localisation, registry/scenario, and evolution-counter reaudits are clean.
-> The owner-approved regional route now has 91 separate built-in ImageGen raw
-> flags, 91 deterministic spot-colour masters, and the complete 273-row native
-> PNG/runtime-TGA ladder. Visual and runtime rows pass, and the seven recovered
-> GHOST_BASE prompt records remain in their existing ghost-owned provenance
-> surfaces. The independent remediation re-audit handoff
-> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-> is PASS and clears the regional asset gate for parent-owned package
-> promotion. The machine validator's literal
-> `candidate_requires_independent_visual_review` value remains an immutable
-> processor-state record and was not edited. This historical planning audit is
-> not a live completion verdict.
+> **Planning-only and superseded for live status (2026-08-22):** This audit proves specification coverage, not current runtime completion. Its 2026-07-18 audit, catalog, and regional-asset assertions remain historical evidence for their bounded tranche. The current Event 19 runtime is decisions-only with no scripted GUI, the live scenario is SCN-013, and the later provider-coverage extension remains open under the current source-of-truth map and provider handoffs. The restored asset package preserves the historical raw/master/runtime provenance, but those records do not close the provider-extension or whole-event gate.
 
 This is the planning-package audit. Live implementation status and evidence are
 owned by `review/blockers_and_uncertainty.md` and the consolidated parent audit
@@ -64,7 +47,7 @@ planner disposition.
 | Evolution IV | Complete | registry, saturation, derivatives |
 | Derivative countries | Complete design | implementation identifier verification required |
 | Decisions and missions | Complete design | exact costs and syntax belong to implementation |
-| Scripted GUI | Complete design | exact dimensions belong to implementation |
+| Former scripted GUI | Historical design; archival only | the accepted runtime is decisions-only with no Event 19 scripted GUI |
 | AI | Complete design | tuning belongs to implementation |
 | Focus architecture | Complete path design | final focus list and layout belong to implementation |
 | Triggerable scenario | Complete design | final ID registration to verify |
@@ -126,11 +109,6 @@ raw-to-spot-master-to-native-PNG/runtime-TGA chain, with visual/runtime rows
 passing. The independent remediation re-audit handoff
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
 is PASS and clears the regional asset gate for parent-owned package promotion.
-The catalog records Event 19 and SCN-013 as `Fully Functional` after the final
-completion audit authorized promotion.
+The historical catalog snapshot records Event 19 and SCN-013 as `Fully Functional` after its bounded final completion audit authorized promotion.
 
-Live closure state is owned by `blockers_and_uncertainty.md`. Workbook/catalog
-reconciliation and export, the 33/33 package inventory, and the final completion
-audit are complete. Event 19 and SCN-013 now read `Fully Functional`. The
-approved engine contracts and regional asset gate are resolved, and no
-unresolved owner decision or closure gate remains in this planning audit.
+Live status is owned by `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` and `review/blockers_and_uncertainty.md`. The historical workbook/catalog reconciliation, 33/33 package inventory, and 2026-07-18 final completion audit remain bounded evidence; they do not certify the later provider-522/provider-523 and expanded unit-coverage extension. The current provider-extension, normalized dynamic-provider odds, and final documentation gates remain open, and no current “no closure gate remains” claim is made here.

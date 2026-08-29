@@ -1,5 +1,7 @@
 # Event 019 achievement tracking handoff
 
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this handoff predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old engine-proof discussion remains historical evidence only.
+
 ## Status
 
 The bounded achievement tracking package is ready for integration. It provides centralized thresholds, eleven completion triggers, persistent history/disqualifier effects, exact generation/lot/unit audits, rail continuity, claimant and derivative tracking, scenario continuity, and one-shot capitulation/annex hooks.
@@ -424,4 +426,3 @@ There is a second, narrower engine limitation even after a bridge exists: the sc
 - Shared integration hooks, registry entries, localisation, icons, and the Event 019 asset manifest remain parent-owned and are listed above.
 - The classification of `infantry_spawn_recognize_selected_emergency_reserve` as an emergency integration exploit requires the parent’s design decision.
 - Exact proof against a manual switch to a different superset clone/template is not exposed by the engine; the implemented proof is limited as described above.
-

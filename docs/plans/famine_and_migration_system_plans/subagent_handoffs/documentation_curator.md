@@ -1,5 +1,7 @@
 # Documentation Curator Handoff
 
+> **Superseded historical snapshot (2026-08-25):** This standalone reconciliation predates the post-incident closure and is retained as historical evidence only. Its transitional helper names, combined-system paths, and prior “permanent” document claims are not current instructions. Use [source_of_truth_map.md](../source_of_truth_map.md) and [completion_report.md](../completion_report.md) for the current documentation authority, incomplete status, and remaining blockers.
+
 Status: Documentation reconciliation is complete for the current source snapshot, with gameplay, localisation, assets, spreadsheets, and unrelated implementation files left outside this worker's write scope.
 
 No gameplay completion claim is made.

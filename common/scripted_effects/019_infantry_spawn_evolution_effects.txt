@@ -1126,6 +1126,22 @@ infantry_spawn_freeze_first_family_reception_row = {
 		set_variable = { infantry_spawn_first_family_reception_family_id = global.chaos_unit_family_id_entries^infantry_spawn_first_family_reception_selected_index }
 		set_variable = { infantry_spawn_first_family_reception_provider_id = global.chaos_unit_family_provider_id_entries^infantry_spawn_first_family_reception_selected_index }
 		set_variable = { infantry_spawn_first_family_reception_visual_profile = global.chaos_unit_family_visual_profile_entries^infantry_spawn_first_family_reception_selected_index }
+		set_temp_variable = { infantry_spawn_family_provider_name_loc_token = 0 }
+		set_temp_variable = { infantry_spawn_family_provider_request_cost_loc_token = 0 }
+		set_temp_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token = 0 }
+		meta_effect = {
+			text = { chaos_unit_family_provider_[PROVIDER]_event19_get_presentation = yes }
+			PROVIDER = "[?infantry_spawn_first_family_reception_provider_id|.0]"
+		}
+		if = {
+			limit = {
+				check_variable = { infantry_spawn_family_provider_name_loc_token > 0 }
+				check_variable = { infantry_spawn_family_provider_request_cost_loc_token > 0 }
+				check_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token > 0 }
+			}
+			set_variable = { infantry_spawn_first_family_reception_name_loc_token = infantry_spawn_family_provider_name_loc_token }
+		}
+		else = { infantry_spawn_mark_ledger_invariant_failure = yes }
 		set_variable = { infantry_spawn_first_family_reception_nonce = global.infantry_spawn_next_first_family_reception_nonce }
 		add_to_variable = { global.infantry_spawn_next_first_family_reception_nonce = constant:infantry_spawn_weight_result.one }
 		set_variable = { infantry_spawn_muster_gui_selected_family_id = infantry_spawn_first_family_reception_family_id }
@@ -1170,6 +1186,7 @@ infantry_spawn_try_dispatch_first_family_reception = {
 					has_variable = infantry_spawn_first_family_reception_family_id
 					has_variable = infantry_spawn_first_family_reception_provider_id
 					has_variable = infantry_spawn_first_family_reception_visual_profile
+					has_variable = infantry_spawn_first_family_reception_name_loc_token
 					has_variable = infantry_spawn_first_family_reception_nonce
 				}
 			}
@@ -1190,6 +1207,7 @@ infantry_spawn_load_frozen_first_family_reception_row = {
 			has_variable = infantry_spawn_first_family_reception_family_id
 			has_variable = infantry_spawn_first_family_reception_provider_id
 			has_variable = infantry_spawn_first_family_reception_visual_profile
+			has_variable = infantry_spawn_first_family_reception_name_loc_token
 			has_variable = infantry_spawn_first_family_reception_nonce
 			check_variable = { var = infantry_spawn_first_family_reception_registry_index value = constant:chaos_unit_family_registry.not_found compare = greater_than }
 			check_variable = { var = infantry_spawn_first_family_reception_registry_index value = global.chaos_unit_family_id_entries^num compare = less_than }
@@ -1215,6 +1233,7 @@ infantry_spawn_finalize_first_family_reception = {
 	clr_country_flag = infantry_spawn_first_family_reception_pending
 	clr_country_flag = infantry_spawn_first_family_reception_dispatched
 	set_variable = { infantry_spawn_first_family_reception_choice = infantry_spawn_first_family_reception_choice_request }
+	clear_variable = infantry_spawn_first_family_reception_name_loc_token
 	infantry_spawn_recalculate_country_pressure = yes
 	infantry_spawn_schedule_country_pulse = yes
 }

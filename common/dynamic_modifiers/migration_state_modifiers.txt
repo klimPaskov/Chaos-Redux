@@ -1,0 +1,109 @@
+# Chaos Redux migration state modifiers.
+
+
+# Flow modifiers are enabled only by the presentation adapter. The core flags
+# still own lifecycle truth; the adapter adds dynamic values derived from exact
+# receipts, loads, and state denominators before each flow modifier is added.
+migration_state_preparing_to_leave = {
+	icon = GFX_migration_state_exodus
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_preparing_to_leave }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_preparing_to_leave } }
+	state_production_speed_buildings_factor = var:migration_presentation_preparing_production
+	army_speed_factor_for_controller = var:migration_presentation_preparing_speed
+}
+
+
+migration_state_exodus = {
+	icon = GFX_migration_state_exodus
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_active_exodus }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_active_exodus } }
+	state_production_speed_buildings_factor = var:migration_presentation_active_exodus_production
+	army_speed_factor_for_controller = var:migration_presentation_active_exodus_speed
+}
+
+
+migration_state_organized_evacuation = {
+	icon = GFX_migration_state_exodus
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_organized_evacuation }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_organized_evacuation } }
+	state_production_speed_buildings_factor = var:migration_presentation_organized_evacuation_production
+	army_speed_factor_for_controller = var:migration_presentation_organized_evacuation_speed
+}
+
+
+migration_state_depopulated_districts = {
+	icon = GFX_migration_state_exodus
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_depopulated_districts }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_depopulated_districts } }
+	state_production_speed_buildings_factor = var:migration_presentation_depopulated_production
+	local_non_core_manpower = var:migration_presentation_depopulated_non_core_manpower
+	local_building_slots_factor = var:migration_presentation_depopulated_building_slots
+}
+
+
+migration_state_reception = {
+	icon = GFX_migration_state_reception
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_reception }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_reception } }
+	local_supplies = var:migration_presentation_reception_supplies
+	state_production_speed_buildings_factor = var:migration_presentation_reception_production
+	army_speed_factor_for_controller = var:migration_presentation_reception_speed
+}
+
+
+migration_state_overcrowded = {
+	icon = GFX_migration_state_overcrowded
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_overcrowded }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_overcrowded } }
+	local_supplies = var:migration_presentation_overcrowded_supplies
+	attrition_for_controller = var:migration_presentation_overcrowded_attrition
+	army_speed_factor_for_controller = var:migration_presentation_overcrowded_speed
+}
+
+
+migration_state_trapped_border = {
+	icon = GFX_migration_state_trapped_border
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_trapped_population }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_trapped_population } }
+	local_supplies = var:migration_presentation_trapped_supplies
+	army_speed_factor_for_controller = var:migration_presentation_trapped_speed
+}
+
+
+migration_state_transit = {
+	icon = GFX_migration_state_exodus
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_transit }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_transit } }
+	local_supplies = var:migration_presentation_transit_supplies
+	state_production_speed_buildings_factor = var:migration_presentation_transit_production
+	army_speed_factor_for_controller = var:migration_presentation_transit_speed
+}
+
+
+migration_state_return_readiness = {
+	icon = GFX_migration_state_return
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_return_readiness }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_return_readiness } }
+	state_production_speed_buildings_factor = var:migration_presentation_return_readiness_production
+	army_speed_factor_for_controller = var:migration_presentation_return_readiness_speed
+}
+
+
+migration_state_return = {
+	icon = GFX_migration_state_return
+	attacker_modifier = yes
+	enable = { has_state_flag = migration_presentation_resettlement_return }
+	remove_trigger = { NOT = { has_state_flag = migration_presentation_resettlement_return } }
+	state_production_speed_buildings_factor = var:migration_presentation_resettlement_return_production
+	army_speed_factor_for_controller = var:migration_presentation_resettlement_return_speed
+}
+

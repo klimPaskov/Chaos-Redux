@@ -1,11 +1,13 @@
 # Famine and Migration Resume Packet
 
+> **Superseded historical snapshot (2026-08-25):** This resume packet predates the accepted split famine/migration implementation and is retained for provenance only. Do not use its helper names, counts, paths, open decisions, or MCP status as current instructions. Use [source_of_truth_map.md](source_of_truth_map.md) and [completion_report.md](completion_report.md) for the current incomplete status and remaining owner, probability, GUI/map, asset, and other blockers.
+
 Status: The implementation has a reconciled documentation ledger, but parent-owned runtime and engine-evidence gates remain open.
 
 ## Current truth before resuming
 
-- The category starts hidden and `famine_migration_refresh_decision_phase_from_state` reveals emerging only at sustained or large food, incident, flight, trapped, or reception thresholds.
-- `famine_migration_retire_inactive_displacement_country` removes dormant scheduler entries without clearing integrated, resettled, or returned historical ledgers.
+- The migration category starts hidden and `migration_refresh_decision_phase_from_state` reveals its emerging phase only at sustained or large migration incident, flight, trapped-population, or reception thresholds. Famine has its own independent visibility lifecycle.
+- `migration_retire_inactive_country` removes dormant migration scheduler entries without clearing integrated, resettled, or returned historical ledgers.
 - The food evaluator uses the documented weighted formula, and trapped population contributes normalized pressure to both need and vulnerability.
 - Exact transfer debits origin once, logs route deaths separately, credits survivors only, restores any short-credit residual to origin with manpower rollback, and requires a positive debit with zero conservation residual.
 - The sparse scheduler processes registered arrays through the host-only coordinator and does not add a whole-world recurring scan.

@@ -1,0 +1,28 @@
+# CHAOS REDUX - SPONTANEOUS MIGRATION MOVEMENT CONSTANTS
+# ============================================================================
+# Central tuning for the registry-owned spontaneous movement transaction.
+# Values are campaign-facing pacing and population shares, not historical
+# totals. The owner derives each request from the live origin population and
+# its current flight-pressure ledger.
+# ============================================================================
+
+migration_spontaneous_movement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# One state can submit at most one spontaneous attempt during this window.
+	cooldown_days = 30
+	# Pressure must be material before the sparse job attempts a route.
+	minimum_flight_pressure = 1000
+	# A bounded fraction of current pressure becomes one cohort request.
+	request_pressure_share = 0.25
+	minimum_request_people = 1000
+	maximum_request_people = 50000
+	# Keep this live fraction of the measured state population in the origin.
+	protected_origin_share = 0.20
+	# state_population_k is measured in thousands, so this is a one-thousand-
+	# person floor rather than a fixed people-denominated movement total.
+	minimum_origin_population_k = 1
+}

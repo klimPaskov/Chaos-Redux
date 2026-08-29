@@ -1,0 +1,150 @@
+# Chaos Redux migration core tuning.
+
+
+migration_border_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	humanitarian_open = 1
+	controlled = 2
+	transit_only = 3
+	quarantine = 4
+	closed = 5
+	violent = 6
+	forced_return = 7
+}
+
+
+# Cohort records are aligned entries in the bounded global ledger. An
+# unbound destination is represented by the recorded origin scope only; no
+# effect may invent a replacement state when the destination is absent.
+migration_cohort_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	active = 1
+	destination_bound = 2
+	completed = 3
+	invalid = 4
+	destination_bound_unsafe = 5
+}
+
+
+# Reception accounting accepts only positive actual survivor deltas. The
+# shared effect applies the same delta to the destination state and its owner
+# country, so mapmode and country-category consumers cannot drift.
+migration_reception_delta = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	credit = 1
+	debit = 2
+}
+
+
+# Core reconciliation values are shared by the sparse registry, exact
+# transfer, reception service, and presentation projections.  The values are
+# deliberately separate from food mortality and decision AI tuning so a
+# food-only retirement can never silently change a migration obligation.
+migration_core_reconciliation = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	schema_version = 2
+	state_registry_revision_start = 1
+	country_registry_revision_start = 1
+	projection_generation_start = 1
+	selector_zero = 0
+	selector_one = 1
+	selector_ambiguous = 2
+	selector_misaligned = 3
+	cohort_live_minimum = 1
+	protected_population_share = 0.15
+	flight_request_minimum = 1
+	flight_share_supply_strain = 0.01
+	flight_share_acute_shortage = 0.03
+	flight_share_famine = 0.06
+	flight_share_catastrophic = 0.10
+	transfer_projection_invalid = 0
+	transfer_projection_valid = 1
+	transfer_finalize_invalid = 0
+	transfer_finalize_pending = 1
+	transfer_finalize_valid = 2
+	transfer_bind_safe = 1
+	transfer_bind_forced = 2
+	transfer_rebind_safe = 3
+	transfer_rebind_forced = 4
+	transfer_source_reception_not_required = 0
+	transfer_source_reception_required = 1
+	transfer_projection_role_unspecified = 0
+	transfer_projection_role_spontaneous_exodus = 1
+	transfer_projection_role_organized_evacuation = 2
+	transfer_projection_role_forced_movement = 3
+	transfer_projection_role_deportation = 4
+	transfer_projection_role_transit = 5
+	transfer_projection_role_resettlement = 6
+	transfer_projection_role_voluntary_return = 7
+	transfer_projection_role_forced_return = 8
+	transfer_projection_role_local_integration = 9
+}
+
+
+# Reception capacity is an aggregate people-unit service.  It is intentionally
+# conservative: a candidate without both explicit adapters is not a usable
+# candidate, and normalized transport is availability evidence only.
+migration_capacity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	schema_version = 2
+	people_per_k = 1000
+	max_component = 100
+	min_component = 0
+	food_safe_stage = 1
+	shelter_quality_floor = 0.25
+	medical_quality_floor = 0.25
+	transport_quality_floor = 0.20
+	infrastructure_quality_floor = 0.20
+	governance_quality_floor = 0.20
+	infrastructure_max_level = 5
+	quality_input_count = 6
+	safe_factor_divisor = 2
+	weight_food = 1
+	weight_shelter = 1
+	weight_infrastructure = 1
+	weight_transport = 1
+	weight_medical = 1
+	weight_administration = 1
+	quality_weight_sum = 6
+	target_safe_state_count = 3
+	capacity_population_share = 0.10
+	capacity_population_share_max = 0.20
+	minimum_load_denominator_people = 1
+	load_penalty = 1
+	minimum_load_factor = 0
+	minimum_hazard_factor = 0
+	administration_full_civilian_factories = 20
+	food_quality_stable = 1.00
+	food_quality_supply_strain = 0.80
+	food_quality_acute_shortage = 0.60
+	food_quality_famine = 0.40
+	food_quality_catastrophic = 0.20
+	war_penalty = 0.25
+	outbreak_penalty = 0.35
+	contamination_penalty = 0.40
+	revision_increment = 1
+}
+

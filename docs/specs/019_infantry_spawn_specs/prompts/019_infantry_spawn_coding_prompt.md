@@ -1,5 +1,7 @@
 # Coding Prompt for Chaos Redux Event 19 Infantry Spawn
 
+> **Archival implementation prompt (2026-08-22):** This prompt preserves the original cross-surface implementation request and must not be executed as a current work order. The accepted runtime surface is decisions-only with no Event 19 scripted GUI. Use `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md`, `docs/events/019_infantry_spawn/overview.md`, and the current provider handoffs before proposing any additional implementation. Future families remain owner-side registration plus the complete callback contract with no Event 19 list or second registry-file edit.
+
 Implement the complete Event ID `19`, Infantry Spawn, from `docs/specs/019_infantry_spawn_specs/`. Preserve the stable event identity. Treat the request prefix `017` as request metadata, not the event ID.
 
 > **Current implementation boundary (2026-08-09):** This prompt is accepted design input, not a literal instruction to move every provider callback into one file. The consolidated Event 19 registry file owns the ordinary table and baseline bindings, while owner adapters for providers `511-514`, `518`, `520-522` register from their existing parent surfaces and dispatch through the shared contract. Do not create a second registry file or migrate those owner callbacks into the consolidated file without a new accepted design decision.

@@ -1623,6 +1623,16 @@ infantry_spawn_achievement_resolve_combat_trial_attacker_win = {
 		set_country_flag = infantry_spawn_achievement_combat_trial_resolved
 		if = {
 			limit = { infantry_spawn_achievement_combat_trial_frozen_pair_is_intact = yes }
+			if = {
+				limit = {
+					has_country_flag = infantry_spawn_achievement_combat_trial_started
+					infantry_spawn_achievement_combat_trial_frozen_pair_is_intact = yes
+				}
+				save_event_target_as = humanitarian_corridor_exact_attacker
+				var:infantry_spawn_achievement_combat_trial_defender_state = {
+					humanitarian_corridor_handle_exact_state_attack = yes
+				}
+			}
 			infantry_spawn_achievement_record_controlled_combat_trial_victory = yes
 		}
 		infantry_spawn_achievement_cleanup_combat_trial = yes
@@ -1636,6 +1646,16 @@ infantry_spawn_achievement_resolve_combat_trial_attacker_loss = {
 			NOT = { has_country_flag = infantry_spawn_achievement_combat_trial_resolved }
 		}
 		set_country_flag = infantry_spawn_achievement_combat_trial_resolved
+		if = {
+			limit = {
+				has_country_flag = infantry_spawn_achievement_combat_trial_started
+				infantry_spawn_achievement_combat_trial_frozen_pair_is_intact = yes
+			}
+			save_event_target_as = humanitarian_corridor_exact_attacker
+			var:infantry_spawn_achievement_combat_trial_defender_state = {
+				humanitarian_corridor_handle_exact_state_attack = yes
+			}
+		}
 		infantry_spawn_achievement_cleanup_combat_trial = yes
 	}
 }

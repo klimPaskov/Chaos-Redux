@@ -740,6 +740,7 @@ camp_rework_register_active_site = {
 }
 
 camp_rework_resolve_site_evidence = {
+	migration_persecution_prepare_camp_terminal = yes
 	if = {
 		limit = {
 			has_variable = genocide_responsible_country
@@ -775,9 +776,11 @@ camp_rework_resolve_site_evidence = {
 	clr_state_flag = genocide_site_has_responsible_country
 	clear_variable = genocide_responsible_country
 	clear_variable = camp_site_secondary_responsible_country
+	migration_persecution_clear_owner_state = yes
 }
 
 camp_rework_unregister_inactive_site = {
+	migration_persecution_prepare_camp_terminal = yes
 	if = {
 		limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
 		set_variable = { camp_state_evidence_site_type = camp_state_site_type }
@@ -822,6 +825,7 @@ camp_rework_unregister_inactive_site = {
 			}
 		}
 	}
+	migration_persecution_clear_owner_state = yes
 }
 
 camp_rework_clean_invalid_active_sites = {
@@ -1855,6 +1859,7 @@ camp_rework_prepare_monthly_state_death_profile = {
 		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
 		set_temp_variable = { chaos_state_deaths_percent = constant:camp_rework_death_percent.expanded_labor_monthly }
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:camp_rework_death_cap.expanded_labor }
+		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.forced_labor }
 		set_temp_variable = { camp_monthly_evidence_gain = constant:camp_rework_monthly.expanded_evidence_gain }
 		set_temp_variable = { camp_monthly_resistance_gain = constant:camp_rework_monthly.expanded_resistance_gain }
 	}
@@ -1960,7 +1965,28 @@ camp_rework_record_latest_state_deaths = {
 	set_variable = { camp_site_last_month_deaths = chaos_deaths_change }
 	set_variable = { genocide_last_state_deaths = chaos_deaths_change }
 	genocide_credit_state_deaths_to_responsible = yes
-	famine_migration_adapt_camp_state = yes
+	# The camp owner supplies the complete state-local receipt. Site, pool,
+	# control, and evidence ledgers identify the source; the adapter never
+	# reconstructs proof from the already-applied death amount.
+	if = {
+		limit = {
+			has_variable = genocide_responsible_country
+			var:genocide_responsible_country = { exists = yes }
+		}
+		var:genocide_responsible_country = { save_event_target_as = famine_adapter_actor }
+		set_temp_variable = { famine_adapter_state_proven = THIS.id }
+		set_temp_variable = { famine_adapter_food_proven = camp_state_death_pool_factor }
+		set_temp_variable = { famine_adapter_environment_proven = camp_state_site_type }
+		set_temp_variable = { famine_adapter_transport_proven = camp_state_reach }
+		set_temp_variable = { famine_adapter_policy_proven = camp_state_coercive_control }
+		set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+		set_temp_variable = { famine_adapter_cause_proven = chaos_deaths_reason }
+		set_temp_variable = { famine_adapter_source_proven = camp_state_site_type }
+		set_temp_variable = { famine_adapter_generation = global.num_days }
+		set_temp_variable = { famine_adapter_revision = camp_site_last_month_deaths }
+		set_temp_variable = { famine_adapter_request_id = global.date }
+	}
+	famine_adapt_camp_state = yes
 }
 
 camp_rework_register_exact_state_deaths = {
@@ -4237,6 +4263,7 @@ camp_rework_close_dormant_inherited_site = {
 }
 
 camp_rework_complete_dismantlement = {
+	migration_persecution_prepare_camp_dismantlement = yes
 	camp_rework_refresh_state_site_profile = yes
 	if = {
 		limit = {
@@ -4315,6 +4342,7 @@ camp_rework_complete_dismantlement = {
 	set_state_flag = camp_rework_liberated_evidence
 	camp_rework_register_evidence_state = yes
 	camp_rework_unregister_inactive_site = yes
+	migration_persecution_clear_camp_owners = yes
 	if = {
 		limit = {
 			has_variable = genocide_responsible_country
@@ -5051,6 +5079,117 @@ camp_rework_consume_dismantlement_resources = {
 	add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_cost_remove }
 }
 
+# State scope. Stage one explicit current cohort for the generic owner action.
+# This is an assignment boundary only; the live cohort row is not moved,
+# split, debited, killed, or otherwise mutated here.
+camp_rework_prepare_exact_cohort_custody = {
+	clear_variable = camp_rework_exact_cohort_staged
+	clear_variable = camp_rework_exact_cohort_id
+	clear_variable = camp_rework_exact_cohort_amount
+	clear_variable = camp_rework_exact_cohort_action
+	clear_variable = camp_rework_exact_cohort_actor_token
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			migration_cohort_history_live_ledger_arrays_are_aligned = yes
+			has_variable = migration_current_cohort_id
+			NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+			ROOT = {
+				OR = {
+					check_variable = { camp_rework_exact_custody_action_request = constant:migration_custody_action.internment }
+					check_variable = { camp_rework_exact_custody_action_request = constant:migration_custody_action.forced_labor }
+				}
+			}
+		}
+		set_temp_variable = { migration_cohort_id_request = migration_current_cohort_id }
+		migration_resolve_cohort_origin = yes
+		if = {
+			limit = {
+				check_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.valid }
+				check_variable = { migration_cohort_resolved_amount > constant:humanitarian_population.zero }
+				OR = {
+					check_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.active }
+					check_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.destination_bound }
+					check_variable = { migration_cohort_resolved_status = constant:migration_cohort_status.destination_bound_unsafe }
+				}
+				has_event_target = migration_cohort_host
+				state = event_target:migration_cohort_host
+			}
+			set_variable = { camp_rework_exact_cohort_id = migration_cohort_id_request }
+			set_variable = { camp_rework_exact_cohort_amount = migration_cohort_resolved_amount }
+			set_variable = { camp_rework_exact_cohort_action = ROOT.camp_rework_exact_custody_action_request }
+			set_variable = { camp_rework_exact_cohort_actor_token = ROOT.camp_rework_exact_custody_actor_token }
+			set_variable = { camp_rework_exact_cohort_staged = constant:humanitarian_runtime.one }
+		}
+	}
+	set_temp_variable = { migration_cohort_id_request = constant:humanitarian_runtime.zero }
+}
+
+# State scope. Complete the already-staged generic owner transaction after
+# the concrete site or labor assignment exists, then issue the strict receipt.
+# The adapter resolves the explicit staged ID again here so the accepted amount
+# is the current whole live row after owner mutations, never a quota or death.
+camp_rework_commit_exact_cohort_custody = {
+	if = {
+		limit = {
+			check_variable = { camp_rework_exact_cohort_staged = constant:humanitarian_runtime.one }
+			check_variable = { camp_rework_exact_cohort_id > constant:humanitarian_runtime.zero }
+			check_variable = { camp_rework_exact_cohort_action > constant:migration_custody_action.none }
+			check_variable = { camp_rework_exact_cohort_amount > constant:humanitarian_population.zero }
+			OR = {
+				is_valid_camp_active_site_state = yes
+				has_state_flag = camp_rework_labor_project_active
+			}
+			has_variable = camp_rework_exact_cohort_actor_token
+			check_variable = { camp_rework_exact_cohort_actor_token > constant:humanitarian_runtime.zero }
+		}
+		migration_initialize_runtime = yes
+		set_temp_variable = { migration_cohort_custody_id_request = camp_rework_exact_cohort_id }
+		set_temp_variable = { migration_cohort_custody_action_request = camp_rework_exact_cohort_action }
+		set_temp_variable = { migration_cohort_custody_transaction_proven = global.date }
+		set_temp_variable = { migration_cohort_custody_actor_proven = camp_rework_exact_cohort_actor_token }
+		set_temp_variable = { migration_cohort_custody_site_proven = ROOT.camp_rework_action_state_id }
+		set_temp_variable = { migration_cohort_custody_route_proven = constant:humanitarian_runtime.zero }
+		set_temp_variable = { migration_cohort_custody_generation = global.civilian_transfer_generation }
+		set_temp_variable = { migration_cohort_custody_revision = camp_rework_exact_cohort_amount }
+		set_temp_variable = { migration_cohort_custody_request_id = global.date }
+		ROOT = { save_event_target_as = migration_cohort_custody_actor }
+		# Re-resolve the staged row before the adapter so route proof represents
+		# the current host and whole-row amount, not a stale camp quota.
+		set_temp_variable = { migration_cohort_id_request = camp_rework_exact_cohort_id }
+		migration_resolve_cohort_origin = yes
+		if = {
+			limit = {
+				check_variable = { migration_cohort_origin_resolution_result = constant:civilian_transfer_route_result.valid }
+				check_variable = { migration_cohort_resolved_amount > constant:humanitarian_population.zero }
+				has_event_target = migration_cohort_host
+				state = event_target:migration_cohort_host
+			}
+			set_temp_variable = { migration_cohort_custody_route_proven = migration_cohort_resolved_amount }
+		}
+		set_temp_variable = { migration_cohort_id_request = constant:humanitarian_runtime.zero }
+		migration_record_current_state_cohort_custody_exact = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { migration_current_state_custody_result = constant:civilian_transfer_route_result.valid }
+					check_variable = { migration_cohort_custody_already_recorded = constant:humanitarian_runtime.one }
+				}
+			}
+			set_state_flag = camp_rework_exact_cohort_custody_receipted
+			set_variable = { camp_rework_exact_cohort_custody_id = camp_rework_exact_cohort_id }
+			set_variable = { camp_rework_exact_cohort_custody_amount = migration_cohort_custody_resolved_amount }
+			set_variable = { camp_rework_exact_cohort_custody_action = camp_rework_exact_cohort_action }
+		}
+		set_temp_variable = { migration_cohort_id_request = constant:humanitarian_runtime.zero }
+		clear_variable = camp_rework_exact_cohort_staged
+		clear_variable = camp_rework_exact_cohort_id
+		clear_variable = camp_rework_exact_cohort_amount
+		clear_variable = camp_rework_exact_cohort_action
+		clear_variable = camp_rework_exact_cohort_actor_token
+	}
+}
+
 camp_rework_activate_detention_in_from = {
 	set_variable = { camp_rework_action_state_id = FROM.id }
 	camp_rework_activate_detention_in_action_state = yes
@@ -5086,6 +5225,12 @@ camp_rework_activate_detention_in_action_state = {
 		}
 		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.detention }
 		camp_rework_register_active_site = yes
+		camp_rework_commit_exact_cohort_custody = yes
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.detention
+		}
+		set_variable = { migration_persecution_pending_actor = ROOT }
+		migration_persecution_record_state = yes
 	}
 	set_country_flag = camp_rework_managed_network_visible
 	camp_rework_recalculate_country_values = yes
@@ -5134,6 +5279,11 @@ camp_rework_expand_labor_in_action_state = {
 		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		camp_rework_apply_state_death_burst = yes
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.expanded_labor
+		}
+		set_variable = { migration_persecution_pending_actor = ROOT }
+		migration_persecution_record_state = yes
 	}
 	camp_rework_recalculate_country_values = yes
 	camp_rework_refresh_lifecycle_ideas = yes
@@ -5150,7 +5300,15 @@ camp_rework_start_generic_labor_project_in_action_state = {
 	set_country_flag = generic_labor_project_active
 	set_variable = { generic_labor_project_state_id = camp_rework_action_state_id }
 	set_variable = { generic_labor_project_type = camp_requested_project_type }
-	var:camp_rework_action_state_id = { set_state_flag = camp_rework_labor_project_active }
+	var:camp_rework_action_state_id = {
+		set_state_flag = camp_rework_labor_project_active
+		camp_rework_commit_exact_cohort_custody = yes
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project
+		}
+		set_variable = { migration_persecution_pending_actor = ROOT }
+		migration_persecution_record_state = yes
+	}
 	add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
 	add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.overstretch_minor }
 	add_to_variable = { camp_policy_resistance_pressure = constant:camp_rework_country_value.resistance_minor }
@@ -5183,7 +5341,17 @@ camp_rework_complete_generic_labor_project = {
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 			camp_rework_apply_state_death_burst = yes
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project
+			}
+			if = {
+				limit = { has_variable = migration_persecution_labor_project_generation }
+				set_variable = {
+					migration_persecution_pending_clear_generation = migration_persecution_labor_project_generation
+				}
+			}
 			clr_state_flag = camp_rework_labor_project_active
+			migration_persecution_clear_owner_state = yes
 		}
 		set_temp_variable = { camp_generic_project_succeeded = 1 }
 	}
@@ -5196,7 +5364,17 @@ camp_rework_complete_generic_labor_project = {
 			camp_rework_apply_state_death_burst = yes
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 			camp_rework_register_evidence_state = yes
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project
+			}
+			if = {
+				limit = { has_variable = migration_persecution_labor_project_generation }
+				set_variable = {
+					migration_persecution_pending_clear_generation = migration_persecution_labor_project_generation
+				}
+			}
 			clr_state_flag = camp_rework_labor_project_active
+			migration_persecution_clear_owner_state = yes
 		}
 	}
 	if = {
@@ -5249,6 +5427,11 @@ camp_rework_radicalize_site_in_action_state = {
 			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.extermination_camp }
 			camp_rework_apply_state_death_burst = yes
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
+			}
+			set_variable = { migration_persecution_pending_actor = ROOT }
+			migration_persecution_record_state = yes
 		}
 	}
 	if = {

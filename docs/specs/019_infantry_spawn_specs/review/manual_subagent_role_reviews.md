@@ -1,5 +1,7 @@
 # Manual Role-Equivalent Subagent Reviews
 
+> **Historical planning review (2026-08-22):** This file is retained as design evidence. Its selected-lot GUI references and completion language are superseded by the decisions-only addendum and current provider handoffs.
+
 ## Process status
 
 The custom Chaos Redux subagent runtime was not available in the original

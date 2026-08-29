@@ -1,5 +1,7 @@
 # Event 019 Localisation and Asset Independent Reaudit
 
+> **Historical UI boundary (2026-08-22):** This dated localisation/asset audit retains former Muster Board and scripted-GUI consumer findings as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; use the current asset manifest, decision-only surface handoff, and source-of-truth map for active routing.
+
 Date: 2026-07-16  
 Mode: independent read-only audit  
 Scope: Event 019 English localisation, Event Log/history/evolution/details text, SCN-013 text, achievement text and icon triplets, fixed identity scenes, animation packages, manifests, contact sheets, runtime formats, and sprite consumers  

@@ -6,6 +6,8 @@ This is an independent documentation and source-completion certification for the
 
 The certification reconciles the current source census with the owner handoffs, the acceptance ledger, and the available read-only HOI4 MCP evidence. The current event evidence is tied to the partial event revision `91161780...`; no focused Event 012 omission was identified in that evidence.
 
+> 2026-08-26 status note: this certification remains a dated source census, not current model/audio promotion authority. The per-package manifests and current model handoffs govern the mixed Oracle, Disaster Wardens, blocked strange-force, and blocked Elephant statuses.
+
 ## Current source census
 
 | Surface | Current source result | Disposition |
@@ -15,7 +17,7 @@ The certification reconciles the current source census with the owner handoffs, 
 | AI profiles | 64 profiles are source-wired across host, constitutional, member, power-response, high-chaos, world-order, and host-specific families. | Source-complete; exact and bounded/partial MCP evidence are kept separate from normalized probability claims. |
 | Priority packages | 16 priority packages and their matching polity rows use existing conditional carriers. DYX/Luba, DZX/Lunda, and EMX/Kilwa remain intentionally dormant when their accepted gates are closed. | 16/16 packages and 16 matching polity rows accepted as implemented; historical portrait placeholders are non-blocking. |
 | Controlled pool | The remaining 199 polity candidates remain deliberately queued for controlled-pool treatment. | Queued, not silently promoted or dropped. |
-| Visual/model package | The current reconciliation records 239 visual rows: 84 installed runtime, 28 installed dormant, 10 runtime-gated, and 117 controlled-pool deferred; it also records 9 model packages, 18 animations, and 4 super-event roles. | Evidence ledger retained; no asset binary claim is made here. |
+| Visual/model package | The current reconciliation records 239 visual rows: 84 installed runtime, 28 installed dormant, 10 runtime-gated, and 117 controlled-pool deferred; it also records 9 model package/workspace records, 18 animations, and 4 super-event roles. Current model promotion is mixed and governed by per-package manifests. | Evidence ledger retained; no asset binary or runtime-readiness claim is made here. |
 
 The six runtime gates are the accepted fictional-disease and strange-formation readiness contracts for actions 71–76. They are intentional fail-closed runtime gates, not missing action concepts, dead choices, or omitted selectors.
 

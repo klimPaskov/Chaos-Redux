@@ -10,6 +10,10 @@
 # origin/target state. No effect scans beyond every_neighbor_state.
 # ============================================================================
 
+@MIGRATION_OPINION_FRIENDLY = 75
+@MIGRATION_OPINION_POSITIVE = 25
+@MIGRATION_OPINION_NEGATIVE = -25
+
 # STATE scope. Preserve an explicit actor supplied by a registry owner. All
 # existing decision callers omit the override and refresh the chain-local actor
 # from their ROOT country, so a stale regular target cannot affect a later call.
@@ -182,15 +186,15 @@ migration_destination_selection_calculate_candidate_weight = {
 			}
 
 			if = {
-				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value > constant:migration_destination_selection_threshold.opinion_friendly } }
+				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value > @MIGRATION_OPINION_FRIENDLY } }
 				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_opinion_friendly }
 			}
 			else_if = {
-				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value > constant:migration_destination_selection_threshold.opinion_positive } }
+				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value > @MIGRATION_OPINION_POSITIVE } }
 				add_to_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_opinion_positive }
 			}
 			else_if = {
-				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value < constant:migration_destination_selection_threshold.opinion_negative } }
+				limit = { has_opinion = { target = event_target:migration_destination_selection_actor value < @MIGRATION_OPINION_NEGATIVE } }
 				subtract_from_temp_variable = { migration_destination_candidate_weight = constant:migration_destination_selection_weight.relation_opinion_negative_penalty }
 			}
 

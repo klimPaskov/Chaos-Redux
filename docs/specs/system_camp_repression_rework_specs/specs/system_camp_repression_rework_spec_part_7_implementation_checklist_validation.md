@@ -386,7 +386,7 @@ rg -n "camp_gui_pool_state_ids|camp_gui_active_site_state_ids|camp_selected_stat
 ### Asset references
 
 ```bash
-rg -n "GFX_decision_category_repression_ledger|GFX_repression_ledger|GFX_decision_uk_raj_detention|GFX_decision_usa_emergency_relocation|GFX_decision_bel_congo_concession_quota" interface common localisation docs
+rg -n "GFX_decision_category_repair_repression_ledger|GFX_decision_category_repression_ledger|GFX_repression_ledger|GFX_decision_uk_raj_detention|GFX_decision_usa_emergency_relocation|GFX_decision_bel_congo_concession_quota" interface common localisation docs
 find gfx -iname '*repression*' -o -iname '*raj*detention*' -o -iname '*congo*labor*'
 ```
 

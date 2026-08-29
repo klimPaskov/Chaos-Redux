@@ -1,0 +1,59 @@
+# Migration-owned player-facing selectors.
+
+defined_text = {
+	name = GetMigrationCategoryPhase
+	text = { trigger = { has_country_flag = migration_decision_resolution } localization_key = migration_category_phase_resolution }
+	text = { trigger = { has_country_flag = migration_decision_active } localization_key = migration_category_phase_active }
+	text = { trigger = { has_country_flag = migration_decision_emerging } localization_key = migration_category_phase_emerging }
+	text = { trigger = { always = yes } localization_key = migration_category_phase_dormant }
+}
+
+defined_text = {
+	name = GetMigrationPriorityResponse
+	text = { trigger = { any_owned_state = { has_state_flag = migration_population_trapped } } localization_key = migration_priority_response_trapped }
+	text = {
+		trigger = {
+			has_variable = migration_reception_load
+			has_variable = migration_reception_capacity
+			check_variable = { var = migration_reception_load value = migration_reception_capacity compare = greater_than }
+		}
+		localization_key = migration_priority_response_reception
+	}
+	text = { trigger = { any_owned_state = { has_state_flag = migration_displacement_active } } localization_key = migration_priority_response_displacement }
+	text = { trigger = { always = yes } localization_key = migration_priority_response_stable }
+}
+
+defined_text = {
+	name = GetMigrationBorderPolicy
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.humanitarian_open } } localization_key = migration_border_policy_open }
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.controlled } } localization_key = migration_border_policy_controlled }
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.transit_only } } localization_key = migration_border_policy_transit }
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.quarantine } } localization_key = migration_border_policy_quarantine }
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.closed } } localization_key = migration_border_policy_closed }
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.violent } } localization_key = migration_border_policy_violent }
+	text = { trigger = { check_variable = { migration_border_policy = constant:migration_border_policy.forced_return } } localization_key = migration_border_policy_forced_return }
+	text = { trigger = { always = yes } localization_key = migration_border_policy_unset }
+}
+
+defined_text = {
+	name = GetMigrationCohortName
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.occupation_policy } } localization_key = migration_cohort_occupation }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.camp_repression } } localization_key = migration_cohort_camp }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.gulag_repression } } localization_key = migration_cohort_gulag }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.forced_labor } } localization_key = migration_cohort_forced_labor }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.deportation } } localization_key = migration_cohort_deportation }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.strategic_bombing } } localization_key = migration_cohort_bombing }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.nuclear_strike } } localization_key = migration_cohort_nuclear }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.fallout } } localization_key = migration_cohort_fallout }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.outbreak } } localization_key = migration_cohort_outbreak }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.natural_disaster } } localization_key = migration_cohort_disaster }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.war } } localization_key = migration_cohort_war }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.peace } } localization_key = migration_cohort_peace }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.event } } localization_key = migration_cohort_event }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.blockade } } localization_key = migration_cohort_blockade }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.resource_shortage } } localization_key = migration_cohort_shortage }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.evacuation } } localization_key = migration_cohort_evacuation }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.internal_displacement } } localization_key = migration_cohort_internal }
+	text = { trigger = { check_variable = { migration_cohort_resolved_source = constant:humanitarian_pressure_source.cross_border_flight } } localization_key = migration_cohort_refugees }
+	text = { trigger = { always = yes } localization_key = migration_cohort_unknown }
+}

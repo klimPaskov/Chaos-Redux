@@ -1,6 +1,6 @@
 # Event 019 Claimant Identity Specialist Re-Audit
 
-> Superseded visual evidence: all human-portrait, face, sex-presentation, source-dimension, hash, and contact-sheet claims in the body describe rejected art. Current fixed slots show twenty regional claimant armies/musters, six derivative massed hosts, and one neutral unassigned muster with no individual focal human/person; see `019_full_portrait_regeneration_handoff_2026_07_16.md`, `019_neutral_unassigned_muster_asset_handoff_2026_07_16.md`, and the current 27-row crosswalk. Runtime claimant sex/name correction remains governed by `019_male_claimant_identity_correction_handoff_2026_07_16.md`; nonvisual regional/profile audit reasoning below is historical evidence only.
+> Superseded visual and identity evidence: all human-portrait, face, sex-presentation, source-dimension, hash, and contact-sheet claims in the body describe rejected art or the pre-correction identity model. The body’s female-profile and female-commander claims are not current behavior. Current fixed slots show twenty regional claimant armies/musters, six derivative massed hosts, and one neutral unassigned muster with no individual focal human/person; current runtime claimant identity is male-only under `019_male_claimant_identity_correction_handoff_2026_07_16.md`; nonvisual regional/profile audit reasoning below is historical evidence only.
 
 Date: 2026-07-16  
 Mode: read-only live-source audit plus this handoff only  

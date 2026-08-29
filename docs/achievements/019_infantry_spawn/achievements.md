@@ -1,10 +1,14 @@
 # Event 019 Infantry Spawn achievements
 
+> **Current documentation boundary (2026-08-22):** Event 19 is ID 19, Minor Repeatable, unclustered, and decisions-only with no scripted GUI. The direct scenario is SCN-013; former Muster Board wording in achievement provenance or asset handoffs is archival terminology and does not define a runtime UI.
+
 ## Overview
 
 Event 019 has eleven stable custom-achievement identifiers. The achievement definitions live in `common/achievements/chaos_redux_achievements.txt`. Centralized thresholds, proof effects, completion triggers, and one-shot victory hooks live in the Event 019 achievement-owned script files. Generation, management, claimant, rail, and country-pulse effects call narrow achievement helpers at the point where the authoritative Event 019 ledger still identifies the exact generation, lot, unit, claimant, or state.
 
 All ordinary achievements require a human country and reject forced or debug completion history. The triggerable-scenario achievement owns a separate frozen launch record because a scenario is intentionally forced setup. Ready flags never replace the underlying disqualifier checks: claimant seizure, revolt, emergency integration, failed teardown, forced parent merge, leadership interruption, capitulation, intensity changes, and country switching remain durable where their contracts require them.
+
+All eleven Event 19 achievements are visible in the live registry, including the four controlled-trial achievements whose obsolete `hidden = yes` entries were removed; older handoffs that call those four hidden or unawarded are historical evidence only.
 
 ## Achievement contracts
 
@@ -54,11 +58,7 @@ Each identifier requires three independent 64 by 64 DDS files loaded by the cust
 - `gfx/achievements/<achievement_id>_grey.dds`
 - `gfx/achievements/<achievement_id>_not_eligible.dds`
 
-The custom-achievement loader can resolve the filename triplets directly, and
-Event 019 also registers all 33 explicit aliases in
-`interface/chaosx_achievements.gfx` for stable consumer wiring. The Event 019
-asset manifest records the source, processed PNG, final DDS paths, hashes, and
-visual direction for all eleven triplets.
+The custom-achievement loader can resolve the filename triplets directly, and Event 019 also registers all 33 explicit aliases in `interface/chaosx_achievements.gfx` for stable consumer wiring. The asset manifest records the intended source, processed PNG, final DDS paths, hashes, and visual direction for all eleven triplets as historical asset evidence. Its 2026-07-18 completion and catalog assertions are bounded to that asset tranche and do not establish current provider or whole-event completion.
 
 ## Future plans
 

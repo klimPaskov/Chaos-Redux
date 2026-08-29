@@ -13,7 +13,8 @@
 # Keep the active-Kruger gates for legacy equipment inline inside
 # can_be_produced. Calling the shared raid scripted trigger from those consumers
 # causes a launch-time access violation in HOI4 1.19.2 even though it is safe
-# elsewhere. The provider-neutral alien contact trigger is intentionally shared.
+# elsewhere. Keep the provider-neutral alien contact gate inline here for the
+# same loader-safety reason; all other consumers use its public trigger.
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_AIR_ATTACK = 10
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_ARMOR = 30
 @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_BREAKTHROUGH = 40
@@ -615,7 +616,35 @@ equipments = {
 		ap_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_PIERCING
 		air_attack = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_AIR_ATTACK
 		build_cost_ic = @BRILLIANT_SCIENTIST_PROJECT_FORCE_ALIEN_BUILD_COST
-		can_be_produced = { alien_infantry_has_contact = yes }
+		can_be_produced = {
+			OR = {
+				check_variable = {
+					var = alien_infantry_contact_receipt_kruger_pact
+					value = constant:alien_infantry_landing.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = alien_infantry_contact_receipt_mengele_expedition
+					value = constant:alien_infantry_landing.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = alien_infantry_contact_receipt_event019_provider_508
+					value = constant:alien_infantry_landing.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = alien_infantry_contact_receipt_dhrondan_sovereignty
+					value = constant:alien_infantry_landing.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = alien_infantry_contact_receipt_future
+					value = constant:alien_infantry_landing.zero
+					compare = greater_than
+				}
+			}
+		}
 		can_be_lend_leased = { always = no }
 	}
 

@@ -6,7 +6,9 @@
 > 501-503 lifecycle findings remain historical evidence only; use
 > `source_of_truth_map.md`,
 > `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and
-> `.tmp/event19_docs_curator_current.md` for current provider facts.
+> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_dynamic_unit_provider_api_completion_2026-08-22.md` for current provider facts.
+
+> **Superseded category-lifecycle notice (2026-08-22):** The closeout and “no closure gate remains” references below preserve the 2026-07-29 audit state only. The current shared `infantry_spawn_ordinary_management_category_is_relevant` trigger hides the Formation Management and claimant categories after a completed takeover or achievement-marked claimant or derivative revolt, even if claimant rows remain; use `source_of_truth_map.md` and the current decision-audit handoff for active lifecycle and provider status.
 
 Date: 2026-07-29
 Role: `chaosx_event_completion_auditor`

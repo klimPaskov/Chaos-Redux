@@ -1,5 +1,7 @@
 # Event 019 asset and army-scene independent audit
 
+> **Historical UI boundary (2026-08-22):** This dated asset audit retains former Muster Board consumer findings as historical provenance. The accepted Event 19 runtime is decisions-only with no scripted GUI; use the restored asset manifest/GFX handoff and current source-of-truth map for active routing.
+
 Date: 2026-07-16
 
 Mode: independent read-only audit of gameplay and asset surfaces. This handoff is the only file written by the auditor.
@@ -156,4 +158,3 @@ Technical checks were independent read-only Python/Pillow/hash/header audits; no
 - Auditor changed only this handoff.
 - Parent changed the achievement registry and associated documentation during the audit; that narrow change was rechecked and is closed above.
 - P0 and regional-flag P1 remain open. Event 019 should not receive a complete/no-simplifications asset claim until both are resolved and visually re-audited.
-

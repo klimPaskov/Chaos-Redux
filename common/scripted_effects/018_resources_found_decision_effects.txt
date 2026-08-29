@@ -2553,6 +2553,22 @@ resources_found_escalate_field_border_war = {
 
 # COUNTRY scope after any terminal callback.
 resources_found_clear_border_conflict_runtime = {
+	if = {
+		limit = {
+			resources_found_border_callback_is_owner_context = yes
+			var:resources_found_border_owner_state = {
+				OR = {
+					has_state_flag = resources_found_owner_border_victory
+					has_state_flag = resources_found_owner_victory_compensation
+					has_state_flag = resources_found_owner_victory_exclusion
+				}
+			}
+		}
+		save_event_target_as = humanitarian_corridor_exact_attacker
+		var:resources_found_border_claimant_state = {
+			humanitarian_corridor_handle_exact_state_attack = yes
+		}
+	}
 	clear_variable = resources_found_frontier_mission_days
 	clear_variable = resources_found_border_war_limit_days
 	clear_variable = resources_found_border_owner_state
@@ -2567,6 +2583,13 @@ resources_found_record_border_transfer_result = {
 		var:resources_found_border_owner_state = {
 			set_state_flag = resources_found_dispute_border_transfer
 			set_state_flag = resources_found_dispute_owner_changed
+		}
+	}
+	if = {
+		limit = { resources_found_border_callback_is_owner_context = yes }
+		save_event_target_as = humanitarian_corridor_exact_attacker
+		var:resources_found_border_claimant_state = {
+			humanitarian_corridor_handle_exact_state_attack = yes
 		}
 	}
 	set_country_flag = resources_found_achievement_border_transfer_winner

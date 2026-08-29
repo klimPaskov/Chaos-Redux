@@ -1,5 +1,7 @@
 # Famine and Migration Generated Event-Art Handoff
 
+> **Superseded historical snapshot (2026-08-25):** This standalone handoff records pre-split report and category-art names and is retained as provenance only. Its `fm_*` identifiers, combined paths, and completion wording are not current instructions. Use [source_of_truth_map.md](../source_of_truth_map.md) and [completion_report.md](../completion_report.md) for current status; declared asset closure remains incomplete because the physical inventory, manifest coverage, provenance, and category-image edge checks still require parent resolution.
+
 Status: complete for the seven accepted generated report-image rows and the follow-up `fm_pic_displacement` decision-category picture. Current source contains the package `.gfx` registrations; parent owns event IDs, localisation, decision-category wiring, report consumers, and final runtime validation. No gameplay, localisation, GUI, event, decision, focus, country, spreadsheet, flag, portrait, super-event, animation, or `.gfx` file was edited by this handoff.
 
 ## Completed family

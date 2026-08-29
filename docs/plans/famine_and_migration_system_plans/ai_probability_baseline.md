@@ -1,114 +1,142 @@
 # Famine and Migration System: AI Probability Baseline
 
-Date: 2026-08-22
+Audit date: 2026-08-24
 
-Mode: mandatory pre-change, read-only audit. The only file written by this audit is this report. No gameplay, localisation, asset, workbook, specification, or unrelated file was changed.
+> **Superseded historical snapshot (2026-08-25):** This baseline records a pre-separation source snapshot and is retained for historical comparison only. Its combined source path, counts, hashes, and unresolved-scenario status are not current instructions. Use [source_of_truth_map.md](source_of_truth_map.md), [completion_report.md](completion_report.md), and [ai_probability_current.md](ai_probability_current.md) for the current incomplete audit status and blockers.
+
+Audit mode: read-only current-source baseline. No gameplay, localisation, asset, workbook, or source implementation file was edited by this audit. The pre-existing source change in common/decisions/famine_migration_decisions.txt was preserved.
 
 ## Outcome
 
-The shared famine and migration probability surfaces are absent from the current checkout. Event 149 Immigrations is listed as `Unavailable` in `docs/spreadsheets/chaos_redux_events_catalog.csv:311`, but there is no `events/149_immigrations.txt`, no `chaosx.nr149` source, and no declared shared famine/migration weighted registry or candidate-pool manifest. The required baseline therefore has no engine-derived probability, ranking, timing, starvation, dominance, invalid-candidate, repetition, or sensitivity result.
+The current source contains exactly seven uniform random_neighbor_state selections and 26 ai_will_do blocks across six missions and 26 decisions. The baseline defect is confirmed at source level: destination selection is uniform among states passing each limit, with no weighted candidate scoring or internal-first stage. The required probability adapters did not expose a complete candidate pool, so no exact selection probability, ranking, timing distribution, dominance, starvation, or rank-reversal claim is resolved by MCP.
 
-All twenty required scenarios are recorded below as unresolved baseline blockers. Existing disaster, outbreak, plague, fallout, Soviet-collapse, and registry files were inspected only as analogues; their AI scores or event `ai_chance` surfaces do not constitute evidence for the absent famine/migration system.
+## Audited surfaces and references
 
-## Scope and source review
+Primary gameplay source: common/decisions/famine_migration_decisions.txt.
 
-The required spec package, including all eight specification parts, matrices, bibliography, closure review, routing status, implementation prompts, and `subagent_prompts/03_ai_probability_auditor_baseline.md`, was read. The offline Paradox wiki core pages and the relevant vanilla documentation for triggers, effects, modifiers, script concepts, event, decision, and AI behavior were also consulted.
+Shared tuning source: common/script_constants/famine_migration_constants.txt.
 
-Relevant current source reviewed:
+Scenario source: docs/specs/famine_and_migration_system_specs/famine_and_migration_system_probability_scenarios.csv.
 
-- `docs/spreadsheets/chaos_redux_events_catalog.csv:311` — Event 149 Immigrations, status `Unavailable`; the catalog description is not an implementation or weighted surface.
-- `common/decisions/013_natural_disasters_decisions.txt` — disaster decision `ai_will_do` analogue.
-- `common/decisions/002_zombie_outbreak_decisions.txt` — outbreak and migration-restriction decision analogue.
-- `common/decisions/020_black_plague_response_decisions.txt` and `common/decisions/020_black_plague_shared_response_decisions.txt` — mission/response analogue; the requested decision adapter correctly redirected to mission inspection.
-- `common/decisions/fallout_consolidated_decisions.txt` and `common/decisions/005_soviet_collapse_decisions.txt` — decision-score analogues.
-- `events/020_black_death.txt`, `events/002_zombie_outbreak.txt`, and `events/005_soviet_collapse.txt` — event-option `ai_chance` analogues.
-- `common/scripted_effects/006_independence_wave_package_allocator_effects.txt`, `common/scripted_effects/006_independence_wave_package_planner_effects.txt`, `common/scripted_effects/017_random_faction_effects.txt`, and `common/scripted_effects/020_black_plague_effects.txt` — possible custom-registry analogues; none exposed a declared weighted custom pool for this system.
+Prepared audit prompt: docs/specs/famine_and_migration_system_specs/subagent_prompts/03_ai_probability_auditor_baseline.md.
 
-Static search found no Event 149 source, migration crisis event chain, shared destination/route candidate registry, or scenario fixture that could be supplied to the probability adapter. The current catalogue row must not be turned into a new event ID or pacing weight for this system.
+The full famine_and_migration_system_specs package, AGENTS.md, chaos-redux-subagents, chaos-redux-decisions-missions, chaos-redux-event-planning, the required offline Paradox wiki pages, and relevant vanilla documentation were reviewed. Event, focus, GUI, and technology structural adapters were not applicable to this decision/mission and random-state selection surface.
 
-## MCP inspection evidence
+## Current MCP evidence
 
-Workspace: `mod_chaos_redux_ea3b2d67c2c0`.
+Workspace: mod_chaos_redux_ea3b2d67c2c0.
 
-The required first-pass tool was `hoi4.probability_inspect`. The target Event 149 inspection returned `PROBABILITY_SOURCE_NOT_FOUND` for `{path: "events/149_immigrations.txt"}` and produced no artifact. This is the direct target-source blocker.
+Source revision: 8c9fbec5c423574f1510dc711da1668c230279b2e825ae3255ddcb337acfb7dc.
 
-| Adapter | Source | Inspect result | Pool/input state | Revision / source hash | Artifact |
-|---|---|---|---|---|---|
-| `event_option_ai_chance` | `events/149_immigrations.txt` | `PROBABILITY_SOURCE_NOT_FOUND` | Source absent; no candidates or inputs | N/A | None; exact error: probability source path was not found |
-| `decision_ai_will_do` | `common/decisions/013_natural_disasters_decisions.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 112 candidates; 0 available in the supplied context; 13 required inputs; 0 unresolved | revision `ca7e3c5c114010526cc4578de6137f40306b39f71685f4d090599eeec04c495b`; hash `b8de931d3b94fd84282c20b62d9faeabcd0ec935820af58165e82914c9cdda9b` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/18d9caa3a6b531bf160eb6eb6fc69ab92405066eaebd3c4511d758b922b01bb9/0a97a28560ffc2f0eae31cbdb73eca2e16e6ec0ed3e65cd5277ac9e2853b99b4/probability-inspect-b8de931d3b94.json` |
-| `decision_ai_will_do` | `common/decisions/002_zombie_outbreak_decisions.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 13 candidates; 0 available; 16 required inputs; 0 unresolved | revision `5e245593a0ba24b69513793e4894270369944291053f7cb5a7b5fc6501435d6c`; hash `e53eed7c60108dbca80d04a24a49fe831296346aafd48a701b6e04b828780b40` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/75460007590ebe76265ff384f9784f721b79c727ce952f2710fe837c225d5aa0/4cfb5826016d2d66c7588755bb8d70d0f1ca495b0384e664551fe3b2724c39de/probability-inspect-e53eed7c6010.json` |
-| `decision_ai_will_do` | `common/decisions/020_black_plague_response_decisions.txt` | `PROBABILITY_SOURCE_DISCOVERED` | 0 decision candidates; 16 mission candidates; suggested adapter `mission_ai_will_do` | revision `5857f5ae83d5ebaec6b52366cc85b6b15ae1a36d9b3a17d880bf181da089f1f7`; hash `f56571d757e13682f5a3653c10891d1f8ae259fe49f51a95169e63079bda32c2` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ee50ed5a3156e6355416c40031516d5673e81d684d22c31855f860452753c76d/1bca844778c3c7f955040d14de0791b063146da9e597e86130349ebac6827f1c/probability-inspect-f56571d757e1.json` |
-| `decision_ai_will_do` | `common/decisions/020_black_plague_shared_response_decisions.txt` | `PROBABILITY_SOURCE_DISCOVERED` | 0 decision candidates; 42 mission candidates; suggested adapter `mission_ai_will_do` | revision `5857f5ae83d5ebaec6b52366cc85b6b15ae1a36d9b3a17d880bf181da089f1f7`; hash `9468f2d68017ee11dfd60de4b676e5287cff569d9407206ba95c9b4a8e0fc793` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bbe1650eb29ba770f893d22d0c2cf495401c2f2d3c9c5ff319cfa492ada48e8d/d2f2082e71ef9dceca7b3c5485bc197a17215942d1aeb297686172ec36944c33/probability-inspect-9468f2d68017.json` |
-| `decision_ai_will_do` | `common/decisions/fallout_consolidated_decisions.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 7 candidates; 0 available; 20 required inputs; 0 unresolved | revision `e875542dfe3177211b662b82bd65a552b7b9f27b481d77a88d844d96306d6899`; hash `7c92aa6eb43eca7ed657d0342b16860969a3f7fdd550c38df5ef30a7ac94d0de` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/36a7b1c901ab96c4b9bc69b35eafdf4a9b84e80ab0825da479ad7cf902da0879/b54657a2949ca89543bbfb420493afd6adbaadae01ba0fc243f5f4e16943bdb5/probability-inspect-7c92aa6eb43e.json` |
-| `decision_ai_will_do` | `common/decisions/005_soviet_collapse_decisions.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 211 candidates; 0 available; 51 required inputs; 0 unresolved | revision `907fc4bab91ced7a0d46d811cd0e35aee988108c364efd11f3a2c94b2dae9e93`; hash `72ed3330bb09e019a57c72f5f3b0fa83757164c316e6ec984b9acc1b67c541a5` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/54ed09d95ca2b05e06fa0d73f57fc8c914cdcbb437d0f7d3b8a7187c58755dd8/5370868b3875fb1469cccef27afe36e2988f8e242023ad59758e191ad2c6f79e/probability-inspect-72ed3330bb09.json` |
-| `event_option_ai_chance` | `events/020_black_death.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 91 candidates; 0 available; 4 required inputs; 1 unresolved | revision `8fab844e1d82b17cab30d8a03328e12c81a25f298f10924b1d60bb1ac1aa1630`; hash `a04ba2efd8daa9e69f786cfe8ac717d314146328c4098aa4f21ff41a0415b278` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/77a0030ad99a007c54bed2291f3372d3f0e447d5e7af7649d5037b1dda0393ba/6dc5e3190e36f6020ec8813f500bb5cdc65c54e980bd3a6cfb868b259fa15aa0/probability-inspect-a04ba2efd8da.json` |
-| `event_option_ai_chance` | `events/002_zombie_outbreak.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 12 candidates; 0 available; 28 required inputs; 1 unresolved | revision `1dd8eba19177c5e225a8116294c18bac6d3429d18508e40ad4e17abac6d3aefa`; hash `b467454649cc70a715058256247e24d522d818a77ccddd7c1d43cc9f10135dde` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9262026044b1799d2905aaad7cfa69951080d46d2f362bc7344c487fd4ac8cb7/874c571efbde625bff232d2fac552bdbbca3c646b9a37cb1511abe486e118afe/probability-inspect-b467454649cc.json` |
-| `event_option_ai_chance` | `events/005_soviet_collapse.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 184 candidates; 0 available; 3 required inputs; 1 unresolved | revision `ffc613b22ad186bc96575c4e03618ef66f6039b57c5e5d7356ea91ae63cac09a`; hash `034ca4bcaa72eb652c56cdb02d172679a131ce1408c75cf909095d3b1aab9a71` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d79297cb8ad53913b7243ea16155d9d8d9318cc1439c2d8f39979f6c257964ab/382acd1a5fb299c08ab6ae4eebfabca18e286e9c791b23ec228cd9088402a1dd/probability-inspect-034ca4bcaa72.json` |
-| `custom_weighted_pool` | `common/scripted_effects/006_independence_wave_package_allocator_effects.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 0 candidates; 0 available; 0 inputs; no declared target pool | revision `ffc613b22ad186bc96575c4e03618ef66f6039b57c5e5d7356ea91ae63cac09a`; hash `9cab0bffea71b78719b2c8634363338e9f12e4d214de1603dc0f9b6b24ef72b9` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f3ab6ec9e9ff5ab607da709ae36c507c7853ccff28a140932ef2f6af8a21e603/cb4c0656dd9212ae0c6fab903def3e49ae72a303793830def260235f74973d01/probability-inspect-9cab0bffea71.json` |
-| `custom_weighted_pool` | `common/scripted_effects/006_independence_wave_package_planner_effects.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 0 candidates; 0 available; 0 inputs; no declared target pool | revision `ffc613b22ad186bc96575c4e03618ef66f6039b57c5e5d7356ea91ae63cac09a`; hash `116469afe2f369140cbe94b99defbc83d6d3b20a0c81e68ce7fdf625c3b446da` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bef4b762c7c80df2434bca7fc1d992e834daab12885a3745eb104ed788f497bb/fbb9a90a108fe6cbd3045351b1a7d06a2d481e9de457f47f0c1e33ec0de3e6a2/probability-inspect-116469afe2f3.json` |
-| `custom_weighted_pool` | `common/scripted_effects/017_random_faction_effects.txt` | `PROBABILITY_SOURCE_INSPECTED` | `poolComplete=false`; 0 candidates; 0 available; 0 inputs; no declared target pool | revision `ffc613b22ad186bc96575c4e03618ef66f6039b57c5e5d7356ea91ae63cac09a`; hash `fb8850724f331f516ea9d8abff6655590e6b4cc7652217161a2b4edb83e11417` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c3665cdc3481aef6f346866f3e930abd2a1c1118597c16e164af5dc44f6c70f7/f9ed5029f3cccd925ccb8c8df76c25350fb02150e1d148454dbbee3d373df4d4/probability-inspect-fb8850724f33.json` |
-| `custom_weighted_pool` | `common/scripted_effects/020_black_plague_effects.txt` | `no_weighted_surfaces` | 0 candidates; no available adapter; no declared target pool | revision `ffc613b22ad186bc96575c4e03618ef66f6039b57c5e5d7356ea91ae63cac09a`; hash `f036e67c34fa939c342ed9794bc84a8155590f2427b12c2a160c0cef3edf4242` | `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6e776ba489f3411bc0c37a6f18aa66ef3bc2ef290f67fc130b7e612a21984bb9/68eb28e25fab95202adf8d4cd1d5053b2d57d9035522424f418d95b77cd09b69/probability-inspect-f036e67c34fa.json` |
+Source hash: a1b7fda6b69c9429ae6151b98fc1e96b9556087b5d566ed6e126ab40c17b4728.
 
-An `hoi4.event_inspect` scan against the absent Event 149 path fell back to a partial workspace-wide event graph and returned `MCP_INLINE_FILES_TRUNCATED`; it is not evidence that Event 149 exists. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e32169c099ace1e94a0d695f3993f547062909a6bf5415608913bfdda8ea1bc4/1d2627f61c15be61c8d2fc2b8fcddb7c93e0df5d53bfa0639ad7f442e4798777/event-scan-f571ec78c744.json`; revision `f571ec78c74458bc26a47475ac8ac6ea8404f76554d8d260288cac595c21c933`; graph hash `7392c4a2995edd161387f053508f2834f7b401950813a456a3beeafe6cd44816`.
+| Adapter or route | Result | Evidence |
+| --- | --- | --- |
+| decision_ai_will_do | Empty/suggested mission result; no usable decision pool | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/37858f6b331cf501eae67a2da4e3f6a8c283562bedddd3d9c845a9a63673ffb5/4e73f2461095daa1ec0da04a9ce4a0672810e43aeb6ff6c8498500c2b05f798c/probability-inspect-a1b7fda6b69c.json |
+| mission_ai_will_do | Inspect returned 26 candidates, poolComplete=false, availableCandidates=0, requiredInputs=12, unresolved=0 | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4616445bd05406533ee2cebf407cff11a6cbebf500f0e100ce835ab8fbb2393a/ca8647c10ee04ee5111ac474514de0bc0e07032356daed94f2d06adcc7831e3b/probability-inspect-a1b7fda6b69c.json |
+| direct_random | Adapter does not recognize random_neighbor_state | No artifact issued; exact blocker is unsupported construct |
+| custom_weighted_pool | poolComplete=false and candidates=0 | hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a3d38f26b020e9231db9df2e6e182abb6d3d73f0351a45d378e1cf728c0d8545/14ce8570c1c15ac779d578dec0a73eccec20f9d7db56713bce0fe94c555828c5/probability-inspect-a1b7fda6b69c.json |
+
+The mission inspect above was the one short confirmatory probability_inspect call permitted for this recovery. No scenario hash, evaluation id, comparison id, or rendered evidence URI was produced. The artifact and source revision/hash must travel with the owner patch and later compare pass.
+
+## Seven uniform selection sites
+
+The following are the complete current random_neighbor_state sites. Each is a score-free random neighbor choice after its limit is applied; none has an internal-first stage or a weighted candidate pool.
+
+| Site | Source line | Current limit summary | Baseline risk |
+| --- | ---: | --- | --- |
+| fm_famine_evacuation | 1417 | Valid state; no famine food-security, unsafe route, persecution, bombing, CBRN contamination, or trapped flag; controller not at war with ROOT; valid owner; reception capacity; load below capacity; border policy not closed | Uniformly selects among surviving neighbors; no route, relations, ties, ideology, danger, or donor score |
+| fm_evacuate_vulnerable | 1577 | Same safe-neighbor and capacity/load/border-policy gate | Vulnerable priority is a mission score, not destination weighting; no internal-first guarantee |
+| fm_evacuate_workers | 1729 | Same safe-neighbor and capacity/load/border-policy gate | Worker destination choice remains uniform and cannot prefer a safer or better-connected host |
+| fm_requisition_safer_state | 1893 | State is owned and controlled by ROOT; no famine food-security, unsafe route, persecution, bombing, or contamination | No reserve/surplus, protected-state, route, or capacity scoring; a strained donor can pass |
+| fm_distribute_arrivals | 2348 | Valid state owned by ROOT; no famine food-security or unsafe route | No reception capacity/load check, so an exhausted destination can remain eligible |
+| fm_transit_only | 2511 | Valid foreign-owned state; valid owner; no famine food-security or unsafe route; controller not at war with ROOT | No border acceptance, capacity, onward route, relations, ties, ideology, danger, or forced-return scoring |
+| fm_third_country_resettlement | 2886 | Valid safe state; controller not at war; valid foreign owner; reception capacity; load below capacity; no famine, unsafe route, persecution, bombing, or contamination | Capacity is gated but border, route, relations, ties, ideology, danger, and forced-return scores are absent |
+
+These limits are eligibility filters, not weighted probabilities. A state that passes a limit has no source-level weight advantage over another passing state. If no state passes, the effect has no valid destination; MCP could not produce a direct random trace because direct_random does not support this construct.
+
+## Source score values
+
+The centralized constants provide ai_will_do score bases and factors, not click probabilities:
+
+| Decision or mission | Base | Factors visible in constants |
+| --- | ---: | --- |
+| fm_famine_evacuation | 10 | factor_1=4, factor_2=3, factor_3=2 |
+| fm_evacuate_vulnerable | 13 | factor_1=4, factor_2=3 |
+| fm_evacuate_workers | 8 | factor_1=3, factor_2=2 |
+| fm_requisition_safer_state | 5 | factor_1=3, factor_2=0.3 |
+| fm_distribute_arrivals | 9 | factor_1=4, factor_2=3 |
+| fm_transit_only | 6 | factor_1=3, factor_2=2 |
+| fm_third_country_resettlement | 7 | factor_1=4, factor_2=3 |
+
+The source review identifies these as score inputs only. MCP supplied no modifier traces because the candidate pool was incomplete and all 12 required inputs were unavailable. It is therefore invalid to normalize these bases into action probabilities or to infer a score race winner.
 
 ## Scenario baseline
 
-The following IDs are copied from `docs/specs/famine_and_migration_system_specs/famine_and_migration_system_probability_scenarios.csv`. The expected order is the specification expectation, not an observed result.
+All 20 scenario IDs from the probability CSV were registered for the requested baseline. Every row is unresolved for probability because the adapter did not return a complete candidate pool or external-factor trace. The expected behavior below is the CSV contract to test after the owner patch, not a result proved by this baseline.
 
-| Scenario ID | Surface | Expected ordering | Candidate pool and external factors | Baseline result and evidence class |
-|---|---|---|---|---|
-| `prob_famine_relief_dense` | Famine decision AI | Release reserves / route repair > concealment / extraction | Absent shared famine decision pool; reserves, route, mortality, recovery, and invalid-state fixture absent | Unresolved; no score or probability evidence |
-| `prob_famine_relief_blocked_island` | Famine decision AI | Convoy / airlift > generic imports; evacuation rises as reserves fall; generic import zero without route | Absent pool; island geometry, damaged port, hostile sea, convoy availability, reserves, and mortality inputs absent | Unresolved; route-invalid and starvation findings untestable |
-| `prob_soviet_extraction` | Famine decision AI | Extraction / concealment can lead early; relief rises with collapse, republic exit, or exposure; concealment benefit ends after exposure | Absent pool; profile, visibility, war need, mortality, collapse, exposure, and route inputs absent | Unresolved; rank reversal and exposure transition untested |
-| `prob_humanitarian_border` | Border policy AI | Open / controlled entry > closure; forced return near zero | Absent pool; cohort, safe host, capacity, route, and persecution inputs absent | Unresolved; invalid receiving-state behavior untested |
-| `prob_capacity_exhausted_border` | Border policy AI | Transit / distribution / resettlement > unlimited open entry; closure can rise | Absent pool; host capacity, famine, third-country route, and policy inputs absent | Unresolved; capacity starvation and dominance untested |
-| `prob_outbreak_reception` | Border policy AI | Controlled medical reception > closure > ordinary open entry | Absent pool; proven exposure, medical capacity, policy, and destination inputs absent | Unresolved; exposure-gate invalidity untested |
-| `prob_nuclear_evacuation` | Origin evacuation AI | Organized evacuation > hold; vulnerable priority rises; no return during fallout | Absent pool; fallout, internal safe states, transport, vulnerability, and return gates absent | Unresolved; timing and route safety untested |
-| `prob_genocide_escape` | Destination AI | Humanitarian entry > closure; forced return near zero | Absent pool; visible persecution, safe border, capacity, ideology, and route inputs absent | Unresolved; persecutor/host validity untested |
-| `prob_authoritarian_pushback` | Destination AI | Controlled / closure can lead; violent pushback below closure and zero without policy | Absent pool; authoritarian policy, security, capacity, ideology, and policy flags absent | Unresolved; positive weight on policy-invalid pushback untested |
-| `prob_destination_selection_internal` | Destination pool | Safe internal state > foreign capacity/route options; unsafe internal zero | No destination candidate registry; state safety, capacity, route, and validity inputs absent | Unresolved; pool completeness and zero-invalid behavior untested |
-| `prob_destination_selection_persecution` | Destination pool | Safe different-ideology host > persecuting same-ideology neighbor; persecutor zero while threat persists | No destination candidate registry; threat, ideology, safety, and route inputs absent | Unresolved; persecutor leakage and rank reversal untested |
-| `prob_corridor_acceptance` | Diplomatic AI | Acceptance rises with condemnation, observers, and low military cost | No corridor candidate pool; geometry, danger, condemnation, observers, military cost, and invalid-target inputs absent | Unresolved; no exact acceptance probability |
-| `prob_forced_return` | Return AI | Voluntary return rises when origin is safe; forced return near zero when origin is unsafe | No return pool; origin safety, famine, camps, route, and coercion policy inputs absent | Unresolved; unsafe-origin validity untested |
-| `prob_integration` | Host AI | Integration > indefinite temporary placement as duration rises; no repeat after integration | No integration/resettlement pool; duration, host capacity, integration state, and cooldown inputs absent | Unresolved; repetition and terminal-state behavior untested |
-| `prob_opposition_channel` | Political outcome pool | Credible local movement > absent ideologies; absent/invalid movement zero | No opposition candidate registry; ideology, local movement, credibility, region, and target validity inputs absent | Unresolved; invalid-candidate leakage untested |
-| `prob_disaster_flight` | Movement trigger | Severe destruction > minor destruction; no mass flow at zero damage | No movement trigger/pool; destruction severity, route, cohort, and cooldown inputs absent | Unresolved; timing distribution untested |
-| `prob_bombing_exodus` | Movement trigger | Persistent heavy damage > single raid; shelters reduce; active cohort cooldown prevents duplicates | No movement trigger/pool; raid history, damage persistence, shelters, active cohort, and cooldown inputs absent | Unresolved; repetition and snowball behavior untested |
-| `prob_requisition_donor` | Famine target pool | Safe high-surplus donor > strained/occupied donor; famine/protected donor zero | No requisition donor pool; surplus, occupation, famine, protection, and route inputs absent | Unresolved; donor starvation and invalid positive weights untested |
-| `prob_relief_donor` | Foreign aid pool | Reachable stock plus relations > distant or blocked donor; no donor without route/capacity | No relief donor pool; stocks, route, relations, capacity, and blockade inputs absent | Unresolved; route incompatibility untested |
-| `prob_cleanup` | Registry/job sequence | Pause, redirect, or trap safely after annexation, destination loss, route change, or reload; no duplicate debit | No complete custom registry/cohort manifest; cadence, cooldown, removal, reset, terminal state, and save/reload state absent | Unresolved; `hoi4.probability_sequence` correctly skipped |
+| Scenario ID | Expected contract | Pool and external-factor completeness | Baseline result |
+| --- | --- | --- | --- |
+| prob_famine_relief_dense | Relief/route repair should outrank concealment/extraction; invalid recovered state is zero | Pool incomplete; reserves, route, state validity, and competing actions unavailable | Unresolved |
+| prob_famine_relief_blocked_island | Escorted convoy/airlift should beat generic imports; evacuation rises as reserves fall; generic import is zero without route | Pool incomplete; route, reserves, airlift, and import candidates unavailable | Unresolved |
+| prob_soviet_extraction | Extraction/concealment can lead early; relief rises with collapse/republic pressure/exposure; no concealment benefit after exposure | Pool incomplete; exposure, pressure, collapse, and strategy factors unavailable | Unresolved |
+| prob_humanitarian_border | Open/controlled entry should beat closure; forced return near zero; no destination without a receiver | Pool incomplete; border policy, route, receiver, and return candidates unavailable | Unresolved |
+| prob_capacity_exhausted_border | Transit/distribution/resettlement should beat unlimited open entry; closure may rise; famine destination cannot be ignored | Pool incomplete; capacity/load and policy states unavailable | Unresolved |
+| prob_outbreak_reception | Controlled medical reception should beat closure and ordinary open entry; no outbreak penalty without exposure | Pool incomplete; outbreak exposure and reception controls unavailable | Unresolved |
+| prob_nuclear_evacuation | Organized evacuation should beat hold; vulnerable priority rises; no return while fallout is high | Pool incomplete; fallout, vulnerability, evacuation, and return factors unavailable | Unresolved |
+| prob_genocide_escape | Entry should beat closure; forced return near zero; ideology cannot override persecution | Pool incomplete; persecution, ideology, border, and return factors unavailable | Unresolved |
+| prob_authoritarian_pushback | Controlled/closure can lead; violent pushback stays below closure absent extreme flags; zero without policy | Pool incomplete; policy and pushback candidates unavailable | Unresolved |
+| prob_destination_selection_internal | Safe internal destination should beat foreign when capacity/route are adequate; unsafe internal is zero | Pool incomplete; internal/foreign candidates, route, and capacity unavailable | Unresolved |
+| prob_destination_selection_persecution | Safe different-ideology host should beat same-ideology persecutor; persecutor is zero | Pool incomplete; persecution, ideology, route, and host candidates unavailable | Unresolved |
+| prob_corridor_acceptance | Acceptance rises with condemnation/observers and low military cost; invalid geometry is zero | Pool incomplete; corridor geometry, observers, condemnation, and cost unavailable | Unresolved |
+| prob_forced_return | Voluntary return rises when origin is safe; forced return near zero when unsafe; no voluntary return without route/safety | Pool incomplete; origin safety, route, and return modes unavailable | Unresolved |
+| prob_integration | Integration should beat temporary status as duration rises; no repeat after integrated | Pool incomplete; duration, status, and terminal state unavailable | Unresolved |
+| prob_opposition_channel | Credible local movement should beat absent ideologies; absent/invalid is zero | Pool incomplete; movement, ideology, and validity factors unavailable | Unresolved |
+| prob_disaster_flight | Severe destruction should beat minor damage; zero damage should not create mass flow | Pool incomplete; damage and flow candidates unavailable | Unresolved |
+| prob_bombing_exodus | Persistent heavy damage should beat a single raid; shelters reduce flow; cooldown blocks duplicates | Pool incomplete; damage persistence, shelters, and cooldown unavailable | Unresolved |
+| prob_requisition_donor | Safe high-surplus donor should beat strained/occupied donor; famine/protected donor is zero | Pool incomplete; surplus, occupation, famine, and protected-state factors unavailable | Unresolved |
+| prob_relief_donor | Reachable stock plus relations should beat distant/blocked donor; no donor without route/capacity | Pool incomplete; stock, route, relations, and capacity unavailable | Unresolved |
+| prob_cleanup | Annexation, destination loss, route change, and reload should pause/redirect/trap safely without duplicate debit | Pool incomplete; terminal states, timers, and ledger transitions unavailable | Unresolved |
 
-For every row, candidate-pool completeness is `incomplete/absent` and external-factor completeness is `incomplete/absent`. The adapter cannot normalize or compare choices without those inputs, so no row has an exact, bounded, sampled, or score-only probability result. No starvation, dominance, invalid-candidate, rank-reversal, repetition, or sensitivity conclusion is proven by this baseline.
+No row has an exact, bounded, sampled, or score-race result from MCP. The classification for all scenario conclusions is unresolved; the seven source site descriptions and constant values are score/source-only evidence.
 
-## Blockers and skipped MCP analyses
+## Findings and risks
 
-- `hoi4.probability_evaluate` was not run because no target source, complete candidate pool, or named scenario fixture exists.
-- `hoi4.probability_sweep` was not run because there is no evaluated baseline to sweep and no external-factor trace to vary.
-- `hoi4.probability_simulate` was not run because the scenarios do not provide an explicitly declared uncertain input plus a valid source pool; simulation would invent inputs.
-- `hoi4.probability_sequence` was not run because `prob_cleanup` lacks a complete registry/cohort manifest, cadence, cooldown, removal, reset, and terminal-state contract.
-- `hoi4.probability_render` was not run because there is no ranking, matrix, timing, sensitivity, sequence, or unresolved-analysis ID to render; the inspect artifacts above are retained instead.
-- `hoi4.probability_compare` was not run because this is pre-change and there is no owner patch or before/after source pair.
-- `hoi4.event_render` was not run because the named Event 149 chain is absent; the partial broad `event_inspect` fallback is explicitly non-authoritative for this target.
+The 26 ai_will_do blocks are willingness scores. They are not probability-proportional selections. Vanilla AI guidance distinguishes score races from ai_chance/random-list sampling; the seven random_neighbor_state calls have no per-candidate weights at all.
 
-The analogue inspections establish adapter/source-discovery behavior only. They do not prove famine/migration weights, and their `poolComplete=false` states reinforce that they cannot be used as substitutes for the required scenario fixtures.
+The dominant systemic risk is destination flatness. A passing foreign neighbor can be selected exactly like a safer internal state unless the caller has already constrained the pool. There is no proof that internal destinations are exhausted before foreign migration.
 
-## Recommended owner actions (not applied)
+Eligibility is incomplete at several high-impact sites. distribute_arrivals has no capacity/load gate. requisition_safer_state has no donor reserve/surplus or protected-state gate. transit_only lacks border acceptance, capacity, onward route, relations, ties, bounded ideology, danger, and forced-return checks. The other foreign destination sites lack most of those score dimensions even when capacity is present.
 
-1. Define the shared famine/migration weighted surfaces and stable source identifiers for famine response, border/reception, origin evacuation, destination/route selection, corridor acceptance, return/integration/resettlement, opposition outcomes, movement triggers, requisition/relief donors, and cleanup jobs.
-2. Supply a complete candidate pool for each surface, with availability, prerequisites, route validity, destination validity, policy gates, and explicit zero-weight handling for impossible, dead, hidden, blocked, or persecutor destinations.
-3. Create named scenario fixtures containing every external factor in the CSV, including reserves, mortality, exposure proof, capacity, stock, route geometry, transport, ideology, fallout, damage persistence, shelters, cooldowns, and terminal states.
-4. Centralize tunable values and document whether each surface is a score race, willingness score, timing distribution, or probability-proportional pool. Do not describe `ai_will_do` or `ai_chance` scores as click probabilities without a complete engine-supported pool.
-5. Before any cleanup sequence is testable, declare cadence, cooldown, recovery, cap, removal, reset, destination-loss handling, annexation handling, save/reload behavior, and terminal-state cleanup for each registry/cohort job.
-6. Keep Event 149 as an unavailable/catalog concept until its owner supplies a valid source; do not assign this system a new event ID or pacing weight.
+Persecution, bombing, contamination, food security, unsafe route, nuclear fallout, outbreak exposure, and controller war are partly represented as binary limits, but they are not a complete danger or route score. The source cannot prove that an invalid or unsafe candidate receives zero under every scenario.
 
-## Required post-patch rerun
+Because cadence, cooldown, recovery, removal, reset, timer, and terminal-state traces were not available, repetition, duplicate debit, starvation, dominance, timing drift, and reload/annexation exploit risks remain unresolved.
 
-The owner patch must be followed by `hoi4.probability_compare` using the exact same twenty scenario IDs: `prob_famine_relief_dense`, `prob_famine_relief_blocked_island`, `prob_soviet_extraction`, `prob_humanitarian_border`, `prob_capacity_exhausted_border`, `prob_outbreak_reception`, `prob_nuclear_evacuation`, `prob_genocide_escape`, `prob_authoritarian_pushback`, `prob_destination_selection_internal`, `prob_destination_selection_persecution`, `prob_corridor_acceptance`, `prob_forced_return`, `prob_integration`, `prob_opposition_channel`, `prob_disaster_flight`, `prob_bombing_exodus`, `prob_requisition_donor`, `prob_relief_donor`, and `prob_cleanup`.
+## Accepted owner-patch requirements
 
-The rerun must preserve the source revision/hash and scenario hash for both sides, start with `hoi4.probability_inspect` for every newly defined surface, evaluate each named scenario with a complete candidate pool and declared external factors, use sweeps for the specified sensitivity and rank-reversal dimensions, use simulation only for explicitly marked uncertain inputs, use sequence only for the complete cleanup manifest, and retain comparison IDs plus rendered ranking/matrix/timing/sensitivity/unresolved artifacts.
+These are required owner changes, not changes applied by this auditor:
+
+1. Build a complete weighted candidate pool for each of the seven destination surfaces. The pool must enumerate every candidate considered by the action and expose the weights and modifier trace to the probability adapter.
+2. Give impossible, dead, hidden, blocked, occupied-incompatible, route-incompatible, capacity-exhausted, famine, protected, persecuting, or otherwise invalid candidates weight exactly 0. Do not hide invalid candidates behind a positive fallback.
+3. Implement internal-first selection: score safe ROOT-controlled destinations first, and permit foreign fallback only when the declared internal stage has no valid candidates or the scenario explicitly requires external migration.
+4. For foreign routes, require and score route reachability, border/entry policy, controller-at-war status, receiving capacity/load, onward route, and destination food security. Open entry must not imply unlimited reception.
+5. Add bounded relations and tie factors, including diplomatic relations and declared humanitarian, historical, ethnic, alliance, or observer ties. Ties may influence a valid pool but must not override persecution, danger, route, or capacity invalidation.
+6. Add bounded ideology and persecution scoring. Same ideology must not override an unsafe or persecuting host; a persecutor must be zero in the persecution scenarios.
+7. Add bounded danger and forced-return scoring for route danger, bombing, contamination, fallout, outbreak exposure, persecution, and return safety. Forced return must be near zero or zero when the origin remains unsafe, and voluntary return must require a safe reachable route.
+8. Add donor reserve/surplus and relief-stock scoring. Strained, occupied, famine, protected, unreachable, or capacity-exhausted donors must be zero; reachable stock and relations must be visible modifiers.
+9. Centralize tuning in the existing constants surface or an explicitly documented shared constants file. Keep mission/decision willingness scores separate from destination probabilities.
+10. Declare cadence, cooldown, recovery, removal, reset, timer, reload, annexation, destination-loss, route-change, and terminal-state behavior for every custom pool or ledger-consuming action. Prevent repeated selection and duplicate debit.
+11. Add complete scenario fixtures for all 20 IDs, including candidate lists, route/border state, capacity/load, reserves/stock, relations/ties, ideology/persecution, danger, forced-return safety, cooldowns, seeds, cadence, and terminal state.
+12. After the owner patch, rerun probability_inspect and the named evaluate/sweep/compare workflow with the same scenario IDs. Use sequence only after a complete declared custom pool exists, and render ranking/timing/sensitivity evidence. A probability claim remains prohibited while poolComplete is false or required inputs are missing.
+
+## Skipped analyses and exact blockers
+
+probability_evaluate, probability_sweep, probability_simulate, probability_sequence, probability_render, and probability_compare were not run. The mission pool had zero available candidates and 12 required inputs missing; decision_ai_will_do was empty/suggested; direct_random does not recognize random_neighbor_state; custom_weighted_pool returned zero candidates. The parent also prohibited long sweeps for this recovery. No replacement hand arithmetic or source-only probability claim was used.
+
+There is no rendered evidence path, scenario hash, evaluation id, or comparison id to report for this baseline. The four inspect artifacts, workspace, source revision, and source hash above are the complete current MCP evidence.
 
 ## Handoff
 
-Report path: `docs/plans/famine_and_migration_system_plans/ai_probability_baseline.md`.
+Changed file: docs/plans/famine_and_migration_system_plans/ai_probability_baseline.md.
 
-The baseline is complete as an absence/blocker audit, not as a balance claim. Exact blockers are the missing Event 149 source, absent shared famine/migration adapters and candidate pools, absent scenario fixtures/external factors, and absent custom registry/cohort sequence manifest. No probability or balance conclusion should be inferred until the owner patch supplies those surfaces and the same twenty scenarios are rerun through `hoi4.probability_compare`.
+No gameplay or source implementation file was changed by this audit. The report is ready for the owner patch, but the baseline remains unresolved for probability until the seven destination pools are complete and the same 20 scenarios can be evaluated through MCP.

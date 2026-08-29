@@ -8,9 +8,9 @@ Owner: `chaosx_scripted_system_architect`.
 
 This handoff wires the eight Event 012 strange-formation consumers without changing the package-readiness decision.
 
-The shared global gate `africa_strange_formation_package_ready` remains unset and no code in this change sets it.
+The shared global gate `africa_strange_formation_package_ready` remains unset and no code in this change sets it. The source manifest effect `common/scripted_effects/012_africa_strange_force_manifest_effects.txt` clears every per-family model/entity/counter/audio receipt and the shared package flag during startup or host initialization, so no package opens until all eight manifests are explicitly promoted atomically.
 
-The runtime therefore refuses every attempted formation until the global gate and all four per-family manifest receipts are supplied.
+The runtime therefore refuses every attempted formation until the global gate and all four manifest receipts for the requested family are supplied under that all-eight promotion contract.
 
 No new country tags, fictional package tags, generic unit fallback, recoloured vanilla entity, or Event 019 provider shortcut was added.
 
@@ -139,13 +139,13 @@ Hearts of Iron IV was not launched; live consumer validation remains parent/user
 
 ## Blockers and known limitations
 
-All six model handoffs inspected for Stone Cohorts, Gorilla Heavy Infantry, Pan Sappers, Riverborn, Forest Giants, and Oracle Recon remain blocked or missing their approved model/entity/audio/counter manifests.
+Current model handoffs are mixed rather than uniformly absent: Oracle Recon has an accepted local Meshy 7 mesh and five action exports/reimports, but counter replacement, runtime/entity/GFX wiring, and live validation remain pending; Disaster Wardens intentionally uses vanilla `infantry` resolving to `infantry_rifle_entity` / `generic_western_european_rifle_infantry_mesh`, with custom registrations retired and live validation pending; Gorilla Heavy Infantry, Pan Sappers, Stone Cohorts, Riverborn, Forest Giants, and Plague Carriers remain blocked or unpromoted.
 
-The Disaster Wardens and Plague Carriers manifests are likewise not present in the current repository acceptance state.
+The separate `chaosx_elephant` package is also blocked or unpromoted under its current recovery manifest and must not be inferred from this eight-family wiring handoff.
 
 Because the manifest receipts and shared package gate remain absent by design, all eight runtime branches are dormant and will record explicit refusal if called.
 
-The three support-only templates rely on a vanilla `infantry` carrier solely to satisfy the support-slot schema; the exact custom support IDs remain the consumer and no fallback formation is created.
+The support-only templates use a vanilla `infantry` carrier where the support-slot schema requires it; Disaster Wardens additionally reuses vanilla `infantry` as its intentional model token, and no generic fallback formation is created.
 
 No GFX, entity, animation, counter, audio, rights, or bulk localisation work is included in this runtime handoff.
 

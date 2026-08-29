@@ -1,10 +1,12 @@
 # Humanitarian Corridor Contract Architecture Handoff
 
-Status: design-only handoff for the bounded replacement of `fm_negotiate_corridor`.
+> **Superseded historical identifier banner (2026-08-25):** Any `fm_*` or `famine_migration_*` identifier quoted in this historical handoff is source-snapshot terminology only and is superseded; current authorities use separate `famine_*`, `migration_*`, or narrow neutral `civilian_transfer_*`/`humanitarian_*` names; see [source_of_truth_map.md](../source_of_truth_map.md).
+
+Status: architecture handoff plus completed package-owned replay repair for the bounded replacement of `fm_negotiate_corridor`.
 
 Scope: this handoff proposes the smallest authoritative contract that can prove an exact origin state, adjacent cross-front state, counterpart country, route geometry, response, operation, expiry, and cleanup without adding an event, event-pool entry, third mapmode, global target registry, or global periodic scan.
 
-No gameplay files were edited.
+The replay repair edited only the corridor helper, its helper documentation, and the three exact evacuation execution gates owned by this tranche; broader decision-owner wiring remains parent-owned.
 
 ## Decision
 
@@ -64,6 +66,7 @@ The origin state selected by `FROM` owns the contract and stores these normal va
 - `famine_migration_corridor_actual_origin_debit`.
 - `famine_migration_corridor_route_deaths`.
 - `famine_migration_corridor_survivor_credit`.
+- `famine_migration_corridor_evacuation_proven`.
 - `famine_migration_corridor_relief_source_debit`.
 - `famine_migration_corridor_relief_destination_credit`.
 - `famine_migration_corridor_cleanup_reason`.
@@ -78,7 +81,6 @@ The state owns the following flags for visibility and proof rather than using nu
 - `famine_migration_corridor_operation_pending`.
 - `famine_migration_corridor_mission_active`.
 - `famine_migration_corridor_relief_proven`.
-- `famine_migration_corridor_evacuation_proven`.
 - `famine_migration_corridor_attack_disqualified`.
 - `famine_migration_corridor_route_invalid`.
 - `famine_migration_corridor_selection_ambiguous`.
@@ -307,6 +309,20 @@ No probability completion claim is supported by this handoff because the current
 
 9. Run source lint and the required MCP inspect/compare/auditor workflow before any completion claim.
 
+## Replay repair handoff
+
+The exact evacuation receipt is the normal variable `famine_migration_corridor_evacuation_proven`, not a state flag. The route generation variable remains `famine_migration_corridor_route_generation`; preparation clears the receipt only while replacing the fully reset contract, and terminal cleanup clears it after expiry, rejection, route invalidation, attack disqualification, or mission completion.
+
+Before/after caller census: the three execution lanes `fm_famine_evacuation`, `fm_evacuate_vulnerable`, and `fm_evacuate_workers` previously gated with the unproduced state flag and could re-enter the exact transfer during an active mission. They now all require `has_variable = famine_migration_corridor_route_generation` and gate with `NOT = { has_variable = famine_migration_corridor_evacuation_proven }`, and the execution and record helpers carry the same generation and fail-closed receipt guards.
+
+The record helper now requires exact-transfer validity, positive measured origin debit, and positive survivor credit before persisting the receipt. The same-generation replay test is: first valid lane call performs one exact debit/death/survivor transaction and records cohort/reception plus mission proof; a second lane call is unavailable and a direct helper call remains invalid without a second transfer. Mission continuation/finalisation still reads the durable proof and mission state independently of the one-shot execution gate.
+
+Save/reload behavior is intentionally ordinary-variable based: the receipt remains present across a save and blocks replay until terminal cleanup. Cleanup is idempotent and removes only the canonical normal-variable receipt on terminal/full-reset paths; the previous dead `clr_state_flag = famine_migration_corridor_evacuation_proven` cleanup was removed.
+
+The repair changes no event, GUI, mapmode, relief row, achievement helper, route contract, or population/death endpoint. No weighted AI surface changed, so no new probability audit was required. Live save/reload and engine execution evidence remain parent-owned; the post-repair decision lint blocker is recorded below.
+
+Post-repair decision lint was attempted against `common/decisions/famine_migration_decisions.txt` and blocked by the exact MCP error `tool call error: tool call failed for hoi4_agent_tools/hoi4.event_inspect; Caused by: timed out awaiting tools/call after 180s`. This repair adds no weighted surface, so no probability inspection or AI-probability comparison was applicable; no map or GUI surface changed.
+
 ## Evidence, blockers, and unsupported analysis
 
 The required offline wiki and vanilla documentation were consulted, including `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Decision modding - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Triggers - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Effects - Hearts of Iron 4 Wiki.md`, `paradox_wiki/Scopes - Hearts of Iron 4 Wiki.md`, and the vanilla `documentation/effects_documentation.md`, `documentation/triggers_documentation.md`, `documentation/script_concept_documentation.md`, `documentation/dynamic_variables_documentation.md`, and `common/script_constants/documentation.md`.
@@ -337,6 +353,6 @@ No source-only inspection in this handoff is presented as a substitute for those
 
 ## Completion boundary
 
-This handoff is complete as an architecture proposal and intentionally contains no gameplay implementation.
+The architecture proposal and bounded replay repair are complete. `famine_migration_corridor_evacuation_proven` is now the single durable evacuation receipt, all three exact caller gates and both helper gates require the active route generation and fail closed on that receipt, and terminal cleanup remains the only active-contract receipt reset.
 
-Parent implementation is blocked only on the listed exact attack-owner hook, MCP/auditor availability, and engine validation of dynamic ID scopes and counterpart decision visibility; those blockers must be carried into the final report if they remain unresolved.
+Parent implementation remains responsible for broader decision-owner wiring, exact attack-owner hooks, MCP/auditor availability, and engine validation of dynamic ID scopes and counterpart decision visibility; those blockers must be carried into the final report if they remain unresolved.

@@ -1,5 +1,7 @@
 # Event 019 triggerable scenario runtime handoff
 
+> **Historical UI boundary (2026-08-22):** This dated handoff remains scenario evidence. Its statement that a generic scripted GUI requires no scenario-specific edit describes the superseded UI design; the accepted Event 19 runtime is decisions-only with no Event 19 scripted GUI. Use the current scenario system doc and source-of-truth map for active UI routing.
+
 > Visual supersession notice (2026-07-16): the original generic-government
 > image statement in this dated handoff predates the formation-first visual
 > override. SCN-013 now resolves `GetInfantrySpawnScenarioActorArmyScene` and

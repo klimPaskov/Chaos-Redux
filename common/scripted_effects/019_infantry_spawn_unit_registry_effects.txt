@@ -4111,6 +4111,112 @@ chaos_unit_family_provider_501_event19_remove_public_additions = {
 	chaos_unit_family_event19_cleanup_initial_provider_authority = yes
 }
 
+# Input: infantry_spawn_exact_current_profile. Output:
+# infantry_spawn_family_provider_equipment_token. This reusable bridge covers
+# standard equipment; a custom family maps only its own bespoke profiles in its
+# owner callback and never needs an Event 19 family-list edit.
+infantry_spawn_provider_get_standard_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+	if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_equipment_family.infantry_equipment compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:infantry_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_equipment_family.support_equipment compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:support_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_equipment_family.motorized_equipment compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:motorized_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:infantry_spawn_equipment_family.coal_golem_equipment compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:coal_golem_equipment_1 }
+	}
+}
+
+# Input: infantry_spawn_family_provider_equipment_token. Provider-owned
+# publish callbacks call this once for every non-generic equipment archetype
+# that their Event 19 package can debit, refund, grant, or settle. The selected
+# snapshot destination keeps the pre-payment and post-payment transaction
+# baselines independent without any Event 19 family or equipment list.
+infantry_spawn_register_current_family_custom_equipment_token = {
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_equipment_token > 0 }
+			check_variable = { infantry_spawn_family_equipment_snapshot_destination = constant:infantry_spawn_family_equipment_snapshot_destination.pre_payment }
+			NOT = { is_in_array = { array = infantry_spawn_family_pre_payment_equipment_token_entries value = infantry_spawn_family_provider_equipment_token } }
+		}
+		set_temp_variable = { infantry_spawn_family_equipment_snapshot_current_amount = 0 }
+		meta_effect = {
+			text = { set_temp_variable = { infantry_spawn_family_equipment_snapshot_current_amount = num_equipment@[EQUIPMENT] } }
+			EQUIPMENT = "[?infantry_spawn_family_provider_equipment_token.GetTokenKey]"
+		}
+		add_to_temp_array = { array = infantry_spawn_family_pre_payment_equipment_token_entries value = infantry_spawn_family_provider_equipment_token }
+		add_to_temp_array = { array = infantry_spawn_family_pre_payment_equipment_amount_entries value = infantry_spawn_family_equipment_snapshot_current_amount }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_equipment_token > 0 }
+			check_variable = { infantry_spawn_family_equipment_snapshot_destination = constant:infantry_spawn_family_equipment_snapshot_destination.transaction }
+			NOT = { is_in_array = { array = infantry_spawn_family_transaction_equipment_token_entries value = infantry_spawn_family_provider_equipment_token } }
+		}
+		set_temp_variable = { infantry_spawn_family_equipment_snapshot_current_amount = 0 }
+		meta_effect = {
+			text = { set_temp_variable = { infantry_spawn_family_equipment_snapshot_current_amount = num_equipment@[EQUIPMENT] } }
+			EQUIPMENT = "[?infantry_spawn_family_provider_equipment_token.GetTokenKey]"
+		}
+		add_to_temp_array = { array = infantry_spawn_family_transaction_equipment_token_entries value = infantry_spawn_family_provider_equipment_token }
+		add_to_temp_array = { array = infantry_spawn_family_transaction_equipment_amount_entries value = infantry_spawn_family_equipment_snapshot_current_amount }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_provider_equipment_token > constant:infantry_spawn_event.first_index }
+			check_variable = { infantry_spawn_family_equipment_snapshot_destination = constant:infantry_spawn_family_equipment_snapshot_destination.derivative_opening }
+			NOT = { is_in_array = { array = infantry_spawn_derivative_opening_custom_equipment_token_entries value = infantry_spawn_family_provider_equipment_token } }
+		}
+		set_temp_variable = { infantry_spawn_family_equipment_snapshot_current_amount = constant:infantry_spawn_event.first_index }
+		meta_effect = {
+			text = { set_temp_variable = { infantry_spawn_family_equipment_snapshot_current_amount = num_equipment@[EQUIPMENT] } }
+			EQUIPMENT = "[?infantry_spawn_family_provider_equipment_token.GetTokenKey]"
+		}
+		add_to_array = { array = infantry_spawn_derivative_opening_custom_equipment_token_entries value = infantry_spawn_family_provider_equipment_token }
+		add_to_array = { array = infantry_spawn_derivative_opening_custom_equipment_amount_entries value = infantry_spawn_family_equipment_snapshot_current_amount }
+	}
+	else = { infantry_spawn_mark_ledger_invariant_failure = yes }
+}
+
+# Inputs: infantry_spawn_current_family_id and
+# infantry_spawn_exact_current_profile. Outputs the concrete equipment token,
+# specialist classification, provider id, and a validity bit. The family id is
+# resolved through the shared registry at runtime, so this dispatch never owns
+# a family or equipment list.
+infantry_spawn_resolve_current_family_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token_valid = 0 }
+	if = {
+		limit = { chaos_unit_family_registry_is_aligned = yes }
+		set_temp_variable = { chaos_unit_family_requested_id = infantry_spawn_current_family_id }
+		chaos_unit_family_resolve_requested_id = yes
+		if = {
+			limit = {
+				check_variable = { chaos_unit_family_registry_index > constant:chaos_unit_family_registry.not_found }
+				check_variable = { var = chaos_unit_family_registry_index value = global.chaos_unit_family_provider_id_entries^num compare = less_than }
+			}
+			set_temp_variable = { infantry_spawn_current_registry_provider_id = global.chaos_unit_family_provider_id_entries^chaos_unit_family_registry_index }
+			meta_effect = {
+				text = { chaos_unit_family_provider_[PROVIDER]_event19_get_equipment_token = yes }
+				PROVIDER = "[?infantry_spawn_current_registry_provider_id|.0]"
+			}
+			if = {
+				limit = { check_variable = { infantry_spawn_family_provider_equipment_token > 0 } }
+				set_temp_variable = { infantry_spawn_family_provider_equipment_token_valid = 1 }
+			}
+		}
+	}
+}
+
 chaos_unit_family_provider_501_register = {
 	set_temp_variable = { chaos_unit_family_register_id = constant:event19_zombie_family.family_id }
 	set_temp_variable = { chaos_unit_family_register_provider_id = constant:event19_zombie_family.provider_id }
@@ -4179,8 +4285,19 @@ chaos_unit_family_provider_501_event19_reconcile_sustainment = {
 	infantry_spawn_record_provider_unit_obligations = yes
 }
 
-chaos_unit_family_provider_501_event19_get_management_cost_display = {
-	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.base_zombie }
+chaos_unit_family_provider_501_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	infantry_spawn_provider_get_standard_equipment_token = yes
+}
+
+chaos_unit_family_provider_501_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+}
+
+chaos_unit_family_provider_501_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_501_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_501_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_501_sustainment_cost_loc }
 }
 
 # Event 19 registry-management contract. Base zombies are the only zombie
@@ -4399,7 +4516,6 @@ chaos_unit_family_provider_502_event19_build_template = {
 					death_weak_ghost_host = { x = 0 y = 0 }
 					death_weak_ghost_host = { x = 0 y = 1 }
 					death_weak_ghost_host = { x = 0 y = 2 }
-					death_weak_ghost_host = { x = 0 y = 3 }
 				}
 			}
 		}
@@ -4422,8 +4538,19 @@ chaos_unit_family_provider_502_event19_reconcile_sustainment = {
 	infantry_spawn_record_provider_unit_obligations = yes
 }
 
-chaos_unit_family_provider_502_event19_get_management_cost_display = {
-	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.weak_ghost }
+chaos_unit_family_provider_502_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	infantry_spawn_provider_get_standard_equipment_token = yes
+}
+
+chaos_unit_family_provider_502_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+}
+
+chaos_unit_family_provider_502_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_502_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_502_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_502_sustainment_cost_loc }
 }
 
 chaos_unit_family_provider_502_event19_evaluate_management = {
@@ -4656,8 +4783,20 @@ chaos_unit_family_provider_503_event19_reconcile_sustainment = {
 	infantry_spawn_record_provider_unit_obligations = yes
 }
 
-chaos_unit_family_provider_503_event19_get_management_cost_display = {
-	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.coal_golem }
+chaos_unit_family_provider_503_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	infantry_spawn_provider_get_standard_equipment_token = yes
+}
+
+chaos_unit_family_provider_503_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:coal_golem_equipment_1 }
+	infantry_spawn_register_current_family_custom_equipment_token = yes
+}
+
+chaos_unit_family_provider_503_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_503_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_503_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_503_sustainment_cost_loc }
 }
 
 chaos_unit_family_provider_503_event19_evaluate_management = {

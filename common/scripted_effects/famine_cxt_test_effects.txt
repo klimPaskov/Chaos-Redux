@@ -1,0 +1,32 @@
+# Bounded, idempotent famine fixture for the CXT extension bus.
+
+famine_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_famine
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_famine_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = famine_cxt_fixture_initialized }
+		}
+		set_country_flag = famine_cxt_fixture_initialized
+		capital_scope = {
+			set_temp_variable = { famine_input_production = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_transport = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_extraction = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_need = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_environment = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_vulnerability = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_governance = constant:famine_food_score.supply_strain_threshold }
+			set_temp_variable = { famine_input_relief = constant:famine_food_component.zero }
+			set_temp_variable = { famine_surface_context_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { famine_surface_context_actor_proven = constant:humanitarian_runtime.one }
+			famine_submit_surface_context = yes
+		}
+	}
+}

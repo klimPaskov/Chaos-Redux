@@ -1,5 +1,7 @@
 # Event 19 Muster Board GUI and Decision Audit
 
+> **Archival handoff notice (2026-08-22):** This audit describes a former scripted GUI and is retained only as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; do not route the GUI identifiers or layout findings as active implementation work.
+
 ## Scope and outcome
 
 This audit covered the direct Event 19 Muster Board GUI, its scripted-GUI contract, the opening decision and category, direct GUI localisation, and the registered background asset.

@@ -1,5 +1,7 @@
 # Event 012 Africa disaster wardens reference-replacement handoff
 
+> This source-replacement handoff records the retired custom-model route. The current disposition is [`012_africa_disaster_wardens_meshy7_redo.md`](012_africa_disaster_wardens_meshy7_redo.md): no custom model is required, the consumer reuses vanilla `infantry`, custom model/entity/animation registrations are retired, and parent live validation remains pending.
+
 Status: `parent_approved_exact_hash_geometry_passed_rig_recovery_blocked`.
 
 ## Outcome

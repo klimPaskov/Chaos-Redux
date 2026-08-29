@@ -1,5 +1,7 @@
 # Event 019 Localisation Specialist Audit
 
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this dated localisation audit predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old localisation and proof discussion remains historical evidence only.
+
 Date: 2026-07-16
 
 Mode: source-stable specialist audit with narrow localisation, documentation,

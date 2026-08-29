@@ -1,0 +1,37 @@
+# Famine decision-owner effects.
+#
+# Famine evacuation is the one famine-surface action that deliberately calls
+# into the migration-owned movement transaction. This narrow wrapper keeps the
+# cross-mechanic seam explicit while the shared route contract remains neutral.
+
+famine_decision_prove_evacuation_route = {
+	migration_decision_prove_route_contract = yes
+}
+
+# STATE scope at the famine-stricken destination. Select the adjacent,
+# same-owner safe state with the largest existing reserve stock. This is a
+# deterministic physical-neighbor selection, not a world pool or fallback.
+famine_select_safe_food_reserve_donor = {
+	set_temp_variable = { famine_requisition_donor_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { famine_requisition_best_reserve = constant:famine_food_reserve.zero }
+	every_neighbor_state = {
+		if = {
+			limit = {
+				humanitarian_state_is_valid = yes
+				has_variable = famine_food_reserve_amount
+				is_owned_and_controlled_by = ROOT
+				infrastructure > constant:famine_decision_threshold.minimum_route_infrastructure
+				NOT = { has_state_flag = famine_food_security_active }
+				migration_destination_native_hazards_are_safe = yes
+				NOT = { cbrn_state_has_chemical_contamination = yes }
+				NOT = { has_dynamic_modifier = { modifier = nuclear_fallout_state } }
+				NOT = { black_plague_state_is_infected_or_worse = yes }
+				CONTROLLER = { NOT = { has_war_with = ROOT } }
+				check_variable = { var = famine_food_reserve_amount value = famine_requisition_best_reserve compare = greater_than }
+			}
+			set_temp_variable = { famine_requisition_best_reserve = famine_food_reserve_amount }
+			save_event_target_as = famine_requisition_donor_state
+			set_temp_variable = { famine_requisition_donor_result = constant:humanitarian_runtime.one }
+		}
+	}
+}

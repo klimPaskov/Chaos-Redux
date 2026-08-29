@@ -2,7 +2,7 @@
 
 Date: 2026-08-01.
 
-> Final disposition, 2026-08-11: this accepted improvement-loop addendum is fully folded into the current Event 012 overview, normative spec parts 2 and 5, world-order document, asset matrix, action/achievement owner handoffs, and acceptance ledger. Its historical blocker counts and model-gated language are superseded by the current 44 implemented achievement rows, 64 source-wired AI profiles, 102/102 action concepts with six deliberate runtime gates, 16 implemented conditional priority packages, 9 model packages, 18 animations, 4 super-event roles, and 239-row visual reconciliation. The broad addendum is closed; remaining MCP adapter limits and user-owned playback are evidence boundaries, not implementation gaps, and no new expansion pass is authorised by this file.
+> Final disposition, 2026-08-11: this accepted improvement-loop addendum is fully folded into the current Event 012 overview, normative spec parts 2 and 5, world-order document, asset matrix, action/achievement owner handoffs, and acceptance ledger. Its historical blocker counts and model-gated language are superseded by the current 44 implemented achievement rows, 64 source-wired AI profiles, 102/102 action concepts with six deliberate runtime gates, 16 implemented conditional priority packages, 9 model package/workspace records with mixed promotion status, 18 animations, 4 super-event roles, and 239-row visual reconciliation. The broad addendum is closed, but current per-package model manifests remain the promotion authority; remaining MCP adapter limits and user-owned playback are evidence boundaries, and no new expansion pass is authorised by this file.
 
 ## Superseding implementation note (2026-08-03)
 
@@ -10,7 +10,7 @@ The W5 callsite and six external identity package tranche described as queued in
 
 ## Superseding implementation note (2026-08-06)
 
-The shared armoured elephant model package is now parent-wired as `chaosx_elephant` with a custom unit, equipment and technology bridge, counters, sounds, and host/Action 102 formation consumers. Matrix rows 203–204 therefore moved to `installed_runtime`; achievement 36 has its source owner contract, and user-owned movement, supply, destruction, and war-purpose playback remains separate evidence. The current matrix and `docs/events/012_africa/overview.md` supersede the historical counts in this addendum.
+The shared armoured elephant source contract is parent-wired as `chaosx_elephant` with a custom unit, equipment and technology bridge, candidate counters, candidate sounds, and host/Action 102 formation consumers, but its current recovery manifest remains blocked or unpromoted. Matrix rows 203–204 are historical dispositions; achievement 36 has its source owner contract, and user-owned movement, supply, destruction, and war-purpose playback remains separate evidence. The current per-package manifest and `docs/events/012_africa/overview.md` supersede the historical counts in this addendum.
 
 Status: Superseded and fully folded on 2026-08-11; broad expansion, implementation planning, and acceptance disposition are closed in the current source-of-truth map.
 
@@ -122,7 +122,7 @@ The following remain behind `africa_strange_formation_package_ready` or their ex
 - achievements 18 `africa_covenant_with_the_impossible`, 35 `africa_beasts_but_not_caricatures`, and 40 `africa_stone_walks_into_parliament` remain model-gated; achievement 36 `africa_elephants_crossed_the_desert` is runtime-evidence-gated after the shared elephant consumer wiring;
 - AI profile 16 and profiles 30-35 where their accepted consumer requires a nonhuman or strange-formation package;
 - the six country visual packages Pan, Gorilla Kingdom, The Green, Living Rivers, Stoneborn, and Ancient Hosts;
-- the eight remaining unit identities gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, and plague carriers; elephant logistics and shock are installed through one shared body;
+- the eight remaining unit identities gorilla heavy infantry, Pan sappers, stone cohorts, riverborn, forest giants, oracle recon, disaster wardens, and plague carriers; Elephant logistics and shock remain source-defined through one shared body but are not promoted by the current recovery manifest;
 - the fourteen asset-matrix rows marked `deferred_model_required`.
 
 No free infantry, recoloured vanilla entity, 2D-only formation proxy, generic creature, or readiness flag may substitute for those packages.

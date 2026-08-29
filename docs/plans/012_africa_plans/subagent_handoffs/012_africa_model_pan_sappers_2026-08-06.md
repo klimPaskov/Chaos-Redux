@@ -1,6 +1,6 @@
 # Event 012 Pan Sappers 3D production handoff
 
-Superseded by `012_africa_models_runtime_completion_2026-08-06.md`; the complete package is at `docs/assets/012_africa/models_3d/pan_sappers/`.
+This dated dependency handoff is historical evidence only. The retained package workspace is `docs/assets/012_africa/models_3d/pan_sappers/`; current provider-not-started status is governed by its manifest and the current model-runtime reconciliation.
 
 ## Outcome
 

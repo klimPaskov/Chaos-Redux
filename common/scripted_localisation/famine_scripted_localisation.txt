@@ -1,0 +1,91 @@
+# Famine-owned player-facing selectors.
+
+defined_text = {
+	name = GetFamineCategoryPhase
+	text = { trigger = { has_country_flag = famine_decision_resolution } localization_key = famine_category_phase_resolution }
+	text = { trigger = { has_country_flag = famine_decision_active } localization_key = famine_category_phase_active }
+	text = { trigger = { has_country_flag = famine_decision_emerging } localization_key = famine_category_phase_emerging }
+	text = { trigger = { always = yes } localization_key = famine_category_phase_dormant }
+}
+
+defined_text = {
+	name = GetFamineNationalFoodStage
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_catastrophic } } localization_key = famine_food_stage_catastrophic }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_famine } } localization_key = famine_food_stage_famine }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_acute_shortage } } localization_key = famine_food_stage_acute_shortage }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_supply_strain } } localization_key = famine_food_stage_supply_strain }
+	text = { trigger = { always = yes } localization_key = famine_food_stage_stable }
+}
+
+defined_text = {
+	name = GetFaminePriorityResponse
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_catastrophic } } localization_key = famine_priority_response_catastrophic }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_famine } } localization_key = famine_priority_response_famine }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_acute_shortage } } localization_key = famine_priority_response_acute }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_stage_supply_strain } } localization_key = famine_priority_response_strain }
+	text = { trigger = { always = yes } localization_key = famine_priority_response_stable }
+}
+
+defined_text = {
+	name = GetFamineReserveSummary
+	text = {
+		trigger = {
+			any_owned_state = {
+				has_state_flag = famine_food_security_active
+				has_variable = famine_food_reserve_amount
+				has_variable = famine_food_reserve_daily_need
+				check_variable = { var = famine_food_reserve_amount value = famine_food_reserve_daily_need compare = less_than }
+			}
+		}
+		localization_key = famine_reserve_summary_critical
+	}
+	text = {
+		trigger = {
+			any_owned_state = {
+				has_state_flag = famine_food_security_active
+				has_variable = famine_food_reserve_amount
+				has_variable = famine_food_reserve_target
+				check_variable = { var = famine_food_reserve_amount value = famine_food_reserve_target compare = less_than }
+			}
+		}
+		localization_key = famine_reserve_summary_low
+	}
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_reserve_initialized } } localization_key = famine_reserve_summary_working }
+	text = { trigger = { always = yes } localization_key = famine_reserve_summary_untracked }
+}
+
+defined_text = {
+	name = GetFamineReliefAccess
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_security_active has_state_flag = famine_relief_access_active } } localization_key = famine_relief_access_open }
+	text = { trigger = { any_owned_state = { has_state_flag = famine_food_security_active NOT = { has_state_flag = famine_relief_access_active } } } localization_key = famine_relief_access_blocked }
+	text = { trigger = { always = yes } localization_key = famine_relief_access_not_required }
+}
+
+defined_text = {
+	name = GetFamineHistoricalProfileName
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_soviet_1932_memory } } localization_key = famine_profile_soviet_1932_memory }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_china_henan_1942 } } localization_key = famine_profile_china_henan_1942 }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_china_policy_famine } } localization_key = famine_profile_china_policy_famine }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_bengal_1943 } } localization_key = famine_profile_bengal_1943 }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_vietnam_1944 } } localization_key = famine_profile_vietnam_1944 }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_java_1944 } } localization_key = famine_profile_java_1944 }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_greece_1941 } } localization_key = famine_profile_greece_1941 }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_leningrad_siege } } localization_key = famine_profile_leningrad_siege }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_dutch_hunger_winter } } localization_key = famine_profile_dutch_hunger_winter }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_spain_early_1940s } } localization_key = famine_profile_spain_early_1940s }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_ireland_memory } } localization_key = famine_profile_ireland_memory }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_brazil_ceara } } localization_key = famine_profile_brazil_ceara }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_congo_interaction } } localization_key = famine_profile_congo_interaction }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_ethiopia_policy } } localization_key = famine_profile_ethiopia_policy }
+	text = { trigger = { check_variable = { famine_profile_context_id = constant:famine_profile_id.hist_nuclear_winter_global } } localization_key = famine_profile_nuclear_winter_global }
+	text = { trigger = { always = yes } localization_key = famine_profile_none }
+}
+
+defined_text = {
+	name = GetFamineHistoricalProfileMode
+	text = { trigger = { check_variable = { famine_profile_mode = constant:famine_profile_mode.memory } } localization_key = famine_profile_mode_memory }
+	text = { trigger = { check_variable = { famine_profile_mode = constant:famine_profile_mode.historical_window } } localization_key = famine_profile_mode_window }
+	text = { trigger = { check_variable = { famine_profile_mode = constant:famine_profile_mode.policy_analogue } } localization_key = famine_profile_mode_analogue }
+	text = { trigger = { check_variable = { famine_profile_mode = constant:famine_profile_mode.dynamic_regional } } localization_key = famine_profile_mode_regional }
+	text = { trigger = { always = yes } localization_key = famine_profile_mode_regional }
+}

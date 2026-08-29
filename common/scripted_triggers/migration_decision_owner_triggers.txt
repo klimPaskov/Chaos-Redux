@@ -1,0 +1,271 @@
+# Migration reveal evidence must be sustained or large. Merely initializing a
+# cohort, registry, or country does not expose the category.
+migration_decision_reveal_threshold_is_met = {
+		hidden_trigger = {
+		OR = {
+			check_variable = { var = migration_incident_count value = constant:migration_decision_threshold.category_incidents compare = greater_than_or_equals }
+			AND = {
+				has_country_flag = humanitarian_corridor_offer_pending
+				humanitarian_corridor_offer_is_valid = yes
+			}
+			AND = {
+				has_variable = migration_reception_load
+				check_variable = { var = migration_reception_load value = constant:migration_decision_threshold.category_reception_load compare = greater_than }
+			}
+			check_variable = { var = migration_flight_pressure value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
+			check_variable = { var = migration_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+			any_owned_state = {
+				OR = {
+					check_variable = { var = migration_state_flight_population value = constant:migration_decision_threshold.category_flight_people compare = greater_than_or_equals }
+					check_variable = { var = migration_state_trapped_population value = constant:migration_decision_threshold.category_trapped_people compare = greater_than_or_equals }
+					check_variable = { var = migration_state_reception_load value = constant:migration_decision_threshold.category_reception_load compare = greater_than_or_equals }
+				}
+			}
+		}
+	}
+}
+
+migration_decision_problem_is_active = {
+	hidden_trigger = {
+		OR = {
+			has_country_flag = migration_decision_active
+			has_country_flag = migration_decision_emerging
+			has_country_flag = migration_decision_resolution
+			migration_decision_reveal_threshold_is_met = yes
+		}
+	}
+}
+
+# Country/state seams used by famine-owned evacuation decisions. They expose
+# only migration-owned capacity and preparation availability; the famine
+# decision separately proves its own food-security cause.
+migration_decision_famine_evacuation_country_is_available = {
+	hidden_trigger = {
+		OR = {
+			NOT = { has_variable = migration_reception_load }
+			NOT = { check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than } }
+		}
+	}
+}
+
+migration_decision_famine_evacuation_state_is_available = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		NOT = { has_state_flag = migration_evacuation_prepared }
+	}
+}
+
+migration_reception_policy_is_humanitarian_open = {
+	hidden_trigger = {
+		has_variable = migration_reception_policy
+		check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
+	}
+}
+
+# The acting state must have exactly one aligned, live positive cohort row.  The
+# core reconciler derives these counters from the persisted host state, so an
+# old selector, stale origin, or ambiguous row fails closed.
+migration_decision_exact_hosted_cohort_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		migration_cohort_arrays_are_aligned = yes
+		NOT = { has_state_flag = migration_cohort_selection_ambiguous }
+		has_variable = migration_current_cohort_id
+		has_variable = migration_state_live_cohort_count
+		check_variable = { var = migration_state_live_cohort_count value = constant:humanitarian_runtime.one compare = equals }
+		has_variable = migration_state_live_cohort_amount
+		check_variable = { var = migration_state_live_cohort_amount value = constant:humanitarian_population.zero compare = greater_than }
+	}
+}
+
+# A host action needs a valid current country capacity revision and a positive
+# measured load.  Capacity validity is intentionally separate from the load
+# check: a stale or dirty revision cannot authorize a transfer.
+migration_decision_reception_host_is_valid = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		migration_reception_capacity_is_valid = yes
+		has_variable = migration_reception_load
+		check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+		has_variable = migration_reception_capacity
+		check_variable = { var = migration_reception_load value = migration_reception_capacity compare = less_than }
+	}
+}
+
+# Outbound relief lanes may be needed precisely while the host is above its
+# effective capacity. This companion guard still requires a valid capacity
+# revision and measured positive load, but deliberately does not claim spare
+# capacity.
+migration_decision_reception_load_is_valid = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		migration_reception_capacity_is_valid = yes
+		has_variable = migration_reception_load
+		check_variable = { var = migration_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+		has_variable = migration_reception_capacity
+	}
+}
+
+# State-targeted reception actions require both the country service revision
+# and the state-local measured load.  The state predicate above remains the
+# authoritative cohort/host check and is deliberately composed here instead
+# of re-reading a country-level cohort id in state scope.
+migration_decision_reception_state_host_is_valid = {
+	hidden_trigger = {
+		OWNER = { migration_decision_reception_host_is_valid = yes }
+		migration_decision_exact_hosted_cohort_is_valid = yes
+		has_variable = migration_state_reception_load
+		check_variable = { var = migration_state_reception_load value = constant:humanitarian_population.zero compare = greater_than }
+	}
+}
+
+# A country-level capacity warning must be derived from the published current
+# revision, never from the orphaned exhausted flag.  Equality is exhausted;
+# callers still fail closed when the revision is absent or dirty.
+migration_decision_reception_capacity_exhausted_is_valid = {
+	hidden_trigger = {
+		humanitarian_country_is_valid = yes
+		migration_reception_capacity_is_valid = yes
+		has_variable = migration_reception_load
+		has_variable = migration_reception_capacity
+		check_variable = { var = migration_reception_load value = migration_reception_capacity compare = greater_than_or_equals }
+	}
+}
+
+# Durable receipt for the Hungry, Not Contagious outcome.  The receipt is
+# written only by the decision-owned arrival adapter after the exact transfer,
+# bind, reception delta, and history visit all succeed.  It binds one live
+# cohort to its host and preserves the arrival-time origin/exposure snapshot;
+# current host infection or a policy flag cannot satisfy it.
+migration_decision_reception_exposure_receipt_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = migration_mission_reception_exposure_receipt
+		has_variable = migration_mission_reception_receipt_cohort_id
+		check_variable = { var = migration_mission_reception_receipt_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+		has_variable = migration_mission_reception_receipt_origin_state_id
+		check_variable = { var = migration_mission_reception_receipt_origin_state_id value = constant:humanitarian_runtime.zero compare = greater_than }
+		has_variable = migration_mission_reception_receipt_host_state_id
+		check_variable = { var = migration_mission_reception_receipt_host_state_id value = THIS.id compare = equals }
+		has_variable = migration_mission_reception_receipt_generation
+		check_variable = { var = migration_mission_reception_receipt_generation value = constant:humanitarian_runtime.zero compare = greater_than }
+		has_variable = migration_mission_reception_receipt_transaction
+		check_variable = { var = migration_mission_reception_receipt_transaction value = migration_mission_reception_receipt_generation compare = equals }
+		has_variable = migration_mission_reception_receipt_exposure_class
+		check_variable = { var = migration_mission_reception_receipt_exposure_class value = constant:humanitarian_pressure_source.outbreak compare = equals }
+		migration_cohort_arrays_are_aligned = yes
+		migration_decision_exact_hosted_cohort_is_valid = yes
+		check_variable = { var = migration_current_cohort_id value = migration_mission_reception_receipt_cohort_id compare = equals }
+	}
+}
+
+# Internal policy dimensions.  The legacy Border Policy variable remains a
+# derived presentation value for selectors that still consume the core API;
+# decision-owned lanes read these two authoritative dimensions instead.
+migration_decision_departure_policy_request_is_valid = {
+	hidden_trigger = {
+		OR = {
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.humanitarian_open compare = equals }
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.transit_only compare = equals }
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.quarantine compare = equals }
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.closed compare = equals }
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.violent compare = equals }
+			check_variable = { var = migration_departure_policy_request value = constant:migration_border_policy.forced_return compare = equals }
+		}
+	}
+}
+
+migration_decision_reception_policy_request_is_valid = {
+	hidden_trigger = {
+		OR = {
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.humanitarian_open compare = equals }
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.transit_only compare = equals }
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.quarantine compare = equals }
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.closed compare = equals }
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.violent compare = equals }
+			check_variable = { var = migration_reception_policy_request value = constant:migration_border_policy.forced_return compare = equals }
+		}
+	}
+}
+
+migration_decision_departure_policy_is_valid = {
+	hidden_trigger = {
+		has_variable = migration_departure_policy
+		OR = {
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.transit_only compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.quarantine compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.closed compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.violent compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.forced_return compare = equals }
+		}
+	}
+}
+
+migration_decision_reception_policy_is_valid = {
+	hidden_trigger = {
+		has_variable = migration_reception_policy
+		OR = {
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.transit_only compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.quarantine compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.closed compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.violent compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.forced_return compare = equals }
+		}
+	}
+}
+
+migration_decision_departure_policy_allows_outbound = {
+	hidden_trigger = {
+		migration_decision_departure_policy_is_valid = yes
+		OR = {
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_departure_policy value = constant:migration_border_policy.transit_only compare = equals }
+		}
+	}
+}
+
+migration_decision_reception_policy_allows_admission = {
+	hidden_trigger = {
+		migration_decision_reception_policy_is_valid = yes
+		OR = {
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.humanitarian_open compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.controlled compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.transit_only compare = equals }
+			check_variable = { var = migration_reception_policy value = constant:migration_border_policy.quarantine compare = equals }
+		}
+	}
+}
+
+# Return destinations are resolved from the persisted historical origin, never
+# from ROOT-owned-state discovery. Forced return accepts any current reception
+# policy because the action is an explicit coercive destination contract;
+# ordinary admission is handled by the voluntary-return predicate below.
+migration_decision_forced_return_destination_is_valid = {
+	hidden_trigger = {
+		has_event_target = migration_cohort_origin
+		event_target:migration_cohort_origin = {
+			humanitarian_state_is_valid = yes
+			OWNER = {
+				humanitarian_country_is_valid = yes
+				migration_reception_capacity_is_valid = yes
+				migration_decision_reception_policy_is_valid = yes
+			}
+		}
+	}
+}
+
+migration_decision_voluntary_return_destination_is_valid = {
+	hidden_trigger = {
+		migration_decision_forced_return_destination_is_valid = yes
+		event_target:migration_cohort_origin = {
+			OWNER = { migration_decision_reception_policy_allows_admission = yes }
+		}
+	}
+}

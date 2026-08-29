@@ -1,5 +1,15 @@
 # Event 020 shared plague-rat animation and sound handoff
 
+## Resumed production preflight — authoritative current update
+
+The current parent brief re-authorizes bounded Meshy 7 generation, rigging, and animation spend. That instruction supersedes the historical free-only/Meshy-spend prohibition below. No paid call was made in this resumed pass because the dependency-lock gate failed first.
+
+`MESHY_API_KEY` was present and nonblank; `python -B .tools/3d_pipeline/verify_environment.py` returned no findings; the exact Meshy 7 schema is verified; and the live balance was `466`. Blender health passed on adapter `1.10.4`, Blender `5.1.2`, and io_pdx_mesh `0.91.0` with request id `a4ad499a2e6f4cf089a8f875bae8e3cb`; `127.0.0.1:9876` was independently listening.
+
+The live callable Blender MCP surface, however, omits lock-declared `import_animation_action`, `retime_animation_action`, creature-rig/action, grounding, root-offset, and sanitization operations required to process and validate real quadruped source motion. Under the 3D pipeline's fail-closed dependency policy this is `blocked — required installation/verification`. The proposed 5-credit legacy `meshy_rig` call against task `019fd39c-3f8e-7f96-bd04-214ccbb7d64f` was therefore not submitted, so whether Meshy accepts that legacy lineage remains unknown. Credits consumed: `0`; new provider task IDs: none.
+
+Exact hashes, callable-tool inventory, missing capabilities, and required resolution are recorded in `docs/assets/020_black_plague/models_3d/rat_ground_unit_shared/evidence/dependencies/2026-08-24_live_route_gate.md`. No runtime promotion or wiring was touched.
+
 Date: 2026-08-24
 Owner: `020_black_plague`
 Asset slug: `rat_ground_unit_shared`

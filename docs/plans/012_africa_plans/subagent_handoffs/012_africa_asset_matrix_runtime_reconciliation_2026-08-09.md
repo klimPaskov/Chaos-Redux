@@ -2,7 +2,9 @@
 
 ## Result
 
-The 239-row asset and animation matrix remains the acceptance source of truth. Its current release-candidate distribution is 84 `installed_runtime`, 28 `installed_dormant`, 117 `deferred_controlled_pool`, 10 `deferred_runtime_gated`, zero `deferred_model_required`, zero `deferred_unique_package_required`, and zero `pending_runtime_blocker` rows.
+> This 2026-08-09 matrix reconciliation is a historical visual-ledger snapshot. The current per-package model manifests and 2026-08-26 handoffs supersede its model/audio promotion language; the matrix counts below must not be read as eight strange-force meshes or the Elephant being runtime-ready.
+
+The 239-row asset and animation matrix remains the row-level visual acceptance source for the snapshot recorded here. Its historical release-candidate distribution is 84 `installed_runtime`, 28 `installed_dormant`, 117 `deferred_controlled_pool`, 10 `deferred_runtime_gated`, zero `deferred_model_required`, zero `deferred_unique_package_required`, and zero `pending_runtime_blocker` rows; current model promotion is governed by the per-package manifests and the fail-closed formation contract.
 
 The matching 239 `asset_item` rows in `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` retain the same key order and dispositions. The ledger keeps its UTF-8 BOM and now records direct binary, GFX, consumer, source-frame, visual-review, and model-package evidence for the 32 promoted rows rather than repeating a status-only claim.
 
@@ -42,7 +44,7 @@ The six promoted Tier A country visual packages are installed on their approved 
 
 Each package has its three-size flag ladder, unique emblem, cosmetic identity, one adult male fictional ruler portrait on a plain background, package gameplay, AI, settlement logic, and strange-force relationship. The matrix's 52 Tier A portrait contracts now explicitly forbid female characters and council or group portraits.
 
-The eight strange-force identity rows are installed with unique technology, decision, focus, emblem, counter, equipment, technology, subunit, formation, entity, model, action, and sourced-audio packages:
+The eight strange-force identity rows have static identity and package evidence, while current model/audio promotion remains mixed and package-specific:
 
 - `unit_identity_gorilla_heavy_infantry`
 - `unit_identity_pan_sappers`
@@ -67,8 +69,8 @@ The eight strange-force identity rows are installed with unique technology, deci
 - Tier A visual handoff: `docs/plans/012_africa_plans/subagent_handoffs/012_africa_tiera_visuals_final_2026-08-09.md`
 - Model and runtime handoffs: the Event 12 model and strange-force handoffs under `docs/plans/012_africa_plans/subagent_handoffs/`
 
-The overall animation contact sheet and both Tier A flag/emblem contact sheets were visually reviewed. Runtime DDS dimensions and headers, exact frame counts, non-empty and non-duplicated animation frames, GIF frame counts, flag sizes, emblem round trips, counter round trips, model-package manifests, and audio format evidence are recorded in their accepted handoffs.
+The overall animation contact sheet and both Tier A flag/emblem contact sheets were visually reviewed. Runtime DDS dimensions and headers, exact frame counts, non-empty and non-duplicated animation frames, GIF frame counts, flag sizes, emblem round trips, counter round trips, model-package manifests, and audio format evidence are recorded in their respective handoffs; those evidence records do not by themselves promote the current model packages.
 
 ## Remaining disposition boundary
 
-The 117 `deferred_controlled_pool` and 10 `deferred_runtime_gated` rows are explicit controlled-pool or political-readiness dispositions, not missing runtime references. No matrix row remains model-blocked. Live in-game playback, visibility, and model rendering are owned by the user and are not claimed by this reconciliation.
+The 117 `deferred_controlled_pool` and 10 `deferred_runtime_gated` rows are explicit controlled-pool or political-readiness dispositions, not missing runtime references in this historical matrix. Current model production remains mixed: Oracle Recon has accepted local Meshy 7 mesh/actions with its replacement counter and runtime files staged, but live validation is pending; Disaster Wardens uses vanilla `infantry` with custom registrations retired; Gorilla, Pan, Stone, Riverborn, Forest, Plague, and the separate Elephant package remain blocked or unpromoted. The shared strange-force manifest effect clears all per-family and package readiness flags at startup/host initialization, so no package opens until all eight manifests are promoted atomically. Live in-game playback, visibility, and model rendering are owned by the user and are not claimed by this reconciliation.

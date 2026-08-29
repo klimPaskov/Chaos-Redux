@@ -578,19 +578,23 @@ defined_text = {
 defined_text = {
 	name = GetFamineStateMapModeStage
 	text = {
-		trigger = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.catastrophic_famine } }
+		trigger = { NOT = { has_variable = famine_food_stage } }
+		localization_key = famine_state_map_mode_stage_untracked
+	}
+	text = {
+		trigger = { check_variable = { famine_food_stage = constant:famine_food_stage.catastrophic_famine } }
 		localization_key = famine_state_map_mode_stage_catastrophic
 	}
 	text = {
-		trigger = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.famine } }
+		trigger = { check_variable = { famine_food_stage = constant:famine_food_stage.famine } }
 		localization_key = famine_state_map_mode_stage_famine
 	}
 	text = {
-		trigger = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.acute_shortage } }
+		trigger = { check_variable = { famine_food_stage = constant:famine_food_stage.acute_shortage } }
 		localization_key = famine_state_map_mode_stage_acute
 	}
 	text = {
-		trigger = { check_variable = { famine_migration_food_stage = constant:famine_migration_food_stage.supply_strain } }
+		trigger = { check_variable = { famine_food_stage = constant:famine_food_stage.supply_strain } }
 		localization_key = famine_state_map_mode_stage_strain
 	}
 	text = { localization_key = famine_state_map_mode_stage_stable }
@@ -600,6 +604,7 @@ defined_text = {
 	name = GetFamineStateMapModeDetail
 	text = {
 		trigger = {
+			has_variable = famine_food_stage
 			OR = {
 				is_owned_by = ROOT
 				is_controlled_by = ROOT
@@ -611,35 +616,453 @@ defined_text = {
 }
 
 defined_text = {
-	name = GetMigrationStateMapModeRole
+	name = GetFamineStateMapModeBlockadeStatus
 	text = {
-		trigger = { has_state_flag = famine_migration_population_trapped }
-		localization_key = migration_state_map_mode_role_trapped
+		trigger = { famine_blockade_proof = yes }
+		localization_key = famine_state_map_mode_blockade_proven
+	}
+	text = { localization_key = famine_state_map_mode_blockade_not_proven }
+}
+
+defined_text = {
+	name = GetFamineStateMapModeReliefStatus
+	text = {
+		trigger = {
+			has_state_flag = famine_relief_delivery_proven
+			has_variable = famine_relief_last_delivery_credit
+			check_variable = { famine_relief_last_delivery_credit > constant:humanitarian_population.zero }
+		}
+		localization_key = famine_state_map_mode_relief_delivery_proven
 	}
 	text = {
 		trigger = {
-			has_state_flag = famine_migration_displacement_active
-			check_variable = { famine_migration_flight_pressure > constant:famine_migration_population.zero }
+			has_variable = famine_relief_action_route_proven
+			check_variable = { famine_relief_action_route_proven > constant:humanitarian_runtime.zero }
+		}
+		localization_key = famine_state_map_mode_relief_route_proven
+	}
+	text = { localization_key = famine_state_map_mode_relief_none }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeRole
+	text = {
+		trigger = { has_state_flag = migration_population_trapped }
+		localization_key = migration_state_map_mode_role_trapped
+	}
+	text = {
+		trigger = { has_state_flag = migration_overcrowded_context_active }
+		localization_key = migration_state_map_mode_role_overcrowded
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_mission_evacuation_subject
+			OR = {
+				NOT = { has_variable = humanitarian_corridor_operation }
+				check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+			}
+		}
+		localization_key = migration_state_map_mode_role_organized_evacuation
+	}
+	text = {
+		trigger = {
+			has_state_flag = humanitarian_corridor_operation_pending
+			has_variable = humanitarian_corridor_operation
+			check_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation }
+		}
+		localization_key = migration_state_map_mode_role_organized_evacuation
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_displacement_active
+			OR = {
+				AND = {
+					has_variable = migration_flight_pressure
+					check_variable = { migration_flight_pressure > constant:humanitarian_population.zero }
+				}
+				AND = {
+					has_variable = migration_state_flight_population
+					check_variable = { migration_state_flight_population > constant:humanitarian_population.zero }
+				}
+			}
 		}
 		localization_key = migration_state_map_mode_role_exodus
 	}
 	text = {
-		trigger = { has_state_flag = famine_migration_overcrowded_context_active }
-		localization_key = migration_state_map_mode_role_overcrowded
+		trigger = {
+			OR = {
+				has_state_flag = migration_evacuation_prepared
+				has_state_flag = humanitarian_corridor_preparation_pending
+			}
+		}
+		localization_key = migration_state_map_mode_role_preparing
 	}
 	text = {
-		trigger = { has_state_flag = famine_migration_state_resettlement_context_active }
-		localization_key = migration_state_map_mode_role_resettlement
+		trigger = {
+			has_state_flag = migration_mission_return_subject
+			has_state_flag = migration_return_context_active
+		}
+		localization_key = migration_state_map_mode_role_return_readiness
 	}
 	text = {
-		trigger = { has_state_flag = famine_migration_return_context_active }
+		trigger = {
+			has_state_flag = migration_return_context_active
+			has_variable = migration_state_returned_population
+			check_variable = { migration_state_returned_population > constant:humanitarian_population.zero }
+		}
 		localization_key = migration_state_map_mode_role_return
 	}
 	text = {
-		trigger = { has_state_flag = famine_migration_reception_context_active }
+		trigger = {
+			has_state_flag = migration_state_resettlement_context_active
+			has_variable = migration_state_resettled_population
+			check_variable = { migration_state_resettled_population > constant:humanitarian_population.zero }
+		}
+		localization_key = migration_state_map_mode_role_resettlement
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_reception_context_active
+			has_variable = migration_state_reception_load
+			check_variable = { migration_state_reception_load > constant:humanitarian_population.zero }
+			OWNER = {
+				has_variable = migration_border_policy
+				check_variable = { migration_border_policy = constant:migration_border_policy.transit_only }
+			}
+		}
+		localization_key = migration_state_map_mode_role_transit
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_reception_context_active
+			has_variable = migration_state_reception_load
+			check_variable = { migration_state_reception_load > constant:humanitarian_population.zero }
+		}
 		localization_key = migration_state_map_mode_role_reception
 	}
 	text = { localization_key = migration_state_map_mode_role_none }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeOriginRole
+	text = {
+		trigger = {
+			OR = {
+				has_state_flag = migration_population_trapped
+				has_state_flag = migration_evacuation_prepared
+				has_state_flag = migration_mission_evacuation_subject
+				AND = {
+					has_state_flag = migration_displacement_active
+					has_variable = migration_flight_pressure
+					check_variable = { migration_flight_pressure > constant:humanitarian_population.zero }
+				}
+			}
+		}
+		localization_key = migration_state_map_mode_origin_recorded
+	}
+	text = { localization_key = migration_state_map_mode_origin_unproven }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeHostRole
+	text = {
+		trigger = {
+			has_state_flag = migration_reception_context_active
+			has_variable = migration_state_reception_load
+			check_variable = { migration_state_reception_load > constant:humanitarian_population.zero }
+		}
+		localization_key = migration_state_map_mode_host_recorded
+	}
+	text = { localization_key = migration_state_map_mode_host_unproven }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeDestinationRole
+	text = {
+		trigger = {
+			OR = {
+				AND = {
+					has_state_flag = migration_state_resettlement_context_active
+					has_variable = migration_state_resettled_population
+					check_variable = { migration_state_resettled_population > constant:humanitarian_population.zero }
+				}
+				AND = {
+					has_state_flag = migration_return_context_active
+					has_variable = migration_state_returned_population
+					check_variable = { migration_state_returned_population > constant:humanitarian_population.zero }
+				}
+			}
+		}
+		localization_key = migration_state_map_mode_destination_recorded
+	}
+	text = { localization_key = migration_state_map_mode_destination_unproven }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeFlightShare
+	text = {
+		trigger = { has_variable = migration_projection_last_origin_departure_share }
+		localization_key = migration_state_map_mode_flight_share_recorded
+	}
+	text = { localization_key = migration_state_map_mode_flight_share_none }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeReceptionShare
+	text = {
+		trigger = { has_variable = migration_projection_last_reception_share }
+		localization_key = migration_state_map_mode_reception_share_recorded
+	}
+	text = { localization_key = migration_state_map_mode_reception_share_none }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeReceptionCapacityStatus
+	text = {
+		trigger = {
+			OWNER = {
+				has_variable = migration_reception_capacity_valid
+				check_variable = { var = migration_reception_capacity_valid value = constant:migration_capacity.one compare = equals }
+			}
+		}
+		localization_key = migration_state_map_mode_capacity_valid
+	}
+	text = { localization_key = migration_state_map_mode_capacity_invalid }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeFlowIdentity
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_voluntary_return
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_forced_return compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_forced_return
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_resettlement compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_resettlement
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_deportation compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_deportation
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_evacuation
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_transit compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_transit
+	}
+	text = {
+		trigger = {
+			has_variable = migration_projection_last_role
+			check_variable = { var = migration_projection_last_role value = constant:migration_core_reconciliation.transfer_projection_role_local_integration compare = equals }
+		}
+		localization_key = migration_state_map_mode_identity_integration
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_state_resettlement_context_active
+			has_variable = migration_state_resettled_population
+			check_variable = { migration_state_resettled_population > constant:humanitarian_population.zero }
+		}
+		localization_key = migration_state_map_mode_identity_resettlement
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_return_context_active
+			has_variable = migration_state_returned_population
+			check_variable = { migration_state_returned_population > constant:humanitarian_population.zero }
+		}
+		localization_key = migration_state_map_mode_identity_return_ambiguous
+	}
+	text = {
+		trigger = {
+			has_state_flag = migration_reception_context_active
+			has_variable = migration_state_reception_load
+			check_variable = { migration_state_reception_load > constant:humanitarian_population.zero }
+		}
+		localization_key = migration_state_map_mode_identity_reception
+	}
+	text = {
+		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.evacuation compare = equals } }
+		localization_key = migration_state_map_mode_identity_evacuation
+	}
+	text = {
+		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.deportation compare = equals } }
+		localization_key = migration_state_map_mode_identity_deportation
+	}
+	text = {
+		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.cross_border_flight compare = equals } }
+		localization_key = migration_state_map_mode_identity_cross_border
+	}
+	text = {
+		trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.internal_displacement compare = equals } }
+		localization_key = migration_state_map_mode_identity_internal
+	}
+	text = {
+		trigger = {
+			OWNER = {
+				has_variable = migration_integrated_population
+				check_variable = { migration_integrated_population > constant:humanitarian_population.zero }
+			}
+		}
+		localization_key = migration_state_map_mode_identity_integration_owner
+	}
+	text = { localization_key = migration_state_map_mode_identity_unresolved }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeCorridorGeneration
+	text = {
+		trigger = { has_variable = humanitarian_corridor_route_generation }
+		localization_key = migration_state_map_mode_corridor_generation_recorded
+	}
+	text = { localization_key = migration_state_map_mode_corridor_generation_none }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeSource
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.occupation_policy compare = equals } } localization_key = migration_state_map_mode_source_occupation }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.camp_repression compare = equals } } localization_key = migration_state_map_mode_source_camp }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.gulag_repression compare = equals } } localization_key = migration_state_map_mode_source_gulag }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.forced_labor compare = equals } } localization_key = migration_state_map_mode_source_forced_labor }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.deportation compare = equals } } localization_key = migration_state_map_mode_source_deportation }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.strategic_bombing compare = equals } } localization_key = migration_state_map_mode_source_bombing }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.nuclear_strike compare = equals } } localization_key = migration_state_map_mode_source_nuclear }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.fallout compare = equals } } localization_key = migration_state_map_mode_source_fallout }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.outbreak compare = equals } } localization_key = migration_state_map_mode_source_outbreak }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.natural_disaster compare = equals } } localization_key = migration_state_map_mode_source_disaster }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.war compare = equals } } localization_key = migration_state_map_mode_source_war }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.peace compare = equals } } localization_key = migration_state_map_mode_source_peace }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.event compare = equals } } localization_key = migration_state_map_mode_source_event }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.blockade compare = equals } } localization_key = migration_state_map_mode_source_blockade }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.resource_shortage compare = equals } } localization_key = migration_state_map_mode_source_food_shortage }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.evacuation compare = equals } } localization_key = migration_state_map_mode_source_evacuation }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.internal_displacement compare = equals } } localization_key = migration_state_map_mode_source_internal }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.cross_border_flight compare = equals } } localization_key = migration_state_map_mode_source_cross_border }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.air_cleanliness compare = equals } } localization_key = migration_state_map_mode_source_air_cleanliness }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.chemical_aftermath compare = equals } } localization_key = migration_state_map_mode_source_chemical }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.biological_warfare compare = equals } } localization_key = migration_state_map_mode_source_biological }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.cluster compare = equals } } localization_key = migration_state_map_mode_source_cluster }
+	text = { trigger = { check_variable = { var = migration_last_pressure_source value = constant:humanitarian_pressure_source.scenario compare = equals } } localization_key = migration_state_map_mode_source_scenario }
+	text = { localization_key = migration_state_map_mode_source_unknown }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeRouteStatus
+	text = {
+		trigger = {
+			has_variable = humanitarian_corridor_route_safety_proof
+			check_variable = { humanitarian_corridor_route_safety_proof > constant:humanitarian_runtime.zero }
+		}
+		localization_key = migration_state_map_mode_route_proven
+	}
+	text = { localization_key = migration_state_map_mode_route_unproven }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeCorridorStatus
+	text = {
+		trigger = {
+			has_state_flag = humanitarian_corridor_preparation_pending
+			has_variable = humanitarian_corridor_status
+			check_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.prepared }
+		}
+		localization_key = migration_state_map_mode_corridor_prepared
+	}
+	text = {
+		trigger = {
+			has_state_flag = humanitarian_corridor_mission_active
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.mission_active compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_mission_active
+	}
+	text = {
+		trigger = {
+			has_state_flag = humanitarian_corridor_offer_pending
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.offer_pending compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_offer_pending
+	}
+	text = {
+		trigger = {
+			has_state_flag = humanitarian_corridor_operation_pending
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.operation_pending compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_operation_pending
+	}
+	text = {
+		trigger = {
+			has_state_flag = humanitarian_corridor_response_accepted
+			check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.accepted compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_accepted
+	}
+	text = {
+		trigger = {
+			has_variable = humanitarian_corridor_last_terminal_status
+			check_variable = { var = humanitarian_corridor_last_terminal_status value = constant:humanitarian_corridor_status.disqualified compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_disqualified
+	}
+	text = {
+		trigger = {
+			has_variable = humanitarian_corridor_last_terminal_status
+			check_variable = { var = humanitarian_corridor_last_terminal_status value = constant:humanitarian_corridor_status.completed compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_completed
+	}
+	text = {
+		trigger = {
+			has_variable = humanitarian_corridor_last_terminal_status
+			check_variable = { var = humanitarian_corridor_last_terminal_status value = constant:humanitarian_corridor_status.rejected compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_rejected
+	}
+	text = {
+		trigger = {
+			has_variable = humanitarian_corridor_last_terminal_status
+			check_variable = { var = humanitarian_corridor_last_terminal_status value = constant:humanitarian_corridor_status.expired compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_expired
+	}
+	text = {
+		trigger = {
+			has_variable = humanitarian_corridor_last_terminal_status
+			check_variable = { var = humanitarian_corridor_last_terminal_status value = constant:humanitarian_corridor_status.invalidated compare = equals }
+		}
+		localization_key = migration_state_map_mode_corridor_invalidated
+	}
+	text = { localization_key = migration_state_map_mode_corridor_none }
+}
+
+defined_text = {
+	name = GetMigrationStateMapModeCohortStatus
+	text = { trigger = { has_state_flag = migration_cohort_selection_ambiguous } localization_key = migration_state_map_mode_cohort_ambiguous }
+	text = { trigger = { has_variable = migration_current_cohort_id NOT = { has_state_flag = migration_cohort_selection_ambiguous } } localization_key = migration_state_map_mode_cohort_exact }
+	text = { localization_key = migration_state_map_mode_cohort_none }
 }
 
 defined_text = {
@@ -649,6 +1072,18 @@ defined_text = {
 			OR = {
 				is_owned_by = ROOT
 				is_controlled_by = ROOT
+			}
+			OR = {
+				has_state_flag = migration_population_trapped
+				has_state_flag = migration_displacement_active
+				has_state_flag = migration_reception_context_active
+				has_state_flag = migration_overcrowded_context_active
+				has_state_flag = migration_evacuation_prepared
+				has_state_flag = migration_return_context_active
+				has_state_flag = migration_state_resettlement_context_active
+				has_state_flag = humanitarian_corridor_contract_active
+				has_variable = migration_state_reception_load
+				has_variable = migration_current_cohort_id
 			}
 		}
 		localization_key = migration_state_map_mode_detail_authorized

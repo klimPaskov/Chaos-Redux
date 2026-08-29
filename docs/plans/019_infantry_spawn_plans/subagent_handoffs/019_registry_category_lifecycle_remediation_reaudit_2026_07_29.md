@@ -5,7 +5,7 @@
 > management-cost display/profile-cache callback. Its 501-503 lifecycle scope
 > remains historical evidence only; use `source_of_truth_map.md`,
 > `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and
-> `.tmp/event19_docs_curator_current.md` for current provider facts.
+> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_dynamic_unit_provider_api_completion_2026-08-22.md` for current provider facts.
 
 Date: 2026-07-29
 Role: `chaosx_event_completion_auditor`

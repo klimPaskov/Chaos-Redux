@@ -1,0 +1,38 @@
+# Famine incident accounting and report presentation. Incidents are system
+# state, never event objects, event-pool entries, or event-pacing pulses.
+
+# STATE scope. The first worsening food-security transition in each state is
+# recorded before the transition chain returns to the standing decision UI.
+famine_register_initial_incident = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			NOT = { has_state_flag = famine_initial_incident_presented }
+			check_variable = { var = famine_requested_food_stage value = constant:famine_food_stage.supply_strain compare = greater_than_or_equals }
+			OWNER = { humanitarian_country_is_valid = yes }
+		}
+		set_state_flag = famine_initial_incident_presented
+		OWNER = { famine_show_report_generic = yes }
+	}
+}
+
+famine_clear_report_scene = {
+	clr_country_flag = famine_report_generic
+	clr_country_flag = famine_report_island_blockade
+	clr_country_flag = famine_report_relief_arrival
+}
+
+famine_show_report_generic = {
+	famine_clear_report_scene = yes
+	set_country_flag = famine_report_generic
+}
+
+famine_show_report_island_blockade = {
+	famine_clear_report_scene = yes
+	set_country_flag = famine_report_island_blockade
+}
+
+famine_show_report_relief_arrival = {
+	famine_clear_report_scene = yes
+	set_country_flag = famine_report_relief_arrival
+}

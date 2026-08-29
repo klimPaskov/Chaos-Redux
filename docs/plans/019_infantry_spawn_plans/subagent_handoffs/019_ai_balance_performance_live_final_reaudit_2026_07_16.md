@@ -1,5 +1,7 @@
 # Event 19 AI, Balance, Performance, Isolation, and Exploit Live-Final Reaudit
 
+> **Historical UI boundary (2026-08-22):** This dated audit retains former scripted-GUI parity and mutation findings as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; current player actions are ordinary decisions and missions.
+
 ## Audit disposition
 
 This was a fresh audit of the live Event 19 source. Existing Event 19 audit and handoff conclusions were not used as evidence.

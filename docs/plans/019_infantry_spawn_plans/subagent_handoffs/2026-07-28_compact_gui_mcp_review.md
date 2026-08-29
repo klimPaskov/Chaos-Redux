@@ -1,5 +1,7 @@
 # Event 019 compact Muster Board MCP review
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI review is retained only as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; the compact geometry, GUI artifacts, and runtime claims below are not active implementation instructions.
+
 > Superseded by the richer background and left-aligned button-label correction recorded in `2026-07-28_richer_gui_button_mcp_review.md`. The compact geometry and reduced-information decisions remain current.
 
 ## Scope

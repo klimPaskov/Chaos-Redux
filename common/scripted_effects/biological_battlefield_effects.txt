@@ -523,6 +523,12 @@ bio_resolve_battlefield_dissemination = {
 				bio_battlefield_dispatch_primary_release_internal = yes
 				if = {
 					limit = { check_variable = { var = bio_battlefield_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+					event_target:bio_battlefield_actor = {
+						save_event_target_as = humanitarian_corridor_exact_attacker
+					}
+					event_target:bio_battlefield_target_state = {
+						humanitarian_corridor_handle_exact_state_attack = yes
+					}
 					bio_battlefield_attempt_friendly_blowback_internal = yes
 					if = {
 						limit = { event_target:bio_battlefield_actor = { tag = UWR } }

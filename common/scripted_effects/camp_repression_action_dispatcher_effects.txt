@@ -45,11 +45,45 @@ camp_rework_dispatch_restore_colonial_selection = {
 }
 
 camp_rework_dispatch_generic_action = {
+	clear_variable = camp_rework_exact_custody_action_request
+	clear_variable = camp_rework_exact_custody_actor_token
+	if = {
+		limit = { check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_activate_detention_network } }
+		set_variable = { camp_rework_exact_custody_action_request = constant:migration_custody_action.internment }
+		set_variable = { camp_rework_exact_custody_actor_token = camp_rework_action_id }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
+				check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
+			}
+		}
+		set_variable = { camp_rework_exact_custody_action_request = constant:migration_custody_action.forced_labor }
+		set_variable = { camp_rework_exact_custody_actor_token = camp_rework_action_id }
+	}
+	if = {
+		limit = {
+			has_variable = camp_rework_action_state_id
+			has_variable = camp_rework_exact_custody_action_request
+		}
+		var:camp_rework_action_state_id = { camp_rework_prepare_exact_cohort_custody = yes }
+	}
 	if = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_activate_detention_network }
 			has_variable = camp_rework_action_state_id
-			camp_rework_country_can_activate_generic = yes
+			OR = {
+				camp_rework_country_can_activate_generic = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_variable = camp_rework_exact_custody_action_request
+					var:camp_rework_action_state_id = {
+						check_variable = { camp_rework_exact_cohort_staged = constant:humanitarian_runtime.one }
+					}
+				}
+			}
 			var:camp_rework_action_state_id = {
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				is_generic_player_selectable_camp_pool_state = yes
@@ -77,6 +111,17 @@ camp_rework_dispatch_generic_action = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
 			has_variable = camp_rework_action_state_id
+			OR = {
+				camp_rework_country_can_expand_generic_labor = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_variable = camp_rework_exact_custody_action_request
+					var:camp_rework_action_state_id = {
+						check_variable = { camp_rework_exact_cohort_staged = constant:humanitarian_runtime.one }
+					}
+				}
+			}
 			var:camp_rework_action_state_id = {
 				is_valid_camp_active_site_state = yes
 				camp_rework_state_is_actor_responsible_controlled = yes
@@ -91,6 +136,17 @@ camp_rework_dispatch_generic_action = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
 			has_variable = camp_rework_action_state_id
+			OR = {
+				camp_rework_country_can_expand_generic_labor = yes
+				AND = {
+					camp_rework_country_is_eligible = yes
+					NOT = { has_country_flag = camp_rework_expansion_frozen }
+					has_variable = camp_rework_exact_custody_action_request
+					var:camp_rework_action_state_id = {
+						check_variable = { camp_rework_exact_cohort_staged = constant:humanitarian_runtime.one }
+					}
+				}
+			}
 			var:camp_rework_action_state_id = {
 				is_valid_camp_active_site_state = yes
 				camp_rework_state_is_actor_responsible_controlled = yes
@@ -171,6 +227,8 @@ camp_rework_dispatch_generic_action = {
 		set_country_flag = camp_rework_site_closure_active
 		var:camp_rework_action_state_id = { camp_rework_start_dismantlement = yes }
 	}
+	clear_variable = camp_rework_exact_custody_action_request
+	clear_variable = camp_rework_exact_custody_actor_token
 }
 
 camp_rework_dispatch_germany_action = {

@@ -1,5 +1,7 @@
 # Event 019 achievement completion pass handoff
 
+> **Superseded achievement-visibility notice (2026-08-22):** This handoff's four-hidden/unawarded status predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the proof-contract limitations below remain historical evidence and are not a current visibility instruction.
+
 ## Scope and outcome
 
 This pass completed the achievement-owned registry, localisation, exact ledger tracking, narrow Event 019 source hooks, and player-facing documentation for all eleven stable Event 019 custom-achievement identifiers. Achievement logic reads authoritative generation, lot, unit, claimant, derivative, rail, and scenario records rather than country-level approximations.

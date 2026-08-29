@@ -1429,7 +1429,38 @@ black_plague_apply_current_state_mortality_once = {
 			limit = { check_variable = { state_civilian_population_loss_applied > 0 } }
 			add_to_variable = { black_plague_deaths_applied = state_civilian_population_loss_applied }
 			add_to_variable = { global.black_plague_deaths_total = state_civilian_population_loss_applied }
-			famine_migration_adapt_black_plague_state = yes
+			# The plague pulse supplies the exact non-rat outbreak receipt. A zero
+			# response or missing provenance remains represented by the positive
+			# established phase rather than being invented by the adapter.
+			OWNER = { save_event_target_as = famine_adapter_actor }
+			set_temp_variable = { famine_adapter_state_proven = THIS.id }
+			set_temp_variable = { famine_adapter_food_proven = black_plague_mortality_pressure }
+			set_temp_variable = { famine_adapter_environment_proven = black_plague_load }
+			set_temp_variable = { famine_adapter_transport_proven = black_plague_last_exposure_route }
+			if = {
+				limit = { NOT = { check_variable = { black_plague_last_exposure_route > constant:black_plague_value.zero } } }
+				set_temp_variable = { famine_adapter_transport_proven = black_plague_phase }
+			}
+			set_temp_variable = { famine_adapter_policy_proven = black_plague_containment }
+			if = {
+				limit = { NOT = { check_variable = { black_plague_containment > constant:black_plague_value.zero } } }
+				set_temp_variable = { famine_adapter_policy_proven = black_plague_phase }
+			}
+			set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+			set_temp_variable = { famine_adapter_cause_proven = state_civilian_population_loss_reason }
+			set_temp_variable = { famine_adapter_source_proven = black_plague_provenance }
+			if = {
+				limit = { NOT = { check_variable = { black_plague_provenance > constant:black_plague_value.zero } } }
+				set_temp_variable = { famine_adapter_source_proven = black_plague_phase }
+			}
+			set_temp_variable = { famine_adapter_generation = global.black_plague_pulse_sequence }
+			if = {
+				limit = { NOT = { check_variable = { global.black_plague_pulse_sequence > constant:black_plague_value.zero } } }
+				set_temp_variable = { famine_adapter_generation = global.date }
+			}
+			set_temp_variable = { famine_adapter_revision = state_civilian_population_loss_applied }
+			set_temp_variable = { famine_adapter_request_id = global.date }
+			famine_adapt_black_plague_state = yes
 		}
 		set_variable = { black_plague_last_mortality_pulse_sequence = global.black_plague_pulse_sequence }
 	}
@@ -1965,8 +1996,19 @@ chaos_unit_family_provider_520_event19_reconcile_sustainment = {
 	infantry_spawn_record_provider_unit_obligations = yes
 }
 
-chaos_unit_family_provider_520_event19_get_management_cost_display = {
-	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.rat_brood }
+chaos_unit_family_provider_520_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	infantry_spawn_provider_get_standard_equipment_token = yes
+}
+
+chaos_unit_family_provider_520_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+}
+
+chaos_unit_family_provider_520_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_520_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_520_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_520_sustainment_cost_loc }
 }
 
 chaos_unit_family_provider_520_event19_evaluate_management = {

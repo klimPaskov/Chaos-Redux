@@ -38,6 +38,12 @@ infantry_spawn_muster_board_selected_family_index_is_valid = {
 	has_variable = infantry_spawn_muster_gui_selected_family_view_index
 	check_variable = { infantry_spawn_muster_gui_selected_family_view_index > constant:infantry_spawn_muster_gui_value.invalid_index }
 	check_variable = { var = infantry_spawn_muster_gui_selected_family_view_index value = infantry_spawn_muster_gui_family_id_entries^num compare = less_than }
+	check_variable = { var = infantry_spawn_muster_gui_family_id_entries^num value = infantry_spawn_muster_gui_family_name_loc_token_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_muster_gui_family_id_entries^num value = infantry_spawn_muster_gui_family_request_cost_loc_token_entries^num compare = equals }
+	check_variable = { var = infantry_spawn_muster_gui_family_id_entries^num value = infantry_spawn_muster_gui_family_sustainment_cost_loc_token_entries^num compare = equals }
+	check_variable = { infantry_spawn_muster_gui_family_name_loc_token_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	check_variable = { infantry_spawn_muster_gui_family_request_cost_loc_token_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
+	check_variable = { infantry_spawn_muster_gui_family_sustainment_cost_loc_token_entries^infantry_spawn_muster_gui_selected_family_view_index > 0 }
 }
 
 # ---------------------------------------------------------------------------
@@ -88,7 +94,20 @@ infantry_spawn_can_execute_selected_lot_standardization = {
 			NOT = { has_template = "National Muster Standard" }
 		}
 	}
-	infantry_spawn_selected_lot_standardization_loss_is_affordable = yes
+}
+
+infantry_spawn_standardization_requisition_tranche_is_affordable = {
+	infantry_spawn_scenario_transaction_is_idle = yes
+	infantry_spawn_obligation_ledger_is_aligned = yes
+	infantry_spawn_unit_ledger_is_aligned = yes
+	infantry_spawn_lot_ledger_is_aligned = yes
+	has_country_flag = infantry_spawn_standardization_running
+	has_country_flag = infantry_spawn_standardization_requisition_active
+	NOT = { has_country_flag = infantry_spawn_standardization_requisition_paid_in_full }
+	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
+	check_variable = { var = infantry_spawn_standardization_requisition_lot_uid value = infantry_spawn_standardization_target_lot_uid compare = equals }
+	check_variable = { infantry_spawn_standardization_tranche_count > 0 }
+	check_variable = { infantry_spawn_standardization_tranche_affordable > 0 }
 }
 
 infantry_spawn_can_execute_selected_lot_specialist_preservation = {
@@ -186,31 +205,22 @@ infantry_spawn_can_pay_field_request = {
 	check_variable = { var = army_experience value = infantry_spawn_request_field_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_field_infantry_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_field_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_field_truck_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_field_train_cost compare = greater_than_or_equals }
-	check_variable = { var = fuel_k value = infantry_spawn_request_field_fuel_cost_k compare = greater_than_or_equals }
 	check_variable = { var = manpower value = infantry_spawn_request_field_manpower_cost compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_pay_mobile_reserve_request = {
 	infantry_spawn_can_begin_paid_request = yes
 	check_variable = { var = army_experience value = infantry_spawn_request_mobile_xp_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_mobile_infantry_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_mobile_support_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_mobile_truck_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_mobile_train_cost compare = greater_than_or_equals }
 	check_variable = { var = fuel_k value = infantry_spawn_request_mobile_fuel_cost_k compare = greater_than_or_equals }
-	check_variable = { var = manpower value = infantry_spawn_request_mobile_manpower_cost compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_pay_territorial_request = {
 	infantry_spawn_can_begin_paid_request = yes
 	check_variable = { var = army_experience value = infantry_spawn_request_territorial_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_territorial_infantry_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_territorial_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_territorial_truck_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_territorial_train_cost compare = greater_than_or_equals }
-	check_variable = { var = fuel_k value = infantry_spawn_request_territorial_fuel_cost_k compare = greater_than_or_equals }
 	check_variable = { var = manpower value = infantry_spawn_request_territorial_manpower_cost compare = greater_than_or_equals }
 }
 
@@ -219,10 +229,7 @@ infantry_spawn_can_pay_specialist_request = {
 	check_variable = { var = army_experience value = infantry_spawn_request_specialist_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_specialist_infantry_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_specialist_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_specialist_truck_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_specialist_train_cost compare = greater_than_or_equals }
 	check_variable = { var = fuel_k value = infantry_spawn_request_specialist_fuel_cost_k compare = greater_than_or_equals }
-	check_variable = { var = manpower value = infantry_spawn_request_specialist_manpower_cost compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_pay_numbers_request = {
@@ -230,9 +237,6 @@ infantry_spawn_can_pay_numbers_request = {
 	infantry_spawn_can_begin_paid_request = yes
 	check_variable = { var = army_experience value = infantry_spawn_request_numbers_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_numbers_infantry_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_numbers_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_numbers_truck_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_numbers_train_cost compare = greater_than_or_equals }
 	check_variable = { var = fuel_k value = infantry_spawn_request_numbers_fuel_cost_k compare = greater_than_or_equals }
 	check_variable = { var = manpower value = infantry_spawn_request_numbers_manpower_cost compare = greater_than_or_equals }
 }
@@ -243,9 +247,6 @@ infantry_spawn_can_pay_discipline_request = {
 	check_variable = { var = army_experience value = infantry_spawn_request_discipline_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_discipline_infantry_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_discipline_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_discipline_truck_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_discipline_train_cost compare = greater_than_or_equals }
-	check_variable = { var = fuel_k value = infantry_spawn_request_discipline_fuel_cost_k compare = greater_than_or_equals }
 	check_variable = { var = manpower value = infantry_spawn_request_discipline_manpower_cost compare = greater_than_or_equals }
 }
 
@@ -255,22 +256,16 @@ infantry_spawn_can_pay_firepower_request = {
 	check_variable = { var = army_experience value = infantry_spawn_request_firepower_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_firepower_infantry_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_firepower_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_firepower_truck_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_firepower_train_cost compare = greater_than_or_equals }
 	check_variable = { var = fuel_k value = infantry_spawn_request_firepower_fuel_cost_k compare = greater_than_or_equals }
-	check_variable = { var = manpower value = infantry_spawn_request_firepower_manpower_cost compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_pay_mobility_request = {
 	infantry_spawn_has_evolution_iii = yes
 	infantry_spawn_can_begin_paid_request = yes
 	check_variable = { var = army_experience value = infantry_spawn_request_mobility_xp_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_mobility_infantry_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_mobility_support_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_mobility_truck_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_mobility_train_cost compare = greater_than_or_equals }
 	check_variable = { var = fuel_k value = infantry_spawn_request_mobility_fuel_cost_k compare = greater_than_or_equals }
-	check_variable = { var = manpower value = infantry_spawn_request_mobility_manpower_cost compare = greater_than_or_equals }
 }
 
 infantry_spawn_can_pay_anything_request = {
@@ -279,9 +274,6 @@ infantry_spawn_can_pay_anything_request = {
 	check_variable = { var = army_experience value = infantry_spawn_request_anything_xp_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = infantry_spawn_request_anything_infantry_cost compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = infantry_spawn_request_anything_support_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@motorized_equipment value = infantry_spawn_request_anything_truck_cost compare = greater_than_or_equals }
-	check_variable = { var = num_equipment@train_equipment value = infantry_spawn_request_anything_train_cost compare = greater_than_or_equals }
-	check_variable = { var = fuel_k value = infantry_spawn_request_anything_fuel_cost_k compare = greater_than_or_equals }
 	check_variable = { var = manpower value = infantry_spawn_request_anything_manpower_cost compare = greater_than_or_equals }
 }
 

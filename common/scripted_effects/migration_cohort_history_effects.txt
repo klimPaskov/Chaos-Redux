@@ -1,0 +1,341 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION COHORT VISIT HISTORY EFFECTS
+# ============================================================================
+# This file owns an append-only sparse visit receipt ledger for the existing
+# global migration cohort registry. The two history arrays are aligned:
+# migration_cohort_history_ids stores a positive cohort identity and
+# migration_cohort_history_states stores the exact state visited at the
+# same index. Increasing array index is visit order. Removing one cohort's
+# rows removes both values at each matching index and leaves every other
+# cohort's relative order intact.
+#
+# The helper never creates, removes, or changes population. It does not write
+# the live cohort's origin, host, destination, status, amount, source, or
+# Deaths ledger. The only country-side side effect is the existing achievement
+# disqualifier when an earlier state is revisited by the exact persisted owner.
+# All loops are bounded by the sparse live/history arrays; no map or world scan
+# is used.
+# ============================================================================
+
+# The history initializer is deliberately non-destructive. It never clears an
+# array, even when the initialization flag is absent on a migrated save. A
+# missing count is derived from the existing ID array only; an existing count
+# is never repaired. The alignment trigger then fails closed on any mismatch.
+migration_initialize_cohort_history = {
+	if = {
+		limit = { NOT = { has_global_flag = migration_cohort_history_initialized } }
+		if = {
+			limit = { NOT = { has_variable = global.migration_cohort_history_count } }
+			set_variable = { global.migration_cohort_history_count = global.migration_cohort_history_ids^num }
+		}
+		set_global_flag = migration_cohort_history_initialized
+	}
+}
+
+# State scope. Record one actual cohort visit after the caller has proven the
+# movement or accepted host rebind. The caller supplies the positive one-shot
+# migration_cohort_history_id_request temporary variable. THIS is the
+# exact state being recorded, never a state inferred from ownership.
+#
+# A first receipt is appended even when the live host is already THIS, which is
+# needed to seed the true origin. Later calls are no-ops when the newest receipt
+# for this cohort is THIS. Otherwise the new state is appended; a prior receipt
+# for the same cohort and state sets the cycle output and calls the achievement
+# disqualifier in the persisted owner country scope.
+migration_record_cohort_history_visit = {
+	migration_initialize_cohort_history = yes
+	set_temp_variable = { migration_cohort_history_record_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_history_cycle_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_history_append_result = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_history_alignment_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = {
+				var = migration_cohort_history_id_request
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+		}
+		save_event_target_as = migration_cohort_history_request_state
+		if = {
+			limit = { NOT = { migration_cohort_history_arrays_are_aligned = yes } }
+			set_global_flag = migration_cohort_history_alignment_broken
+		}
+		if = {
+			limit = { NOT = { migration_cohort_history_live_ledger_arrays_are_aligned = yes } }
+			set_global_flag = migration_cohort_history_alignment_broken
+		}
+		if = {
+			limit = {
+				migration_cohort_history_arrays_are_aligned = yes
+				migration_cohort_history_live_ledger_arrays_are_aligned = yes
+			}
+			set_temp_variable = { migration_cohort_history_alignment_result = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_cohort_history_main_match_count = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_cohort_history_main_duplicate = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_cohort_history_live_row_usable = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_cohort_history_main_index = global.migration_cohort_ids^num }
+			while_loop_effect = {
+				limit = {
+					check_variable = {
+						var = migration_cohort_history_main_index
+						value = constant:humanitarian_runtime.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_temp_variable = { migration_cohort_history_main_index = constant:humanitarian_runtime.array_index_increment }
+				set_temp_variable = { migration_cohort_history_main_row_id = global.migration_cohort_ids^migration_cohort_history_main_index }
+				if = {
+					limit = {
+						check_variable = {
+							var = migration_cohort_history_main_row_id
+							value = migration_cohort_history_id_request
+							compare = equals
+						}
+					}
+					add_to_temp_variable = { migration_cohort_history_main_match_count = constant:humanitarian_runtime.one }
+					if = {
+						limit = {
+							check_variable = {
+								var = migration_cohort_history_main_match_count
+								value = constant:humanitarian_runtime.one
+								compare = equals
+							}
+						}
+						set_temp_variable = { migration_cohort_history_main_row_index = migration_cohort_history_main_index }
+						set_temp_variable = { migration_cohort_history_main_row_status = global.migration_cohort_statuses^migration_cohort_history_main_index }
+						set_temp_variable = { migration_cohort_history_owner_valid = constant:humanitarian_runtime.zero }
+						set_temp_variable = { migration_cohort_history_host_valid = constant:humanitarian_runtime.zero }
+						set_temp_variable = { migration_cohort_history_live_host_is_request_state = constant:humanitarian_runtime.zero }
+						var:global.migration_cohort_owners^migration_cohort_history_main_index = {
+							if = {
+								limit = { humanitarian_country_is_valid = yes }
+								save_event_target_as = migration_cohort_history_owner
+								set_temp_variable = { migration_cohort_history_owner_valid = constant:humanitarian_runtime.one }
+							}
+						}
+						var:global.migration_cohort_hosts^migration_cohort_history_main_index = {
+							if = {
+								limit = { humanitarian_state_is_valid = yes }
+								save_event_target_as = migration_cohort_history_live_host
+								set_temp_variable = { migration_cohort_history_host_valid = constant:humanitarian_runtime.one }
+								if = {
+									limit = { state = event_target:migration_cohort_history_request_state }
+									set_temp_variable = { migration_cohort_history_live_host_is_request_state = constant:humanitarian_runtime.one }
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = migration_cohort_history_main_match_count
+							value = constant:humanitarian_runtime.one
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { migration_cohort_history_main_duplicate = constant:humanitarian_runtime.one }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = migration_cohort_history_main_duplicate value = constant:humanitarian_runtime.one compare = equals }
+				}
+				set_global_flag = migration_cohort_history_duplicate_live_id
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = migration_cohort_history_main_match_count
+						value = constant:humanitarian_runtime.one
+						compare = equals
+					}
+					check_variable = { var = migration_cohort_history_main_duplicate value = constant:humanitarian_runtime.zero compare = equals }
+					OR = {
+						check_variable = { var = migration_cohort_history_main_row_status value = constant:migration_cohort_status.active compare = equals }
+						check_variable = { var = migration_cohort_history_main_row_status value = constant:migration_cohort_status.destination_bound compare = equals }
+						check_variable = { var = migration_cohort_history_main_row_status value = constant:migration_cohort_status.destination_bound_unsafe compare = equals }
+					}
+					check_variable = { var = migration_cohort_history_owner_valid value = constant:humanitarian_runtime.one compare = equals }
+					check_variable = { var = migration_cohort_history_host_valid value = constant:humanitarian_runtime.one compare = equals }
+				}
+				set_temp_variable = { migration_cohort_history_live_row_usable = constant:humanitarian_runtime.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = migration_cohort_history_main_match_count value = constant:humanitarian_runtime.one compare = equals }
+					check_variable = { var = migration_cohort_history_live_row_usable value = constant:humanitarian_runtime.zero compare = equals }
+				}
+				set_global_flag = migration_cohort_history_live_row_invalid
+			}
+			if = {
+				limit = { check_variable = { var = migration_cohort_history_live_row_usable value = constant:humanitarian_runtime.one compare = equals } }
+				set_temp_variable = { migration_cohort_history_has_prior_visit = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_cohort_history_latest_is_request_state = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_cohort_history_prior_request_state = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_cohort_history_invalid_state = constant:humanitarian_runtime.zero }
+				set_temp_variable = { migration_cohort_history_index = global.migration_cohort_history_ids^num }
+				while_loop_effect = {
+					limit = {
+						check_variable = {
+							var = migration_cohort_history_index
+							value = constant:humanitarian_runtime.zero
+							compare = greater_than
+						}
+					}
+					subtract_from_temp_variable = { migration_cohort_history_index = constant:humanitarian_runtime.array_index_increment }
+					set_temp_variable = { migration_cohort_history_row_id = global.migration_cohort_history_ids^migration_cohort_history_index }
+					if = {
+						limit = {
+							check_variable = {
+								var = migration_cohort_history_row_id
+								value = migration_cohort_history_id_request
+								compare = equals
+							}
+						}
+						set_temp_variable = { migration_cohort_history_state_match = constant:humanitarian_runtime.zero }
+						set_temp_variable = { migration_cohort_history_state_valid = constant:humanitarian_runtime.zero }
+						var:global.migration_cohort_history_states^migration_cohort_history_index = {
+							if = {
+								limit = { humanitarian_state_is_valid = yes }
+								set_temp_variable = { migration_cohort_history_state_valid = constant:humanitarian_runtime.one }
+								if = {
+									limit = { state = event_target:migration_cohort_history_request_state }
+									set_temp_variable = { migration_cohort_history_state_match = constant:humanitarian_runtime.one }
+								}
+							}
+						}
+						if = {
+							limit = { check_variable = { var = migration_cohort_history_state_valid value = constant:humanitarian_runtime.one compare = equals } }
+							if = {
+								limit = { check_variable = { var = migration_cohort_history_has_prior_visit value = constant:humanitarian_runtime.zero compare = equals } }
+								set_temp_variable = { migration_cohort_history_has_prior_visit = constant:humanitarian_runtime.one }
+								if = {
+									limit = { check_variable = { var = migration_cohort_history_state_match value = constant:humanitarian_runtime.one compare = equals } }
+									set_temp_variable = { migration_cohort_history_latest_is_request_state = constant:humanitarian_runtime.one }
+								}
+							}
+							else_if = {
+								limit = { check_variable = { var = migration_cohort_history_state_match value = constant:humanitarian_runtime.one compare = equals } }
+								set_temp_variable = { migration_cohort_history_prior_request_state = constant:humanitarian_runtime.one }
+							}
+						}
+						else = {
+							set_temp_variable = { migration_cohort_history_invalid_state = constant:humanitarian_runtime.one }
+						}
+					}
+				}
+				if = {
+					limit = { check_variable = { var = migration_cohort_history_invalid_state value = constant:humanitarian_runtime.one compare = equals } }
+					set_global_flag = migration_cohort_history_invalid_state_scope
+				}
+				if = {
+					limit = {
+						check_variable = { var = migration_cohort_history_invalid_state value = constant:humanitarian_runtime.zero compare = equals }
+						check_variable = { var = migration_cohort_history_latest_is_request_state value = constant:humanitarian_runtime.one compare = equals }
+						check_variable = { var = migration_cohort_history_live_host_is_request_state value = constant:humanitarian_runtime.zero compare = equals }
+					}
+					set_global_flag = migration_cohort_history_host_mismatch
+				}
+				if = {
+					limit = {
+						check_variable = { var = migration_cohort_history_invalid_state value = constant:humanitarian_runtime.zero compare = equals }
+						check_variable = { var = migration_cohort_history_latest_is_request_state value = constant:humanitarian_runtime.one compare = equals }
+						check_variable = { var = migration_cohort_history_live_host_is_request_state value = constant:humanitarian_runtime.one compare = equals }
+					}
+					set_temp_variable = { migration_cohort_history_record_result = constant:civilian_transfer_route_result.valid }
+				}
+				if = {
+					limit = {
+						check_variable = { var = migration_cohort_history_invalid_state value = constant:humanitarian_runtime.zero compare = equals }
+						NOT = { check_variable = { var = migration_cohort_history_latest_is_request_state value = constant:humanitarian_runtime.one compare = equals } }
+					}
+					if = {
+						limit = { check_variable = { var = migration_cohort_history_prior_request_state value = constant:humanitarian_runtime.one compare = equals } }
+						set_temp_variable = { migration_cohort_history_cycle_result = constant:humanitarian_runtime.one }
+						event_target:migration_cohort_history_owner = {
+							humanitarian_achievement_record_transfer_cycle_failure = yes
+						}
+					}
+					add_to_array = {
+						array = global.migration_cohort_history_ids
+						value = migration_cohort_history_id_request
+					}
+					add_to_array = {
+						array = global.migration_cohort_history_states
+						value = THIS
+					}
+					set_variable = { global.migration_cohort_history_count = global.migration_cohort_history_ids^num }
+					set_temp_variable = { migration_cohort_history_append_result = constant:humanitarian_runtime.one }
+					set_temp_variable = { migration_cohort_history_record_result = constant:civilian_transfer_route_result.valid }
+				}
+			}
+		}
+	}
+	set_temp_variable = { migration_cohort_history_id_request = constant:humanitarian_runtime.zero }
+}
+
+# Any scope. Remove every history receipt for one explicit positive cohort ID.
+# This intentionally validates only the history arrays, so it can clean stale
+# receipts after the live cohort row has already been removed. Descending index
+# removal preserves the relative order of all rows that remain.
+migration_cleanup_cohort_visit_history = {
+	migration_initialize_cohort_history = yes
+	set_temp_variable = { migration_cohort_history_cleanup_result = constant:civilian_transfer_route_result.invalid }
+	set_temp_variable = { migration_cohort_history_removed_count = constant:humanitarian_runtime.zero }
+	set_temp_variable = { migration_cohort_history_alignment_result = constant:humanitarian_runtime.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_cohort_history_id_request
+				value = constant:humanitarian_runtime.zero
+				compare = greater_than
+			}
+			migration_cohort_history_arrays_are_aligned = yes
+		}
+		set_temp_variable = { migration_cohort_history_alignment_result = constant:humanitarian_runtime.one }
+		set_temp_variable = { migration_cohort_history_cleanup_index = global.migration_cohort_history_ids^num }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = migration_cohort_history_cleanup_index
+					value = constant:humanitarian_runtime.zero
+					compare = greater_than
+				}
+			}
+			subtract_from_temp_variable = { migration_cohort_history_cleanup_index = constant:humanitarian_runtime.array_index_increment }
+			set_temp_variable = { migration_cohort_history_cleanup_row_id = global.migration_cohort_history_ids^migration_cohort_history_cleanup_index }
+			if = {
+				limit = {
+					check_variable = {
+						var = migration_cohort_history_cleanup_row_id
+						value = migration_cohort_history_id_request
+						compare = equals
+					}
+				}
+				remove_from_array = {
+					array = global.migration_cohort_history_ids
+					index = migration_cohort_history_cleanup_index
+				}
+				remove_from_array = {
+					array = global.migration_cohort_history_states
+					index = migration_cohort_history_cleanup_index
+				}
+				add_to_temp_variable = { migration_cohort_history_removed_count = constant:humanitarian_runtime.one }
+			}
+		}
+		set_variable = { global.migration_cohort_history_count = global.migration_cohort_history_ids^num }
+		set_temp_variable = { migration_cohort_history_cleanup_result = constant:civilian_transfer_route_result.valid }
+	}
+	if = {
+		limit = {
+			NOT = {
+				migration_cohort_history_arrays_are_aligned = yes
+			}
+		}
+		set_global_flag = migration_cohort_history_alignment_broken
+	}
+	set_temp_variable = { migration_cohort_history_id_request = constant:humanitarian_runtime.zero }
+}

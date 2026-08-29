@@ -791,13 +791,13 @@ chaos_unit_family_provider_521_event19_reconcile_sustainment = {
 	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
 	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.support_equipment_per_battalion }
 	infantry_spawn_queue_provider_obligation = yes
-	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.gas_mask_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.gas_mask_resource_profile }
 	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.gas_mask_equipment_per_battalion }
 	infantry_spawn_queue_provider_obligation = yes
-	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.decontamination_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.decontamination_resource_profile }
 	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.decontamination_equipment_per_battalion }
 	infantry_spawn_queue_provider_obligation = yes
-	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_unit_registry_resource_profile.cbrn_instrument_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:chaos_unit_family_event_cbrn_chaos_battalion.cbrn_instrument_resource_profile }
 	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event_cbrn_chaos_battalion.cbrn_instrument_equipment_per_battalion }
 	infantry_spawn_queue_provider_obligation = yes
 	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.motorized_equipment }
@@ -807,8 +807,36 @@ chaos_unit_family_provider_521_event19_reconcile_sustainment = {
 	infantry_spawn_clear_provider_obligation_manifest = yes
 }
 
-chaos_unit_family_provider_521_event19_get_management_cost_display = {
-	set_temp_variable = { infantry_spawn_family_provider_display_cost_profile = constant:infantry_spawn_family_display_cost_profile.chaos_assault_battalion }
+chaos_unit_family_provider_521_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	infantry_spawn_provider_get_standard_equipment_token = yes
+	if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:chaos_unit_family_event_cbrn_chaos_battalion.gas_mask_resource_profile compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:gas_mask_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:chaos_unit_family_event_cbrn_chaos_battalion.decontamination_resource_profile compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:decontamination_equipment }
+	}
+	else_if = {
+		limit = { check_variable = { var = infantry_spawn_exact_current_profile value = constant:chaos_unit_family_event_cbrn_chaos_battalion.cbrn_instrument_resource_profile compare = equals } }
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:cbrn_instrument_equipment }
+	}
+}
+
+chaos_unit_family_provider_521_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:gas_mask_equipment }
+	infantry_spawn_register_current_family_custom_equipment_token = yes
+	set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:decontamination_equipment }
+	infantry_spawn_register_current_family_custom_equipment_token = yes
+	set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:cbrn_instrument_equipment }
+	infantry_spawn_register_current_family_custom_equipment_token = yes
+}
+
+chaos_unit_family_provider_521_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_521_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_521_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_521_sustainment_cost_loc }
 }
 
 chaos_unit_family_provider_521_event19_evaluate_management = {

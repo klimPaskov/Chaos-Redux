@@ -1,0 +1,46 @@
+# Migration incident accounting and report presentation. Incidents are system
+# state, never event objects, event-pool entries, or event-pacing pulses.
+
+# STATE scope. Present each of the first bounded country incidents before the
+# sustained-issue phase refresh exposes the standing migration category.
+migration_register_initial_incident = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			check_variable = { var = migration_new_incident value = constant:humanitarian_runtime.one compare = equals }
+			NOT = { has_state_flag = migration_initial_incident_presented }
+			OWNER = {
+				humanitarian_country_is_valid = yes
+				check_variable = { var = migration_incident_count value = constant:migration_decision_threshold.category_incidents compare = less_than_or_equals }
+			}
+		}
+		set_state_flag = migration_initial_incident_presented
+	}
+}
+
+migration_clear_report_scene = {
+	clr_country_flag = migration_report_wartime_evacuation
+	clr_country_flag = migration_report_closed_border
+	clr_country_flag = migration_report_nuclear_evacuation
+	clr_country_flag = migration_report_return
+}
+
+migration_show_report_wartime_evacuation = {
+	migration_clear_report_scene = yes
+	set_country_flag = migration_report_wartime_evacuation
+}
+
+migration_show_report_closed_border = {
+	migration_clear_report_scene = yes
+	set_country_flag = migration_report_closed_border
+}
+
+migration_show_report_nuclear_evacuation = {
+	migration_clear_report_scene = yes
+	set_country_flag = migration_report_nuclear_evacuation
+}
+
+migration_show_report_return = {
+	migration_clear_report_scene = yes
+	set_country_flag = migration_report_return
+}

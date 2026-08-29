@@ -1,5 +1,7 @@
 # Event 019 ordinary management category lifecycle handoff
 
+> **Historical UI boundary (2026-08-22):** This dated lifecycle handoff preserves the former Muster Board doorway and scripted-GUI implementation evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; use `docs/specs/019_infantry_spawn_specs/review/decision_only_surface_addendum_2026-08-05.md` and the current source-of-truth map for active UI behavior.
+
 ## Scope
 
 This focused decision and mission patch removes the permanent Evolution III category state from ordinary Event 19 countries while preserving the Muster Board doorway during a live crisis.

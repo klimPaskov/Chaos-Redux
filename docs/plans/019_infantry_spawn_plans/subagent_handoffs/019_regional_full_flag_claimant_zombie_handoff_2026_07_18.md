@@ -1,18 +1,6 @@
 # Event 019 claimant/zombie regional full-flag raw-source handoff
 
-> **Raw-tranche status (2026-07-18):** This handoff remains valid as source
-> evidence for its 35-row raw tranche, but its raw-only boundary is historical.
-> The later 7/18 postprocess adds the 91-row spot-master, native PNG, and
-> runtime-TGA chain. Visual/runtime rows pass, and the independent remediation
-> re-audit handoff
-> `019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS,
-> clearing the regional asset gate for parent-owned package promotion. The
-> machine JSON retains its immutable literal
-> `candidate_requires_independent_visual_review` processor-state value. Parent
-> workbook/catalog reconciliation and export are complete, Event 19 and SCN-013
-> now read `Fully Functional`, and package inventory and final completion audit
-> are PASS-complete. No closure gate remains. Current package status is owned by
-> the manifest and final audit handoff.
+> **Historical raw-tranche status (2026-07-18; current boundary 2026-08-22):** This handoff remains valid as source evidence for its 35-row raw tranche, but its raw-only boundary and its workbook/catalog, `Fully Functional`, and closure statements are historical. The later 7/18 postprocess adds the 91-row spot-master, native PNG, and runtime-TGA chain. Visual/runtime rows pass, and the independent remediation re-audit handoff `019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS for that bounded asset tranche. The machine JSON retains its immutable literal `candidate_requires_independent_visual_review` processor-state value. Current provider-extension and whole-event status is owned by the source-of-truth map and current provider handoffs.
 
 Date: 2026-07-18
 

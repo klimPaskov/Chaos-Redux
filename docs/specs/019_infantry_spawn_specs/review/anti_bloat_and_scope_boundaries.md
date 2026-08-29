@@ -1,5 +1,7 @@
 # Anti-Bloat and Scope Boundaries
 
+> **Historical review note (2026-08-22):** This planning review predates the accepted decisions-only conversion. Its selected-lot scripted-GUI references are historical design evidence and must not be routed as active GUI work.
+
 ## Included because they change play
 
 - diminishing territorial coverage

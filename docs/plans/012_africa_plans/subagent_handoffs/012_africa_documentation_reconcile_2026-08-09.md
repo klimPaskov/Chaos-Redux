@@ -2,6 +2,8 @@
 
 ## Scope and authority
 
+> This 2026-08-09 handoff is superseded for current Africa 3D model and strange-force audio status by the per-package manifests and the 2026-08-26 model handoffs. Its release-candidate counts are retained as historical documentation evidence and do not claim nine runtime-ready model packages or a complete eight-unit audio set.
+
 This handoff covers the documentation-only reconciliation of `docs/events/012_africa/**`, top-level `docs/012_africa*.md`, and `docs/specs/012_africa_specs/**`.
 
 The asset and animation CSV matrices and `012_africa_asset_animation_matrix_notes.md` were excluded from editing because the parent agent owns them.
@@ -27,7 +29,7 @@ The event subsystem documents remain the narrow authority for their mechanics, a
 
 ## Current source-of-truth status
 
-The current release-candidate has nine installed 3D packages, consisting of one shared huge rider elephant and eight strange-unit packages.
+The previous release-candidate summary recorded nine 3D package workspaces, consisting of one shared huge rider elephant and eight strange-unit packages. Current manifests supersede any interpretation of those workspaces as promoted runtime packages: Oracle Recon is locally accepted with its replacement counter and runtime files staged but live validation pending, Disaster Wardens reuses vanilla `infantry` with custom registrations retired, and Gorilla, Pan, Stone, Riverborn, Forest, Plague, and Elephant remain blocked or unpromoted.
 
 The current release-candidate has 18 installed full frame-animation packages with source frames, frame sheets, DDS outputs, review GIFs, registrations, consumers, and static accessibility paths.
 

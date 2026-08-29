@@ -1,5 +1,9 @@
 # Event 019 final decision/mission closure audit
 
+> **Historical UI boundary (2026-08-22):** This dated decision/mission audit retains former Muster Board and scripted-GUI findings as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; use the current decision-only surface handoff and source-of-truth map for active UI routing.
+
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this dated closure audit predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old proof discussion remains historical evidence only.
+
 ## Closure date and authority
 
 Date: 2026-07-16

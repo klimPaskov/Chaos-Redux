@@ -108,4 +108,3 @@ No valid before/after `hoi4.probability_compare` receipt exists for this categor
 Only this handoff was added:
 
 `docs/plans/020_black_plague_plans/subagent_handoffs/2026-08-09_event020_dedicated_category_probability_audit.md`
-

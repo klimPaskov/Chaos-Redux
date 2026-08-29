@@ -527,6 +527,19 @@ infantry_spawn_fire_manifestation = {
 				if = {
 					limit = { infantry_spawn_has_evolution_iii = yes }
 					infantry_spawn_initialize_command_fracture_entry = yes
+					# Repeatable manifestations at Evolution III/IV reopen the
+					# request surface with a fresh, empty generation. The request
+					# context does not draw or pay for a lot; it only gives the
+					# player and AI a bounded window to make an ordinary request.
+					# Terminal revolt/takeover outcomes retain their historical
+					# ledgers but must never reopen the ordinary category.
+					if = {
+						limit = {
+							NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
+							NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
+						}
+						infantry_spawn_prepare_request_generation_context = yes
+					}
 				}
 				else = { infantry_spawn_begin_country_generation = yes }
 			}

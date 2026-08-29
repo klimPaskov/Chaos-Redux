@@ -1,6 +1,8 @@
 # Event 19 Mandatory Improvement-Loop Planner Closure Handoff
 
-> **Historical closure notice (2026-08-09):** This closure handoff predates the provider-522 and expanded 18-ID Event 19 owner-adapter tranches. Its closure statements remain historical for the bounded 2026-07-18 tranche; use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `.tmp/event19_docs_curator_current.md` for current provider status.
+> **Historical closure notice (2026-08-09, current boundary 2026-08-22):** This closure handoff predates the provider-522, provider-523, and expanded provider tranches. Its closure statements remain historical for the bounded 2026-07-18 tranche; use `source_of_truth_map.md`, `docs/events/019_infantry_spawn/systems/unit_family_coverage.md`, and `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_dynamic_unit_provider_api_completion_2026-08-22.md` for current provider status.
+
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this closure handoff predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old improvement-loop discussion remains historical evidence only.
 
 > **Superseded current-state notice (2026-07-16):** This file preserves the
 > first near-completion planner run and its then-current approval gates. The

@@ -1,27 +1,8 @@
 # Blockers and Uncertainty
 
-> **Current-state notice (2026-07-18):** The two owner decisions described in
-> this file are resolved: controlled one-formation border trials and exact
-> recorded-formation recreate/prove/delete are approved. The later
-> near-completion improvement addendum is implemented. The fixed identity-scene
-> package is 20 claimant army/muster scenes, 6 fantastical massed-host scenes,
-> and 1 neutral unassigned muster scene, with no individual focal person. Every
-> gameplay specialist gate is clean, including the live-final AI, balance,
-> performance, isolation, scenario-safety, and exploit reaudit with zero P0, P1,
-> or P2 findings. The owner-approved deterministic spot-colour route now has a
-> 91-row raw, spot-master, native PNG, and runtime TGA candidate. Visual and
-> runtime rows pass. The independent remediation re-audit handoff
-> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-> is PASS and clears the regional asset gate for parent-owned package
-> promotion. The machine JSON retains its immutable literal
-> `candidate_requires_independent_visual_review` processor-state value, which
-> is superseded for approval by the separate PASS handoff and was not edited.
-> Dated passages below remain useful
-> evidence but do not override
-> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`
-> or the newest specialist/final audit handoffs.
+> **Current-state notice (2026-08-22):** This file preserves the resolved 2026-07-18 design and audit evidence, but it is not a current completion verdict. Event 19 is ID 19, Minor Repeatable, unclustered, and decisions-only with no scripted GUI; the live scenario is SCN-013. The live provider census is 19 IDs (`501-514`, `518`, `520-523`) with the expanded combat/support boundary recorded in the Event 19 systems docs. Provider-extension, normalized dynamic-provider odds, and final documentation gates remain open. The restored asset package and 2026-07-18 PASS handoffs remain historical evidence for bounded surfaces only. Dated passages below must be read through `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` and the current provider handoffs.
 
-> **Provider-extension notice (2026-08-09):** The static Event 19 provider bridge now covers 18 IDs (`501-514`, `518`, `520-522`), including the separate five-gate Event 016 Aryan clone provider 522 and exact multi-resource profiles 130-148. Provider 521 remains combat-only on the CBRN side, and provider 513 remains dormant until Event 012 sets `africa_strange_formation_package_ready`. The historical closure wording in this planning review does not replace current MCP evidence: Event 19 inspection is partial, the bounded render attempt timed out, and normalized dynamic provider-pool odds remain unresolved.
+> **Provider-extension notice (2026-08-22):** The live Event 19 provider bridge contains 19 IDs (`501-514`, `518`, `520-523`), including the separate five-gate Event 016 Aryan clone provider 522, Event 012 readiness-gated provider 513, and Event 014 provider 523. The current source census contains 50 combat and 47 support land sub-units, with all 50 combat bodies covered and 43 support-only definitions remaining parent-owned unless explicitly attached by a provider. The historical closure wording in this planning review does not replace current MCP evidence: Event 19 inspection is partial and normalized dynamic provider-pool odds remain unresolved.
 
 ## Current implementation status
 
@@ -33,10 +14,7 @@ formation pool, helicopters, zombie variants, ghost units, coal golems, dynamic
 country creation, scripted GUI, achievements, Event Log, and triggerable
 scenarios have been verified against the installed code and documentation.
 
-The old planning-environment blockers are closed. The owner approved controlled
-border trials for the exact-formation achievements and the exact recorded-
-formation recreate/prove/delete contract for natural revolts. Neither capability
-uses an unapproved fallback.
+The old planning-environment blockers are closed for the bounded historical tranche. The owner approved controlled border trials for the exact-formation achievements and the exact recorded-formation recreate/prove/delete contract for natural revolts. Neither capability uses an unapproved fallback. The later provider-extension and documentation gates remain current work.
 
 ## Exact recorded-formation transfer
 
@@ -140,6 +118,10 @@ provisional ledger snapshots, verified package creation, rollback, deferred
 government/AI installation, and cleanup retries. A fixed-tag fallback remains
 forbidden unless separately approved.
 
+## Derivative opening local-asset reconciliation
+
+The owner follow-up closes the starting-country economy and logistics documentation gap through `infantry_spawn_derivative_reconcile_starting_local_assets` and `infantry_spawn_derivative_resolve_opening_local_asset_shortfall`. The audit persists transferred-state industry, population, infrastructure, rail, ports, supply, resources, standard stockpiles, private-ledger liabilities, active formations, and dynamically published custom-equipment token and amount arrays, then classifies the opening as fragile, strained, or viable. A fragile result adds a temporary shortfall idea until `infantry_spawn_derivative_inventory_the_seized_districts` proves the opening inventory; the contract never creates factories, infrastructure, supply assets, or a generic economy grant. The implementation contract is documented in `docs/events/019_infantry_spawn/overview.md` and `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_6_derivative_countries.md`.
+
 ## Parent isolation
 
 Zombie, ghost, and golem identifiers were verified locally. Their Event 19
@@ -193,11 +175,7 @@ fixed identity-scene slots is deferred to the current asset handoff.
 
 ## Localisation and catalog
 
-Final in-world English localisation is wired in the existing Event 19 file. The
-catalog workbook records Event 19 as ID 19 and Minor Repeatable, supplies all
-four evolution records, leaves cluster fields empty, and includes SCN-013. Both
-are `Fully Functional` after the completed workbook/catalog reconciliation,
-export, 33/33 package inventory, and final completion audit. The fixed
+Final in-world English localisation is wired in the existing Event 19 file. The catalog workbook records Event 19 as ID 19 and Minor Repeatable, supplies all four evolution records, leaves cluster fields empty, and includes SCN-013. The historical catalog snapshot records both as `Fully Functional` after its completed workbook/catalog reconciliation, export, 33/33 package inventory, and final completion audit. The fixed
 army/host/neutral identity-scene package is present and wired. B-019-001 and
 B-019-002 are closed through the two owner-approved engine-constrained
 substitutes described below. The four SCN-013 type summaries and four intensity
@@ -225,16 +203,9 @@ exclusive tracks: government recognition, family command,
 logistics/doctrine/sustainment, and former-parent/expansion. Encircled Remnant
 completes the four-form defeat matrix.
 
-The current no-context focus-tree, decision/mission, country-package,
-localisation, registry/scenario, evolution-counter, and live-final AI, balance,
-performance, isolation, scenario-safety, and exploit reaudits each closed with
-no P0, P1, or P2 finding. The evolution-counter reaudit specifically supersedes
-the earlier recurring global-country scan finding. Maintained country-local
-receipts and counters now drive the bounded work. All gameplay specialist gates
-are clean. The independent regional-flag remediation re-audit is separately
-PASS, recorded in
+The 2026-07-18 no-context focus-tree, decision/mission, country-package, localisation, registry/scenario, evolution-counter, and live-final AI, balance, performance, isolation, scenario-safety, and exploit reaudits each closed with no P0, P1, or P2 finding for their bounded tranche. The evolution-counter reaudit specifically supersedes the earlier recurring global-country scan finding. Maintained country-local receipts and counters now drive the bounded work. The independent regional-flag remediation re-audit is separately PASS, recorded in
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`.
-These specialist verdicts are reinforced by the final completion audit
+These historical specialist verdicts are reinforced by the final completion audit
 `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md`,
 which is PASS with P0/P1/P2 = 0. Parent package inventory is complete at 33/33
 current files, and the catalog promotion is complete.
@@ -250,11 +221,7 @@ It is historical evidence, not a completion verdict for the current project.
 
 ## Final closure status
 
-The final completion audit
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md`
-is PASS with P0/P1/P2 = 0 and authorizes the `Fully Functional` promotion.
-Parent package inventory is complete at 33/33 current files. Event 19 and
-SCN-013 are `Fully Functional`, and no closure gate remains.
+The final completion audit `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_final_completion_audit_2026_07_18.md` is PASS with P0/P1/P2 = 0 and authorized the historical `Fully Functional` promotion. Parent package inventory was complete at 33/33 files for that tranche. Event 19 and SCN-013 are not currently certified by that historical status, and the current provider-extension and documentation closure gates remain open.
 
 ## Historical pre-inventory-completion gate wording (superseded)
 

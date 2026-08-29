@@ -1,0 +1,1084 @@
+# ============================================================================
+# CHAOS REDUX - HUMANITARIAN CORRIDOR CONTRACT EFFECTS
+# ============================================================================
+# Package-owned lifecycle and transaction adapters for an exact humanitarian
+# corridor. The effects persist origin/front/counterpart database IDs, bind a
+# single adjacent route, and reuse the existing exact civilian and reserve
+# transfer helpers. They do not create events, register an event pool, add a
+# GUI, add a mapmode, or scan the world. Attack receipts and owner call sites
+# remain explicit inputs.
+# ============================================================================
+
+# STATE scope. Copy caller-owned route evidence into durable contract fields.
+# A missing request is represented as zero and is intentionally rejected by
+# humanitarian_corridor_route_geometry_is_valid.
+humanitarian_corridor_copy_request_proofs = {
+	set_variable = { humanitarian_corridor_route_geometry_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_border_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_transport_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_safety_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_actor_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_ceasefire_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_food_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_route_reception_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_food_proof = constant:humanitarian_corridor_runtime.zero }
+	set_variable = { humanitarian_corridor_reception_proof = constant:humanitarian_corridor_runtime.zero }
+	if = { limit = { has_variable = humanitarian_corridor_route_geometry_proof_request } set_variable = { humanitarian_corridor_route_geometry_proof = humanitarian_corridor_route_geometry_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_border_proof_request } set_variable = { humanitarian_corridor_route_border_proof = humanitarian_corridor_route_border_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_transport_proof_request } set_variable = { humanitarian_corridor_route_transport_proof = humanitarian_corridor_route_transport_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_safety_proof_request } set_variable = { humanitarian_corridor_route_safety_proof = humanitarian_corridor_route_safety_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_actor_proof_request } set_variable = { humanitarian_corridor_route_actor_proof = humanitarian_corridor_route_actor_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_ceasefire_proof_request } set_variable = { humanitarian_corridor_route_ceasefire_proof = humanitarian_corridor_route_ceasefire_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_food_proof_request } set_variable = { humanitarian_corridor_route_food_proof = humanitarian_corridor_route_food_proof_request } }
+	if = { limit = { has_variable = humanitarian_corridor_route_reception_proof_request } set_variable = { humanitarian_corridor_route_reception_proof = humanitarian_corridor_route_reception_proof_request } }
+	set_variable = { humanitarian_corridor_food_proof = humanitarian_corridor_route_food_proof }
+	set_variable = { humanitarian_corridor_reception_proof = humanitarian_corridor_route_reception_proof }
+	if = {
+		limit = { has_variable = humanitarian_corridor_route_generation_request }
+		set_variable = { humanitarian_corridor_route_generation = humanitarian_corridor_route_generation_request }
+	}
+	else = { set_variable = { humanitarian_corridor_route_generation = global.date } }
+	set_variable = { humanitarian_corridor_route_proof_generation = humanitarian_corridor_route_generation }
+}
+
+# STATE scope. Prepare one exact contract from the state-target decision. A
+# caller may submit a front-state ID, but the ID still passes the same unique
+# adjacency/controller predicate. Without an explicit ID the bounded neighbour
+# loop must find exactly one candidate; zero or multiple candidates fail closed.
+humanitarian_corridor_prepare_contract = {
+	set_temp_variable = { humanitarian_corridor_request_result = constant:humanitarian_corridor_result.invalid }
+	set_temp_variable = { humanitarian_corridor_request_reason = constant:humanitarian_corridor_reason.invalid_origin }
+	if = {
+		limit = { humanitarian_corridor_origin_is_valid = yes }
+		save_event_target_as = humanitarian_corridor_origin
+		set_state_flag = humanitarian_corridor_contract_active
+		set_state_flag = humanitarian_corridor_preparation_pending
+		set_variable = { humanitarian_corridor_origin_state_id = THIS.id }
+		set_variable = { humanitarian_corridor_requester_country_id = ROOT.id }
+		set_variable = { humanitarian_corridor_origin_controller_country_id = CONTROLLER.id }
+		set_variable = { humanitarian_corridor_origin_owner_country_id = OWNER.id }
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.prepared }
+		if = {
+			limit = { has_variable = humanitarian_corridor_operation_request }
+			set_variable = { humanitarian_corridor_operation = humanitarian_corridor_operation_request }
+		}
+		else = { set_variable = { humanitarian_corridor_operation = constant:humanitarian_corridor_operation.evacuation } }
+		if = {
+			limit = { has_variable = humanitarian_corridor_relation_request }
+			set_variable = { humanitarian_corridor_relation = humanitarian_corridor_relation_request }
+		}
+		else = { set_variable = { humanitarian_corridor_relation = constant:humanitarian_corridor_relation.enemy_front } }
+		if = {
+			limit = { has_variable = humanitarian_corridor_cohort_id_request }
+			set_variable = { humanitarian_corridor_cohort_id = humanitarian_corridor_cohort_id_request }
+		}
+		else = { set_variable = { humanitarian_corridor_cohort_id = migration_current_cohort_id } }
+		if = {
+			limit = { has_variable = humanitarian_corridor_transfer_people_request }
+			set_variable = { humanitarian_corridor_transfer_people = humanitarian_corridor_transfer_people_request }
+		}
+		else = {
+			if = {
+				limit = { has_variable = migration_trapped_population }
+				set_variable = { humanitarian_corridor_transfer_people = migration_trapped_population }
+			}
+		}
+		if = {
+			limit = { has_variable = humanitarian_corridor_relief_amount_request }
+			set_variable = { humanitarian_corridor_relief_amount = humanitarian_corridor_relief_amount_request }
+		}
+		else = { set_variable = { humanitarian_corridor_relief_amount = constant:famine_food_reserve.zero } }
+		clear_variable = humanitarian_corridor_counterpart_country_id
+		clear_variable = humanitarian_corridor_front_state_id
+		clear_variable = humanitarian_corridor_offer_deadline
+		clear_variable = humanitarian_corridor_operation_deadline
+		clear_variable = humanitarian_corridor_mission_deadline
+		clear_variable = humanitarian_corridor_evacuation_proven
+		clear_variable = humanitarian_corridor_relief_proven
+		clear_variable = humanitarian_corridor_attack_receipt_proven
+		clear_variable = humanitarian_corridor_attack_attacker_country_id
+		clear_variable = humanitarian_corridor_route_binding_active
+		clear_variable = humanitarian_corridor_mission_armed
+		clr_state_flag = humanitarian_corridor_offer_pending
+		clr_state_flag = humanitarian_corridor_response_accepted
+		clr_state_flag = humanitarian_corridor_operation_pending
+		clr_state_flag = humanitarian_corridor_mission_armed
+		clr_state_flag = humanitarian_corridor_attack_received
+		humanitarian_corridor_copy_request_proofs = yes
+		# Every prepared corridor receives a fresh persistent identity nonce. The
+		# caller-supplied route generation is not allowed to replay an older crisis.
+		humanitarian_achievement_advance_generation = yes
+		set_variable = { humanitarian_corridor_route_generation = global.humanitarian_achievement_generation_counter }
+		set_variable = { humanitarian_corridor_route_proof_generation = humanitarian_corridor_route_generation }
+		set_variable = { humanitarian_corridor_candidate_count = constant:humanitarian_corridor_runtime.zero }
+		clear_variable = humanitarian_corridor_candidate_front_state_id
+		clear_variable = humanitarian_corridor_candidate_country_id
+		if = {
+			limit = {
+				has_variable = humanitarian_corridor_front_state_request
+				var:humanitarian_corridor_front_state_request = { humanitarian_corridor_front_candidate_is_valid = yes }
+			}
+			var:humanitarian_corridor_front_state_request = {
+				save_event_target_as = humanitarian_corridor_candidate_front
+				CONTROLLER = { save_event_target_as = humanitarian_corridor_candidate_controller }
+			}
+			set_variable = { humanitarian_corridor_candidate_count = constant:humanitarian_corridor_runtime.one }
+		set_variable = { humanitarian_corridor_candidate_front_state_id = event_target:humanitarian_corridor_candidate_front.id }
+		set_variable = { humanitarian_corridor_candidate_country_id = event_target:humanitarian_corridor_candidate_controller.id }
+		}
+		else = {
+			every_neighbor_state = {
+				limit = { humanitarian_corridor_front_candidate_is_valid = yes }
+				save_event_target_as = humanitarian_corridor_candidate_front
+				CONTROLLER = { save_event_target_as = humanitarian_corridor_candidate_controller }
+				event_target:humanitarian_corridor_origin = {
+					if = {
+						limit = { check_variable = { var = humanitarian_corridor_candidate_count value = constant:humanitarian_corridor_runtime.zero compare = equals } }
+						set_variable = { humanitarian_corridor_candidate_front_state_id = event_target:humanitarian_corridor_candidate_front.id }
+						set_variable = { humanitarian_corridor_candidate_country_id = event_target:humanitarian_corridor_candidate_controller.id }
+					}
+					add_to_variable = { humanitarian_corridor_candidate_count = constant:humanitarian_corridor_runtime.candidate_increment }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = humanitarian_corridor_candidate_count value = constant:humanitarian_corridor_runtime.one compare = equals } }
+			set_variable = { humanitarian_corridor_front_state_id = humanitarian_corridor_candidate_front_state_id }
+			set_variable = { humanitarian_corridor_counterpart_country_id = humanitarian_corridor_candidate_country_id }
+			set_variable = { humanitarian_corridor_origin_controller_id = humanitarian_corridor_origin_controller_country_id }
+			set_variable = { humanitarian_corridor_front_controller_id = event_target:humanitarian_corridor_candidate_controller.id }
+			set_variable = { humanitarian_corridor_route_geometry_proof = constant:humanitarian_corridor_runtime.one }
+			set_variable = { humanitarian_corridor_route_border_proof = constant:humanitarian_corridor_runtime.one }
+			set_variable = { humanitarian_corridor_route_actor_proof = constant:humanitarian_corridor_runtime.one }
+			set_variable = { humanitarian_corridor_route_transport_proof = constant:humanitarian_corridor_runtime.zero }
+			set_variable = { humanitarian_corridor_route_food_proof = constant:humanitarian_corridor_runtime.zero }
+			if = {
+				limit = {
+					infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+					has_variable = famine_component_transport
+					var:humanitarian_corridor_front_state_id = {
+						infrastructure > constant:migration_destination_selection_threshold.minimum_route_infrastructure
+						has_variable = famine_component_transport
+					}
+				}
+				set_variable = { humanitarian_corridor_route_transport_proof = constant:humanitarian_corridor_runtime.one }
+			}
+			if = {
+				limit = {
+					var:humanitarian_corridor_front_state_id = {
+						OR = {
+							NOT = { has_variable = famine_food_stage }
+							check_variable = { var = famine_food_stage value = constant:famine_food_stage.acute_shortage compare = less_than }
+						}
+						humanitarian_corridor_front_destination_is_safe = yes
+					}
+				}
+				set_variable = { humanitarian_corridor_route_food_proof = constant:humanitarian_corridor_runtime.one }
+			}
+			set_variable = { humanitarian_corridor_food_proof = humanitarian_corridor_route_food_proof }
+			if = {
+				limit = { humanitarian_corridor_offer_route_is_valid = yes }
+				if = {
+					limit = {
+						check_variable = { var = humanitarian_corridor_transfer_people value = constant:humanitarian_population.zero compare = greater_than }
+						check_variable = { var = humanitarian_corridor_route_generation value = constant:humanitarian_corridor_runtime.zero compare = greater_than }
+					}
+					set_temp_variable = { migration_presentation_corridor_denominator = state_population_k }
+					multiply_temp_variable = { migration_presentation_corridor_denominator = constant:chaos_meter_deaths.people_per_k }
+					round_temp_variable = migration_presentation_corridor_denominator
+					set_temp_variable = { migration_presentation_input_preparing_proven = constant:migration_presentation.one }
+					set_temp_variable = { migration_presentation_input_preparing_people = humanitarian_corridor_transfer_people }
+					set_temp_variable = { migration_presentation_input_preparing_denominator = migration_presentation_corridor_denominator }
+					set_temp_variable = { migration_presentation_input_cohort_id = constant:migration_presentation.zero }
+					if = {
+						limit = { has_variable = humanitarian_corridor_cohort_id }
+						set_temp_variable = { migration_presentation_input_cohort_id = humanitarian_corridor_cohort_id }
+					}
+					set_temp_variable = { migration_presentation_input_generation = humanitarian_corridor_route_generation }
+					set_temp_variable = { migration_presentation_input_role = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
+					migration_presentation_record_preparing_projection = yes
+					humanitarian_refresh_state_modifiers = yes
+				}
+				clr_state_flag = humanitarian_corridor_preparation_pending
+				set_temp_variable = { humanitarian_corridor_request_result = constant:humanitarian_corridor_result.valid }
+				set_temp_variable = { humanitarian_corridor_request_reason = constant:humanitarian_corridor_reason.unknown }
+				migration_register_active_state = yes
+			}
+			else = {
+				set_state_flag = humanitarian_corridor_route_invalid
+				set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.missing_route_proof }
+				set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.missing_route_proof }
+				set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.invalidated }
+				set_temp_variable = { humanitarian_corridor_request_reason = constant:humanitarian_corridor_reason.missing_route_proof }
+				humanitarian_corridor_cleanup = yes
+			}
+		}
+		else_if = {
+			limit = { check_variable = { var = humanitarian_corridor_candidate_count value = constant:humanitarian_corridor_runtime.one compare = greater_than } }
+			set_state_flag = humanitarian_corridor_selection_ambiguous
+			set_state_flag = humanitarian_corridor_route_invalid
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.ambiguous_front }
+			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.ambiguous_front }
+			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.invalidated }
+			set_temp_variable = { humanitarian_corridor_request_result = constant:humanitarian_corridor_result.ambiguous }
+			set_temp_variable = { humanitarian_corridor_request_reason = constant:humanitarian_corridor_reason.ambiguous_front }
+			humanitarian_corridor_cleanup = yes
+		}
+		else = {
+			set_state_flag = humanitarian_corridor_route_invalid
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.no_front }
+			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.no_front }
+			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.invalidated }
+			set_temp_variable = { humanitarian_corridor_request_result = constant:humanitarian_corridor_result.no_front }
+			set_temp_variable = { humanitarian_corridor_request_reason = constant:humanitarian_corridor_reason.no_front }
+			humanitarian_corridor_cleanup = yes
+		}
+	}
+	else = {
+		set_temp_variable = { humanitarian_corridor_request_result = constant:humanitarian_corridor_result.invalid }
+		set_temp_variable = { humanitarian_corridor_request_reason = constant:humanitarian_corridor_reason.invalid_origin }
+	}
+	clear_variable = humanitarian_corridor_candidate_count
+	clear_variable = humanitarian_corridor_candidate_front_state_id
+	clear_variable = humanitarian_corridor_candidate_country_id
+	clear_variable = humanitarian_corridor_front_state_request
+	clear_variable = humanitarian_corridor_relation_request
+	clear_variable = humanitarian_corridor_operation_request
+	clear_variable = humanitarian_corridor_cohort_id_request
+	clear_variable = humanitarian_corridor_transfer_people_request
+	clear_variable = humanitarian_corridor_relief_amount_request
+	clear_variable = humanitarian_corridor_route_geometry_proof_request
+	clear_variable = humanitarian_corridor_route_border_proof_request
+	clear_variable = humanitarian_corridor_route_transport_proof_request
+	clear_variable = humanitarian_corridor_route_safety_proof_request
+	clear_variable = humanitarian_corridor_route_actor_proof_request
+	clear_variable = humanitarian_corridor_route_ceasefire_proof_request
+	clear_variable = humanitarian_corridor_route_food_proof_request
+		clear_variable = humanitarian_corridor_route_reception_proof_request
+		clear_variable = humanitarian_corridor_route_generation_request
+}
+
+# STATE scope. Submit a pending offer to the exact stored counterpart. The
+# counterpart's country mirror is the only response surface; no event is fired.
+humanitarian_corridor_submit_offer = {
+	set_temp_variable = { humanitarian_corridor_offer_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_offer_request_is_valid = yes }
+		if = {
+			limit = { var:humanitarian_corridor_counterpart_country_id = { has_country_flag = humanitarian_corridor_offer_pending } }
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.duplicate_offer }
+			set_temp_variable = { humanitarian_corridor_offer_result = constant:humanitarian_corridor_result.duplicate }
+		}
+		else = {
+			save_event_target_as = humanitarian_corridor_origin
+			set_variable = { humanitarian_corridor_offer_deadline = global.date }
+			add_to_variable = { humanitarian_corridor_offer_deadline = constant:humanitarian_corridor_timing.offer_response_days }
+			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.offer_pending }
+			set_state_flag = humanitarian_corridor_offer_pending
+			var:humanitarian_corridor_counterpart_country_id = {
+				set_country_flag = humanitarian_corridor_offer_pending
+				set_variable = { humanitarian_corridor_offer_origin_state_id = event_target:humanitarian_corridor_origin.id }
+				set_variable = { humanitarian_corridor_offer_front_state_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_front_state_id }
+				set_variable = { humanitarian_corridor_offer_requester_country_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_requester_country_id }
+				set_variable = { humanitarian_corridor_offer_deadline = event_target:humanitarian_corridor_origin.humanitarian_corridor_offer_deadline }
+				set_variable = { humanitarian_corridor_offer_operation = event_target:humanitarian_corridor_origin.humanitarian_corridor_operation }
+				set_variable = { humanitarian_corridor_offer_cohort_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_cohort_id }
+				set_variable = { humanitarian_corridor_offer_route_generation = event_target:humanitarian_corridor_origin.humanitarian_corridor_route_generation }
+				migration_register_active_country = yes
+			}
+			var:humanitarian_corridor_requester_country_id = {
+				set_country_flag = humanitarian_corridor_request_pending
+				set_variable = { humanitarian_corridor_origin_state_id = event_target:humanitarian_corridor_origin.id }
+				set_variable = { humanitarian_corridor_counterpart_country_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_counterpart_country_id }
+				set_variable = { humanitarian_corridor_front_state_id = event_target:humanitarian_corridor_origin.humanitarian_corridor_front_state_id }
+				set_variable = { humanitarian_corridor_country_pulse_due = global.date }
+				add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+				set_country_flag = humanitarian_corridor_country_pulse_pending
+				migration_register_active_country = yes
+			}
+			set_temp_variable = { humanitarian_corridor_offer_result = constant:humanitarian_corridor_result.valid }
+		}
+	}
+}
+
+# COUNTRY scope. The counterpart's acceptance is a real state transition only;
+# population, reserve, and cohort transactions remain separate exact calls.
+humanitarian_corridor_accept_offer = {
+	set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_offer_is_valid = yes }
+		var:humanitarian_corridor_offer_origin_state_id = {
+			if = {
+				limit = { humanitarian_corridor_acceptance_is_valid = yes }
+				set_variable = { humanitarian_corridor_route_safety_proof = constant:humanitarian_corridor_runtime.one }
+				set_variable = { humanitarian_corridor_route_ceasefire_proof = constant:humanitarian_corridor_runtime.one }
+				set_variable = { humanitarian_corridor_route_reception_proof = constant:humanitarian_corridor_runtime.one }
+				set_variable = { humanitarian_corridor_reception_proof = constant:humanitarian_corridor_runtime.one }
+				set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.accepted }
+				clr_state_flag = humanitarian_corridor_offer_pending
+				set_state_flag = humanitarian_corridor_response_accepted
+				set_state_flag = humanitarian_corridor_accepted
+				set_state_flag = humanitarian_corridor_operation_pending
+				set_variable = { humanitarian_corridor_operation_deadline = global.date }
+				add_to_variable = { humanitarian_corridor_operation_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+				clear_variable = humanitarian_corridor_offer_deadline
+				# Bind the receiving country's achievement ledger to this exact
+				# accepted origin/front/counterpart/cohort contract. The old aggregate
+				# trapped-population proxy is deliberately not used.
+				save_event_target_as = humanitarian_corridor_origin
+				ROOT = {
+					set_variable = { humanitarian_achievement_gate_generation_request = PREV.humanitarian_corridor_route_generation }
+					set_variable = { humanitarian_achievement_gate_origin_state_id_request = PREV.id }
+					set_variable = { humanitarian_achievement_gate_front_state_id_request = PREV.humanitarian_corridor_front_state_id }
+					set_variable = { humanitarian_achievement_gate_counterpart_country_id_request = ROOT.id }
+					set_variable = { humanitarian_achievement_gate_offered_cohort_id_request = PREV.humanitarian_corridor_cohort_id }
+					humanitarian_achievement_record_gate_crisis = yes
+				}
+				var:humanitarian_corridor_requester_country_id = {
+					set_country_flag = humanitarian_corridor_response_accepted
+					clr_country_flag = humanitarian_corridor_request_pending
+					set_temp_variable = { famine_achievement_corridor_generation_request = PREV.humanitarian_corridor_route_generation }
+					set_temp_variable = { famine_achievement_corridor_origin_state_id_request = PREV.id }
+					set_temp_variable = { famine_achievement_corridor_front_state_id_request = PREV.humanitarian_corridor_front_state_id }
+					set_temp_variable = { famine_achievement_corridor_counterpart_country_id_request = PREV.humanitarian_corridor_counterpart_country_id }
+					famine_achievement_start_corridor_attempt = yes
+					add_stability = constant:migration_decision_outcome.decision_standard_stability
+					set_variable = { humanitarian_corridor_country_pulse_due = global.date }
+					add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+					set_country_flag = humanitarian_corridor_country_pulse_pending
+				}
+				ROOT = { set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.valid } }
+			}
+		}
+		clr_country_flag = humanitarian_corridor_offer_pending
+		set_country_flag = humanitarian_corridor_response_accepted
+		clear_variable = humanitarian_corridor_offer_origin_state_id
+		clear_variable = humanitarian_corridor_offer_front_state_id
+		clear_variable = humanitarian_corridor_offer_requester_country_id
+		clear_variable = humanitarian_corridor_offer_deadline
+		clear_variable = humanitarian_corridor_offer_operation
+		clear_variable = humanitarian_corridor_offer_cohort_id
+		clear_variable = humanitarian_corridor_offer_route_generation
+	}
+}
+
+# COUNTRY scope. Rejection changes only the contract state and clears every
+# mirror; it never debits trapped people or reserves.
+humanitarian_corridor_reject_offer = {
+	set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_offer_is_valid = yes }
+		var:humanitarian_corridor_offer_origin_state_id = {
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.rejected }
+			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.rejected }
+			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.rejected }
+			humanitarian_corridor_cleanup = yes
+		}
+		set_temp_variable = { humanitarian_corridor_response_result = constant:humanitarian_corridor_result.valid }
+	}
+	clr_country_flag = humanitarian_corridor_offer_pending
+	clr_country_flag = humanitarian_corridor_request_pending
+	clr_country_flag = humanitarian_corridor_country_pulse_pending
+	clear_variable = humanitarian_corridor_offer_origin_state_id
+	clear_variable = humanitarian_corridor_offer_front_state_id
+	clear_variable = humanitarian_corridor_offer_requester_country_id
+	clear_variable = humanitarian_corridor_offer_deadline
+	clear_variable = humanitarian_corridor_offer_operation
+	clear_variable = humanitarian_corridor_offer_cohort_id
+	clear_variable = humanitarian_corridor_offer_route_generation
+}
+
+# STATE scope. Bind the persisted front state to the existing exact route
+# destination target. Generic destination proof is written only while the
+# corridor binding flag is present, so ordinary route consumers cannot inherit
+# it after cleanup. Reserve transfers may use the same destination target.
+humanitarian_corridor_bind_route_destination = {
+	set_temp_variable = { humanitarian_corridor_route_binding_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_route_binding_is_valid = yes }
+		save_event_target_as = humanitarian_corridor_origin
+		var:humanitarian_corridor_front_state_id = {
+			save_event_target_as = civilian_transfer_route_destination
+			save_event_target_as = famine_food_reserve_destination
+			set_state_flag = humanitarian_corridor_destination_binding_active
+		}
+		set_variable = { humanitarian_corridor_route_binding_active = constant:humanitarian_corridor_runtime.one }
+		set_state_flag = humanitarian_corridor_operation_pending
+		if = {
+			limit = { has_variable = humanitarian_corridor_transfer_people }
+			set_temp_variable = { civilian_transfer_people = humanitarian_corridor_transfer_people }
+		}
+		set_temp_variable = { civilian_transfer_request_proven = constant:humanitarian_corridor_runtime.one }
+		set_temp_variable = { civilian_transfer_route_border_proven = humanitarian_corridor_route_border_proof }
+		set_temp_variable = { civilian_transfer_route_transport_proven = humanitarian_corridor_route_transport_proof }
+		set_temp_variable = { civilian_transfer_route_safety_proven = humanitarian_corridor_route_safety_proof }
+		set_temp_variable = { civilian_transfer_route_actor_proven = humanitarian_corridor_route_actor_proof }
+		set_temp_variable = { humanitarian_corridor_route_binding_result = constant:humanitarian_corridor_result.valid }
+	}
+}
+
+# STATE scope. Remove the corridor-owned destination-binding marker. The
+# canonical route target and destination proof inputs are chain-local and are
+# not promoted to global or durable state data.
+humanitarian_corridor_clear_route_binding = {
+	if = {
+		limit = { has_variable = humanitarian_corridor_front_state_id }
+		var:humanitarian_corridor_front_state_id = {
+			if = {
+				limit = { has_state_flag = humanitarian_corridor_destination_binding_active }
+				clr_state_flag = humanitarian_corridor_destination_binding_active
+			}
+		}
+	}
+	clear_variable = humanitarian_corridor_route_binding_active
+	clear_variable = humanitarian_corridor_route_binding_result
+}
+
+# STATE scope. Arm the existing country mission slot only after an exact
+# corridor transaction has proved a positive survivor/relief result. The
+# corridor-owned mission subject and counterpart identity remain exact and
+# sparse for the mission owner.
+humanitarian_corridor_arm_mission = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = humanitarian_corridor_mission_armed }
+			has_variable = humanitarian_corridor_cohort_id
+			var:humanitarian_corridor_requester_country_id = {
+				NOT = { has_country_flag = humanitarian_corridor_mission_active }
+				migration_country_has_free_mission_slot = yes
+			}
+		}
+		set_state_flag = humanitarian_corridor_mission_armed
+		set_state_flag = humanitarian_corridor_mission_active
+		set_state_flag = humanitarian_corridor_mission_subject
+		set_variable = { humanitarian_corridor_mission_cohort_id = humanitarian_corridor_cohort_id }
+		if = {
+			limit = { NOT = { has_variable = humanitarian_corridor_mission_deadline } }
+			set_variable = { humanitarian_corridor_mission_deadline = global.date }
+			add_to_variable = { humanitarian_corridor_mission_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+		}
+		set_state_flag = humanitarian_corridor_mission_success_proven
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.mission_active }
+		var:humanitarian_corridor_requester_country_id = {
+			migration_claim_mission_slot = yes
+			set_country_flag = humanitarian_corridor_mission_active
+		}
+	}
+}
+
+# STATE scope after the shared exact-transfer finalizer. The finalizer already
+# owns trapped and flight settlement; this adapter records its measured output
+# without applying any second obligation or population mutation.
+# `humanitarian_corridor_evacuation_proven` is the
+# canonical durable receipt for this route generation; no state flag mirrors it.
+humanitarian_corridor_record_evacuation = {
+	set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = {
+			humanitarian_corridor_route_binding_is_valid = yes
+			check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+			has_variable = humanitarian_corridor_route_generation
+			NOT = { has_variable = humanitarian_corridor_evacuation_proven }
+			check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
+			check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
+			check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+		}
+		set_variable = { humanitarian_corridor_evacuation_proven = constant:humanitarian_corridor_runtime.one }
+		set_variable = { humanitarian_corridor_transaction_proven = constant:humanitarian_corridor_runtime.one }
+		set_variable = { humanitarian_corridor_evacuation_actual_debit = civilian_transfer_actual_origin_debit }
+		set_variable = { humanitarian_corridor_evacuation_route_deaths = civilian_transfer_route_deaths }
+		set_variable = { humanitarian_corridor_evacuation_survivor_credit = civilian_transfer_survivor_credit }
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.operation_pending }
+		set_variable = { humanitarian_corridor_mission_deadline = global.date }
+		add_to_variable = { humanitarian_corridor_mission_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+		humanitarian_corridor_arm_mission = yes
+		set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.valid }
+	}
+}
+
+# STATE scope after the foreign-relief contract has delivered into this
+# corridor origin. The donor helper owns the debit/credit and preserves its
+# measured outputs on the recipient, so this adapter never reverses the route
+# by treating the trapped origin as a donor.
+humanitarian_corridor_record_relief = {
+	set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = {
+			humanitarian_corridor_operation_is_valid = yes
+			check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.relief compare = equals }
+			has_state_flag = famine_relief_delivery_proven
+			check_variable = { var = famine_relief_last_delivery_debit value = constant:famine_food_reserve.zero compare = greater_than }
+			check_variable = { var = famine_relief_last_delivery_credit value = famine_relief_last_delivery_debit compare = equals }
+		}
+		set_variable = { humanitarian_corridor_relief_proven = constant:humanitarian_corridor_runtime.one }
+		set_state_flag = humanitarian_corridor_relief_proven
+		set_variable = { humanitarian_corridor_transaction_proven = constant:humanitarian_corridor_runtime.one }
+		set_variable = { humanitarian_corridor_relief_source_debit = famine_relief_last_delivery_debit }
+		set_variable = { humanitarian_corridor_relief_destination_credit = famine_relief_last_delivery_credit }
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.operation_pending }
+		set_variable = { humanitarian_corridor_mission_deadline = global.date }
+		add_to_variable = { humanitarian_corridor_mission_deadline = constant:humanitarian_corridor_timing.mission_hold_days }
+		humanitarian_corridor_arm_mission = yes
+		set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.valid }
+	}
+}
+
+# STATE scope. Public evacuation transaction adapter. It binds the persisted
+# front, then delegates population, reception, cohort bind, obligation
+# settlement, and projection to the shared atomic transaction.
+humanitarian_corridor_execute_evacuation = {
+	set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = {
+			humanitarian_corridor_operation_is_valid = yes
+			check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.evacuation compare = equals }
+			has_variable = humanitarian_corridor_route_generation
+			NOT = { has_variable = humanitarian_corridor_evacuation_proven }
+		}
+		humanitarian_corridor_bind_route_destination = yes
+		if = {
+			limit = { check_variable = { var = humanitarian_corridor_route_binding_result value = constant:humanitarian_corridor_result.valid compare = equals } }
+			event_target:civilian_transfer_route_destination = {
+				set_temp_variable = { migration_cohort_destination_food_safe_proven = event_target:humanitarian_corridor_origin.humanitarian_corridor_route_food_proof }
+				set_temp_variable = { migration_cohort_destination_reception_proven = event_target:humanitarian_corridor_origin.humanitarian_corridor_route_reception_proof }
+			}
+			set_temp_variable = { migration_cohort_id_request = humanitarian_corridor_cohort_id }
+			migration_resolve_cohort_origin = yes
+			if = {
+				limit = { migration_cohort_origin_resolution_is_valid = yes }
+				set_temp_variable = { civilian_transfer_people = migration_cohort_resolved_amount }
+			}
+			# No corridor owner currently supplies a mortality request. Reset the
+			# shared input unconditionally so another lane's temporary value cannot
+			# leak into this transaction; a future corridor mortality contract must
+			# replace this owned assignment explicitly.
+			set_temp_variable = { civilian_transfer_route_deaths_requested = constant:humanitarian_population.zero }
+			set_temp_variable = { civilian_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
+			set_temp_variable = { civilian_transfer_log_deaths = constant:humanitarian_corridor_runtime.one }
+			set_temp_variable = { civilian_transfer_role_request = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation }
+			set_temp_variable = { civilian_transfer_bind_mode = constant:migration_core_reconciliation.transfer_bind_safe }
+			set_temp_variable = { civilian_transfer_source_reception_required = constant:migration_core_reconciliation.transfer_source_reception_not_required }
+			set_temp_variable = { civilian_transfer_flight_obligation_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { civilian_transfer_trapped_obligation_proven = constant:humanitarian_runtime.one }
+			civilian_transfer_execute_transaction = yes
+			if = {
+				limit = {
+					check_variable = { var = civilian_transfer_finalize_result value = constant:migration_core_reconciliation.transfer_finalize_valid compare = equals }
+					check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+				}
+				humanitarian_corridor_record_evacuation = yes
+			}
+		}
+		if = { limit = { check_variable = { var = humanitarian_corridor_transaction_result value = constant:humanitarian_corridor_result.valid compare = equals } } set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.valid } }
+	}
+}
+
+# STATE scope. Public relief adapter. This corridor origin is the recipient,
+# never the donor. A previously selected foreign-relief contract therefore
+# performs the only reserve mutation in the correct source-to-origin direction.
+humanitarian_corridor_execute_relief = {
+	set_temp_variable = { humanitarian_corridor_transaction_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = {
+			humanitarian_corridor_operation_is_valid = yes
+			check_variable = { var = humanitarian_corridor_operation value = constant:humanitarian_corridor_operation.relief compare = equals }
+			famine_relief_contract_is_valid = yes
+		}
+		famine_relief_deliver_contract = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.delivered compare = equals }
+					check_variable = { var = famine_relief_delivery_result value = constant:famine_relief_result.partial compare = equals }
+				}
+			}
+			humanitarian_corridor_record_relief = yes
+		}
+	}
+}
+
+# STATE scope. The mission owner calls this when its existing mission surface
+# proves completion. No stability, war-support, achievement, or population
+# effect is duplicated here; those remain in the owner decision/mission.
+humanitarian_corridor_finalize = {
+	set_temp_variable = { humanitarian_corridor_finalize_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_mission_is_valid = yes }
+		set_variable = { humanitarian_corridor_last_terminal_status = constant:humanitarian_corridor_status.completed }
+		set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.completed }
+		set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.completed }
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.completed }
+		humanitarian_corridor_cleanup = yes
+		set_temp_variable = { humanitarian_corridor_finalize_result = constant:humanitarian_corridor_result.valid }
+	}
+}
+
+# STATE scope. Expiry is terminal and never rolls back an already committed
+# civilian/reserve transaction. The response deadline and mission deadline are
+# distinguished so audit tools can identify where the contract ended.
+humanitarian_corridor_expire = {
+	set_temp_variable = { humanitarian_corridor_expire_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { has_state_flag = humanitarian_corridor_contract_active }
+		set_variable = { humanitarian_corridor_last_terminal_status = constant:humanitarian_corridor_status.expired }
+		set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.mission_deadline }
+		set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.mission_deadline }
+		if = {
+			limit = { check_variable = { var = humanitarian_corridor_status value = constant:humanitarian_corridor_status.offer_pending compare = equals } }
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
+			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = humanitarian_corridor_route_safety_proof value = constant:humanitarian_corridor_runtime.zero compare = equals }
+					check_variable = { var = humanitarian_corridor_route_ceasefire_proof value = constant:humanitarian_corridor_runtime.zero compare = equals }
+				}
+			}
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.route_unsafe }
+			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.route_unsafe }
+		}
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.expired }
+		humanitarian_corridor_cleanup = yes
+		set_temp_variable = { humanitarian_corridor_expire_result = constant:humanitarian_corridor_result.expired }
+	}
+}
+
+# STATE scope. Revalidates the persisted corridor relation after an exact war
+# or peace callback. The route is invalidated only when its stored relation no
+# longer matches the current controller relationship; no war graph is scanned.
+humanitarian_corridor_revalidate_route_relation = {
+	if = {
+		limit = { humanitarian_state_is_valid = yes }
+		if = {
+			limit = { CONTROLLER = { humanitarian_country_is_valid = yes } }
+			CONTROLLER = { save_event_target_as = humanitarian_corridor_relation_origin_controller }
+		}
+		if = {
+			limit = {
+				has_event_target = humanitarian_corridor_relation_origin_controller
+				CONTROLLER = { humanitarian_country_is_valid = yes }
+				humanitarian_corridor_front_state_is_valid = yes
+				has_variable = humanitarian_corridor_relation
+				OR = {
+					AND = {
+						check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.enemy_front compare = equals }
+						var:humanitarian_corridor_counterpart_country_id = { has_war_with = event_target:humanitarian_corridor_relation_origin_controller }
+					}
+					AND = {
+						check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.neutral_border compare = equals }
+						var:humanitarian_corridor_counterpart_country_id = {
+							NOT = { has_war_with = event_target:humanitarian_corridor_relation_origin_controller }
+							NOT = { is_in_faction_with = event_target:humanitarian_corridor_relation_origin_controller }
+						}
+					}
+					AND = {
+						check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.faction_partner compare = equals }
+						var:humanitarian_corridor_counterpart_country_id = {
+							NOT = { has_war_with = event_target:humanitarian_corridor_relation_origin_controller }
+							is_in_faction_with = event_target:humanitarian_corridor_relation_origin_controller
+						}
+					}
+					AND = {
+						check_variable = { var = humanitarian_corridor_relation value = constant:humanitarian_corridor_relation.neighbor compare = equals }
+						var:humanitarian_corridor_counterpart_country_id = { NOT = { has_war_with = event_target:humanitarian_corridor_relation_origin_controller } }
+					}
+				}
+			}
+		}
+		else = {
+			set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.route_closed }
+			set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.route_closed }
+			set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.invalidated }
+			humanitarian_corridor_cleanup = yes
+		}
+	}
+}
+
+# STATE scope. Control transfer is a route invalidation receipt, never an
+# attack receipt. Callers establish the exact origin identity first.
+humanitarian_corridor_invalidate_for_control_change = {
+	if = {
+		limit = { humanitarian_corridor_cleanup_needed = yes }
+		set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.control_change }
+		set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.control_change }
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.invalidated }
+		humanitarian_corridor_cleanup = yes
+	}
+}
+
+# STATE scope. The state-control callback supplies the exact changed state.
+# The direct origin check is followed by one sparse active-country registry
+# pass so a persisted front-state identity can invalidate its origin as well.
+humanitarian_corridor_handle_state_control_change = {
+	save_event_target_as = humanitarian_corridor_changed_state
+	if = {
+		limit = {
+			humanitarian_corridor_cleanup_needed = yes
+			has_variable = humanitarian_corridor_origin_state_id
+			check_variable = { var = humanitarian_corridor_origin_state_id value = THIS.id compare = equals }
+		}
+		humanitarian_corridor_invalidate_for_control_change = yes
+	}
+	for_each_scope_loop = {
+		array = global.migration_active_countries
+		humanitarian_corridor_revalidate_changed_state = yes
+	}
+}
+
+# COUNTRY scope. Revalidates only the exact mirrored origin/front rows carried
+# by the registered country. The helper is used by state-control callbacks and
+# never searches owned states or the country graph.
+humanitarian_corridor_revalidate_changed_state = {
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			has_country_flag = migration_displacement_country_active
+			has_event_target = humanitarian_corridor_changed_state
+			has_variable = humanitarian_corridor_offer_front_state_id
+			has_variable = humanitarian_corridor_offer_origin_state_id
+			check_variable = { var = humanitarian_corridor_offer_front_state_id value = event_target:humanitarian_corridor_changed_state.id compare = equals }
+		}
+		var:humanitarian_corridor_offer_origin_state_id = {
+			humanitarian_corridor_invalidate_for_control_change = yes
+		}
+	}
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			has_country_flag = migration_displacement_country_active
+			has_event_target = humanitarian_corridor_changed_state
+			has_variable = humanitarian_corridor_front_state_id
+			has_variable = humanitarian_corridor_origin_state_id
+			check_variable = { var = humanitarian_corridor_front_state_id value = event_target:humanitarian_corridor_changed_state.id compare = equals }
+		}
+		var:humanitarian_corridor_origin_state_id = {
+			humanitarian_corridor_invalidate_for_control_change = yes
+		}
+	}
+}
+
+# COUNTRY scope. War/peace callbacks call this only on their named countries.
+# Both pending offers and accepted/active contracts resolve one persisted
+# origin; relation validation remains exact and fail-closed.
+humanitarian_corridor_revalidate_sparse_country = {
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			has_country_flag = migration_displacement_country_active
+		}
+		if = {
+			limit = { has_variable = humanitarian_corridor_offer_origin_state_id }
+			var:humanitarian_corridor_offer_origin_state_id = {
+				humanitarian_corridor_revalidate_route_relation = yes
+			}
+		}
+		if = {
+			limit = { has_variable = humanitarian_corridor_origin_state_id }
+			var:humanitarian_corridor_origin_state_id = {
+				humanitarian_corridor_revalidate_route_relation = yes
+			}
+		}
+	}
+}
+
+# STATE scope. Attack/control owners submit the exact receipt and attacker ID.
+# This helper owns terminal disqualification and cleanup, not detection.
+humanitarian_corridor_mark_attack_disqualified = {
+	set_temp_variable = { humanitarian_corridor_attack_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_attack_receipt_is_valid = yes }
+		set_temp_variable = { famine_achievement_corridor_generation_request = humanitarian_corridor_route_generation }
+		set_temp_variable = { famine_achievement_corridor_origin_state_id_request = id }
+		if = {
+			limit = { has_variable = humanitarian_corridor_requester_country_id }
+			var:humanitarian_corridor_requester_country_id = { famine_achievement_fail_corridor_attempt = yes }
+		}
+		set_variable = { humanitarian_corridor_attack_received_date = global.date }
+		set_variable = { humanitarian_corridor_attack_date = global.date }
+		set_variable = { humanitarian_corridor_last_attack_attacker_country_id = humanitarian_corridor_attack_attacker_country_id }
+		set_variable = { humanitarian_corridor_attack_reason = constant:humanitarian_corridor_reason.attack }
+		set_variable = { humanitarian_corridor_last_terminal_status = constant:humanitarian_corridor_status.disqualified }
+		set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.attack }
+		set_variable = { humanitarian_corridor_cleanup_reason = constant:humanitarian_corridor_reason.attack }
+		set_variable = { humanitarian_corridor_status = constant:humanitarian_corridor_status.disqualified }
+		set_state_flag = humanitarian_corridor_attack_received
+		set_state_flag = humanitarian_corridor_attack_disqualified
+		humanitarian_corridor_cleanup = yes
+		set_temp_variable = { humanitarian_corridor_attack_result = constant:humanitarian_corridor_result.disqualified }
+	}
+}
+
+# STATE scope. Exact attack callbacks save the attacked state and attacking
+# country before calling this helper. It tests the origin directly, then only
+# the sparse registered-country mirrors for a matching persisted front state.
+# Controller, war status, and state-control changes are never attacker proof.
+humanitarian_corridor_handle_exact_state_attack = {
+	save_event_target_as = humanitarian_corridor_attacked_state
+	if = {
+		limit = {
+			has_event_target = humanitarian_corridor_exact_attacker
+			has_state_flag = humanitarian_corridor_contract_active
+			has_variable = humanitarian_corridor_origin_state_id
+			check_variable = { var = humanitarian_corridor_origin_state_id value = THIS.id compare = equals }
+		}
+		set_variable = { humanitarian_corridor_attack_receipt_proven = constant:humanitarian_corridor_runtime.one }
+		set_variable = { humanitarian_corridor_attack_attacker_country_id = event_target:humanitarian_corridor_exact_attacker.id }
+		humanitarian_corridor_mark_attack_disqualified = yes
+	}
+	for_each_scope_loop = {
+		array = global.migration_active_countries
+		humanitarian_corridor_submit_exact_front_attack_receipt = yes
+	}
+}
+
+# COUNTRY scope. Resolves an authoritative attack on the exact persisted front
+# state through the sparse active-country registry. If no active mirror matches
+# the state and current contract generation, no receipt is emitted.
+humanitarian_corridor_submit_exact_front_attack_receipt = {
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			has_country_flag = migration_displacement_country_active
+			has_event_target = humanitarian_corridor_exact_attacker
+			has_event_target = humanitarian_corridor_attacked_state
+			has_variable = humanitarian_corridor_front_state_id
+			has_variable = humanitarian_corridor_origin_state_id
+			check_variable = { var = humanitarian_corridor_front_state_id value = event_target:humanitarian_corridor_attacked_state.id compare = equals }
+		}
+		var:humanitarian_corridor_origin_state_id = {
+			if = {
+				limit = {
+					has_state_flag = humanitarian_corridor_contract_active
+					humanitarian_corridor_front_state_is_valid = yes
+				}
+				set_variable = { humanitarian_corridor_attack_receipt_proven = constant:humanitarian_corridor_runtime.one }
+				set_variable = { humanitarian_corridor_attack_attacker_country_id = event_target:humanitarian_corridor_exact_attacker.id }
+				humanitarian_corridor_mark_attack_disqualified = yes
+			}
+		}
+	}
+	if = {
+		limit = {
+			humanitarian_country_is_valid = yes
+			has_country_flag = migration_displacement_country_active
+			has_event_target = humanitarian_corridor_exact_attacker
+			has_event_target = humanitarian_corridor_attacked_state
+			has_variable = humanitarian_corridor_offer_front_state_id
+			has_variable = humanitarian_corridor_offer_origin_state_id
+			check_variable = { var = humanitarian_corridor_offer_front_state_id value = event_target:humanitarian_corridor_attacked_state.id compare = equals }
+		}
+		var:humanitarian_corridor_offer_origin_state_id = {
+			if = {
+				limit = {
+					has_state_flag = humanitarian_corridor_contract_active
+					humanitarian_corridor_front_state_is_valid = yes
+				}
+				set_variable = { humanitarian_corridor_attack_receipt_proven = constant:humanitarian_corridor_runtime.one }
+				set_variable = { humanitarian_corridor_attack_attacker_country_id = event_target:humanitarian_corridor_exact_attacker.id }
+				humanitarian_corridor_mark_attack_disqualified = yes
+			}
+		}
+	}
+}
+
+# STATE scope. on_nuke_drop enters the exact nuked state after its launcher was
+# saved by the on-action owner. Reuse the shared exact-state receipt path.
+humanitarian_corridor_handle_nuke_drop = {
+	if = {
+		limit = { has_event_target = humanitarian_corridor_nuke_launcher }
+		event_target:humanitarian_corridor_nuke_launcher = {
+			save_event_target_as = humanitarian_corridor_exact_attacker
+		}
+		humanitarian_corridor_handle_exact_state_attack = yes
+	}
+}
+
+# STATE scope. Idempotent terminal cleanup. Last status/reason, transaction
+# amounts, and attacker evidence remain for audits; active IDs, response
+# mirrors, mission slots, and generic route proof do not.
+humanitarian_corridor_cleanup = {
+	# Corridor cleanup is an exact terminal for its preparation/organized
+	# presentation receipts. Durable depopulation and resettlement/return
+	# history is intentionally untouched here.
+	set_temp_variable = { humanitarian_corridor_presentation_clear_refresh = constant:humanitarian_corridor_runtime.zero }
+	if = {
+		limit = { has_state_flag = migration_presentation_preparing_projection_active }
+		set_temp_variable = { humanitarian_corridor_presentation_clear_refresh = constant:humanitarian_corridor_runtime.one }
+		migration_presentation_clear_preparing_projection = yes
+	}
+	if = {
+		limit = { has_state_flag = migration_presentation_organized_projection_active }
+		set_temp_variable = { humanitarian_corridor_presentation_clear_refresh = constant:humanitarian_corridor_runtime.one }
+		migration_presentation_clear_organized_evacuation_projection = yes
+	}
+	if = {
+		limit = {
+			check_variable = { var = humanitarian_corridor_presentation_clear_refresh value = constant:humanitarian_corridor_runtime.one compare = equals }
+		}
+		humanitarian_refresh_state_modifiers = yes
+	}
+	set_temp_variable = { humanitarian_corridor_presentation_clear_refresh = constant:humanitarian_corridor_runtime.zero }
+	if = {
+		limit = { has_variable = humanitarian_corridor_status }
+		set_variable = { humanitarian_corridor_last_terminal_status = humanitarian_corridor_status }
+	}
+	set_state_flag = humanitarian_corridor_cleanup_pending
+	if = {
+		limit = { has_variable = humanitarian_corridor_counterpart_country_id }
+		# Snapshot the receiving country's terminal cohort identity before this
+		# cleanup clears the route mirror and counterpart IDs.
+		var:humanitarian_corridor_counterpart_country_id = {
+			humanitarian_achievement_record_gate_terminal_cleanup = yes
+		}
+	}
+	if = {
+		limit = { has_variable = humanitarian_corridor_front_state_id }
+		humanitarian_corridor_clear_route_binding = yes
+	}
+	if = {
+		limit = { has_variable = humanitarian_corridor_counterpart_country_id }
+		var:humanitarian_corridor_counterpart_country_id = {
+			clr_country_flag = humanitarian_corridor_offer_pending
+			clr_country_flag = humanitarian_corridor_offer_accepted
+			clr_country_flag = humanitarian_corridor_country_pulse_pending
+			clr_country_flag = humanitarian_corridor_request_pending
+			clear_variable = humanitarian_corridor_offer_origin_state_id
+			clear_variable = humanitarian_corridor_offer_front_state_id
+			clear_variable = humanitarian_corridor_offer_requester_country_id
+			clear_variable = humanitarian_corridor_offer_deadline
+			clear_variable = humanitarian_corridor_offer_operation
+			clear_variable = humanitarian_corridor_offer_cohort_id
+			clear_variable = humanitarian_corridor_offer_route_generation
+			clear_variable = humanitarian_corridor_origin_state_id
+			clear_variable = humanitarian_corridor_counterpart_country_id
+			clear_variable = humanitarian_corridor_front_state_id
+			clear_variable = humanitarian_corridor_country_pulse_due
+		}
+	}
+	clr_state_flag = humanitarian_corridor_contract_active
+	clr_state_flag = humanitarian_corridor_preparation_pending
+	clr_state_flag = humanitarian_corridor_offer_pending
+	clr_state_flag = humanitarian_corridor_response_accepted
+	clr_state_flag = humanitarian_corridor_operation_pending
+	clr_state_flag = humanitarian_corridor_mission_armed
+	clr_state_flag = humanitarian_corridor_attack_received
+	clr_state_flag = humanitarian_corridor_route_invalid
+	clr_state_flag = humanitarian_corridor_accepted
+	clr_state_flag = humanitarian_corridor_mission_active
+	clr_state_flag = humanitarian_corridor_relief_proven
+	clr_state_flag = humanitarian_corridor_attack_disqualified
+	clr_state_flag = humanitarian_corridor_selection_ambiguous
+	clr_state_flag = humanitarian_corridor_mission_subject
+	clr_state_flag = humanitarian_corridor_mission_success_proven
+	if = {
+		limit = { has_variable = humanitarian_corridor_requester_country_id }
+		var:humanitarian_corridor_requester_country_id = {
+			clr_country_flag = humanitarian_corridor_request_pending
+			clr_country_flag = humanitarian_corridor_response_accepted
+			clr_country_flag = humanitarian_corridor_country_pulse_pending
+			clr_country_flag = humanitarian_corridor_mission_active
+			clear_variable = humanitarian_corridor_origin_state_id
+			clear_variable = humanitarian_corridor_counterpart_country_id
+			clear_variable = humanitarian_corridor_front_state_id
+			clear_variable = humanitarian_corridor_country_pulse_due
+			migration_recount_active_mission_slots = yes
+		}
+	}
+	clear_variable = humanitarian_corridor_mission_cohort_id
+	clear_variable = humanitarian_corridor_origin_state_id
+	clear_variable = humanitarian_corridor_origin_controller_country_id
+	clear_variable = humanitarian_corridor_origin_owner_country_id
+	clear_variable = humanitarian_corridor_origin_controller_id
+	clear_variable = humanitarian_corridor_front_controller_id
+	clear_variable = humanitarian_corridor_requester_country_id
+	clear_variable = humanitarian_corridor_counterpart_country_id
+	clear_variable = humanitarian_corridor_front_state_id
+	clear_variable = humanitarian_corridor_offer_deadline
+	clear_variable = humanitarian_corridor_operation_deadline
+	clear_variable = humanitarian_corridor_mission_deadline
+	clear_variable = humanitarian_corridor_route_geometry_proof
+	clear_variable = humanitarian_corridor_route_border_proof
+	clear_variable = humanitarian_corridor_route_transport_proof
+	clear_variable = humanitarian_corridor_route_safety_proof
+	clear_variable = humanitarian_corridor_route_actor_proof
+	clear_variable = humanitarian_corridor_route_ceasefire_proof
+	clear_variable = humanitarian_corridor_route_food_proof
+	clear_variable = humanitarian_corridor_route_reception_proof
+	clear_variable = humanitarian_corridor_food_proof
+	clear_variable = humanitarian_corridor_reception_proof
+	clear_variable = humanitarian_corridor_route_generation
+	clear_variable = humanitarian_corridor_route_proof_generation
+	clear_variable = humanitarian_corridor_operation
+	clear_variable = humanitarian_corridor_relation
+	clear_variable = humanitarian_corridor_cohort_id
+	clear_variable = humanitarian_corridor_transfer_people
+	clear_variable = humanitarian_corridor_transaction_proven
+	clear_variable = humanitarian_corridor_evacuation_proven
+	clear_variable = humanitarian_corridor_relief_proven
+	clear_variable = humanitarian_corridor_evacuation_actual_debit
+	clear_variable = humanitarian_corridor_evacuation_route_deaths
+	clear_variable = humanitarian_corridor_evacuation_survivor_credit
+	clear_variable = humanitarian_corridor_relief_source_debit
+	clear_variable = humanitarian_corridor_relief_destination_credit
+	clear_variable = humanitarian_corridor_relief_amount
+	clear_variable = humanitarian_corridor_attack_receipt_proven
+	clear_variable = humanitarian_corridor_attack_attacker_country_id
+	clear_variable = humanitarian_corridor_attack_received_date
+	clear_variable = humanitarian_corridor_mission_armed
+	clear_variable = humanitarian_corridor_candidate_count
+	clear_variable = humanitarian_corridor_candidate_front_state_id
+	clear_variable = humanitarian_corridor_candidate_country_id
+	clear_variable = humanitarian_corridor_route_binding_active
+	clear_variable = humanitarian_corridor_status
+	clr_state_flag = humanitarian_corridor_cleanup_pending
+}
+
+# COUNTRY scope. Sparse country pulse checks one mirrored origin only. A stale
+# offer expires through the normal lifecycle; a changed front/controller also
+# expires through the same path. No any_owned_state/any_country scan occurs.
+humanitarian_corridor_sparse_country_pulse = {
+	set_temp_variable = { humanitarian_corridor_pulse_result = constant:humanitarian_corridor_result.invalid }
+	if = {
+		limit = { humanitarian_corridor_country_pulse_is_valid = yes }
+		clear_variable = humanitarian_corridor_country_pulse_due
+		clr_country_flag = humanitarian_corridor_country_pulse_pending
+	set_variable = { humanitarian_corridor_country_pulse_last_date = global.date }
+		if = {
+			limit = { has_variable = humanitarian_corridor_offer_origin_state_id }
+			var:humanitarian_corridor_offer_origin_state_id = {
+				if = {
+					limit = { NOT = { humanitarian_corridor_acceptance_is_valid = yes } }
+					set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.response_deadline }
+					humanitarian_corridor_expire = yes
+				}
+				else = {
+					ROOT = {
+						set_temp_variable = { humanitarian_corridor_pulse_result = constant:humanitarian_corridor_result.valid }
+						set_variable = { humanitarian_corridor_country_pulse_due = global.date }
+						add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+						set_country_flag = humanitarian_corridor_country_pulse_pending
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { has_variable = humanitarian_corridor_origin_state_id }
+			var:humanitarian_corridor_origin_state_id = {
+				if = {
+					limit = { NOT = { humanitarian_corridor_front_state_is_valid = yes } }
+					set_variable = { humanitarian_corridor_last_cleanup_reason = constant:humanitarian_corridor_reason.control_change }
+					humanitarian_corridor_expire = yes
+				}
+				else = {
+					ROOT = {
+						set_temp_variable = { humanitarian_corridor_pulse_result = constant:humanitarian_corridor_result.valid }
+						set_variable = { humanitarian_corridor_country_pulse_due = global.date }
+						add_to_variable = { humanitarian_corridor_country_pulse_due = constant:humanitarian_corridor_timing.pulse_cooldown_days }
+						set_country_flag = humanitarian_corridor_country_pulse_pending
+					}
+				}
+			}
+		}
+	}
+}

@@ -780,6 +780,7 @@ camp_rework_germany_register_requested_laboratory_state = {
 
 camp_rework_germany_register_auschwitz_layers = {
 	camp_rework_germany_initialize_country_values = yes
+	set_temp_variable = { genocide_camp_conversion_succeeded = 0 }
 	88 = {
 		if = {
 			limit = {
@@ -805,6 +806,14 @@ camp_rework_germany_register_auschwitz_layers = {
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
 			camp_rework_register_active_site = yes
 			camp_rework_register_evidence_state = yes
+			if = {
+				limit = { check_variable = { genocide_camp_conversion_succeeded > 0 } }
+				set_variable = {
+					migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
+				}
+				set_variable = { migration_persecution_pending_actor = ROOT }
+				migration_persecution_record_state = yes
+			}
 		}
 	}
 	camp_rework_germany_refresh_values = yes
@@ -820,6 +829,7 @@ camp_rework_germany_apply_prisoner_transfer = {
 				compare = greater_than_or_equals
 			}
 			FROM = {
+				NOT = { state = 88 }
 				camp_rework_state_can_accept_responsibility_from_root = yes
 				OR = {
 					is_germany_occupied_poland_prisoner_source = yes
@@ -860,6 +870,11 @@ camp_rework_germany_apply_prisoner_transfer = {
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 			camp_rework_apply_state_death_burst = yes
 			camp_rework_register_evidence_state = yes
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
+			}
+			set_variable = { migration_persecution_pending_actor = ROOT }
+			migration_persecution_record_state = yes
 		}
 		camp_rework_germany_register_auschwitz_layers = yes
 		if = { limit = { FROM = { is_germany_occupied_poland_prisoner_source = yes } } add_to_variable = { poland_transfer_pressure = constant:camp_rework_germany.poland_transfer_pressure } }
@@ -879,6 +894,39 @@ camp_rework_germany_apply_prisoner_transfer = {
 		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }
 		add_to_variable = { camp_policy_tribunal = constant:camp_rework_country_value.tribunal_major }
 		camp_rework_recalculate_country_values = yes
+		# State 88 is the owner-proven camp-prison reception site for this
+		# transaction. These are forced-intake proofs, not a humanitarian
+		# destination selection and not a proxy Soviet route.
+		88 = {
+			save_event_target_as = migration_forced_transfer_destination
+			set_temp_variable = { migration_forced_transfer_destination_food_safe_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_destination_reception_proven = constant:humanitarian_runtime.one }
+		}
+		set_temp_variable = { migration_forced_transfer_transaction_id = genocide_decisions_taken }
+		FROM = {
+			set_temp_variable = { migration_forced_transfer_requested_people = state_population_k }
+			multiply_temp_variable = { migration_forced_transfer_requested_people = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { migration_forced_transfer_requested_people = constant:migration_decision_threshold.transfer_share }
+			round_temp_variable = migration_forced_transfer_requested_people
+			set_temp_variable = { migration_forced_transfer_minimum_origin_remaining = state_population_k }
+			multiply_temp_variable = { migration_forced_transfer_minimum_origin_remaining = constant:chaos_meter_deaths.people_per_k }
+			multiply_temp_variable = { migration_forced_transfer_minimum_origin_remaining = constant:migration_decision_threshold.transfer_minimum_origin_share }
+			round_temp_variable = migration_forced_transfer_minimum_origin_remaining
+			set_temp_variable = { migration_forced_transfer_request_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_origin_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_destination_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_actor_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_transaction_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_cause = constant:migration_forced_movement_cause.deportation_camp_prison_transfer }
+			set_temp_variable = { migration_forced_transfer_custody_status = constant:migration_forced_movement_custody.forced }
+			set_temp_variable = { migration_forced_transfer_source_pressure_owner_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_reception_owner_proven = constant:humanitarian_runtime.one }
+			set_temp_variable = { migration_forced_transfer_route_deaths_requested = constant:humanitarian_population.zero }
+			set_temp_variable = { migration_forced_transfer_route_death_proven = constant:humanitarian_runtime.zero }
+			set_temp_variable = { migration_forced_transfer_route_death_reason = constant:chaos_meter_deaths_reason.forced_displacement }
+			set_temp_variable = { migration_forced_transfer_log_deaths = constant:humanitarian_runtime.zero }
+			migration_execute_forced_transfer_exact = yes
+		}
 	}
 }
 
@@ -1356,6 +1404,14 @@ camp_rework_japan_apply_prisoner_experiment = {
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
 			camp_rework_apply_state_death_burst = yes
 			camp_rework_register_evidence_state = yes
+			if = {
+				limit = { check_variable = { genocide_camp_conversion_succeeded > 0 } }
+				set_variable = {
+					migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
+				}
+				set_variable = { migration_persecution_pending_actor = ROOT }
+				migration_persecution_record_state = yes
+			}
 			if = { limit = { is_japan_home_island_fallback_state = yes } set_state_flag = camp_rework_japan_home_fallback_used }
 		}
 		add_to_variable = { ishii_influence = constant:camp_rework_japan.ishii_influence_major }
@@ -2261,6 +2317,11 @@ camp_rework_soviet_transfer_prisoners_to_industrial_camps_in_action_state = {
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 			camp_rework_apply_state_death_burst = yes
 			camp_rework_register_evidence_state = yes
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.gulag
+			}
+			set_variable = { migration_persecution_pending_actor = ROOT }
+			migration_persecution_record_state = yes
 		}
 	}
 	add_to_variable = { forced_labor_quota = constant:camp_rework_country_value.labor_output_major }
@@ -2605,6 +2666,14 @@ camp_rework_soviet_extreme_repression_in_action_state = {
 	var:camp_rework_action_state_id = {
 		set_state_flag = genocide_soviet_mass_repression_site
 		set_state_flag = camp_rework_soviet_mass_deportation_site
+		if = {
+			limit = { camp_rework_state_can_accept_responsibility_from_root = yes }
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.gulag
+			}
+			set_variable = { migration_persecution_pending_actor = ROOT }
+			migration_persecution_record_state = yes
+		}
 	}
 	add_to_variable = { forced_labor_quota = constant:camp_rework_country_value.labor_output_major }
 	add_to_variable = { nkvd_authority = constant:camp_rework_soviet.nkvd_authority_major }

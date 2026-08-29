@@ -2,6 +2,8 @@
 
 Date: 2026-08-24.
 
+> **Superseded historical snapshot (2026-08-25):** This addendum records pre-separation design and closure evidence and is retained for provenance only. Do not use its shared category, helper names, asset counts, probability status, or GUI/map recommendations as current instructions. Use [source_of_truth_map.md](source_of_truth_map.md) and [completion_report.md](completion_report.md) for the current incomplete status and remaining blockers.
+
 Status: broad expansion is closed. The implemented shared system is deep enough that another mechanic, narrative, country, or visual layer would add bloat. Completion is still withheld for the bounded defects and external evidence blockers in this addendum.
 
 This document supersedes the 2026-08-22 improvement review. It is a final disposition and closure plan, not a second unresolved expansion layer.

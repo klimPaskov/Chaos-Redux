@@ -1,5 +1,7 @@
 # Event 019 and SCN-013 Catalog Workbook Reconciliation
 
+> **Historical catalog handoff (2026-08-22):** This dated workbook audit is retained as catalog evidence for its bounded 2026-07-18 reconciliation. Its status-promotion statements do not certify the later provider-522/provider-523 extension or current whole-event closure; use `source_of_truth_map.md` and `019_final_catalog_alignment_2026-08-22.md` for current documentation routing.
+
 Date: 2026-07-18  
 Scope: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`, Event 19 and
 `SCN-013` rows only

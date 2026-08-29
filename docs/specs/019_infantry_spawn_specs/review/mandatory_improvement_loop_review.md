@@ -1,23 +1,6 @@
 # Mandatory Near-Completion Improvement Loop Review
 
-> **Superseded process notice (2026-07-16):** This file preserves the manual
-> planning-stage review. A later mandatory planner pass produced
-> `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`.
-> Its natural-release, pre-fire reception, documentation, and fixed
-> identity-scene findings have been implemented. That addendum and the newest
-> audit handoffs are the current authority. The live-final AI, balance,
-> performance, isolation, scenario-safety, and exploit reaudit is clean with
-> zero P0, P1, or P2 findings. All gameplay specialist gates are closed. The
-> owner-approved 7/18 regional candidate now contains 91 raw sources, 91
-> deterministic spot masters, and 273 native/runtime output pairs. Visual and
-> runtime rows pass. The independent remediation re-audit handoff
-> `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-> is PASS and clears the regional asset gate for parent-owned package
-> promotion. The machine JSON retains its immutable literal
-> `candidate_requires_independent_visual_review` processor-state value. Parent
-> workbook/catalog reconciliation and export, the 33-file package inventory,
-> and the mandatory final completion audit are complete. Event 19 and SCN-013
-> are `Fully Functional`; no closure gate remains.
+> **Superseded process notice (2026-07-16, current boundary 2026-08-22):** This file preserves the manual planning-stage review. A later mandatory planner pass produced `docs/plans/019_infantry_spawn_plans/019_near_completion_improvement_addendum_2026_07_16.md`, and that addendum plus the newest audit handoffs are the current authority. The 2026-07-18 AI, balance, performance, isolation, scenario-safety, exploit, asset, catalog, and completion statements are historical tranche evidence. The current provider-extension decision/localisation integration pass, normalized provider odds, and final documentation gate remain unresolved. The accepted runtime surface is decisions-only with no Event 19 scripted GUI.
 
 ## Process status
 
@@ -141,14 +124,4 @@ first-family reception, fixed identity-scene, and documentation findings were
 promoted into implementation and are closed at addendum level; another broad
 expansion pass is not warranted unless a current audit finds a concrete gap.
 
-Exactly two engine-constrained substitutes are owner-approved and implemented:
-exact recorded-formation recreate/prove/delete and controlled one-formation
-combat trials. The owner-approved deterministic spot-colour route is also
-implemented for the 7/18 regional candidate. The independent remediation
-re-audit handoff
-`docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md`
-is PASS and clears the regional asset gate. Workbook/catalog reconciliation,
-export, the 33-file package inventory, and the final completion audit are
-complete. Event 19 and SCN-013 are `Fully Functional`; no closure gate remains.
-The current disposition is tracked in
-`review/blockers_and_uncertainty.md`.
+Exactly two engine-constrained substitutes are owner-approved and implemented for the historical tranche: exact recorded-formation recreate/prove/delete and controlled one-formation combat trials. The owner-approved deterministic spot-colour route is also implemented for the 7/18 regional candidate. The independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS for that bounded asset gate. Workbook/catalog reconciliation, export, the 33-file package inventory, and the final completion audit are historical tranche evidence. Event 19 and SCN-013 are not currently certified by that historical `Fully Functional` status; the current disposition is tracked in `docs/plans/019_infantry_spawn_plans/source_of_truth_map.md` and `review/blockers_and_uncertainty.md`, where provider-extension and documentation gates remain open.

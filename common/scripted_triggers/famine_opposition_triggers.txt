@@ -1,0 +1,101 @@
+# ============================================================================
+# CHAOS REDUX - FAMINE OPPOSITION TRIGGERS
+# ============================================================================
+# State-scoped, fail-closed eligibility predicates for the one-shot
+# catastrophic-famine opposition resolution. These triggers never scan for
+# states or invent a movement; they only inspect the current explicit state.
+# ============================================================================
+
+famine_opposition_resolution_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		has_state_flag = famine_food_security_active
+		has_state_flag = famine_food_stage_catastrophic
+		has_state_flag = famine_extraction_active
+		check_variable = {
+			var = famine_component_extraction
+			value = constant:famine_food_component.zero
+			compare = greater_than
+		}
+		check_variable = {
+			var = famine_food_security_score
+			value = constant:famine_food_score.catastrophic_threshold
+			compare = greater_than_or_equals
+		}
+		OR = {
+			NOT = { has_variable = famine_opposition_last_resolution_stage_date }
+			check_variable = {
+				var = famine_opposition_last_resolution_stage_date
+				value = famine_food_stage_started_date
+				compare = less_than
+			}
+		}
+		OWNER = { humanitarian_country_is_valid = yes }
+		CONTROLLER = { humanitarian_country_is_valid = yes }
+	}
+}
+
+famine_opposition_party_democratic_candidate_is_valid = {
+	hidden_trigger = {
+		CONTROLLER = {
+			NOT = { has_government = democratic }
+			check_variable = { party_popularity_100@democratic > constant:famine_opposition_weight.party_support_floor }
+		}
+	}
+}
+
+famine_opposition_party_communism_candidate_is_valid = {
+	hidden_trigger = {
+		CONTROLLER = {
+			NOT = { has_government = communism }
+			check_variable = { party_popularity_100@communism > constant:famine_opposition_weight.party_support_floor }
+		}
+	}
+}
+
+famine_opposition_party_fascism_candidate_is_valid = {
+	hidden_trigger = {
+		CONTROLLER = {
+			NOT = { has_government = fascism }
+			check_variable = { party_popularity_100@fascism > constant:famine_opposition_weight.party_support_floor }
+		}
+	}
+}
+
+famine_opposition_party_neutrality_candidate_is_valid = {
+	hidden_trigger = {
+		CONTROLLER = {
+			NOT = { has_government = neutrality }
+			check_variable = { party_popularity_100@neutrality > constant:famine_opposition_weight.party_support_floor }
+		}
+	}
+}
+
+famine_opposition_local_resistance_candidate_is_valid = {
+	hidden_trigger = {
+		has_active_resistance = yes
+		check_variable = { resistance > constant:famine_opposition_weight.party_support_floor }
+	}
+}
+
+famine_opposition_national_autonomy_candidate_is_valid = {
+	hidden_trigger = {
+		is_core_of = OWNER
+		OWNER = {
+			check_variable = { autonomy_ratio > constant:famine_opposition_weight.autonomy_subject_floor }
+		}
+	}
+}
+
+# No authoritative project-movement flag or scoped registry exists in the
+# current source. This trigger intentionally remains false until such a
+# project-owned proof is added; the corresponding candidate weight is zero.
+famine_opposition_project_movement_candidate_is_valid = {
+	hidden_trigger = {
+		check_variable = {
+			var = famine_opposition_project_movement_authority_proven
+			value = constant:famine_opposition_weight.project_authority_proven
+			compare = greater_than
+		}
+	}
+}

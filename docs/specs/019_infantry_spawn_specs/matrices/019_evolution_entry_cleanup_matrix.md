@@ -1,12 +1,14 @@
 # Event 19 Evolution Entry and Cleanup Matrix
 
+> **Current UI boundary (2026-08-22):** Event 19 uses ordinary decisions and decision categories only; no scripted GUI is runtime-wired. The former Muster Board terms retained below are historical design labels for selection-cache and lifecycle state, not active window requirements.
+
 ## Evolution entry paths
 
 | Evolution | Active-event entry | Pre-fire evolved opening | Logged evolution | Main cleanup risk |
 | --- | --- | --- | --- | --- |
 | I Organized Muster | unresolved lots gain staff, district, and reorganization actions | next generation uses stronger coherent families | one global stage 1 record | old audit missions and equipment debt must migrate |
 | II Arsenal Lottery | current lots can expand, preserve prototypes, and use requests | generation can create multiple serious or strange units per state | one global stage 2 record | request counters, advanced-equipment restrictions, and lot upgrades |
-| III Command Fracture | automatic spawning pauses after active lots, claimants use existing districts | country receives Muster Board and first bounded draw or claimant offer | one global stage 3 record | baseline decision replacement and claimant target lifecycle |
+| III Command Fracture | automatic spawning pauses after active lots, claimants use existing districts | country receives the Formation Ledger decision category and first bounded draw or claimant offer | one global stage 3 record | baseline decision replacement and claimant target lifecycle |
 | IV Anomalous Muster | registry and saturation attach to active crisis | first anomalous family incident follows local eligibility | one global stage 4 record | parent isolation, family targets, derivative release safety |
 
 ## Generation closeout
@@ -20,7 +22,7 @@
 | Request count | archive into generation history and reset |
 | Request cooldown | retain until expiry |
 | Audit lock | remove from integrated ordinary formations |
-| Selected lot target | clear when lot resolves or UI closes on invalid target |
+| Selected lot target | clear when lot resolves or the decision selection cache invalidates the target |
 | Temporary mission flags | clear on success, failure, annexation, or route transition |
 | Stacked muster | remove only after overlapping generations are resolved |
 

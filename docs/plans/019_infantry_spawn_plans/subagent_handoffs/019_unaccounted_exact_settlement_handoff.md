@@ -1,5 +1,7 @@
 # Event 19 exact-obligation settlement handoff
 
+> **Historical UI boundary (2026-08-22):** This settlement handoff is retained as implementation evidence. Any former Muster Board or selected-lot UI references below are archival; the accepted Event 19 runtime is decisions-only with no scripted GUI.
+
 ## Scope
 
 This tranche replaces aggregate debt disposal with row-exact settlement,

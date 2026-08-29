@@ -1,5 +1,7 @@
 # Famine and Migration Localisation Handoff
 
+> **Superseded historical identifier banner (2026-08-25):** Any `fm_*` or `famine_migration_*` identifier quoted in this historical handoff is source-snapshot terminology only and is superseded; current authorities use separate `famine_*`, `migration_*`, or narrow neutral `civilian_transfer_*`/`humanitarian_*` names; see [source_of_truth_map.md](../source_of_truth_map.md).
+
 ## Ownership and changed files
 
 - `localisation/english/famine_migration_l_english.yml`: new English player-facing text for the shared famine and migration system.

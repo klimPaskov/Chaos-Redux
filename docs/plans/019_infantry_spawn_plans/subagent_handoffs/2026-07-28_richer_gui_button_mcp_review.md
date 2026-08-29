@@ -1,5 +1,7 @@
 # Event 019 richer background and button-label MCP review
 
+> **Archival handoff notice (2026-08-22):** This former scripted-GUI review is retained only as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; the button geometry, GUI artifacts, and runtime claims below are not active implementation instructions.
+
 ## Scope
 
 This handoff records the follow-up correction after the compact board review. The direct Event 019 Muster Board remains a 960 by 640 window with the reduced information set, but button labels are now separate left-aligned `instantTextBoxType` overlays rather than centered `buttonText` values. Every functional button keeps its original click name, scripted GUI binding, and `pdx_tooltip`; each visible overlay repeats the same tooltip key and is `alwaystransparent` so the underlying hitbox receives the click.

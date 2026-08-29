@@ -65,5 +65,6 @@ The startup effect currently replaces copied vanilla overrides for:
 - biowarfare facility placement in states 247, 282, 328, 338, 440, 609, 816, and 823
 - the Australia citizen-army tuning variables
 - the British Raj famine state pointer
+- Liberia's vanilla support-equipment technology required by its startup AI production strategy
 
 When adding a new startup grant, create or extend an individual `chaosx_startup_grant_<tag>` effect and call it from `chaosx_apply_startup_history_grants`.

@@ -1,0 +1,866 @@
+# ============================================================================
+# CHAOS REDUX - MIGRATION PERSECUTION PROJECTION
+# ============================================================================
+# Overview:
+# - Maintains a state-scoped projection of exact current persecution owners.
+# - Records only accepted state/action seams that provide a responsible actor,
+#   a cause class, and a monotonic state-local generation.
+# - Keeps actor, cause, and generation metadata separate from the canonical
+#   boolean flag so consumers cannot treat the flag as an identity container.
+# - Aggregates overlapping owner classes and clears only the class whose exact
+#   terminal path supplied a matching generation proof.
+# - Performs no population, Deaths, pressure, migration, or world-scan work.
+# ============================================================================
+
+# State scope. Allocate the next durable generation for one accepted owner
+# action. Call only after the caller has passed its exact action/state guards.
+migration_persecution_issue_generation = {
+	if = {
+		limit = { NOT = { has_variable = migration_persecution_generation_counter } }
+		set_variable = {
+			migration_persecution_generation_counter = constant:migration_persecution_owner_class.none
+		}
+	}
+	add_to_variable = {
+		migration_persecution_generation_counter = constant:humanitarian_runtime.one
+	}
+}
+
+# State scope. Record one accepted request and mark its owner class. The actor
+# is supplied as a scope pointer by the caller and must resolve to ROOT, the
+# country that accepted the operation. A mismatched actor fails closed.
+migration_persecution_record_state = {
+	if = {
+		limit = {
+			has_variable = migration_persecution_pending_owner
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.none
+				compare = greater_than
+			}
+			has_variable = migration_persecution_pending_actor
+			var:migration_persecution_pending_actor = {
+				exists = yes
+				tag = ROOT
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = migration_persecution_pending_generation } }
+			migration_persecution_issue_generation = yes
+			set_variable = {
+				migration_persecution_pending_generation = migration_persecution_generation_counter
+			}
+		}
+		migration_persecution_mark_state = yes
+	}
+	clear_variable = migration_persecution_pending_owner
+	clear_variable = migration_persecution_pending_actor
+	clear_variable = migration_persecution_pending_generation
+}
+
+# State scope. Accept a generation for exactly one owner class. Newer
+# generations replace an older active generation; equal active generations are
+# idempotent; lower generations and replays after a terminal clear do nothing.
+migration_persecution_mark_state = {
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.detention
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_detention_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_detention_generation
+						compare = greater_than
+					}
+				}
+				OR = {
+					NOT = { has_variable = migration_persecution_detention_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_detention_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_state_flag = migration_persecution_detention_active
+			set_variable = {
+				migration_persecution_detention_generation = migration_persecution_pending_generation
+			}
+			set_variable = {
+				migration_persecution_detention_actor_id = ROOT.id
+			}
+			set_variable = {
+				migration_persecution_detention_cause_class = migration_persecution_pending_owner
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_persecution_detention_generation
+				check_variable = {
+					var = migration_persecution_pending_generation
+					value = migration_persecution_detention_generation
+					compare = equals
+				}
+			}
+			set_state_flag = migration_persecution_detention_active
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.expanded_labor
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_expanded_labor_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_expanded_labor_generation
+						compare = greater_than
+					}
+				}
+				OR = {
+					NOT = { has_variable = migration_persecution_expanded_labor_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_expanded_labor_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_state_flag = migration_persecution_expanded_labor_active
+			set_variable = {
+				migration_persecution_expanded_labor_generation = migration_persecution_pending_generation
+			}
+			set_variable = {
+				migration_persecution_expanded_labor_actor_id = ROOT.id
+			}
+			set_variable = {
+				migration_persecution_expanded_labor_cause_class = migration_persecution_pending_owner
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_persecution_expanded_labor_generation
+				check_variable = {
+					var = migration_persecution_pending_generation
+					value = migration_persecution_expanded_labor_generation
+					compare = equals
+				}
+			}
+			set_state_flag = migration_persecution_expanded_labor_active
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.labor_project
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_labor_project_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_labor_project_generation
+						compare = greater_than
+					}
+				}
+				OR = {
+					NOT = { has_variable = migration_persecution_labor_project_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_labor_project_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_state_flag = migration_persecution_labor_project_active
+			set_variable = {
+				migration_persecution_labor_project_generation = migration_persecution_pending_generation
+			}
+			set_variable = {
+				migration_persecution_labor_project_actor_id = ROOT.id
+			}
+			set_variable = {
+				migration_persecution_labor_project_cause_class = migration_persecution_pending_owner
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_persecution_labor_project_generation
+				check_variable = {
+					var = migration_persecution_pending_generation
+					value = migration_persecution_labor_project_generation
+					compare = equals
+				}
+			}
+			set_state_flag = migration_persecution_labor_project_active
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.gulag
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_gulag_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_gulag_generation
+						compare = greater_than
+					}
+				}
+				OR = {
+					NOT = { has_variable = migration_persecution_gulag_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_gulag_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_state_flag = migration_persecution_gulag_active
+			set_variable = {
+				migration_persecution_gulag_generation = migration_persecution_pending_generation
+			}
+			set_variable = {
+				migration_persecution_gulag_actor_id = ROOT.id
+			}
+			set_variable = {
+				migration_persecution_gulag_cause_class = migration_persecution_pending_owner
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_persecution_gulag_generation
+				check_variable = {
+					var = migration_persecution_pending_generation
+					value = migration_persecution_gulag_generation
+					compare = equals
+				}
+			}
+			set_state_flag = migration_persecution_gulag_active
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.extermination
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_extermination_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_extermination_generation
+						compare = greater_than
+					}
+				}
+				OR = {
+					NOT = { has_variable = migration_persecution_extermination_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_extermination_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_state_flag = migration_persecution_extermination_active
+			set_variable = {
+				migration_persecution_extermination_generation = migration_persecution_pending_generation
+			}
+			set_variable = {
+				migration_persecution_extermination_actor_id = ROOT.id
+			}
+			set_variable = {
+				migration_persecution_extermination_cause_class = migration_persecution_pending_owner
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_persecution_extermination_generation
+				check_variable = {
+					var = migration_persecution_pending_generation
+					value = migration_persecution_extermination_generation
+					compare = equals
+				}
+			}
+			set_state_flag = migration_persecution_extermination_active
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.cbrn_coercive_operation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_cbrn_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_cbrn_generation
+						compare = greater_than
+					}
+				}
+				OR = {
+					NOT = { has_variable = migration_persecution_cbrn_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_pending_generation
+						value = migration_persecution_cbrn_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_state_flag = migration_persecution_cbrn_active
+			set_variable = {
+				migration_persecution_cbrn_generation = migration_persecution_pending_generation
+			}
+			set_variable = {
+				migration_persecution_cbrn_actor_id = ROOT.id
+			}
+			set_variable = {
+				migration_persecution_cbrn_cause_class = migration_persecution_pending_owner
+			}
+		}
+		else_if = {
+			limit = {
+				has_variable = migration_persecution_cbrn_generation
+				check_variable = {
+					var = migration_persecution_pending_generation
+					value = migration_persecution_cbrn_generation
+					compare = equals
+				}
+			}
+			set_state_flag = migration_persecution_cbrn_active
+		}
+	}
+	migration_persecution_recompute_state = yes
+}
+
+# State scope. Rebuild the canonical projection from exact owner classes. The
+# priority only selects metadata; it never suppresses another owner marker.
+migration_persecution_recompute_state = {
+	if = {
+		limit = {
+			has_state_flag = migration_persecution_cbrn_active
+			has_variable = migration_persecution_cbrn_generation
+			has_variable = migration_persecution_cbrn_actor_id
+			has_variable = migration_persecution_cbrn_cause_class
+		}
+		set_state_flag = migration_persecution_active
+		set_variable = {
+			migration_persecution_active_generation = migration_persecution_cbrn_generation
+		}
+		set_variable = {
+			migration_persecution_active_actor_id = migration_persecution_cbrn_actor_id
+		}
+		set_variable = {
+			migration_persecution_active_cause_class = migration_persecution_cbrn_cause_class
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = migration_persecution_extermination_active
+			has_variable = migration_persecution_extermination_generation
+			has_variable = migration_persecution_extermination_actor_id
+			has_variable = migration_persecution_extermination_cause_class
+		}
+		set_state_flag = migration_persecution_active
+		set_variable = {
+			migration_persecution_active_generation = migration_persecution_extermination_generation
+		}
+		set_variable = {
+			migration_persecution_active_actor_id = migration_persecution_extermination_actor_id
+		}
+		set_variable = {
+			migration_persecution_active_cause_class = migration_persecution_extermination_cause_class
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = migration_persecution_gulag_active
+			has_variable = migration_persecution_gulag_generation
+			has_variable = migration_persecution_gulag_actor_id
+			has_variable = migration_persecution_gulag_cause_class
+		}
+		set_state_flag = migration_persecution_active
+		set_variable = {
+			migration_persecution_active_generation = migration_persecution_gulag_generation
+		}
+		set_variable = {
+			migration_persecution_active_actor_id = migration_persecution_gulag_actor_id
+		}
+		set_variable = {
+			migration_persecution_active_cause_class = migration_persecution_gulag_cause_class
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = migration_persecution_expanded_labor_active
+			has_variable = migration_persecution_expanded_labor_generation
+			has_variable = migration_persecution_expanded_labor_actor_id
+			has_variable = migration_persecution_expanded_labor_cause_class
+		}
+		set_state_flag = migration_persecution_active
+		set_variable = {
+			migration_persecution_active_generation = migration_persecution_expanded_labor_generation
+		}
+		set_variable = {
+			migration_persecution_active_actor_id = migration_persecution_expanded_labor_actor_id
+		}
+		set_variable = {
+			migration_persecution_active_cause_class = migration_persecution_expanded_labor_cause_class
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = migration_persecution_labor_project_active
+			has_variable = migration_persecution_labor_project_generation
+			has_variable = migration_persecution_labor_project_actor_id
+			has_variable = migration_persecution_labor_project_cause_class
+		}
+		set_state_flag = migration_persecution_active
+		set_variable = {
+			migration_persecution_active_generation = migration_persecution_labor_project_generation
+		}
+		set_variable = {
+			migration_persecution_active_actor_id = migration_persecution_labor_project_actor_id
+		}
+		set_variable = {
+			migration_persecution_active_cause_class = migration_persecution_labor_project_cause_class
+		}
+	}
+	else_if = {
+		limit = {
+			has_state_flag = migration_persecution_detention_active
+			has_variable = migration_persecution_detention_generation
+			has_variable = migration_persecution_detention_actor_id
+			has_variable = migration_persecution_detention_cause_class
+		}
+		set_state_flag = migration_persecution_active
+		set_variable = {
+			migration_persecution_active_generation = migration_persecution_detention_generation
+		}
+		set_variable = {
+			migration_persecution_active_actor_id = migration_persecution_detention_actor_id
+		}
+		set_variable = {
+			migration_persecution_active_cause_class = migration_persecution_detention_cause_class
+		}
+	}
+	else = {
+		clr_state_flag = migration_persecution_active
+		clear_variable = migration_persecution_active_generation
+		clear_variable = migration_persecution_active_actor_id
+		clear_variable = migration_persecution_active_cause_class
+	}
+}
+
+# State scope. Capture the current camp owner class and generation before an
+# exact evidence/inactive-site terminal path mutates the site profile.
+migration_persecution_prepare_camp_terminal = {
+	camp_rework_refresh_state_site_profile = yes
+	clear_variable = migration_persecution_pending_owner
+	clear_variable = migration_persecution_pending_clear_generation
+	if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.detention } }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.detention
+		}
+		if = {
+			limit = { has_variable = migration_persecution_detention_generation }
+			set_variable = {
+				migration_persecution_pending_clear_generation = migration_persecution_detention_generation
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.expanded_labor } }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.expanded_labor
+		}
+		if = {
+			limit = { has_variable = migration_persecution_expanded_labor_generation }
+			set_variable = {
+				migration_persecution_pending_clear_generation = migration_persecution_expanded_labor_generation
+			}
+		}
+	}
+	else_if = {
+		limit = { check_variable = { camp_state_site_type = constant:camp_rework_site_type.gulag } }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.gulag
+		}
+		if = {
+			limit = { has_variable = migration_persecution_gulag_generation }
+			set_variable = {
+				migration_persecution_pending_clear_generation = migration_persecution_gulag_generation
+			}
+		}
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { camp_state_site_type = constant:camp_rework_site_type.radicalized }
+				check_variable = { camp_state_site_type = constant:camp_rework_site_type.experiment }
+			}
+		}
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
+		}
+		if = {
+			limit = { has_variable = migration_persecution_extermination_generation }
+			set_variable = {
+				migration_persecution_pending_clear_generation = migration_persecution_extermination_generation
+			}
+		}
+	}
+}
+
+# State scope. Capture every camp owner generation before dismantlement clears
+# the underlying site flags. The later clear helper preserves any newer owner
+# that appeared before the terminal callback completes.
+migration_persecution_prepare_camp_dismantlement = {
+	clear_variable = migration_persecution_terminal_detention_generation
+	clear_variable = migration_persecution_terminal_expanded_labor_generation
+	clear_variable = migration_persecution_terminal_labor_project_generation
+	clear_variable = migration_persecution_terminal_gulag_generation
+	clear_variable = migration_persecution_terminal_extermination_generation
+	if = {
+		limit = { has_variable = migration_persecution_detention_generation }
+		set_variable = {
+			migration_persecution_terminal_detention_generation = migration_persecution_detention_generation
+		}
+	}
+	if = {
+		limit = { has_variable = migration_persecution_expanded_labor_generation }
+		set_variable = {
+			migration_persecution_terminal_expanded_labor_generation = migration_persecution_expanded_labor_generation
+		}
+	}
+	if = {
+		limit = { has_variable = migration_persecution_labor_project_generation }
+		set_variable = {
+			migration_persecution_terminal_labor_project_generation = migration_persecution_labor_project_generation
+		}
+	}
+	if = {
+		limit = { has_variable = migration_persecution_gulag_generation }
+		set_variable = {
+			migration_persecution_terminal_gulag_generation = migration_persecution_gulag_generation
+		}
+	}
+	if = {
+		limit = { has_variable = migration_persecution_extermination_generation }
+		set_variable = {
+			migration_persecution_terminal_extermination_generation = migration_persecution_extermination_generation
+		}
+	}
+}
+
+# State scope. Clear one owner only when its terminal callback supplies the
+# generation that was current when that callback began.
+migration_persecution_clear_owner_state = {
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.detention
+				compare = equals
+			}
+			has_state_flag = migration_persecution_detention_active
+			has_variable = migration_persecution_detention_generation
+			check_variable = {
+				var = migration_persecution_pending_clear_generation
+				value = migration_persecution_detention_generation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_detention_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_detention_generation
+						value = migration_persecution_detention_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_variable = {
+				migration_persecution_detention_last_ended_generation = migration_persecution_detention_generation
+			}
+		}
+		clr_state_flag = migration_persecution_detention_active
+		clear_variable = migration_persecution_detention_generation
+		clear_variable = migration_persecution_detention_actor_id
+		clear_variable = migration_persecution_detention_cause_class
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.expanded_labor
+				compare = equals
+			}
+			has_state_flag = migration_persecution_expanded_labor_active
+			has_variable = migration_persecution_expanded_labor_generation
+			check_variable = {
+				var = migration_persecution_pending_clear_generation
+				value = migration_persecution_expanded_labor_generation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_expanded_labor_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_expanded_labor_generation
+						value = migration_persecution_expanded_labor_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_variable = {
+				migration_persecution_expanded_labor_last_ended_generation = migration_persecution_expanded_labor_generation
+			}
+		}
+		clr_state_flag = migration_persecution_expanded_labor_active
+		clear_variable = migration_persecution_expanded_labor_generation
+		clear_variable = migration_persecution_expanded_labor_actor_id
+		clear_variable = migration_persecution_expanded_labor_cause_class
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.labor_project
+				compare = equals
+			}
+			has_state_flag = migration_persecution_labor_project_active
+			has_variable = migration_persecution_labor_project_generation
+			check_variable = {
+				var = migration_persecution_pending_clear_generation
+				value = migration_persecution_labor_project_generation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_labor_project_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_labor_project_generation
+						value = migration_persecution_labor_project_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_variable = {
+				migration_persecution_labor_project_last_ended_generation = migration_persecution_labor_project_generation
+			}
+		}
+		clr_state_flag = migration_persecution_labor_project_active
+		clear_variable = migration_persecution_labor_project_generation
+		clear_variable = migration_persecution_labor_project_actor_id
+		clear_variable = migration_persecution_labor_project_cause_class
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.gulag
+				compare = equals
+			}
+			has_state_flag = migration_persecution_gulag_active
+			has_variable = migration_persecution_gulag_generation
+			check_variable = {
+				var = migration_persecution_pending_clear_generation
+				value = migration_persecution_gulag_generation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_gulag_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_gulag_generation
+						value = migration_persecution_gulag_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_variable = {
+				migration_persecution_gulag_last_ended_generation = migration_persecution_gulag_generation
+			}
+		}
+		clr_state_flag = migration_persecution_gulag_active
+		clear_variable = migration_persecution_gulag_generation
+		clear_variable = migration_persecution_gulag_actor_id
+		clear_variable = migration_persecution_gulag_cause_class
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.extermination
+				compare = equals
+			}
+			has_state_flag = migration_persecution_extermination_active
+			has_variable = migration_persecution_extermination_generation
+			check_variable = {
+				var = migration_persecution_pending_clear_generation
+				value = migration_persecution_extermination_generation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_extermination_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_extermination_generation
+						value = migration_persecution_extermination_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_variable = {
+				migration_persecution_extermination_last_ended_generation = migration_persecution_extermination_generation
+			}
+		}
+		clr_state_flag = migration_persecution_extermination_active
+		clear_variable = migration_persecution_extermination_generation
+		clear_variable = migration_persecution_extermination_actor_id
+		clear_variable = migration_persecution_extermination_cause_class
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = migration_persecution_pending_owner
+				value = constant:migration_persecution_owner_class.cbrn_coercive_operation
+				compare = equals
+			}
+			has_state_flag = migration_persecution_cbrn_active
+			has_variable = migration_persecution_cbrn_generation
+			check_variable = {
+				var = migration_persecution_pending_clear_generation
+				value = migration_persecution_cbrn_generation
+				compare = equals
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = migration_persecution_cbrn_last_ended_generation }
+					check_variable = {
+						var = migration_persecution_cbrn_generation
+						value = migration_persecution_cbrn_last_ended_generation
+						compare = greater_than
+					}
+				}
+			}
+			set_variable = {
+				migration_persecution_cbrn_last_ended_generation = migration_persecution_cbrn_generation
+			}
+		}
+		clr_state_flag = migration_persecution_cbrn_active
+		clear_variable = migration_persecution_cbrn_generation
+		clear_variable = migration_persecution_cbrn_actor_id
+		clear_variable = migration_persecution_cbrn_cause_class
+	}
+	clear_variable = migration_persecution_pending_owner
+	clear_variable = migration_persecution_pending_clear_generation
+	migration_persecution_recompute_state = yes
+}
+
+# State scope. Clear every camp-owned class after an exact dismantlement. CBRN
+# ownership is deliberately excluded and is recomputed independently.
+migration_persecution_clear_camp_owners = {
+	if = {
+		limit = { has_variable = migration_persecution_terminal_detention_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.detention
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_terminal_detention_generation
+		}
+		migration_persecution_clear_owner_state = yes
+	}
+	if = {
+		limit = { has_variable = migration_persecution_terminal_expanded_labor_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.expanded_labor
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_terminal_expanded_labor_generation
+		}
+		migration_persecution_clear_owner_state = yes
+	}
+	if = {
+		limit = { has_variable = migration_persecution_terminal_labor_project_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_terminal_labor_project_generation
+		}
+		migration_persecution_clear_owner_state = yes
+	}
+	if = {
+		limit = { has_variable = migration_persecution_terminal_gulag_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.gulag
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_terminal_gulag_generation
+		}
+		migration_persecution_clear_owner_state = yes
+	}
+	if = {
+		limit = { has_variable = migration_persecution_terminal_extermination_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_terminal_extermination_generation
+		}
+		migration_persecution_clear_owner_state = yes
+	}
+	clear_variable = migration_persecution_terminal_detention_generation
+	clear_variable = migration_persecution_terminal_expanded_labor_generation
+	clear_variable = migration_persecution_terminal_labor_project_generation
+	clear_variable = migration_persecution_terminal_gulag_generation
+	clear_variable = migration_persecution_terminal_extermination_generation
+	migration_persecution_recompute_state = yes
+}

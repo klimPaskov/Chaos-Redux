@@ -2,13 +2,15 @@
 
 ## Scope and source-of-truth map
 
+> 2026-08-26 status note: this final documentation baseline is superseded for Africa model/audio promotion by the current per-package manifests and `012_africa_models_documentation_reconciliation_2026-08-26.md`. Its dated certification counts do not claim nine runtime-ready models or a complete eight-unit sound set.
+
 This handoff records the final documentation-only reconciliation for Event 012 Africa. It does not modify gameplay, localisation, spreadsheet workbooks or exports, asset binaries, staging, or commits, and it does not replace parent-owned live validation.
 
 The accepted design source remains `docs/specs/012_africa_specs/`. The current release overview is `docs/events/012_africa/overview.md`. The machine-readable acceptance source is `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv`. Current implementation evidence is carried by the dated owner handoffs under `docs/plans/012_africa_plans/subagent_handoffs/`.
 
 The current ledger is 809 rows: 44 achievements are `implemented`; 96 ordinary action concepts are `implemented`; six action concepts, Rows 71–76, are `blocked_with_gate` as deliberate runtime gates; 64 AI profiles are `implemented`; 16 priority-member packages and 16 matching polity candidates are `implemented`; 199 other polity candidates remain `queued`; 78 focus payoffs and 51 host playbooks are `implemented`; and the 239 asset rows are 84 `installed_runtime`, 28 `installed_dormant`, 10 `deferred_runtime_gated`, and 117 `deferred_controlled_pool`.
 
-The separate current-source certification records 9 model packages, 18 animations, 4 super-event roles, 16 accepted historical source-cropped male portrait placeholders, no current gameplay omission, and no live-testing blocker. The separate AI follow-up records the current world-order and African-union probability evidence limits.
+The separate dated source certification records 9 model package workspaces, 18 animations, 4 super-event roles, and 16 accepted historical source-cropped male portrait placeholders. Current model/audio promotion is governed by the per-package manifests: Oracle remains locally accepted with its replacement counter and runtime files staged but live validation pending, Disaster uses vanilla infantry reuse, and the other model packages remain blocked or unpromoted. The separate AI follow-up records the current world-order and African-union probability evidence limits.
 
 ## Normative promotions and current contracts
 

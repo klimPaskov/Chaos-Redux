@@ -1,0 +1,97 @@
+# ============================================================================
+# CHAOS REDUX - NEUTRAL HUMANITARIAN RUNTIME DISPATCH
+# ============================================================================
+# Thin shared scheduler and lifecycle dispatch. Mechanic mutations live in the
+# famine, migration, or civilian-transfer owner files.
+# ============================================================================
+
+humanitarian_initialize_runtime = {
+	if = {
+		limit = { NOT = { has_global_flag = humanitarian_runtime_initialized } }
+		famine_initialize_runtime = yes
+		migration_initialize_runtime = yes
+		civilian_transfer_initialize_runtime = yes
+		set_global_flag = humanitarian_runtime_initialized
+	}
+}
+
+humanitarian_clear_dynamic_modifiers = {
+	famine_clear_dynamic_modifiers = yes
+	migration_clear_dynamic_modifiers = yes
+	force_update_dynamic_modifier = yes
+}
+
+humanitarian_refresh_state_modifiers = {
+	famine_refresh_dynamic_modifiers = yes
+	migration_refresh_dynamic_modifiers = yes
+	migration_presentation_refresh_state = yes
+}
+
+humanitarian_cleanup_state_registration = {
+	famine_cleanup_state_registration = yes
+	migration_cleanup_state_registration = yes
+}
+
+humanitarian_process_registered_runtime = {
+	if = {
+		limit = { has_country_flag = is_global_host }
+		humanitarian_initialize_runtime = yes
+		famine_bootstrap_historical_profile_anchors = yes
+		for_each_scope_loop = {
+			array = global.famine_historical_profile_anchor_states
+			famine_process_registered_historical_profile_anchor = yes
+		}
+		for_each_scope_loop = {
+			array = global.famine_historical_profile_candidate_states
+			famine_process_registered_historical_profile_candidate = yes
+		}
+		for_each_scope_loop = {
+			array = global.famine_active_states
+			famine_process_registered_state = yes
+		}
+		for_each_scope_loop = {
+			array = global.migration_active_states
+			migration_process_registered_state = yes
+		}
+		for_each_scope_loop = {
+			array = global.migration_reception_candidate_states
+			migration_clear_stale_normal_destination_proofs = yes
+			migration_refresh_native_state_safety_projections = yes
+			migration_consume_registered_state_reassessment = yes
+			if = { limit = { humanitarian_state_is_valid = yes } migration_reconcile_state_cohort_selection = yes }
+		}
+		for_each_scope_loop = {
+			array = global.migration_active_countries
+			migration_process_registered_country = yes
+		}
+		for_each_scope_loop = {
+			array = global.famine_relief_registered_donor_states
+			famine_relief_process_registered_donor_state = yes
+		}
+	}
+}
+
+humanitarian_handle_state_control_change = {
+	famine_handle_state_control_change = yes
+	migration_handle_state_control_change = yes
+}
+
+humanitarian_mark_country_war_reassessment = {
+	famine_mark_country_war_reassessment = yes
+	migration_mark_country_war_reassessment = yes
+}
+
+humanitarian_mark_country_peace_reassessment = {
+	famine_mark_country_peace_reassessment = yes
+	migration_mark_country_peace_reassessment = yes
+}
+
+humanitarian_handle_nuclear_state_change = {
+	famine_handle_nuclear_state_change = yes
+	migration_handle_nuclear_state_change = yes
+}
+
+humanitarian_refresh_decision_phase_from_country = {
+	famine_refresh_decision_phase_from_country = yes
+	migration_refresh_decision_phase_from_country = yes
+}

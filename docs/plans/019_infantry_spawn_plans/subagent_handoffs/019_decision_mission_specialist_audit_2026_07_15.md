@@ -1,5 +1,9 @@
 # Event 019 Decision/Mission Specialist Audit — 2026-07-15
 
+> **Historical UI boundary (2026-08-22):** This dated decision/mission audit retains former Muster Board and scripted-GUI findings as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; use the current decision-only surface handoff and source-of-truth map for active UI routing.
+
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this dated audit predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old proof discussion remains historical evidence only.
+
 ## Mandate and verdict
 
 This is the required read-only `chaosx_decision_mission_auditor` pass over the live Event 019, Infantry Spawn, worktree after the improvement planner closed without an addendum. No gameplay, localisation, asset, specification, workbook, registry, or event source was edited by this audit.

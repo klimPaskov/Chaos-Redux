@@ -14,14 +14,14 @@ The four runtime DDS files are:
 - `gfx/interface/mapmode/custom/migration_state_map_mode_selected.dds`
 - `gfx/interface/mapmode/custom/migration_state_map_mode_deselected.dds`
 
-The parent-owned consumer sprite IDs are:
+The installed consumer sprite IDs are:
 
 - `GFX_mapmode_buttons_selected_small_famine_state_map_mode`
 - `GFX_mapmode_buttons_deselected_small_famine_state_map_mode`
 - `GFX_mapmode_buttons_selected_small_migration_state_map_mode`
 - `GFX_mapmode_buttons_deselected_small_migration_state_map_mode`
 
-The parent owns adding those four sprite definitions to `interface/mapmodes_interface.gfx` and pointing the two mapmode definitions at the IDs above.
+All four sprite definitions are present exactly once in `interface/mapmodes_interface.gfx`, and the two mapmode definitions resolve to these IDs. No parent GFX patch remains for this asset family.
 
 ## Source and evidence files
 
@@ -71,10 +71,10 @@ Visual inspection evidence is retained in the two new contact sheets.
 
 ## Ownership and blockers
 
-No GFX, mapmode script, localisation, gameplay, or unrelated files were edited.
+No GFX, mapmode script, localisation, gameplay, or unrelated files were edited by the asset artist. This final audit only corrected stale handoff wording.
 
 No shared strip frame, optional deaths icon, portrait, flag, model, animation, or scripted GUI was created.
 
 No blocker remains for the asset package.
 
-Current source contains the four mapmode sprite registrations, while live GUI/render consumer validation remains intentionally pending under the parent-owned scope.
+Current source contains the four mapmode sprite registrations. Live GUI/render consumer validation remains intentionally pending under the parent-owned scope.

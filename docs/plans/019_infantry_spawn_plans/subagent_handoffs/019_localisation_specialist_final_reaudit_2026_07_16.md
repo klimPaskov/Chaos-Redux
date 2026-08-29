@@ -2,6 +2,8 @@
 
 > Its former two-branch claimant creation description is superseded on 2026-07-16 by `019_male_claimant_identity_correction_handoff_2026_07_16.md`. Technical `portrait` tokens remain correct, but their fixed Event 019 sprites now display regional army/muster identity scenes rather than people; current visual evidence is `019_full_portrait_regeneration_handoff_2026_07_16.md`. The body below remains historical localisation/interface audit evidence and is not current claimant creation or visual metadata.
 
+> **Superseded achievement-visibility notice (2026-08-22):** Any four-hidden or unawarded wording in this dated re-audit predates the owner removal of the obsolete `hidden = yes` entries. All eleven Event 19 achievements are now visible; the old localisation and proof discussion remains historical evidence only.
+
 Date: 2026-07-16
 
 Mode: current-source, audit-only re-audit. This subagent did not edit gameplay,

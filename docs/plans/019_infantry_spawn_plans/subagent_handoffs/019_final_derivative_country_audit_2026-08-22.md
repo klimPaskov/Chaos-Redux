@@ -6,7 +6,7 @@ The Event 19 derivative-country package is **not source-complete for sign-off**.
 
 No P0 defect was confirmed in the read-only audit.
 
-The concrete P1 blockers are missing asset provenance/manifests, an unavailable mandatory probability-auditor route, missing explicit starting economy and country-level logistics reconciliation, and a strict weaker-than-parent gap for the Event 19 ghost starting template.
+The concrete P1 blockers recorded by the audit were missing asset provenance/manifests, an unavailable mandatory probability-auditor route, and a strict weaker-than-parent gap for the Event 19 ghost starting template.
 
 The runtime country, transfer, leader, unit-provider, focus, decision, AI, isolation, decline, expansion, and defeat-cleanup implementations are substantially present, but the unresolved surfaces prevent a completion claim.
 
@@ -26,17 +26,17 @@ The required country/event/focus/decision/assets/comfyui/subagent skills were re
 
 No confirmed P0 country-package defect was found in the reviewed source or the available read-only MCP evidence.
 
-### P1 — missing asset provenance and manifests, confirmed
+### P1 — asset provenance and manifests, audit-time gap superseded by restored package
 
-The current repository has runtime Event 19 assets but no `docs/assets/019_infantry_spawn/` tree.
+At audit time, the current repository had runtime Event 19 assets but no `docs/assets/019_infantry_spawn/` tree.
 
-The missing tree includes the required source/master/runtime provenance records such as `manifest.md`, `gfx_handoff.md`, source PNGs, processed PNGs, checksum/crosswalk tables, contact sheets, provider/source-mode records, and portrait-specific wiring evidence.
+The parent subsequently restored the historical package, including `manifest.md`, `gfx_handoff.md`, source and processed visual records, checksum/crosswalk tables, contact sheets, provider/source-mode records, and portrait-specific wiring evidence.
 
 The planning requirement is explicit in `docs/specs/019_infantry_spawn_specs/matrices/019_asset_inventory.md`, which requires source PNG, processed PNG, DDS/TGA runtime output, manifest, sprite wiring, contact sheet, and source-mode or prompt provenance for completion.
 
-The stale historical claims in `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026-07-18.md` and `019_full_portrait_regeneration_handoff_2026-07-16.md` refer to that missing directory and cannot substitute for files that are absent from the current tree.
+The restored package is historical evidence, not current provider or whole-event completion proof; its former Muster Board GUI material is archival because Event 19 is decisions-only at runtime.
 
-This is a confirmed package-evidence defect rather than a confirmed runtime-load defect because the runtime files remain present under `gfx/leaders/019_infantry_spawn/`, `gfx/flags/`, `gfx/interface/goals/019_infantry_spawn/`, `gfx/interface/decisions/019_infantry_spawn/`, `gfx/interface/ideas/019_infantry_spawn/`, and `gfx/event_pictures/019_infantry_spawn/`.
+This audit-time package-evidence defect is therefore superseded at the documentation-package level, while the runtime files remain under `gfx/leaders/019_infantry_spawn/`, `gfx/flags/`, `gfx/interface/goals/019_infantry_spawn/`, `gfx/interface/decisions/019_infantry_spawn/`, `gfx/interface/ideas/019_infantry_spawn/`, and `gfx/event_pictures/019_infantry_spawn/`.
 
 ### P1 — mandatory probability audit unavailable, confirmed limitation
 
@@ -52,15 +52,13 @@ The provider callbacks are meta-dispatched by provider id, and the available pro
 
 These are MCP/auditor limitations, not proof that the source weights are invalid, but they block the required scenario-specific balance certification and any final source-complete claim.
 
-### P1 — starting country economy and logistics reconciliation is not explicit, confirmed source gap
+### P1 — starting country economy and logistics reconciliation, resolved by owner follow-up
 
-The derivative setup in `common/scripted_effects/019_infantry_spawn_derivative_package_effects.txt:520-593` initializes private ledgers, ideas, politics, dynamic focus loading, region metadata, the opening mission, and the pulse, but does not explicitly reconcile starting factories, production lines, research slots or technologies, fuel, convoys, supply capacity, supply hubs, railways, ports, resources, or captured stockpiles.
+The owner added `infantry_spawn_derivative_reconcile_starting_local_assets` in `common/scripted_effects/019_infantry_spawn_derivative_package_effects.txt` and invokes it after the derivative owns its opening states and private Event 19 ledger. The effect persists owned-state count, total and civilian/military/naval factories, population, infrastructure, qualifying railways, port levels, supply nodes, local resources, research slots, fuel ratio, standard stockpiles, Event 19 equipment debt, manpower liability, active formations, and owner-published custom-equipment token and amount arrays.
 
-The Event 19 derivative specification requires those inputs to be evaluated in `docs/specs/019_infantry_spawn_specs/specs/019_infantry_spawn_spec_part_6_derivative_countries.md:261-275`.
+The same effect classifies the opening local capacity as fragile, strained, or viable from `constant:infantry_spawn_derivative_opening_asset` thresholds. A fragile result adds the temporary `infantry_spawn_derivative_local_asset_shortfall` idea, while the effect never creates factories, infrastructure, supply assets, or a generic economy grant. A mismatched custom-equipment token and amount array fails closed through the existing ledger-invariant path.
 
-The file contains later decision/reinforcement costs and a golem infrastructure action at approximately line 6944, but those effects are not a starting-country reconciliation.
-
-`create_dynamic_country` may inherit engine state from `original_tag = ROOT`, but the available documentation and MCP routes do not prove which country-level economy and logistics state is copied, so this remains an acceptance blocker rather than a proven runtime outcome.
+The opening inventory focus calls `infantry_spawn_derivative_resolve_opening_local_asset_shortfall`, which removes the temporary shortfall idea and sets `infantry_spawn_derivative_local_asset_shortfall_resolved` without erasing the opening measurements. The starting-economy and logistics source gap is therefore closed at documentation and source-contract level; live in-game validation remains outside this audit.
 
 ### P1 — strict weaker-than-parent proof is missing for the ghost starting template, confirmed source comparison
 
@@ -146,7 +144,7 @@ The claimant lookup also filters `is_female = no` at `common/scripted_effects/01
 
 No `common/characters/019_infantry_spawn_characters.txt` exists, which is consistent with the package’s dynamic leader creation and is not itself a defect.
 
-Runtime art wiring is present, but the missing asset provenance tree prevents verification of portrait-worker provenance, source-mode records, master outputs, crosswalks, and final-versus-placeholder status.
+The parent restored the historical `docs/assets/019_infantry_spawn/` provenance package after this audit, including source/processed outputs, manifests, crosswalks, contact sheets, and portrait-worker records. Those records resolve the audit-time documentation-package gap but remain historical asset evidence rather than current provider or whole-event completion proof; former Muster Board material is archival because Event 19 is decisions-only.
 
 ### Politics, ideas, localisation, decisions, and focus
 
@@ -206,9 +204,8 @@ No probability compare was run because this audit made no weighted-source patch,
 
 ## Missing or stale surfaces to resolve before completion
 
-- Restore or regenerate the complete `docs/assets/019_infantry_spawn/` source/master/runtime provenance tree and crosswalks for portraits, flags, focus icons, decision icons, idea icons, and report art.
+- Treat the restored `docs/assets/019_infantry_spawn/` source/master/runtime provenance tree and crosswalks as historical evidence, and do not use its former GUI rows or 2026-07-18 tranche PASS as current provider or whole-event completion proof.
 - Complete the required `chaosx_ai_probability_auditor` scenario pass for all derivative focus, decision, strategy-factor, and provider-weight surfaces, including normalized provider callbacks and named zombie, ghost, golem, claimant, and one-state scenarios.
-- Add or prove explicit starting economy, industry, research, production, stockpile, fuel, convoy, supply-hub, railway, port, resource, and population reconciliation against the derivative-country specification.
 - Resolve whether the ghost derivative must be strictly weaker than `Death Passive Host` at starting-template strength and, if so, adjust the provider or document an accepted package-level weakness rule before re-auditing.
 - Clarify the 35-versus-45 focus-count wording in `docs/events/019_infantry_spawn/overview.md`.
 - If final review requires advisors or high-command roles, none are present in the Event 19 derivative-specific sources; the current specification explicitly covers leaders and councils but does not require those extra roles.

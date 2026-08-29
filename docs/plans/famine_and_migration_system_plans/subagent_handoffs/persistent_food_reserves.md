@@ -1,5 +1,7 @@
 # Persistent food-reserve ledger handoff
 
+> **Superseded historical identifier banner (2026-08-25):** Any `fm_*` or `famine_migration_*` identifier quoted in this historical handoff is source-snapshot terminology only and is superseded; current authorities use separate `famine_*`, `migration_*`, or narrow neutral `civilian_transfer_*`/`humanitarian_*` names; see [source_of_truth_map.md](../source_of_truth_map.md).
+
 ## Scope and files
 
 This tranche adds a sparse state-owned reserve ledger to the existing famine and migration food evaluator.

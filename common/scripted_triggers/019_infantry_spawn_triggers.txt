@@ -135,12 +135,13 @@ infantry_spawn_ordinary_management_crisis_is_active = {
 		has_country_flag = infantry_spawn_specialist_preservation_running
 		has_country_flag = infantry_spawn_prototype_trial_running
 		has_country_flag = infantry_spawn_rail_corridor_running
+		has_country_flag = infantry_spawn_achievement_combat_trial_active
 		has_country_flag = infantry_spawn_request_cooldown
 	}
 }
 
-# Shared player and AI gate for the ordinary category, direct decisions, and
-# Muster Board. A completed takeover or derivative revolt is a terminal
+# Shared player and AI gate for the ordinary decisions and their category.
+# A completed takeover or derivative revolt is a terminal
 # ordinary-country surface outcome even if its historical ledger still exists.
 infantry_spawn_ordinary_management_category_is_relevant = {
 	infantry_spawn_country_is_active = yes
@@ -153,6 +154,92 @@ infantry_spawn_ordinary_management_category_is_relevant = {
 	NOT = { has_country_flag = infantry_spawn_claimant_takeover_complete }
 	NOT = { has_country_flag = infantry_spawn_achievement_revolt_history }
 	infantry_spawn_ordinary_management_crisis_is_active = yes
+}
+
+# Event 19 exposes one management lane at a time to a human player. AI keeps
+# the full source route and relies on the same decision availability/effect
+# checks, so phasing is presentation-only and cannot remove an AI route.
+infantry_spawn_event19_management_mission_is_running = {
+	OR = {
+		has_country_flag = infantry_spawn_audit_decision_running
+		has_country_flag = infantry_spawn_standardization_running
+		has_country_flag = infantry_spawn_demobilization_running
+		has_country_flag = infantry_spawn_training_cycle_running
+		has_country_flag = infantry_spawn_muster_districts_running
+		has_country_flag = infantry_spawn_integration_staff_search_running
+		has_country_flag = infantry_spawn_specialist_preservation_running
+		has_country_flag = infantry_spawn_prototype_trial_running
+		has_country_flag = infantry_spawn_rail_corridor_running
+		has_country_flag = infantry_spawn_achievement_combat_trial_active
+	}
+}
+
+infantry_spawn_event19_management_mission_slot_is_free = {
+	NOT = { infantry_spawn_event19_management_mission_is_running = yes }
+}
+
+# Evolution III request philosophies are split into a peacetime and frontline
+# lane. The broad "anything" request remains in both lanes, so the player
+# always retains an equivalent catch-all route while never seeing all five
+# philosophy decisions together.
+infantry_spawn_event19_evolution_iii_peacetime_request_lane = {
+	OR = {
+		is_ai = yes
+		NOT = { has_war = yes }
+	}
+}
+
+infantry_spawn_event19_evolution_iii_frontline_request_lane = {
+	OR = {
+		is_ai = yes
+		has_war = yes
+	}
+}
+
+# Evolution II requests use the same state split as the later philosophy
+# lane. AI retains every candidate; a human sees only the request family that
+# matches the current strategic state, plus the later unrestricted lane when
+# unlocked.
+infantry_spawn_event19_evolution_ii_peacetime_request_lane = {
+	OR = {
+		is_ai = yes
+		NOT = { has_war = yes }
+	}
+}
+
+infantry_spawn_event19_evolution_ii_frontline_request_lane = {
+	OR = {
+		is_ai = yes
+		has_war = yes
+	}
+}
+
+infantry_spawn_event19_selected_family_stable_lane = {
+	OR = {
+		is_ai = yes
+		AND = {
+			infantry_spawn_muster_board_selected_family_index_is_valid = yes
+			check_variable = {
+				var = infantry_spawn_muster_gui_family_pressure_entries^infantry_spawn_muster_gui_selected_family_view_index
+				value = constant:infantry_spawn_family_pressure.strained
+				compare = less_than
+			}
+		}
+	}
+}
+
+infantry_spawn_event19_selected_family_crisis_lane = {
+	OR = {
+		is_ai = yes
+		AND = {
+			infantry_spawn_muster_board_selected_family_index_is_valid = yes
+			check_variable = {
+				var = infantry_spawn_muster_gui_family_pressure_entries^infantry_spawn_muster_gui_selected_family_view_index
+				value = constant:infantry_spawn_family_pressure.strained
+				compare = greater_than_or_equals
+			}
+		}
+	}
 }
 
 infantry_spawn_country_can_continue_pulse = {
@@ -339,7 +426,9 @@ infantry_spawn_frozen_first_family_reception_row_is_valid = {
 	has_variable = infantry_spawn_first_family_reception_family_id
 	has_variable = infantry_spawn_first_family_reception_provider_id
 	has_variable = infantry_spawn_first_family_reception_visual_profile
+	has_variable = infantry_spawn_first_family_reception_name_loc_token
 	has_variable = infantry_spawn_first_family_reception_nonce
+	check_variable = { infantry_spawn_first_family_reception_name_loc_token > 0 }
 	check_variable = {
 		var = infantry_spawn_first_family_reception_registry_index
 		value = constant:chaos_unit_family_registry.not_found
@@ -821,10 +910,6 @@ infantry_spawn_exact_profile_totals_are_affordable = {
 		check_variable = { var = num_equipment@train_equipment value = infantry_spawn_exact_train_equipment compare = greater_than_or_equals }
 	}
 	OR = {
-		check_variable = { infantry_spawn_exact_coal_golem_equipment < 1 }
-		check_variable = { var = num_equipment@coal_golem_equipment value = infantry_spawn_exact_coal_golem_equipment compare = greater_than_or_equals }
-	}
-	OR = {
 		check_variable = { infantry_spawn_exact_light_tank_chassis < 1 }
 		check_variable = { var = num_equipment@light_tank_chassis value = infantry_spawn_exact_light_tank_chassis compare = greater_than_or_equals }
 	}
@@ -964,82 +1049,6 @@ infantry_spawn_exact_profile_totals_are_affordable = {
 		check_variable = { infantry_spawn_exact_super_heavy_tank_destroyer_chassis < 1 }
 		check_variable = { var = num_equipment@super_heavy_tank_destroyer_chassis value = infantry_spawn_exact_super_heavy_tank_destroyer_chassis compare = greater_than_or_equals }
 	}
-	OR = {
-		check_variable = { infantry_spawn_exact_chaosx_elephant_equipment_1 < 1 }
-		check_variable = { var = num_equipment@chaosx_elephant_equipment_1 value = infantry_spawn_exact_chaosx_elephant_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_gorilla_heavy_infantry_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_gorilla_heavy_infantry_equipment_1 value = infantry_spawn_exact_africa_gorilla_heavy_infantry_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_pan_sappers_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_pan_sappers_equipment_1 value = infantry_spawn_exact_africa_pan_sappers_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_stone_cohorts_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_stone_cohorts_equipment_1 value = infantry_spawn_exact_africa_stone_cohorts_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_riverborn_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_riverborn_equipment_1 value = infantry_spawn_exact_africa_riverborn_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_forest_giants_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_forest_giants_equipment_1 value = infantry_spawn_exact_africa_forest_giants_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_oracle_recon_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_oracle_recon_equipment_1 value = infantry_spawn_exact_africa_oracle_recon_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_disaster_wardens_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_disaster_wardens_equipment_1 value = infantry_spawn_exact_africa_disaster_wardens_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_africa_plague_carriers_equipment_1 < 1 }
-		check_variable = { var = num_equipment@africa_plague_carriers_equipment_1 value = infantry_spawn_exact_africa_plague_carriers_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_gas_mask_equipment < 1 }
-		check_variable = { var = num_equipment@gas_mask_equipment value = infantry_spawn_exact_gas_mask_equipment compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_decontamination_equipment < 1 }
-		check_variable = { var = num_equipment@decontamination_equipment value = infantry_spawn_exact_decontamination_equipment compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_cbrn_instrument_equipment < 1 }
-		check_variable = { var = num_equipment@cbrn_instrument_equipment value = infantry_spawn_exact_cbrn_instrument_equipment compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_clone_equipment < 1 }
-		check_variable = { var = num_equipment@clone_equipment value = infantry_spawn_exact_clone_equipment compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_autonomous_robot_equipment_1 < 1 }
-		check_variable = { var = num_equipment@autonomous_robot_equipment_1 value = infantry_spawn_exact_autonomous_robot_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_kruger_paleogenetic_equipment_1 < 1 }
-		check_variable = { var = num_equipment@kruger_paleogenetic_equipment_1 value = infantry_spawn_exact_kruger_paleogenetic_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_kruger_xenobiological_equipment_1 < 1 }
-		check_variable = { var = num_equipment@kruger_xenobiological_equipment_1 value = infantry_spawn_exact_kruger_xenobiological_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_alien_laser_weapon_equipment_1 < 1 }
-		check_variable = { var = num_equipment@alien_laser_weapon_equipment_1 value = infantry_spawn_exact_alien_laser_weapon_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_teleportation_equipment_1 < 1 }
-		check_variable = { var = num_equipment@teleportation_equipment_1 value = infantry_spawn_exact_teleportation_equipment_1 compare = greater_than_or_equals }
-	}
-	OR = {
-		check_variable = { infantry_spawn_exact_kruger_temporal_equipment_1 < 1 }
-		check_variable = { var = num_equipment@kruger_temporal_equipment_1 value = infantry_spawn_exact_kruger_temporal_equipment_1 compare = greater_than_or_equals }
-	}
 }
 
 infantry_spawn_selected_lot_exact_obligations_are_affordable = {
@@ -1047,12 +1056,11 @@ infantry_spawn_selected_lot_exact_obligations_are_affordable = {
 	infantry_spawn_obligation_ledger_is_aligned = yes
 	infantry_spawn_lot_ledger_is_aligned = yes
 	infantry_spawn_selected_lot_index_is_valid = yes
-	has_country_flag = infantry_spawn_exact_settlement_ready
-	NOT = { has_country_flag = infantry_spawn_exact_settlement_invalid_profile }
+	has_country_flag = infantry_spawn_settlement_requisition_active
 	NOT = { has_country_flag = infantry_spawn_ledger_invariant_failure }
-	check_variable = { infantry_spawn_exact_settlement_row_count > 0 }
-	check_variable = { var = infantry_spawn_exact_settlement_target_lot_uid value = infantry_spawn_lot_uid_entries^infantry_spawn_selected_lot_index compare = equals }
-	infantry_spawn_exact_profile_totals_are_affordable = yes
+	check_variable = { var = infantry_spawn_settlement_requisition_lot_uid value = infantry_spawn_lot_uid_entries^infantry_spawn_selected_lot_index compare = equals }
+	check_variable = { infantry_spawn_settlement_tranche_count > 0 }
+	check_variable = { infantry_spawn_settlement_tranche_affordable > 0 }
 }
 
 infantry_spawn_selected_lot_standardization_loss_is_affordable = {

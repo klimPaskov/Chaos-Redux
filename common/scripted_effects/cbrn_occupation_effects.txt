@@ -440,6 +440,16 @@ cbrn_occupation_end_responsible_country_operational_modifiers = {
 	clr_state_flag = cbrn_occupation_backlash_active
 	clr_state_flag = cbrn_occupation_state_seal_active
 	if = {
+		limit = { has_variable = migration_persecution_cbrn_generation }
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.cbrn_coercive_operation
+		}
+		set_variable = {
+			migration_persecution_pending_clear_generation = migration_persecution_cbrn_generation
+		}
+	}
+	migration_persecution_clear_owner_state = yes
+	if = {
 		limit = { has_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier } }
 		remove_dynamic_modifier = { modifier = cbrn_occupation_state_sealed_modifier }
 	}
@@ -503,7 +513,34 @@ cbrn_occupation_apply_accepted_operation_state = {
 			set_state_flag = cbrn_occupation_confirmed_use_history
 		}
 		cbrn_occupation_register_atrocity_context_if_eligible = yes
-		famine_migration_adapt_chemical_state = yes
+		# CBRN owns the delayed food receipt. Keep the actor target and pass only
+		# source ledgers that describe this accepted nerve-suppression operation.
+		event_target:cbrn_action_actor = { save_event_target_as = famine_adapter_actor }
+		set_temp_variable = { famine_adapter_state_proven = THIS.id }
+		set_temp_variable = { famine_adapter_food_proven = cbrn_occupation_last_disruption }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_occupation_last_disruption > constant:humanitarian_runtime.zero } } }
+			set_temp_variable = { famine_adapter_food_proven = cbrn_occupation_last_action_severity }
+		}
+		set_temp_variable = { famine_adapter_environment_proven = cbrn_occupation_last_contamination_points }
+		if = {
+			limit = { NOT = { check_variable = { cbrn_occupation_last_contamination_points > constant:humanitarian_runtime.zero } } }
+			set_temp_variable = { famine_adapter_environment_proven = cbrn_occupation_last_action_severity }
+		}
+		set_temp_variable = { famine_adapter_transport_proven = cbrn_occupation_last_action_route }
+		set_temp_variable = { famine_adapter_policy_proven = cbrn_occupation_last_attribution_state }
+		set_temp_variable = { famine_adapter_actor_proven = event_target:famine_adapter_actor.id }
+		set_temp_variable = { famine_adapter_cause_proven = cbrn_occupation_last_attribution_state }
+		set_temp_variable = { famine_adapter_source_proven = cbrn_occupation_last_action_route }
+		set_temp_variable = { famine_adapter_generation = cbrn_occupation_last_action_date }
+		set_temp_variable = { famine_adapter_revision = cbrn_occupation_last_civilian_deaths }
+		set_temp_variable = { famine_adapter_request_id = global.date }
+		famine_adapt_chemical_state = yes
+		set_variable = {
+			migration_persecution_pending_owner = constant:migration_persecution_owner_class.cbrn_coercive_operation
+		}
+		set_variable = { migration_persecution_pending_actor = event_target:cbrn_action_actor }
+		migration_persecution_record_state = yes
 
 		if = {
 			limit = { NOT = { has_variable = cbrn_occupation_nerve_suppression_trauma } }
@@ -1235,6 +1272,10 @@ cbrn_occupation_apply_delayed_backlash = {
 		set_variable = { cbrn_occupation_backlash_resolved_date = global.num_days }
 		clr_state_flag = cbrn_occupation_delayed_backlash_pending
 		clear_variable = cbrn_occupation_backlash_due_day
+		# This state event is scheduled at the current operation's active-window
+		# boundary. The cleanup helper remains guarded by the expired active flag,
+		# so a mismatched delay or a replay cannot clear a live operation.
+		cbrn_occupation_cleanup_expired_state_records = yes
 	}
 }
 
@@ -1275,6 +1316,15 @@ cbrn_occupation_cleanup_expired_state_records = {
 	if = {
 		limit = { NOT = { has_state_flag = cbrn_occupation_nerve_suppression_active } }
 		if = {
+			limit = { has_variable = migration_persecution_cbrn_generation }
+			set_variable = {
+				migration_persecution_pending_owner = constant:migration_persecution_owner_class.cbrn_coercive_operation
+			}
+			set_variable = {
+				migration_persecution_pending_clear_generation = migration_persecution_cbrn_generation
+			}
+		}
+		if = {
 			limit = {
 				has_variable = cbrn_occupation_responsible_country
 				has_dynamic_modifier = {
@@ -1289,6 +1339,7 @@ cbrn_occupation_cleanup_expired_state_records = {
 			force_update_dynamic_modifier = yes
 		}
 		clear_variable = cbrn_occupation_active_until_day
+		migration_persecution_clear_owner_state = yes
 	}
 }
 

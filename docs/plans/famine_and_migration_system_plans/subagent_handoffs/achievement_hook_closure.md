@@ -1,5 +1,7 @@
 # Famine and Migration Achievement Hook Closure
 
+> **Superseded historical identifier banner (2026-08-25):** Any `fm_*` or `famine_migration_*` identifier quoted in this historical handoff is source-snapshot terminology only and is superseded; current authorities use separate `famine_*`, `migration_*`, or narrow neutral `civilian_transfer_*`/`humanitarian_*` names; see [source_of_truth_map.md](../source_of_truth_map.md).
+
 ## Scope and evidence
 
 This closure review covers the eight achievement predicates in `common/scripted_triggers/famine_migration_achievement_triggers.txt` and their persistent evidence writers in `common/scripted_effects/famine_migration_achievement_effects.txt`.

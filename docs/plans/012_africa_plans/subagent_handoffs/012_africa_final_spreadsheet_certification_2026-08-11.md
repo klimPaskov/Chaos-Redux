@@ -4,13 +4,15 @@ Date: 2026-08-11.
 
 Status: The Event 012 catalog row is certified against the supplied source-complete release facts. The workbook remains the only editable catalog source. The workbook's valid terminal status label is `Playable`; no out-of-list `Available` value was introduced. No live game, MCP visual/probability, or live-save acceptance claim is made.
 
+> 2026-08-26 status note: this catalog certification is historical for 3D model/audio promotion. Its model counts are package/workspace records, not a runtime-ready nine-model claim; current manifests govern Oracle staging/live validation, Disaster Wardens' vanilla infantry reuse, and the blocked or unpromoted remaining packages.
+
 ## Workbook change
 
 - Workbook: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 - Changed sheet and row: `Events!13`, event ID `12`, `Africa Is One`.
 - Changed cell: `Events!M13` (`Status`), `Partially Available` -> `Playable`.
 - `Events!C13` (`Details`), `Events!D13:F13` (evolution mirrors), and `Events!I13` (`World-End Scenario`) were preserved exactly as present before this certification pass.
-- The status change reflects the certified source-complete boundary: 44/44 achievements, 102/102 action concepts, 51 host playbooks (22 full and 29 compact), 16 priority packages, 64 AI profiles, 9 models, 18 animations, 4 super-event roles, and the fully classified 239-row visual disposition matrix (84 installed at runtime, 28 installed but dormant, 10 runtime-gated, and 117 controlled-pool rows). Actions 71-76 remain deliberate runtime authorization/readiness gates rather than omissions; HZX/EUX/ELX remain intentional Event006-origin conditional carriers; source-cropped historical portraits remain accepted placeholders and are not an availability blocker.
+- The status change reflects the certified source-complete boundary: 44/44 achievements, 102/102 action concepts, 51 host playbooks (22 full and 29 compact), 16 priority packages, 64 AI profiles, 9 model package/workspace records with mixed promotion status, 18 animations, 4 super-event roles, and the fully classified 239-row visual disposition matrix (84 installed at runtime, 28 installed but dormant, 10 runtime-gated, and 117 controlled-pool rows). Actions 71-76 remain deliberate runtime authorization/readiness gates rather than omissions; HZX/EUX/ELX remain intentional Event006-origin conditional carriers; source-cropped historical portraits remain accepted placeholders and are not an availability blocker.
 - The `Clusters!9` Formables row was not changed. Its status remains `Partially Available` because it is a mixed cluster surface rather than an Event012-only status.
 
 ## Preservation and validation

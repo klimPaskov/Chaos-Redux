@@ -1,5 +1,7 @@
 # Event 019 Muster Board Runtime Border Cleanup
 
+> **Archival handoff notice (2026-08-22):** This cleanup describes a former scripted GUI and is retained only as historical evidence. The accepted Event 19 runtime is decisions-only with no scripted GUI; do not route the GUI identifiers or layout findings as active implementation work.
+
 The direct Event 019 Muster Board review found that the critical-command frame was registered at the root window level even when the command panel and claimant portrait were absent, leaving a loose empty frame below the utility controls.
 
 The frame sprites now live inside `infantry_spawn_muster_command_panel` beside the claimant portrait, so their position is owned by the command surface and they cannot float over Overview, Lots, Anomalous, or History.

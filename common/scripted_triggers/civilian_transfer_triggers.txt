@@ -1,0 +1,82 @@
+# Chaos Redux exact civilian-transfer scripted triggers.
+# Fail-closed request, role, and finalization predicates for conserved movement.
+
+
+civilian_transfer_route_request_is_valid = {
+	hidden_trigger = {
+		humanitarian_state_is_valid = yes
+		NOT = { has_state_flag = civilian_transfer_atomicity_quarantine }
+		OWNER = { NOT = { has_country_flag = civilian_transfer_atomicity_quarantine } }
+		check_variable = { var = civilian_transfer_request_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_people value = constant:humanitarian_population.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_route_border_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_route_transport_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_route_safety_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_route_actor_proven value = constant:humanitarian_runtime.zero compare = greater_than }
+		has_event_target = civilian_transfer_route_destination
+		event_target:civilian_transfer_route_destination = {
+			migration_destination_is_valid = yes
+			NOT = { has_state_flag = civilian_transfer_atomicity_quarantine }
+			OWNER = { NOT = { has_country_flag = civilian_transfer_atomicity_quarantine } }
+		}
+	}
+}
+
+
+civilian_transfer_role_request_is_valid = {
+	hidden_trigger = {
+		OR = {
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_spontaneous_exodus compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_organized_evacuation compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_forced_movement compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_deportation compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_transit compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_resettlement compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_voluntary_return compare = equals }
+			check_variable = { var = civilian_transfer_role_request value = constant:migration_core_reconciliation.transfer_projection_role_forced_return compare = equals }
+		}
+	}
+}
+
+
+# A physical transfer is not a committed migration lane until the caller has
+# proved its exact bind/rebind and reception receipt. The request is chain-local
+# and deliberately separate from the durable projection validity result.
+civilian_transfer_finalize_request_is_valid = {
+	hidden_trigger = {
+		check_variable = { var = civilian_transfer_finalize_pending value = constant:migration_core_reconciliation.transfer_finalize_pending compare = equals }
+		check_variable = { var = civilian_transfer_result value = constant:civilian_transfer_route_result.valid compare = equals }
+		check_variable = { var = civilian_transfer_actual_origin_debit value = constant:humanitarian_population.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_actual_origin_debit value = civilian_transfer_finalize_requested_people compare = equals }
+		check_variable = { var = civilian_transfer_conservation_ledger value = constant:humanitarian_population.zero compare = equals }
+		check_variable = { var = civilian_transfer_finalize_cohort_id value = constant:humanitarian_runtime.zero compare = greater_than }
+		check_variable = { var = civilian_transfer_finalize_role value = civilian_transfer_role_request compare = equals }
+		OR = {
+			AND = {
+				check_variable = { var = civilian_transfer_finalize_source_reception_required value = constant:migration_core_reconciliation.transfer_source_reception_not_required compare = equals }
+				check_variable = { var = civilian_transfer_source_reception_result value = constant:civilian_transfer_route_result.valid compare = equals }
+				check_variable = { var = civilian_transfer_source_reception_applied value = constant:humanitarian_population.zero compare = equals }
+			}
+			AND = {
+				check_variable = { var = civilian_transfer_finalize_source_reception_required value = constant:migration_core_reconciliation.transfer_source_reception_required compare = equals }
+				check_variable = { var = civilian_transfer_source_reception_result value = constant:civilian_transfer_route_result.valid compare = equals }
+				check_variable = { var = civilian_transfer_source_reception_applied value = civilian_transfer_actual_origin_debit compare = equals }
+			}
+		}
+		OR = {
+			AND = {
+				check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = greater_than }
+				check_variable = { var = civilian_transfer_destination_actual_credit value = civilian_transfer_survivor_credit compare = equals }
+				check_variable = { var = civilian_transfer_destination_reception_result value = constant:civilian_transfer_route_result.valid compare = equals }
+				check_variable = { var = civilian_transfer_destination_reception_applied value = civilian_transfer_survivor_credit compare = equals }
+				check_variable = { var = civilian_transfer_bind_receipt_result value = constant:civilian_transfer_route_result.valid compare = equals }
+			}
+			AND = {
+				check_variable = { var = civilian_transfer_survivor_credit value = constant:humanitarian_population.zero compare = equals }
+				check_variable = { var = civilian_transfer_route_deaths value = civilian_transfer_actual_origin_debit compare = equals }
+				check_variable = { var = civilian_transfer_destination_reception_applied value = constant:humanitarian_population.zero compare = equals }
+			}
+		}
+	}
+}
+

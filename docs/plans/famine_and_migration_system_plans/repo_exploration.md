@@ -1,5 +1,7 @@
 # Repo Explorer Handoff
 
+> **Superseded historical snapshot (2026-08-25):** This exploration report predates the accepted split famine/migration implementation and is retained for provenance only. Its source census, old helper names, and proposed edit order must not be used to reopen completed separation work. Use [source_of_truth_map.md](source_of_truth_map.md) and [completion_report.md](completion_report.md) for the current incomplete status and remaining blockers.
+
 ## Scope read
 
 - Parent task: bounded seam map for the shared famine and migration system.

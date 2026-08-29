@@ -2,21 +2,23 @@
 
 Date: 2026-08-06.
 
+> This 2026-08-06 audio-only handoff is a retained source and derived-cue inventory, not a current eight-unit runtime-completion receipt. The current per-package manifests and model handoffs supersede its blanket runtime wording.
+
 ## Outcome
 
-Source-only sound-design packages are complete for `gorilla_heavy_infantry`, `pan_sappers`, `stone_cohorts`, `forest_giants`, `oracle_recon`, `riverborn`, `disaster_wardens`, and `plague_carriers`.
+Source and derived sound-design evidence exists for `gorilla_heavy_infantry`, `pan_sappers`, `stone_cohorts`, `forest_giants`, `oracle_recon`, `riverborn`, `disaster_wardens`, and `plague_carriers`, but current action lineage, model promotion, and runtime acceptance are mixed and package-specific.
 
-The package contains 17 job-local immutable source copies representing 13 distinct licensed or public-domain recordings, 49 mechanically derived WAV cues, eight source-research evidence records, eight manifests, and eight runtime handoffs. Shared originals retain identical SHA-256 hashes across job roots.
+The package contains 17 job-local immutable source copies representing 13 distinct licensed or public-domain recordings, 49 mechanically derived WAV-cue candidates, eight source-research evidence records, eight manifests, and eight runtime handoffs. Shared originals retain identical SHA-256 hashes across job roots; the 49-cue count is an archived inventory, not a family-wide runtime-acceptance count.
 
 ## Legal and technical status
 
 All selected sources are public domain, CC0 1.0, CC BY 4.0, or CC BY-SA 4.0. Attribution, source page, direct-download URL, permission terms, source checksum, excerpt interval, transformations, and final checksum are recorded in each job package. CC BY-SA-derived files must retain attribution, a change notice, and ShareAlike treatment when redistributed.
 
-Every runtime candidate is mono 44,100 Hz PCM 32-bit float. FFprobe verified codec, sample format, sample rate, and channel count across all 49 WAVs. No generated, synthesized, recorded, placeholder, or unlicensed audio was used.
+The original 49-cue batch was mono 44,100 Hz PCM 32-bit float, as recorded by FFprobe. Current per-unit revalidation supersedes that blanket format and readiness statement: Oracle derivatives are signed 16-bit and parent-owned for runtime review, Disaster Wardens retains optional cues alongside its vanilla infantry reuse, and the blocked packages have no approved action lineage for synchronization. No generated, synthesized, recorded, placeholder, or unlicensed audio was used.
 
 ## Runtime ownership
 
-No gameplay, GFX, entity, `.asset`, `sound.asset`, or `soundeffects.asset` file was edited. Each per-unit handoff supplies exact proposed sound IDs, soundeffect wrapper IDs, runtime paths, animation actions, and synchronization frames. The parent still owns copying selected WAVs into the runtime sound tree, defining sound and soundeffect entries, binding UI/entity consumers, selecting runtime volume/distance/instance limits, and validating the live consumer in game.
+No gameplay, GFX, entity, `.asset`, `sound.asset`, or `soundeffects.asset` file was edited by this audio-only tranche. Each per-unit handoff supplies proposed sound IDs, soundeffect wrapper IDs, runtime paths, animation actions, and synchronization frames, but blocked or retired model/action lineages make those bindings provisional. The parent owns copying selected WAVs into the runtime sound tree, defining sound and soundeffect entries, binding consumers, selecting runtime volume/distance/instance limits, and validating live consumers in game.
 
 ## Costs and dependencies
 
@@ -35,8 +37,8 @@ No Meshy/provider call was made and no credits were estimated or consumed. The d
 
 ## Simplifications, omissions, and blockers
 
-There are no source, licensing, role-coverage, conversion, checksum, or handoff omissions in this bounded audio task. Final runtime wiring and in-game consumer validation are intentionally not claimed because they remain parent-owned.
+There are no source, licensing, or checksum omissions claimed within this bounded audio task. Role coverage and frame synchronization are not blanket acceptance receipts: Oracle is locally revalidated but still parent-owned, Disaster is optional beside the vanilla infantry consumer, and the remaining strange-force packages remain blocked or unpromoted. Final runtime wiring and in-game consumer validation are not claimed.
 
 ## Parent integration receipt
 
-The parent copied all 49 derived WAV files into `sound/012_africa/units/<slug>/`, registered 49 source sounds and 49 soundeffect wrappers in `sound/012_africa_strange_forces_sound.asset`, and bound every wrapper. Forty action roles are bound to map-entity animation states. Eight selection roles play once when their exact formation is successfully created. The plague-carrier impact role plays for the affected country after the native disease lifecycle accepts the seed. A source-to-consumer audit reports 49 defined soundeffect IDs and zero unused IDs.
+The earlier parent receipt claiming that all 49 WAVs, 49 source sounds, 49 wrappers, and 40 action-role bindings were copied and consumed is historical only and must not be used as current runtime evidence. Current per-package manifests govern promotion: Oracle's six signed-16-bit derivatives remain parent-owned, Disaster Wardens' custom action consumers were retired with the custom entity, and Gorilla, Pan, Stone, Riverborn, Forest, and Plague retain blocked or provisional action/audio lineages. No family-wide 49-sound runtime completion or live-consumer claim is made.

@@ -1,9 +1,10 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 019 DERIVATIVE COUNTRY PACKAGE EFFECTS
 # ============================================================================
-# Owns the isolated setup, family reinforcement, focus-route lifecycle,
-# district projects, ghost population decline, defeat handling, and annex
-# cleanup for zombie, ghost, and golem derivative countries. These effects do
+# Owns the isolated setup, opening local-asset reconciliation, family
+# reinforcement, focus-route lifecycle, district projects, ghost population
+# decline, defeat handling, and annex cleanup for claimant, zombie, ghost, and
+# golem derivative countries. These effects do
 # not grant infantry_spawn_participant; derivative identity excludes their
 # materialization from global Event 019 formation and lot history.
 # ============================================================================
@@ -34,6 +35,198 @@ infantry_spawn_derivative_initialize_private_ledger = {
 		set_variable = { infantry_spawn_derivative_depot_count = constant:infantry_spawn_derivative_package_value.zero }
 		set_variable = { infantry_spawn_derivative_sustainment_site_count = constant:infantry_spawn_derivative_package_value.zero }
 	}
+}
+
+# COUNTRY scope after the derivative owns its opening states and has adopted or
+# initialized its private Event 19 ledger. Records the local economy exactly as
+# found: this audit never creates factories, infrastructure, or supply assets.
+# Custom-equipment stockpiles are discovered through every registered family's
+# owner-side publisher, so future provider packages enter this snapshot without
+# an Event 19 equipment-list edit.
+infantry_spawn_derivative_reconcile_starting_local_assets = {
+	set_temp_variable = { infantry_spawn_derivative_asset_owned_states = num_owned_states }
+	set_temp_variable = { infantry_spawn_derivative_asset_factory_count = num_of_factories }
+	set_temp_variable = { infantry_spawn_derivative_asset_civilian_factory_count = num_of_civilian_factories }
+	set_temp_variable = { infantry_spawn_derivative_asset_military_factory_count = num_of_military_factories }
+	set_temp_variable = { infantry_spawn_derivative_asset_naval_factory_count = num_of_naval_factories }
+	set_temp_variable = { infantry_spawn_derivative_asset_population_k = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_derivative_asset_infrastructure_score = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_derivative_asset_railway_states = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_derivative_asset_port_levels = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_derivative_asset_supply_nodes = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_derivative_asset_local_resources = constant:infantry_spawn_derivative_package_value.zero }
+	set_temp_variable = { infantry_spawn_derivative_asset_minimum_railway_level = constant:infantry_spawn_derivative_opening_asset.minimum_railway_level }
+	every_owned_state = {
+		add_to_temp_variable = { infantry_spawn_derivative_asset_population_k = state_population_k }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_infrastructure_score = infrastructure_level }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_port_levels = building_level@naval_base }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_supply_nodes = building_level@supply_node }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@oil }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@aluminium }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@rubber }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@tungsten }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@steel }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@chromium }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_local_resources = resource@coal }
+		if = {
+			limit = {
+				meta_trigger = {
+					text = {
+						has_railway_level = {
+							level = [RAIL_LEVEL]
+							state = THIS
+						}
+					}
+					RAIL_LEVEL = "[?infantry_spawn_derivative_asset_minimum_railway_level|.0]"
+				}
+			}
+			add_to_temp_variable = { infantry_spawn_derivative_asset_railway_states = constant:infantry_spawn_derivative_package_value.one }
+		}
+	}
+
+	set_variable = { infantry_spawn_derivative_opening_owned_state_count = infantry_spawn_derivative_asset_owned_states }
+	set_variable = { infantry_spawn_derivative_opening_factory_count = infantry_spawn_derivative_asset_factory_count }
+	set_variable = { infantry_spawn_derivative_opening_civilian_factory_count = infantry_spawn_derivative_asset_civilian_factory_count }
+	set_variable = { infantry_spawn_derivative_opening_military_factory_count = infantry_spawn_derivative_asset_military_factory_count }
+	set_variable = { infantry_spawn_derivative_opening_naval_factory_count = infantry_spawn_derivative_asset_naval_factory_count }
+	set_variable = { infantry_spawn_derivative_opening_population_k = infantry_spawn_derivative_asset_population_k }
+	set_variable = { infantry_spawn_derivative_opening_infrastructure_score = infantry_spawn_derivative_asset_infrastructure_score }
+	set_variable = { infantry_spawn_derivative_opening_railway_state_count = infantry_spawn_derivative_asset_railway_states }
+	set_variable = { infantry_spawn_derivative_opening_port_level_count = infantry_spawn_derivative_asset_port_levels }
+	set_variable = { infantry_spawn_derivative_opening_supply_node_count = infantry_spawn_derivative_asset_supply_nodes }
+	set_variable = { infantry_spawn_derivative_opening_local_resource_total = infantry_spawn_derivative_asset_local_resources }
+	set_variable = { infantry_spawn_derivative_opening_research_slot_count = amount_research_slots }
+	set_variable = { infantry_spawn_derivative_opening_fuel_ratio = fuel_ratio }
+	set_variable = { infantry_spawn_derivative_opening_infantry_equipment = num_equipment@infantry_equipment }
+	set_variable = { infantry_spawn_derivative_opening_support_equipment = num_equipment@support_equipment }
+	set_variable = { infantry_spawn_derivative_opening_motorized_equipment = num_equipment@motorized_equipment }
+	set_variable = { infantry_spawn_derivative_opening_train_equipment = num_equipment@train_equipment }
+	set_variable = { infantry_spawn_derivative_opening_convoy_equipment = num_equipment@convoy }
+	set_variable = { infantry_spawn_derivative_opening_equipment_obligation = infantry_spawn_equipment_debt }
+	set_variable = { infantry_spawn_derivative_opening_manpower_obligation = infantry_spawn_manpower_liability }
+	set_variable = { infantry_spawn_derivative_opening_active_formation_count = infantry_spawn_active_division_count }
+
+	clear_array = infantry_spawn_derivative_opening_custom_equipment_token_entries
+	clear_array = infantry_spawn_derivative_opening_custom_equipment_amount_entries
+	set_temp_variable = { infantry_spawn_family_equipment_snapshot_destination = constant:infantry_spawn_family_equipment_snapshot_destination.derivative_opening }
+	infantry_spawn_publish_registered_family_custom_equipment_tokens = yes
+	set_temp_variable = { infantry_spawn_derivative_asset_custom_equipment_total = constant:infantry_spawn_derivative_package_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = infantry_spawn_derivative_opening_custom_equipment_token_entries^num
+				value = infantry_spawn_derivative_opening_custom_equipment_amount_entries^num
+				compare = equals
+			}
+		}
+		set_temp_variable = { infantry_spawn_derivative_asset_custom_equipment_index = constant:infantry_spawn_event.first_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = infantry_spawn_derivative_asset_custom_equipment_index
+					value = infantry_spawn_derivative_opening_custom_equipment_amount_entries^num
+					compare = less_than
+				}
+			}
+			add_to_temp_variable = { infantry_spawn_derivative_asset_custom_equipment_total = infantry_spawn_derivative_opening_custom_equipment_amount_entries^infantry_spawn_derivative_asset_custom_equipment_index }
+			add_to_temp_variable = { infantry_spawn_derivative_asset_custom_equipment_index = constant:infantry_spawn_derivative_package_value.one }
+		}
+	}
+	else = { infantry_spawn_mark_ledger_invariant_failure = yes }
+	set_variable = { infantry_spawn_derivative_opening_custom_equipment_total = infantry_spawn_derivative_asset_custom_equipment_total }
+
+	set_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_package_value.zero }
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_asset_factory_count value = constant:infantry_spawn_derivative_opening_asset.factory_presence_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_asset_military_factory_count value = constant:infantry_spawn_derivative_opening_asset.military_factory_presence_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.critical_domain_score }
+	}
+	set_temp_variable = { infantry_spawn_derivative_asset_infrastructure_floor = infantry_spawn_derivative_asset_owned_states }
+	multiply_temp_variable = { infantry_spawn_derivative_asset_infrastructure_floor = constant:infantry_spawn_derivative_opening_asset.infrastructure_per_state_floor }
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_asset_infrastructure_score value = infantry_spawn_derivative_asset_infrastructure_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_derivative_asset_supply_nodes > constant:infantry_spawn_derivative_package_value.zero } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.critical_domain_score }
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_derivative_asset_railway_states > constant:infantry_spawn_derivative_package_value.zero } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { infantry_spawn_derivative_asset_port_levels > constant:infantry_spawn_derivative_package_value.zero } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_asset_population_k value = constant:infantry_spawn_derivative_opening_asset.population_k_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_asset_local_resources value = constant:infantry_spawn_derivative_opening_asset.resource_presence_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_opening_infantry_equipment value = constant:infantry_spawn_derivative_opening_asset.infantry_equipment_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_opening_support_equipment value = constant:infantry_spawn_derivative_opening_asset.support_equipment_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_opening_motorized_equipment value = constant:infantry_spawn_derivative_opening_asset.motorized_equipment_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_opening_train_equipment value = constant:infantry_spawn_derivative_opening_asset.train_equipment_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_opening_convoy_equipment value = constant:infantry_spawn_derivative_opening_asset.convoy_equipment_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = { check_variable = { var = infantry_spawn_derivative_asset_custom_equipment_total value = constant:infantry_spawn_derivative_opening_asset.custom_equipment_floor compare = greater_than_or_equals } }
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.ordinary_domain_score }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_active_division_count > constant:infantry_spawn_derivative_package_value.zero }
+			OR = {
+				check_variable = { infantry_spawn_equipment_debt > constant:infantry_spawn_derivative_package_value.zero }
+				check_variable = { infantry_spawn_manpower_liability > constant:infantry_spawn_derivative_package_value.zero }
+			}
+		}
+		add_to_temp_variable = { infantry_spawn_derivative_asset_capacity_score = constant:infantry_spawn_derivative_opening_asset.liability_pressure_score }
+	}
+	set_variable = { infantry_spawn_derivative_opening_local_capacity_score = infantry_spawn_derivative_asset_capacity_score }
+	clr_country_flag = infantry_spawn_derivative_local_assets_fragile
+	clr_country_flag = infantry_spawn_derivative_local_assets_strained
+	clr_country_flag = infantry_spawn_derivative_local_assets_viable
+	clr_country_flag = infantry_spawn_derivative_local_asset_shortfall_resolved
+	if = {
+		limit = { check_variable = { infantry_spawn_derivative_asset_capacity_score < constant:infantry_spawn_derivative_opening_asset.fragile_score_ceiling } }
+		set_country_flag = infantry_spawn_derivative_local_assets_fragile
+		add_ideas = infantry_spawn_derivative_local_asset_shortfall
+	}
+	else_if = {
+		limit = { check_variable = { infantry_spawn_derivative_asset_capacity_score < constant:infantry_spawn_derivative_opening_asset.strained_score_ceiling } }
+		set_country_flag = infantry_spawn_derivative_local_assets_strained
+	}
+	else = { set_country_flag = infantry_spawn_derivative_local_assets_viable }
+}
+
+# Called by the opening inventory focus after the host has catalogued its
+# captured workshops, depots, and routes. The opening measurements remain as
+# historical evidence while the temporary shortfall burden is retired.
+infantry_spawn_derivative_resolve_opening_local_asset_shortfall = {
+	remove_ideas = infantry_spawn_derivative_local_asset_shortfall
+	set_country_flag = infantry_spawn_derivative_local_asset_shortfall_resolved
 }
 
 # COUNTRY scope on a scenario or natural-release actor whose exact private ledger
@@ -156,6 +349,7 @@ infantry_spawn_derivative_clear_parent_runtime_surface = {
 	clear_variable = infantry_spawn_first_family_reception_family_id
 	clear_variable = infantry_spawn_first_family_reception_provider_id
 	clear_variable = infantry_spawn_first_family_reception_visual_profile
+	clear_variable = infantry_spawn_first_family_reception_name_loc_token
 	clear_variable = infantry_spawn_first_family_reception_nonce
 	clear_variable = infantry_spawn_first_family_reception_choice
 	clear_variable = infantry_spawn_natural_release_transaction_mode
@@ -573,6 +767,7 @@ infantry_spawn_setup_derivative_identity_common = {
 		}
 		infantry_spawn_derivative_initialize_private_ledger = yes
 		infantry_spawn_derivative_add_starting_ideas = yes
+		infantry_spawn_derivative_reconcile_starting_local_assets = yes
 		load_focus_tree = {
 			tree = infantry_spawn_derivative_focus_tree
 			keep_completed = no
@@ -5131,14 +5326,29 @@ infantry_spawn_lock_failed_natural_derivative_post_commit = {
 infantry_spawn_apply_natural_derivative_precommit_failure = {
 	if = {
 		limit = { check_variable = { infantry_spawn_natural_derivative_release_mode = constant:infantry_spawn_natural_release_mode.independent_family } }
-		set_variable = { infantry_spawn_muster_gui_selected_family_id = infantry_spawn_natural_derivative_selected_family_id }
-		set_temp_variable = { infantry_spawn_natural_family_deferred_days = constant:infantry_spawn_derivative_runtime.natural_family_deferred_days }
-		set_country_flag = { flag = infantry_spawn_natural_family_breach_deferred days = infantry_spawn_natural_family_deferred_days }
-		subtract_from_variable = { infantry_spawn_muster_control = constant:infantry_spawn_derivative_runtime.natural_family_deferred_control_loss }
-		add_to_variable = { infantry_spawn_evolution_saturation_pressure = constant:infantry_spawn_derivative_runtime.natural_family_deferred_pressure_gain }
-		clamp_variable = { var = infantry_spawn_muster_control min = constant:infantry_spawn_control.minimum max = constant:infantry_spawn_control.maximum }
-		infantry_spawn_recalculate_country_pressure = yes
-		country_event = { id = chaosx.nr19.206 }
+		set_temp_variable = { infantry_spawn_family_provider_name_loc_token = 0 }
+		set_temp_variable = { infantry_spawn_family_provider_request_cost_loc_token = 0 }
+		set_temp_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token = 0 }
+		meta_effect = {
+			text = { chaos_unit_family_provider_[PROVIDER]_event19_get_presentation = yes }
+			PROVIDER = "[?infantry_spawn_natural_derivative_selected_provider_id|.0]"
+		}
+		if = {
+			limit = {
+				check_variable = { infantry_spawn_family_provider_name_loc_token > 0 }
+				check_variable = { infantry_spawn_family_provider_request_cost_loc_token > 0 }
+				check_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token > 0 }
+			}
+			set_variable = { infantry_spawn_natural_derivative_report_family_name_loc_token = infantry_spawn_family_provider_name_loc_token }
+			set_temp_variable = { infantry_spawn_natural_family_deferred_days = constant:infantry_spawn_derivative_runtime.natural_family_deferred_days }
+			set_country_flag = { flag = infantry_spawn_natural_family_breach_deferred days = infantry_spawn_natural_family_deferred_days }
+			subtract_from_variable = { infantry_spawn_muster_control = constant:infantry_spawn_derivative_runtime.natural_family_deferred_control_loss }
+			add_to_variable = { infantry_spawn_evolution_saturation_pressure = constant:infantry_spawn_derivative_runtime.natural_family_deferred_pressure_gain }
+			clamp_variable = { var = infantry_spawn_muster_control min = constant:infantry_spawn_control.minimum max = constant:infantry_spawn_control.maximum }
+			infantry_spawn_recalculate_country_pressure = yes
+			country_event = { id = chaosx.nr19.206 }
+		}
+		else = { infantry_spawn_mark_ledger_invariant_failure = yes }
 	}
 	else = {
 		if = {
@@ -5246,6 +5456,25 @@ infantry_spawn_run_natural_derivative_exact_transaction = {
 				}
 				else = {
 					set_country_flag = infantry_spawn_derivative_identity_creation_failure
+				}
+				if = {
+					limit = { check_variable = { infantry_spawn_derivative_family_id > constant:infantry_spawn_lot_family.none } }
+					set_temp_variable = { infantry_spawn_family_provider_name_loc_token = 0 }
+					set_temp_variable = { infantry_spawn_family_provider_request_cost_loc_token = 0 }
+					set_temp_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token = 0 }
+					meta_effect = {
+						text = { chaos_unit_family_provider_[PROVIDER]_event19_get_presentation = yes }
+						PROVIDER = "[?infantry_spawn_derivative_provider_id|.0]"
+					}
+					if = {
+						limit = {
+							check_variable = { infantry_spawn_family_provider_name_loc_token > 0 }
+							check_variable = { infantry_spawn_family_provider_request_cost_loc_token > 0 }
+							check_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token > 0 }
+						}
+						set_variable = { infantry_spawn_derivative_family_name_loc_token = infantry_spawn_family_provider_name_loc_token }
+					}
+					else = { set_country_flag = infantry_spawn_derivative_identity_creation_failure }
 				}
 				set_variable = { infantry_spawn_derivative_origin_generation_uid = infantry_spawn_natural_derivative_selected_origin_generation_uid }
 			}
@@ -5477,6 +5706,22 @@ infantry_spawn_execute_natural_family_same_tag_takeover = {
 		set_variable = { infantry_spawn_derivative_former_parent = event_target:infantry_spawn_natural_same_tag_country }
 		set_variable = { infantry_spawn_derivative_family_id = infantry_spawn_natural_derivative_selected_family_id }
 		set_variable = { infantry_spawn_derivative_provider_id = infantry_spawn_natural_derivative_selected_provider_id }
+		set_temp_variable = { infantry_spawn_family_provider_name_loc_token = 0 }
+		set_temp_variable = { infantry_spawn_family_provider_request_cost_loc_token = 0 }
+		set_temp_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token = 0 }
+		meta_effect = {
+			text = { chaos_unit_family_provider_[PROVIDER]_event19_get_presentation = yes }
+			PROVIDER = "[?infantry_spawn_natural_derivative_selected_provider_id|.0]"
+		}
+		if = {
+			limit = {
+				check_variable = { infantry_spawn_family_provider_name_loc_token > 0 }
+				check_variable = { infantry_spawn_family_provider_request_cost_loc_token > 0 }
+				check_variable = { infantry_spawn_family_provider_sustainment_cost_loc_token > 0 }
+			}
+			set_variable = { infantry_spawn_derivative_family_name_loc_token = infantry_spawn_family_provider_name_loc_token }
+		}
+		else = { set_country_flag = infantry_spawn_derivative_identity_creation_failure }
 		set_variable = { infantry_spawn_derivative_origin_generation_uid = infantry_spawn_natural_derivative_selected_origin_generation_uid }
 		set_variable = { infantry_spawn_derivative_release_mode = infantry_spawn_natural_derivative_release_mode }
 		set_variable = { infantry_spawn_derivative_release_nonce = infantry_spawn_natural_derivative_release_nonce }
@@ -5496,6 +5741,8 @@ infantry_spawn_execute_natural_family_same_tag_takeover = {
 				has_country_flag = infantry_spawn_derivative_package_initialized
 				has_country_flag = infantry_spawn_derivative_package_active
 				has_country_flag = infantry_spawn_derivative_country
+				has_variable = infantry_spawn_derivative_family_name_loc_token
+				check_variable = { infantry_spawn_derivative_family_name_loc_token > 0 }
 				infantry_spawn_derivative_is_parent_isolated = yes
 				has_country_flag = infantry_spawn_natural_derivative_recreated_transfer
 				NOT = { has_country_flag = infantry_spawn_claimant_breakaway }
@@ -6017,6 +6264,7 @@ infantry_spawn_derivative_manifest_paid_family_formation = {
 			}
 		}
 		set_temp_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+		infantry_spawn_snapshot_management_request_payment_resources = yes
 		infantry_spawn_derivative_pay_current_family_management = yes
 		if = {
 			limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
@@ -6029,7 +6277,12 @@ infantry_spawn_derivative_manifest_paid_family_formation = {
 			else_if = {
 				limit = { check_variable = { infantry_spawn_derivative_materialization_rollback_succeeded > constant:infantry_spawn_derivative_package_value.zero } }
 				infantry_spawn_derivative_refund_current_family_management = yes
+				infantry_spawn_verify_management_request_payment_resources_restored = yes
 			}
+		}
+		else = {
+			set_temp_variable = { infantry_spawn_request_rollback_valid = constant:infantry_spawn_derivative_package_value.one }
+			infantry_spawn_verify_management_request_payment_resources_restored = yes
 		}
 	}
 }
@@ -7073,6 +7326,7 @@ infantry_spawn_derivative_record_war_victory = {
 infantry_spawn_derivative_remove_active_ideas = {
 	remove_ideas = infantry_spawn_derivative_unrecognized_host
 	remove_ideas = infantry_spawn_derivative_seized_muster_districts
+	remove_ideas = infantry_spawn_derivative_local_asset_shortfall
 	remove_ideas = infantry_spawn_derivative_claimant_disputed_command
 	remove_ideas = infantry_spawn_derivative_zombie_fragmented_command
 	remove_ideas = infantry_spawn_derivative_ghost_unstable_manifestation
@@ -7501,7 +7755,8 @@ infantry_spawn_derivative_finalize_cleanup_after_formation_proof = {
 		clear_variable = infantry_spawn_derivative_origin_generation_uid
 		clear_variable = infantry_spawn_derivative_claimant_uid
 		clear_variable = infantry_spawn_derivative_claimant_archetype
-		clear_variable = infantry_spawn_derivative_provider_id
+	clear_variable = infantry_spawn_derivative_provider_id
+	clear_variable = infantry_spawn_derivative_family_name_loc_token
 		clear_variable = infantry_spawn_derivative_release_mode
 		clear_variable = infantry_spawn_derivative_release_nonce
 		clear_variable = infantry_spawn_derivative_package_owner_uid
@@ -7517,6 +7772,35 @@ infantry_spawn_derivative_finalize_cleanup_after_formation_proof = {
 		clear_variable = infantry_spawn_derivative_depot_count
 		clear_variable = infantry_spawn_derivative_sustainment_site_count
 		clear_variable = infantry_spawn_derivative_opening_crisis_days
+		clear_variable = infantry_spawn_derivative_opening_owned_state_count
+		clear_variable = infantry_spawn_derivative_opening_factory_count
+		clear_variable = infantry_spawn_derivative_opening_civilian_factory_count
+		clear_variable = infantry_spawn_derivative_opening_military_factory_count
+		clear_variable = infantry_spawn_derivative_opening_naval_factory_count
+		clear_variable = infantry_spawn_derivative_opening_population_k
+		clear_variable = infantry_spawn_derivative_opening_infrastructure_score
+		clear_variable = infantry_spawn_derivative_opening_railway_state_count
+		clear_variable = infantry_spawn_derivative_opening_port_level_count
+		clear_variable = infantry_spawn_derivative_opening_supply_node_count
+		clear_variable = infantry_spawn_derivative_opening_local_resource_total
+		clear_variable = infantry_spawn_derivative_opening_research_slot_count
+		clear_variable = infantry_spawn_derivative_opening_fuel_ratio
+		clear_variable = infantry_spawn_derivative_opening_infantry_equipment
+		clear_variable = infantry_spawn_derivative_opening_support_equipment
+		clear_variable = infantry_spawn_derivative_opening_motorized_equipment
+		clear_variable = infantry_spawn_derivative_opening_train_equipment
+		clear_variable = infantry_spawn_derivative_opening_convoy_equipment
+		clear_variable = infantry_spawn_derivative_opening_equipment_obligation
+		clear_variable = infantry_spawn_derivative_opening_manpower_obligation
+		clear_variable = infantry_spawn_derivative_opening_active_formation_count
+		clear_variable = infantry_spawn_derivative_opening_custom_equipment_total
+		clear_variable = infantry_spawn_derivative_opening_local_capacity_score
+		clear_array = infantry_spawn_derivative_opening_custom_equipment_token_entries
+		clear_array = infantry_spawn_derivative_opening_custom_equipment_amount_entries
+		clr_country_flag = infantry_spawn_derivative_local_assets_fragile
+		clr_country_flag = infantry_spawn_derivative_local_assets_strained
+		clr_country_flag = infantry_spawn_derivative_local_assets_viable
+		clr_country_flag = infantry_spawn_derivative_local_asset_shortfall_resolved
 		clear_variable = infantry_spawn_derivative_submission_target
 		clear_variable = infantry_spawn_derivative_submission_days
 		clear_variable = infantry_spawn_derivative_integration_state
