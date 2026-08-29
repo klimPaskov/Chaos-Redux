@@ -7,11 +7,11 @@ Event 006 defines sixteen achievements around sovereign survival, negotiated hos
 The implementation is split across:
 
 - `common/achievements/chaos_redux_achievements.txt` for achievement registration;
-- `common/script_constants/006_independence_wave_achievement_constants.txt` for every numerical threshold;
+- `common/script_constants/006_independence_wave_constants_registry.txt` for every numerical threshold;
 - `common/scripted_triggers/006_independence_wave_achievement_triggers.txt` for final-state proofs;
 - `common/scripted_effects/006_independence_wave_achievement_effects.txt` for historical ledgers and clocks;
 - `common/on_actions/006_independence_wave_achievement_on_actions.txt` for narrow engine events;
-- `localisation/english/006_independence_wave_achievements_l_english.yml` for final names, descriptions, and exact condition tooltips.
+- `localisation/english/006_independence_wave_l_english.yml` for final names, descriptions, and exact condition tooltips.
 
 No daily, weekly, or monthly on-action is used. Wave initialization iterates only the frozen plan's host array. League clocks iterate only the maintained league-member array. Scenario survival iterates only the countries committed by the current scenario plan.
 
@@ -33,7 +33,7 @@ No daily, weekly, or monthly on-action is used. Wave initialization iterates onl
 | The Open-Border Reckoning | Radical route triggers the radical dangerous milestone, then receives an external containment attack and survives one year; scenario-forced qualification excluded | Wired |
 | The Long Roll Call | Low-intensity, non-Common-Congress `SCN-008`; after five years at least 85 percent of that plan's released countries remain active and independent | Wired |
 | Three Patrons, No Master | Major aid history from three distinct patrons; no dependency history or client route; all concessions bought out | Wired |
-| Five Lines, No Shots | Five DM-43 arbitrations in one leadership term; any member war, DM-51 coercion, or a completed DM-60 charter expulsion invalidates that term | Arbitration, war, coercion, and the bounded patron-client expulsion proof are wired |
+| Five Lines, No Shots | Five DM-43 arbitrations in one leadership term; any member war, DM-51 coercion, or a completed DM-60 charter expulsion invalidates that term | Arbitration, war, coercion, and all seven factual patron-client expulsion grounds are wired |
 | One Capital, Ten Years | Former host left with one state; settlements with all ledgered breakaways; never a subject or reconqueror; ten peaceful years, 60 percent stability, two civilian factories, and level-two capital infrastructure | Wired |
 
 ## Historical transactions
@@ -90,4 +90,4 @@ The completion audit must cover at least:
 
 ## Future extensions
 
-All seven accepted factual grounds now enter the same DM-60 expulsion target pool. The remaining league extension is the charter-governed rival-bloc transaction after expulsion; it still needs a separate generation-safe membership contract, visible actions, AI, cleanup, and achievement-scenario coverage. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.
+All seven accepted factual grounds now enter the same DM-60 expulsion target pool, and the charter-governed rival-bloc transaction after expulsion has a generation-safe membership contract, visible actions, AI, cleanup, and achievement-scenario coverage in the Event 006 rival-bloc surfaces. Typed probability evidence and live save/load validation remain follow-up work. The two package-specific achievements remain fail-closed at country admission until their sourced portrait packages pass the current grounded-country rules.
