@@ -1,0 +1,1659 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 RANDOM CIVIL WAR EFFECTS
+# ============================================================================
+# Reusable, bounded scripted-system contracts for Event 021. The parent event,
+# decision, and scenario files own narrative text, country creation, state
+# transfer, wars, ideas, AI, and shared cluster/event-log registration. These
+# effects own the state that those surfaces share: hidden Fracture Pressure,
+# visible State Authority, target scoring, plan reservations, front records,
+# evolution scheduling, exposure, queue/cap bookkeeping, settlement, and
+# cleanup.
+#
+# Public input convention:
+# - normal variables named `random_civil_war_*` are persistent inputs or
+#   outputs on the current scope;
+# - temporary variables with the same prefix are one-call inputs/outputs;
+# - event targets `random_civil_war_host_country`,
+#   `random_civil_war_current_state`, `random_civil_war_anchor_state`, and
+#   `random_civil_war_current_actor` are short-lived parent call-frame targets;
+# - global arrays store bounded registries and are changed only by explicit
+#   register/unregister/rollback helpers.
+#
+# The only world-facing review helper is `event021_global_review_batch`. It
+# opens a fixed review budget. The parent must feed countries through
+# `event021_review_current_country` from an existing bounded hook. No default
+# any_country daily/monthly loop is defined here.
+#
+# Event 006 adapter boundary: `event021_prepare_event6_admission` calls only
+# the existing static admission/preflight predicates after bridging the package
+# id. It never calls `independence_wave_prepare_country_origin`, never marks an
+# Event 006 origin/evolution/league state, and never applies an Event 006
+# package dispatcher. The parent owns the package-specific execution step.
+# ============================================================================
+
+# -----------------------------------------------------------------------------
+# Core state: Fracture Pressure and State Authority
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope. Idempotently creates the persistent state used by all other
+# helpers, then refreshes derived pressure and authority bands. Call after a
+# country is created, restored, annexed, or otherwise changes crisis inputs.
+event021_initialize_country_state = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_fracture_pressure } }
+		set_variable = { random_civil_war_fracture_pressure = constant:random_civil_war_pressure.base }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_state_authority } }
+		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.default }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_generation } }
+		set_variable = { random_civil_war_generation = constant:random_civil_war_value.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_settled_front_count } }
+		set_variable = { random_civil_war_settled_front_count = constant:random_civil_war_value.zero }
+	}
+	event021_refresh_country_state = yes
+}
+
+# COUNTRY scope. Recomputes hidden Fracture Pressure from live country values
+# and parent-supplied bounded component flags/counters. It intentionally does
+# not treat diversity alone as pressure: a route, grievance, organization,
+# territorial access, or institutional access must still be supplied by the
+# target planner.
+event021_refresh_country_state = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_fracture_pressure } }
+		set_variable = { random_civil_war_fracture_pressure = constant:random_civil_war_pressure.base }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_state_authority } }
+		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.default }
+	}
+	set_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.base }
+	if = {
+		limit = { has_stability < constant:random_civil_war_pressure.stability_low }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.political_grievance }
+	}
+	if = {
+		limit = { has_stability > constant:random_civil_war_pressure.stability_high }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.cohesive_relief }
+	}
+	if = {
+		limit = { has_war_support < constant:random_civil_war_pressure.war_support_low }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.political_grievance }
+	}
+	if = {
+		limit = { has_war_support > constant:random_civil_war_pressure.war_support_high }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.cohesive_relief }
+	}
+	if = {
+		limit = { has_war = yes }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.active_war }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_political_competition_active }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.political_grievance }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_military_loyalty_low }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.military_disloyalty }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_regional_grievance_active }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.regional_identity }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_state_capacity_low }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.state_capacity_loss }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_nearby_conflict_exposure }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.nearby_conflict }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_recent_civil_war_memory }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.event_memory }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_contested_territory }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.territorial_loss }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_key_state_lost }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.territorial_loss }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_settlement_relief_active }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.settlement_relief }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_reconstruction_active }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.reconstruction_relief }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_authority_failing }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.authority_failing }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_authority_collapse }
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.authority_collapse }
+	}
+	set_temp_variable = { event021_pressure_chaos_tier = constant:chaos_meter_tier_id.tier_0 }
+	get_current_chaos_tier_value = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = current_chaos_tier_value
+				value = constant:chaos_meter_tier_id.tier_1
+				compare = greater_than_or_equals
+			}
+		}
+		add_to_temp_variable = { event021_pressure_recalculated = constant:random_civil_war_pressure.chaos_tier }
+	}
+	if = {
+		limit = { has_variable = random_civil_war_contested_state_count }
+		set_temp_variable = { event021_pressure_state_component = random_civil_war_contested_state_count }
+		multiply_temp_variable = { event021_pressure_state_component = constant:random_civil_war_pressure.territorial_loss }
+		add_to_temp_variable = { event021_pressure_recalculated = event021_pressure_state_component }
+	}
+	if = {
+		limit = { has_variable = random_civil_war_pressure_modifier }
+		add_to_temp_variable = { event021_pressure_recalculated = random_civil_war_pressure_modifier }
+	}
+	clamp_temp_variable = {
+		var = event021_pressure_recalculated
+		min = constant:random_civil_war_pressure.minimum
+		max = constant:random_civil_war_pressure.maximum
+	}
+	set_variable = { random_civil_war_fracture_pressure = event021_pressure_recalculated }
+	set_variable = { random_civil_war_pressure_snapshot_date = global.date }
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_recent_civil_war_memory
+			has_variable = random_civil_war_memory_until
+			check_variable = { var = global.date value = random_civil_war_memory_until compare = greater_than_or_equals }
+		}
+		clr_country_flag = random_civil_war_recent_civil_war_memory
+	}
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_recent_target
+			has_variable = random_civil_war_recent_target_until
+			check_variable = { var = global.date value = random_civil_war_recent_target_until compare = greater_than_or_equals }
+		}
+		clr_country_flag = random_civil_war_recent_target
+	}
+	event021_update_pressure_band = yes
+	event021_update_authority_band = yes
+}
+
+# COUNTRY scope. `random_civil_war_pending_pressure_delta` is an optional
+# normal-variable input. If absent, the helper applies the centralized
+# reconstruction relief. The input is consumed so a decision cannot repeat a
+# one-shot delta on a later bounded refresh.
+event021_reduce_pressure = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_pending_pressure_delta } }
+		set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.reconstruction_relief }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_fracture_pressure } }
+		set_variable = { random_civil_war_fracture_pressure = constant:random_civil_war_pressure.base }
+	}
+	add_to_variable = { random_civil_war_fracture_pressure = random_civil_war_pending_pressure_delta }
+	clamp_variable = {
+		var = random_civil_war_fracture_pressure
+		min = constant:random_civil_war_pressure.minimum
+		max = constant:random_civil_war_pressure.maximum
+	}
+	clear_variable = random_civil_war_pending_pressure_delta
+	event021_update_pressure_band = yes
+}
+
+# COUNTRY scope. `random_civil_war_pending_authority_delta` is an optional
+# normal-variable input. Without one, the helper applies the centralized
+# administrative restoration delta. Condition flags add the loss or recovery
+# associated with the current capital, supply, and settlement state.
+event021_add_authority = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_pending_authority_delta } }
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.admin_restored }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_state_authority } }
+		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.default }
+	}
+	add_to_variable = { random_civil_war_state_authority = random_civil_war_pending_authority_delta }
+	if = {
+		limit = { has_country_flag = random_civil_war_capital_lost }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.capital_lost }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_capital_secured }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.capital_secured }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_supply_lost }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.supply_lost }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_supply_secured }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.supply_secured }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_admin_restored }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.admin_restored }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_negotiation_active }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.negotiation }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_repression_active }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.repression }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_foreign_intervention_active }
+		add_to_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.foreign_intervention }
+	}
+	clamp_variable = {
+		var = random_civil_war_state_authority
+		min = constant:random_civil_war_authority.minimum
+		max = constant:random_civil_war_authority.maximum
+	}
+	clear_variable = random_civil_war_pending_authority_delta
+	event021_update_authority_band = yes
+}
+
+# COUNTRY scope. Refreshes the visible four-band State Authority ladder.
+event021_update_authority_band = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_state_authority } }
+		set_variable = { random_civil_war_state_authority = constant:random_civil_war_authority.default }
+	}
+	clamp_variable = {
+		var = random_civil_war_state_authority
+		min = constant:random_civil_war_authority.minimum
+		max = constant:random_civil_war_authority.maximum
+	}
+	set_variable = { random_civil_war_authority_band = constant:random_civil_war_authority_band.collapse }
+	clr_country_flag = random_civil_war_authority_cohesive
+	clr_country_flag = random_civil_war_authority_contested
+	clr_country_flag = random_civil_war_authority_failing
+	clr_country_flag = random_civil_war_authority_collapse
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_state_authority
+				value = constant:random_civil_war_authority.collapse_maximum
+				compare = greater_than
+			}
+		}
+		set_variable = { random_civil_war_authority_band = constant:random_civil_war_authority_band.failing }
+		set_country_flag = random_civil_war_authority_failing
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_state_authority
+				value = constant:random_civil_war_authority.failing_maximum
+				compare = greater_than
+			}
+		}
+		set_variable = { random_civil_war_authority_band = constant:random_civil_war_authority_band.contested }
+		clr_country_flag = random_civil_war_authority_failing
+		set_country_flag = random_civil_war_authority_contested
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_state_authority
+				value = constant:random_civil_war_authority.contested_maximum
+				compare = greater_than
+			}
+		}
+		set_variable = { random_civil_war_authority_band = constant:random_civil_war_authority_band.cohesive }
+		clr_country_flag = random_civil_war_authority_contested
+		set_country_flag = random_civil_war_authority_cohesive
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_state_authority
+				value = constant:random_civil_war_authority.collapse_maximum
+				compare = less_than_or_equals
+			}
+		}
+		set_variable = { random_civil_war_authority_band = constant:random_civil_war_authority_band.collapse }
+		clr_country_flag = random_civil_war_authority_failing
+		set_country_flag = random_civil_war_authority_collapse
+	}
+}
+
+# COUNTRY scope. Refreshes the hidden pressure band used by the bounded global
+# review. The band is a derived value and never starts a crisis by itself.
+event021_update_pressure_band = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_fracture_pressure } }
+		set_variable = { random_civil_war_fracture_pressure = constant:random_civil_war_pressure.base }
+	}
+	clamp_variable = {
+		var = random_civil_war_fracture_pressure
+		min = constant:random_civil_war_pressure.minimum
+		max = constant:random_civil_war_pressure.maximum
+	}
+	set_variable = { random_civil_war_pressure_band = constant:random_civil_war_pressure_band.stable }
+	clr_country_flag = random_civil_war_pressure_stable
+	clr_country_flag = random_civil_war_pressure_exposed
+	clr_country_flag = random_civil_war_pressure_fractured
+	clr_country_flag = random_civil_war_pressure_critical
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_fracture_pressure
+				value = constant:random_civil_war_pressure.exposed_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { random_civil_war_pressure_band = constant:random_civil_war_pressure_band.exposed }
+		set_country_flag = random_civil_war_pressure_exposed
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_fracture_pressure
+				value = constant:random_civil_war_pressure.fractured_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { random_civil_war_pressure_band = constant:random_civil_war_pressure_band.fractured }
+		clr_country_flag = random_civil_war_pressure_exposed
+		set_country_flag = random_civil_war_pressure_fractured
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_fracture_pressure
+				value = constant:random_civil_war_pressure.critical_threshold
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { random_civil_war_pressure_band = constant:random_civil_war_pressure_band.critical }
+		clr_country_flag = random_civil_war_pressure_fractured
+		set_country_flag = random_civil_war_pressure_critical
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = random_civil_war_fracture_pressure
+				value = constant:random_civil_war_pressure.exposed_threshold
+				compare = less_than
+			}
+		}
+		set_country_flag = random_civil_war_pressure_stable
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Target scoring, severity, and archetype planning
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope. Produces temporary `event021_target_weight` and persistent
+# `random_civil_war_target_weight`. Call once for each candidate selected by a
+# bounded parent pool. A zero result is fail-closed and never creates an actor.
+event021_random_civil_war_prepare_target = {
+	event021_initialize_country_state = yes
+	set_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.base }
+	if = {
+		limit = { event021_country_can_be_target = yes }
+		set_temp_variable = { event021_pressure_component = random_civil_war_fracture_pressure }
+		multiply_temp_variable = { event021_pressure_component = constant:random_civil_war_target_weight.pressure_per_point }
+		add_to_temp_variable = { event021_target_weight = event021_pressure_component }
+		if = {
+			limit = { random_civil_war_authority_is_failing = yes }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.authority_failing }
+		}
+		if = {
+			limit = { random_civil_war_authority_is_collapsed = yes }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.authority_collapse }
+		}
+		if = {
+			limit = { random_civil_war_has_valid_actor_route = yes }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.valid_actor_route }
+		}
+		if = {
+			limit = { random_civil_war_major_severity_allowed = yes }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.major_stage }
+		}
+		if = {
+			limit = { has_country_flag = random_civil_war_nearby_conflict_exposure }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.nearby_exposure }
+		}
+		if = {
+			limit = { has_country_flag = random_civil_war_recent_civil_war_memory }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.recent_memory }
+		}
+		if = {
+			limit = { is_subject = yes }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.subject }
+		}
+		if = {
+			limit = { has_country_flag = random_civil_war_player_target }
+			add_to_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.player }
+		}
+	}
+	else = {
+		set_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.minimum }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_target_reserved }
+		set_temp_variable = { event021_target_weight = constant:random_civil_war_target_weight.minimum }
+	}
+	clamp_temp_variable = {
+		var = event021_target_weight
+		min = constant:random_civil_war_target_weight.minimum
+		max = constant:random_civil_war_target_weight.maximum
+	}
+	round_temp_variable = event021_target_weight
+	set_variable = { random_civil_war_target_weight = event021_target_weight }
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_target_weight
+				value = constant:random_civil_war_target_weight.minimum
+				compare = greater_than
+			}
+		}
+		set_country_flag = random_civil_war_target_pool_candidate
+		save_event_target_as = random_civil_war_target_country
+	}
+	else = { clr_country_flag = random_civil_war_target_pool_candidate }
+}
+
+# COUNTRY scope. Produces the four dynamic route weights as temporary values
+# for the parent selector. The selector may use a random_list or its own
+# bounded pool; this helper does not invent an actor when all routes are zero.
+event021_prepare_archetype_weights = {
+	set_temp_variable = { event021_ideological_weight = constant:random_civil_war_target_weight.minimum }
+	set_temp_variable = { event021_legal_weight = constant:random_civil_war_target_weight.minimum }
+	set_temp_variable = { event021_regional_weight = constant:random_civil_war_target_weight.minimum }
+	set_temp_variable = { event021_command_weight = constant:random_civil_war_target_weight.minimum }
+	set_temp_variable = { event021_event6_weight = constant:random_civil_war_target_weight.minimum }
+	set_temp_variable = { event021_same_tag_weight = constant:random_civil_war_target_weight.minimum }
+	if = {
+		limit = { random_civil_war_ideological_route_valid = yes }
+		set_temp_variable = { event021_ideological_weight = constant:random_civil_war_target_weight.valid_actor_route }
+	}
+	if = {
+		limit = { random_civil_war_legal_route_valid = yes }
+		set_temp_variable = { event021_legal_weight = constant:random_civil_war_target_weight.valid_actor_route }
+	}
+	if = {
+		limit = { random_civil_war_regional_route_valid = yes }
+		set_temp_variable = { event021_regional_weight = constant:random_civil_war_target_weight.valid_actor_route }
+	}
+	if = {
+		limit = { random_civil_war_command_route_valid = yes }
+		set_temp_variable = { event021_command_weight = constant:random_civil_war_target_weight.valid_actor_route }
+	}
+	if = {
+		limit = { random_civil_war_event6_route_valid = yes }
+		set_temp_variable = { event021_event6_weight = constant:random_civil_war_target_weight.valid_actor_route }
+	}
+	if = {
+		limit = { random_civil_war_same_tag_route_valid = yes }
+		set_temp_variable = { event021_same_tag_weight = constant:random_civil_war_target_weight.valid_actor_route }
+	}
+}
+
+# COUNTRY scope. Produces temporary `event021_opening_severity` and publishes
+# the same value on the target. One-state/all-island paths stay limited; severe
+# and critical openings require an active evolution or scenario bypass.
+event021_prepare_opening_severity = {
+	set_temp_variable = { event021_opening_severity = constant:random_civil_war_severity.limited }
+	if = {
+		limit = {
+			OR = {
+				random_civil_war_pressure_is_exposed = yes
+				has_country_flag = random_civil_war_serious_opening_ready
+			}
+		}
+		set_temp_variable = { event021_opening_severity = constant:random_civil_war_severity.serious }
+	}
+	if = {
+		limit = {
+			random_civil_war_major_severity_allowed = yes
+			random_civil_war_pressure_is_fractured = yes
+		}
+		set_temp_variable = { event021_opening_severity = constant:random_civil_war_severity.severe }
+	}
+	if = {
+		limit = {
+			random_civil_war_major_severity_allowed = yes
+			random_civil_war_pressure_is_critical = yes
+		}
+		set_temp_variable = { event021_opening_severity = constant:random_civil_war_severity.critical }
+	}
+	if = {
+		limit = { random_civil_war_one_state_route_valid = yes }
+		set_temp_variable = { event021_opening_severity = constant:random_civil_war_severity.limited }
+	}
+	set_variable = { random_civil_war_opening_severity = event021_opening_severity }
+}
+
+# COUNTRY scope. Sets an explicit target reservation before any country or
+# state mutation. The parent must clear it with rollback or commit.
+event021_reserve_target = {
+	if = {
+		limit = { event021_country_can_be_target = yes }
+		set_country_flag = random_civil_war_target_reserved
+		set_variable = { random_civil_war_target_reservation_date = global.date }
+		save_event_target_as = random_civil_war_target_country
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Connected-state, capital, remnant, and front planning
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope. Opens the single bounded opening transaction used to reserve
+# connected states and anchors. A second plan cannot overwrite the first one.
+# The parent calls `event021_reserve_state` once per selected state.
+event021_begin_opening_transaction = {
+	if = {
+		limit = { NOT = { has_global_flag = random_civil_war_plan_active } }
+		set_global_flag = random_civil_war_plan_active
+		set_global_flag = random_civil_war_plan_seed_pending
+		set_global_flag = random_civil_war_planning_lock
+		clear_array = global.random_civil_war_plan_states
+		clear_array = global.random_civil_war_reserved_states
+		set_variable = { global.random_civil_war_plan_state_count = constant:random_civil_war_value.zero }
+		set_country_flag = random_civil_war_plan_owner
+		save_event_target_as = random_civil_war_host_country
+	}
+	else = { set_global_flag = random_civil_war_plan_rejected }
+}
+
+# STATE scope through the `random_civil_war_current_state` event target. Adds a
+# state to both the temporary plan and the global collision reservation. The
+# seed flag is consumed after the first state; later states need adjacency or
+# the host's all-island route. No owner/controller mutation occurs here.
+event021_reserve_state = {
+	if = {
+		limit = { has_event_target = random_civil_war_current_state }
+		event_target:random_civil_war_current_state = {
+			if = {
+				limit = { random_civil_war_state_can_be_reserved = yes }
+				add_to_array = { array = global.random_civil_war_plan_states }
+				add_to_array = { array = global.random_civil_war_reserved_states }
+				add_to_variable = { global.random_civil_war_plan_state_count = constant:random_civil_war_value.one }
+				set_variable = { global.random_civil_war_last_reserved_state = THIS }
+			}
+		}
+		clr_global_flag = random_civil_war_plan_seed_pending
+	}
+}
+
+# COUNTRY scope. The parent stores the selected capital/anchor scope in the
+# normal variable `random_civil_war_anchor_state` before calling this helper.
+# The regular event target is kept for the rest of the opening call frame and a
+# global target is kept for later front/settlement decisions.
+event021_record_anchor_state = {
+	if = {
+		limit = { has_variable = random_civil_war_anchor_state }
+		var:random_civil_war_anchor_state = { save_event_target_as = random_civil_war_anchor_state }
+		var:random_civil_war_anchor_state = { save_global_event_target_as = random_civil_war_global_anchor_state }
+	}
+}
+
+# COUNTRY scope. Marks the planned remnant and proves that the parent retains a
+# connected, supplied country with at least one state and a usable capital.
+event021_prepare_parent_remnant = {
+	if = {
+		limit = { random_civil_war_parent_remnant_valid = yes }
+		set_country_flag = random_civil_war_parent_remnant_preserved
+		set_country_flag = random_civil_war_parent_capital_safe
+		set_variable = { random_civil_war_remnant_state_count = num_owned_states }
+		capital_scope = { save_global_event_target_as = random_civil_war_global_remnant_capital }
+	}
+	else = { set_country_flag = random_civil_war_parent_remnant_invalid }
+}
+
+# COUNTRY scope. Records the caller's already-proven force and stockpile plan.
+# Optional normal inputs are `random_civil_war_requested_force_divisions`,
+# `random_civil_war_requested_force_manpower`, and the three equipment pools.
+# When absent, force output is derived from the current country's divisions,
+# factories, and manpower instead of using a fixed half-stockpile split.
+event021_prepare_force_package = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_requested_force_divisions } }
+		set_variable = { random_civil_war_requested_force_divisions = num_divisions }
+		multiply_variable = { random_civil_war_requested_force_divisions = constant:random_civil_war_force.actor_division_ratio }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_requested_force_manpower } }
+		set_variable = { random_civil_war_requested_force_manpower = manpower }
+		multiply_variable = { random_civil_war_requested_force_manpower = constant:random_civil_war_force.actor_manpower_ratio }
+	}
+	clamp_variable = {
+		var = random_civil_war_requested_force_divisions
+		min = constant:random_civil_war_capacity.minimum_force_divisions
+		max = constant:random_civil_war_capacity.maximum_force_divisions
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_one_state_route
+				has_country_flag = random_civil_war_all_island_route_ready
+			}
+		}
+		set_variable = { random_civil_war_requested_force_divisions = constant:random_civil_war_force.one_state_division_count }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_requested_force_equipment } }
+		set_variable = { random_civil_war_requested_force_equipment = num_of_military_factories }
+		multiply_variable = { random_civil_war_requested_force_equipment = constant:random_civil_war_force.actor_equipment_ratio }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_requested_force_support_equipment } }
+		set_variable = { random_civil_war_requested_force_support_equipment = constant:random_civil_war_force.minimum_support_equipment }
+	}
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_requested_force_artillery_equipment } }
+		set_variable = { random_civil_war_requested_force_artillery_equipment = constant:random_civil_war_force.minimum_artillery_equipment }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_manpower < constant:random_civil_war_force.minimum_manpower
+				NOT = { num_divisions > constant:random_civil_war_value.zero }
+			}
+		}
+		set_country_flag = random_civil_war_force_package_invalid
+	}
+	else = { set_country_flag = random_civil_war_force_package_ready }
+}
+
+# COUNTRY scope. Commits after all state transfers, actor setup, and remnant
+# checks have completed. It consumes the plan arrays only after the parent has
+# finished using them and increments the bounded active-theater registry.
+event021_random_civil_war_commit_opening = {
+	if = {
+		limit = { random_civil_war_opening_plan_valid = yes }
+		set_country_flag = random_civil_war_active
+		set_country_flag = random_civil_war_recent_target
+		set_country_flag = random_civil_war_plan_committed
+		set_country_flag = random_civil_war_plan_owner
+		set_variable = { random_civil_war_crisis_start_date = global.date }
+		set_variable = { random_civil_war_last_target_date = global.date }
+		event021_register_active_theater = yes
+		clear_array = global.random_civil_war_plan_states
+		clear_array = global.random_civil_war_reserved_states
+		set_variable = { global.random_civil_war_plan_state_count = constant:random_civil_war_value.zero }
+		clr_global_flag = random_civil_war_plan_active
+		clr_global_flag = random_civil_war_plan_seed_pending
+		clr_global_flag = random_civil_war_planning_lock
+	}
+	else = {
+		set_country_flag = random_civil_war_plan_rejected
+		event021_rollback_opening = yes
+	}
+}
+
+# COUNTRY scope. Releases all currently reserved Event 021 plan states and
+# clears the transaction lock. This is safe because the global planning lock
+# permits only one uncommitted opening plan at a time.
+event021_rollback_opening = {
+	clear_array = global.random_civil_war_plan_states
+	clear_array = global.random_civil_war_reserved_states
+	set_variable = { global.random_civil_war_plan_state_count = constant:random_civil_war_value.zero }
+	clr_global_flag = random_civil_war_plan_active
+	clr_global_flag = random_civil_war_plan_seed_pending
+	clr_global_flag = random_civil_war_planning_lock
+	clr_country_flag = random_civil_war_plan_owner
+}
+
+# COUNTRY scope. Adds one actor/host to the active-theater registry. Parent
+# calls this once after the opening transaction is committed.
+event021_register_active_theater = {
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_theater_registered } }
+		set_country_flag = random_civil_war_theater_registered
+		add_to_array = { array = global.random_civil_war_active_theaters }
+		if = {
+			limit = { NOT = { has_global_flag = random_civil_war_capacity_initialized } }
+			event021_refresh_global_capacity = yes
+		}
+		add_to_variable = { global.random_civil_war_active_theater_count = constant:random_civil_war_value.one }
+	}
+}
+
+# COUNTRY scope. Removes the current host from the active-theater registry.
+event021_unregister_active_theater = {
+	if = {
+		limit = { has_country_flag = random_civil_war_theater_registered }
+		remove_from_array = { array = global.random_civil_war_active_theaters value = THIS }
+		clr_country_flag = random_civil_war_theater_registered
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_active_theater_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+			subtract_from_variable = { global.random_civil_war_active_theater_count = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Registers one stable front row. Inputs are normal
+# `random_civil_war_front_id` and the `random_civil_war_anchor_state` event
+# target. Parallel fronts are represented by aligned global arrays of IDs,
+# actors, and anchor states; the actor keeps its host pointer locally.
+event021_register_front = {
+	if = {
+		limit = {
+			has_variable = random_civil_war_front_id
+			NOT = { random_civil_war_front_id_is_registered = yes }
+			has_event_target = random_civil_war_anchor_state
+		}
+		add_to_array = { array = global.random_civil_war_front_ids value = random_civil_war_front_id }
+		add_to_array = { array = global.random_civil_war_front_actors value = THIS }
+		event_target:random_civil_war_anchor_state = { add_to_array = { array = global.random_civil_war_front_states } }
+		set_country_flag = random_civil_war_front_registered
+		set_variable = { random_civil_war_front_registered_date = global.date }
+		if = {
+			limit = { NOT = { has_global_flag = random_civil_war_capacity_initialized } }
+			event021_refresh_global_capacity = yes
+		}
+		add_to_variable = { global.random_civil_war_active_front_count = constant:random_civil_war_value.one }
+	}
+}
+
+# COUNTRY scope. Removes the current front row and updates the bounded front
+# cap counter. The parent should call this once per actor/front, not from a
+# world-wide periodic loop.
+event021_unregister_front = {
+	if = {
+		limit = { has_country_flag = random_civil_war_front_registered }
+		if = {
+			limit = { has_variable = random_civil_war_front_id }
+			remove_from_array = { array = global.random_civil_war_front_ids value = random_civil_war_front_id }
+		}
+		remove_from_array = { array = global.random_civil_war_front_actors value = THIS }
+		if = {
+			limit = { has_event_target = random_civil_war_anchor_state }
+			event_target:random_civil_war_anchor_state = { remove_from_array = { array = global.random_civil_war_front_states value = THIS } }
+		}
+		clr_country_flag = random_civil_war_front_registered
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_active_front_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+			subtract_from_variable = { global.random_civil_war_active_front_count = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# STATE or COUNTRY scope through the current anchor target. The priority state
+# is a global event target because selected-front decisions outlive one event
+# chain. Full cleanup must call `event021_clear_priority_front`.
+event021_set_priority_front = {
+	if = {
+		limit = { has_event_target = random_civil_war_anchor_state }
+		event_target:random_civil_war_anchor_state = { save_global_event_target_as = random_civil_war_priority_front_state }
+		set_global_flag = random_civil_war_priority_front_active
+	}
+}
+
+event021_clear_priority_front = {
+	clr_global_flag = random_civil_war_priority_front_active
+	clear_global_event_target = random_civil_war_priority_front_state
+}
+
+# -----------------------------------------------------------------------------
+# Event 006 admission/origin and same-tag adapters
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope of the dormant Event 006 package. Input:
+# `random_civil_war_event6_package_id` and `random_civil_war_event6_anchor_state`
+# are normal variables, with the latter holding a state scope. The helper
+# mirrors the package id into Event 006's temporary execution variable only
+# long enough to run the existing admission/preflight predicates.
+event021_prepare_event6_admission = {
+	clr_country_flag = random_civil_war_event6_package_admission_ready
+	clr_country_flag = random_civil_war_event6_identity_ready
+	if = {
+		limit = {
+			has_variable = random_civil_war_event6_package_id
+			has_variable = random_civil_war_event6_anchor_state
+		}
+		set_temp_variable = { independence_wave_execution_package_id = random_civil_war_event6_package_id }
+		if = {
+			limit = { random_civil_war_event6_package_admission_valid = yes }
+			set_country_flag = random_civil_war_event6_package_admission_ready
+			var:random_civil_war_event6_anchor_state = { save_event_target_as = random_civil_war_event6_anchor }
+			set_country_flag = random_civil_war_event6_identity_candidate_ready
+		}
+		else = { set_country_flag = random_civil_war_event6_package_rejected }
+	}
+	else = { set_country_flag = random_civil_war_event6_package_rejected }
+}
+
+# COUNTRY scope. Called after the parent package setup has proved the exact
+# leader/flag/focus/force identity. Admission alone never marks identity as
+# complete, which prevents an incomplete Event 006 package from entering a
+# civil-war front.
+event021_confirm_event6_identity = {
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_event6_package_admission_ready
+			has_country_flag = random_civil_war_event6_identity_candidate_ready
+			NOT = { has_country_flag = random_civil_war_event6_identity_collision }
+			random_civil_war_is_normal_human_country = yes
+		}
+		set_country_flag = random_civil_war_event6_identity_ready
+	}
+}
+
+# COUNTRY scope. Records Event 021 provenance after the parent has performed
+# package-specific identity setup. This is intentionally not the Event 006
+# `independence_wave_prepare_country_origin` effect and does not alter Event
+# 006 fired/evolution/league state.
+event021_record_event6_origin = {
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_event6_package_admission_ready
+			has_country_flag = random_civil_war_event6_identity_ready
+			random_civil_war_is_normal_human_country = yes
+		}
+		set_country_flag = random_civil_war_event6_origin_recorded
+		set_variable = { random_civil_war_origin_kind = constant:random_civil_war_origin.event006 }
+		set_variable = { random_civil_war_event6_origin_date = global.date }
+		set_variable = { random_civil_war_event6_origin_generation = random_civil_war_generation }
+	}
+	else = { set_country_flag = random_civil_war_event6_origin_rejected }
+}
+
+# COUNTRY scope. Supplies an Event 021-only origin receipt to the parent
+# package executor. The executor may use package-specific leaders, focuses,
+# forms, forces, AI, and assets, but must not call Event 006's normal origin
+# initializer or its evolution/league registration.
+event021_apply_event6_origin_adapter = {
+	if = {
+		limit = { random_civil_war_event6_origin_adapter_valid = yes }
+		set_country_flag = random_civil_war_event6_adapter_complete
+		set_country_flag = random_civil_war_origin_adapter_complete
+	}
+}
+
+# COUNTRY scope. Prepares the one-state/all-island same-tag route. It records
+# a loyalty contest origin and leaves tag, territory, and force mutations to
+# the parent transaction after connected-state validation.
+event021_prepare_same_tag_route = {
+	if = {
+		limit = {
+			random_civil_war_same_tag_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_active }
+		}
+		set_country_flag = random_civil_war_same_tag_route_active
+		set_country_flag = random_civil_war_same_tag_origin
+		set_variable = { random_civil_war_origin_kind = constant:random_civil_war_origin.same_tag }
+		set_variable = { random_civil_war_same_tag_start_date = global.date }
+	}
+}
+
+# COUNTRY scope. Clears the same-tag route after its takeover/settlement path
+# resolves. It does not clear durable settlement or achievement receipts.
+event021_cleanup_same_tag_route = {
+	clr_country_flag = random_civil_war_same_tag_route_active
+	clr_country_flag = random_civil_war_same_tag_loyalty_contest_ready
+	clear_variable = random_civil_war_same_tag_start_date
+}
+
+# -----------------------------------------------------------------------------
+# Regional exposure
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope for an exposed neighbor. The caller proves the live border,
+# maritime corridor, or political network before setting one of the route-ready
+# flags used by `random_civil_war_neighbor_exposure_valid`.
+event021_apply_regional_exposure = {
+	if = {
+		limit = { random_civil_war_neighbor_exposure_valid = yes }
+		if = {
+			limit = { NOT = { has_variable = random_civil_war_exposure_stage } }
+			set_variable = { random_civil_war_exposure_stage = constant:random_civil_war_exposure_stage.observed }
+		}
+		else = { add_to_variable = { random_civil_war_exposure_stage = constant:random_civil_war_value.one } }
+		clamp_variable = {
+			var = random_civil_war_exposure_stage
+			min = constant:random_civil_war_exposure_stage.observed
+			max = constant:random_civil_war_exposure_stage.mobilizing
+		}
+		set_country_flag = random_civil_war_exposure_active
+		if = {
+			limit = { NOT = { is_in_array = { array = global.random_civil_war_exposed_countries value = THIS } } }
+			add_to_array = { array = global.random_civil_war_exposed_countries value = THIS }
+		}
+		if = {
+			limit = { has_event_target = random_civil_war_exposure_source }
+			event_target:random_civil_war_exposure_source = { save_global_event_target_as = random_civil_war_exposure_source_country }
+		}
+	}
+}
+
+# COUNTRY scope. Advances one exposure stage only while the source route is
+# still valid. The parent applies relief or military aid separately and may
+# clear the exposure cooldown after its bounded action completes.
+event021_advance_regional_exposure = {
+	if = {
+		limit = { random_civil_war_neighbor_exposure_valid = yes }
+		event021_apply_regional_exposure = yes
+	}
+}
+
+# COUNTRY scope. Removes the current neighbor from the persistent exposure
+# registry while leaving the source war's civilian aftermath to settlement.
+event021_cleanup_regional_exposure = {
+	remove_from_array = { array = global.random_civil_war_exposed_countries value = THIS }
+	clr_country_flag = random_civil_war_exposure_active
+	set_country_flag = random_civil_war_exposure_cooldown
+	set_variable = { random_civil_war_exposure_cooldown_until = global.date }
+	add_to_variable = { random_civil_war_exposure_cooldown_until = constant:random_civil_war_timing.exposure_cooldown_days }
+	clear_variable = random_civil_war_exposure_stage
+}
+
+# -----------------------------------------------------------------------------
+# Evolution scheduling, bounded global review, queue, and capacity
+# -----------------------------------------------------------------------------
+
+# ANY scope. Reads the shared Chaos tier and publishes Event 021's derived
+# stage/unlock flags. It does not record an evolution log row or advance a
+# league/fired state; the parent evolution event owns that accounting.
+event021_sync_evolution_state = {
+	set_temp_variable = { event021_current_chaos_tier = constant:chaos_meter_tier_id.tier_0 }
+	get_current_chaos_tier_value = yes
+	set_temp_variable = { event021_current_chaos_tier = current_chaos_tier_value }
+	set_variable = { global.random_civil_war_current_chaos_tier = event021_current_chaos_tier }
+	set_variable = { global.random_civil_war_current_stage = constant:random_civil_war_stage.baseline }
+	clr_global_flag = random_civil_war_stage_gathering_storm
+	clr_global_flag = random_civil_war_stage_rising_chaos
+	clr_global_flag = random_civil_war_stage_chaos_tier
+	clr_global_flag = random_civil_war_stage_totalen_chaos
+	clr_global_flag = random_civil_war_stage_world_collapse
+	clr_global_flag = random_civil_war_evolution_i_unlocked
+	clr_global_flag = random_civil_war_evolution_ii_unlocked
+	clr_global_flag = random_civil_war_evolution_iii_unlocked
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_current_chaos_tier
+				value = constant:chaos_meter_tier_id.tier_1
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_current_stage = constant:random_civil_war_stage.gathering_storm }
+		set_global_flag = random_civil_war_stage_gathering_storm
+		set_global_flag = random_civil_war_evolution_i_unlocked
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_current_chaos_tier
+				value = constant:chaos_meter_tier_id.tier_2
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_current_stage = constant:random_civil_war_stage.rising_chaos }
+		set_global_flag = random_civil_war_stage_rising_chaos
+		set_global_flag = random_civil_war_evolution_ii_unlocked
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_current_chaos_tier
+				value = constant:chaos_meter_tier_id.tier_3
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_current_stage = constant:random_civil_war_stage.chaos_tier }
+		set_global_flag = random_civil_war_stage_chaos_tier
+		set_global_flag = random_civil_war_evolution_iii_unlocked
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_current_chaos_tier
+				value = constant:chaos_meter_tier_id.tier_4
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_current_stage = constant:random_civil_war_stage.totalen_chaos }
+		set_global_flag = random_civil_war_stage_totalen_chaos
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_current_chaos_tier
+				value = constant:chaos_meter_tier_id.tier_final
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_current_stage = constant:random_civil_war_stage.world_collapse }
+		set_global_flag = random_civil_war_stage_world_collapse
+	}
+}
+
+# ANY scope. Publishes the context values expected by the shared event-log
+# caller, but deliberately does not call a logger or set an evolution receipt.
+event021_prepare_evolution_log_context = {
+	set_temp_variable = { events_log_evolution_event_id = constant:random_civil_war_event.id }
+	set_temp_variable = { events_log_evolution_type = constant:random_civil_war_event.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = global.random_civil_war_current_stage }
+	set_temp_variable = { events_log_evolution_tier = global.random_civil_war_current_chaos_tier }
+}
+
+# ANY scope. Marks Evolution I's runtime unlock. Shared event evolution
+# accounting remains parent-owned.
+event021_apply_evolution_i = {
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_evolution_i_unlocked
+			NOT = { has_global_flag = random_civil_war_evolution_i_active }
+		}
+		set_global_flag = random_civil_war_evolution_i_active
+		set_variable = { global.random_civil_war_evolution_i_date = global.date }
+		event021_refresh_global_capacity = yes
+	}
+}
+
+# ANY scope. Evolution II retains the Evolution I mechanics and enables
+# regional exposure/contagion consumers in the parent event system.
+event021_apply_evolution_ii = {
+	event021_apply_evolution_i = yes
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_evolution_ii_unlocked
+			NOT = { has_global_flag = random_civil_war_evolution_ii_active }
+		}
+		set_global_flag = random_civil_war_evolution_ii_active
+		set_variable = { global.random_civil_war_evolution_ii_date = global.date }
+		event021_refresh_global_capacity = yes
+	}
+}
+
+# ANY scope. Evolution III opens a persistent non-terminal global threat source
+# for bounded review. It never sets world_end and never creates a country by
+# itself.
+event021_apply_evolution_iii = {
+	event021_apply_evolution_ii = yes
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_evolution_iii_unlocked
+			NOT = { has_global_flag = random_civil_war_evolution_iii_active }
+		}
+		set_global_flag = random_civil_war_evolution_iii_active
+		set_variable = { global.random_civil_war_evolution_iii_date = global.date }
+		set_global_flag = random_civil_war_global_threat_source_active
+		set_variable = { global.random_civil_war_global_threat_source_date = global.date }
+		event021_refresh_global_capacity = yes
+	}
+}
+
+# COUNTRY scope. Sets the next bounded review date using the current pressure
+# band. The resulting date is a normal variable so callers can use it from
+# decisions, missions, or bounded CXT review hooks.
+event021_schedule_country_review = {
+	if = {
+		limit = { random_civil_war_pressure_is_critical = yes }
+		set_variable = { random_civil_war_next_review_date = global.date }
+		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.critical_review_days }
+	}
+	if = {
+		limit = { random_civil_war_pressure_is_fractured = yes }
+		set_variable = { random_civil_war_next_review_date = global.date }
+		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.fractured_review_days }
+	}
+	if = {
+		limit = { random_civil_war_pressure_is_exposed = yes }
+		set_variable = { random_civil_war_next_review_date = global.date }
+		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.exposed_review_days }
+	}
+	if = {
+		limit = { random_civil_war_pressure_is_stable = yes }
+		set_variable = { random_civil_war_next_review_date = global.date }
+		add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.stable_review_days }
+	}
+}
+
+# ANY scope. Chooses global active theatre/front caps from the current Event
+# 021 evolution flags. This is a pure registry calculation and may be called
+# after a theatre/front registration or evolution application.
+event021_refresh_global_capacity = {
+	set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_baseline }
+	set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_baseline }
+	if = {
+		limit = { has_global_flag = random_civil_war_evolution_i_active }
+		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_evolution_i }
+		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_evolution_i }
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_evolution_ii_active }
+		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_evolution_ii }
+		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_evolution_ii }
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_evolution_iii_active }
+		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_evolution_iii }
+		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_evolution_iii }
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_stage_totalen_chaos }
+		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_totalen }
+		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_totalen }
+	}
+	if = {
+		limit = { has_global_flag = random_civil_war_stage_world_collapse }
+		set_variable = { global.random_civil_war_max_active_theaters = constant:random_civil_war_capacity.active_theaters_world_collapse }
+		set_variable = { global.random_civil_war_max_active_fronts = constant:random_civil_war_capacity.active_fronts_world_collapse }
+	}
+	if = {
+		limit = { NOT = { has_global_flag = random_civil_war_capacity_initialized } }
+		set_variable = { global.random_civil_war_active_theater_count = constant:random_civil_war_value.zero }
+		set_variable = { global.random_civil_war_active_front_count = constant:random_civil_war_value.zero }
+	}
+	set_global_flag = random_civil_war_capacity_initialized
+}
+
+# ANY scope. Adds the current existing country to the persistent bounded review
+# registry and seeds its first review date. No world iteration occurs.
+event021_register_global_country = {
+	if = {
+		limit = {
+			random_civil_war_is_normal_human_country = yes
+			NOT = { has_country_flag = random_civil_war_global_registered }
+		}
+		set_country_flag = random_civil_war_global_registered
+		add_to_array = { array = global.random_civil_war_registered_countries value = THIS }
+		if = {
+			limit = { NOT = { has_variable = random_civil_war_next_review_date } }
+			set_variable = { random_civil_war_next_review_date = global.date }
+			add_to_variable = { random_civil_war_next_review_date = constant:random_civil_war_timing.initial_review_days }
+		}
+	}
+}
+
+# ANY scope. Registers the package's CXT extension carrier from an existing
+# bounded country scope. Input `random_civil_war_setup_carrier_token` is owned
+# by the parent setup contract; this helper records membership idempotently and
+# does not create an idea or alter another system's on_action.
+event021_register_cxt_extension = {
+	if = {
+		limit = {
+			random_civil_war_is_normal_human_country = yes
+			NOT = { has_country_flag = random_civil_war_cxt_extension_registered }
+		}
+		set_country_flag = random_civil_war_cxt_extension_registered
+		set_country_flag = random_civil_war_setup_carrier_pending
+		add_to_array = { array = global.random_civil_war_cxt_extension_countries value = THIS }
+		event021_register_global_country = yes
+		set_global_flag = random_civil_war_cxt_extension_registry_ready
+	}
+}
+
+# COUNTRY scope. Consumes the bounded setup registration marker after the
+# parent-owned CXT carrier setup has run. No carrier idea id is guessed here.
+event021_mark_setup_carrier_consumed = {
+	if = {
+		limit = { has_country_flag = random_civil_war_setup_carrier_pending }
+		clr_country_flag = random_civil_war_setup_carrier_pending
+		set_country_flag = random_civil_war_setup_carrier_consumed
+		remove_from_array = { array = global.random_civil_war_cxt_extension_countries value = THIS }
+	}
+}
+
+# ANY scope. Opens one bounded registry-review budget. Parent callers should
+# invoke this from a narrow existing pulse, then pass a bounded set of current
+# countries through `event021_review_current_country` before finishing.
+event021_global_review_batch = {
+	if = {
+		limit = { NOT = { has_global_flag = random_civil_war_review_batch_active } }
+		set_global_flag = random_civil_war_review_batch_active
+		set_variable = { global.random_civil_war_review_batch_remaining = constant:random_civil_war_capacity.global_review_batch }
+		set_variable = { global.random_civil_war_review_batch_processed = constant:random_civil_war_value.zero }
+		set_variable = { global.random_civil_war_review_batch_date = global.date }
+		set_variable = { global.random_civil_war_critical_queue_budget = constant:random_civil_war_capacity.critical_queue_batch }
+	}
+}
+
+# COUNTRY scope. Consumes one review slot and processes only the current
+# registered country. This is the bounded counterpart to a world loop.
+event021_review_current_country = {
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_review_batch_active
+			has_country_flag = random_civil_war_global_registered
+			check_variable = {
+				var = global.random_civil_war_review_batch_remaining
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_variable = { global.random_civil_war_review_batch_remaining = constant:random_civil_war_value.one }
+		add_to_variable = { global.random_civil_war_review_batch_processed = constant:random_civil_war_value.one }
+		if = {
+			limit = { random_civil_war_review_due = yes }
+			event021_refresh_country_state = yes
+			if = {
+				limit = { random_civil_war_pressure_is_critical = yes }
+				event021_queue_critical_country = yes
+			}
+			event021_schedule_country_review = yes
+		}
+		if = {
+			limit = { NOT = { random_civil_war_global_registry_entry_valid = yes } }
+			clr_country_flag = random_civil_war_critical_queued
+			clr_country_flag = random_civil_war_global_registered
+			remove_from_array = { array = global.random_civil_war_registered_countries value = THIS }
+		}
+	}
+}
+
+# ANY scope. Closes the current review budget and leaves the persistent country
+# registry intact for the next explicitly bounded pulse.
+event021_finish_global_review_batch = {
+	clr_global_flag = random_civil_war_review_batch_active
+	set_variable = { global.random_civil_war_review_batch_remaining = constant:random_civil_war_value.zero }
+	set_variable = { global.random_civil_war_critical_queue_budget = constant:random_civil_war_capacity.critical_queue_batch }
+}
+
+# COUNTRY scope. Adds a critical candidate to the persistent queue once. The
+# queue is independent from ordinary target weight and can be launched later
+# when a theater/front cap becomes available.
+event021_queue_critical_country = {
+	if = {
+		limit = {
+			random_civil_war_critical_queue_entry_valid = yes
+			NOT = { has_country_flag = random_civil_war_critical_queued }
+			OR = {
+				NOT = { has_global_flag = random_civil_war_review_batch_active }
+				check_variable = {
+					var = global.random_civil_war_critical_queue_budget
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+		}
+		set_country_flag = random_civil_war_critical_queued
+		set_variable = { random_civil_war_critical_queue_date = global.date }
+		add_to_array = { array = global.random_civil_war_critical_queue value = THIS }
+		if = {
+			limit = { NOT = { has_global_flag = random_civil_war_queue_initialized } }
+			set_variable = { global.random_civil_war_critical_queue_count = constant:random_civil_war_value.zero }
+			set_global_flag = random_civil_war_queue_initialized
+		}
+		add_to_variable = { global.random_civil_war_critical_queue_count = constant:random_civil_war_value.one }
+		if = {
+			limit = { has_global_flag = random_civil_war_review_batch_active }
+			subtract_from_variable = { global.random_civil_war_critical_queue_budget = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Removes the current country from the critical queue.
+event021_dequeue_critical_country = {
+	if = {
+		limit = { has_country_flag = random_civil_war_critical_queued }
+		remove_from_array = { array = global.random_civil_war_critical_queue value = THIS }
+		clr_country_flag = random_civil_war_critical_queued
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_critical_queue_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+			subtract_from_variable = { global.random_civil_war_critical_queue_count = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Publishes the current critical target as a global event target
+# for a parent launch event, but does not fire that event itself.
+event021_launch_critical_country = {
+	if = {
+		limit = {
+			random_civil_war_critical_queue_entry_valid = yes
+			random_civil_war_theater_capacity_available = yes
+			NOT = { has_global_flag = random_civil_war_launch_in_progress }
+		}
+		set_global_flag = random_civil_war_launch_in_progress
+		save_global_event_target_as = random_civil_war_launch_target
+		event021_dequeue_critical_country = yes
+		set_variable = { global.random_civil_war_launch_date = global.date }
+	}
+}
+
+# ANY scope. Parent calls this after the launch event either commits or
+# rejects the target. Rejected launches may requeue explicitly after restoring
+# the target's route proof.
+event021_finish_critical_launch = {
+	clr_global_flag = random_civil_war_launch_in_progress
+	clear_global_event_target = random_civil_war_launch_target
+}
+
+# -----------------------------------------------------------------------------
+# Settlement, reconstruction, recurrence, and achievement state
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope. Input `random_civil_war_settlement_type` is a normal variable
+# using `random_civil_war_settlement.*`. The effect records the outcome,
+# applies centralized authority/pressure relief, starts bounded reconstruction,
+# and sets a successor grace period before recurrence can be considered.
+event021_apply_settlement = {
+	if = {
+		limit = { NOT = { has_variable = random_civil_war_settlement_type } }
+		set_variable = { random_civil_war_settlement_type = constant:random_civil_war_settlement.government_victory }
+	}
+	set_country_flag = random_civil_war_settlement_recorded
+	set_variable = { random_civil_war_settlement_date = global.date }
+	clr_country_flag = random_civil_war_settlement_government_victory
+	clr_country_flag = random_civil_war_settlement_opposition_victory
+	clr_country_flag = random_civil_war_settlement_independence
+	clr_country_flag = random_civil_war_settlement_autonomy
+	clr_country_flag = random_civil_war_settlement_coalition
+	clr_country_flag = random_civil_war_settlement_partition
+	clr_country_flag = random_civil_war_settlement_merger
+	clr_country_flag = random_civil_war_settlement_evolution
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.government_victory compare = equals } }
+		set_country_flag = random_civil_war_settlement_government_victory
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.opposition_victory compare = equals } }
+		set_country_flag = random_civil_war_settlement_opposition_victory
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.independence compare = equals } }
+		set_country_flag = random_civil_war_settlement_independence
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.autonomy compare = equals } }
+		set_country_flag = random_civil_war_settlement_autonomy
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.coalition compare = equals } }
+		set_country_flag = random_civil_war_settlement_coalition
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.partition compare = equals } }
+		set_country_flag = random_civil_war_settlement_partition
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.merger compare = equals } }
+		set_country_flag = random_civil_war_settlement_merger
+	}
+	if = {
+		limit = { check_variable = { var = random_civil_war_settlement_type value = constant:random_civil_war_settlement.evolution compare = equals } }
+		set_country_flag = random_civil_war_settlement_evolution
+	}
+	set_country_flag = random_civil_war_settlement_relief_active
+	set_country_flag = random_civil_war_reconstruction_active
+	set_variable = { random_civil_war_reconstruction_until = global.date }
+	add_to_variable = { random_civil_war_reconstruction_until = constant:random_civil_war_timing.reconstruction_days }
+	set_country_flag = random_civil_war_successor_grace
+	set_variable = { random_civil_war_successor_grace_until = global.date }
+	add_to_variable = { random_civil_war_successor_grace_until = constant:random_civil_war_timing.successor_grace_days }
+	set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.settlement }
+	event021_add_authority = yes
+	set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.settlement_relief }
+	event021_reduce_pressure = yes
+	event021_prepare_recurrence = yes
+	event021_update_achievement_state = yes
+}
+
+# COUNTRY scope. Computes a recurrence score from unresolved pressure,
+# post-war memory, settlement quality, and persistent network flags. It marks
+# recurrence eligibility but never immediately starts another crisis.
+event021_prepare_recurrence = {
+	set_variable = { random_civil_war_recurrence_score = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_variable = random_civil_war_fracture_pressure }
+		set_variable = { random_civil_war_recurrence_score = random_civil_war_fracture_pressure }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_recent_civil_war_memory }
+		add_to_variable = { random_civil_war_recurrence_score = constant:random_civil_war_settlement_tuning.postwar_memory_pressure }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_failed_settlement }
+		add_to_variable = { random_civil_war_recurrence_score = constant:random_civil_war_settlement_tuning.failed_settlement_pressure }
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_authority_collapse }
+		add_to_variable = { random_civil_war_recurrence_score = constant:random_civil_war_pressure.authority_collapse }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_settlement_government_victory
+				has_country_flag = random_civil_war_settlement_coalition
+			}
+		}
+		add_to_variable = { random_civil_war_recurrence_score = constant:random_civil_war_settlement_tuning.settlement_recurrence_relief }
+	}
+	clamp_variable = {
+		var = random_civil_war_recurrence_score
+		min = constant:random_civil_war_pressure.minimum
+		max = constant:random_civil_war_pressure.maximum
+	}
+	if = {
+		limit = { random_civil_war_recurrence_valid = yes }
+		set_country_flag = random_civil_war_recurrence_eligible
+		set_variable = { random_civil_war_recurrence_review_date = global.date }
+		add_to_variable = { random_civil_war_recurrence_review_date = constant:random_civil_war_timing.recurrence_minimum_days }
+	}
+	else = { clr_country_flag = random_civil_war_recurrence_eligible }
+}
+
+# COUNTRY scope. Bounded reconstruction tick. The parent invokes this from a
+# mission or a bounded maintenance hook; the helper does not iterate countries.
+event021_reconstruction_tick = {
+	if = {
+		limit = { has_country_flag = random_civil_war_reconstruction_active }
+		set_variable = { random_civil_war_pending_pressure_delta = constant:random_civil_war_pressure.reconstruction_relief }
+		event021_reduce_pressure = yes
+		set_variable = { random_civil_war_pending_authority_delta = constant:random_civil_war_authority.reconstruction }
+		event021_add_authority = yes
+		if = {
+			limit = {
+				has_variable = random_civil_war_reconstruction_until
+				check_variable = { var = global.date value = random_civil_war_reconstruction_until compare = greater_than_or_equals }
+			}
+			clr_country_flag = random_civil_war_reconstruction_active
+			set_country_flag = random_civil_war_reconstruction_complete
+			clr_country_flag = random_civil_war_settlement_relief_active
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_successor_grace
+			has_variable = random_civil_war_successor_grace_until
+			check_variable = { var = global.date value = random_civil_war_successor_grace_until compare = greater_than_or_equals }
+		}
+		clr_country_flag = random_civil_war_successor_grace
+	}
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_exposure_cooldown
+			has_variable = random_civil_war_exposure_cooldown_until
+			check_variable = { var = global.date value = random_civil_war_exposure_cooldown_until compare = greater_than_or_equals }
+		}
+		clr_country_flag = random_civil_war_exposure_cooldown
+	}
+	event021_update_achievement_state = yes
+}
+
+# COUNTRY scope. Updates six durable achievement-state flags. The achievement
+# registry/actual unlock remains parent-owned and can consume these predicates
+# without re-evaluating historical state.
+event021_update_achievement_state = {
+	if = {
+		limit = { random_civil_war_achievement_survive_first_crisis_ready = yes }
+		set_country_flag = random_civil_war_achievement_survive_first_crisis
+	}
+	if = {
+		limit = { random_civil_war_achievement_settle_three_fronts_ready = yes }
+		set_country_flag = random_civil_war_achievement_settle_three_fronts
+	}
+	if = {
+		limit = { random_civil_war_achievement_preserve_remnant_ready = yes }
+		set_country_flag = random_civil_war_achievement_preserve_remnant
+	}
+	if = {
+		limit = { random_civil_war_achievement_event6_origin_ready = yes }
+		set_country_flag = random_civil_war_achievement_event6_origin
+	}
+	if = {
+		limit = { random_civil_war_achievement_global_stabilizer_ready = yes }
+		set_country_flag = random_civil_war_achievement_global_stabilizer
+	}
+	if = {
+		limit = { random_civil_war_achievement_nested_recovery_ready = yes }
+		set_country_flag = random_civil_war_achievement_nested_recovery
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Manual scenario bypass and terminal cleanup
+# -----------------------------------------------------------------------------
+
+# COUNTRY scope. Manual scenario setup bypasses ordinary random weight and
+# evolution timing, but it still requires a valid normal human route and an
+# available theater cap. Inputs `random_civil_war_scenario_type` and
+# `random_civil_war_scenario_intensity` are optional normal variables.
+event021_prepare_scenario_bypass = {
+	if = {
+		limit = { random_civil_war_scenario_launch_valid = yes }
+		if = {
+			limit = { NOT = { has_variable = random_civil_war_scenario_type } }
+			set_variable = { random_civil_war_scenario_type = constant:random_civil_war_scenario_type.political_fracture }
+		}
+		if = {
+			limit = { NOT = { has_variable = random_civil_war_scenario_intensity } }
+			set_variable = { random_civil_war_scenario_intensity = constant:random_civil_war_scenario_intensity.low }
+		}
+		set_country_flag = random_civil_war_scenario_bypass_active
+		set_country_flag = random_civil_war_scenario_target_confirmed
+		set_variable = { random_civil_war_origin_kind = constant:random_civil_war_origin.scenario }
+		set_variable = { random_civil_war_scenario_start_date = global.date }
+		set_variable = { random_civil_war_scenario_batch_deadline = global.date }
+		add_to_variable = { random_civil_war_scenario_batch_deadline = constant:random_civil_war_timing.scenario_batch_maximum_days }
+		set_global_flag = random_civil_war_scenario_bypass_active
+		save_global_event_target_as = random_civil_war_scenario_target
+	}
+}
+
+# ANY scope. Clears manual scenario bypass and its global target after the
+# parent-owned scenario cleanup has closed all fronts and settlement records.
+event021_clear_scenario_bypass = {
+	clr_global_flag = random_civil_war_scenario_bypass_active
+	clear_global_event_target = random_civil_war_scenario_target
+	clear_variable = global.random_civil_war_scenario_batch_deadline
+}
+
+# COUNTRY scope. Idempotently releases this country's front/theater/queue
+# records, preserves durable origin/settlement/achievement receipts, and sets
+# a target cooldown. Call after a victory, defeat, partition, or rejected
+# launch; it does not close another theatre's arrays.
+event021_cleanup_crisis = {
+	if = {
+		limit = { NOT = { has_country_flag = random_civil_war_cleanup_lock } }
+		set_country_flag = random_civil_war_cleanup_lock
+		event021_unregister_front = yes
+		event021_unregister_active_theater = yes
+		event021_dequeue_critical_country = yes
+		remove_from_array = { array = global.random_civil_war_exposed_countries value = THIS }
+		clr_country_flag = random_civil_war_active
+		clr_country_flag = random_civil_war_government_side
+		clr_country_flag = random_civil_war_opposition_side
+		clr_country_flag = random_civil_war_sponsor_side
+		clr_country_flag = random_civil_war_front_registered
+		clr_country_flag = random_civil_war_target_reserved
+		clr_country_flag = random_civil_war_plan_committed
+		clr_country_flag = random_civil_war_exposure_active
+		clr_country_flag = random_civil_war_same_tag_route_active
+		clr_country_flag = random_civil_war_event6_adapter_complete
+		clr_country_flag = random_civil_war_origin_adapter_complete
+		clr_country_flag = random_civil_war_event6_package_admission_ready
+		clr_country_flag = random_civil_war_event6_identity_candidate_ready
+		clr_country_flag = random_civil_war_event6_identity_ready
+		set_country_flag = random_civil_war_recent_target
+		set_variable = { random_civil_war_recent_target_until = global.date }
+		add_to_variable = { random_civil_war_recent_target_until = constant:random_civil_war_timing.target_cooldown_days }
+		set_country_flag = random_civil_war_recent_civil_war_memory
+		set_variable = { random_civil_war_memory_until = global.date }
+		add_to_variable = { random_civil_war_memory_until = constant:random_civil_war_timing.event_memory_days }
+		set_variable = { random_civil_war_last_cleanup_date = global.date }
+		clear_variable = random_civil_war_front_id
+		clear_variable = random_civil_war_front_registered_date
+		clear_variable = random_civil_war_crisis_start_date
+		clear_variable = random_civil_war_opening_severity
+		clear_variable = random_civil_war_critical_queue_date
+		clear_variable = random_civil_war_scenario_start_date
+		clr_country_flag = random_civil_war_setup_carrier_pending
+		clr_country_flag = random_civil_war_plan_owner
+		clr_country_flag = random_civil_war_cleanup_lock
+	}
+}
+
+# ANY scope. Clears global pointer/registry state only when the parent has
+# already verified that no Event 021 theatre/front is active. This avoids
+# deleting another live theatre's queue or reservations.
+event021_cleanup_global_registry = {
+	if = {
+		limit = {
+			AND = {
+				OR = {
+					NOT = { has_global_flag = random_civil_war_capacity_initialized }
+					check_variable = { var = global.random_civil_war_active_theater_count value = constant:random_civil_war_value.zero compare = equals }
+				}
+				OR = {
+					NOT = { has_global_flag = random_civil_war_capacity_initialized }
+					check_variable = { var = global.random_civil_war_active_front_count value = constant:random_civil_war_value.zero compare = equals }
+				}
+			}
+		}
+		clear_array = global.random_civil_war_active_theaters
+		clear_array = global.random_civil_war_front_ids
+		clear_array = global.random_civil_war_front_actors
+		clear_array = global.random_civil_war_front_states
+		clear_array = global.random_civil_war_critical_queue
+		clear_array = global.random_civil_war_exposed_countries
+		clear_global_event_target = random_civil_war_priority_front_state
+		clear_global_event_target = random_civil_war_launch_target
+		clear_global_event_target = random_civil_war_exposure_source_country
+		clear_global_event_target = random_civil_war_global_anchor_state
+		clr_global_flag = random_civil_war_priority_front_active
+		clr_global_flag = random_civil_war_global_threat_source_active
+		clr_global_flag = random_civil_war_capacity_initialized
+		clr_global_flag = random_civil_war_review_batch_active
+	}
+}
+
+# ANY scope. Clears the non-terminal Evolution III threat source when the
+# parent has disabled the Event 021 global route. It never changes world_end.
+event021_clear_global_threat_source = {
+	clr_global_flag = random_civil_war_global_threat_source_active
+	clear_variable = global.random_civil_war_global_threat_source_date
+}
