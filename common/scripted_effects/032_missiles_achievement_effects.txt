@@ -1,0 +1,673 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 ACHIEVEMENT TRACKING EFFECTS
+# ============================================================================
+# Persistent, event-owned evidence for the eight Event 032 achievements.
+# Callers write the documented chaosx_032_input_* variables before invoking a
+# recorder. Recorders retain counters, arrays, dates, and disqualifier flags.
+# Finalizers only write a receipt after the complete historical contract is
+# true. They never grant an achievement and never treat one event firing as
+# sufficient evidence.
+# ============================================================================
+
+@missiles_achievement_site_count = 3
+@missiles_achievement_retained_site_count = 2
+@missiles_achievement_region_count = 3
+@missiles_achievement_readiness_secure = 85
+@missiles_achievement_chain_depth = 2
+@missiles_achievement_chain_country_count = 4
+@missiles_achievement_survival_days = 90
+@missiles_achievement_saturation_control = 35
+@missiles_achievement_saturation_window_days = 365
+@missiles_achievement_repair_window_days = 180
+@missiles_achievement_long_reach_control = 90
+@missiles_achievement_long_reach_days = 180
+
+chaosx_032_achievement_initialize_country = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_032_achievement_tracking_initialized } }
+		set_country_flag = chaosx_032_achievement_tracking_initialized
+		set_variable = { chaosx_032_exact_distance_precision_strike_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_exact_distance_state_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_exact_distance_country_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_exact_distance_civilian_deaths = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_still_on_the_line_active_site_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_still_on_the_line_region_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_break_the_chain_depth = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_break_the_chain_country_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_keys_returned_control = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_empty_the_silos_opening_site_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_empty_the_silos_removed_site_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_sky_full_of_steel_saturation_operation_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_sky_full_of_steel_state_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_sky_full_of_steel_damage = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_long_reach_site_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_long_reach_region_count = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_long_reach_reserve = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_long_reach_readiness = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_long_reach_control = constant:missiles_program_value.zero }
+		set_variable = { chaosx_032_long_reach_final_operational_site_count = constant:missiles_program_value.zero }
+		clear_array = chaosx_032_exact_distance_states
+		clear_array = chaosx_032_exact_distance_countries
+		clear_array = chaosx_032_empty_the_silos_opening_sites
+		clear_array = chaosx_032_empty_the_silos_removed_sites
+		clear_array = chaosx_032_sky_full_of_steel_states
+	}
+}
+
+chaosx_032_achievement_mark_scn015_disqualifier = {
+	set_country_flag = chaosx_032_achievement_disqualified_scn015
+}
+
+chaosx_032_achievement_mark_force_bypass = {
+	set_country_flag = chaosx_032_achievement_disqualified_force
+}
+
+chaosx_032_achievement_mark_debug_bypass = {
+	set_country_flag = chaosx_032_achievement_disqualified_debug
+}
+
+chaosx_032_achievement_mark_country_ceased = {
+	set_country_flag = chaosx_032_achievement_country_ceased
+}
+
+# A qualifying action must set chaosx_032_achievement_required_evolution_enabled
+# to one before this effect. Missing input fails closed and disqualifies the
+# named achievement, preventing disabled evolutions from being retroactively
+# credited. Callers must invoke the matching wrapper for the action.
+chaosx_032_achievement_latch_required_evolution = {
+	if = {
+		limit = {
+			NOT = {
+				check_variable = {
+					var = chaosx_032_achievement_required_evolution_enabled
+					value = constant:missiles_program_value.one
+					compare = equals
+				}
+			}
+		}
+		set_country_flag = chaosx_032_achievement_required_evolution_disabled
+	}
+}
+
+chaosx_032_achievement_latch_saturation_evolution = {
+	chaosx_032_achievement_latch_required_evolution = yes
+	if = {
+		limit = { has_country_flag = chaosx_032_achievement_required_evolution_disabled }
+		set_country_flag = chaosx_032_achievement_sky_full_of_steel_evolution_disabled
+	}
+	clr_country_flag = chaosx_032_achievement_required_evolution_disabled
+}
+
+chaosx_032_achievement_latch_rogue_evolution = {
+	chaosx_032_achievement_latch_required_evolution = yes
+	if = {
+		limit = { has_country_flag = chaosx_032_achievement_required_evolution_disabled }
+		set_country_flag = chaosx_032_achievement_keys_returned_evolution_disabled
+	}
+	clr_country_flag = chaosx_032_achievement_required_evolution_disabled
+}
+
+chaosx_032_achievement_latch_special_warhead_evolution = {
+	chaosx_032_achievement_latch_required_evolution = yes
+	if = {
+		limit = { has_country_flag = chaosx_032_achievement_required_evolution_disabled }
+		set_country_flag = chaosx_032_achievement_no_second_sun_evolution_disabled
+	}
+	clr_country_flag = chaosx_032_achievement_required_evolution_disabled
+}
+
+chaosx_032_achievement_latch_retaliation_evolution = {
+	chaosx_032_achievement_latch_required_evolution = yes
+	if = {
+		limit = { has_country_flag = chaosx_032_achievement_required_evolution_disabled }
+		set_country_flag = chaosx_032_achievement_break_the_chain_evolution_disabled
+	}
+	clr_country_flag = chaosx_032_achievement_required_evolution_disabled
+}
+
+chaosx_032_achievement_record_precision_operation = {
+	# Input: profile, target_profile, payload, outcome, target_state_id,
+	# target_country_id, target_is_enemy, civilian_deaths, and
+	# neutral_or_self are required chaosx_032_input_* variables.
+	if = {
+		limit = {
+			has_variable = chaosx_032_input_target_state_id
+			has_variable = chaosx_032_input_target_country_id
+			has_variable = chaosx_032_input_target_is_enemy
+			check_variable = { var = chaosx_032_input_target_is_enemy value = constant:missiles_program_value.one compare = equals }
+			check_variable = { var = chaosx_032_input_profile value = constant:missiles_strike_profile.precision compare = equals }
+			check_variable = { var = chaosx_032_input_payload value = constant:missiles_payload.conventional compare = equals }
+			OR = {
+				check_variable = { var = chaosx_032_input_outcome value = constant:missiles_guidance_outcome.on_target compare = equals }
+				check_variable = { var = chaosx_032_input_outcome value = constant:missiles_guidance_outcome.degraded compare = equals }
+			}
+			NOT = { check_variable = { var = chaosx_032_input_target_profile value = constant:missiles_target_profile.command compare = equals } }
+			NOT = { check_variable = { var = chaosx_032_input_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals } }
+		}
+		if = {
+			limit = { NOT = { has_variable = chaosx_032_exact_distance_precision_strike_count } }
+			set_variable = { chaosx_032_exact_distance_precision_strike_count = constant:missiles_program_value.zero }
+		}
+		add_to_variable = { chaosx_032_exact_distance_precision_strike_count = constant:missiles_program_value.one }
+		if = {
+			limit = { NOT = { is_in_array = { array = chaosx_032_exact_distance_states value = chaosx_032_input_target_state_id } } }
+			add_to_array = { array = chaosx_032_exact_distance_states value = chaosx_032_input_target_state_id }
+			add_to_variable = { chaosx_032_exact_distance_state_count = constant:missiles_program_value.one }
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = chaosx_032_exact_distance_countries value = chaosx_032_input_target_country_id } } }
+			add_to_array = { array = chaosx_032_exact_distance_countries value = chaosx_032_input_target_country_id }
+			add_to_variable = { chaosx_032_exact_distance_country_count = constant:missiles_program_value.one }
+		}
+		set_country_flag = chaosx_032_exact_distance_precision_only
+		set_country_flag = chaosx_032_exact_distance_valid_receipts
+		set_country_flag = chaosx_032_exact_distance_no_special_payload
+		if = {
+			limit = { has_variable = chaosx_032_input_civilian_deaths }
+			add_to_variable = { chaosx_032_exact_distance_civilian_deaths = chaosx_032_input_civilian_deaths }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_032_input_neutral_or_self value = constant:missiles_program_value.one compare = equals }
+					check_variable = { var = chaosx_032_input_outcome value = constant:missiles_guidance_outcome.neutral_accident compare = equals }
+					check_variable = { var = chaosx_032_input_outcome value = constant:missiles_guidance_outcome.self_strike compare = equals }
+				}
+			}
+			set_country_flag = chaosx_032_exact_distance_disqualified_strike
+		}
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_032_exact_distance_disqualified_strike } }
+			set_country_flag = chaosx_032_exact_distance_no_neutral_or_self_strike
+		}
+	}
+	else = {
+		set_country_flag = chaosx_032_exact_distance_disqualified_strike
+	}
+	chaosx_032_achievement_finalize_exact_distance = yes
+}
+
+chaosx_032_achievement_record_site_network = {
+	# Input: active_site_count, region_count, readiness, control, and
+	# all_sites_hardened_secure. A qualifying snapshot is retained forever.
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_active_site_count value = @missiles_achievement_site_count compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_region_count value = @missiles_achievement_region_count compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_readiness value = @missiles_achievement_readiness_secure compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_control value = @missiles_achievement_readiness_secure compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_all_sites_hardened_secure value = constant:missiles_program_value.one compare = equals }
+		}
+		set_variable = { chaosx_032_still_on_the_line_active_site_count = chaosx_032_input_active_site_count }
+		set_variable = { chaosx_032_still_on_the_line_region_count = chaosx_032_input_region_count }
+		set_variable = { chaosx_032_still_on_the_line_readiness = chaosx_032_input_readiness }
+		set_variable = { chaosx_032_still_on_the_line_control = chaosx_032_input_control }
+		set_country_flag = chaosx_032_still_on_the_line_three_sites_hardened_secure
+	}
+	chaosx_032_achievement_finalize_still_on_the_line = yes
+}
+
+chaosx_032_achievement_record_site_damage = {
+	# Input: retained_operational_site_count, damaged_site_id, scuttled, and
+	# site_setup_invalid. The parent supplies the Event 032 repair deadline as
+	# a date by this effect.
+	set_country_flag = chaosx_032_still_on_the_line_damage_received
+	set_variable = { chaosx_032_still_on_the_line_damage_date = global.date }
+	set_variable = { chaosx_032_still_on_the_line_repair_deadline = global.date }
+	add_to_variable = { chaosx_032_still_on_the_line_repair_deadline = @missiles_achievement_repair_window_days }
+	set_variable = { chaosx_032_still_on_the_line_damaged_site_id = chaosx_032_input_damaged_site_id }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_scuttled value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_still_on_the_line_scuttled
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_site_setup_invalid value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_still_on_the_line_lost_all_capacity
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_retained_operational_site_count value = @missiles_achievement_retained_site_count compare = greater_than_or_equals } }
+		set_country_flag = chaosx_032_still_on_the_line_two_sites_retained
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_retained_operational_site_count value = constant:missiles_program_value.zero compare = equals } }
+		set_country_flag = chaosx_032_still_on_the_line_lost_all_capacity
+	}
+	chaosx_032_achievement_finalize_still_on_the_line = yes
+}
+
+chaosx_032_achievement_record_site_repair = {
+	# Input: repair_site_id, damaged_site_id, and repair_is_complete. The
+	# recorded date must be on or before the retained deadline.
+	if = {
+	limit = {
+			check_variable = { var = chaosx_032_input_repair_is_complete value = constant:missiles_program_value.one compare = equals }
+			check_variable = { var = chaosx_032_input_repair_site_id value = chaosx_032_still_on_the_line_damaged_site_id compare = equals }
+			check_variable = { var = global.date value = chaosx_032_still_on_the_line_repair_deadline compare = less_than_or_equals }
+			NOT = { has_country_flag = chaosx_032_still_on_the_line_scuttled }
+		}
+		set_country_flag = chaosx_032_still_on_the_line_repaired_within_deadline
+		set_variable = { chaosx_032_still_on_the_line_repair_date = global.date }
+	}
+	chaosx_032_achievement_finalize_still_on_the_line = yes
+}
+
+chaosx_032_achievement_record_retaliation_incident = {
+	# Input: incident_depth, participant_country_count, actionable_warning,
+	# no_retaliation, special_payload, and incident_root_id.
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_incident_depth value = @missiles_achievement_chain_depth compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_participant_country_count value = @missiles_achievement_chain_country_count compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_actionable_warning value = constant:missiles_program_value.one compare = equals }
+		}
+		set_variable = { chaosx_032_break_the_chain_depth = chaosx_032_input_incident_depth }
+		set_variable = { chaosx_032_break_the_chain_country_count = chaosx_032_input_participant_country_count }
+		set_country_flag = chaosx_032_break_the_chain_actionable_warning
+		if = {
+			limit = { check_variable = { var = chaosx_032_input_no_retaliation value = constant:missiles_program_value.one compare = equals } }
+			set_country_flag = chaosx_032_break_the_chain_no_retaliation
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_032_input_special_payload value = constant:missiles_program_value.one compare = equals } }
+			set_country_flag = chaosx_032_break_the_chain_special_payload
+		}
+		set_variable = { chaosx_032_break_the_chain_incident_root_id = chaosx_032_input_incident_root_id }
+	}
+	chaosx_032_achievement_finalize_break_the_chain = yes
+}
+
+chaosx_032_achievement_record_retaliation_closure = {
+	# Input: incident_root_id, warning_resolved, incident_closed, and
+	# later_launch. A closed incident starts the independent 90-day clock.
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_incident_root_id value = chaosx_032_break_the_chain_incident_root_id compare = equals }
+			check_variable = { var = chaosx_032_input_warning_resolved value = constant:missiles_program_value.one compare = equals }
+			check_variable = { var = chaosx_032_input_incident_closed value = constant:missiles_program_value.one compare = equals }
+		}
+		set_country_flag = chaosx_032_break_the_chain_warning_resolved
+		set_country_flag = chaosx_032_break_the_chain_incident_closed
+		set_variable = { chaosx_032_break_the_chain_survival_deadline = global.date }
+		add_to_variable = { chaosx_032_break_the_chain_survival_deadline = @missiles_achievement_survival_days }
+		if = {
+			limit = { check_variable = { var = chaosx_032_input_later_launch value = constant:missiles_program_value.one compare = equals } }
+			set_country_flag = chaosx_032_break_the_chain_later_launch
+		}
+	}
+	chaosx_032_achievement_finalize_break_the_chain = yes
+}
+
+chaosx_032_achievement_refresh_retaliation_survival = {
+	if = {
+		limit = {
+			has_variable = chaosx_032_break_the_chain_survival_deadline
+			check_variable = { var = global.date value = chaosx_032_break_the_chain_survival_deadline compare = greater_than_or_equals }
+			has_country_flag = chaosx_032_break_the_chain_incident_closed
+			NOT = { has_country_flag = chaosx_032_break_the_chain_later_launch }
+		}
+		set_country_flag = chaosx_032_break_the_chain_survived_90_days
+	}
+	chaosx_032_achievement_finalize_break_the_chain = yes
+}
+
+chaosx_032_achievement_record_rogue_recovery = {
+	# Input: reserve_or_prepared, recovery_complete, unauthorized_launch,
+	# scuttled, foreign_seizure, destroyed, secure_restored, and control.
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_reserve_or_prepared value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_reserve_or_prepared
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_recovery_complete value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_rogue_recovery
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_unauthorized_launch value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_unauthorized_launch
+	}
+	else = { set_country_flag = chaosx_032_keys_returned_no_unauthorized_launch }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_scuttled value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_scuttled
+	}
+	else = { set_country_flag = chaosx_032_keys_returned_no_scuttle }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_foreign_seizure value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_foreign_seizure
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_destroyed value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_destroyed
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_secure_restored value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_keys_returned_secure_restored
+	}
+	set_variable = { chaosx_032_keys_returned_control = chaosx_032_input_control }
+	chaosx_032_achievement_finalize_keys_returned = yes
+}
+
+chaosx_032_achievement_record_no_second_sun_prewar = {
+	# Called before the qualifying war: input delivery_capability and
+	# qualifying_stockpile must both be one.
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_delivery_capability value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_prewar_delivery_capability
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_qualifying_stockpile value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_prewar_stockpile
+	}
+}
+
+chaosx_032_achievement_record_no_second_sun_incoming = {
+	# Input: incoming_payload, incoming_from_enemy, and war_id. Only enemy
+	# nuclear or thermonuclear receipts start this achievement's war record.
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_incoming_from_enemy value = constant:missiles_program_value.one compare = equals }
+			OR = {
+				check_variable = { var = chaosx_032_input_incoming_payload value = constant:missiles_payload.nuclear compare = equals }
+				check_variable = { var = chaosx_032_input_incoming_payload value = constant:missiles_payload.thermonuclear compare = equals }
+			}
+		}
+		set_country_flag = chaosx_032_no_second_sun_incoming_nuclear_or_thermo
+		set_variable = { chaosx_032_no_second_sun_war_id = chaosx_032_input_war_id }
+	}
+}
+
+chaosx_032_achievement_record_no_second_sun_resolution = {
+	# Input: war_id, country_survived, war_won, own_special_launch,
+	# delivery_option_retained, and world_end.
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_country_survived value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_country_survived
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_war_won value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_war_won
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_own_special_launch value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_own_special_launch
+	}
+	else = { set_country_flag = chaosx_032_no_second_sun_no_own_special_launch }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_delivery_option_retained value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_delivery_option_retained
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_world_end value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_no_second_sun_world_end
+	}
+	chaosx_032_achievement_finalize_no_second_sun = yes
+}
+
+chaosx_032_achievement_record_empty_silos_war_start = {
+	# Input: opening_site_count and war_id. The frozen manifest is the evidence
+	# against enemy rebuilding or ally-only credit.
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_opening_site_count value = @missiles_achievement_site_count compare = greater_than_or_equals } }
+		set_variable = { chaosx_032_empty_the_silos_opening_site_count = chaosx_032_input_opening_site_count }
+		set_variable = { chaosx_032_empty_the_silos_war_id = chaosx_032_input_war_id }
+		set_country_flag = chaosx_032_empty_the_silos_conventional_only
+	}
+}
+
+chaosx_032_achievement_record_empty_silos_counterforce = {
+	# Input: site_id, player_credit, site_removed, ally_credit, special_payload,
+	# civilian_command_strike, and enemy_rebuilt.
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_special_payload value = constant:missiles_program_value.one compare = equals } }
+		clr_country_flag = chaosx_032_empty_the_silos_conventional_only
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_civilian_command_strike value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_empty_the_silos_civilian_command_strike
+	}
+	else = { set_country_flag = chaosx_032_empty_the_silos_no_civilian_command_strike }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_enemy_rebuilt value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_empty_the_silos_enemy_rebuilt
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_ally_credit value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_empty_the_silos_ally_credit_disqualifier
+	}
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_player_credit value = constant:missiles_program_value.one compare = equals }
+			check_variable = { var = chaosx_032_input_site_removed value = constant:missiles_program_value.one compare = equals }
+			check_variable = { var = chaosx_032_input_conventional value = constant:missiles_program_value.one compare = equals }
+			NOT = { is_in_array = { array = chaosx_032_empty_the_silos_removed_sites value = chaosx_032_input_site_id } }
+		}
+		add_to_array = { array = chaosx_032_empty_the_silos_removed_sites value = chaosx_032_input_site_id }
+		add_to_variable = { chaosx_032_empty_the_silos_removed_site_count = constant:missiles_program_value.one }
+		set_country_flag = chaosx_032_empty_the_silos_player_credit
+	}
+	if = {
+		limit = {
+			has_variable = chaosx_032_empty_the_silos_opening_site_count
+			check_variable = { var = chaosx_032_empty_the_silos_removed_site_count value = chaosx_032_empty_the_silos_opening_site_count compare = greater_than_or_equals }
+		}
+		set_country_flag = chaosx_032_empty_the_silos_all_opening_sites_removed
+	}
+	chaosx_032_achievement_finalize_empty_the_silos = yes
+}
+
+chaosx_032_achievement_record_empty_silos_war_resolution = {
+	# Input: war_id, war_won, and enemy_rebuilt. Resolution is separate from
+	# the last counterforce receipt so a single strike cannot unlock the award.
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_war_id value = chaosx_032_empty_the_silos_war_id compare = equals }
+			check_variable = { var = chaosx_032_input_war_won value = constant:missiles_program_value.one compare = equals }
+		}
+		set_country_flag = chaosx_032_empty_the_silos_war_won
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_enemy_rebuilt value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_empty_the_silos_enemy_rebuilt
+	}
+	chaosx_032_achievement_finalize_empty_the_silos = yes
+}
+
+chaosx_032_achievement_record_saturation_operation = {
+	# Input: war_id, target_state_id, conventional, neutral_or_self, control,
+	# strategic_damage, and war_deadline_met. Required saturation evolution
+	# must be checked by the caller, then latched with the matching wrapper.
+	if = {
+		limit = { NOT = { has_variable = chaosx_032_sky_full_of_steel_war_id } }
+		set_variable = { chaosx_032_sky_full_of_steel_war_id = chaosx_032_input_war_id }
+		set_variable = { chaosx_032_sky_full_of_steel_first_operation_date = global.date }
+		set_variable = { chaosx_032_sky_full_of_steel_deadline = global.date }
+		add_to_variable = { chaosx_032_sky_full_of_steel_deadline = @missiles_achievement_saturation_window_days }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_conventional value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_sky_full_of_steel_conventional_only
+	}
+	else = { clr_country_flag = chaosx_032_sky_full_of_steel_conventional_only }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_neutral_or_self value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_sky_full_of_steel_neutral_strike
+	}
+	else = {
+		set_country_flag = chaosx_032_sky_full_of_steel_no_neutral_strike
+		clr_country_flag = chaosx_032_sky_full_of_steel_neutral_strike
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_control value = @missiles_achievement_saturation_control compare = greater_than_or_equals } }
+		set_country_flag = chaosx_032_sky_full_of_steel_control_held
+	}
+	else = { clr_country_flag = chaosx_032_sky_full_of_steel_control_held }
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_war_id value = chaosx_032_sky_full_of_steel_war_id compare = equals }
+			check_variable = { var = chaosx_032_input_war_deadline_met value = constant:missiles_program_value.one compare = equals }
+		}
+		add_to_variable = { chaosx_032_sky_full_of_steel_saturation_operation_count = constant:missiles_program_value.one }
+		if = {
+			limit = { NOT = { is_in_array = { array = chaosx_032_sky_full_of_steel_states value = chaosx_032_input_target_state_id } } }
+			add_to_array = { array = chaosx_032_sky_full_of_steel_states value = chaosx_032_input_target_state_id }
+			add_to_variable = { chaosx_032_sky_full_of_steel_state_count = constant:missiles_program_value.one }
+		}
+		add_to_variable = { chaosx_032_sky_full_of_steel_damage = chaosx_032_input_strategic_damage }
+	}
+	else = { set_country_flag = chaosx_032_sky_full_of_steel_war_mismatch }
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_required_damage value = constant:missiles_program_value.zero compare = greater_than } }
+		set_variable = { chaosx_032_sky_full_of_steel_required_damage = chaosx_032_input_required_damage }
+	}
+	chaosx_032_achievement_finalize_sky_full_of_steel = yes
+}
+
+chaosx_032_achievement_record_saturation_war_resolution = {
+	# Input: war_id, war_won, and deadline_met.
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_war_id value = chaosx_032_sky_full_of_steel_war_id compare = equals }
+			check_variable = { var = chaosx_032_input_war_won value = constant:missiles_program_value.one compare = equals }
+			check_variable = { var = chaosx_032_input_deadline_met value = constant:missiles_program_value.one compare = equals }
+		}
+		set_country_flag = chaosx_032_sky_full_of_steel_war_won
+	}
+	else = {
+		set_country_flag = chaosx_032_sky_full_of_steel_deadline_missed
+	}
+	chaosx_032_achievement_finalize_sky_full_of_steel = yes
+}
+
+chaosx_032_achievement_record_long_reach_snapshot = {
+	# Input: full_tech, mature_line, site_count, region_count, reserve,
+	# readiness, control, at_war_with_major, war_id, and final_site_count.
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_full_tech value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_long_reach_full_tech
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_mature_line value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_long_reach_mature_line
+	}
+	set_variable = { chaosx_032_long_reach_site_count = chaosx_032_input_site_count }
+	set_variable = { chaosx_032_long_reach_region_count = chaosx_032_input_region_count }
+	set_variable = { chaosx_032_long_reach_reserve = chaosx_032_input_reserve }
+	set_variable = { chaosx_032_long_reach_readiness = chaosx_032_input_readiness }
+	set_variable = { chaosx_032_long_reach_control = chaosx_032_input_control }
+	set_variable = { chaosx_032_long_reach_final_operational_site_count = chaosx_032_input_final_site_count }
+	if = {
+		limit = {
+			check_variable = { var = chaosx_032_input_site_count value = @missiles_achievement_site_count compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_region_count value = @missiles_achievement_region_count compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_reserve value = constant:missiles_tuning.evolution_saturation_reserve compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_readiness value = @missiles_achievement_long_reach_control compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_control value = @missiles_achievement_long_reach_control compare = greater_than_or_equals }
+			check_variable = { var = chaosx_032_input_at_war_with_major value = constant:missiles_program_value.one compare = equals }
+		}
+		if = {
+			limit = { NOT = { has_variable = chaosx_032_long_reach_war_id } }
+			set_variable = { chaosx_032_long_reach_war_id = chaosx_032_input_war_id }
+		}
+		if = {
+			limit = {
+				has_variable = chaosx_032_long_reach_war_id
+				NOT = { check_variable = { var = chaosx_032_input_war_id value = chaosx_032_long_reach_war_id compare = equals } }
+			}
+			set_country_flag = chaosx_032_long_reach_war_mismatch
+		}
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_032_long_reach_readiness_control_clock_started } }
+			set_country_flag = chaosx_032_long_reach_readiness_control_clock_started
+			set_variable = { chaosx_032_long_reach_clock_start = global.date }
+		}
+		if = {
+			limit = {
+				has_variable = chaosx_032_long_reach_clock_start
+				check_variable = { var = global.date value = chaosx_032_long_reach_clock_start compare = greater_than_or_equals }
+			}
+			set_variable = { chaosx_032_long_reach_clock_days = global.date }
+			subtract_from_variable = { chaosx_032_long_reach_clock_days = chaosx_032_long_reach_clock_start }
+			if = {
+				limit = { check_variable = { var = chaosx_032_long_reach_clock_days value = @missiles_achievement_long_reach_days compare = greater_than_or_equals } }
+				set_country_flag = chaosx_032_long_reach_readiness_control_held_180_days
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_032_long_reach_readiness_control_held_180_days } }
+			clr_country_flag = chaosx_032_long_reach_readiness_control_clock_started
+			clear_variable = chaosx_032_long_reach_clock_start
+		}
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_at_war_with_major value = constant:missiles_program_value.one compare = equals } }
+		set_country_flag = chaosx_032_long_reach_at_war_with_major
+	}
+	chaosx_032_achievement_finalize_long_reach = yes
+}
+
+chaosx_032_achievement_record_long_reach_operation = {
+	# Input: operation_profile and operation_war_id. The three flags form a
+	# persistent operation-type set, not a one-firing unlock.
+	if = {
+		limit = { NOT = { has_variable = chaosx_032_long_reach_operation_war_id } }
+		set_variable = { chaosx_032_long_reach_operation_war_id = chaosx_032_input_operation_war_id }
+	}
+	if = {
+		limit = {
+			has_variable = chaosx_032_long_reach_war_id
+			NOT = { check_variable = { var = chaosx_032_input_operation_war_id value = chaosx_032_long_reach_war_id compare = equals } }
+		}
+		set_country_flag = chaosx_032_long_reach_war_mismatch
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_operation_profile value = constant:missiles_strike_profile.precision compare = equals } }
+		set_country_flag = chaosx_032_long_reach_precision_operation
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_operation_profile value = constant:missiles_strike_profile.strategic compare = equals } }
+		set_country_flag = chaosx_032_long_reach_strategic_operation
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_032_input_target_profile value = constant:missiles_target_profile.counterforce compare = equals } }
+		set_country_flag = chaosx_032_long_reach_counterforce_operation
+	}
+	chaosx_032_achievement_finalize_long_reach = yes
+}
+
+chaosx_032_achievement_record_long_reach_rogue_site_loss = {
+	set_country_flag = chaosx_032_long_reach_rogue_site_loss
+}
+
+chaosx_032_achievement_finalize_exact_distance = {
+	if = { limit = { chaosx_032_achievement_exact_distance_criteria_met = yes } set_country_flag = chaosx_032_achievement_exact_distance_receipt }
+}
+
+chaosx_032_achievement_finalize_still_on_the_line = {
+	if = { limit = { chaosx_032_achievement_still_on_the_line_criteria_met = yes } set_country_flag = chaosx_032_achievement_still_on_the_line_receipt }
+}
+
+chaosx_032_achievement_finalize_break_the_chain = {
+	if = { limit = { chaosx_032_achievement_break_the_chain_criteria_met = yes } set_country_flag = chaosx_032_achievement_break_the_chain_receipt }
+}
+
+chaosx_032_achievement_finalize_keys_returned = {
+	if = { limit = { chaosx_032_achievement_keys_returned_criteria_met = yes } set_country_flag = chaosx_032_achievement_keys_returned_receipt }
+}
+
+chaosx_032_achievement_finalize_no_second_sun = {
+	if = { limit = { chaosx_032_achievement_no_second_sun_criteria_met = yes } set_country_flag = chaosx_032_achievement_no_second_sun_receipt }
+}
+
+chaosx_032_achievement_finalize_empty_the_silos = {
+	if = { limit = { chaosx_032_achievement_empty_the_silos_criteria_met = yes } set_country_flag = chaosx_032_achievement_empty_the_silos_receipt }
+}
+
+chaosx_032_achievement_finalize_sky_full_of_steel = {
+	if = { limit = { chaosx_032_achievement_sky_full_of_steel_criteria_met = yes } set_country_flag = chaosx_032_achievement_sky_full_of_steel_receipt }
+}
+
+chaosx_032_achievement_finalize_long_reach = {
+	if = { limit = { chaosx_032_achievement_long_reach_criteria_met = yes } set_country_flag = chaosx_032_achievement_long_reach_receipt }
+}

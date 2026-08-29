@@ -1,0 +1,218 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 ACHIEVEMENT CONTRACTS
+# ============================================================================
+# These triggers consume persistent Event 032 achievement receipts. The
+# Event 032 runtime must call the companion recording effects at the exact
+# operation, incident, site, and war-resolution boundaries described in the
+# handoff. No trigger here awards an achievement or treats one event firing
+# as sufficient evidence.
+# ============================================================================
+
+@missiles_achievement_precision_strike_count = 12
+@missiles_achievement_precision_state_count = 12
+@missiles_achievement_precision_country_count = 4
+@missiles_achievement_site_count = 3
+@missiles_achievement_region_count = 3
+@missiles_achievement_readiness_secure = 85
+@missiles_achievement_chain_depth = 2
+@missiles_achievement_chain_country_count = 4
+@missiles_achievement_survival_days = 90
+@missiles_achievement_rogue_control = 75
+@missiles_achievement_opening_site_count = 3
+@missiles_achievement_saturation_operation_count = 5
+@missiles_achievement_saturation_state_count = 10
+@missiles_achievement_saturation_control = 35
+@missiles_achievement_long_reach_control = 90
+@missiles_achievement_long_reach_days = 180
+@missiles_achievement_long_reach_final_site_count = 2
+
+chaosx_032_achievement_campaign_is_valid = {
+	exists = yes
+	is_ai = no
+	NOT = { has_country_flag = chaosx_032_achievement_disqualified_scn015 }
+	NOT = { has_country_flag = chaosx_032_achievement_disqualified_force }
+	NOT = { has_country_flag = chaosx_032_achievement_disqualified_debug }
+	NOT = { has_country_flag = chaosx_032_achievement_country_ceased }
+	NOT = { has_country_flag = missiles_achievement_forced_setup_used }
+	NOT = { has_country_flag = missiles_achievement_debug_completion_used }
+	NOT = { has_global_flag = missiles_scenario_bypass_active }
+	NOT = { has_global_flag = missiles_scenario_launched }
+	NOT = { has_country_flag = missiles_scenario_country_bypass_active }
+}
+
+chaosx_032_achievement_possible = {
+	chaosx_032_achievement_campaign_is_valid = yes
+	has_country_flag = missiles_program_initialized
+	NOT = { has_country_flag = missiles_scenario_origin }
+}
+
+chaosx_032_achievement_exact_distance_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_exact_distance_evolution_disabled }
+	check_variable = { var = chaosx_032_exact_distance_precision_strike_count value = @missiles_achievement_precision_strike_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_exact_distance_state_count value = @missiles_achievement_precision_state_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_exact_distance_country_count value = @missiles_achievement_precision_country_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_exact_distance_civilian_deaths value = constant:missiles_damage.civilian_deaths_precision compare = less_than }
+	has_country_flag = chaosx_032_exact_distance_precision_only
+	has_country_flag = chaosx_032_exact_distance_valid_receipts
+	has_country_flag = chaosx_032_exact_distance_no_special_payload
+	has_country_flag = chaosx_032_exact_distance_no_neutral_or_self_strike
+	NOT = { has_country_flag = chaosx_032_exact_distance_disqualified_strike }
+}
+
+chaosx_032_achievement_exact_distance_is_complete = {
+	chaosx_032_achievement_exact_distance_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_exact_distance_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_exact_distance_granted }
+}
+
+chaosx_032_achievement_still_on_the_line_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_still_on_the_line_evolution_disabled }
+	check_variable = { var = chaosx_032_still_on_the_line_active_site_count value = @missiles_achievement_site_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_still_on_the_line_region_count value = @missiles_achievement_region_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_still_on_the_line_readiness value = @missiles_achievement_readiness_secure compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_still_on_the_line_control value = @missiles_achievement_readiness_secure compare = greater_than_or_equals }
+	has_country_flag = chaosx_032_still_on_the_line_three_sites_hardened_secure
+	has_country_flag = chaosx_032_still_on_the_line_damage_received
+	has_country_flag = chaosx_032_still_on_the_line_two_sites_retained
+	has_country_flag = chaosx_032_still_on_the_line_repaired_within_deadline
+	NOT = { has_country_flag = chaosx_032_still_on_the_line_scuttled }
+	NOT = { has_country_flag = chaosx_032_still_on_the_line_lost_all_capacity }
+}
+
+chaosx_032_achievement_still_on_the_line_is_complete = {
+	chaosx_032_achievement_still_on_the_line_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_still_on_the_line_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_still_on_the_line_granted }
+}
+
+chaosx_032_achievement_break_the_chain_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_break_the_chain_evolution_disabled }
+	check_variable = { var = chaosx_032_break_the_chain_depth value = @missiles_achievement_chain_depth compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_break_the_chain_country_count value = @missiles_achievement_chain_country_count compare = greater_than_or_equals }
+	has_country_flag = chaosx_032_break_the_chain_actionable_warning
+	has_country_flag = chaosx_032_break_the_chain_warning_resolved
+	has_country_flag = chaosx_032_break_the_chain_no_retaliation
+	has_country_flag = chaosx_032_break_the_chain_incident_closed
+	has_country_flag = chaosx_032_break_the_chain_survived_90_days
+	NOT = { has_country_flag = chaosx_032_break_the_chain_later_launch }
+	NOT = { has_country_flag = chaosx_032_break_the_chain_special_payload }
+}
+
+chaosx_032_achievement_break_the_chain_is_complete = {
+	chaosx_032_achievement_break_the_chain_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_break_the_chain_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_break_the_chain_granted }
+}
+
+chaosx_032_achievement_keys_returned_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_keys_returned_evolution_disabled }
+	has_country_flag = chaosx_032_keys_returned_rogue_recovery
+	has_country_flag = chaosx_032_keys_returned_reserve_or_prepared
+	has_country_flag = chaosx_032_keys_returned_no_unauthorized_launch
+	has_country_flag = chaosx_032_keys_returned_no_scuttle
+	has_country_flag = chaosx_032_keys_returned_secure_restored
+	check_variable = { var = chaosx_032_keys_returned_control value = @missiles_achievement_rogue_control compare = greater_than_or_equals }
+	NOT = { has_country_flag = chaosx_032_keys_returned_foreign_seizure }
+	NOT = { has_country_flag = chaosx_032_keys_returned_destroyed }
+	NOT = { has_country_flag = chaosx_032_keys_returned_unauthorized_launch }
+	NOT = { has_country_flag = chaosx_032_keys_returned_scuttled }
+}
+
+chaosx_032_achievement_keys_returned_is_complete = {
+	chaosx_032_achievement_keys_returned_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_keys_returned_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_keys_returned_granted }
+}
+
+chaosx_032_achievement_no_second_sun_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_no_second_sun_evolution_disabled }
+	has_country_flag = chaosx_032_no_second_sun_prewar_delivery_capability
+	has_country_flag = chaosx_032_no_second_sun_prewar_stockpile
+	has_country_flag = chaosx_032_no_second_sun_incoming_nuclear_or_thermo
+	has_country_flag = chaosx_032_no_second_sun_country_survived
+	has_country_flag = chaosx_032_no_second_sun_war_won
+	has_country_flag = chaosx_032_no_second_sun_no_own_special_launch
+	has_country_flag = chaosx_032_no_second_sun_delivery_option_retained
+	NOT = { has_country_flag = chaosx_032_no_second_sun_world_end }
+	NOT = { has_country_flag = chaosx_032_no_second_sun_own_special_launch }
+}
+
+chaosx_032_achievement_no_second_sun_is_complete = {
+	chaosx_032_achievement_no_second_sun_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_no_second_sun_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_no_second_sun_granted }
+}
+
+chaosx_032_achievement_empty_the_silos_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_empty_the_silos_evolution_disabled }
+	check_variable = { var = chaosx_032_empty_the_silos_opening_site_count value = @missiles_achievement_opening_site_count compare = greater_than_or_equals }
+	has_country_flag = chaosx_032_empty_the_silos_all_opening_sites_removed
+	has_country_flag = chaosx_032_empty_the_silos_player_credit
+	has_country_flag = chaosx_032_empty_the_silos_conventional_only
+	has_country_flag = chaosx_032_empty_the_silos_no_civilian_command_strike
+	has_country_flag = chaosx_032_empty_the_silos_war_won
+	NOT = { has_country_flag = chaosx_032_empty_the_silos_ally_credit_disqualifier }
+	NOT = { has_country_flag = chaosx_032_empty_the_silos_enemy_rebuilt }
+	NOT = { has_country_flag = chaosx_032_empty_the_silos_civilian_command_strike }
+}
+
+chaosx_032_achievement_empty_the_silos_is_complete = {
+	chaosx_032_achievement_empty_the_silos_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_empty_the_silos_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_empty_the_silos_granted }
+}
+
+chaosx_032_achievement_sky_full_of_steel_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_sky_full_of_steel_evolution_disabled }
+	check_variable = { var = chaosx_032_sky_full_of_steel_saturation_operation_count value = @missiles_achievement_saturation_operation_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_sky_full_of_steel_state_count value = @missiles_achievement_saturation_state_count compare = greater_than_or_equals }
+	has_variable = chaosx_032_sky_full_of_steel_damage
+	has_variable = chaosx_032_sky_full_of_steel_required_damage
+	check_variable = { var = chaosx_032_sky_full_of_steel_damage value = chaosx_032_sky_full_of_steel_required_damage compare = greater_than_or_equals }
+	has_country_flag = chaosx_032_sky_full_of_steel_conventional_only
+	has_country_flag = chaosx_032_sky_full_of_steel_no_neutral_strike
+	has_country_flag = chaosx_032_sky_full_of_steel_control_held
+	has_country_flag = chaosx_032_sky_full_of_steel_war_won
+	NOT = { has_country_flag = chaosx_032_sky_full_of_steel_deadline_missed }
+	NOT = { has_country_flag = chaosx_032_sky_full_of_steel_war_mismatch }
+	NOT = { has_country_flag = chaosx_032_sky_full_of_steel_neutral_strike }
+}
+
+chaosx_032_achievement_sky_full_of_steel_is_complete = {
+	chaosx_032_achievement_sky_full_of_steel_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_sky_full_of_steel_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_sky_full_of_steel_granted }
+}
+
+chaosx_032_achievement_long_reach_criteria_met = {
+	chaosx_032_achievement_possible = yes
+	NOT = { has_country_flag = chaosx_032_achievement_long_reach_evolution_disabled }
+	has_country_flag = chaosx_032_long_reach_full_tech
+	has_country_flag = chaosx_032_long_reach_mature_line
+	check_variable = { var = chaosx_032_long_reach_site_count value = @missiles_achievement_site_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_long_reach_region_count value = @missiles_achievement_region_count compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_long_reach_reserve value = constant:missiles_tuning.evolution_saturation_reserve compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_long_reach_readiness value = @missiles_achievement_long_reach_control compare = greater_than_or_equals }
+	check_variable = { var = chaosx_032_long_reach_control value = @missiles_achievement_long_reach_control compare = greater_than_or_equals }
+	has_country_flag = chaosx_032_long_reach_readiness_control_held_180_days
+	has_country_flag = chaosx_032_long_reach_at_war_with_major
+	has_country_flag = chaosx_032_long_reach_precision_operation
+	has_country_flag = chaosx_032_long_reach_strategic_operation
+	has_country_flag = chaosx_032_long_reach_counterforce_operation
+	check_variable = { var = chaosx_032_long_reach_final_operational_site_count value = @missiles_achievement_long_reach_final_site_count compare = greater_than_or_equals }
+	NOT = { has_country_flag = chaosx_032_long_reach_rogue_site_loss }
+	NOT = { has_country_flag = chaosx_032_long_reach_war_mismatch }
+}
+
+chaosx_032_achievement_long_reach_is_complete = {
+	chaosx_032_achievement_long_reach_criteria_met = yes
+	has_country_flag = chaosx_032_achievement_long_reach_receipt
+	NOT = { has_country_flag = chaosx_032_achievement_long_reach_granted }
+}
