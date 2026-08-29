@@ -82,7 +82,7 @@ These are guarded runtime Event 6 characters, not replacements for vanilla chara
 
 Scotland also recruits a Shipping Authority Commissioner, Industrial Reconstruction Secretary, and Territorial Defense Planner. Wales recruits a Bilingual Civil Service Commissioner, Coal and Rail Organizer, and Mountain Defense Planner. These asset-neutral advisor offices carry no custom Event 006 portrait cards or sprite registrations. Each retains a substantial role-specific trait, a concrete hiring cost, and route-aware AI weighting.
 
-The static advisor records are recruited by hidden setup event `chaosx.nr6.10` inside the frozen release chain. The calling package adapter then proves all three records exist before it can publish setup success; no scripted effect or on action contains `recruit_character`.
+The static advisor records are recruited during game history initialization. Hidden setup event `chaosx.nr6.10` remains a synchronous compatibility checkpoint, and the calling package adapter proves all three records exist before it can publish setup success.
 
 ### Founding pressures and lifecycle ideas
 
@@ -605,7 +605,7 @@ Each package recruits three fictional specialist offices without custom Event 00
 
 Their substantial traits affect customs and consumer burdens, rail and infrastructure construction, river defense and planning, district finance, constitutional stability, or alpine logistics. Hiring costs and route-aware AI weights are centralized in `common/script_constants/006_independence_wave_constants_registry.txt`. The advisors are visible only for their exact active Event 006 package, use no custom portrait sprites, and never overwrite either tag's vanilla advisor content.
 
-Hidden setup event `chaosx.nr6.10` recruits these static records within the frozen release chain. The package adapter will not publish success unless the exact three-advisor roster is present, and no scripted effect or on action contains `recruit_character`.
+Game history initialization recruits these static records. Hidden setup event `chaosx.nr6.10` remains a synchronous compatibility checkpoint, and the package adapter will not publish success unless the exact three-advisor roster is present.
 
 ### Starting forces
 
