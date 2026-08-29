@@ -2,12 +2,7 @@
 
 Date: 2026-07-18
 
-Status: **SOURCE IMPLEMENTED / PACKAGE ADMISSION BLOCKED** — the CHU/ASY
-gameplay, FORM-12/13/18 transactions, exact vanilla-formable guards, staged
-integration, sovereign-autonomy alternative, and signature-achievement writers
-are implemented. IW-043 and IW-058 remain excluded from exact content
-attestation while their grounded portrait, rights, role, and full-package gates
-remain open.
+Status: **SOURCE IMPLEMENTED / PACKAGE ADMISSION BLOCKED** — the CHU/ASY gameplay, FORM-12/13/18 transactions, exact vanilla-formable guards, staged integration, sovereign-autonomy alternative, and signature-achievement writers are implemented. IW-043 and IW-058 remain excluded from exact content attestation while their grounded portrait, rights, role, and full-package gates remain open.
 
 Owner: Event 006 parent implementation agent
 

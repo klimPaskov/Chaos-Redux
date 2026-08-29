@@ -192,12 +192,7 @@ The Event 006 end-of-origin and generation-reset helpers retry the overlay only 
 
 An approved Event 006 carrier with no active meaningful tree remains eligible for the Africa tree, while an unrecognised or missing tree on any other carrier is preserved rather than overwritten; this is intentional until a supported no-tree predicate is available.
 
-The two wrappers in
-`common/scripted_effects/006_independence_wave_country_registry_effects.txt`
-only record/clear Event 006's existing origin markers. They create no tags,
-event targets, advisors, or assets. Existing Event 006 setup event targets and
-cleanup chain remain the owner of short-lived scope pointers and global target
-cleanup.
+The two wrappers are implemented in `common/scripted_effects/006_independence_wave_effects.txt` and documented in `common/scripted_effects/006_independence_wave_country_registry_effects.md`; they only record or clear Event 006's existing origin markers. They create no tags, event targets, advisors, or assets. Existing Event 006 setup event targets and cleanup chain remain the owner of short-lived scope pointers and global target cleanup.
 
 ## Country-history ownership
 

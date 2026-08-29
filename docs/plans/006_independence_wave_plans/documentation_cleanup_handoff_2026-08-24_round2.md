@@ -10,6 +10,8 @@ Status: documentation reconciliation complete; Event 006 remains **HOLD / PARTIA
 
 > Superseded for focus-layout status by commit `314642488` and the 2026-08-25 reconciliation: the six-warning references below are dated 2026-08-24 round-2 evidence, while current authority is 184 focuses, 195 connectors, zero crossings, zero node intersections, zero long connectors, zero too-close same-row pairs, and zero Event 006 layout diagnostics; only the unrelated vanilla `continuous_restrict_freedom_desc` localisation reference remains reported. Preserve this handoff as historical provenance.
 
+> Superseded for current portrait and catalog status by the 2026-08-28 portrait-consumer and 2026-08-29 premise-repair handoffs: the 38 installed source-placeholder/13-unmapped portrait wording and the `Partially Available`/`Unavailable` catalog labels below describe the 2026-08-24 snapshot only. Current export status is Event 006 `Needs Testing`, SCN-008 `Needs Testing`, and Liberations `Partially Available`, while current portrait evidence is 110 supplied PNG/DDS pairs, 70 runtime DDS files, 38 exact supplied matches, 64 unique GFX pairs, and 47 resolved character references. At the 2026-08-28 snapshot, the Event Details field required premise-only wording review. The 2026-08-29 repair supersedes that condition.
+
 ## Scope and source-of-truth map
 
 The seven accepted specification parts under `docs/specs/006_independence_wave_specs/` remain the design authority.
@@ -32,7 +34,7 @@ The current portrait boundary remains 38 installed supplied source-placeholder D
 
 The asset manifests under `docs/assets/006_independence_wave/` contain no current warning-count or consolidated-registry contradiction found by the scoped search; their rights, source-placeholder, and package-gate notes remain evidence rather than admission authority.
 
-The catalog handoffs remain final-state aligned: Event Details and `Events!C7` agree, Event 006 and the mixed Liberations cluster remain `Partially Available`, SCN-008 remains `Unavailable`, and the alignment-versus-reconcile process-history discrepancy is preserved.
+At the 2026-08-24 snapshot, the catalog handoffs were final-state aligned: Event Details and `Events!C7` agreed, Event 006 and the mixed Liberations cluster were `Partially Available`, and SCN-008 was `Unavailable`. This dated status paragraph is superseded by the 2026-08-29 workbook/export authority, while the alignment-versus-reconcile process-history discrepancy remains preserved.
 
 ## Plan and handoff disposition
 

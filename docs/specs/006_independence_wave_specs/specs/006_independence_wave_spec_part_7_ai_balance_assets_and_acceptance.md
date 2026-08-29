@@ -677,18 +677,18 @@ The two final super-event text packages and musical selections are approved in `
 
 ## Event log and catalog direction
 
-Event 6 remains:
+The historical planning upload described Event 6 as:
 
 - ID 6
 - Minor Repeatable
 - Liberations cluster member
-- current status To Be Reworked until implementation is complete
+- status `To Be Reworked`
 
 The Event Details entry should describe sudden waves of new states and their struggle for survival. It should not list mechanic values, modifiers, wave algorithms, or hidden formables.
 
 Evolution details should describe public changes in the pattern of new states. They should not describe ordinary wave counts as evolutions.
 
-The spreadsheet row must be updated only after final in-game wording exists. The spreadsheet worker should mirror final Event Details, evolution, cluster, and scenario text rather than paraphrasing this spec.
+The current workbook/export snapshot reports Event 006 and SCN-008 as `Needs Testing` and Liberations as `Partially Available`. The historical `To Be Reworked` label above is not current status. The 2026-08-29 Event Details and catalog premise repair removed exact Join thresholds and rival-compact values from public text, corrected the duplicated `Clusters!D3` member list, and refreshed the workbook and generated CSVs. The spreadsheet worker should mirror approved Event Details, evolution, cluster, and scenario text rather than paraphrasing this spec.
 
 ## Documentation plan
 

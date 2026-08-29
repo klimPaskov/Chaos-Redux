@@ -7,11 +7,11 @@
 > 2026-08-15 supersession handoff for current implementation status. This
 > documentation reconciliation does not edit or export the workbook.
 
-Current documentation authority (2026-08-12): this file remains accepted catalog direction and historical workbook input, not a current workbook-status claim. Current Event 006 package, super-event, portrait-placeholder, MNT, KOS, RUT, KUB, and FORM-16 routing is recorded in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`, and the current event overview; the workbook and export mirrors are outside this cleanup. The current catalog status is unchanged: Event 006 remains `Partially Available`, SCN-008 remains `Unavailable`, and the mixed Liberations cluster remains `Partially Available`.
+Current documentation authority (2026-08-29): this file remains accepted catalog direction and historical workbook input, not a replacement for the authoritative workbook or its generated exports. Current Event 006 package, super-event, portrait, MNT, KOS, RUT, KUB, and FORM-16 routing is recorded in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`, `docs/plans/006_independence_wave_plans/006_independence_wave_resume_packet.md`, and the current event overview. The read-only export snapshot generated from the workbook reports Event 006 as `Needs Testing`, SCN-008 as `Needs Testing`, and the mixed Liberations cluster as `Partially Available`. The older `Partially Available` and `Unavailable` labels below are historical evidence only.
 
-## Current catalog receipt (2026-08-11)
+## Historical catalog receipt (2026-08-11)
 
-The editable workbook remains the sole catalog source. Event 006 `Events!C7` now mirrors the static Event Details premise and Join eligibility wording, `Events!M7` remains `Partially Available`, and the exporter refreshed all three CSV snapshots. The superseding receipt is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_catalog_event_details_mirror_reconcile_2026_08_11.md`. The current runtime authority is 32 content-attested packages across 29 compatible reservation groups, 161 unattested selectable rows, and 40 runtime adapters after the IW-045 admission; eight adapter-only rows remain fail-closed. This catalog receipt does not claim whole-event completion.
+The editable workbook remains the sole catalog source. Event 006 `Events!C7` mirrored the then-current Event Details premise and Join eligibility wording, `Events!M7` was `Partially Available`, and the exporter refreshed all three CSV snapshots. The superseding receipt is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_catalog_event_details_mirror_reconcile_2026_08_11.md`. The 2026-08-28 OOXML repair and export refresh are historical workbook-readability evidence, superseded for current wording by `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_event_details_premise_catalog_repair_2026-08-29.md`. This historical receipt does not claim whole-event completion.
 
 ## Historical catalog state
 
@@ -101,7 +101,7 @@ Universal Belligerence has three independently selectable rules: Former Hosts, N
 
 The player-facing catalog therefore exposes eight selectable modes backed by the six numeric families. The runtime acceptance matrix is eight selectable modes by four intensities, or 32 cells. The three Universal Belligerence rules require separate acceptance rows and are not interchangeable proxies.
 
-Final scenario detail text, type names, and intensity text must be written in game first and then mirrored into the catalog workbook.
+Final scenario detail text, type names, and intensity text must be approved in source localisation first and then mirrored into the catalog workbook.
 
 ## Cluster alignment
 
@@ -119,7 +119,7 @@ The user describes Event 6 cluster participation as Low. This is a participation
 6. Send exact localisation keys and final wording to `chaosx_spreadsheet_doc_worker`.
 7. Update the catalog workbook without paraphrasing mirror fields.
 
-The `To Be Reworked` status at the top of this historical handoff is not a current workbook claim. The current workbook status and any changed Event Details/crisis-queue fields must be confirmed by the spreadsheet worker after the doubled-ladder/crisis wording is re-audited; no status promotion is implied here.
+The `To Be Reworked` status in this historical handoff is not a current workbook claim. The current workbook and generated-export status is `Needs Testing` for Event 006 and SCN-008 and `Partially Available` for Liberations. The 2026-08-29 Event Details and catalog premise repair removed exact Join thresholds and rival-compact values from public text, corrected the duplicated `Clusters!D3` member list, and refreshed the workbook and generated CSVs. Future source-localisation changes must preserve the premise-only contract.
 
 ## Superseding pre-event surface decision — 2026-08-15
 

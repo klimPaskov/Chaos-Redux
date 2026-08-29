@@ -252,7 +252,7 @@ The source-of-truth map and resume packet now record the 32-package authority; t
 
 Write a current CAT country-package audit, decision and mission audit, focus-gate audit, localisation audit, and completion-audit handoff under `docs/plans/006_independence_wave_plans/subagent_handoffs/`.
 
-The Event 006 workbook row remains `Unavailable` because one additional country package does not complete the event.
+The current workbook/export snapshot reports Event 006 as `Needs Testing`, SCN-008 as `Needs Testing`, and the mixed Liberations cluster as `Partially Available`. This CAT package does not by itself change the whole-event status.
 
 Do not change `docs/spreadsheets/chaos_redux_events_catalog.xlsx` unless a player-facing catalog field actually changes.
 

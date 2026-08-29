@@ -5,11 +5,7 @@ Status: accepted and source-implemented; live validation and route-readiness evi
 Scope: `FORM-03`, the `LCX` Confederation of the Low Countries carried by `AFX` or `AGX`
 Working labels in this document are not final localisation.
 
-Current disposition (2026-07-29): the `.300-.308` event chain, FORM-03 focus,
-decision, idea, modifier, report-art, localisation, and runtime consumers are
-implemented in the current tree. The remaining work is bounded validation of
-formation reachability, carrier/package admission, save/load, AI, and live
-outcomes; this addendum is no longer pending implementation.
+Current disposition (2026-07-29): the `.300-.308` event chain, FORM-03 focus, decision, idea, modifier, report-art, localisation, and runtime consumers are implemented in the current tree. The remaining work is bounded validation of formation reachability, carrier/package admission, save/load, AI, and live outcomes; this addendum is no longer pending implementation.
 
 ## 1. Decision and acceptance status
 
@@ -542,7 +538,7 @@ After parent acceptance, route production through `chaos-redux-event-assets` und
 | `ASSET-026` founding identity stages | Six charter idea stages | 64x64, `gfx/interface/ideas/006_independence_wave/form03/` | `GFX_idea_independence_wave_form03_*` |
 | `ASSET-038` integration missions | Distinct adapted language, works, member vote, ratification, repair, and withdrawal decisions | 32x32, `gfx/interface/decisions/006_independence_wave/form03/` | `GFX_decision_independence_wave_form03_*` |
 
-Register these sprites in the FORM-03 source block of `interface/006_independence_wave_small_assets.gfx` and register the report image in `interface/006_independence_wave_event_pictures.gfx`.
+Register these sprites in the FORM-03 source block of the canonical `interface/006_independence_wave_small_assets.gfx` registry, including the report image after the 2026-08-26 small-file merge.
 
 The report scene should show a multilingual constitutional table joined to engineering and transport plans, with no readable generated text. The six focus icons must distinguish the opening convention, public-service guarantees, the delta works board, appeals and examinations, corridor standards, and ratification. Idea stages must visibly progress from loose papers to a settled charter and works seal. Every decision receives distinct adapted art within coherent language, works, member, ratification, repair, and withdrawal subfamilies. Decision icons must remain readable at 32x32.
 
@@ -566,8 +562,7 @@ No new animated asset is specified. If a later accepted design adds animation, i
 | `events/006_independence_wave.txt` | Event block `.300` through `.308` |
 | `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt` | Value, phase, model, member, and outcome text selectors |
 | `localisation/english/006_independence_wave_form03_l_english.yml` | Final player-facing localisation, UTF-8 BOM |
-| `interface/006_independence_wave_small_assets.gfx` | FORM-03 source block for focus, idea, and decision sprites |
-| `interface/006_independence_wave_event_pictures.gfx` | FORM-03 report sprite |
+| `interface/006_independence_wave_small_assets.gfx` | FORM-03 focus, idea, decision, and report sprites in the current consolidated registry; the former package-local event-picture path is historical provenance |
 | `common/scripted_effects/006_independence_wave_wallonia_frisia_package_effects.txt` | Preserve package lifecycles and expose the existing AFX or AGX project-value hooks only |
 | `common/scripted_triggers/006_independence_wave_wallonia_frisia_package_triggers.txt` | Reuse stable continuity and waterline checks in project AI |
 | `docs/events/006_independence_wave/systems/formable_registry.md` | Document post-charter state machine and runtime completion flag |

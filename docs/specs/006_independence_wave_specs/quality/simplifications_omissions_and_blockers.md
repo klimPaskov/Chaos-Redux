@@ -2,11 +2,11 @@
 
 ## Planning scope
 
-This package is the accepted source specification; implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. The current catalog status is evidenced by `subagent_handoffs/006_event6_catalog_alignment_2026-08-22.md` and `subagent_handoffs/006_event6_catalog_reconcile_2026-08-22.md`; their process-history discrepancy is preserved while their final C7/export/status result is current. This documentation patch does not edit the workbook or exports.
+This package is the accepted source specification. Implementation status is reconciled in `docs/plans/006_independence_wave_plans/006_source_of_truth_map.md`. The wider event remains incomplete, but the verified `24` source has a produced game-ready derivative and runtime package. The current catalog status is evidenced by the authoritative workbook and generated exports, with the 2026-08-28 OOXML repair handoff preserving the read-only refresh record. The older 2026-08-22 process-history discrepancy remains historical. This documentation patch does not edit the workbook or exports.
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## Current implementation correction (2026-08-27; bounded evidence)
+## Current implementation correction (2026-08-29; bounded evidence)
 
 The accepted fail-closed boundary remains 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with unresolved portraits still blocking admission and no visible pre-Event 006 crisis surface.
 
@@ -18,9 +18,11 @@ The related dormant-carrier capital-scope repair is source-closed for AXX, BAX, 
 
 Commit `cdbf9ec1f` extends absent-country safety into the shared frozen-plan validator by accepting the active Event 006 aligned plan-array receipt for uninstantiated selected tags, while preserving strict durable-marker and metadata validation for Event 005 and non-array-backed rows. It also replaces the generic provisional-phase `capital_scope` dereference with `has_independence_wave_current_capital_controlled_by_root`; focused static audits pass, the cdb handoff records partial event inspect/render evidence with zero blocking diagnostics, and no live release receipt is claimed. A fresh documentation-pass inspect/render attempt returned `ARTIFACT_MANIFEST_INTEGRITY_FAILED` with no artifact, so no newer engine evidence is claimed. Handoff: `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_absent_target_release_validation_repair_2026-08-27.md`.
 
-Commits `d50e2bf1b` and `6d8426272` document 37 byte-preserving supplied portrait mappings, while `795dc9bed` adds the package-gated source-placeholder YAK Pavel consumer; the current supplied runtime set is 38 installed files with 13 intentionally unmapped files, and no package promotion follows.
+Commits `d50e2bf1b` and `6d8426272` document the earlier 37 byte-preserving supplied portrait mappings, while `795dc9bed` adds the package-gated source-placeholder YAK Pavel consumer. That 2026-08-22 mapping snapshot is historical, and no package promotion follows.
 
 The 2026-08-28 read-only portrait-consumer revalidation confirms 38 installed exact-match consumers and 13 intentionally unmapped identity/role/rights/consumer-gated candidates. It also validates 110 supplied PNG/DDS pairs, 70 runtime DDS files, 64 unique Event 006 GFX portrait pairs, and 47 resolved character-registry references. No runtime portrait bytes, package gate, source-placeholder state, or styled-candidate state changed, and no additional consumer is admitted. The current evidence is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_consumer_audit_2026-08-28.md` and the detailed hash ledger `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_consumer_closure_2026-08-26.md`.
+
+The 2026-08-29 absent-country release-scope repair keeps an uninstantiated selected tag in the `every_possible_country` candidate scope before entering the former host and calling `release = PREV`. The shared Event 005 plus Event 006 branch follows the same scope contract. Focused static audits pass, but no engine or live-runtime release receipt exists. Evidence: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_absent_scope_release_repair_2026-08-29.md`.
 
 The 2026-08-28 IW-095 roster-checkpoint repair makes the package-local setup require the explicit parent-published `independence_wave_dah_roster_checkpoint`; identity clearance alone no longer creates a command-roster proof or permits partial initialization. The repair changes no admission count, asset state, central allocator path, or pre-event surface. Evidence: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw095_roster_checkpoint_gate_repair_2026-08-28.md`.
 
@@ -76,7 +78,7 @@ The committed evolution removal-tail repair in `7a4e0d7a9` clears each matching 
 
 Komi codify/corridor lifecycle repair `65da64229`, strategic/lifecycle hardening `85f5c9778`, and lifecycle/cost/tooltip repair `b8aa313a8` remain package-local corrections and do not widen the current 40/32/29/161 boundary or central admission surfaces.
 
-The current catalog status remains `Partially Available` for Event 006, `Unavailable` for SCN-008, and `Partially Available` for the mixed Liberations cluster. The 2026-08-11 catalog handoff records the updated player-facing ladder wording and successful export refresh; earlier no-delta catalog comparisons are historical traceability only.
+The current catalog status is `Needs Testing` for Event 006 and SCN-008 and `Partially Available` for the mixed Liberations cluster, as reported by the authoritative workbook and generated exports. The 2026-08-29 Event Details and catalog premise repair records the successful export refresh, removes exact Join thresholds and rival-compact values from public text, and corrects the duplicated `Clusters!D3` member list. Earlier `Partially Available` and `Unavailable` labels are historical traceability only.
 
 ## Historical authority continuation (2026-08-06 Banat admission; superseded by the IW-038 promotion)
 
@@ -254,26 +256,19 @@ Final titles, corrected descriptions, buttons, short sourced quotes, attribution
 
 ### Visual assets
 
-The historical planning-only sentence below predates the bounded IW-043/IW-058
-asset delivery. Current produced files are governed by the generated-visuals and
-static-icon package manifests; the broader Event 006 asset families remain
-separately queued.
+The historical planning-only sentence below predates the bounded IW-043/IW-058 asset delivery. Current produced files are governed by the generated-visuals and static-icon package manifests. The broader Event 006 asset families remain separately queued.
 
 The package defines source mode, motifs, sizes, animated states, static fallbacks, and asset families. It does not create PNG, DDS, TGA, portrait, flag, UI, or animation files. Historical material requires sourced evidence. Fictional material requires the approved generation workflow.
 
+The current non-portrait asset audit is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_assets_audit_current_2026-08-29.md`. It confirms the consolidated `interface/006_independence_wave_small_assets.gfx` receiver and records unresolved ASSET-004 strict-grayscale, AEX cross-event basename, NWE alias, ASSET-046 emblem, BWX and chunk-3 flag source, animation-manifest, and super-event 23 rights findings. The current asset manifests and GFX handoffs now cite the consolidated receiver, while the audit's binary, source, rights, and runtime limitations remain in force.
+
 ### Catalog workbook
 
-The latest catalog handoff records an approved `Events!C7` wording update for the current 3/4/5/7/10 ladder with World Collapse at 10 and a successful refresh of all three export-only CSV mirrors. Event 006 remains `Partially Available`, the mixed Liberations cluster remains `Partially Available`, and SCN-008 remains `Unavailable`; the earlier no-delta comparison is historical traceability only. Whole-event status remains **HOLD / PARTIAL** for implementation and static-source reasons, not catalog drift. Live rendering and runtime QA are optional future follow-up.
+The 2026-08-28 catalog repair handoff records the initial shared-string repair and export refresh. The 2026-08-29 Event Details and catalog premise repair then removed exact Join thresholds and rival-compact values from public text, corrected the duplicated `Clusters!D3` member list, and refreshed all three export-only CSV mirrors. The current export rows report Event 006 `Needs Testing`, the mixed Liberations cluster `Partially Available`, and SCN-008 `Needs Testing`. The older `Partially Available` and `Unavailable` labels are historical traceability only. Whole-event status remains **HOLD / PARTIAL**.
 
 ### Repository and game validation
 
-No Clausewitz files were edited in this planning-only pass. That historical
-statement does not describe the current implementation snapshot; the Pacific
-promotion and its gameplay validation evidence are recorded above and in the
-Event 006 source-of-truth map. No final whole-event parser, focus-tree layout,
-AI behavior, map release, unit spawn, or super-event source audit is claimed
-here. Game load, live scenario, and live playback checks are optional future QA
-rather than acceptance blockers.
+No Clausewitz files were edited in this planning-only pass. That historical statement does not describe the current implementation snapshot. The Pacific promotion and its gameplay validation evidence are recorded above and in the Event 006 source-of-truth map. No final whole-event parser, focus-tree layout, AI behavior, map release, unit spawn, or super-event source audit is claimed here. Game load, live scenario, and live playback checks are optional future QA rather than acceptance blockers.
 
 ## Research status
 
