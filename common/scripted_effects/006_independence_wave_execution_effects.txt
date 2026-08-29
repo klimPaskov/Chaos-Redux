@@ -500,12 +500,15 @@ independence_wave_release_one_frozen_country = {
 				}
 			}
 		}
-		event_target:independence_wave_execution_country = {
+		# An absent tag must remain the current every_possible_country scope. An
+		# event_target block cannot enter a country object that does not yet exist;
+		# vanilla uses this same candidate-scope/host-scope shape before release.
+		every_possible_country = {
+			limit = {
+				exists = no
+				tag = event_target:independence_wave_execution_country
+			}
 			event_target:independence_wave_execution_former_host = {
-				# `release` accepts a scope-stack target. Keep the candidate country
-				# as PREV, matching the vanilla every_possible_country release
-				# pattern; passing an event_target directly is not a valid release
-				# target and leaves absent candidates uninstantiated.
 				release = PREV
 				if = {
 					limit = {
