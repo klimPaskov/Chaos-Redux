@@ -8,7 +8,7 @@ This tranche repairs the accepted Event 006 administration-cost mismatches and p
 
 The source patch is complete for the scoped decision and trigger surfaces.
 
-The DM-35 Later cost row still needs a localization-only update because the requested source-file boundary excludes `localisation/english/006_independence_wave_decisions_l_english.yml`.
+The DM-35 Later cost row was completed in the follow-up localization commit `3fd0c7613` after the original source-file boundary was lifted.
 
 ## Changed files and identifiers
 
@@ -40,7 +40,7 @@ DM-35 already pays `independence_wave_decision_pay_diplomatic_standard` on every
 
 Its repeat affordability branch now matches that payment palette with command power and manpower only, so it no longer hides a non-reserved factory-capacity requirement.
 
-The existing `independence_wave_cost_patron_balance` and blocked variant still need the Later line to repeat the always-paid diplomatic-standard command power and convoy-or-train cost, followed by the later administration-light command power and manpower cost.
+The `independence_wave_cost_patron_balance` and blocked variant now repeat the always-paid diplomatic-standard command power and convoy-or-train cost on the Later line, followed by the later administration-light command power and manpower cost.
 
 The five package foundation missions were automatic missions outside the package active-project helper because the helper only tested decisions and stale foundation flags.
 
@@ -68,6 +68,8 @@ The task-specific static audit reported 153 generic administration blocks and ze
 
 The source cross-check confirmed that DM-35 contains both its unconditional diplomatic-standard payment and its repeat administration-light payment.
 
+The localization cross-check confirmed that both DM-35 cost variants disclose those same recurring resources without static values.
+
 The source cross-check confirmed all five foundation mission IDs resolve in the package-local active-project helpers.
 
 The required `hoi4.gui_inspect` and `hoi4.gui_render` routes were not callable in this runtime, so no production GUI evidence is claimed.
@@ -78,7 +80,6 @@ The agent did not launch Hearts of Iron IV or claim live-save validation.
 
 ## Remaining issues and parent follow-up
 
-- Update `independence_wave_cost_patron_balance` and `independence_wave_cost_patron_balance_blocked` in the excluded localization file so the Later line shows the always-paid diplomatic-standard cost and the later administration-light command-power and manpower cost.
 - Review the existing strategic cost rows that use `independence_wave_cost_strategic` without a local factory reservation if that broader cost-family mismatch is admitted into a later tranche.
 - Retain the latest Event 006 SCN-008 failure-ledger leak and shared GUI/probability evidence blockers from `006_event6_decisions_audit_current_2026-08-29.md`; they are outside this bounded patch.
 
