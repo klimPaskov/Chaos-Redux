@@ -128,7 +128,9 @@ An offline arithmetic audit matched BF-R01 through BF-R10, BF-C01/BF-C02, and BF
 
 No game launch or live consumer test was performed, consistent with repository instructions.
 
-The initial scoped commit attempt was delayed by an existing `.git/index.lock` held while other git add processes were active in this shared repository; the lock was left untouched, and the exact framework file list above was committed as `e965edfa9` after it cleared.
+The initial scoped commit attempt was delayed by an existing `.git/index.lock` held while other git add processes were active in this shared repository; the lock was left untouched, and the framework implementation plus the original handoff were committed as `e965edfa9` after it cleared.
+
+The one-line lock-note correction was subsequently carried by concurrent shared-workspace commit `6f12512e9`; no framework source file changed in that concurrent commit.
 
 ## Simplifications and omissions
 
