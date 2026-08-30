@@ -103,13 +103,13 @@ For actual research work, use the narrow project subagents instead of making one
 | --- | --- |
 | Main quote candidates, wording verification, attribution, source confidence, and quote recommendation | `chaosx_super_event_quote_researcher` |
 | Button text, cultural remark, short allusion, slogan, title-like reference, and copyright-risk notes | `chaosx_super_event_cultural_remark_researcher` |
-| Audio candidates, license verification, legitimate download, conversion to a game-ready `.wav`, and audio research notes | `chaosx_super_event_audio_researcher` |
+| Audio candidates, license verification, legitimate download, conversion to a final game-ready `.wav`, and audio research notes | `chaosx_super_event_audio_researcher` |
 | Real historical, archival, or real-world super-event image that must depict real material | `chaosx_asset_source_researcher` |
 | Fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific generated super-event image | `chaosx_generated_event_art` |
 
-The main agent owns final localisation, scripted localisation, slot wiring, settings-aware sound playback wiring, audio id wiring, sound definition wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`; never edit the three CSV exports directly.
+The main agent owns acceptance and runtime placement of the researcher's final game-ready `.wav`, final localisation, scripted localisation, slot wiring, settings-aware sound playback wiring, audio id wiring, sound definition wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`; never edit the three CSV exports directly.
 
-The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
+The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. For audio, the subagent delivers the final game-ready `.wav`; the main agent accepts and places that file in the runtime sound folder without requiring an intermediate derivative. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
 
 
 ## 4. Super-event design role
@@ -414,7 +414,7 @@ Super-event audio should make the moment feel distinct.
 
 Register the final super-event cue as sound and play it through the settings-aware sound helper.
 
-Core rule: a super-event task is not complete unless its audio is selected, verified, converted to a game-ready WAV, registered, wired, and documented.
+Core rule: a super-event task is not complete unless its audio is selected, verified, converted by the audio researcher to a final game-ready WAV when that subagent is used, accepted by the main agent, registered, wired, and documented.
 
 Every super-event implementation must include complete sound wiring. Do not leave a completed super-event on default, placeholder, mismatched, wrong-format, or undocumented audio.
 
@@ -497,13 +497,13 @@ For every super-event audio package:
 2. Verify the track title, creator or composer, source, license, duration, and usage terms.
 3. Download the selected audio from its legitimate source.
 4. Preserve the downloaded source file under the temporary event-scoped `docs/assets/<event_id>_<event_slug>/` source-audio path when practical. Before the event goal is fully complete, promote durable source, license, attribution, and conversion facts into the permanent audio documentation, verify that no runtime reference points into `docs/assets/`, and delete the event-scoped workspace. Keep it for blocked or incomplete work.
-5. Convert the final cue to a game-ready `.wav`.
-6. Place the final `.wav` in the event-scoped sound folder: `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`.
+5. When using `chaosx_super_event_audio_researcher`, receive its final game-ready `.wav`, source documentation, licensing notes, and conversion handoff.
+6. After accepting the file, place that `.wav` in the event-scoped sound folder: `sound/<event_id>_<event_slug>/super_event_<super_event_id>_<super_event_name>.wav`.
 7. Add or update the base `sound` definition in `sound/chaosx_sound.asset` so it points to the final WAV and has a unique sound definition id.
 8. Add or update the required settings-volume `soundeffect` wrappers in `sound/chaosx_sound.asset`. Each wrapper must point to the base sound, follow the existing `max_audible` and `max_audible_behaviour` pattern, and use the helper naming contract `chaosx_super_event_<super_event_id>_sound_<volume_suffix>`.
 9. Set `global.current_super_event_audio_id` to the correct unique audio id and call `play_current_super_event_sound = yes`, the settings-aware sound helper.
 10. Update the relevant event/system documentation and `music/chaosx_music_track_list.html`, the canonical audio catalogue. Every final cue must have a row that lists the super-event id using the track and the source/rights details. If a user-approved reuse exists, document every id in the row and explain the approval in the audio docs.
-11. Verify the final file paths, sound definitions, volume wrappers, ids, helper call, and docs before calling the super-event complete.
+11. Verify the final file path, sound definitions, volume wrappers, ids, helper call, and docs before calling the super-event complete.
 
 Use the existing Chaos Redux settings-aware sound helper. Do not bypass it.
 
@@ -787,7 +787,7 @@ Before closing a super-event task, confirm:
 27. Player-facing localisation is updated.
 28. Image wiring is updated.
 29. Audio wiring is updated.
-30. Audio documentation is updated with source, license, duration, paths, sound definition id, volume-wrapper ids, super-event use, and conversion steps.
+30. Audio documentation is updated with source, license, duration, the final `.wav` path, sound definition id, volume-wrapper ids, super-event use, and conversion steps.
 31. No placeholder, default, mismatched, or wrong-format audio remains for completed super-events.
 32. Event docs are updated.
 33. Spreadsheet or event catalog is updated if relevant.
