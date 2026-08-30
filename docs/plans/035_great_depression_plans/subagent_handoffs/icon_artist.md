@@ -1,6 +1,6 @@
 # Event 35 Great Depression icon artist handoff
 
-Status: ready for parent integration review. The asset worker produced every requested mapped concept, preserved all source masters, converted the regular icon families to exact 32x32 DDS, and produced the canonical 64x64 achievement triplets.
+Status: ready for parent integration review. The asset worker produced every requested mapped concept, preserved all source masters, converted the regular icon families to exact 32x32 DDS, and produced the canonical 64x64 achievement triplets, including the inherited Event 34 `chaos_redux_034_the_long_fall` package documented in the dedicated handoff.
 
 No gameplay, localisation, workbook, or `.gfx` file was edited. The existing `gfx/interface/decisions/035_great_depression/decision_cat_picture_great_depression.dds` was preserved and is not part of this icon batch.
 
@@ -13,7 +13,7 @@ No gameplay, localisation, workbook, or `.gfx` file was edited. The existing `gf
 | Conditions, six doctrine legacies, and recovery scar | 12 | `gfx/interface/ideas/035_great_depression/` | `vanilla_reference/icons/ideas/` | ready; needs parent binding review |
 | State statuses | 8 | `gfx/interface/state_modifiers/035_great_depression/` | `vanilla_reference/icons/state_modifiers/` | ready; needs parent binding review |
 | Evolutions | 3 | `gfx/interface/decisions/035_great_depression/` | decision/event-local icon precedent | ready; needs parent binding review |
-| Achievement triplets | 18 | `gfx/achievements/` | `vanilla_reference/icons/achievements/` | ready; canonical 64x64 family |
+| Achievement state assets | 21 (7 triplets) | `gfx/achievements/` | `vanilla_reference/icons/achievements/` | ready; canonical 64x64 family |
 
 ## Exact file inventory and checksums
 
@@ -96,7 +96,7 @@ Review sheets: `contact_sheets/decisions_review.png`, `missions_review.png`, `co
 ## Alpha and consumer notes
 
 - All regular processed PNGs are exact 32x32 RGBA canvases with transparent unused canvas and all regular DDS files are exact 32x32 one-level uncompressed BGRA DDS files of 4224 bytes.
-- Conditions, state modifiers, and achievement source layers came from opaque ImageGen sheets after the native-alpha attempt failed; the untouched opaque sheets and the failed checkerboard edit are retained under `generated_sources/`.
+- The existing condition, state-modifier, and six Event 35 achievement source layers came from opaque ImageGen sheets after native-alpha attempts failed; their untouched opaque sheets and rejected checkerboard edit remain retained under `generated_sources/`. The inherited Event 34 completed source was generated with native transparency; its grey and not-eligible state edits had checkerboard failures that were rejected and retained, followed by successful targeted transparency edits.
 - The final fallback used per-cell `rembg` with a verified `u2net` session, followed by alpha-bounds fitting and LANCZOS resizing. The whole-sheet fallback was visually rejected and was not shipped.
 - Achievement DDS files are intentionally canonical 64x64 template-backed outputs with alpha 254-255 across the template canvas. This is required by the inspected achievement family and `process_achievement_icons.py`; they are not 32x32 icon assets.
 
@@ -104,6 +104,6 @@ Review sheets: `contact_sheets/decisions_review.png`, `missions_review.png`, `co
 
 - No mapped concept is missing for the canonical consumers listed above.
 - The six achievement IDs are provisional event-scoped IDs because no Event 35 achievement registry entries existed during this asset-only pass: `035_great_depression_back_to_work`, `035_great_depression_every_center_reopened`, `035_great_depression_containment_line`, `035_great_depression_social_peace`, `035_great_depression_lean_but_standing`, and `035_great_depression_recovery_of_nations`.
+- The inherited Event 34 achievement `chaos_redux_034_the_long_fall` has complete source, processed, review, and runtime triplet files; its exact registry and existing sprite names are recorded in `icon_artist_034_the_long_fall.md`.
 - The user-directed 32x32 size conflicts with the canonical achievement processor and inspected achievement consumer, which require 64x64 triplets. A separate 32x32 achievement variant remains unmet only if the parent proves a non-canonical 32x32 consumer is required.
 - Parent must confirm final sprite tokens and consumer bindings without changing these filenames casually; no GFX wiring was added by this worker.
-
