@@ -1,0 +1,104 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND SCRIPTED LOCALISATION
+# ============================================================================
+# Compact dynamic labels for the ordinary mine category and Event Details.
+# Every state read is entered through the selected state pointer, with a safe
+# N/A fallback when Event Details has no valid target pair.
+# ============================================================================
+
+defined_text = {
+	name = GetRichesFoundHistoryTargetName
+	text = {
+		trigger = {
+			has_country_flag = riches_found_history_payload_loaded
+			has_variable = riches_found_history_detail_state
+			var:riches_found_history_detail_state = { riches_found_mine_is_registered = yes }
+		}
+		localization_key = riches_found.history.target.loaded
+	}
+	text = { localization_key = riches_found.history.target.na }
+}
+
+defined_text = {
+	name = GetRichesFoundSelectedMinePhase
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.discovery_claims } } }
+		localization_key = riches_found.phase.discovery_claims
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.rush } } }
+		localization_key = riches_found.phase.rush
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.physical_development } } }
+		localization_key = riches_found.phase.physical_development
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement } } }
+		localization_key = riches_found.phase.revenue_settlement
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.foreign_concessions } } }
+		localization_key = riches_found.phase.foreign_concessions
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.security_raids } } }
+		localization_key = riches_found.phase.security_raids
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis } } }
+		localization_key = riches_found.phase.closure_control_crisis
+	}
+	text = { localization_key = riches_found.phase.discovery_claims }
+}
+
+defined_text = {
+	name = GetRichesFoundSelectedMineName
+	text = {
+		trigger = {
+			has_variable = riches_found_selected_mine
+			var:riches_found_selected_mine = { riches_found_mine_is_registered = yes }
+		}
+		localization_key = riches_found.selected_mine.name
+	}
+	text = { localization_key = riches_found.selected_mine.na }
+}
+
+defined_text = {
+	name = GetRichesFoundExtractionPressureText
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_emergency compare = greater_than_or_equals } } }
+		localization_key = riches_found.pressure.severe
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_severe compare = greater_than_or_equals } } }
+		localization_key = riches_found.pressure.high
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_warning compare = greater_than_or_equals } } }
+		localization_key = riches_found.pressure.moderate
+	}
+	text = {
+		trigger = { has_variable = riches_found_selected_mine }
+		localization_key = riches_found.pressure.low
+	}
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundMineDevelopmentText
+	text = { trigger = { has_variable = riches_found_selected_mine } localization_key = riches_found.development.value }
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundLocalOrderText
+	text = { trigger = { has_variable = riches_found_selected_mine } localization_key = riches_found.order.value }
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundRevenueLegitimacyText
+	text = { trigger = { has_variable = riches_found_selected_mine } localization_key = riches_found.legitimacy.value }
+	text = { localization_key = riches_found.value.na }
+}
