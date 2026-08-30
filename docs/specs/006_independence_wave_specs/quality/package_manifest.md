@@ -6,6 +6,24 @@ Architecture aligned: 2026-07-15
 
 ## Current architecture
 
+## Current reconciliation (2026-08-30)
+
+Event 006 remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with the automatic ladder `3/4/5/7/10`, World Collapse at `10`, and nothing visible before Event 006 fires.
+
+The latest accepted source/static receipts are `e2a1403ed` for residual player-facing localisation clarity, `cbee847f8` for fourteen instant strategic-cost display rows, `844a24d2b` for six package category setup-receipt gates, `43ddcfc32` for the IW-058 setup identity receipt, `711ca668e` for the formable/League/evolution/achievement audit, and `7bb338554` for the allocator no-change runtime probe; none widens central admission or changes the whole-event disposition.
+
+The 2026-08-30 asset receipts `51da79665` and `730cb572b` keep ASSET-046, BWX, chunk-3 flags, the Event 005 AEX collision, NWE ideology aliases, and broader row-level source metadata behind explicit rights or ownership decisions while confirming `interface/006_independence_wave_small_assets.gfx` as the current consolidated receiver.
+
+The 2026-08-30 focus receipt `d9d56e1b4` closes no new gameplay gap, confirms the shared tree at 184 focuses and 195 connectors with no Event 006 geometry diagnostics, and leaves typed probability evidence blocked because the required `chaosx_ai_probability_auditor` route is unavailable.
+
+The 2026-08-30 super-event text receipt `4d81a3227` leaves slot `23` Wilson text approved and slot `24` KJV wording approved with a United Kingdom Crown-rights caveat, while the separate slot-23 London Brass Players recording remains rights-blocked and the WEB translation remains an explicit parent-choice backup.
+
+The 2026-08-29 SCN-008 receipts `3ce4b3468` and `713306f2e` close success-only publication at source/static level, so delayed `.80` follows a successful `chaosx.nr6.2` report and failed or invalid generations clear the receipt and summary instead of publishing a result.
+
+The 2026-08-30 FSM portrait retry `ce19e6741` remains fail-closed with `independence_wave_fsm_sourced_identity_ready` unset, and the 2026-08-30 country and formable audits leave all unadmitted country rows and the 34 unreviewed formable families fail-closed while retaining the verified admitted package and adapter boundaries.
+
+This section supersedes only the dated 2026-08-28 implementation summary where it conflicts with the receipts above; the seven specification parts, research matrices, and design decisions remain unchanged.
+
 ## Current authority override (2026-08-28 after absent-target release-validation, portrait-consumer, and authority reconciliation)
 
 The whole-event disposition remains **HOLD / PARTIAL**. Current routing authority is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows; the eight adapter-only IDs remain fail-closed: IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM. The automatic ladder remains `3/4/5/7/10`, with World Collapse at `10`, and nothing is visible before Event 006 fires.
