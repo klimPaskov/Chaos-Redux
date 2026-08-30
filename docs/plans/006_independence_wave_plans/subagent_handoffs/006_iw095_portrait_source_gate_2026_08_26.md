@@ -46,7 +46,7 @@ The untouched Commons original is `docs/assets/portraits/006_independence_wave/i
 
 The original decodes as RGB JPEG, `2560x1899`, 4,006,345 bytes, SHA-256 `0310f6cc149fed8fb8e2b8322dc6e37723c056c3524e780f32838cb0bed914a8`, and Commons SHA-1 `4a87fa41927cbcd156a7931aeefbdff51c04e50b`.
 
-The exact source crop is `docs/assets/portraits/006_independence_wave/iw095_dah_abomey_royal_customary_body_source_2026_08_26_source_crop.png`.
+The exact source crop is `docs/assets/portraits/006_independence_wave/processed/iw095_dah_abomey_royal_customary_body_source_2026_08_26_source_crop.png`.
 
 The crop is RGB PNG, `1411x1899`, 3,989,440 bytes, SHA-256 `a1742dff3bb1a3c238fa22f42abefe6af9b1be1391686835ac4ca77f5d88812a`, and rectangle `(574, 0, 1985, 1899)`.
 
@@ -105,4 +105,3 @@ The parent must decide whether an Abomey royal/customary court is an acceptable 
 If the parent accepts that body and rights basis, the portrait worker can create a package-local source-placeholder consumer with an exact character id, portrait-specific `.gfx`, DDS conversion, and a new runtime manifest. The source must not be described as a named 1936 leader or independent restored Dahomey.
 
 If the parent requires a named 1936 officeholder instead, this source gate remains blocked and a different exact male source with period role continuity is required.
-

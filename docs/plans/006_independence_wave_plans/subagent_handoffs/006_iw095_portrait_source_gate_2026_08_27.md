@@ -60,7 +60,7 @@ The untouched archived source is `docs/assets/portraits/006_independence_wave/iw
 
 It is an RGB JPEG at `1519x2048`, `3,328,737` bytes, with SHA-256 `1414f5cb822d6020caba3eeaa37f51abbba0b912a9ac586e5741dd187895cd36` and Commons SHA-1 `cfa4db6b1e38374baaed60f947347b5182cf7aea`.
 
-The exact lossless source crop is `docs/assets/portraits/006_independence_wave/iw095_dah_casimir_dalmeida_source_2026_08_27_source_crop.png`.
+The exact lossless source crop is `docs/assets/portraits/006_independence_wave/processed/iw095_dah_casimir_dalmeida_source_2026_08_27_source_crop.png`.
 
 It is an RGB PNG at `832x1120`, `1,777,353` bytes, with SHA-256 `18e44cdc0eb8d4d2146bc8936f8cde67a97238815dee0d5ec912a9e7deb164fd`.
 
@@ -153,7 +153,7 @@ After those decisions, the portrait worker can produce the deterministic `156x21
 ## Changed files in this pass
 
 - `docs/assets/portraits/006_independence_wave/iw095_dah_casimir_dalmeida_source_2026_08_27_original.jpg`
-- `docs/assets/portraits/006_independence_wave/iw095_dah_casimir_dalmeida_source_2026_08_27_source_crop.png`
+- `docs/assets/portraits/006_independence_wave/processed/iw095_dah_casimir_dalmeida_source_2026_08_27_source_crop.png`
 - `docs/assets/portraits/006_independence_wave/processed/iw095_dah_casimir_dalmeida_source_2026_08_27_source_crop_evidence.json`
 - `docs/assets/portraits/006_independence_wave/processed/iw095_dah_casimir_dalmeida_source_2026_08_27_source_review_4x_nearest.png`
 - `docs/assets/portraits/006_independence_wave/processed/iw095_dah_casimir_dalmeida_source_albert_kahn_page_2026_08_27.html`
