@@ -24,6 +24,30 @@ This sequence converts one adapter-only package into a worldwide-breadth gain an
 
 No gameplay, localisation, asset, spreadsheet, source spec, or manifest file is changed or authorized by this addendum.
 
+## 2026-08-30 continuation disposition
+
+**NO SAFE SOURCE PATCH / EXISTING ADDENDUM REMAINS OPEN.** This continuation updates the accepted docket instead of creating a second improvement layer.
+
+The P0 SCN-008 publication item is implemented and source/static closed by commits `3ce4b3468` and `713306f2e`. The sole delayed `chaosx.triggerable_scenarios.80` result follows a successful `chaosx.nr6.2` public report, while failed and invalid generations clear the committed receipt and scenario summary without publishing an Event 006 result. Do not repeat or redesign that patch.
+
+The latest bounded country, decision, focus, formable/League, localisation, and allocator reviews expose no additional source-backed gameplay or localisation correction that can be applied without widening an accepted gate. The narrow IW-058 setup identity-receipt repair is already implemented by `43ddcfc32`, and the six category setup-receipt gates are already implemented by `844a24d2b`. Admitted package audits found no further package-local defect; the current boundary remains 32 content-attested packages, 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows.
+
+The nearest package transition remains IW-179 FSM, but it is not patchable. `ce19e6741` and `subagent_handoffs/006_iw179_fsm_portrait_source_gate_retry_2026_08_30.md` confirm that no candidate simultaneously clears all five required gates: a named adult male Micronesian, Pohnpeian, or Carolinian identity; a civic or traditional governing role tied to the 1936 opening; a stable attributable full-resolution image; explicit derivative and reuse rights; and an independent identity, framing, and provenance review. `independence_wave_fsm_sourced_identity_ready` must remain unset, the withdrawn Elias Kihleng identity must not return, and FORM-48 must remain unreachable through FSM.
+
+The next first-footprint row, IW-108 Buganda, is also not patchable. `subagent_handoffs/006_event6_iw108_buganda_country_package_audit_2026-08-30.md` records an unresolved Event 012 ownership collision on `UGA`, a `needs_user_review` Daudi Cwa II source/repaint and flag decision, no accepted Event 006 roster or force contract, and no Event 006 lifecycle, adapter, attestation, Join, AI, or cleanup package. Event 012's Buganda content is occupied consumer evidence, not an authorized fallback or reusable Event 006 package.
+
+The automatic-selector zero-country observation is not a safe repair target. `subagent_handoffs/006_allocator_runtime_probe_no_change_2026-08-30.md` found no concrete false source gate and explicitly rejects weakening the selector or adding a fallback. A parent patch requires a specific failing-condition receipt from the planner phase, selected and rejected arrays, pool-exhausted state, or a package wrapper and weight output; source inference alone is insufficient.
+
+Current read-only Event MCP evidence is partial rather than blocking: `hoi4.event_inspect` and `hoi4.event_render` for `chaosx.nr6.1` completed at revision `3ab4ef70be0beb8fdb94320b71fc0769ac1bf50c76f6529abc50afc42fb1d20e`, selected five overview nodes, and returned linked trace and render artifacts, but helper projection remains absent and 8,553 workspace nodes remain unresolved. This supports no new event-chain patch or runtime completion claim. No weighted surface is advanced by this continuation; any AI, MTTH, random-pool, decision-score, mission-score, or focus-weight conclusion still requires `hoi4.probability_inspect` and the named `chaosx_ai_probability_auditor` route before and after an owner patch. No technology surface is included in this continuation, and the installed package has no Technology Tree Viewer, so no technology-tree conclusion is available.
+
+### Exact next owners and transition gates
+
+1. `chaosx_portrait_creator` may reopen IW-179 only when a new source lead can satisfy the five identity, role, image, rights, and independent-review gates above. Another generic web search or a regional substitute is not an implementation tranche.
+2. The Event 006 parent must resolve the non-duplicating UGA/Event 012 ownership contract before assigning any IW-108 package work. Only after that decision may the portrait owner review Daudi Cwa II or another accepted subject and the country owner design the exact force, lifecycle, focus callback, decisions, ideas, localisation, AI, cleanup, adapter, attestation, and Join transaction.
+3. The Event 006 parent may patch the allocator only after a concrete failing predicate is evidenced. No fallback candidate, relaxed content attestation, pre-event category, pressure meter, mission, cost, or queue is authorized.
+
+This addendum remains in `docs/plans/006_independence_wave_plans/`. It must not be promoted into `docs/specs/006_independence_wave_specs/` because it does not change the accepted design; it records implementation sequencing and fail-closed evidence. The parent may not apply a gameplay or asset patch from this continuation at the current evidence cut.
+
 ## Current authority and resolved work
 
 The evidence cut records **32 content-attested selectable packages / 29 reservation groups / 40 runtime adapters / 161 unattested selectable rows out of 193 non-overlay rows**.
