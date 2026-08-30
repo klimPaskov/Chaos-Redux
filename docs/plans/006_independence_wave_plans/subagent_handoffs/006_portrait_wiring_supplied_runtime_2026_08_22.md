@@ -1,5 +1,7 @@
 # Event 006 supplied portrait source-placeholder wiring handoff
 
+> Revalidated on 2026-08-30 by `006_portrait_wiring_reconciliation_2026-08-30.md`. The 38/13 source-to-runtime result and hashes remain unchanged; the current sprite registry ownership is recorded in that reconciliation.
+
 Date: 2026-08-22.
 
 Scope: audit and portrait-specific wiring of the 51 exact user-supplied DDS files under `C:\Users\klimp\Documents\ComfyUI Workflows\HOI4\hoi4_portraits_output\output\156x210\iw\dds`. The source files are grounded real-person or grounded institutional source-placeholder inputs supplied by the user. They are not styled-final replacements, and no RunPod, native ImageGen, repaint, identity substitution, or generic fallback was used.
