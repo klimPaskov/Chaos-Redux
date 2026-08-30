@@ -40,9 +40,9 @@ Overlay categories additionally require `is_independence_wave_overlay_runtime_un
 
 `independence_wave_formable_commit_selected_family` requires the shared readiness and congress-proof contract, dispatches the family identity and integration adapters, sets the committed transaction only after both adapters succeed, and starts the family-owned post-formation progression where one exists.
 
-The reviewed state-puzzle adapter pairs are FORM-01, FORM-02, FORM-03, FORM-04, FORM-07, FORM-08, FORM-09, FORM-12, FORM-13, FORM-16, FORM-18, FORM-39, and FORM-48.
+The reviewed state-puzzle adapter pairs are FORM-01, FORM-02, FORM-03, FORM-04, FORM-05, FORM-07, FORM-08, FORM-09, FORM-12, FORM-13, FORM-16, FORM-18, FORM-39, and FORM-48.
 
-The 14 state-puzzle directories under `docs/formables/state_puzzles/` match that admitted set, and the adapter IDs are exactly `1`, `2`, `3`, `4`, `7`, `8`, `9`, `12`, `13`, `16`, `18`, `39`, and `48` for both identity and integration dispatch.
+The 14 Event 006 state-puzzle directories named `006_form*_state_puzzle` under `docs/formables/state_puzzles/` match that admitted set, and the adapter IDs are exactly `1`, `2`, `3`, `4`, `5`, `7`, `8`, `9`, `12`, `13`, `16`, `18`, `39`, and `48` for both identity and integration dispatch.
 
 FORM-01, FORM-02, and FORM-04 intentionally use the dedicated `006_independence_wave_form01_02_04_effects.txt` integration adapters rather than the generic member-ledger branch.
 
