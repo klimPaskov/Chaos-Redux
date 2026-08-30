@@ -175,11 +175,11 @@ The roll uses basis points with integer outcomes 1 through 10,000 and succeeds a
 | T4 | 60 | 0.60 percent | 4 |
 | T5 | 85 | 0.85 percent | 5 |
 
-The drought bonus is one basis point per valid failed attempt and is capped at 15 basis points.
+The drought bonus is 0.25 basis points per valid failed attempt and is rounded to whole basis points when the live chance is calculated.
 
 The success factor is 1.00 before the first and second successes, 0.75 when two successes have already occurred, and 0.50 after three or more successes.
 
-The final chance is rounded and clamped from 1 through 100 basis points, so it can never exceed 1.00 percent.
+The final chance is rounded and has no special one-percent ceiling. It is bounded only by the 10,000-outcome roll scale, which represents the natural 100 percent probability limit.
 
 A valid failed roll increments the drought count.
 

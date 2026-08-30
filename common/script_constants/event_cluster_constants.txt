@@ -272,8 +272,8 @@ event_cluster_diseases = {
 }
 
 # Random Stuff is a post-minor-event bonus batch rather than a fixed-member
-# cluster. Its roll is stored in basis points so automatic chances can remain
-# below one percent without losing integer-roll precision.
+# cluster. Its roll is stored in basis points so sub-one-percent opening
+# chances and gradual drought growth retain integer-roll precision.
 event_cluster_random_stuff = {
 	schema = {
 		any_key = yes
@@ -281,7 +281,7 @@ event_cluster_random_stuff = {
 	}
 
 	unlock_tier = 3
-	state_version = 1
+	state_version = 2
 	row_id_base = 12000
 	roll_minimum = 1
 	roll_largest_result = 10000
@@ -290,12 +290,17 @@ event_cluster_random_stuff = {
 	roll_maximum = 10001
 	basis_points_per_percent = 100
 	chance_minimum_basis_points = 1
-	chance_maximum_basis_points = 100
-	drought_basis_points_per_failed_attempt = 1
-	drought_basis_points_cap = 15
 	batch_size_tier_3 = 3
 	batch_size_tier_4 = 4
 	batch_size_tier_final = 5
+}
+
+event_cluster_random_stuff_drought = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	basis_points_per_failed_attempt = 0.25
 }
 
 event_cluster_random_stuff_base_chance = {

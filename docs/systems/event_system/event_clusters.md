@@ -117,7 +117,7 @@ A valid failed roll returns to ordinary standalone handling and does not apply c
 
 Random Stuff is the one registered cluster without configured member rows.
 
-It unlocks at Chaos Tier 3 and receives exactly one one-percent-or-lower automatic attempt after a successfully dispatched ordinary minor event.
+It unlocks at Chaos Tier 3 and receives exactly one dynamic automatic attempt after a successfully dispatched ordinary minor event.
 
 Manual event firing, major events, ordinary cluster members, and Random Stuff members do not create attempts.
 
@@ -129,11 +129,11 @@ The automatic roll uses integer basis points on a 1 through 10,000 scale.
 | T4 Totalen Chaos | 0.60 percent | 4 |
 | T5 World Collapse | 0.85 percent | 5 |
 
-Every valid failed attempt adds 0.01 percentage points of drought relief, capped at 0.15 percentage points.
+Every valid failed attempt adds 0.0025 percentage points of drought relief before the live chance is rounded to whole basis points.
 
 The prospective third success multiplies the chance by 0.75, and later successes multiply it by 0.50.
 
-The final chance is clamped from 0.01 through 1.00 percent.
+The chance has no special one-percent ceiling. Long dry streaks can carry it above one percent, while the roll scale supplies only the natural 100 percent probability limit.
 
 A successful automatic activation starts a 240-day cooldown and resets the drought count.
 

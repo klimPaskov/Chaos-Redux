@@ -3972,8 +3972,14 @@ random_stuff_cluster_ensure_state = {
 		limit = { check_variable = { global.random_stuff_cluster_state_version < constant:event_cluster_random_stuff.state_version } }
 		set_variable = { global.random_stuff_cluster_state_version = constant:event_cluster_random_stuff.state_version }
 	}
-	clamp_variable = { var = global.random_stuff_cluster_failed_attempts min = 0 max = constant:event_cluster_random_stuff.drought_basis_points_cap }
-	clamp_variable = { var = global.random_stuff_cluster_last_chance_basis_points min = 0 max = constant:event_cluster_random_stuff.chance_maximum_basis_points }
+	if = {
+		limit = { check_variable = { global.random_stuff_cluster_failed_attempts < 0 } }
+		set_variable = { global.random_stuff_cluster_failed_attempts = 0 }
+	}
+	if = {
+		limit = { check_variable = { global.random_stuff_cluster_last_chance_basis_points < 0 } }
+		set_variable = { global.random_stuff_cluster_last_chance_basis_points = 0 }
+	}
 	clamp_variable = { var = global.random_stuff_cluster_last_roll_basis_points min = 0 max = constant:event_cluster_random_stuff.roll_largest_result }
 }
 
@@ -4014,8 +4020,8 @@ random_stuff_cluster_get_activation_chance = {
 	if = {
 		limit = { check_variable = { random_stuff_cluster_chance_basis_points > 0 } }
 		set_temp_variable = { random_stuff_cluster_drought_bonus = global.random_stuff_cluster_failed_attempts }
-		multiply_temp_variable = { random_stuff_cluster_drought_bonus = constant:event_cluster_random_stuff.drought_basis_points_per_failed_attempt }
-		clamp_temp_variable = { var = random_stuff_cluster_drought_bonus min = 0 max = constant:event_cluster_random_stuff.drought_basis_points_cap }
+		multiply_temp_variable = { random_stuff_cluster_drought_bonus = constant:event_cluster_random_stuff_drought.basis_points_per_failed_attempt }
+		round_temp_variable = random_stuff_cluster_drought_bonus
 		add_to_temp_variable = { random_stuff_cluster_chance_basis_points = random_stuff_cluster_drought_bonus }
 		set_temp_variable = { random_stuff_cluster_success_factor = constant:event_cluster_random_stuff_success_factor.first_two }
 		if = {
@@ -4028,7 +4034,7 @@ random_stuff_cluster_get_activation_chance = {
 		}
 		multiply_temp_variable = { random_stuff_cluster_chance_basis_points = random_stuff_cluster_success_factor }
 		round_temp_variable = random_stuff_cluster_chance_basis_points
-		clamp_temp_variable = { var = random_stuff_cluster_chance_basis_points min = constant:event_cluster_random_stuff.chance_minimum_basis_points max = constant:event_cluster_random_stuff.chance_maximum_basis_points }
+		clamp_temp_variable = { var = random_stuff_cluster_chance_basis_points min = constant:event_cluster_random_stuff.chance_minimum_basis_points max = constant:event_cluster_random_stuff.roll_largest_result }
 		set_temp_variable = { random_stuff_cluster_chance_percent = random_stuff_cluster_chance_basis_points }
 		divide_temp_variable = { random_stuff_cluster_chance_percent = constant:event_cluster_random_stuff.basis_points_per_percent }
 	}

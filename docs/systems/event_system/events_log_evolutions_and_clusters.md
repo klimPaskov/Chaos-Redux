@@ -76,7 +76,7 @@ When no eligible positive-weight trigger exists, the cluster displays N/A.
 
 Random Stuff is the exception because it has no fixed trigger rows.
 
-Its By Roll value is the live precise whole-pool activation chance, from 0.30 percent at tier 3 through a hard maximum of 1.00 percent after its drought and success state are applied.
+Its By Roll value is the live precise whole-pool activation chance. It opens at 0.30 percent at tier 3, rises gradually after valid misses, and can exceed one percent during a long dry streak.
 
 The catalogue and Settings activation summary use Varies by member where member rows have different computed chances.
 
@@ -122,7 +122,7 @@ High and Severe non-trigger rows require another pass-one base-eligible row.
 
 Trigger rows and sole configured members are exempt from that support requirement.
 
-Random Stuff instead receives one guarded one-percent-or-lower attempt after a successfully fired ordinary automatic minor event at tier 3 or above.
+Random Stuff instead receives one guarded dynamic attempt after a successfully fired ordinary automatic minor event at tier 3 or above.
 
 It samples uniformly without replacement from all currently fireable positive-weight events, ignoring major or minor type, severity, and weight magnitude.
 
