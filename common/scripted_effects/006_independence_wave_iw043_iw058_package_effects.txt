@@ -1383,6 +1383,9 @@ independence_wave_setup_iw043_middle_volga = {
 independence_wave_setup_iw058_assyria = {
 	clr_country_flag = independence_wave_package_setup_complete
 	clr_country_flag = independence_wave_iw058_setup_complete
+	# Rebuild the identity receipt from the current force mapping and
+	# generation-scoped force proof so a stale ASY generation cannot pass setup.
+	clr_country_flag = independence_wave_iw058_cosmetic_identity_ready
 	clear_global_event_target = independence_wave_iw058_regional_settlement_partner
 	set_temp_variable = { independence_wave_iw058_setup_result = constant:independence_wave_planner.no_candidates }
 	if = {
@@ -1396,6 +1399,15 @@ independence_wave_setup_iw058_assyria = {
 			independence_wave_apply_dynamic_starting_force = yes
 		}
 		independence_wave_define_iw058_package_formation_template = yes
+		if = {
+			limit = {
+				has_country_flag = independence_wave_force_mapping_loaded
+				check_variable = { independence_wave_force_mapping_package_id = constant:independence_wave_package_id.iw_058 }
+				has_country_flag = independence_wave_force_package_applied
+				has_independence_wave_force_package_for_current_generation = yes
+			}
+			set_country_flag = independence_wave_iw058_cosmetic_identity_ready
+		}
 		if = {
 			limit = { has_independence_wave_iw058_setup_surface = yes }
 			set_variable = { independence_wave_package_id = constant:independence_wave_package_id.iw_058 }
