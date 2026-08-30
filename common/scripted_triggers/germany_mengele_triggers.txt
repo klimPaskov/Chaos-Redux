@@ -99,18 +99,86 @@ mengele_clone_army_has_clone_deployment_command_power = {
 	OR = {
 		AND = {
 			has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked
-			command_power > constant:mengele_clone_decision_threshold.raise_clone_wave_streamlined_command_power
+			NOT = { command_power < constant:mengele_clone_decision_threshold.raise_clone_wave_streamlined_command_power }
 		}
 		AND = {
 			has_country_flag = mengele_clone_decision_discounted_deployment_unlocked
 			NOT = { has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked }
-			command_power > constant:mengele_clone_decision_threshold.raise_clone_wave_discount_command_power
+			NOT = { command_power < constant:mengele_clone_decision_threshold.raise_clone_wave_discount_command_power }
 		}
 		AND = {
 			NOT = { has_country_flag = mengele_clone_decision_discounted_deployment_unlocked }
 			NOT = { has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked }
-			command_power > constant:mengele_clone_decision_threshold.raise_clone_wave_command_power
+			NOT = { command_power < constant:mengele_clone_decision_threshold.raise_clone_wave_command_power }
 		}
+	}
+}
+
+# Event 26 Black Friday adapter for the clone-deployment decisions. The
+# ordinary cost selection mirrors the owner effect's exact flag precedence so
+# the custom-cost display and confirmation gate quote the same current value.
+mengele_clone_army_black_friday_source_is_active = {
+	set_temp_variable = {
+		universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id
+	}
+	black_friday_is_active = yes
+	universal_cost_source_is_active = yes
+}
+
+mengele_clone_army_black_friday_has_clone_deployment_command_power = {
+	set_temp_variable = {
+		mengele_clone_deployment_command_power_spend = constant:mengele_clone_decision.raise_clone_wave_command_power
+	}
+	if = {
+		limit = { has_country_flag = mengele_clone_decision_discounted_deployment_unlocked }
+		set_temp_variable = {
+			mengele_clone_deployment_command_power_spend = constant:mengele_clone_decision.raise_clone_wave_discount_command_power
+		}
+	}
+	if = {
+		limit = { has_country_flag = mengele_clone_decision_streamlined_deployment_unlocked }
+		set_temp_variable = {
+			mengele_clone_deployment_command_power_spend = constant:mengele_clone_decision.raise_clone_wave_streamlined_command_power
+		}
+	}
+	set_temp_variable = {
+		mengele_clone_black_friday_clone_deployment_command_power_cost = mengele_clone_deployment_command_power_spend
+	}
+	if = {
+		limit = { mengele_clone_army_black_friday_source_is_active = yes }
+		set_temp_variable = {
+			black_friday_quote_ordinary_cost = mengele_clone_deployment_command_power_spend
+		}
+		black_friday_quote_custom_cost = yes
+		set_temp_variable = {
+			mengele_clone_black_friday_clone_deployment_command_power_cost = black_friday_quote_final_cost
+		}
+		set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+		black_friday_active_component_is_affordable = yes
+	}
+	else = {
+		mengele_clone_army_has_clone_deployment_command_power = yes
+	}
+}
+
+mengele_clone_black_friday_has_continental_assault_command_power = {
+	set_temp_variable = {
+		mengele_clone_black_friday_continental_assault_command_power_cost = constant:mengele_clone_decision.continental_assault_command_power
+	}
+	if = {
+		limit = { mengele_clone_army_black_friday_source_is_active = yes }
+		set_temp_variable = {
+			black_friday_quote_ordinary_cost = constant:mengele_clone_decision.continental_assault_command_power
+		}
+		black_friday_quote_custom_cost = yes
+		set_temp_variable = {
+			mengele_clone_black_friday_continental_assault_command_power_cost = black_friday_quote_final_cost
+		}
+		set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+		black_friday_active_component_is_affordable = yes
+	}
+	else = {
+		NOT = { command_power < constant:mengele_clone_decision.continental_assault_command_power }
 	}
 }
 

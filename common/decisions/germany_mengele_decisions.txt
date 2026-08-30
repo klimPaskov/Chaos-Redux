@@ -450,9 +450,9 @@ mengele_clone_army_category = {
 	raise_clone_infantry_wave = {
 		icon = GFX_decision_generic_military
 		custom_cost_trigger = {
-			mengele_clone_army_has_clone_deployment_command_power = yes
+			mengele_clone_army_black_friday_has_clone_deployment_command_power = yes
 		}
-		custom_cost_text = mengele_clone_deployment_command_power_cost
+		custom_cost_text = mengele_clone_black_friday_clone_deployment_command_power_cost
 		days_re_enable = constant:mengele_clone_decision.raise_clone_wave_re_enable_days
 		visible = {
 			is_mengele_clone_directorate_country = yes
@@ -462,9 +462,18 @@ mengele_clone_army_category = {
 		}
 		complete_effect = {
 			hidden_effect = {
-				mengele_clone_army_spend_clone_deployment_command_power = yes
+				mengele_clone_army_black_friday_pay_clone_deployment_command_power = yes
 			}
-			mengele_clone_army_raise_clone_wave = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = mengele_clone_black_friday_payment_success
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+				mengele_clone_army_raise_clone_wave = yes
+			}
 		}
 		ai_will_do = { base = constant:mengele_clone_decision_ai.raise_clone_infantry_wave }
 	}
@@ -472,9 +481,9 @@ mengele_clone_army_category = {
 	raise_clone_assault_wave = {
 		icon = GFX_decision_generic_military
 		custom_cost_trigger = {
-			mengele_clone_army_has_clone_deployment_command_power = yes
+			mengele_clone_army_black_friday_has_clone_deployment_command_power = yes
 		}
-		custom_cost_text = mengele_clone_deployment_command_power_cost
+		custom_cost_text = mengele_clone_black_friday_clone_deployment_command_power_cost
 		days_re_enable = constant:mengele_clone_decision.raise_clone_wave_re_enable_days
 		visible = {
 			has_country_flag = mengele_clone_decision_assault_series_unlocked
@@ -484,9 +493,18 @@ mengele_clone_army_category = {
 		}
 		complete_effect = {
 			hidden_effect = {
-				mengele_clone_army_spend_clone_deployment_command_power = yes
+				mengele_clone_army_black_friday_pay_clone_deployment_command_power = yes
 			}
-			mengele_clone_army_raise_assault_clone_wave = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = mengele_clone_black_friday_payment_success
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+				mengele_clone_army_raise_assault_clone_wave = yes
+			}
 		}
 		ai_will_do = { base = constant:mengele_clone_decision_ai.raise_clone_infantry_wave }
 	}
@@ -494,9 +512,9 @@ mengele_clone_army_category = {
 	raise_clone_guard_wave = {
 		icon = GFX_decision_generic_military
 		custom_cost_trigger = {
-			mengele_clone_army_has_clone_deployment_command_power = yes
+			mengele_clone_army_black_friday_has_clone_deployment_command_power = yes
 		}
-		custom_cost_text = mengele_clone_deployment_command_power_cost
+		custom_cost_text = mengele_clone_black_friday_clone_deployment_command_power_cost
 		days_re_enable = constant:mengele_clone_decision.raise_clone_wave_re_enable_days
 		visible = {
 			has_country_flag = mengele_clone_decision_guard_series_unlocked
@@ -506,9 +524,18 @@ mengele_clone_army_category = {
 		}
 		complete_effect = {
 			hidden_effect = {
-				mengele_clone_army_spend_clone_deployment_command_power = yes
+				mengele_clone_army_black_friday_pay_clone_deployment_command_power = yes
 			}
-			mengele_clone_army_raise_guard_clone_wave = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = mengele_clone_black_friday_payment_success
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+				mengele_clone_army_raise_guard_clone_wave = yes
+			}
 		}
 		ai_will_do = { base = constant:mengele_clone_decision_ai.raise_clone_infantry_wave }
 	}
@@ -539,9 +566,9 @@ mengele_clone_army_category = {
 	activate_continental_assault_protocols = {
 		icon = GFX_decision_generic_military
 		custom_cost_trigger = {
-			command_power > constant:mengele_clone_decision.continental_assault_command_power
+			mengele_clone_black_friday_has_continental_assault_command_power = yes
 		}
-		custom_cost_text = mengele_clone_command_power_75
+		custom_cost_text = mengele_clone_black_friday_continental_assault_command_power_cost
 		days_re_enable = constant:mengele_clone_decision.continental_assault_re_enable_days
 		visible = {
 			has_country_flag = mengele_clone_decision_continental_assault_unlocked
@@ -552,11 +579,20 @@ mengele_clone_army_category = {
 		}
 		complete_effect = {
 			hidden_effect = {
-				mengele_clone_army_spend_continental_assault_command_power = yes
+				mengele_clone_army_black_friday_pay_continental_assault_command_power = yes
 			}
-			add_timed_idea = {
-				idea = mengele_clone_continental_assault_protocols
-				days = @MCL_CLONE_ASSAULT_TIMED_DAYS
+			if = {
+				limit = {
+					check_variable = {
+						var = mengele_clone_black_friday_payment_success
+						value = constant:universal_cost_framework.one
+						compare = equals
+					}
+				}
+				add_timed_idea = {
+					idea = mengele_clone_continental_assault_protocols
+					days = @MCL_CLONE_ASSAULT_TIMED_DAYS
+				}
 			}
 		}
 		ai_will_do = { base = constant:mengele_clone_decision_ai.activate_continental_assault_protocols }

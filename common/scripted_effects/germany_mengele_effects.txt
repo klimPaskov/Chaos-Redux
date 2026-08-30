@@ -578,6 +578,113 @@ mengele_clone_army_spend_clone_deployment_command_power = {
     add_command_power = mengele_clone_deployment_command_power_spend
 }
 
+# Event 26 Black Friday adapter for one command-power component. The wrapper
+# quotes and rechecks the current ordinary cost at confirmation, debits once,
+# records the actual paid amount, and settles the receipt before the caller
+# releases the gameplay effect. The non-sale branch is the original ordinary
+# command-power debit expressed through the same input cost.
+mengele_clone_army_black_friday_pay_command_power = {
+	set_temp_variable = { mengele_clone_black_friday_payment_success = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = {
+			black_friday_is_active = yes
+			universal_cost_source_is_active = yes
+		}
+		black_friday_allocate_owner_transaction = yes
+		set_temp_variable = { universal_cost_quote_ordinary_cost = mengele_clone_black_friday_ordinary_cost }
+		set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
+		set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+		universal_cost_quote_integer = yes
+		set_temp_variable = { mengele_clone_black_friday_paid_cost = universal_cost_quote_final_cost }
+		set_temp_variable = { universal_cost_quote_resource_kind = constant:universal_cost_resource_kind.command_power }
+		set_temp_variable = { universal_cost_quote_final_cost = mengele_clone_black_friday_paid_cost }
+		universal_cost_check_quote_affordable = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_quote_affordable
+					value = constant:universal_cost_framework.result_success
+					compare = equals
+				}
+			}
+			set_temp_variable = { universal_cost_payment_resource_kind = constant:universal_cost_resource_kind.command_power }
+			set_temp_variable = { universal_cost_payment_amount = mengele_clone_black_friday_paid_cost }
+			universal_cost_pay_component = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = universal_cost_payment_result
+						value = constant:universal_cost_framework.result_success
+						compare = equals
+					}
+				}
+				set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+				set_temp_variable = { universal_cost_transaction_component_id = constant:black_friday_event.owner_component_command_power }
+				set_temp_variable = { universal_cost_transaction_resource_kind = constant:universal_cost_resource_kind.command_power }
+				set_temp_variable = { universal_cost_transaction_resource_id = constant:universal_cost_framework.zero }
+				set_temp_variable = { universal_cost_transaction_ordinary_cost = mengele_clone_black_friday_ordinary_cost }
+				set_temp_variable = { universal_cost_transaction_quoted_cost = mengele_clone_black_friday_paid_cost }
+				set_temp_variable = { universal_cost_transaction_actual_paid_cost = mengele_clone_black_friday_paid_cost }
+				set_temp_variable = { universal_cost_transaction_source_id = constant:universal_cost_framework.black_friday_source_id }
+				set_temp_variable = { universal_cost_transaction_primary_component = constant:black_friday_event.owner_component_command_power }
+				universal_cost_record_transaction = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = universal_cost_record_transaction_result
+							value = constant:universal_cost_framework.result_success
+							compare = equals
+						}
+					}
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_settle_transaction = yes
+					if = {
+						limit = {
+							check_variable = {
+								var = universal_cost_settle_transaction_result
+								value = constant:universal_cost_framework.result_success
+								compare = equals
+							}
+						}
+						set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
+						set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.command_power }
+						set_temp_variable = { black_friday_purchase_ordinary_cost = mengele_clone_black_friday_ordinary_cost }
+						set_temp_variable = { black_friday_purchase_actual_paid_cost = mengele_clone_black_friday_paid_cost }
+						black_friday_record_achievement_transaction = yes
+						set_temp_variable = { mengele_clone_black_friday_payment_success = constant:universal_cost_framework.one }
+					}
+					else = {
+						set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+						universal_cost_refund_transaction = yes
+					}
+				}
+				else = {
+					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
+					universal_cost_refund_transaction = yes
+				}
+			}
+		}
+	}
+	else = {
+		set_temp_variable = { mengele_clone_black_friday_fallback_spend = mengele_clone_black_friday_ordinary_cost }
+		multiply_temp_variable = { mengele_clone_black_friday_fallback_spend = constant:universal_cost_framework.negative_one }
+		add_command_power = mengele_clone_black_friday_fallback_spend
+		set_temp_variable = { mengele_clone_black_friday_payment_success = constant:universal_cost_framework.one }
+	}
+}
+
+mengele_clone_army_black_friday_pay_clone_deployment_command_power = {
+	mengele_clone_army_set_clone_deployment_command_power_cost = yes
+	set_temp_variable = { mengele_clone_black_friday_ordinary_cost = mengele_clone_deployment_command_power_spend }
+	mengele_clone_army_black_friday_pay_command_power = yes
+}
+
+mengele_clone_army_black_friday_pay_continental_assault_command_power = {
+	set_temp_variable = { mengele_clone_black_friday_ordinary_cost = constant:mengele_clone_decision.continental_assault_command_power }
+	mengele_clone_army_black_friday_pay_command_power = yes
+}
+
 mengele_clone_army_ensure_clone_templates = {
 	clone_select_mengele_refinement = yes
     if = {
