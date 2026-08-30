@@ -16,7 +16,7 @@ Internal `repression_ledger_*` identifiers remain unchanged because they are est
 - Country-specific institution names appear only in the phase line and Authority tab. They no longer replace the system title.
 - The last player-facing use of “ledger,” the Japanese `Occupation Test Ledger` project, is named `Occupation Test Records`; legacy ids remain internal only.
 - Player-facing summaries use ordinary sentences and bounded two- or three-line card copy. Costs, blockers, and detailed consequences remain in tooltips.
-- The category priority is `1`, matching the low-priority family used by the related occupation and repression categories.
+- The category priority is `0`, placing it below the priority-1 occupation and repression categories.
 
 ## MCP visual evidence
 
