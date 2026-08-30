@@ -804,6 +804,19 @@ def main() -> int:
 	except ValueError as exc:
 		errors.append(str(exc))
 		execution_metadata = ""
+	# The execution validator must inspect the shared liberation host ledger.
+	# The old Event-006-only array was never populated by the coordinator and
+	# allowed a regression where every standalone release failed closed.
+	require(
+		"array = global.liberation_plan_hosts" in execution_metadata,
+		"Event 006 execution metadata does not validate against the shared host ledger",
+		errors,
+	)
+	require(
+		"global.independence_wave_plan_hosts" not in execution_metadata,
+		"Event 006 execution metadata still references the stale Event-006 host ledger",
+		errors,
+	)
 	for target, first_readiness_trigger in (
 		("independence_wave_execution_country", "is_liberation_release_current_reserved_country = yes"),
 		("independence_wave_execution_sponsorship_country", "is_liberation_release_current_reserved_country = yes"),
@@ -844,6 +857,24 @@ def main() -> int:
 			f"Event 006 execution metadata inverts the existence test for {target}",
 			errors,
 		)
+	try:
+		achievement_initialize = extract_script_block(
+			read("common/scripted_effects/006_independence_wave_achievement_effects.txt"),
+			"independence_wave_achievement_initialize_committed_wave",
+		)
+	except ValueError as exc:
+		errors.append(str(exc))
+		achievement_initialize = ""
+	require(
+		"array = global.liberation_plan_hosts" in achievement_initialize,
+		"Event 006 achievement initialization does not iterate the shared host ledger",
+		errors,
+	)
+	require(
+		"global.independence_wave_plan_hosts" not in achievement_initialize,
+		"Event 006 achievement initialization still references the stale Event-006 host ledger",
+		errors,
+	)
 
 	scenario = read("common/scripted_effects/006_independence_wave_scenario_effects.txt")
 	require_order(
