@@ -74,6 +74,10 @@ Only distinct trigger events that pass current automatic-pool eligibility and ha
 
 When no eligible positive-weight trigger exists, the cluster displays N/A.
 
+Random Stuff is the exception because it has no fixed trigger rows.
+
+Its By Roll value is the live precise whole-pool activation chance, from 0.30 percent at tier 3 through a hard maximum of 1.00 percent after its drought and success state are applied.
+
 The catalogue and Settings activation summary use Varies by member where member rows have different computed chances.
 
 A unique event detail shows the current trigger-specific activation chance.
@@ -81,6 +85,10 @@ A unique event detail shows the current trigger-specific activation chance.
 A duplicate staged event ID shows Varies by row because one event ID can represent multiple logical rows.
 
 Cluster member rows expose role, severity, declared minimum, effective minimum, ordinary event-system availability, starting chance, final chance, roll, status, and canonical reason.
+
+The Random Stuff catalogue has no permanent member rows and shows the current 3-to-5-event batch size plus the current authoritative eligible-pool count.
+
+Its history rows show the exact uniformly selected event IDs with role Random Draw, severity Not Used, the event's independent minimum tier, and their final delayed-dispatch result.
 
 Member rows display trigger and required guarantees as 100 percent and Guaranteed after eligibility.
 
@@ -114,6 +122,14 @@ High and Severe non-trigger rows require another pass-one base-eligible row.
 
 Trigger rows and sole configured members are exempt from that support requirement.
 
+Random Stuff instead receives one guarded one-percent-or-lower attempt after a successfully fired ordinary automatic minor event at tier 3 or above.
+
+It samples uniformly without replacement from all currently fireable positive-weight events, ignoring major or minor type, severity, and weight magnitude.
+
+The first selected event fires synchronously and the rest use the shared delayed recheck queue.
+
+Manual Random Stuff activation bypasses its cluster gates but retains strict event-system eligibility and does not update its automatic drought, success, or cooldown memory.
+
 ## Stable state and history
 
 Events 6, 9, and 13 have explicit stable primary trigger rows for their opening duplicate groups.
@@ -142,7 +158,9 @@ After batch settlement, historical values never recompute from current Chaos tie
 
 Automatic fatigue and previous-participation memory exclude manual forcing.
 
-A successful cluster activation applies one pacing and one cooldown update regardless of member count.
+A successful fixed-member cluster activation applies one pacing and one cooldown update regardless of member count.
+
+For Random Stuff, the ordinary minor event that opened the attempt already supplied the single pacing update, while the successful bonus batch supplies only its 240-day cluster cooldown.
 
 ## Detail-window selection state
 
@@ -210,6 +228,6 @@ Evolution families without a portrait treatment keep the wide text body, while a
 
 ## External validation limitation
 
-The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
 
-This document records the contract and source references only and does not claim engine evidence from those routes.
+The shared Event Log and Settings GUI routes render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state, so this document does not claim full engine or branch-specific visual evidence.

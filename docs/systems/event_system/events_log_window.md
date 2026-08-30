@@ -203,7 +203,7 @@ A failed delayed recheck invalidates the row with N/A and the first canonical re
 
 Overlapping batches remain isolated.
 
-A successful cluster activation applies one pacing and one cooldown update for the complete batch.
+A successful fixed-member cluster activation applies one pacing and one cooldown update for the complete batch. Random Stuff reuses the opening ordinary minor event's pacing update and applies only its successful automatic cooldown.
 
 Automatic fatigue increases by one after a successful activation and decreases by one after a valid failed activation roll.
 
@@ -335,6 +335,6 @@ If future Event Logs work needs an additional sprite, place it under gfx/interfa
 
 ## External validation limitation
 
-The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
 
-This documentation records source and contract evidence only and does not claim engine evidence from those routes.
+The shared Event Log and Settings GUI routes render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state, so this documentation does not claim full engine or branch-specific visual evidence.

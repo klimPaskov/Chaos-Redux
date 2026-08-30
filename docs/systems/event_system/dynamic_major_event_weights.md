@@ -56,6 +56,8 @@ The event-system helpers live in `common/scripted_effects/chaosx_logic_effects.t
 
 Each successful cluster activation applies global pacing once for the complete batch. One-time and repeatable clusters count as one minor global pacing event, so `apply_dynamic_major_weight_gain_after_minor` runs once regardless of the number of dispatched members. Member events fire in `event_cluster_member_fire_context`, which suppresses additional timer or major-gain updates.
 
+Random Stuff is a post-minor-event exception: the ordinary minor event that opens its attempt has already applied that one pacing update, so the bonus batch suppresses member pacing and does not apply a second aggregate gain.
+
 An intentionally registered major cluster uses the major pacing path and resets major weights once for the cluster.
 
 A valid failed cluster activation roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.

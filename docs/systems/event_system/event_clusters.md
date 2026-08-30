@@ -113,6 +113,48 @@ Gated attempts, failed preflight, and manual forcing leave fatigue unchanged.
 
 A valid failed roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.
 
+### Random Stuff whole-pool activation
+
+Random Stuff is the one registered cluster without configured member rows.
+
+It unlocks at Chaos Tier 3 and receives exactly one one-percent-or-lower automatic attempt after a successfully dispatched ordinary minor event.
+
+Manual event firing, major events, ordinary cluster members, and Random Stuff members do not create attempts.
+
+The automatic roll uses integer basis points on a 1 through 10,000 scale.
+
+| Current tier | Base chance | Batch size |
+| --- | ---: | ---: |
+| T3 Chaos Tier | 0.30 percent | 3 |
+| T4 Totalen Chaos | 0.60 percent | 4 |
+| T5 World Collapse | 0.85 percent | 5 |
+
+Every valid failed attempt adds 0.01 percentage points of drought relief, capped at 0.15 percentage points.
+
+The prospective third success multiplies the chance by 0.75, and later successes multiply it by 0.50.
+
+The final chance is clamped from 0.01 through 1.00 percent.
+
+A successful automatic activation starts a 240-day cooldown and resets the drought count.
+
+Gated attempts, insufficient eligible pools, cooldown checks, disabled state, and first-member runtime failure do not change drought or success memory.
+
+At activation, Random Stuff scans `global.all_events` through the ordinary event-system selection evaluator, including positive current selectable weight, and excludes the minor event that opened the attempt.
+
+It then samples uniformly without replacement from that eligible pool.
+
+Major or minor classification, severity, and the magnitude of a positive selection weight do not influence the uniform draw.
+
+The first selected event is rechecked and dispatched synchronously.
+
+The remaining selected events use the shared delayed batch queue and receive another authoritative event-system recheck before dispatch.
+
+Every selected row is guaranteed after eligibility; Random Stuff has no severity floor, escalation-support rule, or optional participation roll.
+
+The ordinary minor event that opened the attempt already supplied the batch's single pacing update, so Random Stuff does not apply a second aggregate pacing update.
+
+Manual Random Stuff activation bypasses its tier, disabled state, cooldown, and activation roll, but it still constructs the same strict current eligible pool and never changes automatic drought, success, or cooldown state.
+
 ## Optional participation and dispatch order
 
 The trigger is guaranteed and fires first synchronously after eligibility.
@@ -142,7 +184,7 @@ Ineligible, rejected, or invalidated optional rows do not increase that count.
 
 ## Stable rows, batches, and delayed state
 
-Every configured member has a stable logical row identity.
+Every configured fixed member has a stable logical row identity.
 
 Stable logical rows keep duplicate event IDs distinct.
 
@@ -163,6 +205,8 @@ A queued row never substitutes another event, logical row, target, or batch cont
 Overlapping batches remain isolated by their batch identity and aligned context.
 
 Runtime state is versioned and non-destructive, so historical snapshots are not rewritten when current definitions or state change.
+
+Random Stuff has no permanent row registry; its selected event IDs receive history-only row identities within the saved batch, and the history sequence keeps repeated selections across different batches distinct.
 
 The automatic transition is ordinary-pool selection, ordinary event-system eligibility, cluster-only gates, two-pass base eligibility, activation roll, batch preparation, synchronous trigger, required rows, optional severity-ordered rows, delayed rechecks, successful history commit, and one pacing/cooldown update.
 
@@ -218,6 +262,7 @@ The current registry artifacts define these stable cluster IDs and member patter
 | Formables | event_cluster_id.formables | Event 12 Africa Is One | Negotiated restoration and union projects, including the protection-first Charter League route. |
 | Positive Economy | event_cluster_id.economy_positive | Event 18 Resources Found | Beneficial economic shocks with persistent development choices. |
 | Diseases | event_cluster_id.diseases | Event 20 Black Plague with optional Event 2 Zombie Outbreak | Severe disease outbreaks with public state conditions, spread, and sustained containment work. |
+| Random Stuff | event_cluster_id.random_stuff | No fixed members; 3 to 5 uniformly drawn currently eligible events | Rare whole-pool bonus batches after ordinary minor events from Chaos Tier 3 onward. |
 
 The first logical rows for Events 6, 9, and 13 are primary trigger rows.
 
@@ -315,9 +360,9 @@ The event-system relationship is documented in event_chaos_levels.md and dynamic
 
 The Event Logs presentation is documented in events_log_window.md and events_log_evolutions_and_clusters.md.
 
-The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
 
-These documentation pages therefore do not claim engine evidence from MCP routes.
+The shared Event Log and Settings GUI routes render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state; these pages therefore do not claim full engine or branch-specific visual evidence.
 
 ## Future cluster additions
 

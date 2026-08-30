@@ -159,6 +159,52 @@ Fatigue does not change for a gated attempt, a failed preflight, or a manual clu
 
 A valid failed roll proceeds through ordinary standalone handling for the selected trigger and does not apply cluster pacing or a cluster cooldown update.
 
+## 3.1. Random Stuff special activation contract
+
+Random Stuff is cluster ID 12, type Minor Repeatable, unlock tier 3, and has no configured member rows.
+
+Each successfully dispatched ordinary automatic minor event creates exactly one Random Stuff attempt after ordinary minor pacing has been applied.
+
+The attempt is forbidden in manual event context, cluster-member context, Random Stuff bulk context, major-event handlers, below-tier state, disabled state, cooldown state, and when fewer additional events pass the authoritative event-system evaluator than the current tier's exact batch size: three at tier 3, four at tier 4, or five at the final tier.
+
+The roll uses basis points with integer outcomes 1 through 10,000 and succeeds at or below the final basis-point chance.
+
+| Current tier | Base basis points | Displayed base | Selected batch size |
+| --- | ---: | ---: | ---: |
+| T3 | 30 | 0.30 percent | 3 |
+| T4 | 60 | 0.60 percent | 4 |
+| T5 | 85 | 0.85 percent | 5 |
+
+The drought bonus is one basis point per valid failed attempt and is capped at 15 basis points.
+
+The success factor is 1.00 before the first and second successes, 0.75 when two successes have already occurred, and 0.50 after three or more successes.
+
+The final chance is rounded and clamped from 1 through 100 basis points, so it can never exceed 1.00 percent.
+
+A valid failed roll increments the drought count.
+
+A successful automatic activation increments success count, resets drought to zero, records its chance and roll, and applies a 240-day cooldown.
+
+Manual activation changes none of those automatic fields and applies no cooldown.
+
+Random Stuff builds its candidate pool from every `global.all_events` entry accepted by `evaluate_random_event_selection_candidate` with the all-events filter, then excludes the minor event that opened the attempt.
+
+Positive selectable weight remains an eligibility condition, but weight magnitude is not a sampling weight.
+
+The sample is uniform without replacement and does not use event type, severity, ordinary selection weight, or fixed cluster membership.
+
+The first selected event receives an immediate authoritative recheck and synchronous dispatch.
+
+Only that successful first dispatch creates history.
+
+Remaining selections enter the shared batch queue and receive another authoritative event-system recheck immediately before delayed dispatch.
+
+Selected rows are guaranteed after eligibility and store role Random Draw, severity Not Used, the event's independent Chaos Level, 100 percent participation, final status, and canonical failure reason.
+
+The opening ordinary minor event supplies the one pacing update for the overall incident.
+
+Random Stuff members suppress their own pacing and recursion, so the bonus batch does not add another aggregate timer or major-weight update.
+
 ## 4. Optional member participation
 
 The trigger row is guaranteed and fires first synchronously after ordinary eligibility succeeds.
@@ -196,7 +242,7 @@ Required and trigger rows do not consume optional participation decay.
 
 ## 5. Stable rows, batches, and dispatch state
 
-Every configured member row has a stable logical row identity that remains distinct even when several rows use the same event ID.
+Every configured fixed member row has a stable logical row identity that remains distinct even when several rows use the same event ID.
 
 Opening duplicate rows for Events 6, 9, and 13 have explicit primary trigger rows.
 
@@ -217,6 +263,8 @@ Overlapping batches remain isolated by batch identity and aligned row context.
 One batch cannot borrow a target, actor, event-specific context, history sequence, or staged payload from another batch.
 
 Runtime state is versioned and non-destructive.
+
+Random Stuff has no fixed row registry; its history-only row identity combines the dynamic cluster row namespace with the selected event ID, while the batch and history sequence distinguish repeated selections across activations.
 
 Adding or migrating batch fields must preserve prior successful history snapshots instead of rewriting them from current state.
 
@@ -424,9 +472,9 @@ events_log_window.md, events_log_evolutions_and_clusters.md, event_chaos_levels.
 
 No new visual asset or catalog workbook schema is part of this overhaul.
 
-The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+The HOI4 MCP event route currently returns partial coverage, while the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool and therefore cannot run evaluate, sweep, simulation, sequence, or comparison passes.
 
-Source documentation must therefore not claim engine evidence from those routes.
+The shared Event Log and Settings GUI routes inspect and render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state, so this documentation does not claim full engine or branch-specific visual evidence.
 
 Source review, static checks, and parent-owned runtime validation remain separate evidence classes.
 

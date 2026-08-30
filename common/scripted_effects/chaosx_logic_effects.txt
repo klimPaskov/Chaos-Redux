@@ -1108,6 +1108,12 @@ on_fire_once_event_fired = {
     update_unfired_events_counts = yes
     record_events_log_history_entry = yes
     log_event_fired_summary = yes
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		# Record the opening minor first so a synchronous Random Stuff draw retains
+		# the true dispatch order in history and as the latest displayed event.
+		random_stuff_cluster_try_after_minor_event = yes
+	}
 }
 
 # Handler for repeatable events
@@ -1149,6 +1155,10 @@ on_repeatable_event_fired = {
     update_unfired_events_counts = yes
     record_events_log_history_entry = yes
     log_event_fired_summary = yes
+	if = {
+		limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+		random_stuff_cluster_try_after_minor_event = yes
+	}
 }
 
 # Handler for major events

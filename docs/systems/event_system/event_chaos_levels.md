@@ -141,7 +141,7 @@ The table is unchanged by cluster member severity.
 
 Event Chaos Level gating happens during ordinary event selection and does not count as a cluster activation.
 
-A successful cluster activation applies one cluster pacing and cooldown update regardless of member count.
+A successful fixed-member cluster activation applies one cluster pacing and cooldown update regardless of member count. Random Stuff is attempted after ordinary minor pacing and therefore applies no second aggregate pacing update; its selected events still obey their independent Event Chaos Levels.
 
 A valid failed cluster activation roll does not apply cluster pacing or a cluster cooldown update and returns to ordinary standalone handling.
 
@@ -163,9 +163,9 @@ The Event Chaos Level implementation is documented through the shared selection,
 
 The event catalog workbook schema and formula prose remain unchanged.
 
-The HOI4 MCP probability, event, and GUI routes currently fail with ARTIFACT_MANIFEST_INTEGRITY_FAILED and the message Artifact provenance manifest does not match its immutable address.
+The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
 
-This document does not claim engine evidence from those routes.
+The shared GUI routes render successfully without a selected Random Stuff runtime state, so this document does not claim full engine or branch-specific visual evidence.
 
 ## Future extensions
 
