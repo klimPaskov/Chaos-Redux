@@ -198,7 +198,7 @@ The same pass records *The Enola Foam March* and *Toujours en Tête* / *Defileer
 
 - `common/script_constants/006_independence_wave_super_event_constants.txt`
 - `common/scripted_triggers/006_independence_wave_triggers.txt`
-- `common/scripted_effects/006_independence_wave_super_event_effects.txt`
+- `common/scripted_effects/006_independence_wave_effects.txt` (consolidated source section: `006_independence_wave_super_event_effects.txt`)
 - Event 006 release, scenario, decision, league, focus, evolution, and formable
 transaction effects
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
