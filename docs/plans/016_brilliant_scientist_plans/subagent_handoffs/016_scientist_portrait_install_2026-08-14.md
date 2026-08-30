@@ -8,7 +8,7 @@ Scope: bounded installation of the user-supplied scientist portrait finals from 
 
 The supplied directory contained 71 DDS files rather than the requested 70, and contained no other input file type. All 71 were audited. Following the user's identity correction, 66 unique identities are installed, four duplicate candidates are retained as alternates, and one anonymous file is retained as explicit `not_needed` evidence. The full per-file manifest is `docs/assets/portraits/016_brilliant_scientist/manifest.md` with machine-readable evidence in `input_mapping.json`.
 
-All installed scientist textures are exact `156x210` one-level uncompressed BGRA DDS files under `gfx/leaders/scientists/portrait_<ID>.dds`. The 20 existing runtime IDs were preserved and their supplied finals replaced the old DDS bytes. The 46 identities without an existing sprite received stable `GFX_portrait_<ID>` definitions and texture paths in `interface/_scientists_portraits_additions.gfx`; no character definition, recruitment, traits, skills, history, decisions, events, AI, or localisation was edited for them.
+All installed scientist textures are exact `156x210` one-level uncompressed BGRA DDS files under `gfx/leaders/scientists/portrait_<ID>.dds`. The 20 existing runtime IDs were preserved and their supplied finals replaced the old DDS bytes. The 46 identities without an existing sprite received stable `GFX_portrait_<ID>` definitions and texture paths in `interface/_scientists_portraits.gfx`; no character definition, recruitment, traits, skills, history, decisions, events, AI, or localisation was edited for them.
 
 ## Identity decisions
 
@@ -38,4 +38,4 @@ Existing portrait references remain on their stable IDs and are listed per ident
 
 ## Parent review points
 
-Review `manifest.md`, `input_mapping.json`, the native/4x contact sheets, and `interface/_scientists_portraits_additions.gfx`. New identities are intentionally asset-only and require gameplay owners to decide whether/where to create their character definitions. The supplied-final rights status is internal-installation authorization only; external redistribution rights were not supplied.
+Review `manifest.md`, `input_mapping.json`, the native/4x contact sheets, and `interface/_scientists_portraits.gfx`. New identities are intentionally asset-only and require gameplay owners to decide whether/where to create their character definitions. The supplied-final rights status is internal-installation authorization only; external redistribution rights were not supplied.

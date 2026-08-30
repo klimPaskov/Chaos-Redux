@@ -116,7 +116,7 @@ Descriptions of coerced experimentation identify the conduct directly and avoid 
 
 Large portrait sprites are `GFX_portrait_<character_id>` and resolve to `gfx/leaders/scientists/portrait_<character_id>.dds`.
 
-The 46 new sprite registrations live in `interface/_scientists_portraits_additions.gfx`; the existing shared portrait registry remains unchanged.
+The complete scientist portrait registry, including the 46 expanded-roster registrations, lives in `interface/_scientists_portraits.gfx`.
 
 Eleven pre-existing 65x67 advisor cards were regenerated from the accepted portrait replacements under `gfx/interface/advisors/cbrn/`.
 
