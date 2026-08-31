@@ -126,7 +126,7 @@ The identity flag `independence_wave_iw_051_identity_rights_cleared` is never se
 - AI owner: run the required same-scenario baseline/after compare through `chaosx_ai_probability_auditor` when that route is available.
 - FORM-14 owner: no work required for this package; preserve the explicit exclusion.
 
-The “a arctic” localisation typo at `localisation/english/006_independence_wave_siberian_l_english.yml:315` is cosmetic and non-blocking.
+The former “a arctic” localisation typo at `localisation/english/006_independence_wave_siberian_l_english.yml:315` is corrected to “an arctic” in the current source.
 
 ## Validation and handoff
 
