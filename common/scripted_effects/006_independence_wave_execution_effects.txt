@@ -508,24 +508,158 @@ independence_wave_release_one_frozen_country = {
 				exists = no
 				tag = event_target:independence_wave_execution_country
 			}
-			event_target:independence_wave_execution_former_host = {
-				release = PREV
-				if = {
-					limit = {
-						PREV = { is_subject_of = PREV }
-					}
-					set_autonomy = {
-						target = PREV
-						autonomy_state = autonomy_free
+			# The nine X-tag carriers have no historical state cores. `release` can
+			# only materialize a country from states already cored by that tag, so
+			# use the documented dynamic-country template path for these carriers.
+			# The Fallout fracture implementation uses the same literal-tag,
+			# `copy_tag = THIS`, reserved dynamic-country pattern. The child saves
+			# the live dynamic scope directly; planned cores are restored below.
+			if = {
+				limit = { tag = AFX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = AFX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
 					}
 				}
 			}
+			else_if = {
+				limit = { tag = AGX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = AGX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = AJX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = AJX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = ARX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = ARX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = ASX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = ASX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = AXX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = AXX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = BAX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = BAX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = BBX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = BBX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else_if = {
+				limit = { tag = HBX }
+				event_target:independence_wave_execution_former_host = {
+					create_dynamic_country = {
+						original_tag = HBX
+						copy_tag = THIS
+						reserve_dynamic_country = yes
+						save_event_target_as = independence_wave_execution_country
+					}
+				}
+			}
+			else = {
+				event_target:independence_wave_execution_former_host = {
+					release = PREV
+					if = {
+						limit = {
+							PREV = { is_subject_of = PREV }
+						}
+						set_autonomy = {
+							target = PREV
+							autonomy_state = autonomy_free
+						}
+					}
+				}
+				# `independence_wave_execution_country` was saved while this tag
+				# was absent. Rebind it to the current candidate after `release`
+				# creates the country so later transfer, setup, and receipt checks
+				# use the live country scope rather than a stale absent-tag pointer.
+				save_event_target_as = independence_wave_execution_country
+			}
 		}
-		# `independence_wave_execution_country` was saved while this tag was
-		# absent. Rebind it to the current candidate after `release` creates the
-		# country so all later transfer, setup, and receipt checks use the live
-		# country scope rather than a stale absent-tag pointer.
-		save_event_target_as = independence_wave_execution_country
+	}
+	# Dynamic creation occurs after the initial absent-target core pass. Add the
+	# frozen package cores again now that the live target exists; this is a no-op
+	# for existing shells and ordinary release targets and gives dynamic carriers
+	# the exact cores that the later frozen state transfer expects.
+	for_each_scope_loop = {
+		array = global.liberation_plan_states
+		if = {
+			limit = {
+				check_variable = {
+					var = liberation_release_plan_owner
+					value = constant:liberation_plan_owner.independence_wave
+					compare = equals
+				}
+				check_variable = {
+					var = liberation_release_package_id
+					value = independence_wave_execution_package_id
+					compare = equals
+				}
+				check_variable = {
+					var = liberation_release_target_country
+					value = event_target:independence_wave_execution_country
+					compare = equals
+				}
+			}
+			add_core_of = event_target:independence_wave_execution_country
+		}
 	}
 	for_each_scope_loop = {
 		array = global.independence_wave_execution_masked_core_states
