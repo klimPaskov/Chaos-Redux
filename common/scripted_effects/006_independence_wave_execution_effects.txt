@@ -521,6 +521,11 @@ independence_wave_release_one_frozen_country = {
 				}
 			}
 		}
+		# `independence_wave_execution_country` was saved while this tag was
+		# absent. Rebind it to the current candidate after `release` creates the
+		# country so all later transfer, setup, and receipt checks use the live
+		# country scope rather than a stale absent-tag pointer.
+		save_event_target_as = independence_wave_execution_country
 	}
 	for_each_scope_loop = {
 		array = global.independence_wave_execution_masked_core_states
