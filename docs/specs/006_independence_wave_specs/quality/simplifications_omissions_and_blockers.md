@@ -6,11 +6,25 @@ This package is the accepted source specification. Implementation status is reco
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
+## Current evidence reconciliation (2026-09-02)
+
+The accepted fail-closed boundary remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with no-pre-event visibility still absolute.
+
+Fresh bounded Event 006 MCP evidence for `chaosx.nr6.1` includes partial `hoi4_event_inspect` and matching `hoi4_event_render` receipts at revision `2725045f62d14f3536e32f1662ce2fae9f2fae9933ff462de6a8c867d1401570`, graph hash `e6c16ff300aa88dfed3e6f55481fdb8ad1e5bb697e6cf3ca888bd82178d7d62d`, and render layout hash `3ba5f18a64912a9ece6fe76dde07333dd05321a92381135e629786aae491844d`. Helper/lifecycle projections remain deferred, and helper-expanded recovery returned an internal error, so these receipts do not establish semantic helper behavior, save/load behavior, or live gameplay. Trace artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bad097f83a5c3d3af401f543b5da46eb9a84f24250e626dfe0175450369f96bd/2adde93d4402b62b4ce775aa182594756a418685afa896e607bd43476c25799a/event-trace-2725045f62d1.json`.
+
+Fresh read-only allocator probability evidence discovers 14 complete candidates and evaluates five named empty-fixture scenarios with zero available candidates, 70 rows, and 14 unresolved values under `PROBABILITY_ANALYZED_PARTIAL`. The inspect and evaluation artifacts are `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a9f982ee6657a34618ab463c5d29bf78b43848c31366bac1915d44c8b969e85c/87b9581dc774c6868a28b94e29c7de2eb9cb435d854396d3e37dbc7b81ffc28d/probability-inspect-2f659348919a.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2db87ee9d24ee3ffacdb34b8cee8d7bcd55f6952d5542c9a1e67451b8acf936a/6479aefb6bcb77c698c828c47e2a4f8d86d85e56ed491e87629ae14583dc8a2b/probability-a108fc2e08a2e11724e965c9.json`; this is not campaign balance, ranking, timing, live AI, or `probability_compare` evidence.
+
+Fresh ACX map evidence returns `MAP_INSPECTED` with no current state named Cornwall. Direct state `123` is vanilla “South-West England” with provinces `540 3422 3463 6526 9562 11406`, covering more than Cornwall-only geometry, so IW-003 remains fail-closed pending a concrete map binding, rights-cleared portrait/flag identity, central attestation/Join, and complete package evidence. Map artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8cd3f14ab7c10608ef21c64107d4689cd991cd0c08fdb91a998e01e6f1643031/c9e44a028bd09f5c9653212b0d62e6f3bdb0f31c3815825411ecc53e8899ad0a/map-inspect.bfaf7becc0c8c796.json`; map geometry, state-region, network-adjacency, and province-definition checks pass, while unrelated workspace-wide position/locator diagnostics keep the overall map result partial.
+
+The 2026-08-31 absent-country rebind, IW-050 identity-rights roster guard, and Mediterranean package-content receipt predicates remain bounded source contracts and do not widen admission or restore pre-event surfaces. The 2026-08-31 timeout/`Transport closed`/probability-`INTERNAL_ERROR` statements in the earlier implementation correction are historical route state and are superseded for current evidence by these bounded 2026-09-02 receipts, without changing the HOLD / PARTIAL boundary.
+
+The 2026-09-02 country-shell consolidation is committed in `2617931b1b730f617ad99c3c363503b4465f38d6`: 85 researched Event 006 tags share seven exact graphical-culture shells, their former per-tag RGB values are preserved in the complete vanilla-compatible `common/countries/colors.txt` override, and the 17 inert reservation tags remain on the unchanged shared reservation shell. This removes 78 country-definition files and saves 44,482 shell bytes without changing country history, admission, allocation, Join, gameplay, localisation, assets, or the no-pre-event contract. Handoff: `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_country_shell_merge_audit_2026-09-02.md`.
+
 ## Current implementation correction (2026-08-29; bounded evidence)
 
 The accepted fail-closed boundary remains 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with unresolved portraits still blocking admission and no visible pre-Event 006 crisis surface.
 
-The 2026-08-31 absent-country target rebind is a bounded source repair: after `release = PREV` creates an absent selected tag in the current candidate scope, the live candidate is saved again as `independence_wave_execution_country` before later core, transfer, setup, and receipt consumers run. It changes no admission, reservation, ladder, cost, UI, or pre-event behavior. Current completion and probability handoffs retain the HOLD / PARTIAL boundary because Event MCP timed out or returned `Transport closed`, while probability adapters returned `INTERNAL_ERROR`; no engine, balance, or live-runtime completion claim follows.
+The 2026-08-31 absent-country target rebind is a bounded source repair: after `release = PREV` creates an absent selected tag in the current candidate scope, the live candidate is saved again as `independence_wave_execution_country` before later core, transfer, setup, and receipt consumers run. It changes no admission, reservation, ladder, cost, UI, or pre-event behavior. The 2026-08-31 timeout/`Transport closed`/probability-`INTERNAL_ERROR` state remains dated evidence, while bounded 2026-09-02 Event and probability receipts provide partial current route evidence without establishing engine semantics, live release, campaign balance, or same-scenario comparison; the HOLD / PARTIAL boundary remains.
 
 The 2026-08-31 receipt-guard reconciliation documents existing fail-closed source gates rather than adding new gameplay. IW-050's roster proof requires `independence_wave_iw_050_identity_rights_cleared`; COR, ARX, and ASX require `is_independence_wave_package_content_active = yes` before their package predicates succeed. No central adapter, attestation, preflight, Join, weight, cost, route, or pre-event surface changed. The 32/29/40/161 HOLD / PARTIAL boundary is unchanged. Evidence: `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_komi_roster_checkpoint_identity_guard_2026_08_30.md`, `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_mediterranean_receipt_audit_2026-08-26.md`, and `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_receipt_guard_reconciliation_2026-08-31.md`.
 
@@ -121,71 +135,15 @@ IW-184 `HBX` is admitted after the full post-wire package audit for William D. S
 The earlier source-locked HAW trial built from the correct 1925 archival photograph remains historical evidence only after it failed independent likeness review; the accepted King portrait has its own source, crop, HOI4 repaint, and post-wire audit chain.
 
 
-The current scoped tag audit covers the 102 Event 006 reservation tags plus the
-34 Soviet Collapse carriers. It excludes the Random Events Mod by accepted scope,
-reports zero external collisions for the scoped surface, and leaves the unrelated
-`REV`, `ZIN`, and `ZZZ` carriers untouched. Earlier broad installed scans remain
-dated evidence only. The allocator still records 149 publishers, 126
-automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, the active
-3/4/5/7/10 ladder, and Event 005-first joint reservation ordering. Those
-structural counts do not override the compile-time visual-readiness gate. Pacific
-assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and
-the audited flat ImageGen PFX flag. Exactly zero custom Event 006 advisor
-icons/assets/sprites/portrait blocks are present; leader assets are separate, and
-protected BAY/RHI hashes are unchanged.
+The current scoped tag audit covers the 102 Event 006 reservation tags plus the 34 Soviet Collapse carriers. It excludes the Random Events Mod by accepted scope, reports zero external collisions for the scoped surface, and leaves the unrelated `REV`, `ZIN`, and `ZZZ` carriers untouched. Earlier broad installed scans remain dated evidence only. The allocator still records 149 publishers, 126 automatic/high-chaos selectable packages, 138 SCN-008 ranked packages, the active 3/4/5/7/10 ladder, and Event 005-first joint reservation ordering. Those structural counts do not override the compile-time visual-readiness gate. Pacific assets use vanilla HAW/FSM flags, a researched flat 1911 Bear Flag for HBX, and the audited flat ImageGen PFX flag. Exactly zero custom Event 006 advisor icons/assets/sprites/portrait blocks are present; leader assets are separate, and protected BAY/RHI hashes are unchanged.
 
-The bounded IW-043/IW-058 gameplay tranche is also recorded. The package audits
-and manifests record eight generated all-male institutional portraits,
-ten flat flags, two report images, and the final 27-icon static package,
-  including the three-state Assyria survival triplet. No custom advisor assets
-  were created. Those portraits are no longer accepted for grounded Volga
-  Bulgaria or Assyria, so both packages are removed from runtime content
-  attestation pending sourced replacements. The exact vanilla CHU/ASY shortcut guards passed the parent
-  compatibility re-audit and preserve ordinary and Event 005 carrier behavior.
-  FORM-12, FORM-13, and FORM-18 are operational for their exact carriers with
-  setup attestations, paid 180-day congresses, consent and unique-anchor
-  ledgers, carrier-only cosmetics, and staged sovereignty-preserving
-  integration. The two IW-043 route proofs and three IW-058 proof writers are
-  sole, generation-gated call sites. Achievement visibility remains hidden and
-  depends on its route and survival conditions. The final focus is the sole
-  caller for the `.5810` Mesopotamian settlement presentation after the
-  sovereign-autonomy decision records its compact and mode. That transaction
-  deterministically locks either the completed former-host settlement or the
-  named sovereignty-bound regional guarantor, records all five treaty chapters,
-  and creates no subject or client relationship. FORM-18 and sovereign autonomy
-  share a permanent terminal-choice lock: start and finalization gates reject
-  crossover, and the final Mesopotamian proof requires that lock.
+The bounded IW-043/IW-058 gameplay tranche is also recorded. The package audits and manifests record eight generated all-male institutional portraits, ten flat flags, two report images, and the final 27-icon static package, including the three-state Assyria survival triplet. No custom advisor assets were created. Those portraits are no longer accepted for grounded Volga Bulgaria or Assyria, so both packages are removed from runtime content attestation pending sourced replacements. The exact vanilla CHU/ASY shortcut guards passed the parent compatibility re-audit and preserve ordinary and Event 005 carrier behavior. FORM-12, FORM-13, and FORM-18 are operational for their exact carriers with setup attestations, paid 180-day congresses, consent and unique-anchor ledgers, carrier-only cosmetics, and staged sovereignty-preserving integration. The two IW-043 route proofs and three IW-058 proof writers are sole, generation-gated call sites. Achievement visibility remains hidden and depends on its route and survival conditions. The final focus is the sole caller for the `.5810` Mesopotamian settlement presentation after the sovereign-autonomy decision records its compact and mode. That transaction deterministically locks either the completed former-host settlement or the named sovereignty-bound regional guarantor, records all five treaty chapters, and creates no subject or client relationship. FORM-18 and sovereign autonomy share a permanent terminal-choice lock: start and finalization gates reject crossover, and the final Mesopotamian proof requires that lock.
 
-FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event
-006 completion audit, static balance/source audit, and unrelated package/achievement
-work remain incomplete. Runtime scenario execution is optional future QA and is
-not a completion blocker. Earlier Pacific handoffs
-that state HOLD/FAIL-CLOSED are historical records and are not rewritten here.
+FORM-06 through FORM-47 remain fail-closed, including FORM-42. The parent Event 006 completion audit, static balance/source audit, and unrelated package/achievement work remain incomplete. Runtime scenario execution is optional future QA and is not a completion blocker. Earlier Pacific handoffs that state HOLD/FAIL-CLOSED are historical records and are not rewritten here.
 
-IW-093 `DOX` Asante and IW-098 `SOK` Sokoto now have a bounded foundational
-scripted layer: exact dormant-tag and fixed-anchor predicates, central
-setup/final-validation/cleanup dispatch, Kumasi/Sokoto capital proofs,
-date-aware Sokoto succession hooks, host-capital survival checks, and
-Event-012-preserving cleanup. That layer deliberately grants neither runtime
-content attestation nor SCN-008 admission. Both packages remain fail-closed
-until the pre-cutover Sokoto leader, sourced commander replacements, exact
-period flags, FORM-24/25 links, and
-final country, scenario, presentation, and completion audits pass. The
-original deterministic Prempeh-II candidate remains rejected evidence, but the
-identity-preserving sourced-image treatment passed parent HOI4-style visual
-review and exact DDS comparison in commit `e0e85c832`. The pre-cutover Hasan
-portrait, sourced commanders, both exact period flags, and FORM-24/25 contracts
-remain blocked.
-Route-specific political transitions and bilateral former-host diplomacy are
-implemented: the exact host chooses recognition, association, or reclamation
-conflict, and the receipt is written only after host acceptance or a paid
-post-crisis ratification. Opening institutional politics and the exact
-Prempeh and date-aware Siddiq leader paths are implemented without granting
-runtime attestation. Only Prempeh currently has compliant sourced portrait
-evidence: vanilla maps Siddiq to generic
-`gfx/leaders/Africa/Portrait_Africa_Generic_3.dds`, so sourced real-person
-portraits for Hasan, Siddiq, and all four Asante/Sokoto commanders remain
-blocking requirements. No advisor asset was created or requested.
+IW-093 `DOX` Asante and IW-098 `SOK` Sokoto now have a bounded foundational scripted layer: exact dormant-tag and fixed-anchor predicates, central setup/final-validation/cleanup dispatch, Kumasi/Sokoto capital proofs, date-aware Sokoto succession hooks, host-capital survival checks, and Event-012-preserving cleanup. That layer deliberately grants neither runtime content attestation nor SCN-008 admission. Both packages remain fail-closed until the pre-cutover Sokoto leader, sourced commander replacements, exact period flags, FORM-24/25 links, and final country, scenario, presentation, and completion audits pass. The original deterministic Prempeh-II candidate remains rejected evidence, but the identity-preserving sourced-image treatment passed parent HOI4-style visual review and exact DDS comparison in commit `e0e85c832`. The pre-cutover Hasan portrait, sourced commanders, both exact period flags, and FORM-24/25 contracts remain blocked.
+
+Route-specific political transitions and bilateral former-host diplomacy are implemented: the exact host chooses recognition, association, or reclamation conflict, and the receipt is written only after host acceptance or a paid post-crisis ratification. Opening institutional politics and the exact Prempeh and date-aware Siddiq leader paths are implemented without granting runtime attestation. Only Prempeh currently has compliant sourced portrait evidence: vanilla maps Siddiq to generic `gfx/leaders/Africa/Portrait_Africa_Generic_3.dds`, so sourced real-person portraits for Hasan, Siddiq, and all four Asante/Sokoto commanders remain blocking requirements. No advisor asset was created or requested.
 
 ### Current post-ARX blocker handoffs (2026-08-01)
 
@@ -243,18 +201,7 @@ All titles and labels in the source specification are working labels. Event text
 
 ### Achievements
 
-All sixteen accepted Event 006 achievements have registered definitions, final
-English localisation, centralized thresholds, and event-driven proof logic.
-Country, patron, league, scenario, host-remnant, war, peace, subject, and anchor
-control history is wired through bounded Event 006 transactions and narrow
-engine on-actions; no periodic world scan is used. Fifteen have final normal,
-grey, and not-eligible DDS triplets. The bounded Assyria triplet is final and
-reviewed. The two signature achievements remain hidden by their intended
-player-facing visibility rules, while their exact proof writers and formable
-adapter attestations are operational for the matching CHU and ASY package
-generations. The vanilla CHU/ASY shortcut guards have independently passed.
-The current static achievement audit and proof/source matrix are recorded in
-`docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_achievement_static_audit_current_2026_08_14.md` and verify all sixteen definitions, 48 localisation keys, 48 icon variants, and proof-writer references. Whole-event completion still requires campaign reachability evidence across the remaining package, formable, League, super-event, and MCP lifecycle gaps. Live validation is optional future QA.
+All sixteen accepted Event 006 achievements have registered definitions, final English localisation, centralized thresholds, and event-driven proof logic. Country, patron, league, scenario, host-remnant, war, peace, subject, and anchor control history is wired through bounded Event 006 transactions and narrow engine on-actions; no periodic world scan is used. Fifteen have final normal, grey, and not-eligible DDS triplets. The bounded Assyria triplet is final and reviewed. The two signature achievements remain hidden by their intended player-facing visibility rules, while their exact proof writers and formable adapter attestations are operational for the matching CHU and ASY package generations. The vanilla CHU/ASY shortcut guards have independently passed. The current static achievement audit and proof/source matrix are recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_achievement_static_audit_current_2026_08_14.md` and verify all sixteen definitions, 48 localisation keys, 48 icon variants, and proof-writer references. Whole-event completion still requires campaign reachability evidence across the remaining package, formable, League, super-event, and MCP lifecycle gaps. Live validation is optional future QA.
 
 ### Super-event production
 
@@ -278,15 +225,7 @@ No Clausewitz files were edited in this planning-only pass. That historical stat
 
 ## Research status
 
-Package-specific research and final IW-043/IW-058 asset provenance are resolved
-for the admitted tranche. The CHU/ASY vanilla compatibility adapter has passed.
-FORM-12/13/18 and the signature proof writers are operational for their exact
-carrier contracts. The sovereign-autonomy partner and terminal-ordering gap is
-closed in source with a permanent terminal-choice lock and proof requirement,
-and the bounded non-portrait visual families have a dated parent PASS. Remaining
-work is static scenario source/MCP evidence and parent-wide Event 006
-documentation, balance, asset/audio, package-registry, and completion validation.
-Live runtime evidence is optional future QA.
+Package-specific research and final IW-043/IW-058 asset provenance are resolved for the admitted tranche. The CHU/ASY vanilla compatibility adapter has passed. FORM-12/13/18 and the signature proof writers are operational for their exact carrier contracts. The sovereign-autonomy partner and terminal-ordering gap is closed in source with a permanent terminal-choice lock and proof requirement, and the bounded non-portrait visual families have a dated parent PASS. Remaining work is static scenario source/MCP evidence and parent-wide Event 006 documentation, balance, asset/audio, package-registry, and completion validation. Live runtime evidence is optional future QA.
 
 Every package has a final representation, research disposition, and source packet. Packages that are unsafe on the current map are intentionally restricted or unbound rather than replaced by broad geography. Installed-map rebinding is complete for the 2026-07-14 snapshot and the accepted tag scan is complete for the 2026-07-15 scan universe. Compatibility adapters, overlay hooks, final asset provenance, the `23` rights blocker, the two cross-group reservation decisions, and implementation validation remain explicit tasks.
 
