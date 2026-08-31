@@ -4,7 +4,7 @@ IW-054 KHA is a package-local, fail-closed Event 006 implementation for the inst
 
 ## Runtime contract
 
-The package binds KHA to state 569, the Soviet host capital 219, reservation group RG-KHAKASSIA, and the p55 `mounted_mobile` force profile. It rejects Soviet Collapse origins and requires the existing former-host protection contract before setup or final validation.
+The package binds KHA to state 569, the Soviet host capital 219, reservation group RG-KHAKASSIA, and the p54 `mounted_mobile` force row (tradition 55). It rejects Soviet Collapse origins and requires the existing former-host protection contract before setup or final validation.
 
 Setup is additionally gated by the parent-owned `independence_wave_iw_054_identity_rights_cleared` flag and `independence_wave_kha_institutional_roster_ready` flag. The package creates no leader, portrait, flag, cosmetic tag, or vanilla history mutation.
 
