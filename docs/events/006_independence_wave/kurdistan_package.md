@@ -4,7 +4,7 @@ IW-060 KUR is a package-local, fail-closed Event 006 implementation for the regi
 
 ## Runtime contract
 
-The package-local contract uses public research anchor state 421 and rejects Soviet Collapse origins, living-host violations, missing former-host protection, missing current-generation force mapping, and the vanilla KUR capital mismatch. The current installed map binding records state 1001 while the public/Form-18 surface still names 421, so the package intentionally remains fail-closed until the parent chooses one map/formable authority. Vanilla KUR history also uses state 800 as its capital; no history or map file is rewritten here.
+The package-local contract uses public research anchor state 421 and rejects Soviet Collapse origins, living-host violations, missing former-host protection, missing current-generation force mapping, and the vanilla KUR capital mismatch. Its installed force row is p60, resolving to the accepted `mountain_frontier` profile with military tradition 72. The current installed map binding records state 1001 while the public/Form-18 surface still names 421, so the package intentionally remains fail-closed until the parent chooses one map/formable authority. Vanilla KUR history also uses state 800 as its capital; no history or map file is rewritten here.
 
 Setup additionally requires `independence_wave_iw_060_identity_rights_cleared` and the existing vanilla KUR leader roster. No leader, portrait, flag, cosmetic tag, or vanilla history mutation is performed by the package.
 
