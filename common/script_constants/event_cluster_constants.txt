@@ -497,6 +497,38 @@ event_cluster_member_order = {
 	score_maximum = 100
 }
 
+# Optional rows normally preserve the Low -> Medium -> High -> Severe incident
+# progression. Higher Chaos tiers increasingly permit a cross-severity
+# inversion, without making the normal progression the minority outcome.
+event_cluster_optional_order_bias = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tier_0 = 90
+	tier_1 = 88
+	tier_2 = 86
+	tier_3 = 84
+	tier_4 = 82
+	tier_final = 80
+}
+
+# Extra eligible logical rows carrying the selected trigger event strengthen
+# that event's activation chance for this cluster. The ordinary activation
+# ceiling remains the only saturation point.
+event_cluster_trigger_multiplicity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_rows = 1
+	base_factor = 1
+	factor_per_extra_row = 0.15
+	minimum_points_per_extra_row = 1
+}
+
 event_cluster_member_cooldown_min = {
 	schema = {
 		any_key = yes

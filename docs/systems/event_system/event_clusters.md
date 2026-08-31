@@ -113,6 +113,20 @@ Gated attempts, failed preflight, and manual forcing leave fatigue unchanged.
 
 A valid failed roll returns to ordinary standalone handling and does not apply cluster pacing or a cluster cooldown update.
 
+### Duplicate triggers and multiple memberships
+
+Membership discovery scans every registered fixed-member cluster instead of stopping at the first match. Automatic candidacy requires the selected event to own a configured primary-trigger row in that cluster.
+
+Within each candidate cluster, every currently eligible logical row carrying the selected trigger event strengthens that cluster's trigger-specific chance:
+
+    multiplicity_factor = 1 + 0.15 × (eligible_matching_rows - 1)
+
+Every extra eligible matching row guarantees at least one additional percentage point before the ordinary 90 percent activation ceiling. Duplicate rows never dispatch the selected trigger more than once.
+
+Each eligible cluster calculates and rolls its final chance independently. If several clusters succeed, one successful cluster is selected uniformly; the selected event therefore opens no more than one cluster batch.
+
+Only the selected winner commits success fatigue, history, pacing, and cooldown. Successful candidates that lose arbitration remain unchanged, while genuine failed rolls receive the normal failed-roll fatigue reduction.
+
 ### Random Stuff whole-pool activation
 
 Random Stuff is the one registered cluster without configured member rows.
@@ -159,9 +173,19 @@ Manual Random Stuff activation bypasses its tier, disabled state, cooldown, and 
 
 The trigger is guaranteed and fires first synchronously after eligibility.
 
-Required rows are guaranteed after eligibility.
+Required rows are guaranteed after eligibility and follow in declaration order.
 
-Optional rows follow in Low, Medium, High, then Severe order, with random order within each severity.
+Optional ordering is severity-biased rather than severity-locked.
+
+The system preserves Low, Medium, High, then Severe bands in 90 percent of Calm World batches, 88 percent at Gathering Storm, 86 percent at Rising Chaos, 84 percent at Chaos Tier, 82 percent at Totalen Chaos, and 80 percent at World Collapse.
+
+Within that majority path, rows are randomized inside each severity band.
+
+The remaining batches select one random boundary between adjacent severity bands and invert the two rows at that boundary, allowing Medium, High, or Severe members to be evaluated and dispatched before a lower-severity member.
+
+A batch containing only one optional severity band cannot form a cross-severity inversion and remains randomized within that band.
+
+Participation decay follows the resulting order, so a higher-severity member can receive an earlier optional roll during an inversion batch.
 
 The optional participation table is:
 
@@ -208,7 +232,7 @@ Runtime state is versioned and non-destructive, so historical snapshots are not 
 
 Random Stuff has no permanent row registry; its selected event IDs receive history-only row identities within the saved batch, and the history sequence keeps repeated selections across different batches distinct.
 
-The automatic transition is ordinary-pool selection, ordinary event-system eligibility, cluster-only gates, two-pass base eligibility, activation roll, batch preparation, synchronous trigger, required rows, optional severity-ordered rows, delayed rechecks, successful history commit, and one pacing/cooldown update.
+The automatic transition is ordinary-pool selection, ordinary event-system eligibility, multi-cluster candidate discovery, per-cluster gates and activation rolls, one-winner resolution, batch preparation, synchronous trigger, required rows, severity-biased optional ordering, delayed rechecks, successful history commit, and one pacing/cooldown update.
 
 A rejected trigger exits before cluster rolling and continues through standalone handling.
 
@@ -368,7 +392,7 @@ The shared Event Log and Settings GUI routes render successfully, but their synt
 
 A new cluster must define a stable cluster ID, member rows, role, declared minimum, severity, ordinary event-system eligibility path, runtime context, and history fields.
 
-A new cluster must use the same two-pass support rule, activation formula, optional participation table, dispatch ordering, delayed recheck, pacing contract, and manual memory isolation.
+A new cluster must use the same two-pass support rule, activation formula, trigger-row multiplicity adjustment, multi-cluster one-winner resolution, optional participation table, severity-biased dispatch ordering, delayed recheck, pacing contract, and manual memory isolation.
 
 A new cluster must preserve stable logical row identities when duplicate event IDs represent stages or variants.
 

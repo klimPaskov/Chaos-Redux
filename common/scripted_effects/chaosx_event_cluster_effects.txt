@@ -7,9 +7,9 @@
 # event handlers used by single events. Member events run with a cluster context
 # guard so the cluster updates timer and major-event pacing once for the group.
 #
-# To add a future cluster, register it in initialize_event_cluster_definitions,
-# map member events in event_belongs_to_cluster, and add ordered member rows in
-# load_event_cluster_members.
+# To add a future cluster, register it in initialize_event_cluster_definitions
+# and add stable member rows in load_event_cluster_members. Membership discovery
+# scans that registry, including duplicate rows and cross-cluster memberships.
 # ============================================================================
 
 
@@ -451,7 +451,7 @@ get_event_cluster_enabled_state = {
     }
 }
 
-event_belongs_to_cluster = {
+event_belongs_to_cluster_legacy = {
     set_temp_variable = { event_cluster_candidate_id = 0 }
 	    if = {
 	        limit = {
@@ -560,6 +560,67 @@ event_belongs_to_cluster = {
 			}
 		}
 		set_temp_variable = { event_cluster_candidate_id = constant:event_cluster_id.diseases }
+	}
+}
+
+# Build every fixed-member cluster membership for the selected event. This is
+# registry-driven so one event can belong to several clusters and repeated
+# logical rows remain visible instead of being collapsed by an else-if map.
+# Input: event_id. Outputs: aligned candidate cluster and configured-match
+# arrays. Random Stuff is excluded because it has no fixed member registry.
+event_get_cluster_candidates_for_event = {
+	set_temp_variable = { event_cluster_candidate_event_id = event_id }
+	clear_array = temp_event_cluster_candidate_id_entries
+	clear_array = temp_event_cluster_candidate_matching_row_count_entries
+	clear_array = temp_event_cluster_candidate_primary_matching_row_count_entries
+	for_loop_effect = {
+		start = 0
+		end = global.event_clusters^num
+		value = candidate_cluster_index
+		set_temp_variable = { event_cluster_id = global.event_clusters^candidate_cluster_index }
+		if = {
+			limit = { NOT = { check_variable = { event_cluster_id = constant:event_cluster_id.random_stuff } } }
+			load_event_cluster_members = yes
+			set_temp_variable = { event_cluster_candidate_matching_row_count = 0 }
+			set_temp_variable = { event_cluster_candidate_primary_matching_row_count = 0 }
+			for_loop_effect = {
+				start = 0
+				end = temp_event_cluster_member_event_id_entries^num
+				value = candidate_member_index
+				if = {
+					limit = {
+						check_variable = {
+							var = temp_event_cluster_member_event_id_entries^candidate_member_index
+							value = event_cluster_candidate_event_id
+							compare = equals
+						}
+					}
+					add_to_temp_variable = { event_cluster_candidate_matching_row_count = 1 }
+					if = {
+						limit = { check_variable = { temp_event_cluster_member_primary_trigger_entries^candidate_member_index = constant:event_cluster_member_primary_trigger.yes } }
+						add_to_temp_variable = { event_cluster_candidate_primary_matching_row_count = 1 }
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { event_cluster_candidate_matching_row_count > 0 } }
+				add_to_array = { array = temp_event_cluster_candidate_id_entries value = event_cluster_id }
+				add_to_array = { array = temp_event_cluster_candidate_matching_row_count_entries value = event_cluster_candidate_matching_row_count }
+				add_to_array = { array = temp_event_cluster_candidate_primary_matching_row_count_entries value = event_cluster_candidate_primary_matching_row_count }
+			}
+		}
+	}
+	set_temp_variable = { event_id = event_cluster_candidate_event_id }
+}
+
+# Compatibility lookup for callers that can display only one cluster. Runtime
+# automatic firing uses the complete candidate arrays above.
+event_belongs_to_cluster = {
+	set_temp_variable = { event_cluster_candidate_id = 0 }
+	event_get_cluster_candidates_for_event = yes
+	if = {
+		limit = { check_variable = { temp_event_cluster_candidate_id_entries^num > 0 } }
+		set_temp_variable = { event_cluster_candidate_id = temp_event_cluster_candidate_id_entries^0 }
 	}
 }
 
@@ -1088,6 +1149,66 @@ event_cluster_get_activation_chance = {
 	multiply_temp_variable = { event_cluster_activation_chance = event_cluster_activation_fatigue_factor }
 	multiply_temp_variable = { event_cluster_activation_chance = event_cluster_activation_participation_factor }
 	round_temp_variable = event_cluster_activation_chance
+	clamp_temp_variable = {
+		var = event_cluster_activation_chance
+		min = constant:event_cluster_probability_bounds.activation_minimum
+		max = constant:event_cluster_probability_bounds.activation_maximum
+	}
+}
+
+# Repeated eligible logical rows carrying the selected trigger event strengthen
+# this cluster's trigger-specific chance without creating duplicate dispatches.
+event_cluster_apply_trigger_multiplicity_bonus = {
+	set_temp_variable = { event_cluster_trigger_matching_eligible_rows = 0 }
+	for_loop_effect = {
+		start = 0
+		end = temp_event_cluster_member_event_id_entries^num
+		value = multiplicity_member_index
+		if = {
+			limit = {
+				check_variable = { temp_event_cluster_member_base_eligible_entries^multiplicity_member_index > 0 }
+				check_variable = {
+					var = temp_event_cluster_member_event_id_entries^multiplicity_member_index
+					value = event_cluster_trigger_event_id
+					compare = equals
+				}
+			}
+			add_to_temp_variable = { event_cluster_trigger_matching_eligible_rows = 1 }
+		}
+	}
+	set_temp_variable = { event_cluster_trigger_multiplicity_factor = constant:event_cluster_trigger_multiplicity.base_factor }
+	set_temp_variable = { event_cluster_trigger_pre_multiplicity_chance = event_cluster_activation_chance }
+	set_temp_variable = { event_cluster_trigger_extra_eligible_rows = 0 }
+	if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_trigger_matching_eligible_rows
+				value = constant:event_cluster_trigger_multiplicity.minimum_rows
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { event_cluster_trigger_bonus_rows = event_cluster_trigger_matching_eligible_rows }
+		subtract_from_temp_variable = { event_cluster_trigger_bonus_rows = constant:event_cluster_trigger_multiplicity.minimum_rows }
+		set_temp_variable = { event_cluster_trigger_extra_eligible_rows = event_cluster_trigger_bonus_rows }
+		multiply_temp_variable = { event_cluster_trigger_bonus_rows = constant:event_cluster_trigger_multiplicity.factor_per_extra_row }
+		add_to_temp_variable = { event_cluster_trigger_multiplicity_factor = event_cluster_trigger_bonus_rows }
+	}
+	multiply_temp_variable = { event_cluster_activation_chance = event_cluster_trigger_multiplicity_factor }
+	round_temp_variable = event_cluster_activation_chance
+	set_temp_variable = { event_cluster_trigger_minimum_boosted_chance = event_cluster_trigger_pre_multiplicity_chance }
+	set_temp_variable = { event_cluster_trigger_minimum_bonus_points = event_cluster_trigger_extra_eligible_rows }
+	multiply_temp_variable = { event_cluster_trigger_minimum_bonus_points = constant:event_cluster_trigger_multiplicity.minimum_points_per_extra_row }
+	add_to_temp_variable = { event_cluster_trigger_minimum_boosted_chance = event_cluster_trigger_minimum_bonus_points }
+	if = {
+		limit = {
+			check_variable = {
+				var = event_cluster_activation_chance
+				value = event_cluster_trigger_minimum_boosted_chance
+				compare = less_than
+			}
+		}
+		set_temp_variable = { event_cluster_activation_chance = event_cluster_trigger_minimum_boosted_chance }
+	}
 	clamp_temp_variable = {
 		var = event_cluster_activation_chance
 		min = constant:event_cluster_probability_bounds.activation_minimum
@@ -2092,6 +2213,7 @@ event_cluster_get_current_activation_breakdown = {
 			set_temp_variable = { event_cluster_prior_optional_participation_ratio = global.event_cluster_probability_state_last_participation_ratio_entries^event_cluster_probability_state_index }
 		}
 		event_cluster_get_activation_chance = yes
+		event_cluster_apply_trigger_multiplicity_bonus = yes
 	}
 }
 
@@ -2305,6 +2427,37 @@ event_cluster_append_optional_order_candidates_by_score = {
 event_cluster_build_optional_participation_order = {
 	clear_array = temp_event_cluster_optional_order_index_entries
 	event_cluster_clear_optional_order_candidates = yes
+	set_temp_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_0 }
+	get_current_chaos_tier_value = yes
+	set_temp_variable = { event_cluster_optional_order_bias_chance = constant:event_cluster_optional_order_bias.tier_0 }
+	if = {
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_final } }
+		set_temp_variable = { event_cluster_optional_order_bias_chance = constant:event_cluster_optional_order_bias.tier_final }
+	}
+	else_if = {
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_4 } }
+		set_temp_variable = { event_cluster_optional_order_bias_chance = constant:event_cluster_optional_order_bias.tier_4 }
+	}
+	else_if = {
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_3 } }
+		set_temp_variable = { event_cluster_optional_order_bias_chance = constant:event_cluster_optional_order_bias.tier_3 }
+	}
+	else_if = {
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_2 } }
+		set_temp_variable = { event_cluster_optional_order_bias_chance = constant:event_cluster_optional_order_bias.tier_2 }
+	}
+	else_if = {
+		limit = { check_variable = { current_chaos_tier_value = constant:chaos_meter_tier_id.tier_1 } }
+		set_temp_variable = { event_cluster_optional_order_bias_chance = constant:event_cluster_optional_order_bias.tier_1 }
+	}
+	set_temp_variable = { event_cluster_optional_order_bias_ceiling = constant:event_cluster_roll.maximum }
+	add_to_temp_variable = { event_cluster_optional_order_bias_ceiling = 1 }
+	set_temp_variable_to_random = {
+		var = event_cluster_optional_order_bias_roll
+		min = constant:event_cluster_roll.minimum
+		max = event_cluster_optional_order_bias_ceiling
+		integer = yes
+	}
 	for_loop_effect = {
 		start = 0
 		end = temp_event_cluster_member_event_id_entries^num
@@ -2372,6 +2525,53 @@ event_cluster_build_optional_participation_order = {
 		}
 	}
 	event_cluster_append_optional_order_candidates_by_score = yes
+	# The minority branch forces one adjacent cross-severity inversion. Building
+	# the monotonic order first makes the configured 80-90 percent rate exact
+	# whenever at least two optional severity bands are present.
+	if = {
+		limit = { check_variable = { event_cluster_optional_order_bias_roll > event_cluster_optional_order_bias_chance } }
+		clear_array = temp_event_cluster_optional_order_boundary_entries
+		set_temp_variable = { event_cluster_optional_order_boundary_scan = 0 }
+		set_temp_variable = { event_cluster_optional_order_boundary_scan_limit = temp_event_cluster_optional_order_index_entries^num }
+		subtract_from_temp_variable = { event_cluster_optional_order_boundary_scan_limit = 1 }
+		while_loop_effect = {
+			limit = { check_variable = { event_cluster_optional_order_boundary_scan < event_cluster_optional_order_boundary_scan_limit } }
+			set_temp_variable = { event_cluster_optional_order_left_member_index = temp_event_cluster_optional_order_index_entries^event_cluster_optional_order_boundary_scan }
+			set_temp_variable = { event_cluster_optional_order_right_position = event_cluster_optional_order_boundary_scan }
+			add_to_temp_variable = { event_cluster_optional_order_right_position = 1 }
+			set_temp_variable = { event_cluster_optional_order_right_member_index = temp_event_cluster_optional_order_index_entries^event_cluster_optional_order_right_position }
+			if = {
+				limit = {
+					NOT = {
+						check_variable = {
+							var = temp_event_cluster_member_danger_entries^event_cluster_optional_order_left_member_index
+							value = temp_event_cluster_member_danger_entries^event_cluster_optional_order_right_member_index
+							compare = equals
+						}
+					}
+				}
+				add_to_array = { array = temp_event_cluster_optional_order_boundary_entries value = event_cluster_optional_order_boundary_scan }
+			}
+			add_to_temp_variable = { event_cluster_optional_order_boundary_scan = 1 }
+		}
+		if = {
+			limit = { check_variable = { temp_event_cluster_optional_order_boundary_entries^num > 0 } }
+			set_temp_variable = { event_cluster_optional_order_boundary_count = temp_event_cluster_optional_order_boundary_entries^num }
+			set_temp_variable_to_random = {
+				var = event_cluster_optional_order_boundary_choice
+				min = 0
+				max = event_cluster_optional_order_boundary_count
+				integer = yes
+			}
+			set_temp_variable = { event_cluster_optional_order_swap_left_position = temp_event_cluster_optional_order_boundary_entries^event_cluster_optional_order_boundary_choice }
+			set_temp_variable = { event_cluster_optional_order_swap_right_position = event_cluster_optional_order_swap_left_position }
+			add_to_temp_variable = { event_cluster_optional_order_swap_right_position = 1 }
+			set_temp_variable = { event_cluster_optional_order_swap_left_member = temp_event_cluster_optional_order_index_entries^event_cluster_optional_order_swap_left_position }
+			set_temp_variable = { event_cluster_optional_order_swap_right_member = temp_event_cluster_optional_order_index_entries^event_cluster_optional_order_swap_right_position }
+			set_variable = { temp_event_cluster_optional_order_index_entries^event_cluster_optional_order_swap_left_position = event_cluster_optional_order_swap_right_member }
+			set_variable = { temp_event_cluster_optional_order_index_entries^event_cluster_optional_order_swap_right_position = event_cluster_optional_order_swap_left_member }
+		}
+	}
 }
 
 prepare_event_cluster_firing = {
@@ -2863,7 +3063,7 @@ build_event_cluster_firing_order = {
 			add_to_temp_variable = { event_cluster_firing_order_batch_index = 1 }
 		}
 	}
-	# Optional rows use the precomputed Low -> Severe randomized order.
+	# Optional rows use the precomputed severity-biased randomized order.
 	for_loop_effect = {
 		start = 0
 		end = temp_event_cluster_optional_order_index_entries^num
@@ -4662,53 +4862,87 @@ try_fire_event_cluster_for_selected_event_legacy = {
 
 try_fire_event_cluster_for_selected_event = {
 	set_temp_variable = { event_cluster_fired = 0 }
-	set_temp_variable = { event_cluster_candidate_id = 0 }
-	event_belongs_to_cluster = yes
+	set_temp_variable = { event_cluster_selected_event_id = event_id }
+	clear_array = temp_event_cluster_successful_candidate_id_entries
+	clear_array = temp_event_cluster_successful_candidate_trigger_row_id_entries
+	clear_array = temp_event_cluster_successful_candidate_chance_entries
+	clear_array = temp_event_cluster_successful_candidate_roll_entries
 	if = {
 		limit = {
 			has_variable = automatic_event_firing_context
 			check_variable = { automatic_event_firing_context > 0 }
-			check_variable = { event_cluster_candidate_id > 0 }
 		}
-		set_temp_variable = { event_cluster_id = event_cluster_candidate_id }
-		set_temp_variable = { event_cluster_trigger_event_id = event_id }
-		set_temp_variable = { event_cluster_trigger_member_row_id = 0 }
-		set_temp_variable = { event_cluster_force_fire = 0 }
-		event_cluster_ensure_probability_state = yes
-		can_event_cluster_fire = yes
-		if = {
-			limit = {
-				check_variable = { event_cluster_can_fire > 0 }
-				check_variable = { event_cluster_trigger_member_row_is_eligible > 0 }
-			}
-			set_temp_variable = { event_cluster_roll_chance = 0 }
-			get_event_cluster_roll_chance = yes
-			set_temp_variable = { event_cluster_random_ceiling = constant:event_cluster_roll.maximum }
-			add_to_temp_variable = { event_cluster_random_ceiling = 1 }
-			set_temp_variable_to_random = {
-				var = event_cluster_roll
-				min = constant:event_cluster_roll.minimum
-				max = event_cluster_random_ceiling
-				integer = yes
-			}
+		event_get_cluster_candidates_for_event = yes
+		set_temp_variable = { event_cluster_candidate_count = temp_event_cluster_candidate_id_entries^num }
+		for_loop_effect = {
+			start = 0
+			end = event_cluster_candidate_count
+			value = candidate_index
 			if = {
-				limit = {
-					check_variable = {
+				limit = { check_variable = { temp_event_cluster_candidate_primary_matching_row_count_entries^candidate_index > 0 } }
+				set_temp_variable = { event_cluster_id = temp_event_cluster_candidate_id_entries^candidate_index }
+				set_temp_variable = { event_cluster_trigger_event_id = event_cluster_selected_event_id }
+				set_temp_variable = { event_cluster_trigger_member_row_id = 0 }
+				set_temp_variable = { event_cluster_force_fire = 0 }
+				event_cluster_ensure_probability_state = yes
+				can_event_cluster_fire = yes
+				if = {
+					limit = {
+						check_variable = { event_cluster_can_fire > 0 }
+						check_variable = { event_cluster_trigger_member_row_is_eligible > 0 }
+					}
+					set_temp_variable = { event_cluster_roll_chance = 0 }
+					get_event_cluster_roll_chance = yes
+					set_temp_variable = { event_cluster_random_ceiling = constant:event_cluster_roll.maximum }
+					add_to_temp_variable = { event_cluster_random_ceiling = 1 }
+					set_temp_variable_to_random = {
 						var = event_cluster_roll
-						value = event_cluster_roll_chance
-						compare = less_than_or_equals
+						min = constant:event_cluster_roll.minimum
+						max = event_cluster_random_ceiling
+						integer = yes
+					}
+					if = {
+						limit = {
+							check_variable = {
+								var = event_cluster_roll
+								value = event_cluster_roll_chance
+								compare = less_than_or_equals
+							}
+						}
+						add_to_array = { array = temp_event_cluster_successful_candidate_id_entries value = event_cluster_id }
+						add_to_array = { array = temp_event_cluster_successful_candidate_trigger_row_id_entries value = event_cluster_trigger_member_row_id }
+						add_to_array = { array = temp_event_cluster_successful_candidate_chance_entries value = event_cluster_roll_chance }
+						add_to_array = { array = temp_event_cluster_successful_candidate_roll_entries value = event_cluster_roll }
+					}
+					else = {
+						set_temp_variable = { event_cluster_activation_result = constant:event_cluster_activation_result.roll_failed }
+						event_cluster_record_failed_activation_roll = yes
 					}
 				}
-				set_temp_variable = { event_cluster_activation_roll = event_cluster_roll }
-				set_temp_variable = { event_cluster_activation_result = constant:event_cluster_activation_result.success }
-				fire_event_cluster_by_temp_id = yes
-			}
-			else = {
-				set_temp_variable = { event_cluster_activation_result = constant:event_cluster_activation_result.roll_failed }
-				event_cluster_record_failed_activation_roll = yes
 			}
 		}
+		if = {
+			limit = {
+				check_variable = { temp_event_cluster_successful_candidate_id_entries^num > 0 }
+			}
+			set_temp_variable = { event_cluster_successful_candidate_count = temp_event_cluster_successful_candidate_id_entries^num }
+			set_temp_variable_to_random = {
+				var = event_cluster_successful_candidate_index
+				min = 0
+				max = event_cluster_successful_candidate_count
+				integer = yes
+			}
+			set_temp_variable = { event_cluster_id = temp_event_cluster_successful_candidate_id_entries^event_cluster_successful_candidate_index }
+			set_temp_variable = { event_cluster_trigger_event_id = event_cluster_selected_event_id }
+			set_temp_variable = { event_cluster_trigger_member_row_id = temp_event_cluster_successful_candidate_trigger_row_id_entries^event_cluster_successful_candidate_index }
+			set_temp_variable = { event_cluster_roll_chance = temp_event_cluster_successful_candidate_chance_entries^event_cluster_successful_candidate_index }
+			set_temp_variable = { event_cluster_activation_roll = temp_event_cluster_successful_candidate_roll_entries^event_cluster_successful_candidate_index }
+			set_temp_variable = { event_cluster_activation_result = constant:event_cluster_activation_result.success }
+			set_temp_variable = { event_cluster_force_fire = 0 }
+			fire_event_cluster_by_temp_id = yes
+		}
 	}
+	set_temp_variable = { event_id = event_cluster_selected_event_id }
 }
 
 initialize_event_cluster_settings = {

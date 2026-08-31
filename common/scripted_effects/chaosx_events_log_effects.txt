@@ -1948,6 +1948,7 @@ events_log_rebuild_open_event_details_view = {
 		set_temp_variable = { events_log_open_detail_cluster_matching_rows = 0 }
 		set_temp_variable = { events_log_open_detail_cluster_matching_row_index = -1 }
 		event_belongs_to_cluster = yes
+		set_temp_variable = { events_log_open_detail_cluster_candidate_count = temp_event_cluster_candidate_id_entries^num }
 		set_temp_variable = { events_log_open_detail_cluster_id = event_cluster_candidate_id }
 		if = {
 			limit = { check_variable = { events_log_open_detail_cluster_id > 0 } }
@@ -1984,6 +1985,10 @@ events_log_rebuild_open_event_details_view = {
 				}
 			}
 			if = {
+				limit = { check_variable = { events_log_open_detail_cluster_candidate_count > 1 } }
+				set_temp_variable = { events_log_open_detail_cluster_activation_mode = 3 }
+			}
+			else_if = {
 				limit = { check_variable = { events_log_open_detail_cluster_matching_rows > 1 } }
 				set_temp_variable = { events_log_open_detail_cluster_activation_mode = 2 }
 			}

@@ -112,7 +112,7 @@ The trigger fires first synchronously after eligibility.
 
 Required rows follow after eligibility.
 
-Optional rows follow in Low, Medium, High, then Severe severity order, with random order within a severity.
+Optional rows normally follow Low, Medium, High, then Severe severity bands, with random order inside each band. The band-preservation chance falls dynamically from 90 percent at Calm World to 80 percent at World Collapse; other multi-band batches invert one random adjacent severity boundary, so a higher-severity member can precede a lower-severity member.
 
 The optional participation chance uses the current tier and severity table, the eligible-count factor, and 0.95 decay per accepted optional row.
 

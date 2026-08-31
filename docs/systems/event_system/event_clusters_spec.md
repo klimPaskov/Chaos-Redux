@@ -147,6 +147,24 @@ The activation formula is:
 
     activation_chance = clamp(round(base × trigger_severity_factor × eligible_count_factor × fatigue_factor × previous_participation_factor), 1, 90)
 
+When the selected trigger event occupies more than one currently eligible logical row in the same cluster, its trigger-specific chance receives:
+
+    multiplicity_factor = 1 + 0.15 × (eligible_matching_rows - 1)
+
+The activation chance is multiplied by that factor and rounded again. Every extra eligible matching row guarantees at least one additional percentage point before the final 1 through 90 percent clamp, so every duplicate strengthens the cluster until the shared activation ceiling is reached.
+
+Only currently eligible matching rows count, and the bonus never creates duplicate event dispatches.
+
+When the selected event belongs to several fixed-member clusters, every cluster in which it owns a configured primary-trigger row evaluates eligibility and calculates and rolls its own final trigger-specific chance independently.
+
+If no roll succeeds, the selected event continues through its ordinary standalone path.
+
+If one roll succeeds, that cluster is selected.
+
+If several rolls succeed, one successful cluster is selected uniformly at random.
+
+Only the selected cluster commits successful activation memory, history, pacing, and cooldown state. A successful but unselected candidate remains unchanged, while a candidate whose valid roll failed receives the ordinary failed-roll fatigue reduction.
+
 The displayed starting chance is the computed automatic activation chance before the activation roll.
 
 An activation chance is never recomputed for a historical row.
@@ -213,9 +231,24 @@ Required rows are guaranteed after ordinary eligibility succeeds.
 
 Optional rows are evaluated after the trigger and required rows.
 
-Optional rows are ordered by Low, Medium, High, then Severe severity.
+Optional ordering uses a Chaos-tier severity bias:
 
-Rows within the same severity use random order.
+| Current tier | Preserve Low to Severe bands |
+| --- | ---: |
+| Calm World | 90 percent |
+| Gathering Storm | 88 percent |
+| Rising Chaos | 86 percent |
+| Chaos Tier | 84 percent |
+| Totalen Chaos | 82 percent |
+| World Collapse | 80 percent |
+
+On the severity-biased path, rows follow Low, Medium, High, then Severe bands and are randomized within each band.
+
+On the remaining path, the system uniformly selects one boundary between adjacent severity bands and swaps the two rows at that boundary. This guarantees one cross-severity inversion whenever at least two optional severity bands are present.
+
+A batch with only one optional severity band has no valid boundary and remains randomized within that band; such batches are excluded from the cross-severity inversion denominator.
+
+Participation rolls and their accepted-member decay use this resolved order, and accepted members dispatch in the same order.
 
 The optional-member table is indexed by current Chaos tier and member severity.
 
@@ -270,7 +303,7 @@ Adding or migrating batch fields must preserve prior successful history snapshot
 
 ## 5.1. Explicit state transitions
 
-An automatic candidate transitions from ordinary-pool selection to ordinary event-system eligibility, then to cluster-only gates, then to two-pass base eligibility, then to activation chance and roll.
+An automatic candidate transitions from ordinary-pool selection to ordinary event-system eligibility, then to complete fixed-cluster membership discovery, per-cluster gates, two-pass base eligibility, duplicate-row adjustment, and independent activation rolls.
 
 A trigger rejected by ordinary event-system eligibility exits cluster evaluation before any cluster roll and continues through standalone handling.
 
@@ -278,7 +311,7 @@ A cluster-gated or preflight-failed attempt exits without changing automatic fat
 
 A valid failed activation roll transitions to ordinary standalone handling after decreasing fatigue by one and without applying cluster pacing or cooldown.
 
-A successful activation transitions to batch preparation, synchronous trigger dispatch, required-row eligibility and guaranteed dispatch, optional severity-ordered rolls, delayed fireability rechecks, history snapshot commit, one pacing update, and one cooldown update.
+A single successful candidate, or one uniformly selected candidate when several rolls succeed, transitions to batch preparation, synchronous trigger dispatch, required-row eligibility and guaranteed dispatch, severity-biased optional rolls, delayed fireability rechecks, history snapshot commit, one pacing update, and one cooldown update.
 
 An optional row transitions from base-eligible to accepted or rejected, and only an accepted optional row increments the current-batch decay count.
 
@@ -448,7 +481,7 @@ The trigger is still eligible and may continue through an ordinary standalone ev
 3. A required row receives 100 percent and Guaranteed only after ordinary eligibility succeeds.
 4. A High or Severe non-trigger row requires another pass-one base-eligible row, while the trigger and a sole configured member remain exempt.
 5. A duplicate Event 6, 9, or 13 group identifies one stable primary trigger row and preserves separate logical rows for later stages.
-6. Optional rows use the tier and severity table, apply the eligible-count factor, and increment decay only after accepted optional dispatch.
+6. Optional rows use the tier and severity table, apply the eligible-count factor, and increment decay only after accepted optional dispatch; their evaluation order preserves severity bands at the tier's 80 through 90 percent bias and otherwise permits cross-severity inversions.
 7. A valid failed automatic roll decreases fatigue by one, while a gated attempt, failed preflight, or manual force leaves fatigue unchanged.
 8. A successful automatic activation increases fatigue by one, updates pacing and cooldown once, and records the previous-participation source only after the batch completes.
 9. A delayed row that becomes invalid is skipped with N/A and its canonical reason without borrowing another batch's context.
@@ -461,6 +494,8 @@ The trigger is still eligible and may continue through an ordinary standalone ev
 16. Fury is Medium, Tensions Rising is Low, and Black Plague is Severe in every cluster-facing presentation.
 17. Event Chaos Level assignments and workbook schema or formula prose remain unchanged.
 18. The event-log and Settings surfaces reuse existing assets without a new visual asset requirement.
+19. Two or more eligible rows carrying the selected event in one cluster increase that cluster's final trigger-specific chance through the bounded multiplicity factor without dispatching the trigger twice.
+20. An event mapped to several clusters rolls every eligible cluster independently, activates no more than one, and selects uniformly among simultaneous successes.
 
 ## 12. Artifact ownership and external validation
 

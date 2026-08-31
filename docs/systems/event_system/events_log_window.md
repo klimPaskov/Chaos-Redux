@@ -189,7 +189,7 @@ The trigger fires first synchronously after ordinary eligibility.
 
 Required rows follow after ordinary eligibility.
 
-Optional rows follow in Low, Medium, High, then Severe order, with random order within each severity.
+Optional rows use a dynamic severity-biased shuffle. Low through Severe bands are preserved in 90 percent of Calm World batches and gradually fall to 80 percent at World Collapse, while the remaining multi-band batches invert one random adjacent severity boundary.
 
 Opening duplicate rows for Events 6, 9, and 13 have explicit stable primary trigger rows.
 
