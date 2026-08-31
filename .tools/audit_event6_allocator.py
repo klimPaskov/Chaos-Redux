@@ -1099,7 +1099,7 @@ def main() -> int:
 
 	# The pre-event crisis surface is intentionally retired. Event 006 must not
 	# expose a pressure category, mission, cost, or queue before its public event.
-	compatibility_triggers = read("common/scripted_triggers/006_independence_wave_compatibility_triggers.txt")
+	compatibility_triggers = read("common/scripted_triggers/006_independence_wave_triggers.txt")
 	require("can_independence_wave_open_crisis = {" in compatibility_triggers, "retired crisis trigger is missing", errors)
 	retired_crisis_trigger = extract_script_block(compatibility_triggers, "can_independence_wave_open_crisis")
 	require("always = no" in retired_crisis_trigger, "pre-event crisis trigger is not hard-disabled", errors)
@@ -1109,7 +1109,7 @@ def main() -> int:
 	require(not crisis_on_actions.exists(), "retired crisis on_annex callback still registers an active on_action file", errors)
 	for relative_path in ("common", "events", "history", "interface"):
 		for path in (ROOT / relative_path).rglob("*.txt"):
-			if path in (crisis_on_actions, ROOT / "common/scripted_effects/006_independence_wave_compatibility_effects.txt"):
+			if path in (crisis_on_actions, ROOT / "common/scripted_effects/006_independence_wave_effects.txt"):
 				continue
 			text = path.read_text(encoding="utf-8-sig")
 			require(
