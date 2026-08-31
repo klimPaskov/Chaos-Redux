@@ -6,6 +6,10 @@ Owner: `/root/event6_country_tranche_europe_med`.
 
 Scope: IW-014 Catalonia/CAT, IW-015 Galicia/GLC, IW-043 Volga Bulgaria/CHU, IW-046 Chuvashia/CHU, IW-057 Far Eastern Republic/FER, IW-058 Assyria/ASY, IW-060 Kurdistan/KUR, IW-081 Lebanon/LEB, and IW-082 Palestine/PAL.
 
+## Superseded note (2026-08-31)
+
+The IW-015 row below is a pre-repair snapshot. Use `subagent_handoffs/006_event6_glc_no_additive_roster_repair_2026-08-30.md` for the current no-additive Castelao ownership decision and roster evidence. Retain this handoff for dated tranche provenance, but do not use its duplicate-Castelao ownership wording or its dated MCP-unavailable statement as current authority.
+
 Verdict: no gameplay or central-registry patch is safe in this tranche. IW-014 is already source-complete and centrally attested. IW-015, IW-043, and IW-058 have package-local source and adapters but remain fail-closed at content attestation and join admission. IW-057 and IW-060 have package-local mechanics but remain package-local pending identity, rights, map, probability, and central-admission evidence. IW-046, IW-081, and IW-082 have planner, loader, and reservation rows but no executable Event 006 package-local source sufficient for admission.
 
 ## Authority and method

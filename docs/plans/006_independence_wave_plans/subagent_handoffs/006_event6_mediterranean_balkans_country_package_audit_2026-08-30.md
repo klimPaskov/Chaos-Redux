@@ -5,6 +5,10 @@ Date: 2026-08-30
 Owner: `event6_country_tranche_med`
 Scope: IW-013, IW-014, IW-015, IW-017, IW-018, IW-019, IW-023, IW-024, IW-026, IW-027, IW-028, IW-029, IW-030, IW-031, IW-038, IW-040, IW-041, IW-044, and IW-045.
 
+## Superseded note (2026-08-31)
+
+The IW-015 row below is a pre-repair snapshot. Use `subagent_handoffs/006_event6_glc_no_additive_roster_repair_2026-08-30.md` for the current no-additive Castelao ownership decision and roster evidence. Retain this handoff for dated package-audit provenance, but do not use its claim that GLC independently recruits or defines a Castelao corps commander as current status.
+
 ## Verdict
 
 No gameplay or package source patch is safe from this audit. Seventeen scoped packages are already source-attested and centrally admitted under the current Event 006 contract, while IW-013/NAV and IW-015/GLC are intentionally adapter-only and fail closed. Their unresolved state/identity/rights issues require an authoritative design decision, not a local wiring change.
