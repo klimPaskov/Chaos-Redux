@@ -8,13 +8,13 @@ Scope: IW-003 Cornwall (`ACX`) current-map anchor verification only.
 
 ## Disposition
 
-A read-only HOI4 map inspection does not identify a current state named Cornwall, and the previously considered state `123` does not resolve as a selected state record in the current map catalog. No map rewrite, state reassignment, ACX promotion, or package-admission change is justified by this evidence.
+A read-only HOI4 map inspection does not identify a current state named Cornwall. State `123` does resolve as a current state when requested directly, but its vanilla localization is “South-West England” and its province list covers more than the audited Cornwall-only geometry. No map rewrite, state reassignment, ACX promotion, or package-admission change is justified by this evidence.
 
 ## MCP evidence
 
 The bounded inspection used `hoi4_map_inspect` with `query = "Cornwall"`, `queryLimit = 50`, `includeOverview = false`, and workspace `mod_chaos_redux_ea3b2d67c2c0`. The server returned `MAP_INSPECTED` with artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8cd3f14ab7c10608ef21c64107d4689cd991cd0c08fdb91a998e01e6f1643031/c9e44a028bd09f5c9653212b0d62e6f3bdb0f31c3815825411ecc53e8899ad0a/map-inspect.bfaf7becc0c8c796.json`.
 
-The map revision and shared revision are `bfaf7becc0c8c796e4a90a965eb38ab8db5b7a4bde2e0f4219c810810172632f`. The catalog reports 13,414 province definitions, 1,081 states, 304 strategic regions, and 534 ports. The query returned `queryMatchCount = 0`, `coordinateMatchCount = 0`, and no inspected state, province, region, or allocation records. A companion inspection with `stateIds = [123]` and the same query also returned no Cornwall match and no resolved selected state record.
+The map revision and shared revision are `bfaf7becc0c8c796e4a90a965eb38ab8db5b7a4bde2e0f4219c810810172632f`. The catalog reports 13,414 province definitions, 1,081 states, 304 strategic regions, and 534 ports. The Cornwall query returned `queryMatchCount = 0`, `coordinateMatchCount = 0`, and no selected query-match records. A companion inspection with `stateIds = [123]` returned `inspectedStateCount = 1` but still no Cornwall query match. The vanilla state record is `history/states/123-Cornwall.txt` with localization `STATE_123 = "South-West England"` and provinces `540 3422 3463 6526 9562 11406`; the current package binding therefore correctly rejects it as a unique Cornwall state.
 
 ## Validation boundary
 
