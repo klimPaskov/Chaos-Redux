@@ -634,6 +634,56 @@ independence_wave_release_one_frozen_country = {
 			}
 		}
 	}
+	# A plan array stores country scopes as variable IDs. When an absent carrier
+	# is materialized, replace the planned row and every aligned state target with
+	# the live country ID before any later executor reads those arrays. Without
+	# this rebinding, the transfer loop can still target the pre-materialization
+	# absent scope even though the release target was successfully created.
+	if = {
+		limit = {
+			has_event_target = independence_wave_execution_country
+			event_target:independence_wave_execution_country = { exists = yes }
+			check_variable = {
+				var = independence_wave_execution_country_row
+				value = global.liberation_plan_countries^num
+				compare = less_than
+			}
+		}
+		set_variable = {
+			global.liberation_plan_countries^independence_wave_execution_country_row = event_target:independence_wave_execution_country
+		}
+		set_temp_variable = { independence_wave_execution_state_rebind_index = constant:independence_wave_plan.first_array_index }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = independence_wave_execution_state_rebind_index
+					value = global.liberation_plan_states^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.liberation_plan_state_country_owners^independence_wave_execution_state_rebind_index
+						value = constant:liberation_plan_owner.independence_wave
+						compare = equals
+					}
+					check_variable = {
+						var = global.liberation_plan_state_package_ids^independence_wave_execution_state_rebind_index
+						value = independence_wave_execution_package_id
+						compare = equals
+					}
+				}
+				set_variable = {
+					global.liberation_plan_state_target_countries^independence_wave_execution_state_rebind_index = event_target:independence_wave_execution_country
+				}
+				var:global.liberation_plan_states^independence_wave_execution_state_rebind_index = {
+					set_variable = { liberation_release_target_country = event_target:independence_wave_execution_country }
+				}
+			}
+			add_to_temp_variable = { independence_wave_execution_state_rebind_index = constant:independence_wave_plan.loop_increment }
+		}
+	}
 	# Dynamic creation occurs after the initial absent-target core pass. Add the
 	# frozen package cores again now that the live target exists; this is a no-op
 	# for existing shells and ordinary release targets and gives dynamic carriers
