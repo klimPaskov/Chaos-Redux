@@ -53,8 +53,11 @@ Canonical reference families:
 - Missions and decision categories:
   C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/missions
   C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/decision_categories
-- Achievements, technologies, special projects, and officer corps:
+- Achievements:
   C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements
+- Achievement creation workflow inputs (not reference art):
+  C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/achievements/template
+- Technologies, special projects, and officer corps:
   C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/technologies
   C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/special_projects
   C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/icons/officer_corps_spirits
@@ -66,6 +69,16 @@ Canonical reference families:
 
 Inspect the matching contact sheet before individual references. Reference PNGs
 are review material, never final art.
+
+Achievement-specific workflow:
+- Inspect `icons/achievements/contact_sheet.png` and the matching achievement references before generation; the `icons/achievements/template/` folder is workflow input, not a reference family.
+- For each new achievement, use ImageGen to create one original subject on a genuinely transparent background, with no achievement frame, square background, red cross, text, or fake checkerboard. Process it into one centered 64x64 color subject layer and retain its native source PNG, prompt, processed PNG, and hashes; do not generate three unrelated state artworks.
+- Use the exact supplied files `icons/achievements/template/achievement_template.png`, `icons/achievements/template/achievement_template_grey.png`, and `icons/achievements/template/overlay.png` as immutable 64x64 inputs; the first is the completed background, the second is the grey and not-eligible background, and the third is the unchanged red-cross overlay.
+- Derive the grey source deterministically from the color subject with canvas, position, and alpha preserved, then build the not-eligible source by compositing the unchanged template overlay on top of that grey source at exact 64x64 alignment.
+- Run `process_achievement_icons.py` on the complete color/grey/not-eligible source triplet so it places the completed background beneath the color source and the grey background beneath both state sources; migration of an existing triplet preserves supplied state layers and never derives a missing not-eligible layer.
+- Keep final DDS files directly under `gfx/achievements/` as `<achievement_id>.dds`, `<achievement_id>_grey.dds`, and `<achievement_id>_not_eligible.dds`, using the exact registered achievement id and no event subfolder.
+- Verify exact 64x64 dimensions, immutable template and overlay hashes/pixels, source-to-output alpha-compositing equality, strict final DDS decode, native-size triplet contact sheet, and a handoff with all source/processed/runtime paths and any sprite aliases or review state.
+- Use `process_achievement_icons.py` for the achievement DDS triplet; do not run the generic single-image converter independently on the three final achievement states.
 
 Custom-unit counter gate:
 - The parent must provide the exact installed-vanilla counter definition and DDS paths, owning consumer/token, required states/sizes, and matching reference family.

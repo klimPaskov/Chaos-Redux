@@ -55,15 +55,15 @@ The checksum- and frame-level provenance for the 2026-08-04 expansion is recorde
 ## Achievement workflow inputs (excluded from coverage and contact sheets)
 
 These exact PNGs were supplied as Chaos Redux workflow inputs, not as Vanilla reference art.
-They are kept beside the achievement references for the reusable processor and are excluded from the `icons/achievements` count and `contact_sheet.png`.
-The existing `overlay.png` is the unchanged red not-eligible overlay and is excluded for the same reason.
+They are kept in `icons/achievements/template/` for the reusable processor and are excluded from the `icons/achievements` count and `contact_sheet.png`.
+The `template/overlay.png` file is the unchanged red not-eligible overlay and is excluded for the same reason.
 The completed background bytes came from `C:/Users/klimp/Downloads/achievement_template.png`, and the grey background bytes came from `C:/Users/klimp/Downloads/achievement_template_grey.png`.
 
 | Category | Workflow PNG | Size | Source kind | Contact sheet | SHA-256 (PNG) |
 | --- | --- | ---: | --- | --- | --- |
-| Achievement completed background | `icons/achievements/achievement_template.png` | 64x64 | User-provided workflow input | — | `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA` |
-| Achievement grey/not-eligible background | `icons/achievements/achievement_template_grey.png` | 64x64 | User-provided workflow input | — | `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022` |
-| Achievement not-eligible overlay | `icons/achievements/overlay.png` | 64x64 | Existing unchanged workflow input | — | `89BC80C6AC975BF6F1FF000FF3070B20C337BFB8B8AE966AE35A5540C004D6DD` |
+| Achievement completed background | `icons/achievements/template/achievement_template.png` | 64x64 | User-provided workflow input | — | `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA` |
+| Achievement grey/not-eligible background | `icons/achievements/template/achievement_template_grey.png` | 64x64 | User-provided workflow input | — | `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022` |
+| Achievement not-eligible overlay | `icons/achievements/template/overlay.png` | 64x64 | Existing unchanged workflow input | — | `89BC80C6AC975BF6F1FF000FF3070B20C337BFB8B8AE966AE35A5540C004D6DD` |
 
 ## Decision category pictures
 

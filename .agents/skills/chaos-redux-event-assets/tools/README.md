@@ -87,16 +87,16 @@ Each source triplet must contain a base, `_grey`, and `_not_eligible` state, and
 The processor does not resize, crop, alpha-trim, grayscale, recolor, redraw, filter, or otherwise preprocess any source layer.
 Completed output is the supplied completed background beneath the unchanged completed layer; grey output is the supplied grey background beneath the unchanged `_grey` layer; and not-eligible output is the supplied grey background beneath the unchanged `_not_eligible` layer.
 Only normal alpha compositing occurs between each background and its source layer, so an opaque custom source background may hide the new bottom layer.
-The existing `overlay.png` remains available as an unchanged future source-triplet overlay, but this preservation workflow never derives or rebuilds a not-eligible state from grey plus overlay.
+For new achievement creation, build a complete transparent source triplet before running the processor: keep the colour subject as the completed layer, create a deterministic grayscale copy as the grey layer, and alpha-composite `assets/vanilla_reference/icons/achievements/template/overlay.png` unchanged above that grayscale copy as the not-eligible layer. This preservation processor then places the supplied backgrounds beneath those three source layers. Existing triplet migrations remain preservation-only and must not rebuild a supplied not-eligible state.
 
 PNG and current runtime DDS inputs are accepted.
 DDS inputs are checked with the strict canonical BGRA parser first, then noncanonical, compressed, mipped, or truncated source files use Pillow's DDS decoder with `ImageFile.LOAD_TRUNCATED_IMAGES = True` enabled only during that decode.
 The source fallback does not weaken the strict canonical parser used for every final output and audit.
 The base filename is the achievement id unless `--achievement-id` is supplied for one selected directory triplet or explicit triplet.
 
-The processor uses the skill-owned `assets/vanilla_reference/icons/achievements/achievement_template.png` completed background and `achievement_template_grey.png` grey/not-eligible background by default.
+The processor uses the skill-owned `assets/vanilla_reference/icons/achievements/template/achievement_template.png` completed background and `assets/vanilla_reference/icons/achievements/template/achievement_template_grey.png` grey/not-eligible background by default.
 The two user-provided background inputs are excluded from reference counts and contact sheets; their SHA-256 values are `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA` and `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`.
-The unchanged overlay is also excluded from reference counts and contact sheets.
+The unchanged overlay at `assets/vanilla_reference/icons/achievements/template/overlay.png` is also excluded from reference counts and contact sheets.
 
 Always keep source triplets and outputs in separate directories unless replacement is explicitly intended with `--in-place --force`.
 The processor requires a complete triplet, refuses non-64x64 states, refuses a source triplet whose unchanged outer template border is detected, refuses existing output files without `--force`, and never silently derives missing state layers.

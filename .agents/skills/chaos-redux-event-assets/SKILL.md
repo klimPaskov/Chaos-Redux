@@ -381,10 +381,10 @@ The tree is semantic, not a bank of interchangeable pictures. Use the folder for
 
 The canonical `assets/vanilla_reference/` tree remains the source of truth for exact engine surfaces and semantic ownership.
 
-The reusable achievement not-eligible compositing overlay lives at
-`icons/achievements/overlay.png`. It is a workflow
-input rather than a reference example, so it is excluded from the achievement
-contact sheet and coverage count.
+The reusable achievement creation inputs live under `icons/achievements/template/`.
+The actual supplied filenames are `achievement_template.png` (completed background), `achievement_template_grey.png` (grey and not-eligible background), and `overlay.png` (unchanged red-cross not-eligible overlay).
+They are workflow inputs rather than reference examples, so they are excluded from the achievement contact sheet and coverage count.
+Preserve these supplied files byte-for-byte and at their exact native alignment.
 
 Do not add new reference images outside the skill-local `assets/` root. Add
 semantic references under `assets/vanilla_reference/` with exact provenance,
@@ -1010,25 +1010,37 @@ Read the matching canonical catalog entries and inspect the owning `.gfx`, `.gui
 
 Achievement icons should be compact and readable at 64x64.
 
-Treat each existing achievement triplet as three authoritative state layers and compose the supplied workflow backgrounds underneath those layers.
+Inspect `assets/vanilla_reference/icons/achievements/contact_sheet.png` and the matching individual references before creating an achievement icon. The contact sheet and reference examples are review material, while the `template/` folder below is a separate workflow-input folder excluded from the achievement reference count.
 
-- `assets/vanilla_reference/icons/achievements/achievement_template.png` is the user-provided completed-state background.
-- `assets/vanilla_reference/icons/achievements/achievement_template_grey.png` is the user-provided grey and not-eligible background.
-- `assets/vanilla_reference/icons/achievements/overlay.png` is the existing red not-eligible overlay and must remain unchanged.
+### New achievement creation
 
-These three files are workflow inputs, not Vanilla references, and are excluded from the achievement contact sheet and coverage count. Record their source and SHA-256 in the asset handoff when a package uses them.
+For each new achievement, use `$imagegen` to design one original subject on a genuinely transparent background with the inspected achievement references guiding framing, density, contrast, and readability. Request no achievement frame, square background, red cross, text, or fake checkerboard. Process the result into one centered 64x64 color subject layer, retain the native ImageGen source PNG, prompt, processed PNG, and hashes, and do not independently generate three state artworks or borrow another icon type.
 
-Every migration source must provide a complete `<achievement_id>.{png,dds}`, `<achievement_id>_grey.{png,dds}`, and `<achievement_id>_not_eligible.{png,dds}` triplet, and every decoded state layer must be exactly 64x64. The processor must preserve each supplied state layer at its native 64x64 canvas and exact position without resizing, cropping, alpha-trimming, grayscale conversion, recoloring, redrawing, filtering, or other preprocessing.
+Use these exact supplied workflow inputs and do not invent, rename, move, resize, crop, trim, recolor, redraw, filter, or replace them:
 
-Build the exact three-state contract:
+```text
+assets/vanilla_reference/icons/achievements/template/achievement_template.png
+assets/vanilla_reference/icons/achievements/template/achievement_template_grey.png
+assets/vanilla_reference/icons/achievements/template/overlay.png
+```
 
-1. Completed: `achievement_template.png` as the bottom layer with the supplied completed state unchanged as the top layer.
-2. Grey: `achievement_template_grey.png` as the bottom layer with the supplied `_grey` state unchanged as the top layer.
-3. Not eligible: `achievement_template_grey.png` as the bottom layer with the supplied `_not_eligible` state unchanged as the top layer.
+`achievement_template.png` is the completed-state background, `achievement_template_grey.png` is the grey and not-eligible background, and `overlay.png` is the unchanged red-cross not-eligible overlay. The supplied files are 64x64 workflow inputs; record their source and SHA-256 in the manifest or handoff, with the currently verified hashes `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`, `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`, and `89BC80C6AC975BF6F1FF000FF3070B20C337BFB8B8AE966AE35A5540C004D6DD` respectively.
 
-Normal alpha compositing is the only pixel interaction between a template and a state layer. An opaque custom background in a supplied state may completely hide the new bottom layer and is accepted. The existing `overlay.png` remains available as the unchanged red overlay for future source-triplet creation, but migration never derives a not-eligible state from grey plus overlay and never replaces a supplied not-eligible layer.
+Build the three complete source layers deterministically from the one processed color subject, preserving the 64x64 canvas, exact position, and alpha alignment:
 
-Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` for the reusable triplet-preservation and DDS handoff. Directory mode collects complete base, `_grey`, and `_not_eligible` triplets and never derives missing states. Use `--input <source_triplet_directory>` for a bulk pass, add `--achievement-id <achievement_id>` to select one triplet, or provide all three explicit paths with `--completed`, `--grey`, and `--not-eligible`. A single source file is not a valid preservation input.
+1. Completed source: the processed transparent color subject unchanged.
+2. Grey source: a deterministic grayscale conversion of that same subject, with its canvas, alignment, and alpha preserved.
+3. Not-eligible source: the deterministic grey source with the unchanged `template/overlay.png` composited on top at the exact 64x64 alignment.
+
+Then use `process_achievement_icons.py` to apply the supplied backgrounds beneath those three source layers: `template/achievement_template.png` beneath the completed source, `template/achievement_template_grey.png` beneath the grey source, and `template/achievement_template_grey.png` beneath the not-eligible source. Normal alpha compositing is the only pixel interaction. Do not derive a not-eligible state from a completed or runtime grey output, recolor or resize the red cross, or feed a processed output back as a source layer.
+
+### Existing-triplet migration
+
+For an existing achievement, provide the complete `<achievement_id>.{png,dds}`, `<achievement_id>_grey.{png,dds}`, and `<achievement_id>_not_eligible.{png,dds}` source triplet to the processor. Migration preserves each supplied state layer at its native 64x64 canvas and exact position without resizing, cropping, alpha-trimming, grayscale conversion, recoloring, redrawing, filtering, or other preprocessing; it never derives a missing not-eligible state from grey plus the overlay and never replaces a supplied not-eligible layer.
+
+Every decoded source state must be exactly 64x64, and the processor must fail closed when a state is missing or a source exposes an already-applied template border. Keep the source triplet separate from processed outputs and use `--in-place --force` only for an intentional replacement.
+
+Use `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py` for the reusable background composition, triplet-preservation, strict validation, and DDS handoff. Its default backgrounds resolve from `assets/vanilla_reference/icons/achievements/template/`. Directory mode collects complete base, `_grey`, and `_not_eligible` triplets and never derives missing states. Use `--input <source_triplet_directory>` for a bulk pass, add `--achievement-id <achievement_id>` to select one triplet, or provide all three explicit paths with `--completed`, `--grey`, and `--not-eligible`. A single source file is not a valid processor input.
 
 DDS sources use the strict canonical BGRA parser first, then a Pillow DDS fallback with `ImageFile.LOAD_TRUNCATED_IMAGES = True` enabled only while decoding compressed, mipped, noncanonical, or truncated current inputs; this fallback never weakens the strict final-output validator. PNG and DDS state layers are still required to decode to exactly 64x64.
 
@@ -1064,7 +1076,9 @@ gfx/achievements/<achievement_id>_not_eligible.dds
 
 When renaming or adding achievement ids, update `common/achievements/`, `localisation/english/chaosx_achievements_l_english.yml`, `interface/chaosx_achievements.gfx`, the three DDS variants in `gfx/achievements/`, and any docs or manifests that list the final DDS paths. If the achievement registry owns a single `unique_id`, keep it as one root-level registry file and group event-owned achievements by event section inside the file instead of splitting it into per-event achievement files.
 
-Inspect the Vanilla triplets in `icons/achievements/` for scale and state readability, then use the mandatory skill-owned workflow inputs above for every Chaos Redux achievement. Keep all three states aligned to the exact achievement id.
+Inspect the Vanilla triplets in `icons/achievements/` for scale and state readability, then use the mandatory skill-owned workflow inputs above for every Chaos Redux achievement. Keep the generated color, grey, and not-eligible source layers and all three runtime states aligned to the exact achievement id.
+
+Validation and handoff must retain the source color subject, deterministic grey source, not-eligible source with the unchanged overlay, all three composited review PNGs, the native-size contact sheet, the three template hashes, strict DDS decode and pixel-equality evidence, and the final root-only DDS paths. The handoff must identify the exact achievement id, `gfx/achievements/` triplet, any registered achievement sprite aliases, source and processed paths, and any remaining needs-user-review or blocked state; the parent must review the contact sheet before wiring or completion.
 
 ## 20. Flags
 

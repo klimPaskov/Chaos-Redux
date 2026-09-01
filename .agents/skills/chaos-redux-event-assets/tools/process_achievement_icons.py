@@ -73,7 +73,7 @@ def _skill_root() -> Path:
 
 
 def _default_template_paths() -> tuple[Path, Path]:
-    root = _skill_root() / "assets" / "vanilla_reference" / "icons" / "achievements"
+    root = _skill_root() / "assets" / "vanilla_reference" / "icons" / "achievements" / "template"
     return root / "achievement_template.png", root / "achievement_template_grey.png"
 
 
