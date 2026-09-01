@@ -143,10 +143,7 @@ separate manpower liability. Partial payments reduce a row's weighted debt in
 the same proportion as its exact outstanding quantity. A final payment clears
 the residual exactly.
 
-Custom provider profiles 130-148 retain their exact Africa, CBRN, clone, and
-Kruger equipment tokens and use the anomalous-provider debt class rather than a
-generic proxy. Their affordability, settlement, standardization-loss, salvage,
-and rollback paths use the same exact profile totals.
+Custom provider profiles 130-148 retain their exact Africa, CBRN, clone, and generic project-force equipment tokens and use the anomalous-provider debt class rather than a generic proxy. Their affordability, settlement, standardization-loss, salvage, and rollback paths use the same exact profile totals.
 
 An unaccounted lot can be selected and settled as one exact transaction. Every
 outstanding person, weapon, vehicle, chassis, train, fuel, or anomalous-resource

@@ -119,6 +119,16 @@ Each family stage applies a cumulative persistent modifier while the country rem
 
 The mapped vanilla technologies remain unchanged. The powerful identity comes from the Event 016 persistent project modifiers and the hidden reusable operational technologies, so other events can grant the custom API rewards without globally rewriting vanilla research.
 
+## Reusable force-package access
+
+The hidden operational technology is the complete access boundary for each reusable unit family. Clone Infantry, Aryan Clone Infantry, Autonomous Robots, Paleogenetic Creatures, Xenobiological Assault Organisms, Portal Raiders, and Temporal Guards become normal trainable battalions only after their exact access technology is present. Their package-owned starting templates remain locked examples, but the battalion itself is available to the division designer and has no artificial division cap. Equipment, fuel, manpower where applicable, production capacity, and the family's support burdens are the scaling limits. Alien Infantry is the sole exception: its battalion and locked landing cohort remain unavailable for ordinary recruitment and can only arrive through the source-counted D'Rhondan landing API after exactly 2,000 laser weapons are reserved.
+
+Base Clone Infantry uses 1,000 normal manpower, 90 infantry weapons, and one `clone_equipment` per battalion. Its 20-width example has ten battalions, 70 organisation, and deliberately weak 20 HP. Every whole `clone_equipment` held in the national stockpile contributes exactly ten weekly manpower through the clone-reserve dynamic modifier; reconciliation reads the physical stockpile, so captured equipment changes the current holder's contribution without creating a parallel ownership ledger. Kruger's weaponized refinement and Mengele's Aryan refinement remain separate elite paths, and Aryan clones retain ordinary German infantry models.
+
+Authorized AI countries receive family-specific target templates and production floors only while they hold the corresponding access technology. Event 019 providers 504-510 and 522 expose the same generic families through the shared registry. Event 019's request payment is its own transaction; after a formation is generated, the central obligation ledger records that formation's full manpower and equipment bill. Provider 508 instead uses the alien contact and landing reservation API, and its cleanup revokes only Event 019's source receipt.
+
+The Event 016 CXT extension registers all seven concrete equipment types, all eight frontline tokens, and the D'Rhondan envoy craft through one idempotent carrier. The shared CXT helpers install ordinary generic battalions and equipment directly, while Alien Infantry keeps its package-owned locked-template and contact behavior.
+
 Xenobiological control remains mechanically exclusive. Chemical signaling improves specialist defense, reliability, and supply economy. Neural bonding improves organization and soft attack. Machine mediation emphasizes hard attack and breakthrough. The researched protocol takes longer and costs more to select, then produces the most supply-efficient balanced package. The base `brilliant_scientist_xenobiological_formations_tech` remains the stable family output, while exactly one `brilliant_scientist_xeno_<method>_control_tech` records and applies the selected control architecture.
 
 The exact biological-agent character flags are:
@@ -215,6 +225,8 @@ Weaponization certification leaves `brilliant_scientist_singularity_arming_state
 No missing sprite is registered or referenced. New projects intentionally reuse registered Chaos Redux or vanilla special-project icons that match their facility class. The decision layer uses existing generic research and operation icons.
 
 Dedicated project art is present for the live portfolio. The sixteen special-project cards are `161x98` DDS files under `gfx/interface/special_project/project_icons/016_brilliant_scientist/`, the sixty family-stage decision cards are `32x32` DDS files under `gfx/interface/decisions/016_brilliant_scientist/projects/`, and `interface/016_brilliant_scientist_project_icons.gfx` registers both sets. The exact sprite-to-consumer ledger and processing evidence are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_project_icon_asset_handoff.md`. These cards are presentation-only and do not change project prerequisites, costs, or rewards.
+
+Reusable combat families use the vanilla counter filename contract. Large counters live under `gfx/interface/counters/divisions_large/` as `unit_<subunit>_icon.dds`, and map counters live under `gfx/interface/counters/divisions_small/` as `onmap_unit_<subunit>_icon.dds`. The required subunit stems are `clone_infantry`, `aryan_clone_infantry`, `autonomous_robot`, `paleogenetic_creature`, `xenobiological_assault_organism`, `portal_raider`, `alien_infantry`, and `temporal_guard`. These counter consumers do not need separate sprite registrations; technology, equipment, decision, and project icons retain their explicit entries in the Event 016 interface files.
 
 ## Future plans
 

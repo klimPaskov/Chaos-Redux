@@ -8,40 +8,40 @@
 # Biological weapons reuse their existing delivery technologies and equipment.
 # ============================================================================
 
-# COUNTRY scope. Existing formations survive a project shutdown, but every
-# matching template immediately loses both queue access and its division cap.
-# The runtime rebuild selectively restores only operational project families.
+# COUNTRY scope. Existing formations survive a project shutdown, but matching
+# default templates immediately lose queue access. Any legacy template cap is
+# removed because ordinary recruitment scales exclusively through manpower,
+# equipment, fuel, and production; only scripted formation receipts are capped.
 brilliant_scientist_revoke_project_force_template_authorizations = {
-	set_temp_variable = { brilliant_scientist_project_force_zero_division_cap = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = { has_template = "Quantum Transit Raiders" }
 		set_division_force_allow_recruiting = { division_template = "Quantum Transit Raiders" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Quantum Transit Raiders" division_cap = brilliant_scientist_project_force_zero_division_cap }
+		clear_division_template_cap = { division_template = "Quantum Transit Raiders" }
 	}
 	if = {
 		limit = { has_template = "Replicated Guard Cadre" }
 		set_division_force_allow_recruiting = { division_template = "Replicated Guard Cadre" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Replicated Guard Cadre" division_cap = brilliant_scientist_project_force_zero_division_cap }
+		clear_division_template_cap = { division_template = "Replicated Guard Cadre" }
 	}
 	if = {
 		limit = { has_template = "Autonomous Robot Cohort" }
 		set_division_force_allow_recruiting = { division_template = "Autonomous Robot Cohort" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Autonomous Robot Cohort" division_cap = brilliant_scientist_project_force_zero_division_cap }
+		clear_division_template_cap = { division_template = "Autonomous Robot Cohort" }
 	}
 	if = {
 		limit = { has_template = "Paleogenetic Shock Pack" }
 		set_division_force_allow_recruiting = { division_template = "Paleogenetic Shock Pack" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Paleogenetic Shock Pack" division_cap = brilliant_scientist_project_force_zero_division_cap }
+		clear_division_template_cap = { division_template = "Paleogenetic Shock Pack" }
 	}
 	if = {
 		limit = { has_template = "Xenobiological Assault Organisms" }
 		set_division_force_allow_recruiting = { division_template = "Xenobiological Assault Organisms" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_zero_division_cap }
+		clear_division_template_cap = { division_template = "Xenobiological Assault Organisms" }
 	}
 	if = {
 		limit = { has_template = "Temporal Continuity Guard" }
 		set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = no }
-		set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_zero_division_cap }
+		clear_division_template_cap = { division_template = "Temporal Continuity Guard" }
 	}
 }
 
@@ -57,13 +57,13 @@ brilliant_scientist_clear_project_force_runtime_package = {
 	# while receipts owned by Kruger, Mengele, DHR, or future events remain.
 	set_temp_variable = { alien_infantry_contact_source_id = constant:alien_infantry_contact_source.event019_provider_508 }
 	alien_infantry_revoke_contact = yes
-	set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_force_paleogenetics_division_cap = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_force_xenobiological_division_cap = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_force_alien_arms_division_cap = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_project_force_temporal_division_cap = constant:brilliant_scientist_value.zero }
+	clear_variable = brilliant_scientist_project_force_teleportation_division_cap
+	clear_variable = brilliant_scientist_project_force_cloning_division_cap
+	clear_variable = brilliant_scientist_project_force_robotics_division_cap
+	clear_variable = brilliant_scientist_project_force_paleogenetics_division_cap
+	clear_variable = brilliant_scientist_project_force_xenobiological_division_cap
+	clear_variable = brilliant_scientist_project_force_alien_arms_division_cap
+	clear_variable = brilliant_scientist_project_force_temporal_division_cap
 	brilliant_scientist_revoke_project_force_template_authorizations = yes
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_portal_warfare_granted } } set_technology = { brilliant_scientist_portal_warfare_tech = 0 popup = no } }
 	if = { limit = { NOT = { has_country_flag = chaosx_custom_technology_clone_formations_granted } } set_technology = { brilliant_scientist_clone_formations_tech = 0 popup = no } }
@@ -193,9 +193,10 @@ brilliant_scientist_apply_biological_force_history = {
 	}
 }
 
-# COUNTRY scope. Creates only exact active-family templates. Prototype history
-# can preserve a stranded cadre, but recruiting requires the matching physical
-# facility and Deployment history. Every project template remains locked.
+# COUNTRY scope. Creates only exact active-family templates. Each ordinary
+# family becomes recruitable as soon as its operational technology is active;
+# production, equipment, fuel, and manpower are the scaling constraints. The
+# supplied baseline template remains locked, but carries no division cap.
 brilliant_scientist_define_project_force_templates = {
 	if = {
 		limit = {
@@ -321,6 +322,7 @@ brilliant_scientist_define_project_force_templates = {
 	if = {
 		limit = { has_template = "Quantum Transit Raiders" }
 		set_division_template_lock = { division_template = "Quantum Transit Raiders" is_locked = yes }
+		clear_division_template_cap = { division_template = "Quantum Transit Raiders" }
 		if = {
 			limit = {
 				OR = {
@@ -328,111 +330,84 @@ brilliant_scientist_define_project_force_templates = {
 					has_country_flag = chaosx_custom_technology_portal_operational
 				}
 			}
-			set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_project_force_cap.teleportation }
-			set_division_template_cap = { division_template = "Quantum Transit Raiders" division_cap = brilliant_scientist_project_force_teleportation_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Quantum Transit Raiders" force_allow_recruiting = yes }
 		}
 		else = {
-			set_variable = { brilliant_scientist_project_force_teleportation_division_cap = constant:brilliant_scientist_value.zero }
-			set_division_template_cap = { division_template = "Quantum Transit Raiders" division_cap = brilliant_scientist_project_force_teleportation_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Quantum Transit Raiders" force_allow_recruiting = no }
 		}
 	}
 	if = {
 		limit = { has_template = "Replicated Guard Cadre" }
 		set_division_template_lock = { division_template = "Replicated Guard Cadre" is_locked = yes }
-		if = {
-			limit = { has_country_flag = brilliant_scientist_project_force_cloning_active }
-			set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
-		}
+		clear_division_template_cap = { division_template = "Replicated Guard Cadre" }
 		if = {
 			limit = {
 				OR = {
-					brilliant_scientist_has_cloning_force_deployment = yes
+					has_country_flag = brilliant_scientist_project_force_cloning_active
 					has_country_flag = chaosx_custom_technology_clone_operational
 				}
 			}
-			set_variable = { brilliant_scientist_project_force_cloning_division_cap = constant:brilliant_scientist_project_force_cap.cloning }
-			set_division_template_cap = { division_template = "Replicated Guard Cadre" division_cap = brilliant_scientist_project_force_cloning_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Replicated Guard Cadre" force_allow_recruiting = yes }
 		}
 		else = {
-			set_division_template_cap = { division_template = "Replicated Guard Cadre" division_cap = brilliant_scientist_project_force_cloning_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Replicated Guard Cadre" force_allow_recruiting = no }
 		}
 	}
 	if = {
 		limit = { has_template = "Autonomous Robot Cohort" }
 		set_division_template_lock = { division_template = "Autonomous Robot Cohort" is_locked = yes }
-		if = {
-			limit = { has_country_flag = brilliant_scientist_project_force_robotics_active }
-			set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
-		}
+		clear_division_template_cap = { division_template = "Autonomous Robot Cohort" }
 		if = {
 			limit = {
 				OR = {
-					brilliant_scientist_has_robotics_force_deployment = yes
+					has_country_flag = brilliant_scientist_project_force_robotics_active
 					has_country_flag = chaosx_custom_technology_robot_operational
 				}
 			}
-			set_variable = { brilliant_scientist_project_force_robotics_division_cap = constant:brilliant_scientist_project_force_cap.robotics }
-			set_division_template_cap = { division_template = "Autonomous Robot Cohort" division_cap = brilliant_scientist_project_force_robotics_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Autonomous Robot Cohort" force_allow_recruiting = yes }
 		}
 		else = {
-			set_division_template_cap = { division_template = "Autonomous Robot Cohort" division_cap = brilliant_scientist_project_force_robotics_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Autonomous Robot Cohort" force_allow_recruiting = no }
 		}
 	}
 	if = {
 		limit = { has_template = "Paleogenetic Shock Pack" }
 		set_division_template_lock = { division_template = "Paleogenetic Shock Pack" is_locked = yes }
-		if = {
-			limit = { has_country_flag = brilliant_scientist_project_force_paleogenetics_active }
-			set_variable = { brilliant_scientist_project_force_paleogenetics_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
-		}
+		clear_division_template_cap = { division_template = "Paleogenetic Shock Pack" }
 		if = {
 			limit = {
 				OR = {
-					brilliant_scientist_has_paleogenetics_force_deployment = yes
+					has_country_flag = brilliant_scientist_project_force_paleogenetics_active
 					has_country_flag = chaosx_custom_technology_paleogenetic_operational
 				}
 			}
-			set_variable = { brilliant_scientist_project_force_paleogenetics_division_cap = constant:brilliant_scientist_project_force_cap.paleogenetics }
-			set_division_template_cap = { division_template = "Paleogenetic Shock Pack" division_cap = brilliant_scientist_project_force_paleogenetics_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Paleogenetic Shock Pack" force_allow_recruiting = yes }
 		}
 		else = {
-			set_division_template_cap = { division_template = "Paleogenetic Shock Pack" division_cap = brilliant_scientist_project_force_paleogenetics_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Paleogenetic Shock Pack" force_allow_recruiting = no }
 		}
 	}
 	if = {
 		limit = { has_template = "Xenobiological Assault Organisms" }
 		set_division_template_lock = { division_template = "Xenobiological Assault Organisms" is_locked = yes }
-		if = {
-			limit = { has_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active }
-			set_variable = { brilliant_scientist_project_force_xenobiological_division_cap = constant:brilliant_scientist_project_force_cap.prototype_demonstration }
-		}
+		clear_division_template_cap = { division_template = "Xenobiological Assault Organisms" }
 		if = {
 			limit = {
 				OR = {
-					brilliant_scientist_has_xenobiological_force_deployment = yes
+					has_country_flag = brilliant_scientist_project_force_xenobiological_synthesis_active
 					has_country_flag = chaosx_custom_technology_xenobiological_operational
 				}
 			}
-			set_variable = { brilliant_scientist_project_force_xenobiological_division_cap = constant:brilliant_scientist_project_force_cap.xenobiological_synthesis }
-			set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_xenobiological_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Xenobiological Assault Organisms" force_allow_recruiting = yes }
 		}
 		else = {
-			set_division_template_cap = { division_template = "Xenobiological Assault Organisms" division_cap = brilliant_scientist_project_force_xenobiological_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Xenobiological Assault Organisms" force_allow_recruiting = no }
 		}
 	}
 	if = {
 		limit = { has_template = "Temporal Continuity Guard" }
 		set_division_template_lock = { division_template = "Temporal Continuity Guard" is_locked = yes }
+		clear_division_template_cap = { division_template = "Temporal Continuity Guard" }
 		if = {
 			limit = {
 				OR = {
@@ -440,13 +415,9 @@ brilliant_scientist_define_project_force_templates = {
 					has_country_flag = chaosx_custom_technology_temporal_operational
 				}
 			}
-			set_variable = { brilliant_scientist_project_force_temporal_division_cap = constant:brilliant_scientist_project_force_cap.temporal }
-			set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_temporal_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = yes }
 		}
 		else = {
-			set_variable = { brilliant_scientist_project_force_temporal_division_cap = constant:brilliant_scientist_value.zero }
-			set_division_template_cap = { division_template = "Temporal Continuity Guard" division_cap = brilliant_scientist_project_force_temporal_division_cap }
 			set_division_force_allow_recruiting = { division_template = "Temporal Continuity Guard" force_allow_recruiting = no }
 		}
 	}

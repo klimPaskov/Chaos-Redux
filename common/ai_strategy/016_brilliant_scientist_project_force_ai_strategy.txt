@@ -1,0 +1,85 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 GENERIC PROJECT-FORCE AI PRODUCTION
+# ============================================================================
+# Overview:
+# - Assigns a bounded formation share and a real production floor to every
+#   trainable reusable project-force family after its hidden grant technology.
+# - Strategies abort immediately when the technology is unavailable.
+# - Alien Infantry is excluded because its API reserves laser stock and creates
+#   cohorts only through scripted landings.
+# ============================================================================
+
+@EVENT016_AI_ROLE_CLONE = 18
+@EVENT016_AI_ROLE_ARYAN_CLONE = 24
+@EVENT016_AI_ROLE_ROBOT = 14
+@EVENT016_AI_ROLE_PALEOGENETIC = 10
+@EVENT016_AI_ROLE_XENOBIOLOGICAL = 10
+@EVENT016_AI_ROLE_PORTAL = 8
+@EVENT016_AI_ROLE_TEMPORAL = 6
+@EVENT016_AI_FACTORIES_CLONE = 4
+@EVENT016_AI_FACTORIES_ROBOT = 6
+@EVENT016_AI_FACTORIES_PALEOGENETIC = 4
+@EVENT016_AI_FACTORIES_XENOBIOLOGICAL = 4
+@EVENT016_AI_FACTORIES_PORTAL = 4
+@EVENT016_AI_FACTORIES_TEMPORAL = 5
+
+event016_clone_infantry_production = {
+	allowed = { always = yes }
+	enable = {
+		OR = {
+			has_tech = clone_infantry_access_tech
+			has_tech = brilliant_scientist_clone_formations_tech
+		}
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = clone_infantry value = @EVENT016_AI_ROLE_CLONE }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = clone_equipment value = @EVENT016_AI_FACTORIES_CLONE }
+}
+
+event016_aryan_clone_infantry_production = {
+	allowed = { always = yes }
+	enable = { has_tech = mengele_aryan_clone_refinement_tech }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = aryan_clone_infantry value = @EVENT016_AI_ROLE_ARYAN_CLONE }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = clone_equipment value = @EVENT016_AI_FACTORIES_CLONE }
+}
+
+event016_autonomous_robot_production = {
+	allowed = { always = yes }
+	enable = { has_tech = brilliant_scientist_robot_formations_tech }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = autonomous_robot value = @EVENT016_AI_ROLE_ROBOT }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = autonomous_robot_equipment value = @EVENT016_AI_FACTORIES_ROBOT }
+}
+
+event016_paleogenetic_creature_production = {
+	allowed = { always = yes }
+	enable = { has_tech = brilliant_scientist_paleogenetic_formations_tech }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = paleogenetic_creature value = @EVENT016_AI_ROLE_PALEOGENETIC }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = paleogenetic_creature_equipment value = @EVENT016_AI_FACTORIES_PALEOGENETIC }
+}
+
+event016_xenobiological_assault_organism_production = {
+	allowed = { always = yes }
+	enable = { has_tech = brilliant_scientist_xenobiological_formations_tech }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = xenobiological_assault_organism value = @EVENT016_AI_ROLE_XENOBIOLOGICAL }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = xenobiological_assault_organism_equipment value = @EVENT016_AI_FACTORIES_XENOBIOLOGICAL }
+}
+
+event016_portal_raider_production = {
+	allowed = { always = yes }
+	enable = { has_tech = brilliant_scientist_portal_warfare_tech }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = portal_raider value = @EVENT016_AI_ROLE_PORTAL }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = teleportation_equipment value = @EVENT016_AI_FACTORIES_PORTAL }
+}
+
+event016_temporal_guard_production = {
+	allowed = { always = yes }
+	enable = { has_tech = brilliant_scientist_temporal_guard_tech }
+	abort_when_not_enabled = yes
+	ai_strategy = { type = role_ratio id = temporal_guard value = @EVENT016_AI_ROLE_TEMPORAL }
+	ai_strategy = { type = equipment_production_min_factories_archetype id = temporal_guard_equipment value = @EVENT016_AI_FACTORIES_TEMPORAL }
+}
