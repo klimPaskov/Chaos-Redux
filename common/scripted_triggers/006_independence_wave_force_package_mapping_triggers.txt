@@ -81,7 +81,17 @@ has_ready_independence_wave_force_package_mapping_probe = {
 # Internal post-apply proof. The loaded flag is set only after this succeeds.
 has_valid_independence_wave_loaded_force_package_mapping = {
 	has_ready_independence_wave_force_package_mapping_probe = yes
-	is_independence_wave_active_country = yes
+	OR = {
+		is_independence_wave_package_content_active = yes
+		AND = {
+			has_country_flag = random_civil_war_event6_adapter_preparing
+			NOT = { has_country_flag = independence_wave_active_origin }
+		}
+		AND = {
+			has_country_flag = random_civil_war_event6_adapter_complete
+			NOT = { has_country_flag = independence_wave_active_origin }
+		}
+	}
 	has_variable = independence_wave_package_id
 	has_variable = independence_wave_force_mapping_revision
 	has_variable = independence_wave_force_mapping_package_id
@@ -269,7 +279,7 @@ has_valid_independence_wave_loaded_force_package_mapping = {
 
 # Persistent contract for later full-package and allocator wiring.
 has_current_independence_wave_force_package_mapping = {
-	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
 	has_country_flag = independence_wave_force_mapping_loaded
 	has_variable = independence_wave_package_id
 	has_variable = independence_wave_force_mapping_revision

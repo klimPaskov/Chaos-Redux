@@ -13,6 +13,32 @@ is_independence_wave_active_country = {
 	NOT = { has_country_flag = independence_wave_origin_ended }
 }
 
+is_independence_wave_package_content_active = {
+	exists = yes
+	OR = {
+		is_independence_wave_active_country = yes
+		AND = {
+			# Event 021's adapter owns this bounded setup window. It may consume
+			# package-local setup predicates, but it must not satisfy Event 006's
+			# lifecycle classifier before its origin-neutral receipts are proven.
+			has_country_flag = random_civil_war_event6_adapter_preparing
+			has_country_flag = independence_wave_event6_adapter_package_ready
+			has_valid_independence_wave_setup_input = yes
+			NOT = { has_country_flag = independence_wave_active_origin }
+			NOT = { has_country_flag = independence_wave_origin_ended }
+		}
+		AND = {
+			has_country_flag = random_civil_war_event6_adapter_complete
+			has_country_flag = independence_wave_event021_adapter_setup_proven
+			has_country_flag = random_civil_war_event6_origin_recorded
+			has_country_flag = random_civil_war_origin_adapter_complete
+			has_variable = independence_wave_package_id
+			NOT = { has_country_flag = independence_wave_active_origin }
+			NOT = { has_country_flag = independence_wave_origin_ended }
+		}
+	}
+}
+
 # ============================================================================
 # SOURCE: 006_independence_wave_evolution_triggers.txt
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE EVOLUTION TRIGGERS
@@ -127,7 +153,17 @@ has_independence_wave_reinforcement_program = {
 }
 
 can_apply_independence_wave_force_package = {
-	is_independence_wave_active_country = yes
+	OR = {
+		is_independence_wave_active_country = yes
+		AND = {
+			has_country_flag = random_civil_war_event6_adapter_preparing
+			NOT = { has_country_flag = independence_wave_active_origin }
+		}
+		AND = {
+			has_country_flag = random_civil_war_event6_adapter_complete
+			NOT = { has_country_flag = independence_wave_active_origin }
+		}
+	}
 	has_valid_independence_wave_force_profile = yes
 	has_valid_independence_wave_military_tradition = yes
 	has_independence_wave_reinforcement_program = yes
@@ -205,14 +241,14 @@ has_independence_wave_current_capital_controlled_by_root = {
 }
 
 can_independence_wave_enter_provisional_phase = {
-	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
 	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.emergency_founding }
 	has_independence_wave_current_capital_controlled_by_root = yes
 	check_variable = { var = independence_wave_capacity value = constant:independence_wave_phase_gate.provisional_capacity compare = greater_than_or_equals }
 }
 
 can_independence_wave_enter_recognized_phase = {
-	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
 	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.provisional_state }
 	OR = {
 		has_independence_wave_de_facto_recognition = yes
@@ -221,7 +257,7 @@ can_independence_wave_enter_recognized_phase = {
 }
 
 can_independence_wave_enter_regional_power_phase = {
-	is_independence_wave_active_country = yes
+	is_independence_wave_package_content_active = yes
 	check_variable = { independence_wave_founding_phase = constant:independence_wave_founding_phase.recognized_state }
 	check_variable = { var = independence_wave_legitimacy value = constant:independence_wave_phase_gate.regional_legitimacy compare = greater_than_or_equals }
 	check_variable = { var = independence_wave_recognition value = constant:independence_wave_phase_gate.regional_recognition compare = greater_than_or_equals }
