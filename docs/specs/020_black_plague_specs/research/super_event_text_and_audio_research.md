@@ -5,9 +5,9 @@ This note preserves the verified quote research and the original candidate compa
 ## Final runtime audio reconciliation
 
 - Rat King coronation uses `sound/020_black_plague/super_event_101_rat_king_coronation.wav`, a 110-second stereo 16-bit PCM file at 44,100 Hz derived from Kevin MacLeod's CC BY 3.0 `Gregorian Chant` recording. The runtime identifier is `101`.
-- Rat King world end uses `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, a 103.65-second stereo 16-bit PCM file at 44,100 Hz derived from Membeth's public-domain `Dies irae` recording. The runtime identifier is `102`.
+- Rat King world end uses `sound/020_black_plague/super_event_102_rat_king_world_end.wav`, a 105-second stereo 16-bit PCM file at 44,100 Hz derived from Lệ Xuân's CC BY-SA 4.0 performance of Sigismond Thalberg's public-domain piano arrangement of Mozart's `Lacrimosa`. The runtime identifier is `102`.
 - Both tracks have unique sound wrappers and settings-aware volume ladders in `sound/chaosx_sound.asset`; the Rat King coronation and world-end launchers select the corresponding identifier. The final files were read back as stereo 44.1 kHz WAVs before wiring.
-- The older `De profundis` and untrimmed `Dies irae` paragraphs below are retained as rejected research history. They are not runtime fallbacks.
+- The older `De profundis` and `Dies irae` paragraphs below are retained as rejected research history. They are not runtime fallbacks.
 
 ## Rat King coronation super-event
 

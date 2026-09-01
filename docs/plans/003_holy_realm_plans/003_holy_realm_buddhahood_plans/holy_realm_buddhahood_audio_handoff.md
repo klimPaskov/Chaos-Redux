@@ -18,9 +18,9 @@
   Suggested id: `holy_realm_final_silence_nonterminal_music`
 
 - `The Final Silence` terminal: [holy_realm_final_silence_terminal_candidate.ogg](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/003_holy_realm_buddhahood/audio_research/processed/holy_realm_final_silence_terminal_candidate.ogg)
-  Source: `Bore Xinjing (Heart Sutra) in Mandarin recited by a Chinese Buddhist layperson`
-  Creator: Nyarlathotep1001
-  License: CC0 1.0
+  Source: `Chanting at Lingyin Temple, Hangzhou`, a Louise Brown field recording licensed CC BY-SA 3.0.
+  Creator: Louise Brown
+  License: CC BY-SA 3.0
   Suggested id: `holy_realm_final_silence_terminal_music`
 
 ## Source files
@@ -33,8 +33,8 @@
 ## Required attribution
 
 - `Powers of the Awakened` must keep attribution because the selected recording is CC BY 3.0.
-- The three CC0 selections do not require attribution, but courtesy credit is still recommended in audio docs.
-- The terminal `Final Silence` package now uses the Nyarlathotep1001 CC0 Heart Sutra recording documented in [holy_realm_buddhahood_super_event_audio_research.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/assets/003_holy_realm_buddhahood/audio_research/holy_realm_buddhahood_super_event_audio_research.md) and [super_event_audio_packages.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/super_events/super_event_audio_packages.md).
+- The two CC0 selections do not require attribution, but courtesy credit is still recommended in audio docs. The terminal recording requires Louise Brown attribution, a modification notice, and compatible ShareAlike terms.
+- The ordinary terminal `Final Silence` package uses the Nyarlathotep1001 CC0 Heart Sutra recording. The thermonuclear variant uses the distinct Louise Brown Lingyin Temple field recording, with attribution, modification notice, and ShareAlike terms retained in [super_event_audio_packages.md](C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/docs/super_events/super_event_audio_packages.md).
 
 ## Wiring status
 

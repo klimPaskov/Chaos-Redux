@@ -7,10 +7,10 @@ This note records the audio package for the Rat King coronation, Rat King world-
 | Super-event | Role | Selected audio | Playback ID | Final duration |
 | --- | --- | --- | ---: | ---: |
 | Rat King coronation | Global transformation: scattered broods become one sentient sovereign | Kevin MacLeod, `Gregorian Chant`, edited chant-style processional | 101 | 110.000000 s |
-| Rat King world end | Terminal takeover after the Rat King world-end path | Gregorian chant sequence `Dies irae`, recording by Membeth | 102 | 103.650000 s |
+| Rat King world end | Terminal takeover after the Rat King world-end path | Mozart, *Requiem in D minor: Lacrimosa*, Sigismond Thalberg piano arrangement performed by Lệ Xuân | 102 | 105.000000 s |
 | Rat King defeat aftermath | Global defeat aftermath: the crown is gone, but the world remains scarred and unstable | Henry Purcell, `Dido's Lament`, 2 March 2014 premiere recording by A1 (Commons category credits Andriy Bondarenko) | 103 | 115.000000 s |
 
-The cues are unique to Event 020 and are not reused from another super-event. Audio ID 101 uses the named Kevin MacLeod recording because the author, source, and CC BY 3.0 terms are explicit. Audio ID 102 uses the public-domain Membeth recording because its worldwide dedication is explicit and the medieval composition is public domain. Audio ID 103 uses a CC BY-SA 4.0 premiere recording of Purcell's public-domain lament; the recording and adapted WAV require attribution and compatible share-alike terms. The source evidence, API metadata, legal-code snapshots, hashes, and conversion ledger are kept in `docs/assets/020_black_plague/source_audio/evidence/` and `docs/assets/020_black_plague/audio_manifest.md`.
+The cues are unique to Event 020 and are not reused from another super-event. Audio ID 101 uses the named Kevin MacLeod recording because the author, source, and CC BY 3.0 terms are explicit. Audio ID 102 uses Lệ Xuân's CC BY-SA 4.0 performance of Sigismond Thalberg's public-domain piano arrangement of Mozart's public-domain `Lacrimosa`; attribution, a modification notice, and compatible ShareAlike terms are required. Audio ID 103 uses a CC BY-SA 4.0 premiere recording of Purcell's public-domain lament under the same distribution obligations. The replacement audit evidence and preserved source for audio ID 102 are kept under `docs/assets/020_black_plague/source_audio/duplicate_audio_replacements_2026-09-01/`; the original Event 020 manifests retain historical package evidence.
 
 ## Audio ID 101: Rat King coronation
 
@@ -28,17 +28,17 @@ The cues are unique to Event 020 and are not reused from another super-event. Au
 
 ## Audio ID 102: Rat King world end
 
-- Title: `Dies irae` (final in-game cue title: Rat King World End - Dies Irae Excerpt).
-- Composer or work: traditional medieval Requiem sequence, commonly attributed to Tommaso da Celano; the source page identifies it as Gregorian chant. The sequence's composition is public domain by age.
-- Performer and recording source: Membeth, own Gregorian-chant recording dated 12 August 2010.
-- Source URL: <https://commons.wikimedia.org/wiki/File:Dies.irae.ogg>; frozen page revision <https://commons.wikimedia.org/w/index.php?title=File:Dies.irae.ogg&oldid=1205385897>.
-- Licence: public-domain dedication by the recording author, released worldwide with no conditions (<https://creativecommons.org/publicdomain/zero/1.0/> legal-code snapshot retained locally). Attribution is not required; courtesy credit is recommended.
-- Licence confidence: high for the recording and composition. The source page identifies the recording author, states a worldwide public-domain release, and the preserved file SHA-1 matches the Commons API (`d13e914db3016ab43bcb89c695e501ac8fd19605`). Historical authorship of the medieval sequence is not needed to establish its public-domain status.
-- Preserved original: `docs/assets/020_black_plague/source_audio/dies_irae_membeth_commons_original.ogg` (434.000952 s, 44,100 Hz stereo, SHA-256 `a94c57586d3215a4ecb67a5eb9701b387be39bef2f53abaa3e3b2214a2e9472e6`).
-- Final sound file: `sound/020_black_plague/super_event_102_rat_king_world_end.wav` (103.650000 s, 44,100 Hz stereo signed 16-bit PCM, SHA-256 `7240f9bddc19955fde7c56ef9d15381d87a84ba7ce39f6c5bf3663b67ab0221f`).
-- Editing: source-relative `0.905760-104.555760 s`, ending at the first long chant pause; initial silence removed; loudness normalized to `-20.3 LUFS` (`11.7 LU LRA`); 1.5-second fade-in; 6-second fade-out; stereo 16-bit PCM render; 44.1 kHz output; Ogg Vorbis quality 6. No generated tone, oscillator, drone, or placeholder was used.
-- Courtesy attribution: `Gregorian chant, “Dies irae”; recording by Membeth; source via Wikimedia Commons; public domain. Edited, faded, loudness-normalized, resampled, and excerpted by Chaos Redux.`
-- Fit: the opening sequence's ritual judgment and natural pause give the terminal takeover a final, liturgical weight while remaining short enough for the super-event window.
+- Title: Mozart, *Requiem in D minor*, `Lacrimosa`, in Sigismond Thalberg's piano arrangement.
+- Composer and arrangement: Wolfgang Amadeus Mozart; piano arrangement by Sigismond Thalberg. The composition and arrangement are public domain.
+- Performer and recording source: Lệ Xuân, piano.
+- Source URL: <https://commons.wikimedia.org/wiki/File:Mozart,_Requiem_in_D_minor,_%27Lacrimosa%27_%E2%80%93_piano_arrangement.ogg>.
+- Licence: Creative Commons Attribution-ShareAlike 4.0 International. Attribution, a licence link, a modification notice, and compatible ShareAlike distribution are required.
+- Licence confidence: high. The preserved Commons page identifies the performer and the file-specific CC BY-SA 4.0 licence.
+- Preserved original: `docs/assets/020_black_plague/source_audio/duplicate_audio_replacements_2026-09-01/source/mozart_lacrimosa_thalberg_piano_lexuan.ogg`.
+- Final sound file: `sound/020_black_plague/super_event_102_rat_king_world_end.wav` (105.000000 s, 44,100 Hz stereo signed 16-bit PCM, SHA-256 `DE5CDF237958F73EF04C2A61602182C83DCAA2D91FCDF8ABE626D6EA9B55C1CD`).
+- Editing: the opening 105 seconds are rendered with entry and exit fades to stereo 16-bit PCM at 44.1 kHz. No generated tone, oscillator, drone, or placeholder was used.
+- Required attribution: `Mozart, “Lacrimosa” from Requiem in D minor; piano arrangement by Sigismond Thalberg; performed by Lệ Xuân; source via Wikimedia Commons; CC BY-SA 4.0. Excerpted, faded, and converted by Chaos Redux.`
+- Fit: the exposed piano arrangement retains the work's funeral finality while separating the Rat King's world-end cue from the Gregorian recording kept by the Zombie Apocalypse super-event.
 
 ## Parent wiring evidence
 

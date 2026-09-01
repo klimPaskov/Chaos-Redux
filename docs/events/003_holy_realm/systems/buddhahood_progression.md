@@ -190,7 +190,7 @@ The new decision category reuses `GFX_decision_category_holy_mandala`; the new d
 
 ## Future Plans
 
-- Keep the terminal Final Silence audio on the CC0 Heart Sutra recording unless a future pass deliberately changes the terminal tone.
+- Keep the terminal Final Silence audio on the CC0 Heart Sutra recording, while its thermonuclear counterpart remains the distinct Lingyin Temple field recording documented in the canonical catalogue.
 - Static fallback Mandala and leader portrait stage DDS files are wired; all Mandala states plus the Buddha Mandate and Empty Seat leader portraits have animated frame sheets.
 - Add deeper power-specific decision upgrades if later balance passes show the focus lattice needs more than route flags and Meditation Charge rewards.
 - Expand `holy_realm_false_buddha_echo_abroad` into a full rival cult country or portrait-stage return chain if the exiled echo route needs a later foreign crisis.
