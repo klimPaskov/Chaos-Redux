@@ -1013,7 +1013,13 @@ independence_wave_execute_standalone_frozen_plan = {
 					set_temp_variable = { independence_wave_execution_expected_state_count = constant:independence_wave_planner.no_candidates }
 					set_temp_variable = { independence_wave_execution_transferred_state_count = constant:independence_wave_planner.no_candidates }
 					set_temp_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
+					# The finalizer writes these counters through nested scripted effects.
+					# Seed the caller frame so their values survive the nested return and
+					# the commit barrier can evaluate the actual package results.
+					set_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_planner.no_candidates }
+					set_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_planner.no_candidates }
 					set_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_planner.no_candidates }
+					set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
 					if = {
 						limit = {
 							check_variable = {

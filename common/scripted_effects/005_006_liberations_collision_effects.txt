@@ -1340,7 +1340,13 @@ liberations_joint_prepare_and_execute_incident = {
 			set_temp_variable = { independence_wave_execution_expected_state_count = constant:independence_wave_planner.no_candidates }
 			set_temp_variable = { independence_wave_execution_transferred_state_count = constant:independence_wave_planner.no_candidates }
 			set_temp_variable = { independence_wave_execution_transfer_failure = constant:liberation_plan_reject_reason.none }
+			# Event 006 finalization writes these counters through nested scripted
+			# effects. Seed the joint caller frame so the commit barrier receives
+			# the actual package results instead of an undefined temporary value.
+			set_temp_variable = { independence_wave_execution_prepared_count = constant:independence_wave_planner.no_candidates }
+			set_temp_variable = { independence_wave_execution_activated_count = constant:independence_wave_planner.no_candidates }
 			set_temp_variable = { independence_wave_execution_validated_count = constant:independence_wave_planner.no_candidates }
+			set_temp_variable = { independence_wave_execution_initialized_count = constant:independence_wave_planner.no_candidates }
 			soviet_collapse_joint_instantiate_frozen_countries = yes
 			independence_wave_instantiate_frozen_countries = yes
 			if = {
