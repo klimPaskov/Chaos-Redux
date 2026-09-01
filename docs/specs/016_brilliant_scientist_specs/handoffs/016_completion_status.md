@@ -1,5 +1,11 @@
 # Event 016 planning completion status
 
+## Binding closure status, 2026-09-01
+
+The accepted [`016_final_completion_contract.md`](../specs/016_final_completion_contract.md) is the current authority for completion. Earlier statements that describe gameplay, assets, validation, or models as closed, optional, deferred outside scope, or complete are historical evidence when they conflict with that contract.
+
+The active status is `implementation in progress`. The unsafe parallel Event 016 biological quantity ledger is retired. Native raids own their own equipment transaction, while decision-led biological deployments own independent receipts. Existing 3D geometry is preserved and may not be regenerated. The repository cannot be described as ready for user live acceptance until every accepted closure tranche, MCP comparison, audit, documentation surface, and catalog update is resolved.
+
 ## Reconciled status, 2026-08-03
 
 ### Current completion boundary

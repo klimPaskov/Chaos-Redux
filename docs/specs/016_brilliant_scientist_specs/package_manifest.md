@@ -9,9 +9,9 @@
 | Entry classification | Minor fire-once |
 | Source status | Reconciled implementation specification |
 | Package date | 2026-08-01 |
-| Last reconciled | 2026-08-26 |
+| Last reconciled | 2026-09-01 |
 | Intended spec root | `docs/specs/016_brilliant_scientist_specs/` |
-| Planning state | Improvement addendum disposition complete; default-enabled core runtime, finite ten-country settlement, portal-calibration consumer, and high-speed-materials trial are statically implemented, with host-archetype presentation continued through `.10` through `.18`, ten authored country-tag clauses, formation-origin and carried-portfolio presentation, tracked Kruger holder history repaired, and the complete 28-idea KRG icon package wired; native raids are the current Event 016 raid architecture; targeted transfer, cleanup, probability, balance, Event 019 isolation, and live acceptance remain pending; the KRG biological stockpile is queued and blocked on the native CBRN callback contract only; the clone infantry model/entity package is installed and reusable, Alien Infantry has an accepted Meshy V13 model with seven actual-byte-reimported actions and promoted static entity/GFX/animation/sound registrations while supported muzzle/effect binding, strict audio roles, positional playback, and live acceptance remain open, Portal Raider counters are complete and wired while its runtime model/entity remains rejected and unwired pending its own recovery, and the remaining route-specific 3D packages stay queued; broader country chains are closed/rejected as filler unless a new accepted design reopens them |
+| Planning state | Binding final completion contract accepted and implementation in progress. All accepted technology, API, unit, raid, Directorate, evolution, containment, KRG, DHR, focus, GUI, presentation, existing-model runtime, audit, and catalog work remains in scope. The unsafe parallel biological quantity ledger is retired. Native raids and decision-led deployments own independent transactions. Existing model geometry is preserved and may not be regenerated. |
 | Static implementation status | Implemented | Core runtime, finite ten-country settlement layer, portal calibration, high-speed materials, KRG country/focus/project/decision surfaces, Event 019 providers, and registered presentation/localisation surfaces are present in source. |
 | Validation status | Pending | Targeted transfer, cleanup, probability/affordability, quantitative balance, provider isolation, live GUI/audio/presentation, and user-owned campaign scenarios remain open. |
 | Native CBRN dependency | Native raid architecture integrated; KRG stockpile ledger blocked | Existing biological, battlefield, captured-facility recovery, hostile and friendly weaponized-zombie, and anti-zombie-cure raids remain native and manually usable, with active Kruger authority bypass and AI preference while native policy, staging, aircraft or formation, target, and payload checks remain authoritative. Portal Warfare adds two reusable native raid targets: a state-installation raid for factories, reactors, and rocket sites, and an exact building-target raid for special-project facilities. Both use seven-day preparation, ten command power, a formation containing at least six Portal Raider battalions, and sixty Teleportation Equipment; success consumes the assigned formation, reconstructs the standard six-battalion formation in the seized province, and transfers one valid target, while critical success may transfer a second compatible installation. The separate Event 016-owned KRG stockpile/delivery ledger still awaits a stable idempotent native CBRN reservation/outcome/cancellation/expiry callback, but that missing callback does not block the native Event 016 raids. No Event 016 fallback, free biological payload, or parallel ledger is approved. |
@@ -32,12 +32,13 @@
 ## Source-of-truth order
 
 1. The user's Event 16 brief.
-2. `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current implementation, validation, MCP, and deferred-scope status.
-3. `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`, including parent dispositions R1 through R7.
-4. The reconciled specification files in this package.
-5. Promoted portions of the improvement addendum. Rejected R1 and R6 recommendations are historical evidence only.
-6. The project-wide skills and `AGENTS.md`.
-7. Current implementation files as evidence of existing behavior, not as permission to shrink the design.
+2. `docs/specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md` for binding closure scope and dispositions.
+3. `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md` for current implementation and validation evidence where it does not conflict with the closure contract.
+4. `docs/plans/016_brilliant_scientist_plans/016_source_of_truth_map.md`, including parent dispositions R1 through R7 where they do not conflict with the closure contract.
+5. The reconciled specification files in this package.
+6. Promoted portions of the improvement addendum. Rejected R1 and R6 recommendations are historical evidence only.
+7. The project-wide skills and `AGENTS.md`.
+8. Current implementation files as evidence of existing behavior, not as permission to shrink the design.
 
 ## Current evidence pointers, 2026-08-26
 
