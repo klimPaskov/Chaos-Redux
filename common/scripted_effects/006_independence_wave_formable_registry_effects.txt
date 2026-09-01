@@ -756,7 +756,7 @@ independence_wave_formable_store_founding_invitation_from_root = {
 	set_variable = { independence_wave_formable_inviting_carrier = ROOT }
 	set_variable = { independence_wave_formable_inviting_carrier_generation = ROOT.independence_wave_generation_id }
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		set_variable = { independence_wave_formable_invited_member_generation = independence_wave_generation_id }
 	}
 	else = { set_variable = { independence_wave_formable_invited_member_generation = constant:independence_wave_formable_tuning.no_entries } }
@@ -2160,7 +2160,7 @@ independence_wave_formable_build_member_and_anchor_ledgers = {
 			var:global.independence_wave_active_countries^independence_wave_formable_registry_index = {
 				if = {
 					limit = {
-						is_independence_wave_active_country = yes
+						is_independence_wave_package_content_active = yes
 						has_variable = independence_wave_anchor_state
 						check_variable = { var = independence_wave_generation_id value = independence_wave_formable_candidate_generation compare = equals }
 						OR = {
@@ -2609,7 +2609,7 @@ independence_wave_formable_commit_selected_family = {
 			if = {
 				limit = {
 					has_country_flag = independence_wave_full_focus_framework
-					is_independence_wave_active_country = yes
+					is_independence_wave_package_content_active = yes
 				}
 				set_temp_variable = { independence_wave_focus_assignment_input = constant:independence_wave_focus_assignment.post_formation_overlay }
 				independence_wave_assign_focus_framework = yes
@@ -2683,11 +2683,20 @@ independence_wave_formable_end_consenting_member_origin = {
 		limit = {
 			check_variable = { independence_wave_formable_member_authorized = constant:independence_wave_formable_tuning.loop_increment }
 			has_frozen_accepted_independence_wave_formable_invitation_from_root = yes
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			NOT = { tag = event_target:independence_wave_formable_proposer }
 		}
-		set_temp_variable = { independence_wave_cleanup_reason = constant:independence_wave_origin_end_reason.formable_absorption }
-		independence_wave_end_active_origin = yes
+		if = {
+			limit = {
+				has_country_flag = random_civil_war_event6_adapter_complete
+				NOT = { has_country_flag = independence_wave_active_origin }
+			}
+			event021_cleanup_absorbed_event6_adapter = yes
+		}
+		else = {
+			set_temp_variable = { independence_wave_cleanup_reason = constant:independence_wave_origin_end_reason.formable_absorption }
+			independence_wave_end_active_origin = yes
+		}
 	}
 }
 

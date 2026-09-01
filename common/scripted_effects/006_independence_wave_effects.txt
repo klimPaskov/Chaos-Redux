@@ -98,7 +98,7 @@ independence_wave_refresh_founding_phase = {
 # cannot display a contradictory phase.
 independence_wave_refresh_status_frame_state = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		set_variable = { independence_wave_gui_recognition_frame = constant:independence_wave_gui_frame.recognition_unrecognized }
 		set_variable = { independence_wave_gui_dependency_frame = constant:independence_wave_gui_frame.dependency_calm }
 		set_variable = { independence_wave_gui_league_frame = constant:independence_wave_gui_frame.league_rest }
@@ -181,22 +181,28 @@ independence_wave_refresh_status_frame_state = {
 
 independence_wave_refresh_country_state = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		independence_wave_clamp_country_values = yes
 		independence_wave_refresh_founding_phase = yes
 		independence_wave_refresh_strongest_patron = yes
 		independence_wave_refresh_idea_lifecycles = yes
 		independence_wave_start_provisional_capital_mission = yes
-		independence_wave_record_evolution_failure_feedback = yes
 		independence_wave_refresh_status_frame_state = yes
-		independence_wave_achievement_refresh_country_state = yes
+		if = {
+			limit = {
+				has_country_flag = independence_wave_active_origin
+				check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+			}
+			independence_wave_record_evolution_failure_feedback = yes
+			independence_wave_achievement_refresh_country_state = yes
+		}
 	}
 }
 
 # Public input: temporary `independence_wave_value_delta`.
 independence_wave_change_legitimacy = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_legitimacy = independence_wave_value_delta }
 		independence_wave_refresh_country_state = yes
 	}
@@ -205,7 +211,7 @@ independence_wave_change_legitimacy = {
 # Public input: temporary `independence_wave_value_delta`.
 independence_wave_change_recognition = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_recognition = independence_wave_value_delta }
 		independence_wave_refresh_country_state = yes
 	}
@@ -214,7 +220,7 @@ independence_wave_change_recognition = {
 # Public input: temporary `independence_wave_value_delta`.
 independence_wave_change_capacity = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_capacity = independence_wave_value_delta }
 		independence_wave_refresh_country_state = yes
 	}
@@ -223,7 +229,7 @@ independence_wave_change_capacity = {
 # Public input: temporary `independence_wave_value_delta`.
 independence_wave_change_security = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_security = independence_wave_value_delta }
 		independence_wave_refresh_country_state = yes
 	}
@@ -233,7 +239,7 @@ independence_wave_change_security = {
 # the country less stable, negative values reduce founding pressure.
 independence_wave_change_instability = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_instability = independence_wave_value_delta }
 		independence_wave_refresh_country_state = yes
 	}
@@ -370,7 +376,7 @@ independence_wave_start_sponsored_member_coup = {
 independence_wave_select_government_route = {
 	if = {
 		limit = {
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			has_valid_independence_wave_government_route = yes
 			check_variable = { independence_wave_government_route = constant:independence_wave_government_route.undecided }
 		}
@@ -697,17 +703,27 @@ independence_wave_prepare_country_origin = {
 	if = {
 		limit = { has_valid_independence_wave_setup_input = yes }
 		independence_wave_reset_current_generation = yes
-		independence_wave_achievement_reset_country_trackers = yes
 		if = {
-			limit = { NOT = { has_variable = global.independence_wave_next_generation_id } }
-			set_variable = { global.independence_wave_next_generation_id = constant:independence_wave_plan.first_package_id }
+			limit = { NOT = { has_country_flag = random_civil_war_event6_adapter_preparing } }
+			independence_wave_achievement_reset_country_trackers = yes
+		}
+		if = {
+			limit = { has_country_flag = random_civil_war_event6_adapter_preparing }
+			# Event 021 has its own generation counter. Do not advance the Event
+			# 006 origin registry or its next-generation sequence for an adapter.
+			set_variable = { independence_wave_generation_id = random_civil_war_generation }
 		}
 		else = {
-			add_to_variable = { global.independence_wave_next_generation_id = constant:independence_wave_plan.loop_increment }
+			if = {
+				limit = { NOT = { has_variable = global.independence_wave_next_generation_id } }
+				set_variable = { global.independence_wave_next_generation_id = constant:independence_wave_plan.first_package_id }
+			}
+			else = {
+				add_to_variable = { global.independence_wave_next_generation_id = constant:independence_wave_plan.loop_increment }
+			}
+			independence_wave_registry_record_event6_origin = yes
+			set_variable = { independence_wave_generation_id = global.independence_wave_next_generation_id }
 		}
-
-		independence_wave_registry_record_event6_origin = yes
-		set_variable = { independence_wave_generation_id = global.independence_wave_next_generation_id }
 		set_variable = { independence_wave_package_id = independence_wave_setup_package_id }
 		set_variable = { independence_wave_region = independence_wave_setup_region }
 		set_variable = { independence_wave_package_depth = independence_wave_setup_depth }
@@ -935,7 +951,7 @@ independence_wave_clamp_host_relation_values = {
 # bilateral transaction.
 independence_wave_change_host_relation = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_host_claim_intensity = independence_wave_host_claim_delta }
 		add_to_variable = { independence_wave_hostility = independence_wave_hostility_delta }
 		add_to_variable = { independence_wave_host_obligations = independence_wave_host_obligations_delta }
@@ -954,7 +970,7 @@ independence_wave_change_host_relation = {
 independence_wave_set_host_outcome = {
 	if = {
 		limit = {
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			check_variable = { var = independence_wave_host_outcome_input value = constant:independence_wave_host_outcome.recognized_separation compare = greater_than_or_equals }
 			check_variable = { var = independence_wave_host_outcome_input value = constant:independence_wave_host_outcome.voluntary_reunion compare = less_than_or_equals }
 		}
@@ -984,7 +1000,7 @@ independence_wave_set_host_outcome = {
 independence_wave_sync_former_host_ledger = {
 	if = {
 		limit = {
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			has_independence_wave_living_former_host = yes
 			var:independence_wave_former_host = { independence_wave_host_relation_arrays_are_aligned = yes }
 		}
@@ -1095,7 +1111,7 @@ independence_wave_remove_former_host_ledger_entry = {
 independence_wave_cleanup_former_host_relationship = {
 	if = {
 		limit = {
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			check_variable = { independence_wave_relationship_cleanup_reason = constant:independence_wave_relationship_cleanup_reason.host_death }
 		}
 		set_variable = { independence_wave_last_relationship_cleanup_reason = independence_wave_relationship_cleanup_reason }
@@ -1108,7 +1124,7 @@ independence_wave_cleanup_former_host_relationship = {
 independence_wave_handle_former_host_death = {
 	if = {
 		limit = {
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			has_variable = independence_wave_former_host
 			var:independence_wave_former_host = { NOT = { exists = yes } }
 		}
@@ -1550,7 +1566,7 @@ independence_wave_refresh_identity_idea = {
 
 independence_wave_refresh_idea_lifecycles = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		independence_wave_refresh_government_idea = yes
 		independence_wave_refresh_recognition_idea = yes
 		independence_wave_refresh_command_idea = yes
@@ -1604,7 +1620,7 @@ independence_wave_clear_patron_ledger = {
 independence_wave_register_patron_channel = {
 	if = {
 		limit = {
-			is_independence_wave_active_country = yes
+			is_independence_wave_package_content_active = yes
 			has_event_target = independence_wave_action_patron
 			event_target:independence_wave_action_patron = { exists = yes }
 			event_target:independence_wave_action_patron = { NOT = { tag = ROOT } }
@@ -2847,7 +2863,7 @@ independence_wave_restart_informal_network = {
 # Public input: temporary `independence_wave_network_delta`.
 independence_wave_change_network_standing = {
 	if = {
-		limit = { is_independence_wave_active_country = yes }
+		limit = { is_independence_wave_package_content_active = yes }
 		add_to_variable = { independence_wave_network_standing = independence_wave_network_delta }
 		clamp_variable = {
 			var = independence_wave_network_standing
