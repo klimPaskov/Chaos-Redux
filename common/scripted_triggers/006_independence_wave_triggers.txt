@@ -39,6 +39,17 @@ is_independence_wave_package_content_active = {
 	}
 }
 
+# Player-facing Event 006 categories and decisions stay closed while Event 021
+# is borrowing an Event 006 package as an origin-neutral adapter. The adapter
+# still needs the package-content predicate for leaders, forces, and setup,
+# but none of those transient receipts may publish an Event 006 surface.
+is_independence_wave_event6_player_surface_allowed = {
+	NOT = { has_country_flag = random_civil_war_event6_adapter_preparing }
+	NOT = { has_country_flag = random_civil_war_event6_adapter_complete }
+	NOT = { has_country_flag = random_civil_war_origin_adapter_complete }
+	NOT = { has_country_flag = independence_wave_event021_adapter_setup_proven }
+}
+
 # ============================================================================
 # SOURCE: 006_independence_wave_evolution_triggers.txt
 # CHAOS REDUX - EVENT 006 INDEPENDENCE WAVE EVOLUTION TRIGGERS
