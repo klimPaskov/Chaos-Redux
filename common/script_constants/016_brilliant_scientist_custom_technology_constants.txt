@@ -40,11 +40,57 @@ chaosx_custom_technology_upgrade = {
 	xeno_researched_control = 11
 }
 
-chaosx_custom_technology_tuning = {
+chaosx_custom_technology_control = {
 	schema = {
 		any_key = yes
 		data = int
 	}
 
+	none = 0
+	chemical = 1
+	neural = 2
+	machine = 3
+	researched = 4
+}
+
+# Stable shared vocabulary for alien-derived external grants. Event packages
+# may pass the same numeric values without making this API depend on their
+# package-owned script-constant files or load order.
+chaosx_custom_technology_recovery = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	one = 1
+	tier_base = 1
+	tier_upgrade = 2
+	tier_integration = 3
+	result_base_operational = 1
+	result_compatible_upgrade = 2
+	result_alien_systems_integration = 3
+	result_overlap_conversion = 4
+	field_none = 0
+	field_aircraft = 1
+	field_propulsion = 2
+	source_antarctic_race = 25
+	source_alien_spacecraft = 36
+}
+
+chaosx_custom_technology_tuning = {
+	schema = {
+		any_key = yes
+		any_value = fixed_point
+	}
+
 	random_candidate_weight = 1
+	provenance_minimum_source = 1
+	# Receipts encode selector * provenance_stride + source. Event 025 and Event 036
+	# use their positive event IDs, leaving the lower source range collision-free.
+	provenance_stride = 1000000
+	integration_reinforcement_stability = 0.02
+	integration_research_speed = 0.06
+	integration_special_project_speed = 0.04
+	integration_air_attack = 0.02
 }

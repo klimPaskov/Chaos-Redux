@@ -65,7 +65,7 @@ The fresh technology routes report no blockers and the comparison reports zero s
 - Every entity sound reference resolves to a registered sound effect and existing 44.1 kHz mono PCM WAV.
 - All twelve staged model/animation/texture hashes match the installed runtime copies.
 - All 22 hidden/shared technology icon manifest entries exist and match their checksums.
-- Retired `kruger_robot_frame`, `kruger_robot_equipment`, and `kruger_robot_equipment_1` identifiers are absent from active runtime and localisation source.
+- Retired pre-generic robot identifiers are absent from active runtime and localisation source.
 - Scoped localisation contains every robot subunit, equipment, technology, project, incident, and Event 019 family key with no duplicate keys; all edited localisation retains UTF-8 BOM.
 - The completion audit's provider-505 derivative activation finding was resolved by making the derivative callback invoke the public operational-technology API in the derivative country scope before public-package setup.
 

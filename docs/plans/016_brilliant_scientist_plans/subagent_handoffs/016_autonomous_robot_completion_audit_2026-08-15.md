@@ -47,7 +47,7 @@ The current authority `docs/plans/016_brilliant_scientist_plans/subagent_handoff
 - `docs/assets/shared_robot_system/models_3d/autonomous_robot/manifest.json` still has status `production_complete_parent_wiring_pending` and `runtime_wiring = parent_owned_pending`.
 - `docs/assets/shared_robot_system/models_3d/autonomous_robot/manifest.md`, `runtime/handoff.md`, and `runtime/crosswalk.md` still describe the entity/sound/counter runtime as unwired or parent-pending.
 - `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/autonomous_robot_3d_model_handoff.md` and `autonomous_robot_counter_art_handoff.md` retain parent-wiring/live-consumer pending wording.
-- `docs/plans/016_brilliant_scientist_plans/016_event19_generic_unit_family_3d_model_backlog.md`, `016_core_runtime_handoff_map.md`, and `subagent_handoffs/016_project_reuse_identifier_map.md` still describe `kruger_robot_frame` / `kruger_robot_equipment(_1)` and an unproduced or deferred generic model.
+- `docs/plans/016_brilliant_scientist_plans/016_event19_generic_unit_family_3d_model_backlog.md`, `016_core_runtime_handoff_map.md`, and `subagent_handoffs/016_project_reuse_identifier_map.md` previously described retired pre-generic robot identifiers and an unproduced or deferred generic model.
 
 Dated historical audit handoffs may retain their old observations, but the active backlog/map/manifest surfaces need an explicit superseded disposition or promotion to the generic installed IDs. The current runtime handoff is not enough to make contradictory working documents self-dispositioning.
 
@@ -55,7 +55,7 @@ Dated historical audit handoffs may retain their old observations, but the activ
 
 | Surface | Status | Evidence |
 | --- | --- | --- |
-| Generic runtime IDs | Finished | Definitions and active consumers consistently use `autonomous_robot`, `autonomous_robot_equipment`, and `autonomous_robot_equipment_1`. No retired `kruger_robot_frame` or `kruger_robot_equipment(_1)` token remains in active `common`, `events`, `interface`, `gfx`, `sound`, or `localisation` source. |
+| Generic runtime IDs | Finished | Definitions and active consumers consistently use `autonomous_robot`, `autonomous_robot_equipment`, and `autonomous_robot_equipment_1`. No retired pre-generic robot token remains in active `common`, `events`, `interface`, `gfx`, `sound`, or `localisation` source. |
 | Event 016 operational technology | Finished statically | `brilliant_scientist_robot_formations_tech` is grant-only, AI-disabled, enables the exact variant/subunit, and applies the documented robot bonuses in `common/technologies/016_brilliant_scientist_project_technologies.txt:58-72`. Public API and Event 016 history rebuild grant it dependency-safely. |
 | Event 016 weaponization technology | Finished statically | `brilliant_scientist_robot_formations_weaponization_tech` is grant-only, AI-disabled, depends on the operational tech, and modifies the exact generic subunit in `common/technologies/016_brilliant_scientist_project_force_technologies.txt:67-79`. The upgrade API grants the base first. |
 | Subunit/equipment statistics and modifier families | Finished statically | The subunit uses both `armor` and `mechanized` types, `group = armor`, and the expected armor/infantry categories. Equipment and technology values match `docs/systems/shared_autonomous_robot_system.md` and the dated runtime handoff. No orphaned runtime token was found. |

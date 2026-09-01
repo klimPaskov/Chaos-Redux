@@ -8,7 +8,7 @@ Status: the KRG/Event 016 shared clone and Portal Raider integration is source-c
 
 This audit covers KRG access to `portal_raider`, `teleportation_equipment_1`, the locked six-battalion `Quantum Transit Raiders` template, project completion and weaponization grants, Event 019 provider reuse, shared clone and Mengele refinement consumers, counters, GFX registrations, and runtime model/entity/action/sound references.
 
-No obsolete runtime identifiers `kruger_portal_raider` or `kruger_portal_equipment` remain outside documentation, and no new Portal Raider model, entity, action, or sound fallback was created.
+No obsolete pre-generic Portal Raider identifiers remain outside documentation, and no replacement model, entity, action, or sound fallback was created.
 
 The only local load-safety edit in this tranche is lowercase `texturefile` normalization in `interface/clone_system.gfx` and `interface/portal_raider_system.gfx`.
 
@@ -74,7 +74,7 @@ Its eligibility, dynamic four-battalion template, spawn callback, and sustainmen
 
 Provider 522 is the Mengele Aryan clone family and requires Germany scope, an active Mengele program, completed cloning project, the master-race claim, and `mengele_aryan_clone_refinement_tech`.
 
-No provider callback references `kruger_portal_raider` or `kruger_portal_equipment`.
+No provider callback references a retired pre-generic Portal Raider identifier.
 
 ## KRG inheritance and causal rebuild
 

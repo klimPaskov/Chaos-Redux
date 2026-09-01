@@ -14,7 +14,7 @@ This tranche closes the missing shared-infantry-spawn coverage for the two Event
 - `common/ideas/016_brilliant_scientist_project_force_ideas.txt` adds hidden, cleanup-auditable host receipts for the two provider families.
 - `localisation/english/019_infrantry_spawn_l_english.yml` localizes both hidden receipt ideas.
 
-Portal provider 509 consumes `kruger_portal_raider` and `kruger_portal_equipment_1`. Temporal provider 510 consumes `kruger_temporal_guard` and `kruger_temporal_equipment_1`. Both use the existing Event 019 generic provider dispatch and do not restore the Event 016 parent identity.
+Portal provider 509 consumes `portal_raider` and `portal_equipment_1`. Temporal provider 510 consumes `temporal_guard` and `temporal_guard_equipment_1`. Both use the existing Event 019 generic provider dispatch and do not restore the Event 016 parent identity.
 
 ## Documentation changes
 

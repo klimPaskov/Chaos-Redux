@@ -18,12 +18,12 @@ The shared contract is documented in `docs/events/019_infantry_spawn/systems/tri
 | Provider | Family | Gate | Event 016 source |
 | --- | --- | --- | --- |
 | 504 | clone | `brilliant_scientist_project_force_cloning_active` | `clone_infantry` |
-| 505 | robot | `brilliant_scientist_project_force_robotics_active` | `kruger_robot_frame` |
-| 506 | paleogenetic | `brilliant_scientist_project_force_paleogenetics_active` | `kruger_paleogenetic_beast` |
-| 507 | xenobiological | `brilliant_scientist_project_force_xenobiological_synthesis_active` | `kruger_xenobiological_assault` |
+| 505 | robot | `brilliant_scientist_project_force_robotics_active` | `autonomous_robot` |
+| 506 | paleogenetic | `brilliant_scientist_project_force_paleogenetics_active` | `paleogenetic_creature` |
+| 507 | xenobiological | `brilliant_scientist_project_force_xenobiological_synthesis_active` | `xenobiological_assault_organism` |
 | 508 | alien infantry | `brilliant_scientist_project_force_alien_arms_active` or provider-neutral operational technology | `alien_infantry` through the shared contact and landing API |
-| 509 | portal | `brilliant_scientist_project_force_teleportation_active` | `kruger_portal_raider` |
-| 510 | temporal | `brilliant_scientist_project_force_temporal_active` | `kruger_temporal_guard` |
+| 509 | portal | `brilliant_scientist_project_force_teleportation_active` | `portal_raider` |
+| 510 | temporal | `brilliant_scientist_project_force_temporal_active` | `temporal_guard` |
 
 The template callbacks select the corresponding generic Event 019 division name and map each provider to an existing Event 016 unit/equipment package.
 Clones intentionally use vanilla `infantry_equipment`; all other rows use the Event 016 equipment definitions. No provider row contains an entity, `.mesh`, or `.anim` reference, so model work remains deferred as requested.

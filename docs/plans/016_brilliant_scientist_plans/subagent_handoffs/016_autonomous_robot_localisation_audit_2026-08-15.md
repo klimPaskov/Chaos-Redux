@@ -132,7 +132,7 @@ No sourced or attributed quotation appears on any inspected robot surface. No qu
 - Compared the three robotics stage cost strings with `brilliant_scientist_project_stage_cost` constants. All values match.
 - Compared family 505 request and sustainment dynamic constant paths with the provider effect and family constants. All paths and gameplay costs match.
 - Scanned all English localisation for the 40 expected robot keys. Result: 40 found, zero missing, zero duplicates.
-- Scanned runtime source and localisation for the retired `kruger_robot_frame` and `kruger_robot_equipment` identifiers. No remaining runtime or localisation reference was found.
+- Scanned runtime source and localisation for the retired pre-generic robot identifiers. No remaining runtime or localisation reference was found.
 - Confirmed UTF-8 BOM on all three audited localisation files after the patch.
 - Confirmed the nested `$autonomous_robot_equipment_1$` target exists exactly once.
 

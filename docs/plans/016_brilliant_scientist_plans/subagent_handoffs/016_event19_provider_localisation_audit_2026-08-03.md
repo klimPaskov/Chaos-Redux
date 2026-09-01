@@ -26,7 +26,7 @@ This read-only audit covers the Event 016 provider-extension surface in `common/
 
 ## Cross-surface mismatch notes
 
-- The new receipt names match the provider family constants and the generated template names. `Portal Raider` aligns with `chaos_unit_family_event16_portal_raider` and `kruger_portal_raider`; `Temporal Guard` aligns with `chaos_unit_family_event16_temporal_guard` and `kruger_temporal_guard`.
+- The receipt names match the provider family constants and generated template names. `Portal Raider` aligns with `chaos_unit_family_event16_portal_raider` and `portal_raider`; `Temporal Guard` aligns with `chaos_unit_family_event16_temporal_guard` and `temporal_guard`.
 - The descriptions state that the receipt does not restore the Event 016 parent identity. This matches `brilliant_scientist_event19_install_project_force_public_package`, which adds only the provider-owned host idea and route variable without invoking Event 016 parent setup.
 - The description wording is inherited from the five existing receipts and uses implementation-facing phrases such as `provider-owned receipt` and `Event 016 parent identity`. The ideas are `visible = no`, so this is not a runtime-facing leak under the current implementation. If hidden ideas can be surfaced by a future UI or debug view, rewrite all seven receipt descriptions together rather than changing only portal and temporal.
 - `Temporal Guard Host Receipt` is a short route label, while the native equipment/unit localisation uses `Temporal Continuity Guard`. Decide whether to retain the concise route label or expand the receipt name for strict cross-surface naming consistency. No gameplay identifier depends on the display choice.

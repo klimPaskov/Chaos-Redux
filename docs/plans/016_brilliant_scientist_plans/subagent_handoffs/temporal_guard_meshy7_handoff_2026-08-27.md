@@ -8,7 +8,7 @@ The generic Temporal Guard has actual io_pdx_mesh `.mesh` bytes, eight distinct 
 
 Package root: `docs/assets/chaos_redux_3d_model_pilots/models_3d/temporal_guard`
 
-Parent consumer: `kruger_temporal_guard`
+Parent consumer: `temporal_guard`
 
 ## Dependency, route, and cost evidence
 
@@ -125,7 +125,7 @@ Exact evidence is in `counters/gfx_handoff.md`.
 - Actions `chaosx_temporal_guard_idle`, `chaosx_temporal_guard_move`, `chaosx_temporal_guard_attack`, `chaosx_temporal_guard_defend`, `chaosx_temporal_guard_entrain`, `chaosx_temporal_guard_death`, `chaosx_temporal_guard_temporal_anchor`, and `chaosx_temporal_guard_synchronization`.
 - Proposed required-but-blocked action ids: `chaosx_temporal_guard_support_attack` and `chaosx_temporal_guard_retreat`; parent must not bind either name to an existing semantic role.
 - Runtime material basenames `texture_0.dds`, `texture_normal.dds`, and `texture_specular.dds`; parent must synchronize from the selected `textures/dds/` hashes recorded below rather than from filenames alone.
-- Parent owns `.gfx`/`.asset`, entity, sound definition, localisation, and `kruger_temporal_guard` consumer wiring.
+- Parent owns `.gfx`/`.asset`, entity, sound definition, localisation, and `temporal_guard` consumer wiring.
 
 ## Files changed by the recovery pass
 

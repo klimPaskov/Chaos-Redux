@@ -68,6 +68,8 @@ Protection is layered. Respirators dominate choking-agent defence; blister and n
 
 Ordinary biological warfare will use separate profiles for anthrax, plague, tularemia, and smallpox, with agent-specific incubation, detection, spread, containment, treatment, safety, and attribution. Weaponized zombies remain a separate weapon class and lifecycle. They may share only explicitly approved evidence, death, Air Cleanliness, and consequence adapters.
 
+Event 016 Biomedical Acceleration integrates at the existing exact-state response calculation instead of creating a parallel protection ledger. A healthy operational project contributes fifty points each to surveillance, containment, medical response, and biosecurity; weaponization contributes a further fifty. The normal response clamp remains authoritative, and suspended, damaged, dismantled, stolen, transferred, or inactive project state contributes nothing.
+
 ## Existing-system integration
 
 - Deaths: one operation or continuing-death period creates one shared record and real population loss.

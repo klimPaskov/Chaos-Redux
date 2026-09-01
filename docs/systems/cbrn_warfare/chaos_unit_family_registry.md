@@ -33,11 +33,11 @@ Event 016 registers the following generic Event 019 families from its idempotent
 | --- | ---: | --- | --- |
 | Clone Infantry | 504 | `clone_infantry`, `clone_equipment`, `infantry_equipment` | Shared clone cohorts, rifles, and exact manpower and training or sustainment costs. |
 | Autonomous Robot | 505 | `autonomous_robot`, `autonomous_robot_equipment_1` | Provider-neutral robot equipment, manpower, political power, and command power callbacks. |
-| Paleogenetic Creature | 506 | `kruger_paleogenetic_beast`, `kruger_paleogenetic_equipment_1` | Paleogenetic equipment, manpower, political power, and command power callbacks. |
-| Xenobiological Organism | 507 | `kruger_xenobiological_assault`, `kruger_xenobiological_equipment_1` | Xenobiological equipment, manpower, political power, and command power callbacks. |
+| Paleogenetic Creature | 506 | `paleogenetic_creature`, `paleogenetic_creature_equipment_1` | Paleogenetic equipment, manpower, political power, and command power callbacks. |
+| Xenobiological Organism | 507 | `xenobiological_assault_organism`, `xenobiological_assault_organism_equipment_1` | Xenobiological equipment, manpower, political power, and command power callbacks. |
 | Alien Infantry | 508 | `alien_infantry`, `alien_laser_weapon_equipment_1` | Shared contact receipt and transaction-bound 2,000-laser landing API; no training or manpower callback. Event 019 supplies the exact deletion ID and commits state history and pact telemetry only after its enclosing ledger proof succeeds. Every request or scenario actor is one cohort, and persistent transaction receipts preserve exact refunds through delayed same-tag cleanup. |
 | Portal Raider | 509 | `portal_raider`, `teleportation_equipment_1` | Generic teleportation equipment, infantry equipment, manpower, political power, and command power callbacks. |
-| Temporal Guard | 510 | `kruger_temporal_guard`, `kruger_temporal_equipment_1` | Temporal equipment, manpower, political power, and command power callbacks. |
+| Temporal Guard | 510 | `temporal_guard`, `temporal_guard_equipment_1` | Temporal equipment, manpower, political power, and command power callbacks. |
 | Aryan Clone Infantry | 522 | `aryan_clone_infantry`, `clone_equipment` | Germany/Mengele-owned refinement only; requires `germany_mengele_is_germany_scope = yes`, `germany_mengele_program_active = yes`, `germany_mengele_cloning_project_completed`, `germany_master_race_claim_established`, and `mengele_aryan_clone_refinement_tech`. It is never a neutral clone alias. |
 
 These eight rows use neutral visual profile 999 and remain unavailable until their corresponding Event 016 history-derived runtime flag or the strict Mengele refinement gate is active, so Event 016 native force materialisation remains unchanged and no provider row becomes a synonym for the Event 016 parent identity.

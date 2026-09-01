@@ -8,7 +8,7 @@ Runtime status: **not wired; parent-owned**
 
 Package root: `docs/assets/chaos_redux_3d_model_pilots/models_3d/xenobiological_assault_organism/`
 
-Consumer requested by the parent: `kruger_xenobiological_assault`
+Consumer requested by the parent: `xenobiological_assault_organism`
 
 ## Result
 
@@ -188,7 +188,7 @@ All four derivatives are metadata-free PCM S16LE, 44.1 kHz, mono WAVs verified w
 
 ## Bespoke vanilla-green counters
 
-Current consumer: `common/units/016_brilliant_scientist_project_forces.txt#kruger_xenobiological_assault`, currently `sprite = infantry` and `map_icon_category = armored`.
+Current consumer: `common/units/016_brilliant_scientist_project_forces.txt#xenobiological_assault_organism`, currently `sprite = infantry` and `map_icon_category = armored`.
 
 Required parent-facing sprites and textures:
 
@@ -310,7 +310,7 @@ At the current 13-credit balance, even a technically valid rig source would not 
 
 The four immutable originals and four mechanical derivatives were rehashed and match `audio/source/provenance.md` and `audio/handoff.md`. Fresh `ffprobe` receipts reconfirm every derived WAV as `pcm_s16le`, 44.1 kHz, mono, 16-bit: ambient 33.097143 s, contact thud 0.391837 s, hiss 11.328005 s, and joint crack 6.793288 s. The source pages, direct-download URLs, creators, CC0/public-domain terms, allowed transformations, original hashes, and derived hashes remain recorded.
 
-Audio remains `needs_user_review` for source suitability and `blocked` for exact synchronization. There is no accepted provider action from which to derive foot-contact, strike, landing, wounded, or death-impact frames. Per-subunit selection is also blocked because the verified infantry voice consumer is tag/original-tag scoped, not isolated to `kruger_xenobiological_assault`.
+Audio remains `needs_user_review` for source suitability and `blocked` for exact synchronization. There is no accepted provider action from which to derive foot-contact, strike, landing, wounded, or death-impact frames. Per-subunit selection is also blocked because the verified infantry voice consumer is tag/original-tag scoped, not isolated to `xenobiological_assault_organism`.
 
 ### Counter verification
 

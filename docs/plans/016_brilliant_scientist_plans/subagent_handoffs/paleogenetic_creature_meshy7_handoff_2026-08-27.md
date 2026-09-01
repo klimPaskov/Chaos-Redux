@@ -11,7 +11,7 @@ The rejected humanoid rig was not used for actions or export. No local Blender r
 ## Owned scope and parent boundary
 
 - Package root: `docs/assets/chaos_redux_3d_model_pilots/models_3d/paleogenetic_creature`
-- Parent consumer: `kruger_paleogenetic_beast`
+- Parent consumer: `paleogenetic_creature`
 - Proposed entity: `chaosx_paleogenetic_creature_entity`
 - Proposed mesh: `chaosx_paleogenetic_creature_mesh`
 - Parent owns `.asset`, entity, `.gfx`, sound definitions, gameplay/runtime copies, live-consumer validation, and in-game validation.

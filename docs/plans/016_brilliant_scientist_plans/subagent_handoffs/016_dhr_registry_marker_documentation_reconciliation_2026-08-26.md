@@ -21,6 +21,6 @@ Historical audit language remains in place where it explains the original defect
 
 ## Source checks
 
-Each of the five route-support marker writers has at least one current reader in `common/decisions/016_alien_infantry_landing_decisions.txt`, `common/decisions/016_dhrondan_country_decisions.txt`, or the corresponding DHR trigger file. The four survival-marker readers are present in the landing or enclave-support decision AI. No obsolete `kruger_exotic_guard` or `kruger_exotic_arms_equipment` identifier remains in runtime source. The scoped documentation diff is whitespace-clean.
+Each of the five route-support marker writers has at least one current reader in `common/decisions/016_alien_infantry_landing_decisions.txt`, `common/decisions/016_dhrondan_country_decisions.txt`, or the corresponding DHR trigger file. The four survival-marker readers are present in the landing or enclave-support decision AI. No obsolete pre-generic alien identifier remains in runtime source. The scoped documentation diff is whitespace-clean.
 
 No gameplay, asset, model, localisation, spreadsheet, or MCP surface was changed by this reconciliation. The workbook remains `Needs Testing` until the outstanding runtime and evidence gates are accepted.

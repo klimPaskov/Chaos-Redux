@@ -97,25 +97,25 @@ Paleogenetics and Xenobiological Synthesis do not share sites, control flags, ma
 
 ## Project reward power profile
 
-Each family stage applies a cumulative persistent modifier while the country remains the current Event 016 host. These rewards use a late-game prize scale. Theory bonuses are normally 12% or 18%, prototype bonuses are 12% to 35%, deployment bonuses are 18% to 50%, and weaponization bonuses are 30% to 100%.
+Each family stage applies a cumulative persistent modifier while the country remains the current Event 016 host. The shared wonder-weapon ladder uses 20% or 35% Theory values, 25% to 75% Prototype values, 30% to 75% Deployment values, and 50% to 150% Weaponization values. Family-specific outputs use the same scale without flattening their identities.
 
 | Family | Cumulative strategic identity at Weaponization |
 | --- | --- |
-| Computation | +12% research speed, +18% intelligence-network growth, +25% encryption and decryption, -35% agency upgrade time, +35% planning speed, +78% maximum planning, +0.35 command-power gain, +30% army organization, and +30% reinforcement rate |
-| Electronics | +12% research speed, -50% air accidents, +35% decryption, +107% air-mission efficiency, +95% static anti-air hit chance, +18% army air-superiority benefit, and +30% army attack |
-| Advanced Materials | +18% production-efficiency growth and cap, -35% resource shortage penalty, +25% local resources, +35% factory output and repair speed, +18% construction speed, +60% conversion speed and maximum entrenchment, and +30% army defense |
-| Rocketry | +18% special-project speed, +138% air range, +90% air-mission efficiency, and +48% army attack |
-| High Energy | +12% research speed, +53% fuel gain, +103% special-project speed, +125% nuclear production, +18% factory output, and +30% army attack |
-| Biomedical | +12% research speed, +2,500 weekly manpower, +65% reinforcement rate, -35% experience loss, +18% army organization, -15% training time, -35% supply consumption, and +60% recovery rate |
-| Teleportation | +12% research speed, +90% planning speed, +48% army speed, -70% out-of-supply penalty, -15% supply consumption, and +60% maximum planning |
-| Cloning | +2,500 weekly manpower, +9% recruitable population, -50% training time, +47% reinforcement rate, +18% army organization, and -35% experience loss |
-| Robotics | +18% production-efficiency growth, +43% production-efficiency cap, +42% factory output, +18% army organization, -15% supply consumption and out-of-supply penalty, and +60% army attack and defense |
-| Paleogenetics | +12% research speed, +30% recovery rate, +72% army attack, +30% army defense, +18% army organization, and +48% army speed at a 15% supply burden |
-| Xenobiological Synthesis | +12% research speed, +30% recovery rate, +72% army attack, +60% army defense, +48% army organization, and +18% army speed at a 15% supply burden |
-| Biological Weapons | +12% research speed, +78% intelligence-network growth, +25% decryption, +30% special-project speed, +78% army attack, and +78% maximum planning |
-| Alien Arms | +12% research speed, +43% special-project speed, +25% decryption, +78% army attack and air-mission efficiency, +60% army defense, and +48% army speed |
-| Temporal | +12% research speed, +18% reinforcement rate, +125% planning speed, -70% experience loss, +35% maximum planning, +0.35 command-power gain, +18% army organization, and +30% army speed |
-| Strategic Singularity | +18% research speed, +35% special-project speed, +25% factory output, +150% planning speed, +60% army attack and defense, +30% army organization, +18% maximum planning, +35% maximum command power, and +1.10 command-power gain at a 15% consumer-goods burden |
+| Computation | One research slot, +50% cumulative research speed at Deployment, +100% at Weaponization, overwhelming encryption, decryption, planning, intelligence, and the paid Predictive Campaign directive. |
+| Electronics | Overwhelming radar, air and naval detection, decryption, mission efficiency, interception, anti-air coordination, and the paid Sensor Saturation directive. |
+| Advanced Materials | Extreme efficiency growth, output, repair, extraction, conversion, armor, construction, and permanent state synthesis works that create strategic resources. |
+| Rocketry | Extreme special-project speed, range, air efficiency, strategic bombing, high-speed strike tempo, and a paid long-range industrial-delivery attack. |
+| High Energy | Extreme reactor output, fuel production, special-project speed, nuclear production, industrial power, command capacity, and the paid Field Projector grid. |
+| Biomedical | Extreme reinforcement, casualty recovery, experience preservation, recruitable population, logistics, emergency regeneration, epidemic control, and up to one hundred added points in the shared outbreak-response calculation. |
+| Teleportation | Extreme planning and strategic movement, low supply and isolation penalties, generic Portal Raiders, raid beachheads, factory theft, facility extraction, and improved weaponized reliability. |
+| Cloning | The exact physical-stockpile manpower farm, growth infrastructure, fast high-organization base clones, and a separate elite weaponized refinement; Mengele retains his independent clone branches. |
+| Robotics | Extreme industrial automation and a zero-human-manpower armored-infantry package constrained by robot equipment, fuel, power infrastructure, and production. |
+| Paleogenetics | A fast reconnaissance and intimidation shock package with high breakthrough and terrain utility, plus real feed, handler, transport, air-defense, and containment burdens. |
+| Xenobiological Synthesis | A fort-breaking adaptive assault package whose chemical, neural, machine, and researched control doctrines are mutually exclusive and mechanically distinct. |
+| Biological Weapons | Every mapped native pathogen project and raid, production and defensive integration, and the separately owned decision-deployment transactions documented by the biological-warfare closure contract. |
+| Alien Arms | Alien laser production, the envoy craft, D'Rhondan contact, predictive tactics, exact paid UFO landings, zero-human-manpower Alien Infantry, and the DHR consequence chain. |
+| Temporal | A resilient Temporal Guard package plus bounded recovery, continuity, synchronization, temporal-debt, anchor-control, and stabilization actions. |
+| Strategic Singularity | Six causal components, command nodes, power links, certification, guarded arming, threshold-forcing detonation, and exclusive transition into the shared Fallout pipeline. |
 
 The mapped vanilla technologies remain unchanged. The powerful identity comes from the Event 016 persistent project modifiers and the hidden reusable operational technologies, so other events can grant the custom API rewards without globally rewriting vanilla research.
 
