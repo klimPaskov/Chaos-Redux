@@ -16,7 +16,7 @@
 #   chaosx_grant_custom_technology_upgrade:
 #       chaosx_custom_technology_upgrade = constant:chaosx_custom_technology_upgrade.*
 #   all public grants (optional):
-#       chaosx_custom_technology_source = positive numeric source ID
+#       chaosx_custom_technology_source = numeric source ID in [1, stride)
 #   chaosx_grant_random_custom_operational_technology:
 #       no selector; chooses one unresearched operational family.
 #   chaosx_reconcile_custom_technology_runtime:
@@ -27,7 +27,7 @@
 #   grant; chaosx_custom_technology_upgrade_applied (temporary 0/1) for an
 #   upgrade grant; chaosx_custom_technology_random_grant_applied (temporary
 #   0/1) for the random effect; chaosx_custom_technology_runtime_reconciled
-#   (temporary 0/1) for explicit runtime reconciliation. Positive sources also
+#   (temporary 0/1) for explicit runtime reconciliation. In-range sources also
 #   append idempotent encoded receipts to the country-scoped operational and
 #   upgrade provenance arrays. Invalid selectors are safe no-ops.
 # ============================================================================
@@ -92,20 +92,16 @@ chaosx_grant_custom_operational_technology_core = {
 }
 
 # COUNTRY scope. Private provenance writers used only by the public grant
-# boundaries. A caller may provide a positive numeric
-# chaosx_custom_technology_source as a temporary or country variable. The
+# boundaries. A caller may provide a numeric chaosx_custom_technology_source
+# from provenance_minimum_source (inclusive) to provenance_stride (exclusive)
+# as a temporary or country variable. The
 # receipt is selector * provenance_stride + source and is appended once to the
 # corresponding country array; these arrays are never cleared by reconciliation
 # or runtime rebuilds.
 chaosx_record_custom_operational_technology_provenance = {
 	if = {
 		limit = {
-			has_variable = chaosx_custom_technology_source
-			check_variable = {
-				var = chaosx_custom_technology_source
-				value = constant:chaosx_custom_technology_tuning.provenance_minimum_source
-				compare = greater_than_or_equals
-			}
+			chaosx_custom_technology_source_is_valid = yes
 			chaosx_custom_technology_family_is_valid = yes
 		}
 		set_temp_variable = { chaosx_custom_technology_provenance_receipt = chaosx_custom_technology_family }
@@ -121,12 +117,7 @@ chaosx_record_custom_operational_technology_provenance = {
 chaosx_record_custom_technology_upgrade_provenance = {
 	if = {
 		limit = {
-			has_variable = chaosx_custom_technology_source
-			check_variable = {
-				var = chaosx_custom_technology_source
-				value = constant:chaosx_custom_technology_tuning.provenance_minimum_source
-				compare = greater_than_or_equals
-			}
+			chaosx_custom_technology_source_is_valid = yes
 			chaosx_custom_technology_upgrade_is_valid = yes
 		}
 		set_temp_variable = { chaosx_custom_technology_provenance_receipt = chaosx_custom_technology_upgrade }

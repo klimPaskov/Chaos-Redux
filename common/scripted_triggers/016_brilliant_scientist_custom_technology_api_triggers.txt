@@ -9,6 +9,18 @@
 # existing Event 016 control flags so a public award cannot create a stack.
 # ============================================================================
 
+# COUNTRY scope. Optional provenance sources occupy only the source portion of
+# selector * stride + source. Invalid sources do not block technology grants.
+chaosx_custom_technology_source_is_valid = {
+	has_variable = chaosx_custom_technology_source
+	check_variable = {
+		var = chaosx_custom_technology_source
+		value = constant:chaosx_custom_technology_tuning.provenance_minimum_source
+		compare = greater_than_or_equals
+	}
+	check_variable = { chaosx_custom_technology_source < constant:chaosx_custom_technology_tuning.provenance_stride }
+}
+
 # COUNTRY scope. True when the temporary family selector names one of the seven
 # operational families owned by Event 016.
 chaosx_custom_technology_family_is_valid = {

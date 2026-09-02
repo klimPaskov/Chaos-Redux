@@ -2,7 +2,10 @@
 
 This API gives other events, decisions, focuses, and scripted systems a neutral way to award the eighteen existing Event 016 custom technologies. Every public effect is country scoped, and selectors are temporary or country variables supplied by the caller. The API never grants vanilla computing, radar, industry, rocketry, nuclear, medical, or chemical/biological technologies and never creates Event 016 project history.
 
-Every public grant accepts the optional numeric `chaosx_custom_technology_source` input. A positive source records permanent provenance without changing the grant result, while an omitted, zero, or negative source records nothing. The Event 025/Event 036 recovery bridge automatically supplies its positive source event when the generic input is absent.
+Every public grant accepts the optional numeric `chaosx_custom_technology_source` input.
+A source from `provenance_minimum_source` inclusive to `provenance_stride` exclusive records permanent provenance without changing the grant result; the current range is 1 through values below 1,000,000.
+An omitted or out-of-range source records nothing and does not block a valid technology grant.
+The Event 025/Event 036 recovery bridge automatically supplies its positive source event when the generic input is absent.
 
 ## Public effects
 
@@ -15,6 +18,11 @@ Every public grant accepts the optional numeric `chaosx_custom_technology_source
 `chaosx_grant_external_alien_recovery_reward` is the owner API for alien-derived rewards from Event 025 and compatible recovery systems. It grants the first missing operational family, then one eligible upgrade, then `brilliant_scientist_alien_systems_integration`; it never grants vanilla technology or Event 016 project history. Set the temporary `chaosx_alien_recovery_overlap` value above zero when a caller has proved an aircraft or propulsion overlap. Upgrade weights are built through `chaosx_custom_technology_upgrade_is_eligible`, so already-owned upgrades and all three alternate xenobiological controls have zero weight. The durable result is stored in `chaosx_external_alien_recovery_result`, and repeated calls are guarded by `chaosx_external_alien_recovery_reward_consumed`. The stable result, tier, field, and source values live in `chaosx_custom_technology_recovery`, so the API does not depend on any caller package's constant namespace or file load order.
 
 ## Query and reconciliation effects
+
+`chaosx_custom_technology_source_is_valid` is a read-only country-scope query for the optional temporary or country variable `chaosx_custom_technology_source`.
+It requires the input to exist and satisfy the inclusive minimum and exclusive stride bounds above.
+It has no side effects, makes no default assignment, and returns false for missing or out-of-range input.
+Callers requiring recorded provenance can use this query before invoking a public grant; ordinary grants intentionally remain usable without provenance.
 
 `chaosx_custom_technology_family_is_valid` and `chaosx_custom_technology_upgrade_is_valid` are selector-shape queries. They return true only for the seven operational or eleven upgrade constants, respectively.
 
@@ -34,9 +42,27 @@ Every public grant accepts the optional numeric `chaosx_custom_technology_source
 
 ## Source provenance receipts
 
-Operational receipts are stored in the country array `chaosx_custom_technology_operational_provenance`, and upgrade receipts are stored in `chaosx_custom_technology_upgrade_provenance`. The API encodes each receipt as `selector * constant:chaosx_custom_technology_tuning.provenance_stride + source`. The current stride is `1000000`, and source IDs should remain positive and below that stride so selector and source components remain unambiguous. The receipt therefore preserves both the selected API vocabulary and the external source without requiring a second parallel array.
+Operational receipts are stored in the country array `chaosx_custom_technology_operational_provenance`, and upgrade receipts are stored in `chaosx_custom_technology_upgrade_provenance`.
+The API encodes each receipt as `selector * constant:chaosx_custom_technology_tuning.provenance_stride + source`.
+Both writers require `chaosx_custom_technology_source_is_valid`, so a source cannot spill into the next selector's numeric range.
+The current stride is `1000000`, and valid source IDs are at least 1 and strictly below that stride.
+The receipt therefore preserves both the selected API vocabulary and the external source without requiring a second parallel array.
 
-The operational public effect appends one family receipt after a valid grant. The upgrade public effect appends the prerequisite family receipt and one upgrade receipt after a valid grant. `chaosx_grant_external_alien_recovery_reward` inherits Event 025 or Event 036's positive source event when no direct source input is supplied. `is_in_array` guards make each encoded receipt idempotent, and neither reconciliation nor runtime rebuild clears either array. A missing, zero, or negative source is intentionally provenance-free and does not block the technology grant.
+The operational public effect appends one family receipt after a valid grant.
+The upgrade public effect appends the prerequisite family receipt and one upgrade receipt after a valid grant.
+`chaosx_grant_external_alien_recovery_reward` inherits Event 025 or Event 036's positive source event when no direct source input is supplied.
+`is_in_array` guards make each encoded receipt idempotent, and neither reconciliation nor runtime rebuild clears either array.
+A missing or out-of-range source is intentionally provenance-free and does not block the technology grant.
+No existing receipt is reinterpreted, deleted, or attributed to a guessed source.
+
+```text
+set_temp_variable = { chaosx_custom_technology_source = 25 }
+if = {
+	limit = { chaosx_custom_technology_source_is_valid = yes }
+	set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.robot }
+	chaosx_grant_custom_operational_technology = yes
+}
+```
 
 ## Runtime behavior and lifecycle
 
