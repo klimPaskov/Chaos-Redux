@@ -3765,6 +3765,79 @@ def _promotion_attribute_record(attribute: Any) -> Dict[str, Any]:
     return {"domain": attribute.domain, "type": attribute.data_type, "sha256": _promotion_digest(values)}
 
 
+def _promotion_discardable_material(record: Dict[str, Any]) -> bool:
+    """Only independently unconsumed, unretained local material IDs may disappear."""
+    return (
+        type(record["users"]) is int and record["users"] == 0
+        and record["local"] is True and record["fake_user"] is False
+        and record["extra_user"] is False and record["protected"] is False
+        and record["tree_retained"] is False
+        and record["id_consumers"] == [] and record["mesh_slots"] == []
+        and record["object_slots"] == []
+    )
+
+
+def _promotion_material_retention(materials: Dict[str, Any]) -> Dict[str, Any]:
+    """Record complete native ID consumers without changing any retention flag."""
+    blocks = list(bpy.data.materials)
+    user_map = bpy.data.user_map(subset=blocks)
+    inventory = {}
+    for material in blocks:
+        if material not in user_map:
+            raise ValueError("Promotion material is absent from the native ID user map.")
+        tree = material.node_tree
+        record = {
+            "record_sha256": _promotion_digest(materials[material.name]),
+            "users": material.users, "fake_user": material.use_fake_user,
+            "extra_user": material.use_extra_user,
+            "local": material.library is None and material.override_library is None,
+            "protected": any(bool(block.get(key)) for block in (material, tree) for key in ("chaosx_source_protected", "chaosx_reference_read_only")),
+            "tree_retained": bool(tree.use_fake_user or tree.use_extra_user or tree.library or tree.override_library),
+            "id_consumers": sorted((_promotion_value(block) for block in user_map[material]), key=lambda row: json.dumps(row, sort_keys=True)),
+            "mesh_slots": sorted((mesh.name, index) for mesh in bpy.data.meshes for index, slot in enumerate(mesh.materials) if slot == material),
+            "object_slots": sorted((obj.name, index, slot.link) for obj in bpy.data.objects for index, slot in enumerate(obj.material_slots) if slot.material == material),
+        }
+        record["discardable_orphan"] = _promotion_discardable_material(record)
+        inventory[material.name] = record
+    retained = {name: materials[name] for name, row in inventory.items() if not row["discardable_orphan"]}
+    return {"inventory": inventory, "retained_sha256": _promotion_digest(retained)}
+
+
+def _promotion_reopen_comparison(before: Dict[str, Any], after: Dict[str, Any]) -> Dict[str, Any]:
+    """Exact preservation except native disappearance of proven before-only orphans."""
+    mismatches, removed = [], []
+    if set(before) != set(after):
+        mismatches.append("fingerprint_fields")
+    for key in set(before) | set(after):
+        if key not in {"sha256", "material_retention"} and before.get(key) != after.get(key):
+            mismatches.append(key)
+    left_hashes, right_hashes = before["sha256"], after["sha256"]
+    if set(left_hashes) != set(right_hashes):
+        mismatches.append("sha256.fields")
+    for key in set(left_hashes) | set(right_hashes):
+        if key != "materials" and left_hashes.get(key) != right_hashes.get(key):
+            mismatches.append(f"sha256.{key}")
+    left, right = before["material_retention"], after["material_retention"]
+    if left["retained_sha256"] != right["retained_sha256"]:
+        mismatches.append("material_retention.retained_sha256")
+    old, new = left["inventory"], right["inventory"]
+    for name in sorted(set(old) | set(new)):
+        path = f"material_retention.inventory[{name!r}]"
+        if name not in old:
+            mismatches.append(path + ".added")
+        elif name in new:
+            if old[name] != new[name]:
+                mismatches.append(path + ".changed")
+        elif old[name]["discardable_orphan"] is True and _promotion_discardable_material(old[name]):
+            removed.append({"name": name, "reason": "native_save_dropped_zero_user_unretained_local_unprotected_material_without_id_or_slot_consumers", "before": old[name]})
+        else:
+            mismatches.append(path + ".required_material_missing")
+    if not removed and left_hashes["materials"] != right_hashes["materials"]:
+        mismatches.append("sha256.materials")
+    return {"accepted": not mismatches, "mismatches": sorted(mismatches), "removed_orphan_materials": removed,
+            "policy": "exact_retained_materials_and_all_other_sections_only_proven_orphan_disappearance"}
+
+
 def _promotion_fingerprint(job: Path, target_names: Iterable[str]) -> Dict[str, Any]:
     """Exact pre/post fingerprints; no evaluated mesh, conversion, or data mutation."""
     target_names = set(target_names)
@@ -3843,7 +3916,7 @@ def _promotion_fingerprint(job: Path, target_names: Iterable[str]) -> Dict[str, 
     scene = bpy.context.scene
     sections = {"objects": objects, "geometry": geometry, "rigs": rigs, "materials": materials, "images": images, "actions": actions,
                 "scene": {"fps": scene.render.fps, "fps_base": scene.render.fps_base, "frame": scene.frame_current, "subframe": scene.frame_subframe, "start": scene.frame_start, "end": scene.frame_end, "properties": _promotion_properties(scene), "collections": {collection.name: {"objects": sorted(obj.name for obj in collection.objects), "children": sorted(child.name for child in collection.children), "properties": _promotion_properties(collection)} for collection in bpy.data.collections}}}
-    return {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
+    return {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "material_retention": _promotion_material_retention(materials), "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
 
 
 def promote_accepted_reimport(req: Dict[str, Any]) -> Dict[str, Any]:
@@ -3855,7 +3928,7 @@ def promote_accepted_reimport(req: Dict[str, Any]) -> Dict[str, Any]:
               "checkpoint": output.relative_to(job).as_posix(), "report": context["report_path"].relative_to(job).as_posix(),
               "inputs": {role: {key: value for key, value in row.items() if key != "path"} for role, row in inputs.items()},
               "receipt_policy": "complete_legacy_reimport_export_receipt_bound_to_explicit_caller_hashes",
-              "comparison_policy": "exact_fingerprints_no_tolerance_no_export_vertex_count_assumption"}
+              "comparison_policy": "exact_fingerprints_with_proven_unretained_orphan_material_disappearance_only_no_tolerance_no_export_vertex_count_assumption"}
     try:
         bpy.ops.wm.open_mainfile(filepath=str(inputs["source"]["path"]), use_scripts=False)
         targets = _promotion_targets(context)
@@ -3879,7 +3952,8 @@ def promote_accepted_reimport(req: Dict[str, Any]) -> Dict[str, Any]:
         bpy.ops.wm.open_mainfile(filepath=str(output), use_scripts=False)
         after = _promotion_fingerprint(job, names)
         result["fingerprints_after"] = after
-        if after != before:
+        result["reopen_comparison"] = _promotion_reopen_comparison(before, after)
+        if not result["reopen_comparison"]["accepted"]:
             raise RuntimeError("Promotion saved/reopened invariant mismatch; output is not approved.")
         for name in names:
             obj = bpy.context.scene.objects.get(name)

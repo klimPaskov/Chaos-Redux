@@ -1,6 +1,6 @@
 """Disposable native-Blender locator regression; never a production asset proof.
 
-Run only after parent review and the approved adapter 1.10.16 lock refresh.
+Run only after parent review and the approved adapter 1.10.17 lock refresh.
 This fixture creates its own tiny mesh/rig/action in a temporary directory and
 round-trips actual io_pdx_mesh bytes; no production checkpoint is opened.
 """
@@ -49,7 +49,7 @@ def verified_environment() -> tuple[dict, dict]:
     lock = json.loads((PIPELINE_ROOT / "config/dependencies.lock.json").read_text(encoding="utf-8"))
     routes = lock["routes"]
     adapter = routes["blender_hoi4_adapter"]
-    assert config["adapter_version"] == adapter["version"] == "1.10.16", "Review/version/lock gate is not complete"
+    assert config["adapter_version"] == adapter["version"] == "1.10.17", "Review/version/lock gate is not complete"
     assert config["operations"] == adapter["operations"]
     assert adapter["operations"].count("author_locator") == 1
     assert adapter["operations"].count("promote_accepted_reimport") == 1
@@ -229,7 +229,7 @@ def main() -> None:
     for class_name in ("Short2AttributeValue", "Int2AttributeValue", "StringAttributeValue", "Float2AttributeValue", "Float4x4AttributeValue", "QuaternionAttributeValue"):
         rna = getattr(bpy.types, class_name).bl_rna
         attribute_schema[class_name] = [{"name": prop.identifier, "type": prop.type, "array_length": getattr(prop, "array_length", None)} for prop in rna.properties if prop.identifier != "rna_type"]
-    print(json.dumps({"native_attribute_schema": attribute_schema, "blender_version": bpy.app.version_string}, sort_keys=True))
+    print(json.dumps({"native_attribute_schema": attribute_schema, "native_user_map_doc": bpy.data.user_map.__doc__, "blender_version": bpy.app.version_string}, sort_keys=True))
     if "--schema-only" in sys.argv:
         return
     with tempfile.TemporaryDirectory(prefix="chaosx_locator_fixture_") as directory:
@@ -306,6 +306,17 @@ def main() -> None:
         # Obtain a real producer receipt and proof from these actual synthetic
         # export bytes. This also renders the producer's own preview evidence.
         reset_fixture_scene()
+        # An unretained mesh datablock keeps this material in the producer save,
+        # then disappears when the source proof opens. The material consequently
+        # reaches promotion as a genuine native zero-user orphan, as opposed to
+        # a mocked drop or an explicit material deletion by the adapter.
+        orphan = bpy.data.materials.new("FixtureUnretainedOrphan")
+        orphan.use_nodes = True
+        carrier = bpy.data.meshes.new("FixtureUnretainedCarrier")
+        carrier.materials.append(orphan)
+        retained_orphan = bpy.data.materials.new("FixtureFakeUserMaterial")
+        retained_orphan.use_nodes = True
+        retained_orphan.use_fake_user = True
         proof = blender_worker.reimport_export({**req, "payload": {
             "mesh_rel": mesh_report["mesh"], "anim_rel": anim_report["anim"],
             "proof_name": "fixture_promotion",
@@ -318,6 +329,13 @@ def main() -> None:
         target_names = [target_rig, *target_meshes]
         bpy.ops.wm.open_mainfile(filepath=str(proof_path), use_scripts=False)
         promotion_before = blender_worker._promotion_fingerprint(job, target_names)
+        retention = promotion_before["material_retention"]["inventory"]
+        assert retention["FixtureUnretainedOrphan"]["discardable_orphan"] is True
+        assert retention["FixtureUnretainedOrphan"]["users"] == 0
+        assert retention["FixtureUnretainedOrphan"]["id_consumers"] == []
+        assert retention["FixtureFakeUserMaterial"]["fake_user"] is True
+        assert retention["FixtureFakeUserMaterial"]["discardable_orphan"] is False
+        assert "FixtureUnretainedCarrier" not in bpy.data.meshes
         assert not any(bpy.data.objects[name].get("chaosx_working", False) for name in target_names)
         promotion = blender_worker.promote_accepted_reimport({**req, "payload": {
             "blend_rel": proof["proof_blend"], "expected_source_sha256": proof_hash,
@@ -328,17 +346,44 @@ def main() -> None:
             "anim_rel": anim_report["anim"], "expected_anim_sha256": hashes["anim"],
         }})
         assert promotion["status"] == "pass" and promotion["new_provider_call"] is False
-        assert promotion["fingerprints_before"] == promotion["fingerprints_after"] == promotion_before
+        assert promotion["fingerprints_before"] == promotion_before
+        assert promotion["reopen_comparison"]["accepted"] is True
+        assert [row["name"] for row in promotion["reopen_comparison"]["removed_orphan_materials"]] == ["FixtureUnretainedOrphan"]
+        assert promotion["fingerprints_after"]["material_retention"]["inventory"]["FixtureFakeUserMaterial"] == retention["FixtureFakeUserMaterial"]
+        for section, before_hash in promotion_before["sha256"].items():
+            if section != "materials":
+                assert promotion["fingerprints_after"]["sha256"][section] == before_hash
         promoted_path = job / promotion["checkpoint"]
         assert digest(promoted_path) == promotion["checkpoint_sha256"]
         bpy.ops.wm.open_mainfile(filepath=str(promoted_path), use_scripts=False)
-        assert blender_worker._promotion_fingerprint(job, target_names) == promotion_before
+        assert blender_worker._promotion_fingerprint(job, target_names) == promotion["fingerprints_after"]
         assert all(bpy.data.objects[name].get("chaosx_working") is True for name in target_names)
         assert not bpy.data.objects[LOCATOR_NAME].get("chaosx_working", False)
         assert digest(proof_path) == proof_hash and digest(validation_path) == validation_hash
         assert digest(mesh_path) == hashes["mesh"] and digest(anim_path) == hashes["anim"]
+        # Exercise real material records, not just dictionary doubles. These
+        # deliberate corruptions affect disposable in-memory fixture data only;
+        # no corrupted checkpoint is saved or accepted.
+        native_material_rejections = {}
+        runtime_material = bpy.data.objects[target_meshes[0]].data.materials[0]
+        shader = next(node for node in runtime_material.node_tree.nodes if node.bl_idname == "ShaderNodeBsdfPrincipled")
+        shader.inputs["Roughness"].default_value = 0.271
+        corrupted = blender_worker._promotion_fingerprint(job, target_names)
+        rejection = blender_worker._promotion_reopen_comparison(promotion["fingerprints_after"], corrupted)
+        assert rejection["accepted"] is False
+        assert "material_retention.retained_sha256" in rejection["mismatches"]
+        native_material_rejections["consumed_material_socket_mutation"] = rejection
+        bpy.ops.wm.open_mainfile(filepath=str(promoted_path), use_scripts=False)
+        bpy.data.materials.remove(bpy.data.materials["FixtureFakeUserMaterial"])
+        corrupted = blender_worker._promotion_fingerprint(job, target_names)
+        rejection = blender_worker._promotion_reopen_comparison(promotion["fingerprints_after"], corrupted)
+        assert rejection["accepted"] is False
+        assert "material_retention.inventory['FixtureFakeUserMaterial'].required_material_missing" in rejection["mismatches"]
+        native_material_rejections["fake_user_material_disappearance"] = rejection
+        assert digest(promoted_path) == promotion["checkpoint_sha256"], "Negative fixture checks wrote the working copy"
         bpy.ops.wm.open_mainfile(filepath=str(proof_path), use_scripts=False)
         assert not any(bpy.data.objects[name].get("chaosx_working", False) for name in target_names)
+        assert blender_worker._promotion_fingerprint(job, target_names) == promotion_before
         hashes.update(promotion_source=proof_hash, promotion_validation=validation_hash, promoted_copy=digest(promoted_path))
         print(json.dumps({
             "status": "pass", "fixture_only": True, "production_asset_acceptance": False,
@@ -348,6 +393,8 @@ def main() -> None:
             "selected_objects": mesh_report["selected_export_objects"], "source_samples": authored_samples,
             "reimport_world_errors": errors, "hashes": hashes,
             "promotion_status": promotion["status"], "promotion_fingerprints": promotion["fingerprints_after"],
+            "promotion_reopen_comparison": promotion["reopen_comparison"],
+            "native_material_rejections": native_material_rejections,
         }, sort_keys=True))
         # Leave no test data-blocks or file handles pointing into the disposable directory.
         reset_fixture_scene()

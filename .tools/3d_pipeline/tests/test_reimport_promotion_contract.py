@@ -98,9 +98,9 @@ class PromotionContracts(unittest.TestCase):
         self.action = Block("RetainedAction", users=1, use_fake_user=True)
         self.objects = Objects([self.rig, self.mesh])
         self.scene = Block("Scene", objects=self.objects, render=types.SimpleNamespace(fps=30, fps_base=1.0), frame_current=1, frame_subframe=0.0, frame_start=1, frame_end=20)
-        self.bpy = types.SimpleNamespace(types=types.SimpleNamespace(ID=Block), data=types.SimpleNamespace(objects=self.objects, actions=[self.action], materials=[], collections=[]), context=types.SimpleNamespace(scene=self.scene), ops=types.SimpleNamespace(wm=types.SimpleNamespace(open_mainfile=Mock(), save_as_mainfile=Mock(side_effect=self.save))))
+        self.bpy = types.SimpleNamespace(types=types.SimpleNamespace(ID=Block), data=types.SimpleNamespace(objects=self.objects, actions=[self.action], materials=[], meshes=[], collections=[], user_map=Mock(return_value={})), context=types.SimpleNamespace(scene=self.scene), ops=types.SimpleNamespace(wm=types.SimpleNamespace(open_mainfile=Mock(), save_as_mainfile=Mock(side_effect=self.save))))
         self.ns["bpy"] = self.bpy
-        self.baseline = {"sha256": {name: "unchanged" for name in ("objects", "geometry", "rigs", "materials", "images", "actions", "scene")}, "mesh_counts": {"Body": {"vertices": 3, "polygons": 1, "loops": 3}}, "actions": ["RetainedAction"], "objects": ["Body", "Rig"]}
+        self.baseline = {"sha256": {name: "unchanged" for name in ("objects", "geometry", "rigs", "materials", "images", "actions", "scene")}, "material_retention": {"inventory": {}, "retained_sha256": "unchanged"}, "mesh_counts": {"Body": {"vertices": 3, "polygons": 1, "loops": 3}}, "actions": ["RetainedAction"], "objects": ["Body", "Rig"]}
 
     def write_receipt(self):
         path = self.job / self.req["payload"]["validation_rel"]
@@ -308,6 +308,119 @@ class PromotionContracts(unittest.TestCase):
         self.bpy.ops.wm.save_as_mainfile.side_effect = corrupt_input
         with self.assertRaisesRegex(RuntimeError, "Immutable promotion mesh"):
             self.ns["promote_accepted_reimport"](self.req)
+
+    def orphan_inventory(self):
+        orphan = Block("Orphan", users=0, use_fake_user=False, use_extra_user=False,
+                       node_tree=Block("OrphanTree", use_fake_user=False, use_extra_user=False))
+        self.bpy.data.materials = [orphan]
+        self.bpy.data.objects = []
+        self.bpy.data.user_map.return_value = {orphan: set()}
+        return orphan, self.ns["_promotion_material_retention"]({"Orphan": {"exact": [1, 2, 3]}})
+
+    def test_plain_orphan_disappearance_passes_and_records_exact_before_evidence(self):
+        orphan, inventory = self.orphan_inventory()
+        before, after = copy.deepcopy(self.baseline), copy.deepcopy(self.baseline)
+        before["material_retention"] = inventory
+        after["material_retention"] = {"inventory": {}, "retained_sha256": inventory["retained_sha256"]}
+        after["sha256"]["materials"] = "native_orphan_drop"
+        result = self.ns["_promotion_reopen_comparison"](before, after)
+        self.assertTrue(result["accepted"])
+        self.assertEqual(result["removed_orphan_materials"][0]["name"], orphan.name)
+        self.assertEqual(result["removed_orphan_materials"][0]["before"], inventory["inventory"]["Orphan"])
+        self.bpy.data.user_map.assert_called_once_with(subset=[orphan])
+
+    def test_material_retention_uses_complete_id_map_and_independent_slots(self):
+        orphan, _ = self.orphan_inventory()
+        self.bpy.data.user_map.return_value = {}
+        with self.assertRaisesRegex(ValueError, "absent from the native ID user map"):
+            self.ns["_promotion_material_retention"]({"Orphan": {}})
+        consumer = Block("GeometryNodeConsumer")
+        self.bpy.data.user_map.return_value = {orphan: {consumer}}
+        record = self.ns["_promotion_material_retention"]({"Orphan": {}})["inventory"]["Orphan"]
+        self.assertFalse(record["discardable_orphan"])
+        self.assertEqual(record["id_consumers"], [self.ns["_promotion_value"](consumer)])
+        self.bpy.data.user_map.return_value = {orphan: set()}
+        self.bpy.data.meshes = [Block("UnlinkedMesh", materials=[orphan])]
+        record = self.ns["_promotion_material_retention"]({"Orphan": {}})["inventory"]["Orphan"]
+        self.assertFalse(record["discardable_orphan"])
+        self.assertEqual(record["mesh_slots"], [("UnlinkedMesh", 0)])
+        self.bpy.data.meshes = []
+        self.bpy.data.objects = [Block("ObjectSlot", material_slots=[types.SimpleNamespace(material=orphan, link="OBJECT")])]
+        record = self.ns["_promotion_material_retention"]({"Orphan": {}})["inventory"]["Orphan"]
+        self.assertFalse(record["discardable_orphan"])
+        self.assertEqual(record["object_slots"], [("ObjectSlot", 0, "OBJECT")])
+
+    def test_native_retention_flags_and_protection_feed_classification_without_mutation(self):
+        orphan, baseline = self.orphan_inventory()
+        material_value = {"exact": [1, 2, 3]}
+        self.assertEqual(baseline["inventory"]["Orphan"]["record_sha256"], self.ns["_promotion_digest"](material_value))
+        for block, attribute, value in ((orphan, "use_fake_user", True), (orphan, "use_extra_user", True), (orphan, "users", 1), (orphan.node_tree, "use_fake_user", True), (orphan.node_tree, "use_extra_user", True)):
+            previous = getattr(block, attribute)
+            setattr(block, attribute, value)
+            record = self.ns["_promotion_material_retention"]({"Orphan": material_value})
+            self.assertFalse(record["inventory"]["Orphan"]["discardable_orphan"])
+            self.assertEqual(record["retained_sha256"], self.ns["_promotion_digest"]({"Orphan": material_value}))
+            self.assertEqual(getattr(block, attribute), value)
+            setattr(block, attribute, previous)
+        for block in (orphan, orphan.node_tree):
+            for key in ("chaosx_source_protected", "chaosx_reference_read_only"):
+                block[key] = True
+                self.assertFalse(self.ns["_promotion_material_retention"]({"Orphan": material_value})["inventory"]["Orphan"]["discardable_orphan"])
+                self.assertTrue(block[key])
+                del block[key]
+
+    def test_fake_user_protected_linked_extra_user_and_consumed_disappearance_reject(self):
+        _, inventory = self.orphan_inventory()
+        for key, value in (("users", 1), ("users", False), ("fake_user", True), ("extra_user", True), ("protected", True), ("local", False), ("tree_retained", True), ("id_consumers", [{"name": "NodeConsumer"}]), ("mesh_slots", [["Mesh", 0]]), ("object_slots", [["Object", 0, "OBJECT"]])):
+            before, after = copy.deepcopy(self.baseline), copy.deepcopy(self.baseline)
+            before["material_retention"] = copy.deepcopy(inventory)
+            # Even an incorrect cached classification cannot override native facts.
+            before["material_retention"]["inventory"]["Orphan"][key] = value
+            after["material_retention"]["retained_sha256"] = inventory["retained_sha256"]
+            with self.subTest(key=key):
+                self.assertFalse(self.ns["_promotion_reopen_comparison"](before, after)["accepted"])
+
+    def test_orphan_addition_mutation_and_retained_material_mutation_reject(self):
+        _, inventory = self.orphan_inventory()
+        before = copy.deepcopy(self.baseline)
+        before["material_retention"] = inventory
+        for change in ("addition", "orphan_value", "retained_value", "new_consumer"):
+            after = copy.deepcopy(before)
+            if change == "addition":
+                after["material_retention"]["inventory"]["Added"] = copy.deepcopy(inventory["inventory"]["Orphan"])
+            elif change == "orphan_value":
+                after["material_retention"]["inventory"]["Orphan"]["record_sha256"] = "changed"
+            elif change == "retained_value":
+                after["material_retention"]["retained_sha256"] = "changed"
+            else:
+                after["material_retention"]["inventory"]["Orphan"]["id_consumers"] = [{"name": "Consumer"}]
+            with self.subTest(change=change):
+                self.assertFalse(self.ns["_promotion_reopen_comparison"](before, after)["accepted"])
+
+    def test_orphan_drop_cannot_hide_image_geometry_action_or_retained_material_drift(self):
+        _, inventory = self.orphan_inventory()
+        before, after = copy.deepcopy(self.baseline), copy.deepcopy(self.baseline)
+        before["material_retention"] = inventory
+        after["material_retention"]["retained_sha256"] = inventory["retained_sha256"]
+        after["sha256"]["materials"] = "native_orphan_drop"
+        for category in ("images", "geometry", "actions", "objects", "rigs", "scene"):
+            changed = copy.deepcopy(after)
+            changed["sha256"][category] = "changed"
+            with self.subTest(category=category):
+                self.assertFalse(self.ns["_promotion_reopen_comparison"](before, changed)["accepted"])
+        after["material_retention"]["retained_sha256"] = "changed"
+        self.assertFalse(self.ns["_promotion_reopen_comparison"](before, after)["accepted"])
+
+    def test_orphan_disappearance_is_not_allowed_before_save(self):
+        _, inventory = self.orphan_inventory()
+        before, changed = copy.deepcopy(self.baseline), copy.deepcopy(self.baseline)
+        before["material_retention"] = inventory
+        changed["material_retention"]["retained_sha256"] = inventory["retained_sha256"]
+        self.bpy.data.objects = self.objects
+        self.ns["_promotion_fingerprint"] = Mock(side_effect=[before, changed])
+        with self.assertRaisesRegex(RuntimeError, "before saving"):
+            self.ns["promote_accepted_reimport"](self.req)
+        self.bpy.ops.wm.save_as_mainfile.assert_not_called()
 
     def test_dispatch_does_not_load_exporter(self):
         self.ns["load_pdx"] = Mock(side_effect=AssertionError("must not load"))
