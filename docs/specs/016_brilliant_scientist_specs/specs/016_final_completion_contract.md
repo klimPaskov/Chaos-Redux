@@ -123,6 +123,17 @@ Only the eligible country's 90-day pulse evaluates rebellion after the minimum t
 
 The Directorate board shows only actions relevant to the current stage, route, facilities, and crisis. Obsolete, invalid, duplicate, and completed actions remain hidden. Long engine triggers are represented with concise custom trigger tooltips and separate effect summaries.
 
+Every timed project-stage wrapper, including native-prototype integration, owns an exact family-and-stage receipt.
+Finish and cancellation callbacks may clear or refund only the matching active receipt; a mismatched callback leaves the current project untouched.
+The native Prototype transition occupies Capacity only when the family genuinely advances from Theory, and repeated completion notifications cannot charge it again.
+Native completion during an integration timer preserves one prototype reward and one Capacity charge; the remaining timer cannot release another project's reservation.
+Invalid host, facility, terminal, or world-end state cannot produce a stage reward from a delayed callback.
+Stage costs, normal durations, family priorities, and the native special project's own payment remain independent of this receipt-ownership correction.
+
+When DLC special-project presentation is unavailable, the existing decision-led board must preserve core project progression and outcomes.
+This compatibility requirement does not authorize free prototype rewards, duplicate native payments, a second project ledger, or another scripted GUI.
+Its availability and completion paths require their own explicit acceptance evidence; the ordinary native-project route alone does not prove no-DLC compatibility.
+
 Exactly four evolutions remain. Active-chain application, evolved first openings, and disabled-evolution safety must agree. Event `.49` keeps valid response options separate from invalid-state cleanup so cleanup cannot dominate a valid option set.
 
 Ordinary transfer validates the recipient and every readiness condition before cancelling a D'Rhondan expedition or changing any host or character state.

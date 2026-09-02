@@ -9,8 +9,17 @@
 # COUNTRY scope. Inputs: temporary project family and requested stage.
 brilliant_scientist_begin_project_stage = {
 	brilliant_scientist_load_project_cost_and_duration = yes
+	brilliant_scientist_load_project_index = yes
+	set_temp_variable = { brilliant_scientist_project_previous_stage = brilliant_scientist_requested_project_stage }
+	subtract_from_temp_variable = { brilliant_scientist_project_previous_stage = constant:brilliant_scientist_value.one }
 	if = {
-		limit = { check_variable = { brilliant_scientist_project_cost_ready = constant:brilliant_scientist_value.one } }
+		limit = {
+			brilliant_scientist_project_board_is_ready = yes
+			brilliant_scientist_project_family_input_is_valid = yes
+			brilliant_scientist_timed_project_stage_input_is_valid = yes
+			check_variable = { brilliant_scientist_project_cost_ready = constant:brilliant_scientist_value.one }
+			check_variable = { var = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index value = brilliant_scientist_project_previous_stage compare = equals }
+		}
 		set_country_flag = brilliant_scientist_project_stage_in_progress
 		set_variable = { brilliant_scientist_active_project_family = brilliant_scientist_project_family }
 		set_variable = { brilliant_scientist_active_project_stage = brilliant_scientist_requested_project_stage }
@@ -45,25 +54,125 @@ brilliant_scientist_begin_project_stage = {
 	}
 }
 
-brilliant_scientist_cancel_project_stage = {
-	if = {
-		limit = { has_variable = brilliant_scientist_active_project_capacity_delta }
-		add_to_variable = { brilliant_scientist_project_capacity = brilliant_scientist_active_project_capacity_delta }
-		clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
-	}
+# COUNTRY scope. Private finalizer; callers must own the exact active receipt.
+# Permanent ledger/history and paid equipment stay intact. Rebuild only after
+# family-dependent outputs: the gross-capacity helper uses the family temporary.
+brilliant_scientist_finalize_owned_project_stage = {
 	clr_country_flag = brilliant_scientist_project_stage_in_progress
 	clear_variable = brilliant_scientist_active_project_family
 	clear_variable = brilliant_scientist_active_project_stage
 	clear_variable = brilliant_scientist_active_project_capacity_delta
+	brilliant_scientist_refresh_project_capacity_from_gross = yes
 }
 
-# COUNTRY scope. Inputs: family and requested stage.
-brilliant_scientist_finish_project_stage = {
+# COUNTRY scope. Fixed callback family/stage inputs, never another order's receipt.
+brilliant_scientist_cancel_project_stage = {
+	if = {
+		limit = {
+			brilliant_scientist_project_callback_matches_active_stage = yes
+			brilliant_scientist_timed_project_stage_input_is_valid = yes
+		}
+		brilliant_scientist_finalize_owned_project_stage = yes
+	}
+}
+
+# COUNTRY scope. Terminal owner only; does not need the now-invalid live context.
+brilliant_scientist_close_active_project_stage_on_terminal = {
 	if = {
 		limit = {
 			has_country_flag = brilliant_scientist_project_stage_in_progress
-			check_variable = { var = brilliant_scientist_active_project_family value = brilliant_scientist_project_family compare = equals }
-			check_variable = { var = brilliant_scientist_active_project_stage value = brilliant_scientist_requested_project_stage compare = equals }
+			has_variable = brilliant_scientist_active_project_family
+			has_variable = brilliant_scientist_active_project_stage
+		}
+		set_temp_variable = { brilliant_scientist_project_family = brilliant_scientist_active_project_family }
+		set_temp_variable = { brilliant_scientist_requested_project_stage = brilliant_scientist_active_project_stage }
+		if = {
+			limit = { brilliant_scientist_native_integration_matches_active_stage = yes }
+			brilliant_scientist_finalize_owned_project_stage = yes
+		}
+		else = { brilliant_scientist_cancel_project_stage = yes }
+	}
+}
+
+# COUNTRY scope. Only the matching callback may settle this paid stage.
+brilliant_scientist_finish_project_stage = {
+	if = {
+		limit = {
+			brilliant_scientist_project_callback_matches_active_stage = yes
+			brilliant_scientist_timed_project_stage_input_is_valid = yes
+		}
+		brilliant_scientist_load_project_index = yes
+		set_temp_variable = { brilliant_scientist_project_previous_stage = brilliant_scientist_requested_project_stage }
+		subtract_from_temp_variable = { brilliant_scientist_project_previous_stage = constant:brilliant_scientist_value.one }
+		if = {
+			limit = {
+				brilliant_scientist_project_context_is_valid = yes
+				check_variable = { var = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index value = brilliant_scientist_project_previous_stage compare = equals }
+			}
+			brilliant_scientist_advance_project_to_requested_stage = yes
+			if = {
+				limit = { check_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.one } }
+				brilliant_scientist_apply_project_stage_output = yes
+				brilliant_scientist_refresh_project_accident_pressure = yes
+				brilliant_scientist_dispatch_project_accident = yes
+				brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
+				brilliant_scientist_refresh_international_recognition_score = yes
+				if = {
+					limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
+					brilliant_scientist_refresh_world_threat_source = yes
+				}
+			}
+		}
+		brilliant_scientist_finalize_owned_project_stage = yes
+	}
+}
+
+# COUNTRY scope. Native integration has no wrapper payment or Capacity delta.
+# Its native special project already owns construction time and resources.
+brilliant_scientist_begin_native_prototype_integration = {
+	brilliant_scientist_load_project_index = yes
+	if = {
+		limit = {
+			brilliant_scientist_project_board_is_ready = yes
+			brilliant_scientist_project_family_input_is_valid = yes
+			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+		}
+		clear_variable = brilliant_scientist_active_project_capacity_delta
+		set_variable = { brilliant_scientist_active_project_family = brilliant_scientist_project_family }
+		set_variable = { brilliant_scientist_active_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		set_country_flag = brilliant_scientist_project_stage_in_progress
+	}
+}
+
+brilliant_scientist_cancel_native_prototype_integration = {
+	if = {
+		limit = { brilliant_scientist_native_integration_matches_active_stage = yes }
+		brilliant_scientist_finalize_owned_project_stage = yes
+	}
+}
+
+brilliant_scientist_finish_native_prototype_integration = {
+	if = {
+		limit = { brilliant_scientist_native_integration_matches_active_stage = yes }
+		brilliant_scientist_complete_native_prototype_stage = yes
+		brilliant_scientist_finalize_owned_project_stage = yes
+	}
+}
+
+# COUNTRY scope. Exact family input; only a genuine Theory-to-Prototype
+# transition adds cumulative Capacity burden. Native sync can run during an
+# integration timer and must not clear that timer's receipt.
+brilliant_scientist_complete_native_prototype_stage = {
+	set_temp_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+	brilliant_scientist_load_project_index = yes
+	if = {
+		limit = {
+			brilliant_scientist_project_context_is_valid = yes
+			brilliant_scientist_project_family_input_is_valid = yes
+			check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index = constant:brilliant_scientist_project_stage.theory }
+			check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
 		}
 		brilliant_scientist_advance_project_to_requested_stage = yes
 		if = {
@@ -77,30 +186,7 @@ brilliant_scientist_finish_project_stage = {
 				limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
 				brilliant_scientist_refresh_world_threat_source = yes
 			}
-		}
-	}
-	clr_country_flag = brilliant_scientist_project_stage_in_progress
-	clear_variable = brilliant_scientist_active_project_family
-	clear_variable = brilliant_scientist_active_project_stage
-	clear_variable = brilliant_scientist_active_project_capacity_delta
-}
-
-# COUNTRY scope. Occupies the additional capacity required by a native prototype.
-brilliant_scientist_complete_native_prototype_stage = {
-	subtract_from_variable = { brilliant_scientist_project_capacity = constant:brilliant_scientist_project_board.capacity_prototype }
-	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
-	set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-	brilliant_scientist_advance_project_to_requested_stage = yes
-	if = {
-		limit = { check_variable = { brilliant_scientist_project_stage_changed = constant:brilliant_scientist_value.one } }
-		brilliant_scientist_apply_project_stage_output = yes
-		brilliant_scientist_refresh_project_accident_pressure = yes
-		brilliant_scientist_dispatch_project_accident = yes
-		brilliant_scientist_sync_project_force_runtime_after_ledger_change = yes
-		brilliant_scientist_refresh_international_recognition_score = yes
-		if = {
-			limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
-			brilliant_scientist_refresh_world_threat_source = yes
+			brilliant_scientist_refresh_project_capacity_from_gross = yes
 		}
 	}
 }

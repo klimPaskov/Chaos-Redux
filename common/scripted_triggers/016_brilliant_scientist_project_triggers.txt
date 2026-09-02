@@ -52,11 +52,49 @@
 # gates. Array indexes 0-14 map directly to family IDs 1-15.
 # ============================================================================
 
-brilliant_scientist_project_board_is_ready = {
+# COUNTRY scope. Live authority and laboratory context for stage callbacks.
+# A prepared terminal route remains valid; only its actual terminal firing ends work.
+brilliant_scientist_project_context_is_valid = {
+	exists = yes
 	brilliant_scientist_is_current_host = yes
 	brilliant_scientist_primary_facility_is_valid = yes
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = world_end }
+}
+
+brilliant_scientist_project_board_is_ready = {
+	brilliant_scientist_project_context_is_valid = yes
 	NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
 	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+}
+
+# COUNTRY scope. Inputs: temporary project family and requested stage.
+# Identity checks deliberately do not require a live host: invalid work must cancel.
+brilliant_scientist_project_callback_matches_active_stage = {
+	brilliant_scientist_project_family_input_is_valid = yes
+	brilliant_scientist_project_stage_input_is_valid = yes
+	has_country_flag = brilliant_scientist_project_stage_in_progress
+	has_variable = brilliant_scientist_active_project_family
+	has_variable = brilliant_scientist_active_project_stage
+	check_variable = { var = brilliant_scientist_active_project_family value = brilliant_scientist_project_family compare = equals }
+	check_variable = { var = brilliant_scientist_active_project_stage value = brilliant_scientist_requested_project_stage compare = equals }
+}
+
+brilliant_scientist_timed_project_stage_input_is_valid = {
+	OR = {
+		check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.theory }
+		check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment }
+		check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization }
+	}
+}
+
+# Native integration owns a family/stage receipt but no wrapper Capacity reservation.
+brilliant_scientist_native_integration_matches_active_stage = {
+	brilliant_scientist_project_callback_matches_active_stage = yes
+	check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+	NOT = { has_variable = brilliant_scientist_active_project_capacity_delta }
 }
 
 brilliant_scientist_has_capacity_to_resume_selected_project = {

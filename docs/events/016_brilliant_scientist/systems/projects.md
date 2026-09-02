@@ -4,7 +4,7 @@
 
 This system turns the Kruger Directorate's fifteen project families into a persistent four-stage portfolio. Theory, Prototype, Deployment, and Weaponization are separate ledger states. A family can advance only through its exact predecessor, its scientific prerequisites, a valid Directorate facility, available Project Capacity, and a concrete industrial and logistical burden.
 
-The system does not create free units, free equipment, generic technology grants, or a Political Power storefront. Native Hearts of Iron IV and Chaos Redux projects keep their own clocks, resources, prototype rewards, and outputs. Event 016 records those exact completions instead of cloning them.
+The project portfolio does not use the ordinary technology tree or fabricate a national equipment stockpile. Its matching hidden operational, weaponization, and xenobiological-control technologies are grant-only through their matching project, authorized Event 016 effects, or the reusable API. Guarded Kruger history reconstruction can materialize bounded opening formations with explicit start factors; normal recruitment and AI production remain constrained by real equipment, fuel, manpower, and factory paths. There is no Political Power storefront, and Event 016 does not clone native project clocks or rewards.
 
 ## Player flow
 
@@ -72,6 +72,54 @@ A completed family therefore occupies 10, 20, 35, or 50 capacity at its current 
 - `brilliant_scientist_breakthrough_classified_count`
 
 The country arrays reserve and queue reports while a host owns the Directorate. Dispatch also writes a pending receipt on the single `KRG_warren_kruger` character before the delayed event appears; resolution clears that pending flag and writes reported plus public or classified governance receipts. Transfer and Kruger State formation carry the reserved arrays, governance arrays, counts, and any active report across the handoff. The host-context policy flags and pending `.4` or `.5` obligation are carried without replaying their value deltas. The first resolved report uses full strength, the next two use half strength, and later reports use quarter strength. These character-level receipts survive transfer and Kruger State formation, so a recipient can inherit project history without replaying the first-Prototype governance choice.
+
+## Timed-stage ownership and settlement
+
+The 45 Theory, Deployment, and Weaponization wrappers and the 15 native Prototype integration wrappers carry an exact family-and-stage receipt in `brilliant_scientist_active_project_family` and `brilliant_scientist_active_project_stage`.
+Each cancellation and removal callback supplies its own fixed identity.
+A delayed callback for another family or stage cannot clear the current order or alter its Capacity.
+The progress flag is not sufficient authority by itself.
+
+Normal wrappers also store `brilliant_scientist_active_project_capacity_delta`.
+Completion requires the exact predecessor, the current living host's authority, a valid primary laboratory, and no fired terminal or world-end state.
+A matching callback whose context is no longer valid releases its reservation without awarding a stage.
+The ordinary upward-stage helper remains available for legitimate higher-stage inheritance and is not used as permission to skip normal progression.
+
+Native Prototype integration stores family and stage but leaves the Capacity-delta variable absent.
+The native special project owns construction costs and time.
+The integration wrapper only coordinates the completed native result with the Directorate.
+Native synchronization may complete the family while that wrapper is active.
+The native helper advances only exact Theory, checks available Capacity, awards the changed stage once, and rebuilds cumulative burden from the ledger.
+The remaining integration callback closes only its own receipt and cannot charge or reward the Prototype again.
+Integration does not reserve Capacity while waiting.
+If another native transition consumes the available room first, integration closes without a reward and remains selectable once its requirements are met again.
+
+Finalization reconstructs available Capacity from gross Capacity, all cumulative stage burdens, suspended-family discounts, and any surviving paid reservation.
+It does not refund consumed equipment, fuel, manpower, experience, Political Power, or elapsed factory time.
+This prevents a clamped availability value from creating extra Capacity through blind incremental refunds.
+Terminal cleanup closes an identified active receipt before discarding laboratory pointers.
+
+The country-scoped helper contract is:
+
+| Helper | Inputs and required caller authority | Outputs and side effects |
+| --- | --- | --- |
+| `brilliant_scientist_project_context_is_valid` | Current country | Queries valid authority, primary laboratory, and nonterminal world state; no mutation. |
+| `brilliant_scientist_project_callback_matches_active_stage` | Temporary `brilliant_scientist_project_family` and `brilliant_scientist_requested_project_stage` | Queries the exact active receipt without requiring a still-valid host. |
+| `brilliant_scientist_begin_project_stage` | Fixed wrapper family and Theory/Deployment/Weaponization stage; public decision already checked the family's complete affordability/prerequisites | Revalidates idle board and predecessor, owns the receipt, reserves incremental Capacity, and spends the existing wrapper resources. |
+| `brilliant_scientist_finish_project_stage` / `brilliant_scientist_cancel_project_stage` | Fixed normal-wrapper family and stage | Finish applies a changed stage only in valid context; cancellation awards nothing; both settle only their matching receipt. |
+| `brilliant_scientist_begin_native_prototype_integration` | Fixed family; caller is the decision exposed by verified native completion | Owns a Prototype receipt with no Capacity delta or wrapper payment. |
+| `brilliant_scientist_finish_native_prototype_integration` / `brilliant_scientist_cancel_native_prototype_integration` | Fixed family and Prototype stage | Require a matching delta-free receipt; finish attempts the exact native transition, then closes the owned receipt. |
+| `brilliant_scientist_complete_native_prototype_stage` | Fixed family from a verified native completion or its integration wrapper | Exact Theory-to-Prototype transition, changed-only family output/history/incident, then Capacity reconstruction; leaves another active receipt intact. |
+| `brilliant_scientist_close_active_project_stage_on_terminal` | The terminal's current host/KRG caller | Reads and closes its identified active normal or native receipt without a live-context requirement. |
+| `brilliant_scientist_finalize_owned_project_stage` | Private implementation helper, only inside an already-matched ownership branch | Clears transient fields and reconstructs Capacity; no stage or material refund. |
+
+For example, the computation Deployment cancellation sets temporary family to `constant:brilliant_scientist_project_family.computation`, requested stage to `constant:brilliant_scientist_project_stage.deployment`, then calls `brilliant_scientist_cancel_project_stage = yes`.
+All other wrappers use the same pattern with their own fixed pair.
+These helpers are not public technology-grant APIs and do not authorize callers to fabricate project completion.
+
+The required no-DLC progression path remains a separate acceptance item.
+Native project completion evidence does not by itself prove the decision-led board can progress without the DLC presentation.
+Current source traces, unchanged cost/timer/AI comparisons, and MCP limitations are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_project_stage_owner_checkpoint_2026-09-02.md`.
 
 ## Family implementation map
 
@@ -186,7 +234,7 @@ Native project AI uses the same host and capacity conditions and retains the eng
 
 ## Strategic Singularity guard contract
 
-This tranche researches and prepares the Strategic Singularity. It does not arm, detonate, fire a super-event, request Fallout, set `world_end`, or perform terminal cleanup.
+This portfolio keeps Strategic Singularity preparation behind the component, command-node, power-link, facility, and map guards and exposes a separate terminal lifecycle. Paid timed decisions own arming, fail-deadly activation, deliberate detonation, controlled disarmament, and Laboratory World audit/finalization; the source-aware terminal effect owns the Fallout request and retry cleanup. Static wiring is present, but live terminal/Fallout scenarios and final MCP comparisons remain open.
 
 The guarded consumer contract is:
 
@@ -199,7 +247,7 @@ The guarded consumer contract is:
 - `brilliant_scientist_singularity_prepared_nonterminal`
 - `brilliant_scientist_singularity_terminal_contract_guarded`
 
-Weaponization certification leaves `brilliant_scientist_singularity_arming_state` at `construction` and explicitly clears `brilliant_scientist_singularity_armed` and `brilliant_scientist_singularity_fail_deadly_active`. A parent-owned terminal implementation must perform a separate authorized arming process and revalidate every terminal prerequisite. Theory or Prototype can be dismantled safely and release the terminal commitment. Deployment and Weaponization cannot use the generic dismantle action until a parent-owned disarmament hold has completed.
+Weaponization certification leaves `brilliant_scientist_singularity_arming_state` at `construction` and explicitly clears `brilliant_scientist_singularity_armed` and `brilliant_scientist_singularity_fail_deadly_active`. The terminal decision chain revalidates its mapped commitment, component, facility, command, setting, route, and world-end prerequisites at start and resolution; controlled disarmament provides the explicit nonterminal reversal path. Theory or Prototype can be dismantled safely and release the terminal commitment. Deployment and Weaponization remain subject to the parent-owned disarmament hold and terminal lifecycle.
 
 ## Files
 
@@ -222,16 +270,16 @@ Weaponization certification leaves `brilliant_scientist_singularity_arming_state
 
 ## Icons and visual assets
 
-No missing sprite is registered or referenced. New projects intentionally reuse registered Chaos Redux or vanilla special-project icons that match their facility class. The decision layer uses existing generic research and operation icons.
+The mapped Event 016 card consumers use dedicated project art rather than a generic research or operation icon. Native reused projects retain their own native project identity where applicable.
 
-Dedicated project art is present for the live portfolio. The sixteen special-project cards are `161x98` DDS files under `gfx/interface/special_project/project_icons/016_brilliant_scientist/`, the sixty family-stage decision cards are `32x32` DDS files under `gfx/interface/decisions/016_brilliant_scientist/projects/`, and `interface/016_brilliant_scientist_project_icons.gfx` registers both sets. The exact sprite-to-consumer ledger and processing evidence are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_project_icon_asset_handoff.md`. These cards are presentation-only and do not change project prerequisites, costs, or rewards.
+Dedicated project art is present for the live portfolio. The sixteen special-project cards are `161x98` DDS files under `gfx/interface/special_project/project_icons/016_brilliant_scientist/`, the sixty family-stage decision cards are `32x32` DDS files under `gfx/interface/decisions/016_brilliant_scientist/projects/`, and `interface/016_brilliant_scientist_project_icons.gfx` registers both sets. The exact sprite-to-consumer ledger and processing evidence are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_project_icon_asset_handoff.md`. The parent-reviewed asset handoff records repository wiring for this bounded tranche; final live consumer and presentation acceptance remain part of parent and user review. These cards are presentation-only and do not change project prerequisites, costs, or rewards.
 
-Reusable combat families use the vanilla counter filename contract. Large counters live under `gfx/interface/counters/divisions_large/` as `unit_<subunit>_icon.dds`, and map counters live under `gfx/interface/counters/divisions_small/` as `onmap_unit_<subunit>_icon.dds`. The required subunit stems are `clone_infantry`, `aryan_clone_infantry`, `autonomous_robot`, `paleogenetic_creature`, `xenobiological_assault_organism`, `portal_raider`, `alien_infantry`, and `temporal_guard`. These counter consumers do not need separate sprite registrations; technology, equipment, decision, and project icons retain their explicit entries in the Event 016 interface files.
+The parent-reviewed bespoke counter tranche explicitly registers `paleogenetic_creature`, `xenobiological_assault_organism`, and `temporal_guard` in `interface/016_brilliant_scientist_generic_counters.gfx`, with two-frame large counter strips under `gfx/interface/counters/divisions_large/` and two-frame on-map strips under `gfx/interface/counters/divisions_small/`. The exact group, medium, and on-map consumer names plus provenance are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_generic_counter_completion_2026-09-01.md`. Other family stems retain their existing vanilla filename and consumer contracts; this documentation does not infer bespoke counter acceptance for them.
 
 ## Future plans
 
 - Keep the sixteen special-project and sixty family-stage cards aligned with any future project-id additions; do not silently substitute a generic icon for a newly introduced family or stage.
-- Add exact bespoke unit and equipment production packages if a later parent-owned tranche expands the authorized surface. The current operational technologies strengthen existing formations and create no free materiel.
-- Add KRG focus and AI consumers for the family-specific `*_military_package_ready` flags.
-- Connect a separately authorized Singularity arming process to the guarded preparation contract.
+- Maintain the installed project-force package definitions and real production paths as family outputs evolve. Hidden operational and weaponization technologies, bespoke equipment archetypes, guarded opening materialization, trainable target templates, and AI production consumers are present in current source; no unrestricted equipment-stockpile path is introduced.
+- Keep KRG project-route focuses and AI plans aligned with the current family history and package-readiness gates. The reusable family-specific AI target and production consumers are implemented, while scenario, probability, and live-consumer evidence remain open.
+- Preserve the separately authorized Singularity arming, fail-deadly, detonation, controlled-disarmament, and Laboratory World audit/finalization lifecycle behind its exact guards. Runtime wiring exists, but terminal/Fallout scenario evidence, GUI status coverage, and final MCP comparisons remain open.
 - Add foreign knowledge and countermeasure consumers without periodic world scans.
