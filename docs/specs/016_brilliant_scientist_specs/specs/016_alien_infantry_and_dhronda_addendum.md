@@ -47,6 +47,18 @@ The three mutually exclusive regimes are Emperor Vael IX’s non-aligned Imperia
 
 The DHR focus tree contains exactly 88 focuses: eight survival and landing-network focuses; 24 political focuses, eight per regime; ten laboratory-economy focuses; 12 alien-army and predictive-warfare focuses; eight orbital-logistics, air, and naval-support focuses; eight diplomacy and intelligence focuses; 12 expansion and world-order focuses; and six crisis and late-game focuses. DHR remains unable to train aliens normally. Every arrival still costs 2,000 laser weapons. At most three focus-created spirits may coexist: staged political, military, and off-world-corridor lifecycles.
 
+### Diplomatic institutions and paid advisors
+
+`DHR_seat_the_human_delegates` establishes the Covenant's human delegation and makes Harmonic Envoy Rae Syl eligible for the existing paid advisor appointment.
+Rae requires both the Covenant regime and `dhrondan_human_delegates_seated`; completing the focus does not appoint him or waive his 100 Political Power cost.
+`DHR_open_the_translation_bureaus` makes Shadow Listener Thel Ior eligible for the existing paid intelligence appointment once Imperial Continuity, the Synod, or the Covenant is established.
+Thel requires `dhrondan_translation_bureaus_open` in every regime and retains his 100 Political Power cost, decryption and research traits, portraits, and advisor AI score.
+The two focus rewards record their existing completion receipts and display the named advisor unlock instead of granting the repeated diplomatic-credit Political Power reward.
+They add no character, national spirit, focus, or interface and leave all focus costs, positions, prerequisites, and AI weights intact.
+
+These two reward contracts are accepted from `docs/plans/016_brilliant_scientist_plans/016_final_dhr_diplomatic_rewards_plan_2026-09-02.md`.
+The plan's four other reward proposals remain under owner review; its Synod no-DLC partner-accord alternative requires user approval and is not implicitly accepted by this section.
+
 ## Assets and acceptance
 
 The reusable model consumer is `alien_infantry_entity`. Its one Meshy input depicts a generic bald green alien with large black eyes, a charcoal retro uniform, grounded boots, and one readable retro-futurist laser pistol held upright in the right hand while the left arm hangs free, without Kruger or DHR markings. The production route uses Meshy 7 exclusively, vanilla infantry scale calibration, packed PDX materials, Blender PDX export and reimport, and genuine idle, move, laser-attack, defend, support-attack, retreat, and death actions. There is no separate UFO map model.
