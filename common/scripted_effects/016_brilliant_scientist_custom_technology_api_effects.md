@@ -2,10 +2,20 @@
 
 This API gives other events, decisions, focuses, and scripted systems a neutral way to award the eighteen existing Event 016 custom technologies. Every public effect is country scoped, and selectors are temporary or country variables supplied by the caller. The API never grants vanilla computing, radar, industry, rocketry, nuclear, medical, or chemical/biological technologies and never creates Event 016 project history.
 
+This file documents only the seven-family custom selector. The separate conventional package API covers six existing Event 016 families through `chaosx_grant_conventional_technology_package` and `chaosx_reconcile_conventional_technology_runtime`; its contract is documented in `common/scripted_effects/016_conventional_technology_api_effects.md` and it does not widen the custom selector or its random pool.
+
 Every public grant accepts the optional numeric `chaosx_custom_technology_source` input.
 A source from `provenance_minimum_source` inclusive to `provenance_stride` exclusive records permanent provenance without changing the grant result; the current range is 1 through values below 1,000,000.
 An omitted or out-of-range source records nothing and does not block a valid technology grant.
 The Event 025/Event 036 recovery bridge automatically supplies its positive source event when the generic input is absent.
+
+## Boundary with the conventional technology package API
+
+The conventional API accepts the existing `brilliant_scientist_project_family` IDs for Computation, Electronics, Materials, Rocketry, High Energy, and Biomedical, together with the existing Deployment and Weaponization stage IDs.
+It persists neutral `conventional_technology_<family>_operational` and `conventional_technology_<family>_weaponized` flags, reuses the full-strength existing stage modifiers, and records optional provenance in separate arrays.
+Computation uses one shared `conventional_technology_computation_research_slot_active` owner marker, adopts a native computation marker without adding a second slot, and never writes Kruger project history.
+The eight paid strategic actions consume these neutral weaponization flags through the ordinary `conventional_technology_operations` category; their target, payment, timer, cancellation/refund, cooldown, and AI consumers remain action-owned.
+These six conventional packages are separate from this API's seven custom operational families and from its seven-candidate random helper, and no extra technology or project family is introduced.
 
 ## Public effects
 
@@ -38,7 +48,7 @@ Callers requiring recorded provenance can use this query before invoking a publi
 
 `chaosx_reconcile_custom_xeno_control_grants` is the country-scoped control repair effect. It chooses exactly one control in deterministic priority order `chemical`, `neural`, `machine`, then `researched`, preferring existing Event 016 project mode flags and then neutral or external API receipts and learned control technologies. It preserves the chosen path, sets its neutral and external receipt markers, clears stale alternate control flags, removes alternate hidden control technologies, and removes alternate control ideas. It does not clear the chosen learned technology and never creates project history, Directorate variables, facilities, or achievements. If no control is present, it leaves the four channels clear.
 
-`chaosx_reconcile_custom_technology_runtime` is the public runtime boundary. It runs control reconciliation and then calls the existing Event 016 rebuild so templates, production gates, provider rows, caps, ideas, and learned technologies are synchronized. Its temporary output `chaosx_custom_technology_runtime_reconciled` is `1` after the boundary runs.
+`chaosx_reconcile_custom_technology_runtime` is the public runtime boundary. It runs control reconciliation, calls the existing Event 016 rebuild so templates, production gates, provider rows, owner-defined formation caps, ideas, and learned custom technologies are synchronized, and then calls `chaosx_reconcile_conventional_technology_runtime` for already-held conventional flags. It does not grant missing conventional packages, and its temporary output `chaosx_custom_technology_runtime_reconciled` is `1` after the boundary runs.
 
 ## Source provenance receipts
 
@@ -54,6 +64,7 @@ The upgrade public effect appends the prerequisite family receipt and one upgrad
 `is_in_array` guards make each encoded receipt idempotent, and neither reconciliation nor runtime rebuild clears either array.
 A missing or out-of-range source is intentionally provenance-free and does not block the technology grant.
 No existing receipt is reinterpreted, deleted, or attributed to a guessed source.
+External knowledge flags and source-provenance receipts are permanent historical state; runtime rebuilds, project closure, provider loss, and source disappearance do not revoke or rewrite them.
 
 ```text
 set_temp_variable = { chaosx_custom_technology_source = 25 }
@@ -66,13 +77,13 @@ if = {
 
 ## Runtime behavior and lifecycle
 
-The external ledger flags are independent of `brilliant_scientist_project_force_*` history flags. The existing Event 016 rebuild calls `chaosx_reapply_custom_technology_grants` after its normal clear and history reconstruction. This restores externally granted custom technologies without restoring project stages, facilities, Kruger ownership, project ideas, opening units, stockpiles, or vanilla technologies.
+The external ledger flags are independent of `brilliant_scientist_project_force_*` history flags. The existing Event 016 rebuild calls `chaosx_reapply_custom_technology_grants` after its normal clear and history reconstruction, and the public custom runtime boundary then reconciles any already-held conventional packages. This restores externally granted custom technologies without restoring project stages, facilities, Kruger ownership, project ideas, opening units, stockpiles, or vanilla technologies, and it does not fabricate a conventional package that is not represented by its durable neutral flag.
 
-Each external operational family rebuilds only its existing runtime consumers. Normally trainable generic families reopen their existing equipment and template paths, while alien infantry remains landing-only and untrainable. Free or event-spawned formation caps remain separate from normal equipment-constrained recruitment and are reconciled by the owning unit package. The matching custom equipment gate accepts the external operational flag while retaining suspended, damaged, and dismantled-family locks. Event 019 provider registration and provider-unlocked triggers accept the same external operational flags, so the existing neutral provider rows remain usable without revealing Event 016 provenance.
+Each external operational family rebuilds only its existing runtime consumers. Normally trainable generic families reopen their existing equipment and template paths, and no API-side artificial division cap is added; ordinary training and recruitment remain constrained by the owning unit package's equipment, manpower, fuel, production, and trainability rules. Free or event-spawned formation caps remain separate from normal equipment-constrained recruitment, while alien infantry remains landing-only and untrainable. The matching custom equipment gate accepts the external operational flag while retaining suspended, damaged, and dismantled-family locks. Event 019 provider registration and provider-unlocked triggers accept the same external operational flags, so the existing neutral provider rows remain usable without revealing Event 016 provenance.
 
-Portal weaponization authorizes the existing portal facility raid for any country that also has the rebuilt `Quantum Transit Raiders` template. Kruger's presence still increases the raid's AI weight, but it is not an access requirement.
+Portal weaponization authorizes the existing portal facility raid for any country that also has the rebuilt `Quantum Transit Raiders` template. The current native outcome calls `brilliant_scientist_portal_raid_establish_beachhead` to recreate one full-equipment and full-manpower `Quantum Transit Raiders` formation with 0.50 starting experience and destroys the assigned formation in its native `division_effects` block. Carried manpower and equipment conservation across this delete/recreate path is not established in the current source and remains pending the user's explicit approval decision, so the path is not documented as accepted unit teleportation or conservation. Kruger's presence still increases the raid's AI weight, but it is not an access requirement.
 
-The clear helper conditionally removes each of the eighteen custom technologies only when its matching external grant ledger flag is absent. External flags and provenance arrays intentionally survive rebuilds and ledger changes. There is no automatic revocation API; callers that need revocation must define a separate design and explicitly clear the corresponding external flags before invoking the normal runtime rebuild. Reconciliation can remove only stale alternate xenobiological control outputs; it never revokes the chosen learned path or any non-control technology.
+The clear helper conditionally removes each of the eighteen custom technologies only when its matching external grant ledger flag is absent. External flags and provenance arrays intentionally survive rebuilds, project closure, provider loss, and source changes, so learned knowledge and provenance are permanent by design. There is no revocation API and callers must not clear these durable flags or receipts; reconciliation can remove only stale alternate xenobiological control outputs and never revokes the chosen learned path or any non-control technology.
 
 ## Selector map
 
@@ -117,4 +128,4 @@ Callers should not call `chaosx_grant_custom_operational_technology_core` or `ch
 
 ## Future plans
 
-If a future event needs to revoke externally granted knowledge, add a narrow, documented revocation effect that clears only its own grant ledger flags and then calls the existing rebuild. Do not couple external knowledge to project-history flags or add a second technology family without updating this map, the dependency audit, the runtime package, and the Event 019 provider surface.
+No revocation effect is planned or authorized for the custom API: external knowledge and provenance remain permanent, with stale alternate xenobiological control outputs as the only reconciliation cleanup exception. Keep any future conventional package work in its six-family API and outside the seven-family random helper. Do not couple external knowledge to project-history flags or add a second technology family without an accepted contract and updates to the selector map, dependency audit, runtime package, and Event 019 provider surface.
