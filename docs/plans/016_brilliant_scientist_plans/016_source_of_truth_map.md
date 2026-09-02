@@ -2,9 +2,46 @@
 
 Date: 2026-07-14
 
-> Current-runtime pointer (2026-09-02): this file remains the accepted Event 016 design and disposition record, but its implementation and asset paragraphs are historical snapshots. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`, the binding [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md), and current [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) for current biological ownership. Native Event 016 raids use the native raid framework for preparation, reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution. The former Event 016 numeric quantity and parallel native-reservation ledger are retired, actual pathogen equipment is authoritative, and Event 016 production, staging, and decision-led deployments use separate transactions. Tranche 4 source review and MCP transaction acceptance remain unresolved. The clone infantry model/entity package is installed and reusable, Portal Raider counter art is complete and wired, and the Portal Raider runtime model/entity remains rejected and unwired with no accepted recovery package. Black Plague remains the native Event 020 runtime available to Kruger through Biological Weapons Theory and to Mengele through the reusable special-project registry and CBRN random/project registries. Every future Chaos Redux special project must be reviewed for inclusion in those reusable registries before acceptance. Do not use the older placeholder or asset-missing statements below to decide what has already been produced.
+> Current-runtime pointer (2026-09-02): this file remains the accepted Event 016 design and disposition record, but its implementation and asset paragraphs are historical snapshots. Use `docs/plans/016_brilliant_scientist_plans/016_core_runtime_handoff_map.md`, the binding [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md), and current [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) for current biological ownership. Native Event 016 raids use the native raid framework for preparation, reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution. The former Event 016 numeric quantity and parallel native-reservation ledger are retired, actual pathogen equipment is authoritative, and Event 016 production, staging, and decision-led deployments use separate transactions. Tranche 4 source review and MCP transaction acceptance remain unresolved. The clone infantry model/entity package is installed and reusable, Portal Raider counter art is complete and wired, and the Portal Raider runtime model/entity remains rejected and unwired; the accepted recovery boundary preserves existing geometry without regeneration and limits work to finishing existing rig, actions, firearm, and effects through approved manual recovery. Black Plague remains the native Event 020 runtime available to Kruger through Biological Weapons Theory and to Mengele through the reusable special-project registry and CBRN random/project registries. Every future Chaos Redux special project must be reviewed for inclusion in those reusable registries before acceptance. Do not use the older placeholder or asset-missing statements below to decide what has already been produced.
 
-> Current reconciliation pointer (2026-08-26): use `docs/plans/016_brilliant_scientist_plans/016_documentation_resume_packet_2026-08-26.md` together with the current core-runtime map for V13 revalidation, Directorate GUI attestation, MCP/probability limits, and the remaining Portal lifecycle and runtime blockers.
+> Historical reconciliation pointer (2026-08-26): `docs/plans/016_brilliant_scientist_plans/016_documentation_resume_packet_2026-08-26.md` is retained for chronology only. The current closure checkpoint below supersedes its continuation wording and uses the current core-runtime map, binding contract, and biological-operations document.
+
+## Current closure checkpoint, 2026-09-02
+
+The binding authority for this pass is [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md), read with [`016_acceptance_criteria.md`](../../specs/016_brilliant_scientist_specs/acceptance/016_acceptance_criteria.md); the reviewed commits below are bounded source checkpoints, not a whole-event completion or acceptance result. The canonical Event 016 root is `chaosx.nr16.1`; any `chaosx.nr016.1` selector or handoff text is invalid evidence and is not retained here.
+
+| Reviewed checkpoint | Current disposition | Explicit open boundary |
+| --- | --- | --- |
+| `9ca2809415` | Promoted binding contract checkpoint. | The acceptance status rule still requires every contract surface plus MCP, auditor, and live evidence. |
+| `ab2ea336da` | Technology/API source checkpoint reviewed; not whole-technology acceptance. | Targeted post-change technology/API MCP comparison and technology-action probability evidence remain incomplete; the current targeted inspect still carries the 1,427-diagnostic combined-graph blocker. |
+| `ae7f1a225f` | Units, equipment, provider, AI, and counter source checkpoint reviewed; no 3D/runtime acceptance. | Country-package and probability audits plus no-regeneration model, export, reimport, runtime, and live gates remain open. |
+| `e7307e228e2` | Raid and lifecycle source checkpoint reviewed; native raid ownership retained. | Portal formation, model, runtime, biological transaction review, MCP/auditor, and live validation remain open. |
+| `4af9495786f` | Transfer and evolution correction checkpoint reviewed. | The named source fixes are not exhaustive lifecycle, event, or probability acceptance. |
+| `588c2f12f0` | Containment cost and receipt checkpoint reviewed. | The probability comparison remains partial with unresolved eligibility, while event, GUI render, and engine-ordering evidence remain absent. |
+| `c25a4f4a94` | DHR `.49` compact receipt checkpoint reviewed. | Probability evidence remains partial and score-only; the cached event comparison returned `EVENT_REVISION_NOT_CACHED`, and destroyed or re-released recipient lifetime plus live gates remain open. |
+| `1ddbd30d1d983cd6046d594026e980cca4914261` | Project-stage receipt ownership checkpoint reviewed. | The same-fixture comparison is `PROBABILITY_ANALYZED_PARTIAL` with 420 rows, 165 unresolved items, and zero detected score or rank changes; Capacity reservation and broader board audits remain open. |
+| `892996690509da646c3dcfa1a912096327f7b862` | Foreign response receipt checkpoint reviewed; fixed actor, host, type, and response phases resolve the original P1 with no new P0 or P1. | Follow-up settlement is recorded by `ef48d393f7211a1d3ed0a85cfaab006e565fb6c1`; exact MCP comparisons remain `EVENT_REVISION_NOT_CACHED` and `EVENT_GRAPH_ARTIFACT_INVALID`, so whole foreign-system and engine acceptance remain open. |
+| `f3725655256cf5e98374366c5b63c8d44a3fc6a0` | Fixture-only Alien muzzle-locator export and reimport checkpoint reviewed; no production model was regenerated. | The tooling fixture reports 32 locator, 5 BVH, and 12 animation regressions plus synthetic mesh and animation reimport with animated locator drift `<1e-6`, but no production model changed and the accepted V13 working-checkpoint gap, muzzle, production reimport, runtime, and live acceptance remain open; Portal runtime remains rejected and unwired within the approved no-regeneration recovery boundary, and other model-package gates remain open. |
+| `7165590e932182d2af71339edb4b1a6be92ad81c` | API provenance source-range checkpoint reviewed. | Existing provenance sources are enforced at `>=1,<1,000,000` with no grant or random-weight change; targeted API MCP comparison, broader technology diagnostics, and probability evidence remain open. |
+| `ef48d393f7211a1d3ed0a85cfaab006e565fb6c1` | Foreign orphan annex, pre-annex, and terminal settlement checkpoint committed; independent source review accepts current-valid-receipt paths across all eleven operation types. | Exact MCP comparisons remain `EVENT_REVISION_NOT_CACHED` and artifact `EVENT_GRAPH_ARTIFACT_INVALID`, and unenterable-country or native timing coverage remains unresolved; no engine-complete or whole Event 016 acceptance is claimed. |
+
+Fresh read-only MCP evidence is bounded and does not replace the owner or auditor gates: Event `chaosx.nr16.1` and `.100` traces are `EVENT_INSPECTED_PARTIAL` with helper and lifecycle analysis deferred, KRG focus inspection reports 100 focuses with a clean Event 016 structural result, targeted Portal technology inspection reports 1,427 blocking diagnostics on the combined graph, project-board probability inspection reports `poolComplete=false`, and Directorate GUI inspection reports conflicting open and close click regions plus other layout overlaps. The exact artifacts and prior scenario-specific comparisons are retained in the current closure handoff and the named owner or auditor handoffs.
+
+### Retired biological ledger and historical completion claims
+
+The former [`016_krg_biological_stockpile_delivery_addendum.md`](016_krg_biological_stockpile_delivery_addendum.md), its design and re-audit handoffs, and the callback-boundary re-audit are superseded and retired historical evidence, not a queued callback task. The binding contract and current [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) establish that actual pathogen equipment is authoritative, native biological raids own preparation, reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution, and Event 016 production, staging, and decision-led deployments use separate transactions. Contamination and condemnation therefore belong to Biological native ownership, not to a Portal raid consequence. Tranche 4 source review and MCP transaction acceptance remain unresolved.
+
+The historical paragraphs and completion statements below preserve chronology and evidence only. They do not promote old placeholder inventories, default-disabled baselines, callback-ledger proposals, or source-freeze dispositions into current acceptance, and they do not mean that all plans are resolved.
+
+### Current closure boundary
+
+The Event 016 goal remains incomplete under the contract's status rule.
+
+- Full MCP and specialist-auditor inspection, comparison, and scenario evidence remain required; zero reported probability deltas in partial fixtures do not certify eligibility, ordering, or live outcomes.
+- Focus reward and AI review, remaining weighted and balance audits, and the Event 019 provider and transfer scenarios remain parent-owned gates.
+- Directorate GUI state and resolution evidence remains open after the current conflicting click-region and overlap findings.
+- The seven generic/reusable unit model packages and the Alien locator, effect, audio, reimport, runtime, and live gates remain open; the fixture-only `f3725655256cf5e98374366c5b63c8d44a3fc6a0` locator export and reimport evidence does not change the production-model or V13 runtime boundary.
+- Presentation, localisation, Event Details, event catalog alignment, final audits, and remaining mechanics remain open, and live gameplay acceptance belongs to the user.
 
 ## Current bounded-reaction disposition, 2026-08-01
 
@@ -20,11 +57,11 @@ The post-implementation improvement pass in `016_nonmodel_content_closure_handof
 
 Commit `01b1a2f3d` extends the existing host-archetype clause to the loyalty and relocation dossiers `chaosx.nr16.10` and `chaosx.nr16.11`. Commit `4b59b0adf` extends the first four Kruger State foundation reports `chaosx.brilliant_scientist_krg.1` through `.4` with a formation-origin clause selected from the retained charter, rebellion, enclave, or takeover flag. Both changes are presentation-only continuations with safe defaults and no new route, reward, evolution, meter, event-log entry, asset, or model. The `.4` through `.9` tranche remains the bounded causal host-context slice, while the `.10` through `.11` and KRG `.1` through `.4` changes preserve existing runtime paths. Broader country-specific flavour, bespoke report/news/remnant presentation, quantitative balance evidence, live consumer validation, and all seven Event 016 3D packages remain deferred.
 
-## Purpose
+## Historical purpose and source-freeze context
 
-This file freezes the reconciled Event 016 design before implementation. It records which sources control, which recommendations were promoted or rejected, what exists in the repository, and what the next implementation session must do.
+This file originally froze the reconciled Event 016 design before implementation. It records which sources controlled, which recommendations were promoted or rejected, what existed in the repository, and what the next implementation session was expected to do.
 
-It does not claim that the planned systems are implemented.
+The current closure checkpoint above governs continuation; the source-freeze wording below remains historical evidence and does not claim that the planned systems were implemented at that snapshot.
 
 ## Authority order
 
@@ -40,7 +77,7 @@ When Event 016 sources disagree, use this order:
 
 Rejected recommendations remain useful evidence of alternatives considered. They do not control inventories or implementation.
 
-## Current implementation evidence
+## Historical implementation evidence at 2026-07-14 source freeze
 
 The following subsection is a 2026-07-14 snapshot. At that snapshot, Event 016 remained a placeholder:
 
@@ -127,7 +164,7 @@ Exactly five packages are planned:
 4. Xenobiological or alien Kruger, selected from the locked campaign conclusion.
 5. Synthesis Kruger.
 
-## Plan and handoff disposition ledger
+## Historical plan and handoff disposition ledger at source freeze
 
 | Source | Status | Disposition |
 | --- | --- | --- |
@@ -144,13 +181,15 @@ Exactly five packages are planned:
 | `prompts/016_brilliant_scientist_improvement_loop_planner_prompt.md` | Superseded | Retained as process evidence. Do not use for current continuation. |
 | `handoffs/016_mandatory_continuation_prompt.md` | Superseded | Replaced by `016_brilliant_scientist_resume_packet.md`. |
 
-No accepted plan remains undispositioned at this source freeze.
+At the 2026-07-14 source freeze, no accepted plan remained undispositioned; that historical statement does not mean that the current closure checkpoints or acceptance gates are resolved.
 
 ## `Crazy Scientist` catalog concept
 
 The unnumbered `Crazy Scientist` idea is absorbed and redesigned inside Event 016. Its standalone concept is superseded. The event-catalog workbook must record that disposition only after final in-game wording exists. No second event, route, or duplicate scientist package should be created from it.
 
-## Asset, audio, and wiring status
+## Historical asset, audio, and wiring status
+
+The following table is the historical source-freeze snapshot; current package evidence and open gates are summarized in the 2026-09-02 closure checkpoint above and the current core-runtime map.
 
 | Surface | Status at follow-up reconciliation | Evidence and next owner |
 | --- | --- | --- |
@@ -169,12 +208,14 @@ The final WAVs are accepted Event 016-owned assets, not research candidates. The
 
 `docs/spreadsheets/chaos_redux_events_catalog.xlsx` was not edited during source freeze. It must be updated only after final localisation exists. Event Details and all four evolution descriptions must match in-game wording exactly. The Event 16 cluster field stays blank, and the standalone `Crazy Scientist` concept must be marked absorbed and superseded.
 
-## Exact next implementation step
+## Historical exact next implementation step
+
+> Superseded for current continuation: this 2026-07-14 architect-spawn instruction is retained as process evidence only; do not spawn it solely from this map.
 
 Run `chaosx_scripted_system_architect` with `fork_context=false` using `prompts/016_brilliant_scientist_scripted_system_architect_prompt.md`.
 
 The architect must return exact helper, constant, event-target, scope, cleanup, institutional-capture, temporal-debt, origin-lock, and terminal-commitment contracts. After the parent accepts that handoff, begin Tranche 1 with prefire host selection, event-log actor ownership, one persistent Warren Kruger identity, the opening `+100%` package, and transfer cleanup. Keep Event 16 disabled by default.
 
-## Completion boundary
+## Historical completion boundary, 2026-07-14
 
 This source freeze and follow-up complete documentation reconciliation only. Event 016 is not implemented, ready to enable, visually complete, localisation-complete, workbook-aligned, audited, or ready for a gameplay completion claim. Audio research and Event 016-owned WAV production are complete, but shared playback wiring is not.
