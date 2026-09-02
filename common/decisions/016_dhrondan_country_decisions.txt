@@ -100,10 +100,15 @@ dhrondan_sovereignty_category = {
 				limit = { dhrondan_enclave_decision_can_complete = yes }
 				custom_effect_tooltip = dhrondan_enclave_crisis_resolved_tt
 				FROM = {
-					add_building_construction = {
-						type = infrastructure
-						level = constant:dhrondan_decision_reward.infrastructure_levels
-						instant_build = yes
+					if = {
+						limit = {
+							infrastructure < constant:dhrondan_decision_limit.maximum_infrastructure
+						}
+						add_building_construction = {
+							type = infrastructure
+							level = constant:dhrondan_decision_reward.infrastructure_levels
+							instant_build = yes
+						}
 					}
 					set_state_flag = dhrondan_enclave_supply_bridge_completed
 				}
