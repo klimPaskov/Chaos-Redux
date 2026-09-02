@@ -172,25 +172,59 @@ dhrondan_integration_decision_can_complete = {
 	FROM = { dhrondan_state_can_be_integrated = yes }
 }
 
-# COUNTRY scope on the recipient of Event .49. The regular actor target is
-# carried by the event chain; the global offer target prevents another country
-# from resolving a popup that outlived its targeted-decision context.
+# COUNTRY scope on the original recipient. Pure receipt identity, independent
+# of diplomatic legality or country existence, so invalid replies can close only
+# their own delivered offer. Regular targets are carried by the event chain.
+dhrondan_compact_receipt_matches_recipient = {
+	has_event_target = dhrondan_diplomatic_actor
+	has_event_target = dhrondan_diplomatic_recipient
+	has_event_target = dhrondan_diplomatic_offer_target
+	tag = event_target:dhrondan_diplomatic_recipient
+	tag = event_target:dhrondan_diplomatic_offer_target
+	event_target:dhrondan_diplomatic_actor = {
+		tag = DHR
+		has_country_flag = dhrondan_diplomatic_offer_active
+	}
+}
+
+# COUNTRY scope on the recipient of Event .49. Visibility and response legality
+# share this gate, but option effects additionally require the delivered receipt.
 dhrondan_compact_response_is_valid = {
+	dhrondan_compact_receipt_matches_recipient = yes
 	exists = yes
 	NOT = { has_global_flag = world_end }
 	is_subject = no
 	NOT = { has_country_flag = dhrondan_two_world_compact_partner }
-	has_event_target = dhrondan_diplomatic_actor
-	has_event_target = dhrondan_diplomatic_offer_target
-	event_target:dhrondan_diplomatic_offer_target = { tag = ROOT }
 	event_target:dhrondan_diplomatic_actor = {
 		exists = yes
-		tag = DHR
 		dhrondan_is_covenant_regime = yes
-		has_country_flag = dhrondan_diplomatic_offer_active
 		is_subject = no
-		NOT = { has_war_with = ROOT }
-		NOT = { has_non_aggression_pact_with = ROOT }
+		NOT = { has_war_with = event_target:dhrondan_diplomatic_recipient }
+		NOT = { has_non_aggression_pact_with = event_target:dhrondan_diplomatic_recipient }
+	}
+}
+
+# COUNTRY scope on the recipient, evaluated at the actual option click/timeout.
+dhrondan_compact_response_can_commit = {
+	dhrondan_compact_response_is_valid = yes
+	event_target:dhrondan_diplomatic_actor = {
+		has_country_flag = dhrondan_diplomatic_offer_delivered
+		has_variable = dhrondan_diplomatic_offer_expiry_date
+		check_variable = { dhrondan_diplomatic_offer_expiry_date > global.date }
+	}
+}
+
+# COUNTRY scope on DHR in Event .52. An old watchdog cannot address a different
+# recipient; an early same-pair watchdog follows the current recorded deadline.
+dhrondan_compact_watchdog_matches_offer = {
+	tag = DHR
+	has_country_flag = dhrondan_diplomatic_offer_active
+	has_event_target = dhrondan_diplomatic_actor
+	has_event_target = dhrondan_diplomatic_recipient
+	has_event_target = dhrondan_diplomatic_offer_target
+	tag = event_target:dhrondan_diplomatic_actor
+	event_target:dhrondan_diplomatic_recipient = {
+		tag = event_target:dhrondan_diplomatic_offer_target
 	}
 }
 

@@ -74,9 +74,28 @@ The `dhrondan_sovereignty_category` contains four targeted surfaces:
 - `dhrondan_integrate_reclaimed_landing_site` adds a DHR core to a recovered marked state and records postwar integration.
 - `dhrondan_offer_two_world_compact` sends a formal recognition and non-aggression proposal to a valid partner after the Covenant integration route begins; a government that has already ratified a compact cannot be targeted again.
 
-Country event `.49` owns the compact recipient’s accept and refuse options, marks the DHR offer as delivered before the recipient responds, `.50` reports ratification to DHR, `.51` reports refusal, and hidden `.52` clears an offer receipt only when delivery becomes invalid.
+Country event `.49` owns the compact recipient’s response; `.50` reports ratification to DHR, `.51` reports refusal, and hidden `.52` is an actor-owned deadline check.
+The targeted decision captures regular `dhrondan_diplomatic_actor` and `dhrondan_diplomatic_recipient` targets before dispatch, alongside the persistent current `dhrondan_diplomatic_offer_target`.
+One active offer is permitted, and `.49` admits only the matching, undelivered receipt before its deadline.
+First delivery marks `dhrondan_diplomatic_offer_delivered` and starts the explicit thirteen-day native response window, followed by one day of cleanup grace.
 
-The active receipt remains set while a delivered player popup is awaiting an answer, so a delayed multiplayer response cannot reopen a duplicate compact offer.
+Valid offers expose accept and refuse; invalid offers expose only the no-agreement response.
+Every actual accept/refuse effect separately rechecks the delivered receipt, both original parties, the current recipient, deadline, country existence, independence, Covenant route, peace, and absence of an existing pact.
+A valid acceptance grants the non-aggression pact, mutual opinion modifiers, partner history, and the existing DHR stability reward once.
+A valid refusal applies the existing refusal opinion modifier once.
+If the situation changes while a popup is open, its visible response closes only its owned receipt without diplomacy, rewards, or penalties.
+An unmatched old popup cannot clear an offer for a different recipient.
+
+The active lock is not released early merely because war, subject status, route, or other response legality changes.
+The native timeout resolves the visible response through the same guarded option effects.
+The watchdog checks its original actor and recipient against the current receipt and clears only after `dhrondan_diplomatic_offer_expiry_date`; an early matching watchdog schedules the remaining deadline instead of polling every day.
+A different-recipient watchdog does nothing, and an early same-pair watchdog follows the current deadline rather than releasing the current lock.
+Country initialization restores the current receipt’s regular pointers and preserves its expiry; an undated active receipt receives one response window without redispatching the popup or applying rewards.
+The private finalizer clears active, delivered, expiry, and current-target state together while leaving permanent partner and concluded-compact history intact.
+
+The regular pointers identify countries, not an immutable numeric popup generation.
+Native timeout behavior for an already-open popup after recipient annexation and re-release is not established by the consulted documentation or MCP tools.
+The bounded deadline prevents indefinite ordinary locks, but same-pair popup survival across that destruction sequence remains an explicit acceptance gap rather than a claimed guarantee.
 
 These events are country follow-ups, not Event 016 evolutions.
 
@@ -130,7 +149,9 @@ The file-scoped event scan and render overview each timed out after 180 seconds,
 
 The map inspector also timed out after 180 seconds when limited to the dormant bootstrap state `1`.
 
-Event comparison requires a meaningful before/baseline revision pair, which this new file never had, so no valid event comparison could be produced.
+The formation-era comparison attempt lacked a usable baseline pair.
+The compact closure checkpoint now retains exact before source bytes and named probability scenarios; its current inspect, render, comparison results, and limitations are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_dhr_compact_probability_2026-09-02.md` and the companion lifecycle/postreview handoffs.
+The baseline probability adapter could not resolve the scoped target, opinion, war, and pact relations, so its apparent cleanup-only output is not a native-game acceptance result.
 
 No separate runtime state-transfer inspect or compare route was exposed, and no declarative map source was changed for a `map_rewrite` operation.
 

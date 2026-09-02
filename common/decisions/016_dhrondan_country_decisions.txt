@@ -187,10 +187,15 @@ dhrondan_sovereignty_category = {
 			clr_country_flag = dhrondan_diplomatic_offer_delivered
 			set_country_flag = dhrondan_diplomatic_offer_active
 			save_event_target_as = dhrondan_diplomatic_actor
-			country_event = { id = chaosx.nr16.52 days = 1 }
+			dhrondan_refresh_compact_expiry = yes
 			FROM = {
+				save_event_target_as = dhrondan_diplomatic_recipient
 				save_global_event_target_as = dhrondan_diplomatic_offer_target
 				country_event = { id = chaosx.nr16.49 }
+			}
+			if = {
+				limit = { dhrondan_compact_watchdog_matches_offer = yes }
+				dhrondan_schedule_compact_expiry = yes
 			}
 		}
 		days_re_enable = constant:dhrondan_decision_duration.repeat_cooldown

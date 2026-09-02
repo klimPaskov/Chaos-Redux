@@ -2,6 +2,8 @@ add_namespace = chaosx.nr16
 
 @DHR_POSITIVE_OPINION_THRESHOLD = 25
 @DHR_NEGATIVE_OPINION_THRESHOLD = -25
+# Native popup field; keep equal to dhrondan_decision_duration.compact_response_timeout.
+@DHR_COMPACT_RESPONSE_TIMEOUT_DAYS = 13
 
 # ============================================================================
 # CHAOS REDUX - EVENT 016 EMPIRE OF D'RHONDA COUNTRY EVENTS (.48-.52)
@@ -26,26 +28,21 @@ country_event = {
 	desc = chaosx.nr16.49.d
 	picture = GFX_report_event_016_dhrondan_diplomatic_compact
 	is_triggered_only = yes
+	timeout_days = @DHR_COMPACT_RESPONSE_TIMEOUT_DAYS
 	trigger = {
-		OR = {
-			dhrondan_compact_response_is_valid = yes
-			AND = {
-				has_event_target = dhrondan_diplomatic_offer_target
-				event_target:dhrondan_diplomatic_offer_target = { tag = ROOT }
-				has_event_target = dhrondan_diplomatic_actor
-				event_target:dhrondan_diplomatic_actor = {
-					exists = yes
-					tag = DHR
-					has_country_flag = dhrondan_diplomatic_offer_active
-					NOT = { has_country_flag = dhrondan_diplomatic_offer_delivered }
-				}
-			}
+		exists = yes
+		dhrondan_compact_receipt_matches_recipient = yes
+		event_target:dhrondan_diplomatic_actor = {
+			exists = yes
+			NOT = { has_country_flag = dhrondan_diplomatic_offer_delivered }
+			has_variable = dhrondan_diplomatic_offer_expiry_date
+			check_variable = { dhrondan_diplomatic_offer_expiry_date > global.date }
 		}
 	}
 	immediate = {
-		if = {
-			limit = { has_event_target = dhrondan_diplomatic_actor }
-			event_target:dhrondan_diplomatic_actor = { set_country_flag = dhrondan_diplomatic_offer_delivered }
+		event_target:dhrondan_diplomatic_actor = {
+			set_country_flag = dhrondan_diplomatic_offer_delivered
+			dhrondan_refresh_compact_expiry = yes
 		}
 	}
 
@@ -63,15 +60,22 @@ country_event = {
 			}
 			modifier = { factor = constant:dhrondan_event_ai.covenant_factor has_government = democratic }
 		}
-		diplomatic_relation = { country = event_target:dhrondan_diplomatic_actor relation = non_aggression_pact active = yes }
-		add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_two_world_compact }
-		set_country_flag = dhrondan_two_world_compact_partner
-		event_target:dhrondan_diplomatic_actor = {
-			add_opinion_modifier = { target = ROOT modifier = dhrondan_two_world_compact }
-			set_country_flag = dhrondan_diplomatic_compact_concluded
-			add_stability = constant:dhrondan_decision_reward.stability_small
-			country_event = { id = chaosx.nr16.50 }
-			dhrondan_clear_diplomatic_offer = yes
+		custom_effect_tooltip = dhrondan_compact_accept_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { dhrondan_compact_response_can_commit = yes }
+				diplomatic_relation = { country = event_target:dhrondan_diplomatic_actor relation = non_aggression_pact active = yes }
+				add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_two_world_compact }
+				set_country_flag = dhrondan_two_world_compact_partner
+				event_target:dhrondan_diplomatic_actor = {
+					add_opinion_modifier = { target = event_target:dhrondan_diplomatic_recipient modifier = dhrondan_two_world_compact }
+					set_country_flag = dhrondan_diplomatic_compact_concluded
+					add_stability = constant:dhrondan_decision_reward.stability_small
+					dhrondan_clear_diplomatic_offer = yes
+					country_event = { id = chaosx.nr16.50 }
+				}
+			}
+			else = { dhrondan_close_owned_compact_response = yes }
 		}
 	}
 
@@ -88,24 +92,25 @@ country_event = {
 				}
 			}
 		}
-		add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_compact_refused }
-		event_target:dhrondan_diplomatic_actor = {
-			country_event = { id = chaosx.nr16.51 }
-			dhrondan_clear_diplomatic_offer = yes
+		custom_effect_tooltip = dhrondan_compact_refuse_effect_tt
+		hidden_effect = {
+			if = {
+				limit = { dhrondan_compact_response_can_commit = yes }
+				add_opinion_modifier = { target = event_target:dhrondan_diplomatic_actor modifier = dhrondan_compact_refused }
+				event_target:dhrondan_diplomatic_actor = {
+					dhrondan_clear_diplomatic_offer = yes
+					country_event = { id = chaosx.nr16.51 }
+				}
+			}
+			else = { dhrondan_close_owned_compact_response = yes }
 		}
 	}
 
 	option = {
 		name = chaosx.nr16.49.c
 		trigger = { NOT = { dhrondan_compact_response_is_valid = yes } }
-		if = {
-			limit = {
-				has_event_target = dhrondan_diplomatic_actor
-				event_target:dhrondan_diplomatic_actor = { exists = yes }
-			}
-			event_target:dhrondan_diplomatic_actor = { dhrondan_clear_diplomatic_offer = yes }
-		}
-		else = { clear_global_event_target = dhrondan_diplomatic_offer_target }
+		custom_effect_tooltip = dhrondan_compact_expired_effect_tt
+		hidden_effect = { dhrondan_close_owned_compact_response = yes }
 	}
 }
 
@@ -127,23 +132,21 @@ country_event = {
 	option = { name = chaosx.nr16.51.a }
 }
 
-# Safety monitor for a compact event invalidated before or after delivery. A
-# valid delivered popup keeps its exclusive receipt while it awaits a response;
-# every invalid state clears the actor receipts and persistent target together.
+# Actor-owned deadline check. Original actor/recipient pointers must still match
+# the receipt. Delivery extends the deadline once; early or duplicate watchdogs
+# follow that deadline and never unlock a popup merely because legality changed.
 country_event = {
 	id = chaosx.nr16.52
 	hidden = yes
 	is_triggered_only = yes
-	trigger = { has_country_flag = dhrondan_diplomatic_offer_active }
+	trigger = { dhrondan_compact_watchdog_matches_offer = yes }
 	immediate = {
 		if = {
 			limit = {
-				has_country_flag = dhrondan_diplomatic_offer_delivered
-				dhrondan_is_covenant_regime = yes
-				has_event_target = dhrondan_diplomatic_offer_target
-				event_target:dhrondan_diplomatic_offer_target = { dhrondan_is_valid_compact_partner = yes }
+				has_variable = dhrondan_diplomatic_offer_expiry_date
+				check_variable = { dhrondan_diplomatic_offer_expiry_date > global.date }
 			}
-			country_event = { id = chaosx.nr16.52 days = 1 }
+			dhrondan_schedule_compact_expiry = yes
 		}
 		else = { dhrondan_clear_diplomatic_offer = yes }
 	}

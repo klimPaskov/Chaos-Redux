@@ -150,6 +150,15 @@ KRG retains exactly 100 focuses. DHR retains exactly 88 focuses. Weak rewards ar
 
 Only the active program owner's D'Rhondan expedition is eligible when both character identities could otherwise qualify. The artificial equal 10,000 score competition is removed.
 
+D'Rhondan compact Event `.49` keeps its valid accept/refuse pool separate from invalid cleanup, and every option revalidates the actual receipt before applying diplomacy or rewards.
+The regular actor and original-recipient targets must match the active persistent offer target, and an offer can deliver only once.
+The delivered offer remains exclusive until the guarded response or native event timeout resolves it; war, subject status, regime change, and other invalidation cannot release a still-open popup's lock early.
+The native response timeout remains thirteen days, made explicit through a file-scoped constant, with a matching shared duration and a one-day cleanup grace.
+An actor-owned watchdog carries the original actor/recipient targets and may clear only that matching offer after its current recorded expiry; an early watchdog reschedules to the remaining deadline instead of clearing an open response.
+This bounded expiry also releases undelivered or destroyed-recipient offers without a world-iterating pulse, new popup, or per-popup numeric snapshot.
+Reinitialization preserves a dated receipt and reconstructs its original-party pointers; an undated active receipt receives one full response window without redispatching a popup or awarding diplomacy.
+The implementation must not claim that ordinary country pointers distinguish a surviving popup from a later same-pair offer after annexation and re-release, because native open-popup timeout behavior across that sequence is not documented by the available evidence.
+
 The existing compact Directorate GUI remains the only event-owned mechanic window. Biological, Alien, Portal, and other action systems use normal decision categories or compact headers.
 
 ## Existing-model runtime contract
