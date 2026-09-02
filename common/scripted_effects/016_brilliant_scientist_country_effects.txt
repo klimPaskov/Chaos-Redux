@@ -655,6 +655,29 @@ brilliant_scientist_apply_formation_diplomacy = {
 	}
 }
 
+# COUNTRY scope. Formation floors the ordinary research establishment without
+# absorbing an already active Computation slot or lowering a larger programme.
+# The native set_research_slots field uses an explicit integer meta expansion.
+brilliant_scientist_apply_formation_research_floor = {
+	set_temp_variable = { brilliant_scientist_formation_research_floor = constant:brilliant_scientist_country.starting_research_slots }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = conventional_technology_computation_research_slot_active
+				has_country_flag = brilliant_scientist_computation_research_slot_active
+			}
+		}
+		add_to_temp_variable = { brilliant_scientist_formation_research_floor = constant:brilliant_scientist_project_technology.research_slot_gain }
+	}
+	if = {
+		limit = { check_variable = { var = num_research_slots value = brilliant_scientist_formation_research_floor compare = less_than } }
+		meta_effect = {
+			text = { set_research_slots = [SLOTS] }
+			SLOTS = "[?brilliant_scientist_formation_research_floor|.0]"
+		}
+	}
+}
+
 # COUNTRY scope after capital, route flag, territory, nationality, and current
 # host target are committed. Project force dispatcher is separately idempotent.
 brilliant_scientist_initialize_current_kruger_state = {
@@ -663,7 +686,7 @@ brilliant_scientist_initialize_current_kruger_state = {
 	set_country_flag = brilliant_scientist_kruger_state
 	set_global_flag = brilliant_scientist_kruger_state_active
 	set_country_flag = brilliant_scientist_focus_tree_available
-	set_research_slots = constant:brilliant_scientist_country.starting_research_slots
+	brilliant_scientist_apply_formation_research_floor = yes
 	add_political_power = constant:brilliant_scientist_country.starting_political_power
 	brilliant_scientist_apply_formation_government = yes
 	brilliant_scientist_promote_kruger_as_sovereign = yes
@@ -1084,10 +1107,7 @@ brilliant_scientist_transform_host_into_kruger_state = {
 		set_global_flag = brilliant_scientist_kruger_state_active
 		drop_cosmetic_tag = yes
 		set_cosmetic_tag = KRG_SCIENTIFIC_REPUBLIC
-		if = {
-			limit = { check_variable = { var = num_research_slots value = constant:brilliant_scientist_country.starting_research_slots compare = less_than } }
-			set_research_slots = constant:brilliant_scientist_country.starting_research_slots
-		}
+		brilliant_scientist_apply_formation_research_floor = yes
 		brilliant_scientist_apply_formation_government = yes
 		brilliant_scientist_promote_kruger_as_sovereign = yes
 		brilliant_scientist_apply_starting_country_ideas = yes

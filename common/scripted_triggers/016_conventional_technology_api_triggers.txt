@@ -1,0 +1,131 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 NEUTRAL CONVENTIONAL TECHNOLOGY API TRIGGERS
+# Country-scope queries for the six existing conventional project families.
+# Callers provide the temporary or country-scoped family and tier selectors.
+# These queries never mutate the request selectors, source input, or receipts.
+# ============================================================================
+
+# COUNTRY scope. The conventional API deliberately accepts only the six
+# conventional Event 016 families. The existing project-family IDs remain the
+# stable selector vocabulary; this does not add a project family.
+chaosx_conventional_technology_family_is_valid = {
+	OR = {
+		check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+		check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+		check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+		check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+		check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+		check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+	}
+}
+
+# COUNTRY scope. Only the native cumulative package boundaries are public:
+# Deployment includes Theory, Prototype, and Deployment, while Weaponization
+# includes the same three stages plus the fourth-stage output.
+chaosx_conventional_technology_tier_is_valid = {
+	OR = {
+		check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+		check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+	}
+}
+
+# COUNTRY scope. Exact request gate used by the public wrapper and its private
+# core. Missing, malformed, or unsupported selectors fail closed.
+chaosx_conventional_technology_request_is_valid = {
+	chaosx_conventional_technology_family_is_valid = yes
+	chaosx_conventional_technology_tier_is_valid = yes
+}
+
+# COUNTRY scope. True only when the exact family/tier requested by the caller
+# already has its durable neutral package receipt.
+chaosx_requested_conventional_technology_is_owned = {
+	chaosx_conventional_technology_request_is_valid = yes
+	OR = {
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = conventional_technology_computation_operational
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = conventional_technology_computation_weaponized
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = conventional_technology_electronics_operational
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = conventional_technology_electronics_weaponized
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = conventional_technology_materials_operational
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = conventional_technology_materials_weaponized
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = conventional_technology_rocketry_operational
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = conventional_technology_rocketry_weaponized
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = conventional_technology_high_energy_operational
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = conventional_technology_high_energy_weaponized
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = conventional_technology_biomedical_operational
+		}
+		AND = {
+			check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = conventional_technology_biomedical_weaponized
+		}
+	}
+}
+
+# COUNTRY scope. True when at least one of the six conventional operational
+# packages is durably owned by this country.
+chaosx_has_conventional_operational_technology = {
+	OR = {
+		has_country_flag = conventional_technology_computation_operational
+		has_country_flag = conventional_technology_electronics_operational
+		has_country_flag = conventional_technology_materials_operational
+		has_country_flag = conventional_technology_rocketry_operational
+		has_country_flag = conventional_technology_high_energy_operational
+		has_country_flag = conventional_technology_biomedical_operational
+	}
+}
+
+# COUNTRY scope. True when at least one of the six conventional weaponization
+# packages is durably owned by this country.
+chaosx_has_conventional_weaponized_technology = {
+	OR = {
+		has_country_flag = conventional_technology_computation_weaponized
+		has_country_flag = conventional_technology_electronics_weaponized
+		has_country_flag = conventional_technology_materials_weaponized
+		has_country_flag = conventional_technology_rocketry_weaponized
+		has_country_flag = conventional_technology_high_energy_weaponized
+		has_country_flag = conventional_technology_biomedical_weaponized
+	}
+}

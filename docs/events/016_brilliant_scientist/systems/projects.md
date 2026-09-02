@@ -6,6 +6,14 @@ This system turns the Kruger Directorate's fifteen project families into a persi
 
 The project portfolio does not use the ordinary technology tree or fabricate a national equipment stockpile. Its matching hidden operational, weaponization, and xenobiological-control technologies are grant-only through their matching project, authorized Event 016 effects, or the reusable API. Guarded Kruger history reconstruction can materialize bounded opening formations with explicit start factors; normal recruitment and AI production remain constrained by real equipment, fuel, manpower, and factory paths. There is no Political Power storefront, and Event 016 does not clone native project clocks or rewards.
 
+The six conventional families also expose their complete cumulative Deployment and Weaponization packages through `chaosx_grant_conventional_technology_package`.
+Deployment grants the same existing Theory, Prototype, and Deployment modifiers; Weaponization grants those plus the fourth-stage modifier.
+Native stage completion and valid history reconstruction record this learned knowledge with Event 016 provenance, while external grants never manufacture the project ledger, facility, stage, Directorate values, or achievements.
+Learned packages remain with their country after Kruger leaves or a project is suspended, damaged, stolen, or dismantled; pre-operational project outputs remain dependent on the project.
+Computation adopts the existing native research slot or adds one shared slot, and repeated grants or runtime reconciliation cannot add a second slot.
+Kruger State formation treats its ordinary research establishment as a floor before the separate learned Computation slot; an already active slot is not absorbed by same-country takeover or country reinitialization.
+The effect and query contract is documented in `common/scripted_effects/016_conventional_technology_api_effects.md`.
+
 ## Player flow
 
 1. Establish the Directorate and a valid primary facility.
@@ -191,6 +199,36 @@ The exact biological-agent character flags are:
 Black Plague remains a distinct disease and special-project history from ordinary plague. A Kruger Directorate that has completed Biological Weapons Theory may expose `black_plague_weaponization_program` without waiting for Event 020 or acquiring an Event 020 sample. The project still uses the native Event 020 Black Plague phase, accident, condemnation, payload, and delivery runtime. Its completed payload shares the existing `plague_bomb_delivery_systems` equipment route, while the character flag above preserves its distinct provenance through transfer or Kruger State formation. Mengele can expose the same project through the reusable Directorate special-project registry, and the project is included in the CBRN random/project registries rather than a parallel disease ledger. Every future Chaos Redux special project must be reviewed for inclusion in the reusable CBRN random and project registries before it is accepted as a new consumer.
 
 ## Costs and duration
+
+### Conventional strategic directives
+
+The eight directives appear in the ordinary `conventional_technology_operations` category once the country owns a conventional Weaponization package.
+Their access gates consume durable neutral knowledge, not Kruger ownership, project-health arrays, or the Directorate board.
+An active terminal commitment or the shared world-end state prevents authorization; map-target and infrastructure requirements remain specific to each operation.
+The category reuses the reviewed generated scientific-instrument emblem at `gfx/interface/016_brilliant_scientist/directorate/decision_category_directorate.dds`, registered as `GFX_decision_category_conventional_technology` in `interface/016_conventional_technology.gfx`.
+No additional scripted GUI, meter, technology, or project family is introduced.
+
+The eight mature conventional directives spend Command Power, support equipment, and fuel at selection and occupy civilian factories for their native decision clock.
+They do not consume trucks or manpower.
+Military factories and target infrastructure are non-consumed requirements.
+
+| Directive payment profile | Command Power | Support equipment | Fuel | Occupied civilian factories |
+| --- | --- | --- | --- | --- |
+| Sensor saturation | 20 | 75 | 250 | 2 |
+| Predictive campaign and epidemic control | 25 | 100 | 500 | 2 |
+| Synthesis works | 25 | 100 | 500 | 3 |
+| High-speed strike, long-range delivery, field projectors, and emergency regeneration | 40 | 200 | 1,500 | 3 |
+
+The three payment helpers and matching refunds remain in `common/scripted_effects/016_brilliant_scientist_technology_action_effects.txt`.
+Shared affordability helpers in the matching trigger file serve both `available` and `custom_cost_trigger`; the synthesis helper additionally requires three available factories.
+Fuel and Command Power checks include the exact payment boundary.
+Heavy directives separately require two military factories without consuming them.
+Native completion activates the existing output; native cancellation refunds the initial payment and releases the factory modifier without granting an output.
+The custom-cost rows use eleven country-scoped presentation queries in `common/scripted_localisation/016_brilliant_scientist_technology_action_cost_scripted_localisation.txt` to colour only the resource entries the country cannot afford.
+The rows reuse registered `command_power`, `support_equipment_text_icon`, `fuel_texticon`, and `civ_factory` texticons; no new visual asset is required for payment presentation.
+Their numerical source is `common/script_constants/016_brilliant_scientist_technology_action_constants.txt`; native static `civilian_factory_use` fields retain matching file-local constants in the decision file.
+
+### Project-stage payments
 
 The exact wrapper costs in `constant:brilliant_scientist_project_stage_cost.*` are rounded products of:
 

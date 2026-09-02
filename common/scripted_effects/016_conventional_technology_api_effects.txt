@@ -1,0 +1,248 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 NEUTRAL CONVENTIONAL TECHNOLOGY API
+# Public and private country-scope effects for the six existing conventional
+# Event 016 project families. This file owns durable neutral package receipts
+# and runtime reapplication; it never creates a Kruger project ledger.
+# ============================================================================
+# Public input:
+#   chaosx_conventional_technology_family = existing
+#       brilliant_scientist_project_family.computation/electronics/materials/
+#       rocketry/high_energy/biomedical
+#   chaosx_conventional_technology_tier = existing
+#       brilliant_scientist_project_stage.deployment/weaponization
+#   optional chaosx_custom_technology_source = positive source ID below the
+#       existing provenance stride
+#
+# Public effects:
+#   chaosx_grant_conventional_technology_package grants the requested complete
+#       package idempotently and returns temporary
+#       chaosx_conventional_technology_grant_applied = 1 for a valid request.
+#   chaosx_reconcile_conventional_technology_runtime reapplies the matching
+#       existing stage modifiers and returns temporary
+#       chaosx_conventional_technology_runtime_reconciled = 1.
+#
+# Weaponization always establishes the operational receipt first. Optional
+# provenance uses the existing source validator and the existing family ID *
+# provenance stride encoding in separate operational and weaponization arrays.
+# Invalid selectors are no-ops. Invalid or missing source input does not block
+# a valid package grant and produces no provenance receipt.
+#
+# These effects do not grant hidden technology, create facilities, write
+# Directorate state, append project history, set active project stages, spend
+# Capacity, create achievements, or add a new project family.
+# ============================================================================
+
+# COUNTRY scope. Private implementation core for both neutral API callers and
+# native completion wrappers. It intentionally does not record provenance so a
+# native caller cannot inherit an unrelated chaosx_custom_technology_source.
+# The caller owns any provenance write after this core returns.
+chaosx_grant_conventional_technology_package_core = {
+	set_temp_variable = { chaosx_conventional_technology_grant_applied = 0 }
+	if = {
+		limit = { chaosx_conventional_technology_request_is_valid = yes }
+		if = {
+			limit = { check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.deployment compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.computation compare = equals } }
+				set_country_flag = conventional_technology_computation_operational
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.electronics compare = equals } }
+				set_country_flag = conventional_technology_electronics_operational
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.materials compare = equals } }
+				set_country_flag = conventional_technology_materials_operational
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.rocketry compare = equals } }
+				set_country_flag = conventional_technology_rocketry_operational
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.high_energy compare = equals } }
+				set_country_flag = conventional_technology_high_energy_operational
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.biomedical compare = equals } }
+				set_country_flag = conventional_technology_biomedical_operational
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.computation compare = equals } }
+				set_country_flag = conventional_technology_computation_operational
+				set_country_flag = conventional_technology_computation_weaponized
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.electronics compare = equals } }
+				set_country_flag = conventional_technology_electronics_operational
+				set_country_flag = conventional_technology_electronics_weaponized
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.materials compare = equals } }
+				set_country_flag = conventional_technology_materials_operational
+				set_country_flag = conventional_technology_materials_weaponized
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.rocketry compare = equals } }
+				set_country_flag = conventional_technology_rocketry_operational
+				set_country_flag = conventional_technology_rocketry_weaponized
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.high_energy compare = equals } }
+				set_country_flag = conventional_technology_high_energy_operational
+				set_country_flag = conventional_technology_high_energy_weaponized
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_conventional_technology_family value = constant:brilliant_scientist_project_family.biomedical compare = equals } }
+				set_country_flag = conventional_technology_biomedical_operational
+				set_country_flag = conventional_technology_biomedical_weaponized
+			}
+		}
+		chaosx_reconcile_conventional_technology_runtime = yes
+		set_temp_variable = { chaosx_conventional_technology_grant_applied = 1 }
+	}
+}
+
+# COUNTRY scope. Public neutral package boundary. Provenance is deliberately
+# written after the private core so a native completion can call the core
+# without consuming a caller's optional public source variable.
+chaosx_grant_conventional_technology_package = {
+	set_temp_variable = { chaosx_conventional_technology_grant_applied = 0 }
+	chaosx_grant_conventional_technology_package_core = yes
+	if = {
+		limit = { check_variable = { var = chaosx_conventional_technology_grant_applied value = 1 compare = greater_than_or_equals } }
+		chaosx_record_conventional_technology_operational_provenance = yes
+		if = {
+			limit = { check_variable = { var = chaosx_conventional_technology_tier value = constant:brilliant_scientist_project_stage.weaponization compare = equals } }
+			chaosx_record_conventional_technology_weaponization_provenance = yes
+		}
+	}
+}
+
+# COUNTRY scope. Encodes the existing family ID and optional source in the
+# country-scoped operational provenance array. It never changes the request or
+# grants a package by itself.
+chaosx_record_conventional_technology_operational_provenance = {
+	if = {
+		limit = {
+			chaosx_custom_technology_source_is_valid = yes
+			chaosx_conventional_technology_family_is_valid = yes
+		}
+		set_temp_variable = { chaosx_conventional_technology_provenance_receipt = chaosx_conventional_technology_family }
+		multiply_temp_variable = { chaosx_conventional_technology_provenance_receipt = constant:chaosx_custom_technology_tuning.provenance_stride }
+		add_to_temp_variable = { chaosx_conventional_technology_provenance_receipt = chaosx_custom_technology_source }
+		if = {
+			limit = { NOT = { is_in_array = { array = conventional_technology_operational_provenance value = chaosx_conventional_technology_provenance_receipt } } }
+			add_to_array = { array = conventional_technology_operational_provenance value = chaosx_conventional_technology_provenance_receipt }
+		}
+	}
+}
+
+# COUNTRY scope. Encodes the existing family ID and optional source in the
+# country-scoped weaponization provenance array. A weaponization grant records
+# both its operational and weaponization receipt through the public boundary.
+chaosx_record_conventional_technology_weaponization_provenance = {
+	if = {
+		limit = {
+			chaosx_custom_technology_source_is_valid = yes
+			chaosx_conventional_technology_family_is_valid = yes
+		}
+		set_temp_variable = { chaosx_conventional_technology_provenance_receipt = chaosx_conventional_technology_family }
+		multiply_temp_variable = { chaosx_conventional_technology_provenance_receipt = constant:chaosx_custom_technology_tuning.provenance_stride }
+		add_to_temp_variable = { chaosx_conventional_technology_provenance_receipt = chaosx_custom_technology_source }
+		if = {
+			limit = { NOT = { is_in_array = { array = conventional_technology_weaponization_provenance value = chaosx_conventional_technology_provenance_receipt } } }
+			add_to_array = { array = conventional_technology_weaponization_provenance value = chaosx_conventional_technology_provenance_receipt }
+		}
+	}
+}
+
+# COUNTRY scope. Reconciles the six durable neutral package flags into the
+# existing full-strength stage modifiers. Existing modifier names are reused so
+# the neutral package does not create a weaker parallel bonus. This effect does
+# not inspect or change the request selectors or optional source variable.
+chaosx_reconcile_conventional_technology_runtime = {
+	set_temp_variable = { chaosx_conventional_technology_runtime_reconciled = 0 }
+	if = {
+		limit = { has_country_flag = conventional_technology_computation_operational }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_computation_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_computation_prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_prototype } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_computation_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_deployment } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_computation_weaponized }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_computation_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_computation_weaponization } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_electronics_operational }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_electronics_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_theory } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_electronics_prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_prototype } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_electronics_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_deployment } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_electronics_weaponized }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_electronics_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_electronics_weaponization } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_materials_operational }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_materials_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_theory } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_materials_prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_prototype } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_materials_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_deployment } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_materials_weaponized }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_materials_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_materials_weaponization } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_rocketry_operational }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_rocketry_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_theory } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_rocketry_prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_prototype } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_rocketry_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_deployment } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_rocketry_weaponized }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_rocketry_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_rocketry_weaponization } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_high_energy_operational }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_high_energy_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_theory } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_high_energy_prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_prototype } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_high_energy_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_deployment } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_high_energy_weaponized }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_high_energy_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_high_energy_weaponization } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_biomedical_operational }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_biomedical_theory } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_theory } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_biomedical_prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_prototype } }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_biomedical_deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_deployment } }
+	}
+	if = {
+		limit = { has_country_flag = conventional_technology_biomedical_weaponized }
+		if = { limit = { NOT = { has_dynamic_modifier = brilliant_scientist_biomedical_weaponization } } add_dynamic_modifier = { modifier = brilliant_scientist_biomedical_weaponization } }
+	}
+
+	if = {
+		limit = {
+			has_country_flag = conventional_technology_computation_operational
+			has_country_flag = brilliant_scientist_computation_research_slot_active
+		}
+		set_country_flag = conventional_technology_computation_research_slot_active
+		clr_country_flag = brilliant_scientist_computation_research_slot_active
+	}
+	if = {
+		limit = {
+			has_country_flag = conventional_technology_computation_operational
+			NOT = { has_country_flag = conventional_technology_computation_research_slot_active }
+			NOT = { has_country_flag = brilliant_scientist_computation_research_slot_active }
+		}
+		add_research_slot = constant:brilliant_scientist_project_technology.research_slot_gain
+		set_country_flag = conventional_technology_computation_research_slot_active
+	}
+	force_update_dynamic_modifier = yes
+	set_temp_variable = { chaosx_conventional_technology_runtime_reconciled = 1 }
+}

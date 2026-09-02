@@ -2,19 +2,22 @@
 
 ## Overview
 
-Mature conventional Directorate projects provide paid operational actions in `brilliant_scientist_directorate_category` instead of functioning only as passive national modifiers.
+Learned conventional Weaponization packages provide eight paid operational actions in the ordinary `conventional_technology_operations` category, alongside their passive national effects.
 
-The actions are available only while Doctor Warren Kruger remains the current host scientist, the relevant project stage is complete, the family ledger is healthy, containment and terminal transactions are inactive, and the country can meet the complete material cost.
+The same full-strength actions are available to a native project recipient or an authorized external API recipient once the matching durable weaponized package is learned.
+They require an existing country, no active terminal commitment or shared world end, the complete material cost, and any action-specific industrial or target requirements.
+Kruger's departure and changes to the originating project do not revoke learned capabilities.
 
-The actions do not grant project stages, duplicate project history, create a second technology ledger, or bypass the project incident lifecycle.
+The actions do not grant project stages, duplicate project history, or create a second project or payment ledger.
+Native project incidents remain separate from the country's permanent knowledge and the action's own payment and target transaction.
 
 ## Operational sequence
 
-1. A project reaches Weaponization through the existing Theory, Prototype, Deployment, and Weaponization lifecycle.
-2. The matching scripted trigger verifies the canonical current host, family stage, family health, terminal state, and concrete resource gates.
-3. Selection immediately commits Command Power, support equipment, trucks, fuel, and manpower while the decision timer applies its civilian-factory burden.
-4. The removal effect applies the operational outcome only after the preparation or construction timer expires and the project and target remain valid.
-5. Cancellation runs one exact refund for the committed Command Power, equipment, fuel, and manpower; factory time already consumed by the cancelled preparation is not restored.
+1. A project reaches Weaponization through its existing lifecycle, or an authorized event grants the same cumulative package through `chaosx_grant_conventional_technology_package`.
+2. The matching scripted trigger verifies learned weaponization, terminal state, concrete resource gates, and any specific industry or target requirements.
+3. Selection immediately commits Command Power, support equipment, and fuel while the native decision timer occupies civilian factories.
+4. The removal effect applies the operational outcome only after preparation or construction expires and the country and target remain valid.
+5. Cancellation refunds the committed Command Power, support equipment, and fuel once; occupied factories are released, but elapsed factory time is not restored.
 6. Successful removal writes the durable history receipt without repeating the project-stage reward.
 
 ## Actions
@@ -27,7 +30,7 @@ The actions do not grant project stages, duplicate project history, create a sec
 | Rocketry | Activate the High-Speed Strike Network | Weaponization | Triples air range and greatly improves strategic bombing, air efficiency, and land attack for ninety days. |
 | Rocketry | Launch a Long-Range Delivery Strike | Weaponization | Selects an enemy-controlled wartime industrial state, then severely damages its factories, infrastructure, air base, radar, and anti-air installations. Repairs proceed at one quarter of normal speed, and the state cannot be struck again for 180 days. |
 | High Energy | Raise the Field Projectors | Weaponization | Sustains extreme national defense, air-superiority support, anti-air targeting, and nuclear output for ninety days. |
-| Biomedical | Order Emergency Regeneration | Weaponization | Doubles reinforcement and recovery, nearly eliminates combat-experience loss, and sharply reduces supply demand for ninety days. The operational and weaponized stages also add fifty points each to the shared outbreak surveillance, containment, medical, and biosecurity calculation while the family remains healthy. |
+| Biomedical | Order Emergency Regeneration | Weaponization | Doubles reinforcement and recovery, nearly eliminates combat-experience loss, and sharply reduces supply demand for ninety days. The operational and weaponized packages also add fifty points each to shared outbreak surveillance, containment, medical, and biosecurity calculations. |
 | Biomedical | Order Epidemic Control | Weaponization | Applies major biomedical research, stability, logistics, and reinforcement support for ninety days and immediately restores national stability. |
 
 The existing Advanced Materials plus Rocketry high-speed materials corridor and Electronics plus Teleportation calibration network remain the authoritative paid cross-project actions for those combinations.
@@ -61,11 +64,23 @@ Shared costs, duration, output, and AI values live in `common/script_constants/0
 
 Eligibility lives in `common/scripted_triggers/016_brilliant_scientist_technology_action_triggers.txt`, payment and outcomes live in `common/scripted_effects/016_brilliant_scientist_technology_action_effects.txt`, decisions live in `common/decisions/016_brilliant_scientist_technology_actions.txt`, and timed national effects live in `common/dynamic_modifiers/016_brilliant_scientist_project_modifiers.txt`.
 
-The strict `has_equipment` and `has_fuel` operators use exclusive gate constants exactly one unit below the displayed payment. Manpower and Command Power use inclusive comparisons so a country with exactly the documented amount can commit the action.
+Support-equipment checks use the strict `has_equipment` operator against exclusive gates one whole unit below the displayed payment.
+Command Power, fuel, and available civilian factories use inclusive lower bounds, including exact fractional fuel boundaries.
+Military factories are a separate non-consumed industrial requirement for the four heavy directives.
+
+| Payment profile | Command Power | Support equipment | Fuel | Occupied civilian factories |
+| --- | ---: | ---: | ---: | ---: |
+| Sensor saturation | 20 | 75 | 250 | 2 |
+| Predictive campaign and epidemic control | 25 | 100 | 500 | 2 |
+| Synthesis works | 25 | 100 | 500 | 3 |
+| High-speed strike, long-range delivery, field projectors, emergency regeneration | 40 | 200 | 1,500 | 3 |
+
+The four custom-cost rows display each resource with an independently coloured affordability fragment, and concise trigger tooltips keep raw nested checks out of the requirements display.
+These eight distinct operations remain directly available in one category when all six packages are weaponized; they are not replaced with an extra selection step or another scripted GUI.
 
 ## Icon contract
 
-No new icon identifier is introduced by this surface.
+The ordinary category uses `GFX_decision_category_conventional_technology`, registered in `interface/016_conventional_technology.gfx` against the existing generated scientific-instrument emblem at `gfx/interface/016_brilliant_scientist/directorate/decision_category_directorate.dds`.
 
 Each decision reuses the original, already registered Event 016 project-stage icon for its owning family:
 
@@ -83,18 +98,24 @@ Sprite registration remains in the existing Event 016 project GFX files; no unwi
 
 ## Interactions
 
-The action availability triggers consume the same suspended, damaged, dismantled, and stolen family arrays as the project board, so an incident or containment response removes the action without erasing completed history.
+The action availability triggers consume durable neutral knowledge flags rather than the project's suspended, damaged, dismantled, or stolen arrays.
+Those arrays still govern the native project board, incidents, and pre-operational outputs.
 
 The materials synthesis state flag is the permanent state receipt used to prevent duplicate construction.
 
 The long-range strike uses a timed target-state flag rather than a world ledger, so target exclusion is bounded to the selected state and requires no recurring world scan.
 
-The project-stage modifier dispatcher owns the computation research slot. The matching disable and re-enable effects remove or restore it idempotently when the portable project ledger changes country.
+The neutral package reconciler owns one computation research slot per country.
+It adopts an existing native slot without adding another and the native dispatcher checks both ownership markers before adding a slot.
+Project disable and transfer retain learned knowledge in the former country, while a valid recipient learns its own package from the transferred project history; neither country can gain a second slot from repeated grants or reconciliation.
+Kruger State formation preserves its ordinary base-slot floor plus any active learned Computation slot, rather than absorbing the learned slot into the base floor.
 
-The shared biological lifecycle reads `brilliant_scientist_biomedical_response_is_operational` and `brilliant_scientist_biomedical_weaponization_is_operational` inside the exact target controller scope. This raises existing outbreak-response values without creating another contamination, pathogen, or protection ledger; disabled, damaged, dismantled, stolen, or transferred project state stops contributing immediately.
+The shared biological lifecycle reads `brilliant_scientist_biomedical_response_is_operational` and `brilliant_scientist_biomedical_weaponization_is_operational` inside the exact target controller scope.
+These queries read the matching learned-package flags, raising existing outbreak-response values without creating another contamination, pathogen, or protection ledger and without revoking the benefit when Kruger or a project leaves.
 
 ## Future extensions
 
 Future work may add target-specific report events or defender reactions only when they use the existing action receipts and do not create a parallel project or payment ledger.
 
-Any additional cross-project synergy must provide a concrete decision, event variant, production route, countermeasure, or strategic action and must use the canonical family-stage and family-health ledgers.
+Any additional cross-project synergy must provide a concrete decision, event variant, production route, countermeasure, or strategic action.
+Native research and governance consumers use the canonical project ledgers; provider-neutral learned-technology consumers use the public package queries and preserve their own payment and target ownership.

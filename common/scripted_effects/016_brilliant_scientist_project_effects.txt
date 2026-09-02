@@ -262,6 +262,32 @@ brilliant_scientist_reoccupy_suspended_project_capacity = {
 	clamp_variable = { var = brilliant_scientist_project_capacity min = constant:brilliant_scientist_measure.minimum max = constant:brilliant_scientist_measure.maximum }
 }
 
+# COUNTRY scope. Private bridge from authenticated native project output.
+# The neutral core never records project history or reads an optional caller
+# source. This wrapper records Event 016 provenance without changing that input.
+brilliant_scientist_record_conventional_stage_knowledge = {
+	if = {
+		limit = { chaosx_conventional_technology_request_is_valid = yes }
+		chaosx_grant_conventional_technology_package_core = yes
+		set_temp_variable = { brilliant_scientist_conventional_source_receipt = chaosx_conventional_technology_family }
+		multiply_temp_variable = { brilliant_scientist_conventional_source_receipt = constant:chaosx_custom_technology_tuning.provenance_stride }
+		add_to_temp_variable = { brilliant_scientist_conventional_source_receipt = constant:brilliant_scientist_event.id }
+		if = {
+			limit = { NOT = { is_in_array = { array = conventional_technology_operational_provenance value = brilliant_scientist_conventional_source_receipt } } }
+			add_to_array = { array = conventional_technology_operational_provenance value = brilliant_scientist_conventional_source_receipt }
+		}
+		if = {
+			limit = {
+				check_variable = { chaosx_conventional_technology_tier = constant:brilliant_scientist_project_stage.weaponization }
+				NOT = { is_in_array = { array = conventional_technology_weaponization_provenance value = brilliant_scientist_conventional_source_receipt } }
+			}
+			add_to_array = { array = conventional_technology_weaponization_provenance value = brilliant_scientist_conventional_source_receipt }
+		}
+	}
+	set_temp_variable = { chaosx_conventional_technology_family = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { chaosx_conventional_technology_tier = constant:brilliant_scientist_value.zero }
+}
+
 # COUNTRY scope. Inputs: family and requested stage.
 brilliant_scientist_apply_project_stage_output = {
 	if = {
@@ -281,7 +307,7 @@ brilliant_scientist_apply_project_stage_output = {
 			set_country_flag = brilliant_scientist_computation_deployment_completed
 			add_dynamic_modifier = { modifier = brilliant_scientist_computation_deployment }
 			if = {
-				limit = { NOT = { has_country_flag = brilliant_scientist_computation_research_slot_active } }
+				limit = { NOT = { has_country_flag = brilliant_scientist_computation_research_slot_active } NOT = { has_country_flag = conventional_technology_computation_research_slot_active } }
 				add_research_slot = constant:brilliant_scientist_project_technology.research_slot_gain
 				set_country_flag = brilliant_scientist_computation_research_slot_active
 			}
@@ -673,11 +699,15 @@ brilliant_scientist_apply_project_stage_output = {
 			clr_country_flag = brilliant_scientist_singularity_fail_deadly_active
 		}
 	}
+	set_temp_variable = { chaosx_conventional_technology_family = brilliant_scientist_project_family }
+	set_temp_variable = { chaosx_conventional_technology_tier = brilliant_scientist_requested_project_stage }
+	brilliant_scientist_record_conventional_stage_knowledge = yes
 	brilliant_scientist_dispatch_breakthrough_report = yes
 }
 
-# COUNTRY scope. Input: family. Suspension removes live benefits while keeping
-# stage history and sites. Resume re-applies only the recorded cumulative stage.
+# COUNTRY scope. Input: family. Suspension removes project-bound benefits while
+# keeping history/sites. Permanent learned conventional packages are reconciled
+# afterward and cannot be revoked by losing a project or its provider.
 brilliant_scientist_disable_project_stage_modifiers = {
 	if = {
 		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
@@ -789,6 +819,7 @@ brilliant_scientist_disable_project_stage_modifiers = {
 		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment }
 		remove_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization }
 	}
+	chaosx_reconcile_conventional_technology_runtime = yes
 }
 
 brilliant_scientist_enable_project_stage_modifiers = {
@@ -801,7 +832,7 @@ brilliant_scientist_enable_project_stage_modifiers = {
 			limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } }
 			add_dynamic_modifier = { modifier = brilliant_scientist_computation_deployment }
 			if = {
-				limit = { NOT = { has_country_flag = brilliant_scientist_computation_research_slot_active } }
+				limit = { NOT = { has_country_flag = brilliant_scientist_computation_research_slot_active } NOT = { has_country_flag = conventional_technology_computation_research_slot_active } }
 				add_research_slot = constant:brilliant_scientist_project_technology.research_slot_gain
 				set_country_flag = brilliant_scientist_computation_research_slot_active
 			}
@@ -906,6 +937,9 @@ brilliant_scientist_enable_project_stage_modifiers = {
 		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.prototype } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_deployment } }
 		if = { limit = { check_variable = { brilliant_scientist_project_stage_entries^brilliant_scientist_project_index > constant:brilliant_scientist_project_stage.deployment } } add_dynamic_modifier = { modifier = brilliant_scientist_singularity_weaponization } }
 	}
+	set_temp_variable = { chaosx_conventional_technology_family = brilliant_scientist_project_family }
+	set_temp_variable = { chaosx_conventional_technology_tier = brilliant_scientist_project_stage_entries^brilliant_scientist_project_index }
+	brilliant_scientist_record_conventional_stage_knowledge = yes
 }
 
 # COUNTRY scope. Input: family. Used only when a transferred current stage has
@@ -1092,6 +1126,11 @@ brilliant_scientist_apply_project_inheritance_outputs = {
 				check_variable = { brilliant_scientist_requested_project_stage > constant:brilliant_scientist_project_stage.none }
 			}
 			brilliant_scientist_apply_inherited_project_history_flags = yes
+			# Authenticated completed knowledge transfers even when the physical
+			# project is suspended or damaged. Do not replay its stage rewards.
+			set_temp_variable = { chaosx_conventional_technology_family = brilliant_scientist_project_family }
+			set_temp_variable = { chaosx_conventional_technology_tier = brilliant_scientist_requested_project_stage }
+			brilliant_scientist_record_conventional_stage_knowledge = yes
 			if = {
 				limit = { brilliant_scientist_project_is_operational = yes }
 				brilliant_scientist_enable_project_stage_modifiers = yes

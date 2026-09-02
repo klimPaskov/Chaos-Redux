@@ -49,6 +49,10 @@ The completed identities are:
 
 Every accepted cross-project synergy must exist as a decision, event variant, production route, countermeasure, or strategic action. A small modifier alone does not satisfy a promised synergy.
 
+Conventional strategic directives use four spendable cost types: Command Power, support equipment, fuel, and temporary civilian-factory commitment.
+Military-industry and target infrastructure requirements are not consumed, and synthesis works require the same three available factories they occupy.
+The same inclusive affordability predicate governs selection and custom-cost presentation, with shortages coloured individually and the initial payment returned on native cancellation.
+
 ## Reusable API and generic-unit contract
 
 The public technology helpers remain:
@@ -57,6 +61,17 @@ The public technology helpers remain:
 - `chaosx_grant_custom_technology_upgrade`
 - `chaosx_grant_random_custom_operational_technology`
 - `chaosx_grant_custom_operational_technology_core`
+
+The six existing conventional families also expose explicit neutral operational and weaponization package grants through `chaosx_grant_conventional_technology_package` and `chaosx_reconcile_conventional_technology_runtime`.
+Their separate selector uses the existing Computation, Electronics, Materials, Rocketry, High Energy, and Biomedical project-family IDs, and their tier uses the existing Deployment or Weaponization stage ID.
+This does not add a hidden technology, project family, or candidate to the existing seven-family random technology helper.
+An operational package contains the same cumulative Theory, Prototype, and Deployment bonuses as the native country; weaponization also supplies the existing fourth-stage bonuses and authorizes that family's paid strategic directives.
+Durable neutral knowledge receipts and optional source provenance are separate from Kruger's history, facilities, achievements, and Directorate values.
+Learned conventional packages remain with the country after loss of a provider or closure of its project facilities, just as granted hidden technologies do; only pre-operational project benefits depend on the continuing project.
+Computation supplies one shared country research slot, not one slot per provider, and reconciliation adopts an existing native slot instead of duplicating it.
+The eight existing conventional directives use one ordinary neutral decision category with their existing artwork and no additional scripted GUI, and still charge their normal costs, preparation time, and cooldowns when selected.
+Valid transferred project history grants the receiving country its already-completed conventional knowledge even when the transferred physical project is suspended, damaged, or dismantled; this does not restore the physical project or replay stage rewards.
+Kruger State formation applies its ordinary starting research-slot floor separately from an already active learned Computation slot, preserving the additive benefit through same-country takeover and idempotent reinitialization.
 
 Closure adds documented eligibility-query and reconciliation helpers. Operational grants are idempotent and install the full generic package immediately. Upgrade grants install the prerequisite base first. Random grants choose uniformly from unowned operational families and do nothing when all are owned. External grants record permanent provenance without fabricating Kruger project history, Directorate state, facilities, or achievements. Learned technology is not revoked when an event source disappears.
 

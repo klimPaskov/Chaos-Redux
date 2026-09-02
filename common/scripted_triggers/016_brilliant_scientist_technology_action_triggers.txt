@@ -1,76 +1,48 @@
 # ============================================================================
 # CHAOS REDUX - EVENT 016 WONDER-TECHNOLOGY ACTION TRIGGERS
 # ============================================================================
-# Keeps project health and concrete payment requirements out of player-facing
+# Keeps learned-package access and concrete payment requirements out of player-facing
 # decision requirement dumps. Every trigger is country scope unless noted.
 # ============================================================================
 
 brilliant_scientist_technology_action_system_is_available = {
-	brilliant_scientist_is_current_host = yes
-	NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
-	NOT = { has_country_flag = brilliant_scientist_project_stage_in_progress }
-	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	exists = yes
 	NOT = { has_country_flag = brilliant_scientist_terminal_commitment_locked }
 	NOT = { has_global_flag = world_end }
 }
 
 brilliant_scientist_computation_action_is_available = {
 	brilliant_scientist_technology_action_system_is_available = yes
-	has_country_flag = brilliant_scientist_computation_weaponization_completed
-	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.computation } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.computation } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.computation } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.computation } }
+	has_country_flag = conventional_technology_computation_weaponized
 }
 
 brilliant_scientist_electronics_action_is_available = {
 	brilliant_scientist_technology_action_system_is_available = yes
-	has_country_flag = brilliant_scientist_electronics_weaponization_completed
-	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.electronics } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.electronics } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.electronics } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.electronics } }
+	has_country_flag = conventional_technology_electronics_weaponized
 }
 
 brilliant_scientist_materials_action_is_available = {
 	brilliant_scientist_technology_action_system_is_available = yes
-	has_country_flag = brilliant_scientist_materials_weaponization_completed
-	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.materials } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.materials } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.materials } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.materials } }
+	has_country_flag = conventional_technology_materials_weaponized
 }
 
 brilliant_scientist_rocketry_action_is_available = {
 	brilliant_scientist_technology_action_system_is_available = yes
-	has_country_flag = brilliant_scientist_rocketry_weaponization_completed
-	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.rocketry } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.rocketry } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.rocketry } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.rocketry } }
+	has_country_flag = conventional_technology_rocketry_weaponized
 }
 
 brilliant_scientist_high_energy_action_is_available = {
 	brilliant_scientist_technology_action_system_is_available = yes
-	has_country_flag = brilliant_scientist_high_energy_weaponization_completed
-	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.high_energy } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.high_energy } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.high_energy } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.high_energy } }
+	has_country_flag = conventional_technology_high_energy_weaponized
 }
 
 brilliant_scientist_biomedical_response_is_operational = {
-	brilliant_scientist_is_current_host = yes
-	has_country_flag = brilliant_scientist_biomedical_deployment_completed
-	NOT = { is_in_array = { array = brilliant_scientist_project_suspended_families value = constant:brilliant_scientist_project_family.biomedical } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_damaged_families value = constant:brilliant_scientist_project_family.biomedical } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_dismantled_families value = constant:brilliant_scientist_project_family.biomedical } }
-	NOT = { is_in_array = { array = brilliant_scientist_project_stolen_families value = constant:brilliant_scientist_project_family.biomedical } }
+	has_country_flag = conventional_technology_biomedical_operational
 }
 
 brilliant_scientist_biomedical_weaponization_is_operational = {
 	brilliant_scientist_biomedical_response_is_operational = yes
-	has_country_flag = brilliant_scientist_biomedical_weaponization_completed
+	has_country_flag = conventional_technology_biomedical_weaponized
 }
 
 brilliant_scientist_biomedical_action_is_available = {
@@ -82,26 +54,30 @@ brilliant_scientist_can_pay_light_technology_action = {
 	NOT = { command_power < constant:brilliant_scientist_technology_action.light_command_power }
 	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories }
 	has_equipment = { support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate }
-	has_fuel > constant:brilliant_scientist_technology_action.light_fuel_exclusive_gate
+	NOT = { has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund }
 }
 
 brilliant_scientist_can_pay_standard_technology_action = {
 	NOT = { command_power < constant:brilliant_scientist_technology_action.standard_command_power }
 	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories }
 	has_equipment = { support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate }
-	has_equipment = { motorized_equipment > constant:brilliant_scientist_technology_action.standard_truck_exclusive_gate }
-	has_fuel > constant:brilliant_scientist_technology_action.standard_fuel_exclusive_gate
-	check_variable = { var = manpower value = constant:brilliant_scientist_technology_action.standard_manpower_minimum compare = greater_than_or_equals }
+	NOT = { has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund }
+}
+
+brilliant_scientist_can_pay_synthesis_technology_action = {
+	brilliant_scientist_can_pay_standard_technology_action = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories }
 }
 
 brilliant_scientist_can_pay_heavy_technology_action = {
 	NOT = { command_power < constant:brilliant_scientist_technology_action.heavy_command_power }
 	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories }
-	NOT = { num_of_military_factories < constant:brilliant_scientist_technology_action.minimum_military_factories }
 	has_equipment = { support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate }
-	has_equipment = { motorized_equipment > constant:brilliant_scientist_technology_action.heavy_truck_exclusive_gate }
-	has_fuel > constant:brilliant_scientist_technology_action.heavy_fuel_exclusive_gate
-	check_variable = { var = manpower value = constant:brilliant_scientist_technology_action.heavy_manpower_minimum compare = greater_than_or_equals }
+	NOT = { has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund }
+}
+
+brilliant_scientist_has_technology_action_military_industry = {
+	NOT = { num_of_military_factories < constant:brilliant_scientist_technology_action.minimum_military_factories }
 }
 
 brilliant_scientist_has_strategic_resource_shortage = {
