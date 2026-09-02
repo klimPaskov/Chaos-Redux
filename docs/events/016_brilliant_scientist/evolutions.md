@@ -96,4 +96,7 @@ Severe animated portraits require real frame-by-frame source animation, a static
 
 ## Open validation
 
+The scheduler records `brilliant_scientist_evolution_next_check_num_days` using `global.num_days` plus its selected delay.
+That receipt is informational; the actual `.90` callback remains scheduled by `brilliant_scientist_evolution_scheduled_delay_days`, without changing the MTTH or delay bounds.
+
 Static audits have verified the four-stage identity, scheduler references, incident IDs, localisation, and asset registrations. Live pacing, visual transitions, the Evolution IV deadline, and disabled-stage campaign behavior remain user-owned in-game validation surfaces.

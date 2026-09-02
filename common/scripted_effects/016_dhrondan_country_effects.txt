@@ -268,7 +268,7 @@ dhrondan_install_covenant_regime = {
 dhrondan_clear_diplomatic_offer = {
 	clr_country_flag = dhrondan_diplomatic_offer_active
 	clr_country_flag = dhrondan_diplomatic_offer_delivered
-	clear_variable = dhrondan_diplomatic_offer_expiry_date
+	clear_variable = dhrondan_diplomatic_offer_expiry_num_days
 	clear_global_event_target = dhrondan_diplomatic_offer_target
 }
 
@@ -286,23 +286,23 @@ dhrondan_close_owned_compact_response = {
 # COUNTRY scope on DHR. Called on authorization and exactly once on delivery.
 # The extra day separates native popup timeout from actor-owned cleanup.
 dhrondan_refresh_compact_expiry = {
-	set_variable = { dhrondan_diplomatic_offer_expiry_date = global.date }
-	add_to_variable = { dhrondan_diplomatic_offer_expiry_date = constant:dhrondan_decision_duration.compact_response_timeout }
-	add_to_variable = { dhrondan_diplomatic_offer_expiry_date = constant:dhrondan_decision_duration.compact_cleanup_grace }
+	set_variable = { dhrondan_diplomatic_offer_expiry_num_days = global.num_days }
+	add_to_variable = { dhrondan_diplomatic_offer_expiry_num_days = constant:dhrondan_decision_duration.compact_response_timeout }
+	add_to_variable = { dhrondan_diplomatic_offer_expiry_num_days = constant:dhrondan_decision_duration.compact_cleanup_grace }
 }
 
 # COUNTRY scope on DHR, with original regular actor/recipient pointers. This
 # schedules one bounded deadline event, not a daily poll or a world iteration.
 dhrondan_schedule_compact_expiry = {
-	set_temp_variable = { dhrondan_compact_expiry_delay = dhrondan_diplomatic_offer_expiry_date }
-	subtract_from_temp_variable = { dhrondan_compact_expiry_delay = global.date }
+	set_temp_variable = { dhrondan_compact_expiry_delay = dhrondan_diplomatic_offer_expiry_num_days }
+	subtract_from_temp_variable = { dhrondan_compact_expiry_delay = global.num_days }
 	clamp_temp_variable = { var = dhrondan_compact_expiry_delay min = constant:dhrondan_decision_duration.compact_cleanup_grace }
 	country_event = { id = chaosx.nr16.52 days = dhrondan_compact_expiry_delay }
 }
 
 # COUNTRY scope on DHR. Restore only the surviving current receipt's pointers.
-# An undated receipt receives one complete response window without redispatching
-# its popup or awarding diplomacy; an already dated receipt keeps its deadline.
+# A receipt without an elapsed-day deadline receives one complete response
+# window without redispatching its popup or awarding diplomacy.
 dhrondan_reconcile_compact_offer = {
 	if = {
 		limit = {
@@ -312,7 +312,7 @@ dhrondan_reconcile_compact_offer = {
 		save_event_target_as = dhrondan_diplomatic_actor
 		event_target:dhrondan_diplomatic_offer_target = { save_event_target_as = dhrondan_diplomatic_recipient }
 		if = {
-			limit = { NOT = { has_variable = dhrondan_diplomatic_offer_expiry_date } }
+			limit = { NOT = { has_variable = dhrondan_diplomatic_offer_expiry_num_days } }
 			dhrondan_refresh_compact_expiry = yes
 		}
 		dhrondan_schedule_compact_expiry = yes

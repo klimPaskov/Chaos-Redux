@@ -1,0 +1,696 @@
+{
+  "schemaVersion": "1.0",
+  "id": "E016_FINAL_REMAINING_TIMER_PROBABILITY_2026_09_02",
+  "description": "Immutable bounded fixture for the remaining Event 016 D'Rhondan compact receipt timer audit. The weighted surface is chaosx.nr16.49 with its complete three-option pool. global.date is retained only as the presentation/date axis. Functional due-day expectations use typed global.num_days inputs. The source arithmetic mirrors are test-contract metadata, not engine proof.",
+  "surfaceHint": "event_option_ai_chance",
+  "candidatePool": [
+    "chaosx.nr16.49.a",
+    "chaosx.nr16.49.b",
+    "chaosx.nr16.49.c"
+  ],
+  "externalFactors": {
+    "rootRecipient": "ABC",
+    "actor": "DHR",
+    "compactResponseTimeoutDays": 13,
+    "compactCleanupGraceDays": 1,
+    "candidatePoolComplete": true,
+    "semanticHelperResolution": "partial because scoped Clausewitz relations and event ordering are not fully modeled by the probability adapter"
+  },
+  "scenarios": [
+    {
+      "id": "E016_DHR_COMPACT_VALID_ACCEPT",
+      "label": "valid delivered compact with friendly democratic recipient",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.01",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 50,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707736
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": {
+            "exists": true,
+            "is_subject": false,
+            "has_war_with:ABC": false,
+            "has_non_aggression_pact_with:ABC": false,
+            "dhrondan_diplomatic_offer_expiry_date": "1939.01.15",
+            "dhrondan_diplomatic_offer_expiry_num_days": 707750
+          },
+          "flags": [
+            "dhrondan_covenant_route",
+            "dhrondan_diplomatic_offer_active",
+            "dhrondan_diplomatic_offer_delivered"
+          ]
+        },
+        "dhrondan_diplomatic_recipient": {
+          "id": "ABC",
+          "type": "country",
+          "actor": "ABC",
+          "state": {
+            "exists": true,
+            "is_subject": false,
+            "has_government": "democratic",
+            "opinion:DHR": 50
+          },
+          "flags": []
+        },
+        "dhrondan_diplomatic_offer_target": {
+          "id": "ABC",
+          "type": "country",
+          "actor": "ABC",
+          "state": { "exists": true, "is_subject": false },
+          "flags": []
+        }
+      },
+      "inputs": {
+        "global.date": "1939.01.01",
+        "global.num_days": 707736,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "legacy_date_axis_expression": "global.date + 13 + 1",
+        "repaired_elapsed_day_expression": "global.num_days + 13 + 1"
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "response": "accept",
+        "validity": "valid",
+        "accept_score_trace": "70 * 1.5 * 2 = 210",
+        "expiry_policy": "commit allowed while current global.num_days is below 707750"
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_VALID_REFUSE",
+      "label": "valid delivered compact with hostile non-democratic recipient",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.01",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "fascism",
+        "opinion:DHR": -50,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707736
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": {
+            "exists": true,
+            "is_subject": false,
+            "has_war_with:ABC": false,
+            "has_non_aggression_pact_with:ABC": false,
+            "dhrondan_diplomatic_offer_expiry_date": "1939.01.15",
+            "dhrondan_diplomatic_offer_expiry_num_days": 707750
+          },
+          "flags": [
+            "dhrondan_covenant_route",
+            "dhrondan_diplomatic_offer_active",
+            "dhrondan_diplomatic_offer_delivered"
+          ]
+        },
+        "dhrondan_diplomatic_recipient": {
+          "id": "ABC",
+          "type": "country",
+          "actor": "ABC",
+          "state": {
+            "exists": true,
+            "is_subject": false,
+            "has_government": "fascism",
+            "opinion:DHR": -50
+          },
+          "flags": []
+        },
+        "dhrondan_diplomatic_offer_target": {
+          "id": "ABC",
+          "type": "country",
+          "actor": "ABC",
+          "state": { "exists": true, "is_subject": false },
+          "flags": []
+        }
+      },
+      "inputs": {
+        "global.date": "1939.01.01",
+        "global.num_days": 707736,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "legacy_date_axis_expression": "global.date + 13 + 1",
+        "repaired_elapsed_day_expression": "global.num_days + 13 + 1"
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "response": "refuse",
+        "validity": "valid",
+        "refuse_score_trace": "30 * 3 = 90",
+        "expiry_policy": "commit allowed while current global.num_days is below 707750"
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_ALREADY_CONSUMED",
+      "label": "recipient already consumed the compact receipt",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.01",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 50,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707736
+      },
+      "flags": ["dhrondan_two_world_compact_partner"],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": {
+          "id": "ABC",
+          "type": "country",
+          "actor": "ABC",
+          "state": { "exists": true, "is_subject": false, "has_government": "democratic", "opinion:DHR": 50 },
+          "flags": ["dhrondan_two_world_compact_partner"]
+        },
+        "dhrondan_diplomatic_offer_target": {
+          "id": "ABC",
+          "type": "country",
+          "actor": "ABC",
+          "state": { "exists": true, "is_subject": false },
+          "flags": []
+        }
+      },
+      "inputs": {
+        "global.date": "1939.01.01",
+        "global.num_days": 707736,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "validity": "invalid",
+        "expected_visible_option": "chaosx.nr16.49.c",
+        "cleanup": "owned receipt cleanup may clear only the matching delivered offer"
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_TIMEOUT_DAY13",
+      "label": "native response timeout at thirteen elapsed days with one grace day remaining",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.14",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707749
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_date": "1939.01.15", "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic", "opinion:DHR": 0 }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.14",
+        "global.num_days": 707749,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "elapsed_days": 13,
+        "native_timeout_days": 13,
+        "cleanup_grace_remaining_days": 1
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "expiry_state": "not yet expired because 707749 < 707750",
+        "timeout_policy": "native first-option timeout still sees a commit-capable receipt",
+        "arithmetic_mirror_not_engine_proof": true
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_EXPIRED_DAY14",
+      "label": "receipt reaches its one-day cleanup-grace deadline",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.15",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707750
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_date": "1939.01.15", "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic", "opinion:DHR": 0 }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.15",
+        "global.num_days": 707750,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "elapsed_days": 14,
+        "cleanup_grace_days": 1
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "expiry_state": "expired because current global.num_days equals the recorded due day",
+        "watchdog": "clear the matching actor-owned offer",
+        "arithmetic_mirror_not_engine_proof": true
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_EXPIRED_DAY15",
+      "label": "late watchdog after the recorded receipt deadline",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.16",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707751
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_date": "1939.01.15", "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic", "opinion:DHR": 0 }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.16",
+        "global.num_days": 707751,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "elapsed_days": 15
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "expiry_state": "expired beyond the recorded due day",
+        "watchdog": "must not reschedule indefinitely or re-open the popup",
+        "arithmetic_mirror_not_engine_proof": true
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_WRONG_INITIATOR",
+      "label": "receipt initiated by a surviving non-DHR country",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.01",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:ALT": 0,
+        "has_war_with:ALT": false,
+        "has_non_aggression_pact_with:ALT": false,
+        "global.num_days": 707736
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "ALT",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "ALT",
+          "type": "country",
+          "actor": "ALT",
+          "state": { "exists": true, "is_subject": false, "has_war_with:ABC": false, "has_non_aggression_pact_with:ABC": false, "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.01",
+        "global.num_days": 707736,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "validity": "invalid",
+        "reason": "wrong initiator cannot satisfy the DHR actor identity",
+        "cleanup": "must not clear an unrelated actor receipt"
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_RECIPIENT_DESTROYED",
+      "label": "recipient no longer exists when the response is due",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.15",
+      "state": {
+        "exists": false,
+        "is_subject": false,
+        "global.num_days": 707750
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": false, "is_subject": false }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": false, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.15",
+        "global.num_days": 707750,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "recipient_exists": false
+      },
+      "sourceExpectation": {
+        "class": "unresolved_lifecycle_boundary",
+        "event_trigger": "recipient-scoped popup cannot be proven deliverable after destruction",
+        "actor_cleanup": "deadline cleanup remains actor-owned",
+        "arithmetic_mirror_not_engine_proof": true
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_NEWER_OFFER_ACTIVE",
+      "label": "old popup receipt while a newer offer targets another country",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.05",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707740
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "NEW"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 707754 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "NEW", "type": "country", "actor": "NEW", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.05",
+        "global.num_days": 707740,
+        "old_receipt_recipient": "ABC",
+        "new_receipt_recipient": "NEW",
+        "new_offer_expiry_num_days": 707754
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "validity": "invalid for the old popup",
+        "cleanup": "old popup cleanup must be impossible while preserving the newer NEW offer",
+        "arithmetic_mirror_not_engine_proof": true
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_IMPOSSIBLE_CLEANUP_WHILE_VALID",
+      "label": "undelivered valid receipt must not be closed by delivered-only cleanup",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.01.01",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707736
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": {
+          "id": "DHR",
+          "type": "country",
+          "actor": "DHR",
+          "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 707750 },
+          "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active"]
+        },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.01.01",
+        "global.num_days": 707736,
+        "receipt_start_num_days": 707736,
+        "intended_expiry_num_days": 707750,
+        "delivered": false,
+        "response_valid": true,
+        "cleanup_expected": false
+      },
+      "sourceExpectation": {
+        "class": "bounded_source_contract",
+        "validity": "valid for popup delivery but not commit-capable until delivered",
+        "cleanup": "dhrondan_close_owned_compact_response must not clear an undelivered receipt",
+        "arithmetic_mirror_not_engine_proof": true
+      }
+    },
+    {
+      "id": "E016_DHR_COMPACT_MONTH_BOUNDARY_DAY13",
+      "label": "thirteen elapsed days across January to February",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.02.13",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707779
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": { "id": "DHR", "type": "country", "actor": "DHR", "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 707780 }, "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"] },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.02.13",
+        "global.num_days": 707779,
+        "receipt_start_date": "1939.01.31",
+        "receipt_start_num_days": 707766,
+        "intended_expiry_num_days": 707780,
+        "elapsed_days": 13
+      },
+      "sourceExpectation": { "class": "bounded_source_contract", "expiry_state": "valid one day before due day", "arithmetic_mirror_not_engine_proof": true }
+    },
+    {
+      "id": "E016_DHR_COMPACT_MONTH_BOUNDARY_DAY14",
+      "label": "fourteen elapsed days across January to February",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1939.02.14",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 707780
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": { "id": "DHR", "type": "country", "actor": "DHR", "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 707780 }, "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"] },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1939.02.14",
+        "global.num_days": 707780,
+        "receipt_start_date": "1939.01.31",
+        "receipt_start_num_days": 707766,
+        "intended_expiry_num_days": 707780,
+        "elapsed_days": 14
+      },
+      "sourceExpectation": { "class": "bounded_source_contract", "expiry_state": "expires exactly at due day", "arithmetic_mirror_not_engine_proof": true }
+    },
+    {
+      "id": "E016_DHR_COMPACT_YEAR_BOUNDARY_DAY13",
+      "label": "thirteen elapsed days across December to January",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1940.01.13",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 708113
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": { "id": "DHR", "type": "country", "actor": "DHR", "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 708114 }, "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"] },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1940.01.13",
+        "global.num_days": 708113,
+        "receipt_start_date": "1939.12.31",
+        "receipt_start_num_days": 708100,
+        "intended_expiry_num_days": 708114,
+        "elapsed_days": 13
+      },
+      "sourceExpectation": { "class": "bounded_source_contract", "expiry_state": "valid one day before due day", "arithmetic_mirror_not_engine_proof": true }
+    },
+    {
+      "id": "E016_DHR_COMPACT_YEAR_BOUNDARY_DAY14",
+      "label": "fourteen elapsed days across December to January",
+      "prevalence": 1,
+      "actor": "ABC",
+      "date": "1940.01.14",
+      "state": {
+        "exists": true,
+        "is_subject": false,
+        "has_government": "democratic",
+        "opinion:DHR": 0,
+        "has_war_with:DHR": false,
+        "has_non_aggression_pact_with:DHR": false,
+        "global.num_days": 708114
+      },
+      "flags": [],
+      "eventTargets": {
+        "dhrondan_diplomatic_actor": "DHR",
+        "dhrondan_diplomatic_recipient": "ABC",
+        "dhrondan_diplomatic_offer_target": "ABC"
+      },
+      "scopes": {
+        "dhrondan_diplomatic_actor": { "id": "DHR", "type": "country", "actor": "DHR", "state": { "exists": true, "is_subject": false, "dhrondan_diplomatic_offer_expiry_num_days": 708114 }, "flags": ["dhrondan_covenant_route", "dhrondan_diplomatic_offer_active", "dhrondan_diplomatic_offer_delivered"] },
+        "dhrondan_diplomatic_recipient": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false, "has_government": "democratic" }, "flags": [] },
+        "dhrondan_diplomatic_offer_target": { "id": "ABC", "type": "country", "actor": "ABC", "state": { "exists": true, "is_subject": false }, "flags": [] }
+      },
+      "inputs": {
+        "global.date": "1940.01.14",
+        "global.num_days": 708114,
+        "receipt_start_date": "1939.12.31",
+        "receipt_start_num_days": 708100,
+        "intended_expiry_num_days": 708114,
+        "elapsed_days": 14
+      },
+      "sourceExpectation": { "class": "bounded_source_contract", "expiry_state": "expires exactly at due day", "arithmetic_mirror_not_engine_proof": true }
+    }
+  ]
+}

@@ -78,6 +78,8 @@ Country event `.49` owns the compact recipient’s response; `.50` reports ratif
 The targeted decision captures regular `dhrondan_diplomatic_actor` and `dhrondan_diplomatic_recipient` targets before dispatch, alongside the persistent current `dhrondan_diplomatic_offer_target`.
 One active offer is permitted, and `.49` admits only the matching, undelivered receipt before its deadline.
 First delivery marks `dhrondan_diplomatic_offer_delivered` and starts the explicit thirteen-day native response window, followed by one day of cleanup grace.
+The functional receipt `dhrondan_diplomatic_offer_expiry_num_days` is measured on `global.num_days`; response commitment, watchdog comparison, and remaining-delay scheduling use that same elapsed-day axis.
+An early watchdog follows the recorded deadline, while an exact-deadline or late watchdog clears the matching transient offer without changing permanent compact history.
 
 Valid offers expose accept and refuse; invalid offers expose only the no-agreement response.
 Every actual accept/refuse effect separately rechecks the delivered receipt, both original parties, the current recipient, deadline, country existence, independence, Covenant route, peace, and absence of an existing pact.

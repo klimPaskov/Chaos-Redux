@@ -88,6 +88,11 @@ brilliant_scientist_calculate_selected_biological_payload_requirement = yes
 Production, staging, and deployment start/finish helpers remain private callbacks of their owning decisions.
 Other events grant access through the technology API and let those decisions own their transactions; they must not call a private production callback to bypass the native factory occupation.
 
+## Black Plague elapsed timing
+
+Black Plague state devastation uses `black_plague_next_devastation_num_days` on the elapsed-day axis `global.num_days`.
+The shared phase-dependent intervals and once-per-pulse application remain authoritative; calendar snapshots used for history are not deadlines.
+
 ## Visual assets and sprite wiring
 
 The category is registered in `common/decisions/categories/016_brilliant_scientist_raid_lifecycle_categories.txt` and reuses `GFX_decision_category_brilliant_scientist_krg_exotic_biological` from `interface/016_brilliant_scientist_kruger_state_decisions.gfx`.

@@ -511,17 +511,18 @@ black_plague_apply_current_state_devastation = {
 }
 
 black_plague_set_next_devastation_date = {
-	set_variable = { black_plague_next_devastation_date = global.date }
+	# The public helper name is retained; its functional receipt is elapsed days.
+	set_variable = { black_plague_next_devastation_num_days = global.num_days }
 	if = {
 		limit = { black_plague_state_is_rat_controlled = yes }
-		add_to_variable = { black_plague_next_devastation_date = constant:black_plague_timing.rat_devastation_interval_days }
+		add_to_variable = { black_plague_next_devastation_num_days = constant:black_plague_timing.rat_devastation_interval_days }
 	}
 	else_if = {
 		limit = { black_plague_state_is_collapsed = yes }
-		add_to_variable = { black_plague_next_devastation_date = constant:black_plague_timing.collapsed_devastation_interval_days }
+		add_to_variable = { black_plague_next_devastation_num_days = constant:black_plague_timing.collapsed_devastation_interval_days }
 	}
 	else = {
-		add_to_variable = { black_plague_next_devastation_date = constant:black_plague_timing.severe_devastation_interval_days }
+		add_to_variable = { black_plague_next_devastation_num_days = constant:black_plague_timing.severe_devastation_interval_days }
 	}
 }
 
@@ -1661,10 +1662,10 @@ black_plague_process_current_state_pulse = {
 					black_plague_state_is_collapsed = yes
 					black_plague_state_is_rat_controlled = yes
 				}
-				has_variable = black_plague_next_devastation_date
+				has_variable = black_plague_next_devastation_num_days
 				check_variable = {
-					var = global.date
-					value = black_plague_next_devastation_date
+					var = global.num_days
+					value = black_plague_next_devastation_num_days
 					compare = greater_than_or_equals
 				}
 			}
