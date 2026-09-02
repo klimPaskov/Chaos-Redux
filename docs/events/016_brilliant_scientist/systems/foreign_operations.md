@@ -92,8 +92,11 @@ Callers must not repeat those actions after invoking it.
 `brilliant_scientist_foreign_event_receipt_matches_active_operation` queries the same receipt through the regular original actor and host event targets.
 These temporary inputs are fixed at each source call site; they are not persistent per-popup snapshots or reads of whichever operation happens to be active.
 
+The actor also retains `brilliant_scientist_foreign_operation_host_scope`, a country-scope pointer paired with the numeric original-host id and cleared only at final settlement.
+The pointer is independent of the response chain's regular event targets.
 `brilliant_scientist_foreign_record_resolution` appends one row to each party only when the matching receipt is unrecorded.
-`brilliant_scientist_foreign_cancel_operation` clears that receipt's response phase, records cancellation only if no result exists, and calls the guarded finish.
+Only its intact-chain wrapper can refresh recognition or present a foreign reaction, and only while the original parties remain valid recipients outside terminal lock.
+`brilliant_scientist_foreign_cancel_operation` clears that receipt's response phase, records cancellation only if no result exists, and calls private settlement without presenting another reaction.
 `brilliant_scientist_foreign_finish_operation` runs in actor scope and requires a recorded matching receipt with no pending response before releasing the host slot and live variables.
 `brilliant_scientist_foreign_align_history_metadata` is country-scoped, takes no input, pads only missing metadata, and never grants gameplay rewards.
 
@@ -104,12 +107,41 @@ set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:
 brilliant_scientist_foreign_resolve_covert_operation = yes
 ```
 
-### Remaining lifecycle evidence
+### Annex and terminal settlement
 
-The documented native event timeout closes intact response/report chains, but a destroyed or annexed event recipient still needs bounded orphan-receipt cleanup evidence.
-The receipt guard does not itself schedule such cleanup and must not be presented as proving it.
-Country target pointers alone are not proof of popup generation identity after annexation and re-release.
-These limits remain in the foreign lifecycle handoff; no periodic world scan is introduced.
+`brilliant_scientist_foreign_owned_receipt_is_valid` queries a country-scoped live receipt and verifies that its stored host pointer resolves to its original numeric host id.
+It takes no temporary argument and does not change state.
+The private actor helpers `brilliant_scientist_foreign_record_owned_resolution`, `brilliant_scientist_foreign_finish_owned_operation`, and `brilliant_scientist_foreign_cancel_owned_operation` share the same history and per-operation resolved-target handling as ordinary callbacks.
+They never create regular event targets, change the caller's expected-operation temporary, spend or refund resources, or dispatch a response or recognition event.
+An unresolved cancellation writes one cancellation row to both parties; an already recorded success, partial result, or failure keeps its original result and rows.
+Final settlement clears the live flag before rebuilding the original host's registry, then clears the stored host pointer last.
+
+`brilliant_scientist_foreign_reconcile_incoming_operations` is a non-destructive host query/rebuild: it snapshots unique actor entries that still own a live operation against this host, rebuilds the persistent array after iteration, and derives the exact count and assassination-live marker from the retained entries.
+It never cancels another actor's receipt, including an actor whose stale array entry points at a different host.
+Duplicate entries and count drift do not release a second slot, and one completed assassination does not clear another live assassin's marker.
+The normal two-incoming-operation start limit remains unchanged; reconciliation records the actual unique count rather than hiding entries behind a count cap.
+
+`brilliant_scientist_foreign_cleanup_country_operations` is the destructive country-owned annex/terminal entry point.
+It settles only that country's outgoing receipt and matching actors in its own incoming registry, using a separate snapshot that nested host reconciliation cannot overwrite.
+The `on_annex` and `on_civil_war_end_before_annexation` hooks call it on documented `FROM`, and the terminal helper calls it before clearing foreign context.
+It is deliberately absent from ordinary relationship cleanup during transfer, defection, extraction, or assassination, when an operation can still be producing its valid result.
+No world scan or new periodic scheduler is introduced.
+
+Example for an irreversible terminal transition in the affected country's scope:
+
+```text
+brilliant_scientist_foreign_cleanup_country_operations = yes
+```
+
+### Evidence boundary
+
+The native event timeout still closes intact response/report chains; participant-owned hooks provide the additional annex and terminal cleanup path.
+Cleanup does not require `exists = yes`, which would reject the annexed country's supplied scope solely because it no longer owns territory.
+The civil-war pre-annex hook has documented access before annexation; ordinary post-annex scope lifetime remains an engine-ordering acceptance question, not something proved by the source guard.
+MCP's focused event evidence defers helper/lifecycle expansion, and the current cached-revision comparison failed with `EVENT_REVISION_NOT_CACHED`.
+The artifact-backed retry rejected the trace report with `EVENT_GRAPH_ARTIFACT_INVALID` because its schema is not a supported comparison graph.
+Passing source review is not presented as a substitute for that missing comparison.
+Country pointers alone do not prove popup generation identity after annexation and re-release.
 
 ## Assets and localisation
 

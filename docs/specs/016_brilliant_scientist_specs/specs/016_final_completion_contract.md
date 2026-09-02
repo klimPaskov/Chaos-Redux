@@ -156,6 +156,13 @@ An aligned peer and actor/host role receipt identifies each chronological row ev
 Public challenges retain their own public consequence set; the additional detected-operation surcharge belongs to covert operations only.
 This receipt correction preserves existing costs, durations, rewards, outcome formulas, and AI scores.
 
+Annexation and irreversible terminal cleanup settle only the affected country's outgoing operation and actor entries in its own incoming-operation registry.
+The persistent original-host pointer must be recoverable without a world scan or another periodic scheduler.
+Cleanup records cancellation only for an unresolved matching receipt, preserves an already recorded real outcome, releases each incoming slot once, and retains the permanent resolved-target and chronological history receipts.
+Stale incoming entries are removed without touching a different live operation, and the remaining count and assassination marker are reconciled from matching entries.
+Ordinary foreign-relationship cleanup during transfer, extraction, defection, or assassination must not prematurely cancel the operation producing that result.
+Nested lifecycle cleanup preserves the caller's original operation targets and fixed expected type rather than replacing its context with the last actor in a registry loop.
+
 Containment follows recorded causal state. Low authority and dependence permit release, arrest, exile, or shutdown. High authority, dangerous projects, extensive facilities, and Independent Capacity can defeat coercion. Failed containment forms KRG only from viable host territory and laboratories. Project-specific military inheritance remains causally separate for every family.
 
 Each containment decision charges no more than four distinct costs: Political Power, at most one physical or operational payment, upfront Stability, and a single temporary consumer-goods burden.

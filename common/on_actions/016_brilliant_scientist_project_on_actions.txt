@@ -5,6 +5,7 @@
 # completion hook avoids any daily, weekly, monthly, or whole-world iteration.
 # The state-control hook retries a deferred, one-time KRG opening force package
 # after a fully occupied takeover first regains a valid controlled state.
+# Annex and terminal receipts are participant-owned; no world pulse is added.
 # ============================================================================
 
 on_actions = {
@@ -79,11 +80,18 @@ on_actions = {
 
 	on_annex = {
 		effect = {
+			FROM = { brilliant_scientist_foreign_cleanup_country_operations = yes }
 			if = {
 				limit = { FROM = { brilliant_scientist_is_kruger_sovereign_country = yes } }
 				save_event_target_as = brilliant_scientist_defeat_victor_input
 				FROM = { brilliant_scientist_evaluate_defeat_after_global_threat = yes }
 			}
+		}
+	}
+
+	on_civil_war_end_before_annexation = {
+		effect = {
+			FROM = { brilliant_scientist_foreign_cleanup_country_operations = yes }
 		}
 	}
 }

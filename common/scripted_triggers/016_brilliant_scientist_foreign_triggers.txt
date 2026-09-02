@@ -438,6 +438,18 @@ brilliant_scientist_foreign_start_is_valid = {
 	}
 }
 
+# Private actor receipt. A stored country scope is paired with the original id;
+# country existence is not required for post-annex history and slot settlement.
+brilliant_scientist_foreign_owned_receipt_is_valid = {
+	has_country_flag = brilliant_scientist_foreign_operation_live
+	has_variable = brilliant_scientist_foreign_live_operation
+	has_variable = brilliant_scientist_foreign_operation_host_id
+	has_variable = brilliant_scientist_foreign_operation_host_scope
+	var:brilliant_scientist_foreign_operation_host_scope = {
+		check_variable = { PREV.brilliant_scientist_foreign_operation_host_id = THIS.id }
+	}
+}
+
 # Targeted-decision actor scope, FROM original host. Each delayed caller supplies
 # its fixed expected operation, never the current receipt's type.
 brilliant_scientist_foreign_callback_matches_active_operation = {
