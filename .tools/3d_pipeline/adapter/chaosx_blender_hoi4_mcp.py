@@ -436,6 +436,40 @@ def chaosx_blender_hoi4_partition_static_mesh_export_batches(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_author_locator(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    target_armature_name: str,
+    parent_bone: str,
+    locator_name: str,
+    bone_local_position: tuple[float, float, float],
+    bone_local_rotation_xyzw: tuple[float, float, float, float],
+) -> Dict[str, Any]:
+    """Create/update one job-owned bone-parented Empty, never geometry or motion.
+
+    Supply a measured bone-head-local position in checkpoint units and a unit
+    quaternion in x,y,z,w order (Blender axes). The exact rig/bone must exist.
+    The output must be a new .blend beside the input checkpoint; existing or
+    foreign locator names, parents, and checkpoint outputs are rejected.
+    """
+
+    return _run(
+        job_id,
+        "author_locator",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "target_armature_name": target_armature_name,
+            "parent_bone": parent_bone,
+            "locator_name": locator_name,
+            "bone_local_position": list(bone_local_position),
+            "bone_local_rotation_xyzw": list(bone_local_rotation_xyzw),
+        },
+    )
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_export_mesh(
     job_id: str,
     blend_rel: str,

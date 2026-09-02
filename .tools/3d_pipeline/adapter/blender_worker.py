@@ -33,6 +33,8 @@ from normalization_convergence import evaluate_convergence_step
 PREVIEW_LIGHT_REFERENCE_HEIGHT = 7.3518242835
 CREATURE_GROUND_CONTACT_TOLERANCE_M = 0.01
 CREATURE_GROUND_CONTACT_CLEARANCE_M = 0.001
+LOCATOR_REGISTRY_VERSION = 1
+LOCATOR_TRANSFORM_TOLERANCE = 1e-5
 
 
 def shortest_quaternion_angle(left: Quaternion, right: Quaternion) -> float:
@@ -94,6 +96,7 @@ def load_pdx(io_pdx_root: str) -> Dict[str, Any]:
         export_meshfile,
         import_animfile,
         import_meshfile,
+        list_scene_pdx_meshes,
         set_mesh_index,
     )
 
@@ -105,6 +108,7 @@ def load_pdx(io_pdx_root: str) -> Dict[str, Any]:
         "export_meshfile": export_meshfile,
         "import_animfile": import_animfile,
         "import_meshfile": import_meshfile,
+        "list_scene_pdx_meshes": list_scene_pdx_meshes,
         "set_mesh_index": set_mesh_index,
         "manifest": str(addon_root / "blender_manifest.toml"),
     }
@@ -3163,6 +3167,7 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
                 "type": obj.type,
                 "parent": obj.parent.name if obj.parent else None,
                 "parent_type": obj.parent_type if obj.parent else None,
+                "parent_bone": obj.parent_bone if obj.parent_type == "BONE" else None,
                 "transform": object_transform(obj),
                 "modifiers": [
                     {
@@ -3176,6 +3181,7 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
             for obj in bpy.context.scene.objects
         ],
         "geometry": geometry_metrics(),
+        "locators": locator_records(),
         "rig_and_actions": action_metrics(),
         "evaluated_actions": evaluated_action_metrics(),
         "weights": weight_metrics(),
@@ -3548,6 +3554,250 @@ def exported_mesh_streams(text_path: Path) -> List[Dict[str, int]]:
     return streams
 
 
+def _locator_exact_name(value: Any, field: str, *, locator: bool = False) -> str:
+    if not isinstance(value, str) or not value or value != value.strip() or "\x00" in value:
+        raise ValueError(f"{field} must be a non-empty exact name without surrounding whitespace.")
+    if locator and re.fullmatch(r"[a-z][a-z0-9_]{0,62}", value) is None:
+        raise ValueError("locator_name must be stable lowercase snake_case (1-63 ASCII characters).")
+    return value
+
+
+def _locator_numbers(value: Any, size: int, field: str) -> List[float]:
+    if not isinstance(value, (list, tuple)) or len(value) != size:
+        raise ValueError(f"{field} requires exactly {size} finite numbers.")
+    if any(isinstance(item, bool) or not isinstance(item, (int, float)) or not math.isfinite(item) for item in value):
+        raise ValueError(f"{field} requires exactly {size} finite numbers.")
+    return [float(item) for item in value]
+
+
+def _locator_request(req: Dict[str, Any]) -> Tuple[Path, Path, Path, str, str, str, List[float], List[float]]:
+    payload = req["payload"]
+    expected = {"blend_rel", "checkpoint_rel", "target_armature_name", "parent_bone", "locator_name", "bone_local_position", "bone_local_rotation_xyzw"}
+    if set(payload) != expected:
+        raise ValueError("author_locator accepts only its exact named, measured locator contract.")
+    job = Path(req["job_root"]).resolve()
+    _locator_exact_name(req.get("job_id"), "job_id", locator=True)
+    for field in ("blend_rel", "checkpoint_rel"):
+        value = payload[field]
+        if not isinstance(value, str) or ".." in Path(value).parts:
+            raise ValueError(f"{field} must be a job-relative checkpoint path without traversal.")
+    source = within(job, payload["blend_rel"])
+    output = within(job, payload["checkpoint_rel"], allow_missing=True)
+    if not source.is_file() or source.suffix.lower() != ".blend" or output.suffix.lower() != ".blend":
+        raise ValueError("author_locator requires .blend checkpoint files.")
+    if source == output or output.exists():
+        raise ValueError("author_locator requires a new checkpoint and never overwrites an existing path.")
+    if source.parent != output.parent:
+        raise ValueError("Locator checkpoints must be siblings to preserve all relative material paths.")
+    armature_name = _locator_exact_name(payload["target_armature_name"], "target_armature_name")
+    bone_name = _locator_exact_name(payload["parent_bone"], "parent_bone")
+    name = _locator_exact_name(payload["locator_name"], "locator_name", locator=True)
+    position = _locator_numbers(payload["bone_local_position"], 3, "bone_local_position")
+    rotation = _locator_numbers(payload["bone_local_rotation_xyzw"], 4, "bone_local_rotation_xyzw")
+    if abs(math.hypot(*rotation) - 1.0) > 1e-6:
+        raise ValueError("bone_local_rotation_xyzw must be a unit quaternion; implicit normalization is forbidden.")
+    return job, source, output, armature_name, bone_name, name, position, rotation
+
+
+def _locator_registration(job: Path, job_id: str, name: str, rig_name: str, bone_name: str) -> Dict[str, Any]:
+    return {
+        "chaosx_export_locator": True,
+        "chaosx_locator_registry_version": LOCATOR_REGISTRY_VERSION,
+        "chaosx_locator_owner_job": job_id,
+        "chaosx_locator_owner_root": hashlib.sha256(os.path.normcase(str(job.resolve())).encode("utf-8")).hexdigest(),
+        "chaosx_locator_name": name,
+        "chaosx_locator_armature": rig_name,
+        "chaosx_locator_parent_bone": bone_name,
+    }
+
+
+def _locator_matrix_record(matrix: Matrix) -> List[List[float]]:
+    values = [[float(value) for value in row] for row in matrix]
+    if len(values) != 4 or any(len(row) != 4 for row in values) or any(not math.isfinite(value) for row in values for value in row):
+        raise ValueError("Locator transforms must be finite 4x4 matrices.")
+    return values
+
+
+def _locator_bone_world(rig: bpy.types.Object, bone_name: str, *, rest: bool = False) -> Matrix:
+    bone_matrix = rig.data.bones[bone_name].matrix_local if rest or rig.data.pose_position == "REST" else rig.pose.bones[bone_name].matrix
+    matrix = rig.matrix_world @ bone_matrix
+    _locator_matrix_record(matrix)
+    if abs(matrix.determinant()) < 1e-12:
+        raise ValueError("Locator parent has a singular transform.")
+    return matrix
+
+
+def _locator_parent(rig_name: str, bone_name: str) -> bpy.types.Object:
+    matches = [obj for obj in bpy.data.objects if obj.name == rig_name]
+    rig = matches[0] if len(matches) == 1 else None
+    if rig is None or rig.type != "ARMATURE" or bpy.context.scene.objects.get(rig_name) != rig:
+        raise ValueError(f"Locator requires one exact scene armature: {rig_name}")
+    if rig.library or rig.override_library or rig.data.library or rig.get("chaosx_source_protected") or rig.get("chaosx_reference_read_only"):
+        raise ValueError("Locator parent cannot be linked, overridden, or a protected source/reference rig.")
+    if bone_name not in rig.data.bones or bone_name not in rig.pose.bones:
+        raise ValueError(f"Locator parent bone does not exist: {rig_name}/{bone_name}")
+    rig_scale = _locator_numbers(list(rig.matrix_world.to_scale()), 3, "locator armature world scale")
+    if min(rig_scale) <= 0.0 or max(rig_scale) - min(rig_scale) > 1e-5 or rig.matrix_world.determinant() <= 0.0:
+        raise ValueError("Locator authoring/export requires a positive uniform armature world scale without reflection.")
+    _locator_bone_world(rig, bone_name)
+    return rig
+
+
+def _validate_registered_locator(obj: bpy.types.Object, rig: bpy.types.Object, bone_name: str, registration: Dict[str, Any]) -> None:
+    if obj.type != "EMPTY" or obj.data is not None or obj.library or obj.override_library:
+        raise ValueError("Locator name collision: only a local registered Empty may be updated/exported.")
+    if bpy.context.scene.objects.get(obj.name) != obj or any(obj.get(key) != value for key, value in registration.items()):
+        raise ValueError("Locator name collision or ownership/registration mismatch.")
+    if obj.parent != rig or obj.parent_type != "BONE" or obj.parent_bone != bone_name:
+        raise ValueError("Registered locator has a different parent; automatic reparenting is forbidden.")
+    if obj.constraints or obj.modifiers or obj.animation_data or obj.children or obj.instance_type != "NONE":
+        raise ValueError("Registered locator must be a non-animated, non-instancing leaf Empty without constraints or modifiers.")
+    if obj.get("chaosx_source_protected") or obj.get("chaosx_reference_read_only"):
+        raise ValueError("Protected source/reference locators cannot be updated/exported.")
+    users = bpy.data.user_map(subset=[obj]).get(obj, set())
+    if any(not isinstance(user, (bpy.types.Scene, bpy.types.Collection)) for user in users):
+        raise ValueError("Locator is referenced by another data-block; non-deforming leaf ownership is required.")
+    _locator_matrix_record(obj.matrix_world)
+    _locator_matrix_record(obj.matrix_basis)
+    _locator_matrix_record(obj.matrix_parent_inverse)
+
+
+def locator_records(objects: Optional[Iterable[bpy.types.Object]] = None) -> List[Dict[str, Any]]:
+    """Report true bone-head-local transforms, not Object.matrix_local (armature-relative)."""
+    records = []
+    for obj in bpy.context.scene.objects if objects is None else objects:
+        if obj.type != "EMPTY" or obj.data is not None:
+            continue
+        record = {
+            "name": obj.name,
+            "parent": obj.parent.name if obj.parent else None,
+            "parent_type": obj.parent_type if obj.parent else None,
+            "parent_bone": obj.parent_bone if obj.parent_type == "BONE" else None,
+            "matrix_world": _locator_matrix_record(obj.matrix_world),
+            "matrix_basis": _locator_matrix_record(obj.matrix_basis),
+            "matrix_parent_inverse": _locator_matrix_record(obj.matrix_parent_inverse),
+            "registered_for_export": bool(obj.get("chaosx_export_locator", False)),
+            "owner_job": obj.get("chaosx_locator_owner_job"),
+            "frame": int(bpy.context.scene.frame_current),
+        }
+        if obj.parent and obj.parent.type == "ARMATURE" and obj.parent_type == "BONE" and obj.parent_bone in obj.parent.data.bones:
+            record["bone_local_matrix"] = _locator_matrix_record(_locator_bone_world(obj.parent, obj.parent_bone).inverted() @ obj.matrix_world)
+            record["rest_bone_relative_matrix"] = _locator_matrix_record(_locator_bone_world(obj.parent, obj.parent_bone, rest=True).inverted() @ obj.matrix_world)
+        records.append(record)
+    return sorted(records, key=lambda item: item["name"])
+
+
+def author_locator(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Modify exactly one registered Empty in a new checkpoint; no mesh, bone or action editing."""
+    job, source, output, rig_name, bone_name, name, position, rotation = _locator_request(req)
+    source_sha256 = hashlib.sha256(source.read_bytes()).hexdigest().upper()
+    bpy.ops.wm.open_mainfile(filepath=str(source), use_scripts=False)
+    rig = _locator_parent(rig_name, bone_name)
+    if any(name in candidate.data.bones for candidate in armatures(working_only=False)):
+        raise ValueError("Locator name collides with a skeleton bone.")
+    registration = _locator_registration(job, req["job_id"], name, rig_name, bone_name)
+    matches = [obj for obj in bpy.data.objects if obj.name == name]
+    if len(matches) > 1:
+        raise ValueError("Duplicate locator names are ambiguous; no object may be adopted or renamed.")
+    locator = matches[0] if matches else None
+    if locator is not None:
+        _validate_registered_locator(locator, rig, bone_name, registration)
+    # Do not change fake-user flags through save_blend. Unretained actions would
+    # be lost on reopening, so fail before touching the locator instead.
+    unretained = [action.name for action in bpy.data.actions if action.users == 0 and not action.use_fake_user]
+    if unretained:
+        raise ValueError(f"Checkpoint contains unretained actions; locator-only save cannot preserve them: {unretained}")
+    actions_before = {action.name: _export_checkpoint_action_snapshot(action) for action in bpy.data.actions}
+    created = locator is None
+    if created:
+        locator = bpy.data.objects.new(name, None)
+        if locator.name != name:
+            raise RuntimeError("Blender changed the requested locator name; refusing an ambiguous locator.")
+        bpy.context.scene.collection.objects.link(locator)
+        locator.empty_display_type = "PLAIN_AXES"
+        locator.parent = rig
+        locator.parent_type = "BONE"
+        locator.parent_bone = bone_name
+        for key, value in registration.items():
+            locator[key] = value
+    # Setting world space after exact bone parenting lets Blender account for
+    # its bone-tail parent offset without pretending matrix_local is bone-local.
+    local = Matrix.Translation(position) @ Quaternion((rotation[3], *rotation[:3])).to_matrix().to_4x4()
+    locator.matrix_parent_inverse = Matrix.Identity(4)
+    locator.matrix_basis = Matrix.Identity(4)
+    bpy.context.view_layer.update()
+    locator.matrix_world = _locator_bone_world(rig, bone_name) @ local
+    bpy.context.view_layer.update()
+    actual = _locator_bone_world(rig, bone_name).inverted() @ locator.matrix_world
+    delta = max(abs(actual[row][col] - local[row][col]) for row in range(4) for col in range(4))
+    if not math.isfinite(delta) or delta > LOCATOR_TRANSFORM_TOLERANCE:
+        raise RuntimeError(f"Locator bone-local transform did not round-trip through Blender parenting: {delta}")
+    _validate_registered_locator(locator, rig, bone_name, registration)
+    if actions_before != {action.name: _export_checkpoint_action_snapshot(action) for action in bpy.data.actions}:
+        raise RuntimeError("Locator authoring altered existing action data.")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    if output.exists():
+        raise ValueError("Locator checkpoint output appeared during processing; refusing overwrite.")
+    saved = bpy.ops.wm.save_as_mainfile(filepath=str(output), copy=True, relative_remap=False)
+    if "FINISHED" not in saved or not output.is_file():
+        raise RuntimeError("Blender did not save the requested locator checkpoint.")
+    if hashlib.sha256(source.read_bytes()).hexdigest().upper() != source_sha256:
+        raise RuntimeError("The input checkpoint changed during locator authoring.")
+    return {
+        "source": source.relative_to(job).as_posix(),
+        "source_sha256": source_sha256,
+        "checkpoint": output.relative_to(job).as_posix(),
+        "checkpoint_sha256": hashlib.sha256(output.read_bytes()).hexdigest().upper(),
+        "checkpoint_bytes": output.stat().st_size,
+        "operation": "author_locator",
+        "created": created,
+        "locator": locator_records([locator])[0],
+        "requested_bone_local_position": position,
+        "requested_bone_local_rotation_xyzw": rotation,
+        "bone_local_matrix_max_error": delta,
+        "actions_verified_unchanged": sorted(actions_before),
+        "policy": "one_registered_leaf_empty_only_no_mesh_material_weight_bone_action_or_scale_edits",
+    }
+
+
+def approved_export_locators(job: Path, job_id: str, working: List[bpy.types.Object]) -> List[bpy.types.Object]:
+    """Select only registered locators on approved rigs exported by a mesh modifier."""
+    exported_rigs = set()
+    for mesh in working:
+        modifiers = [modifier for modifier in mesh.modifiers if modifier.type == "ARMATURE"]
+        if modifiers and modifiers[0].object is not None:
+            exported_rigs.add(modifiers[0].object)  # matches io_pdx_mesh get_rig_from_mesh
+    locators = []
+    for obj in bpy.context.scene.objects:
+        if not obj.get("chaosx_export_locator", False):
+            continue
+        name = _locator_exact_name(obj.name, "locator_name", locator=True)
+        rig_name = _locator_exact_name(obj.get("chaosx_locator_armature"), "registered armature")
+        bone_name = _locator_exact_name(obj.get("chaosx_locator_parent_bone"), "registered parent bone")
+        rig = _locator_parent(rig_name, bone_name)
+        registration = _locator_registration(job, job_id, name, rig_name, bone_name)
+        _validate_registered_locator(obj, rig, bone_name, registration)
+        if rig not in exported_rigs:
+            continue
+        if not rig.get("chaosx_working", False):
+            raise ValueError("Registered locator parent is not an approved working export rig.")
+        # The extension exports only the first root and skips pdxIgnoreJoint branches.
+        bone = rig.data.bones[bone_name]
+        while bone.parent is not None:
+            if bone.get("pdxIgnoreJoint", False):
+                raise ValueError("Locator parent is excluded from the exported skeleton.")
+            bone = bone.parent
+        # RNA access can produce distinct Python wrappers for the same bone.
+        if bone != rig.data.bones[0]:
+            raise ValueError("Locator parent is outside the exporter's first-root skeleton.")
+        if any(name in candidate.data.bones for candidate in exported_rigs):
+            raise ValueError("Locator name collides with an exported skeleton bone.")
+        if sum(bone_name in candidate.data.bones for candidate in exported_rigs) != 1:
+            raise ValueError("Locator parent bone is ambiguous across exported rigs.")
+        locators.append(obj)
+    return sorted(locators, key=lambda obj: obj.name)
+
+
 def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     job = Path(req["job_root"]).resolve()
     payload = req["payload"]
@@ -3556,39 +3806,64 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     output.parent.mkdir(parents=True, exist_ok=True)
     bpy.ops.wm.open_mainfile(filepath=str(blend))
     pdx = load_pdx(req["io_pdx_root"])
-    export_transforms = prepare_pdx_export_transforms()
-    bpy.ops.object.select_all(action="DESELECT")
     working = [
         obj for obj in bpy.context.scene.objects
         if obj.type == "MESH" and obj.get("chaosx_working", False)
     ]
     if not working:
         raise RuntimeError("Mesh export found no approved chaosx_working mesh objects.")
-    for obj in working:
+    pdx_meshes = set(pdx["list_scene_pdx_meshes"]())
+    locators = approved_export_locators(job, req["job_id"], [obj for obj in working if obj in pdx_meshes])
+    locator_local = {obj.name: _locator_bone_world(obj.parent, obj.parent_bone).inverted() @ obj.matrix_world for obj in locators}
+    export_transforms = prepare_pdx_export_transforms()
+    locator_scale = float(export_transforms.get("armature_data_scale_factor", 1.0))
+    if abs(locator_scale - 1.0) > 1e-6:
+        for obj in locators:
+            local = locator_local[obj.name]
+            local.translation *= locator_scale
+            obj.matrix_world = _locator_bone_world(obj.parent, obj.parent_bone) @ local
+        bpy.context.view_layer.update()
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in working + locators:
         obj.select_set(True)
+    if {obj.name for obj in bpy.context.selected_objects} != {obj.name for obj in working + locators}:
+        raise RuntimeError("Mesh export selection differs from approved meshes and registered locators.")
     bpy.context.view_layer.objects.active = working[0]
     for old_output in (output, output.with_suffix(".txt")):
         if old_output.exists():
             if not old_output.is_file():
                 raise RuntimeError(f"Mesh export target is not a file: {old_output}")
             old_output.unlink()
-    pdx["export_meshfile"](
-        str(output),
-        exp_mesh=True,
-        exp_skel=True,
-        exp_locs=True,
-        exp_selected=True,
-        as_blendshape=False,
-        debug_mode=True,
-        # The HOI4 renderer's supported vertex/index envelope is materially
-        # lower than the per-loop vertex stream produced by split_verts=True.
-        # The pinned 0.91 exporter has an O(n^2) de-duplication pass when this
-        # is false, but the shared-vertex route is required for runtime-safe
-        # humanoid exports. A diagnostic may opt into split vertices explicitly.
-        split_verts=bool(payload.get("split_verts", False)),
-        sort_verts="+",
-        plain_txt=True,
-    )
+    # Locator serialization uses rest-bone matrices in io_pdx_mesh 0.91.0.
+    # Evaluate only the approved locator rigs in REST, then restore their pose
+    # display state even if the exporter fails; no action keys are changed.
+    locator_pose_positions = {obj.parent: obj.parent.data.pose_position for obj in locators}
+    try:
+        for rig in locator_pose_positions:
+            rig.data.pose_position = "REST"
+        bpy.context.view_layer.update()
+        exported_locators = locator_records(locators)
+        pdx["export_meshfile"](
+            str(output),
+            exp_mesh=True,
+            exp_skel=True,
+            exp_locs=True,
+            exp_selected=True,
+            as_blendshape=False,
+            debug_mode=True,
+            # The HOI4 renderer's supported vertex/index envelope is materially
+            # lower than the per-loop vertex stream produced by split_verts=True.
+            # The pinned 0.91 exporter has an O(n^2) de-duplication pass when this
+            # is false, but the shared-vertex route is required for runtime-safe
+            # humanoid exports. A diagnostic may opt into split vertices explicitly.
+            split_verts=bool(payload.get("split_verts", False)),
+            sort_verts="+",
+            plain_txt=True,
+        )
+    finally:
+        for rig, pose_position in locator_pose_positions.items():
+            rig.data.pose_position = pose_position
+        bpy.context.view_layer.update()
     text_output = output.with_suffix(".txt")
     streams = exported_mesh_streams(text_output)
     oversized_streams = [stream for stream in streams if stream["vertices"] > 65535]
@@ -3609,6 +3884,9 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "exported_checkpoint": str(exported_checkpoint.relative_to(job)).replace("\\", "/"),
         "geometry": geometry_metrics(),
         "export_transforms": export_transforms,
+        "locators": exported_locators,
+        "selected_export_objects": sorted(obj.name for obj in working + locators),
+        "locator_coordinate_policy": "bone_head_local_rest_export_with_uniform_rig_scale_conversion",
         "warnings": [],
     }
     report = job / "blender" / "reports" / "export_mesh.json"
@@ -7232,6 +7510,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
                         "bounds_max": list(maximum),
                         "ground_contact_z": float(minimum.z),
                         "dimensions": list(maximum - minimum),
+                        "locators": locator_records(),
                     }
                 )
                 preview_paths.extend(
@@ -7260,9 +7539,16 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "runtime_texture_staging": texture_staging,
         "proof_blend": str(proof.relative_to(job)).replace("\\", "/"),
         "objects": [
-            {"name": obj.name, "type": obj.type}
+            {
+                "name": obj.name,
+                "type": obj.type,
+                "parent": obj.parent.name if obj.parent else None,
+                "parent_type": obj.parent_type if obj.parent else None,
+                "parent_bone": obj.parent_bone if obj.parent_type == "BONE" else None,
+            }
             for obj in bpy.context.scene.objects
         ],
+        "locators": locator_records(),
         "meshes": [
             {
                 "name": obj.name,
@@ -7382,7 +7668,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "author_locator", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -7390,6 +7676,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return prepare(req, pdx)
     if operation == "inspect_scene":
         return inspect(req)
+    if operation == "author_locator":
+        return author_locator(req)
     if operation == "process_textures":
         return extract_textures(req)
     if operation == "bake_static_mesh_transforms":

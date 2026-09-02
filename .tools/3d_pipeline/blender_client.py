@@ -143,6 +143,31 @@ class BlenderAdapterClient:
             },
         )
 
+    def author_locator(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        target_armature_name: str,
+        parent_bone: str,
+        locator_name: str,
+        bone_local_position: tuple[float, float, float],
+        bone_local_rotation_xyzw: tuple[float, float, float, float],
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_author_locator",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "target_armature_name": target_armature_name,
+                "parent_bone": parent_bone,
+                "locator_name": locator_name,
+                "bone_local_position": list(bone_local_position),
+                "bone_local_rotation_xyzw": list(bone_local_rotation_xyzw),
+            },
+        )
+
     def export_mesh(self, job_id: str, blend_rel: str, output_rel: str) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_export_mesh",
