@@ -349,8 +349,9 @@ def chaosx_blender_hoi4_inspect_scene(
     target_armature_name: str = "",
     preview_frame: int = -1,
     preview_view_names: list[str] | None = None,
+    mesh_region: dict[str, Any] | None = None,
 ) -> Dict[str, Any]:
-    """Inspect a saved checkpoint, optionally writing review previews."""
+    """Inspect a checkpoint; optional hash-bound mesh_region reads indexed deformation without rendering or saving."""
 
     return _run(
         job_id,
@@ -363,6 +364,7 @@ def chaosx_blender_hoi4_inspect_scene(
             "target_armature_name": target_armature_name,
             "preview_frame": preview_frame,
             "preview_view_names": preview_view_names or [],
+            **({"mesh_region": mesh_region} if mesh_region is not None else {}),
         },
     )
 

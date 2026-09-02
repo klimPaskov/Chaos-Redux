@@ -616,6 +616,7 @@ class BlenderAdapterClient:
         target_armature_name: str = "",
         preview_frame: int = -1,
         preview_view_names: Optional[list[str]] = None,
+        mesh_region: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_inspect_scene",
@@ -628,6 +629,7 @@ class BlenderAdapterClient:
                 "target_armature_name": target_armature_name,
                 "preview_frame": preview_frame,
                 "preview_view_names": preview_view_names or [],
+                **({"mesh_region": mesh_region} if mesh_region is not None else {}),
             },
         )
 

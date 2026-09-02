@@ -3001,7 +3001,307 @@ def prepare(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
+def _mesh_region_name(value: Any, label: str) -> str:
+    if not isinstance(value, str) or not value or value != value.strip() or len(value) > 128 or any(ord(char) < 32 for char in value):
+        raise ValueError(f"{label} must be an exact nonempty name of at most 128 characters.")
+    return value
+
+
+def _mesh_region_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
+    payload = req["payload"]
+    region = payload.get("mesh_region")
+    required = {"mesh_name", "bone_name", "expected_source_sha256", "expected_action_sha256"}
+    allowed = required | {"aabb", "weight", "offset", "limit", "measurement"}
+    if not isinstance(region, dict) or not required.issubset(region) or set(region) - allowed:
+        raise ValueError("mesh_region has missing or unsupported fields.")
+    if payload.get("render_previews") or payload.get("runtime_stem") or payload.get("preview_view_names"):
+        raise ValueError("Mesh-region inspection does not render or write previews.")
+    result = dict(region)
+    for key in ("mesh_name", "bone_name"):
+        result[key] = _mesh_region_name(region[key], key)
+    result["rig_name"] = _mesh_region_name(payload.get("target_armature_name"), "target_armature_name")
+    result["action_name"] = _mesh_region_name(payload.get("action_name"), "action_name")
+    frame = payload.get("preview_frame")
+    if type(frame) is not int or not 0 <= frame <= 1000000:
+        raise ValueError("Mesh-region preview_frame must be an explicit nonnegative bounded integer.")
+    result["frame"] = frame
+    for key in ("expected_source_sha256", "expected_action_sha256"):
+        if not isinstance(region[key], str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", region[key]):
+            raise ValueError(f"{key} must be an explicit SHA-256.")
+        result[key] = region[key].upper()
+    if not any(key in region for key in ("aabb", "weight")):
+        raise ValueError("Mesh-region inspection requires a spatial and/or bone-weight selector.")
+    if "aabb" in region:
+        box = region["aabb"]
+        if not isinstance(box, dict) or set(box) != {"space", "min", "max"} or not isinstance(box["space"], str) or box["space"] not in {"WORLD", "BONE_LOCAL"}:
+            raise ValueError("aabb requires WORLD or BONE_LOCAL space and exact min/max vectors.")
+        low, high = _locator_numbers(box["min"], 3, "aabb min"), _locator_numbers(box["max"], 3, "aabb max")
+        if any(abs(value) > 1000000 for value in low + high) or any(a > b for a, b in zip(low, high)):
+            raise ValueError("AABB bounds must be ordered and inside +/-1000000 units.")
+        result["aabb"] = {"space": box["space"], "min": low, "max": high}
+    if "weight" in region:
+        weight = region["weight"]
+        if not isinstance(weight, dict) or set(weight) != {"bone_name", "min", "max"}:
+            raise ValueError("weight requires an exact bone_name and inclusive min/max.")
+        low, high = _locator_numbers([weight["min"], weight["max"]], 2, "weight range")
+        if not 0 <= low <= high <= 1:
+            raise ValueError("Weight range must be ordered inside [0,1].")
+        result["weight"] = {"bone_name": _mesh_region_name(weight["bone_name"], "weight bone"), "min": low, "max": high}
+    for key, default, maximum in (("offset", 0, 1000000), ("limit", 64, 256)):
+        value = region.get(key, default)
+        if type(value) is not int or not (0 if key == "offset" else 1) <= value <= maximum:
+            raise ValueError(f"Invalid mesh-region {key}.")
+        result[key] = value
+    if "measurement" in region:
+        measurement = region["measurement"]
+        if not isinstance(measurement, dict) or set(measurement) != {"origin_vertex_indices", "endpoint_vertex_indices"}:
+            raise ValueError("measurement requires origin and endpoint source-vertex index sets.")
+        for name, values in measurement.items():
+            if not isinstance(values, list) or not 1 <= len(values) <= 64 or any(type(value) is not int or not 0 <= value < 1000000 for value in values) or len(set(values)) != len(values):
+                raise ValueError(f"{name} requires 1-64 unique bounded source vertex indices.")
+        if set(measurement["origin_vertex_indices"]) & set(measurement["endpoint_vertex_indices"]):
+            raise ValueError("Measurement origin and endpoint index sets must not overlap.")
+    job = Path(req["job_root"]).resolve()
+    source = _promotion_path(job, payload.get("blend_rel"), ".blend")
+    if source.stat().st_size < 1 or file_sha256(source) != result["expected_source_sha256"]:
+        raise ValueError("Mesh-region source SHA-256 mismatch.")
+    result.update(job=job, source=source, source_bytes=source.stat().st_size)
+    return result
+
+
+def _mesh_region_action_hash(action: bpy.types.Action) -> str:
+    """The existing inspect_scene inspected_action_sha256 contract, not an .anim hash."""
+    records = [{"slot": getattr(slot, "identifier", None), "data_path": curve.data_path, "array_index": int(curve.array_index),
+                "keyframes": [[float(key.co.x), float(key.co.y), str(key.interpolation)] for key in curve.keyframe_points]}
+               for curve, slot in action_fcurves(action)]
+    return _promotion_digest(records)
+
+
+def _mesh_region_action_integrity() -> str:
+    records = {}
+    for action in bpy.data.actions:
+        curves = [{"path": curve.data_path, "index": curve.array_index, "settings": _promotion_scalars(curve),
+                   "keys": [{"co": list(key.co), "left": list(key.handle_left), "right": list(key.handle_right), "settings": _promotion_scalars(key)} for key in curve.keyframe_points],
+                   "samples": [list(point.co) for point in curve.sampled_points]}
+                  for curve, _ in action_fcurves(action)]
+        records[action.name] = {"settings": _promotion_scalars(action), "properties": _promotion_properties(action), "fake_user": action.use_fake_user, "curves": curves,
+                                "slots": [_promotion_scalars(slot) for slot in getattr(action, "slots", [])]}
+    return _promotion_digest(records)
+
+
+def _mesh_region_topology(mesh: Any) -> str:
+    return _promotion_digest({"vertices": [vertex.index for vertex in mesh.vertices],
+                              "edges": [(edge.index, list(edge.vertices)) for edge in mesh.edges],
+                              "loops": [(loop.index, loop.vertex_index, loop.edge_index) for loop in mesh.loops],
+                              "polygons": [(face.index, face.loop_start, face.loop_total, list(face.vertices), face.material_index) for face in mesh.polygons]})
+
+
+def _mesh_region_matrix(matrix: Matrix, label: str) -> Matrix:
+    _locator_matrix_record(matrix)
+    if matrix.determinant() <= 0:
+        raise ValueError(f"{label} has a negative or singular transform.")
+    try:
+        inverse = matrix.inverted()
+    except ValueError as exc:
+        raise ValueError(f"{label} has a singular transform.") from exc
+    _locator_matrix_record(inverse)
+    return inverse
+
+
+def _mesh_region_normal(normal: Vector, transform: Matrix) -> List[float]:
+    result = transform @ normal
+    if not math.isfinite(result.length) or result.length <= 1e-12:
+        raise ValueError("Mesh-region normal is nonfinite or has zero length.")
+    return _locator_numbers(list(result.normalized()), 3, "mesh-region normal")
+
+
+def _mesh_region_measurement(specification: Dict[str, Any], matches: List[int], position: Any, bone_inverse: Matrix) -> Dict[str, Any]:
+    required = set(specification["origin_vertex_indices"]) | set(specification["endpoint_vertex_indices"])
+    if not required.issubset(set(matches)):
+        raise ValueError("Every measurement vertex index must match the complete selector, independently of pagination.")
+    def centroid(indices: List[int]) -> Vector:
+        return sum((position(index) for index in indices), Vector()) / len(indices)
+    origin, endpoint = centroid(specification["origin_vertex_indices"]), centroid(specification["endpoint_vertex_indices"])
+    axis = endpoint - origin
+    local_origin, local_endpoint = bone_inverse @ origin, bone_inverse @ endpoint
+    local_axis = local_endpoint - local_origin
+    if any(not math.isfinite(value.length) or value.length <= 1e-12 for value in (axis, local_axis)):
+        raise ValueError("Measured centroid axis is nonfinite or zero length.")
+    return {"policy": "caller_selected_vertex_centroids_no_semantic_detection_no_roll",
+            "origin_vertex_indices": specification["origin_vertex_indices"], "endpoint_vertex_indices": specification["endpoint_vertex_indices"],
+            "origin_count": len(specification["origin_vertex_indices"]), "endpoint_count": len(specification["endpoint_vertex_indices"]),
+            "world_origin": list(origin), "world_endpoint": list(endpoint), "world_axis": list(axis.normalized()), "world_length": axis.length,
+            "bone_local_origin": list(local_origin), "bone_local_endpoint": list(local_endpoint), "bone_local_axis": list(local_axis.normalized()),
+            "rotation_quaternion": None, "semantic_muzzle_approval": False}
+
+
+def _mesh_region_collect(mesh_obj: Any, evaluated_obj: Any, evaluated: Any, rig: Any, evaluated_rig: Any, context: Dict[str, Any]) -> Dict[str, Any]:
+    source = mesh_obj.data
+    if len(source.vertices) > 1000000 or len(source.loops) > 6000000 or len(source.uv_layers) > 8 or len(mesh_obj.vertex_groups) > 256:
+        raise ValueError("Mesh-region source exceeds explicit vertex/loop/UV/group caps.")
+    topology = _mesh_region_topology(source)
+    if _mesh_region_topology(evaluated) != topology:
+        raise ValueError("Evaluated topology/index correspondence changed.")
+    if [layer.name for layer in source.uv_layers] != [layer.name for layer in evaluated.uv_layers]:
+        raise ValueError("Evaluated UV-layer identity changed.")
+    world = evaluated_obj.matrix_world.copy()
+    world_inverse = _mesh_region_matrix(world, "mesh world")
+    bone_world = evaluated_rig.matrix_world @ evaluated_rig.pose.bones[context["bone_name"]].matrix
+    bone_inverse = _mesh_region_matrix(bone_world, "posed bone world")
+    rest_bone_world = rig.matrix_world @ rig.data.bones[context["bone_name"]].matrix_local
+    rest_bone_inverse = _mesh_region_matrix(rest_bone_world, "rest bone world")
+    normal_world = world_inverse.to_3x3().transposed()
+    normal_bone = bone_world.to_3x3().transposed()
+    weight_group = None
+    if "weight" in context:
+        name = context["weight"]["bone_name"]
+        if rig.data.bones.get(name) is None or mesh_obj.vertex_groups.get(name) is None:
+            raise ValueError("Weight selector must name an existing rig bone and mesh group.")
+        weight_group = mesh_obj.vertex_groups[name].index
+    matches = []
+    for vertex in evaluated.vertices:
+        point = world @ vertex.co
+        _locator_numbers(list(point), 3, "evaluated world position")
+        box = context.get("aabb")
+        if box:
+            sample = point if box["space"] == "WORLD" else bone_inverse @ point
+            if any(sample[axis] < box["min"][axis] or sample[axis] > box["max"][axis] for axis in range(3)):
+                continue
+        if weight_group is not None:
+            value = sum(group.weight for group in source.vertices[vertex.index].groups if group.group == weight_group)
+            if not context["weight"]["min"] <= value <= context["weight"]["max"]:
+                continue
+        matches.append(vertex.index)
+    if context["offset"] > len(matches):
+        raise ValueError("Mesh-region page offset exceeds total matched vertices.")
+    loop_map = {}
+    for face in source.polygons:
+        for index in face.loop_indices:
+            loop_map.setdefault(source.loops[index].vertex_index, []).append((index, face.index, face.material_index))
+    selected, corner_count = [], 0
+    for index in matches[context["offset"]:context["offset"] + context["limit"]]:
+        count = len(loop_map.get(index, []))
+        if corner_count + count > 8192:
+            if not selected:
+                raise ValueError("One vertex exceeds the 8192-corner page cap.")
+            break
+        selected.append(index)
+        corner_count += count
+    def position(index: int) -> Vector:
+        return world @ evaluated.vertices[index].co
+    records = []
+    for index in selected:
+        original, posed = source.vertices[index], evaluated.vertices[index]
+        point = position(index)
+        vertex_normal = _mesh_region_normal(posed.normal, normal_world)
+        corners = []
+        for loop_index, face_index, material_index in loop_map.get(index, []):
+            material = mesh_obj.material_slots[material_index].material if material_index < len(mesh_obj.material_slots) else None
+            posed_normal = _mesh_region_normal(evaluated.corner_normals[loop_index].vector, normal_world)
+            corners.append({"loop_index": loop_index, "polygon_index": face_index, "material_index": material_index, "material_name": material.name if material else None,
+                            "source_uvs": {layer.name: _locator_numbers(list(layer.data[loop_index].uv), 2, "source UV") for layer in source.uv_layers},
+                            "evaluated_uvs": {layer.name: _locator_numbers(list(layer.data[loop_index].uv), 2, "evaluated UV") for layer in evaluated.uv_layers},
+                            "source_normal": _locator_numbers(list(source.corner_normals[loop_index].vector), 3, "source corner normal"),
+                            "evaluated_world_normal": posed_normal, "bone_local_normal": _mesh_region_normal(Vector(posed_normal), normal_bone)})
+        records.append({"vertex_index": index, "source_position": list(original.co), "source_world_position": list(mesh_obj.matrix_world @ original.co),
+                        "rest_bone_local_position": list(rest_bone_inverse @ (mesh_obj.matrix_world @ original.co)),
+                        "evaluated_world_position": list(point), "bone_local_position": list(bone_inverse @ point),
+                        "source_normal": list(original.normal), "evaluated_world_normal": vertex_normal,
+                        "bone_local_normal": _mesh_region_normal(Vector(vertex_normal), normal_bone),
+                        "weights": [{"group_index": group.group, "group_name": mesh_obj.vertex_groups[group.group].name, "weight": float(group.weight)} for group in original.groups],
+                        "corners": corners})
+    measurement = _mesh_region_measurement(context["measurement"], matches, position, bone_inverse) if "measurement" in context else None
+    next_offset = context["offset"] + len(records)
+    result = {"mesh_name": mesh_obj.name, "mesh_data_name": source.name, "rig_name": rig.name, "bone_name": context["bone_name"], "frame": context["frame"],
+              "source_counts": {"vertices": len(source.vertices), "loops": len(source.loops), "polygons": len(source.polygons)}, "topology_sha256": topology,
+              "topology_index_correspondence": True, "selector": {key: context[key] for key in ("aabb", "weight") if key in context},
+              "total_matches": len(matches), "matched_vertex_indices_sha256": _promotion_digest(matches),
+              "page": {"offset": context["offset"], "requested_limit": context["limit"], "returned_vertices": len(records), "returned_corners": corner_count,
+                       "vertex_cap": 256, "corner_cap": 8192, "truncated": next_offset < len(matches), "corner_cap_reached": len(records) < len(matches[context["offset"]:context["offset"] + context["limit"]]),
+                       "next_offset": next_offset if next_offset < len(matches) else None},
+              "matrices": {"mesh_world": _locator_matrix_record(world), "mesh_world_inverse": _locator_matrix_record(world_inverse),
+                           "bone_pose_world": _locator_matrix_record(bone_world), "bone_pose_world_inverse": _locator_matrix_record(bone_inverse),
+                           "bone_rest_world": _locator_matrix_record(rest_bone_world), "bone_rest_world_inverse": _locator_matrix_record(rest_bone_inverse)},
+              "records": records, "measurement": measurement}
+    _promotion_digest(result)
+    return result
+
+
+def _mesh_region_object_dependencies(mesh: Any, rig: Any) -> None:
+    if rig.parent is not None or (mesh.parent is not None and (mesh.parent != rig or mesh.parent_type != "OBJECT")):
+        raise ValueError("Mesh-region targets have an uninspected parent dependency.")
+    if mesh.data.animation_data is not None or rig.data.animation_data is not None:
+        raise ValueError("Mesh-region does not support animated mesh or armature datablocks.")
+
+
+def inspect_mesh_region(req: Dict[str, Any]) -> Dict[str, Any]:
+    context = _mesh_region_inputs(req)
+    bpy.ops.wm.open_mainfile(filepath=str(context["source"]), use_scripts=False)
+    objects = bpy.context.scene.objects
+    mesh, rig = objects.get(context["mesh_name"]), objects.get(context["rig_name"])
+    if mesh is None or mesh.type != "MESH" or rig is None or rig.type != "ARMATURE" or rig.data.bones.get(context["bone_name"]) is None:
+        raise ValueError("Mesh-region requires the exact mesh, armature, and existing bone.")
+    _mesh_region_object_dependencies(mesh, rig)
+    for obj in (mesh, rig):
+        if obj.library or obj.override_library or obj.data.library or obj.data.override_library or obj.constraints or any(value <= 0 for value in obj.scale):
+            raise ValueError("Mesh-region requires local unconstrained positive-transform targets.")
+        _mesh_region_matrix(obj.matrix_world, obj.name)
+    modifiers = list(mesh.modifiers)
+    if len(modifiers) != 1 or modifiers[0].type != "ARMATURE" or modifiers[0].object != rig or not modifiers[0].show_viewport:
+        raise ValueError("Mesh-region permits exactly one active Armature modifier consuming the named rig.")
+    if mesh.data.shape_keys or mesh.animation_data or rig.data.pose_position != "POSE" or any(bone.constraints for bone in rig.pose.bones):
+        raise ValueError("Mesh-region does not support shape keys, mesh animation, REST display, or pose constraints.")
+    animation, action = rig.animation_data, bpy.data.actions.get(context["action_name"])
+    if animation is None or animation.drivers or animation.nla_tracks or action is None or action.library or action.override_library or len(getattr(action, "slots", [])) > 1:
+        raise ValueError("Mesh-region requires one explicit local action without NLA/drivers or ambiguous slots.")
+    if any(curve.modifiers for curve, _ in action_fcurves(action)) or not action.frame_range[0] <= context["frame"] <= action.frame_range[1]:
+        raise ValueError("Mesh-region requires an in-range frame and unmodified action curves.")
+    actual_action_hash = _mesh_region_action_hash(action)
+    if actual_action_hash != context["expected_action_sha256"]:
+        raise ValueError("Mesh-region native action SHA-256 mismatch; obtain inspected_action_sha256 with ordinary read-only inspect_scene first.")
+    before_actions = _mesh_region_action_integrity()
+    old_action, old_slot = animation.action, getattr(animation, "action_slot", None)
+    scene = bpy.context.scene
+    old_frame, old_subframe = scene.frame_current, scene.frame_subframe
+    evaluated_obj = None
+    try:
+        animation.action = action
+        if getattr(action, "slots", []):
+            animation.action_slot = action.slots[0]
+        scene.frame_set(context["frame"])
+        bpy.context.view_layer.update()
+        if any(value <= 0 for value in rig.pose.bones[context["bone_name"]].scale):
+            raise ValueError("Requested bone has negative or singular pose scale.")
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        evaluated_obj, evaluated_rig = mesh.evaluated_get(depsgraph), rig.evaluated_get(depsgraph)
+        evaluated = evaluated_obj.to_mesh(preserve_all_data_layers=True, depsgraph=depsgraph)
+        report = _mesh_region_collect(mesh, evaluated_obj, evaluated, rig, evaluated_rig, context)
+    finally:
+        if evaluated_obj is not None:
+            evaluated_obj.to_mesh_clear()
+        animation.action = old_action
+        if old_slot is not None:
+            animation.action_slot = old_slot
+        scene.frame_set(old_frame, subframe=old_subframe)
+        bpy.context.view_layer.update()
+    if animation.action != old_action or getattr(animation, "action_slot", None) != old_slot or scene.frame_current != old_frame or scene.frame_subframe != old_subframe:
+        raise RuntimeError("Mesh-region frame/action binding restoration failed.")
+    if _mesh_region_action_integrity() != before_actions or _mesh_region_action_hash(action) != actual_action_hash:
+        raise RuntimeError("Read-only mesh-region inspection changed action data.")
+    if file_sha256(context["source"]) != context["expected_source_sha256"] or context["source"].stat().st_size != context["source_bytes"]:
+        raise RuntimeError("Read-only mesh-region source changed.")
+    report.update(source_sha256=context["expected_source_sha256"], source_bytes=context["source_bytes"], source_immutable=True,
+                  action_name=action.name, native_action_sha256=actual_action_hash, native_action_hash_policy="inspect_scene_curve_slot_path_index_key_co_interpolation_v1_not_anim_file_sha256",
+                  action_integrity_sha256=before_actions, all_actions_unchanged=True, action_provenance=_promotion_properties(action),
+                  source_receipt_metadata={obj.name: {key: _promotion_value(obj[key]) for key in PROMOTION_METADATA_KEYS if key in obj} for obj in (rig, mesh)},
+                  frame_action_binding_restored=True, new_provider_call=False, checkpoint_saved=False)
+    return {"blend": context["source"].relative_to(context["job"]).as_posix(), "inspected_target_armature": rig.name,
+            "inspected_action_sha256": actual_action_hash, "mesh_region": report}
+
+
 def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
+    if req["payload"].get("mesh_region") is not None:
+        return inspect_mesh_region(req)
     job = Path(req["job_root"]).resolve()
     blend = within(job, req["payload"]["blend_rel"])
     bpy.ops.wm.open_mainfile(filepath=str(blend))
