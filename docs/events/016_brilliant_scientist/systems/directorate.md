@@ -184,6 +184,14 @@ The AI cannot bypass family prerequisites through the generic board. The native 
 
 ## Localisation and UI assets
 
+The event-owned `kruger_directorate_container` is a compact read-only header, not a second decision board.
+Its expanded 500×360 panel shows Kruger's portrait, Mandate, Dependence, Exposure, Capacity, and one role/control line; its collapsed panel is 500×58.
+Independent Capacity and Grievance are not displayed.
+Project, facility, foreign, and authority actions belong to the ordinary decisions beneath the header.
+The open control is enabled only while collapsed, and the close control only while expanded, so their shared rectangle cannot dispatch both actions.
+`GFX_kruger_directorate_background` uses the full-canvas ImageGen panel at `gfx/interface/016_brilliant_scientist/directorate/directorate_background.dds`; the complete lower border remains inside the fixed canvas.
+The current typed-state MCP render, rewrite, comparison, three-resolution checks, parent visual review, and remaining shader/runtime limitations are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_directorate_gui_closure_2026-09-02.md`.
+
 Player-facing decision strings are in `localisation/english/016_brilliant_scientist_directorate_l_english.yml`. Outcome reports and causal header fragments are in `localisation/english/016_brilliant_scientist_directorate_outcomes_l_english.yml`. Broad control, cause, and latest-result selection is defined in `common/scripted_localisation/016_brilliant_scientist_directorate_scripted_localisation.txt`.
 
 Ordinary decisions deliberately use verified existing vanilla sprite identifiers:
