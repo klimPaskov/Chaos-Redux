@@ -77,6 +77,19 @@ Closure adds documented eligibility-query and reconciliation helpers. Operationa
 
 Mengele can eventually unlock all project families through his own program state without writing Kruger Directorate variables. Event 019 exposes every generic unit family through its provider registry. Provider cleanup removes only that provider's own receipt or entitlement.
 
+Mengele's provider stages use independent per-family receipts, not a global one-project queue or another public Capacity meter.
+Concurrent families compete for actual available factories, political power, support equipment, and fuel.
+The implementation sequence begins with a complete Computation path: Theory, a native Prototype when that presentation is available or a decision Prototype otherwise, Deployment, and Weaponization.
+Theory and both post-prototype decisions remain available in either DLC state under the existing program-registry gate.
+The existing Computation theory modifier accepts an explicit active Mengele theory receipt; the existing Mengele prototype modifier expires when the full neutral operational package is learned, preventing duplicate prototype and operational bonuses.
+Deployment and Weaponization call the full neutral conventional API with explicit Mengele provenance, leaving research-slot adoption and idempotent learned knowledge to that API.
+The four Computation decision stages respectively occupy 1, 2, 3, and 5 civilian factories for 120, 180, 270, and 360 days and charge 45/68/90/135 Political Power, 80/200/600/1200 Support Equipment, and 0/100/500/1500 fuel.
+The decision Prototype values use the existing prototype baseline and Computation family multipliers, rounded to whole units; they never supplement a native project's own payment or clock.
+Only the three direct debits are refundable on cancellation; native decision removal releases occupied factories without creating factories or refunding a fictitious factory balance.
+Callbacks validate their literal family and stage, snapshot paid values, clear that family's active receipt, then settle once without starting another project from cleanup.
+Loss of the active program owner cancels unresolved work but preserves learned neutral technology and authentic provider history; an unrelated external technology grant cannot fabricate a provider Deployment receipt.
+The remaining family adapters and the provider-neutral terminal extension retain their separate reviewed implementation gates in the Mengele portfolio closure plan.
+
 The following gameplay identifiers are generic across technology, equipment, subunits, templates, enums, sprites, localisation, APIs, Event 019, CXT, AI, decisions, focuses, and documentation:
 
 - `paleogenetic_creature`
@@ -202,6 +215,16 @@ Reinitialization preserves a dated receipt and reconstructs its original-party p
 The implementation must not claim that ordinary country pointers distinguish a surviving popup from a later same-pair offer after annexation and re-release, because native open-popup timeout behavior across that sequence is not documented by the available evidence.
 
 The existing compact Directorate GUI remains the only event-owned mechanic window. Biological, Alien, Portal, and other action systems use normal decision categories or compact headers.
+
+Defeat classification is permanent for the defeated Kruger country, so capitulation followed by annexation cannot deliver another local, regional, or global aftermath package.
+The recipient's local and regional archive choices each settle only their own outstanding package once, including when a duplicate popup was already delivered.
+World-threat duration counts actual active days through `global.num_days`, accumulating closed intervals and adding only the current open interval.
+Inactive gaps and a missing start receipt contribute no duration; the existing date values remain presentation history rather than arithmetic inputs.
+The 180-, 365-, and 730-day qualification thresholds and their score contributions remain unchanged.
+Singularity arming, fail-deadly authorization, and final commitment require currently owned-and-controlled qualifying facilities, not only a retained audit flag.
+Command and power infrastructure must retain physical site, role, and quantity receipts so captured or destroyed sites cannot remain live solely through country counters; permanent research and construction history are separate from live infrastructure.
+The shared final-commit gate retains the capitulation failsafe and does not inherit an ordinary decision's non-capitulated-country requirement.
+Durable-settlement certification revalidates its disarmament and nonterminal conditions when its timer ends and cannot award administration or settlement history twice.
 
 ## Existing-model runtime contract
 
