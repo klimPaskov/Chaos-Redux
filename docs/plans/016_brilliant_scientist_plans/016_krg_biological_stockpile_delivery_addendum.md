@@ -2,15 +2,19 @@
 
 Date: 2026-08-03
 
-Status: design contract queued; no gameplay, shared CBRN, model, or asset files changed.
+Status: superseded historical design, retired 2026-09-02. No gameplay, shared CBRN, model, or asset files changed.
+
+> This addendum is retained as evidence for why the proposed parallel Event 016 numeric stockpile and native-reservation ledger was rejected. It is superseded by the binding [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md) and the current [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) implementation surface. Actual pathogen equipment is authoritative, native raids own reservation and outcome lifecycle, and Event 016 production, staging, and decision-led deployments use separate transactions. Tranche 4 source remains under review and MCP transaction acceptance is unresolved. Do not use this historical proposal or its callback order as an active implementation task. The reconciliation handoff is [`016_final_raid_docs_reconciliation_2026-09-02.md`](subagent_handoffs/016_final_raid_docs_reconciliation_2026-09-02.md).
 
 ## Purpose
 
 The Event 016 country package already carries biological project history, native delivery technologies, containment ideas, and the confirmed-use world-threat hook. It does not yet own a bounded quantity ledger for the Kruger State. The missing layer must make biological deployment a concrete production and delivery system without creating a free payload or bypassing the existing condemnation, contamination, retaliation, and Fallout systems.
 
-This addendum is the implementation contract for a later reviewed tranche. It is intentionally not a one-flag patch. The lifecycle must be added as one transaction family so transfer, fixed-tag formation, institutional takeover, defeat, and terminal cleanup cannot leave a usable payload behind.
+At proposal time, this addendum served as the implementation contract for a later reviewed tranche. It was intentionally not a one-flag patch. Its proposed lifecycle grouped transfer, fixed-tag formation, institutional takeover, defeat, and terminal cleanup so that no usable payload could remain behind.
 
-## Current runtime evidence
+The sections below are retained historical proposal evidence only and are not active implementation instructions.
+
+## Historical runtime evidence at proposal time
 
 `brilliant_scientist_apply_biological_force_history` restores native biological delivery technologies and the Event 016 delivery ideas from the carried scientist history, but it does not create a quantity ledger. `biological_cap = 4` is defined in the Event 016 constants and currently has no KRG stockpile consumer. `brilliant_scientist_krg_record_confirmed_offensive_biological_use` is correctly called only after a real offensive release and must remain that way.
 
@@ -93,9 +97,9 @@ The category tooltip must expose the current ready quantity, reserved quantity, 
 
 Add localisation in the existing Event 016 KRG localisation file for the decision name, description, trigger tooltip, cost tooltip, stockpile display, reservation display, production receipt, returned-charge receipt, and confirmed-use receipt. Do not describe variables, implementation history, or a fallback to the player.
 
-Add the decision to the KRG route AI plan only after the native callback contract exists. The AI should prioritize a single batch when a matching staging state and authority are ready, maintain a small reserve below the cap, and stop production when containment or security is degraded.
+The retired proposal would have added the decision to the KRG route AI plan only after a native callback contract existed. Its proposed AI would prioritize a single batch when a matching staging state and authority were ready, maintain a small reserve below the cap, and stop production when containment or security was degraded.
 
-## Required validation before implementation acceptance
+## Historical validation matrix for the retired proposal
 
 The gameplay tranche must provide static and targeted scenario evidence for the following cases.
 

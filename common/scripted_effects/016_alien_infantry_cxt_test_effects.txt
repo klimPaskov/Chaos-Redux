@@ -19,6 +19,18 @@ alien_infantry_register_cxt_test_content = {
 }
 
 chaosx_cxt_extension_event016_alien_infantry_apply = {
+	# Exercise the public raid-system queries without manufacturing a breach,
+	# authorizing a release, or disturbing an active payload transaction.
+	brilliant_scientist_portal_reconcile_country_beachheads = yes
+	if = {
+		limit = {
+			NOT = { has_variable = brilliant_scientist_selected_biological_agent }
+			brilliant_scientist_biological_agent_anthrax_is_unlocked = yes
+			brilliant_scientist_biological_agent_selection_is_available = yes
+		}
+		set_temp_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.anthrax }
+		brilliant_scientist_select_biological_agent = yes
+	}
 	# Registration helpers reject duplicates, so these calls also repair an
 	# existing CXT save whose older Event 016 carrier contained only aliens.
 	set_temp_variable = {

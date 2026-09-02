@@ -63,9 +63,9 @@ Event 16 may be marked Reworked only when every required surface below is comple
 - [ ] AI has equivalent paths for every human-only GUI action.
 - [ ] Final host resolutions close or transform the category cleanly.
 
-## Accepted finite country-specific institutional settlements (static implementation complete; targeted validation pending, 2026-08-03)
+## Historical finite country-specific institutional settlement snapshot (static implementation evidence; targeted validation pending, 2026-08-03)
 
-The accepted 2026-08-02 addendum is implemented in the working tree as a ten-country contract. These checks remain open for targeted transfer, cleanup, balance, and live acceptance; they do not reopen the generic pool or authorize model production.
+The accepted 2026-08-02 addendum is retained as a ten-country implementation snapshot. These checks remain open for targeted transfer, cleanup, balance, and live acceptance; they do not reopen the generic pool or authorize model production.
 
 - [ ] `chaosx.nr16.5` preserves generic `.5.a`, `.5.b`, and `.5.c` and exposes exactly one conditional national option for `ENG`, `USA`, `SOV`, `JAP`, `GER`, `FRA`, `ITA`, `CHI`, `POL`, and `CZE` only under the exact tag and context gates.
 - [ ] Every national option clears `brilliant_scientist_context_assistant_conflict_pending`, sets `brilliant_scientist_assistant_conflict_resolved`, calls its named base and settlement resolvers once, and calls `brilliant_scientist_try_schedule_impossible_lecture` at most once.
@@ -174,9 +174,10 @@ The accepted 2026-08-02 addendum is implemented in the working tree as a ten-cou
 - [ ] Reinforcement uses production, facilities, resources, and time rather than infinite free loops.
 - [ ] Starting technology and project access derive from host and archive history.
 - [ ] Supply, production, manpower, equipment, and resource assumptions are viable.
-- [ ] KRG biological deployment owns a bounded stockpile, reservation, production-cost, and confirmed-consumption ledger rather than a free payload.
-- [ ] Native biological reservation, failed-delivery return, confirmed-use, transfer, formation, defeat, and terminal cleanup callbacks are idempotent and preserve shared CBRN condemnation, contamination, retaliation, and Fallout history.
-- [ ] Biological production and AI stop safely when containment, security, authority, or the native delivery boundary is unavailable.
+- [ ] Actual native pathogen equipment in the national stockpile is the authoritative Event 016 payload quantity source, with no parallel Event 016 numeric stockpile or native-raid reservation ledger.
+- [ ] Native biological raids retain ownership of preparation, equipment reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution without Event 016 duplication or interception.
+- [ ] Event 016 production and staging plus battlefield and strategic decision-led deployments use separate receipts with exact debit, refund, and one-time settlement behavior, as documented in `docs/events/016_brilliant_scientist/systems/biological_operations.md`.
+- [ ] Biological production and AI stop safely when containment, security, authority, or the relevant delivery boundary is unavailable, and tranche-4 source review and MCP transaction acceptance are resolved.
 - [ ] Country is registered in `is_special_chaos_country`.
 - [ ] Actual nonhuman classification is added only after a real nonhuman transformation.
 - [ ] AI can survive, defend facilities, use project armies, and pursue route goals.

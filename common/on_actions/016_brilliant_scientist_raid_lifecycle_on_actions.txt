@@ -1,0 +1,53 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 RAID LIFECYCLE ON ACTIONS
+# ============================================================================
+# Exact-state and participant-only callbacks reconcile Portal beachheads after
+# control, peace, or capitulation changes. No periodic or world iteration runs.
+# ============================================================================
+
+on_actions = {
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = {
+				if = {
+					limit = {
+						has_state_flag = brilliant_scientist_portal_beachhead_active
+						NOT = { brilliant_scientist_portal_beachhead_runtime_is_valid = yes }
+					}
+					brilliant_scientist_portal_cleanup_beachhead = yes
+				}
+			}
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			ROOT = { brilliant_scientist_portal_reconcile_country_beachheads = yes }
+		}
+	}
+
+	on_peace = {
+		effect = { brilliant_scientist_portal_reconcile_country_beachheads = yes }
+	}
+
+	on_annex = {
+		effect = {
+			FROM = { brilliant_scientist_portal_cleanup_country_beachheads = yes }
+			ROOT = {
+				brilliant_scientist_portal_reconcile_country_beachheads = yes
+				brilliant_scientist_seize_annexed_biological_reservation = yes
+			}
+		}
+	}
+
+	on_capitulation_immediate = {
+		effect = { ROOT = { brilliant_scientist_cancel_biological_operations_on_capitulation = yes } }
+	}
+
+	on_capitulation = {
+		effect = {
+			ROOT = { brilliant_scientist_portal_reconcile_country_beachheads = yes }
+			FROM = { brilliant_scientist_portal_reconcile_country_beachheads = yes }
+		}
+	}
+}

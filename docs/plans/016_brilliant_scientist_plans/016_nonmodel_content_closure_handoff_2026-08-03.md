@@ -4,6 +4,10 @@
 
 Date: 2026-08-03
 
+Status: historical non-model closure handoff, reconciled 2026-09-02. The former Event 016 numeric biological quantity and parallel native-reservation ledger proposal is retired. No gameplay, localisation, GUI, asset, model, or spreadsheet files were changed by this documentation reconciliation.
+
+> Current biological boundary: [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md) and [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) define actual pathogen equipment as authoritative, native biological raid ownership of reservation and outcome lifecycle, and separate Event 016 production, staging, and decision-led deployment receipts. Tranche 4 source review and MCP transaction acceptance remain unresolved.
+
 ## Recommendation
 
 Stop adding non-model Event 016 mechanics after commit `f89bc776a`.
@@ -52,9 +56,9 @@ The next useful work is not another content tranche:
 4. Review quantitative project timing, foreign-operation scoring, force production, rebellion, and terminal timing.
 5. Rerun decision/mission, localisation, event-completion, and documentation audits against the final implementation state.
 
-The KRG biological stockpile and delivery contract remains queued behind the native CBRN reservation and cancellation callback.
+The former KRG biological stockpile and delivery contract is retired as a parallel-ledger proposal. Actual pathogen equipment is authoritative, native biological raids own reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution, and Event 016 production, staging, and decision-led deployments use separate receipts documented in [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md). Tranche 4 source review and MCP transaction acceptance remain unresolved.
 
-No substitute stockpile, scripted delivery fallback, or parallel payload system should be designed.
+No substitute stockpile, scripted delivery fallback, or parallel native-raid payload ledger should be designed.
 
 The seven Event 016 model packages and any explicitly deferred staff or art work remain separate approval-dependent production tasks.
 
@@ -64,7 +68,7 @@ They are not evidence for another gameplay expansion pass.
 
 - New non-model mechanic: **none recommended**.
 - High-speed materials addendum: **implemented; targeted validation pending**.
-- Biological stockpile addendum: **queued and blocked by native CBRN callback**.
+- Biological stockpile addendum: **superseded and retired as a parallel-ledger proposal; tranche-4 source review and MCP transaction acceptance remain open**.
 - Broader country chains: **do not add; they would be filler or reopen the accepted ten-country boundary**.
 - 3D packages: **deferred by user instruction**.
 - Staff and art follow-ups: **retain their existing queued or deferred disposition; do not convert them into gameplay fallbacks**.
@@ -75,7 +79,7 @@ It should not be promoted into the Event 016 specs because it introduces no desi
 
 The parent should record it in the source-of-truth map as the stopping point for non-model content expansion, finish the listed validations and audits, and mark only the non-model expansion loop closed.
 
-Do not mark the whole Event 016 goal complete while the accepted CBRN plan, deferred model or staff/art obligations, or required validation evidence remains unresolved.
+Do not mark the whole Event 016 goal complete while tranche-4 biological source review, MCP transaction acceptance, deferred model or staff/art obligations, or required validation evidence remains unresolved.
 
 ## Tooling limitation
 

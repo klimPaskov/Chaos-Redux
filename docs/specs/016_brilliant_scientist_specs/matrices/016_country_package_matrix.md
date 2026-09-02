@@ -60,7 +60,7 @@ Host takeover is an institutional-capture origin and never a territorial fallbac
 | Teleportation Deployment | Linked sites and portal raider access |
 | Temporal Deployment | One bounded recovery or temporal guard package |
 | Alien arms Deployment | Elite exotic support and guard |
-| Biological Deployment | Stockpile, defense, and existing-system access |
+| Biological Deployment | Actual native pathogen equipment, containment, defense, and existing-system access |
 | Multiple facilities | More territory, capacity, and supply sites |
 | High independent replication by host | Host retains more technology, Kruger inherits less broad science |
 
@@ -75,10 +75,10 @@ Host takeover is an institutional-capture origin and never a territorial fallbac
 | Portal | Power, terminals, materials | Linked depots and hardened rings | Foreign terminal concessions | Enclave isolation or breach |
 | Temporal | Energy, computation, synchronization capacity, temporal debt | Synchronization bureau, anchors, authenticated ledgers | Captured data or allied observers | Timeline scar, anchor loss, or authentication crisis |
 | Alien arms | Exotic material and elite production | Material synthesis | Artifact seizure | Elite force exhaustion |
-| Biological | Medical safety and delivery | Containment and production | Foreign samples or facilities | Outbreak and condemnation |
+| Biological | Medical safety, actual native equipment, and delivery | Containment and production | Foreign samples or facilities | Outbreak and condemnation |
 | Mixed synthesis | Every specialized supply | Project-caste economy | Submission network | Overload and internal conflict |
 
-The biological row is a binding requirement, not evidence that the current KRG runtime already owns a quantity ledger. The implementation contract is queued in `docs/plans/016_brilliant_scientist_plans/016_krg_biological_stockpile_delivery_addendum.md`; the native CBRN reservation and outcome callback remains a separately reviewed cross-system surface.
+The biological rows are binding requirements for actual equipment, containment, production, staging, and delivery behavior, not evidence for an Event 016 numeric quantity ledger. The former parallel stockpile and native-reservation ledger proposal is retired. Native raids own reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, and confirmed-use attribution, while Event 016 decision-led deployments use separate receipts documented in [`docs/events/016_brilliant_scientist/systems/biological_operations.md`](../../../events/016_brilliant_scientist/systems/biological_operations.md). Tranche 4 source review and MCP transaction acceptance remain unresolved.
 
 ## Diplomacy matrix
 

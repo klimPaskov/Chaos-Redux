@@ -1,6 +1,8 @@
 # Portal Raider reusable unit and raid API
 
-`portal_raider` is a shared land-unit family, not a Kruger-owned identity. Event 016 unlocks it through Portal Warfare, Event 019 can request it through the generic infantry-spawn provider, and later event packages may reuse the same subunit, equipment, and counter contract without copying Event 016 state. The reusable model/entity contract remains pending because the current Portal Raider model task was rejected at the semantic generation gate and no accepted recovery package exists.
+`portal_raider` is a shared land-unit family, not a Kruger-owned identity. Event 016 unlocks it through Portal Warfare, Event 019 can request it through the generic infantry-spawn provider, and later event packages may reuse the same subunit, equipment, and counter contract without copying Event 016 state.
+The runtime package remains pending the existing-geometry recovery and export gates in the final completion contract.
+Model regeneration is forbidden; body geometry, the approved existing firearm, and recoverable rig/action work are the inputs for closure.
 
 ## Unit contract
 
@@ -18,6 +20,15 @@ Both native Portal Warfare raids require seven days of preparation, ten Command 
 
 Both surfaces establish a captured hostile province and rebuild the selected formation there. Facility or state extraction occurs only when a valid owned destination with a compatible free slot exists; factory transfers preserve the building type through the existing off-map industry path, while facility transfers preserve the selected facility family. Persistent country and state flags record successful landings and each transferred installation class.
 
+Exact carried manpower and equipment conservation is an unresolved acceptance gate.
+The native outcome deletes the assigned formation and the scripted beachhead creates the locked cadre at full readiness, so formation count is preserved but damage, experience, and carried-equipment quantities are not copied exactly.
+The installed documented `teleport_armies` effect operates on a state with an owner filter, not on the raid's individual division, and cannot be substituted without moving unrelated formations.
+No broader relocation or replacement cost scheme is approved by this record.
+
+Every successful breach persists the exact province, attacking country, and original defending country on the target state. The state is entered into bounded attacker-owned and defender-owned active-beachhead registries, and a state with an active breach cannot receive another Portal raid. The registries are reconciled only through the affected state or the two participating countries; there is no recurring world scan.
+
+After the original defender recaptures the exact saved province, `brilliant_scientist_seal_recaptured_portal_breach` becomes available on that state. Sealing takes 21 days and spends 25 Command Power. Losing the province cancels only the sealing attempt, leaving the breach active. Successful sealing, invalid participant state, the end of the war, Event 016 containment, and either terminal route use `brilliant_scientist_portal_cleanup_beachhead`, the single idempotent transient cleanup owner. Cleanup does not refund raid equipment, reverse transferred installations, recreate units, or erase permanent raid history.
+
 The raid does not require Warren Kruger. His active authority raises AI interest through the existing raid weighting surface, while launch, equipment, target, template, and preparation requirements remain the same for every consumer.
 
 ## Runtime identifiers
@@ -31,11 +42,16 @@ The raid does not require Warren Kruger. His active authority raises AI interest
 - Exact facility-target raid: `brilliant_scientist_portal_special_project_facility_raid`
 - State installation effect: `brilliant_scientist_portal_raid_extract_state_installation`
 - Exact facility effect: `brilliant_scientist_portal_raid_extract_installation`
-- Runtime entity and preview animation: no entity or arrival-animation hook is registered in either native raid while the model package is rejected; accepted 3D production remains pending.
+- Defender sealing decision: `brilliant_scientist_seal_recaptured_portal_breach`
+- State cleanup effect: `brilliant_scientist_portal_cleanup_beachhead`
+- Country registry cleanup effect: `brilliant_scientist_portal_cleanup_country_beachheads`
+- Runtime entity and preview animation: pending the existing-model runtime tranche; gameplay and counter wiring alone do not establish model acceptance.
 
 ## Required visual, sound, and counter assets
 
-The evidence package is rooted at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`, but it is rejected for runtime use because the legacy provider task omitted the mandatory ray rifle and no accepted recovery package exists. The package therefore does not hand accepted model, entity, animation, or sound files to runtime consumers. Any recovery generation must use Meshy 7 and the current balance and provider-capability gates.
+The evidence package is rooted at `docs/assets/shared_portal_raider_system/models_3d/portal_raider/`.
+The accepted closure route preserves the existing body and recovers its rig, attaches the approved existing retro firearm with two-hand contact, provides a stable muzzle attachment, and finishes distinct actions, particles, light, and synchronized sourced sound.
+Final runtime promotion requires actual-byte export/reimport evidence and matching entity/action consumers; the historical generation failure does not authorize regeneration or replacement geometry.
 
 - `gfx/models/units/portal_raider/portal_raider.mesh`, material DDS maps, and real skeletal action files remain future recovery outputs rather than accepted runtime files.
 - `gfx/entities/portal_raider.gfx` and `gfx/entities/portal_raider.asset` remain future recovery outputs; no runtime entity or preview hook is registered until an accepted model package exists.

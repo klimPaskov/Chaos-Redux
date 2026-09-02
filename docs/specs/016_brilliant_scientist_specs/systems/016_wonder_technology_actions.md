@@ -48,12 +48,12 @@ The portfolio table in the source specification describes gameplay directions ra
 | Cloning plus Xenobiology | Designed-caste production, medical fabrication, control-mode choice, escape response, and the corresponding KRG project-force route. |
 | Robotics plus Xenobiology | The mutually exclusive machine-control doctrine, control centers, synthetic coordination, and escape-response countermeasures. |
 | Alien Arms plus High Energy | Strategic-delivery architecture, alien-cohort armament, the exact Singularity component ledger, arming, fail-deadly, disarmament, and terminal paths. |
-| Teleportation plus Biological Weapons | Portal-assisted biological deployment is owned by the separate biological-warfare transaction tranche; it must debit its own pathogen payload and never reuse a native-raid reservation. |
+| Teleportation plus Biological Weapons | The existing battlefield biological-release decision reaches hostile rear areas by committing ten Teleportation Equipment alongside its own pathogen payload. Its transaction refunds both costs on cancellation and never reuses a native-raid reservation. |
 | Temporal Mechanics plus Cloning | Clone continuity is one exclusive canonical-Kruger survival route; temporal target-use receipts and debt prevent repeated body recovery. |
 | Temporal Mechanics plus Robotics | Machine continuity is one exclusive canonical-Kruger survival route; anchor authentication and temporal debt prevent repeated command restoration. |
 | Public Computation plus Independent Teams | Independent-research reconstruction, archive recovery, assistant amnesty, international inspection, and exact-family foreign counter-program decisions. |
 
-The Teleportation plus Biological Weapons row remains owned by the biological-warfare tranche of the final completion contract. It is not represented by a temporary percentage modifier in this tranche.
+The Teleportation plus Biological Weapons action uses the shared biological-operations category and its own target/method receipt, not an additional Directorate action or a temporary percentage modifier.
 
 ## Tuning and ownership
 

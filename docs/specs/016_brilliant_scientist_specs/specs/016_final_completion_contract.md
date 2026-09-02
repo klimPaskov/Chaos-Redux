@@ -80,7 +80,19 @@ Decision-led biological deployments own a separate transaction. One selected ope
 
 Battlefield release lasts seven days, consumes one selected payload, costs 25 Command Power, and requires a frontline or operational military target. Strategic covert release lasts fourteen days, consumes two selected payloads, costs 50 Command Power, and requires an enemy core industrial or strategic target.
 
+The accepted Teleportation–Biological Weapons synergy is a variant of the existing battlefield action, not a third deployment decision.
+Operational portal technology permits a rear-area target that otherwise lacks frontline or military-target eligibility, provided ten Teleportation Equipment can be committed with the payload.
+That transport equipment has its own exact amount in the decision transaction, is returned together with the payload on pre-execution cancellation, and is consumed on settlement.
+Ordinary frontline and military targets do not pay the transport cost, and neither variant reads or changes a native raid reservation.
+
 Decision deployment debits payload at start, stores one receipt, refunds exactly once if the target becomes invalid before execution, and settles exactly once on success, failure, or accident. Native raid and decision receipts never share ownership.
+
+A capitulating actor returns its independent decision-deployment payload and any committed Portal transport before the native capitulation equipment transfer.
+A directly annexed actor transfers any still-reserved payload and transport exactly once to the annexing country, because those items were already removed from the stockpile and cannot be captured by the native stockpile transfer.
+Both paths clear active production and staging receipts without creating their uncompleted output or refunding consumed production inputs.
+Their native timed decisions also cancel when the country capitulates, the shared world-end state begins, or their own active receipt is cleared, releasing occupied factories without awarding completion.
+Production and staging may start or complete only while the operating country exists, has not capitulated, and the shared world-end state is absent.
+These participant-only hooks never touch native raid reservations or another country's deployment receipt.
 
 ## Portal beachhead contract
 
@@ -143,6 +155,7 @@ Closure proceeds through reviewed commits for the contract, technology and API r
 
 MCP inspection, rendering, comparison, and supported rewrite routes are mandatory for technologies, events, probabilities, focus trees, the Directorate GUI, and relevant maps. Weighted changes require the same named baseline and post-change scenarios. The final planner and mapped auditors run before a near-completion claim.
 
-The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, model packages pass their no-regeneration gates or carry exact blockers, MCP and audit findings are dispositioned, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
+The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, every model package passes its no-regeneration gates, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
+An exact recorded blocker preserves the recovery task; it does not satisfy a completion gate or permit a ready-for-acceptance claim.
 
 The agent does not launch Hearts of Iron IV. In-game completion remains subject to the user's acceptance.

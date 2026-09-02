@@ -46,6 +46,7 @@ brilliant_scientist_portal_raid_target_is_valid = {
 	var:target_state = {
 		is_owned_by = FROM
 		is_controlled_by = FROM
+		NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
 		OR = {
 			industrial_complex > 0
 			arms_factory > 0
@@ -77,6 +78,7 @@ brilliant_scientist_portal_facility_raid_target_is_valid = {
 	var:target_state = {
 		is_owned_by = FROM
 		is_controlled_by = FROM
+		NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
 		OR = {
 			AND = {
 				land_facility > 0
@@ -104,4 +106,29 @@ brilliant_scientist_portal_facility_raid_target_is_valid = {
 			nuclear_facility > 0
 		}
 	}
+}
+
+# STATE scope. A breach remains operational while both recorded participants
+# exist, the exact province still belongs to this state, and their war remains
+# active. Control of the breach province is deliberately not required: a
+# defender must be able to recapture it and then run the sealing decision.
+brilliant_scientist_portal_beachhead_runtime_is_valid = {
+	has_state_flag = brilliant_scientist_portal_beachhead_active
+	has_variable = brilliant_scientist_portal_breach_attacker
+	has_variable = brilliant_scientist_portal_breach_original_defender
+	has_variable = brilliant_scientist_portal_breach_province
+	var:brilliant_scientist_portal_breach_attacker = {
+		exists = yes
+		has_war_with = var:PREV.brilliant_scientist_portal_breach_original_defender
+	}
+	var:brilliant_scientist_portal_breach_original_defender = { exists = yes }
+	var:brilliant_scientist_portal_breach_province = { state = PREV }
+}
+
+# STATE scope with ROOT = the country evaluating the state-targeted decision.
+brilliant_scientist_portal_beachhead_can_be_sealed_by_root = {
+	brilliant_scientist_portal_beachhead_runtime_is_valid = yes
+	NOT = { has_state_flag = brilliant_scientist_portal_beachhead_sealing_in_progress }
+	var:brilliant_scientist_portal_breach_original_defender = { tag = ROOT }
+	var:brilliant_scientist_portal_breach_province = { CONTROLLER = { tag = ROOT } }
 }

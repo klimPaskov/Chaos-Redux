@@ -1,0 +1,71 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 PORTAL BEACHHEAD CONTAINMENT
+# ============================================================================
+# The lawful defender may seal an active Portal beachhead after recapturing the
+# exact saved breach province. The timed action owns only its Command Power cost
+# and in-progress receipt; the shared state cleanup owns final settlement.
+# ============================================================================
+
+brilliant_scientist_portal_containment_category = {
+	brilliant_scientist_seal_recaptured_portal_breach = {
+		name = brilliant_scientist_seal_recaptured_portal_breach
+		desc = brilliant_scientist_seal_recaptured_portal_breach_desc
+		icon = GFX_decision_brilliant_scientist_aftermath_map_portal_terminals
+		state_target = yes
+		on_map_mode = map_and_decisions_view
+		days_remove = constant:brilliant_scientist_portal_lifecycle.sealing_days
+		cancel_if_not_visible = no
+
+		target_root_trigger = {
+			has_country_flag = brilliant_scientist_portal_has_active_defender_beachhead
+			command_power > constant:brilliant_scientist_portal_lifecycle.sealing_command_power_floor
+		}
+		target_trigger = {
+			FROM = { brilliant_scientist_portal_beachhead_can_be_sealed_by_root = yes }
+		}
+		visible = {
+			FROM = {
+				has_state_flag = brilliant_scientist_portal_beachhead_active
+				var:brilliant_scientist_portal_breach_original_defender = { tag = ROOT }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_seal_recaptured_portal_breach_requirements_tt
+				hidden_trigger = {
+					command_power > constant:brilliant_scientist_portal_lifecycle.sealing_command_power_floor
+					FROM = { brilliant_scientist_portal_beachhead_can_be_sealed_by_root = yes }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:brilliant_scientist_portal_lifecycle.sealing_command_power_floor
+		}
+		custom_cost_text = brilliant_scientist_seal_recaptured_portal_breach_cost
+		ai_hint_pp_cost = 0
+
+		complete_effect = {
+			add_command_power = constant:brilliant_scientist_portal_lifecycle.sealing_command_power_spend
+			FROM = { set_state_flag = brilliant_scientist_portal_beachhead_sealing_in_progress }
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_seal_recaptured_portal_breach_complete_tt
+			FROM = { brilliant_scientist_portal_seal_beachhead = yes }
+		}
+		cancel_trigger = {
+			FROM = {
+				OR = {
+					NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
+					NOT = { var:brilliant_scientist_portal_breach_province = { CONTROLLER = { tag = ROOT } } }
+				}
+			}
+		}
+		cancel_effect = {
+			FROM = { clr_state_flag = brilliant_scientist_portal_beachhead_sealing_in_progress }
+			custom_effect_tooltip = brilliant_scientist_seal_recaptured_portal_breach_cancel_tt
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_portal_lifecycle.sealing_ai_base
+		}
+	}
+}

@@ -153,6 +153,10 @@ When Chaos Redux adds a technology definition, no CXT inventory edit is required
 
 The one-time initialization flag is `chaosx_test_country_initialized`.
 
+Event 016's existing `chaosx_cxt_extension_event016_alien_infantry_apply` also reconciles only CXT's registered Portal beachheads and selects the Anthrax operational agent once that native technology is present and no selection or transaction exists.
+It does not create a breach, start a raid, produce a payload, authorize a release, or clear a pending biological operation.
+The existing package carrier and startup/tag-specific registration hooks own this coverage; no additional global tick is introduced.
+
 The public scripted effect name `chaosx_test` and country tag `CXT` are stable interfaces.
 
 ## Future plans

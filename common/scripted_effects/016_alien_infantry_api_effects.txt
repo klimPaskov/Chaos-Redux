@@ -375,9 +375,10 @@ alien_infantry_spawn_landing_cohort = {
 	if = {
 		limit = {
 			alien_infantry_has_contact = yes
+			NOT = { has_global_flag = world_end }
 			OR = {
 				AND = {
-					has_country_flag = alien_infantry_landing_pending
+					alien_infantry_landing_reservation_is_valid = yes
 				NOT = {
 					check_variable = {
 						var = alien_infantry_landing_batch_mode
@@ -537,10 +538,17 @@ alien_infantry_spawn_landing_cohort = {
 		}
 	}
 	# Invalid non-deferred callers never enter the guarded materialization
-	# branch above. Clear their state target as well so a failed state selection
-	# cannot be reused by a later landing request.
+	# branch above. Settle an invalid pending reservation before clearing its
+	# target, so direct API calls have the same exact refund as mission cleanup.
 	if = {
 		limit = { NOT = { has_country_flag = alien_infantry_event19_deferred_mode } }
+		if = {
+			limit = {
+				has_country_flag = alien_infantry_landing_pending
+				NOT = { alien_infantry_landing_reservation_is_valid = yes }
+			}
+			alien_infantry_cancel_landing_reservation = yes
+		}
 		clear_variable = dhrondan_landing_state_id
 	}
 }

@@ -9,8 +9,9 @@
 # selected: the breach seizes one province, reconstructs the raid's assigned
 # Portal Raider formation there, and transfers exact factories or strategic
 # facilities. The raid outcome destroys the original formation before this
-# fixed-template reconstruction, so successful repeatable raids cannot duplicate
-# units, manpower, or their carried equipment.
+# fixed-template reconstruction, preventing duplicate formation count. Exact
+# carried manpower/equipment conservation is not established: the reconstruction
+# currently uses full readiness and must not be certified as a unit teleport.
 # ============================================================================
 
 @CR_SC_PORTAL_RAID_LIGHT_DAMAGE = 1
@@ -42,22 +43,249 @@ brilliant_scientist_record_portal_raid_critical_success = {
 	set_country_flag = brilliant_scientist_portal_raid_critical_success_ever
 }
 
+# COUNTRY scope. Recalculates the two decision-category visibility receipts
+# from the bounded local registries. It does not mutate either registry.
+brilliant_scientist_portal_refresh_country_beachhead_flags = {
+	save_event_target_as = brilliant_scientist_portal_registry_country
+	clr_country_flag = brilliant_scientist_portal_has_active_attacker_beachhead
+	clr_country_flag = brilliant_scientist_portal_has_active_defender_beachhead
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_attacker_active_beachheads
+		if = {
+			limit = {
+				has_state_flag = brilliant_scientist_portal_beachhead_active
+				has_variable = brilliant_scientist_portal_breach_attacker
+				var:brilliant_scientist_portal_breach_attacker = { tag = event_target:brilliant_scientist_portal_registry_country }
+			}
+			event_target:brilliant_scientist_portal_registry_country = { set_country_flag = brilliant_scientist_portal_has_active_attacker_beachhead }
+		}
+	}
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_defender_active_beachheads
+		if = {
+			limit = {
+				has_state_flag = brilliant_scientist_portal_beachhead_active
+				has_variable = brilliant_scientist_portal_breach_original_defender
+				var:brilliant_scientist_portal_breach_original_defender = { tag = event_target:brilliant_scientist_portal_registry_country }
+			}
+			event_target:brilliant_scientist_portal_registry_country = { set_country_flag = brilliant_scientist_portal_has_active_defender_beachhead }
+		}
+	}
+}
+
+# STATE scope. Inputs are the native raid's actor and target-province variables.
+# This is the only registration owner for exact breach participants and bounded
+# country registries.
+brilliant_scientist_portal_register_beachhead = {
+	if = {
+		limit = {
+			NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
+			var:ROOT.actor_country = { exists = yes }
+		}
+		set_variable = { brilliant_scientist_portal_breach_attacker = var:ROOT.actor_country }
+		set_variable = { brilliant_scientist_portal_breach_original_defender = var:ROOT.victim_country }
+		set_variable = { brilliant_scientist_portal_breach_province = var:ROOT.target_province }
+		set_state_flag = brilliant_scientist_portal_beachhead_active
+		set_state_flag = brilliant_scientist_portal_raid_breach_recorded
+		var:brilliant_scientist_portal_breach_attacker = {
+			if = {
+				limit = { NOT = { is_in_array = { array = brilliant_scientist_portal_attacker_active_beachheads value = PREV } } }
+				add_to_array = { array = brilliant_scientist_portal_attacker_active_beachheads value = PREV }
+			}
+			set_country_flag = brilliant_scientist_portal_has_active_attacker_beachhead
+		}
+		var:brilliant_scientist_portal_breach_original_defender = {
+			if = {
+				limit = { NOT = { is_in_array = { array = brilliant_scientist_portal_defender_active_beachheads value = PREV } } }
+				add_to_array = { array = brilliant_scientist_portal_defender_active_beachheads value = PREV }
+			}
+			set_country_flag = brilliant_scientist_portal_has_active_defender_beachhead
+		}
+	}
+}
+
+# STATE scope. The single idempotent transient cleanup owner. Permanent raid,
+# extraction, and targeting history remains; raid equipment and stolen
+# installations are never refunded or reversed.
+brilliant_scientist_portal_cleanup_beachhead = {
+	clr_state_flag = brilliant_scientist_portal_beachhead_active
+	clr_state_flag = brilliant_scientist_portal_beachhead_sealing_in_progress
+	if = {
+		limit = {
+			has_variable = brilliant_scientist_portal_breach_attacker
+			var:brilliant_scientist_portal_breach_attacker = { exists = yes }
+		}
+		var:brilliant_scientist_portal_breach_attacker = {
+			remove_from_array = { array = brilliant_scientist_portal_attacker_active_beachheads value = PREV }
+			brilliant_scientist_portal_refresh_country_beachhead_flags = yes
+		}
+	}
+	if = {
+		limit = {
+			has_variable = brilliant_scientist_portal_breach_original_defender
+			var:brilliant_scientist_portal_breach_original_defender = { exists = yes }
+		}
+		var:brilliant_scientist_portal_breach_original_defender = {
+			remove_from_array = { array = brilliant_scientist_portal_defender_active_beachheads value = PREV }
+			brilliant_scientist_portal_refresh_country_beachhead_flags = yes
+		}
+	}
+	clear_variable = brilliant_scientist_portal_breach_attacker
+	clear_variable = brilliant_scientist_portal_breach_original_defender
+	clear_variable = brilliant_scientist_portal_breach_province
+}
+
+# STATE scope. Successful sealing records permanent history and delegates all
+# transient state to the shared cleanup owner.
+brilliant_scientist_portal_seal_beachhead = {
+	if = {
+		limit = {
+			brilliant_scientist_portal_beachhead_runtime_is_valid = yes
+			var:brilliant_scientist_portal_breach_original_defender = { tag = ROOT }
+			var:brilliant_scientist_portal_breach_province = { CONTROLLER = { tag = ROOT } }
+		}
+		set_state_flag = brilliant_scientist_portal_beachhead_sealed_ever
+		if = {
+			limit = {
+				has_variable = brilliant_scientist_portal_breach_original_defender
+				var:brilliant_scientist_portal_breach_original_defender = { exists = yes }
+			}
+			var:brilliant_scientist_portal_breach_original_defender = {
+				set_country_flag = brilliant_scientist_portal_beachhead_sealed_ever
+				add_to_variable = { brilliant_scientist_portal_beachheads_sealed = constant:brilliant_scientist_value.one }
+			}
+		}
+		brilliant_scientist_portal_cleanup_beachhead = yes
+	}
+	else = { clr_state_flag = brilliant_scientist_portal_beachhead_sealing_in_progress }
+}
+
+# COUNTRY scope. Reconciles only states already present in this country's two
+# bounded registries. Invalid entries are first copied to a separate cleanup
+# queue so the source arrays are never mutated during iteration.
+brilliant_scientist_portal_reconcile_country_beachheads = {
+	save_event_target_as = brilliant_scientist_portal_reconcile_country
+	clear_array = brilliant_scientist_portal_pending_cleanup_beachheads
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_attacker_active_beachheads
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
+					NOT = { has_variable = brilliant_scientist_portal_breach_attacker }
+					NOT = { var:brilliant_scientist_portal_breach_attacker = { tag = event_target:brilliant_scientist_portal_reconcile_country } }
+					NOT = { brilliant_scientist_portal_beachhead_runtime_is_valid = yes }
+				}
+			}
+			event_target:brilliant_scientist_portal_reconcile_country = {
+				if = {
+					limit = { NOT = { is_in_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV } } }
+					add_to_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV }
+				}
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_defender_active_beachheads
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
+					NOT = { has_variable = brilliant_scientist_portal_breach_original_defender }
+					NOT = { var:brilliant_scientist_portal_breach_original_defender = { tag = event_target:brilliant_scientist_portal_reconcile_country } }
+					NOT = { brilliant_scientist_portal_beachhead_runtime_is_valid = yes }
+				}
+			}
+			event_target:brilliant_scientist_portal_reconcile_country = {
+				if = {
+					limit = { NOT = { is_in_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV } } }
+					add_to_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV }
+				}
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_pending_cleanup_beachheads
+		if = {
+			limit = { NOT = { brilliant_scientist_portal_beachhead_runtime_is_valid = yes } }
+			brilliant_scientist_portal_cleanup_beachhead = yes
+			event_target:brilliant_scientist_portal_reconcile_country = {
+				remove_from_array = { array = brilliant_scientist_portal_attacker_active_beachheads value = PREV }
+				remove_from_array = { array = brilliant_scientist_portal_defender_active_beachheads value = PREV }
+			}
+		}
+		else = {
+			# A stale caller receipt must not close another pair's live breach.
+			if = {
+				limit = { NOT = { var:brilliant_scientist_portal_breach_attacker = { tag = event_target:brilliant_scientist_portal_reconcile_country } } }
+				event_target:brilliant_scientist_portal_reconcile_country = { remove_from_array = { array = brilliant_scientist_portal_attacker_active_beachheads value = PREV } }
+			}
+			if = {
+				limit = { NOT = { var:brilliant_scientist_portal_breach_original_defender = { tag = event_target:brilliant_scientist_portal_reconcile_country } } }
+				event_target:brilliant_scientist_portal_reconcile_country = { remove_from_array = { array = brilliant_scientist_portal_defender_active_beachheads value = PREV } }
+			}
+		}
+	}
+	clear_array = brilliant_scientist_portal_pending_cleanup_beachheads
+	brilliant_scientist_portal_refresh_country_beachhead_flags = yes
+}
+
+# COUNTRY scope. Terminal and containment owner: clean every state referenced by
+# either local registry, then clear the local containers and visibility flags.
+brilliant_scientist_portal_cleanup_country_beachheads = {
+	save_event_target_as = brilliant_scientist_portal_cleanup_country
+	clear_array = brilliant_scientist_portal_pending_cleanup_beachheads
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_attacker_active_beachheads
+		event_target:brilliant_scientist_portal_cleanup_country = {
+			if = {
+				limit = { NOT = { is_in_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV } } }
+				add_to_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV }
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_defender_active_beachheads
+		event_target:brilliant_scientist_portal_cleanup_country = {
+			if = {
+				limit = { NOT = { is_in_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV } } }
+				add_to_array = { array = brilliant_scientist_portal_pending_cleanup_beachheads value = PREV }
+			}
+		}
+	}
+	for_each_scope_loop = {
+		array = brilliant_scientist_portal_pending_cleanup_beachheads
+		if = {
+			limit = {
+				OR = {
+					var:brilliant_scientist_portal_breach_attacker = { tag = event_target:brilliant_scientist_portal_cleanup_country }
+					var:brilliant_scientist_portal_breach_original_defender = { tag = event_target:brilliant_scientist_portal_cleanup_country }
+					NOT = { brilliant_scientist_portal_beachhead_runtime_is_valid = yes }
+				}
+			}
+			brilliant_scientist_portal_cleanup_beachhead = yes
+		}
+	}
+	clear_array = brilliant_scientist_portal_pending_cleanup_beachheads
+	clear_array = brilliant_scientist_portal_attacker_active_beachheads
+	clear_array = brilliant_scientist_portal_defender_active_beachheads
+	clr_country_flag = brilliant_scientist_portal_has_active_attacker_beachhead
+	clr_country_flag = brilliant_scientist_portal_has_active_defender_beachhead
+}
+
 # STATE scope. The successful portal operation is a real one-province landing,
 # not a damage-only report. The actor becomes controller of the selected
 # province while the target country retains the surrounding state, and the
 # existing locked Quantum Transit Raiders template supplies the reconstructed
 # formation. The raid requires all six Portal Raider battalions from that locked
 # template and destroys the assigned formation in its division outcome block.
-# This leaves a persistent state flag for later spread, containment, and
-# aftermath systems without adding a whole-world polling on_action.
 brilliant_scientist_portal_raid_establish_beachhead = {
 	if = {
 		limit = {
 			var:ROOT.actor_country = { exists = yes }
-			var:ROOT.target_province = { exists = yes }
+			NOT = { has_state_flag = brilliant_scientist_portal_beachhead_active }
 		}
-		set_state_flag = brilliant_scientist_portal_beachhead_active
-		set_state_flag = brilliant_scientist_portal_raid_breach_recorded
+		brilliant_scientist_portal_register_beachhead = yes
 		set_temp_variable = { brilliant_scientist_portal_spawn_province = var:ROOT.target_province }
 		var:ROOT.actor_country = {
 			set_country_flag = brilliant_scientist_portal_beachhead_established_ever

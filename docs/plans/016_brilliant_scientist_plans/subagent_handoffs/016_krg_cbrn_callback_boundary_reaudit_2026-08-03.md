@@ -1,6 +1,8 @@
 # Event 016 native CBRN callback boundary re-audit
 
-> Scope correction, 2026-08-09: this audit remains valid for the optional KRG biological stockpile and delivery ledger, but its callback absence does not block native Event 016 biological or Portal Facility Raids. Native raids remain engine-owned for preparation, reservation, cancellation, expiry, outcome, and history; no parallel ledger is authorized. See `docs/plans/016_brilliant_scientist_plans/016_portal_plague_documentation_reconciliation_2026-08-09.md`.
+Status: superseded historical callback-boundary audit, retired 2026-09-02. No gameplay, localisation, CBRN, model, or shared lifecycle file was changed.
+
+> This audit remains useful evidence for why the former Event 016 numeric biological quantity and parallel native-reservation ledger were retired. The binding [`016_final_completion_contract.md`](../../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md) and current [`biological_operations.md`](../../../events/016_brilliant_scientist/systems/biological_operations.md) establish that actual pathogen equipment is authoritative, native biological raids own preparation, reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution, and Event 016 production, staging, and decision-led deployments use separate transactions. Tranche 4 source review and MCP transaction acceptance remain unresolved. This historical callback audit is not an active implementation task.
 
 ## Finding
 
@@ -15,8 +17,8 @@ The current HOI4 raid API still exposes only outcome-time scripted hooks. Native
 
 ## Disposition
 
-Do not add an Event 016 stockpile ledger, production decision, delayed flag, parallel payload, or outcome-only debit. Those approaches can double-charge native payloads, create free payloads, or mis-handle concurrent/cancelled raids. The queued KRG biological stockpile remains blocked until a shared CBRN owner supplies a stable native callback/receipt contract.
+The former Event 016 stockpile ledger, production decision, delayed flag, parallel payload, and outcome-only debit proposal is retired. Actual pathogen equipment is authoritative, native biological raids retain their native reservation and outcome lifecycle, and Event 016 production, staging, and decision-led deployments use separate receipts documented in [`biological_operations.md`](../../../events/016_brilliant_scientist/systems/biological_operations.md). No free payload or native-raid interception is authorized.
 
-When that contract exists, the intended Event 016 boundary is four keyed helpers: pre-reservation gate, reservation commit, outcome settlement, and cancellation/expiry return. The existing confirmed-use helper must remain attached to canonical confirmed lifecycle attribution rather than every native consumption outcome.
+The historical four-helper callback proposal is not an active task. The existing confirmed-use helper remains attached to canonical confirmed lifecycle attribution rather than every native consumption outcome. Tranche 4 source review and MCP transaction acceptance remain open for the separate Event 016 transactions.
 
 No gameplay files were changed by this audit. No HOI4 runtime was launched. The absence of a callback is an engine/API blocker, not an approved fallback.

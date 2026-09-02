@@ -2,7 +2,9 @@
 
 Date: 2026-08-03
 
-Status: queued design; no gameplay patch was made.
+Status: superseded historical design, retired 2026-09-02. No gameplay patch was made.
+
+> This handoff preserves the rejected parallel Event 016 numeric stockpile and native-reservation ledger as historical evidence. It is superseded by the binding [`016_final_completion_contract.md`](../../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md) and current [`biological_operations.md`](../../../events/016_brilliant_scientist/systems/biological_operations.md) surface. Actual pathogen equipment is authoritative, native raids own reservation and outcome lifecycle, and Event 016 production, staging, and decision-led deployments use separate transactions. Tranche 4 source remains under review and MCP transaction acceptance is unresolved. The proposed implementation order below is not active work. See [`016_final_raid_docs_reconciliation_2026-09-02.md`](016_final_raid_docs_reconciliation_2026-09-02.md).
 
 ## Files
 
@@ -12,7 +14,7 @@ Status: queued design; no gameplay patch was made.
 
 The current Event 016 bridge restores biological project history, native delivery technologies, containment ideas, and the confirmed-use hook, but it has no KRG quantity ledger. A single Event 016 decision or flag would be unsafe because native CBRN systems own reservations, equipment debit, consumption, condemnation, contamination, retaliation, and Fallout accounting.
 
-## Required implementation order
+## Historical proposed implementation order
 
 1. Promote the addendum into the relevant Event 016 specification and KRG decision documentation.
 2. Add Event 016 constants, variables, receipts, production action, transfer/formation cleanup, localisation, and route AI in an isolated Event 016 tranche.
