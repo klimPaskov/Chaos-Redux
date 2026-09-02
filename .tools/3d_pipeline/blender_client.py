@@ -253,6 +253,23 @@ class BlenderAdapterClient:
             },
         )
 
+    def patch_existing_humanoid_action_phases(
+        self, job_id: str, blend_rel: str, checkpoint_rel: str,
+        expected_source_sha256: str, expected_action_sha256: str,
+        target_armature_name: str, source_action_name: str, target_action_name: str,
+        semantic_role: str, source_fps: int, source_fps_base: float,
+        frame_start: int, frame_end: int, phase_frames: Dict[str, int],
+        allowed_bones: list[str], motion_bone_chain: list[str], bone_patches: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        return self.call("chaosx_blender_hoi4_patch_existing_humanoid_action_phases", {
+            "job_id": job_id, "blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel,
+            "expected_source_sha256": expected_source_sha256, "expected_action_sha256": expected_action_sha256,
+            "target_armature_name": target_armature_name, "source_action_name": source_action_name, "target_action_name": target_action_name,
+            "semantic_role": semantic_role, "source_fps": source_fps, "source_fps_base": source_fps_base,
+            "frame_start": frame_start, "frame_end": frame_end, "phase_frames": phase_frames,
+            "allowed_bones": allowed_bones, "motion_bone_chain": motion_bone_chain, "bone_patches": bone_patches,
+        })
+
     def author_humanoid_actions(
         self,
         job_id: str,

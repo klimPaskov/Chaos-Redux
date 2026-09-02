@@ -4138,7 +4138,7 @@ def _promotion_reopen_comparison(before: Dict[str, Any], after: Dict[str, Any]) 
             "policy": "exact_retained_materials_and_all_other_sections_only_proven_orphan_disappearance"}
 
 
-def _promotion_fingerprint(job: Path, target_names: Iterable[str]) -> Dict[str, Any]:
+def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_action_name: str = "") -> Dict[str, Any]:
     """Exact pre/post fingerprints; no evaluated mesh, conversion, or data mutation."""
     target_names = set(target_names)
     objects, geometry, rigs, materials, images, actions = {}, {}, {}, {}, {}, {}
@@ -4205,6 +4205,8 @@ def _promotion_fingerprint(job: Path, target_names: Iterable[str]) -> Dict[str, 
                 images[image.name] = {"filepath": image.filepath, "size": list(image.size), "source": image.source, "alpha_mode": image.alpha_mode, "colorspace": image.colorspace_settings.name, "packed_hashes": packed, "file_sha256": file_sha256(image_path) if not packed else None, "properties": _promotion_properties(image)}
         materials[material.name] = {"properties": _promotion_properties(material), "settings": _promotion_scalars(material), "animation": _promotion_animation_state(material), "tree_properties": _promotion_properties(tree), "tree_animation": _promotion_animation_state(tree), "nodes": nodes, "links": [(link.from_node.name, link.from_socket.identifier, link.to_node.name, link.to_socket.identifier) for link in tree.links]}
     for action in bpy.data.actions:
+        if exclude_action_name and action.name == exclude_action_name:
+            continue
         if action.library or action.override_library or (action.users == 0 and not action.use_fake_user):
             raise ValueError("Promotion cannot preserve linked/overridden/unretained actions.")
         curves = []
@@ -6138,6 +6140,335 @@ def author_humanoid_rig(req: Dict[str, Any]) -> Dict[str, Any]:
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return report
+
+
+def _action_phase_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
+    payload = req["payload"]
+    required = {"blend_rel", "checkpoint_rel", "expected_source_sha256", "expected_action_sha256", "target_armature_name", "source_action_name", "target_action_name", "semantic_role", "source_fps", "source_fps_base", "frame_start", "frame_end", "phase_frames", "allowed_bones", "motion_bone_chain", "bone_patches"}
+    if not isinstance(payload, dict) or set(payload) != required:
+        raise ValueError("Action phase patch has missing or unsupported fields.")
+    result = dict(payload)
+    for key in ("target_armature_name", "source_action_name", "target_action_name"):
+        result[key] = _mesh_region_name(payload[key], key)
+    if result["source_action_name"] == result["target_action_name"]:
+        raise ValueError("Source and new target action names must differ.")
+    for key in ("expected_source_sha256", "expected_action_sha256"):
+        if not isinstance(payload[key], str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", payload[key]):
+            raise ValueError(f"{key} must be an explicit SHA-256.")
+        result[key] = payload[key].upper()
+    role_phases = {"attack": ("ready", "aim", "discharge", "recoil", "recovery"), "support_attack": ("ready", "aim", "discharge", "recoil", "recovery"), "defend": ("guard_start", "guard_hold", "guard_release"), "retreat": ("disengage", "withdrawal", "recovery")}
+    role = payload["semantic_role"]
+    if not isinstance(role, str) or role not in role_phases:
+        raise ValueError("Unsupported action phase semantic role.")
+    for key in ("frame_start", "frame_end"):
+        if type(payload[key]) is not int or not 0 <= payload[key] <= 1000000:
+            raise ValueError("Action frame endpoints must be bounded integers.")
+    start, end = payload["frame_start"], payload["frame_end"]
+    phases = payload["phase_frames"]
+    if start >= end or not isinstance(phases, dict) or set(phases) != set(role_phases[role]):
+        raise ValueError("Role requires the exact phase names and a nonempty action range.")
+    ordered = [phases[name] for name in role_phases[role]]
+    if any(type(frame) is not int or not start <= frame <= end for frame in ordered) or any(a >= b for a, b in zip(ordered, ordered[1:])):
+        raise ValueError("Role phase frames must be strictly ordered inside the source action range.")
+    result["phase_frames"] = {name: phases[name] for name in role_phases[role]}
+    if type(payload["source_fps"]) is not int or not 1 <= payload["source_fps"] <= 1000:
+        raise ValueError("Source FPS must be an explicit bounded positive integer.")
+    fps_base = _locator_numbers([payload["source_fps_base"]], 1, "source FPS base")[0]
+    if not 0 < fps_base <= 1000:
+        raise ValueError("Source FPS base must be positive and bounded.")
+    names = payload["allowed_bones"]
+    if not isinstance(names, list) or not 1 <= len(names) <= 64:
+        raise ValueError("allowed_bones requires 1-64 exact named bones.")
+    names = [_mesh_region_name(name, "allowed bone") for name in names]
+    if len(set(names)) != len(names):
+        raise ValueError("Duplicate allowed bone names are forbidden.")
+    patches = payload["bone_patches"]
+    if not isinstance(patches, dict) or set(patches) != set(names):
+        raise ValueError("bone_patches must match the exact allowed bone list.")
+    converted, key_count = {}, 0
+    for name, channels in patches.items():
+        if not isinstance(channels, dict) or not channels or set(channels) - {"location", "rotation_quaternion"}:
+            raise ValueError("Bone patches accept only explicit location/quaternion channels, never scale.")
+        converted[name] = {}
+        for channel, rows in channels.items():
+            if not isinstance(rows, list) or not 2 <= len(rows) <= 512:
+                raise ValueError("A patched channel requires 2-512 explicit keys.")
+            keys = []
+            for row in rows:
+                if not isinstance(row, dict) or set(row) != {"frame", "value"} or type(row["frame"]) is not int or not start <= row["frame"] <= end:
+                    raise ValueError("Malformed or out-of-range action key.")
+                values = _locator_numbers(row["value"], 4 if channel == "rotation_quaternion" else 3, "action key")
+                if channel == "rotation_quaternion":
+                    length = math.sqrt(sum(value * value for value in values))
+                    if not math.isfinite(length) or abs(length - 1.0) > 1e-5:
+                        raise ValueError("Action key must contain a finite nonzero unit quaternion within 1e-5; no normalization is performed.")
+                elif any(abs(value) > 1000000 for value in values):
+                    raise ValueError("Location key exceeds the bounded coordinate range.")
+                keys.append({"frame": row["frame"], "value": values})
+            frames = [row["frame"] for row in keys]
+            if any(a >= b for a, b in zip(frames, frames[1:])) or not {start, end, *ordered}.issubset(frames):
+                raise ValueError("Keys must be unique, ordered, and include every phase and both action endpoints.")
+            key_count += len(keys)
+            converted[name][channel] = keys
+    if key_count > 4096:
+        raise ValueError("Action patch exceeds 4096 vector keys.")
+    chain = payload["motion_bone_chain"]
+    if not isinstance(chain, list) or any(not isinstance(name, str) or name not in names for name in chain) or len(set(chain)) != len(chain):
+        raise ValueError("Motion bone chain must contain unique explicitly patched bones.")
+    if (role == "retreat" and not 2 <= len(chain) <= 16) or (role != "retreat" and chain):
+        raise ValueError("Retreat requires a 2-16 bone chain; other roles must leave the chain empty.")
+    job = Path(req["job_root"]).resolve()
+    source = _promotion_path(job, payload["blend_rel"], ".blend")
+    output = _promotion_path(job, payload["checkpoint_rel"], ".blend", missing=True)
+    if source.parent != output.parent or output == source or output.exists():
+        raise ValueError("Action patch output must be a new sibling; refusing existing output or overwrite.")
+    if source.stat().st_size < 1 or file_sha256(source) != result["expected_source_sha256"]:
+        raise ValueError("Action patch source SHA-256 mismatch.")
+    result.update(job=job, source=source, output=output, source_bytes=source.stat().st_size, bone_patches=converted, vector_key_count=key_count)
+    return result
+
+
+def _action_phase_curve_records(action: Any, excluded_paths: Iterable[str] = ()) -> List[Dict[str, Any]]:
+    excluded_paths = set(excluded_paths)
+    return sorted([{"path": curve.data_path, "index": curve.array_index, "group": curve.group.name if curve.group else None,
+                    "settings": _promotion_scalars(curve), "keys": [{"co": list(key.co), "left": list(key.handle_left), "right": list(key.handle_right), "settings": _promotion_scalars(key)} for key in curve.keyframe_points],
+                    "samples": [list(point.co) for point in curve.sampled_points]}
+                   for curve, _ in action_fcurves(action) if curve.data_path not in excluded_paths], key=lambda row: (row["path"], row["index"]))
+
+
+def _action_phase_action_record(action: Any) -> Dict[str, Any]:
+    return {"settings": _promotion_scalars(action), "properties": _promotion_properties(action), "fake_user": action.use_fake_user,
+            "curves": _action_phase_curve_records(action), "slots": [_promotion_scalars(slot) for slot in getattr(action, "slots", [])],
+            "layers": [{"settings": _promotion_scalars(layer), "strips": [{"type": strip.type, "bags": [bag.slot_handle for bag in getattr(strip, "channelbags", [])]} for strip in layer.strips]} for layer in getattr(action, "layers", [])]}
+
+
+def _action_phase_restore(rig: Any, state: Dict[str, Any]) -> None:
+    rig.animation_data.action = state["action"]
+    if state["slot"] is not None:
+        rig.animation_data.action_slot = state["slot"]
+    for name, channels in state["pose"].items():
+        for channel, values in channels.items():
+            setattr(rig.pose.bones[name], channel, values)
+    bpy.context.scene.frame_set(state["frame"], subframe=state["subframe"])
+    bpy.context.view_layer.update()
+
+
+def _action_phase_samples(rig: Any, action: Any, meshes: List[Any], context: Dict[str, Any]) -> Dict[str, Any]:
+    rig.animation_data.action = action
+    if getattr(action, "slots", []):
+        rig.animation_data.action_slot = action.slots[0]
+    samples = {}
+    locators = [obj for obj in bpy.context.scene.objects if obj.type == "EMPTY" and obj.parent == rig and obj.parent_type == "BONE"]
+    if len(locators) > 32:
+        raise ValueError("Action phase locator count exceeds 32.")
+    for phase, frame in context["phase_frames"].items():
+        bpy.context.scene.frame_set(frame)
+        bpy.context.view_layer.update()
+        depsgraph = bpy.context.evaluated_depsgraph_get()
+        bones = {name: {"basis": _locator_matrix_record(rig.pose.bones[name].matrix_basis), "pose": _locator_matrix_record(rig.pose.bones[name].matrix),
+                        "world": _locator_matrix_record(rig.matrix_world @ rig.pose.bones[name].matrix)} for name in context["allowed_bones"]}
+        mesh_records = []
+        for mesh in meshes:
+            evaluated = mesh.evaluated_get(depsgraph)
+            temporary = evaluated.to_mesh(preserve_all_data_layers=True, depsgraph=depsgraph)
+            try:
+                if len(temporary.vertices) != len(mesh.data.vertices):
+                    raise ValueError("Action evaluation changed the source vertex count.")
+                points = [(vertex.index, evaluated.matrix_world @ vertex.co) for vertex in temporary.vertices]
+                for _, point in points:
+                    _locator_numbers(list(point), 3, "phase evaluated position")
+                low = [min(point[axis] for _, point in points) for axis in range(3)]
+                high = [max(point[axis] for _, point in points) for axis in range(3)]
+                lowest = min(points, key=lambda item: item[1].z)
+                mesh_records.append({"name": mesh.name, "bounds_min": low, "bounds_max": high, "lowest_vertex_index": lowest[0], "lowest_world_position": list(lowest[1]), "ground_contact_verified": False})
+            finally:
+                evaluated.to_mesh_clear()
+        samples[phase] = {"frame": frame, "seconds_from_action_start": (frame - context["frame_start"]) * context["source_fps_base"] / context["source_fps"],
+                          "bones": bones, "meshes": mesh_records, "locators": [{"name": obj.name, "parent_bone": obj.parent_bone, "world": _locator_matrix_record(obj.evaluated_get(depsgraph).matrix_world)} for obj in locators]}
+    _promotion_digest(samples)
+    return samples
+
+
+def _action_phase_delta(left: Any, right: Any) -> float:
+    return max(abs(left[row][column] - right[row][column]) for row in range(4) for column in range(4))
+
+
+def _action_phase_motion(context: Dict[str, Any], rig: Any, source: Dict[str, Any], target: Dict[str, Any]) -> Dict[str, Any]:
+    changed = {name: max(_action_phase_delta(source[phase]["bones"][name]["basis"], target[phase]["bones"][name]["basis"]) for phase in target) for name in context["allowed_bones"]}
+    changed = {name: delta for name, delta in changed.items() if delta > 1e-6}
+    if not changed:
+        raise ValueError("Action patch is identity-only at the required phases.")
+    non_root = [name for name in changed if rig.data.bones[name].parent is not None]
+    if not non_root:
+        raise ValueError("Action patch requires genuinely changed non-root bone channels.")
+    pairs = {"attack": (("ready", "aim"), ("discharge", "recoil"), ("recoil", "recovery")), "support_attack": (("ready", "aim"), ("discharge", "recoil"), ("recoil", "recovery")),
+             "defend": (("guard_start", "guard_hold"), ("guard_hold", "guard_release")), "retreat": (("disengage", "withdrawal"), ("withdrawal", "recovery"))}
+    transitions = {}
+    for start, end in pairs[context["semantic_role"]]:
+        deltas = {name: _action_phase_delta(target[start]["bones"][name]["basis"], target[end]["bones"][name]["basis"]) for name in non_root}
+        if max(deltas.values()) <= 1e-6:
+            raise ValueError(f"Required phase transition {start}/{end} has no distinguishable non-root articulation.")
+        transitions[f"{start}/{end}"] = deltas
+    if context["semantic_role"] == "defend" and not any(_action_phase_delta(source["guard_hold"]["bones"][name]["basis"], target["guard_hold"]["bones"][name]["basis"]) > 1e-6 for name in non_root):
+        raise ValueError("Defensive guard hold is indistinguishable from the source action.")
+    if context["semantic_role"] == "retreat" and any(name not in non_root for name in context["motion_bone_chain"]):
+        raise ValueError("Every declared retreat-chain bone must have genuine changed non-root channels.")
+    return {"changed_bones": changed, "phase_transitions": transitions, "numerical_identity_tolerance": 1e-6, "semantic_acceptance": False}
+
+
+def _action_phase_execute(req: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+    job, source, output = context["job"], context["source"], context["output"]
+    bpy.ops.wm.open_mainfile(filepath=str(source), use_scripts=False)
+    rig = bpy.context.scene.objects.get(context["target_armature_name"])
+    if rig is None or rig.type != "ARMATURE" or rig.library or rig.override_library or rig.data.library or rig.data.override_library or not rig.get("chaosx_working"):
+        raise ValueError("Action phase patch requires the exact local working armature.")
+    if rig.get("chaosx_source_protected") or rig.get("chaosx_reference_read_only") or rig.constraints or any(bone.constraints for bone in rig.pose.bones) or rig.data.pose_position != "POSE":
+        raise ValueError("Action phase patch rejects protected/reference rigs, constraints, and REST display.")
+    animation = rig.animation_data
+    if animation is None or animation.drivers or animation.nla_tracks:
+        raise ValueError("Action phase patch requires existing animation data without drivers/NLA.")
+    meshes = [obj for obj in bpy.context.scene.objects if obj.type == "MESH" and any(mod.type == "ARMATURE" and mod.object == rig for mod in obj.modifiers)]
+    if not 1 <= len(meshes) <= 16 or sum(len(obj.data.vertices) for obj in meshes) > 1000000:
+        raise ValueError("Action phase patch requires 1-16 bound meshes within one million vertices.")
+    for mesh in meshes:
+        _mesh_region_object_dependencies(mesh, rig)
+        if mesh.library or mesh.override_library or mesh.data.library or mesh.data.override_library or mesh.constraints or mesh.animation_data or mesh.data.shape_keys or not mesh.data.vertices or not mesh.get("chaosx_working"):
+            raise ValueError("Action phase patch requires local working meshes without shape keys, constraints, or mesh animation.")
+        if mesh.get("chaosx_source_protected") or mesh.get("chaosx_reference_read_only") or len(mesh.modifiers) != 1 or not mesh.modifiers[0].show_viewport:
+            raise ValueError("Action phase patch rejects protected meshes or additional/disabled modifiers.")
+        for obj in (mesh, rig):
+            if any(value <= 0 for value in obj.scale):
+                raise ValueError("Action phase patch rejects negative/singular object scale.")
+            _mesh_region_matrix(obj.matrix_world, obj.name)
+    action = bpy.data.actions.get(context["source_action_name"])
+    if action is None or action.library or action.override_library or len(getattr(action, "slots", [])) > 1:
+        raise ValueError("Action phase patch requires one exact local source action with an unambiguous slot.")
+    if bpy.data.actions.get(context["target_action_name"]) is not None:
+        raise ValueError("Target action already exists; refusing overwrite.")
+    curves = list(action_fcurves(action))
+    if not curves or len(curves) > 4096 or any(curve.modifiers or curve.sampled_points for curve, _ in curves):
+        raise ValueError("Action phase patch requires bounded keyed curves without modifiers or sampled curves.")
+    if any(not curve.data_path.startswith('pose.bones[') or not curve.data_path.endswith((".location", ".rotation_quaternion")) for curve, _ in curves):
+        raise ValueError("Source action has unsupported object, scale, or non-quaternion bone channels.")
+    if len({(curve.data_path, curve.array_index) for curve, _ in curves}) != len(curves):
+        raise ValueError("Source action has duplicate/ambiguous bone channels.")
+    if len(getattr(action, "layers", [])) > 1 or any(len(layer.strips) != 1 or len(layer.strips[0].channelbags) != 1 for layer in getattr(action, "layers", [])):
+        raise ValueError("Action phase patch requires one unambiguous layer/strip/channel bag.")
+    if list(action.frame_range) != [context["frame_start"], context["frame_end"]]:
+        raise ValueError("Source action frame range mismatch; this operation never retimes.")
+    scene = bpy.context.scene
+    if scene.render.fps != context["source_fps"] or scene.render.fps_base != context["source_fps_base"]:
+        raise ValueError("Source native FPS/FPS-base mismatch; this operation never retimes.")
+    if _mesh_region_action_hash(action) != context["expected_action_sha256"]:
+        raise ValueError("Source native action SHA-256 mismatch.")
+    for name in context["allowed_bones"]:
+        bone = rig.pose.bones.get(name)
+        if bone is None or bone.rotation_mode != "QUATERNION" or any(value <= 0 for value in bone.scale):
+            raise ValueError("Patched bones must exist with quaternion mode and positive pose scale.")
+    chain = context["motion_bone_chain"]
+    if chain and (rig.data.bones[chain[0]].parent is None or any(rig.data.bones[child].parent != rig.data.bones[parent] for parent, child in zip(chain, chain[1:]))):
+        raise ValueError("Retreat motion bone chain must be contiguous and non-root.")
+    before = _promotion_fingerprint(job, ())
+    paths = {rig.pose.bones[name].path_from_id(channel) for name, channels in context["bone_patches"].items() for channel in channels}
+    untouched = _action_phase_curve_records(action, paths)
+    state = {"action": animation.action, "slot": getattr(animation, "action_slot", None), "frame": scene.frame_current, "subframe": scene.frame_subframe,
+             "pose": {bone.name: {channel: list(getattr(bone, channel)) for channel in ("location", "rotation_quaternion", "rotation_euler", "rotation_axis_angle", "scale")} for bone in rig.pose.bones}}
+    target = None
+    try:
+        source_phases = _action_phase_samples(rig, action, meshes, context)
+        target = action.copy()
+        target.name, target.use_fake_user = context["target_action_name"], True
+        if target.name != context["target_action_name"]:
+            raise ValueError("Native target action name differs from the exact requested name.")
+        animation.action = target
+        if getattr(target, "slots", []):
+            animation.action_slot = target.slots[0]
+        for curve, collection in list(action_fcurves(target)):
+            if curve.data_path in paths:
+                collection.remove(curve)
+        expected_keys = {}
+        for name, channels in context["bone_patches"].items():
+            for channel, keys in channels.items():
+                path = rig.pose.bones[name].path_from_id(channel)
+                expected_keys[path] = []
+                for key in keys:
+                    setattr(rig.pose.bones[name], channel, key["value"])
+                    expected_keys[path].append((key["frame"], list(getattr(rig.pose.bones[name], channel))))
+                    if not rig.pose.bones[name].keyframe_insert(data_path=channel, frame=key["frame"], group=name):
+                        raise RuntimeError("Native insertion rejected an explicit phase key.")
+        for curve, _ in action_fcurves(target):
+            if curve.data_path in paths:
+                for key in curve.keyframe_points:
+                    key.interpolation = "LINEAR"
+                curve.update()
+        for path, keys in expected_keys.items():
+            written = {curve.array_index: curve for curve, _ in action_fcurves(target) if curve.data_path == path}
+            if set(written) != set(range(len(keys[0][1]))):
+                raise RuntimeError("Native insertion produced incomplete declared phase channels.")
+            for index, curve in written.items():
+                if [(point.co.x, point.co.y) for point in curve.keyframe_points] != [(frame, values[index]) for frame, values in keys]:
+                    raise RuntimeError("Native stored keys differ from the explicitly supplied phase keys.")
+        if _action_phase_curve_records(target, paths) != untouched:
+            raise RuntimeError("Declared patch changed an undeclared source channel.")
+        target_phases = _action_phase_samples(rig, target, meshes, context)
+        motion = _action_phase_motion(context, rig, source_phases, target_phases)
+        target_hash = _mesh_region_action_hash(target)
+        if any(_mesh_region_action_hash(other) == target_hash for other in bpy.data.actions if other != target):
+            raise ValueError("Patched action aliases an existing action fingerprint.")
+        target["chaosx_animation_processing_policy"] = "authorized_existing_action_declarative_phase_patch"
+        target["chaosx_action_phase_source_sha256"] = context["expected_source_sha256"]
+        target["chaosx_action_phase_source_action"] = action.name
+        target["chaosx_action_phase_source_action_sha256"] = context["expected_action_sha256"]
+        target["chaosx_action_phase_role"] = context["semantic_role"]
+        target["chaosx_action_phase_request_sha256"] = _promotion_digest(req["payload"])
+        target["chaosx_action_phase_semantic_acceptance"] = False
+    except Exception:
+        _action_phase_restore(rig, state)
+        if target is not None:
+            bpy.data.actions.remove(target)
+        raise
+    _action_phase_restore(rig, state)
+    if _promotion_fingerprint(job, (), exclude_action_name=target.name) != before:
+        raise RuntimeError("Action patch changed original scene/action data before saving.")
+    target_record = _action_phase_action_record(target)
+    if output.exists():
+        raise ValueError("Action patch output appeared during processing; refusing overwrite.")
+    saved = bpy.ops.wm.save_as_mainfile(filepath=str(output), copy=True, relative_remap=False)
+    if "FINISHED" not in saved or not output.is_file():
+        raise RuntimeError("Action patch checkpoint save did not finish.")
+    bpy.ops.wm.open_mainfile(filepath=str(output), use_scripts=False)
+    target = bpy.data.actions.get(context["target_action_name"])
+    if target is None or _action_phase_action_record(target) != target_record:
+        raise RuntimeError("New target action changed during save/reopen.")
+    after = _promotion_fingerprint(job, (), exclude_action_name=context["target_action_name"])
+    comparison = _promotion_reopen_comparison(before, after)
+    if not comparison["accepted"]:
+        raise RuntimeError(f"Action patch violated original-scene preservation: {comparison['mismatches']}")
+    return {"operation": "patch_existing_humanoid_action_phases", "source": source.relative_to(job).as_posix(), "checkpoint": output.relative_to(job).as_posix(),
+            "source_sha256": context["expected_source_sha256"], "source_bytes": context["source_bytes"], "source_immutable": True,
+            "output_sha256": file_sha256(output), "output_bytes": output.stat().st_size,
+            "source_action_name": context["source_action_name"], "target_action_name": target.name,
+            "source_action_sha256": context["expected_action_sha256"], "target_action_sha256": target_hash,
+            "target_action_record_sha256": _promotion_digest(target_record), "target_action_reopen_exact": True, "original_actions_unchanged": True,
+            "preserved_before": before, "preserved_after": after, "reopen_comparison": comparison,
+            "source_fps": context["source_fps"], "source_fps_base": context["source_fps_base"],
+            "frame_range": [context["frame_start"], context["frame_end"]], "semantic_role": context["semantic_role"],
+            "phase_frames": context["phase_frames"], "motion_bone_chain": chain, "vector_key_count": context["vector_key_count"],
+            "patched_channels": {name: list(channels) for name, channels in context["bone_patches"].items()},
+            "source_phases": source_phases, "target_phases": target_phases, **motion,
+            "manual_or_procedural_replacement_authored": True, "procedural_generator_used": False,
+            "root_policy": "no_object_channels_authored_source_root_bone_channels_preserved_unless_explicitly_patched",
+            "quaternion_norm_tolerance": 1e-5, "new_provider_call": False, "runtime_acceptance": False}
+
+
+def patch_existing_humanoid_action_phases(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Apply explicit authorized manual phase keys to a clone; never mutate the source."""
+    context = _action_phase_inputs(req)
+    try:
+        return _action_phase_execute(req, context)
+    finally:
+        if file_sha256(context["source"]) != context["expected_source_sha256"] or context["source"].stat().st_size != context["source_bytes"]:
+            raise RuntimeError("Action phase patch source checkpoint changed.")
 
 
 def author_humanoid_actions(req: Dict[str, Any]) -> Dict[str, Any]:
@@ -8395,7 +8726,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "author_locator", "promote_accepted_reimport", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "author_locator", "promote_accepted_reimport", "patch_existing_humanoid_action_phases", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -8429,6 +8760,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return author_humanoid_rig(req)
     if operation == "author_humanoid_actions":
         return author_humanoid_actions(req)
+    if operation == "patch_existing_humanoid_action_phases":
+        return patch_existing_humanoid_action_phases(req)
     if operation == "author_locomotion_action":
         return author_locomotion_action(req)
     if operation == "segment_creature_components":

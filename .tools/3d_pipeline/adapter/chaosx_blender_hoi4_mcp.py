@@ -649,6 +649,26 @@ def chaosx_blender_hoi4_author_humanoid_rig(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_patch_existing_humanoid_action_phases(
+    job_id: str, blend_rel: str, checkpoint_rel: str,
+    expected_source_sha256: str, expected_action_sha256: str,
+    target_armature_name: str, source_action_name: str, target_action_name: str,
+    semantic_role: str, source_fps: int, source_fps_base: float,
+    frame_start: int, frame_end: int, phase_frames: dict[str, int],
+    allowed_bones: list[str], motion_bone_chain: list[str], bone_patches: dict[str, Any],
+) -> Dict[str, Any]:
+    """Clone an existing action and apply explicit authorized manual bone-phase keys in a new sibling; no geometry edits or semantic approval."""
+    return _run(job_id, "patch_existing_humanoid_action_phases", {
+        "blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel,
+        "expected_source_sha256": expected_source_sha256, "expected_action_sha256": expected_action_sha256,
+        "target_armature_name": target_armature_name, "source_action_name": source_action_name, "target_action_name": target_action_name,
+        "semantic_role": semantic_role, "source_fps": source_fps, "source_fps_base": source_fps_base,
+        "frame_start": frame_start, "frame_end": frame_end, "phase_frames": phase_frames,
+        "allowed_bones": allowed_bones, "motion_bone_chain": motion_bone_chain, "bone_patches": bone_patches,
+    })
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_author_humanoid_actions(
     job_id: str,
     blend_rel: str,
