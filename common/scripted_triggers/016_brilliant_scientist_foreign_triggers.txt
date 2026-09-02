@@ -386,9 +386,141 @@ brilliant_scientist_foreign_can_assassinate_target = {
 	NOT = { is_in_array = { array = brilliant_scientist_foreign_assassination_resolved_targets value = FROM } }
 }
 
+# Targeted-decision actor scope. The static route selected by the caller must
+# satisfy the same eligibility and permanent target receipt as the public action.
+brilliant_scientist_foreign_start_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.observation }
+			brilliant_scientist_foreign_can_observe_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.formal_invitation }
+			brilliant_scientist_foreign_can_invite_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.assistant_recruitment }
+			brilliant_scientist_foreign_can_recruit_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.archive_theft }
+			brilliant_scientist_foreign_can_steal_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.project_sabotage }
+			brilliant_scientist_foreign_can_sabotage_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.encourage_defection }
+			brilliant_scientist_foreign_can_encourage_defection_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.extraction }
+			brilliant_scientist_foreign_can_extract_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.protection_offer }
+			brilliant_scientist_foreign_can_offer_protection_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.assassination_attempt }
+			brilliant_scientist_foreign_can_assassinate_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.public_challenge }
+			brilliant_scientist_foreign_can_public_challenge_target = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.counter_program }
+			brilliant_scientist_foreign_can_build_counter_program_target = yes
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_foreign_cost.counter_program_support_equipment } }
+		}
+	}
+}
+
+# Targeted-decision actor scope, FROM original host. Each delayed caller supplies
+# its fixed expected operation, never the current receipt's type.
+brilliant_scientist_foreign_callback_matches_active_operation = {
+	has_country_flag = brilliant_scientist_foreign_operation_live
+	has_variable = brilliant_scientist_foreign_live_operation
+	has_variable = brilliant_scientist_foreign_operation_host_id
+	check_variable = { brilliant_scientist_foreign_live_operation = brilliant_scientist_foreign_expected_operation }
+	check_variable = { brilliant_scientist_foreign_operation_host_id = FROM.id }
+}
+
+# Any event scope. Regular targets retain the original parties even when the
+# operation transfers Kruger or ends his host tenure.
+brilliant_scientist_foreign_event_receipt_matches_active_operation = {
+	has_event_target = brilliant_scientist_foreign_operation_actor
+	has_event_target = brilliant_scientist_foreign_operation_host
+	event_target:brilliant_scientist_foreign_operation_actor = {
+		has_country_flag = brilliant_scientist_foreign_operation_live
+		has_variable = brilliant_scientist_foreign_live_operation
+		has_variable = brilliant_scientist_foreign_operation_host_id
+		check_variable = { brilliant_scientist_foreign_live_operation = brilliant_scientist_foreign_expected_operation }
+		check_variable = { brilliant_scientist_foreign_operation_host_id = event_target:brilliant_scientist_foreign_operation_host.id }
+	}
+}
+
+# Host event scope. Detection records the result before this independent phase.
+brilliant_scientist_foreign_host_response_is_pending = {
+	brilliant_scientist_foreign_event_receipt_matches_active_operation = yes
+	tag = event_target:brilliant_scientist_foreign_operation_host
+	event_target:brilliant_scientist_foreign_operation_actor = {
+		has_country_flag = brilliant_scientist_foreign_host_response_pending
+		OR = {
+			AND = {
+				OR = {
+					check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.formal_invitation }
+					check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.protection_offer }
+					check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge }
+				}
+				NOT = { has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded }
+			}
+			AND = {
+				NOT = {
+					OR = {
+						check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.formal_invitation }
+						check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.protection_offer }
+						check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.public_challenge }
+					}
+				}
+				has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
+			}
+		}
+	}
+}
+
+# Host event scope. A recorded covert result may settle at its former host,
+# but neither destroyed parties nor a terminal world can receive new effects.
+brilliant_scientist_foreign_response_context_is_valid = {
+	exists = yes
+	event_target:brilliant_scientist_foreign_operation_actor = { exists = yes }
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	NOT = { has_global_flag = world_end }
+}
+
+# Immediate diplomacy still requires Kruger's current living host.
+brilliant_scientist_foreign_diplomatic_response_context_is_valid = {
+	brilliant_scientist_foreign_response_context_is_valid = yes
+	brilliant_scientist_is_current_host = yes
+	NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }
+	NOT = { has_global_flag = brilliant_scientist_character_transaction_lock }
+}
+
+# Actor report scope. A stale report must not consume another active operation.
+brilliant_scientist_foreign_actor_report_is_ready = {
+	brilliant_scientist_foreign_event_receipt_matches_active_operation = yes
+	tag = event_target:brilliant_scientist_foreign_operation_actor
+	has_country_flag = brilliant_scientist_foreign_operation_resolution_recorded
+	NOT = { has_country_flag = brilliant_scientist_foreign_host_response_pending }
+}
+
 # Targeted decision cancellation contract. ROOT actor, FROM original host.
 brilliant_scientist_foreign_operation_target_remains_valid = {
 	has_country_flag = brilliant_scientist_foreign_operation_live
+	has_variable = brilliant_scientist_foreign_operation_host_id
+	check_variable = { brilliant_scientist_foreign_operation_host_id = FROM.id }
 	FROM = {
 		brilliant_scientist_is_current_host = yes
 		NOT = { has_country_flag = brilliant_scientist_kruger_confirmed_dead }

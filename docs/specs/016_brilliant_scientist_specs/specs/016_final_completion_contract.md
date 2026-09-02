@@ -147,6 +147,15 @@ Disabling a stage does not erase already recorded history or ordinary Directorat
 
 Foreign recruitment, theft, sabotage, defection, public challenge, and assassination react to Exposure, security, ideology, intelligence, diplomacy, project value, and prior operations.
 
+Every foreign-operation callback must match the original actor, original host, and fixed operation type before changing an active receipt.
+The shared start gate enforces one live operation per actor, at most two incoming operations per host, and permanent type-specific resolved-target exclusion, including direct scripted callers.
+A host response consumes a separate pending-response flag before applying its effects; covert outcomes are already recorded before their detected-operation response and must not be rejected for that reason.
+Actor reports may finish only a matching recorded operation with no pending host response, and stale timer, response, or report callbacks leave any newer operation untouched.
+Resolved history retains the operation's start date and selected project stage alongside host, type, result, detection, and family; non-project operations use explicit none values, and unknown historical metadata is not fabricated.
+An aligned peer and actor/host role receipt identifies each chronological row even if one country has participated on both sides of the contest.
+Public challenges retain their own public consequence set; the additional detected-operation surcharge belongs to covert operations only.
+This receipt correction preserves existing costs, durations, rewards, outcome formulas, and AI scores.
+
 Containment follows recorded causal state. Low authority and dependence permit release, arrest, exile, or shutdown. High authority, dangerous projects, extensive facilities, and Independent Capacity can defeat coercion. Failed containment forms KRG only from viable host territory and laboratories. Project-specific military inheritance remains causally separate for every family.
 
 Each containment decision charges no more than four distinct costs: Political Power, at most one physical or operational payment, upfront Stability, and a single temporary consumer-goods burden.

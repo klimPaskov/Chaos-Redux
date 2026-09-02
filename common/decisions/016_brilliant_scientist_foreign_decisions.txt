@@ -33,13 +33,22 @@ brilliant_scientist_foreign_operations_category = {
 				brilliant_scientist_foreign_start_operation = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.observation } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.observation }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.observation }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_observation_weight }
 	}
 
@@ -65,11 +74,6 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.formal_invitation }
 				brilliant_scientist_foreign_start_operation = yes
-				save_event_target_as = brilliant_scientist_foreign_operation_actor
-				FROM = {
-					save_event_target_as = brilliant_scientist_foreign_operation_host
-					country_event = { id = chaosx.nr16.100 }
-				}
 			}
 		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_invitation_weight }
@@ -98,16 +102,24 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.assistant_recruitment }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assistant_recruitment } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.assistant_recruitment }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.assistant_recruitment }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_recruitment_weight }
 	}
 
@@ -134,16 +146,24 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.archive_theft }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.archive_theft } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.archive_theft }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.archive_theft }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_theft_weight }
 	}
 
@@ -170,16 +190,24 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.project_sabotage }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.project_sabotage } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.project_sabotage }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.project_sabotage }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_sabotage_weight }
 	}
 
@@ -206,16 +234,24 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.encourage_defection }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.encourage_defection } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.encourage_defection }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.encourage_defection }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_defection_weight }
 	}
 
@@ -242,16 +278,24 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.extraction }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.extraction } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.extraction }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.extraction }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_extraction_weight }
 	}
 
@@ -277,11 +321,6 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.protection_offer }
 				brilliant_scientist_foreign_start_operation = yes
-				save_event_target_as = brilliant_scientist_foreign_operation_actor
-				FROM = {
-					save_event_target_as = brilliant_scientist_foreign_operation_host
-					country_event = { id = chaosx.nr16.110 }
-				}
 			}
 		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_protection_weight }
@@ -310,16 +349,24 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.assassination_attempt }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.assassination_attempt }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_assassination_weight }
 	}
 
@@ -347,22 +394,26 @@ brilliant_scientist_foreign_operations_category = {
 		complete_effect = {
 			custom_effect_tooltip = brilliant_scientist_foreign_counter_program_effect_tt
 			hidden_effect = {
-				add_equipment_to_stockpile = {
-					type = support_equipment
-					amount = constant:brilliant_scientist_foreign_cost.counter_program_support_equipment_spend
-				}
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.counter_program }
 				brilliant_scientist_foreign_start_operation = yes
-				brilliant_scientist_foreign_prepare_project_target = yes
 			}
 		}
-		cancel_trigger = { NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes } }
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_foreign_operation_target_remains_valid = yes }
+				NOT = { check_variable = { brilliant_scientist_foreign_live_operation = constant:brilliant_scientist_foreign_operation.counter_program } }
+			}
+		}
 		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.counter_program }
 			save_event_target_as = brilliant_scientist_foreign_operation_actor
 			FROM = { save_event_target_as = brilliant_scientist_foreign_operation_host }
 			brilliant_scientist_foreign_cancel_operation = yes
 		}
-		remove_effect = { brilliant_scientist_foreign_resolve_covert_operation = yes }
+		remove_effect = {
+			set_temp_variable = { brilliant_scientist_foreign_expected_operation = constant:brilliant_scientist_foreign_operation.counter_program }
+			brilliant_scientist_foreign_resolve_covert_operation = yes
+		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_counter_program_weight }
 	}
 
@@ -388,11 +439,6 @@ brilliant_scientist_foreign_operations_category = {
 			hidden_effect = {
 				set_temp_variable = { brilliant_scientist_foreign_operation_type = constant:brilliant_scientist_foreign_operation.public_challenge }
 				brilliant_scientist_foreign_start_operation = yes
-				save_event_target_as = brilliant_scientist_foreign_operation_actor
-				FROM = {
-					save_event_target_as = brilliant_scientist_foreign_operation_host
-					country_event = { id = chaosx.nr16.190 }
-				}
 			}
 		}
 		ai_will_do = { base = mtth:brilliant_scientist_foreign_ai_public_challenge_weight }
