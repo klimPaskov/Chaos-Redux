@@ -2934,14 +2934,17 @@ brilliant_scientist_refresh_kruger_continuity_state = {
 # brilliant_scientist_transfer_recipient. All validation occurs before the
 # first mutation. Output temp brilliant_scientist_transfer_committed.
 brilliant_scientist_transfer_kruger_atomically = {
-	if = {
-		limit = { has_country_flag = dhrondan_kruger_expedition_in_progress }
-		remove_mission = dhrondan_kruger_expedition_mission
-		dhrondan_fail_expedition = yes
-	}
 	set_temp_variable = { brilliant_scientist_transfer_committed = @CR_SC_BRILLIANT_SCIENTIST_VALUE_ZERO }
 	if = {
 		limit = { brilliant_scientist_transfer_inputs_are_valid = yes }
+		set_global_flag = brilliant_scientist_character_transaction_lock
+		set_country_flag = brilliant_scientist_character_transaction_lock
+		if = {
+			limit = { has_country_flag = dhrondan_kruger_expedition_in_progress }
+			remove_mission = dhrondan_kruger_expedition_mission
+			dhrondan_fail_expedition = yes
+		}
+		# Expedition role restoration closes its own transaction locks.
 		set_global_flag = brilliant_scientist_character_transaction_lock
 		set_country_flag = brilliant_scientist_character_transaction_lock
 		save_event_target_as = brilliant_scientist_transfer_old_host
@@ -3014,7 +3017,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 				has_variable = brilliant_scientist_last_breakthrough_project_family
 			}
 			set_temp_variable = { brilliant_scientist_transfer_breakthrough_pending = constant:brilliant_scientist_value.one }
-			set_temp_variable = { brilliant_scientist_transfer_breakthrough_family = brilliant_scientist_last_breakthrough_project_family }
+			set_temp_variable = { brilliant_scientist_transfer_pending_breakthrough_family = brilliant_scientist_last_breakthrough_project_family }
 			set_temp_variable = { brilliant_scientist_transfer_breakthrough_stage = brilliant_scientist_last_breakthrough_project_stage }
 		}
 		set_temp_variable = { brilliant_scientist_transfer_posture = constant:brilliant_scientist_recruitment_posture.secret_directorate }
@@ -3186,7 +3189,7 @@ brilliant_scientist_transfer_kruger_atomically = {
 			set_variable = { brilliant_scientist_breakthrough_classified_count = brilliant_scientist_transfer_breakthrough_classified_count }
 			if = {
 				limit = { check_variable = { brilliant_scientist_transfer_breakthrough_pending = constant:brilliant_scientist_value.one } }
-				set_variable = { brilliant_scientist_last_breakthrough_project_family = brilliant_scientist_transfer_breakthrough_family }
+				set_variable = { brilliant_scientist_last_breakthrough_project_family = brilliant_scientist_transfer_pending_breakthrough_family }
 				set_variable = { brilliant_scientist_last_breakthrough_project_stage = brilliant_scientist_transfer_breakthrough_stage }
 				set_country_flag = brilliant_scientist_breakthrough_report_active
 				country_event = { id = chaosx.nr16.6 days = 1 }

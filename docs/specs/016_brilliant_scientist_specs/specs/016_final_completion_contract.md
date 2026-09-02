@@ -125,6 +125,15 @@ The Directorate board shows only actions relevant to the current stage, route, f
 
 Exactly four evolutions remain. Active-chain application, evolved first openings, and disabled-evolution safety must agree. Event `.49` keeps valid response options separate from invalid-state cleanup so cleanup cannot dominate a valid option set.
 
+Ordinary transfer validates the recipient and every readiness condition before cancelling a D'Rhondan expedition or changing any host or character state.
+An invalid transfer leaves all pending obligations intact.
+The active breakthrough's family and stage use dedicated transfer snapshots that cannot be overwritten by history-array iteration.
+Permanent departure and confirmed death clear unresolved host and character reactions before the canonical identity leaves its host.
+Split sovereignty closes the former host's transient foreign frameworks and pending reactions only after the inheritance snapshot is secured, while retaining completed history and learned technology.
+Same-country sovereignty also stops host-only delayed reactions without erasing that country's resolved history.
+Every evolved-opening seed package, lower-stage delivery receipt, and policy write checks its own evolution's enablement rather than inferring it from the highest enabled stage.
+Disabling a stage does not erase already recorded history or ordinary Directorate progression, but it cannot create that stage's delivery, policy, or seed rewards.
+
 Foreign recruitment, theft, sabotage, defection, public challenge, and assassination react to Exposure, security, ideology, intelligence, diplomacy, project value, and prior operations.
 
 Containment follows recorded causal state. Low authority and dependence permit release, arrest, exile, or shutdown. High authority, dangerous projects, extensive facilities, and Independent Capacity can defeat coercion. Failed containment forms KRG only from viable host territory and laboratories. Project-specific military inheritance remains causally separate for every family.

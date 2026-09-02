@@ -53,6 +53,15 @@ The host records the selected action, action date, outcome, outcome date, and an
 
 The same Kruger token is transferred through the existing guarded transaction. It cannot be recruited twice, cannot move into an invalid recipient, cannot transfer while assigned to an active special project, and does not replay the original appointment reward.
 
+Transfer validates every input before cancelling an expedition or changing host ownership.
+The pending breakthrough retains its own family and stage snapshots while separate iterators copy the completed and pending history arrays.
+Permanent departure and confirmed death clear pending host-reaction obligations while the canonical character is still available.
+Confirmed death also closes live foreign frameworks without deleting the assassination actor's settlement targets or permanent operation history.
+
+Split sovereignty first secures the territory and inheritance snapshot, then clears the former host's pending reactions and live foreign partner/site pointers.
+Same-country takeover clears only pending reactions, preserving earned policy benefits and the country's resolved reaction history.
+Host-only reaction schedulers and delayed events exclude both sovereign carrier forms, so an unresolved report cannot be rescheduled after either transition.
+
 ## Assets and wiring
 
 - Report sprite: `GFX_report_event_016_brilliant_scientist_sovereignty_confrontation`

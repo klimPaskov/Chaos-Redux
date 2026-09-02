@@ -35,9 +35,14 @@ An evolved opening strengthens the initial appointment package without bypassing
 - Evolution I can seed a conventional Theory project and brings institutional competition into the opening.
 - Evolution II can seed a conventional Prototype and begins with greater foreign attention and security pressure.
 - Evolution III can seed an impossible Prototype and opens the early safe-science or dangerous-project conflict.
-- Evolution IV can seed a Deployment-stage project and accelerates the route toward a supervised compact or sovereignty deadline.
+- Evolution IV can seed advanced Temporal and Alien Arms Prototypes with a loyal assistant network and accelerates the route toward a supervised compact or sovereignty deadline.
 
 The evolved opening is recorded after appointment so the selected country remains the correct actor. Disabled stages are skipped while the strongest valid lower opening remains available.
+
+Each seed package checks its own evolution independently.
+A Stage IV opening with Stage III disabled receives the enabled Stage IV package but does not receive Stage III's cloning and robotics seed package, delivery receipt, or secret-weaponization policy.
+The same independent check protects each first application of an evolution base package, including when a new host inherits already recorded chronology.
+Already applied rewards and permanent chronology are not deleted by these guards.
 
 ## Disabled-evolution safety
 
