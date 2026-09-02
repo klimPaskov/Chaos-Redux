@@ -3069,6 +3069,126 @@ def _mesh_region_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
+def _action_channel_inventory_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
+    payload = req["payload"]
+    if payload.get("include_action_channels") is not True:
+        raise ValueError("Action-channel inventory requires include_action_channels=true.")
+    if payload.get("render_previews") or payload.get("runtime_stem") or payload.get("preview_view_names") or payload.get("mesh_region") is not None:
+        raise ValueError("Action-channel inventory cannot render or combine with mesh-region inspection.")
+    if payload.get("preview_frame", -1) != -1:
+        raise ValueError("Action-channel inventory does not evaluate a preview frame.")
+    expected = payload.get("expected_source_sha256")
+    if not isinstance(expected, str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", expected):
+        raise ValueError("expected_source_sha256 must be an explicit SHA-256 for action-channel inventory.")
+    job = Path(req["job_root"]).resolve()
+    source = _promotion_path(job, payload.get("blend_rel"), ".blend")
+    expected = expected.upper()
+    size = source.stat().st_size
+    if size < 1 or file_sha256(source) != expected:
+        raise ValueError("Action-channel inventory source SHA-256 mismatch.")
+    return {
+        "job": job,
+        "source": source,
+        "source_bytes": size,
+        "expected_source_sha256": expected,
+        "rig_name": _mesh_region_name(payload.get("target_armature_name"), "target_armature_name"),
+        "action_name": _mesh_region_name(payload.get("action_name"), "action_name"),
+    }
+
+
+def _action_channel_rows(action: Any, rig: Any) -> List[Dict[str, Any]]:
+    curves = list(action_fcurves(action))
+    if len(curves) > 4096:
+        raise ValueError("Action-channel inventory exceeds the 4096-curve cap.")
+    bone_owners = [(bone.path_from_id(), bone) for bone in rig.pose.bones]
+    object_paths = {"location", "rotation_euler", "rotation_quaternion", "rotation_axis_angle", "scale"}
+    rows = []
+    for curve, _ in curves:
+        path = str(curve.data_path)
+        if not path or len(path) > 1024 or any(ord(character) < 32 for character in path):
+            raise ValueError("Action-channel inventory encountered an invalid or overlong data_path.")
+        index = int(curve.array_index)
+        if not 0 <= index <= 1024:
+            raise ValueError("Action-channel inventory encountered an invalid array_index.")
+        group = getattr(curve, "group", None)
+        group_name = None if group is None else str(group.name)
+        if group_name is not None and (len(group_name) > 128 or any(ord(character) < 32 for character in group_name)):
+            raise ValueError("Action-channel inventory encountered an invalid or overlong group name.")
+        owners = [bone for prefix, bone in bone_owners if path == prefix or path.startswith(prefix + ".") or path.startswith(prefix + "[")]
+        if len(owners) > 1:
+            raise ValueError("Action-channel inventory found an ambiguous bone RNA owner.")
+        rotation_mode = str(owners[0].rotation_mode) if owners else (str(rig.rotation_mode) if path in object_paths else None)
+        rows.append({"data_path": path, "array_index": index, "group": group_name, "rotation_mode": rotation_mode})
+    return sorted(rows, key=lambda row: (row["data_path"], row["array_index"], row["group"] or "", row["rotation_mode"] or ""))
+
+
+def _action_channel_binding_record(rig: Any) -> Dict[str, Any]:
+    animation = rig.animation_data
+    return {
+        "frame": int(bpy.context.scene.frame_current),
+        "subframe": float(bpy.context.scene.frame_subframe),
+        "object_rotation_mode": str(rig.rotation_mode),
+        "bone_rotation_modes": [(bone.name, str(bone.rotation_mode)) for bone in rig.pose.bones],
+        "action": animation.action.name if animation and animation.action else None,
+        "action_slot": getattr(getattr(animation, "action_slot", None), "identifier", None) if animation else None,
+        "drivers": [(curve.data_path, int(curve.array_index)) for curve in animation.drivers] if animation else [],
+        "nla": [
+            {
+                "name": track.name,
+                "mute": bool(track.mute),
+                "solo": bool(track.is_solo),
+                "strips": [(strip.name, strip.action.name if strip.action else None, float(strip.frame_start), float(strip.frame_end)) for strip in track.strips],
+            }
+            for track in animation.nla_tracks
+        ] if animation else [],
+    }
+
+
+def inspect_action_channels(req: Dict[str, Any]) -> Dict[str, Any]:
+    context = _action_channel_inventory_inputs(req)
+    try:
+        bpy.ops.wm.open_mainfile(filepath=str(context["source"]), use_scripts=False)
+        rig = bpy.context.scene.objects.get(context["rig_name"])
+        action = bpy.data.actions.get(context["action_name"])
+        if rig is None or rig.type != "ARMATURE" or action is None:
+            raise ValueError("Action-channel inventory requires the exact armature and action.")
+        if rig.library or rig.override_library or action.library or action.override_library:
+            raise ValueError("Action-channel inventory requires local armature and action data.")
+        before_actions = _mesh_region_action_integrity()
+        before_binding = _action_channel_binding_record(rig)
+        native_hash = _mesh_region_action_hash(action)
+        rows = _action_channel_rows(action, rig)
+        after_binding = _action_channel_binding_record(rig)
+        if after_binding != before_binding or _mesh_region_action_integrity() != before_actions or _mesh_region_action_hash(action) != native_hash:
+            raise RuntimeError("Read-only action-channel inventory changed action, frame, or rotation-mode data.")
+        result = {
+            "source_sha256": context["expected_source_sha256"],
+            "source_bytes": context["source_bytes"],
+            "source_immutable": True,
+            "armature_name": rig.name,
+            "action_name": action.name,
+            "native_action_sha256": native_hash,
+            "native_action_hash_policy": "inspect_scene_curve_slot_path_index_key_co_interpolation_v1_not_anim_file_sha256",
+            "action_integrity_sha256": before_actions,
+            "row_count": len(rows),
+            "rows": rows,
+            "action_data_unchanged": True,
+            "frame_action_rotation_modes_unchanged": True,
+            "checkpoint_saved": False,
+            "new_provider_call": False,
+        }
+        _promotion_digest(result)
+        return {
+            "blend": context["source"].relative_to(context["job"]).as_posix(),
+            "inspected_target_armature": rig.name,
+            "inspected_action_sha256": native_hash,
+            "action_channels": result,
+        }
+    finally:
+        if file_sha256(context["source"]) != context["expected_source_sha256"] or context["source"].stat().st_size != context["source_bytes"]:
+            raise RuntimeError("Read-only action-channel inventory changed its source checkpoint.")
+
+
 def _mesh_region_action_hash(action: bpy.types.Action) -> str:
     """The existing inspect_scene inspected_action_sha256 contract, not an .anim hash."""
     records = [{"slot": getattr(slot, "identifier", None), "data_path": curve.data_path, "array_index": int(curve.array_index),
@@ -3299,7 +3419,513 @@ def inspect_mesh_region(req: Dict[str, Any]) -> Dict[str, Any]:
             "inspected_action_sha256": actual_action_hash, "mesh_region": report}
 
 
+def _component_review_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
+    payload = req["payload"]
+    required = {"blend_rel", "expected_source_sha256", "mesh_name", "render_group", "component_ids", "component_offset", "component_limit", "preview_view_names"}
+    if not isinstance(payload, dict) or set(payload) != required:
+        raise ValueError("review_humanoid_components accepts only its exact read-only contract.")
+    if payload["render_group"] is not True:
+        raise ValueError("Humanoid component review requires render_group=true; bounds-only review is insufficient.")
+    expected = payload["expected_source_sha256"]
+    if not isinstance(expected, str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", expected):
+        raise ValueError("expected_source_sha256 must be an explicit SHA-256.")
+    ids = payload["component_ids"]
+    if not isinstance(ids, list) or len(ids) > 16 or any(not isinstance(value, str) or not re.fullmatch(r"c_v[0-9]{1,7}", value) for value in ids) or len(set(ids)) != len(ids):
+        raise ValueError("component_ids must contain at most 16 unique stable component IDs.")
+    offset, limit = payload["component_offset"], payload["component_limit"]
+    if type(offset) is not int or not 0 <= offset <= 8192 or type(limit) is not int or not 1 <= limit <= 16:
+        raise ValueError("Component review offset/limit must stay inside the 8192-component and 16-component page caps.")
+    if ids and (offset != 0 or limit != 16):
+        raise ValueError("Explicit component_ids cannot be combined with nondefault pagination.")
+    allowed_views = {"front", "left", "right", "rear", "top", "three_quarter"}
+    requested_views = payload["preview_view_names"]
+    if not isinstance(requested_views, list):
+        raise ValueError("preview_view_names must be a list.")
+    views = requested_views or ["front", "left", "right", "rear", "top", "three_quarter"]
+    if not 1 <= len(views) <= 6 or any(type(value) is not str or value not in allowed_views for value in views) or len(set(views)) != len(views):
+        raise ValueError("Component-review views must be unique supported named views.")
+    job = Path(req["job_root"]).resolve()
+    source = _promotion_path(job, payload["blend_rel"], ".blend")
+    expected = expected.upper()
+    source_bytes = source.stat().st_size
+    if source_bytes < 1 or file_sha256(source) != expected:
+        raise ValueError("Component-review source SHA-256 mismatch.")
+    request_id = req.get("request_id")
+    if not isinstance(request_id, str) or not re.fullmatch(r"[0-9a-f]{32}", request_id):
+        raise ValueError("Component review requires the adapter's exact lowercase UUID request_id.")
+    return {"job": job, "source": source, "source_bytes": source_bytes, "expected_source_sha256": expected,
+            "mesh_name": _mesh_region_name(payload["mesh_name"], "mesh_name"), "component_ids": ids,
+            "component_offset": offset, "component_limit": limit, "preview_view_names": views,
+            "request_id": request_id}
+
+
+def _component_index_catalog(vertex_count: int, edges: Iterable[Tuple[int, Iterable[int]]], polygons: Iterable[Tuple[int, Iterable[int]]]) -> List[Dict[str, Any]]:
+    if type(vertex_count) is not int or not 1 <= vertex_count <= 250000:
+        raise ValueError("Component review requires 1-250000 source vertices.")
+    parent = list(range(vertex_count))
+    def find(index: int) -> int:
+        while parent[index] != index:
+            parent[index] = parent[parent[index]]
+            index = parent[index]
+        return index
+    def union(left: int, right: int) -> None:
+        left, right = find(left), find(right)
+        if left != right:
+            parent[max(left, right)] = min(left, right)
+    edge_rows, polygon_rows = [], []
+    for edge_index, values in edges:
+        values = tuple(values)
+        if type(edge_index) is not int or len(values) != 2 or any(type(value) is not int or not 0 <= value < vertex_count for value in values) or values[0] == values[1]:
+            raise ValueError("Component review found invalid edge topology.")
+        union(values[0], values[1])
+        edge_rows.append((edge_index, values))
+    for polygon_index, values in polygons:
+        values = tuple(values)
+        if type(polygon_index) is not int or len(values) < 3 or any(type(value) is not int or not 0 <= value < vertex_count for value in values):
+            raise ValueError("Component review found invalid polygon topology.")
+        for value in values[1:]:
+            union(values[0], value)
+        polygon_rows.append((polygon_index, values))
+    vertices_by_root: Dict[int, List[int]] = {}
+    for vertex in range(vertex_count):
+        vertices_by_root.setdefault(find(vertex), []).append(vertex)
+    result = []
+    for vertices in sorted(vertices_by_root.values(), key=lambda row: row[0]):
+        members = set(vertices)
+        component_edges = [index for index, values in edge_rows if values[0] in members]
+        component_polygons = [index for index, values in polygon_rows if values[0] in members]
+        if any(any(value not in members for value in values) for index, values in edge_rows if index in component_edges):
+            raise ValueError("Component edge crosses a computed component boundary.")
+        if any(any(value not in members for value in values) for index, values in polygon_rows if index in component_polygons):
+            raise ValueError("Component polygon crosses a computed component boundary.")
+        result.append({"component_id": f"c_v{vertices[0]}", "vertex_indices": vertices,
+                       "edge_indices": component_edges, "polygon_indices": component_polygons})
+    if len(result) > 8192:
+        raise ValueError("Component review exceeds the 8192-component cap.")
+    return result
+
+
+def _component_boundary_record(mesh: Any, record: Dict[str, Any]) -> Dict[str, Any]:
+    incidence = {index: 0 for index in record["edge_indices"]}
+    for polygon_index in record["polygon_indices"]:
+        for loop_index in mesh.polygons[polygon_index].loop_indices:
+            edge_index = mesh.loops[loop_index].edge_index
+            if edge_index not in incidence:
+                raise ValueError("Polygon loop references an edge outside its component.")
+            incidence[edge_index] += 1
+    boundary = sorted(index for index, count in incidence.items() if count == 1)
+    loose = sorted(index for index, count in incidence.items() if count == 0)
+    non_manifold = sorted(index for index, count in incidence.items() if count > 2)
+    adjacency: Dict[int, List[int]] = {}
+    for edge_index in boundary:
+        left, right = mesh.edges[edge_index].vertices
+        adjacency.setdefault(left, []).append(right)
+        adjacency.setdefault(right, []).append(left)
+    unseen, groups = set(adjacency), []
+    while unseen:
+        pending, observed = [min(unseen)], set()
+        while pending:
+            value = pending.pop()
+            if value in observed:
+                continue
+            observed.add(value)
+            pending.extend(adjacency[value])
+        unseen -= observed
+        groups.append(sorted(observed))
+    closed = sum(1 for group in groups if group and all(len(adjacency[index]) == 2 for index in group))
+    return {"boundary_edge_indices": boundary, "loose_edge_indices": loose, "non_manifold_edge_indices": non_manifold,
+            "boundary_graph_components": len(groups), "closed_boundary_loops": closed,
+            "open_boundary_graphs": len(groups) - closed, "boundary_is_not_automatically_a_hole": True}
+
+
+def _component_uv_record(mesh: Any, polygon_indices: List[int], layer: Any) -> Dict[str, Any]:
+    polygon_indices = sorted(polygon_indices)
+    owner = {value: value for value in polygon_indices}
+    def find(value: int) -> int:
+        while owner[value] != value:
+            owner[value] = owner[owner[value]]
+            value = owner[value]
+        return value
+    def union(left: int, right: int) -> None:
+        left, right = find(left), find(right)
+        if left != right:
+            owner[max(left, right)] = min(left, right)
+    signatures: Dict[Any, List[int]] = {}
+    values = []
+    for polygon_index in polygon_indices:
+        polygon = mesh.polygons[polygon_index]
+        loops = list(polygon.loop_indices)
+        for position, loop_index in enumerate(loops):
+            following = loops[(position + 1) % len(loops)]
+            uv = _locator_numbers(list(layer.data[loop_index].uv), 2, "component UV")
+            uv_next = _locator_numbers(list(layer.data[following].uv), 2, "component UV")
+            values.append({"loop_index": loop_index, "uv": uv})
+            signature = (mesh.loops[loop_index].edge_index, tuple(sorted((tuple(uv), tuple(uv_next)))))
+            signatures.setdefault(signature, []).append(polygon_index)
+    for polygons in signatures.values():
+        for polygon in polygons[1:]:
+            union(polygons[0], polygon)
+    islands: Dict[int, List[int]] = {}
+    for polygon in polygon_indices:
+        islands.setdefault(find(polygon), []).append(polygon)
+    coordinates = [coordinate for value in values for coordinate in value["uv"]]
+    uv_pairs = [value["uv"] for value in values]
+    return {"loop_values": sorted(values, key=lambda row: row["loop_index"]), "loop_values_sha256": _promotion_digest(values),
+            "uv_bounds": {"min": [min(row[axis] for row in uv_pairs) for axis in range(2)],
+                          "max": [max(row[axis] for row in uv_pairs) for axis in range(2)]} if coordinates else None,
+            "uv_island_count": len(islands), "uv_islands": sorted((sorted(value) for value in islands.values()), key=lambda row: row[0])}
+
+
+def _component_material_record(job: Path, material: Any) -> Dict[str, Any]:
+    if material is None:
+        return {"name": None}
+    nodes, links, images = [], [], []
+    if material.use_nodes and material.node_tree is not None:
+        for node in material.node_tree.nodes:
+            nodes.append({"name": node.name, "type": node.bl_idname,
+                          "inputs": [(socket.identifier, _promotion_value(socket.default_value) if hasattr(socket, "default_value") else None) for socket in node.inputs],
+                          "outputs": [(socket.identifier, _promotion_value(socket.default_value) if hasattr(socket, "default_value") else None) for socket in node.outputs]})
+            image = getattr(node, "image", None)
+            if image is not None:
+                packed = [hashlib.sha256(item.packed_file.data).hexdigest().upper() for item in image.packed_files]
+                path = Path(bpy.path.abspath(image.filepath)).resolve() if image.filepath else None
+                inside_job = False
+                if path is not None:
+                    try:
+                        path.relative_to(job)
+                        inside_job = True
+                    except ValueError:
+                        pass
+                images.append({"node": node.name, "name": image.name, "filepath": image.filepath,
+                               "packed_sha256": packed, "same_job_file_sha256": file_sha256(path) if not packed and inside_job and path.is_file() else None,
+                               "external_unpacked_reference": bool(not packed and path is not None and not inside_job)})
+        links = sorted((link.from_node.name, link.from_socket.identifier, link.to_node.name, link.to_socket.identifier) for link in material.node_tree.links)
+    result = {"name": material.name, "library": material.library.filepath if material.library else None,
+              "use_nodes": bool(material.use_nodes), "diffuse_color": _promotion_value(material.diffuse_color),
+              "properties": _promotion_properties(material), "nodes": nodes, "links": links, "images": images}
+    result["graph_sha256"] = _promotion_digest(result)
+    return result
+
+
+def _component_source_record(job: Path, mesh_obj: Any) -> Dict[str, Any]:
+    mesh = mesh_obj.data
+    if (not 1 <= len(mesh.vertices) <= 250000 or len(mesh.polygons) > 500000 or len(mesh.loops) > 1500000
+            or len(mesh.edges) > 1000000 or len(mesh.uv_layers) > 8 or len(mesh_obj.vertex_groups) > 256 or len(mesh.materials) > 64):
+        raise ValueError("Component-review source exceeds explicit geometry, UV, group, or material caps.")
+    world_inverse = _mesh_region_matrix(mesh_obj.matrix_world, "component-review mesh world")
+    normal_world = world_inverse.to_3x3().transposed()
+    catalog = _component_index_catalog(len(mesh.vertices),
+                                       ((edge.index, tuple(edge.vertices)) for edge in mesh.edges),
+                                       ((polygon.index, tuple(polygon.vertices)) for polygon in mesh.polygons))
+    polygon_to_component = {polygon: row["component_id"] for row in catalog for polygon in row["polygon_indices"]}
+    for row in catalog:
+        loops = sorted(loop_index for polygon_index in row["polygon_indices"] for loop_index in mesh.polygons[polygon_index].loop_indices)
+        row["loop_indices"] = loops
+        row["triangle_count"] = sum(max(0, len(mesh.polygons[index].vertices) - 2) for index in row["polygon_indices"])
+        row["degenerate_polygon_indices"] = sorted(index for index in row["polygon_indices"] if len(set(mesh.polygons[index].vertices)) < 3 or mesh.polygons[index].area <= 1e-12)
+        row.update(_component_boundary_record(mesh, row))
+        has_faces, has_loose = bool(row["polygon_indices"]), bool(row["loose_edge_indices"])
+        row["topology_class"] = "mixed" if has_faces and has_loose else ("surface" if has_faces else ("wire" if row["edge_indices"] else "point"))
+        positions = []
+        for index in row["vertex_indices"]:
+            vertex = mesh.vertices[index]
+            point = _locator_numbers(list(vertex.co), 3, "component position")
+            world_point = _locator_numbers(list(mesh_obj.matrix_world @ vertex.co), 3, "component world position")
+            normal = _locator_numbers(list(vertex.normal), 3, "component normal")
+            defined = Vector(normal).length > 1e-12
+            world_normal = _mesh_region_normal(vertex.normal, normal_world) if defined else [0.0, 0.0, 0.0]
+            weights = []
+            for assignment in vertex.groups:
+                if not 0 <= assignment.group < len(mesh_obj.vertex_groups) or not math.isfinite(assignment.weight):
+                    raise ValueError("Component review found an invalid vertex-group assignment.")
+                weights.append({"group_index": assignment.group, "group_name": mesh_obj.vertex_groups[assignment.group].name, "weight": float(assignment.weight)})
+            positions.append({"vertex_index": index, "object_position": point, "world_position": world_point,
+                              "object_normal": normal, "world_normal": world_normal, "normal_defined": defined, "weights": weights})
+        row["vertices"] = positions
+        row["object_centroid"] = [sum(value["object_position"][axis] for value in positions) / len(positions) for axis in range(3)]
+        row["world_centroid"] = [sum(value["world_position"][axis] for value in positions) / len(positions) for axis in range(3)]
+        row["object_bounds"] = {"min": [min(value["object_position"][axis] for value in positions) for axis in range(3)],
+                                "max": [max(value["object_position"][axis] for value in positions) for axis in range(3)]}
+        row["world_bounds"] = {"min": [min(value["world_position"][axis] for value in positions) for axis in range(3)],
+                               "max": [max(value["world_position"][axis] for value in positions) for axis in range(3)]}
+        row["edges"] = [{"edge_index": index, "vertex_indices": list(mesh.edges[index].vertices)} for index in row["edge_indices"]]
+        row["polygons"] = [{"polygon_index": index, "vertex_indices": list(mesh.polygons[index].vertices),
+                            "loop_indices": list(mesh.polygons[index].loop_indices), "material_index": int(mesh.polygons[index].material_index)}
+                           for index in row["polygon_indices"]]
+        row["loops"] = [{"loop_index": index, "vertex_index": int(mesh.loops[index].vertex_index), "edge_index": int(mesh.loops[index].edge_index),
+                         "object_normal": _locator_numbers(list(mesh.corner_normals[index].vector), 3, "component corner normal"),
+                         "world_normal": _mesh_region_normal(mesh.corner_normals[index].vector, normal_world),
+                         "uvs": {layer.name: _locator_numbers(list(layer.data[index].uv), 2, "component UV") for layer in mesh.uv_layers}}
+                        for index in loops]
+        row["uv_layers"] = {layer.name: _component_uv_record(mesh, row["polygon_indices"], layer) for layer in mesh.uv_layers}
+        material_counts: Dict[int, Dict[str, int]] = {}
+        for polygon_index in row["polygon_indices"]:
+            polygon = mesh.polygons[polygon_index]
+            slot = material_counts.setdefault(int(polygon.material_index), {"polygons": 0, "loops": 0})
+            slot["polygons"] += 1
+            slot["loops"] += len(polygon.loop_indices)
+        row["material_coverage"] = [{"material_index": index, "material_name": mesh.materials[index].name if 0 <= index < len(mesh.materials) and mesh.materials[index] else None,
+                                     **counts} for index, counts in sorted(material_counts.items())]
+        row["membership_sha256"] = _promotion_digest({key: row[key] for key in ("vertex_indices", "edge_indices", "polygon_indices", "loop_indices")})
+    result = {"mesh_name": mesh_obj.name, "mesh_data_name": mesh.name, "source_topology_sha256": _mesh_region_topology(mesh),
+              "source_counts": {"vertices": len(mesh.vertices), "edges": len(mesh.edges), "polygons": len(mesh.polygons), "loops": len(mesh.loops), "components": len(catalog)},
+              "object_transform": {"matrix_world": _locator_matrix_record(mesh_obj.matrix_world), "matrix_world_inverse": _locator_matrix_record(world_inverse),
+                                   "location": _locator_numbers(list(mesh_obj.location), 3, "component object location"),
+                                   "rotation_euler": _locator_numbers(list(mesh_obj.rotation_euler), 3, "component object rotation"),
+                                   "scale": _locator_numbers(list(mesh_obj.scale), 3, "component object scale")},
+              "material_slots": [_component_material_record(job, material) for material in mesh.materials], "components": catalog,
+              "polygon_component_ids_sha256": _promotion_digest(sorted(polygon_to_component.items()))}
+    result["component_catalog_sha256"] = _promotion_digest(catalog)
+    return result
+
+
+def _component_integrity(mesh_obj: Any, source_record: Dict[str, Any]) -> Dict[str, Any]:
+    inventories = {}
+    for label, collection in (("objects", bpy.data.objects), ("meshes", bpy.data.meshes), ("materials", bpy.data.materials),
+                              ("images", bpy.data.images), ("collections", bpy.data.collections), ("scenes", bpy.data.scenes),
+                              ("actions", bpy.data.actions), ("cameras", bpy.data.cameras), ("lights", bpy.data.lights), ("curves", bpy.data.curves)):
+        inventories[label] = sorted((block.name, int(block.users), block.library.filepath if block.library else None) for block in collection)
+    scenes = {scene.name: {"frame": int(scene.frame_current), "subframe": float(scene.frame_subframe),
+                           "camera": scene.camera.name if scene.camera else None, "objects": sorted(obj.name for obj in scene.objects),
+                           "render": (scene.render.engine, scene.render.resolution_x, scene.render.resolution_y, scene.render.resolution_percentage, scene.render.filepath)}
+              for scene in bpy.data.scenes}
+    objects = {obj.name: {"type": obj.type, "data": obj.data.name if obj.data else None, "world": _locator_matrix_record(obj.matrix_world),
+                          "hide_render": bool(obj.hide_render), "hide_viewport": bool(obj.hide_viewport), "hide_get": bool(obj.hide_get()),
+                          "selected": bool(obj.select_get()), "collections": sorted(owner.name for owner in obj.users_collection), "properties": _promotion_properties(obj)}
+               for obj in bpy.data.objects}
+    sections = {"inventory": inventories, "scenes": scenes, "objects": objects,
+                "actions": _mesh_region_action_integrity(), "selected_source": source_record,
+                "context": {"active_object": bpy.context.view_layer.objects.active.name if bpy.context.view_layer.objects.active else None,
+                            "selected_mesh": mesh_obj.name}}
+    return {"sha256": _promotion_digest(sections), "sections": {key: _promotion_digest(value) for key, value in sections.items()}}
+
+
+def _component_emission_material(name: str, color: Tuple[float, float, float, float]) -> Any:
+    material = bpy.data.materials.new(name)
+    material.use_nodes = True
+    nodes = material.node_tree.nodes
+    nodes.clear()
+    output = nodes.new("ShaderNodeOutputMaterial")
+    shader = nodes.new("ShaderNodeBsdfPrincipled")
+    shader.inputs["Base Color"].default_value = color
+    emission = shader.inputs.get("Emission Color") or shader.inputs.get("Emission")
+    if emission is not None:
+        emission.default_value = color
+    strength = shader.inputs.get("Emission Strength")
+    if strength is not None:
+        strength.default_value = 1.0
+    material.node_tree.links.new(shader.outputs["BSDF"], output.inputs["Surface"])
+    return material
+
+
+def _render_component_group(job: Path, request_id: str, mesh_obj: Any, components: List[Dict[str, Any]], views: List[str]) -> List[Dict[str, Any]]:
+    prefix = f"CHAOSX_COMPONENT_REVIEW_{request_id}"
+    old_scene = bpy.context.window.scene
+    before_images = {image.name for image in bpy.data.images}
+    scene = bpy.data.scenes.new(prefix)
+    temporary_objects, temporary_meshes, temporary_curves, temporary_materials = [], [], [], []
+    camera_data = bpy.data.cameras.new(prefix + "_Camera")
+    camera = bpy.data.objects.new(prefix + "_Camera", camera_data)
+    temporary_objects.append(camera)
+    scene.collection.objects.link(camera)
+    scene.camera = camera
+    world = bpy.data.worlds.new(prefix + "_World")
+    scene.world = world
+    world.color = (0.01, 0.012, 0.016)
+    palette = ((0.95, 0.20, 0.12, 1.0), (0.15, 0.75, 1.0, 1.0), (1.0, 0.72, 0.08, 1.0), (0.25, 1.0, 0.32, 1.0),
+               (0.85, 0.25, 1.0, 1.0), (1.0, 0.42, 0.68, 1.0), (0.20, 1.0, 0.85, 1.0), (0.65, 0.78, 1.0, 1.0))
+    dim = _component_emission_material(prefix + "_Dim", (0.055, 0.065, 0.08, 1.0))
+    colors = [_component_emission_material(f"{prefix}_Color_{index}", palette[index % len(palette)]) for index in range(len(components))]
+    temporary_materials.extend([dim, *colors])
+    body_mesh = mesh_obj.data.copy()
+    body_mesh.name = prefix + "_Mesh"
+    temporary_meshes.append(body_mesh)
+    body = bpy.data.objects.new(prefix + "_Body", body_mesh)
+    temporary_objects.append(body)
+    scene.collection.objects.link(body)
+    body.matrix_world = mesh_obj.matrix_world.copy()
+    body_mesh.materials.clear()
+    body_mesh.materials.append(dim)
+    for material in colors:
+        body_mesh.materials.append(material)
+    polygon_colors = {polygon: index + 1 for index, row in enumerate(components) for polygon in row["polygon_indices"]}
+    for polygon in body_mesh.polygons:
+        polygon.material_index = polygon_colors.get(polygon.index, 0)
+    points = [mesh_obj.matrix_world @ Vector(corner) for corner in mesh_obj.bound_box]
+    low = Vector([min(point[axis] for point in points) for axis in range(3)])
+    high = Vector([max(point[axis] for point in points) for axis in range(3)])
+    center, dimensions = (low + high) * 0.5, high - low
+    span = max(float(max(dimensions)), 0.1)
+    distance = span * 2.5
+    camera.data.type = "ORTHO"
+    camera.data.ortho_scale = span * 1.55
+    camera.data.clip_start = max(span * 0.001, 0.001)
+    camera.data.clip_end = distance * 4.0
+    scene.render.engine = "BLENDER_EEVEE"
+    scene.render.resolution_x = 1024
+    scene.render.resolution_y = 1024
+    scene.render.resolution_percentage = 100
+    scene.render.image_settings.file_format = "PNG"
+    scene.render.film_transparent = False
+    view_positions = {"front": (center.x, center.y - distance, center.z), "rear": (center.x, center.y + distance, center.z),
+                      "left": (center.x - distance, center.y, center.z), "right": (center.x + distance, center.y, center.z),
+                      "top": (center.x, center.y, center.z + distance),
+                      "three_quarter": (center.x + distance * 0.7, center.y - distance * 0.7, center.z + distance * 0.2)}
+    previews = []
+    bpy.context.window.scene = scene
+    try:
+        for view in views:
+            camera.location = view_positions[view]
+            camera_point_at(camera, center)
+            bpy.context.view_layer.update()
+            labels, swatches, leaders = [], [], []
+            for index, row in enumerate(components):
+                anchor = camera.matrix_world @ Vector((-span * 0.70, span * (0.52 - index * 0.065), -span * 0.05))
+                text_data = bpy.data.curves.new(f"{prefix}_{view}_{index}_Text", type="FONT")
+                temporary_curves.append(text_data)
+                text_data.body = row["component_id"]
+                text_data.align_x = "LEFT"
+                text_data.size = span * 0.035
+                label = bpy.data.objects.new(f"{prefix}_{view}_{index}_Label", text_data)
+                temporary_objects.append(label)
+                scene.collection.objects.link(label)
+                label.data.materials.append(colors[index])
+                label.location = anchor
+                label.rotation_mode = "QUATERNION"
+                label.rotation_quaternion = camera.rotation_quaternion.copy()
+                labels.append(label)
+                swatch_mesh = bpy.data.meshes.new(f"{prefix}_{view}_{index}_SwatchMesh")
+                temporary_meshes.append(swatch_mesh)
+                size = span * 0.018
+                swatch_mesh.from_pydata([(-size, -size, 0), (size, -size, 0), (size, size, 0), (-size, size, 0)], [], [(0, 1, 2, 3)])
+                swatch = bpy.data.objects.new(f"{prefix}_{view}_{index}_Swatch", swatch_mesh)
+                temporary_objects.append(swatch)
+                scene.collection.objects.link(swatch)
+                swatch.data.materials.append(colors[index])
+                swatch.location = anchor + camera.matrix_world.to_quaternion() @ Vector((-span * 0.035, span * 0.008, 0))
+                swatch.rotation_mode = "QUATERNION"
+                swatch.rotation_quaternion = camera.rotation_quaternion.copy()
+                swatches.append(swatch)
+                leader_data = bpy.data.curves.new(f"{prefix}_{view}_{index}_Leader", type="CURVE")
+                temporary_curves.append(leader_data)
+                leader_data.dimensions = "3D"
+                leader_data.bevel_depth = span * 0.0015
+                spline = leader_data.splines.new("POLY")
+                spline.points.add(1)
+                centroid = Vector(row["world_centroid"])
+                spline.points[0].co = (*centroid, 1.0)
+                spline.points[1].co = (*anchor, 1.0)
+                leader = bpy.data.objects.new(f"{prefix}_{view}_{index}_Leader", leader_data)
+                temporary_objects.append(leader)
+                scene.collection.objects.link(leader)
+                leader.data.materials.append(colors[index])
+                leaders.append(leader)
+            output = job / "blender" / "previews" / f"component_review_{request_id}_{view}.png"
+            output.parent.mkdir(parents=True, exist_ok=True)
+            if output.exists():
+                raise FileExistsError(f"Component-review preview already exists: {output}")
+            scene.render.filepath = str(output)
+            bpy.ops.render.render(write_still=True)
+            if not output.is_file() or output.stat().st_size < 1:
+                raise RuntimeError("Component-review render did not produce a nonempty PNG.")
+            previews.append({"view": view, "path": output.relative_to(job).as_posix(), "bytes": output.stat().st_size,
+                             "sha256": file_sha256(output), "component_ids": [row["component_id"] for row in components],
+                             "label_policy": "fixed_legend_color_swatch_and_centroid_leader", "small_or_occluded_identity_requires_visual_review": True})
+            for obj in [*labels, *swatches, *leaders]:
+                bpy.data.objects.remove(obj, do_unlink=True)
+                temporary_objects.remove(obj)
+    finally:
+        bpy.context.window.scene = old_scene
+        for obj in reversed(temporary_objects):
+            if obj.name in bpy.data.objects:
+                bpy.data.objects.remove(obj, do_unlink=True)
+        for data in reversed(temporary_meshes):
+            if data.name in bpy.data.meshes and data.users == 0:
+                bpy.data.meshes.remove(data)
+        for data in reversed(temporary_curves):
+            if data.name in bpy.data.curves and data.users == 0:
+                bpy.data.curves.remove(data)
+        for material in reversed(temporary_materials):
+            if material.name in bpy.data.materials and material.users == 0:
+                bpy.data.materials.remove(material)
+        if camera_data.name in bpy.data.cameras and camera_data.users == 0:
+            bpy.data.cameras.remove(camera_data)
+        if scene.name in bpy.data.scenes:
+            bpy.data.scenes.remove(scene)
+        if world.name in bpy.data.worlds and world.users == 0:
+            bpy.data.worlds.remove(world)
+        for image in list(bpy.data.images):
+            if image.name not in before_images:
+                bpy.data.images.remove(image)
+    return previews
+
+
+def review_humanoid_components(req: Dict[str, Any]) -> Dict[str, Any]:
+    context = _component_review_inputs(req)
+    try:
+        bpy.ops.wm.open_mainfile(filepath=str(context["source"]), use_scripts=False)
+        mesh_obj = bpy.context.scene.objects.get(context["mesh_name"])
+        if mesh_obj is None or mesh_obj.type != "MESH" or mesh_obj.library or mesh_obj.override_library or mesh_obj.data.library or mesh_obj.data.override_library:
+            raise ValueError("Component review requires one exact local mesh object and data block.")
+        if (mesh_obj.parent is not None or mesh_obj.modifiers or mesh_obj.constraints or mesh_obj.data.shape_keys
+                or mesh_obj.animation_data or mesh_obj.data.animation_data):
+            raise ValueError("Component review requires an unparented unrigged static mesh without modifiers, shape keys, constraints, or animation.")
+        if any(value <= 0 for value in mesh_obj.scale):
+            raise ValueError("Component review rejects negative or singular object scale.")
+        source_record = _component_source_record(context["job"], mesh_obj)
+        before = _component_integrity(mesh_obj, source_record)
+        by_id = {row["component_id"]: row for row in source_record["components"]}
+        if context["component_ids"]:
+            missing = [value for value in context["component_ids"] if value not in by_id]
+            if missing:
+                raise ValueError(f"Unknown component_ids: {missing}")
+            selected = [by_id[value] for value in context["component_ids"]]
+            offset = None
+        else:
+            offset = context["component_offset"]
+            if offset >= len(source_record["components"]):
+                raise ValueError("Component-review page offset exceeds the component count.")
+            selected = source_record["components"][offset:offset + context["component_limit"]]
+        try:
+            previews = _render_component_group(context["job"], context["request_id"], mesh_obj, selected, context["preview_view_names"])
+        finally:
+            after_record = _component_source_record(context["job"], mesh_obj)
+            after = _component_integrity(mesh_obj, after_record)
+            if before != after or source_record != after_record:
+                changed = sorted(key for key in before["sections"] if before["sections"][key] != after["sections"].get(key))
+                raise RuntimeError(f"Read-only component review changed original scene or mesh data sections: {changed}")
+        next_offset = None if offset is None or offset + len(selected) >= len(source_record["components"]) else offset + len(selected)
+        result = {"operation": "review_humanoid_components", "blend": context["source"].relative_to(context["job"]).as_posix(),
+                  "source_sha256": context["expected_source_sha256"], "source_bytes": context["source_bytes"], "source_immutable": True,
+                  "mesh_name": mesh_obj.name, "mesh_data_name": mesh_obj.data.name, "source_topology_sha256": source_record["source_topology_sha256"],
+                  "component_catalog_sha256": source_record["component_catalog_sha256"], "component_count": len(source_record["components"]),
+                  "component_page": {"explicit_ids": context["component_ids"], "offset": offset, "returned": len(selected), "limit": context["component_limit"],
+                                     "truncated": next_offset is not None, "next_offset": next_offset, "component_ids": [row["component_id"] for row in selected]},
+                  "source_record": source_record, "previews": previews, "render_group": True,
+                  "component_identity_policy": "source_vertex_edge_polygon_connectivity_no_position_weld_no_semantic_classification",
+                  "original_data_integrity_sha256": before["sha256"], "original_data_section_sha256": before["sections"],
+                  "original_data_unchanged": True, "checkpoint_saved": False, "new_provider_call": False,
+                  "semantic_component_acceptance": False, "weapon_separability_approved": False}
+        encoded = (json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n").encode("utf-8")
+        if len(encoded) > 64 * 1024 * 1024:
+            raise ValueError("Component-review report exceeds the 64 MiB full-membership ceiling.")
+        report_path = context["job"] / "blender" / "reports" / f"component_review_{context['request_id']}.json"
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        if report_path.exists():
+            raise FileExistsError(f"Component-review report already exists: {report_path}")
+        report_path.write_bytes(encoded)
+        result["report"] = report_path.relative_to(context["job"]).as_posix()
+        result["report_bytes"] = len(encoded)
+        result["report_sha256"] = file_sha256(report_path)
+        return result
+    finally:
+        if file_sha256(context["source"]) != context["expected_source_sha256"] or context["source"].stat().st_size != context["source_bytes"]:
+            raise RuntimeError("Read-only component review changed its source checkpoint.")
+
+
 def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
+    if req["payload"].get("include_action_channels") is not None:
+        return inspect_action_channels(req)
     if req["payload"].get("mesh_region") is not None:
         return inspect_mesh_region(req)
     job = Path(req["job_root"]).resolve()
@@ -8726,7 +9352,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "author_locator", "promote_accepted_reimport", "patch_existing_humanoid_action_phases", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
+    if operation not in {"health", "inspect_scene", "review_humanoid_components", "save_checkpoint", "author_locator", "promote_accepted_reimport", "patch_existing_humanoid_action_phases", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -8734,6 +9360,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return prepare(req, pdx)
     if operation == "inspect_scene":
         return inspect(req)
+    if operation == "review_humanoid_components":
+        return review_humanoid_components(req)
     if operation == "author_locator":
         return author_locator(req)
     if operation == "promote_accepted_reimport":

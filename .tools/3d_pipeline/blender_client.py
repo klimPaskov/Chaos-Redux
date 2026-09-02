@@ -634,6 +634,8 @@ class BlenderAdapterClient:
         preview_frame: int = -1,
         preview_view_names: Optional[list[str]] = None,
         mesh_region: Optional[Dict[str, Any]] = None,
+        include_action_channels: bool = False,
+        expected_source_sha256: str = "",
     ) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_inspect_scene",
@@ -647,6 +649,34 @@ class BlenderAdapterClient:
                 "preview_frame": preview_frame,
                 "preview_view_names": preview_view_names or [],
                 **({"mesh_region": mesh_region} if mesh_region is not None else {}),
+                **({"include_action_channels": True, "expected_source_sha256": expected_source_sha256} if include_action_channels else {}),
+            },
+        )
+
+    def review_humanoid_components(
+        self,
+        job_id: str,
+        blend_rel: str,
+        expected_source_sha256: str,
+        mesh_name: str,
+        render_group: bool = True,
+        component_ids: Optional[list[str]] = None,
+        component_offset: int = 0,
+        component_limit: int = 16,
+        preview_view_names: Optional[list[str]] = None,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_review_humanoid_components",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "expected_source_sha256": expected_source_sha256,
+                "mesh_name": mesh_name,
+                "render_group": render_group,
+                "component_ids": component_ids or [],
+                "component_offset": component_offset,
+                "component_limit": component_limit,
+                "preview_view_names": preview_view_names or [],
             },
         )
 

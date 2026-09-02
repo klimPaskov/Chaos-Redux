@@ -32,7 +32,7 @@ def verified_environment() -> dict:
     adapter = lock["routes"]["blender_hoi4_adapter"]
     # Parent explicitly requested this disposable native proof before registration.
     # Every deliberate candidate is pinned; all other production locks still apply.
-    assert config["adapter_version"] == adapter["version"] and adapter["version"] in {"1.10.18", "1.10.19"}
+    assert config["adapter_version"] == adapter["version"] and adapter["version"] in {"1.10.18", "1.10.19", "1.10.20"}
     assert config["operations"] == adapter["operations"]
     candidate = adapter["version"] == "1.10.18"
     assert adapter["operations"].count("patch_existing_humanoid_action_phases") == (0 if candidate else 1)

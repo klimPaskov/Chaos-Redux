@@ -350,8 +350,10 @@ def chaosx_blender_hoi4_inspect_scene(
     preview_frame: int = -1,
     preview_view_names: list[str] | None = None,
     mesh_region: dict[str, Any] | None = None,
+    include_action_channels: bool = False,
+    expected_source_sha256: str = "",
 ) -> Dict[str, Any]:
-    """Inspect a checkpoint; optional hash-bound mesh_region reads indexed deformation without rendering or saving."""
+    """Inspect a checkpoint; optional hash-bound mesh_region or action-channel inventory remains read-only."""
 
     return _run(
         job_id,
@@ -365,6 +367,37 @@ def chaosx_blender_hoi4_inspect_scene(
             "preview_frame": preview_frame,
             "preview_view_names": preview_view_names or [],
             **({"mesh_region": mesh_region} if mesh_region is not None else {}),
+            **({"include_action_channels": True, "expected_source_sha256": expected_source_sha256} if include_action_channels else {}),
+        },
+    )
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_review_humanoid_components(
+    job_id: str,
+    blend_rel: str,
+    expected_source_sha256: str,
+    mesh_name: str,
+    render_group: bool = True,
+    component_ids: list[str] | None = None,
+    component_offset: int = 0,
+    component_limit: int = 16,
+    preview_view_names: list[str] | None = None,
+) -> Dict[str, Any]:
+    """Catalog loose source-index components and render bounded labelled group evidence without changing the Blend."""
+
+    return _run(
+        job_id,
+        "review_humanoid_components",
+        {
+            "blend_rel": blend_rel,
+            "expected_source_sha256": expected_source_sha256,
+            "mesh_name": mesh_name,
+            "render_group": render_group,
+            "component_ids": component_ids or [],
+            "component_offset": component_offset,
+            "component_limit": component_limit,
+            "preview_view_names": preview_view_names or [],
         },
     )
 

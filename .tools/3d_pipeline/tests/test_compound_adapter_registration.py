@@ -18,6 +18,17 @@ from lib.mcp_stdio import call_stdio  # noqa: E402
 
 
 REGISTERED_TOOLS = {
+    "chaosx_blender_hoi4_review_humanoid_components": {
+        "job_id",
+        "blend_rel",
+        "expected_source_sha256",
+        "mesh_name",
+        "render_group",
+        "component_ids",
+        "component_offset",
+        "component_limit",
+        "preview_view_names",
+    },
     "chaosx_blender_hoi4_import_animation_action": {
         "job_id",
         "blend_rel",
