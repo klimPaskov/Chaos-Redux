@@ -12,25 +12,36 @@ The deadline and outcome reports also resolve a scripted policy clause from the 
 
 1. Evolution IV records one response: charter, concession, military seizure, foreign containment, or refusal. Concession is offered only after institutional capture is already proven.
 2. `brilliant_scientist_start_sovereignty_deadline` prepares a live territory plan, selects one valid exile recipient, calculates the opposing hidden strength scores, and activates the visible sovereignty mission.
-3. The host can execute one timed decision. Every decision occupies production, consumes Political Power and the relevant physical resources, and sets a single in-progress lock.
+3. The host can execute one timed decision. Every decision pays Political Power and Stability, commits one temporary consumer-goods burden, and may pay one physical or operational cost. Selection records an action-specific receipt and hides the other responses until it ends.
 4. Completion rechecks every mutable fact. Release, exile, charter, and concession must still satisfy their legal or causal contract. Coercive actions recalculate both strength scores immediately before resolution.
 5. A valid result is recorded once, the mission and persistent exile target are cleared, and the outcome report is fired. If a route has become invalid, no land or custody changes; event `.32` reopens the board for another explicit choice.
 6. If the deadline expires, event `.30` executes the response selected during Evolution IV against the same current-state checks. The timer does not introduce a random alternative.
 
 ## Visible actions and costs
 
-| Decision | Time | Concrete burden | Governing risk |
-|---|---:|---|---|
-| Release Doctor Kruger | 21 days | 25 Political Power, light production disruption, stability | Only a low-dependence, low-autonomy, small-site Directorate can leave cleanly |
-| Arrange Exile | 30 days | 40 Political Power, 10 convoys, 5 trains, 100 Support Equipment, stability | Recipient and transfer validity are rechecked atomically |
-| Arrest Doctor Kruger | 30 days | 55 Political Power, 400 Support Equipment, 1,500 Infantry Equipment, 12,000 manpower, 15 Army Experience, stability | Government and Kruger strength scores decide custody, defection, uprising, or crisis |
-| Shut Down the Directorate | 45 days | 65 Political Power, 300 Support Equipment, 150 trucks, 10 trains, 1,000 fuel, stability | Strong independent production and dangerous projects can resist demolition |
-| Ratify the Sovereign Charter | 45 days | 75 Political Power, 20 convoys, 15 trains, 250 trucks, 300 Support Equipment, stability | The laboratory territory and former-host viability must both pass revalidation |
-| Launch the Military Seizure | 21 days | 85 Political Power, 700 Support Equipment, 3,000 Infantry Equipment, 300 trucks, 2,500 fuel, 25,000 manpower, 30 Army Experience, stability | The largest government bonus, but high autonomy and weaponized projects can still defeat it |
-| Request Allied Containment | 30 days | 65 Political Power, faction membership, 25 convoys, 350 Support Equipment, 20 Command Power, stability | Faction support strengthens containment while foreign contacts create a defection route |
-| Concede Institutional Authority | 30 days | 50 Political Power, 200 Support Equipment, 10 trains, stability | Available only when the Directorate already controls the host's institutions |
+| Decision | Time | Immediate payment | Temporary consumer-goods factor | Governing risk |
+| --- | ---: | --- | ---: | --- |
+| Release Kruger | 21 days | 25 Political Power, 2% Stability | +3% | Only a low-dependence, low-autonomy, small-site Directorate can leave cleanly |
+| Arrange Exile | 30 days | 40 Political Power, 20 convoys, 3% Stability | +3% | Recipient and transfer validity are rechecked atomically |
+| Arrest Kruger | 30 days | 55 Political Power, 600 Support Equipment, 5% Stability | +6% | Government and Kruger strength scores decide custody, defection, uprising, or crisis |
+| Close the Directorate | 45 days | 65 Political Power, 200 trucks, 7% Stability | +6% | Strong independent production and dangerous projects can resist demolition |
+| Ratify the Charter | 45 days | 75 Political Power, 600 Support Equipment, 4% Stability | +10% | The laboratory territory and former-host viability must both pass revalidation |
+| Seize the Laboratories | 21 days | 85 Political Power, 6,000 Infantry Equipment, 10% Stability | +10% | The largest government bonus, but high autonomy and weaponized projects can still defeat it |
+| Allied Containment | 30 days | 65 Political Power, 20 Command Power, 6% Stability | +6% | Faction membership is required; allied support strengthens containment while foreign contacts create a defection route |
+| Concede Authority | 30 days | 50 Political Power, 300 Support Equipment, 8% Stability | +10% | Available only when the Directorate already controls the host's institutions |
 
 The costs are centralized in `common/script_constants/016_brilliant_scientist_containment_constants.txt`. The decision descriptions deliberately describe present facts and consequences rather than expose the numeric hidden scores.
+The cost row displays three entries for release and four for each other response, using the matching Political Power, equipment or Command Power, Stability, and consumer-goods texticons.
+Each upfront payment independently turns red only when that payment cannot be met; the other entries retain their normal colour.
+Affordability accepts the exact displayed Political Power, Stability, and equipment or Command Power amount; consumer-goods demand is a temporary factor, not a stockpile payment or a second factory-efficiency penalty.
+Each action's `brilliant_scientist_can_pay_containment_*` trigger is called by both `available` and `custom_cost_trigger`, so selection and the cost display use the same payment boundary.
+The availability copy is hidden only from the prerequisite text because the complete payment is already shown in the cost row and its tooltip.
+No separate manpower, fuel, Army Experience, train, or secondary-equipment deduction is hidden in these actions.
+Preparation is spent immediately and is non-refundable on interruption or invalid final revalidation, while the native decision owns removal of the temporary consumer-goods burden.
+
+The payment shape intentionally keeps political and industrial disruption while concentrating physical preparation into one action-specific requirement.
+Exile pays maritime transport, arrest pays security equipment, shutdown pays demolition transport, charter and concession pay administrative equipment, seizure pays weapons, and allied containment pays command coordination.
+These inputs do not add success points; the existing recorded causal state still determines whether containment succeeds.
 
 ## Causal resolution
 
@@ -62,6 +73,28 @@ Split sovereignty first secures the territory and inheritance snapshot, then cle
 Same-country takeover clears only pending reactions, preserving earned policy benefits and the country's resolved reaction history.
 Host-only reaction schedulers and delayed events exclude both sovereign carrier forms, so an unresolved report cannot be rescheduled after either transition.
 
+### Timed-action receipt
+
+All receipt helpers run in the acting country.
+`brilliant_scientist_begin_containment_action` takes `ACTION`, `POLITICAL_POWER`, and `STABILITY`, with positive payment values, and records `brilliant_scientist_active_containment_action` plus the historical start date before debiting the two common payments.
+The selecting decision debits its own optional equipment or Command Power anchor exactly once; the native decision modifier owns consumer-goods demand for the timer's lifetime.
+`brilliant_scientist_containment_action_is_live` checks the supplied `ACTION` against that receipt, current hosting, the in-progress lock, an unresolved board, and absence of world end.
+Both completion and cancellation use that predicate, and `brilliant_scientist_cancel_containment_action` clears state only when its supplied action still owns the receipt.
+Board closure and invalid-route reopening clear the receipt; permanent history and the latest start date remain.
+An old timer therefore cannot resolve its former action or clear a newer action's lock.
+
+Example country-scope invocation after validating the decision's complete cost and route:
+
+```text
+brilliant_scientist_begin_containment_action = {
+	ACTION = constant:brilliant_scientist_containment_action.arrest
+	POLITICAL_POWER = constant:brilliant_scientist_containment_cost.arrest_political_power
+	STABILITY = constant:brilliant_scientist_containment_cost.arrest_stability
+}
+```
+
+This private helper starts a paid native decision; it is not a public free-grant API or an outcome resolver.
+
 ## Assets and wiring
 
 - Report sprite: `GFX_report_event_016_brilliant_scientist_sovereignty_confrontation`
@@ -70,8 +103,10 @@ Host-only reaction schedulers and delayed events exclude both sovereign carrier 
 - Events: `events/016_brilliant_scientist_containment_events.txt`
 - Decisions: `common/decisions/016_brilliant_scientist_containment_decisions.txt`
 - Localisation: `localisation/english/016_brilliant_scientist_containment_l_english.yml`
+- Dynamic policy and per-payment colour selection: `common/scripted_localisation/016_brilliant_scientist_containment_scripted_localisation.txt`
 
 Decision icons currently use registered vanilla political-discourse, operation, oppression, industry, and civil-war preparation sprites. Dedicated project and Kruger State art is tracked in the Event 016 asset manifest and is not substituted by an unregistered sprite.
+Cost text uses the installed vanilla `GFX_pol_power`, `GFX_stability_texticon`, `GFX_consumer_goods_texticon`, `GFX_convoy_texticon`, `GFX_infantry_equipment_text_icon`, and `GFX_command_power` sprites, plus the existing `GFX_support_equipment_text_icon` and `GFX_motorized_equipment_text_icon` registrations in `interface/chaosx_texticons.gfx`.
 
 ## Future extensions
 

@@ -202,6 +202,7 @@ brilliant_scientist_close_sovereignty_board = {
 	clr_country_flag = brilliant_scientist_sovereignty_deadline_active
 	clr_country_flag = brilliant_scientist_containment_resolution_requested
 	clr_country_flag = brilliant_scientist_containment_action_in_progress
+	clear_variable = brilliant_scientist_active_containment_action
 	set_country_flag = brilliant_scientist_sovereignty_deadline_resolved
 	set_country_flag = brilliant_scientist_containment_resolution_completed
 	set_variable = { brilliant_scientist_containment_resolution_date = global.date }
@@ -275,6 +276,7 @@ brilliant_scientist_reopen_invalidated_sovereignty_board = {
 	set_temp_variable = { brilliant_scientist_containment_outcome = constant:brilliant_scientist_containment_outcome.invalidated }
 	brilliant_scientist_record_containment_outcome = yes
 	clr_country_flag = brilliant_scientist_containment_action_in_progress
+	clear_variable = brilliant_scientist_active_containment_action
 	set_country_flag = brilliant_scientist_containment_resolution_requested
 	brilliant_scientist_prepare_sovereignty_board = yes
 	country_event = { id = chaosx.nr16.32 hours = @CONTAINMENT_INVALIDATED_REVIEW_HOURS }
@@ -506,10 +508,28 @@ brilliant_scientist_resolve_coercive_containment = {
 	else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
 }
 
-# COUNTRY scope. Input temporary brilliant_scientist_containment_action.
+# COUNTRY scope. ACTION identifies the receipt; POLITICAL_POWER and STABILITY
+# are positive payments. Native decision modifiers own the timed commitment.
 brilliant_scientist_begin_containment_action = {
 	set_country_flag = brilliant_scientist_containment_action_in_progress
+	set_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
 	set_variable = { brilliant_scientist_containment_action_started_date = global.date }
+	set_temp_variable = { brilliant_scientist_containment_payment = $POLITICAL_POWER$ }
+	multiply_temp_variable = { brilliant_scientist_containment_payment = constant:brilliant_scientist_directorate_value.negative_one }
+	add_political_power = brilliant_scientist_containment_payment
+	set_temp_variable = { brilliant_scientist_containment_payment = $STABILITY$ }
+	multiply_temp_variable = { brilliant_scientist_containment_payment = constant:brilliant_scientist_directorate_value.negative_one }
+	add_stability = brilliant_scientist_containment_payment
+}
+
+# COUNTRY scope. ACTION is the cancelling timer's receipt. Preparation is sunk;
+# cancelling an older timer must not release the newer action's lock.
+brilliant_scientist_cancel_containment_action = {
+	if = {
+		limit = { check_variable = { brilliant_scientist_active_containment_action = $ACTION$ } }
+		clr_country_flag = brilliant_scientist_containment_action_in_progress
+		clear_variable = brilliant_scientist_active_containment_action
+	}
 }
 
 # COUNTRY scope. Input temporary brilliant_scientist_containment_action.

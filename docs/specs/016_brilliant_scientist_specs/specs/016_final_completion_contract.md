@@ -138,6 +138,14 @@ Foreign recruitment, theft, sabotage, defection, public challenge, and assassina
 
 Containment follows recorded causal state. Low authority and dependence permit release, arrest, exile, or shutdown. High authority, dangerous projects, extensive facilities, and Independent Capacity can defeat coercion. Failed containment forms KRG only from viable host territory and laboratories. Project-specific military inheritance remains causally separate for every family.
 
+Each containment decision charges no more than four distinct costs: Political Power, at most one physical or operational payment, upfront Stability, and a single temporary consumer-goods burden.
+Release has no physical payment; exile uses 20 convoys, arrest 600 Support Equipment, shutdown 200 trucks, charter 600 Support Equipment, military seizure 6,000 Infantry Equipment, foreign containment 20 Command Power, and concession 300 Support Equipment.
+The existing Political Power, Stability, consumer-goods, and duration values remain unchanged.
+Other equipment, manpower, experience, fuel deductions, and the separate factory-efficiency penalty are removed rather than hidden or moved into another payment phase.
+Affordability accepts exactly the displayed amounts, and every payment appears in the icon-backed cost surface with Political Power planning preserved for AI.
+Preparation is spent on selection and is not refunded on interruption or invalid final revalidation; the temporary industrial commitment ends with its native timer or cancellation.
+Only the selected containment action remains visible while its timer runs, and an action-specific receipt prevents a stale timer from resolving or cancelling a newer action.
+
 KRG retains exactly 100 focuses. DHR retains exactly 88 focuses. Weak rewards are replaced in place with project actions, unit production, raids, facilities, diplomacy, intelligence, integration, crises, and late-game capabilities. Focus-created spirit lifecycles never exceed three simultaneous spirits for a route.
 
 Only the active program owner's D'Rhondan expedition is eligible when both character identities could otherwise qualify. The artificial equal 10,000 score competition is removed.
