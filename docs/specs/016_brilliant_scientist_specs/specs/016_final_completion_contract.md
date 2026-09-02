@@ -80,6 +80,13 @@ Mengele can eventually unlock all project families through his own program state
 Mengele's provider stages use independent per-family receipts, not a global one-project queue or another public Capacity meter.
 Concurrent families compete for actual available factories, political power, support equipment, and fuel.
 The implementation sequence begins with a complete Computation path: Theory, a native Prototype when that presentation is available or a decision Prototype otherwise, Deployment, and Weaponization.
+Mengele's Computation incident uses only its private provider state.
+The intrinsic incident pressure is the existing stage Capacity value multiplied by the existing stage accident factor, without reading Kruger's Exposure or writing his incident ledger.
+Each successful private stage output and the native risky Prototype choice may test that pressure against its complement, but only one corrupted-model incident may remain active.
+The incident retains its own permanent history and applies the existing Computation decryption and planning penalties through one provider-owned modifier; it does not revoke learned technology or prevent the native project from completing.
+Its recovery action occupies two civilian factories for sixty days and spends 35 Political Power, 300 Support Equipment, and 500 fuel, using the existing technical-response constants.
+An exact recovery receipt refunds those direct payments once if the provider becomes invalid before completion; the native decision owns the factory reservation.
+Recovery and program cleanup remove transient penalties while retaining incident, recovery, project, and learned-technology history.
 Theory and both post-prototype decisions remain available in either DLC state under the existing program-registry gate.
 The existing Computation theory modifier accepts an explicit active Mengele theory receipt; the existing Mengele prototype modifier expires when the full neutral operational package is learned, preventing duplicate prototype and operational bonuses.
 Deployment and Weaponization call the full neutral conventional API with explicit Mengele provenance, leaving research-slot adoption and idempotent learned knowledge to that API.
@@ -209,6 +216,7 @@ D'Rhondan compact Event `.49` keeps its valid accept/refuse pool separate from i
 The regular actor and original-recipient targets must match the active persistent offer target, and an offer can deliver only once.
 The delivered offer remains exclusive until the guarded response or native event timeout resolves it; war, subject status, regime change, and other invalidation cannot release a still-open popup's lock early.
 The native response timeout remains thirteen days, made explicit through a file-scoped constant, with a matching shared duration and a one-day cleanup grace.
+The functional offer deadline is an elapsed-day receipt based on `global.num_days`; both response commitment and watchdog scheduling use that same axis.
 An actor-owned watchdog carries the original actor/recipient targets and may clear only that matching offer after its current recorded expiry; an early watchdog reschedules to the remaining deadline instead of clearing an open response.
 This bounded expiry also releases undelivered or destroyed-recipient offers without a world-iterating pulse, new popup, or per-popup numeric snapshot.
 Reinitialization preserves a dated receipt and reconstructs its original-party pointers; an undated active receipt receives one full response window without redispatching a popup or awarding diplomacy.
@@ -221,6 +229,9 @@ The recipient's local and regional archive choices each settle only their own ou
 World-threat duration counts actual active days through `global.num_days`, accumulating closed intervals and adding only the current open interval.
 Inactive gaps and a missing start receipt contribute no duration; the existing date values remain presentation history rather than arithmetic inputs.
 The 180-, 365-, and 730-day qualification thresholds and their score contributions remain unchanged.
+All other elapsed deadlines use `global.num_days` rather than adding days to the calendar identifier `global.date`.
+This includes the D'Rhondan compact, shared Black Plague devastation intervals reached by biological deployment, and the evolution scheduler's informational next-check receipt.
+The evolution callback continues to use its existing scheduled delay, and these repairs do not change any duration, outcome weight, or stage count.
 Singularity arming, fail-deadly authorization, and final commitment require currently owned-and-controlled qualifying facilities, not only a retained audit flag.
 Command and power infrastructure must retain physical site, role, and quantity receipts so captured or destroyed sites cannot remain live solely through country counters; permanent research and construction history are separate from live infrastructure.
 The shared final-commit gate retains the capitulation failsafe and does not inherit an ordinary decision's non-capitulated-country requirement.
