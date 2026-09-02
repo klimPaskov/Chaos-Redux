@@ -376,10 +376,28 @@ brilliant_scientist_dispatch_black_plague_release = {
 			else = { set_temp_variable = { black_plague_exposure_amount = constant:brilliant_scientist_biological_deployment.black_plague_covert_exposure } }
 			set_temp_variable = { black_plague_exposure_route = constant:black_plague_route.biological_strike }
 			set_temp_variable = { black_plague_exposure_provenance = constant:black_plague_provenance.weaponized }
-			black_plague_apply_exposure = yes
-			set_state_flag = black_plague_weaponized_provenance
+			black_plague_apply_weaponized_exposure_runtime = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = black_plague_weaponized_runtime_bridge_result
+						value = constant:black_plague_value.one
+						compare = equals
+					}
+				}
+				set_state_flag = black_plague_weaponized_provenance
+			}
 		}
-		set_country_flag = black_plague_weaponization_delivery_history
+		if = {
+			limit = {
+				check_variable = {
+					var = black_plague_weaponized_runtime_bridge_result
+					value = constant:black_plague_value.one
+					compare = equals
+				}
+			}
+			set_country_flag = black_plague_weaponization_delivery_history
+		}
 	}
 }
 

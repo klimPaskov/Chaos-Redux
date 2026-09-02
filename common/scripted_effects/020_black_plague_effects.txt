@@ -1710,8 +1710,9 @@ black_plague_schedule_next_pulse = {
 		add_to_variable = { global.black_plague_scheduler_ticket = constant:black_plague_value.one }
 		set_variable = { black_plague_scheduler_generation = global.black_plague_runtime_generation }
 		set_variable = { black_plague_scheduler_ticket = global.black_plague_scheduler_ticket }
-		set_variable = { black_plague_scheduler_due_day = global.date }
-		add_to_variable = { black_plague_scheduler_due_day = constant:black_plague_timing.pulse_days }
+		# Delayed callbacks use elapsed days, not the calendar date encoding.
+		set_variable = { black_plague_scheduler_due_num_days = global.num_days }
+		add_to_variable = { black_plague_scheduler_due_num_days = constant:black_plague_timing.pulse_days }
 		set_temp_variable = { black_plague_scheduler_delay_days = constant:black_plague_timing.pulse_days }
 		state_event = { id = chaosx.nr20.900 days = black_plague_scheduler_delay_days }
 	}
@@ -1800,7 +1801,7 @@ black_plague_run_scheduled_callback = {
 			NOT = { has_global_flag = black_plague_pulses_suppressed }
 			has_variable = black_plague_scheduler_generation
 			has_variable = black_plague_scheduler_ticket
-			has_variable = black_plague_scheduler_due_day
+			has_variable = black_plague_scheduler_due_num_days
 			check_variable = {
 				var = black_plague_scheduler_generation
 				value = global.black_plague_runtime_generation
@@ -1812,12 +1813,12 @@ black_plague_run_scheduled_callback = {
 				compare = equals
 			}
 			check_variable = {
-				var = global.date
-				value = black_plague_scheduler_due_day
+				var = global.num_days
+				value = black_plague_scheduler_due_num_days
 				compare = greater_than_or_equals
 			}
 		}
-		clear_variable = black_plague_scheduler_due_day
+		clear_variable = black_plague_scheduler_due_num_days
 		black_plague_run_weekly_pulse = yes
 		black_plague_schedule_next_pulse = yes
 	}

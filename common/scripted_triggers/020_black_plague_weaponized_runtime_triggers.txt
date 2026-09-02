@@ -1,0 +1,81 @@
+# ============================================================================
+# CHAOS REDUX - BLACK PLAGUE WEAPONIZED RUNTIME BRIDGE TRIGGERS
+# ============================================================================
+# Read-only predicates for the bounded STATE-scope bridge that applies an
+# already-authorized weaponized exposure and reconciles the shared scheduler.
+# These predicates do not select a target, debit payload, or create history.
+# ============================================================================
+
+# STATE scope. ROOT is the country that owns the release transaction. The
+# caller supplies the exposure provenance; the shared state gate remains the
+# authority for geography, population, and controller eligibility.
+black_plague_weaponized_runtime_bridge_target_is_valid = {
+	exists = yes
+	black_plague_state_can_receive_exposure = yes
+	check_variable = {
+		var = black_plague_exposure_provenance
+		value = constant:black_plague_provenance.weaponized
+		compare = equals
+	}
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+	ROOT = {
+		exists = yes
+		has_capitulated = no
+		NOT = { has_global_flag = world_end }
+		NOT = { has_global_flag = black_plague_terminal_takeover_active }
+		NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+		OR = {
+			has_global_flag = black_plague_system_active
+			AND = {
+				NOT = { has_global_flag = black_plague_system_started }
+				NOT = { has_global_flag = black_plague_pulses_suppressed }
+			}
+		}
+	}
+}
+
+# Any STATE scope. The global scheduler pointer is valid only when it reaches
+# a live state that still owns the shared anchor flag.
+black_plague_weaponized_runtime_scheduler_anchor_is_active = {
+	has_event_target = black_plague_scheduler_anchor_state
+	event_target:black_plague_scheduler_anchor_state = {
+		exists = yes
+		has_state_flag = black_plague_scheduler_anchor
+	}
+}
+
+# Any STATE scope. A valid receipt is an active, unsuppressed shared scheduler
+# anchor whose generation, ticket, and elapsed-day deadline still match the
+# global runtime. The due field is intentionally the shared
+# black_plague_scheduler_due_num_days field repaired by the parent scheduler
+# change, not a calendar-date value.
+black_plague_weaponized_runtime_scheduler_receipt_is_valid = {
+	has_global_flag = black_plague_system_active
+	NOT = { has_global_flag = black_plague_pulses_suppressed }
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = black_plague_terminal_takeover_active }
+	NOT = { has_global_flag = black_plague_terminal_takeover_complete }
+	black_plague_weaponized_runtime_scheduler_anchor_is_active = yes
+	event_target:black_plague_scheduler_anchor_state = {
+		has_variable = black_plague_scheduler_generation
+		has_variable = black_plague_scheduler_ticket
+		has_variable = black_plague_scheduler_due_num_days
+		check_variable = {
+			var = black_plague_scheduler_generation
+			value = global.black_plague_runtime_generation
+			compare = equals
+		}
+		check_variable = {
+			var = black_plague_scheduler_ticket
+			value = global.black_plague_scheduler_ticket
+			compare = equals
+		}
+		check_variable = {
+			var = black_plague_scheduler_due_num_days
+			value = global.num_days
+			compare = greater_than_or_equals
+		}
+	}
+}
