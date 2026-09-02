@@ -532,11 +532,15 @@ brilliant_scientist_krg_commit_continuity_temporal_action = {
 	}
 }
 
-# COUNTRY scope. Called only after the timed disarmament hold mission expires.
+# COUNTRY scope. The certificate timer must still satisfy the disarmament
+# settlement conditions; repeated or stale completions cannot award again.
 brilliant_scientist_krg_complete_durable_settlement = {
-	set_country_flag = brilliant_scientist_durable_settlement_active
-	set_temp_variable = { brilliant_scientist_krg_administration_gain = constant:brilliant_scientist_krg_score.settlement_gain }
-	brilliant_scientist_krg_add_administration_score = yes
-	brilliant_scientist_verify_singularity_nonterminal = yes
-	brilliant_scientist_refresh_world_threat_source = yes
+	if = {
+		limit = { brilliant_scientist_krg_can_verify_durable_nonterminal_settlement = yes }
+		set_country_flag = brilliant_scientist_durable_settlement_active
+		set_temp_variable = { brilliant_scientist_krg_administration_gain = constant:brilliant_scientist_krg_score.settlement_gain }
+		brilliant_scientist_krg_add_administration_score = yes
+		brilliant_scientist_verify_singularity_nonterminal = yes
+		brilliant_scientist_refresh_world_threat_source = yes
+	}
 }

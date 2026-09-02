@@ -75,17 +75,31 @@ brilliant_scientist_aftermath_select_minor_dominant_legacy = {
 }
 
 brilliant_scientist_aftermath_prepare_local_recipient = {
-	set_country_flag = brilliant_scientist_aftermath_local_archive_recovery
-	brilliant_scientist_aftermath_select_minor_dominant_legacy = yes
-	brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
-	country_event = { id = chaosx.nr16.301 }
+	if = {
+		limit = {
+			NOT = { has_country_flag = brilliant_scientist_aftermath_local_archive_recovery }
+			NOT = { has_country_flag = brilliant_scientist_aftermath_local_archive_recovered }
+			NOT = { has_country_flag = brilliant_scientist_aftermath_local_archive_destroyed }
+		}
+		set_country_flag = brilliant_scientist_aftermath_local_archive_recovery
+		brilliant_scientist_aftermath_select_minor_dominant_legacy = yes
+		brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
+		country_event = { id = chaosx.nr16.301 }
+	}
 }
 
 brilliant_scientist_aftermath_prepare_regional_recipient = {
-	set_country_flag = brilliant_scientist_aftermath_regional_cleanup
-	brilliant_scientist_aftermath_select_minor_dominant_legacy = yes
-	brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
-	country_event = { id = chaosx.nr16.303 }
+	if = {
+		limit = {
+			NOT = { has_country_flag = brilliant_scientist_aftermath_regional_cleanup }
+			NOT = { has_country_flag = brilliant_scientist_aftermath_regional_countermeasures_shared }
+			NOT = { has_country_flag = brilliant_scientist_aftermath_regional_archive_nationalized }
+		}
+		set_country_flag = brilliant_scientist_aftermath_regional_cleanup
+		brilliant_scientist_aftermath_select_minor_dominant_legacy = yes
+		brilliant_scientist_achievement_record_defeat_recipient_evidence = yes
+		country_event = { id = chaosx.nr16.303 }
+	}
 }
 
 # Defeated Kruger country scope. Removes every Event 016-owned project template

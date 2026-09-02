@@ -49,6 +49,19 @@ The shared world-threat source activates only after the Kruger State has a real 
 
 A durable settlement, verified global dismantlement, defeat, capitulation, or world end clears the active source without erasing peak history.
 
+### Active-day history
+
+On activation, the country records `brilliant_scientist_world_threat_start_num_days` from `global.num_days` for the current interval.
+The first `brilliant_scientist_world_threat_start_date` and reveal date remain calendar-history values; they are never subtracted to calculate elapsed days.
+`brilliant_scientist_refresh_world_threat_duration` rebuilds `brilliant_scientist_world_threat_duration_days` from positive `brilliant_scientist_world_threat_accumulated_active_days` plus the positive current day difference only while the country threat flag is active.
+A missing start or negative difference contributes zero, and refreshing twice does not accumulate the same interval twice.
+
+Every source-clear boundary calls `brilliant_scientist_close_world_threat_interval` before clearing the active flag.
+That helper stores the rebuilt total, records the end date and day, and clears the current start-day receipt before returning.
+Repeated or nested close calls therefore contribute nothing further.
+Reactivation opens a fresh interval without discarding completed active time, so inactive gaps never count.
+Both Laboratory World and the source-aware Singularity finalizer close the interval and clear the country threat flag as well as the shared source flag.
+
 ## Defeat scale
 
 Defeat qualification uses duration, major-power status, opponent counts, deployed project families, weaponization, late Singularity construction, peak territory, and peak industry.
@@ -58,6 +71,11 @@ A local defeat produces one project-causal archive legacy for the former host or
 A regional defeat produces a news event and a persistent countermeasure-sharing or nationalized-archive settlement.
 
 A qualifying global-threat defeat opens the four-part custodian system and visible super-event `95`.
+
+The defeated country's classification is permanent: capitulation followed by annexation cannot dispatch a second aftermath package.
+Local and regional recipients each hold a distinct pending archive receipt, set before their event is delivered.
+The chosen option clears that receipt before granting its original reward and permanent outcome, so a duplicate already-delivered popup cannot award the other choice.
+Preparation rejects both outstanding and completed packages without erasing their history.
 
 Remnant flags derive from actual deployment history or still-fielded project formations; biological remnants require deployed or weaponized biological history, and a Singularity remnant requires late-construction history.
 
@@ -117,6 +135,10 @@ The aftermath completes only after treaty ratification, inspection certification
 
 Completion clears the active custodian targets and categories while preserving dates, institutions, legal outcomes, defeated-state identity, and project history.
 
+The separate Kruger State durable-settlement certificate requires completed disarmament throughout its audit timer.
+It cancels when its eligibility is lost, and its final helper repeats the same condition independently of UI cancellation.
+The durable-settlement receipt is written before administration is awarded, preventing repeated certification or post-terminal settlement rewards.
+
 ## Laboratory World
 
 Laboratory World uses world-end scenario reservation `11` and visible package `93`.
@@ -132,6 +154,9 @@ Only after those requirements are true does the route set the normal world-end s
 Strategic Singularity uses world-end scenario reservation `12` and visible package `94`.
 
 Preparation may begin before the world-end threshold, but execution requires Evolution IV chronology, all required components, an armed device, a live command network, fail-deadly authority, an enabled chaos meter, no active disarmament, a free Fallout request ledger, and no incompatible world end.
+
+Arming continuation, fail-deadly authorization, and final commitment recheck the current owned-and-controlled qualifying facilities rather than relying solely on a past audit flag.
+The shared final gate preserves the special capitulation-failsafe path; it does not import ordinary decision availability as a blanket non-capitulation requirement.
 
 At execution, Event 16 computes the deficit between the current chaos value and `constant:chaos_meter_tier_range.tier_final.plus`, raises chaos through the documented Singularity source, records deaths, contamination, condemnation, and detonation history, and submits a maximum-intensity source-aware Fallout request.
 
@@ -172,6 +197,13 @@ The twenty-two aftermath decision sprites and four category sprites are register
 Their exact runtime paths and visual meanings are listed in `docs/assets/016_brilliant_scientist/aftermath_decision_icon_contract.md`.
 
 The archive and project-remnant hearings `chaosx.nr16.301`, `.303`, and `.310` through `.318` use scripted picture selection. `GetBrilliantScientistAftermathRemnantPicture` routes clone or machine, biological or paleogenetic or xenobiological, portal or temporal, and alien or singularity remnants to four reviewed `210x176` documentary report cards. Prototype-only and unresolved remnant records retain `GFX_report_event_016_brilliant_scientist_aftermath_remnant`, while the regional settlement `.303` keeps the shared archive card because it is not tied to one project family. The legal choices, receipts, and inspection progress are unchanged by this presentation routing.
+
+## Closure evidence and remaining implementation
+
+The 2026-09-02 terminal postpatch handoff under `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_terminal_postpatch_review_2026-09-02.md` records the once-only archive and certificate traces and all eleven frozen duration boundary cases.
+Its MCP artifacts capture the current event consumers, but the historical comparison returned `EVENT_REVISION_NOT_CACHED`; the arithmetic checks are source regressions, not engine execution.
+Command and power infrastructure still require the separately tracked physical site/role/quantity implementation before the whole terminal system can be accepted.
+No icon or sprite is added by these lifecycle guards; the existing terminal decision icons, aftermath report cards, and six presentation packages remain their consumers.
 
 ## Future extensions
 

@@ -303,6 +303,42 @@ brilliant_scientist_calculate_world_threat_score = {
 	}
 }
 
+# COUNTRY scope. Calendar dates are presentation receipts, not elapsed time.
+# Rebuild duration from completed intervals and the one currently open interval.
+# Missing/invalid starts contribute nothing; inactive gaps never accrue days.
+brilliant_scientist_refresh_world_threat_duration = {
+	set_variable = { brilliant_scientist_world_threat_duration_days = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { check_variable = { brilliant_scientist_world_threat_accumulated_active_days > constant:brilliant_scientist_value.zero } }
+		set_variable = { brilliant_scientist_world_threat_duration_days = brilliant_scientist_world_threat_accumulated_active_days }
+	}
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_world_threat_active
+			has_variable = brilliant_scientist_world_threat_start_num_days
+		}
+		set_temp_variable = { brilliant_scientist_world_threat_open_interval_days = global.num_days }
+		subtract_from_temp_variable = { brilliant_scientist_world_threat_open_interval_days = brilliant_scientist_world_threat_start_num_days }
+		if = {
+			limit = { check_variable = { brilliant_scientist_world_threat_open_interval_days > constant:brilliant_scientist_value.zero } }
+			add_to_variable = { brilliant_scientist_world_threat_duration_days = brilliant_scientist_world_threat_open_interval_days }
+		}
+	}
+}
+
+# COUNTRY scope. Call before clearing the active flag. Clearing the start receipt
+# makes a repeated close harmless and preserves completed time across reactivation.
+brilliant_scientist_close_world_threat_interval = {
+	if = {
+		limit = { has_variable = brilliant_scientist_world_threat_start_num_days }
+		brilliant_scientist_refresh_world_threat_duration = yes
+		set_variable = { brilliant_scientist_world_threat_accumulated_active_days = brilliant_scientist_world_threat_duration_days }
+		set_variable = { brilliant_scientist_world_threat_end_date = global.date }
+		set_variable = { brilliant_scientist_world_threat_end_num_days = global.num_days }
+		clear_variable = brilliant_scientist_world_threat_start_num_days
+	}
+}
+
 # COUNTRY scope. This is the canonical event-driven hook used by project,
 # focus, decision, war, and territory changes.
 brilliant_scientist_refresh_world_threat_source = {
@@ -354,6 +390,7 @@ brilliant_scientist_refresh_world_threat_source = {
 			}
 			set_global_flag = world_threat_source_brilliant_scientist
 			set_country_flag = brilliant_scientist_world_threat_active
+			set_variable = { brilliant_scientist_world_threat_start_num_days = global.num_days }
 			brilliant_scientist_refresh_directorate_idea_lifecycle = yes
 			set_country_flag = brilliant_scientist_world_threat_ever_active
 			set_global_flag = brilliant_scientist_world_threat_ever_active
@@ -379,15 +416,10 @@ brilliant_scientist_refresh_world_threat_source = {
 				has_global_flag = world_threat_source_brilliant_scientist
 				brilliant_scientist_world_threat_should_clear = yes
 			}
+			brilliant_scientist_close_world_threat_interval = yes
 			clr_global_flag = world_threat_source_brilliant_scientist
 			clr_country_flag = brilliant_scientist_world_threat_active
 			brilliant_scientist_refresh_directorate_idea_lifecycle = yes
-			set_variable = { brilliant_scientist_world_threat_end_date = global.date }
-			if = {
-				limit = { has_variable = brilliant_scientist_world_threat_start_date }
-				set_variable = { brilliant_scientist_world_threat_duration_days = global.date }
-				subtract_from_variable = { brilliant_scientist_world_threat_duration_days = brilliant_scientist_world_threat_start_date }
-			}
 		}
 	}
 	refresh_world_threat_state = yes
@@ -399,11 +431,7 @@ brilliant_scientist_refresh_world_threat_source = {
 
 brilliant_scientist_calculate_defeat_qualification_score = {
 	set_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_value.zero }
-	set_variable = { brilliant_scientist_world_threat_duration_days = global.date }
-	if = {
-		limit = { has_variable = brilliant_scientist_world_threat_start_date }
-		subtract_from_variable = { brilliant_scientist_world_threat_duration_days = brilliant_scientist_world_threat_start_date }
-	}
+	brilliant_scientist_refresh_world_threat_duration = yes
 	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_defeat_threshold.duration_short_days compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.duration_short } }
 	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_defeat_threshold.duration_long_days compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.duration_long } }
 	if = { limit = { check_variable = { var = brilliant_scientist_world_threat_duration_days value = constant:brilliant_scientist_defeat_threshold.duration_epic_days compare = greater_than_or_equals } } add_to_variable = { brilliant_scientist_defeat_qualification_score = constant:brilliant_scientist_defeat_score.duration_epic } }
@@ -460,6 +488,7 @@ brilliant_scientist_activate_defeat_aftermath = {
 			brilliant_scientist_queue_current_super_event = yes
 		}
 	}
+	brilliant_scientist_close_world_threat_interval = yes
 	clr_global_flag = world_threat_source_brilliant_scientist
 	clr_country_flag = brilliant_scientist_world_threat_active
 	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
@@ -510,6 +539,7 @@ brilliant_scientist_activate_local_or_regional_defeat_aftermath = {
 		}
 	}
 	brilliant_scientist_aftermath_dismantle_project_arsenal = yes
+	brilliant_scientist_close_world_threat_interval = yes
 	clr_global_flag = world_threat_source_brilliant_scientist
 	clr_country_flag = brilliant_scientist_world_threat_active
 	brilliant_scientist_refresh_directorate_idea_lifecycle = yes
@@ -531,6 +561,7 @@ brilliant_scientist_evaluate_defeat_after_global_threat = {
 			NOT = { has_country_flag = brilliant_scientist_singularity_fallout_request_submitted }
 			NOT = { has_country_flag = brilliant_scientist_singularity_capitulation_failsafe_triggered }
 			NOT = { has_country_flag = brilliant_scientist_qualifying_defeat_recorded }
+			NOT = { has_country_flag = brilliant_scientist_local_or_regional_defeat_recorded }
 			NOT = { has_global_flag = world_end }
 		}
 		brilliant_scientist_calculate_defeat_qualification_score = yes
@@ -683,7 +714,10 @@ brilliant_scientist_finalize_singularity_after_fallout_lock = {
 		brilliant_scientist_mark_singularity_terminal_fired = yes
 		set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.strategic_singularity }
 		brilliant_scientist_queue_current_super_event = yes
+		brilliant_scientist_close_world_threat_interval = yes
 		clr_global_flag = world_threat_source_brilliant_scientist
+		clr_country_flag = brilliant_scientist_world_threat_active
+		brilliant_scientist_refresh_directorate_idea_lifecycle = yes
 		refresh_world_threat_state = yes
 		brilliant_scientist_cleanup_transient_targets_after_world_end = yes
 	}
@@ -705,7 +739,10 @@ brilliant_scientist_execute_lab_world_terminal = {
 		random_faction_cleanup_after_world_end = yes
 		set_temp_variable = { brilliant_scientist_super_event_id = constant:brilliant_scientist_super_event.laboratory_world }
 		brilliant_scientist_queue_current_super_event = yes
+		brilliant_scientist_close_world_threat_interval = yes
 		clr_global_flag = world_threat_source_brilliant_scientist
+		clr_country_flag = brilliant_scientist_world_threat_active
+		brilliant_scientist_refresh_directorate_idea_lifecycle = yes
 		refresh_world_threat_state = yes
 		brilliant_scientist_cleanup_transient_targets_after_world_end = yes
 	}
