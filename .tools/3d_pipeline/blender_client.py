@@ -143,6 +143,30 @@ class BlenderAdapterClient:
             },
         )
 
+    def promote_accepted_reimport(
+        self,
+        job_id: str,
+        blend_rel: str,
+        expected_source_sha256: str,
+        validation_rel: str,
+        expected_validation_sha256: str,
+        checkpoint_rel: str,
+        target_armature_name: str,
+        target_mesh_names: list[str],
+        mesh_rel: str,
+        expected_mesh_sha256: str,
+        anim_rel: str,
+        expected_anim_sha256: str,
+    ) -> Dict[str, Any]:
+        return self.call("chaosx_blender_hoi4_promote_accepted_reimport", {
+            "job_id": job_id, "blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256,
+            "validation_rel": validation_rel, "expected_validation_sha256": expected_validation_sha256,
+            "checkpoint_rel": checkpoint_rel, "target_armature_name": target_armature_name,
+            "target_mesh_names": list(target_mesh_names), "mesh_rel": mesh_rel,
+            "expected_mesh_sha256": expected_mesh_sha256, "anim_rel": anim_rel,
+            "expected_anim_sha256": expected_anim_sha256,
+        })
+
     def author_locator(
         self,
         job_id: str,

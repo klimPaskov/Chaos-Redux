@@ -3554,6 +3554,359 @@ def exported_mesh_streams(text_path: Path) -> List[Dict[str, int]]:
     return streams
 
 
+PROMOTION_METADATA_KEYS = (
+    "chaosx_working", "chaosx_promotion_operation", "chaosx_promotion_source",
+    "chaosx_promotion_source_sha256", "chaosx_promotion_validation",
+    "chaosx_promotion_validation_sha256", "chaosx_promotion_job",
+)
+
+
+def _promotion_digest(value: Any) -> str:
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode("utf-8")).hexdigest().upper()
+
+
+def _promotion_value(value: Any) -> Any:
+    if value is None or isinstance(value, (bool, int, str)):
+        return value
+    if isinstance(value, float):
+        if not math.isfinite(value):
+            raise ValueError("Promotion fingerprint contains a nonfinite value.")
+        return value
+    if isinstance(value, bpy.types.ID):
+        return {"id_type": value.bl_rna.identifier, "name": value.name_full, "library": value.library.filepath if value.library else None}
+    if hasattr(value, "to_dict"):
+        value = value.to_dict()
+    if isinstance(value, dict):
+        return {str(key): _promotion_value(item) for key, item in value.items()}
+    if isinstance(value, set):
+        return sorted(_promotion_value(item) for item in value)
+    # mathutils values can implement the sequence protocol without __iter__.
+    # Index every element and recurse; never stringify or round numeric data.
+    if hasattr(value, "__len__") and hasattr(value, "__getitem__"):
+        return [_promotion_value(value[index]) for index in range(len(value))]
+    if hasattr(value, "__iter__"):
+        return [_promotion_value(item) for item in value]
+    raise ValueError(f"Unsupported promotion fingerprint value: {type(value).__name__}")
+
+
+def _promotion_properties(block: Any, exclude: Iterable[str] = ()) -> Dict[str, Any]:
+    return {key: _promotion_value(block[key]) for key in sorted(block.keys()) if key not in exclude}
+
+
+def _promotion_scalars(block: Any) -> Dict[str, Any]:
+    """Read finite scalar RNA settings and ID references, without traversing arbitrary RNA graphs."""
+    result = {}
+    for prop in block.bl_rna.properties:
+        if prop.identifier == "rna_type":
+            continue
+        if prop.type in {"BOOLEAN", "INT", "FLOAT", "STRING", "ENUM"} and not prop.is_readonly:
+            result[prop.identifier] = _promotion_value(getattr(block, prop.identifier))
+        elif prop.type == "POINTER":
+            value = getattr(block, prop.identifier)
+            if value is None or isinstance(value, bpy.types.ID):
+                result[prop.identifier] = _promotion_value(value)
+    return result
+
+
+def _promotion_path(job: Path, value: Any, suffix: str, *, missing: bool = False) -> Path:
+    if not isinstance(value, str) or not value or value != value.strip() or ".." in Path(value).parts or "\\" in value:
+        raise ValueError("Promotion paths must be explicit job-relative forward-slash paths without traversal.")
+    path = within(job, value, allow_missing=missing)
+    if path.suffix.lower() != suffix or (not missing and not path.is_file()):
+        raise ValueError(f"Promotion requires a {suffix} file: {value}")
+    return path
+
+
+def _promotion_unique_pairs(pairs: List[Tuple[str, Any]]) -> Dict[str, Any]:
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"Duplicate validation JSON key: {key}")
+        result[key] = value
+    return result
+
+
+def _promotion_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
+    payload = req["payload"]
+    expected = {"blend_rel", "expected_source_sha256", "validation_rel", "expected_validation_sha256", "checkpoint_rel", "target_armature_name", "target_mesh_names", "mesh_rel", "expected_mesh_sha256", "anim_rel", "expected_anim_sha256"}
+    if not isinstance(payload, dict) or set(payload) != expected:
+        raise ValueError("promote_accepted_reimport accepts only its exact hashed-proof contract.")
+    _locator_exact_name(req.get("job_id"), "job_id", locator=True)
+    job = Path(req["job_root"]).resolve()
+    inputs = {}
+    for role, field, hash_field, suffix in (
+        ("source", "blend_rel", "expected_source_sha256", ".blend"),
+        ("validation", "validation_rel", "expected_validation_sha256", ".json"),
+        ("mesh", "mesh_rel", "expected_mesh_sha256", ".mesh"),
+        ("anim", "anim_rel", "expected_anim_sha256", ".anim"),
+    ):
+        path = _promotion_path(job, payload[field], suffix)
+        expected_hash = payload[hash_field]
+        if not isinstance(expected_hash, str) or re.fullmatch(r"[0-9A-Fa-f]{64}", expected_hash) is None:
+            raise ValueError(f"{hash_field} must be an explicit SHA-256.")
+        if path.stat().st_size == 0 or file_sha256(path) != expected_hash.upper():
+            raise ValueError(f"Promotion {role} checksum mismatch or empty input.")
+        inputs[role] = {"path": path, "relative": path.relative_to(job).as_posix(), "sha256": expected_hash.upper(), "bytes": path.stat().st_size}
+    output = _promotion_path(job, payload["checkpoint_rel"], ".blend", missing=True)
+    if output.parent != inputs["source"]["path"].parent or output.exists():
+        raise ValueError("Promotion output must be a new sibling checkpoint; overwrite is forbidden.")
+    report_path = within(job, f"blender/reports/promote_{output.stem}.json", allow_missing=True)
+    if report_path.exists():
+        raise ValueError("Promotion report already exists; overwrite is forbidden.")
+    rig_name = _locator_exact_name(payload["target_armature_name"], "target_armature_name")
+    mesh_names = payload["target_mesh_names"]
+    if not isinstance(mesh_names, (list, tuple)) or not 1 <= len(mesh_names) <= 16:
+        raise ValueError("Promotion requires one to sixteen exact mesh names.")
+    mesh_names = [_locator_exact_name(name, "target_mesh_names") for name in mesh_names]
+    if len(set(mesh_names)) != len(mesh_names) or rig_name in mesh_names:
+        raise ValueError("Promotion object identities must be unique.")
+    receipt = json.loads(inputs["validation"]["path"].read_text(encoding="utf-8-sig"), object_pairs_hook=_promotion_unique_pairs)
+    _promotion_digest(receipt)  # Reject JSON NaN/Infinity, including otherwise unused fields.
+    required = {"proof_blend", "mesh", "anim", "objects", "meshes", "armatures", "actions", "geometry", "animation_bounds", "previews", "runtime_texture_staging"}
+    if not isinstance(receipt, dict) or not required.issubset(receipt) or receipt.get("status", "pass") != "pass" or receipt.get("error") or receipt.get("errors"):
+        raise ValueError("Validation is not a complete successful reimport_export receipt.")
+    for role, key, suffix in (("source", "proof_blend", ".blend"), ("mesh", "mesh", ".mesh"), ("anim", "anim", ".anim")):
+        if _promotion_path(job, receipt[key], suffix) != inputs[role]["path"]:
+            raise ValueError(f"Validation {key} does not match the explicitly hashed input.")
+        hash_key = "proof_blend_sha256" if role == "source" else f"{role}_sha256"
+        if hash_key in receipt and str(receipt[hash_key]).upper() != inputs[role]["sha256"]:
+            raise ValueError(f"Validation {hash_key} conflicts with the accepted hash.")
+    def rows(key: str) -> Dict[str, Any]:
+        values = receipt[key]
+        if not isinstance(values, list) or not values or any(not isinstance(row, dict) or not isinstance(row.get("name"), str) for row in values):
+            raise ValueError(f"Invalid validation {key} identities.")
+        by_name = {row["name"]: row for row in values}
+        if len(by_name) != len(values):
+            raise ValueError(f"Duplicate validation {key} identities.")
+        return by_name
+    objects, meshes, rigs = rows("objects"), rows("meshes"), rows("armatures")
+    if set(meshes) != set(mesh_names) or set(rigs) != {rig_name}:
+        raise ValueError("Validation does not identify exactly the requested rig and meshes.")
+    if objects.get(rig_name, {}).get("type") != "ARMATURE" or any(objects.get(name, {}).get("type") != "MESH" for name in mesh_names):
+        raise ValueError("Validation object types do not match the promotion targets.")
+    if {name for name, row in objects.items() if row.get("type") == "MESH"} != set(mesh_names) or {name for name, row in objects.items() if row.get("type") == "ARMATURE"} != {rig_name}:
+        raise ValueError("Validation has undeclared mesh/armature identities.")
+    if type(rigs[rig_name].get("bones")) is not int or rigs[rig_name]["bones"] < 1:
+        raise ValueError("Validation lacks a positive bone count.")
+    for row in meshes.values():
+        if any(type(row.get(key)) is not int or row[key] < 1 for key in ("vertices", "polygons")) or not isinstance(row.get("materials"), list) or not row["materials"] or any(not isinstance(name, str) or not name for name in row["materials"]):
+            raise ValueError("Validation lacks complete mesh counts/material bindings.")
+    actions = receipt["actions"]
+    if not isinstance(actions, list) or not actions or any(not isinstance(name, str) or not name for name in actions) or len(set(actions)) != len(actions):
+        raise ValueError("Validation must identify a nonempty unique existing action set.")
+    bounds = receipt["animation_bounds"]
+    if not isinstance(bounds, list) or not bounds or any(not isinstance(row, dict) or type(row.get("frame")) is not int or any(not isinstance(row.get(key), list) or len(row[key]) != 3 for key in ("bounds_min", "bounds_max", "dimensions")) for row in bounds):
+        raise ValueError("Validation lacks successful animated reimport sample evidence.")
+    for row in bounds:
+        for key in ("bounds_min", "bounds_max", "dimensions"):
+            _locator_numbers(row[key], 3, f"validation {key}")
+        if any(row["bounds_min"][index] > row["bounds_max"][index] or row["dimensions"][index] < 0 for index in range(3)):
+            raise ValueError("Validation has invalid animated bounds.")
+    if not isinstance(receipt["previews"], list) or not receipt["previews"] or not isinstance(receipt["runtime_texture_staging"], list) or not isinstance(receipt["geometry"], dict):
+        raise ValueError("Validation lacks complete reimport geometry/preview evidence.")
+    if any(type(receipt["geometry"].get(key)) is not int or receipt["geometry"][key] < 1 for key in ("objects", "vertices", "polygons", "triangles")) or receipt["geometry"]["objects"] != len(meshes):
+        raise ValueError("Validation lacks complete positive geometry counts.")
+    return {"job": job, "inputs": inputs, "output": output, "report_path": report_path, "receipt": receipt, "rig_name": rig_name, "mesh_names": mesh_names, "receipt_objects": objects, "receipt_meshes": meshes, "receipt_rigs": rigs}
+
+
+def _promotion_targets(context: Dict[str, Any]) -> List[bpy.types.Object]:
+    targets = []
+    for name, kind in [(context["rig_name"], "ARMATURE")] + [(name, "MESH") for name in context["mesh_names"]]:
+        matches = [obj for obj in bpy.data.objects if obj.name == name]
+        if len(matches) != 1 or matches[0].type != kind or bpy.context.scene.objects.get(name) != matches[0]:
+            raise ValueError(f"Promotion requires one exact local scene {kind}: {name}")
+        obj = matches[0]
+        for block in (obj, obj.data, *obj.users_collection):
+            if block.library or getattr(block, "override_library", None) or block.get("chaosx_source_protected") or block.get("chaosx_reference_read_only"):
+                raise ValueError("Linked, overridden, protected source/vanilla/reference data cannot be promoted.")
+        scale = _locator_numbers(list(obj.matrix_world.to_scale()), 3, "promotion world scale")
+        if min(scale) <= 0 or obj.matrix_world.determinant() <= 0:
+            raise ValueError("Promotion requires positive nonsingular transforms without reflection.")
+        if obj.get("chaosx_working") or any(key in obj for key in PROMOTION_METADATA_KEYS[1:]):
+            raise ValueError("Promotion source is already working or has conflicting promotion metadata.")
+        targets.append(obj)
+    rig = targets[0]
+    if len(rig.data.bones) != context["receipt_rigs"][rig.name].get("bones"):
+        raise ValueError("Promotion bone count differs from the accepted receipt.")
+    if {obj.name: obj.type for obj in bpy.context.scene.objects} != {name: row.get("type") for name, row in context["receipt_objects"].items()}:
+        raise ValueError("Promotion scene inventory differs from the accepted receipt.")
+    if sorted(action.name for action in bpy.data.actions) != sorted(context["receipt"]["actions"]):
+        raise ValueError("Promotion action identities differ from the accepted receipt.")
+    for obj in targets[1:]:
+        modifiers = list(obj.modifiers)
+        if len(modifiers) != 1 or modifiers[0].type != "ARMATURE" or modifiers[0].object != rig:
+            raise ValueError("Promotion mesh must have exactly one modifier consuming the exact accepted rig.")
+        row = context["receipt_meshes"][obj.name]
+        if not obj.data.vertices or len(obj.data.polygons) != row.get("polygons") or [mat.name if mat else None for mat in obj.data.materials] != row.get("materials"):
+            raise ValueError("Promotion topology/material identity differs from the accepted receipt.")
+        if not obj.data.materials or any(mat is None or not mat.use_nodes or not mat.get("shader") for mat in obj.data.materials):
+            raise ValueError("Promotion requires the accepted PDX material bindings.")
+        if obj.data.shape_keys:
+            raise ValueError("Promotion does not support shape-key proof scenes.")
+    return targets
+
+
+def _promotion_animation_state(block: Any) -> Any:
+    animation = getattr(block, "animation_data", None)
+    if animation is None:
+        return None
+    if animation.drivers or animation.nla_tracks:
+        raise ValueError("Promotion does not support driver/NLA proof scenes.")
+    return _promotion_scalars(animation)
+
+
+def _promotion_attribute_record(attribute: Any) -> Dict[str, Any]:
+    """Hash every component through the observed Blender 5.1 attribute RNA field."""
+    fields = {"FLOAT": "value", "INT": "value", "INT8": "value", "BOOLEAN": "value", "FLOAT_VECTOR": "vector", "FLOAT2": "vector", "FLOAT_COLOR": "color", "BYTE_COLOR": "color", "QUATERNION": "value", "FLOAT4X4": "value", "INT16_2D": "value", "INT32_2D": "value", "STRING": "value"}
+    field = fields.get(attribute.data_type)
+    if field is None:
+        raise ValueError(f"Unsupported promotion mesh attribute: {attribute.data_type}")
+    values = [_promotion_value(getattr(item, field)) for item in attribute.data]
+    return {"domain": attribute.domain, "type": attribute.data_type, "sha256": _promotion_digest(values)}
+
+
+def _promotion_fingerprint(job: Path, target_names: Iterable[str]) -> Dict[str, Any]:
+    """Exact pre/post fingerprints; no evaluated mesh, conversion, or data mutation."""
+    target_names = set(target_names)
+    objects, geometry, rigs, materials, images, actions = {}, {}, {}, {}, {}, {}
+    for obj in bpy.data.objects:
+        if obj.library or obj.override_library or obj.constraints:
+            raise ValueError("Promotion proof must contain local unconstrained objects only.")
+        objects[obj.name] = {
+            "type": obj.type, "data": _promotion_value(obj.data), "parent": _promotion_value(obj.parent),
+            "parent_type": obj.parent_type, "parent_bone": obj.parent_bone,
+            "world": _locator_matrix_record(obj.matrix_world), "basis": _locator_matrix_record(obj.matrix_basis),
+            "parent_inverse": _locator_matrix_record(obj.matrix_parent_inverse), "dimensions": list(obj.dimensions),
+            "bounds": [list(corner) for corner in obj.bound_box], "settings": _promotion_scalars(obj),
+            "properties": _promotion_properties(obj, PROMOTION_METADATA_KEYS if obj.name in target_names else ()),
+            "animation": _promotion_animation_state(obj),
+            "modifiers": [_promotion_scalars(modifier) for modifier in obj.modifiers],
+        }
+        if obj.type == "MESH":
+            mesh = obj.data
+            attributes = {attribute.name: _promotion_attribute_record(attribute) for attribute in mesh.attributes}
+            geometry[obj.name] = {
+                "vertices": len(mesh.vertices), "polygons": len(mesh.polygons), "loops": len(mesh.loops),
+                "positions_normals": _promotion_digest([[list(vertex.co), list(vertex.normal)] for vertex in mesh.vertices]),
+                "edges": _promotion_digest([[list(edge.vertices), edge.use_seam, edge.use_edge_sharp] for edge in mesh.edges]),
+                "topology": _promotion_digest([[list(face.vertices), face.material_index, face.use_smooth, list(face.normal)] for face in mesh.polygons]),
+                "loops_normals": _promotion_digest([[loop.vertex_index, loop.edge_index] for loop in mesh.loops] + [list(normal.vector) for normal in mesh.corner_normals]),
+                "uvs": _promotion_digest({layer.name: [list(item.uv) for item in layer.data] for layer in mesh.uv_layers}),
+                "uv_settings": [(layer.name, layer.active_render, layer.active_clone) for layer in mesh.uv_layers],
+                "uv_active_index": mesh.uv_layers.active_index, "has_custom_normals": mesh.has_custom_normals,
+                "groups": [group.name for group in obj.vertex_groups],
+                "weights": _promotion_digest([[(group.group, group.weight) for group in vertex.groups] for vertex in mesh.vertices]),
+                "materials": [mat.name if mat else None for mat in mesh.materials], "attributes": attributes,
+                "properties": _promotion_properties(mesh), "settings": _promotion_scalars(mesh),
+            }
+        elif obj.type == "ARMATURE":
+            if any(bone.constraints for bone in obj.pose.bones):
+                raise ValueError("Promotion does not support constrained pose bones.")
+            rigs[obj.name] = {
+                "properties": _promotion_properties(obj.data), "settings": _promotion_scalars(obj.data),
+                "bones": [{"name": bone.name, "parent": bone.parent.name if bone.parent else None, "head": list(bone.head_local), "tail": list(bone.tail_local), "rest": _locator_matrix_record(bone.matrix_local), "properties": _promotion_properties(bone), "settings": _promotion_scalars(bone)} for bone in obj.data.bones],
+                "pose": [{"name": bone.name, "matrix": _locator_matrix_record(bone.matrix), "basis": _locator_matrix_record(bone.matrix_basis), "properties": _promotion_properties(bone), "settings": _promotion_scalars(bone)} for bone in obj.pose.bones],
+            }
+    for material in bpy.data.materials:
+        if material.library or material.override_library or not material.use_nodes:
+            raise ValueError("Promotion requires local node-based materials.")
+        tree = material.node_tree
+        if tree.library or any(node.type == "GROUP" for node in tree.nodes):
+            raise ValueError("Promotion does not support linked or grouped material node trees.")
+        nodes = []
+        for node in tree.nodes:
+            nodes.append({"name": node.name, "type": node.bl_idname, "settings": _promotion_scalars(node), "properties": _promotion_properties(node), "inputs": [(socket.identifier, _promotion_value(socket.default_value) if hasattr(socket, "default_value") else None) for socket in node.inputs], "outputs": [(socket.identifier, _promotion_value(socket.default_value) if hasattr(socket, "default_value") else None) for socket in node.outputs]})
+            image = getattr(node, "image", None)
+            if image is not None:
+                if image.library or image.override_library:
+                    raise ValueError("Promotion cannot adopt linked texture images.")
+                packed = [hashlib.sha256(item.packed_file.data).hexdigest().upper() for item in image.packed_files]
+                image_path = Path(bpy.path.abspath(image.filepath)).resolve()
+                if not packed:
+                    try:
+                        image_path.relative_to(job)
+                    except ValueError as exc:
+                        raise ValueError("Promotion texture image must be packed or inside the same job.") from exc
+                    if not image_path.is_file():
+                        raise ValueError("Promotion texture image is missing.")
+                images[image.name] = {"filepath": image.filepath, "size": list(image.size), "source": image.source, "alpha_mode": image.alpha_mode, "colorspace": image.colorspace_settings.name, "packed_hashes": packed, "file_sha256": file_sha256(image_path) if not packed else None, "properties": _promotion_properties(image)}
+        materials[material.name] = {"properties": _promotion_properties(material), "settings": _promotion_scalars(material), "animation": _promotion_animation_state(material), "tree_properties": _promotion_properties(tree), "tree_animation": _promotion_animation_state(tree), "nodes": nodes, "links": [(link.from_node.name, link.from_socket.identifier, link.to_node.name, link.to_socket.identifier) for link in tree.links]}
+    for action in bpy.data.actions:
+        if action.library or action.override_library or (action.users == 0 and not action.use_fake_user):
+            raise ValueError("Promotion cannot preserve linked/overridden/unretained actions.")
+        curves = []
+        for curve, _ in action_fcurves(action):
+            if curve.modifiers:
+                raise ValueError("Promotion does not support modified action curves.")
+            curves.append({"path": curve.data_path, "index": curve.array_index, "settings": _promotion_scalars(curve), "keys": [{"co": list(key.co), "left": list(key.handle_left), "right": list(key.handle_right), "settings": _promotion_scalars(key)} for key in curve.keyframe_points], "samples": [list(point.co) for point in curve.sampled_points]})
+        actions[action.name] = {"range": list(action.frame_range), "fake_user": action.use_fake_user, "settings": _promotion_scalars(action), "properties": _promotion_properties(action), "curves": curves, "slots": [_promotion_scalars(slot) for slot in getattr(action, "slots", [])], "layers": [{"settings": _promotion_scalars(layer), "strips": [{"type": strip.type, "bags": [bag.slot_handle for bag in getattr(strip, "channelbags", [])]} for strip in layer.strips]} for layer in getattr(action, "layers", [])]}
+    scene = bpy.context.scene
+    sections = {"objects": objects, "geometry": geometry, "rigs": rigs, "materials": materials, "images": images, "actions": actions,
+                "scene": {"fps": scene.render.fps, "fps_base": scene.render.fps_base, "frame": scene.frame_current, "subframe": scene.frame_subframe, "start": scene.frame_start, "end": scene.frame_end, "properties": _promotion_properties(scene), "collections": {collection.name: {"objects": sorted(obj.name for obj in collection.objects), "children": sorted(child.name for child in collection.children), "properties": _promotion_properties(collection)} for collection in bpy.data.collections}}}
+    return {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
+
+
+def promote_accepted_reimport(req: Dict[str, Any]) -> Dict[str, Any]:
+    """Derive a metadata-only working copy from four explicitly hashed immutable proof inputs."""
+    context = _promotion_inputs(req)
+    job, output = context["job"], context["output"]
+    inputs = context["inputs"]
+    result = {"operation": "promote_accepted_reimport", "status": "fail", "new_provider_call": False,
+              "checkpoint": output.relative_to(job).as_posix(), "report": context["report_path"].relative_to(job).as_posix(),
+              "inputs": {role: {key: value for key, value in row.items() if key != "path"} for role, row in inputs.items()},
+              "receipt_policy": "complete_legacy_reimport_export_receipt_bound_to_explicit_caller_hashes",
+              "comparison_policy": "exact_fingerprints_no_tolerance_no_export_vertex_count_assumption"}
+    try:
+        bpy.ops.wm.open_mainfile(filepath=str(inputs["source"]["path"]), use_scripts=False)
+        targets = _promotion_targets(context)
+        names = [obj.name for obj in targets]
+        before = _promotion_fingerprint(job, names)
+        result["fingerprints_before"] = before
+        metadata = {"chaosx_working": True, "chaosx_promotion_operation": "promote_accepted_reimport",
+                    "chaosx_promotion_source": inputs["source"]["relative"], "chaosx_promotion_source_sha256": inputs["source"]["sha256"],
+                    "chaosx_promotion_validation": inputs["validation"]["relative"], "chaosx_promotion_validation_sha256": inputs["validation"]["sha256"], "chaosx_promotion_job": req["job_id"]}
+        result["permitted_metadata"] = {"targets": names, "before": {obj.name: {key: _promotion_value(obj[key]) for key in PROMOTION_METADATA_KEYS if key in obj} for obj in targets}, "after": metadata}
+        for obj in targets:
+            for key, value in metadata.items():
+                obj[key] = value
+        if _promotion_fingerprint(job, names) != before:
+            raise RuntimeError("Promotion changed protected scene data before saving.")
+        if output.exists():
+            raise ValueError("Promotion checkpoint appeared during processing; refusing overwrite.")
+        saved = bpy.ops.wm.save_as_mainfile(filepath=str(output), copy=True, relative_remap=False)
+        if "FINISHED" not in saved or not output.is_file():
+            raise RuntimeError("Promotion checkpoint save did not finish.")
+        bpy.ops.wm.open_mainfile(filepath=str(output), use_scripts=False)
+        after = _promotion_fingerprint(job, names)
+        result["fingerprints_after"] = after
+        if after != before:
+            raise RuntimeError("Promotion saved/reopened invariant mismatch; output is not approved.")
+        for name in names:
+            obj = bpy.context.scene.objects.get(name)
+            if obj is None or any(obj.get(key) != value for key, value in metadata.items()):
+                raise RuntimeError("Promotion metadata did not survive reopening.")
+        for role, row in inputs.items():
+            if row["path"].stat().st_size != row["bytes"] or file_sha256(row["path"]) != row["sha256"]:
+                raise RuntimeError(f"Immutable promotion {role} input changed during processing.")
+        result.update(status="pass", source_immutable=True, all_inputs_immutable=True, checkpoint_sha256=file_sha256(output), checkpoint_bytes=output.stat().st_size)
+    except Exception as exc:
+        result["error"] = str(exc)
+        result["output_approved"] = False
+        result["input_immutability"] = {role: row["path"].is_file() and row["path"].stat().st_size == row["bytes"] and file_sha256(row["path"]) == row["sha256"] for role, row in inputs.items()}
+        if output.is_file():
+            result.update(checkpoint_sha256=file_sha256(output), checkpoint_bytes=output.stat().st_size)
+        context["report_path"].parent.mkdir(parents=True, exist_ok=True)
+        with context["report_path"].open("x", encoding="utf-8", newline="\n") as handle:
+            json.dump(result, handle, indent=2, sort_keys=True, allow_nan=False)
+            handle.write("\n")
+        raise RuntimeError(f"Promotion failed; do not use output. Evidence: {result['report']}: {exc}") from exc
+    context["report_path"].parent.mkdir(parents=True, exist_ok=True)
+    with context["report_path"].open("x", encoding="utf-8", newline="\n") as handle:
+        json.dump(result, handle, indent=2, sort_keys=True, allow_nan=False)
+        handle.write("\n")
+    return result
+
+
 def _locator_exact_name(value: Any, field: str, *, locator: bool = False) -> str:
     if not isinstance(value, str) or not value or value != value.strip() or "\x00" in value:
         raise ValueError(f"{field} must be a non-empty exact name without surrounding whitespace.")
@@ -7668,7 +8021,7 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
     pdx = None
-    if operation not in {"health", "inspect_scene", "save_checkpoint", "author_locator", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
+    if operation not in {"health", "inspect_scene", "save_checkpoint", "author_locator", "promote_accepted_reimport", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
         pdx = load_pdx(req["io_pdx_root"])
     if operation == "health":
         return health(req)
@@ -7678,6 +8031,8 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
         return inspect(req)
     if operation == "author_locator":
         return author_locator(req)
+    if operation == "promote_accepted_reimport":
+        return promote_accepted_reimport(req)
     if operation == "process_textures":
         return extract_textures(req)
     if operation == "bake_static_mesh_transforms":

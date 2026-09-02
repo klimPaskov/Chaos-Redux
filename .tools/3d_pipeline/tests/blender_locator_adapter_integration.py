@@ -1,6 +1,6 @@
 """Disposable native-Blender locator regression; never a production asset proof.
 
-Run only after parent review and the approved adapter 1.10.15 lock refresh.
+Run only after parent review and the approved adapter 1.10.16 lock refresh.
 This fixture creates its own tiny mesh/rig/action in a temporary directory and
 round-trips actual io_pdx_mesh bytes; no production checkpoint is opened.
 """
@@ -49,9 +49,10 @@ def verified_environment() -> tuple[dict, dict]:
     lock = json.loads((PIPELINE_ROOT / "config/dependencies.lock.json").read_text(encoding="utf-8"))
     routes = lock["routes"]
     adapter = routes["blender_hoi4_adapter"]
-    assert config["adapter_version"] == adapter["version"] == "1.10.15", "Review/version/lock gate is not complete"
+    assert config["adapter_version"] == adapter["version"] == "1.10.16", "Review/version/lock gate is not complete"
     assert config["operations"] == adapter["operations"]
     assert adapter["operations"].count("author_locator") == 1
+    assert adapter["operations"].count("promote_accepted_reimport") == 1
     for relative, expected in adapter["source_sha256"].items():
         assert digest(REPO_ROOT / relative) == expected.upper(), f"Locked raw-byte source mismatch: {relative}"
     assert bpy.app.version_string == routes["blender"]["version"]
@@ -224,6 +225,13 @@ def sample_follow(local: Matrix, tolerance: float) -> dict[int, list[list[float]
 
 def main() -> None:
     config, routes = verified_environment()
+    attribute_schema = {}
+    for class_name in ("Short2AttributeValue", "Int2AttributeValue", "StringAttributeValue", "Float2AttributeValue", "Float4x4AttributeValue", "QuaternionAttributeValue"):
+        rna = getattr(bpy.types, class_name).bl_rna
+        attribute_schema[class_name] = [{"name": prop.identifier, "type": prop.type, "array_length": getattr(prop, "array_length", None)} for prop in rna.properties if prop.identifier != "rna_type"]
+    print(json.dumps({"native_attribute_schema": attribute_schema, "blender_version": bpy.app.version_string}, sort_keys=True))
+    if "--schema-only" in sys.argv:
+        return
     with tempfile.TemporaryDirectory(prefix="chaosx_locator_fixture_") as directory:
         job = Path(directory).resolve()
         for relative in ("blender/checkpoints", "blender/reports", "export/mesh", "export/anim"):
@@ -294,6 +302,44 @@ def main() -> None:
         assert locators[0].parent.animation_data.action is not None
         reimported_samples = sample_follow(scaled_local, ROUNDTRIP_TOLERANCE)
         errors = {frame: assert_matrix(Matrix(reimported_samples[frame]), Matrix(normalized_samples[frame]), ROUNDTRIP_TOLERANCE, f"actual animation bytes world at frame {frame}") for frame in FRAMES}
+
+        # Obtain a real producer receipt and proof from these actual synthetic
+        # export bytes. This also renders the producer's own preview evidence.
+        reset_fixture_scene()
+        proof = blender_worker.reimport_export({**req, "payload": {
+            "mesh_rel": mesh_report["mesh"], "anim_rel": anim_report["anim"],
+            "proof_name": "fixture_promotion",
+        }}, pdx)
+        proof_path = job / proof["proof_blend"]
+        validation_path = job / "validation/reimport_fixture_promotion.json"
+        proof_hash, validation_hash = digest(proof_path), digest(validation_path)
+        target_rig = proof["armatures"][0]["name"]
+        target_meshes = [row["name"] for row in proof["meshes"]]
+        target_names = [target_rig, *target_meshes]
+        bpy.ops.wm.open_mainfile(filepath=str(proof_path), use_scripts=False)
+        promotion_before = blender_worker._promotion_fingerprint(job, target_names)
+        assert not any(bpy.data.objects[name].get("chaosx_working", False) for name in target_names)
+        promotion = blender_worker.promote_accepted_reimport({**req, "payload": {
+            "blend_rel": proof["proof_blend"], "expected_source_sha256": proof_hash,
+            "validation_rel": validation_path.relative_to(job).as_posix(), "expected_validation_sha256": validation_hash,
+            "checkpoint_rel": "blender/checkpoints/fixture_promotion_working.blend",
+            "target_armature_name": target_rig, "target_mesh_names": target_meshes,
+            "mesh_rel": mesh_report["mesh"], "expected_mesh_sha256": hashes["mesh"],
+            "anim_rel": anim_report["anim"], "expected_anim_sha256": hashes["anim"],
+        }})
+        assert promotion["status"] == "pass" and promotion["new_provider_call"] is False
+        assert promotion["fingerprints_before"] == promotion["fingerprints_after"] == promotion_before
+        promoted_path = job / promotion["checkpoint"]
+        assert digest(promoted_path) == promotion["checkpoint_sha256"]
+        bpy.ops.wm.open_mainfile(filepath=str(promoted_path), use_scripts=False)
+        assert blender_worker._promotion_fingerprint(job, target_names) == promotion_before
+        assert all(bpy.data.objects[name].get("chaosx_working") is True for name in target_names)
+        assert not bpy.data.objects[LOCATOR_NAME].get("chaosx_working", False)
+        assert digest(proof_path) == proof_hash and digest(validation_path) == validation_hash
+        assert digest(mesh_path) == hashes["mesh"] and digest(anim_path) == hashes["anim"]
+        bpy.ops.wm.open_mainfile(filepath=str(proof_path), use_scripts=False)
+        assert not any(bpy.data.objects[name].get("chaosx_working", False) for name in target_names)
+        hashes.update(promotion_source=proof_hash, promotion_validation=validation_hash, promoted_copy=digest(promoted_path))
         print(json.dumps({
             "status": "pass", "fixture_only": True, "production_asset_acceptance": False,
             "blender_version": bpy.app.version_string, "adapter_version": routes["blender_hoi4_adapter"]["version"],
@@ -301,6 +347,7 @@ def main() -> None:
             "author_invariants_preserved": True, "root_own_ignore_flag_included": True,
             "selected_objects": mesh_report["selected_export_objects"], "source_samples": authored_samples,
             "reimport_world_errors": errors, "hashes": hashes,
+            "promotion_status": promotion["status"], "promotion_fingerprints": promotion["fingerprints_after"],
         }, sort_keys=True))
         # Leave no test data-blocks or file handles pointing into the disposable directory.
         reset_fixture_scene()
