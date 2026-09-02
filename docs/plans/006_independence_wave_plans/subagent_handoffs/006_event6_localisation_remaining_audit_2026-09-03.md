@@ -70,7 +70,7 @@ Dynamic localisation added or fixed: none.
 Files: `common/decisions/006_independence_wave_decisions.txt`, `localisation/english/006_independence_wave_decisions_l_english.yml`.
 Keys: `independence_wave_cost_patron_balance`, `independence_wave_cost_patron_balance_blocked`, and the tooltip alias.
 
-The current cost text prints both Start and Later rows and repeats command power in the Later row.
+The earlier audit observed duplicated Start and Later rows; that display issue is superseded by the parent-owned compaction in `d8895d5d15` and `006_event6_patron_balance_cost_loc_compaction_2026-09-03.md`, which now shows one recurring standard payment and a later light surcharge.
 The first completion pays `independence_wave_decision_pay_diplomatic_standard`.
 A later completion also pays `independence_wave_decision_pay_administration_light`.
 Both `available` and `custom_cost_trigger` test the diplomatic cost plus a separate light command-power threshold, rather than the sum of both command-power payments.
@@ -78,8 +78,7 @@ This can approve a country that can afford each component separately but cannot 
 The same later branch uses strict `>` checks for light command power and manpower.
 This was escalated to the parent while preserving the repaired cost palettes and all gameplay.
 
-Recommended owner fix: establish one current-stage payment and inclusive affordability predicate, then use a current-stage compact row with a single combined command-power amount.
-A text-only claim that the combined payment is already enforced would be incorrect.
+The remaining source concern is transactional rather than presentational: the later branch still checks the standard diplomatic payment plus separate light command-power/manpower thresholds instead of one summed command-power affordability predicate. A text-only claim that the combined payment is already enforced would be incorrect.
 
 ### DM-01: `independence_wave_secure_provisional_capital_desc`
 
