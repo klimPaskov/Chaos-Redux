@@ -12,7 +12,7 @@ The default Event 016 template is `Quantum Transit Raiders`, a six-battalion loc
 
 ## Portal Warfare raid surfaces
 
-Both native Portal Warfare raids require seven days of preparation, ten Command Power, sixty Teleportation Equipment, and an assigned formation containing at least six `portal_raider` battalions. The native raid framework owns preparation, reservation, cancellation, expiry, outcome selection, and raid history. On success or critical success, the selected formation is consumed at its origin and reconstructed as the standard fully supplied six-battalion `Quantum Transit Raiders` formation in the captured target province; this prevents a repeatable free-unit loop while allowing the landing force to attack immediately.
+Both native Portal Warfare raids require seven days of preparation, ten Command Power, sixty Teleportation Equipment, and an assigned formation containing at least six `portal_raider` battalions. The native raid framework owns preparation, reservation, cancellation, expiry, outcome selection, and raid history. On success or critical success, the standard fully supplied six-battalion `Quantum Transit Raiders` formation is committed in the captured target province and raises one scope-less reconstruction receipt. The assigned formation is consumed at its origin only when that receipt exists, so a target-state race cannot destroy the source without creating its replacement and a successful raid cannot retain both formations.
 
 `brilliant_scientist_portal_facility_raid` is the state-targeted surface for hostile states containing factories, reactors, or rocket sites. Its target type is a state rather than an exact building, and its success path calls `brilliant_scientist_portal_raid_extract_state_installation`. A normal success attempts to extract one eligible state installation after the beachhead is established; a critical success calls the state-installation extraction twice before applying the heavy target damage.
 
@@ -20,10 +20,7 @@ Both native Portal Warfare raids require seven days of preparation, ten Command 
 
 Both surfaces establish a captured hostile province and rebuild the selected formation there. Facility or state extraction occurs only when a valid owned destination with a compatible free slot exists; factory transfers preserve the building type through the existing off-map industry path, while facility transfers preserve the selected facility family. Persistent country and state flags record successful landings and each transferred installation class.
 
-Exact carried manpower and equipment conservation is an unresolved acceptance gate.
-The native outcome deletes the assigned formation and the scripted beachhead creates the locked cadre at full readiness, so formation count is preserved but damage, experience, and carried-equipment quantities are not copied exactly.
-The installed documented `teleport_armies` effect operates on a state with an owner filter, not on the raid's individual division, and cannot be substituted without moving unrelated formations.
-No broader relocation or replacement cost scheme is approved by this record.
+The transaction conserves one deployed formation and the locked six-battalion baseline manpower and equipment budget. The native raid consumes its separate sixty-unit transit payload. Damage and experience are intentionally normalized to the breach-cadre profile because the documented engine surface exposes no selected-division relocation or carried-state copy effect. The only documented relocation effect, `teleport_armies`, operates on an entire state with an owner filter and would move unrelated formations, so it is not used.
 
 Every successful breach persists the exact province, attacking country, and original defending country on the target state. The state is entered into bounded attacker-owned and defender-owned active-beachhead registries, and a state with an active breach cannot receive another Portal raid. The registries are reconciled only through the affected state or the two participating countries; there is no recurring world scan.
 

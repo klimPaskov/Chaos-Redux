@@ -234,9 +234,13 @@ types = {
 					}
 				}
 				division_effects = {
-					# The selected formation is the formation reconstructed at the
-					# breach. Destroying it here prevents a repeatable free-unit loop.
-					destroy_unit = yes
+					# Consume the selected formation only after the one-for-one breach
+					# reconstruction has committed. A target race therefore cannot
+					# destroy the source formation without creating its replacement.
+					if = {
+						limit = { check_variable = { brilliant_scientist_portal_reconstruction_committed > constant:brilliant_scientist_value.zero } }
+						destroy_unit = yes
+					}
 				}
 				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
 			}
@@ -259,9 +263,11 @@ types = {
 					}
 				}
 				division_effects = {
-					# Critical success deep-transits the same assigned formation;
-					# it does not create a second independent formation.
-					destroy_unit = yes
+					# Critical success uses the same committed reconstruction receipt.
+					if = {
+						limit = { check_variable = { brilliant_scientist_portal_reconstruction_committed > constant:brilliant_scientist_value.zero } }
+						destroy_unit = yes
+					}
 				}
 				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
 			}
@@ -476,7 +482,10 @@ types = {
 					}
 				}
 				division_effects = {
-					destroy_unit = yes
+					if = {
+						limit = { check_variable = { brilliant_scientist_portal_reconstruction_committed > constant:brilliant_scientist_value.zero } }
+						destroy_unit = yes
+					}
 				}
 				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
 			}
@@ -504,7 +513,10 @@ types = {
 					}
 				}
 				division_effects = {
-					destroy_unit = yes
+					if = {
+						limit = { check_variable = { brilliant_scientist_portal_reconstruction_committed > constant:brilliant_scientist_value.zero } }
+						destroy_unit = yes
+					}
 				}
 				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
 			}

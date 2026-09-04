@@ -277,9 +277,14 @@ brilliant_scientist_portal_cleanup_country_beachheads = {
 # not a damage-only report. The actor becomes controller of the selected
 # province while the target country retains the surrounding state, and the
 # existing locked Quantum Transit Raiders template supplies the reconstructed
-# formation. The raid requires all six Portal Raider battalions from that locked
-# template and destroys the assigned formation in its division outcome block.
+# formation. A scope-less transaction receipt is raised only after the breach
+# controller and replacement cadre have been committed; the native raid's
+# division outcome consumes the selected formation only against that receipt.
+# This keeps the formation count and the six-battalion baseline budget conserved
+# without using teleport_armies, whose documented STATE scope would move every
+# qualifying army in the origin state rather than the selected raid formation.
 brilliant_scientist_portal_raid_establish_beachhead = {
+	set_temp_variable = { brilliant_scientist_portal_reconstruction_committed = constant:brilliant_scientist_value.zero }
 	if = {
 		limit = {
 			var:ROOT.actor_country = { exists = yes }
@@ -303,6 +308,7 @@ brilliant_scientist_portal_raid_establish_beachhead = {
 				}
 				PORTAL_PROVINCE = "[?brilliant_scientist_portal_spawn_province|.0]"
 			}
+			set_temp_variable = { brilliant_scientist_portal_reconstruction_committed = constant:brilliant_scientist_value.one }
 		}
 	}
 }
