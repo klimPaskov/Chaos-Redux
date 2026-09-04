@@ -317,3 +317,21 @@ Post-registration evidence:
 - The live-wrapper registration suite passed all three tests, proving that the enabled tool is exposed with the exact bounded schema and that the adapter operations in the config and lock agree.
 
 This registers a read-only production inspection capability. It does not accept any Portal or Robot component, alter geometry, repair an action, or complete a runtime model package.
+
+## Production-report compaction and Portal evidence
+
+The first registered Portal review rendered all six views but rejected the evidence report because indentation pushed the complete component membership beyond the fixed 64 MiB ceiling.
+Adapter `1.10.21` serializes that same report with lossless compact JSON separators.
+The ceiling remains 64 MiB, every record and membership index remains present, and no sampling, truncation, cap increase, or geometry change was introduced.
+
+The corrected production call completed against `blender/checkpoints/accepted_static_geometry_pre_rig.blend`, source SHA-256 `214DCF6067C49DD79E1CBFBB871E284D8D7BDD6803D97490456C1C01ABB5429D`, and exact mesh `output_unwrapped.001`.
+Its report is `blender/reports/component_review_49eecb73b65b4fdeb07c61f3064e7c85.json`, 42,654,407 bytes, SHA-256 `9A18A5CFF2648BCC891C2DAED92D63D6B094741D5E5A52D3985AA4178BD4A257`.
+The component catalog SHA-256 is `6E09C06F4C2785EE14FE07D72640901C0E63ECF86FC4ECD4DEC4874C0DAAD91C`, with exactly one connected component, `c_v0`: 14,909 vertices, 45,041 edges, 29,999 polygons/triangles, 89,997 loops, 83 boundary edges, zero non-manifold edges, zero degenerate polygons, and one loose edge.
+The source-data comparison returned `original_data_unchanged = true`.
+All six production previews were parent-reviewed together with separate textured front, right, and three-quarter views.
+They show the accepted Portal body and its large two-handed firearm as one visually coherent, source-index-connected mesh; the firearm is not a loose component and must not be extracted or replaced.
+
+The adapter source hash for `1.10.21` is `0C59C4E1D6A241003F59458F5DD130C05670633D304A05AB017E554410216FD6`.
+The focused component suite passes 14 tests, the legacy locator/promotion/mesh-region/action suites pass 88 tests, the live registration suite passes three tests, the native Blender 5.1.2 fixture passes, and `verify_environment.py` reports no findings.
+The native fixture is pinned to the `1.10.21` worker hash and reproduces the frozen synthetic catalog and action fingerprints.
+This evidence proves read-only source identity and preserved weapon presence only; rigging, two-hand contact, firing actions, export/reimport, particles, sound, and runtime acceptance remain pending.

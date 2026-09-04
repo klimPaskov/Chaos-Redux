@@ -239,6 +239,12 @@ class HumanoidComponentReviewContracts(unittest.TestCase):
         self.assertIn("'review_humanoid_components'", text)
         self.assertIn("return review_humanoid_components(req)", text)
 
+    def test_full_membership_report_uses_lossless_compact_json(self):
+        function = next(node for node in self.tree.body if isinstance(node, ast.FunctionDef) and node.name == "review_humanoid_components")
+        text = ast.unparse(function)
+        self.assertIn("separators=(',', ':')", text)
+        self.assertNotIn("indent=2", text)
+
 
 if __name__ == "__main__":
     unittest.main()

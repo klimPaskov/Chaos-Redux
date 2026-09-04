@@ -16,7 +16,7 @@ from blender_locator_adapter_integration import PIPELINE_ROOT, REPO_ROOT, blende
 
 
 REVIEWED_CANDIDATE_HASHES = {
-    ".tools/3d_pipeline/adapter/blender_worker.py": "3C798ACF9182F4644DC3B92A3B7BC3A71399AC0D5EB3BD3D1FE0D86F470C511E",
+    ".tools/3d_pipeline/adapter/blender_worker.py": "0C59C4E1D6A241003F59458F5DD130C05670633D304A05AB017E554410216FD6",
     ".tools/3d_pipeline/adapter/chaosx_blender_hoi4_mcp.py": "B72B323CC9B0C9D70597F662F951D1EC0B18F566BB9CFC3854E321D6D03849A4",
     ".tools/3d_pipeline/blender_client.py": "B2FE78FA84E297C6A913F4E2E17E2E3C1620F417306E33F3066B6F9162241A50",
 }
@@ -26,7 +26,7 @@ def verified_environment() -> dict:
     config = json.loads((PIPELINE_ROOT / "config/blender_hoi4_adapter.json").read_text(encoding="utf-8"))
     lock = json.loads((PIPELINE_ROOT / "config/dependencies.lock.json").read_text(encoding="utf-8"))
     adapter = lock["routes"]["blender_hoi4_adapter"]
-    assert config["adapter_version"] == adapter["version"] == "1.10.20"
+    assert config["adapter_version"] == adapter["version"] == "1.10.21"
     assert config["operations"] == adapter["operations"]
     assert "review_humanoid_components" in adapter["operations"], "Registered component review operation is missing"
     for path, expected in adapter["source_sha256"].items():
@@ -222,7 +222,7 @@ def main() -> None:
             blender_worker._render_component_group = original_render
         assert digest(source) == source_hash and not (job / f"blender/reports/component_review_{'4' * 32}.json").exists()
         print(json.dumps({"status": "pass", "fixture_only": True, "production_asset_acceptance": False,
-                          "reviewed_registered_candidate": True, "adapter_version": "1.10.20",
+                          "reviewed_registered_candidate": True, "adapter_version": "1.10.21",
                           "source_sha256": source_hash, "native_action_sha256": inventory["native_action_sha256"],
                           "component_catalog_sha256": review["component_catalog_sha256"],
                           "component_ids": review["component_page"]["component_ids"],

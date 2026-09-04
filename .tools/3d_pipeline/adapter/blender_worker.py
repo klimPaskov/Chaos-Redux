@@ -3906,7 +3906,10 @@ def review_humanoid_components(req: Dict[str, Any]) -> Dict[str, Any]:
                   "original_data_integrity_sha256": before["sha256"], "original_data_section_sha256": before["sections"],
                   "original_data_unchanged": True, "checkpoint_saved": False, "new_provider_call": False,
                   "semantic_component_acceptance": False, "weapon_separability_approved": False}
-        encoded = (json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n").encode("utf-8")
+        # The report is evidence, not a presentation file. Compact separators
+        # preserve every exact member while keeping dense production meshes
+        # inside the reviewed 64 MiB ceiling without raising that ceiling.
+        encoded = (json.dumps(result, sort_keys=True, separators=(",", ":"), allow_nan=False) + "\n").encode("utf-8")
         if len(encoded) > 64 * 1024 * 1024:
             raise ValueError("Component-review report exceeds the 64 MiB full-membership ceiling.")
         report_path = context["job"] / "blender" / "reports" / f"component_review_{context['request_id']}.json"
