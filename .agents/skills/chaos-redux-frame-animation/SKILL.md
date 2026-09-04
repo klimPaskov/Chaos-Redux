@@ -58,7 +58,7 @@ For every alpha-backed animation family, request a genuine transparent backgroun
 
 Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.
 
-3D skeletal `.anim` actions are not frame-sheet assets. Route model rigs, retargeting, baked actions, root-motion policy, `.anim` export, reimport proof, and unit or entity runtime binding to `chaos-redux-3d-model-pipeline`; do not manufacture a skeletal action by moving or filtering one still image, and do not replace a requested action with a 2D frame sheet.
+3D skeletal `.anim` actions are not frame-sheet assets. Route model rigs, retargeting, baked actions, root-motion policy, `.anim` export, reimport proof, and unit or entity runtime binding to `chaos-redux-3d-model-pipeline`. Do not manufacture a skeletal action by moving or filtering one still image, and do not replace a requested action with a 2D frame sheet.
 
 ## 4. Required HOI4 references before wiring
 
@@ -207,7 +207,7 @@ For the common `frameAnimatedSpriteType` pattern, build a one-row horizontal she
 Rules:
 
 - every processed frame must have identical dimensions
-- each frame must use the target asset type's background rule; alpha-backed families default to native ImageGen transparency, while deliberately painted full-canvas families remain opaque only when their inspected consumer requires it
+- each frame must use the target asset type's background rule. Alpha-backed families default to native ImageGen transparency, while deliberately painted full-canvas families remain opaque only when their inspected consumer requires it
 - frame order is left to right
 - sheet width must be `frame_width * noOfFrames`
 - sheet height must be `frame_height`
@@ -392,7 +392,7 @@ Reusable implementation pattern:
 3. Define one independent overlay container in a `.gui` file:
 	- `containerWindowType` must be top-level under `guiTypes`, not nested inside another container
 	- container `position` is the tunable overlay origin
-	- container `size` should fit the overlay frame; use `clipping = no` for portrait effects that extend beyond the portrait
+	- container `size` should fit the overlay frame. Use `clipping = no` for portrait effects that extend beyond the portrait
 	- child `iconType` should usually use `position = { x = 0 y = 0 }`, the animated sprite, matching portrait `scale`, and `alwaystransparent = yes`
 4. Wire one scripted GUI entry:
 	- set `window_name` to the independent overlay container
@@ -402,12 +402,12 @@ Reusable implementation pattern:
 5. Gate both the scripted GUI and the icon by the same target-scoped trigger:
 	- put the actor/state trigger in `visible = { ... }`
 	- also add `<icon_name>_visible = { ... }` under `triggers`
-	- if non-actor countries show the overlay, fix the context or trigger scope; do not solve it with coordinate changes or duplicated GUI files
+	- if non-actor countries show the overlay, fix the context or trigger scope. Do not solve it with coordinate changes or duplicated GUI files
 6. Align coordinates in this order:
 	- start from the vanilla portrait coordinate relative to the chosen parent token/window
 	- if using a higher independent parent, add nested parent offsets manually
 	- if the parent token already maps to a nested tab/body surface, do not add that surface's offset again
-	- tune only the top-level overlay container `position` after live visual feedback; keep the child icon at `{ x = 0 y = 0 }` unless the source frame has a bad anchor
+	- tune only the top-level overlay container `position` after live visual feedback. Keep the child icon at `{ x = 0 y = 0 }` unless the source frame has a bad anchor
 7. Record the final parent token/window, context type, trigger name, overlay origin, scale, vanilla reference file, portrait element, and any manual visual offset in `gfx_handoff.md`.
 
 Parent-window rule:

@@ -7,13 +7,14 @@ description: Use when coordinating Chaos Redux project custom subagents (Codex T
 
 Use this skill when a Chaos Redux task should be split across project custom subagents.
 
-The parent agent remains responsible for final integration, validation, and completion claims. Subagents can inspect, patch, create assets, write addenda, or produce reports. The parent must review their outputs, wire final cross-surface behavior, and carry blockers into the final report.
+The parent agent remains responsible for final integration, final review, required source and MCP validation, and completion claims. The user performs live-game validation. Subagents can inspect, patch, create assets, write addenda, or produce reports. The parent must review their outputs, wire final cross-surface behavior, and carry blockers into the final report.
 
 Do not use subagents to hide uncertainty or pass off responsibility. A subagent handoff is evidence for the parent, not a replacement for parent review.
 
 ## Fork context rule
 
-All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. In the Codex runtime this means `fork_context=false`. In the Qoder and Cursor runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. Cursor loads generated `.cursor/agents/*.md` files as native project subagents; spawn them by hyphen-case name through `/name` or the Task tool. Do not substitute Cursor's built-in `explore`, `shell`, or `browser` agents for a named Chaos Redux specialist.
+All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. With the current Codex `collaboration.spawn_agent` tool, set `fork_turns="none"`. In the Qoder and Cursor runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. Cursor loads generated `.cursor/agents/*.md` files as native project subagents.
+Spawn them by hyphen-case name through `/name` or the Task tool. Do not substitute Cursor's built-in `explore`, `shell`, or `browser` agents for a named Chaos Redux specialist.
 
 Do not spawn any project subagent with inherited parent-thread context. The parent prompt must include every path, user correction, task constraint, scope boundary, previous handoff status, accepted plan, queued plan, and design rule the subagent needs.
 
@@ -80,9 +81,9 @@ Do not route new work to `chaosx_mechanic_expander`. Its role is merged into `ch
 
 ## Event UI worker gate
 
-Spawn `chaosx_event_ui_worker` with a fully explicit, self-contained prompt (Codex runtime: `fork_context=false`) only when the accepted event spec or implementation explicitly introduces a dedicated scripted GUI or mechanic window. The parent prompt must provide the event id and slug, exact GUI identifiers and owning files, entry point, accepted layout brief and acceptance basis, reference-image paths or a bounded reference-production assignment, image-to-native mapping, intended states and resolutions, linked decisions and scripted-GUI identifiers, approved asset handoffs, allowed files, and handoff path.
+Spawn `chaosx_event_ui_worker` with a fully explicit, self-contained prompt (Codex `collaboration.spawn_agent`: `fork_turns="none"`) only when the accepted event spec or implementation explicitly introduces a dedicated scripted GUI or mechanic window. The parent prompt must provide the event id and slug, exact GUI identifiers and owning files, entry point, accepted layout brief and acceptance basis, reference-image paths or a bounded reference-production assignment, image-to-native mapping, intended states and resolutions, linked decisions and scripted-GUI identifiers, approved asset handoffs, allowed files, and handoff path.
 
-The worker is patch-capable for the accepted event-owned `.gui`, presentation-only `common/scripted_guis` wiring, event-owned `.gfx`, and event-owned GUI localisation. It owns layout implementation, hierarchy, spacing, alignment, background coverage, state presentation, click-region accuracy, and MCP before-and-after evidence. The parent and decision worker retain event outcomes, costs, AI, balance, reusable logic, final integration, and in-game validation.
+The worker is patch-capable for the accepted event-owned `.gui`, presentation-only `common/scripted_guis` wiring, event-owned `.gfx`, and event-owned GUI localisation. It owns layout implementation, hierarchy, spacing, alignment, background coverage, state presentation, click-region accuracy, and MCP before-and-after evidence. The parent and decision worker retain event outcomes, costs, AI, balance, reusable logic, and final integration. The parent reviews required MCP evidence and the user performs live-game validation.
 
 Do not route a GUI merely because an event appears in or opens it. The shared event log, event-details framework, settings UI, super-event framework, shared registries, utility/debug windows, and unrelated existing UIs remain out of scope. The prompt must identify the exact source or accepted specification proving event ownership.
 
@@ -143,7 +144,7 @@ The parent should use this planner after a meaningful implementation tranche, no
 
 `chaosx_documentation_curator` is patch-capable for documentation surfaces only. It may update Markdown specs, docs, plans, handoffs, manifests, prompt files, README files, route coverage tables, source-of-truth ledgers, resume packets, and documentation indexes inside the current task scope.
 
-Use it after long implementation tranches, after several subagent handoffs, before a major resume, or whenever docs may be stale, contradictory, duplicated, or too numerous. It should reduce confusion for the parent agent by recording what is current, what is superseded, what is queued, what is rejected, and what still needs a decision.
+Use it after long implementation tranches, after several subagent handoffs, before a major resume, or whenever docs may be stale, contradictory, duplicated, or too numerous. It should distinguish explicit user decisions, accepted design with its acceptance basis, current implementation evidence, and proposals. Apply the AGENTS.md Specs and Plans dispositions: `unresolved`, `accepted and queued` with acceptance basis and reason, `implemented` with evidence and validation limits, `promoted into an accepted spec` with acceptance basis and destination, `rejected` with recorded reason, `superseded` with a named replacement, or `blocked` with the exact limitation.
 
 It must not edit gameplay files, localisation, scripted localisation, GUI, GFX, events, focuses, decisions, ideas, scripted effects, scripted triggers, on_actions, country setup, history, AI files, assets, audio, binary files, or the event catalog workbook. It does not replace `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_spreadsheet_doc_worker`, or `chaosx_repo_explorer`.
 
@@ -155,7 +156,8 @@ The parent owns temporary-workspace cleanup. Keep the event-scoped `docs/assets/
 
 ### 3D model routing
 
-Route `chaosx_3d_model_pipeline` only with a context-complete prompt (Codex runtime: `fork_context=false`) containing the exact deterministic job root, reference-image path or approved asset brief, output folders, handoff path, asset profile, named vanilla references, scale relationship, required action roles, custom-unit sound roles, Internet source and licensing requirements, custom-unit counter consumers/tokens, exact installed-vanilla counter definition and DDS paths, matching skill-local counter family, `chaosx_icon_artist` handoff path, baseline planned paid operations, extra-recovery credit and paid-attempt limits, dependency lock, and forbidden simplifications. The parent must pass the owner/asset identifiers explicitly; the subagent must not infer them from inherited conversation state.
+Route `chaosx_3d_model_pipeline` only with a context-complete prompt (Codex `collaboration.spawn_agent`: `fork_turns="none"`) containing the exact deterministic job root, reference-image path or approved asset brief, output folders, handoff path, asset profile, named vanilla references, scale relationship, required action roles, custom-unit sound roles, Internet source and licensing requirements, custom-unit counter consumers/tokens, exact installed-vanilla counter definition and DDS paths, matching skill-local counter family, `chaosx_icon_artist` handoff path, baseline planned paid operations, extra-recovery credit and paid-attempt limits, dependency lock, and forbidden simplifications. The parent must pass the owner/asset identifiers explicitly.
+The subagent must not infer them from inherited conversation state.
 
 The parent prompt must also require the MESHY_API_KEY hard gate before path discovery or provider work, Meshy 7 as the generation model, exactly one approved sourced Meshy input image, no multi-view provider board, immediate provider download and checksum, protected provider source, topology repair, PDX packed-material validation, hash-aware runtime synchronization, and `.mesh`/`.anim` reimport evidence. Normal generation, planned remesh/retexture/rig/conversion/required-animation operations, and failure-driven provider recovery are pre-authorized and must not trigger another credit confirmation while live balance and provider capability permit them. For custom units, require Internet sound-source research, original download preservation, licensing evidence, source checksums, animation synchronization points, and a blocked state when no defensible sourced file exists; manual, generated, synthesized, recorded, placeholder, and unlicensed audio are forbidden. Also require bespoke counters for every used counter surface, exact installed-vanilla definition/DDS inspection, matching reference-family inspection, and sampled vanilla green evidence; reused counters, arbitrary green, and unreferenced imitations are forbidden. For humanoids, name the installed vanilla source mesh and entity and pass the source-height/entity-scale/effective-runtime crosswalk; for buildings, pass the valid state/province pair and entity visibility test.
 
@@ -163,7 +165,7 @@ Its allowed scope is source/reference preservation, provider candidates, downloa
 
 The handoff must list files and checksums, provider task lineage and credits, verified dependency versions, Blender checkpoint stages, geometry/material/rig/weight/action/export results, Internet audio source URLs, attribution, licenses, original and derived audio checksums, sound roles and animation synchronization points, custom-unit counter consumers/tokens, installed-vanilla counter paths, sampled green-palette evidence, counter-artist outputs, reimport or parser evidence (or an explicit missing-capability blocker), proposed runtime identifiers, statuses, skipped meaningful validation, and remaining risks. Use only actual provider or Blender tool names discovered and verified by the parent; missing integrations are `required installation/verification` or `blocked`, not invented capabilities. Any viewer or inspector is read-only.
 
-The parent alone owns `.asset`/entity/GFX/runtime source wiring, live-consumer and in-game validation, runtime evidence, and the overall completion claim. A successful provider task, `.blend`, preview, or export never authorizes the subagent to claim the feature is complete or to silently use a fallback.
+The parent alone owns `.asset`/entity/GFX/runtime source wiring, final review, evidence reconciliation, and the overall completion claim. The user performs live-consumer and in-game validation. A successful provider task, `.blend`, preview, or export never authorizes the subagent to claim the feature is complete or to silently use a fallback.
 
 ### Active small-patch agents
 
@@ -236,7 +238,7 @@ If a patch touches localisation, list the keys changed. If it touches decisions 
 
 ## MCP evidence in handoffs
 
-When a routed task touches focus trees, event chains, technology or doctrine trees, weighted logic, scripted GUI, or maps, MCP use is mandatory as the shared evidence surface. Pass only the diagnostics, revision, scenario hash, comparison, or linked artifact URI the parent needs instead of copying a complete graph or matrix into the prompt. If the relevant MCP route is unavailable, mark the affected work blocked or unresolved and carry the exact limitation to the parent.
+When a routed task touches focus trees, event chains, technology or doctrine trees, weighted logic, scripted GUI, or maps, MCP use is mandatory as the shared evidence surface. Pass only the diagnostics, revision, scenario hash, comparison, or linked artifact URI the parent needs instead of copying a complete graph or matrix into the prompt. Tool exposure is separate from service health and standalone viewer availability. If the relevant MCP route is unavailable, mark the affected work blocked or unresolved and carry the exact limitation to the parent. Verify standalone Technology Tree Viewer availability separately from the exposed read-only `mcp__hoi4_agent_tools__hoi4_tech_inspect`, `mcp__hoi4_agent_tools__hoi4_tech_render`, and `mcp__hoi4_agent_tools__hoi4_tech_compare` routes. Record an absent viewer as a package gap without inventing capabilities.
 
 For probability work, `chaosx_ai_probability_auditor` must start with `hoi4.probability_inspect`, name the analyzed surface and scenario ids, state whether the candidate pool and external factors were complete, and distinguish exact, bounded, sampled, score-only, and unresolved results. It must use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_compare` according to the scenario, with `hoi4.probability_simulate`, `hoi4.probability_sequence`, and `hoi4.probability_render` only under their declared evidence conditions. For technology or doctrine work, list the affected technology, folder, unlock, grant, bonus, or asset ids and include the relevant `hoi4.tech_compare` result when source changed.
 
@@ -254,7 +256,7 @@ Subagent plans, expansion addenda, audit follow-up notes, blocked reports, imple
 docs/plans/<event_id>_<event_slug>_plans/
 ```
 
-The plans folder is the working area. The specs folder is the source-of-truth design area. If a plan is accepted as source design, the main agent should fold it into the relevant spec file or clearly report that it remains queued.
+The plans folder is the working area. The specs folder holds source design whose acceptance basis must be recorded. A spec location, date, status label, or old handoff does not prove approval. Cite the explicit user decision or parent acceptance within the user-authorized scope, and keep unsupported or conflicting claims unresolved. Current implementation proves what exists, not what was accepted. The main agent should fold accepted design into the relevant spec or record it as `accepted and queued` with its acceptance basis and reason.
 
 Do not create new planning folder names such as `docs/planning/` unless the user explicitly asks.
 
@@ -350,8 +352,8 @@ Before final completion, the parent should check:
 
 - subagent changes are inside approved scope
 - patch handoffs identify changed files and ids
-- plan handoffs are either implemented, queued, or rejected with a reason
-- documentation curator handoffs identify promoted, queued, rejected, superseded, and unresolved documents when one was used
+- plan and documentation handoffs use the AGENTS.md dispositions with acceptance basis, implementation evidence, reasons, replacement paths, or exact blockers as applicable
+- explicit user decisions, accepted design, implementation evidence, and proposals remain distinguishable
 - assets are wired or reported as pending
 - temporary event asset workspaces are retained for active or blocked work and deleted only after durable evidence and runtime wiring have been reconciled
 - advisor candidates have separate manifest-linked native-plus-`4x` visual approval from a reviewer who is not the producer; automated validation alone is not approval

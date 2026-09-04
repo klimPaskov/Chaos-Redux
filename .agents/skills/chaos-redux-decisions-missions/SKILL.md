@@ -9,7 +9,7 @@ Use this skill when a task touches decisions, missions, timed objectives, decisi
 
 This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`. For scripted GUI layout and visual evidence, use `chaos-redux-scripted-gui`.
 
-For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every complex or balance-sensitive decision or mission weight to `chaosx_ai_probability_auditor` for the mandatory MCP probability pass. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
+For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every in-scope decision or mission weight to `chaosx_ai_probability_auditor` for the mandatory MCP probability pass. The probability auditor remains read-only. The `chaosx_decision_mission_auditor` may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
 ## 1. Required reading
 
@@ -27,7 +27,7 @@ Before editing decisions or missions, read:
 - vanilla decision files from `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 - vanilla documentation in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation`
 - existing Chaos Redux decision categories and scripted effects that do similar work
-- `templates/formable_state_puzzle/README.md` and `universal_state_registry_workflow.md` when a formable's proof uses exact state control
+- `templates/formable_state_puzzle/README.md` and `templates/formable_state_puzzle/universal_state_registry_workflow.md` when a formable's proof uses exact state control
 
 Do not rely on memory when syntax or UI behavior is documented.
 
@@ -241,7 +241,7 @@ If the country cannot pay a cost, show the affected amount and texticon in the b
 
 ### Custom-cost affordability and payment
 
-Custom-cost display is not sufficient evidence that a decision is selectable. Define one shared, inclusive affordability predicate and invoke it from both `available` and `custom_cost_trigger`; manually debit the custom payment once in `complete_effect`, and set the fixed `ai_hint_pp_cost` amount when political power is included. If the cost row already fully explains payment, the `available` duplicate may use `hidden_trigger` to keep raw requirements out of the visible block. Keep the display, affordability gate, and debit aligned, and document any engine uncertainty rather than inferring behavior.
+Custom-cost display is not sufficient evidence that a decision is selectable. Define one shared, inclusive affordability predicate and invoke it from both `available` and `custom_cost_trigger`. Manually debit the custom payment once in `complete_effect`, and set the fixed `ai_hint_pp_cost` amount when political power is included. If the cost row already fully explains payment, the `available` duplicate may use `hidden_trigger` to keep raw requirements out of the visible block. Keep the display, affordability gate, and debit aligned, and document any engine uncertainty rather than inferring behavior.
 
 Requirements are separate from costs. A requirement such as `Depot control` can use concise literal text because it is not a spendable value. When a decision has many non-cost requirements, show a short summary such as `Requirements met` or `§RRequirements not met§!` and place the precise requirement list in a concise tooltip. Do not use this pattern to conceal extra spendable costs.
 
@@ -736,7 +736,7 @@ Decision category descriptions, status summaries, scripted localisation, and com
 
 Use short natural-language lines, properly wired icons or texticons, real meters or panels, and concise tooltips. Introduce a real scripted GUI only when a justified, functional layout gives the player interaction or state clarity that ordinary category text, decisions, tooltips, and pictures cannot provide. Category pictures and compact attached displays must not paint or textually simulate fake buttons, meters, ledger columns, or controls. Resolve country- or route-specific wording through explicit localisation branches with a neutral default fallback that cannot inherit another country's text, and verify the fallback in every supported context.
 
-This restriction applies to runtime player-facing text and art; internal Markdown audit tables may still use normal table syntax and must never be copied into localisation.
+This restriction applies to runtime player-facing text and art. Internal Markdown audit tables may still use normal table syntax and must never be copied into localisation.
 
 ### Decision category picture reference workflow
 
@@ -905,7 +905,7 @@ AI should understand:
 
 Avoid flat `ai_will_do` when campaign state matters.
 
-For complex decision or mission weights, route the analysis through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` to find required inputs, `hoi4.probability_evaluate` for named campaign states, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after a source change. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, and use `hoi4.probability_render` when the ranking, matrix, sensitivity, comparison, or unresolved view improves review. Decision and mission `ai_will_do` results are willingness scores, so do not present them as click probabilities. Include availability, target, cost, cooldown, and route state where relevant, and retain unresolved engine state in the result. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis.
+For every in-scope decision or mission weight, route the analysis through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` to find required inputs, `hoi4.probability_evaluate` for named campaign states, `hoi4.probability_sweep` for thresholds and rank reversals, and `hoi4.probability_compare` after a source change. Use `hoi4.probability_simulate` only for explicitly declared uncertain inputs, and use `hoi4.probability_render` when the ranking, matrix, sensitivity, comparison, or unresolved view improves review. Decision and mission `ai_will_do` results are willingness scores, so do not present them as click probabilities. Include availability, target, cost, cooldown, and route state where relevant, and retain unresolved engine state in the result. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis.
 
 AI should not take suicidal or nonsensical decisions just because they are available.
 

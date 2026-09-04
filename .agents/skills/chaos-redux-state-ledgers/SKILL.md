@@ -11,14 +11,14 @@ Use this skill for reusable population-flow infrastructure that spans state and 
 
 Before editing a transfer or projection surface, read `AGENTS.md`, the relevant owner skill, the offline wiki pages for Data structures, Effects, Triggers, Scopes, and On actions, and the installed vanilla documentation for effects, triggers, script concepts, script constants, and scripted map modes. Inspect the existing shared population-loss helper and its paired documentation before adding another debit path.
 
-Use `common\script_constants\` for shared tuning, `common\scripted_effects\` and `common\scripted_triggers\` for the contract, `common\on_actions\` for bounded lifecycle seams, and `common\map_modes\` plus scripted localisation for projections. Do not create a central MCP router or wrapper; use the owning surface's actual MCP workflow when it exists and record an exact blocker when the installed route is unavailable.
+Use `common\script_constants\` for shared tuning, `common\scripted_effects\` and `common\scripted_triggers\` for the contract, `common\on_actions\` for bounded lifecycle seams, and `common\map_modes\` plus scripted localisation for projections. Do not create a central MCP router or wrapper. Use the owning surface's actual MCP workflow when it exists and record an exact blocker when the installed route is unavailable.
 
 ## Exact transfer contract
 
-Make one helper the sole owner of physical population movement. Owner systems submit explicit proof, amounts, route targets, and reason metadata; they do not debit or credit population themselves.
+Make one helper the sole owner of physical population movement. Owner systems submit explicit proof, amounts, route targets, and reason metadata. They do not debit or credit population themselves.
 
 1. Validate a positive request, valid origin state, valid destination state target, route proof, actor proof, and any protected-floor rule before mutating population. Default result and output variables to zero or invalid, and fail closed when proof is missing or ambiguous.
-2. Save the destination target only after entering the actual destination state scope. A regular event target may carry that pointer back to the origin for the current effect chain; it is not a durable cohort identity.
+2. Save the destination target only after entering the actual destination state scope. A regular event target may carry that pointer back to the origin for the current effect chain. It is not a durable cohort identity.
 3. Read `state_population_k` before the debit, convert with the shared people-per-thousand constant, subtract the protected minimum, clamp the request, and perform the existing exact state-loss helper exactly once.
 4. Measure the actual origin debit from before and after state population. Never trust the requested amount as the debit because floors, rounding, and engine reconciliation can change it.
 5. Clamp route deaths to the actual origin debit, compute survivors as `actual_debit - route_deaths`, and credit only survivors in the destination state. A destination credit must also be measured from before and after state population.
@@ -40,22 +40,22 @@ Keep state effects in state scope and country effects in country scope. When a h
 
 For cohorts that persist beyond one effect chain, use a sparse registry rather than a whole-world scan. Parallel arrays are one row: id, original state, current host, destination, owning country, amount, source, and lifecycle status. Every append, index update, and removal must touch every array at the same index.
 
-- Use monotonic ids as identity; array indexes are implementation details and may change after removal.
+- Use monotonic ids as identity. Array indexes are implementation details and may change after removal.
 - Initialize every array and count once, then keep the count equal to the id array length.
 - A new row may retain the origin as an internal placeholder, but status must prevent that placeholder from being treated as a bound destination.
-- Resolve by explicit id first. A state- or country-derived selection is valid only when exactly one row matches; ambiguity, missing rows, stale targets, and invalid ownership fail closed.
+- Resolve by explicit id first. A state- or country-derived selection is valid only when exactly one row matches. Ambiguity, missing rows, stale targets, and invalid ownership fail closed.
 - Bind a destination only from the actual destination state scope and update destination, host, and status together.
-- Rebind only the destination and current host for a nonterminal row; preserve origin, owner, survivor amount, source, and lifecycle history.
-- On cleanup, remove every aligned array element at the same index. Do not erase a live row merely because its origin recovered; retire it only through an explicit terminal transaction or invalidation rule.
+- Rebind only the destination and current host for a nonterminal row. Preserve origin, owner, survivor amount, source, and lifecycle history.
+- On cleanup, remove every aligned array element at the same index. Do not erase a live row merely because its origin recovered. Retire it only through an explicit terminal transaction or invalidation rule.
 - Process only registered active states and countries through bounded hooks or lifecycle callbacks. Do not add unscoped `on_daily`, `on_weekly`, `on_monthly`, `every_state`, or `every_country` scans for registry maintenance.
 
 Use a row status to distinguish active, destination-bound, unsafe-bound, integrated, resettled, returned, and retired states as needed. A status transition is metadata until the owning transaction has already moved the actual people.
 
 ## Reception and outcome accounting
 
-Keep reception capacity on the receiving country and reception load on both the destination state and receiving country. The state load answers “how much is in this state”; the country load and capacity answer “how much can this country receive overall.” Do not substitute one ledger for the other.
+Keep reception capacity on the receiving country and reception load on both the destination state and receiving country. The state load answers “how much is in this state”. The country load and capacity answer “how much can this country receive overall.” Do not substitute one ledger for the other.
 
-Apply a positive or negative reception delta exactly once per accepted survivor transaction. A credit updates the state and owner-country ledgers by the same actual survivor amount. A debit is valid only when both ledgers can cover the full amount; otherwise it fails closed without changing either ledger. Refresh reception and overcrowding flags or modifiers from those ledgers after the symmetric update.
+Apply a positive or negative reception delta exactly once per accepted survivor transaction. A credit updates the state and owner-country ledgers by the same actual survivor amount. A debit is valid only when both ledgers can cover the full amount. Otherwise it fails closed without changing either ledger. Refresh reception and overcrowding flags or modifiers from those ledgers after the symmetric update.
 
 Integration, resettlement, return, and similar outcomes are accounting projections, not population creation. Record the actual survivor amount and cohort status after the accepted transfer or resolution, and never call a population-adding effect merely to represent an outcome. If a flow ends without movement, record only the proven outcome and its cleanup marker.
 
@@ -73,10 +73,10 @@ Gate exact ledgers, capacity, source, cohort amount, and outcome totals to the s
 
 Before accepting the system, trace every population-changing call site and prove that each accepted movement has exactly one origin debit and at most one measured destination credit. The following are separate and must not be conflated:
 
-- physical origin debit;
-- route-death slice of that debit;
-- survivor credit in the destination state;
-- state and country reception-ledger deltas;
+- physical origin debit.
+- route-death slice of that debit.
+- survivor credit in the destination state.
+- state and country reception-ledger deltas.
 - cohort outcome totals and map projection flags.
 
 Owner adapters may submit pressure, route, border, capacity, or policy proof, but only the transfer owner changes population. Outcome and projection helpers may change ledgers, flags, modifiers, or cohort metadata, but never create the population they describe. A failed route, invalid destination, failed credit, or failed reception delta must leave the corresponding physical and accounting ledgers unchanged.
@@ -85,13 +85,13 @@ Owner adapters may submit pressure, route, border, capacity, or policy proof, bu
 
 Run task-specific source checks before parent review:
 
-- verify one physical loss helper owns all movement debits and that Deaths logging is not a second debit;
-- verify aligned arrays have identical append, update, and removal sites and that all read variables have initialization and cleanup paths;
-- verify no whole-world scan was introduced and every registry processor is bounded to active entries or an explicit lifecycle callback;
-- verify route targets are saved from the destination state scope and stale or ambiguous cohort resolution fails closed;
-- verify state and country reception deltas are symmetric and mapmode projections are written by validated transactions, not by global-ledger scans;
-- verify mapmode definitions use supported layers and state scope, with public versus authorized tooltip disclosure matching the projection data;
-- run the owning MCP inspection/render/compare workflow for supported surfaces, or record the exact unavailable route and do not call source-only review runtime evidence;
+- verify one physical loss helper owns all movement debits and that Deaths logging is not a second debit.
+- verify aligned arrays have identical append, update, and removal sites and that all read variables have initialization and cleanup paths.
+- verify no whole-world scan was introduced and every registry processor is bounded to active entries or an explicit lifecycle callback.
+- verify route targets are saved from the destination state scope and stale or ambiguous cohort resolution fails closed.
+- verify state and country reception deltas are symmetric and mapmode projections are written by validated transactions, not by global-ledger scans.
+- verify mapmode definitions use supported layers and state scope, with public versus authorized tooltip disclosure matching the projection data.
+- run the owning MCP inspection/render/compare workflow for supported surfaces, or record the exact unavailable route and do not call source-only review runtime evidence.
 - exercise scenarios for valid movement with no deaths, movement with route deaths, protected-floor clamping, blocked or invalid route, partial or failed destination credit, reception credit and debit, ambiguous cohort selection, safe and unsafe destination binding, rebind, terminal resolution, and state-control or annexation cleanup.
 
 The handoff must list changed files, public helper names, scope and target contracts, aligned-array fields and statuses, conservation evidence, projection fields and privacy rules, meaningful validation, skipped checks with reasons, blockers, and parent-owned wiring. Do not put event ids, historical profiles, one-off balance choices, or private implementation history into this skill.

@@ -1264,9 +1264,10 @@ The model package must plan provider lineage, Blender source and normalized/repa
 
 The asset prompt must distinguish provider source files from final runtime copies. It must require a final hash-aware synchronization step so an older mapped texture, mesh, entity, or animation cannot overwrite the approved runtime candidate.
 
-Route production to `chaosx_3d_model_pipeline` with `fork_context=false` and give it the exact job root, reference status, asset profile, vanilla references, scale relationship, action list, custom-unit sound roles, counter consumers/tokens and inspected vanilla paths, dependency lock, baseline planned paid operations, live balance and cost preflight, bounded recovery rationale and stop conditions, attempt-scoped retry and provenance requirements, visual-QA evidence requirements, and handoff path. Require Meshy 7 and the no-additional-confirmation policy while balance and provider capability permit the work.
+Route production to `chaosx_3d_model_pipeline` with Codex `collaboration.spawn_agent` using `fork_turns="none"` and give it the exact job root, reference status, asset profile, vanilla references, scale relationship, action list, custom-unit sound roles, counter consumers/tokens and inspected vanilla paths, dependency lock, baseline planned paid operations, live balance and cost preflight, bounded recovery rationale and stop conditions, attempt-scoped retry and provenance requirements, visual-QA evidence requirements, and handoff path. Require Meshy 7 and the no-additional-confirmation policy while balance and provider capability permit the work.
 
-The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, live runtime validation, and in-game evidence.
+The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, final source and MCP validation, and review of available in-game evidence.
+The user performs live runtime validation.
 
 ### 3D model planning matrix
 
@@ -1772,7 +1773,8 @@ The asset prompt must state the correct source mode where relevant.
 
 It must also state the relevant reference folder from the list above when a matching folder exists.
 
-Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. Prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for photographed events and archival artifacts. Every flag uses `$imagegen`. Historical flags first require a cited design reference and must remain flat, faithful reconstructions. Route all portrait prompts to `chaosx_portrait_creator`; name the leader and advisor reference folders, require an explicit head-and-shoulders crop and identity preservation for grounded subjects, and request separate `156x210` leader and `65x67` advisor outputs when both uses exist.
+Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. Prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for photographed events and archival artifacts. Every flag uses `$imagegen`. Historical flags first require a cited design reference and must remain flat, faithful reconstructions. Route all portrait prompts to `chaosx_portrait_creator`.
+Name the leader and advisor reference folders, require an explicit head-and-shoulders crop and identity preservation for grounded subjects, and request separate `156x210` leader and `65x67` advisor outputs when both uses exist.
 
 Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state. Use animation only when the state change benefits from motion. A completed formable or living mechanic may use a strong static category picture, an animated picture, a compact state-puzzle display, or a full window according to the presentation-choice pass.
 
@@ -1852,7 +1854,11 @@ The super-event prompt must explicitly state that unresearched titles, button te
 
 ## Improvement-loop expansion specs
 
-When `chaos-redux-improvement-loop` produces an expansion addendum, treat it as event-planning input. The addendum should be folded into the main spec pack with the same seriousness as the original user idea. Do not treat it as a loose suggestion if the parent accepted it.
+When `chaos-redux-improvement-loop` produces an expansion addendum, treat it as proposed event-planning input until its acceptance basis is recorded.
+Fold accepted design into the main spec pack with the same seriousness as the original user idea.
+Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim.
+A spec path, status label, old handoff, or implementation evidence does not establish approval.
+Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
 
 An improvement-derived spec can be shaped freely. It does not need to copy the section order of this skill. It should still make the design concrete. A useful addendum explains the playable promise, the route or mechanic that feels shallow, the deeper player loop, the choices that change outcomes, the AI behavior, the visual and localisation needs, and the surfaces that must align.
 
@@ -1862,7 +1868,7 @@ Before any event-planning goal is treated as near complete, the coding agent mus
 
 Run this pass after the main design is mostly assembled and before the final completion report. The loop planner should inspect the current spec, accepted plans, unresolved handoffs, asset needs, AI plans, mechanic surfaces, and implementation handoff needs. Its job is to find remaining shallow systems, disconnected mechanics, missing route depth, missing AI behavior, missing asset states, missing aftermath, or scope bloat.
 
-Spawn the loop planner with `fork_context=false`. The parent prompt must explicitly pass the event id, event slug, current goal, user constraints, current spec paths, relevant plan paths, known unresolved decisions, and the exact question to answer. Do not rely on inherited conversation context.
+Spawn the loop planner with Codex `collaboration.spawn_agent` using `fork_turns="none"`. The parent prompt must explicitly pass the event id, event slug, current goal, user constraints, current spec paths, relevant plan paths, known unresolved decisions, and the exact question to answer. Do not rely on inherited conversation context.
 
 The loop planner may return either an expansion addendum or a closure handoff. If it returns an expansion addendum, the parent must resolve it before completion by folding accepted content into `docs/specs/<event_id>_<event_slug>_specs/`, implementing or queuing it with a clear reason, or rejecting it with a clear reason. If it returns a closure handoff, record that closure and proceed with final checks.
 
@@ -1892,7 +1898,7 @@ The coding agent writes the final in-game text during implementation. The planni
 
 The planning agent should preserve the open structure of the addendum where that helps the idea. Use tables, route maps, prose, diagrams, or country package matrices only when they make the design easier to implement. Do not convert every improvement into a rigid checklist.
 
-When an improvement addendum proposes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry those ideas into the relevant files instead of leaving them isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
+When an accepted improvement addendum includes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry that accepted design into the relevant files instead of leaving it isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
 
 
 ## Specification folder convention
@@ -2047,7 +2053,7 @@ The prompt must tell the coding agent to:
 - perform the full vanilla, Chaos Redux, Workshop, and local-mod tag collision audit before creating a new country tag, reuse existing vanilla identities when they already exist, and preserve living vanilla countries and meaningful existing trees
 - use `hoi4.tech_inspect`, `hoi4.tech_render`, and `hoi4.tech_compare` when technologies, doctrines, folders, prerequisites, unlocks, grants, or research bonuses are involved
 - spawn `chaosx_ai_probability_auditor` and use the probability inspection, evaluation, sweep, comparison, rendering, simulation, and sequence tools according to the scenario plan when weighted behavior is involved
-- route required 3D model and skeletal animation production through `chaosx_3d_model_pipeline` with `fork_context=false`, then implement and validate the final `.asset`, entity, `.gfx`, unit or building consumer, placement, animation, and live in-game evidence
+- route required 3D model and skeletal animation production through `chaosx_3d_model_pipeline` with Codex `collaboration.spawn_agent` using `fork_turns="none"`, then implement and validate the final `.asset`, entity, `.gfx`, unit or building consumer, placement, and animation, and review available user-supplied live in-game evidence
 - follow the flat reference-constrained imagegen rule for every flag and the sourced identity-preserving portrait rule for every grounded polity and real person
 - follow `AGENTS.md`
 - follow `chaos-redux-events`
@@ -2058,7 +2064,7 @@ The prompt must tell the coding agent to:
 - keep all Chaos Redux systems aligned
 - report anything that cannot be implemented cleanly
 - keep iterating until the full spec is implemented to its fullest extent
-- spawn `chaosx_improvement_loop_planner` with `fork_context=false` before claiming the goal is near complete, then resolve its addendum or closure handoff before final completion
+- spawn `chaosx_improvement_loop_planner` with Codex `collaboration.spawn_agent` using `fork_turns="none"` before claiming the goal is near complete, then resolve its addendum or closure handoff before final completion
 - avoid fallbacks, simplifications, temporary versions, and good-enough approximations
 - not claim completion until the implemented files satisfy the spec
 

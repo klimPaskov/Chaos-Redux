@@ -50,14 +50,14 @@ Do not extend a central consumer-maintained family list, equipment switch, or lo
 
 For large or multi-surface event work, use project subagents to keep the main implementation pass focused.
 
-- Spawn `chaosx_repo_explorer` before editing when the event touches many systems or when file locations are uncertain.
+- Use `chaosx_repo_explorer` before editing only when file locations, existing patterns, vanilla references, likely touchpoints, missing-file recovery, or implementation order are unclear.
 - Spawn `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist` for actual visual asset packages according to `chaos-redux-event-assets`.
 - Spawn `chaosx_3d_model_pipeline` for bounded Meshy 7 model geometry, textures, rigs, skeletal actions, Internet-sourced unit sound design, bespoke vanilla-green custom-unit counter handoffs, `.mesh`/`.anim` exports, reimport proof, and runtime handoff when the event owns a 3D unit or building surface.
 - Spawn `chaosx_event_ui_worker` only when the named event specifically introduces and owns a dedicated scripted GUI or mechanic window. Never route shared event logs, event details, settings, super-event frameworks, or unrelated existing UIs to it.
 - Spawn `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher` for actual super-event research packages according to `chaos-redux-super-events`.
 - Spawn `chaosx_improvement_loop_planner` after a meaningful implementation tranche when several new mechanics, country packages, formables, focus routes, decisions, scripted GUI surfaces, super-event candidates, or lore systems have been added and the event needs deeper connection. Do not spawn it again for the same event until the previous addendum is implemented, folded into specs, queued with a reason, or rejected.
 - Spawn `chaosx_focus_tree_auditor` after creating or heavily changing focus trees.
-- Spawn `chaosx_ai_probability_auditor` for every complex or balance-sensitive AI weight, MTTH, random-selection, or weighted-pool surface before completion.
+- Spawn `chaosx_ai_probability_auditor` for every in-scope AI weight, MTTH, random-selection, or weighted-pool surface before completion.
 - Spawn `chaosx_event_completion_auditor` before claiming a large event, event rework, or spec-driven implementation is complete.
 - Spawn `chaosx_spreadsheet_doc_worker` after implementation when docs, catalog rows, manifests, route coverage tables, or spreadsheet-style records need to match the final repo state.
 
@@ -65,13 +65,15 @@ Subagents do not remove the main agent's responsibility to wire, review, validat
 
 ## Spec and plan locations
 
-Source event specs live under `docs/specs/<event_id>_<event_slug>_specs/`. Implementation should read those files as the main design source when they exist.
+Source event specs live under `docs/specs/<event_id>_<event_slug>_specs/`. Read them as the main design source when they exist, and record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim.
+A spec location, date, status label, or old handoff does not prove approval, and implementation evidence proves what exists rather than what was accepted.
+Keep missing or conflicting acceptance evidence unresolved under the AGENTS.md Specs and Plans dispositions.
 
 Subagent plans, expansion addenda, audit follow-up notes, and implementation handoffs live under `docs/plans/<event_id>_<event_slug>_plans/`. Plans are working documents. If a plan becomes accepted source design, merge it into the relevant spec.
 
 ## Spec fidelity and implementation quality
 
-When implementing from `docs/specs/`, treat mapped content as acceptance criteria. Do not silently replace mapped mechanics, routes, countries, decisions, achievements, assets, or super-events with smaller fallback versions. If something must be merged, skipped, or simplified, report it in the completion notes with the reason and affected files.
+When implementing from `docs/specs/`, treat mapped content with recorded acceptance as acceptance criteria. Do not silently replace mapped mechanics, routes, countries, decisions, achievements, assets, or super-events with smaller fallback versions. If something must be merged, skipped, or simplified, report it in the completion notes with the reason and affected files.
 
 Use dynamic factors for pressure, cooldowns, progress, chance, support, duration, costs, AI willingness, spawn strength, aid amounts, stage movement, recognition, etc when the spec calls for a living system. Flat values are allowed only as constants, caps, floors, or deliberate tuning anchors. Centralize shared values in script constants or documented tuning.
 
@@ -95,17 +97,11 @@ Any new, released, restored, transformed, or event-managed country that is expec
 
 Major events and country-creation events need route-specific AI. Implement focus choices, decision choices, unit-raising choices, faction behavior, foreign influence behavior, rare variant handling, high-chaos exceptions, invalid-route blocking, etc.
 
-When an event needs a reusable country carrier, consult
-`common/collections/chaosx_country_collections.txt` and
-`docs/events/006_independence_wave/systems/country_registry.md` before reserving a
-new tag. Use the `chaosx_country_*` collection that matches the region or
-origin, then record the consuming event's own provenance and package identity
-before loading content. Do not create a duplicate tag for an Event 006 or
-Soviet Collapse carrier, and do not treat event-text mentions as tag
-collisions. After changing a protected carrier or its references, perform a
-fresh repository-wide collision scan against vanilla, installed Workshop mods,
-and sibling local mods. The legacy country-tag auditors under `.tools/archive/`
-are provenance only and are not current acceptance tools.
+When an event needs a reusable country carrier, consult `common/collections/chaosx_country_collections.txt` and `docs/events/006_independence_wave/systems/country_registry.md` before reserving a new tag.
+Use the `chaosx_country_*` collection that matches the region or origin, then record the consuming event's own provenance and package identity before loading content.
+Do not create a duplicate tag for an Event 006 or Soviet Collapse carrier, and do not treat event-text mentions as tag collisions.
+After changing a protected carrier or its references, perform a fresh repository-wide collision scan against vanilla, installed Workshop mods, and sibling local mods.
+The legacy country-tag auditors under `.tools/archive/` are provenance only and are not current acceptance tools.
 
 Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes.
 
@@ -223,7 +219,7 @@ Implementation design rules:
 
 ### Event-log UI surfaces
 
-Before changing evolution log display, identify the exact surface and keep the change scoped to that surface. Patch the actual GUI/localisation/scripted data path; do not record a process note as a substitute for fixing the visible row.
+Before changing evolution log display, identify the exact surface and keep the change scoped to that surface. Patch the actual GUI/localisation/scripted data path. Do not record a process note as a substitute for fixing the visible row.
 
 - **Main Evolutions tab** uses `global.events_log_evolution_view_*`, `events_log_evolution_index`, and `events_log_evolution_entry_*` templates. This is a global logged-evolution history surface. Rows should visibly show the log index, date, source event, evolution name, tier, and stage.
 - **History details related evolutions** uses `global.events_log_history_detail_evolution_*`, `events_log_history_detail_evolution_index`, and `events_log_history_detail_evolution_entry`. This is the selected-event filtered logged-evolution history surface. Rows should use the same visible metadata as the main Evolutions tab.
@@ -347,7 +343,7 @@ Before treating an inspection or render as lifecycle evidence, read its `analysi
 
 `event_compare` accepts cached revisions, validated event-graph artifacts, or proposed source overlays. Report-only trace artifacts and render or manifest artifacts can fail `artifactUri` graph validation because their report or render schema does not contain an event-graph payload. Use a graph-bearing artifact or another supported compare input when available. If none is available, preserve the exact blocker and do not invent a conversion or comparison result.
 
-For event-option `ai_chance`, event MTTH, direct random chance, and `random_list` logic, route the audit through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` before choosing scenarios, then use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, or `hoi4.probability_compare` only for the surface being reviewed. Use `hoi4.probability_sequence` only when a complete custom-pool manifest explicitly declares cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. Use `hoi4.probability_render` for timing, matrix, sensitivity, sequence, comparison, or unresolved views when they make the result easier to audit. Provide complete option or list pools when normalization applies, and provide scheduled state changes for timing questions. Treat exact, bounded, sampled, score-only, and unresolved results as different evidence; the analyzer does not choose balance targets or edit event source. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis. For `hoi4.probability_compare`, pass both `before` and `after` as `probabilitySourceSchema` objects with a source `identifier`/`path`, `inlineClausewitz`, or `virtualPatch`, or pass both `beforeManifest` and `afterManifest` under an identical `scenarioSet`; do not put a cached `analysisId` in `identifier`, because `analysisId` belongs only to `hoi4.probability_render` and is not a compare source.
+For event-option `ai_chance`, event MTTH, direct random chance, and `random_list` logic, route the audit through `chaosx_ai_probability_auditor`. It must use `hoi4.probability_inspect` before choosing scenarios, then use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, `hoi4.probability_simulate`, or `hoi4.probability_compare` only for the surface being reviewed. Use `hoi4.probability_sequence` only when a complete custom-pool manifest explicitly declares cadence, recovery, caps, cooldowns, removals, resets, timer changes, and terminal states. Use `hoi4.probability_render` for timing, matrix, sensitivity, sequence, comparison, or unresolved views when they make the result easier to audit. Provide complete option or list pools when normalization applies, and provide scheduled state changes for timing questions. Treat exact, bounded, sampled, score-only, and unresolved results as different evidence. The analyzer does not choose balance targets or edit event source. If the probability route is unavailable, record the exact blocker and do not substitute source-only analysis. For `hoi4.probability_compare`, pass both `before` and `after` as `probabilitySourceSchema` objects with a source `identifier`/`path`, `inlineClausewitz`, or `virtualPatch`, or pass both `beforeManifest` and `afterManifest` under an identical `scenarioSet`. Do not put a cached `analysisId` in `identifier`, because `analysisId` belongs only to `hoi4.probability_render` and is not a compare source.
 
 ### 1. Classify the event first
 
@@ -451,7 +447,7 @@ Events must appear in Chaos Redux’s event log, wire the full log contract in t
 Script ownership:
 
 - Put history/evolution recording, actor sanitizing, default actor mapping, Event Details catalog rows, event-detail evolution previews, and History/Evolutions/Events tab rebuild logic in `common/scripted_effects/chaosx_events_log_effects.txt`.
-- Keep random selection, fired-event handlers, timers, and event type accounting in `common/scripted_effects/chaosx_logic_effects.txt`; those effects should call the shared Event Logs recorders rather than defining log arrays themselves.
+- Keep random selection, fired-event handlers, timers, and event type accounting in `common/scripted_effects/chaosx_logic_effects.txt`. Those effects should call the shared Event Logs recorders rather than defining log arrays themselves.
 - Keep settings controls and generic event firing helpers in `common/scripted_effects/chaosx_settings_effects.txt`. Do not add new event-log history/evolution display logic there unless the settings window itself is changing.
 - Keep button click routing in `common/scripted_guis/chaosx_scripted_gui_events_log.txt`, and layout changes in `interface/chaosx_events_log_popup.gui`.
 
@@ -466,8 +462,8 @@ Required actor plumbing when a flag should appear:
 - update `events_log_set_default_actor_for_current_event` in `common/scripted_effects/chaosx_events_log_effects.txt`
 - use a default actor only when the event should show a meaningful actor before or without a fired history row
 - if fired history should override the default actor, keep the history-context flow intact
-- for random-event history rows, remember that the generic fired-event handler records the row before the target event's `immediate` block runs; if the actor is created or refreshed inside that event, move that preparation into a shared pre-fire helper and call it before `record_events_log_history_entry`
-- for evolution rows with actors, save the country as `events_log_evolution_actor` and set `events_log_evolution_has_actor = 1` immediately before `record_events_log_evolution_entry = yes`; no-actor entries should let the shared logger default `events_log_evolution_has_actor` to `0`
+- for random-event history rows, remember that the generic fired-event handler records the row before the target event's `immediate` block runs. If the actor is created or refreshed inside that event, move that preparation into a shared pre-fire helper and call it before `record_events_log_history_entry`
+- for evolution rows with actors, save the country as `events_log_evolution_actor` and set `events_log_evolution_has_actor = 1` immediately before `record_events_log_evolution_entry = yes`. No-actor entries should let the shared logger default `events_log_evolution_has_actor` to `0`
 
 Required detail-view plumbing:
 
@@ -664,9 +660,9 @@ Rules:
 
 - Use exactly these status labels: `Playable`, `Partially Available`, `To Be Reworked`, `Unavailable`, and `Needs Testing`.
 - `Playable` requires explicit approval and must never be inferred or assigned by default.
-- `Partially Available` means the catalog row has a usable implemented surface but still has material unavailable, blocked, or incomplete content; it is not equivalent to `Playable`.
+- `Partially Available` means the catalog row has a usable implemented surface but still has material unavailable, blocked, or incomplete content. It is not equivalent to `Playable`.
 - Events 1–20 awaiting validation use `Needs Testing` unless the user explicitly approves another status.
-- A post-20 catalog ID with an actual root definition in the mod (`id = chaosx.nr<ID>.1`) is `To Be Reworked`, including hidden, bridge, or placeholder roots; do not infer availability from category-array membership alone.
+- A post-20 catalog ID with an actual root definition in the mod (`id = chaosx.nr<ID>.1`) is `To Be Reworked`, including hidden, bridge, or placeholder roots. Do not infer availability from category-array membership alone.
 - A post-20 catalog ID without an actual `chaosx.nr<ID>.1` root definition is `Unavailable`.
 - Treat the workbook `Legend` sheet as the source for status, Type, Member Severity, evolution-column, and World-End colors. Keep dropdown ranges, conditional-formatting rules, static fills, and exported values synchronized with the Legend.
 - These status rules classify catalog entries only and must not silently change runtime registration or enablement.
@@ -685,7 +681,7 @@ When an event can create a normal tag that may also already exist from vanilla, 
 
 Before registering any new country, cosmetic, formable, or route tag, audit it against vanilla, Chaos Redux, every installed Workshop mod, and other local mods. Do not add a duplicate new country for a national identity that already exists in vanilla: reuse the vanilla tag, preserve the living country and its meaningful content, and add only safely gated Event content. If a proposed new tag conflicts anywhere in the installed set, remap it and update every script, history, localisation, asset, manifest, scenario, documentation, and catalog reference together. Apply any event-specific suffix convention only after the collision-free tag is locked.
 
-When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, custom-tag history files, additive startup grants for existing countries, generated startup scientists when needed, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag. Do not copy vanilla country, state, or unit history only to add Chaos Redux technologies, equipment, facilities, traits, or other additive setup; put that setup in `common/scripted_effects/chaosx_startup_history_effects.txt` and call it from `on_startup`. Do not put `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists; it is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
+When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, custom-tag history files, additive startup grants for existing countries, generated startup scientists when needed, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag. Do not copy vanilla country, state, or unit history only to add Chaos Redux technologies, equipment, facilities, traits, or other additive setup. Put that setup in `common/scripted_effects/chaosx_startup_history_effects.txt` and call it from `on_startup`. Do not put `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists. It is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
 
 ## Formable nations as event surfaces
 
@@ -751,7 +747,9 @@ For a spawned unit, validate that `create_unit` is executed in a country or othe
 
 For a building or map entity, validate that the building has an entity, the entity key resolves in the `.gfx`/`.asset` chain, the province belongs to the specified state, the building command has the correct argument count, and the test province is visible at the intended zoom without an existing building hiding it.
 
-The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, live consumer, and in-game evidence. The 3D worker owns the bounded model package and must not claim event or in-game completion.
+The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, and review of live-consumer and in-game evidence supplied by the user.
+The user performs live-consumer and in-game validation.
+The 3D worker owns the bounded model package and must not claim event or in-game completion.
 
 ## Generated asset handling
 

@@ -556,7 +556,7 @@ Do not implement a new `on_daily`, `on_weekly`, `on_monthly`, or other all-count
 
 Fix a defect directly when it is narrow, reproducible, and inside the current feature.
 
-Use relevant project subagents only when they save time or provide a required specialty. They remain optional and must be spawned with `fork_context=false` and a complete explicit prompt.
+Use relevant project subagents only when they save time or provide a required specialty. They remain optional and must be spawned with `fork_turns="none"` through Codex `collaboration.spawn_agent` and a complete explicit prompt.
 
 Examples:
 

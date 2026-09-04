@@ -83,7 +83,10 @@ Use the system skill that owns the surface being improved.
 - `chaos-redux-super-events` owns super-event role, title, description, quote, audio, image, trigger, localisation, docs, and spreadsheet alignment.
 - `chaos-redux-subagents` explains when to use a planner subagent, a patch-capable system subagent, an asset worker, a read-only auditor, or other subagents.
 
-When an improvement pass requires event-catalog alignment, update only the authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook and then run `python .tools/export_event_catalog_csv.py`. The three catalog CSVs are export-only snapshots and must never be edited directly.
+When an improvement pass requires event-catalog alignment, the planner returns an alignment handoff to the parent and remains plan-only.
+Once implementation facts are available, the parent coordinates `chaosx_spreadsheet_doc_worker`, which owns updates to the authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook.
+After every successful workbook update, that worker runs `python .tools/export_event_catalog_csv.py` from the mod root.
+The three catalog CSVs are export-only snapshots and must never be edited directly.
 
 ## Research and historical connection standard
 
@@ -117,9 +120,14 @@ Improvement addenda, audit follow-up plans, subagent handoffs, and implementatio
 docs/plans/<event_id>_<event_slug>_plans/
 ```
 
-The plans folder is where subagents add working handoffs. The specs folder is where accepted source-of-truth event specs live.
+The plans folder is where subagents add working handoffs.
+The specs folder holds source design whose acceptance basis must be recorded.
+A spec path, status label, old handoff, or implementation evidence does not establish approval.
+Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim.
+Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
 
-If an improvement addendum is accepted as source design, the main agent should either implement it or fold the design into the relevant spec file under `docs/specs/<event_id>_<event_slug>_specs/`. Do not let accepted design live only as a loose plan if the final spec is meant to be complete.
+If an improvement addendum is accepted as source design, the main agent should fold it into the relevant spec file under `docs/specs/<event_id>_<event_slug>_specs/` or record it as `accepted and queued` with its acceptance basis and reason.
+Record implementation evidence separately from design acceptance.
 
 ## The improvement question
 
@@ -228,7 +236,8 @@ A country package is weak if it only has a tag, flag, leader, and generic tree. 
 
 A country addendum can define why the country exists, what states it can receive, what states are claims only, how it avoids invalid map states, starting leader, ruling party, advisors, ideas, units, technology, industry, supply, focus or overlay route, decisions, missions, survival tools, formables, claims, integration routes, diplomatic ambitions, asset needs, historical source needs, AI behavior, and cleanup.
 
-If the improvement changes a technology or doctrine tree, require `hoi4.tech_inspect` evidence for prerequisites, placement, exclusivity, unlocks, grants, bonuses, references, and missing assets; use `hoi4.tech_render` for the affected folder or branch and `hoi4.tech_compare` for the implemented change.
+If the improvement changes a technology or doctrine tree, require `hoi4.tech_inspect` evidence for prerequisites, placement, exclusivity, unlocks, grants, bonuses, references, and missing assets.
+Use `hoi4.tech_render` for the affected folder or branch and `hoi4.tech_compare` for the implemented change.
 
 If a shared tag can appear through more than one event, define origin logic. The same tag can use different mechanics depending on release origin, formation origin, or route origin.
 
@@ -238,13 +247,20 @@ Visual improvement should support mechanic clarity. It should not become decorat
 
 When an improvement changes a unit, building, creature, vehicle, aircraft, naval object, or map entity, include a 3D model review instead of treating the model as a final-render detail. Check whether the feature needs a static prop, a calibrated humanoid unit, a domain-specific mesh, or a building entity, then name the vanilla mesh/entity precedent, source-height/entity-scale crosswalk, one-image Meshy input rule, PDX material mapping, required skeletal actions, `.mesh`/`.anim` exports, reimport evidence, runtime hashes, valid map placement, and live consumer.
 
-Route bounded production to `chaosx_3d_model_pipeline` with `fork_context=false`. Require Meshy 7, pre-authorized normal model/animation spend and failure-driven provider recovery without another confirmation while live balance and provider capability permit them, Internet-sourced-only unit audio, and bespoke vanilla-green counters backed by exact installed-vanilla inspection. Keep provider source, Blender checkpoints, processed textures, counter and sound handoffs, and runtime evidence separate from the parent-owned `.asset`, entity, `.gfx`, gameplay wiring, and in-game proof.
+Route bounded production to `chaosx_3d_model_pipeline` with Codex `collaboration.spawn_agent` using `fork_turns="none"`. Require Meshy 7, pre-authorized normal model/animation spend and failure-driven provider recovery without another confirmation while live balance and provider capability permit them, Internet-sourced-only unit audio, and bespoke vanilla-green counters backed by exact installed-vanilla inspection. Keep provider source, Blender checkpoints, processed textures, counter and sound handoffs, and runtime evidence separate from the parent-owned `.asset`, entity, `.gfx`, and gameplay wiring.
+The parent reviews source, MCP, and available in-game evidence.
+The user performs live-consumer and in-game validation.
 
 An asset addendum can define route-specific report images, decision icons, idea icons, focus icon families, flags, portraits, faction emblems, scripted GUI panels, animated sprites, animated portrait variants, progression states, and contact sheets.
 
 For animated assets, define the state. The asset worker needs to know what frame set means inactive, active, dangerous, locked, completed, corrupted, hidden, or formed. The main agent needs static fallbacks and sprite names. The docs need manifest data to prove the asset was sourced or generated correctly.
 
-Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs. Keep it while implementation or review is active, blocked, or incomplete. Before the event goal is fully complete, promote durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, and delete the complete workspace. A closure handoff should treat the absence of the deleted workspace as expected, not as a missing asset. Never delete skill-local reference assets or another event's workspace.
+Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs.
+Keep it while implementation or review is active, blocked, or incomplete.
+The parent owns cleanup under the existing deletion authorization and completion/source rules.
+Before the event goal is fully complete, the parent promotes durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verifies that no runtime reference points into `docs/assets/`, and deletes the complete workspace.
+A closure handoff should treat the absence of the deleted workspace as expected, not as a missing asset.
+Never delete skill-local reference assets or another event's workspace.
 
 Use source-based assets for real people, real flags, real symbols, and real historical images. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
 

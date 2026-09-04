@@ -82,7 +82,7 @@ Use `chaos-redux-event-assets` for:
 - sprite handoff notes for main-agent `.gfx` wiring
 - asset manifests
 
-Super-event images may be sourced or generated. Prefer generated images for fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific moments. use sourced images when the visual must depict real historical material.
+Super-event images may be sourced or generated. Prefer generated images for fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific moments. Use sourced images when the visual must depict real historical material.
 
 ### This skill
 
@@ -101,15 +101,15 @@ For actual research work, use the narrow project subagents instead of making one
 
 | Need | Spawn |
 | --- | --- |
-| Main quote candidates, wording verification, attribution, source confidence, and quote recommendation | `chaosx_super_event_quote_researcher` |
-| Button text, cultural remark, short allusion, slogan, title-like reference, and copyright-risk notes | `chaosx_super_event_cultural_remark_researcher` |
+| Main quote candidates, wording verification, attribution, source confidence, and quote recommendation | `chaosx_super_event_text_researcher` |
+| Button text, cultural remark, short allusion, slogan, title-like reference, and copyright-risk notes | `chaosx_super_event_text_researcher` |
 | Audio candidates, license verification, legitimate download, conversion to a final game-ready `.wav`, and audio research notes | `chaosx_super_event_audio_researcher` |
 | Real historical, archival, or real-world super-event image that must depict real material | `chaosx_asset_source_researcher` |
 | Fictional, alternate-history, symbolic, supernatural, high-chaos, or emotionally specific generated super-event image | `chaosx_generated_event_art` |
 
-The main agent owns acceptance and runtime placement of the researcher's final game-ready `.wav`, final localisation, scripted localisation, slot wiring, settings-aware sound playback wiring, audio id wiring, sound definition wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`; never edit the three CSV exports directly.
+The main agent owns acceptance and runtime placement of the researcher's final game-ready `.wav`, final localisation, scripted localisation, slot wiring, settings-aware sound playback wiring, audio id wiring, sound definition wiring, `.gfx` image wiring, event trigger wiring, docs alignment, and spreadsheet alignment. When spreadsheet alignment is needed, edit only the authoritative XLSX and then run `python .tools/export_event_catalog_csv.py`. Never edit the three CSV exports directly.
 
-The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. For audio, the subagent delivers the final game-ready `.wav`; the main agent accepts and places that file in the runtime sound folder without requiring an intermediate derivative. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
+The quote, remark, audio, and image subagents produce research notes, final files where applicable, and handoff notes. For audio, the subagent delivers the final game-ready `.wav`. The main agent accepts and places that file in the runtime sound folder without requiring an intermediate derivative. They do not edit event files, localisation files, `.gfx` files, GUI files, sound definition files, or spreadsheet rows unless the parent prompt explicitly expands their scope.
 
 
 ## 4. Super-event design role
@@ -297,7 +297,7 @@ Avoid:
 
 Modern songs, films, books, and games are better suited for the button text or remark (`.a`) than the main quote (`.q`).
 
-If a modern cultural line is used as the main quote anyway, it must be very short, and clearly sourced
+If a modern cultural line is used as the main quote anyway, it must be very short and clearly sourced.
 
 If attribution is uncertain, mark it uncertain or choose another quote.
 
@@ -783,7 +783,7 @@ Before closing a super-event task, confirm:
 23. The audio id is specific to the super-event or intentionally shared and documented.
 24. `global.current_super_event_audio_id` is set correctly.
 25. `play_current_super_event_sound = yes` uses the settings-aware sound helper.
-26. Scripted localisation is updated, including `GetSuperEventImage`. otherwise the slot can show default art while the text/audio work.
+26. Scripted localisation is updated, including `GetSuperEventImage`. Otherwise the slot can show default art while the text/audio work.
 27. Player-facing localisation is updated.
 28. Image wiring is updated.
 29. Audio wiring is updated.

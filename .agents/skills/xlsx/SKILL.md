@@ -36,7 +36,7 @@ Unless otherwise stated by the user or existing template
 #### Required Format Rules
 
 - **Years**: Format as text strings (e.g., "2024" not "2,024")
-- **Currency**: Use $#,##0 format; ALWAYS specify units in headers ("Revenue ($mm)")
+- **Currency**: Use $#,##0 format. ALWAYS specify units in headers ("Revenue ($mm)")
 - **Zeros**: Use number formatting to make all zeros "-", including percentages (e.g., "$#,##0;($#,##0);-")
 - **Percentages**: Default to 0.0% format (one decimal)
 - **Multiples**: Format as 0.0x for valuation multiples (EV/EBITDA, P/E)
@@ -75,7 +75,7 @@ A user may ask you to create, edit, or analyze the contents of an .xlsx file. Yo
 
 ## Important Requirements
 
-**LibreOffice Required for Formula Recalculation**: You can assume LibreOffice is installed for recalculating formula values using the `recalc.py` script. The script automatically configures LibreOffice on first run
+**LibreOffice Required for Formula Recalculation**: Verify that `soffice` is available on PATH before using `.agents/skills/xlsx/recalc.py` from the mod root. The script configures a LibreOffice macro on first run. If LibreOffice is unavailable, report recalculation as blocked rather than treating stored formulas as calculated values.
 
 ## Reading and analyzing data
 
@@ -144,7 +144,7 @@ This applies to ALL calculations - totals, percentages, ratios, differences, etc
 4. **Save**: Write to file
 5. **Recalculate formulas (MANDATORY IF USING FORMULAS)**: Use the recalc.py script
    ```bash
-   python recalc.py output.xlsx
+   python .agents/skills/xlsx/recalc.py output.xlsx
    ```
 6. **Verify and fix any errors**: 
    - The script returns JSON with error details
@@ -230,15 +230,15 @@ wb.save('modified.xlsx')
 
 ## Recalculating formulas
 
-Excel files created or modified by openpyxl contain formulas as strings but not calculated values. Use the provided `recalc.py` script to recalculate formulas:
+Excel files created or modified by openpyxl contain formulas as strings but not calculated values. From the mod root, use the provided `.agents/skills/xlsx/recalc.py` script to recalculate formulas:
 
 ```bash
-python recalc.py <excel_file> [timeout_seconds]
+python .agents/skills/xlsx/recalc.py <excel_file> [timeout_seconds]
 ```
 
 Example:
 ```bash
-python recalc.py output.xlsx 30
+python .agents/skills/xlsx/recalc.py output.xlsx 30
 ```
 
 The script:
@@ -246,7 +246,9 @@ The script:
 - Recalculates all formulas in all sheets
 - Scans ALL cells for Excel errors (#REF!, #DIV/0!, etc.)
 - Returns JSON with detailed error locations and counts
-- Works on both Linux and macOS
+- Includes Windows, Linux, and macOS branches
+
+The current helper does not enforce `timeout_seconds` on Windows. Its platform branches and error scan do not by themselves prove that LibreOffice completed recalculation successfully.
 
 ## Formula Verification Checklist
 

@@ -81,7 +81,11 @@ Use repo skills as required implementation guidance.
 
 ### HOI4 MCP
 
-The installed `hoi4-agent-tools` server is the coding-agent tool for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
+The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__hoi4_*` coding-agent tools for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
+Tool exposure does not prove service health or the availability of a standalone viewer.
+Verify standalone Technology Tree Viewer availability separately from the exposed technology routes documented in the MCP evidence section of `chaos-redux-subagents`.
+Record an absent viewer as a package gap without inventing capabilities.
+Keep viewer and inspector use read-only.
 
 - Focus work: inspect, render, lint, and use `hoi4.focus_rewrite` for cleanup or a complete new route plan; review the returned layout and diagnostics.
 - Event work: use narrow `hoi4.event_inspect` queries and the read-only render and compare tools, then edit source files through the normal workflow.
@@ -108,15 +112,16 @@ Use project custom subagents when a task needs bounded research, asset productio
 
 `chaos-redux-subagents` is the detailed source of truth for subagent routing, ownership boundaries, handoff quality, audit cadence, asset routing, super-event routing, and the recursive mechanic expansion loop.
 
-The main agent remains responsible for final implementation, final wiring, final review, validation, and completion claims. Subagents return evidence, files, manifests, spec addenda, patches, or handoff notes depending on the parent-granted mode. The main agent must review their outputs and carry blockers or uncertainty into the final report.
+The main agent remains responsible for final implementation, final wiring, final review, required source and MCP validation, and completion claims. The user performs live-game validation. Subagents return evidence, files, manifests, spec addenda, patches, or handoff notes depending on the parent-granted mode. The main agent must review their outputs and carry blockers or uncertainty into the final report.
 
-All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. In the Codex runtime this means `fork_context=false`. In the Qoder and Cursor runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. In Cursor, spawn the generated hyphen-case agent from `.cursor/agents/` through the Task tool or a `/name` invocation; do not substitute Cursor's built-in `explore`, `shell`, or `browser` subagents for a named Chaos Redux specialist. If a subagent needs a user correction, task constraint, current implementation status, or prior handoff detail, the parent must pass it explicitly in the subagent prompt or write it into the relevant spec, plan, handoff, or repo file before spawning.
+All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. With the current Codex `collaboration.spawn_agent` tool, set `fork_turns="none"`. In the Qoder and Cursor runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. In Cursor, spawn the generated hyphen-case agent from `.cursor/agents/` through the Task tool or a `/name` invocation.
+Do not substitute Cursor's built-in `explore`, `shell`, or `browser` subagents for a named Chaos Redux specialist. If a subagent needs a user correction, task constraint, current implementation status, or prior handoff detail, the parent must pass it explicitly in the subagent prompt or write it into the relevant spec, plan, handoff, or repo file before spawning.
 
 Use these high-level routing rules:
 
 - Use `chaosx_repo_explorer` only when file locations, existing patterns, vanilla references, likely touchpoints, missing-file recovery, or implementation order are unclear. Do not use it for small known-file edits, provided-file edits, direct skill or prompt updates, localisation-only cleanup, asset-only production, or tasks already bounded to exact files. The parent should inspect the known files directly for those cases.
 - Use asset subagents for non-portrait visual production: `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist`. All character portrait work belongs to `chaosx_portrait_creator`.
-- Use `chaosx_event_ui_worker` only for a dedicated scripted GUI introduced and owned by one named event or event-owned mechanic. The parent prompt must prove event ownership and name exact GUI identifiers, files, entry point, states, resolutions, assets, and handoff path. The worker owns bounded layout implementation and mandatory MCP visual evidence, while the parent and decision owner retain gameplay, costs, effects, AI, balance, final integration, and in-game validation. It must not audit the shared event log, event details, settings, super-events, shared registries, or unrelated existing UIs.
+- Use `chaosx_event_ui_worker` only for a dedicated scripted GUI introduced and owned by one named event or event-owned mechanic. The parent prompt must prove event ownership and name exact GUI identifiers, files, entry point, states, resolutions, assets, and handoff path. The worker owns bounded layout implementation and mandatory MCP visual evidence, while the parent and decision owner retain gameplay, costs, effects, AI, balance, and final integration. The parent reviews required MCP evidence and the user performs live-game validation. It must not audit the shared event log, event details, settings, super-events, shared registries, or unrelated existing UIs.
 - Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional native ImageGen portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod.
 - For asset animation, route 2D frame sheets to `chaos-redux-frame-animation` and skeletal `.anim` actions to `chaos-redux-3d-model-pipeline`. 3D prompts require Meshy 7, one approved image, vanilla scale, packed materials, reimport proof, parent-owned wiring, sourced-audio provenance/checksums/sync, and bespoke green counters. Normal spend and failure-driven provider recovery need no additional confirmation while live balance and provider capability permit them.
 - Use super-event subagents for specialised research: `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher`.
@@ -136,7 +141,7 @@ Spreadsheet source and export rule:
 - Use `chaosx_skill_maintainer` for non-trivial skill creation, cleanup, routing updates, or multi-skill consistency work.
 - Use `chaosx_improvement_loop_planner` during large event implementation when a mechanic, focus tree, country package, decision system, super-event, visual progression, lore package, or audit finding needs deeper design. It creates concrete event expansion addenda with research, historical connections, playable mechanics, and implementation surfaces for the main agent. It does not patch gameplay files. Do not spawn it again for the same event until the previous addendum has been implemented, folded into specs, queued with a reason, or rejected.
 
-Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. For example, `chaosx_event_ui_worker` may implement the accepted bounded GUI introduced by a named event, but no subagent may invent an unplanned or shared scripted GUI system, expand a whole mechanic, redesign a route family, add a new country package, or change the requested design on its own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, meaningful validation when it affects confidence, and remaining risks. Documentation cleanup work should also record which specs, plans, handoffs, manifests, or reports were promoted, queued, rejected, superseded, or left unresolved.
+Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. For example, `chaosx_event_ui_worker` may implement the accepted bounded GUI introduced by a named event, but no subagent may invent an unplanned or shared scripted GUI system, expand a whole mechanic, redesign a route family, add a new country package, or change the requested design on its own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, meaningful validation when it affects confidence, and remaining risks. Documentation cleanup handoffs must record each affected document using the dispositions and evidence requirements in Specs and Plans below.
 
 For major event work, the main agent should use the improvement loop after meaningful implementation tranches when several new mechanics have been added and now need deeper connections. The planner should expand ideas using the event-planning skill and relevant research. It should not be used repeatedly while a previous plan for the same event is still unresolved.
 
@@ -146,7 +151,25 @@ Event source specifications belong under `docs/specs/<event_id>_<event_slug>_spe
 
 Subagent plans, improvement addenda, audit follow-up notes, and implementation handoffs belong under `docs/plans/<event_id>_<event_slug>_plans/`.
 
-The plans folder is a working area. The specs folder is the source-of-truth design area. If an accepted plan changes the event design, the main agent should merge it into the relevant spec or report that it remains queued.
+The plans folder is a working area.
+The specs folder holds source design, with acceptance recorded for each relevant claim.
+Distinguish explicit user decisions, accepted design with its acceptance basis, implementation evidence, and proposals.
+A spec location, date, status label, or old handoff does not prove approval.
+Record the user decision or parent acceptance within the user-authorized scope that supports accepted design.
+If that basis is missing or conflicting, keep the claim unresolved rather than promoting it through documentation cleanup.
+
+Use these dispositions for plans, addenda, and reconciled documents:
+
+- `unresolved`: acceptance, intent, or evidence still needs resolution
+- `accepted and queued`: record the acceptance basis and the reason implementation remains queued
+- `implemented`: link current implementation evidence and state validation limits
+- `promoted into an accepted spec`: record the acceptance basis and destination spec
+- `rejected`: record the decision and reason
+- `superseded`: name the replacement document
+- `blocked`: record the exact missing input, route, or dependency
+
+Implementation evidence proves what exists and does not establish design approval.
+The main agent reviews dispositions and merges accepted design into the relevant spec or records it as accepted and queued.
 
 ## 1. Coding Style
 
