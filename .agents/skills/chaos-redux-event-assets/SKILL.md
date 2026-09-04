@@ -1251,6 +1251,9 @@ The implementation must still follow HOI4 UI rules and existing repo patterns.
 
 Do not build a full scripted GUI visual pack for every important category. First follow the presentation hierarchy in `chaos-redux-decisions-missions`. A simple category may need only its small icon and one static or animated category picture.
 
+For new or redesigned scripted GUIs, follow `chaos-redux-scripted-gui` for reference images before native implementation, acceptance evidence, and image-to-element mapping.
+Produce a compositional reference with native ImageGen or an applicable supplied image, then separate final decorative art from real controls, live labels, meters, and lists; never deliver a flattened fake interface as functional UI.
+Include painted bounds, transparent padding, usable interior regions, intended dimensions, frame/state order, native element consumers, and justified engine/style adaptations in the asset handoff.
 When a full scripted GUI or mechanic window is justified, the asset handoff should cover the interface state set that the actual mechanic uses. Do not create unused tabs, button states, meters, frames, or decorative controls only to fill the background.
 
 Useful assets can include:

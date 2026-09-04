@@ -7,7 +7,7 @@ description: Use when designing, implementing, auditing, or fixing Hearts of Iro
 
 Use this skill when a task touches decisions, missions, timed objectives, decision categories, mission UI, costs, trigger tooltips, scripted localisation, AI decision behavior, or balance around decision-driven systems.
 
-This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`.
+This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`. For scripted GUI layout and visual evidence, use `chaos-redux-scripted-gui`.
 
 For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every complex or balance-sensitive decision or mission weight to `chaosx_ai_probability_auditor` for the mandatory MCP probability pass. It may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
@@ -837,129 +837,34 @@ Formation systems should support partial success and failure. A country can form
 
 ## Scripted GUI decision categories and mechanic windows
 
-Choose the presentation layer from the hierarchy above before creating a custom window. A major mechanic does not automatically need a full scripted GUI. Use an ordinary category with a strong static or animated picture when the player mainly needs theme, territorial context, or a clear visual identity.
+Choose the presentation layer from the hierarchy above before creating a custom window.
+Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly.
+A custom interface must have a gameplay reason and cannot compensate for weak actions.
 
-Attach a scripted GUI or open a custom mechanic window only when the player must actively manage values, targets, meters, factions, sponsors, state pieces, investment tracks, or competing internal blocs that ordinary decisions and tooltips cannot present clearly. The formable state-puzzle display is an appropriate compact scripted GUI when exact state-by-state qualification must update dynamically.
-
-Use `hoi4.gui_inspect` to map linked layout, states, resolutions, click regions, localisation, sprites, fonts, animation, and background ownership. Then call `hoi4.gui_render` for deterministic full-window, cropped, annotated, state, resolution, click-region, hierarchy, and comparison views. Treat the production MCP render as the one-to-one in-game visual view: every visible bad alignment, uneven spacing, overlap, clipping, overflow, broken click region, state mismatch, resolution drift, missing asset, unused background region, and other layout defect must be fixed. An implementation agent may not dismiss a bad GUI as an offline-render discrepancy or defer a visible defect merely because it has not seen a separate game screenshot. Use `hoi4.gui_rewrite` for an in-scope GUI change after reviewing the diagnostics and renders. Keep gameplay validation and balance review in this skill.
-
-When a named Chaos Redux event or event-owned mechanic specifically introduces its own scripted GUI, route bounded layout implementation or visual-quality work to `chaosx_event_ui_worker`. That worker must apply every rule in this section and return mandatory MCP before-and-after evidence. The decision owner retains costs, effects, availability, AI equivalents, cleanup, and balance. Never route the shared event log, event-details framework, settings, super-event framework, shared windows, or an unrelated existing GUI merely because an event opens or references it.
-
-A scripted GUI or custom window must have a gameplay reason. It should expose useful choices and state clearly. It must not exist only to make a small mechanic look larger.
+Use `chaos-redux-scripted-gui` as the source of truth for reference images before implementation, image-to-native mapping, layout and content budgets, backgrounds, label centering, interaction presentation, and mandatory MCP inspect/render/rewrite/matching-scenario comparison.
+Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`.
+Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization.
+The decision owner retains the gameplay rules below.
 
 ### GUI action integrity
 
-A GUI action follows the same cost budget as a normal decision. It may have at most four distinct spendable cost types, and every displayed cost must use the correct texticon for that value. Do not use literal resource names as a cost-string fallback, and do not hide additional spendable costs in a tooltip or confirmation window.
+Every gameplay-changing GUI action follows the same cost, affordability, requirement, payment, effect, AI, and cleanup contract as a normal decision.
+Use the same scripted effect families, validation triggers, logging, and lifecycle helpers so a GUI cannot bypass decision balance.
+Each action may have at most four distinct spendable cost types, with the correct texticon for every displayed cost; never hide an extra cost in a tooltip or confirmation window.
+Keep non-consumed requirements separate from payment and explain missing requirements precisely.
 
-Every button-shaped element must be one of these:
+For each gameplay-changing control, document:
 
-- a real interactive control with a meaningful action
-- a clearly disabled control with a visible reason
-- a decorative element that cannot reasonably be mistaken for a button
+- its action and target;
+- visible costs and requirement summary, with a precise action/blocked-reason tooltip;
+- shared availability and affordability checks;
+- the single payment path and scripted effect or decision action;
+- AI equivalent where AI countries can use the mechanic;
+- cleanup when the target, route, action, or mechanic becomes invalid.
 
-Do not use fake buttons, decorative frames styled like buttons, empty click boxes, dead controls, or button art with no gameplay action. Do not place a click region outside the visible button or make the click region smaller than the visual control. Informational content should use labels, status panels, icons, meters, or tooltips instead of fake controls.
-
-Every real button needs:
-
-- a clear label or icon
-- an accurate click region
-- hover, available, selected, active, completed, warning, and disabled states when relevant
-- a visible cost and requirement summary
-- a tooltip that explains the action and blocked reason
-- a scripted effect or decision action
-- an AI equivalent when AI countries can use the system
-- cleanup when the action, target, route, or mechanic becomes invalid
-
-Do not add buttons to fill empty space or manufacture the appearance of depth. Merge actions that do the same job, and remove controls whose result does not change play.
-
-### Text and explanation budget
-
-The main panel should use short labels, concise state summaries, and current actions. Do not cover the window with paragraphs, repeated descriptions, raw triggers, long instructions, or text that restates the same mechanic in several places. A category header or main explanatory block should normally fit in one to three short lines. Longer prose should move to an event, detail view, or a narrowly scoped tooltip only when the information is necessary.
-
-A mechanic still needs to be explained. Every non-obvious value, state, threshold, target, and action must have a short visible label and a concise tooltip or help surface that explains:
-
-- what it represents
-- what raises or lowers it
-- which thresholds matter
-- what it unlocks, blocks, improves, or worsens
-- what the player can do about it
-
-Tooltips should usually fit in two to four short lines for one value or action. Do not write a miniature manual inside every tooltip. If the explanation keeps growing, simplify the mechanic or replace prose with a clearer visual state. Keep the explanation precise. A short tooltip that says only `Improves readiness` or `Affects the crisis` is too vague.
-
-Keep the explanation close to the value or control it describes. Do not hide basic cause and effect in documentation outside the game. Do not use long prose to compensate for unclear layout or weak mechanics.
-
-### Visible value budget
-
-A scripted GUI should normally expose one primary mechanic value and no more than two supporting values at the same time. Four total visible mechanic values is the hard ceiling. The fourth value requires a distinct player decision, threshold, and consequence. Internal variables may be numerous, but the player-facing interface should summarize, combine, or hide values that do not need direct management.
-
-Reject value bloat. Merge values that measure the same pressure, remove values that do not change decisions, and avoid parallel meters whose effects are difficult to distinguish. Prefer meters, icons, threshold states, map highlights, stage frames, and progress visuals over rows of labelled numbers.
-
-Do not display plain dynamic numbers with no visual or gameplay significance. Every visible value needs:
-
-- a stable name
-- a clear unit, range, or direction
-- a consistent colour identity
-- a second non-colour cue such as an icon, frame, label, or meter shape
-- meaningful thresholds or states
-- visible consequences
-- at least one player action that can affect it when the mechanic allows intervention
-
-Colour alone is not enough, and an uncoloured number alone is not enough. The player should understand why the value matters without reading implementation notes.
-
-### Decision and action budget
-
-A scripted GUI must not become a wall of decisions. A single phase or state should normally show three to five primary actions. Six visible primary actions is the hard maximum. Active missions or target controls should normally stay between one and three when they share the same surface. Use phases, target selection, replacement, priorities, or conditional visibility when the full system contains more actions.
-
-Do not add tabs or subpanels only to warehouse extra buttons. Merge or remove weak actions first. Do not show every possible decision, target, mission, and upgrade at once. Obsolete, invalid, duplicate, low-impact, and route-incompatible actions must be hidden or removed. A system that needs dozens of simultaneous buttons should be redesigned before more layout work is added.
-
-### Background-first layout
-
-An ImageGen-created scripted GUI background is part of the interface design. Treat it as a functional layout blueprint, not as wallpaper behind unrelated text.
-
-Before placing controls, map the background into intended content regions. Record every prominent panel, inset, slot, frame, medallion, divider, illustration, empty field, and decorative anchor that affects placement. Each intentional functional region should have a matching GUI use, or the background should be revised.
-
-Use the whole background deliberately. This means using its intended panels and visual anchors while preserving intentional negative space. It does not mean filling every pixel.
-
-Do not:
-
-- ignore a painted panel and place unrelated text beside it
-- write text across ornaments, illustrations, borders, handles, seals, diagrams, or other visual elements
-- cover a prominent background feature with a generic text box
-- place controls between the designed slots only because the coordinates are easier
-- leave half of the functional background unused while another area is crowded
-- force content onto a background whose composition does not support the mechanic
-
-Text, values, icons, meters, cards, and buttons should align with the painted frames and content zones that were created for them. If the required content does not fit those regions, revise or regenerate the background. Do not ignore the art and layer a generic interface over it.
-
-The implementation handoff should include a background coverage map:
-
-| Background region | Intended content | GUI elements | Interaction or state | Status |
-| --- | --- | --- | --- | --- |
-
-Use the one-to-one full-window MCP renders at every supported resolution and compare them with the source background. Review the normal, selected, disabled, warning, and crowded states. Confirm that text stays inside intended regions, click boxes match visible controls, no element overlaps important artwork, and no designed functional region is accidentally abandoned; any defect visible in those renders blocks visual completion.
-
-### Interactive design contract
-
-Interactive GUI design should define:
-
-- entry point from the decision category
-- background coverage map and layout regions
-- primary value and supporting value hierarchy
-- visible decision and mission budget by phase
-- visible tabs, panels, cards, meters, bars, or target lists
-- button costs and requirements
-- what each button changes
-- locked, available, selected, active, completed, warning, and disabled states
-- hover and tooltip text
-- scripted localisation for dynamic values
-- scripted effects for button outcomes
-- scripted triggers for button availability
-- AI equivalents for every meaningful button
-- cleanup and fallback behavior
-
-When buttons spend resources, show the cost clearly. Use icon-first cost localisation with the correct texticon for every spendable value and never more than four distinct cost types. If the GUI button has many non-cost requirements, show a short requirement summary and put the precise details in a concise tooltip. Extra costs cannot be moved into that tooltip.
-
-Do not use GUI buttons to bypass decision balance. GUI buttons should call the same scripted effect families, cost logic, validation triggers, logging, and cleanup that the normal decision system would use.
+Do not add actions to fill layout space or manufacture depth.
+Merge duplicate actions and remove controls whose result does not change play.
+Information and navigation controls follow the interaction contract in `chaos-redux-scripted-gui`; they do not require an invented gameplay effect.
 
 ## Animated decision category presentation
 
