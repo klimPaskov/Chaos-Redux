@@ -1,0 +1,104 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION INCIDENT TRIGGERS
+# ============================================================================
+# Private country-scope predicates for the Mengele Computation corrupted-model
+# incident and its paid technical recovery. The stage selector is temporary:
+# mengele_event016_requested_stage.
+#
+# This file deliberately owns no Kruger incident, Exposure, pressure, ledger,
+# stage receipt, native project, or public meter state.
+# ============================================================================
+
+# COUNTRY scope. The strict provider lifecycle is shared with the separate
+# Mengele Computation stage core. It keeps a private incident valid while the
+# provider remains an actual, live programme owner.
+brilliant_scientist_mengele_computation_incident_provider_is_valid = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+}
+
+# COUNTRY scope. Only the four existing Computation stage IDs can seed the
+# private incident pressure. Missing or malformed temporary selectors fail
+# closed and therefore do not roll.
+brilliant_scientist_mengele_computation_incident_stage_is_valid = {
+	OR = {
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.theory
+			compare = equals
+		}
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.prototype
+			compare = equals
+		}
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = equals
+		}
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.weaponization
+			compare = equals
+		}
+	}
+}
+
+# COUNTRY scope. One corrupted-model incident is active at a time. The
+# permanent history flag and count are intentionally not part of this gate,
+# so later successful stages can expose another distinct incident after an
+# earlier one has been recovered.
+brilliant_scientist_mengele_computation_incident_is_active = {
+	has_country_flag = mengele_event016_computation_incident_active
+}
+
+# COUNTRY scope. The direct recovery receipt is exact when the active flag and
+# all three stored direct-cost values are present. Factories are native
+# decision reservations and are not copied into this receipt.
+brilliant_scientist_mengele_computation_incident_recovery_is_active = {
+	has_country_flag = mengele_event016_computation_incident_recovery_active
+	has_variable = mengele_event016_computation_incident_recovery_cost_political_power
+	has_variable = mengele_event016_computation_incident_recovery_cost_support_equipment
+	has_variable = mengele_event016_computation_incident_recovery_cost_fuel
+}
+
+# COUNTRY scope. This is the single inclusive affordability predicate used by
+# both the recovery decision and its custom-cost trigger. Equality is valid for
+# every direct payment and the two-factory native reservation.
+brilliant_scientist_mengele_computation_incident_recovery_can_pay = {
+	check_variable = {
+		var = political_power
+		value = constant:brilliant_scientist_project_board.response_technical_political_power
+		compare = greater_than_or_equals
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:brilliant_scientist_project_board.response_technical_support_equipment
+		}
+	}
+	NOT = {
+		has_fuel < constant:brilliant_scientist_project_board.response_technical_fuel
+	}
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_board.response_technical_civilian_factories
+	}
+}
+
+# COUNTRY scope. The recovery is selectable only while the incident remains
+# active, the provider is valid, no other recovery receipt is live, and all
+# four spendable axes are affordable.
+brilliant_scientist_mengele_computation_incident_recovery_can_start = {
+	brilliant_scientist_mengele_computation_incident_is_active = yes
+	brilliant_scientist_mengele_computation_incident_provider_is_valid = yes
+	NOT = { has_country_flag = mengele_event016_computation_incident_recovery_active }
+	NOT = { brilliant_scientist_mengele_computation_incident_recovery_is_active = yes }
+	brilliant_scientist_mengele_computation_incident_recovery_can_pay = yes
+}
+
+# COUNTRY scope. This guard is used by the decision cancel and finish paths so
+# stale callbacks cannot refund or resolve a newer/no-longer-present receipt.
+# Incident activity is checked separately by the finish helper; a stale direct
+# receipt still has to be refundable during invalid-provider cleanup.
+brilliant_scientist_mengele_computation_incident_recovery_receipt_is_current = {
+	brilliant_scientist_mengele_computation_incident_recovery_is_active = yes
+}

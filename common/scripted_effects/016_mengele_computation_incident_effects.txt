@@ -1,0 +1,403 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION INCIDENT EFFECTS
+# ============================================================================
+# Private country-scope incident and technical-recovery core for the Mengele
+# Computation provider. Callers bind the existing private temporary stage
+# selector `mengele_event016_requested_stage` before dispatching a check; only
+# Theory, Prototype, Deployment, and Weaponization are accepted.
+#
+# The dispatch helper is intentionally called only after a real provider stage
+# output or the native risky Computation Prototype option has settled. It
+# derives the intrinsic pressure from the existing stage-capacity and accident
+# tables, clamps the result to the existing 0..100 range, and uses a weighted
+# roll with an explicit complement no-op. No Kruger incident, Exposure,
+# pressure, ledger, Capacity, event target, native project, or learned-package
+# state is read or written here.
+#
+# Recovery stores one private direct-payment receipt for Political Power,
+# Support Equipment, and fuel. The native decision's civilian-factory modifier
+# owns the fourth cost axis and its release. Cancellation refunds the exact
+# receipt once; successful completion clears the transient incident and keeps
+# all permanent incident, recovery, provider, and learned-knowledge history.
+# ============================================================================
+
+# COUNTRY scope. Converts the existing stage selector into the approved
+# intrinsic private incident pressure. Invalid or missing selectors leave a
+# zero pressure and a full complement, so a direct call is a safe no-op.
+brilliant_scientist_mengele_load_computation_incident_pressure = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_pressure = constant:brilliant_scientist_accident.minimum
+	}
+	set_temp_variable = {
+		mengele_event016_computation_incident_factor = constant:brilliant_scientist_accident.minimum
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.theory
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_pressure = constant:brilliant_scientist_project_board.capacity_theory
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_factor = constant:brilliant_scientist_accident.theory_stage_factor
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.prototype
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_pressure = constant:brilliant_scientist_project_board.capacity_prototype
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_factor = constant:brilliant_scientist_accident.prototype_stage_factor
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_pressure = constant:brilliant_scientist_project_board.capacity_deployment
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_factor = constant:brilliant_scientist_accident.deployment_stage_factor
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.weaponization
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_pressure = constant:brilliant_scientist_project_board.capacity_weaponization
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_factor = constant:brilliant_scientist_accident.weaponization_stage_factor
+		}
+	}
+	multiply_temp_variable = {
+		mengele_event016_computation_incident_pressure = mengele_event016_computation_incident_factor
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_computation_incident_pressure
+				value = constant:brilliant_scientist_accident.maximum
+				compare = greater_than
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_pressure = constant:brilliant_scientist_accident.maximum
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_computation_incident_pressure
+				value = constant:brilliant_scientist_accident.minimum
+				compare = less_than
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_pressure = constant:brilliant_scientist_accident.minimum
+		}
+	}
+	set_temp_variable = {
+		mengele_event016_computation_incident_complement = constant:brilliant_scientist_accident.maximum
+	}
+	subtract_from_temp_variable = {
+		mengele_event016_computation_incident_complement = mengele_event016_computation_incident_pressure
+	}
+}
+
+# COUNTRY scope. Records one private active incident after the caller has
+# authenticated a real stage output. The history flag/count are permanent;
+# the active flag and private modifier are the only transient state.
+brilliant_scientist_mengele_record_computation_incident = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_recorded = constant:brilliant_scientist_value.zero
+	}
+	if = {
+		limit = {
+			brilliant_scientist_mengele_computation_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_computation_incident_stage_is_valid = yes
+			NOT = { brilliant_scientist_mengele_computation_incident_is_active = yes }
+			NOT = { brilliant_scientist_mengele_computation_incident_recovery_is_active = yes }
+		}
+		set_country_flag = mengele_event016_computation_incident_active
+		set_country_flag = mengele_event016_computation_incident_history
+		if = {
+			limit = {
+				NOT = { has_variable = mengele_event016_computation_incident_history_count }
+			}
+			set_variable = {
+				mengele_event016_computation_incident_history_count = constant:brilliant_scientist_value.zero
+			}
+		}
+		add_to_variable = {
+			mengele_event016_computation_incident_history_count = constant:brilliant_scientist_value.one
+		}
+		if = {
+			limit = {
+				NOT = {
+					has_dynamic_modifier = {
+						modifier = brilliant_scientist_mengele_computation_incident
+					}
+				}
+			}
+			add_dynamic_modifier = {
+				modifier = brilliant_scientist_mengele_computation_incident
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recorded = constant:brilliant_scientist_value.one
+		}
+	}
+}
+
+# COUNTRY scope. Tests one actual stage output using its private selector. The
+# complement is a real weighted no-op, not an omitted branch, so the roll is
+# exactly the clamped intrinsic pressure and cannot fire while another private
+# incident or direct recovery receipt is active.
+brilliant_scientist_mengele_dispatch_computation_incident = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_dispatched = constant:brilliant_scientist_value.zero
+	}
+	set_temp_variable = {
+		mengele_event016_computation_incident_recorded = constant:brilliant_scientist_value.zero
+	}
+	if = {
+		limit = {
+			brilliant_scientist_mengele_computation_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_computation_incident_stage_is_valid = yes
+			NOT = { brilliant_scientist_mengele_computation_incident_is_active = yes }
+			NOT = { brilliant_scientist_mengele_computation_incident_recovery_is_active = yes }
+		}
+		brilliant_scientist_mengele_load_computation_incident_pressure = yes
+		random_list = {
+			var:mengele_event016_computation_incident_pressure = {
+				brilliant_scientist_mengele_record_computation_incident = yes
+			}
+			var:mengele_event016_computation_incident_complement = { }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_computation_incident_recorded
+					value = constant:brilliant_scientist_value.one
+					compare = equals
+				}
+			}
+			set_temp_variable = {
+				mengele_event016_computation_incident_dispatched = constant:brilliant_scientist_value.one
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Removes only the private transient incident state and its
+# provider-gated modifier. Incident/recovery history, project receipts,
+# neutral knowledge, and native completion are intentionally preserved.
+brilliant_scientist_mengele_clear_computation_incident = {
+	clr_country_flag = mengele_event016_computation_incident_active
+	if = {
+		limit = {
+			has_dynamic_modifier = {
+				modifier = brilliant_scientist_mengele_computation_incident
+			}
+		}
+		remove_dynamic_modifier = {
+			modifier = brilliant_scientist_mengele_computation_incident
+		}
+	}
+}
+
+# COUNTRY scope. Starts one paid technical response. The decision owns the
+# two-CIC native reservation; this helper owns and records only the three
+# direct payments, exactly once.
+brilliant_scientist_mengele_begin_computation_incident_recovery = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_recovery_started = constant:brilliant_scientist_value.zero
+	}
+	if = {
+		limit = {
+			brilliant_scientist_mengele_computation_incident_recovery_can_start = yes
+		}
+		set_variable = {
+			mengele_event016_computation_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_technical_political_power
+		}
+		set_variable = {
+			mengele_event016_computation_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_technical_support_equipment
+		}
+		set_variable = {
+			mengele_event016_computation_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_technical_fuel
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_payment_political_power = mengele_event016_computation_incident_recovery_cost_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_payment_support_equipment = mengele_event016_computation_incident_recovery_cost_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_payment_fuel = mengele_event016_computation_incident_recovery_cost_fuel
+		}
+		multiply_temp_variable = {
+			mengele_event016_computation_incident_recovery_payment_political_power = constant:brilliant_scientist_directorate_value.negative_one
+		}
+		multiply_temp_variable = {
+			mengele_event016_computation_incident_recovery_payment_support_equipment = constant:brilliant_scientist_directorate_value.negative_one
+		}
+		multiply_temp_variable = {
+			mengele_event016_computation_incident_recovery_payment_fuel = constant:brilliant_scientist_directorate_value.negative_one
+		}
+		add_political_power = mengele_event016_computation_incident_recovery_payment_political_power
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = mengele_event016_computation_incident_recovery_payment_support_equipment
+		}
+		add_fuel = mengele_event016_computation_incident_recovery_payment_fuel
+		set_country_flag = mengele_event016_computation_incident_recovery_active
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_started = constant:brilliant_scientist_value.one
+		}
+	}
+}
+
+# COUNTRY scope. Refunds the exact direct-payment receipt once. The receipt is
+# cleared before the refund, making repeated cancellation and provider cleanup
+# idempotent. Invalid-provider cleanup also clears the transient incident but
+# does not remove any permanent history or learned knowledge.
+brilliant_scientist_mengele_cancel_computation_incident_recovery = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_recovery_cancelled = constant:brilliant_scientist_value.zero
+	}
+	if = {
+		limit = {
+			brilliant_scientist_mengele_computation_incident_recovery_receipt_is_current = yes
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_refund_political_power = mengele_event016_computation_incident_recovery_cost_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_refund_support_equipment = mengele_event016_computation_incident_recovery_cost_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_refund_fuel = mengele_event016_computation_incident_recovery_cost_fuel
+		}
+		clr_country_flag = mengele_event016_computation_incident_recovery_active
+		clear_variable = mengele_event016_computation_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_computation_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_computation_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_computation_incident_recovery_refund_political_power
+		add_equipment_to_stockpile = {
+			type = support_equipment
+			amount = mengele_event016_computation_incident_recovery_refund_support_equipment
+		}
+		add_fuel = mengele_event016_computation_incident_recovery_refund_fuel
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_cancelled = constant:brilliant_scientist_value.one
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = mengele_event016_computation_incident_recovery_active
+			NOT = { brilliant_scientist_mengele_computation_incident_recovery_is_active = yes }
+		}
+		clr_country_flag = mengele_event016_computation_incident_recovery_active
+		clear_variable = mengele_event016_computation_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_computation_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_computation_incident_recovery_cost_fuel
+	}
+	if = {
+		limit = {
+			NOT = { brilliant_scientist_mengele_computation_incident_provider_is_valid = yes }
+		}
+		clr_country_flag = mengele_event016_computation_incident_recovery_active
+		clear_variable = mengele_event016_computation_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_computation_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_computation_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_computation_incident = yes
+	}
+}
+
+# COUNTRY scope. Completes one exact active recovery only while the incident
+# and actual provider remain valid. It clears the direct receipt before
+# history is written, so a repeated timer callback cannot resolve twice.
+brilliant_scientist_mengele_finish_computation_incident_recovery = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_recovery_finished = constant:brilliant_scientist_value.zero
+	}
+	if = {
+		limit = {
+			brilliant_scientist_mengele_computation_incident_recovery_receipt_is_current = yes
+			brilliant_scientist_mengele_computation_incident_is_active = yes
+			brilliant_scientist_mengele_computation_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_computation_incident_recovery_active
+		clear_variable = mengele_event016_computation_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_computation_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_computation_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_computation_incident = yes
+		set_country_flag = mengele_event016_computation_recovery_history
+		if = {
+			limit = {
+				NOT = { has_variable = mengele_event016_computation_recovery_history_count }
+			}
+			set_variable = {
+				mengele_event016_computation_recovery_history_count = constant:brilliant_scientist_value.zero
+			}
+		}
+		add_to_variable = {
+			mengele_event016_computation_recovery_history_count = constant:brilliant_scientist_value.one
+		}
+		set_temp_variable = {
+			mengele_event016_computation_incident_recovery_finished = constant:brilliant_scientist_value.one
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_computation_incident_recovery_finished
+				value = constant:brilliant_scientist_value.zero
+				compare = equals
+			}
+			brilliant_scientist_mengele_computation_incident_recovery_receipt_is_current = yes
+		}
+		brilliant_scientist_mengele_cancel_computation_incident_recovery = yes
+	}
+}
+
+# COUNTRY scope. Parent-owned program cleanup should call this wrapper. It
+# refunds any exact direct receipt before removing transient incident state and
+# leaves provider, native-project, neutral-technology, and both histories
+# intact. Repeated cleanup is a no-op after the first call.
+brilliant_scientist_mengele_cleanup_computation_incident = {
+	set_temp_variable = {
+		mengele_event016_computation_incident_cleanup_completed = constant:brilliant_scientist_value.zero
+	}
+	brilliant_scientist_mengele_cancel_computation_incident_recovery = yes
+	clr_country_flag = mengele_event016_computation_incident_recovery_active
+	clear_variable = mengele_event016_computation_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_computation_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_computation_incident_recovery_cost_fuel
+	brilliant_scientist_mengele_clear_computation_incident = yes
+	set_temp_variable = {
+		mengele_event016_computation_incident_cleanup_completed = constant:brilliant_scientist_value.one
+	}
+}

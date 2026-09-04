@@ -1,0 +1,233 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION DECISION TRIGGERS
+# ============================================================================
+# Fixed-stage wrappers for the four provider decisions under
+# mengele_clone_army_category. These triggers never write temporary selectors.
+# The decision callbacks set the exact Computation family and stage literals
+# before calling the private begin, cancel, and finish effects.
+#
+# Theory, Deployment, and Weaponization remain provider decisions in either DLC
+# state. Prototype is provider-owned only when the native special-project
+# presentation is unavailable. Current vanilla special-project presentation is
+# gated by Götterdämmerung, so the native route requires that DLC together with
+# the existing Mengele Computation prototype gate.
+# ============================================================================
+
+# COUNTRY scope. One private receipt slot is used for Computation (family ID 1
+# maps to array index 0). No global in-progress flag is used.
+brilliant_scientist_mengele_computation_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = {
+				var = mengele_event016_active_project_stage_entries^0
+				value = constant:brilliant_scientist_project_stage.none
+				compare = equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope. This is the only native-presentation test used by the
+# provider Prototype row. A completed native project is deliberately not
+# considered available because the parent bridge must synchronize that exact
+# callback into the provider Prototype receipt first.
+brilliant_scientist_mengele_computation_native_prototype_presentation_available = {
+	has_dlc = "Gotterdammerung"
+	brilliant_scientist_can_research_mengele_computation_prototype = yes
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_computational_engine }
+}
+
+# COUNTRY scope. Stage visibility intentionally ignores direct affordability,
+# keeping missing inputs visible in the category cost row. It hides completed
+# stages, enforces the predecessor order, and hides a decision while its exact
+# private receipt is active without auto-cancelling its timer.
+brilliant_scientist_mengele_computation_theory_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_computation_decision_receipt_is_empty = yes
+	NOT = { has_country_flag = mengele_event016_computation_theory_completed }
+}
+
+brilliant_scientist_mengele_computation_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_computation_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_computation_theory_completed
+	NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_computational_engine }
+	NOT = { brilliant_scientist_mengele_computation_native_prototype_presentation_available = yes }
+}
+
+brilliant_scientist_mengele_computation_deployment_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_computation_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_computation_prototype_completed
+	NOT = { has_country_flag = mengele_event016_computation_deployment_completed }
+}
+
+brilliant_scientist_mengele_computation_weaponization_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_computation_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_computation_deployment_completed
+	NOT = { has_country_flag = mengele_event016_computation_weaponization_completed }
+}
+
+# COUNTRY scope. Stage requirements are separate from affordability so the
+# UI can explain the predecessor/native-route lock and then show the direct
+# cost row independently.
+brilliant_scientist_mengele_computation_theory_decision_requirements = {
+	brilliant_scientist_mengele_computation_theory_decision_visible = yes
+}
+
+brilliant_scientist_mengele_computation_prototype_decision_requirements = {
+	brilliant_scientist_mengele_computation_prototype_decision_visible = yes
+}
+
+brilliant_scientist_mengele_computation_deployment_decision_requirements = {
+	brilliant_scientist_mengele_computation_deployment_decision_visible = yes
+}
+
+brilliant_scientist_mengele_computation_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_computation_weaponization_decision_visible = yes
+}
+
+# COUNTRY scope. Native-CIC availability is inclusive: an exact factory
+# balance passes because only a strictly-lower amount is rejected. Direct
+# payment is inclusive for political power, support equipment, and fuel.
+brilliant_scientist_mengele_computation_theory_decision_can_pay = {
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.computation_theory_civilian_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:brilliant_scientist_project_stage_cost.computation_theory_support_equipment
+		}
+	}
+	check_variable = {
+		var = political_power
+		value = constant:brilliant_scientist_project_stage_cost.computation_theory_political_power
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_mengele_computation_prototype_decision_can_pay = {
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:mengele_event016_project_stage.computation_prototype_civilian_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:mengele_event016_project_stage.computation_prototype_support_equipment
+		}
+	}
+	NOT = { has_fuel < constant:mengele_event016_project_stage.computation_prototype_fuel }
+	check_variable = {
+		var = political_power
+		value = constant:mengele_event016_project_stage.computation_prototype_political_power
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_mengele_computation_deployment_decision_can_pay = {
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.computation_deployment_civilian_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:brilliant_scientist_project_stage_cost.computation_deployment_support_equipment
+		}
+	}
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.computation_deployment_fuel }
+	check_variable = {
+		var = political_power
+		value = constant:brilliant_scientist_project_stage_cost.computation_deployment_political_power
+		compare = greater_than_or_equals
+	}
+}
+
+brilliant_scientist_mengele_computation_weaponization_decision_can_pay = {
+	NOT = {
+		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.computation_weaponization_civilian_factories
+	}
+	NOT = {
+		has_equipment = {
+			support_equipment < constant:brilliant_scientist_project_stage_cost.computation_weaponization_support_equipment
+		}
+	}
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.computation_weaponization_fuel }
+	check_variable = {
+		var = political_power
+		value = constant:brilliant_scientist_project_stage_cost.computation_weaponization_political_power
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope. These fixed callback checks protect against a stale or wrong
+# stage callback. They are intentionally independent of any temporary
+# selector, because cancel/finish callbacks must supply the literal stage.
+brilliant_scientist_mengele_computation_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = {
+		var = mengele_event016_active_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.theory
+		compare = equals
+	}
+}
+
+brilliant_scientist_mengele_computation_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = {
+		var = mengele_event016_active_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.prototype
+		compare = equals
+	}
+}
+
+brilliant_scientist_mengele_computation_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = {
+		var = mengele_event016_active_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.deployment
+		compare = equals
+	}
+}
+
+brilliant_scientist_mengele_computation_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = {
+		var = mengele_event016_active_project_stage_entries^0
+		value = constant:brilliant_scientist_project_stage.weaponization
+		compare = equals
+	}
+}
+
+# COUNTRY scope. Provider loss or an exact-receipt mismatch cancels the timer.
+# Resource loss after start is deliberately not a cancellation condition: the
+# begin helper already debited and stored the direct quote, while native CIC is
+# released by the timed-decision lifecycle.
+brilliant_scientist_mengele_computation_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_computation_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_computation_prototype_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_computation_prototype_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_computation_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_computation_deployment_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_computation_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_computation_weaponization_decision_receipt_matches = yes }
+	}
+}

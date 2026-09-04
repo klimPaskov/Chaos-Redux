@@ -7,8 +7,24 @@
 
 brilliant_scientist_computation_theory = {
 	icon = GFX_idea_generic_research_bonus
-	enable = { OR = { brilliant_scientist_is_current_host = yes has_country_flag = conventional_technology_computation_operational } }
-	remove_trigger = { NOT = { brilliant_scientist_is_current_host = yes } NOT = { has_country_flag = conventional_technology_computation_operational } }
+	enable = {
+		OR = {
+			brilliant_scientist_is_current_host = yes
+			has_country_flag = conventional_technology_computation_operational
+			AND = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				has_country_flag = mengele_event016_computation_theory_completed
+			}
+		}
+	}
+	remove_trigger = {
+		NOT = { brilliant_scientist_is_current_host = yes }
+		NOT = { has_country_flag = conventional_technology_computation_operational }
+		NOT = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_computation_theory_completed
+		}
+	}
 	research_speed_factor = constant:brilliant_scientist_project_modifier.theory_minor
 	intel_network_gain_factor = constant:brilliant_scientist_project_modifier.theory_standard
 }

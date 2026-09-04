@@ -1,0 +1,345 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 SINGULARITY SITE RECEIPT EFFECTS
+# ============================================================================
+# Private country-scoped receipt ledger for paid Singularity command-core and
+# power-link construction. A caller supplies the selected state through the
+# regular event target `brilliant_scientist_singularity_site_selected_state`,
+# and supplies role/quantity through temporary variables. This file owns the
+# reservation, completion, cancellation, physical invalidation, retirement,
+# and counter reconciliation only; parent decisions own payment and timers.
+#
+# Each aligned row stores a state scope, an existing component role, a fixed
+# one-per-paid-row quantity, a live lifecycle status, and independent durable
+# construction history. Live totals are always rebuilt from valid rows instead
+# of trusting the legacy country counters.
+
+# COUNTRY scope. Internal cleanup used after a successful completion or before
+# cancellation. It never clears the caller's selected state event target.
+brilliant_scientist_singularity_site_clear_pending_receipt_metadata = {
+	clr_country_flag = brilliant_scientist_singularity_site_pending
+	clear_variable = brilliant_scientist_singularity_site_pending_state
+	clear_variable = brilliant_scientist_singularity_site_pending_role
+	clear_variable = brilliant_scientist_singularity_site_pending_quantity
+	clear_variable = brilliant_scientist_singularity_site_pending_row
+}
+
+# COUNTRY scope. Internal tail-removal pass for aligned arrays. The caller must
+# prove alignment before invoking it. Removing from the tail keeps every
+# remaining state, role, quantity, status, and history value at the same index.
+brilliant_scientist_singularity_site_remove_pending_rows = {
+	set_temp_variable = { brilliant_scientist_singularity_site_remove_row_cursor = brilliant_scientist_singularity_site_state_entries^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_singularity_site_remove_row_cursor
+				value = constant:brilliant_scientist_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { brilliant_scientist_singularity_site_remove_row_cursor = constant:brilliant_scientist_value.one }
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_remove_row_cursor
+					value = constant:brilliant_scientist_singularity_site_status.pending
+					compare = equals
+				}
+			}
+			remove_from_array = { array = brilliant_scientist_singularity_site_state_entries index = brilliant_scientist_singularity_site_remove_row_cursor }
+			remove_from_array = { array = brilliant_scientist_singularity_site_role_entries index = brilliant_scientist_singularity_site_remove_row_cursor }
+			remove_from_array = { array = brilliant_scientist_singularity_site_quantity_entries index = brilliant_scientist_singularity_site_remove_row_cursor }
+			remove_from_array = { array = brilliant_scientist_singularity_site_status_entries index = brilliant_scientist_singularity_site_remove_row_cursor }
+			remove_from_array = { array = brilliant_scientist_singularity_site_history_entries index = brilliant_scientist_singularity_site_remove_row_cursor }
+		}
+	}
+}
+
+# COUNTRY scope. Rebuilds the legacy display counters and live network flag
+# from current, aligned, live physical receipts. Captured or facility-less
+# states contribute nothing; reacquisition of an intact state makes a live row
+# eligible again unless an explicit destruction invalidated that row. A
+# malformed array set fails closed for the counters and network flag.
+brilliant_scientist_singularity_site_reconcile_receipts = {
+	set_temp_variable = { brilliant_scientist_singularity_site_reconcile_applied = constant:brilliant_scientist_value.one }
+	if = {
+		limit = { brilliant_scientist_singularity_site_current_live_quantities_are_rebuildable = yes }
+		set_variable = { brilliant_scientist_singularity_live_command_node_count = brilliant_scientist_singularity_site_rebuilt_command_node_count }
+		set_variable = { brilliant_scientist_singularity_power_link_count = brilliant_scientist_singularity_site_rebuilt_power_link_count }
+	}
+	else = {
+		set_variable = { brilliant_scientist_singularity_live_command_node_count = constant:brilliant_scientist_value.zero }
+		set_variable = { brilliant_scientist_singularity_power_link_count = constant:brilliant_scientist_value.zero }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = brilliant_scientist_singularity_live_command_node_count
+				value = constant:brilliant_scientist_singularity.minimum_live_command_nodes
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = brilliant_scientist_singularity_power_link_count
+				value = constant:brilliant_scientist_singularity.minimum_power_links
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = brilliant_scientist_singularity_live_command_network
+	}
+	else = { clr_country_flag = brilliant_scientist_singularity_live_command_network }
+}
+
+# COUNTRY scope. Inputs: selected state event target, temporary
+# `brilliant_scientist_singularity_site_selected_role`, and temporary
+# `brilliant_scientist_singularity_site_selected_quantity = 1`. Output:
+# temporary `brilliant_scientist_singularity_site_reservation_applied` is one
+# only when one pending row was appended. No payment or timer is owned here.
+brilliant_scientist_singularity_site_reserve_construction = {
+	set_temp_variable = { brilliant_scientist_singularity_site_reservation_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_singularity_site_selected_input_is_valid = yes
+			NOT = { brilliant_scientist_singularity_site_pending_receipt_is_present = yes }
+			brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes
+		}
+		set_temp_variable = { brilliant_scientist_singularity_site_reservation_row_index = brilliant_scientist_singularity_site_state_entries^num }
+		add_to_array = { array = brilliant_scientist_singularity_site_state_entries value = event_target:brilliant_scientist_singularity_site_selected_state }
+		add_to_array = { array = brilliant_scientist_singularity_site_role_entries value = brilliant_scientist_singularity_site_selected_role }
+		add_to_array = { array = brilliant_scientist_singularity_site_quantity_entries value = brilliant_scientist_singularity_site_selected_quantity }
+		add_to_array = { array = brilliant_scientist_singularity_site_status_entries value = constant:brilliant_scientist_singularity_site_status.pending }
+		add_to_array = { array = brilliant_scientist_singularity_site_history_entries value = constant:brilliant_scientist_singularity_site_history.none }
+		set_variable = { brilliant_scientist_singularity_site_pending_state = event_target:brilliant_scientist_singularity_site_selected_state }
+		set_variable = { brilliant_scientist_singularity_site_pending_role = brilliant_scientist_singularity_site_selected_role }
+		set_variable = { brilliant_scientist_singularity_site_pending_quantity = brilliant_scientist_singularity_site_selected_quantity }
+		set_variable = { brilliant_scientist_singularity_site_pending_row = brilliant_scientist_singularity_site_reservation_row_index }
+		set_country_flag = brilliant_scientist_singularity_site_pending
+		set_temp_variable = { brilliant_scientist_singularity_site_reservation_applied = constant:brilliant_scientist_value.one }
+	}
+}
+
+# COUNTRY scope. Inputs: the selected state event target and temporary selected
+# role bound to the same paid timer callback as the reservation. Output:
+# temporary `brilliant_scientist_singularity_site_completion_applied` is one
+# only after the exact pending row is validated, cleared, and marked live. The
+# parent may award its existing output after this effect; this effect awards no
+# payment, technology, component, or terminal result.
+brilliant_scientist_singularity_site_complete_pending_construction = {
+	set_temp_variable = { brilliant_scientist_singularity_site_completion_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_singularity_site_pending_callback_is_valid = yes }
+		set_temp_variable = { brilliant_scientist_singularity_site_completion_row = brilliant_scientist_singularity_site_pending_row }
+		brilliant_scientist_singularity_site_clear_pending_receipt_metadata = yes
+		set_variable = {
+			brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_completion_row
+			= constant:brilliant_scientist_singularity_site_status.live
+		}
+		set_variable = {
+			brilliant_scientist_singularity_site_history_entries^brilliant_scientist_singularity_site_completion_row
+			= constant:brilliant_scientist_singularity_site_history.constructed
+		}
+		set_temp_variable = { brilliant_scientist_singularity_site_completion_applied = constant:brilliant_scientist_value.one }
+		brilliant_scientist_singularity_site_reconcile_receipts = yes
+	}
+}
+
+# COUNTRY scope. Clears the active pending receipt before removing every
+# pending row from aligned arrays. A captured or destroyed target can still be
+# cancelled because structural receipt validation does not require current
+# ownership/control. This effect is authoritative owner cleanup and is
+# intentionally not identity-gated; a native decision callback must first pass
+# `brilliant_scientist_singularity_site_pending_callback_matches_receipt` before
+# invoking it, while orphan/terminal cleanup may invoke it directly. Output
+# temporary `brilliant_scientist_singularity_site_cancellation_applied` is one
+# whenever any pending flag, metadata, or row was consumed.
+brilliant_scientist_singularity_site_cancel_pending_construction = {
+	set_temp_variable = { brilliant_scientist_singularity_site_cancellation_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_singularity_site_pending_receipt_is_present = yes }
+		brilliant_scientist_singularity_site_clear_pending_receipt_metadata = yes
+		if = {
+			limit = { brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes }
+			brilliant_scientist_singularity_site_remove_pending_rows = yes
+		}
+		set_temp_variable = { brilliant_scientist_singularity_site_cancellation_applied = constant:brilliant_scientist_value.one }
+		brilliant_scientist_singularity_site_reconcile_receipts = yes
+	}
+}
+
+# COUNTRY scope. Input: selected state event target. This marks every live row
+# at that state invalidated, preserving its quantity and constructed history.
+# It also cancels a matching pending row before the live-row pass. Use this for
+# an explicit destruction/disarmament receipt. Ordinary capture/control loss
+# can instead call reconcile so an intact row may become live again on recovery.
+# Output temporary `brilliant_scientist_singularity_site_invalidation_applied`
+# is one when at least one live row was invalidated.
+brilliant_scientist_singularity_site_invalidate_selected_state = {
+	set_temp_variable = { brilliant_scientist_singularity_site_invalidation_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_singularity_site_selected_state_scope_is_valid = yes }
+		if = {
+			limit = {
+				has_variable = brilliant_scientist_singularity_site_pending_state
+				check_variable = {
+					var = brilliant_scientist_singularity_site_pending_state
+					value = event_target:brilliant_scientist_singularity_site_selected_state
+					compare = equals
+				}
+			}
+			brilliant_scientist_singularity_site_cancel_pending_construction = yes
+		}
+		if = {
+			limit = { brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes }
+			set_temp_variable = { brilliant_scientist_singularity_site_invalidation_row_cursor = brilliant_scientist_singularity_site_state_entries^num }
+			while_loop_effect = {
+				limit = {
+					check_variable = {
+						var = brilliant_scientist_singularity_site_invalidation_row_cursor
+						value = constant:brilliant_scientist_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_temp_variable = { brilliant_scientist_singularity_site_invalidation_row_cursor = constant:brilliant_scientist_value.one }
+				if = {
+					limit = {
+						check_variable = {
+							var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_invalidation_row_cursor
+							value = constant:brilliant_scientist_singularity_site_status.live
+							compare = equals
+						}
+						check_variable = {
+							var = brilliant_scientist_singularity_site_state_entries^brilliant_scientist_singularity_site_invalidation_row_cursor
+							value = event_target:brilliant_scientist_singularity_site_selected_state
+							compare = equals
+						}
+					}
+					set_variable = {
+						brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_invalidation_row_cursor
+						= constant:brilliant_scientist_singularity_site_status.invalidated
+					}
+					set_temp_variable = { brilliant_scientist_singularity_site_invalidation_applied = constant:brilliant_scientist_value.one }
+				}
+			}
+		}
+		brilliant_scientist_singularity_site_reconcile_receipts = yes
+	}
+}
+
+# COUNTRY scope. Inputs: selected state event target, temporary
+# `brilliant_scientist_singularity_site_selected_row_index`, and temporary
+# `brilliant_scientist_singularity_site_selected_row_index_supplied = 1`.
+# This is the partial-loss variant for one exact live receipt and leaves
+# duplicate paid rows at the same state untouched. Output uses the same
+# invalidation flag as the state-wide helper.
+brilliant_scientist_singularity_site_invalidate_selected_row = {
+	set_temp_variable = { brilliant_scientist_singularity_site_invalidation_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_singularity_site_selected_row_is_valid = yes }
+		set_variable = {
+			brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_selected_row_index
+			= constant:brilliant_scientist_singularity_site_status.invalidated
+		}
+		set_temp_variable = { brilliant_scientist_singularity_site_invalidation_applied = constant:brilliant_scientist_value.one }
+		brilliant_scientist_singularity_site_reconcile_receipts = yes
+	}
+}
+
+# COUNTRY scope. Cancels any pending reservation and retires every live or
+# already-invalidated row without touching its durable quantity/history. This
+# is the terminal owner cleanup; no new row is created and no construction
+# reward is replayed. Output temporary `brilliant_scientist_singularity_site_retirement_applied`
+# is one when pending/live/invalidated receipt state was settled.
+brilliant_scientist_singularity_site_retire_all = {
+	set_temp_variable = { brilliant_scientist_singularity_site_retirement_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_singularity_site_pending_receipt_is_present = yes }
+		set_temp_variable = { brilliant_scientist_singularity_site_retirement_had_pending = constant:brilliant_scientist_value.one }
+	}
+	else = { set_temp_variable = { brilliant_scientist_singularity_site_retirement_had_pending = constant:brilliant_scientist_value.zero } }
+	brilliant_scientist_singularity_site_cancel_pending_construction = yes
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_singularity_site_retirement_had_pending value = constant:brilliant_scientist_value.one compare = equals } }
+		set_temp_variable = { brilliant_scientist_singularity_site_retirement_applied = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = { brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes }
+		set_temp_variable = { brilliant_scientist_singularity_site_retirement_row_cursor = brilliant_scientist_singularity_site_state_entries^num }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_singularity_site_retirement_row_cursor
+					value = constant:brilliant_scientist_value.zero
+					compare = greater_than
+				}
+			}
+			subtract_from_temp_variable = { brilliant_scientist_singularity_site_retirement_row_cursor = constant:brilliant_scientist_value.one }
+			if = {
+				limit = {
+					OR = {
+						check_variable = {
+							var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_retirement_row_cursor
+							value = constant:brilliant_scientist_singularity_site_status.live
+							compare = equals
+						}
+						check_variable = {
+							var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_retirement_row_cursor
+							value = constant:brilliant_scientist_singularity_site_status.invalidated
+							compare = equals
+						}
+					}
+				}
+				set_variable = {
+					brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_retirement_row_cursor
+					= constant:brilliant_scientist_singularity_site_status.retired
+				}
+				set_temp_variable = { brilliant_scientist_singularity_site_retirement_applied = constant:brilliant_scientist_value.one }
+			}
+		}
+	}
+	brilliant_scientist_singularity_site_reconcile_receipts = yes
+}
+
+# COUNTRY scope on the former host after the selected KRG territory has moved.
+# Pending construction is settled by the caller before this helper runs. Every
+# permanent physical row is moved, not copied, into the one KRG carrier; KRG's
+# reconciliation then counts only rows whose original state and facility also
+# survived the territorial transaction. Constructed history remains durable
+# even when a non-transferred site is no longer a live KRG component.
+brilliant_scientist_singularity_site_migrate_registry_to_krg = {
+	if = {
+		limit = {
+			KRG = { exists = yes }
+			brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes
+		}
+		KRG = {
+			clear_array = brilliant_scientist_singularity_site_state_entries
+			clear_array = brilliant_scientist_singularity_site_role_entries
+			clear_array = brilliant_scientist_singularity_site_quantity_entries
+			clear_array = brilliant_scientist_singularity_site_status_entries
+			clear_array = brilliant_scientist_singularity_site_history_entries
+			brilliant_scientist_singularity_site_clear_pending_receipt_metadata = yes
+		}
+		for_each_loop = {
+			array = brilliant_scientist_singularity_site_state_entries
+			value = brilliant_scientist_singularity_site_transfer_state
+			index = brilliant_scientist_singularity_site_transfer_index
+			set_temp_variable = { brilliant_scientist_singularity_site_transfer_role = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_transfer_index }
+			set_temp_variable = { brilliant_scientist_singularity_site_transfer_quantity = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_transfer_index }
+			set_temp_variable = { brilliant_scientist_singularity_site_transfer_status = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_transfer_index }
+			set_temp_variable = { brilliant_scientist_singularity_site_transfer_history = brilliant_scientist_singularity_site_history_entries^brilliant_scientist_singularity_site_transfer_index }
+			KRG = {
+				add_to_array = { array = brilliant_scientist_singularity_site_state_entries value = brilliant_scientist_singularity_site_transfer_state }
+				add_to_array = { array = brilliant_scientist_singularity_site_role_entries value = brilliant_scientist_singularity_site_transfer_role }
+				add_to_array = { array = brilliant_scientist_singularity_site_quantity_entries value = brilliant_scientist_singularity_site_transfer_quantity }
+				add_to_array = { array = brilliant_scientist_singularity_site_status_entries value = brilliant_scientist_singularity_site_transfer_status }
+				add_to_array = { array = brilliant_scientist_singularity_site_history_entries value = brilliant_scientist_singularity_site_transfer_history }
+			}
+		}
+		clear_array = brilliant_scientist_singularity_site_state_entries
+		clear_array = brilliant_scientist_singularity_site_role_entries
+		clear_array = brilliant_scientist_singularity_site_quantity_entries
+		clear_array = brilliant_scientist_singularity_site_status_entries
+		clear_array = brilliant_scientist_singularity_site_history_entries
+		brilliant_scientist_singularity_site_clear_pending_receipt_metadata = yes
+		brilliant_scientist_singularity_site_reconcile_receipts = yes
+		KRG = { brilliant_scientist_singularity_site_reconcile_receipts = yes }
+	}
+}

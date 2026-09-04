@@ -60,9 +60,27 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 	set_temp_variable = { chaosx_conventional_technology_family = constant:brilliant_scientist_value.zero }
 	set_temp_variable = { chaosx_conventional_technology_tier = constant:brilliant_scientist_value.zero }
 	chaosx_reconcile_conventional_technology_runtime = yes
+	# Reconcile the provider-owned board without impersonating its program or
+	# inventing paid project history from the harness's completed technologies.
+	brilliant_scientist_mengele_reconcile_project_availability = yes
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } }
+		brilliant_scientist_mengele_cleanup_provider_receipts = yes
+	}
 	# Exercise the public raid-system queries without manufacturing a breach,
 	# authorizing a release, or disturbing an active payload transaction.
 	brilliant_scientist_portal_reconcile_country_beachheads = yes
+	# Rebuild only already-recorded physical Singularity sites and settle any
+	# invalid pending receipt. The harness never fabricates a site or component.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = brilliant_scientist_singularity_construction_receipt_active
+				check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = constant:brilliant_scientist_value.zero compare = greater_than }
+			}
+		}
+		brilliant_scientist_singularity_site_reconcile_receipts = yes
+	}
 	if = {
 		limit = {
 			NOT = { has_variable = brilliant_scientist_selected_biological_agent }

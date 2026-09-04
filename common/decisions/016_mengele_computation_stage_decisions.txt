@@ -1,0 +1,352 @@
+# Some decision modifier fields reject script-constant tokens. These values
+# mirror the authoritative Event 016 stage constants and the bounded Mengele
+# Prototype quote; all other timing and payment fields read shared constants.
+@CR_SC_MENGELE_COMPUTATION_THEORY_CIVILIAN_FACTORY_USE = 1
+@CR_SC_MENGELE_COMPUTATION_PROTOTYPE_CIVILIAN_FACTORY_USE = 2
+@CR_SC_MENGELE_COMPUTATION_DEPLOYMENT_CIVILIAN_FACTORY_USE = 3
+@CR_SC_MENGELE_COMPUTATION_WEAPONIZATION_CIVILIAN_FACTORY_USE = 5
+
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION PROVIDER DECISIONS
+# ============================================================================
+# Four current-stage provider rows for the existing Mengele clone-army
+# category. The native special-project route remains authoritative for the
+# Computation Prototype when its Götterdämmerung presentation is available.
+# These wrappers set exact family/stage selectors for the private provider
+# begin/cancel/finish helpers and never enter the Kruger board ledger.
+#
+# Direct provider payment is political power, support equipment, and fuel.
+# Civilian factories are reserved by the native decision modifier and are
+# released by the timed-decision lifecycle. There is no native `cost` field,
+# so political power is never charged twice.
+# ============================================================================
+
+mengele_clone_army_category = {
+	mengele_event016_computation_theory = {
+		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_theory
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_mengele_computation_theory_decision_visible = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_theory_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_theory_decision_requirements = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cost_blocked_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_theory_decision_can_pay = yes
+				}
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_mengele_computation_theory_decision_can_pay = yes
+		}
+		custom_cost_text = mengele_event016_computation_theory_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_stage_cost.computation_theory_political_power
+		modifier = { civilian_factory_use = @CR_SC_MENGELE_COMPUTATION_THEORY_CIVILIAN_FACTORY_USE }
+		days_remove = constant:brilliant_scientist_project_duration.computation_theory
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.theory
+				}
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cancel_trigger_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_theory_decision_cancel_trigger = yes
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.theory
+				}
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_computation_theory_effect_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.theory
+				}
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_project_board.ai_high
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				has_war = yes
+			}
+		}
+	}
+
+	mengele_event016_computation_prototype = {
+		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_prototype
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_mengele_computation_prototype_decision_visible = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_prototype_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_prototype_decision_requirements = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cost_blocked_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_prototype_decision_can_pay = yes
+				}
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_mengele_computation_prototype_decision_can_pay = yes
+		}
+		custom_cost_text = mengele_event016_computation_prototype_cost
+		ai_hint_pp_cost = constant:mengele_event016_project_stage.computation_prototype_political_power
+		modifier = { civilian_factory_use = @CR_SC_MENGELE_COMPUTATION_PROTOTYPE_CIVILIAN_FACTORY_USE }
+		days_remove = constant:brilliant_scientist_project_duration.computation_prototype
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype
+				}
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cancel_trigger_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_prototype_decision_cancel_trigger = yes
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype
+				}
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_computation_prototype_effect_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype
+				}
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_project_board.ai_high
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				has_war = yes
+			}
+		}
+	}
+
+	mengele_event016_computation_deployment = {
+		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_deployment
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_mengele_computation_deployment_decision_visible = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_deployment_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_deployment_decision_requirements = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cost_blocked_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_deployment_decision_can_pay = yes
+				}
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_mengele_computation_deployment_decision_can_pay = yes
+		}
+		custom_cost_text = mengele_event016_computation_deployment_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_stage_cost.computation_deployment_political_power
+		modifier = { civilian_factory_use = @CR_SC_MENGELE_COMPUTATION_DEPLOYMENT_CIVILIAN_FACTORY_USE }
+		days_remove = constant:brilliant_scientist_project_duration.computation_deployment
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment
+				}
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cancel_trigger_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_deployment_decision_cancel_trigger = yes
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment
+				}
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_computation_deployment_effect_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.deployment
+				}
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_project_board.ai_high
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				has_war = yes
+			}
+		}
+	}
+
+	mengele_event016_computation_weaponization = {
+		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_weaponization
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_mengele_computation_weaponization_decision_visible = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_weaponization_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_weaponization_decision_requirements = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cost_blocked_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_weaponization_decision_can_pay = yes
+				}
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_mengele_computation_weaponization_decision_can_pay = yes
+		}
+		custom_cost_text = mengele_event016_computation_weaponization_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_stage_cost.computation_weaponization_political_power
+		modifier = { civilian_factory_use = @CR_SC_MENGELE_COMPUTATION_WEAPONIZATION_CIVILIAN_FACTORY_USE }
+		days_remove = constant:brilliant_scientist_project_duration.computation_weaponization
+		complete_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_started_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization
+				}
+				brilliant_scientist_mengele_begin_project_stage = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_stage_cancel_trigger_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_weaponization_decision_cancel_trigger = yes
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_computation_stage_cancelled_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization
+				}
+				brilliant_scientist_mengele_cancel_project_stage = yes
+			}
+		}
+		remove_effect = {
+			custom_effect_tooltip = mengele_event016_computation_weaponization_effect_tt
+			hidden_effect = {
+				set_temp_variable = {
+					mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+				}
+				set_temp_variable = {
+					mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.weaponization
+				}
+				brilliant_scientist_mengele_finish_project_stage = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_project_board.ai_high
+			modifier = {
+				factor = constant:brilliant_scientist_project_ai.preferred_factor
+				has_war = yes
+			}
+		}
+	}
+}

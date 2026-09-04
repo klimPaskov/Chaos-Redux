@@ -1,0 +1,251 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION STAGE TRIGGERS
+# ============================================================================
+# Private country-scope gates for the bounded Mengele Computation stage core.
+# The public selectors are temporary variables:
+#   mengele_event016_project_family
+#   mengele_event016_requested_stage
+#
+# Event 016 family IDs are stable and one-based. The aligned receipt arrays
+# use family_id - 1, so Computation (family 1) is array index 0. These gates
+# deliberately do not read or write the Kruger project board.
+# ============================================================================
+
+# COUNTRY scope. The bridge file already owns the shorter
+# brilliant_scientist_mengele_project_provider_is_valid name. Keep this
+# stricter lifecycle gate private and unique; the parent bridge must route its
+# provider alias here when it integrates the Computation stage core.
+brilliant_scientist_mengele_project_stage_provider_is_valid = {
+	exists = yes
+	is_mengele_clone_directorate_country = yes
+	has_country_flag = mengele_clone_focus_directorate_project_registry
+	NOT = { has_country_flag = brilliant_scientist_current_host }
+	NOT = { has_country_flag = brilliant_scientist_project_incident_active }
+	NOT = { has_country_flag = germany_mengele_defeated }
+	NOT = { has_country_flag = germany_mengele_program_rejected }
+	NOT = { has_country_flag = germany_mengele_program_closed }
+	NOT = { has_country_flag = germany_mengele_program_expired }
+	NOT = { has_country_flag = germany_mengele_program_recently_expired }
+	NOT = { has_country_flag = brilliant_scientist_all_actions_locked_after_world_end }
+	NOT = { has_global_flag = brilliant_scientist_singularity_terminal_fired }
+	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
+	NOT = { has_global_flag = world_end }
+	OR = {
+		has_country_flag = mengele_clone_army_scenario_country
+		has_country_flag = germany_mengele_victorious
+		has_country_flag = germany_mengele_faction
+		OR = {
+			germany_mengele_program_active = yes
+			germany_mengele_restricted_program_active = yes
+		}
+	}
+}
+
+# COUNTRY scope. Only family 1 and the four persistent stage IDs are accepted.
+# Unsupported families, stage zero, and malformed/missing selectors fail
+# closed before the receipt arrays can be initialized.
+brilliant_scientist_mengele_computation_stage_request_is_valid = {
+	check_variable = {
+		var = mengele_event016_project_family
+		value = constant:brilliant_scientist_project_family.computation
+		compare = equals
+	}
+	OR = {
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.theory
+			compare = equals
+		}
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.prototype
+			compare = equals
+		}
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.deployment
+			compare = equals
+		}
+		check_variable = {
+			var = mengele_event016_requested_stage
+			value = constant:brilliant_scientist_project_stage.weaponization
+			compare = equals
+		}
+	}
+}
+
+# COUNTRY scope. A stage can be opened only once and only in order. The
+# current stage's completion receipt is tested as well as its predecessor so
+# repeated starts cannot re-charge a completed stage.
+brilliant_scientist_mengele_computation_stage_predecessor_is_valid = {
+	OR = {
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.theory
+				compare = equals
+			}
+			NOT = { has_country_flag = mengele_event016_computation_theory_completed }
+		}
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.prototype
+				compare = equals
+			}
+			has_country_flag = mengele_event016_computation_theory_completed
+			NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
+		}
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = equals
+			}
+			has_country_flag = mengele_event016_computation_prototype_completed
+			NOT = { has_country_flag = mengele_event016_computation_deployment_completed }
+		}
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.weaponization
+				compare = equals
+			}
+			has_country_flag = mengele_event016_computation_deployment_completed
+			NOT = { has_country_flag = mengele_event016_computation_weaponization_completed }
+		}
+	}
+}
+
+# COUNTRY scope. The stage may be started only if the direct resources are
+# affordable. Civilian factories are a native decision modifier reservation,
+# not a stockpile debit, so they are deliberately absent from this gate. The
+# provider route uses inclusive affordability: NOT-less-than accepts an exact
+# equipment/fuel balance, while Political Power uses the documented inclusive
+# comparison operator. Existing Kruger board gates remain unchanged.
+brilliant_scientist_mengele_computation_stage_can_pay = {
+	OR = {
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.theory
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.computation_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.computation_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.prototype
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:mengele_event016_project_stage.computation_prototype_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:mengele_event016_project_stage.computation_prototype_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:mengele_event016_project_stage.computation_prototype_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.computation_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.computation_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.computation_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.weaponization
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.computation_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.computation_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.computation_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Receipt emptiness is intentionally independent of provider
+# validity so an accessible owner can clean an abandoned receipt later. The
+# initializer writes a full aligned array, therefore the marker is required
+# before a dynamic array read.
+brilliant_scientist_mengele_computation_stage_receipt_is_empty = {
+	brilliant_scientist_mengele_computation_stage_request_is_valid = yes
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = {
+				var = mengele_event016_active_project_stage_entries^0
+				value = constant:brilliant_scientist_project_stage.none
+				compare = equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Completion/cancellation callbacks must carry the exact
+# family/stage receipt they started; a wrong family or stage cannot clear or
+# refund a different active slot.
+brilliant_scientist_mengele_computation_stage_receipt_matches = {
+	brilliant_scientist_mengele_computation_stage_request_is_valid = yes
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = {
+		var = mengele_event016_active_project_stage_entries^0
+		value = mengele_event016_requested_stage
+		compare = equals
+	}
+}
+
+# COUNTRY scope. Native output is authenticated only for a currently valid
+# provider with the provider Theory receipt and the exact native special-project
+# completion. The parent must call the adapter only from that project's exact
+# `project_output` branch; no project-start callback is assumed. An optional
+# pending marker may describe the exposed native presentation, but it is not a
+# second clock or a prerequisite for this exact output callback. The adapter
+# never treats a stale legacy flag as proof of a native callback.
+brilliant_scientist_mengele_computation_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = {
+		var = mengele_event016_project_family
+		value = constant:brilliant_scientist_project_family.computation
+		compare = equals
+	}
+	has_country_flag = mengele_event016_computation_theory_completed
+	NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
+	is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+}

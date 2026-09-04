@@ -26,6 +26,15 @@ on_actions = {
 			ROOT = {
 				if = {
 					limit = {
+						OR = {
+							has_country_flag = brilliant_scientist_singularity_construction_receipt_active
+							check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = constant:brilliant_scientist_value.zero compare = greater_than }
+						}
+					}
+					brilliant_scientist_singularity_site_reconcile_receipts = yes
+				}
+				if = {
+					limit = {
 						has_country_flag = brilliant_scientist_kruger_state_active
 						NOT = { has_country_flag = brilliant_scientist_project_force_package_from_history_applied }
 						any_owned_state = { is_controlled_by = ROOT }
@@ -39,6 +48,15 @@ on_actions = {
 				}
 			}
 			FROM = {
+				if = {
+					limit = {
+						OR = {
+							has_country_flag = brilliant_scientist_singularity_construction_receipt_active
+							check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = constant:brilliant_scientist_value.zero compare = greater_than }
+						}
+					}
+					brilliant_scientist_singularity_site_reconcile_receipts = yes
+				}
 				if = {
 					limit = { brilliant_scientist_is_kruger_sovereign_country = yes }
 					brilliant_scientist_refresh_world_threat_source = yes
@@ -80,6 +98,8 @@ on_actions = {
 
 	on_annex = {
 		effect = {
+			FROM = { brilliant_scientist_singularity_construction_cleanup = yes }
+			FROM = { brilliant_scientist_mengele_cleanup_provider_receipts = yes }
 			FROM = { brilliant_scientist_foreign_cleanup_country_operations = yes }
 			if = {
 				limit = { FROM = { brilliant_scientist_is_kruger_sovereign_country = yes } }
@@ -91,6 +111,8 @@ on_actions = {
 
 	on_civil_war_end_before_annexation = {
 		effect = {
+			FROM = { brilliant_scientist_singularity_construction_cleanup = yes }
+			FROM = { brilliant_scientist_mengele_cleanup_provider_receipts = yes }
 			FROM = { brilliant_scientist_foreign_cleanup_country_operations = yes }
 		}
 	}

@@ -1,0 +1,691 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION STAGE EFFECTS
+# ============================================================================
+# Private country-scope receipt and settlement core for the Mengele
+# Computation family (family ID 1). The four stage selectors are temporary
+# variables named mengele_event016_project_family and
+# mengele_event016_requested_stage. The aligned provider receipt arrays use
+# the existing fifteen-family layout: family ID 1 is array index 0 and the
+# remaining fourteen slots are initialized to stage none and zero costs.
+#
+# Direct stage costs debit only political power, support equipment, and fuel.
+# Civilian factory values are stored as native-CIC quotes for the parent-owned
+# decision modifier; this file never adds or refunds factories. Deployment and
+# Weaponization call the existing neutral conventional API with the fixed
+# Mengele provenance source. No Kruger board, Capacity, event target, event,
+# probability, or AI state is touched here.
+# ============================================================================
+
+# COUNTRY scope. Initializes the five aligned provider arrays once. Callers
+# must validate the provider and Computation request before invoking this
+# helper; invalid or unsupported requests therefore never create paid-history
+# state. The initialization marker is a boolean country flag, not a numeric
+# variable, so a zero-valued marker can never be mistaken for an initialized
+# receipt store.
+brilliant_scientist_mengele_initialize_project_stage_receipts = {
+	if = {
+		limit = { NOT = { has_country_flag = mengele_event016_provider_receipts_initialized } }
+		clear_array = mengele_event016_active_project_stage_entries
+		clear_array = mengele_event016_active_cost_political_power_entries
+		clear_array = mengele_event016_active_cost_support_equipment_entries
+		clear_array = mengele_event016_active_cost_fuel_entries
+		clear_array = mengele_event016_active_cost_civilian_factory_commitment_entries
+		set_temp_variable = { mengele_event016_initialize_index = constant:brilliant_scientist_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					mengele_event016_initialize_index < constant:brilliant_scientist_event.project_family_count
+				}
+			}
+			add_to_array = {
+				array = mengele_event016_active_project_stage_entries
+				value = constant:brilliant_scientist_project_stage.none
+			}
+			add_to_array = {
+				array = mengele_event016_active_cost_political_power_entries
+				value = constant:brilliant_scientist_value.zero
+			}
+			add_to_array = {
+				array = mengele_event016_active_cost_support_equipment_entries
+				value = constant:brilliant_scientist_value.zero
+			}
+			add_to_array = {
+				array = mengele_event016_active_cost_fuel_entries
+				value = constant:brilliant_scientist_value.zero
+			}
+			add_to_array = {
+				array = mengele_event016_active_cost_civilian_factory_commitment_entries
+				value = constant:brilliant_scientist_value.zero
+			}
+			add_to_temp_variable = {
+				mengele_event016_initialize_index = constant:brilliant_scientist_value.one
+			}
+		}
+		set_country_flag = mengele_event016_provider_receipts_initialized
+	}
+}
+
+# COUNTRY scope. Loads the Computation quote into temporary values for a
+# decision or caller. Existing Event 016 tables remain authoritative for all
+# values except the missing Prototype quote, which is supplied by the new
+# Mengele constants. Output temporary names are intentionally private:
+# mengele_event016_stage_quote_loaded, _quote_duration_days,
+# _quote_civilian_factories, _quote_political_power, _quote_support_equipment,
+# and _quote_fuel.
+brilliant_scientist_mengele_load_computation_stage_quote = {
+	set_temp_variable = { mengele_event016_stage_quote_loaded = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_duration_days = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_civilian_factories = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_political_power = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_support_equipment = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_stage_quote_fuel = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_project_family
+				value = constant:brilliant_scientist_project_family.computation
+				compare = equals
+			}
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.theory
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_duration_days = constant:brilliant_scientist_project_duration.computation_theory
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_civilian_factories = constant:brilliant_scientist_project_stage_cost.computation_theory_civilian_factories
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_political_power = constant:brilliant_scientist_project_stage_cost.computation_theory_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_support_equipment = constant:brilliant_scientist_project_stage_cost.computation_theory_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_fuel = constant:brilliant_scientist_project_stage_cost.computation_theory_fuel
+		}
+		set_temp_variable = { mengele_event016_stage_quote_loaded = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_project_family
+				value = constant:brilliant_scientist_project_family.computation
+				compare = equals
+			}
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.prototype
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_duration_days = constant:brilliant_scientist_project_duration.computation_prototype
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_civilian_factories = constant:mengele_event016_project_stage.computation_prototype_civilian_factories
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_political_power = constant:mengele_event016_project_stage.computation_prototype_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_support_equipment = constant:mengele_event016_project_stage.computation_prototype_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_fuel = constant:mengele_event016_project_stage.computation_prototype_fuel
+		}
+		set_temp_variable = { mengele_event016_stage_quote_loaded = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_project_family
+				value = constant:brilliant_scientist_project_family.computation
+				compare = equals
+			}
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.deployment
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_duration_days = constant:brilliant_scientist_project_duration.computation_deployment
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_civilian_factories = constant:brilliant_scientist_project_stage_cost.computation_deployment_civilian_factories
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_political_power = constant:brilliant_scientist_project_stage_cost.computation_deployment_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_support_equipment = constant:brilliant_scientist_project_stage_cost.computation_deployment_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_fuel = constant:brilliant_scientist_project_stage_cost.computation_deployment_fuel
+		}
+		set_temp_variable = { mengele_event016_stage_quote_loaded = constant:brilliant_scientist_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_project_family
+				value = constant:brilliant_scientist_project_family.computation
+				compare = equals
+			}
+			check_variable = {
+				var = mengele_event016_requested_stage
+				value = constant:brilliant_scientist_project_stage.weaponization
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_duration_days = constant:brilliant_scientist_project_duration.computation_weaponization
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_civilian_factories = constant:brilliant_scientist_project_stage_cost.computation_weaponization_civilian_factories
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_political_power = constant:brilliant_scientist_project_stage_cost.computation_weaponization_political_power
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_support_equipment = constant:brilliant_scientist_project_stage_cost.computation_weaponization_support_equipment
+		}
+		set_temp_variable = {
+			mengele_event016_stage_quote_fuel = constant:brilliant_scientist_project_stage_cost.computation_weaponization_fuel
+		}
+		set_temp_variable = { mengele_event016_stage_quote_loaded = constant:brilliant_scientist_value.one }
+	}
+}
+
+# COUNTRY scope. Clears only this helper's public selectors and index. The
+# existing brilliant_scientist_project_family selector and unrelated caller
+# temporaries are intentionally left untouched.
+brilliant_scientist_mengele_clear_project_stage_selectors = {
+	set_temp_variable = {
+		mengele_event016_project_family = constant:brilliant_scientist_project_family.none
+	}
+	set_temp_variable = {
+		mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none
+	}
+	set_temp_variable = { mengele_event016_project_index = constant:brilliant_scientist_value.zero }
+}
+
+# COUNTRY scope. Clears the Computation slot before a settlement output or
+# refund. The literal zero index is the existing family-1 -> array-0 mapping;
+# no other family's slot is touched by this bounded implementation.
+brilliant_scientist_mengele_clear_computation_active_receipt = {
+	set_variable = {
+		mengele_event016_active_project_stage_entries^0 = constant:brilliant_scientist_project_stage.none
+	}
+	set_variable = {
+		mengele_event016_active_cost_political_power_entries^0 = constant:brilliant_scientist_value.zero
+	}
+	set_variable = {
+		mengele_event016_active_cost_support_equipment_entries^0 = constant:brilliant_scientist_value.zero
+	}
+	set_variable = {
+		mengele_event016_active_cost_fuel_entries^0 = constant:brilliant_scientist_value.zero
+	}
+	set_variable = {
+		mengele_event016_active_cost_civilian_factory_commitment_entries^0 = constant:brilliant_scientist_value.zero
+	}
+}
+
+# COUNTRY scope. Refunds one stored receipt snapshot. The native-CIC quote is
+# never refunded through an effect; the parent decision's civilian_factory_use
+# modifier owns reservation and release.
+brilliant_scientist_mengele_refund_snapshot_direct_costs = {
+	add_political_power = mengele_event016_settlement_cost_political_power
+	add_equipment_to_stockpile = {
+		type = support_equipment
+		amount = mengele_event016_settlement_cost_support_equipment
+	}
+	add_fuel = mengele_event016_settlement_cost_fuel
+}
+
+# COUNTRY scope. Starts one Computation stage after validating the provider,
+# exact predecessor, active-slot emptiness, direct affordability, and quote.
+# The native decision owns the CIC quote; the three following effects are the
+# only payment debits performed here.
+brilliant_scientist_mengele_begin_project_stage = {
+	set_temp_variable = { mengele_event016_stage_started = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_mengele_load_computation_stage_quote = yes
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_computation_stage_request_is_valid = yes
+			brilliant_scientist_mengele_computation_stage_predecessor_is_valid = yes
+			brilliant_scientist_mengele_computation_stage_can_pay = yes
+			check_variable = {
+				var = mengele_event016_stage_quote_loaded
+				value = constant:brilliant_scientist_value.one
+				compare = equals
+			}
+		}
+		brilliant_scientist_mengele_initialize_project_stage_receipts = yes
+		if = {
+			limit = { brilliant_scientist_mengele_computation_stage_receipt_is_empty = yes }
+			set_temp_variable = {
+				mengele_event016_stage_payment_political_power = mengele_event016_stage_quote_political_power
+			}
+			set_temp_variable = {
+				mengele_event016_stage_payment_support_equipment = mengele_event016_stage_quote_support_equipment
+			}
+			set_temp_variable = {
+				mengele_event016_stage_payment_fuel = mengele_event016_stage_quote_fuel
+			}
+			multiply_temp_variable = {
+				mengele_event016_stage_payment_political_power = constant:brilliant_scientist_directorate_value.negative_one
+			}
+			multiply_temp_variable = {
+				mengele_event016_stage_payment_support_equipment = constant:brilliant_scientist_directorate_value.negative_one
+			}
+			multiply_temp_variable = {
+				mengele_event016_stage_payment_fuel = constant:brilliant_scientist_directorate_value.negative_one
+			}
+			add_political_power = mengele_event016_stage_payment_political_power
+			add_equipment_to_stockpile = {
+				type = support_equipment
+				amount = mengele_event016_stage_payment_support_equipment
+			}
+			add_fuel = mengele_event016_stage_payment_fuel
+			set_variable = {
+				mengele_event016_active_project_stage_entries^0 = mengele_event016_requested_stage
+			}
+			set_variable = {
+				mengele_event016_active_cost_political_power_entries^0 = mengele_event016_stage_quote_political_power
+			}
+			set_variable = {
+				mengele_event016_active_cost_support_equipment_entries^0 = mengele_event016_stage_quote_support_equipment
+			}
+			set_variable = {
+				mengele_event016_active_cost_fuel_entries^0 = mengele_event016_stage_quote_fuel
+			}
+			set_variable = {
+				mengele_event016_active_cost_civilian_factory_commitment_entries^0 = mengele_event016_stage_quote_civilian_factories
+			}
+			set_temp_variable = { mengele_event016_stage_started = constant:brilliant_scientist_value.one }
+		}
+	}
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+# COUNTRY scope. Cancels only the exact current Computation receipt. Provider
+# validity and existence are intentionally not required so close/defeat/death
+# cleanup can settle an accessible owner. Snapshot, clear, and refund happen in
+# that order, which makes a repeated callback a no-op.
+brilliant_scientist_mengele_cancel_project_stage = {
+	set_temp_variable = { mengele_event016_stage_cancelled = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_computation_stage_receipt_matches = yes }
+		set_temp_variable = {
+			mengele_event016_settlement_cost_political_power = mengele_event016_active_cost_political_power_entries^0
+		}
+		set_temp_variable = {
+			mengele_event016_settlement_cost_support_equipment = mengele_event016_active_cost_support_equipment_entries^0
+		}
+		set_temp_variable = {
+			mengele_event016_settlement_cost_fuel = mengele_event016_active_cost_fuel_entries^0
+		}
+		brilliant_scientist_mengele_clear_computation_active_receipt = yes
+		brilliant_scientist_mengele_refund_snapshot_direct_costs = yes
+		set_temp_variable = { mengele_event016_stage_cancelled = constant:brilliant_scientist_value.one }
+	}
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+# COUNTRY scope. Settles the exact receipt once. A valid existing owner
+# completes the requested stage; an invalid owner still snapshots, clears, and
+# refunds direct costs, but receives no stage output. The exact receipt gate is
+# intentionally outside the provider/existence gate so cleanup can settle an
+# accessible owner after defeat, closure, expiry, or another invalidation.
+brilliant_scientist_mengele_finish_project_stage = {
+	set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_computation_stage_receipt_matches = yes }
+		set_temp_variable = {
+			mengele_event016_settlement_cost_political_power = mengele_event016_active_cost_political_power_entries^0
+		}
+		set_temp_variable = {
+			mengele_event016_settlement_cost_support_equipment = mengele_event016_active_cost_support_equipment_entries^0
+		}
+		set_temp_variable = {
+			mengele_event016_settlement_cost_fuel = mengele_event016_active_cost_fuel_entries^0
+		}
+		brilliant_scientist_mengele_clear_computation_active_receipt = yes
+		set_temp_variable = { mengele_event016_computation_output_authorized = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = {
+				brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+				brilliant_scientist_mengele_computation_stage_predecessor_is_valid = yes
+			}
+			set_temp_variable = { mengele_event016_computation_output_authorized = constant:brilliant_scientist_value.one }
+			brilliant_scientist_mengele_apply_family_stage_output = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = mengele_event016_computation_output_applied
+						value = constant:brilliant_scientist_value.one
+						compare = equals
+					}
+				}
+				# Private paid stages own one incident roll on accepted completion.
+				# Native Prototype work rolls only through its explicit risky option.
+				brilliant_scientist_mengele_dispatch_computation_incident = yes
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_computation_output_applied
+					value = constant:brilliant_scientist_value.zero
+					compare = equals
+				}
+			}
+			brilliant_scientist_mengele_refund_snapshot_direct_costs = yes
+		}
+		set_temp_variable = { mengele_event016_stage_finished = constant:brilliant_scientist_value.one }
+	}
+	set_temp_variable = { mengele_event016_computation_output_authorized = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+# COUNTRY scope. Applies exactly one provider-owned Computation output after
+# finish or authenticated native completion. Theory uses the existing
+# brilliant_scientist_computation_theory modifier; Prototype preserves the
+# legacy native completion flag and uses the existing Mengele prototype
+# modifier; Deployment and Weaponization use the full neutral conventional API
+# and the fixed program provenance source.
+brilliant_scientist_mengele_apply_family_stage_output = {
+	set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_computation_output_authorized
+				value = constant:brilliant_scientist_value.one
+				compare = equals
+			}
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_computation_stage_request_is_valid = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_requested_stage
+					value = constant:brilliant_scientist_project_stage.theory
+					compare = equals
+				}
+				NOT = { has_country_flag = mengele_event016_computation_theory_completed }
+			}
+			set_country_flag = mengele_event016_computation_theory_completed
+			add_dynamic_modifier = { modifier = brilliant_scientist_computation_theory }
+			set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_requested_stage
+					value = constant:brilliant_scientist_project_stage.prototype
+					compare = equals
+				}
+				NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
+			}
+			set_country_flag = mengele_event016_computation_prototype_completed
+			set_country_flag = directorate_special_project_computation_completed
+			clr_country_flag = directorate_special_project_computation_available
+			add_dynamic_modifier = { modifier = mengele_directorate_computation_prototype }
+			set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_requested_stage
+					value = constant:brilliant_scientist_project_stage.deployment
+					compare = equals
+				}
+			}
+			set_temp_variable = {
+				chaosx_conventional_technology_family = constant:brilliant_scientist_project_family.computation
+			}
+			set_temp_variable = {
+				chaosx_conventional_technology_tier = constant:brilliant_scientist_project_stage.deployment
+			}
+			set_temp_variable = {
+				chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele
+			}
+			chaosx_grant_conventional_technology_package = yes
+			set_temp_variable = { chaosx_conventional_technology_family = constant:brilliant_scientist_project_family.none }
+			set_temp_variable = { chaosx_conventional_technology_tier = constant:brilliant_scientist_project_stage.none }
+			set_temp_variable = { chaosx_custom_technology_source = constant:brilliant_scientist_value.zero }
+			if = {
+				limit = {
+					check_variable = {
+						var = chaosx_conventional_technology_grant_applied
+						value = constant:brilliant_scientist_value.one
+						compare = equals
+					}
+				}
+				set_country_flag = mengele_event016_computation_deployment_completed
+				set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_requested_stage
+					value = constant:brilliant_scientist_project_stage.weaponization
+					compare = equals
+				}
+			}
+			set_temp_variable = {
+				chaosx_conventional_technology_family = constant:brilliant_scientist_project_family.computation
+			}
+			set_temp_variable = {
+				chaosx_conventional_technology_tier = constant:brilliant_scientist_project_stage.weaponization
+			}
+			set_temp_variable = {
+				chaosx_custom_technology_source = constant:mengele_event016_project_stage.provenance_mengele
+			}
+			chaosx_grant_conventional_technology_package = yes
+			set_temp_variable = { chaosx_conventional_technology_family = constant:brilliant_scientist_project_family.none }
+			set_temp_variable = { chaosx_conventional_technology_tier = constant:brilliant_scientist_project_stage.none }
+			set_temp_variable = { chaosx_custom_technology_source = constant:brilliant_scientist_value.zero }
+			if = {
+				limit = {
+					check_variable = {
+						var = chaosx_conventional_technology_grant_applied
+						value = constant:brilliant_scientist_value.one
+						compare = equals
+					}
+				}
+				set_country_flag = mengele_event016_computation_weaponization_completed
+				set_temp_variable = { mengele_event016_computation_output_applied = constant:brilliant_scientist_value.one }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_computation_output_applied
+				value = constant:brilliant_scientist_value.one
+				compare = equals
+			}
+		}
+		force_update_dynamic_modifier = yes
+		brilliant_scientist_mengele_reconcile_project_availability = yes
+	}
+	set_temp_variable = { mengele_event016_computation_output_authorized = constant:brilliant_scientist_value.zero }
+}
+
+# COUNTRY scope. Authenticated native Computation completion adapter. The
+# native project owns its own resource payment and completion clock; this
+# effect records only the provider Prototype output and clears an optional
+# pending presentation marker. The parent must call it from the exact native
+# project_output branch; no project-start callback or second receipt is
+# assumed. It never copies native payment or unrelated stage rewards.
+brilliant_scientist_mengele_sync_native_project_prototypes = {
+	set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_computation_native_output_is_authentic = yes }
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+		set_temp_variable = { mengele_event016_computation_output_authorized = constant:brilliant_scientist_value.one }
+		brilliant_scientist_mengele_apply_family_stage_output = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_computation_output_applied
+					value = constant:brilliant_scientist_value.one
+					compare = equals
+				}
+			}
+			clr_country_flag = mengele_event016_native_computation_prototype_pending
+			set_temp_variable = { mengele_event016_native_prototype_synced = constant:brilliant_scientist_value.one }
+		}
+	}
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_native_computation_prototype_pending
+			is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+			has_country_flag = mengele_event016_computation_prototype_completed
+		}
+		clr_country_flag = mengele_event016_native_computation_prototype_pending
+	}
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+	set_temp_variable = { mengele_event016_computation_output_authorized = constant:brilliant_scientist_value.zero }
+}
+
+# COUNTRY scope. Native project-output bridge entry point. Parent integration
+# may provide the new family selector or the existing native callback selector;
+# this adapter copies only the known Computation family and never copies a
+# caller's optional conventional-technology source.
+brilliant_scientist_mengele_record_native_project_prototype = {
+	set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_project_family
+				value = constant:brilliant_scientist_project_family.computation
+				compare = equals
+			}
+		}
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+		brilliant_scientist_mengele_sync_native_project_prototypes = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_native_prototype_synced
+					value = constant:brilliant_scientist_value.one
+					compare = equals
+				}
+			}
+			set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.one }
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = mengele_event016_project_family
+				value = constant:brilliant_scientist_project_family.none
+				compare = equals
+			}
+			check_variable = {
+				var = brilliant_scientist_project_family
+				value = constant:brilliant_scientist_project_family.computation
+				compare = equals
+			}
+		}
+		set_temp_variable = {
+			mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+		}
+		set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+		brilliant_scientist_mengele_sync_native_project_prototypes = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_native_prototype_synced
+					value = constant:brilliant_scientist_value.one
+					compare = equals
+				}
+			}
+			set_temp_variable = { mengele_event016_native_prototype_recorded = constant:brilliant_scientist_value.one }
+		}
+	}
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}
+
+# COUNTRY scope. Keeps the native Computation prototype presentation flag
+# synchronized with the provider's Theory/Prototype state. This helper is
+# intentionally narrow; parent lifecycle code owns calls when program state
+# closes or the provider leaves.
+brilliant_scientist_mengele_reconcile_project_availability = {
+	set_temp_variable = { mengele_event016_project_availability_reconciled = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_computation_theory_completed
+			NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
+			NOT = { has_country_flag = directorate_special_project_computation_completed }
+			NOT = { is_special_project_completed = sp:sp_brilliant_scientist_computational_engine }
+		}
+		set_country_flag = directorate_special_project_computation_available
+		set_temp_variable = { mengele_event016_project_availability_reconciled = constant:brilliant_scientist_value.one }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				has_country_flag = mengele_event016_computation_prototype_completed
+				has_country_flag = directorate_special_project_computation_completed
+				is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+				NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+			}
+		}
+		clr_country_flag = directorate_special_project_computation_available
+		set_temp_variable = { mengele_event016_project_availability_reconciled = constant:brilliant_scientist_value.one }
+	}
+}
+
+# COUNTRY scope. Lifecycle cleanup for the provider's Computation receipts.
+# It can run after provider validity is lost, and it does not create the
+# receipt arrays. Direct costs are refunded once through the cancel helper;
+# native pending and presentation markers are cleared, while completion flags
+# and neutral API entitlements remain durable.
+brilliant_scientist_mengele_cleanup_provider_receipts = {
+	set_temp_variable = { mengele_event016_provider_cleanup_applied = constant:brilliant_scientist_value.zero }
+	brilliant_scientist_mengele_cleanup_computation_incident = yes
+	if = {
+		limit = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		set_temp_variable = {
+			mengele_event016_project_family = constant:brilliant_scientist_project_family.computation
+		}
+		set_temp_variable = { mengele_event016_requested_stage = mengele_event016_active_project_stage_entries^0 }
+		if = {
+			limit = {
+				check_variable = {
+					var = mengele_event016_active_project_stage_entries^0
+					value = constant:brilliant_scientist_project_stage.none
+					compare = greater_than
+				}
+			}
+			brilliant_scientist_mengele_cancel_project_stage = yes
+			if = {
+				limit = {
+					check_variable = {
+						var = mengele_event016_stage_cancelled
+						value = constant:brilliant_scientist_value.one
+						compare = equals
+					}
+				}
+				set_temp_variable = { mengele_event016_provider_cleanup_applied = constant:brilliant_scientist_value.one }
+			}
+		}
+	}
+	clr_country_flag = mengele_event016_native_computation_prototype_pending
+	clr_country_flag = directorate_special_project_computation_available
+	brilliant_scientist_mengele_clear_project_stage_selectors = yes
+}

@@ -1,0 +1,354 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 SINGULARITY SITE RECEIPT TRIGGERS
+# ============================================================================
+# Country-scope read-only queries for the private physical-site ledger. The
+# quantity query uses only aligned registered rows and rebuilds temporary
+# totals with the documented all_of/if/add_to_temp_variable pattern. It never
+# trusts the legacy country counters as an input and never persists a write.
+
+# COUNTRY scope. Every site row array must have the same physical length. An
+# empty set is aligned (all five arrays expose a zero `^num` length).
+brilliant_scientist_singularity_site_receipt_arrays_are_aligned = {
+	check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = brilliant_scientist_singularity_site_role_entries^num compare = equals }
+	check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = brilliant_scientist_singularity_site_quantity_entries^num compare = equals }
+	check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = brilliant_scientist_singularity_site_status_entries^num compare = equals }
+	check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = brilliant_scientist_singularity_site_history_entries^num compare = equals }
+}
+
+# STATE scope. This is the only physical validity predicate used by the site
+# ledger. It intentionally does not require a country `exists = yes` check or a
+# separate destroyed-facility flag: the state scope, current ownership/control,
+# and an actual Event 016-qualifying facility level are authoritative. The
+# helper is called from one country scope into this state scope, so PREV is the
+# receipt-owning country; ROOT is intentionally not used because an on-action
+# callback can have a different root participant.
+brilliant_scientist_singularity_site_state_is_intact_and_owned = {
+	scope_exists = yes
+	NOT = { state = 0 }
+	is_owned_and_controlled_by = PREV
+	OR = {
+		land_facility > 0
+		air_facility > 0
+		nuclear_facility > 0
+		biowarfare_facility > 0
+	}
+}
+
+# COUNTRY scope. The caller supplies the selected state scope before invoking a
+# reservation, completion, or invalidation helper. This query checks pointer
+# shape only so a lost or occupied state can still be invalidated explicitly.
+brilliant_scientist_singularity_site_selected_state_scope_is_valid = {
+	has_event_target = brilliant_scientist_singularity_site_selected_state
+	event_target:brilliant_scientist_singularity_site_selected_state = {
+		scope_exists = yes
+		NOT = { state = 0 }
+	}
+}
+
+# COUNTRY scope. The selected construction input is checked before payment is
+# touched by the parent decision. This helper itself owns no payment. The
+# existing paid decisions construct one component per completion, so a fixed
+# one-per-row quantity prevents fractional or arbitrary quantity input while
+# still allowing multiple paid rows at one state.
+brilliant_scientist_singularity_site_selected_input_is_valid = {
+	brilliant_scientist_singularity_site_selected_state_scope_is_valid = yes
+	OR = {
+		check_variable = { var = brilliant_scientist_singularity_site_selected_role value = constant:brilliant_scientist_singularity_component.command_core compare = equals }
+		check_variable = { var = brilliant_scientist_singularity_site_selected_role value = constant:brilliant_scientist_singularity_component.power_link compare = equals }
+	}
+	check_variable = { var = brilliant_scientist_singularity_site_selected_quantity value = constant:brilliant_scientist_value.one compare = equals }
+	event_target:brilliant_scientist_singularity_site_selected_state = {
+		brilliant_scientist_singularity_site_state_is_intact_and_owned = yes
+	}
+}
+
+# COUNTRY scope. This catches both the canonical pending flag and orphaned
+# pending metadata/rows so a repeated start cannot append a second reservation.
+brilliant_scientist_singularity_site_pending_receipt_is_present = {
+	OR = {
+		has_country_flag = brilliant_scientist_singularity_site_pending
+		has_variable = brilliant_scientist_singularity_site_pending_state
+		has_variable = brilliant_scientist_singularity_site_pending_role
+		has_variable = brilliant_scientist_singularity_site_pending_quantity
+		has_variable = brilliant_scientist_singularity_site_pending_row
+		is_in_array = { array = brilliant_scientist_singularity_site_status_entries value = constant:brilliant_scientist_singularity_site_status.pending }
+	}
+}
+
+# COUNTRY scope. This is a structural receipt check and deliberately does not
+# require the state to remain currently valid; cancellation must still be able
+# to clear a captured or destroyed pending target.
+brilliant_scientist_singularity_site_pending_row_is_valid = {
+	brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes
+	has_variable = brilliant_scientist_singularity_site_pending_state
+	has_variable = brilliant_scientist_singularity_site_pending_role
+	has_variable = brilliant_scientist_singularity_site_pending_quantity
+	has_variable = brilliant_scientist_singularity_site_pending_row
+	check_variable = { var = brilliant_scientist_singularity_site_pending_row value = constant:brilliant_scientist_value.zero compare = greater_than_or_equals }
+	set_temp_variable = { brilliant_scientist_singularity_site_pending_row_rounded = brilliant_scientist_singularity_site_pending_row }
+	round_temp_variable = brilliant_scientist_singularity_site_pending_row_rounded
+	check_variable = {
+		var = brilliant_scientist_singularity_site_pending_row_rounded
+		value = brilliant_scientist_singularity_site_pending_row
+		compare = equals
+	}
+	check_variable = { var = brilliant_scientist_singularity_site_pending_row value = brilliant_scientist_singularity_site_state_entries^num compare = less_than }
+	check_variable = {
+		var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_pending_row
+		value = constant:brilliant_scientist_singularity_site_status.pending
+		compare = equals
+	}
+	OR = {
+		check_variable = {
+			var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_pending_row
+			value = constant:brilliant_scientist_singularity_component.command_core
+			compare = equals
+		}
+		check_variable = {
+			var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_pending_row
+			value = constant:brilliant_scientist_singularity_component.power_link
+			compare = equals
+		}
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_pending_row
+		value = brilliant_scientist_singularity_site_pending_role
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_pending_row
+		value = brilliant_scientist_singularity_site_pending_quantity
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_pending_quantity
+		value = constant:brilliant_scientist_value.one
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_state_entries^brilliant_scientist_singularity_site_pending_row
+		value = brilliant_scientist_singularity_site_pending_state
+		compare = equals
+	}
+}
+
+# COUNTRY scope. This is the callback identity receipt only. It intentionally
+# does not check current ownership, control, or facility levels, so an owner
+# cleanup can distinguish its own stale callback after state loss. The native
+# decision must evaluate this trigger before calling the cancellation effect.
+brilliant_scientist_singularity_site_pending_callback_matches_receipt = {
+	has_country_flag = brilliant_scientist_singularity_site_pending
+	brilliant_scientist_singularity_site_pending_row_is_valid = yes
+	brilliant_scientist_singularity_site_selected_state_scope_is_valid = yes
+	check_variable = {
+		var = brilliant_scientist_singularity_site_pending_state
+		value = event_target:brilliant_scientist_singularity_site_selected_state
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_pending_role
+		value = brilliant_scientist_singularity_site_selected_role
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_selected_quantity
+		value = constant:brilliant_scientist_value.one
+		compare = equals
+	}
+}
+
+# COUNTRY scope. The full completion guard is the exact callback identity plus
+# the current physical validity of the persisted state receipt.
+brilliant_scientist_singularity_site_pending_callback_is_valid = {
+	brilliant_scientist_singularity_site_pending_callback_matches_receipt = yes
+	var:brilliant_scientist_singularity_site_pending_state = {
+		brilliant_scientist_singularity_site_state_is_intact_and_owned = yes
+	}
+}
+
+# COUNTRY scope. A row index supplied by a destruction consumer identifies one
+# physical receipt for partial loss. The caller must set the temporary supplied
+# marker to one; the rounded-copy check rejects a fractional index. No
+# ownership/control check is made here because the state may already have been
+# captured when the invalidation is delivered.
+brilliant_scientist_singularity_site_selected_row_is_valid = {
+	brilliant_scientist_singularity_site_selected_state_scope_is_valid = yes
+	brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes
+	check_variable = {
+		var = brilliant_scientist_singularity_site_selected_row_index_supplied
+		value = constant:brilliant_scientist_value.one
+		compare = equals
+	}
+	set_temp_variable = { brilliant_scientist_singularity_site_selected_row_index_rounded = brilliant_scientist_singularity_site_selected_row_index }
+	round_temp_variable = brilliant_scientist_singularity_site_selected_row_index_rounded
+	check_variable = {
+		var = brilliant_scientist_singularity_site_selected_row_index_rounded
+		value = brilliant_scientist_singularity_site_selected_row_index
+		compare = equals
+	}
+	check_variable = { var = brilliant_scientist_singularity_site_selected_row_index value = constant:brilliant_scientist_value.zero compare = greater_than_or_equals }
+	check_variable = { var = brilliant_scientist_singularity_site_selected_row_index value = brilliant_scientist_singularity_site_state_entries^num compare = less_than }
+	check_variable = {
+		var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_selected_row_index
+		value = constant:brilliant_scientist_singularity_site_status.live
+		compare = equals
+	}
+	OR = {
+		check_variable = {
+			var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_selected_row_index
+			value = constant:brilliant_scientist_singularity_component.command_core
+			compare = equals
+		}
+		check_variable = {
+			var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_selected_row_index
+			value = constant:brilliant_scientist_singularity_component.power_link
+			compare = equals
+		}
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_selected_row_index
+		value = constant:brilliant_scientist_value.one
+		compare = equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_state_entries^brilliant_scientist_singularity_site_selected_row_index
+		value = event_target:brilliant_scientist_singularity_site_selected_state
+		compare = equals
+	}
+}
+
+# COUNTRY scope. Initializes two temporary counters and rebuilds them from
+# every registered row. Invalidated/retired/pending rows are ignored; each
+# surviving live row must still resolve to its original owned-and-controlled
+# state with an actual qualifying facility. Duplicate valid rows at one state
+# are intentional and each row quantity contributes independently. An aligned
+# empty ledger returns true with both rebuilt quantities at zero.
+brilliant_scientist_singularity_site_current_live_quantities_are_rebuildable = {
+	set_temp_variable = { brilliant_scientist_singularity_site_rebuilt_command_node_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_singularity_site_rebuilt_power_link_count = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_singularity_site_rebuilt_arrays_aligned = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_singularity_site_receipt_arrays_are_aligned = yes }
+		set_temp_variable = { brilliant_scientist_singularity_site_rebuilt_arrays_aligned = constant:brilliant_scientist_value.one }
+		if = {
+			limit = { check_variable = { var = brilliant_scientist_singularity_site_state_entries^num value = constant:brilliant_scientist_value.zero compare = greater_than } }
+			all_of = {
+				array = brilliant_scientist_singularity_site_state_entries
+				value = brilliant_scientist_singularity_site_row_state
+				index = brilliant_scientist_singularity_site_row_index
+				if = {
+					limit = {
+						check_variable = {
+							var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_row_index
+							value = constant:brilliant_scientist_singularity_site_status.live
+							compare = equals
+						}
+						check_variable = {
+							var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_row_index
+							value = constant:brilliant_scientist_singularity_component.command_core
+							compare = equals
+						}
+						check_variable = {
+							var = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_row_index
+							value = constant:brilliant_scientist_value.one
+							compare = equals
+						}
+					}
+					if = {
+						limit = {
+							var:brilliant_scientist_singularity_site_state_entries^brilliant_scientist_singularity_site_row_index = {
+								brilliant_scientist_singularity_site_state_is_intact_and_owned = yes
+							}
+						}
+						add_to_temp_variable = {
+							brilliant_scientist_singularity_site_rebuilt_command_node_count = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_row_index
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = brilliant_scientist_singularity_site_status_entries^brilliant_scientist_singularity_site_row_index
+							value = constant:brilliant_scientist_singularity_site_status.live
+							compare = equals
+						}
+						check_variable = {
+							var = brilliant_scientist_singularity_site_role_entries^brilliant_scientist_singularity_site_row_index
+							value = constant:brilliant_scientist_singularity_component.power_link
+							compare = equals
+						}
+						check_variable = {
+							var = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_row_index
+							value = constant:brilliant_scientist_value.one
+							compare = equals
+						}
+					}
+					if = {
+						limit = {
+							var:brilliant_scientist_singularity_site_state_entries^brilliant_scientist_singularity_site_row_index = {
+								brilliant_scientist_singularity_site_state_is_intact_and_owned = yes
+							}
+						}
+						add_to_temp_variable = {
+							brilliant_scientist_singularity_site_rebuilt_power_link_count = brilliant_scientist_singularity_site_quantity_entries^brilliant_scientist_singularity_site_row_index
+						}
+					}
+				}
+			}
+		}
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_command_node_count
+		value = constant:brilliant_scientist_value.zero
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_power_link_count
+		value = constant:brilliant_scientist_value.zero
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_arrays_aligned
+		value = constant:brilliant_scientist_value.one
+		compare = equals
+	}
+}
+
+# COUNTRY scope. This query runs the same temporary reconstruction and then
+# checks the existing two-node/two-link requirement. It does not persist the
+# rebuilt totals; callers needing counters should invoke the reconciliation
+# effect, while callers needing a gate may use this trigger directly.
+brilliant_scientist_singularity_site_has_minimum_live_network = {
+	brilliant_scientist_singularity_site_current_live_quantities_are_rebuildable = yes
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_command_node_count
+		value = constant:brilliant_scientist_singularity.minimum_live_command_nodes
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_power_link_count
+		value = constant:brilliant_scientist_singularity.minimum_power_links
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope. Construction visibility uses the same live reconstruction as
+# terminal readiness, so captured or facility-less rows cannot keep a build
+# lane hidden through a stale legacy counter.
+brilliant_scientist_singularity_site_needs_command_node = {
+	brilliant_scientist_singularity_site_current_live_quantities_are_rebuildable = yes
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_command_node_count
+		value = constant:brilliant_scientist_singularity.minimum_live_command_nodes
+		compare = less_than
+	}
+}
+
+brilliant_scientist_singularity_site_needs_power_link = {
+	brilliant_scientist_singularity_site_current_live_quantities_are_rebuildable = yes
+	check_variable = {
+		var = brilliant_scientist_singularity_site_rebuilt_power_link_count
+		value = constant:brilliant_scientist_singularity.minimum_power_links
+		compare = less_than
+	}
+}

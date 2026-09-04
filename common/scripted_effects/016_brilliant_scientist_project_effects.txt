@@ -1278,10 +1278,11 @@ brilliant_scientist_sync_native_project_prototypes = {
 # COUNTRY scope. Exact family input, used by project completion outputs.
 brilliant_scientist_record_new_project_prototype = {
 	if = {
-		limit = { brilliant_scientist_mengele_project_provider_is_valid = yes }
+		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
 		brilliant_scientist_record_mengele_project_prototype = yes
 	}
-	else = {
+	else_if = {
+		limit = { brilliant_scientist_is_current_host = yes }
 		brilliant_scientist_load_project_index = yes
 		if = {
 			limit = {
@@ -1349,15 +1350,6 @@ brilliant_scientist_audit_singularity_facilities = {
 		set_country_flag = brilliant_scientist_singularity_facilities_verified
 	}
 	else = { clr_country_flag = brilliant_scientist_singularity_facilities_verified }
-}
-
-brilliant_scientist_construct_singularity_command_node = {
-	add_to_variable = { brilliant_scientist_singularity_live_command_node_count = constant:brilliant_scientist_value.one }
-	set_country_flag = brilliant_scientist_singularity_live_command_network
-}
-
-brilliant_scientist_construct_singularity_power_link = {
-	add_to_variable = { brilliant_scientist_singularity_power_link_count = constant:brilliant_scientist_value.one }
 }
 
 brilliant_scientist_pay_singularity_command_node = {
