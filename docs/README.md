@@ -1,13 +1,15 @@
 # Chaos Redux documentation
 
-This directory separates current implementation documentation, accepted design specifications, working plans, provenance records, and generated catalog exports.
+This directory separates implementation documentation, design specifications, working plans, provenance records, and generated catalog exports.
+Start with the relevant package index and its recorded acceptance basis.
+Document location, catalog status, timestamps, and old completion reports do not establish approval or current behavior.
 
 ## Documentation map
 
 | Area | Purpose |
 | --- | --- |
 | [`events/`](events/README.md) | Canonical event overviews and event-owned supporting system documents, grouped by event. |
-| [`specs/`](specs/README.md) | Accepted design sources and implementation acceptance criteria. |
+| [`specs/`](specs/README.md) | Design sources and acceptance criteria, with acceptance or unresolved proposal status established by each package's decision evidence. |
 | [`plans/`](plans/README.md) | Working plans, audits, handoffs, resume packets, and historical implementation evidence. |
 | [`systems/`](systems/README.md) | Shared or cross-event mechanics that do not belong to one event package. |
 | [`achievements/`](achievements/README.md) | Event achievement contracts, grouped by event. |
@@ -20,6 +22,8 @@ This directory separates current implementation documentation, accepted design s
 
 ## Source-of-truth rules
 
+- Explicit user decisions establish task scope and acceptance. Record their basis separately from proposals and implementation findings.
+- [`AGENTS.md`](../AGENTS.md) owns project rules. The relevant [repository skill](../.agents/skills/) owns its reusable workflow, and [canonical Codex role definitions](../.codex/agents/) own specialist instructions.
 - Event implementation summaries belong in `events/<event_id>_<slug>/overview.md`.
 - Event-owned supporting mechanics belong inside the same event folder, usually under `systems/`.
 - Accepted event design belongs in `specs/<event_id>_<slug>_specs/`.
@@ -28,3 +32,7 @@ This directory separates current implementation documentation, accepted design s
 - Historical evidence is preserved and identified through package indexes or superseded notices rather than deleted.
 - New dated documents use `YYYY-MM-DD_<scope>_<type>.md`.
 - Markdown sentences are not hard-wrapped.
+
+Implementation summaries must identify the source revision or evidence they describe.
+Source inspection, calculations, MCP previews, and user-provided live-game results remain distinct forms of evidence.
+Keep unresolved decisions visible in the package's existing plan disposition or resume record.

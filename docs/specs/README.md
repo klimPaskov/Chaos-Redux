@@ -1,10 +1,14 @@
 # Specification packages
 
-Specifications are accepted design sources. They remain separate from event implementation overviews and working plans.
+This directory holds design specifications and their acceptance criteria.
+Each package must identify the explicit decision or accepted source that establishes its authority.
+Being listed here does not establish approval, implementation, or completed validation.
+Keep proposals and unresolved acceptance questions distinct from accepted design, and keep working plans in `docs/plans/`.
 
 ## Package navigation
 
-The Event 001 through Event 020 packages are the event-specific design roots in the current cleanup scope.
+The first table lists the Event 001 through Event 020 package entry points.
+These navigation groups do not define the scope of a new task.
 
 | Event | Package entry point |
 | --- | --- |
@@ -20,6 +24,7 @@ The Event 001 through Event 020 packages are the event-specific design roots in 
 | 010 Death | [`010_death_specs/README.md`](010_death_specs/README.md) |
 | 011 Secret Alliance | [`011_secret_alliance_specs/README.md`](011_secret_alliance_specs/README.md) |
 | 012 Africa | [`012_africa_specs/README.md`](012_africa_specs/README.md) |
+| 012 Gods of Africa | [`012_africa_is_one_gods_of_africa_specs/README.md`](012_africa_is_one_gods_of_africa_specs/README.md) |
 | 013 Natural Disasters | [`013_natural_disasters_specs/README.md`](013_natural_disasters_specs/README.md) |
 | 014 Cannibalism | [`014_cannibalism_specs/README.md`](014_cannibalism_specs/README.md) |
 | 015 Utopia Manifesto | [`015_utopia_manifesto_specs/README.md`](015_utopia_manifesto_specs/README.md) |
@@ -29,11 +34,13 @@ The Event 001 through Event 020 packages are the event-specific design roots in 
 | 019 Infantry Spawn | [`019_infantry_spawn_specs/README.md`](019_infantry_spawn_specs/README.md) |
 | 020 Black Plague | [`020_black_plague_specs/README.md`](020_black_plague_specs/README.md) |
 
-Event 021 and later package entries are preserved design or provenance navigation only; this table does not assert current implementation status for those event-specific packages.
+The following table continues package navigation from Event 021.
+It does not assert acceptance or current implementation status.
 
 | Event | Package entry point |
 | --- | --- |
 | 021 Random Civil War | [`021_random_civil_war_specs/README.md`](021_random_civil_war_specs/README.md) |
+| 022 Concentration Camps | [`022_concentration_camps_specs/022_concentration_camps_index.md`](022_concentration_camps_specs/022_concentration_camps_index.md) |
 | 023 Soviet Nuclear Bombs | [`023_sov_nuclear_bombs_specs/README.md`](023_sov_nuclear_bombs_specs/README.md) |
 | 024 Video Game in Sweden | [`024_video_game_in_sweden_specs/README.md`](024_video_game_in_sweden_specs/README.md) |
 | 025 Alien Technology in Antarctica | [`025_alien_technology_in_antarctica_specs/README.md`](025_alien_technology_in_antarctica_specs/README.md) |
@@ -41,9 +48,44 @@ Event 021 and later package entries are preserved design or provenance navigatio
 | 027 Doctrine Research | [`027_doctrine_research_specs/README.md`](027_doctrine_research_specs/README.md) |
 | 028 Asteroid Incoming | [`028_asteroid_incoming_specs/028_asteroid_incoming_spec_index.md`](028_asteroid_incoming_specs/028_asteroid_incoming_spec_index.md) |
 | 029 Riches Found | [`029_riches_found_specs/README.md`](029_riches_found_specs/README.md) |
-| 030 Time Traveler | [`030_time_traveler_specs/030_time_traveler_spec_index.md`](030_time_traveler_specs/030_time_traveler_spec_index.md) |
+| 030 Time Traveler | [`030_time_traveler_specs/README.md`](030_time_traveler_specs/README.md) |
 | 031 Random Terror | [`031_random_terror_specs/README.md`](031_random_terror_specs/README.md) |
 | 032 Missiles | [`032_missiles_specs/README.md`](032_missiles_specs/README.md) |
+| 033 Acid Rain | [`033_acid_rain_specs/README.md`](033_acid_rain_specs/README.md) |
+| 034 Industrial Boom | [`034_industrial_boom_specs/034_industrial_boom_spec_index.md`](034_industrial_boom_specs/034_industrial_boom_spec_index.md) |
+| 035 Great Depression 2.0 | [`035_great_depression_specs/035_great_depression_spec_index.md`](035_great_depression_specs/035_great_depression_spec_index.md) |
+| 036 Chemical and Biological Weapons Convention | [`036_chemical_and_biological_weapons_convention_specs/README.md`](036_chemical_and_biological_weapons_convention_specs/README.md) |
+| 037 Mysterious People | [`037_mysterious_people_specs/README.md`](037_mysterious_people_specs/README.md) |
+| 038 Malta Crusaders | [`038_malta_crusaders_specs/00_README.md`](038_malta_crusaders_specs/00_README.md) |
+| 039 Murder Mystery | [`039_murder_mystery_specs/039_murder_mystery_package_index.md`](039_murder_mystery_specs/039_murder_mystery_package_index.md) |
+| 040 Lawrence of Arabia | [`040_lawrence_of_arabia_specs/README.md`](040_lawrence_of_arabia_specs/README.md) |
+| 041 Disease in Divisions | [`041_disease_in_divisions_specs/README.md`](041_disease_in_divisions_specs/README.md) |
+| 042 Equipment from Heavens | [`042_equipment_from_heavens_specs/README.md`](042_equipment_from_heavens_specs/README.md) |
+| 043 Monsters from the Deep | [`043_monsters_from_the_deep_specs/README.md`](043_monsters_from_the_deep_specs/README.md) |
+| 044 Yakub Returns | [`044_yakub_returns_specs/README.md`](044_yakub_returns_specs/README.md) |
+| 045 Third Balkan War | [`045_third_balkan_war_specs/README.md`](045_third_balkan_war_specs/README.md) |
+| 046 The Great Shuffle | [`046_the_great_shuffle_specs/README.md`](046_the_great_shuffle_specs/README.md) |
+| 047 BOOM | [`047_boom_specs/README.md`](047_boom_specs/README.md) |
+| 048 Old Great Bulgaria | [`048_old_great_bulgaria_specs/README.md`](048_old_great_bulgaria_specs/README.md) |
+| 049 Doomsday | [`049_doomsday_specs/README.md`](049_doomsday_specs/README.md) |
+| 050 The Great Embargo | [`050_the_great_embargo_specs/README.md`](050_the_great_embargo_specs/README.md) |
+| 051 Heat Wave | [`051_heat_wave_specs/README.md`](051_heat_wave_specs/README.md) |
+| 052 Intel Leaked | [`052_intel_leaked_specs/README.md`](052_intel_leaked_specs/README.md) |
+| 053 Mysterious Man | [`053_mysterious_man_specs/README.md`](053_mysterious_man_specs/README.md) |
+| 054 Gift from Scientists | [`054_gift_from_scientists_specs/README.md`](054_gift_from_scientists_specs/README.md) |
+| 055 The Great Infrastructure Project | [`055_the_great_infrastructure_project_specs/README.md`](055_the_great_infrastructure_project_specs/README.md) |
+| 056 The Navy | [`056_the_navy_specs/README.md`](056_the_navy_specs/README.md) |
+| 057 The Black Market | [`057_the_black_market_specs/README.md`](057_the_black_market_specs/README.md) |
+| 058 Random Buildings | [`058_random_buildings_specs/README.md`](058_random_buildings_specs/README.md) |
+| 059 The Offensive | [`059_the_offensive_specs/README.md`](059_the_offensive_specs/README.md) |
+| 060 Research Failure | [`060_research_failure_specs/README.md`](060_research_failure_specs/README.md) |
+| 061 Return to Peacetime | [`061_return_to_peacetime_specs/README.md`](061_return_to_peacetime_specs/README.md) |
+| 062 Allies Backstab | [`062_allies_backstab_specs/README.md`](062_allies_backstab_specs/README.md) |
+| 063 Subjects Break Free | [`063_subjects_break_free_specs/README.md`](063_subjects_break_free_specs/README.md) |
+| 064 Border Fortifications | [`064_border_fortifications_specs/README.md`](064_border_fortifications_specs/README.md) |
+| 065 Random Trait | [`065_random_trait_specs/README.md`](065_random_trait_specs/README.md) |
+| 066 Abundance | [`066_abundance_specs/README.md`](066_abundance_specs/README.md) |
+| 067 Generalissimo | [`067_generalissimo_specs/README.md`](067_generalissimo_specs/README.md) |
 
 Shared and cross-event specification packages are indexed below.
 
@@ -59,8 +101,13 @@ Shared and cross-event specification packages are indexed below.
 
 ## Package convention
 
+The nested [`docs/`](docs/) tree contains additional Event 046 and Event 047 spec and plan material.
+Its relationship to the direct packages remains unresolved.
+Compare the complete documents and their decision evidence before merging, promoting, or removing either location.
+
 - Event packages use `docs/specs/<event_id>_<slug>_specs/`.
 - System packages use a descriptive `<slug>_specs/` directory.
-- Each package should provide a root `README.md` or an equivalent named root index that identifies its accepted source, status, aliases, and superseded material; the Asteroid Incoming and Time Traveler packages use their named `*_spec_index.md` files.
+- Each package should provide a root `README.md` or equivalent named index identifying its acceptance basis, unresolved proposals, implementation evidence, aliases, and superseded material.
+- Asteroid Incoming uses `028_asteroid_incoming_spec_index.md`. Time Traveler uses `README.md`.
 - New packages should use `specs/`, `research/`, `matrices/`, `prompts/`, `validation/`, and `handoffs/` only when those surfaces exist.
 - Existing historical filenames are preserved until their references and authority are reconciled.

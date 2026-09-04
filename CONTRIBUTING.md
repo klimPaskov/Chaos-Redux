@@ -30,6 +30,11 @@ Small flags and interface glyphs can legitimately remain under 1 KB; the LFS poi
 
 This repo intentionally leaves the coding agent resources visible, so if you want to, you can fork the repo and contribute directly.
 
+Read [AGENTS.md](AGENTS.md) and the relevant [repository skill](.agents/skills/) before changing project content.
+Use the [documentation index](docs/README.md) to find the owning design, implementation summary, and working plan.
+Canonical specialist instructions live in [.codex/agents/](.codex/agents/).
+Generated runtime definitions follow the [synchronizer guidance](.tools/sync/README.md) and the active runtime's ownership restrictions.
+
 Watch the tutorial videos: <https://www.youtube.com/watch?v=pH_VpBs0mIk&list=PLh6JmuEabQioc4V8IYGEsMtqiw-xemeX3>
 
 ## Contact
