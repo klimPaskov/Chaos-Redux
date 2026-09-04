@@ -1,43 +1,26 @@
 # System Camp Repression Rework Spec, Part 4: UI, AI, Assets, Achievements, and Acceptance Criteria
 
-## Live implementation reconciliation, 2026-07-11
+## Current presentation contract, 2026-09-04
 
-The optional/deferred GUI language below is retained as accepted planning history. The current implementation uses the full five-tab Repression Ledger plus the decision-category header. The header displays country, country-panel name, phase, and discovery state; all 32 Ledger country action slots use their native decision cooldown gates. All 24 ImageGen-derived Ledger sprites have live consumers, including scripted visibility for evidence and reform seals. Only authored frame animation remains optional and queued.
+The current UI design is defined by [Part 6](system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md). The former 900x560 paper-ledger composition, visible card or table requirements, and old tab labels are superseded in this source only; historical completion reports remain dated implementation evidence and are not current UI acceptance criteria. The parent owns GUI and localisation implementation, active MCP previews, and the final completion report at `docs/plans/system_camp_repression_rework_plans/repression_ui_redesign_2026-09-05.md`.
 
 ## UI and presentation
 
-The system should primarily use decision categories and scripted localisation. A custom scripted GUI is optional but recommended after the first implementation tranche if decision-category text becomes too dense.
+The system uses a decision-category header and a required player-opened scripted GUI, with all displayed values rebuilt through scripted localisation. The exact window wireframe, retained runtime ids, button ids, bounded arrays, cleanup rules, and display surfaces are maintained in [Part 6](system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md).
 
 ### Decision category header
 
-Every active country category should show a compact ledger:
+Every active country category should show only the `Repression and Camps` title, the active institution, and the current phase.
 
-- Network Reach.
-- Labor Output.
-- Population Loss.
-- Stability Drain.
-- Resistance Pressure.
-- Evidence Depth.
-- Discovery Risk.
-- Guard and Rail Burden.
-- Dismantlement Progress where relevant.
+The Situation page carries consequence values after the player opens the window, and existing selected-state tooltips retain detailed context.
 
-Use coloured scripted localisation for each value. The tooltip should show the components that moved the value recently.
+### Required custom GUI: current redesign
 
-### Optional custom GUI: Repression Ledger
+The player-opened `repression_ledger_window` uses a 960x600 dark vanilla HOI4 frame with native tiled panels and buttons. Its player-facing title is `Repression and Camps`, and its left navigation labels are Situation, Territories, Sites, Policy, and Accountability.
 
-A future GUI can show:
+Situation presents three compact panels: civilian-loss pressure as the primary consequence, administrative strain as supporting context, and surviving evidence with its warning state; the harm tooltip contains current civilian-loss pressure, the resistance band, and inspection or closure guidance, the strain tooltip contains current strain, labor contribution, and guards or quotas guidance, and no bounded state summaries appear on Situation. Territories and Sites each present a scrollable two-line location-name list over the existing bounded arrays on the left, up to 24 entries with six viewport rows, selected-row highlight, and explicit empty state. An empty list hides the right detail pane, a nonempty unselected list shows a neutral selection instruction, and a selected row shows the selected name and site type plus six context button slots with paired cost rows; the existing selected-state tooltip retains detailed context. These pages do not expose visible status, table, or ledger columns. Policy presents the active institution, current course, four existing directive panels, and guard or quota actions. Accountability summarizes three rows for exposure/evidence, recorded deaths, and closure/reform pressure.
 
-- state cards for active sites;
-- filter for labor, experiment, gulag, contaminated, discovered, destroyed evidence;
-- country values;
-- selected state details;
-- dismantle and guard buttons;
-- warning frame when network is very large;
-- discovery evidence seal;
-- Deaths and Condemnation summary.
-
-The GUI should be hidden for countries without active sites or active reform work.
+The redesigned window must not use parchment cards, copied game textures, custom replacement panel art, or a detached global action bar. Compatibility is limited to the existing window, panel, navigation-mark, and action identifiers verified by the parent; removed `*_card` element ids are not retained. The category and scripted GUI should be hidden for countries without active sites or active reform work, subject to the existing dormant-route, discovery-pressure, and country-specific visibility gates.
 
 ### Popups
 
@@ -147,7 +130,7 @@ AI should avoid or dismantle if:
 
 Required or recommended assets:
 
-- decision category icon for Repression Ledger;
+- decision category icon for Repression and Camps;
 - decision icon for expand labor network;
 - decision icon for guard allocation;
 - decision icon for dismantle network;
@@ -249,7 +232,14 @@ A completed implementation must satisfy every criterion below.
 
 ### UI and documentation
 
-- Decision category text shows current values.
+- Decision category text shows only the `Repression and Camps` title, active institution, and current phase described in [Part 6](system_camp_repression_rework_spec_part_6_scripted_gui_wireframe_value_display.md).
+- The required `repression_ledger_window` uses the 960x600 dark native HOI4 framed layout with Situation, Territories, Sites, Policy, and Accountability navigation.
+- Situation shows three compact panels for civilian-loss pressure, administrative strain, and surviving evidence with its warning state; the harm tooltip contains current civilian-loss pressure, the resistance band, and inspection or closure guidance, the strain tooltip contains current strain, labor contribution, and guards or quotas guidance, and no bounded state summaries are rendered.
+- Territories and Sites use bounded two-line location-name lists with selected-row highlighting and explicit empty states; an empty list hides the right detail pane, a nonempty unselected list shows a neutral selection instruction, and a selected row shows selected name and site type plus six context button slots with paired cost rows.
+- Territories and Sites keep detailed location context in the existing selected-state tooltip and expose no visible status, table, or ledger columns.
+- Policy includes the active institution, current course, four existing directive panels, and guard or quota actions with their existing costs and AI or decision equivalents.
+- Accountability shows three rows for exposure/evidence, recorded deaths, and closure/reform pressure.
+- The redesigned window has no parchment cards, copied game textures, custom replacement panel art, or detached global action bar.
 - Tooltips explain nonstandard costs.
 - Localisation is written as in-world text and does not expose hidden variables directly.
 - System docs are updated.

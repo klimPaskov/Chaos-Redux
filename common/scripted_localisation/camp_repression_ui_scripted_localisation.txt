@@ -1,0 +1,319 @@
+# Repression UI cost selection follows the selected territory's existing registration.
+defined_text = {
+	name = GetCampUiExpansionCost
+	text = {
+		trigger = {
+			has_variable = camp_selected_state_id
+			var:camp_selected_state_id = { is_valid_camp_active_site_state = yes }
+		}
+		localization_key = camp_ui_cost_expansion
+	}
+	text = { trigger = { always = yes } localization_key = camp_ui_cost_activation }
+}
+
+# Collapses the unselected location panel to one instruction instead of stacking
+# the generic state, site-type and action fallbacks.
+defined_text = {
+	name = GetCampUiSelectedState
+	text = {
+		trigger = { has_variable = camp_selected_state_id }
+		localization_key = camp_ui_selected_state_value
+	}
+	text = { trigger = { always = yes } localization_key = camp_ui_selected_state_empty }
+}
+
+# Resource-level affordability helpers. Each red branch mirrors the matching
+# resource predicate in camp_repression_ledger_scripted_gui.txt.
+defined_text = {
+	name = GetCampUiActivationPoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.activation_pp } localization_key = camp_ui_pp_activation_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_activation }
+}
+
+defined_text = {
+	name = GetCampUiExpansionPoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.expansion_pp } localization_key = camp_ui_pp_expansion_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_expansion }
+}
+
+defined_text = {
+	name = GetCampUiLaborPoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.labor_project_pp } localization_key = camp_ui_pp_labor_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_labor }
+}
+
+defined_text = {
+	name = GetCampUiGuardPoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.guard_pp } localization_key = camp_ui_pp_guard_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_guard }
+}
+
+defined_text = {
+	name = GetCampUiReviewPoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.review_pp } localization_key = camp_ui_pp_review_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_review }
+}
+
+defined_text = {
+	name = GetCampUiDismantlePoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.dismantle_pp } localization_key = camp_ui_pp_dismantle_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_dismantle }
+}
+
+defined_text = {
+	name = GetCampUiEvidencePoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.evidence_pp } localization_key = camp_ui_pp_evidence_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_evidence }
+}
+
+defined_text = {
+	name = GetCampUiRestrictedPoliticalPower
+	text = { trigger = { has_political_power < constant:camp_rework_cost.restricted_method_pp } localization_key = camp_ui_pp_restricted_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_pp_restricted }
+}
+
+defined_text = {
+	name = GetCampUiActivationManpower
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than } } } localization_key = camp_ui_manpower_activation_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_manpower_activation }
+}
+
+defined_text = {
+	name = GetCampUiExpansionManpower
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.expansion_manpower compare = greater_than } } } localization_key = camp_ui_manpower_expansion_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_manpower_expansion }
+}
+
+defined_text = {
+	name = GetCampUiGuardManpower
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.guard_manpower compare = greater_than } } } localization_key = camp_ui_manpower_guard_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_manpower_guard }
+}
+
+defined_text = {
+	name = GetCampUiDismantleManpower
+	text = { trigger = { NOT = { check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than } } } localization_key = camp_ui_manpower_dismantle_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_manpower_dismantle }
+}
+
+defined_text = {
+	name = GetCampUiActivationCommand
+	text = { trigger = { NOT = { command_power > constant:camp_rework_cost.activation_command } } localization_key = camp_ui_command_activation_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_command_activation }
+}
+
+defined_text = {
+	name = GetCampUiGuardCommand
+	text = { trigger = { NOT = { command_power > constant:camp_rework_cost.guard_command } } localization_key = camp_ui_command_guard_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_command_guard }
+}
+
+defined_text = {
+	name = GetCampUiEvidenceCommand
+	text = { trigger = { NOT = { command_power > constant:camp_rework_cost.evidence_command } } localization_key = camp_ui_command_evidence_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_command_evidence }
+}
+
+defined_text = {
+	name = GetCampUiInfantryCost
+	text = { trigger = { NOT = { has_equipment = { infantry_equipment > constant:camp_rework_equipment_cost.infantry_equipment } } } localization_key = camp_ui_equipment_infantry_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_infantry }
+}
+
+defined_text = {
+	name = GetCampUiSupportCost
+	text = { trigger = { NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment } } } localization_key = camp_ui_equipment_support_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_support }
+}
+
+defined_text = {
+	name = GetCampUiMotorizedCost
+	text = { trigger = { NOT = { has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_cost.motorized_equipment } } } localization_key = camp_ui_equipment_motorized_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_motorized }
+}
+
+defined_text = {
+	name = GetCampUiTrainCost
+	text = { trigger = { NOT = { has_equipment = { train_equipment_1 > constant:camp_rework_equipment_cost.trains } } } localization_key = camp_ui_equipment_trains_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_trains }
+}
+
+defined_text = {
+	name = GetCampUiConvoyCost
+	text = { trigger = { NOT = { has_equipment = { convoy_1 > constant:camp_rework_equipment_cost.convoys } } } localization_key = camp_ui_equipment_convoys_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_convoys }
+}
+
+defined_text = {
+	name = GetCampUiTransportFuelCost
+	text = { trigger = { NOT = { has_fuel > constant:camp_rework_cost.transport_guard_fuel } } localization_key = camp_ui_fuel_transport_guard_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_fuel_transport_guard }
+}
+
+# Labor projects pay the normal equipment cost but require the payment plus a
+# retained mission reserve at the time of the click.
+defined_text = {
+	name = GetCampUiLaborMotorizedCost
+	text = { trigger = { NOT = { has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment } } } localization_key = camp_ui_equipment_motorized_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_motorized }
+}
+
+defined_text = {
+	name = GetCampUiLaborTrainCost
+	text = { trigger = { NOT = { has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains } } } localization_key = camp_ui_equipment_trains_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_trains }
+}
+
+defined_text = {
+	name = GetCampUiLaborSupportCost
+	text = { trigger = { NOT = { has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment } } } localization_key = camp_ui_equipment_support_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_equipment_support }
+}
+
+# Directive political-power helpers use the displayed action's assigned cost.
+# All current directive costs are covered explicitly so no unrelated lock can
+# color a satisfied political-power entry red.
+defined_text = {
+	name = GetCampUiDirective1PoliticalPower
+	text = { trigger = { OR = {
+		AND = { check_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.labor_project_pp } has_political_power < constant:camp_rework_cost.labor_project_pp }
+		AND = { check_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.guard_pp } has_political_power < constant:camp_rework_cost.guard_pp }
+		AND = { check_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.review_pp } has_political_power < constant:camp_rework_cost.review_pp }
+		AND = { check_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.dismantle_pp } has_political_power < constant:camp_rework_cost.dismantle_pp }
+		AND = { check_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.redress_pp } has_political_power < constant:camp_rework_cost.redress_pp }
+		AND = { check_variable = { display_camp_country_action_1_cost = constant:camp_rework_cost.evidence_pp } has_political_power < constant:camp_rework_cost.evidence_pp }
+	} } localization_key = camp_ui_directive_pp_1_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_pp_1 }
+}
+
+defined_text = {
+	name = GetCampUiDirective2PoliticalPower
+	text = { trigger = { OR = {
+		AND = { check_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.labor_project_pp } has_political_power < constant:camp_rework_cost.labor_project_pp }
+		AND = { check_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.guard_pp } has_political_power < constant:camp_rework_cost.guard_pp }
+		AND = { check_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.review_pp } has_political_power < constant:camp_rework_cost.review_pp }
+		AND = { check_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.dismantle_pp } has_political_power < constant:camp_rework_cost.dismantle_pp }
+		AND = { check_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.redress_pp } has_political_power < constant:camp_rework_cost.redress_pp }
+		AND = { check_variable = { display_camp_country_action_2_cost = constant:camp_rework_cost.evidence_pp } has_political_power < constant:camp_rework_cost.evidence_pp }
+	} } localization_key = camp_ui_directive_pp_2_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_pp_2 }
+}
+
+defined_text = {
+	name = GetCampUiDirective3PoliticalPower
+	text = { trigger = { OR = {
+		AND = { check_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.labor_project_pp } has_political_power < constant:camp_rework_cost.labor_project_pp }
+		AND = { check_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.guard_pp } has_political_power < constant:camp_rework_cost.guard_pp }
+		AND = { check_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.review_pp } has_political_power < constant:camp_rework_cost.review_pp }
+		AND = { check_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.dismantle_pp } has_political_power < constant:camp_rework_cost.dismantle_pp }
+		AND = { check_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.redress_pp } has_political_power < constant:camp_rework_cost.redress_pp }
+		AND = { check_variable = { display_camp_country_action_3_cost = constant:camp_rework_cost.evidence_pp } has_political_power < constant:camp_rework_cost.evidence_pp }
+	} } localization_key = camp_ui_directive_pp_3_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_pp_3 }
+}
+
+defined_text = {
+	name = GetCampUiDirective4PoliticalPower
+	text = { trigger = { OR = {
+		AND = { check_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.labor_project_pp } has_political_power < constant:camp_rework_cost.labor_project_pp }
+		AND = { check_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.guard_pp } has_political_power < constant:camp_rework_cost.guard_pp }
+		AND = { check_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.review_pp } has_political_power < constant:camp_rework_cost.review_pp }
+		AND = { check_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.dismantle_pp } has_political_power < constant:camp_rework_cost.dismantle_pp }
+		AND = { check_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.redress_pp } has_political_power < constant:camp_rework_cost.redress_pp }
+		AND = { check_variable = { display_camp_country_action_4_cost = constant:camp_rework_cost.evidence_pp } has_political_power < constant:camp_rework_cost.evidence_pp }
+	} } localization_key = camp_ui_directive_pp_4_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_pp_4 }
+}
+
+defined_text = {
+	name = GetCampUiDirective1CostDetails
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.labor_project } } localization_key = camp_ui_directive_cost_labor }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.guard } } localization_key = camp_ui_directive_cost_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.evidence } } localization_key = camp_ui_directive_cost_evidence }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.dismantlement } } localization_key = camp_ui_directive_cost_dismantle }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.support_only } } localization_key = camp_ui_directive_cost_support }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.colonial_guard } } localization_key = camp_ui_directive_cost_colonial_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.support_and_convoys } } localization_key = camp_ui_directive_cost_support_convoys }
+	text = { trigger = { check_variable = { display_camp_country_action_1_cost_package = constant:camp_rework_gui_cost_package.transport_guard } } localization_key = camp_ui_directive_cost_transport_guard }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_cost_none }
+}
+
+defined_text = {
+	name = GetCampUiDirective2CostDetails
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.labor_project } } localization_key = camp_ui_directive_cost_labor }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.guard } } localization_key = camp_ui_directive_cost_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.evidence } } localization_key = camp_ui_directive_cost_evidence }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.dismantlement } } localization_key = camp_ui_directive_cost_dismantle }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.support_only } } localization_key = camp_ui_directive_cost_support }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.colonial_guard } } localization_key = camp_ui_directive_cost_colonial_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.support_and_convoys } } localization_key = camp_ui_directive_cost_support_convoys }
+	text = { trigger = { check_variable = { display_camp_country_action_2_cost_package = constant:camp_rework_gui_cost_package.transport_guard } } localization_key = camp_ui_directive_cost_transport_guard }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_cost_none }
+}
+
+defined_text = {
+	name = GetCampUiDirective3CostDetails
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.labor_project } } localization_key = camp_ui_directive_cost_labor }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.guard } } localization_key = camp_ui_directive_cost_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.evidence } } localization_key = camp_ui_directive_cost_evidence }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.dismantlement } } localization_key = camp_ui_directive_cost_dismantle }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.support_only } } localization_key = camp_ui_directive_cost_support }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.colonial_guard } } localization_key = camp_ui_directive_cost_colonial_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.support_and_convoys } } localization_key = camp_ui_directive_cost_support_convoys }
+	text = { trigger = { check_variable = { display_camp_country_action_3_cost_package = constant:camp_rework_gui_cost_package.transport_guard } } localization_key = camp_ui_directive_cost_transport_guard }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_cost_none }
+}
+
+defined_text = {
+	name = GetCampUiDirective4CostDetails
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.labor_project } } localization_key = camp_ui_directive_cost_labor }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.guard } } localization_key = camp_ui_directive_cost_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.evidence } } localization_key = camp_ui_directive_cost_evidence }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.dismantlement } } localization_key = camp_ui_directive_cost_dismantle }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.support_only } } localization_key = camp_ui_directive_cost_support }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.colonial_guard } } localization_key = camp_ui_directive_cost_colonial_guard }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.support_and_convoys } } localization_key = camp_ui_directive_cost_support_convoys }
+	text = { trigger = { check_variable = { display_camp_country_action_4_cost_package = constant:camp_rework_gui_cost_package.transport_guard } } localization_key = camp_ui_directive_cost_transport_guard }
+	text = { trigger = { always = yes } localization_key = camp_ui_directive_cost_none }
+}
+
+# Compact UI payload costs preserve the established selection order. Capacity
+# branches are affordable; technology-only branches identify the selected type
+# while coloring its missing stockpile red.
+defined_text = {
+	name = GetCampUiChemicalPayloadCost
+	text = { trigger = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked camp_rework_country_has_chemical_soman_activation_capacity = yes } localization_key = camp_ui_payload_soman_mastery }
+	text = { trigger = { camp_rework_country_has_chemical_soman_activation_capacity = yes } localization_key = camp_ui_payload_soman }
+	text = { trigger = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked camp_rework_country_has_chemical_sarin_activation_capacity = yes } localization_key = camp_ui_payload_sarin_mastery }
+	text = { trigger = { camp_rework_country_has_chemical_sarin_activation_capacity = yes } localization_key = camp_ui_payload_sarin }
+	text = { trigger = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked camp_rework_country_has_chemical_tabun_activation_capacity = yes } localization_key = camp_ui_payload_tabun_mastery }
+	text = { trigger = { camp_rework_country_has_chemical_tabun_activation_capacity = yes } localization_key = camp_ui_payload_tabun }
+	text = { trigger = { camp_rework_country_has_chemical_lewisite_activation_capacity = yes } localization_key = camp_ui_payload_lewisite }
+	text = { trigger = { camp_rework_country_has_chemical_mustard_activation_capacity = yes } localization_key = camp_ui_payload_mustard }
+	text = { trigger = { camp_rework_country_has_chemical_phosgene_activation_capacity = yes } localization_key = camp_ui_payload_phosgene }
+	text = { trigger = { camp_rework_country_has_chemical_chlorine_activation_capacity = yes } localization_key = camp_ui_payload_chlorine }
+	text = { trigger = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked has_tech = soman } localization_key = camp_ui_payload_soman_mastery_red }
+	text = { trigger = { has_tech = soman } localization_key = camp_ui_payload_soman_red }
+	text = { trigger = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked has_tech = sarin } localization_key = camp_ui_payload_sarin_mastery_red }
+	text = { trigger = { has_tech = sarin } localization_key = camp_ui_payload_sarin_red }
+	text = { trigger = { has_country_flag = cbrn_camp_nerve_killing_mastery_unlocked has_tech = tabun } localization_key = camp_ui_payload_tabun_mastery_red }
+	text = { trigger = { has_tech = tabun } localization_key = camp_ui_payload_tabun_red }
+	text = { trigger = { has_tech = lewisite } localization_key = camp_ui_payload_lewisite_red }
+	text = { trigger = { has_tech = mustard_gas } localization_key = camp_ui_payload_mustard_red }
+	text = { trigger = { has_tech = phosgene } localization_key = camp_ui_payload_phosgene_red }
+	text = { trigger = { has_tech = chlorine_gas } localization_key = camp_ui_payload_chlorine_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_payload_unavailable }
+}
+
+defined_text = {
+	name = GetCampUiBiologicalPayloadCost
+	text = { trigger = { camp_rework_country_has_biological_smallpox_activation_capacity = yes } localization_key = camp_ui_payload_smallpox }
+	text = { trigger = { camp_rework_country_has_biological_plague_activation_capacity = yes } localization_key = camp_ui_payload_plague }
+	text = { trigger = { camp_rework_country_has_biological_anthrax_activation_capacity = yes } localization_key = camp_ui_payload_anthrax }
+	text = { trigger = { camp_rework_country_has_biological_tularemia_activation_capacity = yes } localization_key = camp_ui_payload_tularemia }
+	text = { trigger = { has_tech = smallpox_bomb_delivery_systems } localization_key = camp_ui_payload_smallpox_red }
+	text = { trigger = { has_tech = plague_bomb_delivery_systems } localization_key = camp_ui_payload_plague_red }
+	text = { trigger = { has_tech = anthrax_bomb_delivery_systems } localization_key = camp_ui_payload_anthrax_red }
+	text = { trigger = { has_tech = tularemia_bomb_delivery_systems } localization_key = camp_ui_payload_tularemia_red }
+	text = { trigger = { always = yes } localization_key = camp_ui_payload_unavailable }
+}
