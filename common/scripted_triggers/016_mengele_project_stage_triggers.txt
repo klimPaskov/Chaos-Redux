@@ -31,12 +31,28 @@ brilliant_scientist_mengele_project_stage_provider_is_valid = {
 	NOT = { has_global_flag = brilliant_scientist_lab_world_terminal_fired }
 	NOT = { has_global_flag = world_end }
 	OR = {
-		has_country_flag = mengele_clone_army_scenario_country
-		has_country_flag = germany_mengele_victorious
-		has_country_flag = germany_mengele_faction
-		OR = {
+		AND = {
 			germany_mengele_program_active = yes
+			has_idea = germany_auschwitz_experiments
+		}
+		AND = {
 			germany_mengele_restricted_program_active = yes
+			has_idea = germany_auschwitz_experiments_restricted
+		}
+		AND = {
+			has_country_flag = germany_mengele_faction
+			has_idea = germany_mengele_laboratory_state
+			NOT = { has_country_flag = germany_mengele_perfect_aryans_overthrew_mengele }
+		}
+		AND = {
+			has_country_flag = germany_mengele_victorious
+			has_idea = germany_mengele_victory_state
+			NOT = { has_country_flag = germany_mengele_perfect_aryans_overthrew_mengele }
+		}
+		AND = {
+			has_country_flag = mengele_clone_army_scenario_country
+			has_idea = mengele_clone_army_scenario_state
+			NOT = { check_variable = { triggerable_clone_aryan_variant > constant:brilliant_scientist_value.zero } }
 		}
 	}
 }
