@@ -1,0 +1,123 @@
+# Documentation cleanup state and resume record
+
+Date: 2026-09-05.
+Overall status: incomplete beyond the reviewed coverage below.
+The completed documentation repairs are parent-reviewed, across the navigation, instruction, and historical-documentation batches.
+Their commits are recorded in Git history, with the first two identified below.
+This file owns current cleanup routing and status, while dated source maps and reports retain their distinct evidence.
+
+## Authorization and authority
+
+The attached user request authorizes documentation and instruction cleanup, excluding gameplay, localisation, binary assets, catalog workbooks, configuration policy, model selection, permissions, and provider-policy changes.
+The parent asked, “May I apply the full-reading requirement separately to each bounded cleanup batch?”
+The user answered, “okay, i approve, continue.”
+That answer changes the reading workflow only and does not approve an embedded design, deletion, fallback, or protected policy change.
+
+| Source | What it establishes |
+| --- | --- |
+| Explicit user decisions and parent acceptance within that scope | Authorization and accepted design, with the decision basis recorded separately from implementation. |
+| [AGENTS.md](../../../AGENTS.md), [owning skills](../../../.agents/skills/), and [canonical roles](../../../.codex/agents/) | Repository policy, reusable workflows, specialist boundaries, and required handoffs. Protected conflicts remain explicit below. |
+| [Specification index](../../specs/README.md) and package decision evidence | Design sources. A location, date, catalog status, or detailed specification alone does not prove acceptance. |
+| [Event overviews](../../events/README.md), [shared systems](../../systems/README.md), and actual source files | Recorded implementation facts for the named source revision. They do not establish approval or live behavior. |
+| [Catalog workbook](../../spreadsheets/chaos_redux_events_catalog.xlsx) | Editable catalog source. The CSVs are exports and were not edited here. |
+| Named calculations, MCP artifacts, and user live-game evidence | Separate evidence categories. MCP source analysis and previews are not engine execution. Tool exposure, service health, specialist registration, and standalone viewers require separate checks. |
+| [Plans index](../README.md) and dated handoffs | Working proposals, dispositions, historical findings, and validation limits. Old execution prompts do not grant current authorization. |
+
+## Completed work and proof
+
+| Batch | Result | Evidence |
+| --- | --- | --- |
+| Main navigation | Repaired the missing Time Traveler target and added 37 omitted specification-package entry points. All 76 direct specification directories and 65 direct plan directories are linked. Root README, CONTRIBUTING, documentation indexes, and synchronizer guidance distinguish their ownership. | Commit `d156e8ee121e9c3ea9ea91acce221610567b4cb2` and [navigation handoff](subagent_handoffs/2026-09-05_navigation_review.md). Directory coverage is not full reading of interiors. |
+| Instructions | Updated AGENTS.md, 14 existing skills, and 10 canonical role instruction bodies. Corrected context isolation, approval evidence, specialist ownership, probability routing, helper paths, and tool/viewer distinctions. MTTH was reviewed without edits. | Commit `7cff54ad5522b2d9a4af6cde063a8028bbf4b8ac`. The ten TOML diffs change instruction text only, preserving model, reasoning, permission, and other fields. |
+| Area navigation | Added six event entries, two expanded event-document links, five shared-system documents, and four super-event research links. Kept distinct Event 026/032 root details alongside their folder overviews. Formables/testing received sentence punctuation corrections. | The area continuation in the [navigation handoff](subagent_handoffs/2026-09-05_navigation_review.md) records all 21 curator reads. All six area indexes were fully read by the parent. The achievements index needed no change. |
+| Cleanup history | Reconciled 13 root documents and 23 historical handoffs. Preserved dated findings and original missing paths, added current-path annotations, and linked already-applied recommendations to their recorded outcomes. No old map was globally superseded by this narrower ledger. | [Root review](subagent_handoffs/2026-09-05_documentation_batch01.md), [historical A](subagent_handoffs/2026-09-05_historical_handoffs_a.md), and [historical B](subagent_handoffs/2026-09-05_historical_handoffs_b.md). Parent verified the cited helper, ownership, and localisation commits. |
+| Catalog review | Fully read all five populated sheets without saving the workbook or running the exporter. Recorded schema, membership, name, severity, and status contradictions for the workbook owner. | [Catalog review](subagent_handoffs/2026-09-05_catalog_review.md). Reviewed SHA-256: `b6de395b4a77fb0f7cb9eaee274195a182b67626cbf5fcc4481ebe2db991acaa`. |
+| Runtime documentation | Fixed the two missing generator paths in `.cursor/README.md` and linked the existing destination-write rules. Added a direct cleanup-record link from `docs/README.md`. | Correct paths are `.tools/sync/sync_cursor_agents.py` and `.tools/sync/sync_qoder_agents.py`. Both exist. No synchronizer ran and no generated agent was edited. The fully reviewed Cursor README was pre-existing and untracked, and is included as documentation in this batch. |
+| Nested Event 046/047 tree | Fully read 51 nested Markdown files and 51 counterparts. Every pair was text and SHA-256 identical, with no nested-only requirements or evidence. | The navigation handoff records all 51 pair hashes. Added a retained-mirror notice, canonical links, six plan dispositions, and supported Codex transport and explorer routing. All 51 mirror sources remain unchanged. No design approval was inferred. |
+
+The final documentation candidate contains 60 Markdown files, including 16 additions to Git.
+Eleven additions preserve fully reviewed pre-existing untracked documents, and five are the new source map, three cleanup handoffs, and retained-mirror README.
+Unrelated staged event-index entries and Event 026 retirement edits remain outside this commit.
+All 298 relative link targets in the final candidate resolved against the working tree, including retained untracked package dependencies.
+The commit does not track every referenced package file.
+
+The historical evidence checks preserved all 23 handoffs' fenced code blocks, complete `hoi4-agent` artifact URI multisets, and named probability scenarios against the captured baseline.
+The old Event 006 incidents filename remains historical text beside a related current path, without an inferred rename.
+The world-threat documentation already uses `014_cannibalism_effects.txt` at the two cited locations, so its old path-fix recommendation is resolved independently of broader behavior questions.
+
+## Reading coverage
+
+These are full reads by the named worker or parent, not inventory or search results.
+Overlapping files between batches are not additive unique-file counts.
+
+| Read set | Coverage and limit |
+| --- | --- |
+| Original instruction baseline | AGENTS.md, 15 original skill entrypoints, and 20 canonical role TOMLs were fully read. Parent reviewed final task-specific changes. The concurrent sixteenth scripted-GUI skill and later migration lines were preserved but excluded from this review. |
+| Cleanup records | All 13 existing root documents and 23 historical handoffs were fully read before editing. Parent reviewed the three new handoffs and their changes. |
+| Main package navigation | 37 omitted specification entry documents were fully read, plus the existing Time Traveler README and main indexes. Package interiors outside the nested comparison were not reconciled. |
+| Area navigation | Parent read six area indexes. Curator read 21 files, comprising three of those indexes and 18 supporting entries. Exact paths are in the navigation handoff. |
+| Nested comparison | All 51 files beneath `docs/specs/docs/` and their 51 exact counterparts were fully read. That includes six plans and 45 specification-package files per tree. |
+| Catalog | All populated cells in Events, Clusters, Cluster Memberships, Scenarios, and Legend were fully read in the reviewed workbook revision. No workbook edit or export was performed. |
+| Earlier broad discovery | About 8,477 files and 90 MB were inventoried in an earlier pass. This is a lower-bound inventory, not a complete source read or an immutable snapshot. Most remaining project documentation, reference libraries, and configuration remain outside the verified reading sets. |
+
+At final integration, the workbook SHA-256 was `ac7d7d9848d2fb1ea51e1541d61939d395362a82948f618844c5cb9cfc669aa5`, different from the catalog review revision.
+This cleanup did not write the workbook.
+The recorded catalog findings apply to the earlier hash and were not re-audited after concurrent workbook changes.
+
+The implementation-facing docs reached through navigation were read for their role and evidence limits, without a current gameplay, asset, balance, or live-engine audit.
+The empty `docs/events/028_asteroid_incoming/` directory had no entry to read.
+`docs/super_events/031_random_terror/audio_research.md` and its audio-source interiors remain unread in this navigation batch.
+
+## Root-plan dispositions
+
+These dispositions apply to the 13 root documents, preserving their dated facts.
+Historical implementation evidence does not supply an acceptance decision.
+
+| Document | Type | Disposition | Basis, evidence, or blocker |
+| --- | --- | --- | --- |
+| `chaos_redux_multi_system_fix_spec.md` | Historical design proposal | Unresolved | No explicit acceptance basis for the proposed mechanics is recorded in the current scope, and current source and MCP evidence does not promote the proposal. |
+| `chaos_redux_repo_cleanup_goal_prompt.md` | Historical goal prompt | Superseded by `documentation_state.md` for current task routing | The prompt records an earlier broad goal. Its text remains for provenance and does not grant new authorization. |
+| `chaos_redux_repo_cleanup_master_prompt.md` | Historical cleanup prompt | Superseded by `documentation_state.md` for current task routing | The prompt preserves the earlier broad contract and safety rules. Current work is parent-assigned and batch bounded. |
+| `decision_category_presentation_audit.md` | Dated presentation audit | Unresolved | The 2026-08-09 table and `Complete` labels are historical observations. Current source, asset, and GUI MCP evidence was not re-established in this batch. |
+| `event_003_006_bounded_cleanup_2026-08-22.md` | Dated implementation report | Historical implementation record with current status unresolved | The report preserves its partial Event 003 MCP artifact and dated source findings. Current implementation and runtime behavior require current evidence. |
+| `event_013_020_bounded_cleanup_2026-08-22.md` | Dated implementation report | Historical implementation record with current status unresolved | The report preserves its bounded source findings and timed-out Event 020 MCP attempt. Current implementation and runtime behavior require current evidence. |
+| `gfx_icon_flag_mapmode_cleanup.md` | Historical asset registry | Unresolved current asset status | Asset paths and wiring statements are retained as historical evidence. Current asset availability, consumer resolution, and visual acceptance were not revalidated. |
+| `git_storage_cleanup_2026-08-22.md` | Dated storage report | Historical implementation record with current status unresolved | Counts, deletions, and checks apply to the 2026-08-22 and 2026-08-24 runs. Current Git and LFS state was not rechecked. |
+| `interface_audit_2026-07-22.md` | Dated GUI audit | Blocked | A fresh `hoi4.gui_inspect`, render, and comparison pass is required before current GUI layout or consumer claims can be made. |
+| `README.md` | Documentation index | Implemented for current navigation | It now points to this ledger and the current handoff and labels the root prompts and completion report as historical records. |
+| `repo_cleanup_completion_report_2026-08-22.md` | Dated completion report | Historical completion record with current status unresolved | Its bounded tranche and dated validation facts are preserved. Later concurrent changes and missing current evidence prevent a present completion claim. |
+| `shared_system_migration_plan_2026-08-22.md` | Active deferred migration plan | Blocked | The dated queue requires current parent acceptance, usable Event 006, Event 019, and shared Event Log MCP evidence, plus a scenario-specific probability auditor inspect and compare pass before migration status can be promoted. |
+| `systems_documentation_reorganization_2026-08-22.md` | Dated documentation report | Superseded for current navigation by `2026-09-05_navigation_review.md` | The 2026-08-22 move and link facts remain historical evidence. Current index coverage is governed by the parent navigation commit and handoff. |
+
+The 23 historical handoffs have individual dispositions in the A/B reviews linked above.
+Their recorded implementations remain historical, while current source, acceptance, and validation questions remain unresolved where no new evidence exists.
+The six Event 046/047 plan dispositions are recorded in their owning canonical files, with acceptance claims unresolved and implementation evidence gates retained.
+No proposal was promoted into an accepted specification by this cleanup.
+No document or asset was deleted, and no distinct source requirement was discarded to simplify a design.
+
+## Protected conflicts and remaining checks
+
+| Issue | Exact decision or evidence still required |
+| --- | --- |
+| Generated-role synchronization | AGENTS.md requires propagation from canonical TOMLs and also protects Qoder and generated Cursor files from this runtime. An explicit destination-write decision is needed before synchronization. Generated consistency is not claimed. |
+| Source and production policies | Portrait-placeholder finality, grounded final ownership, 3D reference/refinement and rigging routes, animation approval, flags, advisor review, and source-reading exceptions differ across some roles and skills. Preserve the exact conflicts in the [instruction review](subagent_handoffs/2026-09-05_instruction_batch01.md), [remaining roles](subagent_handoffs/2026-09-05_remaining_roles.md), and [asset skills review](subagent_handoffs/2026-09-05_skills_assets.md). No more-permissive version was selected. |
+| Paid work and live QA | Provider recovery confirmation, the live-QA skill versus user-only game testing, and related invocation or audit rules need their recorded owner decisions. No paid operation, game launch, log search, or autonomous test occurred. See the instruction and [other-skills review](subagent_handoffs/2026-09-05_skills_other.md). |
+| Engine and workflow interpretation | Duration constants/variables, event-target usage, focus reward exceptions, and planning cadence or source-mode differences remain at the limits recorded by [gameplay skills](subagent_handoffs/2026-09-05_skills_gameplay_docs.md) and [planning skills](subagent_handoffs/2026-09-05_skills_planning.md). They were not resolved through source-only assumptions. |
+| MCP capabilities | Exposed technology routes were verified from metadata. Service health and standalone Technology Tree Viewer availability were not tested. No current engine behavior was reconciled in this cleanup. |
+| Workbook contradictions | In the reviewed workbook revision, Events had 13 visible columns versus 14 table/export columns. Clusters had 8 columns but the exporter emitted 7 and omitted Status. Exact status-validation, identity, membership, slot, and Event 39 detail issues are in the catalog review. Workbook/exporter changes require their own authorized scope and accepted wording. |
+| Package acceptance and identities | Detailed specs and old status labels do not approve Event 043 identity changes, proposed SCN-015 uses, Event 046/047 cluster IDs or membership severity, or conflicting supplied scenario-row counts. Retain explicit unresolved dispositions. |
+| Concurrent GUI work | The separate scripted-GUI skill and migration were preserved. This cleanup does not certify that task's implementation, instructions, or visual evidence. |
+| Broader coverage | Unreviewed event/system packages, active addenda, manifests, asset archives, skill-local references, and configuration still need bounded full reads and evidence-backed dispositions. The whole documentation cleanup remains incomplete. |
+
+## Resume without repeating completed work
+
+1. Preserve the completed instruction, navigation, historical, catalog-read, and nested-comparison batches recorded above. Keep all retained mirror files intact.
+2. For the next untouched source batches, begin at `docs/events/README.md`, `docs/systems/README.md`, and the accepted-decision records linked by each package. Read each selected package and its authority dependencies fully before reconciling its implementation-facing claims. The indexes and the specific entry files listed in the navigation handoff are already read.
+3. Read `docs/super_events/031_random_terror/audio_research.md` before any audio-specific reconciliation. Keep source archives and generated evidence under their existing ownership and retention rules.
+4. Use `docs/specs/046_the_great_shuffle_specs/matrices/046_source_conflict_ledger.md`, `docs/specs/047_boom_specs/047_boom_source_reading_ledger.md`, and the catalog review for the unresolved identity/schema decisions. Their recorded snapshot counts are not current workbook facts.
+5. Resolve protected role/skill and cross-runtime conflicts through explicit decisions recorded in the existing handoffs. Do not change settings or source restrictions to unblock cleanup.
+
+Skills used: chaos-redux-subagents, skill-creator through the skill maintainers, and xlsx for the read-only catalog review.
+Fourteen existing skills were updated, MTTH was reviewed unchanged, and this cleanup created no new skill.
+No design or production simplification was introduced within the completed edits.
+The unread coverage, unperformed current engine checks, unresolved acceptance, protected-policy decisions, and blocked synchronization above are material omissions from any repository-wide completion claim.

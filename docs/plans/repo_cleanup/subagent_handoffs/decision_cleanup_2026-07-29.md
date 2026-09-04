@@ -1,5 +1,7 @@
 # Decision and mission cleanup handoff
 
+> Historical evidence snapshot dated 2026-07-29. This handoff preserves the evidence and dispositions available at that date. It is not a current runtime, approval, or implementation-status record.
+
 ## Scope and outcome
 
 Inspected shared decision infrastructure and Event 001 through Event 020 decision and category surfaces only.

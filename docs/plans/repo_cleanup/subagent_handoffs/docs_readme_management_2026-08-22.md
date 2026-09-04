@@ -1,4 +1,6 @@
-# Documentation README management — 2026-08-22
+# Documentation README management: 2026-08-22
+
+> Historical evidence snapshot dated 2026-08-22. This handoff preserves the evidence and dispositions available at that date. It is not a current runtime, approval, or implementation-status record.
 
 > Current-state note (2026-08-24): This handoff records the original 74-README cleanup snapshot. A later filesystem rescan covered 95 README files, including newer active provenance packages, and found zero broken local targets. The original per-file inventory remains historical evidence rather than a claim that no READMEs were added afterward.
 
@@ -54,7 +56,7 @@ The shared specification index distinguishes accepted Event 001–020 package ro
 
 ## Missing README candidates rejected
 
-No central `docs/assets/README.md` was created because asset workspaces carry package-specific provenance and several are ignored, active, blocked, or recent; a central index would risk becoming a false completion ledger.
+No central `docs/assets/README.md` was created because asset workspaces carry package-specific provenance and several are ignored, active, blocked, or recent. A central index would risk becoming a false completion ledger.
 
 No README was added to every event folder because `docs/events/README.md` defines `overview.md` as the canonical event implementation summary.
 

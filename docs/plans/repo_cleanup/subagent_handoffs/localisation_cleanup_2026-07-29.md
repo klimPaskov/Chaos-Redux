@@ -1,5 +1,9 @@
 # Localisation cleanup handoff
 
+Date: 2026-07-29
+
+This document is retained evidence from the 2026-07-29 snapshot. Its changed-file paths and validation statements describe that pass only and do not establish current approval or implementation status.
+
 Scope: shared Chaos Redux English and scripted localisation plus Event 001 through Event 020 surfaces. Event 021 and later content was only inspected where a shared selector or registry referenced it. Parent-owned Event 010 Death and Event 011 Secret Alliance evolution-type mappings and the main-menu version tooltip were preserved.
 
 ## Required references and audit method
@@ -12,21 +16,21 @@ Scanned English key coverage, exact-case duplicate keys, scripted-localisation m
 
 - `localisation/english/001_communism_spread_l_english.yml`: replaced the legacy Event 001 option text `chaosx.nr1.1.a` and `chaosx.nr1.1.b` with `Contain the agitation.` and `The revolution has already arrived.`.
 - `localisation/english/002_zombie_outbreak_l_english.yml`: formatted `total_zombie_divisions` as an integer in `chaosx.nr2.7.d` with `[?total_zombie_divisions|0]`.
-- `localisation/english/006_independence_wave_iw043_iw058_decisions_l_english.yml`: removed four duplicate title and description definitions for `independence_wave_iw043_repair_cheboksary_workshops` and `independence_wave_iw058_fortify_mountain_river_corridor`. The focus localisation file remains the canonical source for those shared keys, while the decision-specific start, success, timeout, cancel, and cost text remains in the decisions file.
+- `localisation/english/006_independence_wave_iw043_iw058_decisions_l_english.yml`: removed four duplicate title and description definitions for `independence_wave_iw043_repair_cheboksary_workshops` and `independence_wave_iw058_fortify_mountain_river_corridor`. The focus localisation file was the canonical source for those shared keys in this snapshot, while the decision-specific start, success, timeout, cancel, and cost text remained in the decisions file. Later consolidation into `localisation/english/006_independence_wave_iw043_iw058_l_english.yml` is recorded by commit `fe064fd57a`.
 - `localisation/english/chaosx_gui_l_english.yml`: replaced process-style scenario, event-detail, evolution-detail, and cluster placeholder wording with current-state wording. The changed keys are `chaosx.scenarios.africa.desc.placeholder`, `chaosx.scenarios.type.placeholder`, `chaosx.scenarios.placeholder.impact`, `chaosx.triggerable_scenarios.11.d`, `chaosx.events_log.window.cluster_details.description.formables`, `chaosx.events_log.window.event_details.entry_placeholder.generic`, and `chaosx.events_log.window.evolution_details.placeholder.generic`.
-- `localisation/english/fallout_world_end_ashline_firebreak_l_english.yml`: added the missing shared event-log base key `fallout.event_log.ashline_firebreak.detail` pointing to the existing `GetFalloutEvent554EventLogDetail` selector. This is the only Event 021 and later localisation file touched, and it was touched solely because the shared `GetEventsLogEventDetailDescription` selector directly requests that key for history id 554.
+- `localisation/english/fallout_world_end_ashline_firebreak_l_english.yml`: added the missing shared event-log base key `fallout.event_log.ashline_firebreak.detail` pointing to the existing `GetFalloutEvent554EventLogDetail` selector. This was the only Event 021 and later localisation file touched, and it was touched solely because the shared `GetEventsLogEventDetailDescription` selector directly requested that key for history id 554. Later consolidation into `localisation/english/fallout_consolidated_l_english.yml` is recorded by commit `8cea20fda6`, with the key at line 958 in the inspected tree.
 
 ## Display changes before and after
 
 - Event 001 no longer presents the player with the legacy Custerdome and class wording. The options now describe containment or acceptance of the revolution.
 - The Anti-Zombie League report now displays the division count as a whole number instead of an unformatted variable value.
 - Event 006 decisions no longer compete with focus-tree strings for the same four keys. The focus wording is used consistently, and decision outcome tooltips still provide the functional details.
-- Scenario and event-log fallback text no longer promises future rework or future detail. It reports that no playable incident, outcome, escalation, or additional detail is currently available.
+- Scenario and event-log fallback text no longer promises future rework or future detail. It reports that no playable incident, outcome, escalation, or additional detail is available in the fallback state.
 - Ashline Firebreak history entries now resolve the shared base detail selector before choosing one of the existing cut, seal, cordon, or callback branch descriptions.
 
 ## Missing key list
 
-- Fixed: `fallout.event_log.ashline_firebreak.detail` was requested by `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt:5650` but only branch-suffix keys existed.
+- Fixed in the dated audit: `fallout.event_log.ashline_firebreak.detail` was requested around `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt:5650` but only branch-suffix keys existed. The later consolidated selector requests the key around line 5937, and the consolidated English key is at `localisation/english/fallout_consolidated_l_english.yml:958` in the inspected tree.
 - Deferred shared registry gap: `chaosx_scripted_localisation_debug.txt` and `chaosx_scripted_localisation_settings.txt` contain selector branches for `chaosx.event_name.100` through `chaosx.event_name.1000`, while the English event-name registry defines only selected ids such as 1 through 99, 163, 635 through 641, and 991. Generating hundreds of speculative names or redirecting the selector would change shared registry behavior and requires parent design input.
 - After the Ashline addition, the shared event-log selector scan found zero missing non-GFX localisation keys outside the known future event-name family.
 
@@ -66,7 +70,7 @@ All touched English YAML files retain UTF-8 with BOM bytes `EF BB BF`. Scripted-
 
 - Decide whether the shared future event-name selector should gain a bounded registry fallback or a deliberate expansion plan. Do not synthesize hundreds of event-name strings in a localisation-only pass.
 - Have the Fallout owner resolve the duplicate `FalloutThawWaterEventLogPayload` declaration and audit repeated option keys in standalone Fallout event files when that scope is opened.
-- Keep the neutral scenario and event-log fallback wording unless a future accepted design adds a playable Event 012 formable escalation or new evolution detail branches.
+- Keep the neutral scenario and event-log fallback wording unless a future design with an explicit acceptance basis adds a playable Event 012 formable escalation or new evolution detail branches.
 
 ## Validation
 

@@ -1,4 +1,6 @@
-# Git Storage Cleanup — 2026-08-22
+# Git Storage Cleanup : 2026-08-22
+
+> Historical storage report. The counts, deletions, and verification results below apply to the dated 2026-08-22 and 2026-08-24 maintenance runs. Current Git and LFS state was not rechecked in this documentation batch. Use [`documentation_state.md`](documentation_state.md) for current cleanup status.
 
 ## Scope and safety boundary
 
@@ -50,7 +52,7 @@ The dry run reported 46,903 local objects, 15,113 retained objects, 31,779 objec
 
 `git lfs prune --verify-remote` then completed successfully and reported 46,904 local objects, 15,114 retained objects, 31,779 remote verifications, and 31,791 deleted cached files.
 
-The one-object count change occurred while concurrent recent repository work was creating current cache state; Git LFS recalculated and retained the current object set during the mutating pass.
+The one-object count change occurred while concurrent recent repository work was creating current cache state. Git LFS recalculated and retained the current object set during the mutating pass.
 
 After pruning, `.git/lfs/objects` contained 15,113 files totaling 3,800,310,194 bytes.
 
@@ -74,13 +76,13 @@ The pass refreshed the multi-pack index with `git multi-pack-index write` and th
 
 `git gc --auto` completed without requesting an aggressive or full repack.
 
-After stale scratch deletion, `git count-objects -vH` reported 16 garbage files using 8.82 MiB; all 16 were newer than the cutoff and deliberately retained.
+After stale scratch deletion, `git count-objects -vH` reported 16 garbage files using 8.82 MiB. All 16 were newer than the cutoff and deliberately retained.
 
 `git fsck --connectivity-only --no-dangling` completed successfully after the cleanup.
 
 `git lfs fsck --objects` completed with `Git LFS fsck OK` after the verified cache prune.
 
-## Follow-up stale object-temp cleanup — 2026-08-24
+## Follow-up stale object-temp cleanup : 2026-08-24
 
 A current `git fsck --connectivity-only --no-dangling` pass identified 17 unreachable `tmp_obj_*` files under `.git/objects`. Eleven had last-write times from August 8–9, were older than the same 14-day cutoff, and resolved inside the verified `.git/objects` root.
 

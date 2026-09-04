@@ -1,4 +1,6 @@
-# Chaos Redux interface audit — 2026-07-22
+# Chaos Redux interface audit : 2026-07-22
+
+> Disposition on 2026-09-05: blocked for current GUI acceptance. This audit preserves the 2026-07-22 source and partial MCP findings. A fresh `hoi4.gui_inspect`, render, and comparison pass remains required before current layout or consumer claims can be made. Use [`documentation_state.md`](documentation_state.md) for the current reconciliation.
 
 This is the source-side handoff for the HOI4 GUI review. The review used the offline Interface Modding and Scripted GUI Modding wiki pages, vanilla GUI/GFX precedents, and the `hoi4.gui_inspect` / `hoi4.gui_render` MCP surfaces before the MCP transport closed during the final rerender pass.
 
@@ -11,7 +13,7 @@ The focused evidence included:
 - KRG and NZL focus-tree structure and CBRN technology GUI layout through the focus MCP review path.
 - Vanilla font and sprite precedents for the settings and event-log controls.
 
-Global MCP diagnostics include vanilla base assets and valid scripted contexts that the offline parser cannot model; those are not treated as local overlap by themselves.
+Global MCP diagnostics include vanilla base assets and valid scripted contexts that the offline parser cannot model. Those are not treated as local overlap by themselves.
 
 ## Fixes applied
 
@@ -28,7 +30,7 @@ Built-in ImageGen was used for the Repression Ledger category emblem and the gen
 ## Remaining limitations
 
 - The HOI4 MCP transport closed after the inventory and initial renders. A post-patch retry of both `hoi4.gui_inspect` and `hoi4.gui_render` returned `Transport closed` as well, so the validation artifact for the new Ledger header and popup is still queued. A subsequent MCP run must rerender those windows before a full completion claim.
-- Large windows such as the muster board and disease board can hit the MCP `SCAN_BYTE_LIMIT`; this is a tool limitation, not proof that the source is valid. They still require a fresh targeted render when the transport is available.
-- The decision-column audit found four other category-bound dashboards wider than the vanilla decision column: Secret Alliance (720px), Utopia (700px), Kruger Directorate (700px), and the Repression Ledger (900px before this popup split). The Repression Ledger is now split; the other three require a dedicated compact-header/popup pass rather than an unverified resize. Death's Black Atlas is 520px and remains a moderate-width surface.
+- Large windows such as the muster board and disease board can hit the MCP `SCAN_BYTE_LIMIT`. This is a tool limitation, not proof that the source is valid. They still require a fresh targeted render when the transport is available.
+- The decision-column audit found four other category-bound dashboards wider than the vanilla decision column: Secret Alliance (720px), Utopia (700px), Kruger Directorate (700px), and the Repression Ledger (900px before this popup split). The Repression Ledger is now split. The other three require a dedicated compact-header/popup pass rather than an unverified resize. Death's Black Atlas is 520px and remains a moderate-width surface.
 - The KRG focus audit found 60 missing focus goal DDS files out of 100 focus icons. This is an asset-package blocker outside the safe scope of a layout adjustment and must be resolved before claiming complete visual coverage.
-- One evolution-details overlap reported by MCP is the intentional portrait plus frame/flame overlay stack; the parser also reports unresolved vanilla portrait and tooltip sprites. These need an in-game or refreshed MCP visual confirmation.
+- One evolution-details overlap reported by MCP is the intentional portrait plus frame/flame overlay stack. The parser also reports unresolved vanilla portrait and tooltip sprites. These need an in-game or refreshed MCP visual confirmation.

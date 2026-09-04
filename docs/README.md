@@ -36,3 +36,5 @@ Document location, catalog status, timestamps, and old completion reports do not
 Implementation summaries must identify the source revision or evidence they describe.
 Source inspection, calculations, MCP previews, and user-provided live-game results remain distinct forms of evidence.
 Keep unresolved decisions visible in the package's existing plan disposition or resume record.
+
+The [documentation cleanup record](plans/repo_cleanup/documentation_state.md) identifies reviewed coverage, completed repairs, unresolved instruction conflicts, and the next bounded source reads for the active cleanup task.

@@ -1,5 +1,7 @@
 # GFX, Icon, Flag, Map Mode, and Division Symbol Registry
 
+> Historical cleanup registry. The asset paths and wiring statements below preserve the earlier evidence record. Current asset availability, consumer resolution, and visual acceptance were not revalidated in this documentation batch. Use [`documentation_state.md`](documentation_state.md) for current status and ownership.
+
 ## Overview
 
 This package keeps several previously disconnected visual surfaces aligned with their gameplay references. It covers biological operations and raids, Event 002 decision categories, the Japan chemical campaign category, scripted map-mode buttons, custom flags, division-template picker symbols, and the repository GFX reference audit.

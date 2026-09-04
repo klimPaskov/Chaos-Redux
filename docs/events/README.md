@@ -1,8 +1,11 @@
 # Event documentation
 
-Each event chain has one folder with `overview.md` as its canonical implementation summary. Supporting event-owned mechanics stay with the event instead of expanding the shared systems directory.
+Event folders use `overview.md` as their canonical implementation summary.
+Standalone entries and expanded supporting documents are linked below.
+Supporting event-owned mechanics stay with the event instead of expanding the shared systems directory.
+These summaries describe their recorded source and validation evidence, which does not by itself establish design approval or current gameplay behavior.
 
-| Event | Canonical overview | Supporting documentation |
+| Event | Implementation entry | Supporting documentation |
 | --- | --- | --- |
 | 001 Communism Spread | [`001_communism_spread/overview.md`](001_communism_spread/overview.md) | Event package |
 | 002 Zombie Outbreak | [`002_zombie_outbreak/overview.md`](002_zombie_outbreak/overview.md) | Event package |
@@ -24,5 +27,11 @@ Each event chain has one folder with `overview.md` as its canonical implementati
 | 018 Resources Found | [`018_resources_found/overview.md`](018_resources_found/overview.md) | Cave-country and helper contracts |
 | 019 Infantry Spawn | [`019_infantry_spawn/overview.md`](019_infantry_spawn/overview.md) | [`systems/`](019_infantry_spawn/systems/) |
 | 020 Black Plague | [`020_black_plague/overview.md`](020_black_plague/overview.md) | Shared disease response |
+| 024 Video Game in Sweden | [`024_video_game_in_sweden/overview.md`](024_video_game_in_sweden/overview.md) | Event package |
+| 026 Black Friday | [`026_black_friday/overview.md`](026_black_friday/overview.md) | [Expanded lifecycle and validation record](026_black_friday.md), universal cost registry, and achievement contract |
+| 027 Doctrine Research | [`027_doctrine_research/overview.md`](027_doctrine_research/overview.md) | Doctrine research and evidence limits |
+| 031 Random Terror | [`031_random_terror/overview.md`](031_random_terror/overview.md) | Routes, actors, assets, and validation records |
+| 032 Missiles | [`032_missiles/overview.md`](032_missiles/overview.md) | [Expanded API, custody, scenario, and validation record](032_missiles.md) |
+| 033 Acid Rain | [`033_acid_rain/overview.md`](033_acid_rain/overview.md) | Weather and contamination contracts |
+| 035 Great Depression 2.0 | [`035_great_depression.md`](035_great_depression.md) | Standalone implementation contract |
 | Germany Mengele chain | [`germany_mengele/overview.md`](germany_mengele/overview.md) | Country event chain outside the random-event pool |
-

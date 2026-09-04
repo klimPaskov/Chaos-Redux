@@ -1,3 +1,5 @@
+> Disposition on 2026-09-05: superseded for current task routing by [`documentation_state.md`](documentation_state.md). This file preserves the earlier cleanup goal and its scope. It is historical task material and does not grant new authorization for repository, gameplay, workbook, asset, or runtime changes.
+
 Read `docs/plans/repo_cleanup/chaos_redux_repo_cleanup_master_prompt.md` and carry out the Chaos Redux repository cleanup to its fullest safe extent.
 
 This is a broad cleanup pass for shared Chaos Redux systems and Events 1-20. General systems remain fully in scope, including random events, settings, event logs, evolutions, clusters, triggerable scenarios, chaos meter, deaths, condemnation, air cleanliness, world threats, super-events, scripted GUI, shared helpers, constants, scripted localisation, localisation, docs, and shared infrastructure.

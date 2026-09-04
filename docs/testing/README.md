@@ -9,4 +9,5 @@ This directory contains test-country guidance and dated evidence from live-QA ru
 
 Each dated QA package is evidence for the run it records and does not replace the accepted design in `docs/specs/`, the current implementation record in `docs/events/`, or the working status in `docs/plans/`.
 
-Preserve dated reports and provenance when they explain a prior validation result or unresolved limitation; do not infer current gameplay status from an old run without checking its package date and current source references.
+Preserve dated reports and provenance when they explain a prior validation result or unresolved limitation.
+Do not infer current gameplay status from an old run without checking its package date and current source references.

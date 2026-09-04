@@ -1,5 +1,9 @@
 # Decision and Mission Cleanup Baseline, 2026-08-22
 
+> Historical evidence snapshot dated 2026-08-22. This handoff preserves the evidence and dispositions available at that date. It is not a current runtime, approval, or implementation-status record.
+
+Follow-up recommendations in this dated handoff remain unresolved unless a later named owner handoff records an explicit disposition.
+
 ## Status and constraints
 
 This is a read-only baseline audit of shared decision and mission systems and event-owned decision surfaces for Events 1 through 20. Event 21 and later content was inspected only where it participates in shared decision infrastructure, target helpers, GUI registries, or localisation.
@@ -36,7 +40,7 @@ The required probability route was attempted through the installed `hoi4.probabi
 
 `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/885b150a178a88e2c19da9c114ffdce2d036c1f13a43980418ca1b179eb8ac84/3101df48fb6ad1b944e33fd18be422b8f27a517e19975f8983f65493523deba1/probability-inspect-72ed3330bb09.json`
 
-That artifact inspected 211 Event 5 candidates, reported zero unresolved inputs, and passed source validation, but the pool was not complete and no scenario comparison was run. Event 6, 12, 13, 14, 16, 18, 19, shared biowarfare, and Fallout source inspections returned `INTERNAL_ERROR`; the Event 20 shared inspection returned `ARTIFACT_STORAGE_LIMIT`; narrower candidate-pool attempts timed out after 180 seconds. These exact blockers are carried into the probability handoff below.
+That artifact inspected 211 Event 5 candidates, reported zero unresolved inputs, and passed source validation, but the pool was not complete and no scenario comparison was run. Event 6, 12, 13, 14, 16, 18, 19, shared biowarfare, and Fallout source inspections returned `INTERNAL_ERROR`. The Event 20 shared inspection returned `ARTIFACT_STORAGE_LIMIT`. Narrower candidate-pool attempts timed out after 180 seconds. These exact blockers are carried into the probability handoff below.
 
 ## Issue list sorted by severity
 
@@ -54,7 +58,7 @@ That artifact inspected 211 Event 5 candidates, reported zero unresolved inputs,
 
 ### P2: probable design or maintenance risks requiring bounded follow-up
 
-6. Category ownership is fragmented across event-owned and shared files. The Directorate category spans seven Event 16 files; disease containment spans Event 20 response and weaponisation files plus shared bio-warfare files; CBRN operations spans five shared CBRN files; Africa and Utopia categories are split between main and evolution or prefire fragments; repression and genocide categories mix generic, colonial, and country-specific files. This increases duplicate cost, tooltip, AI, and cleanup drift. It is a strong architecture finding, not permission to merge files or categories in this baseline.
+6. Category ownership is fragmented across event-owned and shared files. The Directorate category spans seven Event 16 files. Disease containment spans Event 20 response and weaponisation files plus shared bio-warfare files. CBRN operations spans five shared CBRN files. Africa and Utopia categories are split between main and evolution or prefire fragments. Repression and genocide categories mix generic, colonial, and country-specific files. This increases duplicate cost, tooltip, AI, and cleanup drift. It is a strong architecture finding, not permission to merge files or categories in this baseline.
 
 7. A raw scan found about 1,709 `custom_cost_text` references across about 902 keys. All directly referenced keys had a localisation definition, but that does not establish that their texticons, payment, or requirement semantics are correct. The main duplicated payment families are delegated through helpers such as the Soviet Collapse `soviet_collapse_pay_*` family, Independence Wave `independence_wave_decision_pay_*` family, and Utopia Manifesto `utopia_manifesto_pay_*` family. These are dynamic references and need helper-level tracing rather than block-local deletion.
 
@@ -62,7 +66,7 @@ That artifact inspected 211 Event 5 candidates, reported zero unresolved inputs,
 
 9. Targeted decisions that are activated through `activate_targeted_decision` require a separate route-lock audit because the documented effect bypasses ordinary triggers, cooldown, and `fire_once` checks when called. Any scripted caller that uses this effect for Soviet, Africa, Independence Wave, or shared formable flows must prove its own cooldown, target validity, and one-shot guard. This is especially relevant to operation, treaty, and achievement targets.
 
-10. Forty-one missions have neither an explicit `complete_effect` nor an explicit `cancel_effect`. The set includes Event 6 founding-package deadlines, Event 11 public-offensive countdown, Event 12 recognition or intervention windows and sponsorship obligations, Event 16 facility defence, Event 18 rescheduling, and Event 19 internal `selectable_mission = no` clocks. Many are likely intentional timeout-only or cancel-driven clocks; none should be deleted without tracing the timeout helper, phase flags, and downstream event or scripted effect.
+10. Forty-one missions have neither an explicit `complete_effect` nor an explicit `cancel_effect`. The set includes Event 6 founding-package deadlines, Event 11 public-offensive countdown, Event 12 recognition or intervention windows and sponsorship obligations, Event 16 facility defence, Event 18 rescheduling, and Event 19 internal `selectable_mission = no` clocks. Many are likely intentional timeout-only or cancel-driven clocks. None should be deleted without tracing the timeout helper, phase flags, and downstream event or scripted effect.
 
 11. Global event-target saves are widespread and often have matching clears, but ownership is distributed. Confirmed examples include the Fallout NZL partner target at `common/decisions/fallout_consolidated_decisions.txt:2028,2053,2065`, Africa transfer and achievement targets at `common/decisions/012_africa_decisions.txt:614,632,3403,3433,3473`, Directorate facility and foreign targets in `common/decisions/016_brilliant_scientist_directorate_*.txt`, and large Secret Alliance cleanup blocks in `common/scripted_effects/011_secret_alliance_effects.txt:7904-7914`. Saves such as `africa_elephant_band_state`, `independence_wave_reclamation_front_coordinator`, and Fallout world-end external-owner targets require lifecycle tracing before being called leaks. The safe finding is duplicated ownership and stale-target audit debt, not a proven un-cleared target.
 
@@ -78,7 +82,7 @@ That artifact inspected 211 Event 5 candidates, reported zero unresolved inputs,
 
 | Category and owner | Source scale | Lifecycle and ownership finding |
 | --- | ---: | --- |
-| `brilliant_scientist_directorate_category` (Event 16 Directorate) | 149 blocks in 7 files | Project board, facilities, foreign, institutions, containment, synthesis, and evolution fragments share one category. Phase gates may reduce simultaneous rows, but ownership and cleanup are distributed. Keep the category; first define phase-specific primary actions and owner helpers. |
+| `brilliant_scientist_directorate_category` (Event 16 Directorate) | 149 blocks in 7 files | Project board, facilities, foreign, institutions, containment, synthesis, and evolution fragments share one category. Phase gates may reduce simultaneous rows, but ownership and cleanup are distributed. Keep the category, first define phase-specific primary actions and owner helpers. |
 | `soviet_collapse_soviet_category` (Event 5) | 127 blocks | Moscow, Ukraine, Republic, and collapse-phase flows share a large category. Targeted treaty, administration, ultimatum, and reclamation decisions need root target validation and phase cleanup. |
 | `natural_disaster_aftermath_category` (shared/Fallout) | 127 blocks | The source ceiling indicates a long-lived response warehouse. Separate active recovery choices from hidden timers and completed-state records through functional gates, not new visual tabs. |
 | `camp_repression_network_category` (shared plus colonial) | 83 blocks in 2 files | Generic and colonial ownership is mixed. Duplicate repression actions and postwar review/sunset missions need one cleanup owner and explicit terminal state. |
@@ -98,7 +102,7 @@ Visible actions are most overloaded in Directorate, Soviet Collapse, Disaster Af
 
 Active missions are most concerning in Event 5, where 118 mission blocks carry `visible` fields, Event 16 project-board and facility flows, Event 12 repeated recognition and sponsorship windows, and Event 6 package suites. The actual simultaneously active set is scenario-dependent and could not be proven by the blocked MCP route.
 
-Player-facing values are not consistently given a clear cause, threshold, consequence, or response. Africa's action cost row, Infantry Spawn's exact-lot obligation row, cannibalism larder and population counters, resource-found state values, CBRN contamination or protection values, and disease containment counters are candidates for concise stage or threshold presentation. This recommendation is functional content and selector work only; it does not authorize new or modified interface layout.
+Player-facing values are not consistently given a clear cause, threshold, consequence, or response. Africa's action cost row, Infantry Spawn's exact-lot obligation row, cannibalism larder and population counters, resource-found state values, CBRN contamination or protection values, and disease containment counters are candidates for concise stage or threshold presentation. This recommendation is functional content and selector work only. It does not authorize new or modified interface layout.
 
 Text density is highest in dynamic cost localisations that enumerate resources and counters in prose. A player should see a short, icon-first consumed-cost line followed by a separate requirement or blocked-reason line. Long category descriptions and raw helper names should remain hidden behind custom trigger tooltips.
 
@@ -108,14 +112,14 @@ Every visible value should answer what it measures, what changes it, which thres
 
 | Owner and mission family | Category and region | Requirement and duration | Success and failure | Duplicate or stale risk |
 | --- | --- | --- | --- | --- |
-| Event 5 Soviet Collapse treaty, republic, and reclamation missions | Soviet-collapse categories; Soviet sphere and target republics | Target country, phase flags, war or route state; durations use a mixture of file constants and literal/package values | Several complete through helper or cancellation effects; timeout paths vary; 97 lack explicit `cancel_trigger` in the Event 5 scan | High. Repeated treaty and republic packages can drift in targets, payment, AI, and cleanup. |
-| Event 6 Independence Wave founding and integration packages | Formable or package category; package-defined regions and former hosts | Activation flags, host/target checks, package variables, and timed deadlines | Common pattern is `cancel_effect` setting success/failure markers and `timeout_effect` applying failure; missing explicit `complete_effect` is often intentional | High. Repeated country packages are structurally similar and should share verified lifecycle helpers. |
-| Event 12 Africa recognition, coalition, intervention, and sponsorship windows | Africa priority, charter, and world-order categories; African states and sponsor targets | Phase flags, host/member/target scopes, obligations, and fixed or scripted duration | Timeout or phase cancellation often advances the route; explicit success is not present in several windows | Medium-high. Four repeated windows and multiple sponsor obligations are drift candidates. |
-| Event 15 Utopia objective and targeted mission families | Utopia categories; route and target-defined regions | Target selectors, route flags, and duration constants or package values | Completion often delegates to scripted effects; target failure and cancellation need per-mission review | High. Targeted mission blocks repeat selector and helper shapes. |
-| Event 16 Directorate facility defence and project-board missions | Directorate category; facility and research-site states | Facility target, project phase, institution flags, and project duration | Facility and board flows use timeout or cancel-driven terminal paths; phase cleanup is distributed | High. Seven category fragments can leave stale target or project state. |
-| Event 18 resource-found prefire and rescheduling missions | Resource-found categories; random resource field/state regions | Prefire owner/state event targets and field variables; timed rescheduling and field windows | Scripted effects handle terminal state; repeated save/re-save of short-lived targets needs chain tracing | Medium. Repeated target pointers can expose stale scope if a chain exits early. |
-| Event 19 Infantry Spawn internal clocks | Formation and derivative-operation categories; lot or theatre scopes | Internal variables, lot obligations, and package constants | Ten reviewed system missions are non-selectable and timeout-delegated; they are likely intentional clocks rather than player missions | Low for deletion, medium for stale state if timeout cleanup is skipped. |
-| Shared repression and CBRN missions | Repression, CBRN, and disease categories; country, camp, corridor, and operation regions | Country/region ownership, contamination or repression flags, equipment requirements, and timed review windows | Postwar sunset and inspection/training missions often timeout; some lack explicit cancel paths | Medium-high. Shared and event-owned fragments can duplicate cleanup or leave active objectives after route closure. |
+| Event 5 Soviet Collapse treaty, republic, and reclamation missions | Soviet-collapse categories, Soviet sphere and target republics | Target country, phase flags, war or route state, durations use a mixture of file constants and literal/package values | Several complete through helper or cancellation effects, timeout paths vary, 97 lack explicit `cancel_trigger` in the Event 5 scan | High. Repeated treaty and republic packages can drift in targets, payment, AI, and cleanup. |
+| Event 6 Independence Wave founding and integration packages | Formable or package category, package-defined regions and former hosts | Activation flags, host/target checks, package variables, and timed deadlines | Common pattern is `cancel_effect` setting success/failure markers and `timeout_effect` applying failure, missing explicit `complete_effect` is often intentional | High. Repeated country packages are structurally similar and should share verified lifecycle helpers. |
+| Event 12 Africa recognition, coalition, intervention, and sponsorship windows | Africa priority, charter, and world-order categories, African states and sponsor targets | Phase flags, host/member/target scopes, obligations, and fixed or scripted duration | Timeout or phase cancellation often advances the route, explicit success is not present in several windows | Medium-high. Four repeated windows and multiple sponsor obligations are drift candidates. |
+| Event 15 Utopia objective and targeted mission families | Utopia categories, route and target-defined regions | Target selectors, route flags, and duration constants or package values | Completion often delegates to scripted effects, target failure and cancellation need per-mission review | High. Targeted mission blocks repeat selector and helper shapes. |
+| Event 16 Directorate facility defence and project-board missions | Directorate category, facility and research-site states | Facility target, project phase, institution flags, and project duration | Facility and board flows use timeout or cancel-driven terminal paths, phase cleanup is distributed | High. Seven category fragments can leave stale target or project state. |
+| Event 18 resource-found prefire and rescheduling missions | Resource-found categories, random resource field/state regions | Prefire owner/state event targets and field variables, timed rescheduling and field windows | Scripted effects handle terminal state, repeated save/re-save of short-lived targets needs chain tracing | Medium. Repeated target pointers can expose stale scope if a chain exits early. |
+| Event 19 Infantry Spawn internal clocks | Formation and derivative-operation categories, lot or theatre scopes | Internal variables, lot obligations, and package constants | Ten reviewed system missions are non-selectable and timeout-delegated, they are likely intentional clocks rather than player missions | Low for deletion, medium for stale state if timeout cleanup is skipped. |
+| Shared repression and CBRN missions | Repression, CBRN, and disease categories, country, camp, corridor, and operation regions | Country/region ownership, contamination or repression flags, equipment requirements, and timed review windows | Postwar sunset and inspection/training missions often timeout, some lack explicit cancel paths | Medium-high. Shared and event-owned fragments can duplicate cleanup or leave active objectives after route closure. |
 
 The mission owner must document the terminal state before changing a timeout-only mission. A mission with no `complete_effect` is not automatically dead when its `cancel_effect`, timeout helper, event firing, flag, or scripted GUI callback provides the success path.
 
@@ -126,15 +130,15 @@ The direct scan found approximately 1,709 `custom_cost_text` references across a
 | Surface | Observed spendable or displayed types | Texticon and clarity result | Disposition |
 | --- | ---: | --- | --- |
 | Africa `africa_selected_action_dynamic_cost` | About 13 | Long prose, literal labels, mixed requirements and spendables | Defer to broad mechanic redesign. |
-| Independence Wave Form 8, Forms 01/02/04, Form 05, Form 39, Pacific packages | 5-8 in representative strings | Repeated literal resource names and `requires`/`consumes` prose | Defer broad migration; preserve package mechanics until owner selects a four-cost model. |
+| Independence Wave Form 8, Forms 01/02/04, Form 05, Form 39, Pacific packages | 5-8 in representative strings | Repeated literal resource names and `requires`/`consumes` prose | Defer broad migration, preserve package mechanics until owner selects a four-cost model. |
 | CBRN doctrine and occupation | 7 in representative strings | Literal equipment and resource names without complete texticons | Defer broad cost-family migration. |
-| Infantry Spawn exact-lot and standardisation | Dozens in the exact-lot row and many in standardisation | Raw dynamic rows are not a readable decision cost | Defer to lot-obligation design; do not hide a fifth cost in a tooltip. |
-| Fallout repair rows | Mixed infantry, trains, factories, and counters | Literal labels and cost/requirement mixing at `:666-686`; earlier consolidated costs are a positive icon-first precedent | Review each row; only bounded <=4 rows are local candidates. |
+| Infantry Spawn exact-lot and standardisation | Dozens in the exact-lot row and many in standardisation | Raw dynamic rows are not a readable decision cost | Defer to lot-obligation design, do not hide a fifth cost in a tooltip. |
+| Fallout repair rows | Mixed infantry, trains, factories, and counters | Literal labels and cost/requirement mixing at `:666-686`, earlier consolidated costs are a positive icon-first precedent | Review each row, only bounded <=4 rows are local candidates. |
 | Africa sponsorship keys | Three representative requirements | `localisation/english/012_africa_world_sponsorship_l_english.yml:92-95` uses prose Political Power and Command Power labels | Safe bounded icon-first localisation candidate after confirming consumed versus required semantics. |
 | Africa elephant logistics | Four types in `common/decisions/012_africa_elephant_operations_decisions.txt:79` | `localisation/english/012_africa_elephant_operations_l_english.yml` uses literal elephant equipment, trucks, trains, and fuel names | Safe bounded icon-first localisation candidate if all four are actually consumed. |
 | Black Plague Rat King terminal takeover | No proven spendable payment in the block | Cost text describes requirements, not a cost lane | Safe bounded requirement-tooltip candidate after helper tracing. |
 
-No accepted cleanup may leave a fifth or later spendable cost hidden in a tooltip, confirmation, scripted effect, or secondary panel. Literal resource names must be replaced with the correct texticons only when the underlying cost is retained; a missing texticon is not permission to keep prose labels.
+No accepted cleanup may leave a fifth or later spendable cost hidden in a tooltip, confirmation, scripted effect, or secondary panel. Literal resource names must be replaced with the correct texticons only when the underlying cost is retained. A missing texticon is not permission to keep prose labels.
 
 ## AI validity and route-lock notes
 
@@ -194,11 +198,11 @@ Decision-owned scripted GUI surfaces found in source include `communism_spread_d
 - Target-root additions for selectors backed by `target_array`, `state_target`, `any_country`, or scripted targets.
 - Missions without complete or cancel effects where timeout, cancellation, event firing, or helper calls provide the actual terminal path.
 - Global event targets with saves and clears in different files, including Africa, Independence Wave, Directorate, Fallout, and Secret Alliance.
-- Functional scripted-GUI selectors and toggles because per-window MCP renders were blocked; no layout change is implied.
+- Functional scripted-GUI selectors and toggles because per-window MCP renders were blocked. No layout change is implied.
 
 ### Rejected candidates for this baseline
 
-- No decision deletion or merge based on duplicate IDs; the scan found none.
+- No decision deletion or merge based on duplicate IDs. The scan found none.
 - No interface layout, coordinate, click-region, sprite, GFX, or GUI asset edits.
 - No broad category merge or category removal based only on source count.
 - No mass formable localisation additions without proving the dynamic name path.

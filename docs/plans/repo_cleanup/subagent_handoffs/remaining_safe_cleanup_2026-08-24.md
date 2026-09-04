@@ -1,4 +1,6 @@
-# Remaining safe cleanup — 2026-08-24
+# Remaining safe cleanup: 2026-08-24
+
+This handoff records a bounded cleanup completed on 2026-08-24. It is retained historical evidence and does not by itself establish current approval or implementation status.
 
 ## Scope
 
@@ -8,9 +10,9 @@ This bounded follow-up resolves two candidates that were previously deferred bec
 
 Deleted `localisation/english/005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml`.
 
-The deleted file contained 28 localisation keys. All 28 exist in the canonical `localisation/english/005_soviet_collapse_l_english.yml`; 13 values were identical and 15 canonical values contained the current wording. The smaller file had no unique key, no filename consumer, and no documentation or generated-reference role.
+The deleted file contained 28 localisation keys. All 28 exist in the canonical `localisation/english/005_soviet_collapse_l_english.yml`. Thirteen values were identical and 15 canonical values contained the wording present in the audited tree. The smaller file had no unique key, no filename consumer, and no documentation or generated-reference role.
 
-The canonical localisation file was not edited by this cleanup. Removing the smaller file eliminates duplicate definitions and leaves the current canonical values authoritative.
+The canonical localisation file was not edited by this cleanup. Removing the smaller file eliminates duplicate definitions and leaves the consolidated file as the comparison's named canonical source.
 
 ## Event 14 stale source comment
 
@@ -20,6 +22,6 @@ The edit is comment-only. Historical handoffs retain the former filename where i
 
 ## Validation and retained boundaries
 
-Focused localisation parsing confirmed 28/28 replacement keys before deletion. Repository-wide filename search found no consumer of the removed localisation file. The active Event 14 script keeps its concurrent gameplay edits unchanged; only the isolated comment hunk belongs to cleanup.
+Focused localisation parsing confirmed 28/28 replacement keys before deletion. Repository-wide filename search found no consumer of the removed localisation file. The active Event 14 script keeps its concurrent gameplay edits unchanged. Only the isolated comment hunk belongs to cleanup.
 
-No current-runtime helper, dynamic reference, meta effect, scripted-localisation method, GFX consumer, or spreadsheet key was removed. No GUI or interface file changed.
+No runtime helper, dynamic reference, meta effect, scripted-localisation method, GFX consumer, or spreadsheet key was removed by this follow-up. No GUI or interface file changed.

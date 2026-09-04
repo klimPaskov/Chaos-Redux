@@ -1,5 +1,7 @@
 # Events 003-006 bounded cleanup
 
+> Historical implementation record dated 2026-08-22. The source changes and partial MCP artifact remain dated evidence. Current implementation, runtime behavior, and acceptance require current source and matching MCP evidence. Use [`documentation_state.md`](documentation_state.md) for the current reconciliation.
+
 Date: 2026-08-22.
 
 ## Scope
@@ -15,7 +17,7 @@ The following scripted effects had no source consumer beyond their definitions a
 - `holy_realm_core_eastern_chinese_register_states`
 - `holy_realm_prepare_final_silence`
 
-The current regional coring flows use their focus-owned effects. Current terminal Final Silence calls `holy_realm_complete_terminal_final_silence`, records stable cause memory, and requests `fallout_request_aftermath`; it does not call the removed preparation wrapper.
+The current regional coring flows use their focus-owned effects. Current terminal Final Silence calls `holy_realm_complete_terminal_final_silence`, records stable cause memory, and requests `fallout_request_aftermath`. It does not call the removed preparation wrapper.
 
 The legacy strike-wave events, effects, flags, death cause, super-event assets, and compatibility callbacks were retained. They remain reachable from previously queued callbacks or stable cause-memory surfaces and cannot be retired safely without an explicit compatibility-window migration.
 
@@ -38,9 +40,10 @@ The corresponding durable user-supplied portrait archive, manifest, hashes, and 
 
 ## Event 006 localisation and evidence links
 
-All 32 keys in `006_independence_wave_evolution_incidents_l_english.yml` were moved to column zero without changing their keys or text. The UTF-8 BOM was preserved.
+The dated cleanup record says that all 32 keys in `006_independence_wave_evolution_incidents_l_english.yml` were moved to column zero without changing their keys or text, and that the UTF-8 BOM was preserved.
+The original target is absent in the current tree. A related current path exists at [`localisation/english/006_independence_wave_evolution_l_english.yml`](../../../localisation/english/006_independence_wave_evolution_l_english.yml), but no rename or equivalence is inferred here.
 
-The Bashkiria portrait handoff now points to the existing portrait GFX file using the correct relative path. Missing Micronesia, Boris Berman, and Altai processed evidence links were not replaced with fabricated artifacts. Their handoffs now state that the temporary or processed evidence is absent and keep each affected package fail-closed. The surviving Altai original source files remain in the durable portrait archive; the missing processed crops and review images are explicitly insufficient for promotion.
+The Bashkiria portrait handoff now points to the existing portrait GFX file using the correct relative path. Missing Micronesia, Boris Berman, and Altai processed evidence links were not replaced with fabricated artifacts. Their handoffs now state that the temporary or processed evidence is absent and keep each affected package fail-closed. The surviving Altai original source files remain in the durable portrait archive. The missing processed crops and review images are explicitly insufficient for promotion.
 
 ## Validation evidence
 
@@ -50,4 +53,4 @@ The tool reports that workspace-wide helper projections and lifecycle passes wer
 
 ## Behavior
 
-No intended gameplay behavior changes. Removing the four unreachable helpers and four unreferenced binary copies changes no active call path. The Event 003 and Event 006 text/documentation changes correct ownership and parsing visibility; stable identifiers, active callbacks, and fail-closed package gates remain intact.
+No intended gameplay behavior changes. Removing the four unreachable helpers and four unreferenced binary copies changes no active call path. The Event 003 and Event 006 text/documentation changes correct ownership and parsing visibility. Stable identifiers, active callbacks, and fail-closed package gates remain intact.

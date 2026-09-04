@@ -101,9 +101,10 @@ Shared and cross-event specification packages are indexed below.
 
 ## Package convention
 
-The nested [`docs/`](docs/) tree contains additional Event 046 and Event 047 spec and plan material.
-Its relationship to the direct packages remains unresolved.
-Compare the complete documents and their decision evidence before merging, promoting, or removing either location.
+The nested [`docs/`](docs/README.md) tree retains 51 historical Event 046 and Event 047 documents that matched their normal-root counterparts exactly before this cleanup.
+Use the direct specification packages and the normal plans folders for current navigation.
+The retained-mirror notice records the comparison boundary, and package acceptance remains unresolved where no attributable decision is available.
+No retained source copy was removed.
 
 - Event packages use `docs/specs/<event_id>_<slug>_specs/`.
 - System packages use a descriptive `<slug>_specs/` directory.

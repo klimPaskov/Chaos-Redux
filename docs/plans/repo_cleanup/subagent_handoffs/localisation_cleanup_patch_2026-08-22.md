@@ -6,6 +6,8 @@ This bounded patch updates only `localisation/english/chaosx_gui_l_english.yml` 
 
 No gameplay, scripted localisation, sourced quotation, spreadsheet, event-specific Event 21 or later prose, or `interface/*.gui` file changed. No GUI layout, coordinate, or click-region work was performed.
 
+This handoff is retained evidence from the 2026-08-22 patch. Its changed-key list and validation results describe that patch only and do not establish current approval or implementation status.
+
 ## Changed keys
 
 | Key | Old intent and issue | New intent |
@@ -16,11 +18,11 @@ No gameplay, scripted localisation, sourced quotation, spreadsheet, event-specif
 | `chaosx.events_log.window.event_details.white_peace` | Described candidate selection, event weighting, and repeated-firing suppression | Establishes peace without conquest or indemnity and preserves the progression from one minor settlement to broader settlements |
 | `chaosx.events_log.window.event_details.death` | Enumerated state-transfer operations, building removal, soul-power arithmetic, and a long mechanic checklist | Establishes the island disappearances, wasteland consequence, soul-powered spread, living-country responses, and the victory condition |
 
-Removed `chaosx.events_log.window.event_details.event_011_unavailable`. Its former selector consumer was replaced by the live Secret Alliance detail key in commit `9cfec72b3`, and the current exact-reference scan found no remaining consumer.
+Removed `chaosx.events_log.window.event_details.event_011_unavailable`. Its former selector consumer was replaced by the live Secret Alliance detail key in commit `9cfec72b3`, and the post-patch exact-reference scan found no remaining consumer.
 
 ## Consumer validation
 
-The current shared selector file `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt` references the five retained keys at lines 6091, 6095, 6440, 6449, and 6460. The separate pre-reveal Death key remains unchanged and is selected at line 6456.
+The shared selector file in the audited tree, `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`, referenced the five retained keys at lines 6091, 6095, 6440, 6449, and 6460. The separate pre-reveal Death key remained unchanged and was selected at line 6456.
 
 An exact repository reference scan found no consumer for the removed Event 11 fallback key outside the prior baseline report. No localisation key names, dynamic tokens, or scripted-localisation calls in the five retained rows were changed.
 

@@ -1,5 +1,7 @@
 # Spreadsheet Event Details Alignment Follow-up, 2026-08-22
 
+This handoff is retained evidence from the 2026-08-22 workbook pass. Its cell values and exporter results describe that pass only and do not establish current catalog status or approval.
+
 ## Scope
 
 Updated only the Event Details field on the `Events` sheet for Event 012 and Event 019.
@@ -10,11 +12,11 @@ No localisation, gameplay, GUI, interface, asset, status, cluster, or direct CSV
 
 ## Cells and exact localisation keys
 
-| Event ID | Event | Cell and field | Exact current in-game localisation key | Result |
+| Event ID | Event | Cell and field | In-game localisation key in audited tree | Result |
 | ---: | --- | --- | --- | --- |
-| 12 | Africa Is One | `Events!C13` — Details | `chaosx.events_log.window.event_details.africa` in `localisation/english/012_african_union_l_english.yml` | Replaced implementation/process prose with the exact current premise text. |
-| 19 | Soldiers from Nowhere | `Events!C20` — Details | `chaosx.events_log.window.event_details.infantry_spawn` in `localisation/english/019_infrantry_spawn_l_english.yml` | Replaced implementation/process prose with the exact current premise text. |
-| 16 | Brilliant Scientist | `Events!C17` — Details | `chaosx.events_log.window.event_details.brilliant_scientist` plus `GetDhrondanEventDetailClause` resolving `dhrondan_event_detail_clause` | Checked only; the stored character was already Unicode `D’Rhondan`, so no cell edit was made. |
+| 12 | Africa Is One | `Events!C13`: Details | `chaosx.events_log.window.event_details.africa` in `localisation/english/012_african_union_l_english.yml` | Replaced implementation/process prose with the premise text recorded in the audited tree. |
+| 19 | Soldiers from Nowhere | `Events!C20`: Details | `chaosx.events_log.window.event_details.infantry_spawn` in `localisation/english/019_infrantry_spawn_l_english.yml` | Replaced implementation/process prose with the premise text recorded in the audited tree. |
+| 16 | Brilliant Scientist | `Events!C17`: Details | `chaosx.events_log.window.event_details.brilliant_scientist` plus `GetDhrondanEventDetailClause` resolving `dhrondan_event_detail_clause` | Checked only. The stored character was already Unicode `D’Rhondan`, so no cell edit was made. |
 
 The Event 016 Details value remains otherwise unchanged, preserving its concurrent workbook and CSV content.
 
@@ -46,8 +48,8 @@ The checked Event 016 cell contains `D’Rhondan` and no replacement character.
 
 ## Risks and ambiguity
 
-No wording ambiguity remains for Events 012 or 019 because both Details cells now exactly match their current in-game premise keys.
+No wording ambiguity remained for Events 012 or 019 in the audited workbook because both Details cells matched their in-game premise keys.
 
-The earlier `D�Rhondan` appearance was terminal encoding mojibake, not a workbook replacement character; the workbook already contained U+2019 and was intentionally left unchanged.
+The earlier `D�Rhondan` appearance was terminal encoding mojibake, not a workbook replacement character. The workbook already contained U+2019 and was intentionally left unchanged.
 
 No blocked or `needs_user_review` cells were introduced.

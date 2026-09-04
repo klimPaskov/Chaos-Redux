@@ -1,5 +1,7 @@
 # Event 013 and Event 020 bounded cleanup
 
+> Historical implementation record dated 2026-08-22. The source findings and timed-out MCP attempt remain dated evidence. Current implementation, runtime behavior, and acceptance require current source and matching MCP evidence. Use [`documentation_state.md`](documentation_state.md) for the current reconciliation.
+
 Date: 2026-08-22
 
 ## Scope

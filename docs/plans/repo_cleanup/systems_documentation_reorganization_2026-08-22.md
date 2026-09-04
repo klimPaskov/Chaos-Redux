@@ -1,5 +1,7 @@
 # Shared-system documentation reorganization
 
+> Historical reorganization report dated 2026-08-22. Its move, link, and validation facts remain dated evidence. Current navigation coverage is recorded by the 2026-09-05 navigation handoff and [`documentation_state.md`](documentation_state.md), which govern the present documentation boundary.
+
 ## Scope
 
 This pass reorganized `docs/systems/` by subsystem ownership, repaired direct references to relocated documents, and added navigation indexes to every current systems subfolder.

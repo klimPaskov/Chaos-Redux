@@ -1,5 +1,7 @@
 # Events 1–20 catalog description synchronization
 
+> Historical evidence snapshot retained from the catalog synchronization tranche. This handoff preserves the tranche evidence and disposition. It is not a current runtime, approval, or implementation-status record.
+
 ## Outcome
 
 Events 1–20 evolution descriptions and all public world-end descriptions now resolve to complete, stable prose. Existing good prose was preserved. Dynamic mechanics-heavy bodies for Events 1, 2, and 11 were replaced only in the Event Details description selector. Locked or unrecorded generic body placeholders for Events 15, 18, and 20 no longer override canonical stage descriptions. The localisation tranche changed no title selector, gameplay behavior, GUI layout, workbook, CSV, asset, or Event 21+ event-specific file. The following workbook tranche synchronized the catalog content and regenerated all three CSV exports in the same cleanup commit.
@@ -128,7 +130,7 @@ Events 1–20 evolution descriptions and all public world-end descriptions now r
 ## Changed files and keys
 
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`: `GetEventsLogSelectedEvolutionBody` branches only.
-- `localisation/english/chaosx_gui_l_english.yml`: added nine stable catalog body keys for Events 1, 2, and 11; rewrote mapped stage bodies for Events 4, 5, 7, 9, and 10; rewrote `chaosx.events_log.world_end.black_plague.details`.
+- `localisation/english/chaosx_gui_l_english.yml`: added nine stable catalog body keys for Events 1, 2, and 11. Rewrote mapped stage bodies for Events 4, 5, 7, 9, and 10. Rewrote `chaosx.events_log.world_end.black_plague.details`.
 - Dynamic localisation added or fixed: stable stage-specific selector resolution for Events 1, 2, and 11. No dynamic token was removed from any other player-facing surface.
 
 ## Before and after
@@ -143,7 +145,7 @@ Before, several Event Details entries displayed effect lists, trigger or tier la
 
 ## Validation and skipped validation
 
-Focused validation checks every mapped title and body key, duplicate final body definitions, changed selector references, and UTF-8 BOM. Shared GUI source was not edited. No live-game validation was performed. The localisation tranche did not edit spreadsheet files; the following spreadsheet tranche synchronized the workbook and regenerated all three CSV exports.
+Focused validation checks every mapped title and body key, duplicate final body definitions, changed selector references, and UTF-8 BOM. Shared GUI source was not edited. No live-game validation was performed. The localisation tranche did not edit spreadsheet files. The following spreadsheet tranche synchronized the workbook and regenerated all three CSV exports.
 
 ## Unresolved wording decisions
 

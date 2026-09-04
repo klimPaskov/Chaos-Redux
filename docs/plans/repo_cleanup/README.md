@@ -2,11 +2,18 @@
 
 This directory contains the source prompts, bounded cleanup records, migration plans, completion evidence, and preserved audits for repository-wide Chaos Redux maintenance.
 
+## Current authority
+
+- [`documentation_state.md`](documentation_state.md) is the current entry and status ledger, bounded source map, contradiction register, and resume packet for this documentation batch. It does not replace distinct dated maps or reports.
+- [`subagent_handoffs/2026-09-05_documentation_batch01.md`](subagent_handoffs/2026-09-05_documentation_batch01.md) records the bounded cleanup handoff for the parent agent.
+- The 2026-09-05 navigation, catalog, instruction, role, and skill handoffs remain separate evidence owned by their named workers.
+- Historical prompts, reports, audits, and migration plans below preserve dated facts and do not grant current implementation authorization.
+
 ## Cleanup authority and completion
 
-- [`chaos_redux_repo_cleanup_master_prompt.md`](chaos_redux_repo_cleanup_master_prompt.md) is the cleanup scope and acceptance contract.
-- [`chaos_redux_repo_cleanup_goal_prompt.md`](chaos_redux_repo_cleanup_goal_prompt.md) records the goal invocation.
-- [`repo_cleanup_completion_report_2026-08-22.md`](repo_cleanup_completion_report_2026-08-22.md) records the completed broad cleanup pass and its remaining boundaries.
+- [`chaos_redux_repo_cleanup_master_prompt.md`](chaos_redux_repo_cleanup_master_prompt.md) preserves the earlier cleanup scope and acceptance contract.
+- [`chaos_redux_repo_cleanup_goal_prompt.md`](chaos_redux_repo_cleanup_goal_prompt.md) preserves the earlier goal invocation.
+- [`repo_cleanup_completion_report_2026-08-22.md`](repo_cleanup_completion_report_2026-08-22.md) records the bounded cleanup tranche and its dated remaining boundaries.
 
 ## Current maintenance records
 

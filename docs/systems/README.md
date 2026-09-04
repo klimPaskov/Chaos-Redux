@@ -17,10 +17,14 @@ This directory contains mechanics shared by multiple events or owned by the mod 
 ## Independent shared contracts
 
 - [`custom_achievements.md`](custom_achievements.md) documents the root-only achievement registry and shared achievement conventions.
+- [`civilian_transfer_system.md`](civilian_transfer_system.md) documents the exact civilian debit and credit primitive.
+- [`famine_system.md`](famine_system.md) and [`migration_system.md`](migration_system.md) document their separate lifecycle contracts and pending validation.
 - [`hoi4_agent_tools_mcp_integration.md`](hoi4_agent_tools_mcp_integration.md) documents the repository's HOI4 agent-tools integration.
 - [`liberation_release_coordinator.md`](liberation_release_coordinator.md) and [`startup_history_compatibility.md`](startup_history_compatibility.md) document shared country release and additive startup compatibility.
 - [`main_menu_redesign.md`](main_menu_redesign.md) and [`state_map_modes.md`](state_map_modes.md) document shared interface contracts outside the settings and Event Logs subsystems.
 - [`shared_autonomous_robot_system.md`](shared_autonomous_robot_system.md) documents the provider-neutral autonomous robot family shared by multiple events.
+- [`universal_cost_modifier.md`](universal_cost_modifier.md) documents shared cost quotes, payments, refunds, adapter coverage, and validation limits.
+- [`visual_consistency_repair.md`](visual_consistency_repair.md) records visual-family conventions and source-level repair audits.
 - [`world_threat_mechanic.md`](world_threat_mechanic.md) documents the cross-event world-threat aggregator and its source contract.
 
 ## Placement rules

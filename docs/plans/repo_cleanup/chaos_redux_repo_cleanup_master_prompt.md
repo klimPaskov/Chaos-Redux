@@ -1,5 +1,7 @@
 # Chaos Redux repository cleanup master prompt
 
+> Disposition on 2026-09-05: superseded for current task routing by [`documentation_state.md`](documentation_state.md). This file preserves the earlier broad cleanup contract and its historical safety rules. It remains reference material and does not grant new authorization beyond the current parent-assigned batch.
+
 Do a broad cleanup and maintainability pass across the Chaos Redux repository.
 
 This is a large repository-wide cleanup task. Inspect broadly, but patch carefully. The goal is to make the mod cleaner, more reusable, better organized, better documented, and less duplicated while preserving intended gameplay behavior.

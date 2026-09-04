@@ -2,6 +2,8 @@
 
 Date: 2026-07-29
 
+This document is retained evidence from the 2026-07-29 snapshot. Its reference evidence and helper inventory describe the inspected tree and do not establish current approval or runtime status.
+
 Scope: shared scripted systems and helper registries, with Event 001-020-specific references audited only where they consume a shared helper. GUI event-target usage was treated as valid repository practice and was not migrated, removed, or recommended for removal.
 
 ## Changed files
@@ -16,12 +18,12 @@ Scope: shared scripted systems and helper registries, with Event 001-020-specifi
 
 ## Reference evidence
 
-The complete repository search for `is_desert_state` found only these gameplay call sites:
+The complete repository search for `is_desert_state` recorded the following gameplay call sites in the inspected tree:
 
 - `events/026_industry_to_desert.txt:31,35,56,77,90` for Event 026 owned-state selection and factory relocation.
 - `common/scripted_effects/cbrn_doctrine_effects.txt:247` for the state-scope low-water cleanup multiplier.
 
-The only definition and documentation references are:
+The definition and documentation references in the inspected tree were:
 
 - `common/scripted_triggers/chaosx_dynamic_triggers.txt:78`.
 - `common/scripted_triggers/chaosx_dynamic_triggers.md:11,15`.

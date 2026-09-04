@@ -6,6 +6,8 @@ This is a read-only baseline audit of shared player-facing systems and Events 1 
 
 No localisation, scripted localisation, event, gameplay, GFX, spreadsheet, or GUI source file was changed. This report is the only file written by this pass.
 
+This document is retained evidence from the 2026-08-22 snapshot. Its counts, candidate classifications, and MCP blockers describe that audit only and do not establish current approval or implementation status.
+
 The interface constraint is absolute for this cleanup. Event-log details, selectors, content strings, and scripted-localisation helpers remain valid localisation cleanup surfaces. No recommendation in this report requires edits to `interface/*.gui`, layout, coordinates, click regions, or other visual interface structure.
 
 ## Required references and method
@@ -68,7 +70,9 @@ The following are visible from shared files but belong to Event 79 or 80 standal
 - `KMB_basin_concession_court`
 - `KMB_orefront_mobilization`
 
-Each base key also has a duplicated `_desc` key, for 28 collisions total. Most display names are identical, but the descriptions differ. `UWR_blacksite_command` also differs as `Blacksite Command Charter` in the small file and `Blacksite Command` in the consolidated Event 5 file. Confirm the consolidated Event 5 wording as canonical, then retire the entire smaller file. Deleting individual duplicate rows would leave only a header and provides no benefit.
+Each base key also has a duplicated `_desc` key, for 28 collisions total. Most display names are identical, but the descriptions differ. `UWR_blacksite_command` also differs as `Blacksite Command Charter` in the small file and `Blacksite Command` in the consolidated Event 5 file. The snapshot recommended confirming the consolidated Event 5 wording as canonical, then retiring the entire smaller file. Deleting individual duplicate rows would leave only a header and provides no benefit.
+
+Disposition: this 28-key retirement candidate was later implemented by `remaining_safe_cleanup_2026-08-24.md` in commit `0587e680c3`. The historical candidate is superseded by that named handoff. The surviving canonical file is `localisation/english/005_soviet_collapse_l_english.yml`, and this disposition does not approve any further wording change.
 
 ### Other duplicates
 
@@ -91,7 +95,7 @@ Quoted `localization_key = "literal text"` values and dynamic expressions such a
 
 `common/scripted_localisation/chaosx_scripted_localisation_debug.txt` contains 1,000 event-name branches. `common/scripted_localisation/chaosx_scripted_localisation_settings.txt` repeats nearly the same range in `GetSettingsEventName` and `GetLastEventName`, while `GetSelectedEventName` delegates to those helpers. Together these surfaces contain 2,998 branches for the 1 through 1000 range.
 
-Only 130 `chaosx.event_name.*` keys exist. The current replicated selectors can resolve to 864 undefined destinations, including ID 100, 98 IDs from 101 through 199, 764 IDs from 200 through 999, and ID 1000.
+Only 130 `chaosx.event_name.*` keys exist. The replicated selectors observed in the audit could resolve to 864 undefined destinations, including ID 100, 98 IDs from 101 through 199, 764 IDs from 200 through 999, and ID 1000.
 
 Do not repair this by adding 864 generic names. The safe architecture is one canonical event-name selector contract with an explicit unknown fallback, plus only the registered numbered events and documented shared system IDs. This requires the scripted-system owner because settings variables, manual debug entry, event-log callers, and fallbacks must be migrated together.
 
@@ -133,13 +137,13 @@ The visible canonical names for Events 1 through 20 come from `localisation/engl
 | 19 | Soldiers from Nowhere | `019_infrantry_spawn_l_english.yml` contains the typo `infrantry`, while docs use `019_infantry_spawn` | Defer file and namespace rename because of broad reference risk. Do not propagate the typo into new keys or docs |
 | 20 | The Black Plague | `020_black_death_l_english.yml` | Preserve the legacy namespace. Use The Black Plague for the numbered event and reserve Black Death for mechanic-specific text only where intended |
 
-`chaosx.events_log.window.event_details.event_011_unavailable: "Event 011 is currently unavailable."` is implementation-status wording and conflicts with Event 11's dynamic visible identity as Secret Alliance. Replace it only after confirming whether the details surface can expose the event name and premise without revealing secret alliance participants early.
+`chaosx.events_log.window.event_details.event_011_unavailable: "Event 011 is currently unavailable."` is implementation-status wording and conflicts with Event 11's dynamic visible identity as Secret Alliance. The replacement by the live Secret Alliance detail key is recorded in `localisation_cleanup_patch_2026-08-22.md` and commit `9cfec72b3`. Preserve the baseline's concern about early participant disclosure, and do not replay the old replacement instruction without a new owner decision.
 
 Spreadsheet and documentation mirrors must be updated in the same later prose tranche as Event Details. The workbook remains the only editable spreadsheet source, and the export-only CSV files must not be edited directly.
 
 ## File-encoding concerns
 
-No current encoding defect was found. All 288 English YAML files begin with a UTF-8 BOM, use `l_english:` as the first meaningful line, avoid `:0`, and contain no malformed parsed rows.
+No encoding defect was found in the audited snapshot. All 288 English YAML files began with a UTF-8 BOM, used `l_english:` as the first meaningful line, avoided `:0`, and contained no malformed localisation rows.
 
 The primary risk is regression during cleanup. Any file retirement, duplicate repair, or prose rewrite must preserve UTF-8 with BOM. Scripted-localisation `.txt` files do not use the YAML header rule.
 
@@ -195,10 +199,10 @@ These repairs are narrow enough for an owner-applied cleanup tranche after this 
 
 1. Add the missing `fallout.event_log.clean_certificate.detail` wrapper beside the existing Clean Certificate event-log strings.
 2. Replace the eight raw Event 1 `OK` consumers with one confirmed existing generic key or one scoped Event 1 option key.
-3. Confirm the consolidated Event 5 definitions as canonical and retire `005_soviet_collapse_custom_splinter_focus_expansion_l_english.yml` as a whole.
+3. The Event 5 duplicate-file retirement was later implemented by `remaining_safe_cleanup_2026-08-24.md` in commit `0587e680c3`. Use `localisation/english/005_soviet_collapse_l_english.yml` as the named canonical replacement. No replay is needed.
 4. Remove one identical `KRG_XENOBIOLOGICAL_ASCENDANCY` definition after selecting a canonical owner file.
 5. Change only the two CBRN death-count formatters from two decimals to integer display. Leave genuinely fractional values unchanged.
-6. Replace nonsourced semicolons in the opened Event 6, 15, 16, and 19 wording sets while preserving meaning and all dynamic tokens.
+6. The dated audit identified nonsourced semicolons in the opened Event 6, 15, 16, and 19 wording sets. Any remaining wording pass must preserve meaning and all dynamic tokens and needs a separate owner decision.
 
 Each patch must be followed by reference-aware localisation validation. Event and shared GUI consumers should also receive the mandatory read-only MCP inspection when the artifact storage blocker is cleared. No patch requires or authorizes interface layout edits.
 
@@ -215,7 +219,7 @@ The failure of per-event and GUI MCP evidence leaves rendered overflow, fallback
 1. Consolidate the three replicated event-name tables into one canonical selector and fallback contract with the scripted-system owner.
 2. Resolve `ZIN` versus `zin` through an idea-ID migration or an explicitly supported ownership decision. This crosses Event 68 and is not a bounded Events 1 through 20 repair.
 3. Rename legacy Event 17 through 20 files or namespaces only through a reference-complete migration. The Event 19 `infrantry` typo is real, but a filename-only correction would break consumers.
-4. Rewrite the shared Event Details premise text and mirror the accepted wording into the event-catalog workbook and exports. Keep all interface files read-only.
+4. Rewrite the shared Event Details premise text and mirror the selected wording into the event-catalog workbook and exports only after the owner records the acceptance basis. Keep all interface files read-only.
 5. Convert numeric CBRN status codes to meaningful scripted-localisation labels if the underlying values and fallback semantics are confirmed.
 6. Route Event 79 and 80 missing or empty news keys to their event owners.
 
@@ -223,7 +227,7 @@ The failure of per-event and GUI MCP evidence leaves rendered overflow, fallback
 
 The baseline provides source, key, encoding, dynamic-reference, GFX-token, documentation, and partial MCP event evidence. It does not provide successful per-event renders or GUI overflow screenshots because the event query timed out and GUI artifact creation reached the server storage limit.
 
-The canonical wording choice for the 28 Event 5 duplicates remains an owner decision because the descriptions differ even when most names match.
+The canonical wording choice for the 28 Event 5 duplicates remained an owner decision in this baseline because the descriptions differed even when most names matched. The later retirement handoff preserved the consolidated file as the named canonical source and did not record a new wording approval.
 
 The correct generic replacement for Event 1's `OK` remains an owner decision until the intended option tone is checked against its eight event contexts.
 

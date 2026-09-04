@@ -1,6 +1,7 @@
 # Super-event documentation
 
 Event-specific research is grouped by event. Shared quote and audio ledgers remain at this directory root.
+Research recommendations, source selections, and processed files do not by themselves establish acceptance or final runtime integration.
 
 | Event or system | Documentation |
 | --- | --- |
@@ -14,6 +15,9 @@ Event-specific research is grouped by event. Shared quote and audio ledgers rema
 | 016 Brilliant Scientist | [`016_brilliant_scientist/`](016_brilliant_scientist/) |
 | 018 Resources Found | [`018_resources_found/overview.md`](018_resources_found/overview.md) |
 | 020 Black Plague | [`020_black_plague/research.md`](020_black_plague/research.md) |
+| 023 Soviet Nuclear Bombs | [Audio research](023_sov_nuclear_bombs_super_event_research.md) |
+| 028 Asteroid Incoming | [Impact audio research](028_asteroid_incoming_super_event_research.md) |
+| 031 Random Terror | [Text research](031_random_terror_super_event_research.md) and [non-portrait asset research](031_random_terror/asset_source_research.md) |
 | Camp repression rework | [`system_camp_repression_rework_super_event_research.md`](system_camp_repression_rework_super_event_research.md) |
 
 Shared records:

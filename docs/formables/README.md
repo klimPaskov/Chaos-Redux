@@ -16,4 +16,5 @@ Consumer manifests control the state candidates, qualification helpers, visibili
 
 Generated images, masks, projections, and registry outputs are build artifacts and should be regenerated through the documented producers rather than edited as prose documentation.
 
-This directory documents shared formable infrastructure; event-specific design remains in the relevant `docs/specs/`, `docs/events/`, and `docs/plans/` packages.
+This directory documents shared formable infrastructure.
+Event-specific design remains in the relevant `docs/specs/`, `docs/events/`, and `docs/plans/` packages.

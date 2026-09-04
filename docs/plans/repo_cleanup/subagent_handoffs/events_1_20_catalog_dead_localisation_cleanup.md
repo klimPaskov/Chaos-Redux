@@ -1,5 +1,7 @@
 # Events 1–20 catalog dead-localisation cleanup
 
+> Historical evidence snapshot retained from the catalog cleanup tranche. This handoff preserves the tranche evidence and disposition. It is not a current runtime, approval, or implementation-status record.
+
 ## Scope
 
 This bounded follow-up removes description wrappers and localisation keys made obsolete by commit `eec9f7692`, which routed Events 1, 2, and 11 directly to stable catalog descriptions and stopped locked, unrecorded, prefire, and generic bodies from overriding canonical evolution prose.

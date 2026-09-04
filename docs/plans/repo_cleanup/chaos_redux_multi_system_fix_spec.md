@@ -1,5 +1,7 @@
 # Chaos Redux Implementation Spec: Union Collapse, Communist Spread, Holy Realm Rework, Final Silence, Zombie Raids, and Super-Event Audio
 
+> Disposition on 2026-09-05: unresolved historical proposal. This document preserves a dated multi-system design proposal, but its location, date, and implementation detail do not establish acceptance. Current source and MCP evidence do not promote these mechanics into an accepted implementation scope. Use [`documentation_state.md`](documentation_state.md) for the current cleanup boundary and task routing.
+
 ## Purpose
 
 This spec turns the rough request into an implementation-ready task for the Chaos Redux repo. The work is a multi-system update, not a single event patch. It touches event runtime logic, MTTH pacing, focus trees, decisions, scripted GUI settings, balance constants, civil-war handling, world-end logic, population/deaths tracking, super-event audio, focus filters, localisation, docs, and validation.
