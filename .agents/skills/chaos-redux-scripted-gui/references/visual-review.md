@@ -58,7 +58,9 @@ No reference button, meter, list, selection, or dynamic label may survive merely
 
 ## Scenario coverage and evidence
 
-Derive scenarios from the linked source and accepted behavior, not arbitrary combinations that cannot coexist.
+Derive normal review scenarios from the linked source and accepted behavior, with coherent values and controls that can coexist on the same route.
+Label synthetic maximum-control stress fixtures explicitly and keep them separate from route-valid normal screens; do not present mutually impossible controls as normal behavior.
+Trace every rendered number to declared scenario inputs and its actual display source; for costs, also trace the value to the affordability checks and payment contract.
 Keep exact fixture values, selection, visibility/enabled state, localisation, list rows, reference version, source identity, and resource identities in the evidence manifest.
 Use the live route's supported scenario fields and selectors; keep commentary and fixture provenance outside tool requests.
 
@@ -75,6 +77,8 @@ Record findings by element/state/resolution with before/after evidence and dispo
 
 Check that the player can identify the current state, main objective or pressure, next meaningful action, and its consequences without cross-referencing documentation.
 Keep related status, thresholds, costs, blocked reasons, and actions together, with concise labels and precise tooltips.
+Label counters truthfully as cumulative, periodic, or latest-receipt values, and distinguish all-cause totals from contributions attributed to the owning system.
+Show retained reserves as non-consumed requirements, separate from consumed costs, and make the actual debit clear.
 Apply the skill's mechanic-value/action budgets without using extra tabs to evade them.
 For gameplay controls, obtain the decision owner's evidence that shown costs and requirements match selection checks, payment, effect, AI equivalent, and cleanup; a visual pass cannot establish gameplay balance.
 For information-only or navigation controls, verify their declared purpose and enabled/selected behavior instead of demanding a gameplay effect.
