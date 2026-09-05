@@ -88,6 +88,8 @@ The reclamation-doctrine focus keeps its completed-military-archetype requiremen
 
 The central icon build report was reconciled after the runtime audit: all 45 achievement `runtime_sha256` entries in `docs/assets/006_independence_wave/_tooling/icon_build_report.json` now match the installed DDS bytes. No achievement image content changed in this evidence-only refresh.
 
+The four review-only animation GIFs were normalized in place to the registered 5 FPS cadence by changing only their Graphic Control Extension delay from 180 ms to 200 ms. Authored frame pixels, frame count, dimensions, runtime sheets, and static DDS fallbacks were not re-encoded or changed. The resulting GIF hashes are recorded in `docs/assets/006_independence_wave/animations/animation_build_report.json`, and the decoded previews retain their original frame content.
+
 ## Orphans and unresolved supplied inputs
 
 The portrait archive layout cleanup is recorded in `006_event6_portrait_archive_layout_cleanup_2026-09-03.md`; the parent now contains source masters only, while the two Dahomey source crops live under its existing `processed/` child.
@@ -106,7 +108,7 @@ Detailed scene evidence is in `006_event6_report_super_event_asset_audit_2026-09
 
 The focus MCP inspect/render succeeded for the parent tree at 184 focuses and 195 connectors with zero crossings, intersections, long connectors, and too-close same-row pairs after the reclamation-doctrine prerequisite reflow. The GUI MCP resolves `independence_wave_status_window` with 48 Event 006 elements at 1920x1080 and 1366x768, but its offline renderer does not execute scripted visibility or `buttonstate_blendframes.lua`, so it cannot prove live tab isolation or animation playback. No live Hearts of Iron IV launch, save/load, or in-game runtime claim was made.
 
-The remaining blockers are grounded portrait source and rights closure, GLC Castelao/Bóveda identity and rights closure, six documented unregistered portrait candidates, ASSET-046 identity and emblem coverage, BWX/chunk-3/NWE flag provenance and ownership receipts, optional GIF preview cadence parity, GUI dynamic-state and click-region proof, ASSET-005 slot-23 audio and firing reachability, and ASSET-006 reachability gates. Event 006 therefore remains `HOLD/PARTIAL`; this handoff documents the visual audit and concrete repairs but does not promote central admission or full event completion.
+The remaining blockers are grounded portrait source and rights closure, GLC Castelao/Bóveda identity and rights closure, six documented unregistered portrait candidates, ASSET-046 identity and emblem coverage, BWX/chunk-3/NWE flag provenance and ownership receipts, GUI dynamic-state and click-region proof, ASSET-005 slot-23 audio and firing reachability, and ASSET-006 reachability gates. Event 006 therefore remains `HOLD/PARTIAL`; this handoff documents the visual audit and concrete repairs but does not promote central admission or full event completion.
 
 ## Validation record
 

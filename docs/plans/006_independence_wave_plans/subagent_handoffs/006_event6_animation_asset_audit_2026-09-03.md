@@ -100,7 +100,7 @@ The GUI MCP does not execute `buttonstate_blendframes.lua`, so it cannot prove l
 
 ## Review-only timing note
 
-Runtime metadata is consistently 5 FPS, 200 ms per frame, looping, and `play_on_show = yes` on all four animated GFX definitions. The review GIFs contain the correct frame counts and state order but encode 180 ms per frame. GIFs are review-only and do not ship to the runtime consumer; this cadence difference is recorded as `needs_user_review` if exact preview/runtime timing parity is desired, but it does not affect the DDS consumer and was not changed in this audit.
+Runtime metadata is consistently 5 FPS, 200 ms per frame, looping, and `play_on_show = yes` on all four animated GFX definitions. The review GIFs contain the same frame counts and state order and now use 200 ms per frame as well. Their Graphic Control Extension delays were normalized in place without changing authored frame pixels, frame order, or runtime DDS consumers.
 
 ## Exact files changed
 
@@ -120,7 +120,7 @@ No GFX, GUI, scripted-GUI, gameplay, localisation, source-art, processed-art, sh
 
 Completed: ASSET-040, ASSET-041, ASSET-042, and ASSET-043 static/animated packages, runtime path and case checks, frame-count and frame-rate checks, alpha/anchor/bleed checks, state semantics trace, and native-size visual review.
 
-Needs user review: optional exact GIF preview cadence parity, because the existing review GIFs use 180 ms while the runtime contract is 200 ms; no runtime defect is implied.
+Needs user review: none for animation asset timing; dynamic GUI visibility, click regions, and blendframe playback remain a separate engine-evidence gate.
 
 Blocked: none.
 
