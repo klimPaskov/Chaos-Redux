@@ -747,6 +747,8 @@ gods_of_africa_build_need_profile = {
 		set_variable = { gods_of_africa_need_manpower = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_industry = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_emergency = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_need_transport = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.zero }
 		if = {
 			limit = {
 				OR = {
@@ -783,11 +785,24 @@ gods_of_africa_build_need_profile = {
 		if = {
 			limit = {
 			OR = {
-					NOT = { has_variable = africa_emergency_rule_debt }
-					check_variable = { africa_emergency_rule_debt > constant:africa_measure.high }
-				}
+				NOT = { has_variable = africa_emergency_rule_debt }
+				check_variable = { africa_emergency_rule_debt > constant:africa_measure.high }
+			}
 			}
 			set_variable = { gods_of_africa_need_emergency = constant:gods_of_africa_value.one }
+		}
+		if = {
+			limit = {
+				AND = {
+					has_equipment = { convoy_1 < constant:gods_of_africa_transaction.transport_amount }
+					has_equipment = { train_equipment < constant:gods_of_africa_transaction.transport_amount }
+				}
+			}
+			set_variable = { gods_of_africa_need_transport = constant:gods_of_africa_value.one }
+		}
+		if = {
+			limit = { has_equipment = { fighter_equipment_1 < constant:gods_of_africa_transaction.aircraft_amount } }
+			set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.one }
 		}
 	}
 }
@@ -840,6 +855,14 @@ gods_of_africa_select_demand_family = {
 					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.emergency_relief }
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
 				}
+				AND = {
+					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.transport }
+					check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero }
+				}
+				AND = {
+					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.aircraft }
+					check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
+				}
 			}
 		}
 		set_variable = { gods_of_africa_family_candidate = gods_of_africa_priority_family }
@@ -859,6 +882,14 @@ gods_of_africa_select_demand_family = {
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero } }
 		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.industry_repair }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero } }
+		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.transport }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero } }
+		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.aircraft }
 	}
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero } }
@@ -974,6 +1005,8 @@ gods_of_africa_calculate_demand_amount = {
 					check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
 			}
 		}
 		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.need_delta }
@@ -1272,6 +1305,8 @@ gods_of_africa_prepare_demand_for_participant = {
 					check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
 				}
 			}
 			gods_of_africa_select_demand_family = yes

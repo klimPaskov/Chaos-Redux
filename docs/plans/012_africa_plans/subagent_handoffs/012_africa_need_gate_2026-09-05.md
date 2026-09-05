@@ -6,7 +6,7 @@ Implemented in the current Event 012 source. The patch is bounded to the Gods-of
 
 ## Change
 
-`gods_of_africa_prepare_demand_for_participant` now calls `gods_of_africa_select_demand_family` only when the host's maintained land-equipment, fuel, manpower, industry, or emergency need flag is active. A configured priority wins only when it matches one of those active need lanes; otherwise the deterministic emergency-to-land fallback chooses an active lane. Priority values for optional families therefore cannot manufacture a demand with no corresponding maintained need.
+`gods_of_africa_prepare_demand_for_participant` now calls `gods_of_africa_select_demand_family` only when the host's maintained land-equipment, fuel, manpower, industry, emergency, transport, or aircraft need flag is active. A configured priority wins only when it matches one of those active need lanes; otherwise the deterministic emergency, fuel, manpower, industry, transport, aircraft, then land fallback chooses an active lane. Priority values for optional families therefore cannot manufacture a demand with no corresponding maintained need.
 
 ## Evidence
 
@@ -17,4 +17,4 @@ Implemented in the current Event 012 source. The patch is bounded to the Gods-of
 
 ## Limits
 
-The gate uses the five maintained need flags already owned by Event 012. Recognition, territory, alliance access, and other optional demand-family scaffolding remain separate until their own need signals are implemented.
+The gate uses the seven maintained need flags already owned by Event 012. Recognition, territory, alliance access, and other optional demand-family scaffolding remain separate until their own need signals are implemented.
