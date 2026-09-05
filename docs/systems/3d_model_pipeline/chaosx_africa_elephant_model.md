@@ -7,11 +7,11 @@ The Event 012 armoured elephant formation reuses the installed vanilla elephantr
 - `common/units/012_africa_elephant_forces.txt` sets `sprite = elephantry` on `chaosx_elephant`.
 - Host and Action 102 member templates leave `override_model` unset, allowing mixed divisions to resolve each regiment's own visual instead of forcing an elephant entity over the full division.
 - The vanilla consumer is `infantry_rifle_entity` from `gfx/entities/units_infantry.asset`, backed by `generic_western_european_rifle_infantry_mesh` and its registered `elephantry_idle` and `elephantry_move` variants.
-- The former custom registrations in `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `gfx/models/units/chaosx_elephants/animation_chaosx_elephants.asset` are retired. Remaining custom binary files and the evidence workspace are retained only for provenance and must not be synchronized.
+- The former custom registrations in `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `gfx/models/units/chaosx_elephants/animation_chaosx_elephants.asset` are retired. The approximately 340 MB evidence package under `docs/assets/012_africa/models_3d/elephant_shared_base/` is archival/non-promoted; retention or deletion is an explicit owner decision outside this documentation-only pass, and any remaining custom binaries must not be synchronized.
 
 ## Historical evidence
 
-The superseded package record remains under `docs/assets/012_africa/models_3d/elephant_shared_base/` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_elephant_meshy7_redo.md`. It documents the prior reference cleanup, provider feasibility checks, and candidate files, but it is not a current production or promotion target.
+The superseded package record is documented under `docs/assets/012_africa/models_3d/elephant_shared_base/` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_elephant_meshy7_redo.md`. It documents the prior reference cleanup, provider feasibility checks, and candidate files, but it is not a current production or promotion target; retention or deletion remains an owner decision.
 
 ## Gameplay and asset boundary
 
