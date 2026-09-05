@@ -1,0 +1,252 @@
+add_namespace = chaosx.nr12
+
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA
+# ============================================================================
+# These are Event 012-owned private clocks, reports, and relationship notices.
+# Gods of Africa has no normal-event pool entry and never uses Event 070.
+# ============================================================================
+
+# Private consolidation clock. The effect validates all gates again before it
+# commits the system, so a delayed job cannot activate after a defeat or a
+# terminal Event 012 settlement.
+country_event = {
+	id = chaosx.nr12.600
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = gods_of_africa_activation_clock_scheduled
+		africa_gods_of_africa_commit_activation = yes
+	}
+}
+
+# Proclamation is shown once to the African unifier after the delayed commit.
+country_event = {
+	id = chaosx.nr12.601
+	title = chaosx.nr12.601.t
+	desc = chaosx.nr12.601.d
+	picture = GFX_report_event_012_africa_gods_proclamation
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_host_is_active = yes
+		has_country_flag = gods_of_africa_activation_report_pending
+	}
+	option = {
+		name = chaosx.nr12.601.a
+		custom_effect_tooltip = gods_of_africa_activation_effect_tt
+		clr_country_flag = gods_of_africa_activation_report_pending
+	}
+}
+
+# One introduction per enrolled participant. It exposes exactly the two public
+# values while keeping capacity, conduct, and punishment formulae hidden.
+country_event = {
+	id = chaosx.nr12.602
+	title = chaosx.nr12.602.t
+	desc = chaosx.nr12.602.d
+	picture = GFX_report_event_012_africa_gods_introduction
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_intro_pending
+	}
+	option = {
+		name = chaosx.nr12.602.a
+		custom_effect_tooltip = gods_of_africa_introduction_effect_tt
+		clr_country_flag = gods_of_africa_intro_pending
+	}
+}
+
+# A demand notice is deliberately short. Resolution remains in the ordinary
+# decision category and mission, which keeps AI and human response paths equal.
+country_event = {
+	id = chaosx.nr12.603
+	title = chaosx.nr12.603.t
+	desc = chaosx.nr12.603.d
+	picture = GFX_report_event_012_africa_gods_demand
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_demand_active
+	}
+	option = {
+		name = chaosx.nr12.603.a
+		custom_effect_tooltip = gods_of_africa_demand_effect_tt
+	}
+}
+
+# Response receipt. The participant is told what changed, while the detailed
+# transaction record remains hidden and available to the Africa-side ledger.
+country_event = {
+	id = chaosx.nr12.604
+	title = chaosx.nr12.604.t
+	desc = chaosx.nr12.604.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_outcome_report_pending
+	}
+	option = {
+		name = chaosx.nr12.604.a
+		custom_effect_tooltip = gods_of_africa_response_effect_tt
+		clr_country_flag = gods_of_africa_outcome_report_pending
+	}
+}
+
+# Punishment report. A failed manifestation is still a meaningful outcome; the
+# event does not imply that every threat becomes a catastrophe.
+country_event = {
+	id = chaosx.nr12.605
+	title = chaosx.nr12.605.t
+	desc = chaosx.nr12.605.d
+	picture = GFX_report_event_012_africa_gods_punishment
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_punishment_report_pending
+	}
+	option = {
+		name = chaosx.nr12.605.a
+		custom_effect_tooltip = gods_of_africa_punishment_effect_tt
+		clr_country_flag = gods_of_africa_punishment_report_pending
+	}
+}
+
+# Owner-local monthly scheduler. It is never attached to a world on_action.
+country_event = {
+	id = chaosx.nr12.606
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = gods_of_africa_owner_clock_scheduled
+		africa_gods_of_africa_owner_tick = yes
+	}
+}
+
+# Owner-local quarterly onboarding review. The effect performs one bounded
+# major/player pass and removes invalid records from the frozen queue.
+country_event = {
+	id = chaosx.nr12.607
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		clr_country_flag = gods_of_africa_registry_clock_scheduled
+		africa_gods_of_africa_registry_review = yes
+	}
+}
+
+# Final settlement receipt. It is fired per participant after ordinary demands
+# are stopped and the hidden relationship result has been committed.
+country_event = {
+	id = chaosx.nr12.608
+	title = chaosx.nr12.608.t
+	desc = chaosx.nr12.608.d
+	picture = GFX_report_event_012_africa_gods_settlement
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_settlement_report_pending
+	}
+	option = {
+		name = chaosx.nr12.608.a
+		custom_effect_tooltip = gods_of_africa_settlement_effect_tt
+		hidden_effect = { gods_of_africa_acknowledge_settlement = yes }
+	}
+}
+
+# Defiance is separate from a single refusal and therefore receives its own
+# report and retaliation memory.
+country_event = {
+	id = chaosx.nr12.609
+	title = chaosx.nr12.609.t
+	desc = chaosx.nr12.609.d
+	picture = GFX_report_event_012_africa_gods_defiance
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_defiance_report_pending
+	}
+	option = {
+		name = chaosx.nr12.609.a
+		custom_effect_tooltip = gods_of_africa_defiance_effect_tt
+		clr_country_flag = gods_of_africa_defiance_report_pending
+	}
+}
+
+# Africa-side protection receipt, shown only when a paid protection action
+# actually changes the selected participant's record.
+country_event = {
+	id = chaosx.nr12.610
+	title = chaosx.nr12.610.t
+	desc = chaosx.nr12.610.d
+	picture = GFX_report_event_012_africa_gods_protection
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_host_is_active = yes
+		has_country_flag = gods_of_africa_protection_report_pending
+	}
+	option = {
+		name = chaosx.nr12.610.a
+		custom_effect_tooltip = gods_of_africa_protection_effect_tt
+		clr_country_flag = gods_of_africa_protection_report_pending
+	}
+}
+
+# Reconciliation timeout receipt. It keeps a missed window visible without
+# creating a second punishment or changing the defiance cleanup contract.
+country_event = {
+	id = chaosx.nr12.611
+	title = chaosx.nr12.611.t
+	desc = chaosx.nr12.611.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_reconciliation_failure_report_pending
+	}
+	option = {
+		name = chaosx.nr12.611.a
+		custom_effect_tooltip = gods_of_africa_reconciliation_failure_effect_tt
+		clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
+	}
+}
+
+# A host rejection is visible to the participant but does not convert the
+# negotiated offer into a refusal or a second demand failure.
+country_event = {
+	id = chaosx.nr12.612
+	title = chaosx.nr12.612.t
+	desc = chaosx.nr12.612.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_substitute_rejection_report_pending
+	}
+	option = {
+		name = chaosx.nr12.612.a
+		custom_effect_tooltip = gods_of_africa_reject_substitute_effect_tt
+		clr_country_flag = gods_of_africa_substitute_rejection_report_pending
+	}
+}
+
+# A wartime contract is cancelled once by the owner-local ledger. The report
+# keeps the pause visible without turning the cancellation into a second
+# ordinary demand failure.
+country_event = {
+	id = chaosx.nr12.613
+	title = chaosx.nr12.613.t
+	desc = chaosx.nr12.613.d
+	picture = GFX_report_event_012_africa_gods_response
+	is_triggered_only = yes
+	trigger = {
+		africa_gods_of_africa_participant_is_current = yes
+		has_country_flag = gods_of_africa_wartime_demand_report_pending
+	}
+	option = {
+		name = chaosx.nr12.613.a
+		custom_effect_tooltip = gods_of_africa_wartime_demand_cancelled_effect_tt
+		clr_country_flag = gods_of_africa_wartime_demand_report_pending
+	}
+}

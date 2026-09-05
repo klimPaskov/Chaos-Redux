@@ -12,7 +12,6 @@
 # - gods_of_africa_current_demand_cost (icon-first dynamic cost text)
 # - gods_of_africa_reconciliation_can_be_paid (reconciliation cost gate)
 # - gods_of_africa_reconciliation_cost (icon-first dynamic cost text)
-# - gods_of_africa_selected_participant (host selected-target event target)
 # - gods_of_africa_participants (host-owned bounded participant registry)
 #
 # The parent-owned scripted effects implement all state mutation, debit/credit,
@@ -24,13 +23,13 @@ gods_of_africa_participant_category = {
 	gods_of_africa_demand_mission = {
 		name = gods_of_africa_demand_mission
 		desc = gods_of_africa_demand_mission_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_gods_fulfill_demand
 		activation = { always = no }
-		days_mission_timeout = var:gods_of_africa_demand_duration_days
+		days_mission_timeout = constant:gods_of_africa_demand.maximum_mission_timeout
 		is_good = no
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_active_demand
+			has_country_flag = gods_of_africa_demand_active
 			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
 		# Response decisions resolve the mission; it is intentionally not an
@@ -39,25 +38,59 @@ gods_of_africa_participant_category = {
 		cancel_trigger = {
 			OR = {
 				NOT = { gods_of_africa_participant_generation_is_current = yes }
-				NOT = { has_country_flag = gods_of_africa_active_demand }
+				NOT = { has_country_flag = gods_of_africa_demand_active }
 				has_country_flag = gods_of_africa_defiant
 				has_country_flag = gods_of_africa_final_settlement_committed
 			}
+		}
+		cancel_effect = {
+			hidden_effect = { remove_mission = gods_of_africa_demand_mission }
 		}
 		complete_effect = { gods_of_africa_comply_demand = yes }
 		timeout_effect = { gods_of_africa_refuse_demand = yes }
 		ai_will_do = { base = 1 }
 	}
 
+	# A defiant participant receives a bounded reconciliation window. The
+	# participant can submit reparations during the window; the host's target
+	# decision remains the acceptance gate, while timeout records failure.
+	gods_of_africa_reconciliation_mission = {
+		name = gods_of_africa_reconciliation_mission
+		desc = gods_of_africa_reconciliation_mission_desc
+		icon = GFX_decision_012_africa_gods_public_pardon
+		activation = { always = no }
+		days_mission_timeout = constant:gods_of_africa_timing.defiance_review_days
+		is_good = no
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_defiant
+			has_country_flag = gods_of_africa_reconciliation_pending
+		}
+		available = { hidden_trigger = { always = no } }
+		cancel_trigger = {
+			OR = {
+				NOT = { gods_of_africa_participant_generation_is_current = yes }
+				NOT = { has_country_flag = gods_of_africa_defiant }
+				NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+				has_war = yes
+				has_country_flag = gods_of_africa_final_settlement_committed
+			}
+		}
+		cancel_effect = { hidden_effect = { remove_mission = gods_of_africa_reconciliation_mission } }
+		complete_effect = { hidden_effect = { gods_of_africa_complete_reconciliation = yes } }
+		timeout_effect = { gods_of_africa_fail_reconciliation = yes }
+		ai_will_do = { base = 1 }
+	}
+
 	gods_of_africa_comply_demand = {
 		name = gods_of_africa_comply_demand
 		desc = gods_of_africa_comply_demand_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_gods_fulfill_demand
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_active_demand
-			NOT = { has_country_flag = gods_of_africa_defiant }
+			has_country_flag = gods_of_africa_demand_active
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
+			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
 		available = {
 			gods_of_africa_current_demand_can_be_paid = yes
@@ -81,15 +114,47 @@ gods_of_africa_participant_category = {
 		}
 	}
 
+	gods_of_africa_partial_compliance = {
+		name = gods_of_africa_partial_compliance
+		desc = gods_of_africa_partial_compliance_desc
+		icon = GFX_decision_012_africa_gods_fulfill_demand
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_demand_active
+			NOT = { has_country_flag = gods_of_africa_negotiation_open }
+			NOT = { has_country_flag = gods_of_africa_defiant }
+		}
+		available = { gods_of_africa_partial_payment_is_affordable = yes }
+		custom_cost_trigger = { gods_of_africa_partial_payment_is_affordable = yes }
+		custom_cost_text = gods_of_africa_partial_payment_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_partial_compliance_effect_tt
+			hidden_effect = { gods_of_africa_partial_compliance = yes }
+		}
+		ai_will_do = {
+			base = 15
+			modifier = {
+				factor = 0.25
+				gods_of_africa_current_demand_can_be_paid = yes
+			}
+			modifier = {
+				factor = 1.5
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+		}
+	}
+
 	gods_of_africa_negotiate_demand = {
 		name = gods_of_africa_negotiate_demand
 		desc = gods_of_africa_negotiate_demand_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_gods_request_extension
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_active_demand
-			NOT = { has_country_flag = gods_of_africa_defiant }
+			has_country_flag = gods_of_africa_demand_active
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
+			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
 		available = {
 			gods_of_africa_participant_can_request_extension = yes
@@ -100,45 +165,166 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_negotiate_demand_effect_tt
 			hidden_effect = { gods_of_africa_negotiate_demand = yes }
 		}
-		ai_will_do = { base = 20 }
+		ai_will_do = {
+			base = 20
+			modifier = {
+				factor = 2
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+			modifier = {
+				factor = 0.5
+				has_variable = gods_of_africa_wrath
+				check_variable = { gods_of_africa_wrath > constant:gods_of_africa_wrath.vengeful }
+			}
+		}
 	}
 
 	gods_of_africa_substitute_demand = {
 		name = gods_of_africa_substitute_demand
 		desc = gods_of_africa_substitute_demand_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_decision_012_africa_gods_offer_substitute
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_active_demand
+			has_country_flag = gods_of_africa_demand_active
 			has_country_flag = gods_of_africa_negotiation_open
+			NOT = { has_variable = gods_of_africa_substitute_slot_count }
 			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
 		available = {
 			gods_of_africa_participant_can_offer_substitute = yes
-			gods_of_africa_current_demand_can_be_paid = yes
+			gods_of_africa_substitute_offer_is_affordable = yes
 		}
 		custom_cost_trigger = {
-			gods_of_africa_current_demand_can_be_paid = yes
+			gods_of_africa_substitute_offer_is_affordable = yes
 		}
-		custom_cost_text = gods_of_africa_current_demand_cost
+		custom_cost_text = gods_of_africa_substitute_cost
 		cost = 0
 		fire_only_once = no
 		complete_effect = {
 			custom_effect_tooltip = gods_of_africa_substitute_demand_effect_tt
 			hidden_effect = { gods_of_africa_substitute_demand = yes }
 		}
-		ai_will_do = { base = 10 }
+		ai_will_do = {
+			base = 10
+			modifier = {
+				factor = 2
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+			modifier = {
+				factor = 0.5
+				has_variable = gods_of_africa_wrath
+				check_variable = { gods_of_africa_wrath > constant:gods_of_africa_wrath.vengeful }
+			}
+		}
+	}
+
+	gods_of_africa_substitute_demand_slot_1 = {
+		name = gods_of_africa_substitute_demand_slot_1
+		desc = gods_of_africa_substitute_demand_slot_1_desc
+		icon = GFX_decision_012_africa_gods_offer_substitute
+		visible = {
+			gods_of_africa_substitute_slot_1_is_valid = yes
+			NOT = { has_country_flag = gods_of_africa_defiant }
+		}
+		available = { gods_of_africa_substitute_slot_1_is_valid = yes }
+		custom_cost_trigger = { gods_of_africa_substitute_slot_1_is_valid = yes }
+		custom_cost_text = gods_of_africa_substitute_slot_1_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_substitute_demand_slot_1_effect_tt
+			hidden_effect = { gods_of_africa_substitute_demand_slot_1 = yes }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = {
+				factor = 2
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+		}
+	}
+
+	gods_of_africa_substitute_demand_slot_2 = {
+		name = gods_of_africa_substitute_demand_slot_2
+		desc = gods_of_africa_substitute_demand_slot_2_desc
+		icon = GFX_decision_012_africa_gods_offer_substitute
+		visible = {
+			gods_of_africa_substitute_slot_2_is_valid = yes
+			NOT = { has_country_flag = gods_of_africa_defiant }
+		}
+		available = { gods_of_africa_substitute_slot_2_is_valid = yes }
+		custom_cost_trigger = { gods_of_africa_substitute_slot_2_is_valid = yes }
+		custom_cost_text = gods_of_africa_substitute_slot_2_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_substitute_demand_slot_2_effect_tt
+			hidden_effect = { gods_of_africa_substitute_demand_slot_2 = yes }
+		}
+		ai_will_do = {
+			base = 9
+			modifier = {
+				factor = 2
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+		}
+	}
+
+	gods_of_africa_substitute_demand_slot_3 = {
+		name = gods_of_africa_substitute_demand_slot_3
+		desc = gods_of_africa_substitute_demand_slot_3_desc
+		icon = GFX_decision_012_africa_gods_offer_substitute
+		visible = {
+			gods_of_africa_substitute_slot_3_is_valid = yes
+			NOT = { has_country_flag = gods_of_africa_defiant }
+		}
+		available = { gods_of_africa_substitute_slot_3_is_valid = yes }
+		custom_cost_trigger = { gods_of_africa_substitute_slot_3_is_valid = yes }
+		custom_cost_text = gods_of_africa_substitute_slot_3_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_substitute_demand_slot_3_effect_tt
+			hidden_effect = { gods_of_africa_substitute_demand_slot_3 = yes }
+		}
+		ai_will_do = {
+			base = 8
+			modifier = {
+				factor = 2
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+		}
+	}
+
+	gods_of_africa_return_to_demand = {
+		name = gods_of_africa_return_to_demand
+		desc = gods_of_africa_return_to_demand_desc
+		icon = GFX_decision_012_africa_gods_request_extension
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_demand_active
+			has_country_flag = gods_of_africa_negotiation_open
+			NOT = { has_country_flag = gods_of_africa_defiant }
+		}
+		available = { always = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_return_to_demand_effect_tt
+			hidden_effect = { gods_of_africa_return_from_negotiation = yes }
+		}
+		ai_will_do = { base = 5 }
 	}
 
 	gods_of_africa_refuse_demand = {
 		name = gods_of_africa_refuse_demand
 		desc = gods_of_africa_refuse_demand_desc
-		icon = GFX_decision_generic_break_treaty
+		icon = GFX_decision_012_africa_gods_refuse_demand
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
-			has_country_flag = gods_of_africa_active_demand
-			NOT = { has_country_flag = gods_of_africa_defiant }
+			has_country_flag = gods_of_africa_demand_active
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
+			NOT = { has_country_flag = gods_of_africa_defiant }
 		}
 		available = { always = yes }
 		cost = 0
@@ -147,17 +333,32 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_refuse_demand_effect_tt
 			hidden_effect = { gods_of_africa_refuse_demand = yes }
 		}
-		ai_will_do = { base = 5 }
+		ai_will_do = {
+			base = 5
+			modifier = {
+				factor = 3
+				NOT = { gods_of_africa_current_demand_can_be_paid = yes }
+			}
+			modifier = {
+				factor = 0.5
+				gods_of_africa_current_demand_can_be_paid = yes
+			}
+		}
 	}
 
 	gods_of_africa_permanent_defiance = {
 		name = gods_of_africa_permanent_defiance
 		desc = gods_of_africa_permanent_defiance_desc
-		icon = GFX_decision_generic_prepare_for_war
+		icon = GFX_decision_012_africa_gods_defy
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
 			NOT = { has_country_flag = gods_of_africa_defiant }
+			NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
 			NOT = { has_country_flag = gods_of_africa_negotiation_open }
+			OR = {
+				has_country_flag = gods_of_africa_demand_active
+				has_variable = gods_of_africa_wrath
+			}
 		}
 		available = { gods_of_africa_participant_can_defy = yes }
 		cost = 0
@@ -166,13 +367,114 @@ gods_of_africa_participant_category = {
 			custom_effect_tooltip = gods_of_africa_permanent_defiance_effect_tt
 			hidden_effect = { gods_of_africa_permanent_defiance = yes }
 		}
-		ai_will_do = { base = 0 }
+		ai_will_do = {
+			# Defiance is a real AI option, but remains rarer than ordinary
+			# responses and is suppressed while reconciliation is pending.
+			base = 5
+			modifier = {
+				factor = 4
+				has_country_flag = gods_of_africa_offender
+			}
+			modifier = {
+				factor = 3
+				has_variable = gods_of_africa_wrath
+				check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_wrath.hostile compare = greater_than_or_equals }
+			}
+			modifier = {
+				factor = 2
+				has_country_flag = gods_of_africa_demand_active
+			}
+			modifier = {
+				factor = 0
+				has_country_flag = gods_of_africa_reconciliation_pending
+			}
+		}
+	}
+
+	gods_of_africa_prepare_defensive_defiance = {
+		name = gods_of_africa_prepare_defensive_defiance
+		desc = gods_of_africa_prepare_defensive_defiance_desc
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_defiant
+		}
+		available = { gods_of_africa_can_prepare_defensive_defiance = yes }
+		custom_cost_trigger = { gods_of_africa_can_prepare_defensive_defiance = yes }
+		custom_cost_text = gods_of_africa_defensive_preparation_cost
+		cost = 0
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prepare_defensive_defiance_effect_tt
+			hidden_effect = { gods_of_africa_prepare_defensive_defiance = yes }
+		}
+		ai_will_do = { base = 10 }
+	}
+
+	gods_of_africa_harden_stockpiles = {
+		name = gods_of_africa_harden_stockpiles
+		desc = gods_of_africa_harden_stockpiles_desc
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_defiant
+		}
+		available = { gods_of_africa_can_harden_stockpiles = yes }
+		custom_cost_trigger = { gods_of_africa_can_harden_stockpiles = yes }
+		custom_cost_text = gods_of_africa_defensive_stockpile_cost
+		cost = 0
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_harden_stockpiles_effect_tt
+			hidden_effect = { gods_of_africa_harden_stockpiles = yes }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	gods_of_africa_secure_transport = {
+		name = gods_of_africa_secure_transport
+		desc = gods_of_africa_secure_transport_desc
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_defiant
+		}
+		available = { gods_of_africa_can_secure_transport = yes }
+		custom_cost_trigger = { gods_of_africa_can_secure_transport = yes }
+		custom_cost_text = gods_of_africa_defensive_transport_cost
+		cost = 0
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_secure_transport_effect_tt
+			hidden_effect = { gods_of_africa_secure_transport = yes }
+		}
+		ai_will_do = { base = 8 }
+	}
+
+	gods_of_africa_prepare_countermeasures = {
+		name = gods_of_africa_prepare_countermeasures
+		desc = gods_of_africa_prepare_countermeasures_desc
+		icon = GFX_decision_012_africa_gods_escalate_offense
+		visible = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_defiant
+		}
+		available = { gods_of_africa_can_prepare_countermeasures = yes }
+		custom_cost_trigger = { gods_of_africa_can_prepare_countermeasures = yes }
+		custom_cost_text = gods_of_africa_defensive_countermeasure_cost
+		cost = 0
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prepare_countermeasures_effect_tt
+			hidden_effect = { gods_of_africa_prepare_countermeasures = yes }
+		}
+		ai_will_do = { base = 8 }
 	}
 
 	gods_of_africa_seek_reconciliation = {
 		name = gods_of_africa_seek_reconciliation
 		desc = gods_of_africa_seek_reconciliation_desc
-		icon = GFX_decision_generic_political_address
+		icon = GFX_decision_012_africa_gods_public_pardon
 		visible = {
 			gods_of_africa_participant_generation_is_current = yes
 			has_country_flag = gods_of_africa_defiant
@@ -200,7 +502,7 @@ gods_of_africa_host_category = {
 	gods_of_africa_choose_reciprocal_covenant = {
 		name = gods_of_africa_choose_reciprocal_covenant
 		desc = gods_of_africa_choose_reciprocal_covenant_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_goal_012_africa_gods_reciprocal_doctrine
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
 			check_variable = { var = gods_of_africa_doctrine value = constant:gods_of_africa_value.zero compare = equals }
@@ -218,7 +520,7 @@ gods_of_africa_host_category = {
 	gods_of_africa_choose_sovereign_exaction = {
 		name = gods_of_africa_choose_sovereign_exaction
 		desc = gods_of_africa_choose_sovereign_exaction_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_goal_012_africa_gods_extractive_doctrine
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
 			check_variable = { var = gods_of_africa_doctrine value = constant:gods_of_africa_value.zero compare = equals }
@@ -236,7 +538,7 @@ gods_of_africa_host_category = {
 	gods_of_africa_choose_strategic_ambiguity = {
 		name = gods_of_africa_choose_strategic_ambiguity
 		desc = gods_of_africa_choose_strategic_ambiguity_desc
-		icon = GFX_decision_012_africa_charter_ledger
+		icon = GFX_goal_012_africa_gods_judgment
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
 			check_variable = { var = gods_of_africa_doctrine value = constant:gods_of_africa_value.zero compare = equals }
@@ -251,10 +553,138 @@ gods_of_africa_host_category = {
 		ai_will_do = { base = 10 }
 	}
 
+	# Priority is a host policy choice, not a country selector. Each policy is
+	# deliberately separate so the current family is visible and auditable.
+	gods_of_africa_prioritize_land = {
+		name = gods_of_africa_prioritize_land
+		desc = gods_of_africa_prioritize_land_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_land_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.land_equipment }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_prioritize_fuel = {
+		name = gods_of_africa_prioritize_fuel
+		desc = gods_of_africa_prioritize_fuel_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_fuel_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.fuel }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_prioritize_manpower = {
+		name = gods_of_africa_prioritize_manpower
+		desc = gods_of_africa_prioritize_manpower_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_manpower_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.manpower }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_prioritize_industry = {
+		name = gods_of_africa_prioritize_industry
+		desc = gods_of_africa_prioritize_industry_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_industry_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.industry_repair }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_prioritize_transport = {
+		name = gods_of_africa_prioritize_transport
+		desc = gods_of_africa_prioritize_transport_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_transport_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.transport }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_prioritize_air_defense = {
+		name = gods_of_africa_prioritize_air_defense
+		desc = gods_of_africa_prioritize_air_defense_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_air_defense_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.aircraft }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_prioritize_emergency = {
+		name = gods_of_africa_prioritize_emergency
+		desc = gods_of_africa_prioritize_emergency_desc
+		icon = GFX_decision_012_africa_gods_set_priority
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = { gods_of_africa_can_change_priority = yes }
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_prioritize_emergency_effect_tt
+			hidden_effect = {
+				set_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.emergency_relief }
+				gods_of_africa_set_priority = yes
+			}
+		}
+		ai_will_do = { base = 2 }
+	}
+
 	gods_of_africa_grant_leniency = {
 		name = gods_of_africa_grant_leniency
 		desc = gods_of_africa_grant_leniency_desc
-		icon = GFX_decision_generic_political_address
+		icon = GFX_decision_012_africa_gods_grant_leniency
 		target_array = gods_of_africa_participants
 		activation = {
 			gods_of_africa_active_host_is_valid = yes
@@ -266,29 +696,23 @@ gods_of_africa_host_category = {
 			FROM = {
 				exists = yes
 				has_country_flag = gods_of_africa_participant
-				has_country_flag = gods_of_africa_active_demand
+				has_country_flag = gods_of_africa_demand_active
 				has_country_flag = gods_of_africa_offender
 				NOT = { has_country_flag = gods_of_africa_defiant }
-			}
-			OR = {
-				ROOT = { is_ai = yes }
-				FROM = { tag = event_target:gods_of_africa_selected_participant }
+				NOT = { has_country_flag = gods_of_africa_leniency_used }
 			}
 		}
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
-			OR = {
-				is_ai = yes
-				has_event_target = gods_of_africa_selected_participant
-			}
 		}
 		available = {
 			FROM = {
 				exists = yes
 				has_country_flag = gods_of_africa_participant
-				has_country_flag = gods_of_africa_active_demand
+				has_country_flag = gods_of_africa_demand_active
 				has_country_flag = gods_of_africa_offender
 				NOT = { has_country_flag = gods_of_africa_defiant }
+				NOT = { has_country_flag = gods_of_africa_leniency_used }
 			}
 		}
 		cost = 0
@@ -303,7 +727,7 @@ gods_of_africa_host_category = {
 	gods_of_africa_protect_partner = {
 		name = gods_of_africa_protect_partner
 		desc = gods_of_africa_protect_partner_desc
-		icon = GFX_decision_generic_protection
+		icon = GFX_decision_012_africa_gods_protect_partner
 		target_array = gods_of_africa_participants
 		activation = {
 			gods_of_africa_active_host_is_valid = yes
@@ -316,24 +740,18 @@ gods_of_africa_host_category = {
 				exists = yes
 				has_country_flag = gods_of_africa_participant
 				NOT = { has_country_flag = gods_of_africa_defiant }
-			}
-			OR = {
-				ROOT = { is_ai = yes }
-				FROM = { tag = event_target:gods_of_africa_selected_participant }
+				gods_of_africa_protection_package_is_affordable = yes
 			}
 		}
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
-			OR = {
-				is_ai = yes
-				has_event_target = gods_of_africa_selected_participant
-			}
 		}
 		available = {
 			FROM = {
 				exists = yes
-				has_country_flag = gods_of_africa_participant
+					has_country_flag = gods_of_africa_participant
 				NOT = { has_country_flag = gods_of_africa_defiant }
+				gods_of_africa_protection_package_is_affordable = yes
 			}
 		}
 		cost = 0
@@ -345,10 +763,72 @@ gods_of_africa_host_category = {
 		ai_will_do = { base = 1 }
 	}
 
+	gods_of_africa_accept_substitute = {
+		name = gods_of_africa_accept_substitute
+		desc = gods_of_africa_accept_substitute_desc
+		icon = GFX_decision_012_africa_gods_offer_substitute
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = { gods_of_africa_active_host_is_valid = yes }
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_substitute_offer_is_pending = yes
+			}
+		}
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_substitute_offer_is_pending = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_accept_substitute_effect_tt
+			hidden_effect = { FROM = { gods_of_africa_accept_substitute = yes } }
+		}
+		ai_will_do = { base = 2 }
+	}
+
+	gods_of_africa_reject_substitute = {
+		name = gods_of_africa_reject_substitute
+		desc = gods_of_africa_reject_substitute_desc
+		icon = GFX_decision_012_africa_gods_refuse_demand
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = { gods_of_africa_active_host_is_valid = yes }
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_substitute_offer_is_pending = yes
+			}
+		}
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_substitute_offer_is_pending = yes
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_reject_substitute_effect_tt
+			hidden_effect = { FROM = { gods_of_africa_reject_substitute = yes } }
+		}
+		ai_will_do = { base = 1 }
+	}
+
 	gods_of_africa_commit_settlement = {
 		name = gods_of_africa_commit_settlement
 		desc = gods_of_africa_commit_settlement_desc
-		icon = GFX_decision_generic_break_treaty
+		icon = GFX_goal_012_africa_gods_continental_settlement
 		target_array = gods_of_africa_participants
 		activation = {
 			gods_of_africa_active_host_is_valid = yes
@@ -362,17 +842,9 @@ gods_of_africa_host_category = {
 				has_country_flag = gods_of_africa_participant
 				has_country_flag = gods_of_africa_reconciliation_pending
 			}
-			OR = {
-				ROOT = { is_ai = yes }
-				FROM = { tag = event_target:gods_of_africa_selected_participant }
-			}
 		}
 		visible = {
 			gods_of_africa_active_host_is_valid = yes
-			OR = {
-				is_ai = yes
-				has_event_target = gods_of_africa_selected_participant
-			}
 		}
 		available = {
 			FROM = {
@@ -386,6 +858,84 @@ gods_of_africa_host_category = {
 		complete_effect = {
 			custom_effect_tooltip = gods_of_africa_commit_settlement_effect_tt
 			hidden_effect = { FROM = { gods_of_africa_commit_settlement = yes } }
+		}
+		ai_will_do = { base = 1 }
+	}
+
+	gods_of_africa_accept_reconciliation = {
+		name = gods_of_africa_accept_reconciliation
+		desc = gods_of_africa_accept_reconciliation_desc
+		icon = GFX_decision_012_africa_gods_public_pardon
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = { gods_of_africa_active_host_is_valid = yes }
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				has_country_flag = gods_of_africa_defiant
+				has_country_flag = gods_of_africa_reconciliation_pending
+				has_country_flag = gods_of_africa_reparations_paid
+				has_country_flag = gods_of_africa_reconciliation_offer_pending
+			}
+		}
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				has_country_flag = gods_of_africa_defiant
+				has_country_flag = gods_of_africa_reconciliation_pending
+				has_country_flag = gods_of_africa_reparations_paid
+				has_country_flag = gods_of_africa_reconciliation_offer_pending
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_accept_reconciliation_effect_tt
+			hidden_effect = { FROM = { gods_of_africa_accept_reconciliation = yes } }
+		}
+		ai_will_do = { base = 4 }
+	}
+
+	gods_of_africa_mark_offender = {
+		name = gods_of_africa_mark_offender
+		desc = gods_of_africa_mark_offender_desc
+		icon = GFX_decision_012_africa_gods_mark_offender
+		target_array = gods_of_africa_participants
+		activation = { gods_of_africa_active_host_is_valid = yes }
+		target_root_trigger = { gods_of_africa_active_host_is_valid = yes }
+		target_trigger = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_participant_generation_is_current = yes
+				OR = {
+					has_country_flag = gods_of_africa_demand_active
+					has_country_flag = gods_of_africa_defiant
+				}
+				NOT = { has_country_flag = gods_of_africa_enemy_marked }
+			}
+		}
+		visible = { gods_of_africa_active_host_is_valid = yes }
+		available = {
+			FROM = {
+				exists = yes
+				has_country_flag = gods_of_africa_participant
+				gods_of_africa_participant_generation_is_current = yes
+				OR = {
+					has_country_flag = gods_of_africa_demand_active
+					has_country_flag = gods_of_africa_defiant
+				}
+				NOT = { has_country_flag = gods_of_africa_enemy_marked }
+			}
+		}
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_mark_offender_effect_tt
+			hidden_effect = { FROM = { gods_of_africa_mark_offender = yes } }
 		}
 		ai_will_do = { base = 1 }
 	}

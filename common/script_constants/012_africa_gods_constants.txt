@@ -1,0 +1,411 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA CONSTANTS
+# ============================================================================
+# Event 012 owns this persistent diplomatic and tribute layer. Values are kept
+# in script constants so the host can tune the system without duplicating
+# numbers across events, decisions, or focus rewards.
+# ============================================================================
+
+gods_of_africa_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	consolidation_days = 180
+	owner_tick_days = 30
+	registry_review_days = 90
+	priority_change_cooldown_days = 30
+	introduction_stagger_days = 7
+	first_demand_delay_days = 21
+	demand_cooldown_days = 120
+	negotiation_extension_days = 30
+	partial_payment_cooldown_days = 30
+	defiance_review_days = 60
+	settlement_review_days = 45
+	max_active_demands = 4
+	max_participants = 64
+}
+
+gods_of_africa_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	# These are exclusive upper bounds used by `<` checks in scripted
+	# localisation/effects: 0-19, 20-39, 40-59, 60-79, 80-100.
+	limited_strength = 20
+	regional_strength = 40
+	continental_strength = 60
+	global_strength = 80
+	maximum_strength = 100
+	minimum_wrath = 0
+	maximum_wrath = 100
+	minimum_generation = 1
+	starting_strength = 18
+	starting_wrath = 8
+	strength_military_weight = 25
+	strength_industry_weight = 20
+	strength_continent_weight = 20
+	strength_reach_weight = 15
+	strength_internal_weight = 10
+	strength_chaos_weight = 10
+	wrath_compliance_delta = -3
+	wrath_negotiation_delta = -1
+	wrath_substitute_delta = 1
+	wrath_refusal_delta = 8
+	wrath_failure_delta = 12
+	wrath_defiance_delta = 18
+	wrath_leniency_delta = -4
+	wrath_protection_delta = -2
+	wrath_pardon_delta = -12
+	strength_smoothing_step = 8
+	capacity_floor_equipment = 500
+	capacity_floor_fuel = 500
+	capacity_floor_manpower = 10000
+	capacity_floor_industry = 1
+	minimum_demand_amount = 1
+	maximum_demand_amount = 25000
+	repeated_conduct_threshold = 2
+	first_refusal_max_punishment_tier = 2
+	# Settlement bands are deliberately stricter than simple survival. A
+	# respected relationship tolerates only a small record of failures and
+	# refusals and requires Wrath to remain below the hostile threshold.
+	respected_failure_ceiling = 2
+	respected_refusal_ceiling = 2
+	respected_wrath_ceiling = 70
+	catastrophe_strength_gate = 80
+	catastrophe_wrath_gate = 90
+	# The global Chaos meter is 0..1001; tier 4 begins at 800 in the shared
+	# Event 012 meter contract. A value of 5 would make catastrophe nearly
+	# unconditional and is therefore deliberately not used.
+	catastrophe_chaos_gate = 800
+	catastrophe_failure_gate = 3
+	catastrophe_offense_gate = 2
+	favored_minimum_compliance = 3
+}
+
+gods_of_africa_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	limited = 0
+	regional = 1
+	continental = 2
+	global = 3
+	extreme = 4
+}
+
+gods_of_africa_demand_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	land_equipment = 1
+	mobile_artillery = 2
+	armor = 3
+	aircraft = 4
+	fuel = 5
+	transport = 6
+	industry_repair = 7
+	resources = 8
+	manpower = 9
+	recognition = 10
+	territory = 11
+	alliance_access = 12
+	emergency_relief = 13
+	support_equipment = 14
+}
+
+gods_of_africa_demand_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	open = 1
+	extended = 2
+	partial = 3
+	resolved = 4
+	failed = 5
+	cancelled = 6
+}
+
+gods_of_africa_response = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	comply = 1
+	negotiate = 2
+	substitute = 3
+	refuse = 4
+	defy = 5
+}
+
+gods_of_africa_doctrine = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	reciprocal_covenant = 1
+	sovereign_exaction = 2
+	strategic_ambiguity = 3
+}
+
+gods_of_africa_punishment = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	pressure = 1
+	disruption = 2
+	crisis = 3
+	ultimatum = 4
+	catastrophe = 5
+}
+
+gods_of_africa_settlement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	favored = 1
+	respected = 2
+	distrusted = 3
+	enemy = 4
+}
+
+gods_of_africa_history = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = 0
+	first = 1
+	serious = 2
+	extreme = 3
+}
+
+# Runtime ladders used by the owner-local Gods of Africa helpers. These are
+# deliberately separate from the public enum-like namespaces above: callers
+# can tune arithmetic without changing saved contract identities.
+gods_of_africa_wrath = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	direction_increase = 1
+	direction_decrease = 2
+	floor_war = 50
+	floor_territory = 60
+	floor_broken_treaty = 70
+	floor_defiant = 70
+	floor_recent_extreme = 80
+	# Exclusive upper bounds for the six public Wrath bands.
+	quiet = 15
+	watchful = 30
+	angered = 50
+	hostile = 70
+	vengeful = 85
+	condemning = 100
+	compliance_magnitude = 3
+	negotiation_magnitude = 1
+	substitute_magnitude = 1
+	war_magnitude = 10
+	refusal_magnitude = 8
+	failure_magnitude = 12
+	defiance_magnitude = 18
+	leniency_magnitude = 4
+	protection_magnitude = 2
+	pardon_magnitude = 12
+}
+
+gods_of_africa_strength = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	divisions_divisor = 20
+	factories_divisor = 2
+	relationships_divisor = 1
+	reach_divisor = 1
+	chaos_divisor = 1
+	component_average_divisor = 2
+	component_triple_average_divisor = 3
+	technology_radio = 10
+	technology_radio_detection = 10
+	technology_construction = 10
+	technology_machine_tools = 10
+	technology_fighter = 10
+	technology_synthetic = 10
+	evolution_ii_amplifier = 15
+	evolution_iii_amplifier = 25
+	component_min = 0
+	component_max = 100
+	weighted_divisor = 100
+}
+
+gods_of_africa_transaction = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	partial_payment_ratio_numerator = 1
+	partial_payment_ratio_denominator = 2
+	land_equipment_amount = 1000
+	support_equipment_amount = 500
+	mobile_amount = 100
+	aircraft_amount = 50
+	fuel_amount = 1000
+	transport_amount = 20
+	manpower_amount = 10000
+	industry_pp_amount = 20
+	recognition_pp_amount = 10
+	territory_pp_amount = 25
+	reconciliation_pp_amount = 10
+	emergency_amount = 500
+	max_substitutes = 3
+	pressure_pp_loss = 5
+	disruption_pp_loss = 10
+	crisis_pp_loss = 20
+	ultimatum_pp_loss = 25
+	catastrophe_pp_loss = 30
+	catastrophe_population_loss = 25000
+	catastrophe_minimum_population_remaining = 10000
+	# Protection and final settlement transfers are deliberately modest fixed
+	# packages. The owner still checks its live reserve before debiting them.
+	protection_infantry_equipment = 500
+	protection_fuel = 500
+	protection_pp_cost = 10
+	settlement_favored_infantry_equipment = 2500
+	settlement_favored_fuel = 2500
+	settlement_favored_pp = 25
+	settlement_respected_infantry_equipment = 1000
+	settlement_respected_fuel = 1000
+	settlement_respected_pp = 10
+	settlement_distrusted_pp = 5
+	settlement_enemy_pp = 0
+	protection_cooldown_days = 180
+	defensive_preparation_pp_cost = 15
+	defensive_stockpile_pp_cost = 15
+	defensive_transport_pp_cost = 15
+	defensive_countermeasure_pp_cost = 15
+	defiant_punishment_review_days = 180
+	defensive_stability_gain = 0.02
+	defensive_war_support_gain = 0.03
+}
+
+gods_of_africa_punishment_effect = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	pressure_stability_loss = -0.01
+	pressure_war_support_loss = -0.01
+	disruption_stability_loss = -0.02
+	disruption_war_support_loss = -0.02
+	disruption_resistance_gain = 2
+	crisis_stability_loss = -0.03
+	crisis_war_support_loss = -0.03
+	crisis_infrastructure_damage = 1
+	ultimatum_stability_loss = -0.04
+	ultimatum_war_support_loss = -0.04
+	ultimatum_infrastructure_damage = 2
+	ultimatum_industry_damage = 1
+}
+
+gods_of_africa_demand = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ceremonial_band = 0
+	standard_band = 1
+	severe_band = 2
+	emergency_band = 3
+	punitive_band = 4
+	ceremonial_burden = 5
+	standard_burden = 10
+	severe_burden = 20
+	emergency_burden = 30
+	punitive_burden = 40
+	deadline_ceremonial = 45
+	deadline_standard = 90
+	deadline_severe = 120
+	deadline_emergency = 60
+	deadline_punitive = 150
+	# The mission is a visible response surface; the owner-local clock still
+	# enforces each contract's frozen deadline (45/60/90/120) precisely.
+	maximum_mission_timeout = 180
+}
+
+gods_of_africa_demand_scale = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_percent = 100
+	capacity_major_percent = 120
+	capacity_very_high_percent = 140
+	wrath_percent = 120
+	strength_percent = 120
+	chaos_percent = 120
+	need_percent = 120
+	conduct_percent = 115
+	repetition_percent = 110
+	reciprocal_percent = 90
+	sovereign_percent = 120
+	capacity_major_delta = 20
+	capacity_very_high_delta = 40
+	wrath_delta = 20
+	strength_delta = 20
+	chaos_delta = 20
+	need_delta = 20
+	conduct_delta = 15
+	repetition_delta = 10
+	reciprocal_delta = -10
+	sovereign_delta = 20
+	percent_divisor = 100
+	major_factory_threshold = 30
+	very_high_factory_threshold = 60
+	repetition_threshold = 2
+}
+
+gods_of_africa_history_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	compliance = 1
+	partial = 2
+	substitute = 3
+	failure = 4
+	refusal = 5
+	defiance = 6
+	aid = 7
+	punishment = 8
+	reconciliation = 9
+	treaty_break = 10
+	substitute_rejected = 11
+}
