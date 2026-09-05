@@ -817,6 +817,12 @@ africa_initialize_scramble_and_world_packages = {
 		set_variable = { africa_world_package_resolved_count = constant:africa_value.zero }
 		set_variable = { africa_world_sponsorship_overextension = constant:africa_value.zero }
 		set_variable = { africa_world_order_route = constant:africa_world_order_route.uncommitted }
+		# Gods of Africa consumes a separate bounded candidate registry. It is
+		# populated by the one-time Event 012 census and survives Scramble-roster
+		# cleanup; the Gods owner never performs its own unrestricted world scan.
+		set_variable = { gods_of_africa_candidate_count = constant:africa_value.zero }
+		clear_array = gods_of_africa_candidate_registry
+		clr_country_flag = gods_of_africa_candidate_census_complete
 		clear_array = africa_scramble_participants
 		clear_array = africa_scramble_former_colonial_interests
 		clear_array = africa_scramble_ideological_rivals
@@ -893,6 +899,34 @@ africa_initialize_scramble_and_world_packages = {
 			}
 			africa_scramble_register_participant = yes
 		}
+		# Preserve every valid major or player country for the later Gods owner
+		# registry. The cap is explicit and shared with the participant contract;
+		# this is a one-time census, not a recurring on_action scan.
+		every_country = {
+			limit = {
+				exists = yes
+				has_capitulated = no
+				NOT = { tag = ROOT }
+				NOT = { is_actual_nonhuman_country = yes }
+				NOT = { is_special_chaos_country = yes }
+				OR = {
+					is_major = yes
+					is_ai = no
+				}
+				event_target:africa_host = {
+					check_variable = {
+						var = gods_of_africa_candidate_count
+						value = constant:gods_of_africa_timing.max_participants
+						compare = less_than
+					}
+				}
+			}
+			event_target:africa_host = {
+				add_to_array = { array = gods_of_africa_candidate_registry value = PREV }
+				add_to_variable = { gods_of_africa_candidate_count = constant:gods_of_africa_value.one }
+			}
+		}
+		set_country_flag = gods_of_africa_candidate_census_complete
 		set_country_flag = africa_scramble_interest_census_complete
 		clear_global_event_target = africa_scramble_lead_participant
 		random_country = {
