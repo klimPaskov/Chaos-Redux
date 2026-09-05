@@ -1,5 +1,13 @@
 # Shared Event Chaos Levels Localisation Audit
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Historical localisation audit with a recorded parent decision to retain the user-specified Totalen Chaos name and reject Total Chaos. That terminology decision remains recorded as such. Current selector coverage and rendered layout are not revalidated here. The original timeout and terminated-render evidence remains intact.
+See the [shared-plan review](../../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Scope
 
 Audited only:

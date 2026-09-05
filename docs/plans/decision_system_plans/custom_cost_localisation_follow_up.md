@@ -1,5 +1,13 @@
 # Decision custom-cost localisation follow-up
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Deferred custom-cost migration proposal. The 161-key total and five file counts are historical scan results, not a fresh defect inventory. Recheck the selected event family and current payment/trigger/localisation contract before applying any repair. No gameplay or localisation migration is authorized by this documentation pass. Preserve the per-family order, three-form requirement, shared tuning, and exact-payment checks.
+See the [shared-plan review](../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Status
 
 Deferred for parent review because the migration requires coordinated localisation and payment-path verification beyond the bounded cleanup patch.

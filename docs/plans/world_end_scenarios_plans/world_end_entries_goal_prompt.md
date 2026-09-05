@@ -1,3 +1,13 @@
+# Historical World-End Entries Goal Prompt
+
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Retained historical implementation prompt, not an active execution instruction. Its hidden-scenario exclusion conflicts with the registered-hidden-row repair handoff. Resolve the acceptance basis before choosing a public-visibility contract. This cleanup does not authorize its gameplay, GUI, skill-policy, or workbook work. For any later authorized pass, the workbook is the editable catalog source and CSVs are exports. The shared Event Details framework remains parent-owned, and GUI layout follows chaos-redux-scripted-gui. These current routing rules do not rewrite the historical request below.
+See the [shared-plan review](../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 Implement clickable world-end scenario entries in the Chaos Redux Event Details window and update the event workflow skill so future agents wire this surface by default.
 
 Before editing, read and process all project source files fully: AGENTS.md, CHAOS_REDUX_MECHANICS.md, every Chaos Redux skill, every subagent TOML, and the event, cluster, and scenario catalog CSVs. Inspect live repo patterns and relevant HOI4 wiki, vanilla GUI, scripted GUI, localisation, trigger, effect, and data-structure references.

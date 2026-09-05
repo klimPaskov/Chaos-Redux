@@ -1,5 +1,13 @@
 # Shared event-system ownership separation migration plan
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Deferred architecture proposal, without implementation authorization. No phase or owner split is accepted by this cleanup. Its current ownership table is historical source evidence and must be rebuilt before migration. Keep stable IDs, FIFO context, payload 6002, array alignment, selected-row state, and compatibility requirements intact. Parent review owns integration. Live-game evidence belongs to the user under AGENTS.md.
+See the [shared-plan review](../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 Date: 2026-07-29
 
 Status: deferred design plan only. No gameplay, GUI, localisation, or registry file is changed by this document.

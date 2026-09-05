@@ -1,5 +1,13 @@
 # Dynamic Severity-Aware Cluster Overhaul Documentation Handoff
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Historical documentation-reconciliation handoff. It records parent-authorized, user-approved design, but does not include the underlying decision text or identifier needed to independently establish that acceptance here. Preserve the recorded approval claim without promoting additional design through this cleanup. The runtime handoff in this folder reports repairs to several source gaps named below, including activation, history settlement, and sorting. Those later implementation claims do not independently prove acceptance or close the recorded MCP blocker. No source-gap recommendation below is a fresh instruction to recreate that work.
+See the [shared-plan review](../../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Scope and status
 
 This handoff records the documentation reconciliation for the user-approved Dynamic Severity-Aware Cluster Overhaul.

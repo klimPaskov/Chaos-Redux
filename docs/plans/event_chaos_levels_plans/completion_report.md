@@ -1,5 +1,13 @@
 # Per-Event Chaos Levels Completion Report
 
+## Documentation review, 2026-09-05
+
+Disposition: blocked.
+Historical source-completion report. The report itself withholds completion because event, GUI, and post-change probability evidence was not returned. Its 98-event and 14-column claims describe that recorded revision, not the current workbook. Preserve the exact Event 9 scenarios and timeout evidence. No MCP route was retried in this documentation pass.
+See the [shared-plan review](../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Implementation status
 
 The requested source implementation is present across the normal-event registry, automatic selection, recovery, major-event growth, cluster-member availability, normal manual triggering, shared Events and Event Details presentation, documentation, and the authoritative event catalog.

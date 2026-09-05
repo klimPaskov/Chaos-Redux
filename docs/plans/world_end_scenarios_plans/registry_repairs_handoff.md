@@ -1,5 +1,13 @@
 # Event Details Registry Repairs Handoff
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Historical registry-repair record with retained partial event scans and GUI diagnostics. It describes registered hidden world-end identities, while world_end_entries_goal_prompt.md explicitly excludes hidden entries from the public surface. The intervening acceptance decision is not established by either document. Neither description is selected as current approved behavior here. Scenario IDs, flags, slot mappings, artifact URIs, and the separate Fallout boundary remain historical evidence requiring current source reconciliation.
+See the [shared-plan review](../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Scope
 
 This bounded repair keeps the existing Event Details world-end registry and adds only implemented terminal identities and Event 11 evolution preview rows.

@@ -1,5 +1,13 @@
 # Dynamic Severity-Aware Cluster Localisation Audit
 
+## Documentation review, 2026-09-05
+
+Disposition: blocked.
+Historical cluster-localisation audit. Its optional-history chance and roll presentation, special-state precedence, terminology decisions, and exact MCP failure remain recorded evidence. The required matching production renders were not supplied or retried here. Do not interpret the source checks or no-wording-gap statement as visual acceptance.
+See the [shared-plan review](../../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Scope
 
 Audited the final cluster constants, member data arrays, settings selectors, Event Log selectors, and English GUI localisation for the Dynamic Severity-Aware Cluster Overhaul.

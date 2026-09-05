@@ -1,5 +1,13 @@
 # Spreadsheet Column Order Handoff
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Historical workbook-edit record. Its scalar Member Severity column and 14-column Events export conflict with the later schema-alignment handoff and the reviewed workbook evidence linked below. Retain the original row counts, field mapping, and inspection results as revision-specific evidence. Do not reproduce this migration from the old handoff or treat its headers as the current schema.
+See the [shared-plan review](../../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 Updated `docs/spreadsheets/chaos_redux_events_catalog.xlsx` on the `Events` sheet.
 
 - Changed row 1 and the full table field mapping for columns K:N from `Cluster ID, Member Severity, Status, Chaos level` to `Chaos level, Cluster ID, Member Severity, Status`.

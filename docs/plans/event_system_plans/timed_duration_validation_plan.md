@@ -1,5 +1,13 @@
 # Timed duration syntax validation plan
 
+## Documentation review, 2026-09-05
+
+Disposition: unresolved.
+Deferred field-specific duration investigation, without migration authorization. The competing token forms and required official-documentation, vanilla, and offline-wiki evidence remain unresolved by this cleanup. Do not apply a blanket conversion or infer syntax support across different effect fields. Read the current owning skills before implementation because the historical wording may precede later instruction edits.
+See the [shared-plan review](../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 Date: 2026-07-29
 
 Status: deferred validation and migration plan. No duration expression is changed by this document.

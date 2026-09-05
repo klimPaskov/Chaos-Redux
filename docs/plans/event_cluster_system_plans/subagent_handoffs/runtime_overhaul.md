@@ -1,5 +1,13 @@
 # Dynamic Severity-Aware Cluster Runtime Handoff
 
+## Documentation review, 2026-09-05
+
+Disposition: blocked.
+Historical runtime-implementation handoff. It records activation, queue, history, and sorting work that overlaps the open source gaps in documentation_overhaul.md. Read those records together before assigning duplicate implementation. Required baseline and post-change probability evidence remains missing in this record. Preserve the neutral-metadata migration limitation and parent-owned consumer work. No current behavior or balance validation is inferred.
+See the [shared-plan review](../../repo_cleanup/subagent_handoffs/2026-09-05_shared_plan_dispositions.md) for the source ledger, cross-document conflicts, and evidence limits.
+
+## Retained record
+
 ## Changed files
 
 - `common/script_constants/event_cluster_constants.txt` centralizes cluster IDs, stable logical row IDs, duplicate-row primary markers, severity floors, cooldowns, Event 013 context slots, activation factors, participation matrix, decay, probability-state bounds, result/status codes, and catalogue sort modes.
