@@ -753,6 +753,7 @@ gods_of_africa_build_need_profile = {
 		set_variable = { gods_of_africa_need_emergency = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_transport = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_need_support_equipment = constant:gods_of_africa_value.zero }
 		if = {
 			limit = {
 				OR = {
@@ -788,8 +789,12 @@ gods_of_africa_build_need_profile = {
 		}
 		if = {
 			limit = {
-			OR = {
-				NOT = { has_variable = africa_emergency_rule_debt }
+			# An absent debt variable is treated as a healthy zero, not as an
+			# emergency. Africa Is One initializes the variable, but this explicit
+			# guard also keeps a stale or partially restored host from manufacturing
+			# an emergency demand.
+			AND = {
+				has_variable = africa_emergency_rule_debt
 				check_variable = { africa_emergency_rule_debt > constant:africa_measure.high }
 			}
 			}
@@ -807,6 +812,10 @@ gods_of_africa_build_need_profile = {
 		if = {
 			limit = { has_equipment = { fighter_equipment_1 < constant:gods_of_africa_transaction.aircraft_amount } }
 			set_variable = { gods_of_africa_need_aircraft = constant:gods_of_africa_value.one }
+		}
+		if = {
+			limit = { has_equipment = { support_equipment < constant:gods_of_africa_transaction.support_equipment_amount } }
+			set_variable = { gods_of_africa_need_support_equipment = constant:gods_of_africa_value.one }
 		}
 	}
 }
@@ -867,6 +876,10 @@ gods_of_africa_select_demand_family = {
 					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.aircraft }
 					check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
 				}
+				AND = {
+					check_variable = { gods_of_africa_priority_family = constant:gods_of_africa_demand_family.support_equipment }
+					check_variable = { gods_of_africa_need_support_equipment > constant:gods_of_africa_value.zero }
+				}
 			}
 		}
 		set_variable = { gods_of_africa_family_candidate = gods_of_africa_priority_family }
@@ -894,6 +907,10 @@ gods_of_africa_select_demand_family = {
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero } }
 		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.aircraft }
+	}
+	else_if = {
+		limit = { check_variable = { gods_of_africa_need_support_equipment > constant:gods_of_africa_value.zero } }
+		set_variable = { gods_of_africa_family_candidate = constant:gods_of_africa_demand_family.support_equipment }
 	}
 	else_if = {
 		limit = { check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero } }
@@ -1011,6 +1028,7 @@ gods_of_africa_calculate_demand_amount = {
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_support_equipment > constant:gods_of_africa_value.zero }
 			}
 		}
 		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.need_delta }
@@ -1328,6 +1346,7 @@ gods_of_africa_prepare_demand_for_participant = {
 					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_transport > constant:gods_of_africa_value.zero }
 					check_variable = { gods_of_africa_need_aircraft > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_support_equipment > constant:gods_of_africa_value.zero }
 				}
 			}
 			gods_of_africa_select_demand_family = yes
@@ -1452,7 +1471,13 @@ gods_of_africa_transfer_payment = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.land_equipment } }
 			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
 			remove_infantry_equipment_from_stockpile = yes
-			event_target:africa_host = { add_equipment_to_stockpile = { type = infantry_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
+			event_target:africa_host = {
+				add_equipment_to_stockpile = { type = infantry_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit }
+				# The maintained reserve is the same Event 012 ledger used by the
+				# need profile and settlement checks. Keep it in step with the real
+				# infantry shipment so a successful payment clears the shortage.
+				add_to_variable = { africa_common_defence_stockpile = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit }
+			}
 		}
 		else_if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment } }
@@ -2037,6 +2062,7 @@ gods_of_africa_set_priority = {
 		if = { limit = { check_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.industry_repair } } set_variable = { gods_of_africa_priority_family = gods_of_africa_priority_request } }
 		if = { limit = { check_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.transport } } set_variable = { gods_of_africa_priority_family = gods_of_africa_priority_request } }
 		if = { limit = { check_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.aircraft } } set_variable = { gods_of_africa_priority_family = gods_of_africa_priority_request } }
+		if = { limit = { check_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.support_equipment } } set_variable = { gods_of_africa_priority_family = gods_of_africa_priority_request } }
 		if = { limit = { check_variable = { gods_of_africa_priority_request = constant:gods_of_africa_demand_family.emergency_relief } } set_variable = { gods_of_africa_priority_family = gods_of_africa_priority_request } }
 		set_variable = { gods_of_africa_next_priority_change_day = global.num_days }
 		add_to_variable = { gods_of_africa_next_priority_change_day = constant:gods_of_africa_timing.priority_change_cooldown_days }
