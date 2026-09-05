@@ -187,6 +187,27 @@ defined_text = {
 	text = { localization_key = independence_wave_cost_transport_standard_either_blocked }
 }
 
+# DM-35 has a lighter first-use price and a combined repeat-use command charge.
+# Resolve only the price that applies to the current use so the decision cost
+# remains a compact resource row rather than an explanation of both branches.
+defined_text = {
+	name = GetIndependenceWavePatronBalanceCostText
+	text = {
+		trigger = { check_variable = { independence_wave_patron_balance_count = constant:independence_wave_value.minimum compare = greater_than } }
+		localization_key = independence_wave_cost_patron_balance_repeat
+	}
+	text = { localization_key = independence_wave_cost_patron_balance_first }
+}
+
+defined_text = {
+	name = GetIndependenceWavePatronBalanceCostBlockedText
+	text = {
+		trigger = { check_variable = { independence_wave_patron_balance_count = constant:independence_wave_value.minimum compare = greater_than } }
+		localization_key = independence_wave_cost_patron_balance_repeat_blocked
+	}
+	text = { localization_key = independence_wave_cost_patron_balance_first_blocked }
+}
+
 # ============================================================================
 # CHAOS REDUX - EVENT 006 LEAGUE EXPULSION SCRIPTED LOCALISATION
 # ============================================================================
