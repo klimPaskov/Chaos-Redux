@@ -24,6 +24,10 @@ gods_of_africa_initialize_system = {
 			has_global_flag = africa_evolution_i_logged
 			NOT = { has_country_flag = gods_of_africa_active }
 			NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+			# A delayed activation event may still arrive after the host-loss
+			# callback has cancelled this generation. Do not restart consolidation
+			# until a successor generation explicitly clears the loss receipt.
+			NOT = { has_country_flag = gods_of_africa_cancelled_on_unifier_loss }
 		}
 		if = {
 			limit = {
