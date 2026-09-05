@@ -2,6 +2,8 @@
 
 Status: Implemented. No further Event 005 implementation is required for Patron Rivalry or Reconsolidation and Aftermath in this scope. Later unrelated events may consume the persistent flags emitted by these chains, but those consumers do not reopen or own this implementation.
 
+The compact [Event 005 overview](overview.md) owns shared crisis routing and evidence context. This companion owns the Patron Rivalry and Reconsolidation and Aftermath requirements described below.
+
 ## Patron Rivalry
 
 The Patron Rivalry chain records the first German, British, Japanese, French, American, Turkish, Persian, Polish, Romanian, and Finnish aid channel opened for each Event 005 successor.
@@ -26,8 +28,8 @@ It first copies Moscow Authority, Military Obedience, Republic Confidence, Depot
 
 Event `chaosx.nr5.96` then converts those surviving pressures into one of three settlements:
 
-- restored command preserves `soviet_collapse_union_restored` and places surviving successors under renewed central-command pressure;
-- a federal charter preserves `soviet_collapse_new_union_negotiations` and gives surviving successors a standing federal and League-coordination framework;
+- restored command preserves `soviet_collapse_union_restored` and places surviving successors under renewed central-command pressure.
+- a federal charter preserves `soviet_collapse_new_union_negotiations` and gives surviving successors a standing federal and League-coordination framework.
 - a guarded frontier preserves `soviet_collapse_legal_restoration_claim` and treats surviving successors as lasting frontier states.
 
 Every surviving entry in `global.soviet_collapse_breakaway_countries` receives a matching country flag, lasting spirit, and the triggered follow-up event `chaosx.nr5.97` before the breakaway registry is cleared.

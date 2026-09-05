@@ -84,3 +84,18 @@ Four no-scenario probes were rejected because windowName and scenario must be pr
 An object retry was interrupted after 16.3 seconds.
 Three later settings/help/Chaos probes returned no payload after 121 seconds before reassignment interrupted the wait.
 These attempts do not establish current service-wide unavailability.
+
+## Parent path follow-up after closeout
+
+The miscellaneous-settings record incorrectly assigned current random selection helpers to absent `common/scripted_effects/chaosx_random_event_selection_effects.txt`.
+Narrow source lookup located definitions of `evaluate_random_event_selection_candidate`, `select_weighted_random_event_id`, and `select_unweighted_random_event_id` in `common/scripted_effects/chaosx_settings_effects.txt`.
+The current owner reference was corrected while the old path remains in the historical file list.
+
+Git records deletion of `common/scripted_effects/chaosx_effects.txt` and `events/chaosx_events.txt` in `ef63c9e8dcd9a7f2f26c07cd319c5760190be2e7`, and deletion of `common/scripted_effects/fallout_world_end_effects.txt` in `8cea20fda6c51ac49de670fc323dae306e0d1e3f`.
+The file list is labelled historical and retains those original paths alongside the verified facts.
+
+The popup background is an inherited vanilla asset, not a missing mod-owned file.
+The installed game's `interface/general_stuff.gfx` defines `GFX_generic_popup_win` with `gfx/interface/generic_popup_win.dds`, and that vanilla DDS exists.
+The documentation identifies this vanilla ownership explicitly.
+Only the matching GFX declaration and path existence were inspected, not the complete vanilla file or the asset pixels.
+No engine-facing change or visual acceptance claim follows from these path checks.

@@ -47,11 +47,11 @@ Related non-zombie UI documentation:
 
 ## Events Log Integration
 
-The events-log UI now has dedicated zombie-chain detail content.
+The events-log UI has dedicated zombie-chain detail content.
 
 ### Event details for event `2`
 
-In the `Events` tab, opening event `2` now shows a gameplay-facing summary instead of generic placeholder text.
+In the `Events` tab, opening event `2` shows a gameplay-facing summary instead of generic placeholder text.
 
 The written summary intentionally focuses on useful player information:
 
@@ -64,7 +64,7 @@ The written summary intentionally focuses on useful player information:
 
 ### Clickable zombie evolution drill-down
 
-Related zombie evolutions are now clickable from:
+Related zombie evolutions are clickable from:
 
 - the history-details overlay for zombie outbreak entries
 - the event-details window for event `2`
@@ -78,9 +78,9 @@ Opening one of those entries shows:
 - the evolved zombie portrait in a bordered frame
 - the exact modifier package for the logged evolution stage
 
-Each listed zombie evolution stage now also has an event-log checkbox. It behaves like the `Events` tab toggle: disabling a stage blocks that future zombie evolution from firing, but does not erase already logged entries.
+Each listed zombie evolution stage also has an event-log checkbox. It behaves like the `Events` tab toggle: disabling a stage blocks that future zombie evolution from firing, but does not erase already logged entries.
 
-The underlying implementation is generic: scripts set `events_log_evolution_event_id`, `events_log_evolution_type`, and `events_log_evolution_stage`, then check `is_current_evolution_enabled = yes`. The zombie chain now uses that shared hook instead of stage-specific hardcoding.
+The underlying implementation is generic: scripts set `events_log_evolution_event_id`, `events_log_evolution_type`, and `events_log_evolution_stage`, then check `is_current_evolution_enabled = yes`. The zombie chain uses that shared hook instead of stage-specific hardcoding.
 
 No new art was required for this integration. The popup reuses the existing zombie leader portraits and `GFX_tiled_window_2b_border`.
 
@@ -140,7 +140,7 @@ When the scope country is `ZZZ` and the outbreak is active:
 
 - neighboring non-zombie countries are attacked immediately
 - neighboring non-weaponized dynamic zombie outbreak countries are annexed into `ZZZ`
-- subjects next to `ZZZ` are annexed instead of war-decled
+- subjects next to `ZZZ` are annexed instead of having war declared on them
 - every occupied state is cored
 - `relocate_isolated_zombie_capital = yes` runs
 - `USA` is forced into the war in the Monroe Doctrine edge case
@@ -166,11 +166,11 @@ Each evolution step also:
 - writes an events-log evolution entry for `ZZZ`
 - respects the matching evolution checkbox from the events-log UI before advancing
 
-Dynamic zombie countries inherit the same tier state, and their leader sync now keeps one fixed `ZZZ_leader` character while updating its portrait to the current evolution tier instead of swapping between different character tokens. The log is intentionally kept on `ZZZ`.
+Dynamic zombie countries inherit the same tier state, and their leader sync keeps one fixed `ZZZ_leader` character while updating its portrait to the current evolution tier instead of swapping between different character tokens. The log is intentionally kept on `ZZZ`.
 
 #### `chaosx.nr2.5`: target-tier synchronization
 
-This hidden event reacts to rising global chaos tiers. It only raises `zombie_target_tier`; it never lowers it.
+This hidden event reacts to rising global chaos tiers. It only raises `zombie_target_tier`. It never lowers it.
 
 Rules:
 
@@ -198,13 +198,13 @@ Base eligibility:
 - no recent outbreak in that same country
 - no `extreme_martial_law_active`
 
-All of those checks now use controlled territory, not merely owned territory. Lost occupied land does not count toward outbreak exposure or state selection.
+All of those checks use controlled territory, not merely owned territory. Lost occupied land does not count toward outbreak exposure or state selection.
 
 #### Country-level risk and selection logic
 
-The per-country MTTH now drives both the risk display and the actual weekly zombie-side roll. `ZZZ` refreshes every country once per week, stores the best eligible outbreak time, and then uses that live value for the one allowed weekly outbreak roll. That means the system can only create one dynamic outbreak at a time, and the 7 day global cooldown now actually blocks follow-up outbreaks instead of just slowing later rolls.
+The per-country MTTH drives both the risk display and the actual weekly zombie-side roll. `ZZZ` refreshes every country once per week, stores the best eligible outbreak time, and then uses that live value for the one allowed weekly outbreak roll. The system can create only one dynamic outbreak at a time, and the 7 day global cooldown blocks follow-up outbreaks instead of merely slowing later rolls.
 
-It now depends on:
+It depends on:
 
 - zombie evolution tier
 - hygiene, migration, quarantine, and border-closure decisions
@@ -228,16 +228,16 @@ Weekly selection flow:
 
 1. `ZZZ` runs a single dynamic-outbreak selection pass in weekly zombie logic.
 2. The system first checks the 7 day global cooldown and whether any country can roll at all.
-3. The weekly outbreak roll is now dynamic rather than a fixed phase table. It uses the best eligible country MTTH and turns that into a weekly chance. Faster-risk countries raise the global danger; safer countries no longer get treated as if they had the same outbreak pressure.
+3. The weekly outbreak roll is dynamic rather than a fixed phase table. It uses the best eligible country MTTH and turns that into a weekly chance. Faster-risk countries raise the global danger. Safer countries no longer get treated as if they had the same outbreak pressure.
 4. If the outbreak system rolls successfully that week, it builds a weighted country pool from the live `zombie_outbreak_days` values and picks from that pool.
 5. Countries with lower MTTH get more entries in the pool, but very-safe countries can still stay in it with only a tiny number of entries instead of being hard-cut out by a bucket threshold.
-6. Population, research capacity, factory count, and rear-state quality now separate countries more aggressively. A populous, underdeveloped giant such as China should sit much higher on the danger ladder than an advanced country like Germany unless Germany is far more exposed locally.
+6. Population, research capacity, factory count, and rear-state quality separate countries more aggressively. A populous, underdeveloped giant such as China should sit much higher on the danger ladder than an advanced country like Germany unless Germany is far more exposed locally.
 
 Design direction:
 
-- direct proximity still matters, but country population and development now pull much harder on the final MTTH
-- developed countries no longer end up near China-like risk levels just because they have one large city
-- populous and lower-capacity countries now separate more clearly from advanced industrial countries
+- direct proximity still matters, but country population and development pull much harder on the final MTTH
+- developed countries do not end up near China-like risk levels just because they have one large city
+- populous and lower-capacity countries separate more clearly from advanced industrial countries
 - outbreaks still prefer rear areas rather than obvious frontline tiles
 - medium-risk countries near the front can still roll outbreaks later, but the truly dangerous outcomes are concentrated in the higher-risk rear areas first
 
@@ -262,8 +262,8 @@ Risk escalation is driven by:
 - low infrastructure
 - low local industry
 - dense urban state categories such as `city`, `large_city`, `metropolis`, and `megalopolis`
-- but the higher tiers now require combinations of urban density plus poor infrastructure and-or poor industry, instead of treating any advanced city as automatically high risk
-- the minimum population and development thresholds are now slightly lower again, so smaller rear states can qualify for low-level danger instead of being hard-blocked out of the system
+- but the higher tiers require combinations of urban density plus poor infrastructure and-or poor industry, instead of treating any advanced city as automatically high risk
+- the minimum population and development thresholds are lower, so smaller rear states can qualify for low-level danger instead of being hard-blocked out of the system
 
 #### Dynamic zombie country creation
 
@@ -277,7 +277,7 @@ When a rear outbreak fires:
 6. Ordinary dynamic splinters also receive `Fragmented Zombie Horde`, a dedicated debuff idea that keeps them significantly weaker than the main outbreak until one of them is promoted into the new `ZZZ`.
 7. Starting zombie divisions are created from the outbreak-state scope with `owner = var:dynamic_zombie_new_country`, using the current main-zombie tier to choose strength.
 8. The dynamic country keeps using the single fixed zombie leader copied from `ZZZ`, and its portrait is synced to the current evolution tier without generating a fresh leader.
-9. `ZZZ` now also has a one-entry fallback name pool in `common/names/ZZZ_names.txt`, so if the engine does try to auto-generate a temporary zombie character during setup, that name resolves cleanly as `Zombie Horde`.
+9. `ZZZ` also has a one-entry fallback name pool in `common/names/ZZZ_names.txt`, so if the engine does try to auto-generate a temporary zombie character during setup, that name resolves cleanly as `Zombie Horde`.
 10. The source country gets a timed local cooldown and the whole world gets a 7 day global cooldown before another dynamic outbreak can fire.
 11. `chaosx.news.3` fires as public narrative fallout.
 
@@ -311,7 +311,7 @@ This runs for zombie countries in the existing daily outbreak loop, so it does n
 
 ### 6. Anti-Zombie League integration: `chaosx.nr2.7` and weekly emergency logic
 
-The outbreak system has direct League integration. The league is not a loose side mechanic anymore; it is a synchronized emergency coalition tied into outbreak pressure, cure sharing, and weekly zombie escalation checks.
+The outbreak system has direct League integration. The League is a synchronized emergency coalition tied into outbreak pressure, cure sharing, and weekly zombie escalation checks.
 
 Core goals of the current implementation:
 
@@ -352,11 +352,11 @@ The standard formation path still comes from `common/decisions/002_zombie_outbre
 Current behavior:
 
 - only eligible major non-zombie countries can see the formation decision
-- manual formation now requires a larger outbreak footprint and more zombie divisions, so the league appears later and less often
-- the founder no longer has to pre-seed hygiene, quarantine, and cure-sharing manually
-- formation now applies the preparation package automatically through shared scripted effects
+- manual formation requires a larger outbreak footprint and more zombie divisions, so the league appears later and less often
+- the founder does not have to pre-seed hygiene, quarantine, and cure-sharing manually
+- formation applies the preparation package automatically through shared scripted effects
 - if the founder is already in another faction, it leaves first and then creates the league
-- the league is now created from `faction_template_anti_zombie_league`, not a raw `create_faction`
+- the league is created from `faction_template_anti_zombie_league`, not a raw `create_faction`
 - that template gives the league a live survival manifest, visible faction rules, and a dedicated goal track
 
 This makes the manual path consistent with the emergency path instead of producing two different membership states.
@@ -382,21 +382,21 @@ The founder must be a democratic major and is chosen in this order:
 
 #### Joining and absorption
 
-Joining now runs through the same shared preparation and membership-grant logic as formation.
+Joining runs through the same shared preparation and membership-grant logic as formation.
 
 Important results:
 
-- countries that join immediately from `chaosx.nr2.7` now actually join immediately instead of only getting an activated decision
+- countries that join immediately from `chaosx.nr2.7` join immediately instead of only getting an activated decision
 - if a joining country is already in another faction, it leaves that faction first
 - if the zombie threat is still confined to the mainland Americas and holds no mainland outside them, countries outside the Americas become much less willing to join
-- once the league exists and the zombie threat reaches strong emergency pressure, the zombie system now registers itself as a mod-wide world threat source
+- once the league exists and the zombie threat reaches strong emergency pressure, the zombie system registers itself as a mod-wide world threat source
 - when the league forcibly absorbs smaller factions, those absorbed countries also receive the full league preparation package
-- absorbed countries are moved to the correct current league tier instead of being left on a stale member idea
-- vanilla faction joining rules now also prevent zombie outbreak countries from being valid league members in the faction UI layer
+- absorbed countries move to the correct current league tier instead of being left on a stale member idea
+- vanilla faction joining rules also prevent zombie outbreak countries from being valid league members in the faction UI layer
 
 #### Membership tiers and investment
 
-Membership is now evaluated through shared scripted membership logic instead of scattered level checks.
+Membership is evaluated through shared scripted membership logic instead of scattered level checks.
 
 Practical rules:
 
@@ -407,16 +407,16 @@ Practical rules:
 - every time investment changes, all current members are reapplied to the current global tier
 - league membership only counts while a country is actually inside the Anti-Zombie League faction
 - joining some other faction strips league membership, cure-sharing participation, and league-only doctrine benefits
-- the member-tier idea itself no longer carries negative economic or research penalties
-- visible faction-rule bonuses now add extra positive-only coordinated command and shared-lab modifiers on top of the hidden membership package
+- the member-tier idea does not carry negative economic or research penalties
+- visible faction-rule bonuses add extra positive-only coordinated command and shared-lab modifiers on top of the hidden membership package
 
 That keeps late joiners, emergency founders, and absorbed countries synchronized with the same bonuses.
 
 #### Leaving and disbanding
 
-The league leader can no longer use the normal leave decision. The leader must use the dedicated disband path.
+The league leader cannot use the normal leave decision. The leader must use the dedicated disband path.
 
-Threat checks now:
+Threat checks:
 
 - look at all zombie countries, including dynamic outbreaks, not just the main `ZZZ` tag
 - use the same shared zombie-strength logic for leave and disband pressure
@@ -436,11 +436,11 @@ This gives the system a hard emergency response once zombies become too large fo
 
 #### Shared league helpers
 
-The system now relies on reusable scripted helpers so the same rules are shared by decisions, events, AI, and forced faction absorption.
+The system relies on reusable scripted helpers so the same rules are shared by decisions, events, AI, and forced faction absorption.
 
 #### Faction-system layer
 
-The template-backed Anti-Zombie League now exposes a proper vanilla faction package:
+The template-backed Anti-Zombie League exposes a proper vanilla faction package:
 
 - Manifest:
   `faction_manifest_anti_zombie_global_survival`
@@ -454,7 +454,7 @@ The template-backed Anti-Zombie League now exposes a proper vanilla faction pack
   `faction_goal_azl_fund_joint_labs`
   `faction_goal_azl_field_the_cure`
 
-This means the League now has visible faction-level direction in the diplomacy screen:
+This gives the League visible faction-level direction in the diplomacy screen:
 
 - coordinated military planning against zombie offensives
 - faster shared special-project work
@@ -494,18 +494,18 @@ Current formation and join behavior:
 - the League can be formed a bit earlier than before
 - only countries that pass `is_valid_anti_zombie_league_country = yes` can lead, join, receive membership benefits, or be absorbed from another faction
 - if total live zombie strength is still below `650` divisions, AI countries are much less willing to join
-- the one-time `chaosx.nr2.7` formation invitation now only goes to countries that are actually pressured by the threat, not to every technically eligible country on the map
-- countries that pick `Consider Joining Later` now get the later join path explicitly; they do not jump straight from broad eligibility into the decision and faction-rule join logic
-- the faction joining rule itself now uses that stricter later-join gate, so countries cannot bypass the tuned invitation logic by silently joining through the faction-rule layer
-- major democracies no longer get an automatic far-away early-entry carve-out; they still come in early when the threat is regional, continental, or truly global
-- countries now evaluate proximity much more aggressively, so wars with zombies, direct borders, and nearby fronts matter far more than before
-- countries on other continents are now blocked from joining unless the outbreak has become a true global emergency
-- same-continent countries without an actual front threat can still get the formation invitation for consideration once the outbreak is serious, but they no longer actively seek League entry until the threat becomes regional or global
-- countries with no meaningful regional zombie threat are now strongly biased toward delaying or refusing unless the outbreak has become a true global emergency
+- the one-time `chaosx.nr2.7` formation invitation goes only to countries that are actually pressured by the threat, not to every technically eligible country on the map
+- countries that pick `Consider Joining Later` receive the later join path explicitly. They do not jump straight from broad eligibility into the decision and faction-rule join logic
+- the faction joining rule uses that stricter later-join gate, so countries cannot bypass the tuned invitation logic by silently joining through the faction-rule layer
+- major democracies do not get an automatic far-away early-entry carve-out. They still come in early when the threat is regional, continental, or truly global
+- countries evaluate proximity aggressively, so wars with zombies, direct borders, and nearby fronts carry substantial weight in joining decisions
+- countries on other continents are blocked from joining unless the outbreak has become a true global emergency
+- same-continent countries without an actual front threat can still get the formation invitation for consideration once the outbreak is serious, but they do not actively seek League entry until the threat becomes regional or global
+- countries with no meaningful regional zombie threat are strongly biased toward delaying or refusing unless the outbreak has become a true global emergency
 - if there is no live main `ZZZ` outbreak on the map, countries stop joining or rejoining the League and the alliance begins to decay through member exits instead
-- countries that leave during that no-main-outbreak decay are now marked separately and do not cycle back into the League while the alliance shell still exists
+- countries that leave during that no-main-outbreak decay are marked separately and do not cycle back into the League while the alliance shell still exists
 - continent-level emergency pressure only counts Europe, Africa, and Asia
-- Arabia / `middle_east` no longer counts as its own AZL continent pressure bucket
+- Arabia / `middle_east` does not count as its own AZL continent pressure bucket
 - the League can also be dismantled earlier once zombies are reduced to either:
   - fewer than `10` divisions total in practice, or
   - a situation where no Anti-Zombie League member still has a land border with any zombie country
@@ -514,13 +514,13 @@ That means large overseas zombie realms do not automatically keep the League ali
 If zombies are stranded on islands or overseas landmasses and no AZL member actually borders them by land, the alliance can wind down.
 If even one AZL member still directly borders zombie territory, the League stays relevant and should not fully disband yet.
 
-When that distant-front state happens, the League no longer relies only on the leader's manual disband decision.
-Instead, a weekly AZL review now asks current members whether they want to stay in the alliance:
+When that distant-front state happens, the League does not rely only on the leader's manual disband decision.
+Instead, a weekly AZL review asks current members whether they want to stay in the alliance:
 
 - most countries leave
 - major democracies are biased toward staying
 - the leader is not asked to leave through this flow
-- countries that leave through this distant-front review do not use the normal join decision anymore
+- countries that leave through this distant-front review do not use the normal join decision
 - countries that leave because there is no live main outbreak also stop using the rejoin path entirely for that league instance
 
 Those former members can be pulled back only by a renewed crisis.
@@ -533,7 +533,7 @@ The League category uses a dedicated sprite:
 - `GFX_decision_category_anti_zombie_league`
 - `gfx/interface/decisions/002_zombie_outbreak/categories/decision_category_anti_zombie_league.dds`
 
-Event 002 also assigns dedicated category identities to outbreak prevention, weaponized-zombie operations, and each of the seven weaponized creator profiles. Their final DDS files live under `gfx/interface/decisions/002_zombie_outbreak/categories/`; source PNGs, processed PNGs, the contact sheet, manifest, and `.gfx` handoff live under `docs/assets/002_zombie_outbreak/`.
+Event 002 also assigns dedicated category identities to outbreak prevention, weaponized-zombie operations, and each of the seven weaponized creator profiles. Their final DDS files live under `gfx/interface/decisions/002_zombie_outbreak/categories/`. Source PNGs, processed PNGs, the contact sheet, manifest, and `.gfx` handoff live under `docs/assets/002_zombie_outbreak/`.
 
 The two cure categories retain the existing `GFX_decision_category_zombies_cure` identity because it is already custom and directly represents their shared cure workflow.
 
@@ -552,7 +552,7 @@ The main continuity logic sits in `on_capitulation`.
 
 This means the main zombie country can collapse multiple times without ending the mechanic outright, but only if those first two collapses were rapid suppressions of a freshly restored main horde.
 
-When a surviving normal dynamic outbreak is chosen as the successor, `ZZZ` now inherits it through annexation. That means the main outbreak keeps the `ZZZ` tag while taking over the successor's owned territory, divisions, and capital, instead of manually transferring states first and risking partial handoffs.
+When a surviving normal dynamic outbreak is chosen as the successor, `ZZZ` inherits it through annexation. The main outbreak keeps the `ZZZ` tag while taking over the successor's owned territory, divisions, and capital, instead of manually transferring states first and risking partial handoffs.
 
 #### Dormant main-horde recovery
 
@@ -571,7 +571,7 @@ That fallback matters until the shutdown limit is reached. If the main horde is 
 #### Outbreak slowdown after each main collapse
 
 Before shutdown, both the actual MTTH and the displayed outbreak-risk calculation can still react to `global.zombie_main_capitulation_count`.
-The count now directly governs continuity:
+The count directly governs continuity:
 
 - collapse `1`: system remains active only if it happened within `180` days
 - collapse `2`: system remains active only if it happened within `90` days
@@ -579,7 +579,7 @@ The count now directly governs continuity:
 
 ### 7.1 Prevention-decision AI gating
 
-The prevention-decision AI now uses the same displayed no-risk threshold as the outbreak-risk UI.
+The prevention-decision AI uses the same displayed no-risk threshold as the outbreak-risk UI.
 
 Practical rule:
 
@@ -602,13 +602,13 @@ Practical results:
 
 - spontaneous outbreak propagation stops
 - outbreak-risk displays are forced to no-risk values
-- zombie AI setup that checks `zombie_system_disabled` no longer behaves like an active outbreak system
+- zombie AI setup that checks `zombie_system_disabled` does not behave like an active outbreak system
 
-The zombie countries themselves are not force-deleted here. The system is disabled; it is not retroactively rewritten into a different scenario.
+The zombie countries themselves are not force-deleted here. The system is disabled. The zombie countries are not retroactively rewritten into a different scenario.
 
 Shutdown also clears the zombie world-threat source, which lets the shared `world_in_threat` framework fall back to any other active existential threats rather than leaving the zombie source stuck on.
 
-While the outbreak system is active, zombie-controlled states now also decay over time:
+While the outbreak system is active, zombie-controlled states also decay over time:
 
 - every `30` days they lose `0.5%` population for up to `36` monthly ticks per state
 - every `180` days they attempt one structural degradation pass, removing one productive building and degrading the state category by one step only if the state is already `rural` or lower
@@ -619,7 +619,7 @@ Those losses are handled through the shared chaos-meter deaths pipeline rather t
 
 Shutdown is not the same thing as total victory.
 
-After the system has already been shut down, the chain now watches zombie capitulations for a second endpoint:
+After the system has been shut down, the chain watches zombie capitulations for a second endpoint:
 
 - no zombie outbreak country may still control any state
 - `zombie_threat_defeated` must not already be set
@@ -647,7 +647,7 @@ If the Anti-Zombie League still exists at that point, it is dismantled automatic
 
 ### 8.2 Postwar survivor order: `chaosx.nr2.12` and `chaosx.nr2.13`
 
-If the zombie campaign lasted long enough and cost enough lives, the defeat flow now creates a lasting postwar settlement rather than ending as a pure cleanup.
+If the zombie campaign lasted long enough and cost enough lives, the defeat flow creates a lasting postwar settlement rather than ending as a pure cleanup.
 
 Current activation thresholds:
 
@@ -785,7 +785,7 @@ That is an abstraction, not a literal refugee-pop model.
 
 ## Special-Country Exclusions
 
-The zombie system now explicitly distinguishes between normal countries and special/system countries.
+The zombie system explicitly distinguishes between normal countries and special/system countries.
 
 Shared triggers:
 
@@ -817,7 +817,7 @@ Dynamic rear-area outbreaks normally create standard zombie splinters. As chaos 
 
 These random special outbreaks receive random profile attributes and the relevant live special-type idea, but they do not receive a reviewable weaponization profile. Only country-designed weaponized outbreaks expose profile review decisions.
 
-Standard cure research appears when any live standard zombie outbreak exists, including dynamic scenario outbreaks. Special cure research uses the weaponized-zombie countermeasure category and advances the selected zombie type only; cure sharing shares progress for that specific type, not all types at once.
+Standard cure research appears when any live standard zombie outbreak exists, including dynamic scenario outbreaks. Special cure research uses the weaponized-zombie countermeasure category and advances the selected zombie type only. Cure sharing shares progress for that specific type, not all types at once.
 
 Anti-Zombie League membership keeps its direct targeted bonus against the literal `ZZZ` outbreak and also grants an outbreak-active army attack bonus so League members retain offensive value against dynamic special zombie countries.
 
@@ -977,8 +977,8 @@ Audio source, license, duration, and conversion notes are recorded in `docs/supe
 - `GFX_report_event_generic_sign_treaty2`
 - `GFX_report_event_merchant_ship_01`
 
-`chaosx.nr2.10` reuses `GFX_report_event_merchant_ship_01`; it does not require new event art.
-`chaosx.nr2.12` and `chaosx.nr2.13` reuse `GFX_report_event_generic_research_lab`; the postwar compact and memorial flow does not require new art or icons.
+`chaosx.nr2.10` reuses `GFX_report_event_merchant_ship_01`. It does not require new event art.
+`chaosx.nr2.12` and `chaosx.nr2.13` reuse `GFX_report_event_generic_research_lab`. The postwar compact and memorial flow does not require new art or icons.
 
 ## Design Constraints and Known Heuristics
 
@@ -986,7 +986,7 @@ These are intentional implementation choices, not oversights:
 
 - "Nearest island host" is a priority heuristic, not a true distance sort.
 - Population migration uses state manpower because HOI4 does not provide a separate dynamic civilian-population transfer resource.
-- Rear-area outbreak selection now uses a weighted rear-state pool instead of a strict risk-tier fallback, so unusual but plausible outbreaks can still happen without letting advanced states dominate the system.
+- Rear-area outbreak selection uses a weighted rear-state pool instead of a strict risk-tier fallback, so unusual but plausible outbreaks can still happen without letting advanced states dominate the system.
 - The system still uses `ZZZ` as the canonical main outbreak tag. Successors are folded back into `ZZZ` instead of replacing the root tag globally.
 
 ## Testing Notes

@@ -119,8 +119,8 @@ Selection rules:
 - Normal mode uses the same weighted selection logic as the live event system.
 - Force Trigger mode switches the random button to an unweighted random pick inside the current category filter.
 
-Shared selector helpers live in:
-- `common/scripted_effects/chaosx_random_event_selection_effects.txt`
+The source definitions for `evaluate_random_event_selection_candidate`, `select_weighted_random_event_id`, and `select_unweighted_random_event_id` are in `common/scripted_effects/chaosx_settings_effects.txt`.
+The earlier `common/scripted_effects/chaosx_random_event_selection_effects.txt` path is absent and remains a historical reference in the file list below.
 
 ## Timer settings fix
 The timer range bug came from the live timer calculation reading staged GUI values instead of the applied timer values.
@@ -161,7 +161,13 @@ This change also includes:
 - `All continents` display changed to simply `All`.
 - Random-event button label names the selected event ID and does not imply immediate firing.
 
-## Files touched
+## Historical files touched
+
+This list retains the source paths named by the original implementation record.
+`common/scripted_effects/chaosx_effects.txt` and `events/chaosx_events.txt` were deleted in the event-system reorganization recorded by commit `ef63c9e8dcd9a7f2f26c07cd319c5760190be2e7`.
+The absent `common/scripted_effects/fallout_world_end_effects.txt` was deleted in commit `8cea20fda6c51ac49de670fc323dae306e0d1e3f`.
+The related `common/scripted_effects/fallout_consolidated_effects.txt` exists, but this note does not establish a one-to-one replacement or audit current Fallout behavior.
+
 - `common/script_constants/settings_constants.txt`
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_settings_effects.txt`
@@ -184,7 +190,7 @@ No new custom art is required for this change.
 Existing assets used:
 - Popup background sprite:
   - `GFX_generic_popup_win`
-  - file: `gfx/interface/generic_popup_win.dds`
+  - vanilla file: `gfx/interface/generic_popup_win.dds`, registered by the installed game's `interface/general_stuff.gfx`
 - Popup close button:
   - `GFX_closebutton`
 - Popup action button:

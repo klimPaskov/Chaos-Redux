@@ -2,6 +2,8 @@
 
 Status: Implemented. The Black International, Free Soviet Congress, and Iron Production Bloc use the existing Event 005 regional-faction lifecycle and do not require a parallel diplomacy system.
 
+The compact [Event 005 overview](overview.md) owns shared crisis routing and evidence context. This companion owns the three successor bloc lifecycles described below.
+
 ## Player flow
 
 An eligible Soviet-collapse successor sees one or more bloc-founding decisions after regional foundation pressure is active. Founding spends the shared regional-faction political-power and command-power costs, marks the founder and member identity, creates the named faction, recruits eligible governments that are not subjects, faction members, or at war with the founder, applies the established pressure against Moscow, and opens the faction's charter event.
@@ -14,7 +16,7 @@ After formation, all three blocs use the shared invitation, coordination, common
 
 The founding effects fire `chaosx.nr5.33` for the Black International, `chaosx.nr5.34` for the Free Soviet Congress, and `chaosx.nr5.37` for the Iron Production Bloc. Each charter event offers the established binding staff, local autonomy, and patron-channel choices, with the same cohesion, tension, stability, recognition, depot, and Soviet-pressure consequences as the other regional factions.
 
-The Black Banner endgame calls the shared `soviet_collapse_found_or_join_black_international` effect. The first qualifying endgame creates and announces the faction; a later Black Banner successor joins the existing faction and receives the same member registration instead of attempting to create a duplicate faction.
+The Black Banner endgame calls the shared `soviet_collapse_found_or_join_black_international` effect. The first qualifying endgame creates and announces the faction. A later Black Banner successor joins the existing faction and receives the same member registration instead of attempting to create a duplicate faction.
 
 The principal implementation files are:
 
