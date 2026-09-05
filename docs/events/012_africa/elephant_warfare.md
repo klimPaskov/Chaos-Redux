@@ -6,11 +6,13 @@ The custom equipment archetype is `chaosx_elephant_equipment` with buildable var
 
 The `chaosx_elephant` subunit is defined only through `chaosx_africa_elephant_warfare_tech`. It is a mobile front-line armoured formation with a combat width of four, a real `armor_value`, and a need for `chaosx_elephant_equipment_1`. Its unit definition uses `sprite = elephantry`, and host/member division templates leave `override_model` unset so mixed divisions resolve the elephant regiment through the normal vanilla sub-unit visual instead of forcing a custom entity.
 
-The retired custom model workspace under `docs/assets/012_africa/models_3d/elephant_shared_base/` is retained as historical evidence only. It is not a Meshy input or runtime promotion target; no custom elephant model, skeletal action set, or entity registration is part of the current Event 012 asset requirement.
+The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is classified as archival and non-promoted. Retention or deletion is an explicit owner decision outside this documentation-only pass, and the package is not a Meshy input or runtime promotion target; no custom elephant model, skeletal action set, or entity registration is part of the current Event 012 asset requirement.
 
 Action 102 member registration calls `africa_elephant_prepare_member_guard` before the existing package force initializer. The five structural templates—royal guard, river guard, mobile guard, highland guard, and coastal guard—each add one `chaosx_elephant` regiment while preserving their package-specific infantry, cavalry, support, names, readiness, and reserve logic. The helper is idempotent and gives each package one seed equipment stockpile; later reinforcement remains governed by the existing package force actions.
 
 No recurring world scan was added. The host and member helpers only execute from the Event 012 opening and Action 102 package activation surfaces, respectively. The equipment, unit, technology, and localisation identifiers are source-wired, while the vanilla elephantry entity supplies the active visual and animation surface; retained custom sound and counter records are evidence-only and are not part of model promotion.
+
+The latest read-only technology inspection for `chaosx_africa_elephant_warfare_tech` is recorded at `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c69757ace10e8256c258460bd93e8b519b6ee24c404a5916dd3ef9541b9c831c/282633c74c6e8702cc9d431e70c86857d832580ca8d6307acc8d3b73ae72ac67/technology-trace-299d02d9bf3f.json`. It returned `TECH_INSPECTED` with aggregate validation false, 1,295 issues, three unresolved items, and 1,379 blocking technology diagnostics, so it is source-linked evidence rather than clean technology acceptance; standalone Technology Tree Viewer availability remains unverified.
 
 ## Authored achievement operations
 
