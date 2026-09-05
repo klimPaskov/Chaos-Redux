@@ -12,6 +12,7 @@ This bounded audit covered the player-facing names, descriptions, custom costs, 
 
 - `localisation/english/006_independence_wave_decisions_l_english.yml`
   - `independence_wave_cost_selected_formable_commit_blocked`
+  - `independence_wave_league_category_desc`
 - This handoff.
 
 Before: `Unavailable until the selected formable family, carrier, member consent, and material requirements are all valid.`
@@ -19,6 +20,8 @@ Before: `Unavailable until the selected formable family, carrier, member consent
 After: `Select an eligible regional union, secure member consent, and meet its resource requirements.`
 
 The revised line removes the implementation terms `family` and `carrier`, leads with the required player action, and preserves the existing selection, consent, and resource gates.
+
+The League category description now groups its six ledger values into labelled Charter, Capacity, and Danger lines and adds a concise player-facing response cue. The dynamic variable tokens, threshold, colours, and post-event category purpose are unchanged.
 
 ## Audit results
 
@@ -55,6 +58,7 @@ The changed localisation file remains UTF-8 with BOM (`EF-BB-BF`). No encoding c
 - Obvious explanation: no other assigned line was changed solely to narrate an obvious button action.
 - Repetition: no duplicate sentence or repeated requirement requiring a safe localisation-only repair was found.
 - Overcomplication: removed `formable family` and `carrier`, which expose internal registry concepts.
+- Density: grouped the League ledger into three labelled lines so the threshold and player response are visible without changing the underlying values.
 - Style-rule repair: no em dash, semicolon, staccato chain, prompt fragment, or update-history phrasing was introduced.
 
 ### Cost wording requiring owner review
@@ -69,7 +73,7 @@ No sourced or attributed quotation appeared on the inspected decision/category s
 
 ## Validation and evidence
 
-- Confirmed the changed key has a single English definition and remains referenced through the selected-formable dynamic cost path.
+- Confirmed both changed keys have a single English definition; the blocked-cost key remains referenced through the selected-formable dynamic cost path and the League category key remains owned by the active League category.
 - Confirmed the seven inspected scripted-localisation cost selectors exist in the Event 006 registry.
 - Re-ran the assigned explicit-key coverage and duplicate scan after the patch: 190 references, no missing keys, no duplicate definitions.
 - The read-only HOI4 event service completed a repository event scan at revision `c61f85261a222e9683f1688e39eee9b264cdc8b2640dea815a6f20cf11e22e1e`; artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ae4776fb5389787f44efd16d1ee30de0410e0b357c6723ec142397ab86153c67/2d7647397b0bde3dc58bdcb2b82919fccc84be31f063b0267e6b04704f748dc9/event-scan-c61f85261a22.json`.
