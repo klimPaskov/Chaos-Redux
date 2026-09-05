@@ -38,6 +38,14 @@ Overview manifest: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact
 
 This refresh supersedes the earlier same-day structural hashes for current-tree traceability only; helper and lifecycle projections remain deferred, and no allocation, release, materialisation, transfer, report, save/load, or live behavior is claimed.
 
+## Current-tree bounded retry
+
+After the later worktree changes, a smaller read-only `hoi4_event_inspect` retry used `mode = lint`, selector `{ kind: event, eventId: chaosx.nr6.1 }`, `direction = downstream`, `maxDepth = 1`, `maxNodes = 40`, `maxEdges = 80`, `expandHelpers = no`, and `refresh = yes` against workspace `mod_chaos_redux_ea3b2d67c2c0`. The route returned `EVENT_INSPECTED_PARTIAL` with revision `fd57ee4ae74f459a2f0bf6df0319b691c9b744a09a831d4fc32dcbe4c8923df4` and graph hash `0a8e92c258572addc2dd8faef23a48bf7caf8370858083175c09964edc9601a4`. The bounded projection reports 9,739 events, 15,167 options, 1,152 entries, 8,719 unresolved nodes, 7,768 terminals, 38,351 edges, 30,380 state accesses, 2,199 diagnostics, and one aggregate blocking diagnostic. The only returned validation failure is the adapter's explicit deferral of workspace-wide helper projections and lifecycle passes.
+
+Inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9ead17b08648eca5efdd52dffbc149556309511573b67473429c4d0fa3206394/066258bb71f1c949a5f2e0eec6d97b4c1a66178b2f609eaa4a958bb7c0332f38/event-lint-fd57ee4ae74f.json`.
+
+This retry is current-tree structural evidence only. It does not prove a non-empty release, absent-country materialisation, state transfer, host survival, report delivery, save/load behavior, or live campaign balance. No source, gameplay, asset, localisation, spreadsheet, staging, or commit change was made by this retry.
+
 ## Same-day state-flow retry
 
 A bounded read-only retry used `mode = state_flow`, selector `{ kind: event, eventId: chaosx.nr6.1 }`, downstream direction, `maxDepth = 2`, `maxNodes = 120`, `maxEdges = 240`, `expandHelpers = no`, and `refresh = yes` against the same workspace. The route returned `status = error`, `code = INTERNAL_ERROR`, and no artifact after the provider timeout window. This does not replace the successful partial lint/overview receipts above and adds no semantic, runtime, or live-game evidence.
