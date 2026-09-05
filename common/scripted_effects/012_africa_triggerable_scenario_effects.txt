@@ -218,9 +218,18 @@ africa_triggerable_scenario_apply_continental_opening = {
 }
 
 # COUNTRY scope on the host. This is the ordinary manual Africa Is One route:
-# it opens the Scramble response through the existing .309 callback.
+# it opens the Scramble response through the existing .309 callback and starts
+# the Event 012-owned Gods consolidation clock from the same post-unifier
+# boundary used by the normal Evolution-I path.
 africa_triggerable_scenario_apply_africa_is_one_opening = {
 	africa_triggerable_scenario_apply_continental_opening = yes
+	# The manual scenario intentionally bypasses the ordinary Evolution-I
+	# readiness checks, but Gods still requires the chronology receipt. Seed that
+	# receipt without replaying the normal Evolution-I popup/reward package, then
+	# use the canonical owner-local initializer so its 180-day delay and
+	# generation guards remain identical to the live route.
+	set_global_flag = africa_evolution_i_logged
+	africa_gods_of_africa_begin_consolidation = yes
 	set_global_flag = africa_scramble_response_pending
 	set_temp_variable = { africa_triggerable_scenario_callback_days = constant:africa_triggerable_scenario_timing.opening_callback_days }
 	country_event = { id = chaosx.nr12.309 days = africa_triggerable_scenario_callback_days }

@@ -4,6 +4,8 @@
 
 Gods of Africa is an Event 012 subsystem owned by the African unifier created by Africa Is One. It has no normal-event pool entry, no separate Event 070 identity, and no unrestricted recurring world scan. Evolution I starts a host-owned consolidation clock; after the 180-day consolidation interval, the activation effect rechecks the Event 012 host, generation, Africa Is One proof, and evolution gate before committing the system.
 
+The `SCN-011` Africa Is One manual scenario seeds the Evolution I chronology receipt without replaying the ordinary Evolution I popup or reward package, then calls this same owner-local initializer so its 180-day delay, generation checks, and activation gates remain identical to the normal route. The `World Is One` scenario type intentionally prepares the separate terminal-campaign package and does not start the tribute loop.
+
 The committed host owns one bounded participant registry, the global Gods of Africa Strength value, the dispatch cursor, demand budget, doctrine, priority family, and ending lock. Participant countries own their personal Wrath, frozen demand contract, payment progress, defiance state, and hidden relationship history. A restoration generation prevents delayed work from resolving against a previous host.
 
 ## Bounded census and host-transfer persistence
