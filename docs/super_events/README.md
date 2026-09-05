@@ -17,7 +17,7 @@ Research recommendations, source selections, and processed files do not by thems
 | 020 Black Plague | [`020_black_plague/research.md`](020_black_plague/research.md) |
 | 023 Soviet Nuclear Bombs | [Audio research](023_sov_nuclear_bombs_super_event_research.md) |
 | 028 Asteroid Incoming | [Impact audio research](028_asteroid_incoming_super_event_research.md) |
-| 031 Random Terror | [Text research](031_random_terror_super_event_research.md) and [non-portrait asset research](031_random_terror/asset_source_research.md) |
+| 031 Random Terror | [Text research](031_random_terror_super_event_research.md), [audio research and archive status](031_random_terror/audio_research.md), and [non-portrait asset research](031_random_terror/asset_source_research.md) |
 | Camp repression rework | [`system_camp_repression_rework_super_event_research.md`](system_camp_repression_rework_super_event_research.md) |
 
 Shared records:

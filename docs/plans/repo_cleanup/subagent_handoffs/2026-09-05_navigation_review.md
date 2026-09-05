@@ -214,3 +214,15 @@ Unedited package files and mirror sources are not staged by this task.
 The Event 043 identity, stable cluster identifiers, multi-membership severity representation, and differing supplied scenario counts remain unresolved.
 No source was deleted or promoted into accepted design.
 Current implementation, assets, workbook reconciliation, and MCP or engine behavior were not audited in this navigation work.
+
+## Event 031 audio navigation continuation
+
+The parent fully read `docs/super_events/031_random_terror/audio_research.md` and the owning `chaos-redux-super-events` skill, then added its missing link to the super-event index.
+The earlier unread-audio boundary is closed for this Markdown note.
+The `audio_sources/` directory contains no files, so no original recording could be read or compared.
+Both documented original OGG paths are absent, including in a filename search through ignored files under `docs/`, `sound/`, and `music/`.
+The two runtime WAVs match the note's recorded hashes and their headers confirm 110.000 seconds, stereo, 44,100 Hz, and 16-bit PCM.
+The note now separates this file evidence from its historical licensing and proposed wiring statements, retaining all original source URLs, hashes, conversion instructions, and attribution text.
+Its disposition is blocked for source-archive recovery, while derivative identity and format are verified.
+No source was downloaded or regenerated, and no binary, sound definition, event, localisation, or workbook was changed.
+Online license validation, playback-ID assignment, source-to-derivative reproduction, and live playback remain outside this documentation review.

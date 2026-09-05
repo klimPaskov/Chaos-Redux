@@ -3,7 +3,7 @@
 Date: 2026-09-05.
 Overall status: incomplete beyond the reviewed coverage below.
 The completed documentation repairs are parent-reviewed, across the navigation, instruction, and historical-documentation batches.
-Their commits are recorded in Git history, with the first two identified below.
+Their commits are recorded in Git history, with the first three identified below.
 This file owns current cleanup routing and status, while dated source maps and reports retain their distinct evidence.
 
 ## Authorization and authority
@@ -30,12 +30,12 @@ That answer changes the reading workflow only and does not approve an embedded d
 | Main navigation | Repaired the missing Time Traveler target and added 37 omitted specification-package entry points. All 76 direct specification directories and 65 direct plan directories are linked. Root README, CONTRIBUTING, documentation indexes, and synchronizer guidance distinguish their ownership. | Commit `d156e8ee121e9c3ea9ea91acce221610567b4cb2` and [navigation handoff](subagent_handoffs/2026-09-05_navigation_review.md). Directory coverage is not full reading of interiors. |
 | Instructions | Updated AGENTS.md, 14 existing skills, and 10 canonical role instruction bodies. Corrected context isolation, approval evidence, specialist ownership, probability routing, helper paths, and tool/viewer distinctions. MTTH was reviewed without edits. | Commit `7cff54ad5522b2d9a4af6cde063a8028bbf4b8ac`. The ten TOML diffs change instruction text only, preserving model, reasoning, permission, and other fields. |
 | Area navigation | Added six event entries, two expanded event-document links, five shared-system documents, and four super-event research links. Kept distinct Event 026/032 root details alongside their folder overviews. Formables/testing received sentence punctuation corrections. | The area continuation in the [navigation handoff](subagent_handoffs/2026-09-05_navigation_review.md) records all 21 curator reads. All six area indexes were fully read by the parent. The achievements index needed no change. |
-| Cleanup history | Reconciled 13 root documents and 23 historical handoffs. Preserved dated findings and original missing paths, added current-path annotations, and linked already-applied recommendations to their recorded outcomes. No old map was globally superseded by this narrower ledger. | [Root review](subagent_handoffs/2026-09-05_documentation_batch01.md), [historical A](subagent_handoffs/2026-09-05_historical_handoffs_a.md), and [historical B](subagent_handoffs/2026-09-05_historical_handoffs_b.md). Parent verified the cited helper, ownership, and localisation commits. |
+| Cleanup history | Commit `d21d8fb5c7847929ed9644a33563ad4294125a7f` reconciled 13 root documents and 23 historical handoffs. Preserved dated findings and original missing paths, added current-path annotations, and linked already-applied recommendations to their recorded outcomes. No old map was globally superseded by this narrower ledger. | [Root review](subagent_handoffs/2026-09-05_documentation_batch01.md), [historical A](subagent_handoffs/2026-09-05_historical_handoffs_a.md), and [historical B](subagent_handoffs/2026-09-05_historical_handoffs_b.md). Parent verified the cited helper, ownership, and localisation commits. |
 | Catalog review | Fully read all five populated sheets without saving the workbook or running the exporter. Recorded schema, membership, name, severity, and status contradictions for the workbook owner. | [Catalog review](subagent_handoffs/2026-09-05_catalog_review.md). Reviewed SHA-256: `b6de395b4a77fb0f7cb9eaee274195a182b67626cbf5fcc4481ebe2db991acaa`. |
 | Runtime documentation | Fixed the two missing generator paths in `.cursor/README.md` and linked the existing destination-write rules. Added a direct cleanup-record link from `docs/README.md`. | Correct paths are `.tools/sync/sync_cursor_agents.py` and `.tools/sync/sync_qoder_agents.py`. Both exist. No synchronizer ran and no generated agent was edited. The fully reviewed Cursor README was pre-existing and untracked, and is included as documentation in this batch. |
 | Nested Event 046/047 tree | Fully read 51 nested Markdown files and 51 counterparts. Every pair was text and SHA-256 identical, with no nested-only requirements or evidence. | The navigation handoff records all 51 pair hashes. Added a retained-mirror notice, canonical links, six plan dispositions, and supported Codex transport and explorer routing. All 51 mirror sources remain unchanged. No design approval was inferred. |
 
-The final documentation candidate contains 60 Markdown files, including 16 additions to Git.
+The `d21d8fb` documentation batch contained 60 Markdown files, including 16 additions to Git.
 Eleven additions preserve fully reviewed pre-existing untracked documents, and five are the new source map, three cleanup handoffs, and retained-mirror README.
 Unrelated staged event-index entries and Event 026 retirement edits remain outside this commit.
 All 298 relative link targets in the final candidate resolved against the working tree, including retained untracked package dependencies.
@@ -57,16 +57,21 @@ Overlapping files between batches are not additive unique-file counts.
 | Main package navigation | 37 omitted specification entry documents were fully read, plus the existing Time Traveler README and main indexes. Package interiors outside the nested comparison were not reconciled. |
 | Area navigation | Parent read six area indexes. Curator read 21 files, comprising three of those indexes and 18 supporting entries. Exact paths are in the navigation handoff. |
 | Nested comparison | All 51 files beneath `docs/specs/docs/` and their 51 exact counterparts were fully read. That includes six plans and 45 specification-package files per tree. |
+| Runtime configuration continuation | Fully read `.codex/config.toml`, `.qoder/mcp.json`, `.cursor/mcp.json`, and `.cursor/rules/chaos-redux-cursor-runtime.mdc` without edits. The instruction handoff records their hashes, 20 resolved role paths, and protected stale instructions. |
+| Event 031 audio continuation | Fully read the audio note and owning super-event skill. Verified two derivative hashes and WAV headers. Original recording files were absent and could not be read. |
 | Catalog | All populated cells in Events, Clusters, Cluster Memberships, Scenarios, and Legend were fully read in the reviewed workbook revision. No workbook edit or export was performed. |
 | Earlier broad discovery | About 8,477 files and 90 MB were inventoried in an earlier pass. This is a lower-bound inventory, not a complete source read or an immutable snapshot. Most remaining project documentation, reference libraries, and configuration remain outside the verified reading sets. |
 
-At final integration, the workbook SHA-256 was `ac7d7d9848d2fb1ea51e1541d61939d395362a82948f618844c5cb9cfc669aa5`, different from the catalog review revision.
+At integration of `d21d8fb`, the workbook SHA-256 was `ac7d7d9848d2fb1ea51e1541d61939d395362a82948f618844c5cb9cfc669aa5`, different from the catalog review revision.
 This cleanup did not write the workbook.
 The recorded catalog findings apply to the earlier hash and were not re-audited after concurrent workbook changes.
 
 The implementation-facing docs reached through navigation were read for their role and evidence limits, without a current gameplay, asset, balance, or live-engine audit.
 The empty `docs/events/028_asteroid_incoming/` directory had no entry to read.
-`docs/super_events/031_random_terror/audio_research.md` and its audio-source interiors remain unread in this navigation batch.
+The Event 031 audio continuation fully read `docs/super_events/031_random_terror/audio_research.md`.
+The expected original recordings are absent from its empty `audio_sources/` directory.
+Both runtime WAVs match the recorded hashes and 110-second stereo PCM16 format, but source-to-derivative reproduction remains blocked by the missing originals.
+The [navigation handoff](subagent_handoffs/2026-09-05_navigation_review.md) records the exact search and validation limits.
 
 ## Root-plan dispositions
 
@@ -106,16 +111,19 @@ No document or asset was deleted, and no distinct source requirement was discard
 | MCP capabilities | Exposed technology routes were verified from metadata. Service health and standalone Technology Tree Viewer availability were not tested. No current engine behavior was reconciled in this cleanup. |
 | Workbook contradictions | In the reviewed workbook revision, Events had 13 visible columns versus 14 table/export columns. Clusters had 8 columns but the exporter emitted 7 and omitted Status. Exact status-validation, identity, membership, slot, and Event 39 detail issues are in the catalog review. Workbook/exporter changes require their own authorized scope and accepted wording. |
 | Package acceptance and identities | Detailed specs and old status labels do not approve Event 043 identity changes, proposed SCN-015 uses, Event 046/047 cluster IDs or membership severity, or conflicting supplied scenario-row counts. Retain explicit unresolved dispositions. |
-| Concurrent GUI work | The separate scripted-GUI skill and migration were preserved. This cleanup does not certify that task's implementation, instructions, or visual evidence. |
+| Concurrent GUI work | The separate scripted-GUI skill and migration were preserved. A bounded instruction review of the GUI skill and event-UI role is in progress under the replacement AGENTS.md. No GUI layout or visual acceptance is implied. |
+| Runtime configuration wording | The Cursor runtime rule names the missing old generator path. The Codex UI-worker registration describes the older decision-layout owner, and its 3D registration/approval language differs from AGENTS.md. Exact protected follow-ups are in the instruction handoff. No configuration or paid-work policy was changed. |
+| Audio archive recovery | Two Event 031 original OGGs are absent. Recover the exact bytes matching the recorded source hashes, or review a replacement source and conversion lineage. Existing derivative identity does not supply missing source provenance. |
 | Broader coverage | Unreviewed event/system packages, active addenda, manifests, asset archives, skill-local references, and configuration still need bounded full reads and evidence-backed dispositions. The whole documentation cleanup remains incomplete. |
 
 ## Resume without repeating completed work
 
 1. Preserve the completed instruction, navigation, historical, catalog-read, and nested-comparison batches recorded above. Keep all retained mirror files intact.
-2. For the next untouched source batches, begin at `docs/events/README.md`, `docs/systems/README.md`, and the accepted-decision records linked by each package. Read each selected package and its authority dependencies fully before reconciling its implementation-facing claims. The indexes and the specific entry files listed in the navigation handoff are already read.
-3. Read `docs/super_events/031_random_terror/audio_research.md` before any audio-specific reconciliation. Keep source archives and generated evidence under their existing ownership and retention rules.
-4. Use `docs/specs/046_the_great_shuffle_specs/matrices/046_source_conflict_ledger.md`, `docs/specs/047_boom_specs/047_boom_source_reading_ledger.md`, and the catalog review for the unresolved identity/schema decisions. Their recorded snapshot counts are not current workbook facts.
-5. Resolve protected role/skill and cross-runtime conflicts through explicit decisions recorded in the existing handoffs. Do not change settings or source restrictions to unblock cleanup.
+2. Complete the assigned shared-event documentation, settings/Chaos documentation, Events 001–005 documentation, shared-plan disposition, and GUI-instruction reviews. Their write scopes are disjoint and parent integration remains pending.
+3. For the next untouched source batches, begin at `docs/events/README.md`, `docs/systems/README.md`, and the accepted-decision records linked by each package. Read each selected package and its authority dependencies fully before reconciling its implementation-facing claims. The indexes and the specific entry files listed in the navigation handoff are already read.
+4. Resolve the Event 031 missing-original archive gap through the audio owner. The note and derivative file evidence are already reviewed, so do not repeat those reads as an unexplored navigation task.
+5. Use `docs/specs/046_the_great_shuffle_specs/matrices/046_source_conflict_ledger.md`, `docs/specs/047_boom_specs/047_boom_source_reading_ledger.md`, and the catalog review for the unresolved identity/schema decisions. Their recorded snapshot counts are not current workbook facts.
+6. Resolve protected role/skill and cross-runtime conflicts through explicit decisions recorded in the existing handoffs. Do not change settings or source restrictions to unblock cleanup.
 
 Skills used: chaos-redux-subagents, skill-creator through the skill maintainers, and xlsx for the read-only catalog review.
 Fourteen existing skills were updated, MTTH was reviewed unchanged, and this cleanup created no new skill.

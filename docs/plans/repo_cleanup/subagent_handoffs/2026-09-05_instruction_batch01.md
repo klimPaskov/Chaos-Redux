@@ -115,3 +115,33 @@ Baseline root: `C:\Users\klimp\.codex\visualizations\2026\09\04\01a06e33-dc56-78
 | `.codex/agents/chaosx_documentation_curator.toml` | `c5d8ce5d7b1194762f41fa15384d35e39cba83ef95ab7bd06abad4b4461b5b98` | `ed5f3fedeeb3b175f384cb4869299cd9db7b88060779a588d94d83c2bbfdc7f5` |
 | `.codex/agents/chaosx_repo_explorer.toml` | `1a6c78e901b5609955ee0c54ed2b9d905a260b813c8ef62c88ecf21444dc5304` | `276acf0305e8b2a1a9c2b6f60cc8153a9e5cd2d629dca85c592e834c9a65fd9a` |
 | `.codex/agents/chaosx_localisation_auditor.toml` | `1a21ea25ec62710ce2272efd94771402ae454d891859a4cb1b713379572bbd36` | `8d588111bb27da851af9d16b8c426d6e9b59e517444464225e0a3e91385a161b` |
+
+## Parent integration and runtime-configuration continuation
+
+The bounded instruction repairs above were parent-reviewed and committed in `7cff54ad5522b2d9a4af6cde063a8028bbf4b8ac`.
+The earlier review-status wording and final hashes describe that worker's handoff revision, not the current files after later authorized work.
+The user subsequently supplied replacement AGENTS.md instructions naming `chaos-redux-scripted-gui` as the owner of GUI reference images and layout evidence.
+
+The parent fully read the following four runtime files without editing them.
+Both Cursor `MESHY_API_KEY` values are environment-variable placeholders, and no credential value was disclosed.
+
+| Read-only file | Bytes | SHA-256 at review |
+| --- | ---: | --- |
+| `.codex/config.toml` | 11714 | `24bcac71960d42d2958fc98b49fd38a5244b0946bf80cf3ddb879a633c269427` |
+| `.qoder/mcp.json` | 996 | `16890ca0e35251416c2c38627ef11d2a3561b1d94cd4c5b8d0598c77569d90ad` |
+| `.cursor/mcp.json` | 1215 | `11fa02c71468690de1b0ffd5656132a47a16eaf18b5e6091ee10e61ecda22454` |
+| `.cursor/rules/chaos-redux-cursor-runtime.mdc` | 1579 | `02b1ef33b03312945c6f457f37365ffb5b0e0452641aebe090cde49163dcfa15` |
+
+All 20 Codex role registrations point to existing canonical TOMLs.
+The configured production wrapper files exist, and `hoi4-agent-tools.cmd` resolves to the installed npm command path also named by Qoder and Cursor.
+These checks establish registration and file resolution, not startup success, service health, provider access, or a standalone viewer.
+The three runtimes register the same named production services, while the disabled development Blender route remains Codex-only.
+
+Protected follow-up items:
+
+- `.cursor/rules/chaos-redux-cursor-runtime.mdc` still names missing `.tools/sync_cursor_agents.py`. The existing generator is `.tools/sync/sync_cursor_agents.py`. The Cursor runtime-rule owner must apply that path correction under its runtime's write authority.
+- `.codex/config.toml` describes `chaosx_event_ui_worker` using the older decision-layout ownership wording, while the replacement AGENTS.md assigns the GUI contract to `chaos-redux-scripted-gui`. The registration description needs a configuration-owner correction.
+- The same Codex config describes extra failure-driven paid recovery as requiring confirmation and gives image-to-3D its own approval setting. AGENTS.md's preauthorization language differs. This cleanup preserves the configuration and records the authority decision needed, rather than changing paid-work or approval policy.
+- Cross-runtime synchronization remains blocked by the conflicting destination-write instructions already recorded above. Neither generated tree was edited or regenerated.
+
+No model, reasoning, sandbox, approval, credential, server allowlist, provider policy, runtime rule, or MCP configuration changed during this read-only continuation.
