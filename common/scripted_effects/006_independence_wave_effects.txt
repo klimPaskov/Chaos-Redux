@@ -2820,6 +2820,32 @@ independence_wave_dissolve_league_to_network = {
 	if = {
 		limit = { check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis } }
 		independence_wave_clear_league_phase_flags = yes
+		# Dissolution ends the current charter generation. Keep historical
+		# receipts such as `league_dissolved`, but remove active charter,
+		# radical-route, failure-latch, and leadership pointers before the
+		# network can be restarted for a later founding attempt.
+		clr_global_flag = independence_wave_charter_sovereign_equality
+		clr_global_flag = independence_wave_charter_mutual_defense
+		clr_global_flag = independence_wave_charter_anti_puppetry
+		clr_global_flag = independence_wave_charter_arbitration
+		clr_global_flag = independence_wave_charter_common_development
+		clr_global_flag = independence_wave_radical_charter_active
+		clr_global_flag = independence_wave_league_failed_rescue
+		if = {
+			limit = { has_event_target = independence_wave_league_leader_target }
+			event_target:independence_wave_league_leader_target = {
+				clr_country_flag = independence_wave_league_current_leader
+			}
+		}
+		if = {
+			limit = { has_variable = global.independence_wave_league_leader }
+			var:global.independence_wave_league_leader = {
+				clr_country_flag = independence_wave_league_current_leader
+			}
+		}
+		clear_global_event_target = independence_wave_league_leader_target
+		clear_variable = global.independence_wave_league_leader
+		clear_variable = global.independence_wave_congress_leader
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.dissolved_network }
 		set_variable = { global.independence_wave_league_dissolution_date = global.date }
 		set_global_flag = independence_wave_league_dissolved
@@ -2854,6 +2880,30 @@ independence_wave_restart_informal_network = {
 	if = {
 		limit = { check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.dissolved_network } }
 		independence_wave_clear_league_phase_flags = yes
+		# Keep the re-entry boundary idempotent if a saved or scripted state
+		# reaches `dissolved_network` without the normal dissolution caller.
+		clr_global_flag = independence_wave_charter_sovereign_equality
+		clr_global_flag = independence_wave_charter_mutual_defense
+		clr_global_flag = independence_wave_charter_anti_puppetry
+		clr_global_flag = independence_wave_charter_arbitration
+		clr_global_flag = independence_wave_charter_common_development
+		clr_global_flag = independence_wave_radical_charter_active
+		clr_global_flag = independence_wave_league_failed_rescue
+		if = {
+			limit = { has_event_target = independence_wave_league_leader_target }
+			event_target:independence_wave_league_leader_target = {
+				clr_country_flag = independence_wave_league_current_leader
+			}
+		}
+		if = {
+			limit = { has_variable = global.independence_wave_league_leader }
+			var:global.independence_wave_league_leader = {
+				clr_country_flag = independence_wave_league_current_leader
+			}
+		}
+		clear_global_event_target = independence_wave_league_leader_target
+		clear_variable = global.independence_wave_league_leader
+		clear_variable = global.independence_wave_congress_leader
 		set_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.informal_network }
 		set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.undecided }
 		set_global_flag = independence_wave_network_reconstituted
