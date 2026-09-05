@@ -1099,6 +1099,13 @@ gods_of_africa_calculate_demand_amount = {
 			has_variable = gods_of_africa_strength
 			check_variable = { var = gods_of_africa_strength value = constant:gods_of_africa_value.global_strength compare = greater_than_or_equals }
 			has_event_target = gods_of_africa_demand_participant
+			# A conduct-driven punitive quote is already the highest band; later
+			# capability checks may not silently downgrade it.
+			check_variable = {
+				var = gods_of_africa_contract_band
+				value = constant:gods_of_africa_demand.severe_band
+				compare = less_than
+			}
 			event_target:gods_of_africa_demand_participant = {
 				has_variable = gods_of_africa_history_count
 				check_variable = { gods_of_africa_history_count > constant:gods_of_africa_value.zero }
@@ -1107,7 +1114,17 @@ gods_of_africa_calculate_demand_amount = {
 		set_variable = { gods_of_africa_contract_band = constant:gods_of_africa_demand.severe_band }
 	}
 	if = {
-		limit = { has_variable = gods_of_africa_need_emergency check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero } }
+		limit = {
+			has_variable = gods_of_africa_need_emergency
+			check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
+			# Emergency need can lift a normal quote, but never soften the
+			# punitive band already earned by repeated offenses.
+			check_variable = {
+				var = gods_of_africa_contract_band
+				value = constant:gods_of_africa_demand.emergency_band
+				compare = less_than
+			}
+		}
 		set_variable = { gods_of_africa_contract_band = constant:gods_of_africa_demand.emergency_band }
 	}
 	if = {
