@@ -2,13 +2,15 @@
 
 Status: `implemented`.
 
-The active Gods of Africa demand contract now requires the current host to pass `gods_of_africa_active_host_is_valid` before any participant payment, negotiation, substitute, or partial-payment trigger can succeed.
+The active Gods of Africa demand contract now validates the current host's live Event 012 flags through `event_target:africa_host` before any participant payment, negotiation, substitute, or partial-payment trigger can succeed.
 
 This closes a narrow stale-response race: a participant may retain the old generation pointer for the short interval before the host-loss or settlement cleanup executes, but a defeated or already-settled unifier can no longer receive a late tribute debit through the participant decision surface.
 
 ## Changed surface
 
 - `common/scripted_triggers/012_africa_gods_triggers.txt`: `gods_of_africa_demand_contract_is_current` now checks the live Event 012 host before validating the participant's frozen contract and future deadline.
+
+The participant-side guard uses the shared current-host predicate plus the host's active, activation-committed, non-capitulated, and non-settled flags instead of the host-only `gods_of_africa_active_host_is_valid` trigger, whose ROOT comparison is intentionally restricted to host scope.
 
 The cleanup-only `gods_of_africa_demand_contract_can_resolve` trigger remains unchanged, so owner-local expiry and host-loss cleanup can still close an already-invalid contract without needing the defeated host to pass the active-host gate.
 
