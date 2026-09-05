@@ -335,6 +335,4 @@ If future Event Logs work needs an additional sprite, place it under gfx/interfa
 
 ## External validation limitation
 
-The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
-
-The shared Event Log and Settings GUI routes render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state, so this documentation does not claim full engine or branch-specific visual evidence.
+The 2026-09-05 curator's read-only MCP evidence and its limits are recorded in [event_clusters_spec.md](event_clusters_spec.md#12-artifact-ownership-and-external-validation). The required narrow event and GUI inspections stalled before returning a result in that probe, so this documentation does not claim current engine or branch-specific visual acceptance.

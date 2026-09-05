@@ -1,10 +1,23 @@
 # Event Details World-End Scenario Catalog
 
+## Unresolved visibility and identity contract
+
+This page records an integration description whose current acceptance remains unresolved.
+The [retained goal prompt](../../plans/world_end_scenarios_plans/world_end_entries_goal_prompt.md) excludes hidden terminal entries, while this page and the [registry repair record](../../plans/world_end_scenarios_plans/registry_repairs_handoff.md) describe registered hidden rows.
+The intervening decision is not established by those records.
+
+This page lists Final Silence as an Event Details world-end row, while [triggerable_scenarios.md](triggerable_scenarios.md#retired-final-silence-compatibility) describes that identity as retired from Event Details and retained only as cause memory.
+[events_log_window.md](events_log_window.md) also describes hidden visibility as metadata-controlled, while this page says the owner-only rebuild inserts every registered identity.
+These statements need a common acceptance record, current consumer inspection, and matching GUI scenarios.
+No scenario is added, removed, renumbered, or selected as the approved visibility contract by this review.
+
 ## Overview
 
 The Event Details window includes a **World End Scenarios** section below the evolution preview. It is a registered catalog of terminal branches owned by the selected numbered event. Each terminal branch occupies one row, so events with more than one ending keep separate details and separate enable state. The shared registry also stores unnumbered terminal systems with owner event `none`. Those entries retain stable toggle and active-state identities without appearing under an unrelated numbered event.
 
-This document and the live registry are the integration source of truth. They supersede partial implementation handoffs that described only Event 14 entries as public-details ready.
+This document records the broader registry integration described after the partial Event 14 implementation handoffs.
+Those handoffs retain their historical scope and evidence.
+The unresolved acceptance and identity conflicts above prevent this page from independently superseding a source requirement.
 
 Clicking a row opens a movable scenario-details window. World-end rows use the same 41-pixel spacing as evolution rows. The detail body is inset inside its clipped scroll area, and the full-size 28 by 23 checkbox sprite has a separate label bay so neither surface clips or overlaps. The row and detail view show the scenario title, owner event, current enabled or active state, and player-facing prose describing the premise and terminal campaign state. Registered hidden identities are named like every other entry, but implementation variables, effect lists, and hidden trigger conditions remain absent.
 
@@ -37,18 +50,19 @@ Event 14's two world-end rows are not reveal-gated in Event Details. Their activ
 
 `initialize_world_end_scenario_registry` rebuilds aligned global definition arrays during event-system initialization. The registry stores numeric fields for:
 
-- stable scenario ID;
-- owner event ID;
-- owner-local sort order;
-- public or hidden visibility;
-- public-details readiness, which records whether the row package is complete but does not hide a registered identity;
-- default-enabled state;
-- terminal-flag dispatch ID;
-- related super-event display ID;
-- title and details text dispatch IDs;
+- stable scenario ID
+- owner event ID
+- owner-local sort order
+- public or hidden visibility
+- public-details readiness, which records whether the row package is complete but does not hide a registered identity
+- default-enabled state
+- terminal-flag dispatch ID
+- related super-event display ID
+- title and details text dispatch IDs
 - availability-helper ID.
 
-`events_log_rebuild_event_detail_world_end_scenarios` filters the registry only to the selected owner event, then inserts every matching registered record into aligned view arrays by its owner-local sort value. Visibility and details-readiness remain registry metadata; static flags and localisation keys are resolved through explicit scenario-ID dispatch because Clausewitz arrays store numeric values rather than script tokens or localisation-key strings.
+`events_log_rebuild_event_detail_world_end_scenarios` filters the registry only to the selected owner event, then inserts every matching registered record into aligned view arrays by its owner-local sort value. Visibility and details-readiness remain registry metadata.
+Static flags and localisation keys are resolved through explicit scenario-ID dispatch because Clausewitz arrays store numeric values rather than script tokens or localisation-key strings.
 
 The selected details state is stored on the player country. Scripted GUI row indices remain temporary unscoped values, and no event target is used by the GUI.
 
@@ -58,9 +72,9 @@ The persistent `global.disabled_world_end_scenarios` array records independently
 
 The checkbox changes only the selected terminal branch:
 
-- it does not disable the owner event;
-- it does not change sibling terminal branches;
-- it does not change evolution toggles;
+- it does not disable the owner event
+- it does not change sibling terminal branches
+- it does not change evolution toggles
 - it does not clear a world end that has already begun.
 
 Natural terminal paths retain their existing scenario-specific helpers and world-state, Chaos, route, and super-event conditions. The Event Details checkbox continues to store independent scenario state without changing sibling branches or manually launched Triggerable Scenario contracts.
@@ -78,6 +92,8 @@ Natural terminal paths retain their existing scenario-specific helpers and world
 - Player-facing English text: `localisation/english/chaosx_gui_l_english.yml`
 - Public catalog wording: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. Each workbook entry retains the complete scenario description. A title may separate multiple branches in one event row, but it never replaces the description body.
 
+Historical path note: `common/scripted_effects/fallout_world_end_effects.txt` is retained as historical provenance and is absent from the current checkout after the Fallout consolidation recorded in commit `8cea20fda6`. Related current files are `common/scripted_effects/fallout_consolidated_effects.txt` and `events/fallout_world_end_events.txt`. This annotation preserves the historical path without asserting a one-to-one replacement or current runtime ownership.
+
 ## Icons and UI assets
 
 No new art is required.
@@ -87,7 +103,8 @@ No new art is required.
 - Disabled checkbox: existing `GFX_chaosx_checkbox_unchecked`
 - Window background and close button: existing tiled window and close-button sprites
 - Layout registration: `interface/chaosx_events_log_popup.gui`
-- Sprite definitions: existing Chaos Redux interface GFX files; no additional `.gfx` registration is needed
+- Sprite definitions: existing Chaos Redux interface GFX files.
+  No additional `.gfx` registration is needed
 
 ## Future plans
 

@@ -1,10 +1,25 @@
 # Triggerable Scenarios
 
+## Unresolved source records
+
+The Final Silence compatibility description below conflicts with the still-listed world-end Details row in [events_log_world_end_scenarios.md](events_log_world_end_scenarios.md).
+Resolve the retirement and visibility decision before treating either description as the accepted current contract.
+
+The SCN-008 source report gives 149 publishers, 138 selectable packages, and 13 non-selectable overlays.
+It does not explain whether those populations overlap or refer to different revisions, so those counts cannot be treated as a reconciled inventory.
+The SCN-014, SCN-015, and SCN-016 sections also preserve distinct raw-runtime and workbook identity claims.
+The [catalog review](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_catalog_review.md) records its exact workbook revision and does not approve identity remapping.
+All original IDs, counts, and package limits below remain unchanged.
+
 ## Overview
 
 Triggerable scenarios are manual sandbox and challenge setups launched from the Chaos Redux settings UI. The settings button opens a separate movable scenario window and leaves the settings window open until the player closes it manually.
 
 The scenario window is data-driven. It builds a sortable list from `global.triggerable_scenario_view_ids`, shows each scenario as a log-style entry, and updates the detail panel when an entry is clicked. Future scenarios can be added by registering their ID and sort value in `triggerable_scenarios_initialize_registry`, adding scripted localisation, and wiring a launch effect.
+
+## Evidence boundary
+
+The scenario descriptions retain package-owned source reports, workbook labels, and dated audit findings as provenance. Labels such as `Implemented` and `Fully Functional` describe those recorded sources and are not re-certified by this shared registry document. Current engine behavior, MCP acceptance, and live-game validation remain unresolved unless a section names a current artifact and its limitation.
 
 ## Files
 
@@ -38,7 +53,8 @@ Type controls cycle scenario-specific type variables:
 - Zombie Apocalypse: diverse outbreaks, random outbreaks, standard everywhere, special-profile everywhere, or connected outbreak.
 - Army of Clones: standard clone army or Aryan variant.
 - Soviet Collapse: ordinary republics or chaos republics.
-- Final Silence: compatibility-only cause-memory route; it no longer owns a manual selector payload.
+- Final Silence: compatibility-only cause-memory route.
+  It no longer owns a manual selector payload.
 - Death: Instant Outbreak only.
 - Disaster Barrage: Random Barrage, Geological Crisis, Weather Crisis, Skyfall Crisis, or Full Catalogue.
 - Every Banner Rises: Sovereign Scatter, Common Congress, Wars of Separation, three bounded Universal Belligerence rules, Patron Worlds, or Great Partition.
@@ -123,7 +139,7 @@ Low, Medium, High, and Maximum intensity scale minor membership, major sponsorsh
 
 Manual launch bypasses normal Chaos, evolution, date, automatic event history, prior Event 011 completion, and pre-fire requirements. It retains the active Event 011 context guard, the surviving postwar-bloc guard, the valid human-target gate, the viable minor and major composition gates, and human-consent restrictions. An active `world_end` terminal conflict blocks launch, and an impossible coalition is never substituted.
 
-The catalog workbook records SCN-009 as `Implemented` at `Scenarios!F9`. Its name, default detail, five type labels, and four intensity descriptions mirror the final in-game localisation.
+The catalog workbook records the historical SCN-009 status as `Implemented` at `Scenarios!F9`. Its name, default detail, five type labels, and four intensity descriptions mirror the final in-game localisation according to that workbook record.
 
 ### SCN-010: The Hunger Lines
 
@@ -139,7 +155,7 @@ The Convergence profile uses a scenario contract only for the natural Chaos and 
 
 The public scenario name, descriptions, type labels, and intensity warnings never name the hidden leader, the Wendigo branch, or either terminal route. If the alternate host already exists, the later in-world convergence transaction may discover it through the normal guarded Event 014 route.
 
-The catalog workbook records SCN-010 at `Scenarios!A10:F10`. Its public name, five type labels, five type descriptions, and four intensity descriptions mirror the final in-game localisation. Its status is `Fully Functional`.
+The catalog workbook records SCN-010 at `Scenarios!A10:F10`. Its public name, five type labels, five type descriptions, and four intensity descriptions mirror the final in-game localisation according to that workbook record. Its historical status is `Fully Functional`.
 
 ### SCN-011: Africa Is One
 
@@ -149,7 +165,8 @@ The row exposes two types, Africa Is One and World Is One, and four shared inten
 
 On a fresh host, the launcher calls Event 012's manual preflight, reuses the weighted African-capital selector and frozen-contact builder, and queues the canonical `chaosx.nr12.1` entry for the commit barrier. On an existing host, it resolves the committed `event_target:africa_host` in place and applies the one-shot opening without creating a second host or tag.
 
-Africa Is One opens the continental systems and queues the existing Scramble response callback. World Is One initializes the existing world-order package and prepares the terminal continental-campaign route, but it does not force `world_end`, final proof, or terminal identity; normal package, proof, settlement, and identity gates remain authoritative.
+Africa Is One opens the continental systems and queues the existing Scramble response callback. World Is One initializes the existing world-order package and prepares the terminal continental-campaign route, but it does not force `world_end`, final proof, or terminal identity.
+Normal package, proof, settlement, and identity gates remain authoritative.
 
 The source contract is implemented in `common/scripted_effects/012_africa_triggerable_scenario_effects.txt` and its Event 012 host helpers, registry dispatch, launch trigger, entry event, and localisation consumers. This source status is not a live-game completion claim.
 
@@ -167,7 +184,11 @@ Low, Medium, High, and Maximum intensity scale the share of countries processed,
 
 The shared window stores the type and intensity until confirmation. Its pure eligibility bridge checks those persistent selectors and the same host, terminal, setup, and duplicate-launch conditions as direct Event 019 callers without writing temporary variables. Confirmation alone copies the live selectors into the raw Event 019 launch effect, so the shared path shows exactly one confirmation. The row sorts at name value `5.75`, after The Hunger Lines and before The World in Fury. Its stable numeric identity is `SCN-013`.
 
-The current registry/scenario specialist reaudit and live-final AI, balance, performance, isolation, scenario-safety, and exploit reaudit are clean with zero P0, P1, or P2 findings. Every gameplay specialist gate is closed. The catalog workbook marks SCN-013 and Event 19 `Fully Functional`. The 7/18 regional flag package has 91 separate full-flag ImageGen raws, 91 deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs. Visual and runtime rows pass, and the independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS, clearing the regional asset gate for parent-owned package promotion. The machine JSON retains its immutable literal `candidate_requires_independent_visual_review` processor-state value. Parent workbook/catalog export and reconciliation are complete, SCN-013 and Event 19 now read `Fully Functional`, and package inventory is complete at 33/33 current files. The final completion audit is PASS with P0/P1/P2 = 0, so no closure gate remains. The old `regional_variants/` seven-motif composite pipeline and its 7/16 validation records are archival evidence only.
+The package handoff reports that the current registry/scenario specialist reaudit and live-final AI, balance, performance, isolation, scenario-safety, and exploit reaudit were clean with zero P0, P1, or P2 findings. It reports that every gameplay specialist gate was closed. The catalog workbook marks SCN-013 and Event 19 `Fully Functional`. The 7/18 regional flag package has 91 separate full-flag ImageGen raws, 91 deterministic 820 by 520 spot masters, 273 native PNGs, and 273 runtime TGAs. The handoff reports that visual and runtime rows passed, and the independent remediation re-audit handoff `docs/plans/019_infantry_spawn_plans/subagent_handoffs/019_regional_full_flag_postprocess_remediation_reaudit_2026_07_18.md` is PASS. It records the machine JSON's immutable literal `candidate_requires_independent_visual_review` processor-state value, parent workbook/catalog export and reconciliation, SCN-013 and Event 19 as `Fully Functional`, and package inventory at 33/33 current files. It reports a final completion audit with P0/P1/P2 = 0 and no closure gate. The old `regional_variants/` seven-motif composite pipeline and its 7/16 validation records are archival evidence only. These package and workbook records remain historical evidence and do not close current engine or live-game acceptance for this shared registry summary.
+
+Historical asset path note: `docs/assets/019_infantry_spawn/source_png/flags/regional_variants/` is absent from the current checkout. The package handoff identifies related current source and runtime paths at `docs/assets/019_infantry_spawn/source_png/flags/regional_full_flag_raw/`, `docs/assets/019_infantry_spawn/processed_png/flags/regional_spot_colour_masters/`, `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`. The two named source/archive directories were also absent when checked on 2026-09-05.
+They are retained provenance candidates, not verified replacement archives.
+The runtime flag directories exist, but their contents and asset acceptance were not re-audited here.
 
 ### SCN-014: Fallout manual consequence sandbox
 

@@ -4,8 +4,8 @@ Date: 2026-09-05.
 Disposition: implemented bounded documentation review, parent-owned and parent-reviewed.
 Acceptance basis: the user's documentation cleanup request and approval to apply full reading separately to bounded batches.
 The parent fully read all thirteen source documents below before editing seven of them.
-The assigned curator returned no reading evidence or patch, so its write scope was reclaimed and the parent performed this review directly.
-No specialist reading or engine validation is inferred from that assignment.
+At parent takeover, the assigned curator had returned no reading evidence or patch, so the parent reclaimed its write scope and performed this review directly.
+The later read-only closeout below records the curator's actual reading and probe evidence.
 
 ## Repairs and retained evidence
 
@@ -52,7 +52,8 @@ An implemented documentation disposition does not accept or validate the underly
 All newly added relative links resolve in the working tree.
 The parent read only the opening eight lines of the main-menu and map-mode targets to verify their titles and locations, so those dependencies are not counted as full reads in this batch.
 The thirteen source reads do not establish current gameplay, GUI, probability, balance, audio, or live-engine behavior.
-No MCP scenario, game launch, log search, or source-code repair was performed for these prose and navigation edits.
+The parent performed no MCP scenario, game launch, log search, or source-code repair for these prose and navigation edits.
+The curator's earlier probe results arrived in the later closeout below.
 The conflicting Deaths overlay remains unresolved.
 Tuning-change history in the combat/contamination record and past interface repair notes remain historical evidence, without a fresh balance or visual completion claim.
 
@@ -65,3 +66,21 @@ This thirteen-document pass creates or updates no skill.
 
 The commit isolates this cleanup from pre-existing uncommitted Event 33 documentation.
 A punctuation change inside an uncommitted Event 33 paragraph was withdrawn from the working tree, leaving that paragraph exactly as captured before this pass.
+
+## Late curator evidence closeout
+
+The curator confirmed full reads of all thirteen original baseline files and no edits or competing handoff.
+It reported the source definitions `chaos_meter_popup_deaths_details_gui` and `window_name = "chaos_meter_deaths_details_overlay"` in `common/scripted_guis/chaosx_scripted_gui_chaos_meter.txt`, with the linked layout in `interface/chaosx_chaos_meter_popup.gui`.
+This supports the presence of overlay source definitions, but no matching Deaths overlay render was returned to close the presentation conflict.
+
+An Event Log inspection with scenario `{id:"event_log_shared_architecture_baseline", state:"normal"}` and `generatedScenarios.enabled=false` returned `GUI_INSPECTED`.
+Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fa178adda45d7adc02cb12c226d80a28b2185f1ec5b0e1de5ffc4f46bec45aa4/4bd8041bf62783dea8d52c3cb544c7f7eaaacd4be720358a03a8c56c62899105/gui-inspect.1f8444e7f19790c5.json`.
+The returned summary described a complete source graph and zero missing assets, with validation false, 38 blocking diagnostics mainly involving symbol collisions, and 339 nonblocking overlap findings.
+`MCP_INLINE_COLLECTIONS_TRUNCATED` limited inline evidence to 64 files from 11,495 indexed files.
+This Event Log result is not a matched Deaths overlay scenario or GUI acceptance.
+The parent retained the exact closeout summary and artifact URI without independently reading its complete payload.
+
+Four no-scenario probes were rejected because windowName and scenario must be provided together, and a string scenario was rejected because an object was required.
+An object retry was interrupted after 16.3 seconds.
+Three later settings/help/Chaos probes returned no payload after 121 seconds before reassignment interrupted the wait.
+These attempts do not establish current service-wide unavailability.

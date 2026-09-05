@@ -4,6 +4,8 @@ The crisis-rescue registry gives selected event chains a bounded weight floor wh
 
 The implementation lives in `common/scripted_effects/crisis_rescue_effects.txt`. It remains separate from the generic dynamic-effect registry because it owns one event-system subsystem, its aligned country and event-ID arrays, and its registration lifecycle.
 
+This page records the source contract, but it does not certify current rescue weights or live engine behavior.
+
 ## Runtime flow
 
 1. `initialize_crisis_rescue_registry` clears the aligned registry arrays and calls `register_default_crisis_rescue_targets`.

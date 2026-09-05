@@ -5,7 +5,8 @@ Disposition: implemented bounded documentation review, parent-reviewed.
 Acceptance basis: the user's documentation cleanup request and approval to apply the full-reading requirement separately to bounded batches.
 The parent fully read all twelve records below before adding current routing and disposition annotations.
 Their original bodies remain intact beneath a retained-record heading.
-The interrupted curator supplied no read evidence or patch, and the parent reclaimed this scope.
+At takeover, the interrupted curator had supplied no read evidence or patch, and the parent reclaimed this scope.
+Its later read-only closeout confirmed the same twelve original full reads and supplied the earlier probe results below.
 
 ## Source ledger and dispositions
 
@@ -58,7 +59,7 @@ All new relative links resolve against the working tree.
 The registered skill-maintainer TOML and current owning GUI skill exist and were fully read in the instruction reviews already recorded in the [central state](../documentation_state.md).
 
 No gameplay, GUI, localisation, assets, workbook, exporter, configuration, generated role, or paid-work policy was changed.
-No MCP retry, probability calculation, engine test, or live-game validation occurred in this historical-documentation pass.
+The parent performed no MCP retry, probability calculation, engine test, or live-game validation during its historical-documentation pass.
 Historical MCP failures are not presented as current service-health tests.
 The requested source and engine reconciliations remain unresolved where named above.
 
@@ -70,3 +71,18 @@ No skill was created or updated by this twelve-record pass.
 
 The schema-alignment handoff was pre-existing and untracked at the commit boundary.
 It is included as a fully read historical source record, with its original body preserved.
+
+## Late curator evidence closeout
+
+The curator confirmed no competing edits or handoff and complete reads matching all twelve baseline hashes.
+It returned these earlier probe identities:
+
+- Partial Event 9 artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/bf4267275f314d2c8cfe8ec2e7d6a3c6fe0ba874de3373a60e1f962e37fab6ad/4239ac75c116cb048e97a7d6c63a0a2f7427bb8ed66fd7bba78ce8ad2a086ebe/event-lint-fd57ee4ae74f.json`.
+- GUI inspection artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/35813e7be07ed12750aa3b8cb517129011cc42a45300dccc154b1c3f1ce2645d/573077a05a736ca270b12e2cb85a6d118c0b997b745609459743b03e86b447c3/gui-inspect.ebeb2a47d5840e7c.json`.
+- Probability source artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1fabbbfcac38825b8b39d3ef539f39c1d9b49c7b5f891e59f580a9cc32837c0f/fde0dd32884edc99b6b3fba386f6a73cc59bbaefaa0099760e305c8479c17fd5/probability-inspect-4a7b9de6b059.json`.
+
+The returned summary retains partial event coverage, 38 blocking GUI source-graph diagnostics, and an incomplete probability pool with zero candidates.
+It supplies no scenario-specific comparison or live-game acceptance.
+The parent reviewed the closeout summary but did not independently read the complete artifact payloads.
+Other partial world-end probes were reported without exact URIs in the closeout, so they do not supply traceable current acceptance evidence here.
+These results supplement the original historical failure records and do not erase those earlier attempts or close their completion gates.

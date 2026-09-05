@@ -1,8 +1,29 @@
 # Chaos Redux Event Cluster System Contract
 
+## Unresolved cross-document claims
+
+The source contract remains subject to the acceptance boundary below.
+Its completed checklist items are retained source-implementation claims, not independently verified completion or acceptance of every design detail.
+
+- In the captured working-tree documents, this file's catalogue gives Negative Economy Chaos level 2, while the catalogue in [event_clusters.md](event_clusters.md) gives level 1.
+- The common Severe-member floor is T3, while the runtime reference describes Acid Rain participation from Gathering Storm, T1, onward.
+The documents do not explain the acceptance basis and scope of that exception together.
+- The general pacing rule describes one minor update for repeatable clusters, while the Natural Disasters record describes a Major update when the prepared queue contains Acid Rain.
+- The worked small-cluster example starts with two eligible logical rows but subsequently describes a trigger, a required row, and optional rows.
+The optional-decay example continues that setup with another optional row.
+- The High-severity support example says no other row is base-eligible while also describing an eligible trigger.
+
+These scenario definitions and special cases require owner reconciliation before they can serve as matching probability-audit fixtures.
+The original formulas, values, tables, and examples remain unchanged.
+See the [shared documentation review](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_shared_events_documentation.md) for exact scope and evidence limits.
+
 ## Contract status and scope
 
-This file is the accepted source contract for the Dynamic Severity-Aware Cluster Overhaul.
+This file retains the source contract candidate for the Dynamic Severity-Aware Cluster Overhaul.
+
+The repository evidence named for this pass does not include an attributable user decision or parent acceptance for each exact formula, membership, and scenario claim. The prior documentation handoff describes the overhaul as user-approved but does not preserve the decision text. The explicit approval available in [2026-09-05_documentation_batch01.md](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_documentation_batch01.md) authorizes full-reading documentation batches and does not accept cluster behavior.
+
+The contract is therefore retained for parent review, while implementation-facing files and historical handoffs remain evidence of what was described or implemented.
 
 Event clusters are a catalogue and dispatch layer above ordinary Chaos Redux random-event selection.
 
@@ -246,7 +267,8 @@ On the severity-biased path, rows follow Low, Medium, High, then Severe bands an
 
 On the remaining path, the system uniformly selects one boundary between adjacent severity bands and swaps the two rows at that boundary. This guarantees one cross-severity inversion whenever at least two optional severity bands are present.
 
-A batch with only one optional severity band has no valid boundary and remains randomized within that band; such batches are excluded from the cross-severity inversion denominator.
+A batch with only one optional severity band has no valid boundary and remains randomized within that band.
+Such batches are excluded from the cross-severity inversion denominator.
 
 Participation rolls and their accepted-member decay use this resolved order, and accepted members dispatch in the same order.
 
@@ -297,7 +319,8 @@ One batch cannot borrow a target, actor, event-specific context, history sequenc
 
 Runtime state is versioned and non-destructive.
 
-Random Stuff has no fixed row registry; its history-only row identity combines the dynamic cluster row namespace with the selected event ID, while the batch and history sequence distinguish repeated selections across activations.
+Random Stuff has no fixed row registry.
+Its history-only row identity combines the dynamic cluster row namespace with the selected event ID, while the batch and history sequence distinguish repeated selections across activations.
 
 Adding or migrating batch fields must preserve prior successful history snapshots instead of rewriting them from current state.
 
@@ -481,7 +504,8 @@ The trigger is still eligible and may continue through an ordinary standalone ev
 3. A required row receives 100 percent and Guaranteed only after ordinary eligibility succeeds.
 4. A High or Severe non-trigger row requires another pass-one base-eligible row, while the trigger and a sole configured member remain exempt.
 5. A duplicate Event 6, 9, or 13 group identifies one stable primary trigger row and preserves separate logical rows for later stages.
-6. Optional rows use the tier and severity table, apply the eligible-count factor, and increment decay only after accepted optional dispatch; their evaluation order preserves severity bands at the tier's 80 through 90 percent bias and otherwise permits cross-severity inversions.
+6. Optional rows use the tier and severity table, apply the eligible-count factor, and increment decay only after accepted optional dispatch.
+   Their evaluation order preserves severity bands at the tier's 80 through 90 percent bias and otherwise permits cross-severity inversions.
 7. A valid failed automatic roll decreases fatigue by one, while a gated attempt, failed preflight, or manual force leaves fatigue unchanged.
 8. A successful automatic activation increases fatigue by one, updates pacing and cooldown once, and records the previous-participation source only after the batch completes.
 9. A delayed row that becomes invalid is skipped with N/A and its canonical reason without borrowing another batch's context.
@@ -507,11 +531,17 @@ events_log_window.md, events_log_evolutions_and_clusters.md, event_chaos_levels.
 
 No new visual asset or catalog workbook schema is part of this overhaul.
 
-The HOI4 MCP event route currently returns partial coverage, while the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool and therefore cannot run evaluate, sweep, simulation, sequence, or comparison passes.
+The 2026-09-05 shared-event curator's read-only `hoi4.probability_inspect` call exposed the `custom_weighted_pool` adapter name and returned `PROBABILITY_SOURCE_INSPECTED` for `common/scripted_effects/chaosx_event_cluster_effects.txt` with `poolComplete=false`, zero candidates, zero unresolved inputs, and `availableAdapters=[]`.
 
-The shared Event Log and Settings GUI routes inspect and render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state, so this documentation does not claim full engine or branch-specific visual evidence.
+The source revision is `1d86199a66e9a4a08cd1700a3c48898b408e33865ddb07936e2fead6591a86c9`, the source hash is `4a7b9de6b059a75ce473dcb5e69cbcbfc95c5cc666106713cc201ac500d21865`, and the artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1fabbbfcac38825b8b39d3ef539f39c1d9b49c7b5f891e59f580a9cc32837c0f/fde0dd32884edc99b6b3fba386f6a73cc59bbaefaa0099760e305c8479c17fd5/probability-inspect-4a7b9de6b059.json`.
 
-Source review, static checks, and parent-owned runtime validation remain separate evidence classes.
+This source-discovery result does not provide candidate evaluation, sweep, seeded simulation, sequence analysis, comparison, or weighted-behavior acceptance.
+
+The required narrow read-only `hoi4_event_inspect` query for `chaosx.nr12.1` was attempted with `mode=scan`, `maxDepth=1`, `maxEdges=20`, and `maxNodes=20`, but the MCP operation stalled before returning a result in that probe. Earlier partial artifacts in package handoffs remain historical evidence and are not re-certified here.
+
+The required narrow read-only `hoi4_gui_inspect` query for `events_log_popup_window` with scenario `event_log_shared_architecture_baseline` was attempted in the same pass but stalled before returning a result. Existing GUI artifacts are retained as historical evidence, while current engine and branch-specific visual acceptance remain unresolved.
+
+Source review, static checks, MCP artifacts, and user-owned live-game validation remain separate evidence classes.
 
 ## Completion checklist
 
@@ -528,7 +558,7 @@ Source review, static checks, and parent-owned runtime validation remain separat
 - [x] Fury, Tensions Rising, and Black Plague use the corrected severities.
 - [x] Workbook schema and formula prose remain unchanged.
 - [x] No new visual assets are requested or required.
-- [x] MCP route failure is recorded as a limitation and no engine evidence is claimed.
+- [x] MCP evidence limits and the absence of accepted engine evidence are recorded.
 - [ ] Probability inspect, evaluate, sweeps, seeded simulation, sequence analysis, and before/after comparison produce accepted MCP artifacts.
 - [ ] Event inspect, render, and comparison produce accepted MCP artifacts.
 - [ ] Event Log catalogue, current detail, automatic history, and manual history pass GUI inspect/render at 1920 by 1080 and 1366 by 768.

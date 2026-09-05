@@ -1,14 +1,21 @@
 # Event Clusters
 
+## Unresolved contract alignment
+
+The [contract candidate](event_clusters_spec.md#unresolved-cross-document-claims) records the differing Negative Economy unlock levels, Acid Rain severity-floor and pacing exceptions, and worked-example inputs that still need reconciliation.
+This runtime reference preserves its existing membership and source claims without selecting an approved value or providing a current probability audit.
+
 ## Authority and purpose
 
 Event clusters are a catalogue and dispatch layer above ordinary Chaos Redux random-event selection.
 
-The accepted source contract is [event_clusters_spec.md](event_clusters_spec.md).
+The source contract candidate is [event_clusters_spec.md](event_clusters_spec.md), pending the attributable acceptance record described there.
 
 This document is the implementation-facing summary for the cluster registry, runtime flow, member rows, Event Logs, Settings, pacing, and history.
 
 A cluster can join related events into one activation, but it cannot replace or weaken ordinary event-system fireability.
+
+Historical source note: `C:/Users/klimp/Downloads/chaos_redux_clusters_catalog_updated_v2.csv` was absent at that absolute Downloads path when checked on 2026-09-05. Related current catalog surfaces are `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and the export `docs/spreadsheets/chaos_redux_clusters_catalog.csv`. Those files remain outside this bounded documentation scope, and this note does not assert that either current artifact replaces the historical CSV.
 
 ## Ordinary event-system eligibility
 
@@ -45,7 +52,8 @@ The effective minimum is:
 
     effective_member_min = max(severity_floor, declared_member_min)
 
-When this cluster-only minimum or the escalation-support rule blocks a row after the event system accepted it, the row uses a cluster-specific status and leaves the canonical event-system reason empty; the UI must not describe that outcome as failure of the event's independent Chaos Level.
+When this cluster-only minimum or the escalation-support rule blocks a row after the event system accepted it, the row uses a cluster-specific status and leaves the canonical event-system reason empty.
+The UI must not describe that outcome as failure of the event's independent Chaos Level.
 
 High and Severe non-trigger rows need another base-eligible member.
 
@@ -123,7 +131,8 @@ Within each candidate cluster, every currently eligible logical row carrying the
 
 Every extra eligible matching row guarantees at least one additional percentage point before the ordinary 90 percent activation ceiling. Duplicate rows never dispatch the selected trigger more than once.
 
-Each eligible cluster calculates and rolls its final chance independently. If several clusters succeed, one successful cluster is selected uniformly; the selected event therefore opens no more than one cluster batch.
+Each eligible cluster calculates and rolls its final chance independently. If several clusters succeed, one successful cluster is selected uniformly.
+The selected event therefore opens no more than one cluster batch.
 
 Only the selected winner commits success fatigue, history, pacing, and cooldown. Successful candidates that lose arbitration remain unchanged, while genuine failed rolls receive the normal failed-roll fatigue reduction.
 
@@ -163,7 +172,8 @@ The first selected event is rechecked and dispatched synchronously.
 
 The remaining selected events use the shared delayed batch queue and receive another authoritative event-system recheck before dispatch.
 
-Every selected row is guaranteed after eligibility; Random Stuff has no severity floor, escalation-support rule, or optional participation roll.
+Every selected row is guaranteed after eligibility.
+Random Stuff has no severity floor, escalation-support rule, or optional participation roll.
 
 The ordinary minor event that opened the attempt already supplied the batch's single pacing update, so Random Stuff does not apply a second aggregate pacing update.
 
@@ -230,7 +240,8 @@ Overlapping batches remain isolated by their batch identity and aligned context.
 
 Runtime state is versioned and non-destructive, so historical snapshots are not rewritten when current definitions or state change.
 
-Random Stuff has no permanent row registry; its selected event IDs receive history-only row identities within the saved batch, and the history sequence keeps repeated selections across different batches distinct.
+Random Stuff has no permanent row registry.
+Its selected event IDs receive history-only row identities within the saved batch, and the history sequence keeps repeated selections across different batches distinct.
 
 The automatic transition is ordinary-pool selection, ordinary event-system eligibility, multi-cluster candidate discovery, per-cluster gates and activation rolls, one-winner resolution, batch preparation, synchronous trigger, required rows, severity-biased optional ordering, delayed rechecks, successful history commit, and one pacing/cooldown update.
 
@@ -384,9 +395,7 @@ The event-system relationship is documented in event_chaos_levels.md and dynamic
 
 The Event Logs presentation is documented in events_log_window.md and events_log_evolutions_and_clusters.md.
 
-The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
-
-The shared Event Log and Settings GUI routes render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state; these pages therefore do not claim full engine or branch-specific visual evidence.
+The 2026-09-05 curator's read-only MCP evidence and its limits are recorded in [event_clusters_spec.md](event_clusters_spec.md#12-artifact-ownership-and-external-validation). The required narrow event and GUI inspections stalled before returning a result in that probe, so this page does not claim current engine or branch-specific visual acceptance.
 
 ## Future cluster additions
 

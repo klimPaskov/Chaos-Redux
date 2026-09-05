@@ -4,6 +4,8 @@
 
 Major events gain weight after minor global pacing events, but the per-minor gain is calculated from the current active random-event pool instead of using a fixed value. The configured setting remains the baseline gain. With the default baseline of `150`, 90 active non-major events and 10 active major events produce a current gain of `150`.
 
+This page records the source formula and documented consumers, but it does not certify current probability outcomes or engine execution.
+
 ## Formula
 
 ```text

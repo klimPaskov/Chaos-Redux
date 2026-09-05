@@ -112,7 +112,8 @@ The trigger fires first synchronously after eligibility.
 
 Required rows follow after eligibility.
 
-Optional rows normally follow Low, Medium, High, then Severe severity bands, with random order inside each band. The band-preservation chance falls dynamically from 90 percent at Calm World to 80 percent at World Collapse; other multi-band batches invert one random adjacent severity boundary, so a higher-severity member can precede a lower-severity member.
+Optional rows normally follow Low, Medium, High, then Severe severity bands, with random order inside each band. The band-preservation chance falls dynamically from 90 percent at Calm World to 80 percent at World Collapse.
+Other multi-band batches invert one random adjacent severity boundary, so a higher-severity member can precede a lower-severity member.
 
 The optional participation chance uses the current tier and severity table, the eligible-count factor, and 0.95 decay per accepted optional row.
 
@@ -124,7 +125,7 @@ Trigger rows and sole configured members are exempt from that support requiremen
 
 Random Stuff instead receives one guarded dynamic attempt after a successfully fired ordinary automatic minor event at tier 3 or above.
 
-It samples uniformly without replacement from all currently fireable positive-weight events, ignoring major or minor type, severity, and weight magnitude.
+It samples uniformly without replacement from the positive-weight candidates returned by the ordinary all-events evaluator, ignoring major or minor type, severity, and weight magnitude.
 
 The first selected event fires synchronously and the rest use the shared delayed recheck queue.
 
@@ -228,6 +229,4 @@ Evolution families without a portrait treatment keep the wide text body, while a
 
 ## External validation limitation
 
-The HOI4 MCP event route currently returns partial coverage, and the probability inspector discovers no compatible adapter for the scripted-variable Random Stuff pool.
-
-The shared Event Log and Settings GUI routes render successfully, but their synthetic scenarios do not inject a selected Random Stuff runtime state, so this document does not claim full engine or branch-specific visual evidence.
+The 2026-09-05 curator's read-only MCP evidence and its limits are recorded in [event_clusters_spec.md](event_clusters_spec.md#12-artifact-ownership-and-external-validation). The required narrow event and GUI inspections stalled before returning a result in that probe, so this document does not claim current engine or branch-specific visual acceptance.
