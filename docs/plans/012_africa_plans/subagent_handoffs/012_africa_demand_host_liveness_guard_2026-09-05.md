@@ -8,7 +8,8 @@ This closes a narrow stale-response race: a participant may retain the old gener
 
 ## Changed surface
 
-- `common/scripted_triggers/012_africa_gods_triggers.txt`: `gods_of_africa_demand_contract_is_current` now checks the live Event 012 host before validating the participant's frozen contract and future deadline.
+- `common/scripted_triggers/012_africa_gods_triggers.txt`: `gods_of_africa_demand_contract_is_current` and the participant-safe host predicate now check the live Event 012 host before validating a frozen contract or participant action.
+- `common/decisions/012_africa_gods_decisions.txt`: participant demand, defiance, preparation, and reconciliation surfaces use the participant-safe host predicate for both visibility and availability.
 
 The participant-side guard uses the shared current-host predicate plus the host's active, activation-committed, non-capitulated, and non-settled flags instead of the host-only `gods_of_africa_active_host_is_valid` trigger, whose ROOT comparison is intentionally restricted to host scope.
 
