@@ -41,7 +41,7 @@ Weak Africa therefore produces pressure, unrest, limited disruption, failed mani
 
 ## Africa-side agency and ending
 
-The host category exposes the current Strength band, doctrine, one qualitative priority, and bounded target actions. Africa can choose a reciprocal, exaction, or ambiguity doctrine; grant one-off leniency; mark a proven offender; protect a reliable partner; pardon an eligible temporary floor; and escalate only a proven offense. These actions modify the same ledger and do not raise the Strength ceiling.
+The host category exposes the current Strength band, doctrine, one qualitative priority, and bounded target actions. Africa can choose a reciprocal, exaction, or ambiguity doctrine; grant one-off leniency; mark a proven offender; protect a reliable partner; pardon an eligible temporary floor; and escalate only a proven offense. Priority-offender marks are capped at three concurrent marked participants, and archiving a stale marked participant releases its host slot. These actions modify the same ledger and do not raise the Strength ceiling.
 
 When Event 012 secures the continent, ordinary demands stop before settlement. The owner computes one hidden relationship result per surviving participant: Favored, Respected, Distrusted, or Enemy. Loyal support earns substantial reciprocal rewards. A defeated, capitulated, or disappearing unifier cancels active demands, punishment jobs, participant presentation, and current authority. Delayed work is generation-checked and cannot revive the old system.
 

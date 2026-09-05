@@ -527,16 +527,6 @@ gods_of_africa_extreme_gate_is_open = {
 	check_variable = { var = gods_of_africa_offense_count value = constant:gods_of_africa_value.catastrophe_offense_gate compare = greater_than_or_equals }
 }
 
-gods_of_africa_can_protect_participant = {
-	gods_of_africa_active_host_is_valid = yes
-	has_event_target = gods_of_africa_selected_participant
-	event_target:gods_of_africa_selected_participant = {
-		gods_of_africa_participant_generation_is_current = yes
-		NOT = { has_country_flag = gods_of_africa_defiant }
-		gods_of_africa_protection_package_is_affordable = yes
-	}
-}
-
 # COUNTRY scope on a participant. Protection is a real transaction owned by
 # the Event 012 host, not a free flag: the host must have the common defence
 # reserve, infantry equipment, and fuel, and cannot repeat it during cooldown.
@@ -565,24 +555,16 @@ gods_of_africa_protection_package_is_affordable = {
 	}
 }
 
-gods_of_africa_can_grant_leniency = {
+# COUNTRY scope on the host. Priority-offender marks are intentionally capped
+# so the manual target action cannot become unlimited harassment.
+gods_of_africa_priority_offender_capacity_available = {
 	gods_of_africa_active_host_is_valid = yes
-	has_event_target = gods_of_africa_selected_participant
-	event_target:gods_of_africa_selected_participant = {
-		gods_of_africa_participant_generation_is_current = yes
-		has_country_flag = gods_of_africa_offender
-		NOT = { has_country_flag = gods_of_africa_leniency_used }
-	}
-}
-
-gods_of_africa_can_mark_offender = {
-	gods_of_africa_active_host_is_valid = yes
-	has_event_target = gods_of_africa_selected_participant
-	event_target:gods_of_africa_selected_participant = {
-		gods_of_africa_participant_generation_is_current = yes
-		OR = {
-			has_country_flag = gods_of_africa_demand_active
-			has_country_flag = gods_of_africa_defiant
+	OR = {
+		NOT = { has_variable = gods_of_africa_priority_offender_count }
+		check_variable = {
+			var = gods_of_africa_priority_offender_count
+			value = constant:gods_of_africa_timing.priority_offender_cap
+			compare = less_than
 		}
 	}
 }
