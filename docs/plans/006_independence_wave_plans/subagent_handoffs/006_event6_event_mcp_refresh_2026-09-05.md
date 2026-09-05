@@ -37,3 +37,7 @@ Inspect artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/
 Overview manifest: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4ceb9bd7658076621d9499a0119cca20e452017eb8e58a6817e68f4d147fd9e2/336086bee31cdcbfeab976915a9a816a0f707b2826b29826b6d8652a76b596b4/event-overview-e091020adf34-manifest.json`.
 
 This refresh supersedes the earlier same-day structural hashes for current-tree traceability only; helper and lifecycle projections remain deferred, and no allocation, release, materialisation, transfer, report, save/load, or live behavior is claimed.
+
+## Same-day state-flow retry
+
+A bounded read-only retry used `mode = state_flow`, selector `{ kind: event, eventId: chaosx.nr6.1 }`, downstream direction, `maxDepth = 2`, `maxNodes = 120`, `maxEdges = 240`, `expandHelpers = no`, and `refresh = yes` against the same workspace. The route returned `status = error`, `code = INTERNAL_ERROR`, and no artifact after the provider timeout window. This does not replace the successful partial lint/overview receipts above and adds no semantic, runtime, or live-game evidence.
