@@ -6,7 +6,7 @@ Implemented in the current Event 012 source. The patch is bounded to the Gods-of
 
 ## Change
 
-`gods_of_africa_prepare_demand_for_participant` now calls `gods_of_africa_select_demand_family` only when the host's maintained land-equipment, fuel, manpower, industry, emergency, transport, or aircraft need flag is active. A configured priority wins only when it matches one of those active need lanes; otherwise the deterministic emergency, fuel, manpower, industry, transport, aircraft, then land fallback chooses an active lane. Priority values for optional families therefore cannot manufacture a demand with no corresponding maintained need.
+`gods_of_africa_prepare_demand_for_participant` now calls `gods_of_africa_select_demand_family` only when the host's maintained land-equipment, fuel, manpower, industry, emergency, transport, or aircraft need flag is active. The host need snapshot derives transport pressure from simultaneous convoy/train reserve shortfalls and aircraft pressure from its fighter reserve. A configured priority wins only when it matches one of those active need lanes; otherwise the deterministic emergency, fuel, manpower, industry, transport, aircraft, then land fallback chooses an active lane. Priority values for optional families therefore cannot manufacture a demand with no corresponding maintained need.
 
 ## Evidence
 
