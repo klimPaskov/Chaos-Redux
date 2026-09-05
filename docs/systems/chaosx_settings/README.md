@@ -10,4 +10,5 @@ This directory documents shared settings controls and their persisted or staged 
 - [`settings_miscellaneous_menu.md`](settings_miscellaneous_menu.md) defines miscellaneous settings and their runtime effects.
 - [`settings_numeric_manual_inputs.md`](settings_numeric_manual_inputs.md) defines typed numeric entry, validation, and staged application behavior.
 
-Triggerable scenarios are documented with the event system in `../event_system/triggerable_scenarios.md`. Shared main-menu and map-mode contracts belong in `../interface/`.
+Triggerable scenarios are documented with the event system in [triggerable_scenarios.md](../event_system/triggerable_scenarios.md).
+Shared interface contracts are documented in [main_menu_redesign.md](../main_menu_redesign.md) and [state_map_modes.md](../state_map_modes.md).

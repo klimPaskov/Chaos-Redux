@@ -24,7 +24,7 @@ Behavior:
 4. The collateral total is split across every valid frontline state instead of only one random state, so all affected frontier states on that front can register deaths on the same day.
 5. Each frontline state first gets a dynamic distribution weight from density, population, and inverse infrastructure, then the full daily collateral pool is divided across those states by their share of the total weight.
 6. The distribution pass keeps its running allocation totals in global scratch variables for the duration of the country pass, so the state loop no longer depends on fragile inline cross-scope variable reads.
-7. This means combat civilian deaths no longer depend on unit-leader state lookups or daily combat-scope edge cases; they piggyback on the military casualty stream that is already working.
+7. This means combat civilian deaths no longer depend on unit-leader state lookups or daily combat-scope edge cases. They piggyback on the military casualty stream that is already working.
 8. The death rate is ideology-based:
    - fascist: highest baseline,
    - communist: lower,
@@ -97,7 +97,8 @@ Summary:
 
 The global air contamination country modifier is now hidden from the visible spirit list by removing its icon binding.
 
-Gameplay effects remain active; only the visible spirit card is suppressed.
+Gameplay effects remain active.
+Only the visible spirit card is suppressed.
 
 ## Icons and GFX Wiring
 

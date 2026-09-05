@@ -2,9 +2,9 @@
 
 ## Overview
 
-This settings update adds typed numeric entry to the editable value boxes in the Chaos Redux settings window.
+The editable value boxes in the Chaos Redux settings window support typed numeric entry.
 
-The following fields now support direct keyboard entry:
+The following fields support direct keyboard entry:
 
 - Timer Interval minimum days
 - Timer Interval maximum days
@@ -13,7 +13,7 @@ The following fields now support direct keyboard entry:
 - Advanced Settings cap reduction
 - Advanced Settings baseline major gain
 
-The Event ID box already used a separate manual-entry path and remains on that existing system.
+The Event ID box uses a separate manual-entry path.
 
 ## How It Works
 
@@ -32,7 +32,7 @@ The typed input is still staged in the same way as the arrow controls:
 ## Validation Rules
 
 - Timer minimum is clamped to `5` and cannot exceed the staged timer maximum.
-- Timer maximum is clamped to the staged timer minimum and now supports values up to `999`.
+- Timer maximum is clamped to the staged timer minimum and supports values up to `999`.
 - Chaos value is clamped between `0` and `1500`.
 - Recovery rate is clamped to the configured advanced bounds.
 - Cap reduction is entered as a whole-number percent and is converted back into the internal `0.0-1.0` factor.
@@ -42,7 +42,7 @@ The typed input is still staged in the same way as the arrow controls:
 
 - The display text for each editable field switches to a temporary `...` placeholder when a field is focused and empty.
 - Once digits are typed, the display shows the buffered value until `Enter` is pressed or the buffer is cleared.
-- The timer interval limit constant now exposes a maximum of `999`, so both arrow controls and typed entry use the same ceiling.
+- The timer interval limit constant exposes a maximum of `999`, so both arrow controls and typed entry use the same ceiling.
 
 ## Icons And Assets
 

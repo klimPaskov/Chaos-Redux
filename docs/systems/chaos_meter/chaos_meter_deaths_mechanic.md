@@ -1,8 +1,8 @@
 # Chaos Meter Deaths Mechanic
 
-## What This Adds
+## Purpose
 
-This mechanic introduces a global deaths tracker tied to war-crime style systems and large-scale warfare pressure.
+The global deaths tracker records losses from war-crime systems and large-scale warfare.
 
 It tracks:
 
@@ -29,19 +29,21 @@ Deaths are currently registered from:
 8. Fallout's one-time grade-based state loss through an observed post-mutation Deaths transaction.
 9. Event 19 ghost-derivative decline through its long-cadence exact state-population transaction.
 
-Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in `docs/systems/chaos_meter/nuclear_chaos_ladder.md`; that direct gain is separate from any later deaths-to-chaos contribution.
+Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in [nuclear_chaos_ladder.md](nuclear_chaos_ladder.md).
+That direct gain is separate from any later deaths-to-chaos contribution.
 
 ## State Population Impact
 
 When a death source is marked as civilian/state-linked, the shared transaction applies one negative state-scope `add_manpower` delta. Because the engine also credits recruitable manpower when this effect is negative, the transaction snapshots the state's owner and distinct controller, measures their actual `manpower_k` change, and removes only an observed positive credit. This decreases real state population without deliberately granting military reserves and remains safe for occupied states without assuming which country the engine credits.
 
-The official effect surface exposes no population-only replacement. If an engine build does not expose its recruitable credit through `manpower_k` in the same effect chain, the script does not guess an amount or recipient; this residual engine behavior remains a validation risk rather than a hidden compensation assumption.
+The official effect surface exposes no population-only replacement. If an engine build does not expose its recruitable credit through `manpower_k` in the same effect chain, the script does not guess an amount or recipient.
+This residual engine behavior remains a validation risk rather than a hidden compensation assumption.
 
 Fallout uses a stricter order because its world rewrite must be idempotent across phase-event retries. It calculates intent from frozen population and grade, clamps the commit against live population, writes a mutation-issued flag, and calls the population-only helper once. It then reads the live population difference. Only an exact observed result is registered through `chaos_meter_register_deaths`, with `chaos_deaths_apply_state_pop` set to zero. The optional `chaos_deaths_record_state_ledger` input records that observed amount in the state Deaths map ledger without mutating population again. A mismatch leaves the Fallout blackout active and never receives a Deaths entry.
 
 ## UI Integration (Chaos Meter)
 
-A fifth tab was added: `Deaths`.
+The fifth Chaos Meter tab is `Deaths`.
 
 Top section:
 
@@ -71,7 +73,7 @@ Primary scripted effects:
 - `apply_exact_state_civilian_population_loss`
 - `fallout_apply_state_population_loss`
 
-Country totals are now maintained on country-scoped variables and the deaths view backfills legacy saves through bounded chunked rebuild passes instead of scanning the full raw history in one UI refresh.
+Country totals are maintained on country-scoped variables and the deaths view backfills legacy saves through bounded chunked rebuild passes instead of scanning the full raw history in one UI refresh.
 
 Biowarfare helper:
 
@@ -94,10 +96,8 @@ These helpers route state population loss through the same Chaos Meter Deaths pi
 
 Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use the normal `1` chaos per `1,000,000` deaths conversion. Stored before, after, and delta receipts cover the global Deaths total, Deaths log sequence, and state Deaths ledger. When the optional Deaths display is disabled, the exact state mutation still occurs and the receipt records a disabled accounting outcome with zero Deaths-ledger movement.
 
-Event 19 ghost decline uses Deaths reason `20`, `infantry_spawn_ghost_decline`,
-and a `0.10` deaths-to-chaos weight. It records the real population loss once
-through the shared pipeline while keeping the cause separate from Event 10's
-`death_consumption` attribution and progression.
+Event 19 ghost decline uses Deaths reason `20`, `infantry_spawn_ghost_decline`, and a `0.10` deaths-to-chaos weight.
+It records the real population loss once through the shared pipeline while keeping the cause separate from Event 10's `death_consumption` attribution and progression.
 
 ## Icons and GFX Wiring
 

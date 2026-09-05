@@ -11,4 +11,13 @@ This directory documents the shared Chaos Meter, deaths accounting, war-declarat
 - [`chaos_meter_war_declaration_counting.md`](chaos_meter_war_declaration_counting.md) defines war-declaration source registration and duplicate suppression.
 - [`nuclear_chaos_ladder.md`](nuclear_chaos_ladder.md) defines direct Chaos gains and escalation tiers for nuclear use.
 
-Atmospheric contamination belongs in `../air_cleanliness/`. Condemnation and CBRN consequences belong in `../cbrn_warfare/`.
+Atmospheric contamination belongs in [air_cleanliness/](../air_cleanliness/README.md).
+Condemnation and CBRN consequences belong in [cbrn_warfare/](../cbrn_warfare/README.md).
+
+## Unresolved presentation contract
+
+The [deaths/UI pass record](chaos_meter_deaths_and_events_log_ui.md) describes a per-country details overlay.
+The [popup contract](chaos_meter_popup_window.md) and [deaths mechanic](chaos_meter_deaths_mechanic.md) describe that overlay as disabled or absent.
+These are conflicting recorded interface states, and this documentation pass does not select either as current behavior.
+Reconcile the linked GUI consumers and matching MCP state fixtures before promoting one description or superseding the other.
+The pass record retains its historical cache, sorting, and selection findings.

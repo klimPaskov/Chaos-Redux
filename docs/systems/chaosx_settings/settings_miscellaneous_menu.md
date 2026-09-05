@@ -70,7 +70,8 @@ Current sound routing:
 - Current audio ID `28` uses the Mandala of Nations track definitions.
 - Current audio ID `31` uses the Powers of the Awakened track definitions.
 
-The canonical audio catalogue remains `music/chaosx_music_track_list.html`; the parent implementation owns its catalogue edit.
+The canonical audio catalogue remains `music/chaosx_music_track_list.html`.
+The parent implementation owns its catalogue edit.
 
 The Miscellaneous panel no longer shows explanatory note text under the controls.
 The volume control no longer uses a boxed value field. It now uses a vanilla game-rules style slider look with:
