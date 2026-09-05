@@ -19,6 +19,22 @@ gods_of_africa_has_current_host = {
 	}
 }
 
+# COUNTRY scope on a participant. Unlike the host-only active-host trigger,
+# this predicate validates the authoritative host through its event target and
+# is therefore safe to reuse in participant decisions and missions.
+gods_of_africa_participant_host_is_active = {
+	gods_of_africa_has_current_host = yes
+	has_global_flag = africa_event_active
+	has_global_flag = africa_is_one
+	has_global_flag = africa_evolution_i_logged
+	event_target:africa_host = {
+		has_country_flag = gods_of_africa_active
+		has_country_flag = gods_of_africa_activation_committed
+		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+		NOT = { has_capitulated = yes }
+	}
+}
+
 # COUNTRY scope on the committed Event 012 host.
 gods_of_africa_active_host_is_valid = {
 	africa_is_current_host = yes
@@ -182,16 +198,7 @@ gods_of_africa_demand_contract_is_current = {
 	# host through its event target rather than the host-only
 	# `gods_of_africa_active_host_is_valid` trigger, whose ROOT comparison would
 	# (correctly) reject a participant scope.
-	gods_of_africa_has_current_host = yes
-	has_global_flag = africa_event_active
-	has_global_flag = africa_is_one
-	has_global_flag = africa_evolution_i_logged
-	event_target:africa_host = {
-		has_country_flag = gods_of_africa_active
-		has_country_flag = gods_of_africa_activation_committed
-		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
-		NOT = { has_capitulated = yes }
-	}
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_has_active_demand = yes
 	has_variable = gods_of_africa_demand_family
 	has_variable = gods_of_africa_demand_amount
@@ -214,6 +221,7 @@ gods_of_africa_demand_contract_can_resolve = {
 }
 
 gods_of_africa_participant_can_receive_demand = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	# Tribute is a political compact, not a wartime tax. A country at war must
 	# finish its current conflict before a fresh ordinary demand is issued.
@@ -423,6 +431,7 @@ gods_of_africa_participant_can_request_extension = {
 }
 
 gods_of_africa_participant_can_defy = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
 	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
@@ -433,6 +442,7 @@ gods_of_africa_participant_can_defy = {
 }
 
 gods_of_africa_can_prepare_defensive_defiance = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	has_country_flag = gods_of_africa_defiant
 	NOT = { has_country_flag = gods_of_africa_defensive_preparation_committed }
@@ -440,6 +450,7 @@ gods_of_africa_can_prepare_defensive_defiance = {
 }
 
 gods_of_africa_can_harden_stockpiles = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	has_country_flag = gods_of_africa_defiant
 	NOT = { has_country_flag = gods_of_africa_stockpiles_hardened }
@@ -447,6 +458,7 @@ gods_of_africa_can_harden_stockpiles = {
 }
 
 gods_of_africa_can_secure_transport = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	has_country_flag = gods_of_africa_defiant
 	NOT = { has_country_flag = gods_of_africa_transport_secured }
@@ -454,6 +466,7 @@ gods_of_africa_can_secure_transport = {
 }
 
 gods_of_africa_can_prepare_countermeasures = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	has_country_flag = gods_of_africa_defiant
 	NOT = { has_country_flag = gods_of_africa_countermeasures_prepared }
@@ -461,6 +474,7 @@ gods_of_africa_can_prepare_countermeasures = {
 }
 
 gods_of_africa_participant_can_reconcile = {
+	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
 	has_country_flag = gods_of_africa_defiant
 	has_country_flag = gods_of_africa_reconciliation_pending

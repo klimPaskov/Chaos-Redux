@@ -12,6 +12,8 @@ This closes a narrow stale-response race: a participant may retain the old gener
 
 The participant-side guard uses the shared current-host predicate plus the host's active, activation-committed, non-capitulated, and non-settled flags instead of the host-only `gods_of_africa_active_host_is_valid` trigger, whose ROOT comparison is intentionally restricted to host scope.
 
+The same participant-safe predicate now gates participant demand, defiance, defensive-preparation, and reconciliation availability/visibility; frozen substitute-slot triggers inherit the active-demand check through `gods_of_africa_demand_contract_is_current`.
+
 The cleanup-only `gods_of_africa_demand_contract_can_resolve` trigger remains unchanged, so owner-local expiry and host-loss cleanup can still close an already-invalid contract without needing the defeated host to pass the active-host gate.
 
 ## Validation evidence
