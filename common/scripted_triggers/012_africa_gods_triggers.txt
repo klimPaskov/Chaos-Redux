@@ -555,6 +555,50 @@ gods_of_africa_protection_package_is_affordable = {
 	}
 }
 
+# COUNTRY scope on a participant. A voluntary offer is available only outside
+# an active demand, when the owner has a current material need and the sender
+# can make the fixed shipment while keeping its protected operating reserve.
+# The two branches mirror the deterministic choice in the submit effect so a
+# stale UI quote can only fail closed.
+gods_of_africa_participant_can_offer_aid = {
+	gods_of_africa_participant_generation_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_demand_active }
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+	NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+	NOT = { has_war_with = event_target:africa_host }
+	has_event_target = africa_host
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_aid_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_aid_day
+			compare = greater_than_or_equals
+		}
+	}
+	event_target:africa_host = {
+		gods_of_africa_active_host_is_valid = yes
+		OR = {
+			check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+			check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+		}
+	}
+	OR = {
+		AND = {
+			event_target:africa_host = {
+				check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+			}
+			NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.voluntary_aid_equipment_capacity } }
+		}
+		AND = {
+			event_target:africa_host = {
+				check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+			}
+			NOT = { has_fuel < constant:gods_of_africa_transaction.voluntary_aid_fuel_capacity }
+		}
+	}
+}
+
 # COUNTRY scope on the host. Priority-offender marks are intentionally capped
 # so the manual target action cannot become unlimited harassment.
 gods_of_africa_priority_offender_capacity_available = {

@@ -103,6 +103,10 @@ gods_of_africa_run_owner_tick = {
 	}
 	if = {
 		limit = { gods_of_africa_active_host_is_valid = yes }
+		# Keep the small need snapshot current for both demand selection and the
+		# participant-side voluntary-aid action. This remains host-local and does
+		# not introduce a second world scan.
+		gods_of_africa_build_need_profile = yes
 		# Enforce each frozen contract deadline from the owner clock. The visible
 		# mission uses a safe maximum timeout, while this bounded participant pass
 		# resolves shorter ceremonial/emergency deadlines exactly.
@@ -303,6 +307,11 @@ gods_of_africa_register_participant = {
 		set_variable = { gods_of_africa_substitute_count = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_punishment_count = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_aid_count = constant:gods_of_africa_value.zero }
+		set_variable = { gods_of_africa_voluntary_aid_count = constant:gods_of_africa_value.zero }
+		clear_variable = gods_of_africa_last_aid_family
+		clear_variable = gods_of_africa_last_aid_amount
+		clear_variable = gods_of_africa_last_aid_day
+		clr_country_flag = gods_of_africa_aid_report_pending
 		set_variable = { gods_of_africa_repetition_count = constant:gods_of_africa_value.zero }
 		set_variable = { gods_of_africa_next_demand_date = global.num_days }
 		add_to_variable = { gods_of_africa_next_demand_date = constant:gods_of_africa_timing.first_demand_delay_days }
@@ -395,6 +404,7 @@ gods_of_africa_archive_invalid_participant = {
 	clear_variable = gods_of_africa_next_partial_payment_day
 	clr_country_flag = gods_of_africa_reconciliation_offer_pending
 	clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
+	clr_country_flag = gods_of_africa_aid_report_pending
 	clear_variable = gods_of_africa_reconciliation_start_day
 	clear_variable = gods_of_africa_reconciliation_due_day
 	clear_variable = gods_of_africa_reconciliation_next_attempt_day
@@ -2289,6 +2299,7 @@ gods_of_africa_clean_participant = {
 	clr_country_flag = gods_of_africa_reconciliation_offer_pending
 	clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
 	clr_country_flag = gods_of_africa_wartime_demand_report_pending
+	clr_country_flag = gods_of_africa_aid_report_pending
 	clr_country_flag = gods_of_africa_defensive_preparation_committed
 	clr_country_flag = gods_of_africa_stockpiles_hardened
 	clr_country_flag = gods_of_africa_transport_secured
@@ -2350,6 +2361,7 @@ gods_of_africa_finalize_participant = {
 	clr_country_flag = gods_of_africa_reconciliation_offer_pending
 	clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
 	clr_country_flag = gods_of_africa_wartime_demand_report_pending
+	clr_country_flag = gods_of_africa_aid_report_pending
 	clr_country_flag = gods_of_africa_negotiation_open
 	clr_country_flag = gods_of_africa_defensive_preparation_committed
 	clr_country_flag = gods_of_africa_stockpiles_hardened
@@ -2462,6 +2474,7 @@ gods_of_africa_cancel_participant = {
 	clr_country_flag = gods_of_africa_reconciliation_offer_pending
 	clr_country_flag = gods_of_africa_reconciliation_failure_report_pending
 	clr_country_flag = gods_of_africa_wartime_demand_report_pending
+	clr_country_flag = gods_of_africa_aid_report_pending
 	clr_country_flag = gods_of_africa_negotiation_open
 	clr_country_flag = gods_of_africa_defensive_preparation_committed
 	clr_country_flag = gods_of_africa_stockpiles_hardened
@@ -2857,6 +2870,93 @@ gods_of_africa_protect_partner = {
 			set_variable = { gods_of_africa_milestone_secondary_actor = THIS.id }
 			gods_of_africa_record_milestone = yes
 		}
+	}
+}
+
+# COUNTRY scope on a participant. This is the one voluntary aid route outside
+# an active demand. The host need and the sender reserve are checked again at
+# submission, then one real material shipment is debited and credited. The
+# first offer has the larger relationship effect; later offers are still
+# meaningful but use a smaller Wrath reduction.
+gods_of_africa_offer_voluntary_aid = {
+	if = {
+		limit = {
+			gods_of_africa_participant_can_offer_aid = yes
+			has_event_target = africa_host
+		}
+		save_event_target_as = gods_of_africa_aid_participant
+		set_variable = { gods_of_africa_aid_success = constant:gods_of_africa_value.zero }
+		if = {
+			limit = {
+				event_target:africa_host = {
+					check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+				}
+				NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.voluntary_aid_equipment_capacity } }
+			}
+			set_variable = { gods_of_africa_aid_family = constant:gods_of_africa_demand_family.land_equipment }
+			set_variable = { gods_of_africa_aid_amount = constant:gods_of_africa_transaction.voluntary_aid_equipment_amount }
+			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_aid_amount }
+			remove_infantry_equipment_from_stockpile = yes
+			event_target:africa_host = {
+				add_equipment_to_stockpile = { type = infantry_equipment amount = event_target:gods_of_africa_aid_participant.gods_of_africa_aid_amount }
+				add_to_variable = { africa_common_defence_stockpile = event_target:gods_of_africa_aid_participant.gods_of_africa_aid_amount }
+			}
+			set_variable = { gods_of_africa_aid_success = constant:gods_of_africa_value.one }
+		}
+		else_if = {
+			limit = {
+				event_target:africa_host = {
+					check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+				}
+				NOT = { has_fuel < constant:gods_of_africa_transaction.voluntary_aid_fuel_capacity }
+			}
+			set_variable = { gods_of_africa_aid_family = constant:gods_of_africa_demand_family.fuel }
+			set_variable = { gods_of_africa_aid_amount = constant:gods_of_africa_transaction.voluntary_aid_fuel_amount }
+			set_temp_variable = { fuel_stockpile_removal_amount = gods_of_africa_aid_amount }
+			remove_fuel_from_stockpile = yes
+			event_target:africa_host = {
+				add_fuel = event_target:gods_of_africa_aid_participant.gods_of_africa_aid_amount
+			}
+			set_variable = { gods_of_africa_aid_success = constant:gods_of_africa_value.one }
+		}
+		if = {
+			limit = { check_variable = { gods_of_africa_aid_success > constant:gods_of_africa_value.zero } }
+			if = {
+				limit = { NOT = { has_variable = gods_of_africa_voluntary_aid_count } }
+				set_variable = { gods_of_africa_voluntary_aid_count = constant:gods_of_africa_value.zero }
+			}
+			if = {
+				limit = { check_variable = { gods_of_africa_voluntary_aid_count = constant:gods_of_africa_value.zero } }
+				set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.voluntary_aid_magnitude }
+			}
+			else = {
+				set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.voluntary_aid_repeat_magnitude }
+			}
+			add_to_variable = { gods_of_africa_voluntary_aid_count = constant:gods_of_africa_value.one }
+			set_variable = { gods_of_africa_last_aid_family = gods_of_africa_aid_family }
+			set_variable = { gods_of_africa_last_aid_amount = gods_of_africa_aid_amount }
+			set_variable = { gods_of_africa_last_aid_day = global.num_days }
+			set_variable = { gods_of_africa_next_aid_day = global.num_days }
+			add_to_variable = { gods_of_africa_next_aid_day = constant:gods_of_africa_timing.voluntary_aid_cooldown_days }
+			set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_decrease }
+			gods_of_africa_apply_wrath = yes
+			set_variable = { gods_of_africa_history_kind_request = constant:gods_of_africa_history_kind.aid }
+			gods_of_africa_record_history = yes
+			if = {
+				limit = { NOT = { has_country_flag = gods_of_africa_reliable_memory_applied } }
+				set_country_flag = gods_of_africa_reliable_memory_applied
+				add_opinion_modifier = { target = event_target:africa_host modifier = gods_of_africa_reliable_partner }
+				event_target:africa_host = {
+					add_opinion_modifier = { target = event_target:gods_of_africa_aid_participant modifier = gods_of_africa_reliable_partner }
+				}
+			}
+			event_target:africa_host = { gods_of_africa_build_need_profile = yes }
+			set_country_flag = gods_of_africa_aid_report_pending
+			country_event = { id = chaosx.nr12.614 }
+		}
+		clear_variable = gods_of_africa_aid_success
+		clear_variable = gods_of_africa_aid_family
+		clear_variable = gods_of_africa_aid_amount
 	}
 }
 

@@ -82,6 +82,44 @@ gods_of_africa_participant_category = {
 		ai_will_do = { base = 1 }
 	}
 
+	# A participant can make one meaningful voluntary shipment when Africa has
+	# a current material shortage and no ordinary demand is open. The effect
+	# chooses the displayed need deterministically and rechecks the reserve.
+	gods_of_africa_offer_voluntary_aid = {
+		name = gods_of_africa_offer_voluntary_aid
+		desc = gods_of_africa_offer_voluntary_aid_desc
+		icon = GFX_decision_012_africa_gods_protect_partner
+		visible = {
+			gods_of_africa_participant_can_offer_aid = yes
+		}
+		available = {
+			gods_of_africa_participant_can_offer_aid = yes
+		}
+		custom_cost_trigger = {
+			gods_of_africa_participant_can_offer_aid = yes
+		}
+		custom_cost_text = gods_of_africa_voluntary_aid_cost
+		cost = 0
+		fire_only_once = no
+		complete_effect = {
+			custom_effect_tooltip = gods_of_africa_offer_voluntary_aid_effect_tt
+			hidden_effect = { gods_of_africa_offer_voluntary_aid = yes }
+		}
+		ai_will_do = {
+			base = 10
+			modifier = {
+				factor = 1.5
+				has_variable = gods_of_africa_wrath
+				check_variable = { gods_of_africa_wrath < constant:gods_of_africa_wrath.hostile }
+			}
+			modifier = {
+				factor = 0.5
+				has_variable = gods_of_africa_voluntary_aid_count
+				check_variable = { gods_of_africa_voluntary_aid_count > constant:gods_of_africa_value.zero }
+			}
+		}
+	}
+
 	gods_of_africa_comply_demand = {
 		name = gods_of_africa_comply_demand
 		desc = gods_of_africa_comply_demand_desc
