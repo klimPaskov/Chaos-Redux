@@ -177,6 +177,11 @@ gods_of_africa_participant_has_active_demand = {
 }
 
 gods_of_africa_demand_contract_is_current = {
+	# A participant may still retain the old generation pointer for the short
+	# interval before the capitulation/settlement cleanup runs.  Require the
+	# host's live Gods contract here so a stale response cannot debit a country
+	# into a defeated or already-settled unifier.
+	gods_of_africa_active_host_is_valid = yes
 	gods_of_africa_participant_has_active_demand = yes
 	has_variable = gods_of_africa_demand_family
 	has_variable = gods_of_africa_demand_amount
