@@ -1236,7 +1236,21 @@ gods_of_africa_prepare_demand_for_participant = {
 		clear_variable = gods_of_africa_selected_family
 		clear_variable = gods_of_africa_selected_amount
 		gods_of_africa_build_need_profile = yes
-		gods_of_africa_select_demand_family = yes
+		# A priority is only a tie-breaker among real African needs. Do not let
+		# the default land priority turn an empty need profile into an arbitrary
+		# recurring demand.
+		if = {
+			limit = {
+				OR = {
+					check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_manpower > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_industry > constant:gods_of_africa_value.zero }
+					check_variable = { gods_of_africa_need_emergency > constant:gods_of_africa_value.zero }
+				}
+			}
+			gods_of_africa_select_demand_family = yes
+		}
 		if = {
 			limit = { has_variable = gods_of_africa_selected_family }
 			gods_of_africa_calculate_demand_amount = yes
