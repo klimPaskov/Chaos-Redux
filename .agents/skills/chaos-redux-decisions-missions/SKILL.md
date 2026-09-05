@@ -841,7 +841,7 @@ Choose the presentation layer from the hierarchy above before creating a custom 
 Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly.
 A custom interface must have a gameplay reason and cannot compensate for weak actions.
 
-Use `chaos-redux-scripted-gui` as the source of truth for reference images before implementation, image-to-native mapping, layout and content budgets, backgrounds, label centering, interaction presentation, and mandatory MCP inspect/render/rewrite/matching-scenario comparison.
+Use `chaos-redux-scripted-gui` as the source of truth for reference images before implementation, image-to-native mapping, layout and content budgets, backgrounds, label centering, interaction presentation, and mandatory MCP inspect/render/matching-scenario comparison, with direct application of reviewed edits or optional `gui_rewrite` under that skill.
 Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`.
 Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization.
 The decision owner retains the gameplay rules below.

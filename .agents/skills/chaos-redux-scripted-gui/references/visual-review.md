@@ -2,7 +2,7 @@
 
 Use this checklist when designing the native mapping and reviewing baseline and post-change MCP artifacts.
 Inspect the full composition at native output size and detailed crops for text and edges; record measurements where they reveal or verify a defect.
-Every applicable visible defect blocks visual completion, even when the MCP transaction succeeds.
+Every applicable visible defect blocks visual completion regardless of the source-edit method or optional rewrite transaction outcome.
 Do not resize the preview or change UI scale to disguise a layout problem.
 
 ## Geometry, typography, and control bounds

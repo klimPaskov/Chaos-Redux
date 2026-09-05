@@ -46,25 +46,31 @@ A file's existence, its placement in specs, a date, or an old status label does 
 Existing authorization can support parent acceptance without another permission request.
 Do not silently drop behavior or substitute a fallback when adapting the image; unresolved design changes follow the repository's acceptance rules.
 
-## Mandatory MCP sequence
+## Required MCP visual review and optional rewrite
 
 Use the installed `hoi4_agent_tools` service, registered in `.codex/config.toml` through `hoi4-agent-tools.cmd`.
 Discover the live schema before use; tool exposure alone does not establish service health.
 The exposed GUI tools are `mcp__hoi4_agent_tools__hoi4_gui_inspect`, `mcp__hoi4_agent_tools__hoi4_gui_render`, and `mcp__hoi4_agent_tools__hoi4_gui_rewrite`.
-Inspection and rendering are read-only source operations; only the authorized rewrite applies a GUI package.
+Inspection and rendering are read-only source operations; `gui_rewrite` is an optional applying/validation route.
 
 1. Inspect the exact linked window before editing.
    Supply `windowName` together with a valid explicit `scenario` for narrow inspection, and record source identity, hierarchy, parent/context, GFX, fonts, localisation, state logic, and click regions.
 2. Render the baseline before editing, preserving full-window images and relevant detail, hierarchy, click-region, diagnostic, state, and resolution artifacts returned by the route.
    Read the fidelity report, resolve supplied runtime values and flags, and inspect the actual images.
 3. Create/select the intended reference and native-element mapping above, then review the proposed source change against both reference and baseline.
-4. Apply an in-scope package through `mcp__hoi4_agent_tools__hoi4_gui_rewrite` using the discovered source/helpers/patches contract, exact file/window, and current source identity where supported.
+4. Apply the authorized, reviewed GUI edit directly through the normal source-edit workflow, or optionally use `mcp__hoi4_agent_tools__hoi4_gui_rewrite` to apply and validate it.
+   Keep dependencies and changed files inside the granted scope and review the resulting source.
+   When choosing the optional rewrite route, use its discovered source/helpers/patches contract and exact file/window.
    In patches mode, use exact single scalar assignment/value ranges; whole-line replacements spanning several assignments are rejected.
    `expectedSourceHash` belongs to patches mode; do not pass it to source mode.
-   Keep dependencies and changed files inside the granted scope; a rewrite result does not excuse reviewing its changes.
 5. Reinspect and rerender after each accepted change over the same named scenarios, values, states, resolutions, UI scales, language, and assets as the baseline.
    Compare matching before/after source versions and artifact images, then compare the result with the reference.
    Read [references/visual-review.md](references/visual-review.md) for the required visual and usability checks before any visual completion claim.
+
+The optional `gui_rewrite` transaction's automatic post-write/index validation and transaction success are not mandatory GUI completion gates.
+If that route blocks or rolls back, review its diagnostics and current source bytes, then directly apply the already authorized, reviewed edit without another fallback approval solely because the rewrite route failed.
+Record the route failure and application method; resolve actual source defects and complete the required MCP inspection, renders, click-region checks, and matched scenario/reference comparison.
+Do not change the installed MCP package or configuration to remove its internal checks.
 
 `gui_render` exposes `comparisonScenario`; use it for supported scenario comparisons, not as an assumed snapshot of older source.
 There is no separately exposed GUI comparison tool: preserve pre-change artifacts and source identity, and compare them with matching post-change artifacts.
@@ -82,7 +88,7 @@ Treat the production MCP render as the one-to-one in-game visual review surface 
 Every visible defect in the in-scope GUI blocks completion, including warnings the tool does not classify as fatal.
 Never dismiss bad alignment, spacing, clipping, backgrounds, states, assets, or click regions as a renderer discrepancy or defer correction for lack of a separate game screenshot.
 The render does not execute the game: preserve fidelity limits and unverified behavior without using them to waive visible defects.
-If a required route, artifact, scenario, or dependency is unavailable, record the exact call, selector, error, and affected evidence as blocked; source-only review is not equivalent.
+If required inspection/render evidence, artifacts, scenarios, or dependencies are unavailable, record the exact call, selector, error, and affected evidence as blocked; source-only review is not equivalent.
 An incidental defect outside authorized scope becomes a parent-owned finding, not permission to edit another interface.
 
 ## Content and interaction budget

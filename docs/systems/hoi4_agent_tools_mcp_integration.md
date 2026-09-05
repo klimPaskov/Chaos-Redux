@@ -37,6 +37,11 @@ Use the skill that owns the current work. `chaos-redux-focus-trees` owns focus i
 
 Domain rewrites validate the complete proposal, generate review evidence, apply through the internal transaction journal, re-index and post-validate the result, and retain exact-byte recovery data. A blocked proposal does not mutate source. Recovery is automatic when a write or post-validation fails; intentional reversal of a successful edit is a new authorized source change (normally through Git), because the public MCP surface does not expose caller-managed transaction, apply, or rollback tools.
 
+For scripted GUI work, `gui_rewrite` is optional; the transaction behavior above does not make its automatic post-write/index validation or transaction success a project completion gate.
+An authorized reviewed GUI edit may be applied directly without another fallback approval solely because the optional rewrite blocks or rolls back.
+Source review, required MCP inspect/render evidence, click-region checks, matched scenario/reference comparisons, and correction of every visible in-scope defect remain mandatory under `chaos-redux-scripted-gui`.
+This workflow rule does not disable or modify the installed server's internal validation.
+
 ## Rendering limits
 
 Focus, GUI, map, and event renders are deterministic offline evidence, not game screenshots. Scripted GUI previews include fidelity information and do not run, launch, automate, control, or capture HOI4. For GUI visual acceptance, follow `chaos-redux-scripted-gui`: treat the production MCP render as the one-to-one in-game visual review surface, fix every visible in-scope defect, and never dismiss a defect as a renderer discrepancy. Event analysis is bounded and static; dynamic destinations or runtime behavior may remain unresolved and must be reported.
