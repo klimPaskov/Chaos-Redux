@@ -32,6 +32,8 @@ The current Event 006 visual-asset authority is `../../../plans/006_independence
 
 The 2026-09-02 SE23 audio research pass preserves *Alte Kameraden* (Carl Teike, Anker-Orchester) as a conditional replacement candidate with a documented `PD-INT 2023` item record, source mirrors, and a 110-second audition derivative. Parent/user selection, human audition, and distribution-jurisdiction review remain open, so the candidate is not promoted and audio ID 23, wrappers, and firing remain absent from runtime. Handoff: `../../../plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_2026-09-02.md`.
 
+The 2026-09-05 SE23 audio revalidation confirms the same *Alte Kameraden* candidate as a game-ready 110-second, 44.1 kHz PCM WAV at `docs/assets/006_independence_wave/super_events/audio/candidate/super_event_23_alte_kameraden_110s_candidate.wav` (SHA-256 `C261E01261D5DA78EE55FBA5D14F0747EA670495C8357E1CADA13465D33D0EF5`) while preserving the `PD-INT 2023` source record and jurisdiction caveat. Parent/user selection, human audition, and distribution-jurisdiction review remain open, so audio ID 23, wrappers, catalogue, and firing remain absent from runtime. Handoff: `../../../plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_revalidation_2026-09-05.md`.
+
 | Asset ID | Current status | Unresolved gate |
 | --- | --- | --- |
 | ASSET-005 | `needs_user_review` | Slot-23 audio/rights/firing reachability remains open. |
