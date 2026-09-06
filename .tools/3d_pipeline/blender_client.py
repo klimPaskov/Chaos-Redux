@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Any, Dict, Literal, Optional
 
 from lib.mcp_stdio import MCPRouteError, call_stdio
-from meshy_client import require_meshy_key
 
 
 def _structured(result: Dict[str, Any]) -> Dict[str, Any]:
@@ -32,7 +31,6 @@ def _structured(result: Dict[str, Any]) -> Dict[str, Any]:
 
 class BlenderAdapterClient:
     def __init__(self, repo_root: Path):
-        require_meshy_key()
         self.repo_root = repo_root.resolve()
         self.wrapper = self.repo_root / ".tools" / "3d_pipeline" / "wrappers" / "run_blender_hoi4_adapter.cmd"
         if not self.wrapper.exists():

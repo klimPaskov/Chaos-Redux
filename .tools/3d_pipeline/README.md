@@ -13,7 +13,7 @@ one approved reference image
   -> reimport proof, validation evidence, and parent runtime handoff
 ~~~
 
-The first process gate is a non-blank `MESHY_API_KEY` environment variable.
+For work that calls Meshy, first verify a non-blank `MESHY_API_KEY` environment variable. Blender-only repairs of existing models skip this provider gate.
 
 Meshy model selection is live-route gated. Meshy 7 is the only accepted generation model. Inspect the repository-owned `meshy_image_to_3d` declaration before paid work and pass explicit `ai_model: meshy-7`; the wrapper applies a deterministic compatibility patch when the official Meshy API changes before the published MCP package. Require `tools/list` proof, record the exact provider model, and never use an alias, relabel an older output, or bypass MCP with a hidden REST call.
 
@@ -21,7 +21,7 @@ The compatibility patch must be idempotent and UTF-8 stable. Verify it with two 
 
 The package never prints or writes the key.
 
-If the key is missing or blank, print this exact PowerShell command and tell the user to restart the shell or Codex:
+If Meshy work requires a key and it is missing or blank, print this exact PowerShell command and tell the user to restart the shell or Codex:
 
 ~~~powershell
 [Environment]::SetEnvironmentVariable(
@@ -31,7 +31,7 @@ If the key is missing or blank, print this exact PowerShell command and tell the
 )
 ~~~
 
-The key gate precedes repository or job path discovery, reference generation, route discovery, balance checks, provider calls, and downstream work.
+The key gate precedes Meshy route discovery, balance checks, and provider calls. Blender-only repairs verify their job boundary, Blender adapter, and export stack without a provider dependency.
 
 ## Lock and route gate
 
@@ -147,9 +147,20 @@ Never substitute a static still for a requested skeletal action.
 
 ### Skeletal animation source gate
 
-For every skeletal 3D unit or entity package, primary motion for every required runtime action must come from a verified `meshy_animate` operation or another explicitly user-approved professional animation source. Manually keyed or simple procedural Blender actions, whole-rig rotations or translations, transform-only motion, static-pose aliases, and semantic reuse of one action for another role are forbidden as final animation.
+Use GPT-6-astra for manual Blender rigging, weighting, and skeletal animation.
+Try Meshy rigging once per model and each required animation once on a usable supported rig; accept only outputs that pass visual, deformation, contact, and semantic-role review.
+After the first failure, unusable result, or unsupported stage, proceed directly to manual Blender authoring without renewed approval or paid rig/animation retries.
+Polling or downloading the same task does not consume another attempt, and regenerating geometry does not reset the limit.
+Retain valid Meshy rigs and actions; repair existing missing or faulty rigs/actions directly in Blender without new provider calls.
+Blender-only repairs do not require a Meshy API key or balance check; verify the locked Blender adapter and export stack.
 
-For animation production, Blender is limited to importing, retargeting, non-destructive cleanup, contact or root correction, scale normalization, baking, sound-event synchronization, validation, and PDX export or reimport. Cleanup must preserve substantive source motion and may not become a manual replacement. Attack or fire actions must visibly aim, discharge, recoil, and recover where required; death actions must visibly articulate collapse, impact, and settling. Require role-appropriate multi-frame evidence and block missing roles until an approved source exists.
+Author real role-specific bone motion through verified adapter operations and retain editable rig, weights, keys, constraints, baked actions, and checkpoint evidence.
+Whole-rig transforms alone, static-pose aliases, and semantic reuse of one action for another role are not final animation.
+Attack/fire roles require aim, discharge, recoil, and recovery where applicable; death requires articulated collapse, impact, and settling.
+Preserve the existing contact, loop, root-motion, scale, preview, export, and reimport acceptance requirements.
+Record the first Meshy task outcome or unsupported-stage reason, Blender repair reason, authoring model, action source, and proof paths.
+If a required authoring operation is unavailable, report the exact capability gap rather than substituting mock motion.
+Other external animation sources still require their separate approval.
 
 External FBX action selection preserves the exact receipt-verified source identifier and accepts ordinary balanced parenthetical qualifiers such as `KayKit Animated Character|Shoot(2h)Bow`; destination action names remain separately constrained to safe runtime identifiers. Native BVH preflight accepts finite positive leading-decimal frame times such as `Frame Time: .0083333` and continues to reject malformed, non-finite, zero, and negative values.
 
@@ -159,9 +170,9 @@ When a humanoid has detached or loose components, run `chaosx_blender_hoi4_revie
 
 After parent review, run `chaosx_blender_hoi4_isolate_humanoid_weapon` with only the approved ids. It joins only those components, uses deterministic principal-axis alignment to shoulder the original recovered weapon, marks the dedicated `weapon` bone, and must be visually aligned with both hands and the shoulder before rigging or export. The armed rig uses a T-pose 24-bone body plus one weapon bone, excludes the weapon from body bounds and body weights, and binds it rigidly to that bone.
 
-Every declared armed role, including `idle`, `move`, `laser_attack`, `defend`, `support_attack`, `retreat`, `training`, and `death` when required by the job, must use its own Meshy or explicitly approved professional source action. The adapter may only import, retarget, clean, correct contact or root placement, validate, and export that source; it may not author final armed motion. These operations are job-root-bounded and accept no arbitrary Python, shell, URL, or unrestricted path input.
+Every declared armed role, including `idle`, `move`, `laser_attack`, `defend`, `support_attack`, `retreat`, `training`, and `death` when required by the job, must have role-appropriate skeletal motion from a successful first Meshy attempt or manual Blender authoring by GPT-6-astra, with separately approved professional sources also permitted. The adapter may author, import, retarget, clean, correct contact or root placement, validate, and export those actions. These operations are job-root-bounded and accept no arbitrary Python, shell, URL, or unrestricted path input.
 
-If the accepted Meshy 7 result is a single fused character mesh with a correct two-hand grip, retain the accepted provider rig and do not cut the fused hands or weapon merely to create a separate weapon object. Process only approved source actions through import, retarget, cleanup, contact correction, validation, and export; never create final motion by keying a shared root, translating the held assembly, or rotating the whole rig. Require per-frame hand-spacing, stock-proxy distance, weapon-axis proxy drift, visible trigger-hand/foregrip/shoulder-stock contact, genuine role motion, and an articulated death source. Reject provider walk/run actions that swing or detach the weapon and block any missing role until an approved source exists.
+If the accepted Meshy 7 result is a single fused character mesh with a correct two-hand grip, retain the accepted provider rig and do not cut the fused hands or weapon merely to create a separate weapon object. Retain usable source actions and manually author missing or faulty actions in Blender; never create final motion by keying a shared root, translating the held assembly, or rotating the whole rig. Require per-frame hand-spacing, stock-proxy distance, weapon-axis proxy drift, visible trigger-hand/foregrip/shoulder-stock contact, genuine role motion, and an articulated death source. Reject provider walk/run actions that swing or detach the weapon and manually author and validate any missing or faulty role in Blender.
 
 Death validation measures the evaluated silhouette rather than requiring every frame to decrease monotonically. Require a substantial final centre drop while bounding any preparatory rise and terminal settling; record the exact peak-rise, final-drop, and rebound metrics and pair them with start/mid/end visual evidence from the approved articulated source. Do not add a whole-rig transform or accept an upright or rebounding final pose.
 

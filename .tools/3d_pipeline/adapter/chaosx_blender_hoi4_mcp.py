@@ -1027,8 +1027,6 @@ def chaosx_blender_hoi4_save_checkpoint(
 
 
 def main() -> None:
-    if not os.environ.get("MESHY_API_KEY", "").strip():
-        raise SystemExit("MESHY_API_KEY is missing; restart the shell or Codex after setting it.")
     mcp.run(transport="stdio")
 
 

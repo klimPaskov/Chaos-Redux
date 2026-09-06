@@ -1,8 +1,6 @@
 @echo off
 setlocal
 
-if "%MESHY_API_KEY:~0,1%"=="" goto missing_meshy_key
-
 set "PIPELINE_ROOT=%~dp0.."
 set "REPO_ROOT=%PIPELINE_ROOT%\..\.."
 set "ADAPTER_ROOT=%PIPELINE_ROOT%\adapter"
@@ -24,7 +22,3 @@ if not exist "%ADAPTER_ROOT%\pyproject.toml" (
 
 "%UV_EXE%" --directory "%ADAPTER_ROOT%" run python -m chaosx_blender_hoi4_mcp %*
 exit /b %errorlevel%
-
-:missing_meshy_key
-echo MESHY_API_KEY is missing. Stop before starting the workflow.
-exit /b 2
