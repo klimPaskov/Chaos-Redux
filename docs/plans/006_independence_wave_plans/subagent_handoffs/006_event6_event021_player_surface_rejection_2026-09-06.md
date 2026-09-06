@@ -6,9 +6,9 @@ Rejected the observed uncommitted Event 021 widening as incompatible with the ac
 
 ## Authority and evidence
 
-`common/scripted_triggers/006_independence_wave_triggers.txt` keeps `is_independence_wave_package_content_active` available for the bounded internal Event 021 setup window, but `is_independence_wave_event6_player_surface_allowed` remains gated by `is_independence_wave_active_country` and excludes the adapter receipts. This preserves the explicit invariant that nothing from Event 006 is visible before a real Event 006 origin fires.
+`common/scripted_triggers/006_independence_wave_triggers.txt` keeps `is_independence_wave_package_content_active` available for the bounded internal Event 021 setup window, while the explicit `is_independence_wave_event6_local_content_active` and `is_independence_wave_event6_player_surface_allowed` helpers both require `is_independence_wave_active_country` and exclude adapter receipts. This preserves the explicit invariant that nothing from Event 006 is visible before a real Event 006 origin fires and supplies the missing scripted-trigger definition used by existing categories, decisions, and focus content.
 
-The rejected working-tree proposal introduced `is_independence_wave_event021_package_country` and allowed that predicate through Event 006 local-content/player-surface gates. It had no accepted design basis and conflicted with the source-of-truth map, quality checklist, resume packet, and player-surface origin-gate handoffs. Those additions were removed with a narrow patch; the trigger file now has no diff against its committed authority.
+The rejected working-tree proposal introduced `is_independence_wave_event021_package_country` and allowed that predicate through Event 006 local-content/player-surface gates. It had no accepted design basis and conflicted with the source-of-truth map, quality checklist, resume packet, and player-surface origin-gate handoffs. Those widening additions were removed with a narrow patch. A nine-line active-origin-only definition for the already-referenced `is_independence_wave_event6_local_content_active` helper remains as the sole source correction.
 
 ## Scope limits
 
