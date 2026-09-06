@@ -790,22 +790,39 @@ gods_of_africa_build_need_profile = {
 		}
 		if = {
 			limit = {
-			# An absent debt variable is treated as a healthy zero, not as an
-			# emergency. Africa Is One initializes the variable, but this explicit
-			# guard also keeps a stale or partially restored host from manufacturing
-			# an emergency demand.
-			AND = {
-				has_variable = africa_emergency_rule_debt
-				check_variable = { africa_emergency_rule_debt > constant:africa_measure.high }
-			}
+				# An absent debt variable is treated as a healthy zero, not as an
+				# emergency. Africa Is One initializes the variable, but this explicit
+				# guard also keeps a stale or partially restored host from manufacturing
+				# an emergency demand. The needs-profile focus deliberately opens the
+				# relief lane earlier, at the medium debt band.
+				OR = {
+					AND = {
+						has_variable = africa_emergency_rule_debt
+						check_variable = { africa_emergency_rule_debt > constant:africa_measure.high }
+					}
+					AND = {
+						has_country_flag = gods_of_africa_focus_needs_profile_unlocked
+						has_variable = africa_emergency_rule_debt
+						check_variable = { africa_emergency_rule_debt > constant:africa_measure.medium }
+					}
+				}
 			}
 			set_variable = { gods_of_africa_need_emergency = constant:gods_of_africa_value.one }
 		}
 		if = {
 			limit = {
-				AND = {
-					has_equipment = { convoy_1 < constant:gods_of_africa_transaction.transport_amount }
-					has_equipment = { train_equipment < constant:gods_of_africa_transaction.transport_amount }
+				OR = {
+					AND = {
+						has_equipment = { convoy_1 < constant:gods_of_africa_transaction.transport_amount }
+						has_equipment = { train_equipment < constant:gods_of_africa_transaction.transport_amount }
+					}
+					AND = {
+						has_country_flag = gods_of_africa_focus_logistics_support_unlocked
+						OR = {
+							has_equipment = { convoy_1 < constant:gods_of_africa_transaction.transport_amount }
+							has_equipment = { train_equipment < constant:gods_of_africa_transaction.transport_amount }
+						}
+					}
 				}
 			}
 			set_variable = { gods_of_africa_need_transport = constant:gods_of_africa_value.one }
@@ -1034,8 +1051,24 @@ gods_of_africa_calculate_demand_amount = {
 		}
 		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.need_delta }
 	}
-	if = { limit = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant } } add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.reciprocal_delta } }
-	if = { limit = { check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction } } add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.sovereign_delta } }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+				has_country_flag = gods_of_africa_focus_reciprocal_route
+			}
+		}
+		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.reciprocal_delta }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+				has_country_flag = gods_of_africa_focus_exaction_route
+			}
+		}
+		add_to_temp_variable = { gods_of_africa_demand_scale = constant:gods_of_africa_demand_scale.sovereign_delta }
+	}
 	if = {
 		limit = {
 			has_event_target = gods_of_africa_demand_participant
@@ -1484,7 +1517,13 @@ gods_of_africa_transfer_payment = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment } }
 			set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
 			remove_support_equipment_from_stockpile = yes
-			event_target:africa_host = { add_equipment_to_stockpile = { type = support_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
+			event_target:africa_host = {
+				add_equipment_to_stockpile = { type = support_equipment amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit }
+				if = {
+					limit = { has_country_flag = gods_of_africa_focus_arsenal_support_unlocked }
+					add_stability = constant:gods_of_africa_transaction.defensive_stability_gain
+				}
+			}
 		}
 		else_if = {
 			limit = {
@@ -1775,7 +1814,16 @@ gods_of_africa_clear_demand = {
 	gods_of_africa_clear_substitute_slots = yes
 	remove_mission = gods_of_africa_demand_mission
 	set_variable = { gods_of_africa_next_demand_date = global.num_days }
-	add_to_variable = { gods_of_africa_next_demand_date = constant:gods_of_africa_timing.demand_cooldown_days }
+	set_temp_variable = { gods_of_africa_demand_cooldown_days = constant:gods_of_africa_timing.demand_cooldown_days }
+	if = {
+		limit = {
+			has_event_target = africa_host
+			event_target:africa_host = { has_country_flag = gods_of_africa_focus_logistics_support_unlocked }
+		}
+		subtract_from_temp_variable = { gods_of_africa_demand_cooldown_days = constant:gods_of_africa_timing.logistics_demand_cooldown_reduction_days }
+	}
+	if = { limit = { check_variable = { gods_of_africa_demand_cooldown_days < constant:gods_of_africa_value.one } } set_temp_variable = { gods_of_africa_demand_cooldown_days = constant:gods_of_africa_value.one } }
+	add_to_variable = { gods_of_africa_next_demand_date = gods_of_africa_demand_cooldown_days }
 }
 
 # COUNTRY scope on a participant. Wrath is converted into a bounded tier,
@@ -2978,6 +3026,18 @@ gods_of_africa_protect_partner = {
 		set_country_flag = gods_of_africa_protected
 		set_variable = { gods_of_africa_protection_due_day = global.num_days }
 		add_to_variable = { gods_of_africa_protection_due_day = constant:gods_of_africa_transaction.protection_cooldown_days }
+		if = {
+			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_reserve_unlocked } }
+			subtract_from_variable = { gods_of_africa_protection_due_day = constant:gods_of_africa_transaction.reserve_protection_cooldown_reduction_days }
+		}
+		if = {
+			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_relief_unlocked } }
+			add_stability = constant:gods_of_africa_transaction.defensive_stability_gain
+		}
+		if = {
+			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_expedition_unlocked } }
+			add_war_support = constant:gods_of_africa_transaction.defensive_war_support_gain
+		}
 		set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.protection_magnitude }
 		set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_decrease }
 		gods_of_africa_apply_wrath = yes
