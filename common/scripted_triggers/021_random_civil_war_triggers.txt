@@ -18,6 +18,21 @@
 # immunity bypass. No trigger in this file mutates state.
 # ============================================================================
 
+# COUNTRY scope. Internal Event 021 compatibility identity used only by its
+# cleanup path to preserve a fully proven adapter package. This predicate is
+# intentionally owned by Event 021 and is not consumed by any Event 006
+# player-surface gate or pre-event category, decision, queue, or pressure.
+is_independence_wave_event021_package_country = {
+	exists = yes
+	has_country_flag = random_civil_war_event6_adapter_complete
+	has_country_flag = independence_wave_event021_adapter_setup_proven
+	has_country_flag = random_civil_war_event6_origin_recorded
+	has_country_flag = random_civil_war_origin_adapter_complete
+	has_variable = independence_wave_package_id
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { has_country_flag = independence_wave_origin_ended }
+}
+
 random_civil_war_is_normal_human_country = {
 	exists = yes
 	NOT = { is_actual_nonhuman_country = yes }
