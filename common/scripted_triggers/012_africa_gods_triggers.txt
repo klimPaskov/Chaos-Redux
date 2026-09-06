@@ -408,6 +408,13 @@ gods_of_africa_substitute_offer_is_affordable = {
 			NOT = { has_fuel < gods_of_africa_substitute_capacity_requirement }
 		}
 		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.transport }
+			OR = {
+				NOT = { has_equipment = { convoy_1 < gods_of_africa_substitute_capacity_requirement } }
+				NOT = { has_equipment = { train_equipment < gods_of_africa_substitute_capacity_requirement } }
+			}
+		}
+		AND = {
 			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.manpower }
 			NOT = { has_manpower < gods_of_africa_substitute_capacity_requirement }
 		}
@@ -433,12 +440,9 @@ gods_of_africa_participant_can_request_extension = {
 gods_of_africa_participant_can_defy = {
 	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_demand_contract_is_current = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
 	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
-	OR = {
-		has_country_flag = gods_of_africa_demand_active
-		has_variable = gods_of_africa_wrath
-	}
 }
 
 gods_of_africa_can_prepare_defensive_defiance = {
@@ -527,6 +531,18 @@ gods_of_africa_first_failure_is_safe = {
 		NOT = { has_variable = gods_of_africa_refusal_count }
 		check_variable = { gods_of_africa_refusal_count < constant:gods_of_africa_value.one }
 	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_demand_failures }
+		check_variable = { gods_of_africa_demand_failures < constant:gods_of_africa_value.one }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_offense_count }
+		check_variable = { gods_of_africa_offense_count < constant:gods_of_africa_value.one }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_punishment_count }
+		check_variable = { gods_of_africa_punishment_count < constant:gods_of_africa_value.one }
+	}
 	NOT = { has_country_flag = gods_of_africa_recent_extreme_punishment }
 }
 
@@ -562,6 +578,7 @@ gods_of_africa_extreme_gate_is_open = {
 gods_of_africa_protection_package_is_affordable = {
 	gods_of_africa_participant_generation_is_current = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
+	has_country_flag = gods_of_africa_reliable_memory_applied
 	has_event_target = africa_host
 	OR = {
 		NOT = { has_variable = gods_of_africa_protection_due_day }
@@ -630,6 +647,25 @@ gods_of_africa_participant_can_offer_aid = {
 
 # COUNTRY scope on the host. Priority-offender marks are intentionally capped
 # so the manual target action cannot become unlimited harassment.
+gods_of_africa_proven_offender = {
+	OR = {
+		has_country_flag = gods_of_africa_broken_treaty
+		has_country_flag = gods_of_africa_defiant
+		AND = {
+			has_variable = gods_of_africa_demand_failures
+			check_variable = { gods_of_africa_demand_failures > constant:gods_of_africa_value.zero }
+		}
+		AND = {
+			has_variable = gods_of_africa_refusal_count
+			check_variable = { gods_of_africa_refusal_count > constant:gods_of_africa_value.zero }
+		}
+		AND = {
+			has_variable = gods_of_africa_offense_count
+			check_variable = { gods_of_africa_offense_count > constant:gods_of_africa_value.zero }
+		}
+	}
+}
+
 gods_of_africa_priority_offender_capacity_available = {
 	gods_of_africa_active_host_is_valid = yes
 	OR = {

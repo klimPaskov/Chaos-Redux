@@ -7304,6 +7304,814 @@ focus_tree = {
 	}
 
 	# -----------------------------------------------------------------------
+	# Event 012 Gods of Africa overlay
+	# -----------------------------------------------------------------------
+	# The owner commits gods_of_africa_active only after Evolution I and the
+	# consolidation delay. The activation_committed witness keeps this branch
+	# closed during preparation and prevents demands from appearing early.
+	shortcut = {
+		name = gods_of_africa_focus_overlay
+		target = gods_of_africa_focus_prepare_proclamation
+		scroll_wheel_factor = 0.485
+		trigger = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_prepare_proclamation
+		icon = GFX_goal_012_africa_gods_proclamation_institution
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 16
+		cost = @africa_focus_standard
+		prerequisite = { focus = africa_identify_host_problem }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_preparation_complete
+			add_ideas = gods_of_africa_idea_proclamation
+			unlock_decision_tooltip = gods_of_africa_choose_reciprocal_covenant
+			unlock_decision_tooltip = gods_of_africa_choose_sovereign_exaction
+		}
+
+		ai_will_do = { factor = @africa_ai_urgent }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_office_voices
+		icon = GFX_goal_012_africa_gods_proclamation_institution
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 17
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_prepare_proclamation }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_office_voices_complete
+			add_ideas = gods_of_africa_idea_voices
+			unlock_decision_tooltip = gods_of_africa_grant_leniency
+		}
+
+		ai_will_do = { factor = @africa_ai_high }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_continental_proclamation
+		icon = GFX_goal_012_africa_gods_proclamation_institution
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 18
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_office_voices }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_proclamation_complete
+			set_country_flag = gods_of_africa_focus_participant_registry_ready
+			unlock_decision_tooltip = gods_of_africa_grant_leniency
+			unlock_decision_tooltip = gods_of_africa_protect_partner
+		}
+
+		ai_will_do = { factor = @africa_ai_urgent }
+	}
+
+	# The two doctrine focuses are a hard fork. The runtime doctrine variable is
+	# set here as a durable route witness; the normal decision remains available
+	# for saves that activated the subsystem before this overlay was completed.
+	focus = {
+		id = gods_of_africa_focus_reciprocal_covenant
+		icon = GFX_goal_012_africa_gods_reciprocal_doctrine
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 66
+		y = 20
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_continental_proclamation }
+		mutually_exclusive = { focus = gods_of_africa_focus_sovereign_exaction }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.reciprocal_covenant }
+			set_country_flag = gods_of_africa_focus_reciprocal_route
+			remove_ideas = gods_of_africa_idea_sovereign_exaction
+			add_ideas = gods_of_africa_idea_reciprocal_covenant
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_high
+			modifier = {
+				factor = @africa_ai_preferred_multiplier
+				check_variable = { var = gods_of_africa_doctrine value = constant:gods_of_africa_value.zero compare = equals }
+			}
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_sovereign_exaction
+		icon = GFX_goal_012_africa_gods_extractive_doctrine
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 74
+		y = 20
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_continental_proclamation }
+		mutually_exclusive = { focus = gods_of_africa_focus_reciprocal_covenant }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.sovereign_exaction }
+			set_country_flag = gods_of_africa_focus_exaction_route
+			remove_ideas = gods_of_africa_idea_reciprocal_covenant
+			add_ideas = gods_of_africa_idea_sovereign_exaction
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_high
+			modifier = { factor = @africa_ai_preferred_multiplier has_war = yes }
+			modifier = {
+				factor = @africa_ai_preferred_multiplier
+				check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_4.min compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	# Provision: needs, arsenals, logistics, and a reserve are deliberately
+	# separate rewards so tribute is tied to capacity rather than flat power.
+	focus = {
+		id = gods_of_africa_focus_measure_needs
+		icon = GFX_goal_012_africa_gods_provision_logistics
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 62
+		y = 22
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_reciprocal_covenant focus = gods_of_africa_focus_sovereign_exaction }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_needs_profile_unlocked
+			unlock_decision_tooltip = gods_of_africa_grant_leniency
+		}
+
+		ai_will_do = { factor = @africa_ai_high }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_continental_arsenals
+		icon = GFX_goal_012_africa_gods_provision_logistics
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 62
+		y = 23
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_measure_needs }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_arsenal_support_unlocked
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_high
+			modifier = { factor = @africa_ai_preferred_multiplier has_war = yes }
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_rails_ports_fuel
+		icon = GFX_goal_012_africa_gods_provision_logistics
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 62
+		y = 24
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_continental_arsenals }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_ii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_logistics_support_unlocked
+		}
+
+		ai_will_do = { factor = @africa_ai_elevated }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_continental_reserve
+		icon = GFX_goal_012_africa_gods_provision_logistics
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 62
+		y = 25
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_continental_arsenals }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_ii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_reserve_unlocked
+			add_ideas = gods_of_africa_idea_reserve
+			unlock_decision_tooltip = gods_of_africa_protect_partner
+		}
+
+		ai_will_do = { factor = @africa_ai_high }
+	}
+
+	# Oaths: recognition, territory, sponsorship, and the Evolution III security
+	# lane. Each node records a separate capability for the owner ledger.
+	focus = {
+		id = gods_of_africa_focus_recognize_voice
+		icon = GFX_goal_012_africa_gods_oaths_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 23
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_measure_needs }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_recognition_unlocked
+		}
+
+		ai_will_do = { factor = @africa_ai_normal }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_return_soil
+		icon = GFX_goal_012_africa_gods_oaths_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 24
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_recognize_voice }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_territory_unlocked
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_elevated
+			modifier = { factor = @africa_ai_preferred_multiplier has_war = yes }
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_end_sponsorship
+		icon = GFX_goal_012_africa_gods_oaths_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 25
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_return_soil }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_sponsorship_unlocked
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_normal
+			modifier = { factor = @africa_ai_preferred_multiplier has_war = yes }
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_security_oaths
+		icon = GFX_goal_012_africa_gods_oaths_diplomacy
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 70
+		y = 26
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_end_sponsorship }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_iii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_security_unlocked
+			unlock_decision_tooltip = gods_of_africa_protect_partner
+		}
+
+		ai_will_do = { factor = @africa_ai_elevated }
+	}
+
+	# Protection: the common-cause lane converts compliance into aid, relief,
+	# expedition support, and a place in the final settlement.
+	focus = {
+		id = gods_of_africa_focus_shelter_faithful
+		icon = GFX_goal_012_africa_gods_protection
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 78
+		y = 23
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_measure_needs }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_shelter_unlocked
+			unlock_decision_tooltip = gods_of_africa_protect_partner
+		}
+
+		ai_will_do = { factor = @africa_ai_high }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_relief_beyond
+		icon = GFX_goal_012_africa_gods_protection
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 78
+		y = 24
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_shelter_faithful }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_relief_unlocked
+		}
+
+		ai_will_do = { factor = @africa_ai_normal }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_expedition
+		icon = GFX_goal_012_africa_gods_protection
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 78
+		y = 25
+		cost = @africa_focus_institution
+		prerequisite = { focus = gods_of_africa_focus_relief_beyond }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_expedition_unlocked
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_elevated
+			modifier = { factor = @africa_ai_preferred_multiplier has_war = yes }
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_final_council
+		icon = GFX_goal_012_africa_gods_continental_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 78
+		y = 26
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_expedition }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_final_council_unlocked
+			unlock_decision_tooltip = gods_of_africa_commit_settlement
+		}
+
+		ai_will_do = { factor = @africa_ai_high }
+	}
+
+	# Judgment retains a hard Strength ceiling. Evolution II opens coordinated
+	# review; Evolution III opens core liberation and the rare final sentence.
+	focus = {
+		id = gods_of_africa_focus_record_refusal
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 88
+		y = 23
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_measure_needs }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_offense_memory_unlocked
+		}
+
+		ai_will_do = { factor = @africa_ai_normal }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_reach_beyond_coast
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 88
+		y = 24
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_record_refusal }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_judgment_reach_unlocked
+		}
+
+		ai_will_do = { factor = @africa_ai_elevated }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_let_world_answer
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 88
+		y = 25
+		cost = @africa_focus_standard
+		prerequisite = { focus = gods_of_africa_focus_reach_beyond_coast }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_sanctions_unlocked
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_elevated
+			modifier = { factor = @africa_ai_preferred_multiplier has_war = yes }
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_hand_judgment
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 88
+		y = 26
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_let_world_answer }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_ii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_judgment_unlocked
+			add_ideas = gods_of_africa_idea_judgment
+			unlock_decision_tooltip = gods_of_africa_permanent_defiance
+		}
+
+		ai_will_do = { factor = @africa_ai_high }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_no_sanctuary
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 88
+		y = 27
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_hand_judgment }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_iii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_sanctuary_unlocked
+		}
+
+		ai_will_do = { factor = @africa_ai_elevated }
+	}
+
+	focus = {
+		id = gods_of_africa_focus_last_sentence
+		icon = GFX_goal_012_africa_gods_judgment
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 88
+		y = 28
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_no_sanctuary }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_iii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+			check_variable = { var = global.gods_of_africa_strength value = constant:gods_of_africa_value.catastrophe_strength_gate compare = greater_than_or_equals }
+			# Wrath belongs to each participant; punishment checks the participant
+			# gate when a judgment is resolved, rather than on the host focus.
+			check_variable = { var = global.chaos_meter_value value = constant:chaos_meter_tier_range.tier_final.min compare = greater_than_or_equals }
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_last_sentence_unlocked
+		}
+
+		ai_will_do = {
+			factor = @africa_ai_urgent
+			modifier = {
+				factor = @africa_ai_preferred_multiplier
+				check_variable = { var = global.gods_of_africa_strength value = constant:gods_of_africa_value.catastrophe_strength_gate compare = greater_than_or_equals }
+			}
+		}
+	}
+
+	focus = {
+		id = gods_of_africa_focus_africa_speaks_for_itself
+		icon = GFX_goal_012_africa_gods_continental_settlement
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		x = 78
+		y = 29
+		cost = @africa_focus_capstone
+		prerequisite = { focus = gods_of_africa_focus_final_council }
+		prerequisite = { focus = gods_of_africa_focus_security_oaths }
+		prerequisite = { focus = gods_of_africa_focus_hand_judgment }
+		allow_branch = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+		}
+		available = {
+			africa_is_current_host = yes
+			has_global_flag = africa_evolution_i_logged
+			has_global_flag = africa_evolution_iii_logged
+			has_country_flag = gods_of_africa_active
+			has_country_flag = gods_of_africa_activation_committed
+			has_country_flag = africa_continental_settlement_complete
+		}
+		cancel_if_invalid = yes
+
+		completion_reward = {
+			set_country_flag = gods_of_africa_focus_settlement_complete
+			unlock_decision_tooltip = gods_of_africa_commit_settlement
+			remove_ideas = gods_of_africa_idea_proclamation
+			remove_ideas = gods_of_africa_idea_voices
+			remove_ideas = gods_of_africa_idea_reciprocal_covenant
+			remove_ideas = gods_of_africa_idea_sovereign_exaction
+			remove_ideas = gods_of_africa_idea_reserve
+			remove_ideas = gods_of_africa_idea_judgment
+			if = {
+				limit = { gods_of_africa_active_host_is_valid = yes }
+				gods_of_africa_commit_final_settlement = yes
+			}
+		}
+
+		ai_will_do = { factor = @africa_ai_urgent }
+	}
+
+	# -----------------------------------------------------------------------
 	# Charter League formation and post-formation settlement
 	# -----------------------------------------------------------------------
 

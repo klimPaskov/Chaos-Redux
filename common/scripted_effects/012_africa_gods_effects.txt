@@ -437,6 +437,7 @@ gods_of_africa_activate_system = {
 		gods_of_africa_initialize_registry = yes
 		gods_of_africa_review_registry = yes
 		gods_of_africa_refresh_strength = yes
+		africa_refresh_continental_focus_tree_layout = yes
 	}
 }
 
@@ -1513,7 +1514,7 @@ gods_of_africa_transfer_payment = {
 		else_if = {
 			limit = { check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport } }
 			if = {
-				limit = { NOT = { has_equipment = { convoy_1 < gods_of_africa_payment_amount } } }
+				limit = { NOT = { has_equipment = { convoy_1 < gods_of_africa_capacity_requirement } } }
 				set_temp_variable = { equipment_stockpile_removal_amount = gods_of_africa_payment_amount }
 				remove_convoys_from_stockpile = yes
 				event_target:africa_host = { add_equipment_to_stockpile = { type = convoy_1 amount = event_target:gods_of_africa_payment_participant.gods_of_africa_payment_credit } }
@@ -2076,6 +2077,7 @@ gods_of_africa_mark_offender = {
 			gods_of_africa_participant_generation_is_current = yes
 			has_event_target = africa_host
 			NOT = { has_country_flag = gods_of_africa_enemy_marked }
+			gods_of_africa_proven_offender = yes
 			OR = {
 				has_country_flag = gods_of_africa_demand_active
 				has_country_flag = gods_of_africa_defiant
