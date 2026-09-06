@@ -333,7 +333,13 @@ Focus 001 resolves the five-visible-spirit conflict without changing balance. Ad
 
 ## AI strategy-plan architecture
 
-Focus-level weights are a safety net. Deterministic route ownership belongs in KRG-specific AI strategy plans modeled on vanilla Italy and Ethiopia plan sequencing. Every plan has `allowed = { brilliant_scientist_is_kruger_sovereign_country = yes }`, an exact enable gate, an abort condition when the route becomes impossible, an ordered `ai_national_focuses` list, and zero factors for incompatible capstones.
+Focus-level weights are a safety net; ordered KRG AI strategy plans own route sequencing.
+All 19 plans use the static `allowed = { NOT = { original_tag = DJX } }` guard and test `brilliant_scientist_is_kruger_sovereign_country` in their dynamic `enable` gates.
+This preserves the accepted transformed-host route: the offline AI documentation evaluates `allowed` only at game start, while `enable` and `abort` are evaluated daily.
+`DJX` is the reserved Event 006 carrier, not the dormant Kruger holder.
+Origin, takeover, synthesis, and diplomacy plans explicitly abort when the KRG focus lifecycle ends; project and terminal plans instead test operational, capability, or capstone invalidation.
+The parent accepted the static-versus-dynamic gate design on 2026-09-06; the source references, nineteen-plan review, and remaining lifecycle and weighted-evidence limits are recorded in `subagent_handoffs/016_krg_ai_gate_resolution_2026-09-06.md`.
+No focus count, ordered list, or plan weight changes are implied by this documentation correction.
 
 | Plan | Enable and preferred focus sequence | Refusal/abort and military behavior |
 | --- | --- | --- |
