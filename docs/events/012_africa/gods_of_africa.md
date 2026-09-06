@@ -59,6 +59,8 @@ Gods-of-Africa event reports, category art, icons, and focus/idea art use the re
 
 The elephant formation is intentionally not a Gods-specific model deliverable. `common/units/012_africa_elephant_forces.txt` binds `chaosx_elephant` to `sprite = elephantry`, so the normal vanilla Elephantry model and animation family are reused. The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is classified as archival and non-promoted; retention or deletion is an owner decision outside this documentation-only pass, and any retained contents are provenance-only rather than runtime consumers.
 
+The CXT fixture follows the same boundary: `common/scripted_effects/012_africa_gods_cxt_test_effects.txt` registers the existing elephant token and equipment through the shared idempotent extension bus, publishes only an inert readiness receipt after CXT initialization, and never starts Africa Is One or the Gods tribute loop.
+
 ## Source of truth and validation
 
 Gameplay identifiers live in the Event 012 event, scripted-effect, scripted-trigger, decision, focus, constant, and localisation files. The authoritative event catalog is `docs/spreadsheets/chaos_redux_events_catalog.xlsx`; its CSV exports are regenerated only by `.tools/export_event_catalog_csv.py`. Event 070 remains reserved for a different idea. The former Event 070 Gods event, decision, category, localisation, and picture source files have deletion evidence in the current working tree, and no active Event 070 Gods namespace remains; the current generated catalog export records Event 070 with a blank identity and `Unavailable` status, while workbook-source parity remains a spreadsheet-owner check.

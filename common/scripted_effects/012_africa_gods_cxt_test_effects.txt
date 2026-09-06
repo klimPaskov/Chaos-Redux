@@ -1,0 +1,30 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA CXT TEST REGISTRATION
+# ============================================================================
+# Overview:
+# - Registers one package-owned, idempotent setup effect with the CXT bus.
+# - Opts the existing armoured-elephant unit and equipment into the test
+#   country's dynamic roster without creating a custom visual entity.
+# - Publishes an inert CXT fixture receipt only after the test country has been
+#   initialized; it never fires Event 012 or creates a Gods host.
+# ============================================================================
+
+gods_of_africa_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event012_africa_gods
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event012_africa_gods_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = gods_of_africa_cxt_content_registered } }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:chaosx_elephant }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:chaosx_elephant_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+		set_global_flag = gods_of_africa_cxt_content_registered
+	}
+	set_country_flag = gods_of_africa_cxt_fixture_ready
+}

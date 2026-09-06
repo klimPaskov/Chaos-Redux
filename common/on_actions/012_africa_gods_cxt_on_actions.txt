@@ -1,0 +1,32 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA CXT EXTENSION HOOKS
+# ============================================================================
+# Startup registration is bounded to one existing country. The tag-scoped
+# daily fallback repairs initialized CXT saves without a recurring world scan.
+# The fixture is inert: it does not fire Event 012, select a host, or open the
+# tribute loop.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				gods_of_africa_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				gods_of_africa_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

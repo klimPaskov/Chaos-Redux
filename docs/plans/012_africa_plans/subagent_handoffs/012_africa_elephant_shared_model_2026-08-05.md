@@ -1,6 +1,14 @@
 # Event 012 shared elephant 3D-model handoff — 2026-08-05
 
+> Disposition: `superseded` (2026-08-27). The explicit user direction recorded in [the vanilla-elephantry reuse handoff](012_africa_elephant_vanilla_elephantry_reuse_2026-08-27.md) replaces this custom package as the Event 012 runtime path.
+>
+> Treat every package, entity, animation, sound, counter, and wiring statement below as historical provenance only; `chaosx_elephant` uses vanilla `elephantry`, and no custom elephant model, skeletal action set, or entity is a current Meshy or runtime target.
+>
+> Use [Event 012 armoured elephant warfare](../../../events/012_africa/elephant_warfare.md), [Event 012 elephant visual disposition](../../../systems/3d_model_pipeline/chaosx_africa_elephant_model.md), and [the vanilla-elephantry reuse handoff](012_africa_elephant_vanilla_elephantry_reuse_2026-08-27.md) as the current source-of-truth documents. Retention or deletion of the approximately 340 MB evidence package remains an owner decision outside this documentation-only pass.
+
 Package root: `docs/assets/012_africa/models_3d/elephant_shared_base/`.
+
+All sections below describe the custom package as recorded on 2026-08-05 and do not describe active runtime state.
 
 ## Produced package
 
@@ -23,11 +31,11 @@ All six required sound roles are covered by preserved CC0/public-domain original
 - Full source pages, direct-download URLs, authors, licenses, usage terms, transformations, hashes, and synchronization points: `evidence/audio/source_urls.json`, `evidence/audio/audio_manifest.json`, and `evidence/audio/sound_design_handoff.md`.
 - The first public-domain casket candidate remains documented as a rejected HTTP 429 download; it is not used.
 
-## Initial handoff status (superseded by parent unit wiring)
+## Historical handoff status (superseded and retained for provenance)
 
-- Parent-owned runtime copies and registrations now exist under `gfx/models/units/chaosx_elephants/`, `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `sound/chaosx_elephants_sound.asset`. The earlier dormant boundary is superseded by `common/units/012_africa_elephant_forces.txt` and the live host/Action 102 consumers documented in `012_africa_elephant_unit_wiring_2026-08-05.md`.
-- The bespoke large and on-map counter DDS files are copied under `gfx/interface/counters/divisions_large/` and `gfx/interface/counters/divisions_small/`, with their `noOfFrames = 2` sprite registrations in `interface/chaosx_subuniticons.gfx`.
-- The exported semantic partition reports 4,998 boundary edges, although it reports no degenerate or non-manifold faces. Keep this as a topology review item.
-- The single shared export has the cargo/howdah silhouette by approved design; logistics and shock use one shared body, action set, texture set, and counter package.
-- Parent owns any future runtime hash synchronization, `.asset`/entity/animation/material/sound/soundeffect extensions, and live in-game validation. The custom unit, equipment, technology, localisation, counter aliases, and formation consumers are now parent-wired; no second model is authorized.
-- This model handoff remains the source package for the shared body and does not by itself claim in-game achievement completion.
+- At the time of this handoff, parent-owned runtime copies and registrations were reported under `gfx/models/units/chaosx_elephants/`, `gfx/entities/chaosx_elephants.gfx`, `gfx/entities/chaosx_elephants.asset`, and `sound/chaosx_elephants_sound.asset`; those custom registrations are historical and are retired from active loading under the vanilla reuse decision. The current event-level and visual runtime contracts are documented in the linked source-of-truth documents above.
+- The bespoke large and on-map counter DDS files were historical companion assets under `gfx/interface/counters/divisions_large/` and `gfx/interface/counters/divisions_small/`, with their `noOfFrames = 2` sprite registrations in `interface/chaosx_subuniticons.gfx`; retained counter bytes do not imply a custom elephant entity or animation package in the current runtime.
+- The exported semantic partition report recorded 4,998 boundary edges, although it reported no degenerate or non-manifold faces; this is retained as historical topology evidence for the non-promoted custom package.
+- The single shared export was intended to provide the cargo/howdah silhouette for both logistics and shock; this historical design does not authorize a second model or current model promotion.
+- Parent-owned future runtime hash synchronization, `.asset`/entity/animation/material/sound/soundeffect extensions, and live in-game validation are superseded for this custom path; current `chaosx_elephant` visual wiring uses vanilla `elephantry`, while live validation remains parent/user-owned.
+- This model handoff remains a historical record of the custom body package and does not establish current runtime activation or in-game achievement completion.

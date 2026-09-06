@@ -110,6 +110,8 @@ The dynamic unit helpers create one recruitable template and three fully equippe
 
 Every new land sub-unit also requires an explicit Event 19 disposition in the same owner change. A combat unit either extends an existing Chaos unit-family provider or receives one new owner-side provider registration with the complete thirteen-callback Event 19 API. A support unit is recorded as an inseparable provider attachment, an explicitly parent-owned support consumer, or a rejected standalone lot with the engine reason documented. The owner must update `docs/events/019_infantry_spawn/systems/unit_family_coverage.md` and the authoritative registry contract in `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`. A future family must not add an Event 19 family list, custom-equipment switch, localisation switch, or second Event 19 registry file.
 
+Event 012 registers `chaosx_cxt_extension_event012_africa_gods` through the modifier-free carrier in `common/ideas/012_africa_gods_cxt_extension_ideas.txt`, with startup and tag-scoped daily repair in `common/on_actions/012_africa_gods_cxt_on_actions.txt` and the idempotent setup effect in `common/scripted_effects/012_africa_gods_cxt_test_effects.txt`. The fixture registers the existing `chaosx_elephant` frontline token and `chaosx_elephant_equipment_1`, publishes `gods_of_africa_cxt_fixture_ready` after CXT initialization, and never fires Africa Is One, creates a host, or starts the Gods tribute loop; the unit continues to resolve its visual through vanilla `sprite = elephantry`.
+
 ## Special facilities
 
 CXT receives one naval, nuclear, air, land, biowarfare, and chemical-warfare facility.
