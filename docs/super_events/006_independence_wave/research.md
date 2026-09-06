@@ -203,5 +203,5 @@ The same pass records *The Enola Foam March* and *Toujours en Tête* / *Defileer
 transaction effects
 - `common/scripted_localisation/chaosx_scripted_localisation_super_events.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
-- `interface/006_independence_wave_event_pictures.gfx`
+- `interface/006_independence_wave_small_assets.gfx` (consolidated Event 006 visual registry)
 - Event 006 sound registry plus `music/chaosx_music_track_list.html`
