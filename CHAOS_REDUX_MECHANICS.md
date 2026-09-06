@@ -17,19 +17,20 @@ This guide explains the shared systems, the choices they offer, and where to fin
    - [Famine](#famine-mechanics)
    - [Migration](#migration-mechanics)
 6. [World End Scenario Mechanic](#world-end-scenario-mechanic)
-7. [Event Evolution and Event Logs](#event-evolution-and-event-logs)
-8. [Event Clusters](#event-clusters)
-9. [Configuration and Settings](#configuration-and-settings)
-10. [Triggerable Scenarios](#triggerable-scenarios)
-11. [Multiplayer Compatibility](#multiplayer-compatibility)
-12. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
+7. [Event Evolution](#event-evolution)
+8. [Event Logs](#event-logs)
+9. [Event Clusters](#event-clusters)
+10. [Configuration and Settings](#configuration-and-settings)
+11. [Triggerable Scenarios](#triggerable-scenarios)
+12. [Multiplayer Compatibility](#multiplayer-compatibility)
+13. [Chemical and Biological Warfare](#chemical-and-biological-warfare)
     - [Chemical Warfare](#chemical-warfare)
     - [Biological Warfare](#biological-warfare)
-13. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
-14. [Chaos Warfare](#chaos-warfare)
-15. [CBRN Command, Protection, and Diplomacy](#cbrn-command-protection-and-diplomacy)
-16. [Special Units](#special-units)
-17. [Campaign Tools](#campaign-tools)
+14. [Camps and Genocide Mechanics](#camps-and-genocide-mechanics)
+15. [Chaos Warfare](#chaos-warfare)
+16. [CBRN Command, Protection, and Diplomacy](#cbrn-command-protection-and-diplomacy)
+17. [Special Units](#special-units)
+18. [Campaign Tools](#campaign-tools)
 
 ---
 
@@ -407,9 +408,7 @@ Once that transition has begun, the setting cannot reverse it.
 
 ---
 
-## Event Evolution and Event Logs
-
-### Event Evolution
+## Event Evolution
 
 An event's first appearance may only be the beginning.
 Higher Chaos, earlier developments, and changing world conditions can allow it to evolve into a more dangerous crisis.
@@ -417,7 +416,9 @@ Higher Chaos, earlier developments, and changing world conditions can allow it t
 Check Event Details to see possible evolutions and their requirements.
 An evolution has its own history entry, making it easier to follow a crisis across the campaign.
 
-### Event Logs Window
+---
+
+## Event Logs
 
 The Event Logs window shows what has happened and what may still happen.
 
