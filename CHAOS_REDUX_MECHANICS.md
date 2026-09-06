@@ -637,6 +637,8 @@ The **Repression and Camps System** has five tabs:
 - **Extermination Camps**: Systematic mass killing and severe consequences on discovery.
 - **Gulag Networks**: Forced labor and mass repression.
 
+Networks can also include experiment sites and contaminated sites, bringing further risks to prisoners and nearby populations.
+
 Concentration camps are available through construction.
 Further camp development and operation depend on the country's available decisions and circumstances.
 Some countries begin with established repression networks; others develop them as political conditions change.
@@ -826,7 +828,7 @@ Five map views make regional crises easier to follow:
 
 | Map mode | What to look for |
 | --- | --- |
-| **Contamination** | Chemical contamination and disease-affected states. |
+| **Contamination** | Chemical contamination, disease, and nuclear fallout. |
 | **Civilian Deaths** | Areas suffering population losses. |
 | **Air Winter** | Local winter severity and survival conditions. |
 | **Famine** | Food-security stages and relief needs. |
