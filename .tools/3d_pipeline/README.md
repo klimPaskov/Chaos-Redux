@@ -164,15 +164,20 @@ Other external animation sources still require their separate approval.
 
 External FBX action selection preserves the exact receipt-verified source identifier and accepts ordinary balanced parenthetical qualifiers such as `KayKit Animated Character|Shoot(2h)Bow`; destination action names remain separately constrained to safe runtime identifiers. Native BVH preflight accepts finite positive leading-decimal frame times such as `Frame Time: .0083333` and continues to reject malformed, non-finite, zero, and negative values.
 
-### Armed humanoid recovery route
+### Firearm body generation and Blender assembly
 
-When a humanoid has detached or loose components, run `chaosx_blender_hoi4_review_humanoid_components` with `render_group = true` through the repository-owned adapter and require a grouped visual review of explicit component ids against the dim whole-body reference. Bounds-only selection is invalid, and the review reads the source checkpoint without mutating it; its previews and report stay inside the job root.
+Every current firearm-bearing unit must receive a newly generated weapon-free Meshy 7 body, even when its armed predecessor was considered complete.
+Prepare exactly one body-only reference with firearms removed, clear anatomy and neutral hands in a suitable A/T pose; keep the firearm design as separate reconstruction evidence.
+Rig and animate the new body directly in Blender with GPT-6-astra and model/add the firearms and other required held objects there.
+Do not spend Meshy rigging or animation credits for this route; it takes precedence over the general one-attempt provider route.
+Keep the firearm rigid and separately controlled, validate both hand contacts and shoulder/stock relationship when applicable, and retain a measured muzzle locator, aim/discharge/recoil/recovery phases, and synchronized effects and sourced audio.
+A fused provider firearm is historical evidence, not the final replacement route.
 
-After parent review, run `chaosx_blender_hoi4_isolate_humanoid_weapon` with only the approved ids. It joins only those components, uses deterministic principal-axis alignment to shoulder the original recovered weapon, marks the dedicated `weapon` bone, and must be visually aligned with both hands and the shoulder before rigging or export. The armed rig uses a T-pose 24-bone body plus one weapon bone, excludes the weapon from body bounds and body weights, and binds it rigidly to that bone.
-
-Every declared armed role, including `idle`, `move`, `laser_attack`, `defend`, `support_attack`, `retreat`, `training`, and `death` when required by the job, must have role-appropriate skeletal motion from a successful first Meshy attempt or manual Blender authoring by GPT-6-astra, with separately approved professional sources also permitted. The adapter may author, import, retarget, clean, correct contact or root placement, validate, and export those actions. These operations are job-root-bounded and accept no arbitrary Python, shell, URL, or unrestricted path input.
-
-If the accepted Meshy 7 result is a single fused character mesh with a correct two-hand grip, retain the accepted provider rig and do not cut the fused hands or weapon merely to create a separate weapon object. Retain usable source actions and manually author missing or faulty actions in Blender; never create final motion by keying a shared root, translating the held assembly, or rotating the whole rig. Require per-frame hand-spacing, stock-proxy distance, weapon-axis proxy drift, visible trigger-hand/foregrip/shoulder-stock contact, genuine role motion, and an articulated death source. Reject provider walk/run actions that swing or detach the weapon and manually author and validate any missing or faulty role in Blender.
+Add all missing required model elements in Blender without asking again, including melee tools, weapons, held objects, and equipment.
+Preserve the intended unit identity and document component design, dimensions, materials, attachment, and editable source geometry.
+Budget the complete model including props against its calibrated ceiling; perform only the bounded body reduction needed for required additions and compare the silhouette/materials/deformation.
+Use verified structured adapter operations and source-preserving working copies; add a narrow validated operation when the required component or rig is unsupported rather than omitting it.
+Keep previous runtime assets intact until the complete replacement passes visual, deformation, and actual-byte export/reimport review.
 
 Death validation measures the evaluated silhouette rather than requiring every frame to decrease monotonically. Require a substantial final centre drop while bounding any preparatory rise and terminal settling; record the exact peak-rise, final-drop, and rebound metrics and pair them with start/mid/end visual evidence from the approved articulated source. Do not add a whole-rig transform or accept an upright or rebounding final pose.
 
