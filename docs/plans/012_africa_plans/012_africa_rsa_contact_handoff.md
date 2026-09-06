@@ -122,13 +122,13 @@ Both victory paths clear intervention arrays, regional response flags, proof mis
 
 ## 8. Assets
 
-No new raster or interface asset is required. The accepted package has no custom flag, portrait, or route-emblem requirement; those asset families are `not_needed`, not placeholders. The cosmetic identities are name-only and retain South Africa's underlying flag presentation. The package reuses verified vanilla sprites:
+The three RSA cosmetic identities retain the existing country tags and route logic, but each now has a bespoke flag ladder under `gfx/flags/`, `gfx/flags/medium/`, and `gfx/flags/small/`. The package does not add a portrait or route-emblem requirement. The generated flag evidence and exact runtime paths are recorded in `docs/assets/012_africa/flags/manifest.json` and `docs/assets/012_africa/flags/gfx_handoff.md`. The package continues to reuse verified vanilla sprites for its event and decision surfaces:
 
 - event pictures: `GFX_report_event_generic_african_unity`, `GFX_report_event_generic_conference` from vanilla `interface/eventpictures.gfx`;
 - decision-category icon: `GFX_decision_category_generic_crisis`; decision and mission icons: `GFX_decision_generic_industry`, `GFX_decision_generic_civil_support`, `GFX_decision_generic_political_discourse`, and `GFX_decision_generic_break_treaty`, all from vanilla `interface/decisions.gfx`.
 - cost text also reuses vanilla's registered `GFX_train_texticon` plus the standard equipment/political/command/stability text icons.
 
-No DDS, sprite definition, asset manifest, or new `.gfx` file is needed.
+No new `.gfx` declaration is needed for the flag ladder because HOI4 resolves country flags by cosmetic-tag filename stem. The flag package uses TGA rather than DDS, with normal 82x52, medium 41x26, and small 10x7 variants for each RSA branch. The event and decision surfaces continue to use the vanilla sprite registrations listed above.
 
 ## 9. References and validation evidence
 
