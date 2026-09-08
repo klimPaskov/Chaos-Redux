@@ -160,7 +160,8 @@ gods_of_africa_participant_can_register = {
 	event_target:africa_host = {
 		has_country_flag = gods_of_africa_active
 		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
-		NOT = { is_in_array = { array = gods_of_africa_participants value = ROOT } }
+		# The host scope is nested here, so PREV remains the country being tested.
+		NOT = { is_in_array = { array = gods_of_africa_participants value = PREV } }
 		OR = {
 			NOT = { has_variable = gods_of_africa_participant_count }
 			check_variable = { gods_of_africa_participant_count < constant:gods_of_africa_timing.max_participants }
@@ -171,7 +172,7 @@ gods_of_africa_participant_can_register = {
 gods_of_africa_participant_is_registered = {
 	gods_of_africa_participant_generation_is_current = yes
 	event_target:africa_host = {
-		is_in_array = { array = gods_of_africa_participants value = ROOT }
+		is_in_array = { array = gods_of_africa_participants value = PREV }
 	}
 }
 

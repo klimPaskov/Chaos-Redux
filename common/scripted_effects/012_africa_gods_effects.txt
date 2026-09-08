@@ -192,7 +192,8 @@ gods_of_africa_run_owner_tick = {
 
 # COUNTRY scope on the host. This is a bounded review of only valid majors or
 # player countries. It is intentionally invoked by the owner and not a
-# generic daily/weekly world scan.
+# generic daily/weekly world scan. The owner-local review also onboards a
+# country that became major or player-controlled after activation.
 gods_of_africa_review_registry = {
 	if = {
 		limit = { gods_of_africa_active_host_is_valid = yes }
@@ -203,14 +204,19 @@ gods_of_africa_review_registry = {
 				gods_of_africa_archive_invalid_participant = yes
 			}
 		}
+		every_country = {
+			limit = { gods_of_africa_participant_can_register = yes }
+			gods_of_africa_register_participant = yes
+		}
 	}
 }
 
 # COUNTRY scope on the host. This is the single bounded initial discovery pass
 # after consolidation. The candidate array was frozen by Event 012's one-time
 # census before Scramble cleanup. Later reviews only inspect the maintained
-# array; join, major-status, and player callbacks may call register_participant
-# directly.
+# array; transaction-boundary callbacks may register named countries directly,
+# while the owner-local review provides the bounded fallback for later major or
+# player-control changes.
 gods_of_africa_initialize_registry = {
 	if = {
 		limit = { gods_of_africa_active_host_is_valid = yes }
