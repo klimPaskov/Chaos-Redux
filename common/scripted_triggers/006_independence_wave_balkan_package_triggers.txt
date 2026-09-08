@@ -795,6 +795,7 @@ is_independence_wave_mnt_package = {
 is_independence_wave_mnt_project_ready = {
 	is_independence_wave_mnt_package = yes
 	has_country_flag = independence_wave_iw_030_setup_complete
+	has_country_flag = independence_wave_mnt_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_mnt_compact_crisis_failed }
 }
 
@@ -815,19 +816,19 @@ has_independence_wave_mnt_unsettled_host = {
 # committed project burden; no second unowned reserve factory exists at setup.
 can_pay_independence_wave_mnt_administration_light_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_montenegro_cost.civilian_factory_floor
-	command_power > constant:independence_wave_decision_cost.command_power_light
-	has_manpower > constant:independence_wave_decision_cost.manpower_light
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
 }
 
 can_pay_independence_wave_mnt_administration_standard_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_montenegro_cost.civilian_factory_floor
-	command_power > constant:independence_wave_decision_cost.command_power_standard
-	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
 }
 
 can_pay_independence_wave_mnt_strategic_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_montenegro_cost.civilian_factory_floor
-	has_stability > constant:independence_wave_decision_cost.stability_standard
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
 	can_pay_independence_wave_diplomatic_standard_cost = yes
 }
 
@@ -896,6 +897,7 @@ has_stable_independence_wave_mnt_compact = {
 
 has_independence_wave_mnt_active_package_project = {
 	OR = {
+		has_active_mission = independence_wave_mnt_hold_mountain_compact_together
 		has_decision = independence_wave_mnt_reopen_mountain_depots
 		has_decision = independence_wave_mnt_integrate_regional_guards
 		has_decision = independence_wave_mnt_reconcile_cetinje_podgorica_offices
