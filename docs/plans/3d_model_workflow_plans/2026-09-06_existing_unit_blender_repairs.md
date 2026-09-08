@@ -133,11 +133,13 @@ No Meshy rigging or animation calls were used.
 | Portal raider | `01a07650-f80a-7523-b547-7d1f7ccc0221` |
 
 The parent visually reviewed the alien and portal fresh body front previews and accepted their identities for continued rig work, with final topology, materials, assembly and animation still pending.
-The gorilla has an actual 29-bone measured rig and rigid 196-triangle hammer, totaling 24,895 triangles; semantic actions and final topology are still under review.
-The pack-donkey has an actual measured anatomy-specific rig and a provisional idle action; the small hinged cargo closure and final role set are in progress.
+The gorilla has an actual 29-bone measured rig and rigid 196-triangle hammer, totaling 24,595 triangles after a bounded body reduction that reserves surface-repair capacity; overhead-pose review requires smooth exact skin weights and local topology correction before acceptance.
+The pack-donkey has an actual anatomy-specific rig, hinged wooden cargo closure and five authored roles; final cargo settling and export/reimport review remain in progress.
 Pan has a measured digitigrade rig and required tool/kit components in progress.
 Stone has a measured rig on its latest approved body.
-Paleogenetic and xenobiological new actions have real exports/reimports under review, including approximately 1 mm contact preservation through the first xeno export.
+Paleogenetic and xenobiological action repairs are integrated into runtime files after parent pose review and complete source-to-destination checksum validation: eleven paleogenetic roles and ten xenobiological roles, with six repaired actions and corrected gloss maps.
+Their accepted source meshes and other valid action bytes remain preserved.
+The detailed action handoff is `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-06_pilot_creature_action_repairs.md`; inherited audio limitations and paleogenetic small boundary edges remain explicit.
 These are implementation progress records, not completed package or live-game claims.
 
 The shared adapter provides measured rest geometry/bone inspection, explicit bone/weight-region authoring, rigid component geometry and manual role phase keys.
