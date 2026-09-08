@@ -34,7 +34,12 @@ PREVIEW_LIGHT_REFERENCE_HEIGHT = 7.3518242835
 CREATURE_GROUND_CONTACT_TOLERANCE_M = 0.01
 CREATURE_GROUND_CONTACT_CLEARANCE_M = 0.001
 LOCATOR_REGISTRY_VERSION = 1
-LOCATOR_TRANSFORM_TOLERANCE = 1e-5
+# Blender's single-precision bone-parent round-trip accumulates ~1.05e-5 of
+# matrix error on the repository's validated 0.0386299416 uniform runtime
+# armature scale. Keep the guard tight while allowing that measured scale
+# conversion error; the locator operation still records and validates the
+# actual transform matrices after the round-trip.
+LOCATOR_TRANSFORM_TOLERANCE = 2e-5
 
 
 def shortest_quaternion_angle(left: Quaternion, right: Quaternion) -> float:
@@ -2563,9 +2568,45 @@ def image_nodes() -> List[Tuple[bpy.types.Material, bpy.types.Image]]:
     return values
 
 
+def all_image_nodes() -> List[Tuple[bpy.types.Material, bpy.types.Image]]:
+    """Return local node images for bounded reimport texture relinking.
+
+    PDX reimport creates local materials without the source scene's
+    ``chaosx_pdx_shader`` tag.  Keep the normal source-scene selector strict,
+    but let the explicit texture-relink operation see those reimport nodes.
+    """
+    values: List[Tuple[bpy.types.Material, bpy.types.Image]] = []
+    seen = set()
+    for material in bpy.data.materials:
+        if material.library or material.override_library or not material.use_nodes:
+            continue
+        for node in material.node_tree.nodes:
+            image = getattr(node, "image", None)
+            if image is None or image.name in seen:
+                continue
+            seen.add(image.name)
+            values.append((material, image))
+    return values
+
+
 def camera_point_at(camera: bpy.types.Object, target: Vector) -> None:
     direction = target - camera.location
     camera.rotation_euler = direction.to_track_quat("-Z", "Y").to_euler()
+
+
+def validate_preview_region(region, resolution):
+    if type(resolution) is not int or not 128 <= resolution <= 2048:
+        raise ValueError("Preview resolution must be an integer from128 to2048.")
+    if region is None:
+        return None
+    if not isinstance(region,dict) or set(region)!={"min","max"}:
+        raise ValueError("Preview region requires exact min/max world bounds.")
+    for values in region.values():
+        if not isinstance(values,list) or len(values)!=3 or any(type(v) not in (int,float) or not math.isfinite(v) or abs(v)>10000 for v in values):
+            raise ValueError("Preview world bounds must be finite bounded numeric triples.")
+    if any(a>=b for a,b in zip(region['min'],region['max'])):
+        raise ValueError("Preview world bounds must have positive extent on every axis.")
+    return region
 
 
 def render_previews(
@@ -2574,11 +2615,14 @@ def render_previews(
     view_names: List[str] | None = None,
     *,
     working_only: bool = True,
+    preview_region: Dict[str, Any] | None = None,
+    preview_resolution: int = 512,
 ) -> List[str]:
+    validate_preview_region(preview_region,preview_resolution)
     scene = bpy.context.scene
     scene.render.engine = "BLENDER_EEVEE"
-    scene.render.resolution_x = 512
-    scene.render.resolution_y = 512
+    scene.render.resolution_x = preview_resolution
+    scene.render.resolution_y = preview_resolution
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
     scene.render.film_transparent = False
@@ -2588,20 +2632,25 @@ def render_previews(
     if not meshes:
         object_class = "working" if working_only else "imported runtime-proof"
         raise RuntimeError(f"Preview rendering found no {object_class} mesh objects.")
-    minimum, maximum = world_bounds(meshes)
+    # Pose-dependent preview framing only; source normalization retains raw bounds.
+    bpy.context.view_layer.update()
+    minimum, maximum = evaluated_world_bounds(meshes)
+    ground_z = minimum.z
+    if preview_region is not None:
+        minimum,maximum=Vector(preview_region["min"]),Vector(preview_region["max"])
     center = (minimum + maximum) * 0.5
     dimensions = maximum - minimum
-    object_height = max(float(dimensions.z), 0.1)
+    object_height = max(float(max(dimensions)), 0.1)
     ground_extent = max(8.0, float(max(dimensions.x, dimensions.y)) * 2.0)
 
     evidence_collection = new_collection("QA_EVIDENCE")
     ground_mesh = bpy.data.meshes.new("QA_Ground_Mesh")
     ground_mesh.from_pydata(
         [
-            (-ground_extent, -ground_extent, minimum.z),
-            (ground_extent, -ground_extent, minimum.z),
-            (ground_extent, ground_extent, minimum.z),
-            (-ground_extent, ground_extent, minimum.z),
+            (-ground_extent, -ground_extent, ground_z),
+            (ground_extent, -ground_extent, ground_z),
+            (ground_extent, ground_extent, ground_z),
+            (-ground_extent, ground_extent, ground_z),
         ],
         [],
         [(0, 1, 2, 3)],
@@ -2629,7 +2678,7 @@ def render_previews(
         light_data.size = size
         light = bpy.data.objects.new(name, light_data)
         evidence_collection.objects.link(light)
-        light.location = location
+        light.location = center + Vector(location)
         camera_point_at(light, center)
         lights.append(light)
 
@@ -2641,9 +2690,10 @@ def render_previews(
 
     # Frame the whole object regardless of whether it is a 1.5 m prop or a
     # vanilla-calibrated 7.35-unit source mesh.
-    preview_angle = math.radians(38.0)
-    fit_distance = object_height / (2.0 * math.tan(preview_angle * 0.5) * 0.78)
-    fit_distance = max(fit_distance, float(max(dimensions.x, dimensions.y)) * 1.5, 4.0)
+    # Fit a sphere enclosing actual evaluated bounds using the real camera FOV.
+    # This also contains horizontal death poses and all selected view directions.
+    preview_angle = min(camera_data.angle_x,camera_data.angle_y)
+    fit_distance = max(float(dimensions.length)*0.5/(math.sin(preview_angle*0.5)*0.78),0.1)
 
     available_views = [
             ("front", (center.x, center.y - fit_distance, center.z)),
@@ -3927,6 +3977,9 @@ def review_humanoid_components(req: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
+    if req["payload"].get("material_visibility") is not None:
+        from material_visibility_probe import run_material_visibility_probe
+        return run_material_visibility_probe(req, bpy=bpy, render_previews=render_previews, action_hash=_mesh_region_action_hash)
     if req["payload"].get("include_action_channels") is not None:
         return inspect_action_channels(req)
     if req["payload"].get("mesh_region") is not None:
@@ -4084,7 +4137,15 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         bpy.context.view_layer.update()
     if req["payload"].get("render_previews"):
         runtime_stem = safe_name(str(req["payload"].get("runtime_stem") or blend.stem))
-        preview_paths = render_previews(job, runtime_stem, req["payload"].get("preview_view_names") or None)
+        region=req['payload'].get('preview_region')
+        resolution=req['payload'].get('preview_resolution',512)
+        validate_preview_region(region,resolution)
+        if region is not None or resolution != 512:
+            expected=req['payload'].get('expected_source_sha256','')
+            if not expected or file_sha256(blend)!=expected.upper():
+                raise ValueError('Focused preview requires exact source SHA-256.')
+            runtime_stem=runtime_stem+'_focused_'+req['request_id'][:12]
+        preview_paths = render_previews(job,runtime_stem,req['payload'].get('preview_view_names') or None,preview_region=region,preview_resolution=resolution)
     return {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "inspected_target_armature": inspected_target_armature.name if inspected_target_armature else None,
@@ -4169,9 +4230,22 @@ def extract_textures(req: Dict[str, Any]) -> Dict[str, Any]:
     if payload.get("rewrite_to_dds"):
         dds_map = payload.get("dds_map", {})
         rename_images = bool(payload.get("rename_images", False))
-        for _, image in list(image_nodes()):
+        relink_nodes = list(image_nodes())
+        if not relink_nodes:
+            relink_nodes = all_image_nodes()
+        if not relink_nodes:
+            # io_pdx_mesh may retain image datablocks while omitting source
+            # material tags; the explicit caller mapping is safe here.
+            relink_nodes = [(None, image) for image in bpy.data.images if image.name in dds_map]
+        for _, image in relink_nodes:
             original_name = image.name
             dds_rel = dds_map.get(original_name)
+            if not dds_rel:
+                image_stem = Path(original_name).stem.lower()
+                for mapped_name, mapped_rel in dds_map.items():
+                    if Path(mapped_name).stem.lower() in image_stem:
+                        dds_rel = mapped_rel
+                        break
             if dds_rel:
                 image.filepath = str(within(job, dds_rel))
                 image.source = "FILE"
@@ -4450,37 +4524,10 @@ def partition_static_mesh_export_batches(req: Dict[str, Any]) -> Dict[str, Any]:
     return report
 
 
-def exported_mesh_streams(text_path: Path) -> List[Dict[str, int]]:
-    """Read per-material PDX mesh stream sizes from the exporter text proof."""
-
-    streams: List[Dict[str, int]] = []
-    current: Optional[Dict[str, int]] = None
-    for line in text_path.read_text(encoding="utf-8").splitlines():
-        if re.match(r"^\s*mesh:\s*$", line):
-            if current is not None:
-                streams.append(current)
-            current = {"stream_index": len(streams)}
-            continue
-        if current is None:
-            continue
-        position_match = re.search(r"\bp \(float,\s*(\d+)\)", line)
-        if position_match:
-            components = int(position_match.group(1))
-            if components % 3:
-                raise RuntimeError("PDX export position stream is not divisible by three.")
-            current["vertices"] = components // 3
-        triangle_match = re.search(r"\btri \(int,\s*(\d+)\)", line)
-        if triangle_match:
-            indices = int(triangle_match.group(1))
-            if indices % 3:
-                raise RuntimeError("PDX export triangle stream is not divisible by three.")
-            current["triangles"] = indices // 3
-    if current is not None:
-        streams.append(current)
-    streams = [stream for stream in streams if "vertices" in stream or "triangles" in stream]
-    if not streams or any("vertices" not in stream or "triangles" not in stream for stream in streams):
-        raise RuntimeError("Unable to prove complete per-stream vertex and triangle counts from PDX text export.")
-    return streams
+def exported_mesh_streams(text_path: Path) -> List[Dict[str, Any]]:
+    """Read actual arrays at object/material depth through the locked parser."""
+    from skeletal_export_partition import exported_mesh_streams as read_streams
+    return read_streams(text_path)
 
 
 PROMOTION_METADATA_KEYS = (
@@ -4584,8 +4631,8 @@ def _promotion_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError("Promotion report already exists; overwrite is forbidden.")
     rig_name = _locator_exact_name(payload["target_armature_name"], "target_armature_name")
     mesh_names = payload["target_mesh_names"]
-    if not isinstance(mesh_names, (list, tuple)) or not 1 <= len(mesh_names) <= 16:
-        raise ValueError("Promotion requires one to sixteen exact mesh names.")
+    if not isinstance(mesh_names, (list, tuple)) or not 1 <= len(mesh_names) <= 512:
+        raise ValueError("Promotion requires one to 512 exact mesh names from the complete same-rig receipt.")
     mesh_names = [_locator_exact_name(name, "target_mesh_names") for name in mesh_names]
     if len(set(mesh_names)) != len(mesh_names) or rig_name in mesh_names:
         raise ValueError("Promotion object identities must be unique.")
@@ -4767,7 +4814,47 @@ def _promotion_reopen_comparison(before: Dict[str, Any], after: Dict[str, Any]) 
             "policy": "exact_retained_materials_and_all_other_sections_only_proven_orphan_disappearance"}
 
 
-def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_action_name: str = "") -> Dict[str, Any]:
+def _promotion_image_record(job, image):
+    """Hash local images; only truly empty paths may use persisted finite pixels."""
+    import struct
+    # Resolve lazy file metadata before snapshotting load state. Reading size can load a DDS.
+    image_size = list(image.size)
+    packed = [hashlib.sha256(item.packed_file.data).hexdigest().upper() for item in image.packed_files]
+    path = Path(bpy.path.abspath(image.filepath)).resolve() if image.filepath else None
+    file_hash = None
+    pixel_hash = None
+    if not packed and path is not None:
+        try:
+            path.relative_to(job)
+        except ValueError as exc:
+            raise ValueError("Promotion texture image must be packed or inside the same job.") from exc
+        if not path.is_file():
+            raise ValueError("Promotion texture image is missing.")
+        file_hash = file_sha256(path)
+    elif not packed and not image.has_data:
+        # An existing missing image is evidence of absent data, never fabricated pixels.
+        # Preserve the sentinel and actual metadata across save/reopen; final material QA remains required.
+        if len(image.pixels) != 0:
+            raise ValueError(f"Inconsistent empty-path image state: name={image.name!r}, source={image.source!r}, size={list(image.size)!r}, has_data={image.has_data!r}")
+    elif not packed:
+        if image.source not in {"FILE", "GENERATED"}:
+            raise ValueError(f"Unsupported loaded empty-path image: name={image.name!r}, source={image.source!r}, size={list(image.size)!r}, has_data={image.has_data!r}")
+        width,height = list(image.size)
+        channels = int(image.channels)
+        count = len(image.pixels)
+        if not (0 < width <= 4096 and 0 < height <= 4096 and 1 <= channels <= 4 and count == width*height*channels and count <= 4194304):
+            raise ValueError("Empty-path image exceeds the finite four-million-channel pixel budget.")
+        hasher = hashlib.sha256()
+        for offset in range(0,count,4096):
+            values = list(image.pixels[offset:min(offset+4096,count)])
+            if any(not math.isfinite(value) for value in values):
+                raise ValueError("Empty-path image contains nonfinite pixels.")
+            hasher.update(struct.pack('<'+str(len(values))+'f',*values))
+        pixel_hash = hasher.hexdigest().upper()
+    return {"name":image.name,"has_data":bool(image.has_data) if path is None and not packed else None,"missing_data_sentinel":bool(not packed and path is None and not image.has_data),"material_validity":"missing_pixels_requires_material_review" if not packed and path is None and not image.has_data else "not_assessed","filepath":image.filepath,"size":image_size,"source":image.source,"alpha_mode":image.alpha_mode,"colorspace":image.colorspace_settings.name,"packed_hashes":packed,"file_sha256":file_hash,"pixel_sha256":pixel_hash,"pixel_encoding":"little_endian_float32" if pixel_hash else None,"settings":{key:_promotion_value(getattr(image,key)) for key in ("channels","is_float","generated_type","generated_width","generated_height","generated_color","use_generated_float","use_view_as_render") if hasattr(image,key)},"properties":_promotion_properties(image)}
+
+
+def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_action_name: str = "", include_sections: bool = False) -> Dict[str, Any]:
     """Exact pre/post fingerprints; no evaluated mesh, conversion, or data mutation."""
     target_names = set(target_names)
     objects, geometry, rigs, materials, images, actions = {}, {}, {}, {}, {}, {}
@@ -4822,16 +4909,10 @@ def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_ac
             if image is not None:
                 if image.library or image.override_library:
                     raise ValueError("Promotion cannot adopt linked texture images.")
-                packed = [hashlib.sha256(item.packed_file.data).hexdigest().upper() for item in image.packed_files]
-                image_path = Path(bpy.path.abspath(image.filepath)).resolve()
-                if not packed:
-                    try:
-                        image_path.relative_to(job)
-                    except ValueError as exc:
-                        raise ValueError("Promotion texture image must be packed or inside the same job.") from exc
-                    if not image_path.is_file():
-                        raise ValueError("Promotion texture image is missing.")
-                images[image.name] = {"filepath": image.filepath, "size": list(image.size), "source": image.source, "alpha_mode": image.alpha_mode, "colorspace": image.colorspace_settings.name, "packed_hashes": packed, "file_sha256": file_sha256(image_path) if not packed else None, "properties": _promotion_properties(image)}
+                image_record = _promotion_image_record(job,image)
+                if not {"filepath", "packed_hashes", "file_sha256", "pixel_sha256"} <= set(image_record):
+                    raise RuntimeError("Incomplete image fingerprint record.")
+                images[image.name] = image_record
         materials[material.name] = {"properties": _promotion_properties(material), "settings": _promotion_scalars(material), "animation": _promotion_animation_state(material), "tree_properties": _promotion_properties(tree), "tree_animation": _promotion_animation_state(tree), "nodes": nodes, "links": [(link.from_node.name, link.from_socket.identifier, link.to_node.name, link.to_socket.identifier) for link in tree.links]}
     for action in bpy.data.actions:
         if exclude_action_name and action.name == exclude_action_name:
@@ -4847,7 +4928,10 @@ def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_ac
     scene = bpy.context.scene
     sections = {"objects": objects, "geometry": geometry, "rigs": rigs, "materials": materials, "images": images, "actions": actions,
                 "scene": {"fps": scene.render.fps, "fps_base": scene.render.fps_base, "frame": scene.frame_current, "subframe": scene.frame_subframe, "start": scene.frame_start, "end": scene.frame_end, "properties": _promotion_properties(scene), "collections": {collection.name: {"objects": sorted(obj.name for obj in collection.objects), "children": sorted(child.name for child in collection.children), "properties": _promotion_properties(collection)} for collection in bpy.data.collections}}}
-    return {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "material_retention": _promotion_material_retention(materials), "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
+    result = {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "material_retention": _promotion_material_retention(materials), "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
+    if include_sections:
+        result["sections"] = sections
+    return result
 
 
 def promote_accepted_reimport(req: Dict[str, Any]) -> Dict[str, Any]:
@@ -5161,8 +5245,12 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     blend = within(job, payload["blend_rel"])
     output = within(job, payload["output_rel"], allow_missing=True)
+    explicit_checkpoint = payload.get("checkpoint_rel")
+    exported_checkpoint = within(job, explicit_checkpoint, allow_missing=True) if explicit_checkpoint else job / "blender" / "checkpoints" / "06_exported.blend"
+    if explicit_checkpoint and (exported_checkpoint.suffix != ".blend" or exported_checkpoint.parent != blend.parent or exported_checkpoint == blend or exported_checkpoint.exists()):
+        raise ValueError("Explicit export checkpoint must be a new sibling .blend; overwrite is forbidden.")
     output.parent.mkdir(parents=True, exist_ok=True)
-    bpy.ops.wm.open_mainfile(filepath=str(blend))
+    bpy.ops.wm.open_mainfile(filepath=str(blend), use_scripts=False)
     pdx = load_pdx(req["io_pdx_root"])
     working = [
         obj for obj in bpy.context.scene.objects
@@ -5224,10 +5312,8 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         bpy.context.view_layer.update()
     text_output = output.with_suffix(".txt")
     streams = exported_mesh_streams(text_output)
-    oversized_streams = [stream for stream in streams if stream["vertices"] > 65535]
-    if oversized_streams:
-        raise RuntimeError(f"PDX export exceeded the 65,535-vertex per-stream limit: {oversized_streams}")
-    exported_checkpoint = job / "blender" / "checkpoints" / "06_exported.blend"
+    from skeletal_export_partition import require_bounded_export_streams
+    require_bounded_export_streams(streams)
     save_blend(exported_checkpoint)
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
@@ -5238,7 +5324,9 @@ def export_mesh(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         else None,
         "mesh_streams": streams,
         "maximum_stream_vertices": max(stream["vertices"] for stream in streams),
+        "maximum_stream_triangle_indices": max(stream["triangle_indices"] for stream in streams),
         "vertex_stream_limit": 65535,
+        "conservative_triangle_index_entry_budget": 65535,
         "exported_checkpoint": str(exported_checkpoint.relative_to(job)).replace("\\", "/"),
         "geometry": geometry_metrics(),
         "export_transforms": export_transforms,
@@ -5872,6 +5960,13 @@ def action_provenance(action: bpy.types.Action) -> Dict[str, str]:
         "provenance_rel": str(action.get("chaosx_animation_provenance_rel", "")),
         "processing_policy": str(action.get("chaosx_animation_processing_policy", "")),
     }
+    if fields["source_kind"] == "manual_blender_gpt6_astra":
+        spec_hash = str(action.get("chaosx_manual_action_spec_sha256", "")).upper()
+        if not re.fullmatch(r"[0-9A-F]{64}", spec_hash) or not re.fullmatch(r"[0-9A-F]{64}", fields["source_sha256"]):
+            raise RuntimeError("Manual action requires retained source checkpoint and declarative spec SHA-256.")
+        fields.update(source_reference_id=spec_hash, source_action_name=action.name, manual_spec_sha256=spec_hash,
+                      processing_policy="manual_blender_gpt6_astra_hash_bound_declarative_action")
+        return fields
     if fields["source_kind"] not in {"meshy_animate", "professional_source"}:
         raise RuntimeError(f"Action {action.name} is not marked as a verified provider/professional source action.")
     if not re.fullmatch(r"[0-9A-F]{64}", fields["source_sha256"]):
@@ -6488,6 +6583,8 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         plain_txt=True,
     )
     scale_normalization = normalize_exported_animation_scales(output, pdx, 1.0)
+    from animation_root_export import correct_exported_initial_roots
+    initial_root_world_pose = correct_exported_initial_roots(output, rig, start, bpy)
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
         "action": action.name,
@@ -6503,9 +6600,10 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
         if output.with_suffix(".txt").exists()
         else None,
         "scale_normalization": scale_normalization,
+        "initial_root_world_pose": initial_root_world_pose,
         "warnings": [],
     }
-    report = job / "blender" / "reports" / f"export_anim_{safe_name(action.name)}.json"
+    report = job / "blender" / "reports" / f"export_anim_{safe_name(action.name)[:32]}_{hashlib.sha256(action.name.encode()).hexdigest()[:10]}.json"
     report.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return result
 
@@ -8198,6 +8296,8 @@ def author_creature_rig(req: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     if str(payload.get("creature_rig_family") or "elephant").casefold() == "winged_biped":
         return author_winged_biped_rig(req)
+    if str(payload.get("creature_rig_family") or "elephant").casefold() != "elephant":
+        raise ValueError("Unsupported creature rig family; use explicit measured rig authoring.")
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     rider_names = {str(name) for name in payload.get("rider_component_names", [])}
@@ -8578,6 +8678,8 @@ def author_creature_action(req: Dict[str, Any]) -> Dict[str, Any]:
     payload = req["payload"]
     if str(payload.get("creature_rig_family") or "elephant").casefold() == "winged_biped":
         return author_winged_biped_action(req)
+    if str(payload.get("creature_rig_family") or "elephant").casefold() != "elephant":
+        raise ValueError("Unsupported creature action family; use explicit measured action authoring.")
     blend = within(job, payload["blend_rel"])
     checkpoint = within(job, payload["checkpoint_rel"], allow_missing=True)
     role = str(payload.get("action_role") or "").casefold()
@@ -9110,6 +9212,17 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
     mesh = within(job, payload["mesh_rel"])
     anim = within(job, payload["anim_rel"]) if payload.get("anim_rel") else None
     texture_staging = []
+    stage_defaults = payload.get("stage_default_textures", True)
+    if type(stage_defaults) is not bool:
+        raise ValueError("stage_default_textures must be an explicit boolean.")
+    if not stage_defaults:
+        adjacent = sorted(mesh.parent.glob("*.dds"))
+        if not 1 <= len(adjacent) <= 128:
+            raise ValueError("Preserved candidate textures require 1-128 adjacent DDS files.")
+        for path in adjacent:
+            if path.stat().st_size < 128 or path.read_bytes()[:4] != b"DDS ":
+                raise ValueError("Invalid prestaged candidate DDS.")
+            texture_staging.append({"source":path.relative_to(job).as_posix(), "staged":path.relative_to(job).as_posix(), "bytes":path.stat().st_size, "sha256":file_sha256(path), "copied":False, "policy":"preserve_prestaged_candidate"})
     requested_texture_names = tuple(
         str(name)
         for name in (payload.get("texture_names") or [])
@@ -9128,7 +9241,7 @@ def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:
         "Image_3.dds",
         "normal.dds",
     )
-    for texture_name in tuple(dict.fromkeys(requested_texture_names + default_texture_names)):
+    for texture_name in (tuple(dict.fromkeys(requested_texture_names + default_texture_names)) if stage_defaults else ()):
         source = job / "textures" / "dds" / texture_name
         if not source.is_file():
             continue
@@ -9354,6 +9467,34 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
+    if operation in {"repair_explicit_skin", "preview_explicit_skin_selection"}:
+        import explicit_skin_repair
+        return getattr(explicit_skin_repair, operation)(req, globals())
+    if operation in {"edit_explicit_mesh_vertices", "bind_existing_pdx_material"}:
+        import mesh_vertex_material_repair
+        return getattr(mesh_vertex_material_repair, operation)(req, globals())
+    if operation == "rotate_existing_assembly_yaw":
+        from assembly_yaw import rotate_existing_assembly_yaw
+        return rotate_existing_assembly_yaw(req,globals())
+    if operation == "repair_explicit_vertex_remap":
+        from explicit_vertex_remap import repair_explicit_vertex_remap
+        return repair_explicit_vertex_remap(req,globals())
+    if operation == "repair_explicit_mesh_patch":
+        from mesh_patch_repair import repair_explicit_mesh_patch
+        return repair_explicit_mesh_patch(req, globals())
+    if operation in {"inspect_mesh_winding", "repair_mesh_winding"}:
+        import mesh_winding_repair
+        return getattr(mesh_winding_repair, operation)(req, sys.modules[__name__])
+    if operation in {"inspect_fitted_humanoid_source", "author_fitted_humanoid_rig", "author_fitted_humanoid_action"}:
+        import fitted_humanoid_repair
+        selected = {"inspect_fitted_humanoid_source": fitted_humanoid_repair.inspect_source, "author_fitted_humanoid_rig": fitted_humanoid_repair.author_rig, "author_fitted_humanoid_action": fitted_humanoid_repair.author_action}
+        return selected[operation](req)
+    if operation == "partition_skeletal_mesh_export_batches":
+        from skeletal_export_partition import partition_skeletal_mesh_export_batches
+        return partition_skeletal_mesh_export_batches(req, sys.modules[__name__])
+    if operation in {"inspect_mesh_landmarks", "author_measured_creature_rig", "attach_rigid_component", "author_measured_creature_action", "repair_explicit_mesh_winding", "ground_existing_action"}:
+        import manual_creature_rig
+        return getattr(manual_creature_rig, operation)(req, globals())
     pdx = None
     if operation not in {"health", "inspect_scene", "review_humanoid_components", "save_checkpoint", "author_locator", "promote_accepted_reimport", "patch_existing_humanoid_action_phases", "sanitize_runtime_candidate", "retime_animation_action", "offset_action_root", "bake_static_mesh_transforms", "partition_static_mesh_export_batches", "prepare_export_coordinate_checkpoint"}:
         pdx = load_pdx(req["io_pdx_root"])

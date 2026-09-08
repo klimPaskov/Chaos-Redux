@@ -39,7 +39,9 @@ class BlenderAdapterClient:
     def call(self, tool: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         command = ["cmd.exe", "/d", "/c", "call", str(self.wrapper)]
         result: Optional[Dict[str, Any]] = None
-        for attempt in range(3):
+        read_only_tools = {"chaosx_blender_hoi4_health", "chaosx_blender_hoi4_inspect_scene", "chaosx_blender_hoi4_inspect_mesh_landmarks", "chaosx_blender_hoi4_inspect_mesh_winding", "chaosx_blender_hoi4_inspect_fitted_humanoid_source", "chaosx_blender_hoi4_review_humanoid_components"}
+        attempt_limit = 3 if tool in read_only_tools else 1
+        for attempt in range(attempt_limit):
             try:
                 result = call_stdio(
                     command,
@@ -49,8 +51,11 @@ class BlenderAdapterClient:
                     cwd=self.repo_root,
                 )
                 break
-            except MCPRouteError:
-                if attempt == 2:
+            except MCPRouteError as exc:
+                if attempt == attempt_limit - 1:
+                    if tool not in read_only_tools:
+                        receipts = self._matching_mutation_receipts(tool, arguments)
+                        raise MCPRouteError(f"Mutation response uncertain; no automatic retry for {tool}. Inspect saved checkpoint/report before any new call. Matching adapter request evidence: {receipts}. Transport: {exc}") from exc
                     raise
         if result is None:
             raise RuntimeError(f"Blender adapter returned no result for {tool}.")
@@ -60,6 +65,28 @@ class BlenderAdapterClient:
         if "error" in value:
             raise RuntimeError(str(value))
         return value
+
+    def _matching_mutation_receipts(self, tool: str, arguments: Dict[str, Any]) -> list[dict[str, Any]]:
+        """Read bounded matching request headers after uncertain transport; never replay."""
+        config_path = self.repo_root / ".tools/3d_pipeline/config/blender_hoi4_adapter.json"
+        try:
+            config = json.loads(config_path.read_text(encoding="utf-8"))
+            job_id = arguments.get("job_id", "")
+            job = Path(config.get("job_overrides", {}).get(job_id, str(Path(config["job_root"]) / job_id))).resolve()
+            directory = job / "logs/adapter"
+            candidates = sorted((p for p in directory.glob("*.json") if not p.name.endswith(".result.json")), key=lambda p:p.stat().st_mtime, reverse=True)[:16]
+            result = []
+            expected = {k:v for k,v in arguments.items() if k != "job_id"}
+            for path in candidates:
+                if path.stat().st_size > 16_000_000:
+                    continue
+                request = json.loads(path.read_text(encoding="utf-8"))
+                payload = request.get("payload", {})
+                if request.get("operation") == tool.removeprefix("chaosx_blender_hoi4_") and all(payload.get(k) == v for k,v in expected.items()):
+                    result.append({"request_id":request.get("request_id",path.stem),"request_rel":path.relative_to(job).as_posix(),"worker_result_exists":path.with_suffix(".result.json").exists()})
+            return result
+        except (OSError, ValueError, KeyError, TypeError):
+            return []
 
     def health(self, job_id: str) -> Dict[str, Any]:
         return self.call("chaosx_blender_hoi4_health", {"job_id": job_id})
@@ -190,13 +217,14 @@ class BlenderAdapterClient:
             },
         )
 
-    def export_mesh(self, job_id: str, blend_rel: str, output_rel: str) -> Dict[str, Any]:
+    def export_mesh(self, job_id: str, blend_rel: str, output_rel: str, split_verts: bool = False) -> Dict[str, Any]:
         return self.call(
             "chaosx_blender_hoi4_export_mesh",
             {
                 "job_id": job_id,
                 "blend_rel": blend_rel,
                 "output_rel": output_rel,
+                "split_verts": split_verts,
             },
         )
 
@@ -311,6 +339,18 @@ class BlenderAdapterClient:
                 "bounds_tolerance": bounds_tolerance,
             },
         )
+
+    def partition_skeletal_mesh_export_batches(
+        self, *, job_id: str, blend_rel: str, expected_source_sha256: str,
+        checkpoint_rel: str, target_armature_name: str, target_mesh_names: list[str],
+        max_export_vertices_per_batch: int = 24000,
+    ) -> Dict[str, Any]:
+        return self.call("chaosx_blender_hoi4_partition_skeletal_mesh_export_batches", {
+            "job_id": job_id, "blend_rel": blend_rel,
+            "expected_source_sha256": expected_source_sha256, "checkpoint_rel": checkpoint_rel,
+            "target_armature_name": target_armature_name, "target_mesh_names": target_mesh_names,
+            "max_export_vertices_per_batch": max_export_vertices_per_batch,
+        })
 
     def partition_static_mesh_export_batches(
         self,

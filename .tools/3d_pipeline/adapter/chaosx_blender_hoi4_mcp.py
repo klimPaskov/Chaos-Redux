@@ -88,11 +88,39 @@ def _validate_payload(payload: Dict[str, Any]) -> None:
             raise ValueError("Absolute or traversal paths are not accepted by the adapter.")
 
 
+def _prepare_namespace(job: Path, payload: Dict[str, Any]) -> tuple[Path, Dict[str, Any]]:
+    """Isolate one prepare attempt; input and all fixed outputs remain in its child root."""
+    namespace = payload.get("output_namespace_rel", "")
+    if not namespace:
+        return job, payload
+    child = _relative(namespace, job)
+    if child == job.resolve() or not child.is_dir():
+        raise ValueError("Prepare namespace must be an existing strict child containing its input files.")
+    if (child / "blender" / "checkpoints").exists() or (child / "blender" / "source").exists():
+        raise ValueError("Prepare namespace already has checkpoints; choose a new attempt namespace.")
+    rebased = dict(payload)
+    def input_path(value: str) -> str:
+        source = _relative(value, job)
+        if not source.is_file():
+            raise ValueError("Namespaced prepare input must be an existing file.")
+        try:
+            return source.relative_to(child).as_posix()
+        except ValueError as exc:
+            raise ValueError("Every prepare source must be inside the output namespace.") from exc
+    for key in ("source_rel", "geometry_source_rel"):
+        if rebased.get(key):
+            rebased[key] = input_path(rebased[key])
+    rebased["texture_source_rels"] = {key: input_path(value) for key, value in rebased.get("texture_source_rels", {}).items()}
+    rebased.pop("output_namespace_rel", None)
+    return child, rebased
+
+
 def _run(job_id: str, operation: str, payload: Dict[str, Any]) -> Dict[str, Any]:
     job = _job(job_id)
     if operation not in ALLOWED_OPERATIONS:
         raise ValueError(f"Unsupported allowlisted operation: {operation}")
     _validate_payload(payload)
+    worker_job, worker_payload = _prepare_namespace(job, payload) if operation == "prepare_candidate" else (job, payload)
     request_id = uuid.uuid4().hex
     request_path = job / "logs" / "adapter" / f"{request_id}.json"
     request_path.parent.mkdir(parents=True, exist_ok=True)
@@ -101,9 +129,9 @@ def _run(job_id: str, operation: str, payload: Dict[str, Any]) -> Dict[str, Any]
         "adapter_id": CONFIG["adapter_id"],
         "adapter_version": ADAPTER_VERSION,
         "job_id": job_id,
-        "job_root": str(job),
+        "job_root": str(worker_job),
         "operation": operation,
-        "payload": payload,
+        "payload": worker_payload,
     }
     request_path.write_text(json.dumps(request, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     command = [
@@ -149,6 +177,9 @@ def _run(job_id: str, operation: str, payload: Dict[str, Any]) -> Dict[str, Any]
         result, _ = json.JSONDecoder().raw_decode(result_lines[-1])
     except json.JSONDecodeError as exc:
         raise RuntimeError(f"Blender worker returned invalid JSON; evidence: {output_path}") from exc
+    if worker_job != job:
+        result["output_namespace_rel"] = worker_job.relative_to(job).as_posix()
+        result["artifact_path_base"] = "All worker artifact paths are relative to output_namespace_rel; adapter logs remain relative to the registered job."
     result["adapter"] = {
         "id": CONFIG["adapter_id"],
         "version": ADAPTER_VERSION,
@@ -308,8 +339,14 @@ def chaosx_blender_hoi4_prepare_candidate(
     topology_weld_distance: float = 1e-5,
     max_runtime_footprint_m: float | None = None,
     runtime_footprint_policy: str = "reject",
+    output_namespace_rel: str = "",
 ) -> Dict[str, Any]:
-    """Import, preserve, normalize, triangulate, material-tag, and checkpoint a candidate."""
+    """Prepare a candidate; optional output_namespace_rel isolates all fixed outputs.
+
+    All sources must lie inside that existing child, with no previous checkpoints.
+    Pass input paths relative to the registered job; returned worker artifact paths
+    are relative to the explicitly returned output_namespace_rel.
+    """
 
     return _run(
         job_id,
@@ -335,6 +372,7 @@ def chaosx_blender_hoi4_prepare_candidate(
             "topology_weld_distance": topology_weld_distance,
             "max_runtime_footprint_m": max_runtime_footprint_m,
             "runtime_footprint_policy": runtime_footprint_policy,
+            "output_namespace_rel": output_namespace_rel,
         },
     )
 
@@ -350,8 +388,11 @@ def chaosx_blender_hoi4_inspect_scene(
     preview_frame: int = -1,
     preview_view_names: list[str] | None = None,
     mesh_region: dict[str, Any] | None = None,
+    material_visibility: dict[str, Any] | None = None,
     include_action_channels: bool = False,
     expected_source_sha256: str = "",
+    preview_region: Dict[str, Any] | None = None,
+    preview_resolution: int = 512,
 ) -> Dict[str, Any]:
     """Inspect a checkpoint; optional hash-bound mesh_region or action-channel inventory remains read-only."""
 
@@ -366,7 +407,11 @@ def chaosx_blender_hoi4_inspect_scene(
             "target_armature_name": target_armature_name,
             "preview_frame": preview_frame,
             "preview_view_names": preview_view_names or [],
+            "preview_region": preview_region,
+            "preview_resolution": preview_resolution,
+            "expected_source_sha256": expected_source_sha256,
             **({"mesh_region": mesh_region} if mesh_region is not None else {}),
+            **({"material_visibility": material_visibility, "expected_source_sha256": expected_source_sha256} if material_visibility is not None else {}),
             **({"include_action_channels": True, "expected_source_sha256": expected_source_sha256} if include_action_channels else {}),
         },
     )
@@ -449,6 +494,84 @@ def chaosx_blender_hoi4_bake_static_mesh_transforms(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_inspect_mesh_winding(
+    job_id: str, blend_rel: str, expected_source_sha256: str, target_mesh_names: list[str],
+) -> Dict[str, Any]:
+    """Read hashed source-index and exact-position winding diagnostics without mutation."""
+    return _run(job_id, "inspect_mesh_winding", {
+        "blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256, "target_mesh_names": target_mesh_names,
+    })
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_repair_mesh_winding(
+    job_id: str, blend_rel: str, expected_source_sha256: str, checkpoint_rel: str,
+    target_armature_name: str, target_mesh_names: list[str],
+) -> Dict[str, Any]:
+    """Preserve geometry/weights/actions and correct only proven coherent component orientation."""
+    return _run(job_id, "repair_mesh_winding", {
+        "blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256,
+        "checkpoint_rel": checkpoint_rel, "target_armature_name": target_armature_name, "target_mesh_names": target_mesh_names,
+    })
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_inspect_fitted_humanoid_source(
+    job_id: str, blend_rel: str, expected_source_sha256: str, mesh_name: str, report_rel: str,
+) -> Dict[str, Any]:
+    """Inspect exact world vertices/topology of one hashed existing humanoid source."""
+    return _run(job_id, "inspect_fitted_humanoid_source", {
+        "blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256,
+        "mesh_name": mesh_name, "report_rel": report_rel,
+    })
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_fitted_humanoid_rig(
+    job_id: str, blend_rel: str, expected_source_sha256: str,
+    spec_rel: str, expected_spec_sha256: str, checkpoint_rel: str,
+) -> Dict[str, Any]:
+    """Apply explicitly measured bones/weights from a SHA-bound declarative spec."""
+    return _run(job_id, "author_fitted_humanoid_rig", {
+        "blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256,
+        "spec_rel": spec_rel, "expected_spec_sha256": expected_spec_sha256, "checkpoint_rel": checkpoint_rel,
+    })
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_fitted_humanoid_action(
+    job_id: str, blend_rel: str, expected_source_sha256: str,
+    spec_rel: str, expected_spec_sha256: str, checkpoint_rel: str,
+) -> Dict[str, Any]:
+    """Author and bake explicit role keys on an existing fitted skeletal rig."""
+    return _run(job_id, "author_fitted_humanoid_action", {
+        "blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256,
+        "spec_rel": spec_rel, "expected_spec_sha256": expected_spec_sha256, "checkpoint_rel": checkpoint_rel,
+    })
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_partition_skeletal_mesh_export_batches(
+    job_id: str,
+    blend_rel: str,
+    expected_source_sha256: str,
+    checkpoint_rel: str,
+    target_armature_name: str,
+    target_mesh_names: list[str],
+    max_export_vertices_per_batch: int = 24000,
+) -> Dict[str, Any]:
+    """Partition a hashed existing skeletal source using identical material copies only."""
+    return _run(job_id, "partition_skeletal_mesh_export_batches", {
+        "blend_rel": blend_rel,
+        "expected_source_sha256": expected_source_sha256,
+        "checkpoint_rel": checkpoint_rel,
+        "target_armature_name": target_armature_name,
+        "target_mesh_names": target_mesh_names,
+        "max_export_vertices_per_batch": max_export_vertices_per_batch,
+    })
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_partition_static_mesh_export_batches(
     job_id: str,
     blend_rel: str,
@@ -488,7 +611,7 @@ def chaosx_blender_hoi4_promote_accepted_reimport(
     """Copy one hash-bound animated reimport proof with metadata-only working approval.
 
     Require its complete receipt and immutable source .blend/.mesh/.anim hashes,
-    one exact rig and 1-16 exact meshes, and a new sibling checkpoint. Preserve
+    one exact rig and 1-512 exact meshes, and a new sibling checkpoint. Preserve
     geometry, materials, weights, bones, actions and scale through save/reopen.
     This does not import actions, author geometry, convert or approve exports.
     """
@@ -541,13 +664,15 @@ def chaosx_blender_hoi4_export_mesh(
     job_id: str,
     blend_rel: str,
     output_rel: str,
+    split_verts: bool = False,
+    checkpoint_rel: str | None = None,
 ) -> Dict[str, Any]:
     """Export the approved collection through io_pdx_mesh."""
 
     return _run(
         job_id,
         "export_mesh",
-        {"blend_rel": blend_rel, "output_rel": output_rel},
+        {"blend_rel": blend_rel, "output_rel": output_rel, "split_verts": split_verts, "checkpoint_rel": checkpoint_rel},
     )
 
 
@@ -794,6 +919,60 @@ def chaosx_blender_hoi4_calibrate_creature_scale(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_inspect_mesh_landmarks(job_id: str, blend_rel: str, expected_source_sha256: str, report_rel: str, mesh_names: list[str]) -> Dict[str, Any]:
+    """Write a bounded hash-bound rest-vertex/bone inventory; return compact file evidence only."""
+    return _run(job_id, "inspect_mesh_landmarks", {"blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256, "report_rel": report_rel, "mesh_names": mesh_names})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_repair_explicit_skin(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, skin_spec_rel: str, expected_skin_spec_sha256: str) -> Dict[str, Any]:
+    """Repair exact reviewed vertex weights; preserve all other fingerprints and reopen proof."""
+    return _run(job_id, "repair_explicit_skin", {"blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel, "expected_source_sha256": expected_source_sha256, "skin_spec_rel": skin_spec_rel, "expected_skin_spec_sha256": expected_skin_spec_sha256})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_preview_explicit_skin_selection(job_id: str, blend_rel: str, expected_source_sha256: str, selection_spec_rel: str, expected_selection_spec_sha256: str) -> Dict[str, Any]:
+    """Read-only exact source-index rest-mesh highlight; red full faces, cyan mixed boundary."""
+    return _run(job_id, "preview_explicit_skin_selection", {"blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256, "selection_spec_rel": selection_spec_rel, "expected_selection_spec_sha256": expected_selection_spec_sha256})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_measured_creature_rig(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, rig_spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Author explicit measured bones and ordered spatial weights on a new sibling checkpoint.
+
+    rig_spec keys: name, bones [{name,parent,head,tail,roll_degrees?,deform?}],
+    weight_regions [{name,min,max,bones,rigid}], body_triangle_target (0 disables),
+    repair_boundaries (boolean). World-space coordinates; first matching region.
+    """
+    return _run(job_id, "author_measured_creature_rig", {"blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel, "expected_source_sha256": expected_source_sha256, "rig_spec": rig_spec})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_attach_rigid_component(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, triangle_ceiling: int, component_spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Add explicit closed triangular component geometry rigidly bound to one existing bone.
+
+    component_spec: name, bone, material (existing working material), vertices
+    (world coordinates), triangles (indices), loop_uvs (one UV per face corner).
+    All source meshes are preserved and total triangles may not exceed ceiling.
+    """
+    return _run(job_id, "attach_rigid_component", {"blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel, "expected_source_sha256": expected_source_sha256, "target_armature_name": target_armature_name, "triangle_ceiling": triangle_ceiling, "component_spec": component_spec})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_author_measured_creature_action(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, action_spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Create a new explicit articulated action from caller-authored phases; no canned motion.
+
+    action_spec: name, role, fps, frame_start, frame_end, loop, root_bone,
+    ground_contact (per_frame_lowest_point_1mm or none), phases [{name,frame}],
+    keys {bone:[{frame,rotation_degrees:[x,y,z],location:[x,y,z]}]}.
+    Rotations are absolute local XYZ Euler degrees converted to quaternions.
+    Keys must include every phase; unlisted bones use identity. Source actions
+    are retained, new actions require semantic/deformation review and reimport.
+    """
+    return _run(job_id, "author_measured_creature_action", {"blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel, "expected_source_sha256": expected_source_sha256, "target_armature_name": target_armature_name, "action_spec": action_spec})
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_author_creature_rig(
     job_id: str,
     blend_rel: str,
@@ -1001,13 +1180,14 @@ def chaosx_blender_hoi4_reimport_export(
     mesh_rel: str,
     anim_rel: str = "",
     proof_name: str = "",
+    stage_default_textures: bool = True,
 ) -> Dict[str, Any]:
     """Reimport exported PDX assets and save proof into the job."""
 
     return _run(
         job_id,
         "reimport_export",
-        {"mesh_rel": mesh_rel, "anim_rel": anim_rel, "proof_name": proof_name},
+        {"mesh_rel": mesh_rel, "anim_rel": anim_rel, "proof_name": proof_name, "stage_default_textures": stage_default_textures},
     )
 
 
@@ -1024,6 +1204,49 @@ def chaosx_blender_hoi4_save_checkpoint(
         "save_checkpoint",
         {"blend_rel": blend_rel, "stage": stage},
     )
+
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_repair_explicit_mesh_winding(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, mesh_name: str, face_indices: list[int], angular_tolerance_degrees: float = 0.25) -> Dict[str, Any]:
+    """Flip an exact reviewed face list in a new hash-bound sibling; preserve corners, weights, rig and actions."""
+    return _run(job_id, "repair_explicit_mesh_winding", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"mesh_name":mesh_name,"face_indices":face_indices,"angular_tolerance_degrees":angular_tolerance_degrees})
+
+@mcp.tool()
+def chaosx_blender_hoi4_ground_existing_action(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, source_action_name: str, expected_action_sha256: str, target_action_name: str, root_bone: str, excluded_contact_bones: list[str] | None = None) -> Dict[str, Any]:
+    """Copy one reviewed skeletal action and correct true-root location in pure world Z."""
+    return _run(job_id, "ground_existing_action", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"target_armature_name":target_armature_name,"source_action_name":source_action_name,"expected_action_sha256":expected_action_sha256,"target_action_name":target_action_name,"root_bone":root_bone,"excluded_contact_bones":excluded_contact_bones or []})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_repair_explicit_mesh_patch(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, patch_spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Apply an exact reviewed local face/vertex patch; no inferred fill, rig replacement or source overwrite."""
+    return _run(job_id,"repair_explicit_mesh_patch",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"patch_spec":patch_spec})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_edit_explicit_mesh_vertices(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, mesh_name: str, target_armature_name: str, vertex_edits: list[Dict[str, Any]]) -> Dict[str, Any]:
+    """Apply exact world positions/normalized existing deform-bone weights; verify readback and save/reopen."""
+    return _run(job_id,"edit_explicit_mesh_vertices",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"mesh_name":mesh_name,"target_armature_name":target_armature_name,"vertex_edits":vertex_edits})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_bind_existing_pdx_material(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_mesh_names: list[str], source_material_name: str, material_name: str, material_spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Bind unique hash-bound PDX maps to exact existing slots; preserve source materials and mesh/rig/actions."""
+    return _run(job_id,"bind_existing_pdx_material",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"target_mesh_names":target_mesh_names,"source_material_name":source_material_name,"material_name":material_name,"material_spec":material_spec})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_repair_explicit_vertex_remap(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, remap_spec: Dict[str, Any], angular_tolerance_degrees: float = 0.25) -> Dict[str, Any]:
+    """Exact source-vertex fan copies/coincident aliases with explicit corner remaps; no inferred weld or weights."""
+    return _run(job_id,"repair_explicit_vertex_remap",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"remap_spec":remap_spec,"angular_tolerance_degrees":angular_tolerance_degrees})
+
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_rotate_existing_assembly_yaw(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, object_names: list[str], action_names: list[str], yaw_degrees: float) -> Dict[str, Any]:
+    """Rigid cardinal working-assembly yaw with every requested action frame verified; protected source objects excluded."""
+    return _run(job_id,"rotate_existing_assembly_yaw",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"target_armature_name":target_armature_name,"object_names":object_names,"action_names":action_names,"yaw_degrees":yaw_degrees})
 
 
 def main() -> None:

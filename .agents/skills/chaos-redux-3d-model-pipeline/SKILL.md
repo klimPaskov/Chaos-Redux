@@ -69,6 +69,7 @@ After the key gate and job-root resolution, the job loader must preflight every 
 
 For adapter publication, verify exact operation-array agreement between `.tools/3d_pipeline/config/blender_hoi4_adapter.json` and `routes.blender_hoi4_adapter.operations` in the dependency lock, matching source hashes, and the complete local import closure.
 A required locked route omitted from the operation arrays is a publication failure even when its implementation exists; record the blocker until the publication is coherent.
+For hash-locked text sources, verify that Git-clean canonical bytes and raw working-tree bytes agree before recording release hashes; line-ending conversion must not invalidate the lock on checkout.
 
 ## Required reading and local calibration
 
@@ -398,6 +399,10 @@ The model worker does not claim the sound package complete merely because synchr
 ## PDX export and reimport evidence
 
 Before export, ensure the export collection contains only approved objects and that transforms, topology, materials, armature, actions, exporter version, and preset pass. Export `.mesh` and required `.anim` files using the checksum-locked verified `io_pdx_mesh` route. Capture every warning, output path, byte size, and checksum.
+
+After assembly yaw changes, reimport the final actual `.mesh`/`.anim` bytes and verify frame-1 facing and rest-bounds parity against the accepted source, allowing only the intended action pose; grounding and source-yaw equivalence alone cannot prove exported orientation.
+Use the locked `animation_root_export.py` correction to align initial root translation/quaternion with the samples' exact POSE-to-WORLD coordinate conversion, preserving child records and sample payload and verifying serialized readback.
+Do not bake the rig or retry paid generation to mask an initial-root export mismatch.
 
 Keep the complete assembled body and all added props within the calibrated runtime triangle/material/texture budgets. Required equipment and components must not be omitted to hit the target. Modest, controlled reduction of low-value body or prop topology is authorized without renewed approval when needed to accommodate required additions; preserve silhouette, identity, joints, grips, UV/material quality, and required details, record before/after counts, and recheck deformation and export limits. If required quality and runtime limits cannot both pass, report the exact blocker rather than shipping an incomplete model.
 
