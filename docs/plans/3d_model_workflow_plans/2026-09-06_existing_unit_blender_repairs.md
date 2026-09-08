@@ -29,7 +29,7 @@ Never print the credential, include it in a command log or handoff, or save it i
 
 All Blender work uses the verified repository adapter, including structured calls through `BlenderAdapterClient.call` or `lib.mcp_stdio` and `wrappers/run_blender_hoi4_adapter.cmd` when the session tool list is stale.
 Live discovery confirmed manual bone-phase editing and creature operations in addition to humanoid operations.
-The gorilla worker owns the necessary shared adapter extension; other asset workers must send capability requirements to the parent and must not edit adapter/client/config/lock files concurrently.
+The adapter_recovery_resume worker owns shared adapter changes; asset workers send capability requirements to that owner and the parent and must not edit adapter/client/config/lock files concurrently.
 Create real role-specific skeletal actions, separately controlled rigid weapons/props, measured grip/stock/muzzle contacts as applicable, and firing-state aim/discharge/recoil/recovery and sound/effect synchronization evidence.
 Include all required components in the final geometry budget; limited body reduction to make room for props is authorized with visual/material/deformation comparison.
 Retain existing licensed audio and counters and hand off revised animation synchronization; do not create unrelated new assets.
@@ -78,7 +78,7 @@ The existing creature-rig operation only handles a winged-biped exception; other
 The existing action operation has the same anatomy assumption.
 The parent authorized a narrow adapter extension for a measured custom rig, explicit weights, and rigid hammer attachment, with preservation of source geometry/materials and rejection of unsupported inputs.
 This extension must be followed by actual model repair, semantic animation review, and export/reimport evidence.
-The gorilla worker owns the bounded extension and package artifacts; the parent owns dependency-hash review and runtime promotion.
+The initial gorilla-specific extension is superseded by the shared adapter_recovery_resume ownership; the gorilla worker owns its package artifacts, and the parent owns dependency-hash review and runtime promotion.
 
 ## Acceptance and ownership
 
@@ -160,7 +160,7 @@ The alien has a repaired 55,150-triangle assembled body/pistol and seven authore
 The clone has nine authored roles and separate rifle components, with final grip corrections and assembly checks pending.
 The robot has eight authored roles and 29,198 triangles after its first cap pass; exact local seam splitting and final death/export checks remain pending.
 The portal raider has genuine idle/move/attack candidates and an exact local repair proposal; remaining roles and full assembly acceptance remain pending.
-The temporal guard has a closed 29,966-triangle repaired body with two export streams and corrected materials; the ten-role actual-byte reimport tranche remains in progress.
+The temporal guard has a closed 29,966-triangle repaired body with two export streams and corrected materials; all ten actual-byte reimports and runtime mesh/action integration passed, committed as de0d91057.
 Stone and forest have five authored roles each; stone closed body/polearm budget and final death/material checks, and forest terminal contact/export checks, remain in progress.
 Pan and Riverborn retain five authored roles each; local topology and anatomical death support still require repair, and Riverborn needs its shield handle.
 The pack-donkey has five authored roles and measured cargo support; final material, calibrated forward-axis conversion and export/reimport remain pending.
@@ -173,3 +173,8 @@ The wider unit-model repair request remains incomplete; these progress facts do 
 
 Implemented the repaired 29,966-triangle mesh, packed maps and all ten actual-byte-verified skeletal actions through two material streams and the existing sub-unit sprite consumer.
 See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_temporal_guard_runtime_integration.md` for the 14 payload hashes, parent visual review and remaining audio/provenance limits.
+
+### Alien infantry runtime repair
+
+Implemented the accepted weapon-free body, separate ray pistol, 52-bone Blender rig, seven actual-byte-verified actions and synchronized firing/footstep/impact cues.
+See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_alien_weaponfree_runtime_integration.md` for 14 copied payload hashes, eight material streams and inherited companion limits.

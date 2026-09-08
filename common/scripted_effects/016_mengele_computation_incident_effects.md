@@ -14,7 +14,7 @@ The parent must call `brilliant_scientist_mengele_dispatch_computation_incident`
 | `brilliant_scientist_mengele_record_computation_incident` | Country scope; provider validity and the four-stage temporary selector are checked internally. | Temporary `mengele_event016_computation_incident_recorded` result. | Creates one active private incident, records permanent incident history/count, and adds the private penalty modifier. Called by the incident random branch. |
 | `brilliant_scientist_mengele_dispatch_computation_incident` | Country scope; private stage selector plus a caller-authenticated real output. | Temporary `mengele_event016_computation_incident_dispatched` result, set only when the incident branch records an incident. | Uses the pressure/complement `random_list`, refuses invalid or active states, and never writes Kruger fields. Parent stage output and native risky Prototype callbacks are the only callers. |
 | `brilliant_scientist_mengele_clear_computation_incident` | Country scope; no selector. | None. | Clears only the private active flag and private dynamic modifier while retaining all history and learned knowledge. Used by recovery success and cleanup. |
-| `brilliant_scientist_mengele_begin_computation_incident_recovery` | Native decision callback in country scope; incident active, valid provider, no recovery receipt, and inclusive direct affordability after native admission. | Temporary `mengele_event016_computation_incident_recovery_started` result. | Stores and debits exactly 35 Political Power, 300 Support Equipment, and 500 fuel, then sets one active receipt. The decision's native modifier owns 2 civilian factories for 60 days. |
+| `brilliant_scientist_mengele_begin_computation_incident_recovery` | Country scope; incident active, valid provider, no recovery receipt, and inclusive direct/native affordability. | Temporary `mengele_event016_computation_incident_recovery_started` result. | Stores and debits exactly 35 Political Power, 300 Support Equipment, and 500 fuel, then sets one active receipt. The decision's native modifier owns 2 civilian factories for 60 days. |
 | `brilliant_scientist_mengele_cancel_computation_incident_recovery` | Country scope; exact active direct receipt. | Temporary `mengele_event016_computation_incident_recovery_cancelled` result. | Snapshots and clears the receipt before refunding all three direct payments once; invalid-provider cancellation also clears transient incident state. Decision `cancel_effect` and parent cleanup call it. |
 | `brilliant_scientist_mengele_finish_computation_incident_recovery` | Country scope; exact active receipt, active incident, and valid provider. | Temporary `mengele_event016_computation_incident_recovery_finished` result. | Clears the receipt and private penalty, then records permanent recovery history/count once. Decision `remove_effect` calls it. |
 | `brilliant_scientist_mengele_cleanup_computation_incident` | Country scope; no selector. | Temporary `mengele_event016_computation_incident_cleanup_completed` result. | Exposed parent cleanup wrapper; refunds an exact receipt before clearing transient state and is idempotent. It preserves provider receipts, native history, neutral knowledge, and both histories. |
@@ -38,12 +38,6 @@ The new random surface is design-backed by `E016_MENGELE_COMPUTATION_STAGE_INCID
 
 ## Recovery transaction
 
-The recovery begin helper is a native-decision callback, not a standalone reservation API.
-Decision admission checks all four burdens, including free civilian factories.
-After admission, the callback rechecks provider, incident, receipt, and the three direct payments but does not require the same factories to remain free after the native modifier may have reserved them.
-This preserves exact-cost starts regardless of whether native reservation occurs before or after `complete_effect`; no script adds or refunds factories.
-The general affordability tooltip retains the four-burden predicate.
-
 The decision uses the existing `mengele_clone_army_category` and the reused generated icon `GFX_decision_brilliant_scientist_project_computational_mathematics_prototype`.
 The icon is already defined by `interface/016_brilliant_scientist_project_icons.gfx`, so no asset or sprite registration is required.
 The four cost axes are the native 2-civilian-factory reservation plus the three private direct receipts for Political Power, Support Equipment, and fuel.
@@ -51,8 +45,6 @@ The inclusive affordability trigger is shared by `available` and `custom_cost_tr
 No trucks or manpower are charged or refunded.
 `cancel_if_not_visible = no` keeps the decision instance under its explicit cancel trigger so invalid provider cleanup can refund the receipt.
 The cancel and finish paths use the exact private recovery receipt, clear receipt state before settlement, and therefore cannot refund or record success twice.
-An incomplete receipt cannot award a refund or successful recovery, but normal expiry still reaches cancellation and clears its orphaned payment fields and active recovery flag.
-The incident itself remains unresolved while its provider is valid, allowing another properly funded response.
 Native completion of the Computational Engine remains valid while the private incident is active, and the core never revokes learned knowledge or invalidates the provider project.
 
 ## State and cleanup contract
@@ -78,15 +70,9 @@ The focused read-only Event 016 inspection returned `EVENT_INSPECTED_PARTIAL` wi
 The post-edit `hoi4.probability_inspect` discovery found the two-entry `random_list` pool with no unresolved source entries and recorded source hash `8fe18d0f422106b07d15a0e5b95141bae5f9576223d30bbbe07b6aa209d237` in artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1c550d26b2c271ff52b280c40d58cba799000638dec308b15df440dae82f9d4d/6216faff5e87c88b5bf45bb588d124c9920f8594580d31e3b35f6d30e154394b/probability-inspect-8fe18e3d0f42.json`.
 The matching evaluate pass used all fourteen named scenarios from `E016_MENGELE_COMPUTATION_STAGE_INCIDENT_BASELINE_2026_09_02.scenarios.json`, produced twenty-eight candidate rows with zero diagnostics, and left two dynamic `var:` weights unresolved because the analyzer cannot derive temporary pressure/complement values from the fixture.
 The incident same-source compare returned zero changes with two unresolved dynamic weights; it is a capability receipt, not a pre/post balance result.
-The original implementation handoff did not obtain `chaosx_ai_probability_auditor` acceptance, and its prepatch inspection recorded absent-source results for this new file.
-That historical evidence gap is not a claim that the auditor route is currently unavailable.
+The requested `chaosx_ai_probability_auditor` route was not available in the callable tool inventory, and the prepatch inspection recorded absent-source results for this new file, so no true before score or auditor acceptance exists.
 The unchanged native baseline is `E016_MENGELE_COMPUTATION_BASELINE_2026_09_02.scenarios.json` with SHA256 `3c197628aa74eb4dba902f771ec0eba18e2dcf66cf0b1f886858a5632d5bb99e`.
 No engine acceptance claim is made by this owner-local source implementation.
-
-The 2026-09-08 recovery correction separates four-cost admission from three-payment debit and makes malformed expiry retire recovery remnants without an inferred refund or success.
-The current `.tools/audit_mengele_conventional_incident_contract.mjs` source/API regression passes 165 scenarios across Computation and five conventional incident families, including exact civilian-factory affordability under both modeled reservation orders and missing-payment-component expiry for all six families.
-Provider validity is stubbed, native timer and factory ordering are modeled rather than executed, and engine resource caps are not modeled.
-These checks do not replace the outstanding MCP lifecycle comparison or establish in-game acceptance.
 
 ## Future plans
 

@@ -6,7 +6,7 @@ This contract records the accepted Event 016 closure plan and supersedes earlier
 
 The authority order for closure work is:
 
-1. The user's accepted Event 016 Final Completion Plan, amended by the explicit 2026-09-08 instruction to use the new weapon-free regeneration workflow for firearm-bearing units.
+1. The user's accepted Event 016 Final Completion Plan.
 2. This contract.
 3. The ten-part Event 016 specification and the D'Rhondan addendum, except where this contract explicitly changes a disposition.
 4. Current implementation evidence, MCP artifacts, audit handoffs, and model manifests.
@@ -239,22 +239,17 @@ Durable-settlement certification revalidates its disarmament and nonterminal con
 
 ## Existing-model runtime contract
 
-The user explicitly answered the closure exception question on 2026-09-08: "Use the new weapon-free regeneration workflow".
-This accepted amendment supersedes the earlier no-regeneration restriction for firearm-bearing clone, robot, Portal Raider, and Alien Infantry bodies.
-Generate weapon-free bodies through Meshy 7, then use GPT-6-astra Blender rigging, weights, separately modeled firearms and held components, and genuine skeletal actions without Meshy rigging or animation submissions.
-Existing weapon-free Meshy 7 candidates with matching identity, approval, task lineage, and source evidence may continue through review rather than purchasing duplicate bodies.
-Temporal, paleogenetic, and xenobiological packages retain their existing non-firearm geometry and the authorized manual Blender recovery route.
+Geometry regeneration is forbidden for clone, robot, Portal Raider, Alien Infantry, temporal, paleogenetic, and xenobiological packages. Existing geometry remains the source.
 
-The prior preserved-firearm recovery handoffs remain historical evidence, not acceptance of the replacement bodies or a reason to resume fused-weapon repair.
-The amendment does not authorize unrelated redesigns, transform-only motion, semantic action aliases, silent firing, or particleless firing.
+The user's explicit manual recovery permission governs this closure where it conflicts with the ordinary regeneration-first workflow. It authorizes rig, weight, contact, weapon, action, effect, and export recovery on the existing geometry. It does not authorize substitute geometry, a different model, transform-only motion, semantic action aliases, silent firing, or particleless firing.
 
 Each promoted package requires final export and actual-byte reimport proof, distinct idle, move, attack, defend, support-attack, retreat, and death actions as applicable, exact runtime mappings, material paths, scale calibration, counters, hashes, and active entity, asset, GFX, particle, and sound wiring.
 
-Portal Raider receives a weapon-free replacement body and a separately modeled approved retro laser gun, two-hand contact, aim, discharge, recoil, recovery, and a stable muzzle attachment. Alien Infantry retains its intended visual identity through the weapon-free replacement and requires a separately modeled laser weapon and reimport-proven muzzle locator. Robot arm-mounted guns are separately modeled and must synchronize with particles, light, gunfire, mechanical motion, and death audio. All assembled models must fit the verified exporter limits. Aryan clones use normal German infantry models.
+Portal Raider keeps the existing body mesh and receives the approved retro laser gun, two-hand contact, aim, discharge, recoil, recovery, and a stable muzzle attachment. Alien Infantry must fit the verified exporter ceiling without changing its visible identity and requires a reimport-proven muzzle locator. Robot firing must synchronize the existing arm gun with particles, light, gunfire, mechanical motion, and death audio. Aryan clones use normal German infantry models.
 
 Every firing state has a visible discharge, matching particle or beam and light behavior where applicable, identity-matched sourced audio, exact synchronization timing, and runtime consumer evidence. Every unit receives distinct sourced movement, selection where supported, attack, retreat, impact, and death audio without replacing global infantry voices.
 
-If a selected candidate cannot pass an export, firearm, or animation gate, the exact package remains incomplete and its failure must be recorded. Non-firearm regeneration and unapproved substitute identities remain forbidden; firearm body recovery follows the accepted weapon-free workflow and its evidence gates.
+If existing geometry cannot pass an export, firearm, or animation gate, the exact package remains blocked. Regeneration and substitute models are not permitted.
 
 ## Completion and evidence boundary
 
@@ -262,7 +257,7 @@ Closure proceeds through reviewed commits for the contract, technology and API r
 
 MCP inspection, rendering, comparison, and supported rewrite routes are mandatory for technologies, events, probabilities, focus trees, the Directorate GUI, and relevant maps. Weighted changes require the same named baseline and post-change scenarios. The final planner and mapped auditors run before a near-completion claim.
 
-The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, every model package passes its applicable weapon-free rebuild or preserved-geometry recovery gates, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
+The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, every model package passes its no-regeneration gates, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
 An exact recorded blocker preserves the recovery task; it does not satisfy a completion gate or permit a ready-for-acceptance claim.
 
 The agent does not launch Hearts of Iron IV. In-game completion remains subject to the user's acceptance.
