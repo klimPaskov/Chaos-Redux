@@ -133,7 +133,8 @@ No Meshy rigging or animation calls were used.
 | Portal raider | `01a07650-f80a-7523-b547-7d1f7ccc0221` |
 
 The parent visually reviewed the alien and portal fresh body front previews and accepted their identities for continued rig work, with final topology, materials, assembly and animation still pending.
-The gorilla has an actual 29-bone measured rig and rigid 196-triangle hammer, totaling 24,595 triangles after a bounded body reduction that reserves surface-repair capacity; overhead-pose review requires smooth exact skin weights and local topology correction before acceptance.
+The gorilla has a measured 29-bone rig, a 196-triangle hammer, smooth explicit skin weights and five authored roles.
+The parent accepted the repaired overhead hammer windup; exact local topology repair and final material/export evidence remain pending.
 The pack-donkey has an actual anatomy-specific rig, hinged wooden cargo closure and five authored roles; final cargo settling and export/reimport review remain in progress.
 Pan has a measured digitigrade rig and required tool/kit components in progress.
 Stone has a measured rig on its latest approved body.
@@ -145,4 +146,30 @@ These are implementation progress records, not completed package or live-game cl
 The shared adapter provides measured rest geometry/bone inspection, explicit bone/weight-region authoring, rigid component geometry and manual role phase keys.
 A namespaced prepare route protects previous fixed-name checkpoints; input and output path isolation, source containment, legacy behavior and overwrite rejection were checked before release.
 Concurrent adapter maintenance in other active tasks changes shared source hashes; each worker must use a coherent published lock and must never bypass mismatches.
-The bounded adapter recovery owner is preparing source-preserving export checkpoint, recovered-mesh metadata, material attachment, winding and grounding fixes while asset workers continue independent production.
+The bounded adapter recovery owner has published measured source-preserving rig/action/component, local topology, explicit weight and material repair operations with save/reopen checks.
+Current release evidence, native successes and outstanding finite operations are recorded in `2026-09-06_adapter_recovery_handoff.md`; workers must consult the current lock rather than a version copied into this progress note.
+
+## September 8 accepted progress
+
+Commit `e563d9700` integrates the two completed creature action tranches and their exact 29 runtime payloads.
+Commit `469bb2f0bc` fixes assault battalion DDS basenames; commit `00c0e49b7` records deformation, anatomical support, culling diagnosis and exported-grounding rules in the 3D skill.
+The independent creature integration audit found no mismatch across 29 source/runtime payload hashes, 21 role chains, exact submesh/texture bindings, scales, sprite aliases or terminal death policies.
+See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_pilot_creature_runtime_integration.md`.
+
+The alien has a repaired 55,150-triangle assembled body/pistol and seven authored roles; final material/muzzle/death/reimport checks remain pending.
+The clone has nine authored roles and separate rifle components, with final grip corrections and assembly checks pending.
+The robot has eight authored roles and 29,198 triangles after its first cap pass; exact local seam splitting and final death/export checks remain pending.
+The portal raider has genuine idle/move/attack candidates and an exact local repair proposal; remaining roles and full assembly acceptance remain pending.
+The temporal guard has a closed 29,966-triangle repaired body with two export streams and corrected materials; the ten-role actual-byte reimport tranche remains in progress.
+Stone and forest have five authored roles each; stone closed body/polearm budget and final death/material checks, and forest terminal contact/export checks, remain in progress.
+Pan and Riverborn retain five authored roles each; local topology and anatomical death support still require repair, and Riverborn needs its shield handle.
+The pack-donkey has five authored roles and measured cargo support; final material, calibrated forward-axis conversion and export/reimport remain pending.
+Base and specialized zombie actions are in active repair; standing-pose improvements do not establish full-role skin or surface acceptance.
+The assault unit has corrected material candidates and body motion exports, but its existing fused stowed projector still requires controlled extraction/handheld assembly and final action validation.
+No new Meshy calls were made during this resume.
+The wider unit-model repair request remains incomplete; these progress facts do not supersede the recorded final acceptance gates.
+
+### Temporal Guard runtime repair
+
+Implemented the repaired 29,966-triangle mesh, packed maps and all ten actual-byte-verified skeletal actions through two material streams and the existing sub-unit sprite consumer.
+See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_temporal_guard_runtime_integration.md` for the 14 payload hashes, parent visual review and remaining audio/provenance limits.
