@@ -13,6 +13,9 @@ is_independence_wave_kos_package = {
 is_independence_wave_kos_project_ready = {
 	is_independence_wave_kos_package = yes
 	has_country_flag = independence_wave_iw_031_setup_complete
+	# The ordinary project layer opens only after the founding compact mission
+	# resolves; while it is active, the mission remains the sole opening action.
+	has_country_flag = independence_wave_kos_compact_crisis_resolved
 	NOT = { has_country_flag = independence_wave_kos_compact_crisis_failed }
 }
 
@@ -28,19 +31,19 @@ has_independence_wave_kos_unsettled_host = {
 
 can_pay_independence_wave_kos_administration_light_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_kosovo_cost.civilian_factory_floor
-	command_power > constant:independence_wave_decision_cost.command_power_light
-	has_manpower > constant:independence_wave_decision_cost.manpower_light
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_light }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
 }
 
 can_pay_independence_wave_kos_administration_standard_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_kosovo_cost.civilian_factory_floor
-	command_power > constant:independence_wave_decision_cost.command_power_standard
-	has_manpower > constant:independence_wave_decision_cost.manpower_standard
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_standard }
 }
 
 can_pay_independence_wave_kos_strategic_cost = {
 	num_of_civilian_factories_available_for_projects > constant:independence_wave_kosovo_cost.civilian_factory_floor
-	has_stability > constant:independence_wave_decision_cost.stability_standard
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
 	can_pay_independence_wave_diplomatic_standard_cost = yes
 }
 
@@ -93,6 +96,7 @@ has_stable_independence_wave_kos_compact = {
 
 has_independence_wave_kos_active_package_project = {
 	OR = {
+		has_active_mission = independence_wave_kos_hold_cantonal_compact_together
 		has_decision = independence_wave_kos_secure_mitrovica_depots
 		has_decision = independence_wave_kos_integrate_territorial_guards
 		has_decision = independence_wave_kos_register_municipal_compacts
