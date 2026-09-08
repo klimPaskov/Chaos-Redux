@@ -1,0 +1,97 @@
+# Portal Raider unit consumer with timed weapon and contact cues.
+entity = {
+	name = "portal_raider_entity"
+	pdxmesh = "portal_raider_mesh"
+	default_state = "idle"
+	scale = 0.8
+	state = {
+		name = "idle"
+		animation = "idle"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0.000000 trigger_once = yes sound = { soundeffect = "portal_raider_idle_electrical" } }
+	}
+	state = {
+		name = "move"
+		animation = "move"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0.000000 sound = { soundeffect = "portal_raider_move_animation" } }
+		event = { time = 0.666667 sound = { soundeffect = "portal_raider_move_animation" } }
+	}
+	state = {
+		name = "attack"
+		animation = "attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		event = { time = 0.833333 node = "portal_raider_muzzle_locator" particle = "alien_laser_muzzle_particle" keep_particle = yes light = "alien_laser_muzzle_flash" sound = { soundeffect = "portal_raider_ray_attack" } }
+	}
+	state = {
+		name = "defend"
+		animation = "defend"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 1.083333 node = "portal_raider_muzzle_locator" particle = "alien_laser_muzzle_particle" keep_particle = yes light = "alien_laser_muzzle_flash" sound = { soundeffect = "portal_raider_ray_attack" } }
+	}
+	state = {
+		name = "support_attack"
+		animation = "support_attack"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		event = { time = 0.750000 node = "portal_raider_muzzle_locator" particle = "alien_laser_muzzle_particle" keep_particle = yes light = "alien_laser_muzzle_flash" sound = { soundeffect = "portal_raider_ray_attack" } }
+		event = { time = 1.666667 node = "portal_raider_muzzle_locator" particle = "alien_laser_muzzle_particle" keep_particle = yes light = "alien_laser_muzzle_flash" sound = { soundeffect = "portal_raider_ray_attack" } }
+	}
+	state = {
+		name = "retreat"
+		animation = "retreat"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0.000000 sound = { soundeffect = "portal_raider_move_animation" } }
+		event = { time = 0.833333 sound = { soundeffect = "portal_raider_move_animation" } }
+	}
+	state = {
+		name = "guard"
+		animation = "guard"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = yes
+		event = { time = 0.000000 trigger_once = yes sound = { soundeffect = "portal_raider_idle_electrical" } }
+	}
+	state = {
+		name = "portal_arrival"
+		animation = "portal_arrival"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		event = { time = 0.000000 sound = { soundeffect = "portal_raider_portal_arrival" } }
+		event = { time = 0.666667 sound = { soundeffect = "portal_raider_move_animation" } }
+	}
+	state = {
+		name = "wounded"
+		animation = "wounded"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		next_state = "idle"
+		event = { time = 1.166667 sound = { soundeffect = "portal_raider_move_animation" } }
+		event = { time = 0.416667 sound = { soundeffect = "portal_raider_impact" } }
+	}
+	state = {
+		name = "death"
+		animation = "death"
+		animation_blend_time = 0.2
+		animation_speed = 1.0
+		looping = no
+		event = { time = 0.333333 sound = { soundeffect = "portal_raider_death" } }
+		event = { time = 1.916667 sound = { soundeffect = "portal_raider_impact" } }
+	}
+}

@@ -156,10 +156,10 @@ Commit `469bb2f0bc` fixes assault battalion DDS basenames; commit `00c0e49b7` re
 The independent creature integration audit found no mismatch across 29 source/runtime payload hashes, 21 role chains, exact submesh/texture bindings, scales, sprite aliases or terminal death policies.
 See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_pilot_creature_runtime_integration.md`.
 
-The alien has a repaired 55,150-triangle assembled body/pistol and seven authored roles; final material/muzzle/death/reimport checks remain pending.
+Alien runtime integration passed for the repaired 55,150-triangle body/pistol and seven authored roles; see the accepted integration report below.
 The clone has nine authored roles and separate rifle components, with final grip corrections and assembly checks pending.
 The robot has eight authored roles and 29,198 triangles after its first cap pass; exact local seam splitting and final death/export checks remain pending.
-The portal raider has genuine idle/move/attack candidates and an exact local repair proposal; remaining roles and full assembly acceptance remain pending.
+Portal Raider runtime integration includes the closed 29,662-triangle body/rifle, 45-bone rig and ten actual-byte-verified actions; see the accepted integration report below.
 The temporal guard has a closed 29,966-triangle repaired body with two export streams and corrected materials; all ten actual-byte reimports and runtime mesh/action integration passed, committed as de0d91057.
 Stone and forest have five authored roles each; stone closed body/polearm budget and final death/material checks, and forest terminal contact/export checks, remain in progress.
 Pan and Riverborn retain five authored roles each; local topology and anatomical death support still require repair, and Riverborn needs its shield handle.
@@ -178,3 +178,13 @@ See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_tempo
 
 Implemented the accepted weapon-free body, separate ray pistol, 52-bone Blender rig, seven actual-byte-verified actions and synchronized firing/footstep/impact cues.
 See `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_alien_weaponfree_runtime_integration.md` for 14 copied payload hashes, eight material streams and inherited companion limits.
+
+### Gorilla and Portal Raider runtime repairs
+
+Gorilla: nine exact model/action/map payloads, three streams, five authored actions, held hammer and terminal death are installed.
+Six registered sound files are PCM16 with documented semantic cue timing; inherited auditory/counter limits remain explicit.
+See docs/plans/012_africa_plans/subagent_handoffs/2026-09-08_gorilla_runtime_integration.md and the matching independent audit.
+Portal Raider: fourteen exact model/action/map payloads, three streams, ten distinct actions, weapon locator cues and twelve sourced sound files are installed.
+See docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_portal_runtime_integration.md and the matching independent audit.
+No additional Meshy calls were made.
+The remaining packages are still undergoing native surface/contact, export and runtime acceptance; this is not a whole-task completion claim.
