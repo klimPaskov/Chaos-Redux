@@ -325,11 +325,21 @@ When an armored or other variant is defined as the visual derivative of a specia
 
 Require no zero-weight deforming vertices, normalized weights, influence counts within local precedent, no unapproved opposite-side stretch, rigid assignment for rigid parts, and deformation tests in representative poses. Automatic weights are only a seed where the profile allows them.
 
+Nearest-N bone weighting and axis-aligned bounding-box selections can produce abrupt weight seams despite full coverage and nonzero weights.
+Render articulation extremes and inspect stretched edges; repair affected deforming regions with locally smooth, explicit normalized weights, verify the selected vertices receive the intended assignment, and confirm unselected weights remain unchanged.
+
+A complete-looking surface with backface culling disabled does not prove reversed faces: the visible surface may be a far wall seen through a hole.
+Distinguish rest-topology defects from posed foldovers using neutral and posed views, exact affected edges, and face/corner normals before choosing a local repair; do not blanket-flip faces, weld vertices, or cap openings.
+
 Every requested action must have a semantic role, verified source route, Meshy rig and animation task ids or documented fallback provenance, final name, FPS, frame range, loop state, root policy, preview, exported `.anim`, proposed runtime binding, and validation result. Preserve accepted source motion during import, retarget, cleanup, correction, baking, and export. For Blender-authored or repaired actions, record gpt-6-astra, the fallback or repair basis, exact operations/arguments, rig and weight checkpoint hashes, authored bones/channels and role phases, and before/after visual and deformation evidence. Inspect and sanitize scale F-curves and scale keyed location channels only when the provider and calibrated mesh units differ. Define in-place or root-motion policy before processing, apply any location conversion exactly once, and record the factor and before/after channels. Check foot and ground contacts at representative frames and validate every required role as real skeletal motion. Do not replace a missing action with a static pose, simplistic procedural stand-in, whole-rig transform, or another role's action. For loop actions, first/middle/last reimport screenshots are insufficient because the midpoint may intentionally return to neutral: sample at least the first, quarter, middle, three-quarter, and last phases. Retain decoded-pixel or pose/bounds comparisons that prove the quarter phases differ as intended and that the loop endpoints return appropriately, and record contact and actor-bounds checks at every sampled phase. For attack or fire roles, retain aim, discharge, recoil, and recovery evidence where applicable. For death roles, retain articulated collapse, impact, and settling evidence. For non-loop terminal actions, retain start/mid/end samples or other role-appropriate phases. A skeleton change invalidates weights, actions, exports, and downstream evidence.
 
-For creature meshes parented to the armature object by the Blender adapter, measure ground-contact correction from the uncorrected pose on each frame and key it as an absolute armature-object translation. Root-bone-only offsets are insufficient.
+Measure ground-contact correction from each frame's uncorrected posed contacts and apply world-vertical correction through the verified exported root basis, or an object-transform route validated for that source and exporter.
+Preserve rotation modes and prevent lateral drift; require contact preservation in the actual exported bytes after reimport, since a grounded Blender object alone does not prove exported grounding.
 For every creature action, correct the lowest contact point to a positive 1 mm ground clearance. After correction, accept at most 10 mm of measured ground-contact tolerance, record the per-action measurements, and reject any action outside that limit.
 Require a grounded pass for every verified action after allowed non-destructive correction and before export.
+
+Global minimum-Z clearance alone does not prove anatomical support: a rigid prop, finger, or coat hem can touch the ground while the torso visibly floats.
+Inspect intended support contacts in terminal death poses and each limb's stance/swing contacts through gait phases, then correct articulation and prop contacts rather than relying only on whole-body Z translation.
 
 ## Custom unit sound-design companion
 
