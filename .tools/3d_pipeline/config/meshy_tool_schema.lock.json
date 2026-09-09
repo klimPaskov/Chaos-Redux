@@ -4,9 +4,9 @@
   "server_version": "0.4.0",
   "server_git_head": "d8c77d1cb897e345eb41d38b510b8391b1664346",
   "compatibility_sdk_version": "1.29.0",
-  "verified_at": "2026-08-21T00:00:00Z",
+  "verified_at": "2026-09-09T05:32:09Z",
   "schema_source": "live_mcp_tool_declarations",
-  "schema_revision": "meshy-7-compat-live-declaration-2026-08-21",
+  "schema_revision": "meshy-7-v6-motion-live-2026-09-09",
   "required_tools": {
     "meshy_check_balance": {
       "required_arguments": [],
@@ -151,23 +151,257 @@
     },
     "meshy_animate": {
       "required_arguments": [
-        "rig_task_id",
-        "action_id"
+        "rig_task_id"
       ],
       "optional_arguments": [
+        "action_id",
+        "motion_task_id",
         "post_process",
         "response_format"
       ],
       "paid": true,
       "verified_action_library": "https://docs.meshy.ai/en/api/animation-library",
-        "pilot_action_id": 4,
-        "verified_action_ids": {
-          "idle": 0,
-          "attack": 4,
-          "death": 8
+      "pilot_action_id": 4,
+      "verified_action_ids": {
+        "idle": 0,
+        "attack": 4,
+        "death": 8
+      },
+      "estimate_credits": 3,
+      "input_exclusivity": [
+        "action_id",
+        "motion_task_id"
+      ],
+      "live_input_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "description": "Preset action ID; exactly one of action_id or motion_task_id is required",
+            "type": "integer"
+          },
+          "motion_task_id": {
+            "description": "Successful standalone Text-to-Motion task ID; requires biped rig; exclusive with action_id",
+            "minLength": 1,
+            "type": "string"
+          },
+          "post_process": {
+            "additionalProperties": false,
+            "description": "Optional post-processing to apply after animation",
+            "properties": {
+              "fps": {
+                "description": "Target FPS for change_fps operation",
+                "enum": [
+                  24,
+                  25,
+                  30,
+                  60
+                ],
+                "type": "number"
+              },
+              "operation_type": {
+                "description": "Post-processing operation to apply",
+                "enum": [
+                  "change_fps",
+                  "fbx2usdz",
+                  "extract_armature"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation_type"
+            ],
+            "type": "object"
+          },
+          "response_format": {
+            "default": "markdown",
+            "description": "Output format: 'markdown' for human-readable or 'json' for machine-readable",
+            "enum": [
+              "markdown",
+              "json"
+            ],
+            "type": "string"
+          },
+          "rig_task_id": {
+            "description": "Task ID of the completed rigging task to animate",
+            "minLength": 1,
+            "type": "string"
+          }
         },
-        "verified_action_library": "https://docs.meshy.ai/en/api/animation-library",
-        "estimate_credits": 3
+        "required": [
+          "rig_task_id"
+        ],
+        "type": "object"
+      }
+    },
+    "meshy_text_to_motion": {
+      "required_arguments": [
+        "prompt",
+        "mode",
+        "duration"
+      ],
+      "optional_arguments": [],
+      "paid": true,
+      "live_input_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "duration": {
+            "maximum": 10,
+            "minimum": 2,
+            "multipleOf": 0.5,
+            "type": "number"
+          },
+          "mode": {
+            "enum": [
+              "prime",
+              "swift"
+            ],
+            "type": "string"
+          },
+          "prompt": {
+            "maxLength": 400,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "prompt",
+          "mode",
+          "duration"
+        ],
+        "type": "object"
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": false
+      },
+      "estimate_credits_by_mode": {
+        "prime": 10,
+        "swift": 3
+      }
+    },
+    "meshy_get_motion_status": {
+      "required_arguments": [
+        "task_id"
+      ],
+      "optional_arguments": [],
+      "paid": false,
+      "live_input_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "task_id": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id"
+        ],
+        "type": "object"
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true,
+        "readOnlyHint": true
+      }
+    },
+    "meshy_list_motion_tasks": {
+      "required_arguments": [],
+      "optional_arguments": [
+        "page_num",
+        "page_size"
+      ],
+      "paid": false,
+      "live_input_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "page_num": {
+            "default": 1,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "page_size": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true,
+        "readOnlyHint": true
+      }
+    },
+    "meshy_download_motion": {
+      "required_arguments": [
+        "task_id",
+        "save_to",
+        "format"
+      ],
+      "optional_arguments": [],
+      "paid": false,
+      "live_input_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "additionalProperties": false,
+        "properties": {
+          "format": {
+            "enum": [
+              "fbx",
+              "bvh"
+            ],
+            "type": "string"
+          },
+          "save_to": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "task_id": {
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "task_id",
+          "save_to",
+          "format"
+        ],
+        "type": "object"
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": false,
+        "openWorldHint": true,
+        "readOnlyHint": false
+      }
+    },
+    "meshy_animation_library": {
+      "required_arguments": [],
+      "optional_arguments": [],
+      "paid": false,
+      "live_input_schema": {
+        "$schema": "http://json-schema.org/draft-07/schema#",
+        "properties": {},
+        "type": "object"
+      },
+      "annotations": {
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": true,
+        "readOnlyHint": true
+      }
     }
   },
   "forbidden_provider_inputs": [
@@ -175,5 +409,6 @@
     "side_profile_sheet",
     "turnaround_collage",
     "secret_in_arguments"
-  ]
+  ],
+  "schema_evidence": "docs\\assets\\002_zombie_outbreak\\models_3d\\zombies\\evidence\\20260909_text_to_motion\\schema_probe_4.json"
 }

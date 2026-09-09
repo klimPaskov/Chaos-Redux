@@ -272,13 +272,50 @@ if (/Download URLs[^\n]*\n[\s\S]{0,200}https?:\/\//.test(tasks)) {
     throw new Error("Meshy download response still contains an embedded signed URL inventory.");
 }
 
-for (const filePath of [tasksPath, schemaPath, clientPath]) {
+// Current official standalone motion API and generated-motion retarget input.
+const motionPath = path.join(packageRoot, "dist", "tools", "motion-compat.js");
+const postSchemaPath = path.join(packageRoot, "dist", "schemas", "postprocessing.js");
+const postToolsPath = path.join(packageRoot, "dist", "tools", "postprocessing.js");
+fs.copyFileSync(path.join(repoRoot, ".tools/3d_pipeline/wrappers/meshy_motion_compat.mjs"), motionPath);
+if (!tasks.includes("registerMotionTools")) {
+    tasks = 'import { registerMotionTools } from "./motion-compat.js";\n' + tasks;
+    tasks = replaceExactly(tasks, /export function registerTaskTools\(server, client\) \{/g,
+        "export function registerTaskTools(server, client) {\n    registerMotionTools(server, client);", "motion registration");
+    tasks += "\nexport { downloadFileToLocal, fileSha256 };\n";
+    fs.writeFileSync(tasksPath, tasks, "utf8");
+}
+if (!client.includes("CHAOS_REDUX_NO_PAID_RETRY")) {
+    client = replaceExactly(client, /const shouldRetry = retryCount < MAX_RETRIES &&/g,
+        '// CHAOS_REDUX_NO_PAID_RETRY: ambiguous paid motion submissions must be recovered by listing.\n            const shouldRetry = !(config.method === "POST" && ["/openapi/v1/text-to-motion", "/openapi/v1/animations"].includes(config.url)) && retryCount < MAX_RETRIES &&', "paid motion retry guard");
+    fs.writeFileSync(clientPath, client, "utf8");
+}
+let postSchema = fs.readFileSync(postSchemaPath, "utf8");
+if (!postSchema.includes("motion_task_id:")) {
+    postSchema = replaceExactly(postSchema, /\.describe\("ID of the animation action to apply"\),/g,
+        '.optional().describe("Preset action ID; exactly one of action_id or motion_task_id is required"),\n    motion_task_id: z.string().min(1).optional().describe("Successful standalone Text-to-Motion task ID; requires biped rig; exclusive with action_id"),', "animation motion schema");
+    fs.writeFileSync(postSchemaPath, postSchema, "utf8");
+}
+let postTools = fs.readFileSync(postToolsPath, "utf8");
+if (!postTools.includes("CHAOS_REDUX_MOTION_EXCLUSIVITY")) {
+    postTools = replaceExactly(postTools, /            const request = \{\n                rig_task_id: params.rig_task_id,\n                action_id: params.action_id\n            \};/g,
+        `            // CHAOS_REDUX_MOTION_EXCLUSIVITY
+            if ((params.action_id !== undefined) === (params.motion_task_id !== undefined)) {
+                throw new Error("Provide exactly one of action_id or motion_task_id.");
+            }
+            const request = { rig_task_id: params.rig_task_id };
+            if (params.action_id !== undefined) request.action_id = params.action_id;
+            if (params.motion_task_id !== undefined) request.motion_task_id = params.motion_task_id;`, "animation input exclusivity");
+    postTools = postTools.replace("Integer ID of the animation action to apply (required)", "Preset action ID (exactly one of action_id or motion_task_id required)\n  - motion_task_id (string): Successful Text-to-Motion task ID; biped only. Optional post_process can fail if result is GLB-only.");
+    fs.writeFileSync(postToolsPath, postTools, "utf8");
+}
+const lockedPaths = [tasksPath, schemaPath, clientPath, motionPath, postSchemaPath, postToolsPath];
+for (const filePath of lockedPaths) {
     if (fs.statSync(filePath).size > 5 * 1024 * 1024) {
         throw new Error(`Patched Meshy file exceeds the 5 MiB safety limit: ${filePath}`);
     }
 }
 
-const hashes = Object.fromEntries([tasksPath, schemaPath, clientPath].map(filePath => [
+const hashes = Object.fromEntries(lockedPaths.map(filePath => [
     path.relative(packageRoot, filePath).replaceAll(path.sep, "/"),
     crypto.createHash("sha256").update(fs.readFileSync(filePath)).digest("hex")
 ]));

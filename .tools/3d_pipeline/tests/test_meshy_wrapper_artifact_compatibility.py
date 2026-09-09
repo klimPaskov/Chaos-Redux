@@ -158,6 +158,8 @@ process.stdout.write(JSON.stringify(results));
 				Path("dist/tools/tasks.js"),
 				Path("dist/schemas/tasks.js"),
 				Path("dist/services/meshy-client.js"),
+				Path("dist/schemas/postprocessing.js"),
+				Path("dist/tools/postprocessing.js"),
 			):
 				target = copy_root / relative
 				target.parent.mkdir(parents=True, exist_ok=True)
