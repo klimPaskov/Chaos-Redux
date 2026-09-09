@@ -188,3 +188,18 @@ Portal Raider: fourteen exact model/action/map payloads, three streams, ten dist
 See docs/plans/016_brilliant_scientist_plans/subagent_handoffs/2026-09-08_portal_runtime_integration.md and the matching independent audit.
 No additional Meshy calls were made.
 The remaining packages are still undergoing native surface/contact, export and runtime acceptance; this is not a whole-task completion claim.
+
+## September 9 motion endpoint and repair continuation
+
+The user explicitly requested use of Meshy's new animation endpoint.
+The verified MCP compatibility route now exposes standalone Text to Motion and generated-motion input for the existing animation endpoint.
+The one authorized prime three-second base-zombie collapse task, `01a084a7-4d94-72da-8518-b777e95399bf`, succeeded and reports ten consumed credits.
+The downloaded FBX has SHA-256 `22FD74C9A610F9AAD5B2D959050647FDA92D3F95E52B729AC89785267EF688B6`.
+This is a source motion candidate pending Blender retargeting and semantic, contact, deformation and export/reimport review; accepted geometry, rigs and actions remain preserved.
+See `2026-09-09_meshy_motion_endpoint.md` for the verified route, submission journal, live tool checks and source lineage.
+
+The pack-donkey's five corrected animations and four material streams are installed from the selected 25-bone, 25,000-triangle source, including the hinged cargo closure.
+All five actual-byte reimports preserve the calibrated facing after the initial-root export correction; parent review accepted the final side collapse and cargo contact.
+Seven sourced PCM16 sound files have fitted cue durations.
+The independent runtime audit passed all sixteen payload hashes, five action chains, four material streams and eleven timed cues; the inherited counter identity and missing historical audio originals remain explicit in `../012_africa_plans/subagent_handoffs/2026-09-08_donkey_runtime_integration.md`.
+The broader model repair request remains incomplete.
