@@ -54,6 +54,11 @@ Use this skill with `chaos-redux-event-assets`.
 
 Use `$imagegen` for generated frame art. If `$imagegen` is unavailable, stop and report the blocker. Do not invent another image generation route.
 
+Read the [ChatGPT Images 2.5 asset workflow](../chaos-redux-event-assets/references/imagegen-2-5-workflow.md) for reference roles, focused edits, and candidate lineage.
+After accepting the generated seed, prefer an accepted seed or neighbouring accepted frame as the edit target for each subsequent generated frame, state the exact motion-state delta, and preserve the seed's subject, camera, palette, canvas, and anchor invariants.
+Record the input candidate for each frame and each repair, restate transparency in every edit, and compare all accepted frames with the seed to catch accumulated drift and loop discontinuity.
+Every frame still requires its own real generated or sourced visual state; improved edit consistency does not authorize transform-only motion.
+
 For every alpha-backed animation family, request a genuine transparent background in the initial ImageGen call for every generated source frame and preserve the alpha through normalization, sheet assembly, preview creation, and DDS conversion. Do not generate opaque or chroma-backed frames as the normal route. Use the fallback background-removal workflow in `chaos-redux-event-assets` only when native transparency fails or an inherited, sourced, or user-provided frame begins with an unwanted opaque backdrop.
 
 Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.

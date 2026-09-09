@@ -219,6 +219,9 @@ Use Codex's official `$imagegen` skill by default for:
 
 When creating generated assets, follow the `$imagegen` skill workflow. Do not define a separate image generation route in this skill.
 
+Before generating or editing, read [ChatGPT Images 2.5 asset workflow](references/imagegen-2-5-workflow.md) for reference roles, focused edits, candidate lineage, and iteration review.
+Use the built-in `image_gen` path by default; API model names and CLI parameters are not built-in tool controls.
+
 For every alpha-backed asset family, ask `$imagegen` for genuine transparency in the initial generation and preserve that alpha. This is the default for icons, counters, emblems, overlays, decorative UI pieces, transparent animation frames, and any other family whose inspected consumer leaves unused canvas transparent. The final PNG must have real transparency, no fake checkerboard, no white halo, no white outline, and no opaque square background unless the inspected asset type explicitly uses a painted backdrop.
 
 ### Native transparency and background-removal fallback
@@ -526,6 +529,7 @@ Each asset entry should include:
 - source mode: `$imagegen`, portrait-production output, internet source image, or user-provided source image
 - background mode: `native_transparent`, `consumer_opaque`, or `fallback_removed`, including the fallback reason and verified edit/tool when applicable
 - image generation prompt if generated with `$imagegen`
+- generated candidate lineage, input roles, exact edit deltas, immutable source/intermediate paths and SHA-256 hashes, review verdicts, and explicit final-selected candidate from [the ImageGen workflow](references/imagegen-2-5-workflow.md)
 - source link if internet-sourced
 - source author, archive, or collection if available
 - source date or estimated date range if internet-sourced
@@ -689,7 +693,8 @@ A good prompt should include:
 
 Do not ask for vague "cool icon" style outputs.
 
-Do not rely on text inside generated images. Generated text is unreliable.
+Keep functional labels in native HOI4 localisation and controls.
+Use no generated text by default; when an asset's accepted design requires lettering, specify it verbatim and inspect every character at source resolution and final native size.
 
 Prefer strong symbols, clear silhouettes, and readable composition.
 
