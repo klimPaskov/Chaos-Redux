@@ -7,7 +7,7 @@ description: Use when designing, implementing, auditing, or fixing Hearts of Iro
 
 Use this skill when a task touches decisions, missions, timed objectives, decision categories, mission UI, costs, trigger tooltips, scripted localisation, AI decision behavior, or balance around decision-driven systems.
 
-This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`. For scripted GUI layout and visual evidence, use `chaos-redux-scripted-gui`.
+This skill is for implementation and cleanup. For broader Chaos Redux event wiring, use `chaos-redux-events`. For focus trees, use `chaos-redux-focus-trees`. For visual assets, use `chaos-redux-event-assets`. For scripted GUI layout and visual evidence, use [chaos-redux-scripted-gui](../chaos-redux-scripted-gui/SKILL.md).
 
 For large or reworked decision systems, spawn `chaosx_decision_mission_auditor` after implementation and before completion. The subagent is patch-capable by default inside the current task scope. It should audit objective quality, costs, tooltips, AI validity, cleanup, duplicate missions, route integration, fairy-dust rewards, exploit risk, localisation, and balance evidence. Route every in-scope decision or mission weight to `chaosx_ai_probability_auditor` for the mandatory MCP probability pass. The probability auditor remains read-only. The `chaosx_decision_mission_auditor` may directly patch small decision, mission, tooltip, dynamic localisation, AI, cleanup, cooldown, visibility, and existing formable requirement issues when the fix is local and clearly safer.
 
@@ -41,23 +41,7 @@ A mission should feel like an order or objective. A decision should feel like a 
 
 ### Clarity and cognitive-load gate
 
-Clarity is a completion requirement. A player should be able to look at a decision category or mechanic surface and quickly identify the current state, the main pressure or objective, and the next useful actions. If the player has to read a paragraph, remember several unrelated values, or cross-reference multiple panels before understanding what matters, the design has failed.
-
-Keep internal complexity internal. A system may use many variables, weights, and helper calculations, but the player-facing surface should expose only information that changes an immediate decision or explains an important consequence. Do not show a value merely because the script tracks it.
-
-Prefer visual communication for changing state. Use icons, meters, progress bars, threshold markers, stage frames, state pieces, map highlights, compact status labels, and clear enabled or disabled states before adding another paragraph or raw number. Text should explain the visual state, not replace it.
-
-Do not solve clutter by moving the same clutter into another tab, tooltip, category, or popup. Merge duplicate mechanics, hide internal components, phase actions by current state, and remove values or controls whose significance is weak. A mechanic that needs constant memorization of several unrelated counters should be simplified before implementation continues.
-
-Every visible value must pass this test without implementation knowledge:
-
-- what does it represent
-- what changes it
-- why does its current level matter
-- which threshold or state matters next
-- what can the player do about it
-
-If those answers are not clear from the visual treatment and a concise tooltip, merge, hide, summarize, or remove the value.
+Apply the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) to every decision mechanic surface, including ordinary categories, attached displays, and full windows. It owns the value/action limits, visual communication, concise explanations, and interaction presentation. Keep internal calculations hidden or summarized unless they change an immediate player decision or explain an important consequence. Merge or remove weak values and duplicate actions; moving clutter into another category, tab, tooltip, or popup does not resolve it.
 
 ## 3. Decision and mission types
 
@@ -587,22 +571,7 @@ Good examples:
 - a league vote increases faction cohesion or member confidence
 - a failed border mission lowers authority and raises enemy momentum
 
-Use as few player-facing values as the mechanic can support without losing meaningful choices. Normally show one primary value and no more than two supporting values. Four visible mechanic values in one surface is the hard ceiling, including the primary value. A fourth value needs a distinct cause, consequence, threshold, and player response. Internal calculations can remain numerous, but they should be hidden or summarized when the player does not need to manage each component directly.
-
-Do not expose a full component ledger by default. If a total is built from several inputs, show only the material contributors the player can act on and keep the rest internal or summarized in a concise tooltip. A breakdown that becomes another wall of values has failed the same clarity test as the main panel.
-
-Examples of colour identities:
-
-- authority in blue
-- threat in red
-- local support in green
-- foreign influence in purple
-- old movement pressure in orange
-- faction cohesion in yellow
-
-Use project-appropriate colours, but keep each value consistent across decisions, missions, events, tooltips, and UI summaries. Pair colour with a label, icon, frame, meter shape, or another non-colour cue. Do not present a plain changing number with no explained range, threshold, or gameplay meaning.
-
-A visible value has failed when the player cannot answer what changes it, why it matters, and what action responds to it. Remove, merge, summarize, or redesign such values.
+Use the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) for visible values and their explanations. Show only material contributors the player can act on when a total has several inputs; keep the remaining calculation internal. Keep each value's colour identity and non-colour cues consistent across decisions, missions, events, tooltips, and UI summaries.
 
 Balance-of-power or equivalent internal struggle mechanics should be considered when a country has competing power centers. Decisions and missions should push the balance, create risks, unlock branch content, and affect leaders, laws, advisors, events, or crises.
 
@@ -617,13 +586,7 @@ A faction should not form just because one country exists. Use minimum membershi
 
 Special mechanic values must be visible somewhere the player can understand them. A decision category can show values in its header, a custom scripted GUI, a progress meter, a scripted localisation tooltip, or national spirit tooltips.
 
-Prefer visual state over textual reporting. If a value can be communicated through a meter, fill state, threshold marker, icon state, progress ring, map highlight, card state, or short stage label, use that presentation and let the tooltip explain the exact meaning. A row of plain numbers with labels is not an acceptable substitute for visual hierarchy.
-
-When a mechanic uses a scripted GUI, consider whether it needs visual state changes. Useful presentation can include progress bars, meter fill variants, status icons, warning frames, selected and locked frames, animated frames, or frame-by-frame changes. Use visual motion or variants only when they clarify the mechanic.
-
-Do not treat dynamic text as presentation by itself. A changing number needs a labelled role, visual identity, threshold context, and visible consequence. A large collection of plain numbers is a design defect even when every number is technically dynamic.
-
-Special mechanics can hide future surprises, but should not hide basic cause and effect. If a visible value rises or falls, the player should understand the public reason, the consequence, and the broad response available. Explain this through concise labels and tooltips instead of large text blocks. Tooltips should normally fit in two to four short lines for one value or control. A longer tooltip is a redesign signal unless the extra detail is genuinely necessary. Concision must not become vagueness. State the important threshold, consequence, or blocked reason precisely.
+Follow the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) for visual state, value meaning, and concise explanations. Special mechanics may hide future surprises, but public cause and effect must remain clear: what changed the visible value, its consequence, and the broad response available.
 
 Faction, league, bloc, or coalition goals need rewards and failure states. A successful faction goal can unlock shared decisions, war goals, legitimacy, cohesion, member rewards, postwar settlements, or new faction leadership. A failed goal can reduce cohesion, trigger member exits, invite foreign pressure, start leadership contests, weaken shared defenses, or open emergency missions.
 
@@ -669,7 +632,7 @@ Large decision systems should not show every possible decision at once.
 
 Use phases, caps, priorities, regional pools, route locks, mechanic thresholds, or crisis-state filters so the player sees decisions that matter in the current situation.
 
-A decision category should feel curated by current state, not like a debug menu. Treat visible decision count as a hard design budget. A phase should normally expose three to five primary decisions. Six visible primary actions is the hard maximum for one phase or state. Active missions should normally stay between one and three. If the system needs more actions, first merge weak or duplicate actions, then use state-based replacement, target selection, route gates, or phased visibility.
+Apply the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget) to each ordinary decision phase as well as scripted GUI surfaces. If the system exceeds its action or mission budget, first merge weak or duplicate actions, then use state-based replacement, target selection, route gates, or phased visibility.
 
 Do not multiply decision categories, tabs, or subpanels merely to hide an oversized action list. Separate categories should represent genuinely different long-lived contexts, targets, or gameplay roles. Moving clutter elsewhere does not solve clutter.
 
@@ -837,21 +800,13 @@ Formation systems should support partial success and failure. A country can form
 
 ## Scripted GUI decision categories and mechanic windows
 
-Choose the presentation layer from the hierarchy above before creating a custom window.
-Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly.
-A custom interface must have a gameplay reason and cannot compensate for weak actions.
+Choose the presentation layer from the hierarchy above before creating a custom window. Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly. A custom interface must have a gameplay reason and cannot compensate for weak actions.
 
-Use `chaos-redux-scripted-gui` as the source of truth for reference images before implementation, image-to-native mapping, layout and content budgets, backgrounds, label centering, interaction presentation, and mandatory MCP inspect/render/matching-scenario comparison, with direct application of reviewed edits or optional `gui_rewrite` under that skill.
-Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`.
-Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization.
-The decision owner retains the gameplay rules below.
+Use the scripted GUI skill's [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [active MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#required-mcp-visual-review-and-optional-rewrite), and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review). These are mandatory for GUI layout, backgrounds, text, content budgets, interaction presentation, and visual evidence. Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`. Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization. The decision owner retains the gameplay rules below.
 
 ### GUI action integrity
 
-Every gameplay-changing GUI action follows the same cost, affordability, requirement, payment, effect, AI, and cleanup contract as a normal decision.
-Use the same scripted effect families, validation triggers, logging, and lifecycle helpers so a GUI cannot bypass decision balance.
-Each action may have at most four distinct spendable cost types, with the correct texticon for every displayed cost; never hide an extra cost in a tooltip or confirmation window.
-Keep non-consumed requirements separate from payment and explain missing requirements precisely.
+Every gameplay-changing GUI action follows the same cost, affordability, requirement, payment, effect, AI, and cleanup contract as a normal decision. Use the same scripted effect families, validation triggers, logging, and lifecycle helpers so a GUI cannot bypass decision balance. Each action may have at most four distinct spendable cost types, with the correct texticon for every displayed cost; never hide an extra cost in a tooltip or confirmation window. Keep non-consumed requirements separate from payment and explain missing requirements precisely.
 
 For each gameplay-changing control, document:
 
@@ -862,9 +817,7 @@ For each gameplay-changing control, document:
 - AI equivalent where AI countries can use the mechanic;
 - cleanup when the target, route, action, or mechanic becomes invalid.
 
-Do not add actions to fill layout space or manufacture depth.
-Merge duplicate actions and remove controls whose result does not change play.
-Information and navigation controls follow the interaction contract in `chaos-redux-scripted-gui`; they do not require an invented gameplay effect.
+Do not add actions to fill layout space or manufacture depth. Merge duplicate actions and remove controls whose result does not change play. Information and navigation controls follow [click regions and state behavior](../chaos-redux-scripted-gui/SKILL.md#click-regions-overlap-and-state-behavior); they do not require an invented gameplay effect.
 
 ## Animated decision category presentation
 
@@ -984,11 +937,7 @@ When an improvement addendum proposes decision depth, scripted GUI, or mechanic 
 
 Use scripted GUI when the player needs to read or manage values that would otherwise be buried in tooltips. Good uses include influence boards, federation congresses, formable progress, patron leverage, resource routing, public fear, occult pressure, faction cohesion, reform votes, target cards, and timed crisis panels.
 
-The addendum must choose the presentation layer before asking for more art or controls. It should explain why an ordinary category, static category picture, animated category picture, compact attached display, or full scripted GUI is the clearest option. Name the primary value, supporting values, visible action count, active mission cap, explanation surfaces, and the content assigned to each background region when a full GUI is justified. Do not respond to a shallow mechanic by adding more meters, more decisions, more text, or more decorative buttons.
-
-A GUI button should be treated like a decision. It needs cost logic, requirement logic, tooltips, scripted effects, AI equivalents, state cleanup, and a visible result. Fake buttons are forbidden. Animated buttons, glowing meters, floating seals, and warning pulses should clarify state changes. Do not use animation to hide the cost or make a weak action look important.
-
-When the background is generated for a specific layout, the addendum should identify the intended panels, slots, anchors, and content regions. The implementation must fit controls to those regions or revise the background. It must not cover the artwork with generic text and controls.
+The addendum must choose the [presentation layer](#decision-category-presentation-hierarchy) before requesting art or controls and explain why it is the clearest option. For a justified GUI, use the [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget), and [background mapping](../chaos-redux-scripted-gui/SKILL.md#background-and-reference-coverage). Do not respond to a shallow mechanic by adding meters, decisions, text, or decorative controls. Every gameplay-changing button must satisfy [GUI action integrity](#gui-action-integrity); animation must not obscure costs or compensate for weak effects.
 
 For formables, the decision should verify the map state. Focuses may reveal claims, prepare institutions, or reduce costs, but the formation decision should prove control, legitimacy, recognition, or integration when those are central to the idea. When exact state control is the main formation proof, the addendum should use the reusable state-puzzle template and keep the visible pieces synchronized with the real eligibility helper.
 
@@ -1028,26 +977,11 @@ A decision or mission task is complete only when:
 - state-puzzle pieces use exact current map geometry, stay synchronized with formation eligibility, show grey and green qualification states with non-colour cues, and use the reusable template package
 - every manifest-driven formable has a completed category attachment audit with no missing, duplicate, or mismatched category IDs
 - formable category families that declare the strict state-puzzle attachment policy have every in-scope category metadata block pointing to the matching generated `scripted_gui`
-- scripted GUI mechanics use progress meters, variants, frames, or frame animations when useful
-- scripted GUI layouts were inspected and rendered with full-window, state, resolution, click-region, hierarchy, and comparison views where relevant
-- every button-shaped element is a real control, a clearly explained disabled control, or unmistakably decorative
-- no fake buttons, dead click boxes, misleading controls, or click regions that disagree with visible button bounds remain
-- main-panel text is concise and does not cover the interface with repeated explanations, raw triggers, or long paragraphs
-- category headers and main explanatory blocks normally stay within one to three short lines
-- tooltips are concise and precise, normally two to four short lines for one value or action, without vague filler
-- every non-obvious mechanic, value, threshold, and action has a concise in-game explanation
-- each scripted GUI normally shows one primary value and no more than two supporting values, with four total visible mechanic values as the hard ceiling
-- every visible value has a clear meaning, cause, threshold or state, consequence, and player response
-- plain dynamic numbers without colour, labels, threshold context, consequences, or visual significance are not used as mechanic presentation
-- visual state uses meters, icons, threshold markers, stage frames, map highlights, or comparable cues where they communicate the value more clearly than text
-- visible values use consistent colour identities plus non-colour cues
-- each phase normally shows three to five primary actions and never more than six, with active missions or target controls normally limited to one to three
-- excess actions are merged, removed, phased, selected by target, or replaced instead of being hidden in extra tabs or duplicate categories
+- every mechanic surface meets the [content and interaction budget](../chaos-redux-scripted-gui/SKILL.md#content-and-interaction-budget), including ordinary categories and attached displays
+- scripted GUI work meets the [active MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#required-mcp-visual-review-and-optional-rewrite) and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review), with the required [handoff evidence](../chaos-redux-scripted-gui/SKILL.md#handoff-and-completion)
+- gameplay-changing GUI controls have the decision owner's [action-integrity evidence](#gui-action-integrity)
 - no decision or gameplay-changing GUI action uses more than four distinct spendable cost types
 - every displayed spendable cost uses the correct texticon, with no literal resource-name fallback and no hidden fifth cost in a tooltip or confirmation surface
-- ImageGen-created backgrounds are treated as functional layouts, with intended panels, slots, frames, and anchors mapped to actual GUI elements
-- text and controls align with the background's designed regions and do not cover or ignore prominent artwork
-- background coverage is documented and full-window renders confirm that functional regions are used deliberately
 - visible values explain basic cause and effect without revealing hidden future surprises
 - AI decisions respect route validity and avoid impossible actions
 - shared decision systems are adapted per country where needed

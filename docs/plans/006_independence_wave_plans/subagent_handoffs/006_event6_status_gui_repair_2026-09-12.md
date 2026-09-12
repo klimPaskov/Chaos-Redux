@@ -33,7 +33,7 @@ The current scripted-GUI skill makes `gui_rewrite` optional; historical claims t
 
 ## Guidance and precedents consulted
 
-Read `AGENTS.md` and the scripted-GUI skill, its `references/visual-review.md`, decisions/missions, events, event-assets, and frame-animation skills.
+Read `AGENTS.md` and the scripted-GUI skill's integrated [Scripted GUI visual and usability review](../../../../.agents/skills/chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review), plus the decisions/missions, events, event-assets, and frame-animation skills.
 Consulted the required core offline wiki pages and read the relevant Interface modding and Scripted GUI modding snapshot guidance.
 Vanilla references consulted were `common/scripted_guis/_documentation.md`, the localisation concepts in `documentation/script_concept_documentation.md`, and the exact attached-display precedent `interface/sov_paranoia_system_scripted_gui.gui` with `common/scripted_guis/SOV_paranoia_system_scripted_gui.txt`.
 The precedent separates panel art, text, meter values, and tooltip/control elements; the existing Event 006 composition retains native elements rather than flattened interactive artwork.

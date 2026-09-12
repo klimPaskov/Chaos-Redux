@@ -7,8 +7,7 @@ Those corrections are included.
 
 ## Created
 
-- `.agents/skills/chaos-redux-scripted-gui/SKILL.md`: focused workflow for reference-first design, native element mapping, acceptance evidence, live MCP schema discovery, explicit fixtures, inspect/render/rewrite/matched before-and-after review, content budgets, ownership, and completion.
-- `.agents/skills/chaos-redux-scripted-gui/references/visual-review.md`: detailed checklist for glyph centering on both axes, icon/label grouping, spacing, alignment, symmetry, painted versus logical versus usable bounds, scale, clipping, hitboxes, z-order, state behavior, background coverage, and usable information hierarchy.
+- `.agents/skills/chaos-redux-scripted-gui/SKILL.md`: focused workflow for reference-first design, native element mapping, acceptance evidence, live MCP schema discovery, explicit fixtures, inspect/render/rewrite/matched before-and-after review, content budgets, ownership, completion, and the integrated visual/usability checklist for glyph centering, grouping, spacing, alignment, symmetry, painted/logical/usable bounds, scaling, clipping, hitboxes, z-order, states, background coverage, and information hierarchy.
 - This handoff.
 
 ## Updated and exact owned sections

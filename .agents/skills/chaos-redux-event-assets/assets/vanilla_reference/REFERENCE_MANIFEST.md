@@ -1,10 +1,25 @@
 # Vanilla reference expansion manifest
 
-This manifest records the 147 review references added during the 2026-08-04 audit for the requested intelligence, portrait, icon, raid, spirit, project, counter, and equipment-art families.
+This manifest records the scripted GUI full-render set added on 2026-09-12 and the 147 review references added during the 2026-08-04 audit.
 
 The source is the installed vanilla HOI4 build at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`; the review files are lossless RGBA PNG decodes and are not runtime assets.
 
 Frame counts follow the owning vanilla definition. Counters with separate normal/inverted textures retain their separate source files; air strips retain the full native 60x12 or 58x11 canvas with two frames.
+
+## Scripted GUI full renders — 2026-09-12
+
+These exact 1920x1080 PNGs were produced by `hoi4.gui_render` from MCP workspace `mod_chaos_redux_ea3b2d67c2c0` with state `normal` and UI scale `1`. The saved files were reconstructed with bounded resource reads and their SHA-256 values match the MCP artifact hashes.
+
+| Family | Window | Review PNG | Interface source | Scripted-GUI source | Native dimensions | MCP artifact SHA-256 | Hard diagnostic |
+| --- | --- | --- | --- | --- | ---: | --- | --- |
+| `scripted_guis/campaign_progress` | `sov_propaganda_campaigns_ui_window` | `scripted_guis/campaign_progress/sov_propaganda_campaigns_ui_window_full.png` | `interface/sov_propaganda_campaigns_scripted_gui.gui` | `common/scripted_guis/SOV_propaganda_campaigns_scripted_gui.txt` | 1920x1080 | `43508684734414a6762bb3bc30081914cc72bcc93fbb65042a20507dd5ac8f38` | None |
+| `scripted_guis/escalation_status` | `war_escalation_decision_ui_window` | `scripted_guis/escalation_status/war_escalation_decision_ui_window_full.png` | `interface/war_escalation_scripted_gui.gui` | `common/scripted_guis/war_escalation_scripted_gui.txt` | 1920x1080 | `59b0053fb2ed87e3d40e9eb4dad3c4e37d0e7964b791f0fdc38abecfccfe8351` | None |
+| `scripted_guis/faction_relations` | `bul_internal_factions_decision_ui_window` | `scripted_guis/faction_relations/bul_internal_factions_decision_ui_window_full.png` | `interface/bul_internal_factions_scripted_gui.gui` | `common/scripted_guis/BUL_internal_factions_scripted_gui.txt` | 1920x1080 | `241cbe4892f6100bbc236554da50b2a7b4dbdeee00b8c2b3ca5236f0da3a6383` | None |
+| `scripted_guis/institutional_boards` | `usa_congress_decision_ui_window` | `scripted_guis/institutional_boards/usa_congress_decision_ui_window_full.png` | `interface/usa_congress_scripted_gui.gui` | `common/scripted_guis/USA_congress_scripted_gui.txt` | 1920x1080 | `758dce0b72dc5d588c50e31874239ca0abdbaa8e499c13977d1511ebe6620cb7` | Installed `GFX_decision_category_usa_congress_house_ui` width is not divisible by 21 frames. |
+| `scripted_guis/meters_and_pressure` | `sov_paranoia_system_ui_window` | `scripted_guis/meters_and_pressure/sov_paranoia_system_ui_window_full.png` | `interface/sov_paranoia_system_scripted_gui.gui` | `common/scripted_guis/SOV_paranoia_system_scripted_gui.txt` | 1920x1080 | `a36cc55fd2ed748d0d43dd93e233f6d5e5a474cd2ca761df512b5d8a870b9a06` | Installed `GFX_SOV_paranoia_needle` width is not divisible by 21 frames. |
+| `scripted_guis/regional_investment` | `raj_local_leaders_investments_decision_ui_window` | `scripted_guis/regional_investment/raj_local_leaders_investments_decision_ui_window_full.png` | `interface/raj_local_leaders_investments_decision_ui.gui` | `common/scripted_guis/RAJ_local_leaders_investments_scripted_gui.txt` | 1920x1080 | `deb61f411f897c24395de601ce1cef1a6682b8263c392d4ce0cd584d005a1531` | None |
+
+## Visual asset expansion — 2026-08-04
 
 | Family | Type | Review PNG | Vanilla source path | Owner definition | Native dimensions | Frame count | Transparency | Source SHA-256 | Review PNG SHA-256 |
 | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | --- |

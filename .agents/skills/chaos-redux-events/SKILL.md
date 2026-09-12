@@ -65,9 +65,7 @@ Subagents do not remove the main agent's responsibility to wire, review, validat
 
 ## Spec and plan locations
 
-Source event specs live under `docs/specs/<event_id>_<event_slug>_specs/`. Read them as the main design source when they exist, and record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim.
-A spec location, date, status label, or old handoff does not prove approval, and implementation evidence proves what exists rather than what was accepted.
-Keep missing or conflicting acceptance evidence unresolved under the AGENTS.md Specs and Plans dispositions.
+Source event specs live under `docs/specs/<event_id>_<event_slug>_specs/`. Read them as the main design source when they exist, and record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim. A spec location, date, status label, or old handoff does not prove approval, and implementation evidence proves what exists rather than what was accepted. Keep missing or conflicting acceptance evidence unresolved under the AGENTS.md Specs and Plans dispositions.
 
 Subagent plans, expansion addenda, audit follow-up notes, and implementation handoffs live under `docs/plans/<event_id>_<event_slug>_plans/`. Plans are working documents. If a plan becomes accepted source design, merge it into the relevant spec.
 
@@ -97,11 +95,7 @@ Any new, released, restored, transformed, or event-managed country that is expec
 
 Major events and country-creation events need route-specific AI. Implement focus choices, decision choices, unit-raising choices, faction behavior, foreign influence behavior, rare variant handling, high-chaos exceptions, invalid-route blocking, etc.
 
-When an event needs a reusable country carrier, consult `common/collections/chaosx_country_collections.txt` and `docs/events/006_independence_wave/systems/country_registry.md` before reserving a new tag.
-Use the `chaosx_country_*` collection that matches the region or origin, then record the consuming event's own provenance and package identity before loading content.
-Do not create a duplicate tag for an Event 006 or Soviet Collapse carrier, and do not treat event-text mentions as tag collisions.
-After changing a protected carrier or its references, perform a fresh repository-wide collision scan against vanilla, installed Workshop mods, and sibling local mods.
-The legacy country-tag auditors under `.tools/archive/` are provenance only and are not current acceptance tools.
+When an event needs a reusable country carrier, consult `common/collections/chaosx_country_collections.txt` and `docs/events/006_independence_wave/systems/country_registry.md` before reserving a new tag. Use the `chaosx_country_*` collection that matches the region or origin, then record the consuming event's own provenance and package identity before loading content. Do not create a duplicate tag for an Event 006 or Soviet Collapse carrier, and do not treat event-text mentions as tag collisions. After changing a protected carrier or its references, perform a fresh repository-wide collision scan against vanilla, installed Workshop mods, and sibling local mods. The legacy country-tag auditors under `.tools/archive/` are provenance only and are not current acceptance tools.
 
 Do not reduce major spec effects to tiny decorative modifiers. Important effects must change incentives, unlock content, move visible mechanic values, alter army or economy behavior, create a real tradeoff, or connect to later outcomes.
 
@@ -713,9 +707,7 @@ When an event declares the strict `all_formable_categories` attachment policy, e
 
 Major event mechanics can use scripted GUI windows, decision-category interfaces, animated category art, animated leader portraits, or custom buttons when they make the system easier to play. Treat that UI as part of the event contract, not as decoration added later.
 
-Use `chaos-redux-scripted-gui` for every authorized scripted GUI layout change, including parent-owned shared surfaces.
-Create/select the reference before implementation and record its acceptance basis and native-element mapping under that skill.
-When the event specifically adds a dedicated scripted GUI or mechanic window, route its bounded layout implementation and visual-quality pass to `chaosx_event_ui_worker`. The worker must use `hoi4.gui_inspect`, thorough `hoi4.gui_render` state/resolution/hierarchy/click-region views and post-change comparison evidence, treat the production render as the one-to-one in-game visual view, fix every defect visible there, and follow the full reference-image, native-layout, and visual-review contract in `chaos-redux-scripted-gui`. Never send the shared event log, event-details framework, settings, super-event framework, shared registries, or unrelated existing UIs to this worker. Eligibility requires accepted spec or source evidence that the named event introduces and owns the UI. Apply authorized reviewed source edits directly or optionally through `gui_rewrite`; its automatic post-write/index validation is not a mandatory gate under `chaos-redux-scripted-gui`.
+Use `chaos-redux-scripted-gui` for every authorized scripted GUI layout change, including parent-owned shared surfaces. Create/select the reference before implementation and record its acceptance basis and native-element mapping under that skill. When the event specifically adds a dedicated scripted GUI or mechanic window, route its bounded layout implementation and visual-quality pass to `chaosx_event_ui_worker`. The worker must use `hoi4.gui_inspect`, thorough `hoi4.gui_render` state/resolution/hierarchy/click-region views and post-change comparison evidence, treat the production render as the one-to-one in-game visual view, fix every defect visible there, and follow the full reference-image, native-layout, and visual-review contract in `chaos-redux-scripted-gui`. Never send the shared event log, event-details framework, settings, super-event framework, shared registries, or unrelated existing UIs to this worker. Eligibility requires accepted spec or source evidence that the named event introduces and owns the UI. Apply authorized reviewed source edits directly or optionally through `gui_rewrite`; its automatic post-write/index validation is not a mandatory gate under `chaos-redux-scripted-gui`.
 
 When an event uses a custom interface, align these surfaces:
 
@@ -747,9 +739,7 @@ For a spawned unit, validate that `create_unit` is executed in a country or othe
 
 For a building or map entity, validate that the building has an entity, the entity key resolves in the `.gfx`/`.asset` chain, the province belongs to the specified state, the building command has the correct argument count, and the test province is visible at the intended zoom without an existing building hiding it.
 
-The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, and review of live-consumer and in-game evidence supplied by the user.
-The user performs live-consumer and in-game validation.
-The 3D worker owns the bounded model package and must not claim event or in-game completion.
+The main event agent owns the gameplay and runtime source wiring, final runtime copy synchronization, province/state placement, and review of live-consumer and in-game evidence supplied by the user. The user performs live-consumer and in-game validation. The 3D worker owns the bounded model package and must not claim event or in-game completion.
 
 ## Generated asset handling
 

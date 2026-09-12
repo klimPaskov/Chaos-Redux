@@ -1,63 +1,37 @@
 # Canonical asset-reference library
 
-This directory is the single canonical review library for the asset workflows
-used by Chaos Redux, Slop Redux, and agentic HOI4 Modding:
+This directory is the single canonical review library for the asset workflows used by Chaos Redux, Slop Redux, and agentic HOI4 Modding:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
 
-It is organized by the owning visual surface so an agent can compare the right
-canvas, transparency treatment, frame layout, or event-art presentation before
-creating an original asset. The other two mod repositories must reference this
-directory directly; their local copies are legacy review copies and are not
-workflow inputs.
+It is organized by the owning visual surface so an agent can compare the right canvas, transparency treatment, frame layout, or event-art presentation before creating an original asset. The other two mod repositories must reference this directory directly; their local copies are legacy review copies and are not workflow inputs.
 
-Reference PNGs are never runtime mod assets. Do not wire, ship, trace, recolor,
-or copy the depicted people and symbols into final art. For implementation,
-inspect the cataloged source and its `.gfx`, `.gui`, `.asset`, or `.mesh`
-precedent, then create an original or properly sourced Chaos Redux asset.
+Reference PNGs are never runtime mod assets. Do not wire, ship, trace, recolor, or copy the depicted people and symbols into final art. For implementation, inspect the cataloged source and its `.gfx`, `.gui`, `.asset`, or `.mesh` precedent, then create an original or properly sourced Chaos Redux asset.
 
 ## Provenance and coverage
 
 - Vanilla source root: `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
 - Installed build at extraction: `Operation Postern v1.19.2.0.a729 (d245)`
-- Extraction date: `2026-07-16`
+- Texture extraction date: `2026-07-16`
+- MCP scripted GUI render date: `2026-09-12`
 - Review format: lossless RGBA PNG decoded from source DDS, TGA, or PNG
-- Pixel policy: preserve the source texture canvas exactly; do not crop,
-  stretch, repaint, or normalize transparent bounds during extraction
-- Inventory: 434 allowlisted reference PNGs across 37 semantic folders
+- Pixel policy: preserve the source texture canvas exactly; do not crop, stretch, repaint, or normalize transparent bounds during extraction
+- Inventory: 440 reference PNGs across 43 semantic folders, excluding contact sheets
 - Rebuild and validation tool: `.tools/extract_hoi4_asset_references.py`
 
-The generated [CATALOG.md](CATALOG.md) records the exact source, source kind,
-native dimensions, related definition, and local contact sheet for every
-reference. Vanilla HOI4 entries are distinguished from explicitly marked Chaos
-Redux source and migrated legacy review copies.
+The generated [CATALOG.md](CATALOG.md) records the exact source, source kind, native dimensions, related definition, and local contact sheet for every reference. Vanilla HOI4 entries are distinguished from explicitly marked Chaos Redux source and migrated legacy review copies.
 
-The checksum- and frame-level provenance for the 147 references added in the
-2026-08-04 audit is recorded in [REFERENCE_MANIFEST.md](REFERENCE_MANIFEST.md).
+The checksum- and frame-level provenance for the 147 references added in the 2026-08-04 audit and the MCP-rendered scripted GUI set added on 2026-09-12 is recorded in [REFERENCE_MANIFEST.md](REFERENCE_MANIFEST.md).
 
-Common icon families — national focus, ideas, decisions, decision categories,
-technologies, and achievement states — contain at least 15 references. Every
-other tracked icon family contains at least 5. Counts exclude contact sheets.
-The reusable achievement not-eligible overlay is stored separately from the examples
-at `icons/achievements/template/overlay.png`, but is a workflow input and is excluded
-from the contact sheet and inventory count.
+Common icon families — national focus, ideas, decisions, decision categories, technologies, and achievement states — contain at least 15 references. Every other tracked icon family contains at least 5. Counts exclude contact sheets. The reusable achievement not-eligible overlay is stored separately from the examples at `icons/achievements/template/overlay.png`, but is a workflow input and is excluded from the contact sheet and inventory count.
 
-The achievement workflow also owns two user-provided background inputs: `icons/achievements/template/achievement_template.png` (completed state, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`) and `icons/achievements/template/achievement_template_grey.png` (grey and not-eligible states, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`).
-Their authoritative source files were `C:/Users/klimp/Downloads/achievement_template.png` and `C:/Users/klimp/Downloads/achievement_template_grey.png`; the repository copies are byte-for-byte exact.
-They are not Vanilla references, are excluded from the achievement count and contact sheet, and must be used by `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`.
-The `template/overlay.png` file remains the unchanged red not-eligible overlay and is excluded from the count and contact sheet for the same reason.
+The achievement workflow also owns two user-provided background inputs: `icons/achievements/template/achievement_template.png` (completed state, SHA-256 `248DB006611EB3942550C43DF83802AA6FB24761035FC928B5D34586C0C4C5BA`) and `icons/achievements/template/achievement_template_grey.png` (grey and not-eligible states, SHA-256 `70E073694C1A7D9FE40C63B1EB2E987A8A45B3FFD15CCF789EEAA5B843B90022`). Their authoritative source files were `C:/Users/klimp/Downloads/achievement_template.png` and `C:/Users/klimp/Downloads/achievement_template_grey.png`; the repository copies are byte-for-byte exact. They are not Vanilla references, are excluded from the achievement count and contact sheet, and must be used by `.agents/skills/chaos-redux-event-assets/tools/process_achievement_icons.py`. The `template/overlay.png` file remains the unchanged red not-eligible overlay and is excluded from the count and contact sheet for the same reason.
 
-The `icons/decision_categories/pictures/` family is a separate review shelf for larger decision-category pictures.
-It currently contains exactly 13 user-provided vanilla reference PNGs, each lossless RGBA at the native `114x101` reference canvas.
-These are not the small decision-category icons in `icons/decision_categories/` and are not a universal runtime-size prescription.
+The `icons/decision_categories/pictures/` family is a separate review shelf for larger decision-category pictures. It currently contains exactly 13 user-provided vanilla reference PNGs, each lossless RGBA at the native `114x101` reference canvas. These are not the small decision-category icons in `icons/decision_categories/` and are not a universal runtime-size prescription.
 
 ## Contact sheets
 
-Every semantic folder owns one labeled `contact_sheet.png` beside its reference
-PNGs. There is deliberately no broad `contact_sheets/` directory. Sheets use a
-checkerboard review background for transparency, show the filename and native
-dimensions, and preserve the source family’s aspect ratio. The checkerboard is
-not part of any extracted image.
+Every semantic folder owns one labeled `contact_sheet.png` beside its reference PNGs. There is deliberately no broad `contact_sheets/` directory. Sheets use a checkerboard review background for transparency, show the filename and native dimensions, and preserve the source family’s aspect ratio. The checkerboard is not part of any extracted image.
 
 Examples:
 
@@ -70,6 +44,7 @@ Examples:
 - `event_art/news/contact_sheet.png`
 - `event_art/super_event/contact_sheet.png`
 - `flags/contact_sheet.png`
+- `scripted_guis/contact_sheet.png`
 
 ## Reference families
 
@@ -90,45 +65,37 @@ Gameplay icons:
 - `icons/national_focus/`, `icons/ideas/`, `icons/technologies/`
 - `icons/decisions/`, `icons/missions/`, and `icons/decision_categories/`
 - `icons/decision_categories/pictures/` (larger decision-category pictures)
-- `icons/achievements/`, `icons/officer_corps_spirits/`, and
-  `icons/special_projects/`
-- `icons/balance_of_power/`, `icons/intelligence_agency/`, and
-  `icons/intelligence_operations/`
+- `icons/achievements/`, `icons/officer_corps_spirits/`, and `icons/special_projects/`
+- `icons/balance_of_power/`, `icons/intelligence_agency/`, and `icons/intelligence_operations/`
 - `icons/commander_traits/`, `icons/medals/`, and `icons/military_raids/`
-- `icons/state_modifiers/`, `icons/military_industrial_organizations/`,
-  `icons/factions/`, `icons/buildings/`, and `icons/modifiers/`
+- `icons/state_modifiers/`, `icons/military_industrial_organizations/`, `icons/factions/`, `icons/buildings/`, and `icons/modifiers/`
 
 Unit visual pipelines:
 
 - `units/equipment/technology_art/`
-- `units/land/counters_large/`, `units/land/map_counters/`, and
-  `units/land/division_template_emblems/`
+- `units/land/counters_large/`, `units/land/map_counters/`, and `units/land/division_template_emblems/`
 - `units/air/map_counters/` and `units/naval/map_counters/`
 - `units/models_3d/land_materials/`, `air_materials/`, and `naval_materials/`
 
-These families are not interchangeable. Follow the cataloged native canvas,
-transparency, frame order, and owning definition. Model materials are UV
-references paired with mesh/entity definitions; they are not 2D icons, renders,
-or concept sheets.
+Scripted GUI layouts:
+
+- `scripted_guis/meters_and_pressure/`
+- `scripted_guis/institutional_boards/`
+- `scripted_guis/faction_relations/`
+- `scripted_guis/regional_investment/`
+- `scripted_guis/campaign_progress/`
+- `scripted_guis/escalation_status/`
+
+These families are not interchangeable. Follow the cataloged native canvas, transparency, frame order, and owning definition. Model materials are UV references paired with mesh/entity definitions; they are not 2D icons, renders, or concept sheets. Scripted GUI full renders establish native structural precedents and must be paired with their installed `.gui` and `common/scripted_guis` sources.
 
 ### Decision category picture references
 
-The canonical decision-category picture family lives at `icons/decision_categories/pictures/`.
-Its owning UI surface is the larger decision-category `picture` field, normally consumed through a `GFX_decision_cat_*` sprite in Vanilla HOI4's `interface/decisions.gfx`; it is not a small category icon, a decision icon, a scripted-GUI background, or a full mechanic-window asset.
+The canonical decision-category picture family lives at `icons/decision_categories/pictures/`. Its owning UI surface is the larger decision-category `picture` field, normally consumed through a `GFX_decision_cat_*` sprite in Vanilla HOI4's `interface/decisions.gfx`; it is not a small category icon, a decision icon, a scripted-GUI background, or a full mechanic-window asset.
 
-The 13 PNGs in this shelf were provided by the user as vanilla references.
-Each is a lossless `114x101` RGBA review copy whose decoded pixels match the corresponding installed Vanilla HOI4 DDS after the source DDS BGRA channels are decoded to RGBA.
-The installed source path, matching sprite/category identity, native dimensions, contact sheet, and PNG SHA-256 are recorded in `CATALOG.md`.
-The source identity is treated as Vanilla HOI4 only where the installed files expose the corresponding DDS, `.gfx` sprite, and decision category consumer; no identity is inferred from filename alone.
+The 13 PNGs in this shelf were provided by the user as vanilla references. Each is a lossless `114x101` RGBA review copy whose decoded pixels match the corresponding installed Vanilla HOI4 DDS after the source DDS BGRA channels are decoded to RGBA. The installed source path, matching sprite/category identity, native dimensions, contact sheet, and PNG SHA-256 are recorded in `CATALOG.md`. The source identity is treated as Vanilla HOI4 only where the installed files expose the corresponding DDS, `.gfx` sprite, and decision category consumer; no identity is inferred from filename alone.
 
-These user-provided PNGs and `contact_sheet.png` are review-only reference material.
-Do not wire, recolour, trace, ship, or copy them into runtime GFX, and do not infer a runtime redistribution licence from their presence here.
-The local contact sheet labels every filename and native dimension and is also review-only.
+These user-provided PNGs and `contact_sheet.png` are review-only reference material. Do not wire, recolour, trace, ship, or copy them into runtime GFX, and do not infer a runtime redistribution licence from their presence here. The local contact sheet labels every filename and native dimension and is also review-only.
 
 ## Maintenance
 
-The allowlist is maintained by `.tools/extract_hoi4_asset_references.py`.
-When adding a reference, record its exact provenance, choose the correct
-semantic folder, keep the coverage floor, regenerate that folder’s contact
-sheet, and update the catalog or the checksum manifest. Do not recreate the old
-shared contact-sheet directory or add new reference images beside this tree.
+The texture allowlist is maintained by `.tools/extract_hoi4_asset_references.py`. Scripted GUI full renders are added through the mandatory HOI4 MCP inspect/render workflow and documented under `scripted_guis/`. When adding a reference, record its exact provenance, choose the correct semantic folder, keep the coverage floor, regenerate that folder’s contact sheet, and update the catalog or the checksum manifest. Do not recreate the old shared contact-sheet directory or add new reference images beside this tree.
