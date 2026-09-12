@@ -203,3 +203,29 @@ All five actual-byte reimports preserve the calibrated facing after the initial-
 Seven sourced PCM16 sound files have fitted cue durations.
 The independent runtime audit passed all sixteen payload hashes, five action chains, four material streams and eleven timed cues; the inherited counter identity and missing historical audio originals remain explicit in `../012_africa_plans/subagent_handoffs/2026-09-08_donkey_runtime_integration.md`.
 The broader model repair request remains incomplete.
+
+## September 12 runtime integrations and remaining repairs
+
+Clone Infantry is installed from the selected weapon-free body, separate four-part rifle assembly, 44-bone Blender rig, and nine authored roles.
+Commit `8c84f0161c` promoted sixteen exact payloads and replaced the obsolete single-stream binding with eight verified material streams.
+Commit `f51b3446a` installed the reviewed two-state clone counter DDS files.
+
+Autonomous Robot is installed from the selected weapon-free biped body, separate left and right gun and feed assemblies, eight authored roles, and exact six-stream entity bindings.
+Commit `dd48a40ea` promoted fifteen payloads; the selected 728-frame proof includes exact muzzle-locator attachment evidence.
+The revised robot counter is visually accepted, but its manifest hashes are currently stale against its final DDS bytes, so runtime promotion remains blocked until the asset package reconciles those hashes.
+
+Commit `cc2176dae` installed the reviewed Chaos Assault Battalion counters.
+Commit `9fd024026` installed the reviewed Stone Cohorts and Forest Giants counters.
+These counter promotions do not establish completion of their skeletal model packages.
+
+The remaining physical model work is still incomplete for the base, infected, rabid, undead, parasitic, mutant, necrotic, and demonic zombie families; Riverborn; Pan Sappers; Stone Cohorts; Forest Giants; and the Chaos Assault Battalion.
+Continuous-frame review found unsupported zombie collapse phases, joint-boundary stretch in Stone and Forest, support-hand and hose drift in the assault battalion, and unresolved water-entry and held-flask behavior for Riverborn and Pan.
+The selected repairs are waiting for a coherent adapter release that can apply explicit multi-mesh winding and skin replacements and isolated selected-corner normal replacements under one source/spec-hash-bound save and reopen transaction.
+No affected runtime model or action will be promoted from pose snapshots alone.
+
+The adapter candidate also adds snapshot-local image-content memoization without weakening the exact cached/uncached fingerprint digest.
+The parent requires native positive and negative regressions, a selected-corner quantization no-op rejection, unchanged unselected raw normal storage, the existing 0.5-degree native normal ceiling, and a clean environment-lock verification before releasing the paused Blender calls.
+
+The humanoid and variant zombie counter candidates are also not accepted yet.
+Humanoid alternate frames require opaque pale filled fields with dark concise schematics, and the variant processor must correct its integer-overflow palette conversion before new DDS files can be reviewed.
+The current model-repair goal remains incomplete and no live-game completion claim is made.
