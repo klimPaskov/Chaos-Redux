@@ -36,12 +36,12 @@ No cross-family resize, recolour, renamed vanilla substitute, fake checkerboard,
 | ASSET-001–004, ASSET-007–038, ASSET-040–043, ASSET-047–049 | `pass` or `fixed` | No remaining source-level visual defect in the audited consumer. |
 | ASSET-005 | `needs_user_review` | Slot-23 audio rights and firing reachability remain open; the image itself passes. |
 | ASSET-006 | `needs_user_review` | Host, collision, and formable reachability remain partial; the image itself passes. |
-| ASSET-039 | `needs_user_review` | GUI MCP inspection/render exists, but dynamic tab visibility, click-region fidelity, blendframe playback, and the four-value content budget are not accepted. |
+| ASSET-039 | `needs_user_review` | GUI MCP inspection/render exists, and the instability-warning/text collision is repaired at source; dynamic tab visibility, click-region fidelity, blendframe playback, and the five-value content-priority contract remain unaccepted. |
 | ASSET-044 | `needs_user_review` | The flag pixels and ladders pass, while BWX/chunk-3/NWE-alias/GLC/CHU/ASY provenance, rights, or cross-event ownership receipts remain open. |
 | ASSET-045 | `blocked` | Thirteen supplied grounded portrait rows lack an authoritative Event 006 consumer or closed identity/role/date/rights gate. Six unregistered runtime portrait DDS files remain documented `unused_orphan` evidence and were not deleted speculatively. |
 | ASSET-046 | `blocked` | FORM-05 and FORM-48 emblems pass, but the remaining formable identities and the shared league emblem lack an accepted identity, source, rights, or stable consumer. |
 
-The Statehood Ledger GUI remains an explicit design/content blocker rather than a hidden renderer failure. Its baseline render shows ten simultaneous mechanic values, bottom-right tab-panel overprint in the empty fixture, and a warning/text collision; no layout or scripted-GUI rewrite was applied without an accepted state fixture and content-priority decision.
+The Statehood Ledger GUI remains an explicit design/content blocker rather than a hidden renderer failure. Its baseline render shows ten simultaneous mechanic values and bottom-right tab-panel overprint in the empty fixture. The instability warning was moved into the existing tab gap in `interface/006_independence_wave.gui`; the dated repair receipt records the post-change inspect/render, while dynamic tab state, click regions, blendframe playback, and the accepted five-value content-priority contract remain open.
 
 ## Validation evidence
 
