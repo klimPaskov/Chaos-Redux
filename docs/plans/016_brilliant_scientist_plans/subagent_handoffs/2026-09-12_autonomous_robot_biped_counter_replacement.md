@@ -24,21 +24,21 @@ The existing `interface/autonomous_robot_system.gfx` large bindings consume `gfx
 
 The existing `_white` map binding consumes `gfx/interface/counters/divisions_small/onmap_unit_autonomous_robot_icon.dds` with two 30x12 frames inside a 60x12 canvas.
 
-The candidate large DDS is `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/counter_biped_20260912/final/unit_autonomous_robot_icon.dds` with SHA256 `8F374ADF045A0AD24B5BE39C220F65A27346F4FB3942F7D335EE3923C12896EF`.
+The candidate large DDS is `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/counter_biped_20260912/final/unit_autonomous_robot_icon.dds` with SHA256 `95E8A0816A614FEA7449494A026A1C57ED6B76D384C3ADEF933F1DE964E7CDDC`.
 
 The parent promotion path for the large DDS is `gfx/interface/counters/divisions_large/unit_autonomous_robot_icon.dds`.
 
-The candidate small DDS is `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/counter_biped_20260912/final/onmap_unit_autonomous_robot_icon.dds` with SHA256 `C259EAD5749C82D2881EF17CF528413795C6042BA27CB9038563AD13631357DC`.
+The candidate small DDS is `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/counter_biped_20260912/final/onmap_unit_autonomous_robot_icon.dds` with SHA256 `1115AACD9A57653E07BF30915649B0DDDB399253A0ACE59E6078C89ACB01E3C2`.
 
 The parent promotion path for the small DDS is `gfx/interface/counters/divisions_small/onmap_unit_autonomous_robot_icon.dds`.
 
-Matching evidence PNGs are `final/unit_autonomous_robot_icon.png` with SHA256 `1EECF0A0A3C976F9B32F5158DAB11B6F493FA396DF8C77DC811A01FEE25E8510` and `final/onmap_unit_autonomous_robot_icon.png` with SHA256 `AB9BFF06EB876044374BA8C0FA4306B7CFC60DFD91D174F146A534BB397F3569`.
+Matching evidence PNGs are `final/unit_autonomous_robot_icon.png` with SHA256 `9F1D5E52D9345261C4B72336A70D561D3A91A72129CE7D67F446A5D7F37FA237` and `final/onmap_unit_autonomous_robot_icon.png` with SHA256 `3AE76390D02B1E0E2007E4BBCE1A4B551239414AB1078D9B691F2ACB616861EE`.
 
 ## Visual result
 
-The large frame order is frame 0 compact muted vanilla-green biped and frame 1 distinct pale sparse schematic.
+The large frame order is frame 0 compact muted vanilla-green biped and frame 1 distinct pale filled rectangular field with dark border and dark sparse biped schematic strokes, with transparent canvas outside the field.
 
-The small map frame order is frame 0 pale grayscale biped silhouette and frame 1 distinct pale grayscale sparse schematic for the `_white` consumer.
+The small map frame order is frame 0 pale grayscale biped silhouette and frame 1 distinct pale filled rectangular field with dark border and dark sparse biped schematic strokes for the `_white` consumer, with transparent canvas outside the field.
 
 The identity is a squat humanoid biped with two separate armored legs and feet, an olive riveted broad tank-steel torso, a round goggle sensor head, two separate forearm-mounted machine guns, compact feeds and backpack, and no tracks, wheels, text, flags, or logos.
 
@@ -56,7 +56,11 @@ The accepted source model checkpoint hash is `2EBBF34D1E1F4506D042C51CB00DDD3CA8
 
 The large green native candidate is `source/large_green_biped_source.png` from ImageGen candidate `exec-5a133876-ccdc-467e-89e1-200fac988593`.
 
-The large schematic began as opaque candidate `exec-7b20de7e-d758-4412-a3bf-fcf3808b0cbc` and uses the successful targeted transparency edit `exec-96864870-b983-4093-a097-67615659e91e` as `source/large_schematic_source_alpha.png`.
+The former detailed large schematic began as opaque candidate `exec-7b20de7e-d758-4412-a3bf-fcf3808b0cbc` and the targeted transparency edit `exec-96864870-b983-4093-a097-67615659e91e` is retained as rejected evidence because it was an illustrated robot state.
+
+The selected second state is native ImageGen flat emblem candidate `exec-137c9c79-8283-466c-a48f-30ddebeda11a`, retained as `source/large_schematic_source_alpha.png` and shared as `source/map_schematic_source.png`.
+
+The source emblem contains only a thin unfilled pale rectangle, a small square head, short torso stem, two arm/gun ticks, two diagonal leg ticks, and two foot ticks, with no armor panels, eyes, perspective, volume, or illustrated highlights. The processor preserves this geometry while filling the rectangle pale and darkening the existing border and biped masks to match the installed vanilla second-state field behavior.
 
 The map silhouette began as opaque candidate `exec-9cfbe261-d6e4-434d-845c-613ee488caba` and the first transparency edit `exec-835ff4a4-319d-449b-a406-dc08974da5d6` remained opaque and is rejected evidence.
 
@@ -64,13 +68,15 @@ The selected map silhouette source is a uniform chroma edit `exec-df8e5b82-3843-
 
 The untouched opaque map sources, failed edit, chroma source, and fallback output are retained in `source/`, with exact hashes and alpha bounds in `validation/alpha_lineage.json`.
 
+The former detailed map schematic `exec-d7f46960-600a-4125-8b18-d97f4653e710` is retained as `source/map_schematic_illustrated_rejected.png`.
+
 The previous wrong tracked counter is preserved as rejected evidence in `rejected_previous/wrong_tracked_counter_contact_sheet.png`, and its original package remains at `../counter/`.
 
 ## Validation and review evidence
 
-`validation/process_counter_biped.py` performs alpha-threshold crop with padding, premultiplied Lanczos downsampling, inspected vanilla palette mapping, and alpha-preserving two-frame assembly.
+`validation/process_counter_biped.py` performs alpha-threshold crop with padding, native-resolution source-mask pale field/dark border processing for frame 1, one premultiplied Lanczos downsample, inspected vanilla palette mapping, and alpha-preserving two-frame assembly.
 
-`validation/validate_counter_biped.py` passed strict 128-byte uncompressed BGRA DDS header checks, dimensions, pitch, byte length, alpha extrema, frame occupancy, distinct frame states, green palette consistency, map grayscale, and exact PNG-to-DDS decoded pixel equality.
+`validation/validate_counter_biped.py` passed strict 128-byte uncompressed BGRA DDS header checks, dimensions, pitch, byte length, alpha extrema, frame occupancy, distinct frame states, green palette consistency, pale filled frame-1 field with dark border/strokes, map grayscale, and exact PNG-to-DDS decoded pixel equality.
 
 The validation receipt is `validation/dds_validation.json`.
 
