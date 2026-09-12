@@ -1,6 +1,7 @@
 # Autonomous Robot 3D model production handoff
 
-Status: **production package complete; parent runtime wiring and live consumer validation pending**.
+Disposition: **superseded for current source selection and completion status** by `2026-09-12_autonomous_robot_asset_finalization.md` in this folder.
+The following historical production report describes the earlier 29,971-triangle, 24-bone package and must not select bytes, action timing, materials or companion acceptance for the current source40 replacement.
 
 The deterministic package root is `docs/assets/shared_robot_system/models_3d/autonomous_robot/`. The accepted generic retro-WW2 automaton retains its complete biped, two independent integrated forearm machine guns, visible barrels/muzzles, ammunition feeds and rear housing, grounded feet, olive/steel/bakelite palette, and provider-neutral identity.
 

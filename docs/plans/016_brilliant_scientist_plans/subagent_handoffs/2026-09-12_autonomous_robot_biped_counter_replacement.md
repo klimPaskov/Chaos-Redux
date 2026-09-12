@@ -1,6 +1,6 @@
 # Autonomous robot biped counter replacement handoff
 
-Disposition: `implemented` for the bounded asset package; review state: `needs_user_review` pending independent parent visual review.
+Disposition: `implemented` for the bounded asset package; review state: `implemented; parent-promoted` in commit `475839ff20`.
 
 Date: 2026-09-12.
 
@@ -14,7 +14,7 @@ Only `docs/assets/shared_robot_system/models_3d/autonomous_robot/evidence/counte
 
 No GFX, gameplay, shared manifest, runtime, Blender, Meshy, or paid generation file was edited.
 
-The parent owns runtime promotion, GFX review, final integration, and live-game validation.
+The parent promoted the accepted DDS pair in commit `475839ff20`; live-game validation remains user-owned.
 
 ## Consumer and exact outputs
 
@@ -94,4 +94,4 @@ No in-game validation is claimed.
 
 ## Parent review actions
 
-The parent should independently review both contact sheets, promote only the candidate DDS files after acceptance, and carry out the repository/runtime/live-game checks outside this asset package.
+The parent independently reviewed the contact sheets and promoted the accepted DDS files in commit `475839ff20`. Live-game validation remains user-owned.

@@ -2,7 +2,9 @@
 
 Owner: `chaosx_icon_artist`.
 
-Status: generated, processed, converted, and handed off as bespoke shared counter art; `needs_user_review` remains until the parent reviews the contact sheet, registers the sprites, and validates the live Event016/Event019 consumers.
+Disposition: **rejected for current biped identity**.
+The actual retained large strip depicts a tracked chassis and conflicts with the accepted biped, regardless of the intended source description below.
+Preserve these files as rejected historical evidence; the current replacement handoff is `2026-09-12_autonomous_robot_biped_counter_replacement.md` in this folder.
 
 This is generic shared API art for the autonomous robot unit and is not Kruger-named art. The source depicts a retro-WW2 riveted armored humanoid robot with a broad tank-like torso, helmeted sensor head, and integrated machine guns in both forearms. It has no text, Kruger marks, or national insignia.
 
