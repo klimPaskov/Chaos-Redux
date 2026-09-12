@@ -80,6 +80,8 @@ The native-pixel review sheet is `contact_sheet/counter_contact_sheet_native.png
 
 The smooth enlarged review sheet is `contact_sheet/counter_contact_sheet_enlarged.png`.
 
+The final DDS decoded nearest-pixel neutral-matte contact proof is `validation/dds_roundtrip_neutral_matte_contact.png`.
+
 Both contact sheets show selected sources, processed target strips, final DDS roundtrips, installed decoded vanilla large/map references, and the rejected prior package.
 
 No in-game validation is claimed.
