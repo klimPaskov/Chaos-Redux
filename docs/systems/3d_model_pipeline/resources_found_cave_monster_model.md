@@ -2,6 +2,8 @@
 
 The Oth-Kesh cave country uses one shared custom land-unit model with five role-specific counter families. The selected creature is a low-slung, slate-and-ochre armored quadruped generated from one approved fictional reference and calibrated against the installed western-European infantry mesh.
 
+Current disposition: `implemented` for the static runtime package. `docs/plans/018_resources_found_plans/cave_monster_current_package_manifest.md` is the authoritative current status and hash inventory. Live HOI4 and audible behavior remain unverified, and the absent deterministic source/job package blocks strict pipeline package completion and reproducible continuation.
+
 ## Runtime model
 
 - Canonical mesh identifier: `resources_found_cave_monster_mesh`.
@@ -55,4 +57,4 @@ The same reconstruction mechanically inspected all ten counter strips and passed
 
 Static model/action visual closure is complete under the user's explicit no-HOI4-testing override. Live HOI4 consumer validation and audible playback were not performed, so normal-map-zoom presentation, entity-state transitions, sound synchronization, and runtime audible density are not claimed as in-game evidence.
 
-The bounded `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/` workspace retains the reconstructed counter, audio, provenance, and tool-call evidence while the overall Event 018 goal is active. The locked adapter's exact `cave_monster` root was also temporarily reconstructed from runtime-byte copies to retain reimport proofs; neither workspace is a runtime dependency.
+The former `docs/assets/018_resources_found/models_3d/cave_monster/` and `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/` evidence roots are absent from the current checkout. Neither was a runtime dependency. Their durable findings remain in the current package manifest and named handoffs, but the missing source image, checkpoints, selected exports, reimport artifacts, and job metadata cannot be reconstructed from documentation alone.

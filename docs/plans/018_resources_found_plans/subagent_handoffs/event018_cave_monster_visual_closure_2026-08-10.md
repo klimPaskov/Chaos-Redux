@@ -1,5 +1,7 @@
 # Event 018 cave-monster visual closure handoff
 
+> Current-status notice, 2026-09-12: This file remains the authoritative historical visual-proof record. The current package disposition is `implemented` in `../cave_monster_current_package_manifest.md`, which preserves this evidence while separately recording the absent deterministic source/job package and the unperformed live-game validation.
+
 Date: 2026-08-10.
 
 Disposition: `complete` for the bounded static 3D package under the user's explicit no-HOI4-testing override. Fresh actual-byte mesh and action reimports, multi-view textured previews, five-frame loop proofs, runtime/export hash equality, parent-reviewed counters, and durable sourced-audio evidence close the worker-owned package. Audible playback and live HOI4 consumer behavior were not tested and are not claimed as in-game evidence.

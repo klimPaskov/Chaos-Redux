@@ -1,6 +1,10 @@
 # Event 018 cave monster 3D model handoff
 
-Status: `complete` for the bounded static 3D package under the user's explicit no-HOI4-testing override. The package contains source evidence, PDX textures, a custom creature rig, grounded idle/move/attack/death exports, previews, reports, checksums, io_pdx_mesh actual-byte reimports, four licensed audio originals, mechanically converted runtime WAVs, and five parent-reviewed bespoke counter families. The parent copied and hash-verified the selected model/actions, wired the shared entity and animation asset, registered sound hooks, and installed the counters. Fresh five-frame runtime-byte proofs close the earlier idle/move visual-review gap; live consumer behavior and audible playback remain unperformed user-owned caveats and are not claimed as in-game evidence.
+Current disposition: `implemented` for the static runtime package. The authoritative current status and recomputed runtime hashes are recorded in `../cave_monster_current_package_manifest.md`. This handoff remains the historical production and reconstruction evidence; its former bounded-package `complete` statement did not account for the later absence of the deterministic source/job package.
+
+The historical package contained source evidence, PDX textures, a custom creature rig, grounded idle/move/attack/death exports, previews, reports, checksums, io_pdx_mesh actual-byte reimports, four licensed audio originals, mechanically converted runtime WAVs, and five parent-reviewed bespoke counter families. The parent copied and hash-verified the selected model/actions, wired the shared entity and animation asset, registered sound hooks, and installed the counters. Fresh five-frame runtime-byte proofs closed the earlier idle/move visual-review gap; live consumer behavior and audible playback remain unperformed user-owned caveats and are not claimed as in-game evidence.
+
+The historical `docs/assets/018_resources_found/models_3d/cave_monster/` and `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/` roots are absent from the current checkout. Their paths below remain lineage references, not current files or a resumable deterministic job.
 
 ## Provider and dependency lineage
 
@@ -11,7 +15,7 @@ The values in this section are the original production-run lineage. Current 2026
 - One legacy Meshy image-to-3D call: task `019fd394-e30c-7fbb-b0da-ee8078b86c38`, 20 estimated credits, 30 consumed credits. No retry, remesh, retexture, provider rig, conversion, or provider animation call was used. Future regeneration uses Meshy 7.
 - Locked Blender adapter: 1.2.0, wrapper `.tools/3d_pipeline/wrappers/run_blender_hoi4_adapter.cmd`; Blender 5.1.2 build `ec6e62d40fa9`; io_pdx_mesh 0.91.0.
 - Lock hashes: dependencies `F84BC430746C016888D3AEFE2D5ED2969E5E5B8CF90D7EEBD52EB9C49DB08431`; Meshy schema `DBB9CAD7FB12AFE81ECA05A2F381EF4251C035F4D22BF17856A2F6D41F16A62D`; adapter config `0AE3432A008C06F7C7ECFC2877B5C2775C12C0B9C0AD5FCD68F412B0C76722E6`.
-- Initial adapter requests rejected an absolute path and unsupported metallic/roughness roles. Their immutable result logs are retained. Corrected preparation request `d9cc5b3bf6504924912e75618b566689` passed.
+- Initial adapter requests rejected an absolute path and unsupported metallic/roughness roles. Their request ids and conclusions are preserved in this handoff, but the temporary immutable result logs are absent from the current checkout. Corrected preparation request `d9cc5b3bf6504924912e75618b566689` passed.
 
 ## Selected artifacts
 
@@ -38,13 +42,13 @@ Protected source is `blender/source/resources_found_cave_monster_provider_source
 - Provider PBR sources were packed to the verified PDX channels. The mesh text references only the three stable selected DDS names. Auto-generated `texture_0.dds`-family staging maps are rejected and must not be copied.
 - The custom nonhumanoid armature has 17 bones. All 14,998 working vertices have a normalized weight and no deforming vertex is unweighted.
 - Idle: 24 fps, frames 0-48, loop, in-place. Move: 24 fps, frames 0-24, loop, in-place. Attack: 24 fps, frames 0-32, non-loop, in-place. Death: 24 fps, frames 0-36, non-loop. No scale F-curves or unit-location rescaling were introduced.
-- Final v4 action exports use the corrected semantic angle envelope for this hard-weighted creature rig: idle and move remain restrained loops, attack is a short grounded strike, and death is a short grounded collapse without visible mesh shear in the reviewed previews. Final action reimports contain the 17-bone rig and 30,000-polygon mesh with contact ranges within approximately +/-0.000015 m. The final source/runtime hashes are recorded in `runtime/crosswalk.md` and `validation/final_checksums.sha256`.
+- Final v4 action exports use the corrected semantic angle envelope for this hard-weighted creature rig: idle and move remain restrained loops, attack is a short grounded strike, and death is a short grounded collapse without visible mesh shear in the reviewed previews. Final action reimports contain the 17-bone rig and 30,000-polygon mesh with contact ranges within approximately +/-0.000015 m. The temporary `runtime/crosswalk.md` and `validation/final_checksums.sha256` files are absent; their durable runtime hashes are preserved in this handoff and `../cave_monster_current_package_manifest.md`.
 - This worker's first corrected export request `eed3fc1b521f4240a583d6578645af7d` hung after a long preview call and produced no result or output mutation. The parent retried through the same repository-owned adapter; the successful request and byte hash above supersede the hung request.
 - Mesh and all four actual animation bytes were reimported through io_pdx_mesh. Reimports contain the 17-bone `io_pdx_rig` and 30,000 polygons; position-weld diagnostics pass closure. Export request IDs and reports are preserved under `blender/reports/` and `logs/adapter/`.
 
 ## Sourced audio
 
-The durable reconstruction records source pages, direct URLs, creators, licences, and refresh status in `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/evidence/audio/source_provenance.md`.
+The reconstruction recorded source pages, direct URLs, creators, licences, and refresh status in the former `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/evidence/audio/source_provenance.md`. That temporary file is absent; the durable source identities, licences, and hashes remain below and in `event018_cave_audio_recipe_reconstruction_2026-08-10.md`.
 
 - Idle candidate: `evidence/audio/original/idle_alligator_bellow.ogg`, U.S. Fish and Wildlife Service public domain, SHA-256 `72A5612E99B6A941D751EFBCCF1E44F816C06C7884E3108C5298A2BA84B25169`.
 - Move candidate: `evidence/audio/original/move_walking_on_gravel.ogg`, CC0 1.0, SHA-256 `14990DE1FD15418B55A2C939B0A99348446E613C1C4A5A307E49A87D228DE5EF`.
@@ -54,7 +58,7 @@ The durable reconstruction records source pages, direct URLs, creators, licences
 
 ## Bespoke counters
 
-Exact installed-vanilla inspection is recorded in `evidence/counter/counter_artist_handoff.md`. The five consumers are `cave_monster_brood`, `cave_stone_phalanx_brood`, `cave_burrow_war_brood`, `cave_scree_tide_brood`, and `cave_anchor_guard_brood`.
+Exact installed-vanilla inspection was recorded in the former `evidence/counter/counter_artist_handoff.md`. That temporary file is absent; its durable conclusions remain in this section. The five consumers are `cave_monster_brood`, `cave_stone_phalanx_brood`, `cave_burrow_war_brood`, `cave_scree_tide_brood`, and `cave_anchor_guard_brood`.
 
 The inspected references are `interface/subuniticons.gfx` lines 36 and 189, `unit_mountain_icon.dds` at 152 by 42 with two 76 by 42 frames, and `onmap_unit_mountain_icon.dds` at 60 by 12 with two 30 by 12 frames. The matching skill-local land counter contact sheets were inspected. Large olive-green samples include RGB 73/106/73, 62/89/62, 85/116/85, and 112/138/112. Ten original strips were produced, round-tripped, copied into the two runtime counter folders, and registered with the five subunit tokens. The 2026-08-10 mechanical audit confirmed two nonidentical frames, transparent bounds, ten unique large frame-0 hashes, ten unique on-map frame-0 hashes, olive frame 0 and grayscale disabled frame 1 for every large strip, and correct grayscale on-map treatment. Parent visual review passed bounds, alpha, large-strip differentiation, disabled-state readability, and the necessarily tiny but distinct on-map silhouettes.
 
@@ -69,7 +73,7 @@ The inspected references are `interface/subuniticons.gfx` lines 36 and 189, `uni
 - Move quarter request `b6d51f89323a4d359187fc2e8354caee` sampled frames 1/7/13/19/25 with ground contact from `-0.0000001974` to `+0.0000131577`. Decoded front-view RGBA pixels at frames 1/13/25 share SHA-256 `8B07975634E686A3AA35200BB135B201012E405BBFC56AB67656F03E9E74798F`; frame 7 is `949F11F95F3FF398E670DDB6BC38A4DEC6B9E971DA0A590762FB3CD7938AC1C8` and frame 19 is `5763A4CFDC4B0504BC678C543A82E354769493092CD491B43AF5ECBC8B50CEA9`. The loop therefore has visible quarter-phase locomotion and returns exactly to neutral at midpoint and end.
 - The combined idle/move contact sheet is `blender/previews/review/cave_monster_runtime_idle_move_quarter_contact_sheet.png`, SHA-256 `FC5D8A8AB3CCA0BE8143B7767DC55EE710E60CC7D4691C825958C8C5E03258AB`. The corresponding validation JSON hashes are `1EB9B669B27AC7E58C03C5692018458F15B34062B8F35D6A108CADF96DED1247` and `9F11A0E52C627AB279D5A6AD1070F019102A6666EE1C88A9E9DE640B84BAD42E`.
 - Runtime WAV static analysis confirms seven mono 44.1 kHz 16-bit PCM files with zero clipped samples. The strongest measured peaks are `-7.78 dBFS` for attack and `-2.06 dBFS` for death; idle is `24.240 s` at `-30.38 dBFS` RMS. Four movement contacts are `0.274671-0.280000 s`; foot 01 is about 15 dB RMS quieter than foot 02, which remains an auditory review item rather than a declared defect.
-- Evidence and the complete limitation ledger are in `docs/assets/018_resources_found/models_3d/cave_monster_static_closure/` and `event018_cave_monster_evidence_reconstruction_2026-08-10.md`.
+- The temporary evidence root is absent. The durable reconstruction and limitation ledger remain in `event018_cave_monster_evidence_reconstruction_2026-08-10.md`, this handoff, and `../cave_monster_current_package_manifest.md`.
 
 ## Parent-owned caveats after static closure
 

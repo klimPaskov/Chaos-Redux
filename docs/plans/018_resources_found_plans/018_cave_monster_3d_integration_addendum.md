@@ -2,9 +2,9 @@
 
 ## Disposition
 
-Status: `complete` for static integration under the user's explicit no-HOI4-testing override.
+Status: `implemented` for static integration. The authoritative current package status and current-byte manifest are in `cave_monster_current_package_manifest.md`.
 
-The former production workspace was removed after its durable facts were promoted. During the active Event 018 goal, the exact locked adapter root was temporarily reconstructed from installed runtime-byte copies for non-mutating reimport proof, and a separate `cave_monster_static_closure` root retains the static evidence. Neither is a runtime dependency.
+The former production workspace was removed after its durable facts were promoted. During the active Event 018 goal, the exact locked adapter root was temporarily reconstructed from installed runtime-byte copies for non-mutating reimport proof, and a separate `cave_monster_static_closure` root held the static evidence. Both roots are absent from the current checkout, and neither was a runtime dependency.
 
 Broad Event 018 expansion remains closed.
 
@@ -32,7 +32,7 @@ The five sub-units instead declare `sprite = cave_monster_brood`, `sprite = cave
 
 The offline Unit Modding reference states at lines 44 and 119 that `sprite = SPRITE` resolves the map model through `SPRITE_entity` by default.
 
-No entity named for any of the five declared sprite tokens exists in the current `gfx/entities` source, and none of the five locked templates in `history/units/DHO_1936.txt` declares `override_model`.
+Before RF-018-3D-01 was applied, no entity named for any of the five declared sprite tokens existed in `gfx/entities`, and none of the five locked templates in `history/units/DHO_1936.txt` declared `override_model`. The current source contains all five resolving entity aliases listed below.
 
 The nearest installed-vanilla precedent is `common/units/infantry.txt` with `sprite = infantry` and `gfx/entities/units_infantry.asset:141` defining `infantry_entity` as a clone of the fully authored infantry base entity.
 
@@ -56,7 +56,7 @@ Changing all five gameplay `sprite` tokens or adding template-only `override_mod
 
 If the parent chooses either alternative, it should first prove that all five counter token pairs still resolve and record why the alias pattern was rejected.
 
-Static acceptance requires an exact entity resolution for each of the five declared sprite tokens, preservation of the canonical entity and source-to-runtime hashes, preservation of the ten counter registrations and hashes, and a corrected `runtime/crosswalk.md` table that records the full chain from sub-unit to sprite token to resolving entity to canonical entity.
+Static acceptance requires an exact entity resolution for each of the five declared sprite tokens, preservation of the canonical entity and source-to-runtime hashes, preservation of the ten counter registrations and hashes, and a current crosswalk that records the full chain from sub-unit to sprite token to resolving entity to canonical entity. The durable current crosswalk is in `cave_monster_current_package_manifest.md`; the historical temporary `runtime/crosswalk.md` is absent.
 
 User-owned live acceptance requires at least one division of each locked DHO template to display the cave-monster model at normal campaign zoom, remain grounded at the recorded 0.8 scale, enter idle and move without a T-pose or invisible fallback, enter attack, defend, and support-attack through the authored attack action, and use the authored death action when destroyed.
 
@@ -66,7 +66,7 @@ The same review must confirm that each of the five templates retains its distinc
 
 The audio provenance, runtime hashes, derivative durations, and synchronization evidence are aligned.
 
-`evidence/audio/sound_design_handoff.md:10-12` assigns movement one-shots to four planted-foot phases in frames 0-24, attack onset shortly before the action midpoint, and the strongest death slide across frames 18-36.
+The historical `evidence/audio/sound_design_handoff.md:10-12` assigned movement one-shots to four planted-foot phases in frames 0-24, attack onset shortly before the action midpoint, and the strongest death slide across frames 18-36. The temporary file is absent, while its durable timing and source conclusions remain in `subagent_handoffs/cave_monster_3d_model_handoff.md` and `subagent_handoffs/event018_cave_audio_recipe_reconstruction_2026-08-10.md`.
 
 `gfx/entities/018_resources_found_cave_monster.asset` currently attaches one untimed sound event at state entry for move, attack, defend, support attack, and death.
 
@@ -86,7 +86,7 @@ That alternative is a design change and must not be silently treated as though t
 
 Idle may remain a long state-entry ambience if the live review confirms that it does not restart excessively, overlap distractingly, or continue implausibly after a state change, and the handoff records that accepted behavior.
 
-Static acceptance requires exact runtime derivative durations, hashes, transformation steps, audible-onset notes, entity event timing, and action-frame mapping in `evidence/audio/sound_design_handoff.md` and `runtime/crosswalk.md`.
+Static acceptance requires exact runtime derivative durations, hashes, transformation steps, audible-onset notes, entity event timing, and action-frame mapping. The durable current package manifest and the two named audio/model handoffs preserve those facts after removal of the temporary evidence and crosswalk files.
 
 User-owned live acceptance requires move contacts to read as movement rather than continuous noise, attack onset to coincide with the visible strike, death collapse to coincide with the falling body, and repeated state changes to stay within the intended audible-density limits.
 
@@ -126,6 +126,6 @@ This file remains under `docs/plans/018_resources_found_plans/` as the bounded s
 
 It should not be promoted into the source specification because it does not change the accepted Event 018 design.
 
-Durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The temporary reconstructed evidence roots remain non-runtime dependencies and must be retained until the parent closes the overall Event 018 goal.
+Durable consumer, synchronization, hash, provenance, and validation facts belong in `docs/systems/3d_model_pipeline/resources_found_cave_monster_model.md`, `docs/events/018_resources_found/assets.md`, this addendum, `cave_monster_current_package_manifest.md`, and `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md`. The former reconstructed evidence roots are absent from the current checkout and were never runtime dependencies.
 
 The narrow 3D-tranche closure note is `docs/plans/018_resources_found_plans/subagent_handoffs/event018_cave_monster_visual_closure_2026-08-10.md`. No additional broad Event 018 improvement pass is justified by this tranche.

@@ -1,5 +1,7 @@
 # Event 018 cave-monster static closure audit — 2026-08-10
 
+> Superseded status notice, 2026-09-12: The `needs_user_review` disposition below records the pre-visual state of this audit. The later `event018_cave_monster_visual_closure_2026-08-10.md` supplied the missing non-live visual evidence, and `../cave_monster_current_package_manifest.md` is the authoritative current package status. Retain this file as historical evidence rather than using its old status as the current disposition.
+
 ## Disposition
 
 Status: `needs_user_review`.

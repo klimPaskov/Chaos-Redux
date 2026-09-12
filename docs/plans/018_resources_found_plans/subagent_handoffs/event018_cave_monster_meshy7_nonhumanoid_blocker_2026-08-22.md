@@ -1,5 +1,7 @@
 # Event 018 cave monster Meshy 7 animation recovery blocker
 
+> Superseded recovery notice, 2026-09-12: The parent task for the current exhaustive audit accepts the installed four-action contract and the state aliases `defend` and `support_attack` to `attack`, `retreat` to `move`, and `training` to `idle` as intentional. This document therefore does not govern the current package disposition. Retain its provider-capability finding only as conditional evidence if an eight-distinct-Meshy-action requirement is explicitly accepted again; the current status and actual remaining source/job blocker are recorded in `../cave_monster_current_package_manifest.md`.
+
 Date: 2026-08-22
 
 Owner: `chaosx_3d_model_pipeline`
