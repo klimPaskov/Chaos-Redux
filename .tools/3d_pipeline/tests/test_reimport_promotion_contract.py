@@ -98,7 +98,7 @@ class PromotionContracts(unittest.TestCase):
         self.action = Block("RetainedAction", users=1, use_fake_user=True)
         self.objects = Objects([self.rig, self.mesh])
         self.scene = Block("Scene", objects=self.objects, render=types.SimpleNamespace(fps=30, fps_base=1.0), frame_current=1, frame_subframe=0.0, frame_start=1, frame_end=20)
-        self.bpy = types.SimpleNamespace(types=types.SimpleNamespace(ID=Block), data=types.SimpleNamespace(objects=self.objects, actions=[self.action], materials=[], meshes=[], collections=[], user_map=Mock(return_value={})), context=types.SimpleNamespace(scene=self.scene), ops=types.SimpleNamespace(wm=types.SimpleNamespace(open_mainfile=Mock(), save_as_mainfile=Mock(side_effect=self.save))))
+        self.bpy = types.SimpleNamespace(types=types.SimpleNamespace(ID=Block), data=types.SimpleNamespace(objects=self.objects, actions=[self.action], materials=[], images=[], meshes=[], collections=[], user_map=Mock(return_value={})), context=types.SimpleNamespace(scene=self.scene), ops=types.SimpleNamespace(wm=types.SimpleNamespace(open_mainfile=Mock(), save_as_mainfile=Mock(side_effect=self.save))))
         self.ns["bpy"] = self.bpy
         self.baseline = {"sha256": {name: "unchanged" for name in ("objects", "geometry", "rigs", "materials", "images", "actions", "scene")}, "material_retention": {"inventory": {}, "retained_sha256": "unchanged"}, "mesh_counts": {"Body": {"vertices": 3, "polygons": 1, "loops": 3}}, "actions": ["RetainedAction"], "objects": ["Body", "Rig"]}
 

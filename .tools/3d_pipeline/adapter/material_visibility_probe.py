@@ -148,6 +148,7 @@ def run_material_visibility_probe(req: dict[str, Any], *, bpy: Any, render_previ
     exist only in the unsaved diagnostic scene and are discarded by reopening.
     """
     selected = validate_visibility_request(req)
+    framing = {"preview_region": req["payload"].get("preview_region"), "preview_resolution": req["payload"].get("preview_resolution", 512)}
     source, job = selected["source"], selected["job"]
     bpy.ops.wm.open_mainfile(filepath=str(source), use_scripts=False)
     result: dict[str, Any] = {}
@@ -184,7 +185,8 @@ def run_material_visibility_probe(req: dict[str, Any], *, bpy: Any, render_previ
         materials = {slot.material.name: slot.material for obj in meshes for slot in obj.material_slots if slot.material is not None}
         result = {"read_only": True, "checkpoint_saved": False, "blend": str(source.relative_to(job)).replace("\\", "/"), "source_sha256_before": selected["source_sha256"], "frame": selected["frame"], "action": selected["action_name"], "action_sha256": selected["action_sha256"], "target_armature": selected["rig_name"], "meshes": [{"name": obj.name, "vertices": len(obj.data.vertices), "polygons": len(obj.data.polygons), "material_slots": [slot.material.name if slot.material else None for slot in obj.material_slots], "world_determinant": float(obj.matrix_world.determinant()), "directional_face_counts": directional_face_counts(obj, bpy)} for obj in meshes], "materials": [material_visibility_record(material) for material in materials.values()], "previews": {}, "clay_binding": "temporary per-object material-slot binding; no view-layer override dependency", "render_engine": "BLENDER_EEVEE"}
         bpy.context.view_layer.material_override = None
-        result["previews"]["original"] = render_previews(job, selected["stem"] + "_original", selected["views"])
+        result["preview_framing"] = framing
+        result["previews"]["original"] = render_previews(job, selected["stem"] + "_original", selected["views"], **framing)
         clay = bpy.data.materials.new("QA_Visibility_Opaque_Clay")
         clay.use_nodes = True
         shader = next(node for node in clay.node_tree.nodes if node.bl_idname == "ShaderNodeBsdfPrincipled")
@@ -204,7 +206,7 @@ def run_material_visibility_probe(req: dict[str, Any], *, bpy: Any, render_previ
         for culling in (True, False):
             clay.use_backface_culling = culling
             mode = "opaque_clay_culling_on" if culling else "opaque_clay_culling_off"
-            result["previews"][mode] = render_previews(job, selected["stem"] + "_" + mode, selected["views"])
+            result["previews"][mode] = render_previews(job, selected["stem"] + "_" + mode, selected["views"], **framing)
             if bpy.context.scene.render.engine != "BLENDER_EEVEE" or bpy.context.view_layer.material_override is not None or clay.use_backface_culling != culling:
                 raise RuntimeError("Paired visibility proof requires EEVEE, exact culling and direct clay bindings.")
         result["preview_sha256"] = {relative: _sha(job / relative) for group in result["previews"].values() for relative in group}

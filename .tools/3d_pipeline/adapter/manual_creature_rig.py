@@ -386,6 +386,17 @@ def inspect_mesh_landmarks(req,h):
         if obj is None or obj.type!="MESH" or len(obj.data.vertices)>200000: raise ValueError("Mesh missing or exceeds bounded inventory.")
         meshes.append(obj)
     data={"source":p["blend_rel"],"source_sha256":expected,"meshes":{obj.name:{"vertices":[{"index":v.index,"world":list(obj.matrix_world@v.co)} for v in obj.data.vertices],"triangles":[list(f.vertices) for f in obj.data.polygons],"materials":[m.name if m else None for m in obj.data.materials],"vertex_groups":[g.name for g in obj.vertex_groups],"vertex_weights":[[{"group":g.group,"bone":obj.vertex_groups[g.group].name,"weight":g.weight} for g in v.groups] for v in obj.data.vertices],"triangle_material_indices":[f.material_index for f in obj.data.polygons],"triangle_loop_uvs":{u.name:[[list(u.data[i].uv) for i in f.loop_indices] for f in obj.data.polygons] for u in obj.data.uv_layers},"triangle_normals_local":[list(f.normal) for f in obj.data.polygons],"triangle_corner_normals_local":[[list(obj.data.corner_normals[i].vector) for i in f.loop_indices] for f in obj.data.polygons],"normal_local_to_world":[list(r) for r in obj.matrix_world.inverted().transposed().to_3x3()]} for obj in meshes},"rigs":{rig.name:[{"name":b.name,"parent":b.parent.name if b.parent else None,"head":list(b.head_local),"tail":list(b.tail_local),"matrix_local":[list(v) for v in b.matrix_local],"pose_matrix_basis":[list(v) for v in rig.pose.bones[b.name].matrix_basis],"rotation_mode":rig.pose.bones[b.name].rotation_mode} for b in rig.data.bones] for rig in h["armatures"](False)}}
+    for obj in meshes:
+        mesh = obj.data
+        custom = [a for a in mesh.attributes if a.name in {"custom_normal", ".custom_normal"}]
+        data["meshes"][obj.name]["custom_normal_storage"] = [{"name": a.name, "domain": a.domain, "type": a.data_type,
+            "values": [list(item.value) for item in a.data] if a.data_type == "INT16_2D" else None} for a in custom]
+        data["meshes"][obj.name].update(topology_sha256=h["_mesh_region_topology"](mesh),
+            topology_hash_policy="_mesh_region_topology_v1_exact_indexed_vertices_edges_loops_polygons_material_slots",
+            topology_records={"vertices": [v.index for v in mesh.vertices],
+                "edges": [(e.index, list(e.vertices)) for e in mesh.edges],
+                "loops": [(loop.index, loop.vertex_index, loop.edge_index) for loop in mesh.loops],
+                "polygons": [(f.index, f.loop_start, f.loop_total, list(f.vertices), f.material_index) for f in mesh.polygons]})
     output.parent.mkdir(parents=True,exist_ok=True); output.write_text(json.dumps(data,separators=(",",":"))+"\n",encoding="utf-8")
     if h["file_sha256"](source)!=expected: raise RuntimeError("Inspection altered source.")
     return {"operation":"inspect_mesh_landmarks","report":output.relative_to(job).as_posix(),"report_sha256":h["file_sha256"](output),"counts":{obj.name:len(obj.data.vertices) for obj in meshes},"source_immutable":True,"data_semantics":"rest mesh coordinates under current object transforms; no evaluated pose or semantic inference"}

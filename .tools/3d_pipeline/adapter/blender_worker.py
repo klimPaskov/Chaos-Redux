@@ -2224,67 +2224,71 @@ def action_metrics() -> Dict[str, Any]:
     }
 
 
-def evaluated_action_metrics() -> List[Dict[str, Any]]:
-    """Measure evaluated bounds at representative frames for deformation QA."""
+def validate_evaluated_frames(requested_frames, start, end):
+    if requested_frames is None:
+        return sorted({int(math.floor(start)), int(math.ceil((start + end) * 0.5)), int(math.ceil(end))})
+    if not isinstance(requested_frames, list) or not 1 <= len(requested_frames) <= 241:
+        raise ValueError("evaluated_frames requires 1..241 explicit frames.")
+    if any(type(frame) is not int or frame < math.floor(start) or frame > math.ceil(end) for frame in requested_frames):
+        raise ValueError("evaluated_frames must be integers within the selected action range.")
+    if len(set(requested_frames)) != len(requested_frames):
+        raise ValueError("evaluated_frames must not repeat frames.")
+    return sorted(requested_frames)
 
+
+def evaluated_action_metrics(selected_action_name="", requested_frames=None, target_armature_name="") -> List[Dict[str, Any]]:
+    """Read evaluated working-mesh bounds for explicit action/frame selection."""
+    if requested_frames is not None and not selected_action_name:
+        raise ValueError("evaluated_frames requires an explicit selected action_name.")
     meshes = mesh_objects()
-    rigs = armatures()
+    rigs = [rig for rig in armatures() if not target_armature_name or rig.name == target_armature_name]
     if not meshes or not rigs:
         return []
     scene = bpy.context.scene
     original_frame = scene.frame_current
-    records: List[Dict[str, Any]] = []
-    for rig in rigs:
-        rig.animation_data_create()
-        original_action = rig.animation_data.action
-        actions = [
-            action
-            for action in bpy.data.actions
-            if (
-                ("WORKING" in action.name and action.name.startswith("Armature|"))
-                or action.name.startswith("creature_")
-                or action.name.startswith("black_plague_rat_")
-            )
-        ]
-        for action in actions:
+    original_bindings = []
+    records = []
+    try:
+        for rig in rigs:
+            rig.animation_data_create()
+            original_bindings.append((rig, rig.animation_data.action, getattr(rig.animation_data, "action_slot", None)))
+            if selected_action_name:
+                action = bpy.data.actions.get(selected_action_name)
+                if action is None: raise ValueError("Selected evaluated action does not exist.")
+                actions = [action]
+            else:
+                actions = [action for action in bpy.data.actions if (("WORKING" in action.name and action.name.startswith("Armature|")) or action.name.startswith("creature_") or action.name.startswith("black_plague_rat_"))]
+            for action in actions:
+                rig.animation_data.action = action
+                frames = validate_evaluated_frames(requested_frames, *action.frame_range)
+                frame_records = []
+                for frame in frames:
+                    scene.frame_set(frame)
+                    bpy.context.view_layer.update()
+                    depsgraph = bpy.context.evaluated_depsgraph_get()
+                    corners = []
+                    mesh_bounds = []
+                    for obj in meshes:
+                        evaluated = obj.evaluated_get(depsgraph)
+                        evaluated_mesh = evaluated.to_mesh()
+                        try:
+                            points = [evaluated.matrix_world @ vertex.co for vertex in evaluated_mesh.vertices]
+                            corners.extend(points)
+                            if points:
+                                mesh_bounds.append({"name": obj.name, "bounds_min": [min(p[i] for p in points) for i in range(3)], "bounds_max": [max(p[i] for p in points) for i in range(3)]})
+                        finally:
+                            evaluated.to_mesh_clear()
+                    if corners:
+                        minimum = Vector(tuple(min(p[i] for p in corners) for i in range(3)))
+                        maximum = Vector(tuple(max(p[i] for p in corners) for i in range(3)))
+                        frame_records.append({"frame": frame, "bounds_min": list(minimum), "bounds_max": list(maximum), "dimensions": list(maximum-minimum), "meshes": mesh_bounds})
+                records.append({"armature": rig.name, "action": action.name, "frames": frame_records})
+    finally:
+        for rig, action, slot in original_bindings:
             rig.animation_data.action = action
-            start, end = action.frame_range
-            frames = sorted({int(math.floor(start)), int(math.ceil((start + end) * 0.5)), int(math.ceil(end))})
-            frame_records = []
-            for frame in frames:
-                scene.frame_set(frame)
-                depsgraph = bpy.context.evaluated_depsgraph_get()
-                corners: List[Vector] = []
-                for obj in meshes:
-                    evaluated = obj.evaluated_get(depsgraph)
-                    evaluated_mesh = evaluated.to_mesh()
-                    try:
-                        corners.extend(
-                            evaluated.matrix_world @ vertex.co
-                            for vertex in evaluated_mesh.vertices
-                        )
-                    finally:
-                        evaluated.to_mesh_clear()
-                if corners:
-                    minimum = Vector((min(point.x for point in corners), min(point.y for point in corners), min(point.z for point in corners)))
-                    maximum = Vector((max(point.x for point in corners), max(point.y for point in corners), max(point.z for point in corners)))
-                    frame_records.append(
-                        {
-                            "frame": frame,
-                            "bounds_min": list(minimum),
-                            "bounds_max": list(maximum),
-                            "dimensions": list(maximum - minimum),
-                        }
-                    )
-            records.append(
-                {
-                    "armature": rig.name,
-                    "action": action.name,
-                    "frames": frame_records,
-                }
-            )
-        rig.animation_data.action = original_action
-    scene.frame_set(original_frame)
+            if action is not None and slot is not None: rig.animation_data.action_slot = slot
+        scene.frame_set(original_frame)
+        bpy.context.view_layer.update()
     return records
 
 
@@ -3153,6 +3157,9 @@ def _action_channel_rows(action: Any, rig: Any) -> List[Dict[str, Any]]:
     bone_owners = [(bone.path_from_id(), bone) for bone in rig.pose.bones]
     object_paths = {"location", "rotation_euler", "rotation_quaternion", "rotation_axis_angle", "scale"}
     rows = []
+    total_keys = sum(len(curve.keyframe_points) for curve, _ in curves)
+    if total_keys > 500000:
+        raise ValueError("Action-channel key inventory exceeds 500000 keys.")
     for curve, _ in curves:
         path = str(curve.data_path)
         if not path or len(path) > 1024 or any(ord(character) < 32 for character in path):
@@ -3168,7 +3175,12 @@ def _action_channel_rows(action: Any, rig: Any) -> List[Dict[str, Any]]:
         if len(owners) > 1:
             raise ValueError("Action-channel inventory found an ambiguous bone RNA owner.")
         rotation_mode = str(owners[0].rotation_mode) if owners else (str(rig.rotation_mode) if path in object_paths else None)
-        rows.append({"data_path": path, "array_index": index, "group": group_name, "rotation_mode": rotation_mode})
+        rows.append({"data_path": path, "array_index": index, "group": group_name, "rotation_mode": rotation_mode,
+                     "extrapolation": str(curve.extrapolation),
+                     "keyframes": [{"co": list(point.co), "interpolation": str(point.interpolation),
+                                    "handle_left": list(point.handle_left), "handle_right": list(point.handle_right),
+                                    "handle_left_type": str(point.handle_left_type), "handle_right_type": str(point.handle_right_type)}
+                                   for point in curve.keyframe_points]})
     return sorted(rows, key=lambda row: (row["data_path"], row["array_index"], row["group"] or "", row["rotation_mode"] or ""))
 
 
@@ -3221,6 +3233,9 @@ def inspect_action_channels(req: Dict[str, Any]) -> Dict[str, Any]:
             "native_action_hash_policy": "inspect_scene_curve_slot_path_index_key_co_interpolation_v1_not_anim_file_sha256",
             "action_integrity_sha256": before_actions,
             "row_count": len(rows),
+            "pose_local_snapshot": [{"name": bone.name, "location": list(bone.location),
+                                     "rotation_mode": bone.rotation_mode, "rotation_quaternion": list(bone.rotation_quaternion),
+                                     "rotation_euler": list(bone.rotation_euler), "scale": list(bone.scale)} for bone in rig.pose.bones],
             "rows": rows,
             "action_data_unchanged": True,
             "frame_action_rotation_modes_unchanged": True,
@@ -3978,6 +3993,7 @@ def review_humanoid_components(req: Dict[str, Any]) -> Dict[str, Any]:
 
 def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
     if req["payload"].get("material_visibility") is not None:
+        validate_preview_region(req["payload"].get("preview_region"), req["payload"].get("preview_resolution", 512))
         from material_visibility_probe import run_material_visibility_probe
         return run_material_visibility_probe(req, bpy=bpy, render_previews=render_previews, action_hash=_mesh_region_action_hash)
     if req["payload"].get("include_action_channels") is not None:
@@ -4173,7 +4189,7 @@ def inspect(req: Dict[str, Any]) -> Dict[str, Any]:
         "geometry": geometry_metrics(),
         "locators": locator_records(),
         "rig_and_actions": action_metrics(),
-        "evaluated_actions": evaluated_action_metrics(),
+        "evaluated_actions": evaluated_action_metrics(req["payload"].get("action_name", ""), req["payload"].get("evaluated_frames"), req["payload"].get("target_armature_name", "")),
         "weights": weight_metrics(),
         "materials": materials,
         "pose_bones": [
@@ -4779,13 +4795,76 @@ def _promotion_material_retention(materials: Dict[str, Any]) -> Dict[str, Any]:
     return {"inventory": inventory, "retained_sha256": _promotion_digest(retained)}
 
 
+def _promotion_orphan_image_consumers(record: Dict[str, Any], removed_materials: Iterable[str]) -> bool:
+    """Only images whose complete consumers are independently removable materials."""
+    materials = set(record["material_consumers"])
+    bindings = record["material_nodes"]
+    return (
+        bool(materials) and materials <= set(removed_materials)
+        and materials == {row["material"] for row in bindings}
+        and type(record["users"]) is int and record["users"] == len(bindings)
+        and record["local"] is True and record["fake_user"] is False
+        and record["extra_user"] is False and record["protected"] is False
+        and record["other_id_consumers"] == [] and record["retained_node_trees"] == []
+    )
+
+
+def _promotion_image_retention(images: Dict[str, Any], material_retention: Dict[str, Any]) -> Dict[str, Any]:
+    """Cross-check native ID users, direct node references, and embedded tree ownership."""
+    blocks = sorted(bpy.data.images, key=lambda block: block.name)
+    materials = sorted(bpy.data.materials, key=lambda block: block.name)
+    trees = [material.node_tree for material in materials]
+    user_map = bpy.data.user_map(subset=blocks + trees)
+    inventory = {}
+    for image in blocks:
+        if image not in user_map:
+            raise ValueError("Promotion image is absent from the native ID user map.")
+        bindings, owners, retained_trees = [], [], []
+        for material in materials:
+            tree = material.node_tree
+            nodes = [node for node in tree.nodes if getattr(node, "image", None) == image]
+            if not nodes:
+                continue
+            if tree not in user_map:
+                raise ValueError("Promotion image consumer tree is absent from the native ID user map.")
+            owners.append(material)
+            bindings.extend({"material": material.name, "tree": tree.name, "node": node.name} for node in sorted(nodes, key=lambda node: node.name))
+            # Fresh embedded trees have one internal user; loaded orphan trees
+            # can have zero. Neither count is an independent retention claim.
+            if (not tree.is_embedded_data or tree.users not in {0, 1} or user_map[tree]
+                    or tree.use_fake_user or tree.use_extra_user or tree.library or tree.override_library
+                    or any(bool(tree.get(key)) for key in ("chaosx_source_protected", "chaosx_reference_read_only"))):
+                retained_trees.append({"material": material.name, "tree": _promotion_value(tree),
+                                       "users": tree.users, "id_consumers": sorted((_promotion_value(block) for block in user_map[tree]), key=lambda row: json.dumps(row, sort_keys=True))})
+        allowed_ids = set(owners) | {material.node_tree for material in owners}
+        native_users = user_map[image]
+        content = images[image.name]
+        record = {
+            "record_sha256": _promotion_digest(content), "users": image.users,
+            "local": image.library is None and image.override_library is None,
+            "fake_user": image.use_fake_user, "extra_user": image.use_extra_user,
+            "protected": any(bool(image.get(key)) for key in ("chaosx_source_protected", "chaosx_reference_read_only")),
+            "material_nodes": bindings, "material_consumers": sorted(material.name for material in owners),
+            "id_consumers": sorted((_promotion_value(block) for block in native_users), key=lambda row: json.dumps(row, sort_keys=True)),
+            "other_id_consumers": sorted((_promotion_value(block) for block in native_users if block not in allowed_ids), key=lambda row: json.dumps(row, sort_keys=True)),
+            "retained_node_trees": retained_trees, "packed_hashes": content["packed_hashes"],
+            "pixel_sha256": content["pixel_sha256"], "missing_data_sentinel": content["missing_data_sentinel"],
+            "source_file": {"path": str(Path(bpy.path.abspath(image.filepath)).resolve()), "sha256": content["file_sha256"]} if content["file_sha256"] else None,
+        }
+        # A complete native user map must independently identify every observed node owner.
+        record["consumer_map_complete"] = all(material in native_users or material.node_tree in native_users for material in owners)
+        record["exclusive_orphan_consumers"] = record["consumer_map_complete"] and _promotion_orphan_image_consumers(record, [name for name, row in material_retention["inventory"].items() if row["discardable_orphan"] and _promotion_discardable_material(row)])
+        inventory[image.name] = record
+    return {"inventory": inventory, "content_sha256": _promotion_digest(images)}
+
+
 def _promotion_reopen_comparison(before: Dict[str, Any], after: Dict[str, Any]) -> Dict[str, Any]:
     """Exact preservation except native disappearance of proven before-only orphans."""
     mismatches, removed = [], []
     if set(before) != set(after):
         mismatches.append("fingerprint_fields")
     for key in set(before) | set(after):
-        if key not in {"sha256", "material_retention"} and before.get(key) != after.get(key):
+        if key not in {"sha256", "material_retention", "image_retention"} and before.get(key) != after.get(key):
             mismatches.append(key)
     left_hashes, right_hashes = before["sha256"], after["sha256"]
     if set(left_hashes) != set(right_hashes):
@@ -4810,8 +4889,35 @@ def _promotion_reopen_comparison(before: Dict[str, Any], after: Dict[str, Any]) 
             mismatches.append(path + ".required_material_missing")
     if not removed and left_hashes["materials"] != right_hashes["materials"]:
         mismatches.append("sha256.materials")
+    released_images = []
+    if "image_retention" in before and "image_retention" in after:
+        left, right = before["image_retention"], after["image_retention"]
+        if left["content_sha256"] != right["content_sha256"]:
+            mismatches.append("image_retention.content_sha256")
+        old, new = left["inventory"], right["inventory"]
+        for name in sorted(set(old) | set(new)):
+            path = f"image_retention.inventory[{name!r}]"
+            if name not in old:
+                mismatches.append(path + ".added")
+            elif name not in new:
+                mismatches.append(path + ".required_image_missing")
+            elif old[name] != new[name]:
+                # The datablock and pixels survive exactly; only native release of
+                # every node in already accepted removed materials may differ.
+                expected = dict(old[name], users=0, material_nodes=[], material_consumers=[],
+                                id_consumers=[], exclusive_orphan_consumers=False)
+                if (old[name]["exclusive_orphan_consumers"] is True
+                        and old[name]["consumer_map_complete"] is True
+                        and _promotion_orphan_image_consumers(old[name], [row["name"] for row in removed])
+                        and new[name] == expected):
+                    released_images.append({"name": name,
+                        "reason": "image_content_and_packed_bytes_retained_exactly_only_accepted_removed_orphan_material_consumers_released",
+                        "before": old[name], "after": new[name]})
+                else:
+                    mismatches.append(path + ".changed")
     return {"accepted": not mismatches, "mismatches": sorted(mismatches), "removed_orphan_materials": removed,
-            "policy": "exact_retained_materials_and_all_other_sections_only_proven_orphan_disappearance"}
+            "retained_images_with_released_orphan_consumers": released_images,
+            "policy": "exact_all_image_content_and_ids_only_proven_removed_orphan_material_consumer_release"}
 
 
 def _promotion_image_record(job, image):
@@ -4837,7 +4943,9 @@ def _promotion_image_record(job, image):
         if len(image.pixels) != 0:
             raise ValueError(f"Inconsistent empty-path image state: name={image.name!r}, source={image.source!r}, size={list(image.size)!r}, has_data={image.has_data!r}")
     elif not packed:
-        if image.source not in {"FILE", "GENERATED"}:
+        # Full datablock inventory includes native viewer buffers; retain their
+        # exact finite pixel bytes under the same budget as empty-path images.
+        if image.source not in {"FILE", "GENERATED", "VIEWER"}:
             raise ValueError(f"Unsupported loaded empty-path image: name={image.name!r}, source={image.source!r}, size={list(image.size)!r}, has_data={image.has_data!r}")
         width,height = list(image.size)
         channels = int(image.channels)
@@ -4854,10 +4962,24 @@ def _promotion_image_record(job, image):
     return {"name":image.name,"has_data":bool(image.has_data) if path is None and not packed else None,"missing_data_sentinel":bool(not packed and path is None and not image.has_data),"material_validity":"missing_pixels_requires_material_review" if not packed and path is None and not image.has_data else "not_assessed","filepath":image.filepath,"size":image_size,"source":image.source,"alpha_mode":image.alpha_mode,"colorspace":image.colorspace_settings.name,"packed_hashes":packed,"file_sha256":file_hash,"pixel_sha256":pixel_hash,"pixel_encoding":"little_endian_float32" if pixel_hash else None,"settings":{key:_promotion_value(getattr(image,key)) for key in ("channels","is_float","generated_type","generated_width","generated_height","generated_color","use_generated_float","use_view_as_render") if hasattr(image,key)},"properties":_promotion_properties(image)}
 
 
-def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_action_name: str = "", include_sections: bool = False) -> Dict[str, Any]:
+def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_action_name: str = "", include_sections: bool = False, cache_image_records: bool = True, image_cache_stats: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """Exact pre/post fingerprints; no evaluated mesh, conversion, or data mutation."""
     target_names = set(target_names)
     objects, geometry, rigs, materials, images, actions = {}, {}, {}, {}, {}, {}
+    # Local to this synchronous snapshot only; never shared across mutations or loads.
+    import time
+    image_cache, image_stats = {}, {"hits": 0, "misses": 0, "image_record_seconds": 0.0}
+    def image_content(image):
+        if cache_image_records and image in image_cache:
+            image_stats["hits"] += 1
+            return image_cache[image]
+        started = time.perf_counter()
+        record = _promotion_image_record(job, image)
+        image_stats["image_record_seconds"] += time.perf_counter() - started
+        image_stats["misses"] += 1
+        if cache_image_records:
+            image_cache[image] = record
+        return record
     for obj in bpy.data.objects:
         if obj.library or obj.override_library or obj.constraints:
             raise ValueError("Promotion proof must contain local unconstrained objects only.")
@@ -4909,11 +5031,14 @@ def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_ac
             if image is not None:
                 if image.library or image.override_library:
                     raise ValueError("Promotion cannot adopt linked texture images.")
-                image_record = _promotion_image_record(job,image)
+                image_record = image_content(image)
                 if not {"filepath", "packed_hashes", "file_sha256", "pixel_sha256"} <= set(image_record):
                     raise RuntimeError("Incomplete image fingerprint record.")
                 images[image.name] = image_record
         materials[material.name] = {"properties": _promotion_properties(material), "settings": _promotion_scalars(material), "animation": _promotion_animation_state(material), "tree_properties": _promotion_properties(tree), "tree_animation": _promotion_animation_state(tree), "nodes": nodes, "links": [(link.from_node.name, link.from_socket.identifier, link.to_node.name, link.to_socket.identifier) for link in tree.links]}
+    for image in bpy.data.images:
+        if image.name not in images:
+            images[image.name] = image_content(image)
     for action in bpy.data.actions:
         if exclude_action_name and action.name == exclude_action_name:
             continue
@@ -4928,9 +5053,12 @@ def _promotion_fingerprint(job: Path, target_names: Iterable[str], *, exclude_ac
     scene = bpy.context.scene
     sections = {"objects": objects, "geometry": geometry, "rigs": rigs, "materials": materials, "images": images, "actions": actions,
                 "scene": {"fps": scene.render.fps, "fps_base": scene.render.fps_base, "frame": scene.frame_current, "subframe": scene.frame_subframe, "start": scene.frame_start, "end": scene.frame_end, "properties": _promotion_properties(scene), "collections": {collection.name: {"objects": sorted(obj.name for obj in collection.objects), "children": sorted(child.name for child in collection.children), "properties": _promotion_properties(collection)} for collection in bpy.data.collections}}}
-    result = {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "material_retention": _promotion_material_retention(materials), "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
+    material_retention = _promotion_material_retention(materials)
+    result = {"sha256": {key: _promotion_digest(value) for key, value in sections.items()}, "material_retention": material_retention, "image_retention": _promotion_image_retention(images, material_retention), "mesh_counts": {name: {key: row[key] for key in ("vertices", "polygons", "loops")} for name, row in geometry.items()}, "actions": sorted(actions), "objects": sorted(objects)}
     if include_sections:
         result["sections"] = sections
+    if image_cache_stats is not None:
+        image_cache_stats.update(image_stats, unique_images=len(images), cache_enabled=cache_image_records)
     return result
 
 
@@ -5410,8 +5538,8 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     target_armature_name = explicit_safe_name(payload.get("target_armature_name"), "target_armature_name")
     action_name = explicit_action_name(payload.get("target_action_name"), "target_action_name")
     source_kind = str(payload.get("source_kind") or "")
-    if source_kind not in {"meshy_animate", "professional_source"}:
-        raise ValueError("source_kind must be meshy_animate or professional_source.")
+    if source_kind not in {"meshy_animate", "meshy_text_to_motion", "professional_source"}:
+        raise ValueError("source_kind must be meshy_animate, meshy_text_to_motion or professional_source.")
     source_reference_id = explicit_reference_id(payload.get("source_reference_id"), "source_reference_id")
     expected_source_sha256 = str(payload.get("source_sha256") or "").upper()
     if not re.fullmatch(r"[0-9A-F]{64}", expected_source_sha256):
@@ -5444,7 +5572,11 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
             + json.dumps(mismatched_provenance, sort_keys=True)
         )
 
+    if checkpoint == blend or checkpoint.exists():
+        raise ValueError("Animation transfer requires a new sibling checkpoint.")
     bpy.ops.wm.open_mainfile(filepath=str(blend))
+    if bpy.data.actions.get(action_name) is not None:
+        raise ValueError("Animation transfer requires a new target action name.")
     audited_target_promotion = {
         "requested": bool(payload.get("promote_audited_target", False)),
         "applied": False,
@@ -5505,6 +5637,8 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     target_rig = matching_target_rigs[0]
     before_objects = set(bpy.data.objects)
     before_actions = set(bpy.data.actions)
+    retained_action_hashes = {a.name: action_curve_signature(a) for a in before_actions}
+    target_source_hash = file_sha256(blend)
     imported = import_candidate(source)
     imported_rigs = [obj for obj in imported if obj.type == "ARMATURE"]
     if requested_source_armature:
@@ -5637,6 +5771,41 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         raise RuntimeError(
             f"{exc} Source armature: {source_rig.name}; target armature: {target_rig.name}."
         ) from exc
+    from retarget_root_motion import vertical_root_basis_location, conjugate_rotation, angular_motion_retained
+    target_roots = [b for b in target_rig.data.bones if b.parent is None and b.name in bone_chains]
+    if len(target_roots) != 1:
+        raise ValueError("Retarget requires exactly one explicitly mapped target root.")
+    target_root = target_roots[0]
+    if target_rig.pose.bones[target_root.name].constraints:
+        raise ValueError("Root translation proof requires an unconstrained target root.")
+    root_source_name = bone_chains[target_root.name][-1]
+    scale_ref = payload.get("root_scale_reference")
+    anatomical_scale = 1.0
+    scale_evidence = {"policy": "world_units_identity", "ratio": 1.0}
+    if source_kind == "meshy_text_to_motion" and not scale_ref:
+        raise ValueError("Text-to-Motion requires explicit measured root_scale_reference joint-head pairs.")
+    if scale_ref:
+        if not isinstance(scale_ref, dict) or set(scale_ref) != {"source_head_bones", "target_head_bones"}:
+            raise ValueError("root_scale_reference requires source_head_bones and target_head_bones only.")
+        lengths = []
+        for key, rig in (("source_head_bones", source_rig), ("target_head_bones", target_rig)):
+            pair = scale_ref[key]
+            if not isinstance(pair, list) or len(pair) != 2 or pair[0] == pair[1] or any(name not in rig.data.bones for name in pair):
+                raise ValueError("Scale reference must name two distinct existing joints per rig.")
+            points = [rig.matrix_world @ rig.data.bones[name].head_local for name in pair]
+            distance = (points[1] - points[0]).length
+            if not math.isfinite(distance) or distance <= 1e-6:
+                raise ValueError("Measured anatomical span is zero or invalid.")
+            lengths.append(distance)
+        anatomical_scale = lengths[1] / lengths[0]
+        scale_evidence = {"policy": "measured_world_joint_head_span", "reference": scale_ref,
+                          "source_world_span": lengths[0], "target_world_span": lengths[1], "ratio": anatomical_scale}
+    source_object_matrix = source_rig.matrix_world.copy()
+    target_object_matrix = target_rig.matrix_world.copy()
+    root_world_cache = {}
+    target_basis_to_world = (target_rig.matrix_world @ target_root.matrix_local).to_3x3()
+    source_object_rotation = source_rig.matrix_world.to_quaternion().normalized()
+    target_object_rotation = target_rig.matrix_world.to_quaternion().normalized()
     source_pose_cache: Dict[int, Dict[str, Tuple[Vector, Quaternion]]] = {}
     target_bones_by_depth = sorted(
         bone_chains,
@@ -5645,6 +5814,11 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     for frame in range(frame_start, frame_end + 1):
         bpy.context.scene.frame_set(frame)
         bpy.context.view_layer.update()
+        for rig, initial in ((source_rig, source_object_matrix), (target_rig, target_object_matrix)):
+            error = max(abs(rig.matrix_world[row][col] - initial[row][col]) for row in range(4) for col in range(4))
+            if error > 1e-6:
+                raise ValueError("Animated armature object basis is unsupported; provide a static-object source/target. " + str({"rig": rig.name, "frame": frame, "matrix_error": error}))
+        root_world_cache[frame] = (source_rig.matrix_world @ source_rig.pose.bones[root_source_name].matrix).translation.copy()
         source_deltas: Dict[str, Tuple[Vector, Quaternion]] = {}
         for target_name, source_names in bone_chains.items():
             first_pose_bone = source_rig.pose.bones[source_names[0]]
@@ -5669,6 +5843,9 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
                 last_pose_bone.matrix.to_quaternion().normalized()
                 @ last_rest_bone.matrix_local.to_quaternion().normalized().inverted()
             ).normalized()
+            # Conjugate the source armature-space delta through both object orientations.
+            source_world_rotation = Quaternion(conjugate_rotation(
+                source_world_rotation, source_object_rotation, target_object_rotation))
             source_deltas[target_name] = (location.copy(), source_world_rotation)
 
         frame_pose: Dict[str, Tuple[Vector, Quaternion]] = {}
@@ -5717,6 +5894,18 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     transferred["chaosx_animation_processing_policy"] = "verified_source_transfer_only"
     target_rig.animation_data_create()
     target_rig.animation_data.action = transferred
+    unmapped_target_bones = sorted(target_bone_names - set(bone_chains))
+    for name in unmapped_target_bones:
+        pose_bone = target_rig.pose.bones[name]
+        if pose_bone.constraints:
+            raise ValueError("Unmapped target control has constraints; explicit mapping is required: " + name)
+        pose_bone.rotation_mode = "QUATERNION"
+        pose_bone.location = (0.0, 0.0, 0.0)
+        pose_bone.rotation_quaternion = (1.0, 0.0, 0.0, 0.0)
+        pose_bone.scale = (1.0, 1.0, 1.0)
+        for frame in (frame_start, frame_end):
+            for channel in ("location", "rotation_quaternion"):
+                pose_bone.keyframe_insert(data_path=channel, frame=frame, group=name)
     bpy.context.view_layer.objects.active = target_rig
     target_rig.select_set(True)
     target_root = next((bone for bone in target_rig.data.bones if bone.parent is None), None)
@@ -5734,6 +5923,8 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         if target_root_name
         else 0.0
     )
+    root_world_proof = []
+    target_rest_root_world = (target_rig.matrix_world @ target_root.matrix_local).translation.copy()
     for frame in range(frame_start, frame_end + 1):
         bpy.context.scene.frame_set(frame)
         for target_name in bone_chains:
@@ -5741,8 +5932,9 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
             source_location, source_rotation = source_pose_cache[frame][target_name]
             target_bone.rotation_mode = "QUATERNION"
             if target_name == target_root_name:
-                root_delta = source_location - source_root_location
-                target_bone.location = Vector((0.0, 0.0, root_delta.z * location_scale))
+                source_world_delta = (root_world_cache[frame] - root_world_cache[frame_start]) * anatomical_scale
+                target_bone.location = Vector(vertical_root_basis_location(
+                    source_world_delta, (0.0, 0.0, 0.0), target_basis_to_world))
             else:
                 target_bone.location = Vector((0.0, 0.0, 0.0))
             target_bone.rotation_quaternion = source_rotation
@@ -5750,13 +5942,23 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
             target_bone.keyframe_insert(data_path="location", frame=frame, group=target_name)
             target_bone.keyframe_insert(data_path="rotation_quaternion", frame=frame, group=target_name)
         bpy.context.view_layer.update()
+        actual_delta = (target_rig.matrix_world @ target_rig.pose.bones[target_root_name].matrix).translation - target_rest_root_world
+        expected_delta = Vector((0.0, 0.0, (root_world_cache[frame].z - root_world_cache[frame_start].z) * anatomical_scale))
+        error = (actual_delta - expected_delta).length
+        if error > 2e-5:
+            raise RuntimeError("Retarget root world displacement differs from scaled vertical source: " + str({"frame": frame, "error": error}))
+        root_world_proof.append({"frame": frame, "source_world": list(root_world_cache[frame]),
+                                 "expected_target_delta": list(expected_delta), "actual_target_delta": list(actual_delta), "error": error})
 
-    scale_cleanup = sanitize_action_scale_channels()
+    scale_cleanup = {"action": transferred.name, "policy": "only location/quaternion authored; existing action scale channels untouched"}
     root_cleanup = {
         "action": transferred.name,
-        "policy": "provider armature-space motion reconstructed hierarchy-first through target rest and animated parent bases; target-root X/Y motion removed and Z retained; source pose-basis translation is converted to target pose-basis units by source-world-scale divided by target-world-scale",
+        "policy": "source hierarchy world-root delta scaled by explicit measured joint-head span; world X/Y removed; world Z converted through inverse target armature/rest-root basis; rotations conjugated through source/target object orientations",
+        "anatomical_scale": scale_evidence,
+        "world_root_displacement_proof": root_world_proof,
+        "maximum_world_root_error": max(row["error"] for row in root_world_proof),
         "location_coordinate_space": "pose_bone_matrix_basis_translation",
-        "location_scale_formula": "source_armature_uniform_world_scale / target_armature_uniform_world_scale",
+        "location_scale_formula": "source_world_delta * measured_world_joint_span_ratio then inverse_target_world_rest_basis",
         "rest_data_length_ratio_applied_to_location": False,
         "data_length_ratio": data_length_ratio,
         "source_armature_world_scale": list(source_world_scale),
@@ -5796,12 +5998,10 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
             bpy.context.view_layer.update()
             target_base_location = Vector((0.0, 0.0, 0.0))
             target_base_rotation = source_base_rotation
-            source_delta = float((source_location - source_base_location).length) + shortest_quaternion_angle(
-                source_rotation, source_base_rotation
-            )
-            target_delta = float((target_location - target_base_location).length) + shortest_quaternion_angle(
-                target_rotation, target_base_rotation
-            )
+            # Compare like-for-like angular motion. World root translation has its
+            # own exact per-frame proof; raw source pose units must not enter this gate.
+            source_delta = shortest_quaternion_angle(source_rotation, source_base_rotation)
+            target_delta = shortest_quaternion_angle(target_rotation, target_base_rotation)
             source_motion += source_delta
             target_motion += target_delta
             bones_report.append(
@@ -5821,7 +6021,7 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
                 "bones": bones_report,
             }
         )
-    if source_motion_peak > 1e-4 and target_motion_peak < max(1e-4, source_motion_peak * 0.10):
+    if not angular_motion_retained(source_motion_peak, target_motion_peak):
         raise RuntimeError(
             "Provider action has source motion but the transferred target action remained static: "
             + json.dumps(
@@ -5846,11 +6046,15 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
     for action in list(bpy.data.actions):
         if action == transferred or action == existing:
             continue
-        if action == source_action or action.name.startswith("Armature.002|"):
+        if action in source_actions:
             removed_provider_actions.append(action.name)
             action.user_clear()
             bpy.data.actions.remove(action)
 
+    if {a.name: action_curve_signature(a) for a in bpy.data.actions if a.name in retained_action_hashes} != retained_action_hashes:
+        raise RuntimeError("Retarget changed a retained action.")
+    if file_sha256(blend) != target_source_hash:
+        raise RuntimeError("Retarget input checkpoint changed.")
     save_blend(checkpoint)
     result = {
         "blend": str(blend.relative_to(job)).replace("\\", "/"),
@@ -5874,14 +6078,19 @@ def import_animation_action(req: Dict[str, Any]) -> Dict[str, Any]:
         "provider_actions_removed": removed_provider_actions,
         "scale_cleanup": scale_cleanup,
         "root_cleanup": root_cleanup,
+        "retained_action_hashes": retained_action_hashes,
+        "target_source_sha256": target_source_hash,
+        "retained_actions_preserved": True,
+        "unmapped_target_controls": {"names": unmapped_target_bones, "policy": "identity_local_transform_keys_at_start_and_end_inherit_animated_parent"},
         "location_coordinate_space": "pose_bone_matrix_basis_translation",
-        "location_scale_formula": "source_armature_uniform_world_scale / target_armature_uniform_world_scale",
+        "location_scale_formula": "source_world_delta * measured_world_joint_span_ratio then inverse_target_world_rest_basis",
         "rest_data_length_ratio_applied_to_location": False,
         "data_length_ratio": data_length_ratio,
         "source_armature_world_scale": list(source_world_scale),
         "target_armature_world_scale": list(target_world_scale),
         "location_scale": location_scale,
         "source_target_motion_crosscheck": {
+            "metric": "sum_of_mapped_bone_angular_deltas_radians; world_root_translation_verified_separately_per_frame",
             "sample_frames": sample_frames,
             "source_motion_peak": source_motion_peak,
             "target_motion_peak": target_motion_peak,
@@ -5967,7 +6176,7 @@ def action_provenance(action: bpy.types.Action) -> Dict[str, str]:
         fields.update(source_reference_id=spec_hash, source_action_name=action.name, manual_spec_sha256=spec_hash,
                       processing_policy="manual_blender_gpt6_astra_hash_bound_declarative_action")
         return fields
-    if fields["source_kind"] not in {"meshy_animate", "professional_source"}:
+    if fields["source_kind"] not in {"meshy_animate", "meshy_text_to_motion", "professional_source"}:
         raise RuntimeError(f"Action {action.name} is not marked as a verified provider/professional source action.")
     if not re.fullmatch(r"[0-9A-F]{64}", fields["source_sha256"]):
         raise RuntimeError(f"Action {action.name} has no retained verified source checksum.")
@@ -6883,7 +7092,7 @@ def _action_phase_inputs(req: Dict[str, Any]) -> Dict[str, Any]:
         if not isinstance(payload[key], str) or not re.fullmatch(r"[0-9A-Fa-f]{64}", payload[key]):
             raise ValueError(f"{key} must be an explicit SHA-256.")
         result[key] = payload[key].upper()
-    role_phases = {"attack": ("ready", "aim", "discharge", "recoil", "recovery"), "support_attack": ("ready", "aim", "discharge", "recoil", "recovery"), "defend": ("guard_start", "guard_hold", "guard_release"), "retreat": ("disengage", "withdrawal", "recovery")}
+    role_phases = {"attack": ("ready", "aim", "discharge", "recoil", "recovery"), "support_attack": ("ready", "aim", "discharge", "recoil", "recovery"), "defend": ("guard_start", "guard_hold", "guard_release"), "retreat": ("disengage", "withdrawal", "recovery"), "death": ("standing", "falling", "impact", "rebound", "settling", "terminal_hold")}
     role = payload["semantic_role"]
     if not isinstance(role, str) or role not in role_phases:
         raise ValueError("Unsupported action phase semantic role.")
@@ -7029,7 +7238,8 @@ def _action_phase_motion(context: Dict[str, Any], rig: Any, source: Dict[str, An
     if not non_root:
         raise ValueError("Action patch requires genuinely changed non-root bone channels.")
     pairs = {"attack": (("ready", "aim"), ("discharge", "recoil"), ("recoil", "recovery")), "support_attack": (("ready", "aim"), ("discharge", "recoil"), ("recoil", "recovery")),
-             "defend": (("guard_start", "guard_hold"), ("guard_hold", "guard_release")), "retreat": (("disengage", "withdrawal"), ("withdrawal", "recovery"))}
+             "defend": (("guard_start", "guard_hold"), ("guard_hold", "guard_release")), "retreat": (("disengage", "withdrawal"), ("withdrawal", "recovery")),
+             "death": (("standing", "falling"), ("falling", "impact"), ("impact", "rebound"), ("rebound", "settling"))}
     transitions = {}
     for start, end in pairs[context["semantic_role"]]:
         deltas = {name: _action_phase_delta(target[start]["bones"][name]["basis"], target[end]["bones"][name]["basis"]) for name in non_root}
@@ -9467,12 +9677,18 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
+    if operation in {"repair_explicit_mesh_winding_batch", "repair_explicit_skin_batch", "replace_explicit_corner_normals"}:
+        import explicit_batch_repair
+        return explicit_batch_repair.run_repair(req, sys.modules[__name__])
     if operation in {"repair_explicit_skin", "preview_explicit_skin_selection"}:
         import explicit_skin_repair
         return getattr(explicit_skin_repair, operation)(req, globals())
     if operation in {"edit_explicit_mesh_vertices", "bind_existing_pdx_material"}:
         import mesh_vertex_material_repair
         return getattr(mesh_vertex_material_repair, operation)(req, globals())
+    if operation == "inspect_animation_source":
+        from retarget_root_motion import inspect_animation_source
+        return inspect_animation_source(req, globals())
     if operation == "rotate_existing_assembly_yaw":
         from assembly_yaw import rotate_existing_assembly_yaw
         return rotate_existing_assembly_yaw(req,globals())

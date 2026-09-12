@@ -393,6 +393,7 @@ def chaosx_blender_hoi4_inspect_scene(
     expected_source_sha256: str = "",
     preview_region: Dict[str, Any] | None = None,
     preview_resolution: int = 512,
+    evaluated_frames: list[int] | None = None,
 ) -> Dict[str, Any]:
     """Inspect a checkpoint; optional hash-bound mesh_region or action-channel inventory remains read-only."""
 
@@ -404,6 +405,7 @@ def chaosx_blender_hoi4_inspect_scene(
             "render_previews": render_previews,
             "runtime_stem": runtime_stem,
             "action_name": action_name,
+            "evaluated_frames": evaluated_frames,
             "target_armature_name": target_armature_name,
             "preview_frame": preview_frame,
             "preview_view_names": preview_view_names or [],
@@ -560,7 +562,7 @@ def chaosx_blender_hoi4_partition_skeletal_mesh_export_batches(
     target_mesh_names: list[str],
     max_export_vertices_per_batch: int = 24000,
 ) -> Dict[str, Any]:
-    """Partition a hashed existing skeletal source using identical material copies only."""
+    """Partition a hashed existing skeletal source using identical material copies only. Reconcile image-user additions only from transaction-created equivalent clones on exact owned mesh slots; image content, original consumers, and retention remain exact."""
     return _run(job_id, "partition_skeletal_mesh_export_batches", {
         "blend_rel": blend_rel,
         "expected_source_sha256": expected_source_sha256,
@@ -706,12 +708,13 @@ def chaosx_blender_hoi4_import_animation_action(
     source_action_name: str,
     target_armature_name: str,
     target_action_name: str,
-    source_kind: Literal["meshy_animate", "professional_source"],
+    source_kind: Literal["meshy_animate", "meshy_text_to_motion", "professional_source"],
     source_reference_id: str,
     source_sha256: str,
     bone_chains: Dict[str, list[str]] | None = None,
     promote_audited_target: bool = False,
     source_armature_name: str = "",
+    root_scale_reference: Dict[str, list[str]] | None = None,
 ) -> Dict[str, Any]:
     """Transfer one receipt-verified provider/professional skeletal action by its exact source id.
 
@@ -735,6 +738,7 @@ def chaosx_blender_hoi4_import_animation_action(
             "source_reference_id": source_reference_id,
             "source_sha256": source_sha256,
             "bone_chains": bone_chains or {},
+            "root_scale_reference": root_scale_reference,
             "promote_audited_target": promote_audited_target,
         },
     )
@@ -815,7 +819,7 @@ def chaosx_blender_hoi4_patch_existing_humanoid_action_phases(
     frame_start: int, frame_end: int, phase_frames: dict[str, int],
     allowed_bones: list[str], motion_bone_chain: list[str], bone_patches: dict[str, Any],
 ) -> Dict[str, Any]:
-    """Clone an existing action and apply explicit authorized manual bone-phase keys in a new sibling; no geometry edits or semantic approval."""
+    """Clone an existing action and apply explicit authorized manual bone-phase keys in a new sibling; no geometry edits or semantic approval. Reopen receipts prove exact image content and consumers; all image datablocks and packed bytes remain exact, allowing only consumer release caused by accepted removed orphan materials."""
     return _run(job_id, "patch_existing_humanoid_action_phases", {
         "blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel,
         "expected_source_sha256": expected_source_sha256, "expected_action_sha256": expected_action_sha256,
@@ -1208,6 +1212,21 @@ def chaosx_blender_hoi4_save_checkpoint(
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_repair_explicit_mesh_winding_batch(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, repair_spec_rel: str, expected_repair_spec_sha256: str) -> Dict[str, Any]:
+    """Flip only hash-bound per-mesh face lists in one new sibling; exact preconditions, full scene proof and <=0.5 degree native/reopen normals."""
+    return _run(job_id, "repair_explicit_mesh_winding_batch", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"repair_spec_rel":repair_spec_rel,"expected_repair_spec_sha256":expected_repair_spec_sha256})
+
+@mcp.tool()
+def chaosx_blender_hoi4_repair_explicit_skin_batch(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, repair_spec_rel: str, expected_repair_spec_sha256: str) -> Dict[str, Any]:
+    """Replace only exact hash-bound per-mesh expected/replacement weight records; one immutable-source sibling transaction, positive normalized <=4 influences."""
+    return _run(job_id, "repair_explicit_skin_batch", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"repair_spec_rel":repair_spec_rel,"expected_repair_spec_sha256":expected_repair_spec_sha256})
+
+@mcp.tool()
+def chaosx_blender_hoi4_replace_explicit_corner_normals(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, repair_spec_rel: str, expected_repair_spec_sha256: str) -> Dict[str, Any]:
+    """Replace explicit mesh/face/corner/vertex unit directions with expected-before proof; preserve every unselected raw/decoded corner exactly in one new sibling."""
+    return _run(job_id, "replace_explicit_corner_normals", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"repair_spec_rel":repair_spec_rel,"expected_repair_spec_sha256":expected_repair_spec_sha256})
+
+@mcp.tool()
 def chaosx_blender_hoi4_repair_explicit_mesh_winding(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, mesh_name: str, face_indices: list[int], angular_tolerance_degrees: float = 0.25) -> Dict[str, Any]:
     """Flip an exact reviewed face list in a new hash-bound sibling; preserve corners, weights, rig and actions."""
     return _run(job_id, "repair_explicit_mesh_winding", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"mesh_name":mesh_name,"face_indices":face_indices,"angular_tolerance_degrees":angular_tolerance_degrees})
@@ -1251,6 +1270,14 @@ def chaosx_blender_hoi4_rotate_existing_assembly_yaw(job_id: str, blend_rel: str
 
 def main() -> None:
     mcp.run(transport="stdio")
+
+
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_inspect_animation_source(job_id: str, source_rel: str, source_sha256: str) -> Dict[str, Any]:
+    """Read standalone FBX skeleton/action identity in a disposable scene without a target checkpoint."""
+    return _run(job_id, "inspect_animation_source", {"source_rel": source_rel, "source_sha256": source_sha256})
 
 
 if __name__ == "__main__":

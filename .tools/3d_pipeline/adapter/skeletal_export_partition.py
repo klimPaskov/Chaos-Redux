@@ -94,8 +94,101 @@ def _material_signature(record):
     return record
 
 
-def _fingerprint(api, job, names, clones):
+def _partition_clone_ownership(api, result, names, clones, ownership):
+    """Verify exact transaction-created clones and their sole approved mesh slots."""
+    if not isinstance(ownership, dict) or set(ownership) != set(clones):
+        raise RuntimeError("Partition material clones lack exact transaction ownership evidence.")
+    sections = result["sections"]
+    inventory = result["material_retention"]["inventory"]
+    proof = {}
+    for clone, source in clones.items():
+        owned = ownership[clone]
+        if set(owned) != {"source_material", "source_record_sha256", "object", "mesh", "slot", "material_id", "tree_id"}:
+            raise RuntimeError("Partition material clone has incomplete transaction evidence.")
+        obj = api.bpy.data.objects.get(owned["object"])
+        material = api.bpy.data.materials.get(clone)
+        if (owned["source_material"] != source or owned["object"] not in names
+                or obj is None or obj.data.name != owned["mesh"] or obj.data.users != 1
+                or material is None or material.name != clone
+                or api._promotion_value(material) != owned["material_id"]
+                or api._promotion_value(material.node_tree) != owned["tree_id"]):
+            raise RuntimeError("Partition material clone is outside its declared transaction object/mesh.")
+        slot = owned["slot"]
+        if type(slot) is not int or not 0 <= slot < len(obj.data.materials) or obj.data.materials[slot] != material:
+            raise RuntimeError("Partition material clone is not bound to its exact owned slot.")
+        tree = material.node_tree
+        tree_users = api.bpy.data.user_map(subset=[tree])
+        if (tree not in tree_users or tree_users[tree] or not tree.is_embedded_data
+                or tree.users not in {0, 1}):
+            raise RuntimeError("Partition clone node tree has an independent or unproven consumer.")
+        row, original = inventory[clone], inventory[source]
+        expected_mesh_slots = [(owned["mesh"], slot)]
+        expected_object_slots = [(owned["object"], slot, "DATA")]
+        allowed_ids = [api._promotion_value(obj), api._promotion_value(obj.data)]
+        if (row["mesh_slots"] != expected_mesh_slots or row["object_slots"] != expected_object_slots
+                or not row["id_consumers"] or any(consumer not in allowed_ids for consumer in row["id_consumers"])
+                or type(row["users"]) is not int or row["users"] != 1 + int(original["fake_user"])
+                or row["fake_user"] != original["fake_user"] or row["extra_user"] is not False
+                or row["local"] is not True or row["protected"] is not False or row["tree_retained"] is not False
+                or original["local"] is not True or original["protected"] is not False
+                or original["record_sha256"] != owned["source_record_sha256"]):
+            raise RuntimeError("Partition clone/source material retention or consumers changed outside the transaction.")
+        if _material_signature(sections["materials"][clone]) != _material_signature(sections["materials"][source]):
+            raise RuntimeError("Partition material clone content differs from its unchanged source.")
+        proof[clone] = {"ownership": owned, "retention": row, "private_embedded_tree_consumers": [],
+                        "source_record_sha256": original["record_sha256"],
+                        "equivalent_material_signature_sha256": api._promotion_digest(_material_signature(sections["materials"][clone]))}
+    return proof
+
+
+def _partition_image_consumers(api, before, after, clones, ownership):
+    """Reconcile only exact node/ID users added by already verified material clones."""
+    if not isinstance(before, dict) or set(before) != {"inventory", "content_sha256"} or set(after) != set(before):
+        raise RuntimeError("Partition image reconciliation lacks complete baseline evidence.")
+    if before["content_sha256"] != after["content_sha256"] or set(before["inventory"]) != set(after["inventory"]):
+        raise RuntimeError("Partition changed image content or image datablock identities.")
+    reconciled = []
+    for image_name, original in before["inventory"].items():
+        expected = json.loads(json.dumps(original))
+        additions = []
+        for clone, source in clones.items():
+            source_nodes = [row for row in original["material_nodes"] if row["material"] == source]
+            if not source_nodes:
+                continue
+            if (original["consumer_map_complete"] is not True or source not in original["material_consumers"]
+                    or {"id_type": "Material", "name": source, "library": None} not in original["id_consumers"]):
+                raise RuntimeError("Partition clone image lacks a complete original source consumer.")
+            owned = ownership[clone]
+            nodes = [dict(row, material=clone, tree=owned["tree_id"]["name"]) for row in source_nodes]
+            expected["material_nodes"].extend(nodes)
+            expected["material_consumers"].append(clone)
+            expected["id_consumers"].append(owned["material_id"])
+            expected["users"] += len(nodes)
+            additions.append({"material": clone, "source_material": source, "nodes": nodes,
+                              "added_users": len(nodes), "id_consumer": owned["material_id"]})
+        expected["material_nodes"].sort(key=lambda row: (row["material"], row["node"]))
+        expected["material_consumers"].sort()
+        expected["id_consumers"].sort(key=lambda row: json.dumps(row, sort_keys=True))
+        actual = after["inventory"][image_name]
+        if actual != expected:
+            raise RuntimeError(f"Partition image has changed content, retention, or unplanned consumers: {image_name}")
+        if additions:
+            reconciled.append({"image": image_name, "before": original, "after": actual,
+                               "planned_clone_additions": additions, "image_content_exact": True})
+    return {"accepted": True, "content_sha256": before["content_sha256"], "images": reconciled,
+            "policy": "partition_transaction_exact_material_clone_consumers_only_all_image_content_retention_and_original_consumers_exact"}
+
+
+def _fingerprint(api, job, names, clones, *, ownership=None, baseline_images=None, reconciliation=None):
     result = api._promotion_fingerprint(job, names, include_sections=True)
+    if clones:
+        clone_proof = _partition_clone_ownership(api, result, names, clones, ownership)
+        image_proof = _partition_image_consumers(api, baseline_images, result["image_retention"], clones, ownership)
+        if reconciliation is not None:
+            reconciliation.update(material_clones=clone_proof, image_consumers=image_proof)
+        # This operation-scoped projection follows the exact image proof above.
+        # The shared promotion comparator and unprojected receipts remain strict.
+        result["image_retention"] = json.loads(json.dumps(baseline_images))
     sections = result.pop("sections")
     for name in names:
         mesh = api.bpy.data.objects[name].data
@@ -189,7 +282,7 @@ def partition_skeletal_mesh_export_batches(req, api):
         report["locators_before"] = api.locator_records()
         before = _fingerprint(api, job, names, {})
         report["fingerprints_before"] = before
-        clones, rows = {}, []
+        clones, ownership, rows = {}, {}, []
         for obj in targets:
             mesh = obj.data
             initial_materials = list(mesh.materials)
@@ -205,22 +298,34 @@ def partition_skeletal_mesh_export_batches(req, api):
                     faces = face_ids[start:start + maximum // 3]
                     slot = source_index
                     if number:
+                        clone_name = f"{material.name}_skeletal_batch_{number + 1:02d}"
+                        suffix = 1
+                        while clone_name in bpy.data.materials:
+                            clone_name = f"{material.name}_skeletal_batch_{number + 1:02d}.{suffix:03d}"
+                            suffix += 1
                         duplicate = material.copy()
                         # Native ID.copy clears fake-user retention; the batch
                         # must retain the source's full material settings.
                         duplicate.use_fake_user = material.use_fake_user
-                        duplicate.name = f"{material.name}_skeletal_batch_{number + 1:02d}"
+                        duplicate.name = clone_name
+                        if duplicate.name != clone_name:
+                            raise RuntimeError("Partition native clone identity differs from its planned transaction name.")
                         mesh.materials.append(duplicate)
                         slot = len(mesh.materials) - 1
                         clones[duplicate.name] = material.name
+                        ownership[duplicate.name] = {"source_material": material.name,
+                            "source_record_sha256": before["material_retention"]["inventory"][material.name]["record_sha256"],
+                            "object": obj.name, "mesh": mesh.name, "slot": slot,
+                            "material_id": api._promotion_value(duplicate), "tree_id": api._promotion_value(duplicate.node_tree)}
                     for face_id in faces:
                         mesh.polygons[face_id].material_index = slot
                     batches.append({"material_slot_index": slot, "material": mesh.materials[slot].name, "source_material_index": source_index, "source_material": material.name, "triangles": len(faces), "triangle_indices": len(faces) * 3, "worst_case_export_vertices": len(faces) * 3, "polygon_indices_sha256": api._promotion_digest(faces)})
             mesh.update()
             rows.append({"object": obj.name, "export_object_name": mesh.name, "batches": sorted(batches, key=lambda r: r["material_slot_index"])})
         bpy.context.view_layer.update()
-        report.update(objects=rows, material_clones=clones)
-        changed = _fingerprint(api, job, names, clones)
+        report.update(objects=rows, material_clones=clones, material_clone_ownership=ownership)
+        report["partition_consumer_reconciliation"] = {}
+        changed = _fingerprint(api, job, names, clones, ownership=ownership, baseline_images=before["image_retention"], reconciliation=report["partition_consumer_reconciliation"])
         report["fingerprints_after_partition"] = changed
         if before != changed:
             raise RuntimeError("Skeletal partition changed data beyond equivalent material partition assignments.")
@@ -231,7 +336,8 @@ def partition_skeletal_mesh_export_batches(req, api):
         if "FINISHED" not in saved:
             raise RuntimeError("Skeletal partition checkpoint save failed.")
         bpy.ops.wm.open_mainfile(filepath=str(output), use_scripts=False)
-        reopened = _fingerprint(api, job, names, clones)
+        report["reopened_consumer_reconciliation"] = {}
+        reopened = _fingerprint(api, job, names, clones, ownership=ownership, baseline_images=before["image_retention"], reconciliation=report["reopened_consumer_reconciliation"])
         report["fingerprints_reopened"] = reopened
         report["reopen_comparison"] = api._promotion_reopen_comparison(changed, reopened)
         if not report["reopen_comparison"]["accepted"]:
