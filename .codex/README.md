@@ -1,0 +1,66 @@
+## Multi-Runtime Workflow (Codex + Qoder + Cursor + opencode + Claude Code)
+
+This repository runs parallel agent runtimes that never author each other's configuration.
+Codex is the primary workflow and the sole authoring source for shared instruction and subagent content.
+Every other runtime's agent definitions and skill links are generated from Codex plus the shared skills folder.
+
+| Runtime | Loads | Agent definitions | MCP registration |
+| --- | --- | --- | --- |
+| Codex | `.codex/config.toml` | `.codex/agents/*.toml` (canonical source) | `.codex/config.toml` |
+| Qoder | `.qoder/mcp.json` | `.qoder/agents/*.md` (generated) | `.qoder/mcp.json` |
+| Cursor | `.cursor/mcp.json` and `.cursor/rules/` | `.cursor/agents/*.md` (generated) | `.cursor/mcp.json` |
+| opencode | `.opencode/opencode.json` | `.opencode/agent/*.md` (generated) | `.opencode/opencode.json` |
+| Claude Code | `CLAUDE.md` and `.mcp.json` | `.claude/agents/*.md` (generated) | `.mcp.json` |
+
+Shared and runtime-agnostic: `.agents/skills/`, `AGENTS.md`, `docs/`, specs, plans, handoffs, and the `.tools/3d_pipeline/wrappers/` MCP wrappers.
+`AGENTS.md` remains the canonical project instruction file for every runtime.
+
+### Canonical source and generated output
+
+The Codex agent TOMLs in `.codex/agents/` are the single authoring source for every custom subagent.
+Qoder, Cursor, opencode, and Claude Code definitions are generated files.
+Never hand-edit a generated `.qoder/agents/*.md`, `.cursor/agents/*.md`, `.opencode/agent/*.md`, or `.claude/agents/*.md` file.
+Edit the TOML source or the canonical `.agents/skills/<name>/SKILL.md`, then regenerate the affected runtimes:
+
+```text
+python .tools/sync/sync_qoder_agents.py
+python .tools/sync/sync_cursor_agents.py
+python .tools/sync/sync_opencode_agents.py
+python .tools/sync/sync_claude_agents.py
+```
+
+### Name mapping
+
+Codex identifiers use snake_case (`chaosx_repo_explorer`).
+Every other runtime requires lowercase letters and hyphens, so the generated name is the hyphen-case equivalent (`chaosx-repo-explorer`).
+Maps live in `.qoder/agents/README.md`, `.cursor/agent-map.md`, `.opencode/agent-map.md`, and `.claude/agent-map.md`.
+Routing rules in this file and in the repo skills always use the canonical snake_case identifier.
+
+### Runtime-specific rules
+
+Cursor subagent files stay Cursor-native Markdown in `.cursor/agents/<kebab-name>.md` with YAML frontmatter `name`, `description`, and `model: inherit`, followed by the prompt body.
+Cursor loads every `*.md` in that folder into the Task tool, so do not place README or other non-agent Markdown there.
+Spawn a Cursor subagent by hyphen-case name (`/chaosx-repo-explorer` or the matching Task `subagent_type`).
+Do not treat `.codex/agents/*.toml` as Cursor subagent prompts.
+
+Claude Code reads `CLAUDE.md`, not `AGENTS.md`, so the repo-root `CLAUDE.md` imports `AGENTS.md` with `@AGENTS.md` and adds only Claude Code runtime notes.
+Claude Code also has no option to point at an external skills folder, so `.tools/sync/sync_claude_agents.py` mirrors each `.agents/skills/<name>` into `.claude/skills/<name>` as a Windows junction.
+The junction is transparent, so a skill's bundled `assets/` and `tools/` stay readable and the skill content stays single-sourced.
+Run the generator with `--mode copy` on a machine or archive where junctions are unavailable.
+`.claude/agents/*.md` uses `description`, `model: inherit`, and the prompt body, and no `tools:` allowlist, so the prompt body is the scope contract just as it is for Cursor and opencode.
+
+opencode has no Codex-style tool allowlist either, and it reads skills through the `skills.paths` entry in `.opencode/opencode.json` instead of a mirrored folder.
+
+MCP registration differs by runtime.
+Codex registers servers in `.codex/config.toml`.
+Qoder and Cursor register the matching production servers (`hoi4_agent_tools`, `meshy`, `blender_hoi4`) in `.qoder/mcp.json` and `.cursor/mcp.json`.
+opencode registers them in `.opencode/opencode.json`, and Claude Code registers them in the repo-root `.mcp.json`.
+Codex-only keys such as approval modes and tool allowlists have no equivalent in the other runtimes, so the matching discipline is carried by the subagent prompts instead.
+`blender_lab_dev` remains a Codex-only diagnostic server.
+
+### Anti-interference and instruction changes
+
+During a Qoder, Cursor, opencode, or Claude Code session, treat `.codex/**` as read-only reference.
+During a Codex session, leave `.qoder/**`, generated `.cursor/agents/**`, `.opencode/agent/**`, and `.claude/**` untouched.
+Any subagent instruction change lands in the TOML first, then propagates through the sync scripts.
+The same rule applies to skill changes: edit `.agents/skills/<name>/SKILL.md` and let the generators re-link it.
