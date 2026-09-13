@@ -2,6 +2,9 @@
 
 This directory contains the maintained one-way generators that project canonical `.codex/agents/*.toml` definitions into the Qoder, Cursor, opencode, and Claude Code runtime formats.
 
+DSH is intentionally absent.
+It reads `AGENTS.md` and `.agents/skills/` directly, so it has neither generated agent files nor a skills mirror to refresh. Its layout and its profile-scoped MCP registration are documented in [`.dsh/README.md`](../../.dsh/README.md).
+
 The available generator commands are:
 
 ```powershell

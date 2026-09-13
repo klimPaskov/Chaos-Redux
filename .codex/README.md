@@ -1,8 +1,9 @@
-## Multi-Runtime Workflow (Codex + Qoder + Cursor + opencode + Claude Code)
+## Multi-Runtime Workflow (Codex + Qoder + Cursor + opencode + Claude Code + DSH)
 
 This repository runs parallel agent runtimes that never author each other's configuration.
 Codex is the primary workflow and the sole authoring source for shared instruction and subagent content.
-Every other runtime's agent definitions and skill links are generated from Codex plus the shared skills folder.
+Most other runtimes' agent definitions and skill links are generated from Codex plus the shared skills folder.
+DSH is the exception and needs no generator: it already reads `AGENTS.md` and `.agents/skills/` natively.
 
 | Runtime | Loads | Agent definitions | MCP registration |
 | --- | --- | --- | --- |
@@ -11,9 +12,12 @@ Every other runtime's agent definitions and skill links are generated from Codex
 | Cursor | `.cursor/mcp.json` and `.cursor/rules/` | `.cursor/agents/*.md` (generated) | `.cursor/mcp.json` |
 | opencode | `.opencode/opencode.json` | `.opencode/agent/*.md` (generated) | `.opencode/opencode.json` |
 | Claude Code | `CLAUDE.md` and `.mcp.json` | `.claude/agents/*.md` (generated) | `.mcp.json` |
+| DSH | `AGENTS.md` and `CLAUDE.md` | none in the repository; the shared named roles come from the skills | none in the repository; profile-scoped only |
 
 Shared and runtime-agnostic: `.agents/skills/`, `AGENTS.md`, `docs/`, specs, plans, handoffs, and the `.tools/3d_pipeline/wrappers/` MCP wrappers.
 `AGENTS.md` remains the canonical project instruction file for every runtime.
+
+DSH is documented in [`.dsh/README.md`](../.dsh/README.md), which covers its native instruction and skill roots, its profile-scoped MCP registration, and the project-level surfaces it does not have.
 
 ### Canonical source and generated output
 
@@ -28,6 +32,8 @@ python .tools/sync/sync_cursor_agents.py
 python .tools/sync/sync_opencode_agents.py
 python .tools/sync/sync_claude_agents.py
 ```
+
+DSH has no generated agent files to refresh. It consumes `AGENTS.md` and `.agents/skills/` directly, so a canonical change reaches DSH as soon as the file is saved.
 
 ### Name mapping
 
@@ -51,16 +57,21 @@ Run the generator with `--mode copy` on a machine or archive where junctions are
 
 opencode has no Codex-style tool allowlist either, and it reads skills through the `skills.paths` entry in `.opencode/opencode.json` instead of a mirrored folder.
 
+DSH needs no generated file at all: `dsh-agent-instructions` loads `AGENTS.md` and `CLAUDE.md` from the project root down to the working directory, and `dsh-skill-filesystem` discovers project skills from `.agents/skills/`.
+DSH also reserves `.dsh/skills/` at a higher priority than `.agents/skills/`, and this repository deliberately leaves that directory absent so the shared skills folder stays the single source.
+DSH has no project-level MCP configuration and no repository-level subagent definition format, so both are profile-scoped or runtime-composed. See [`.dsh/README.md`](../.dsh/README.md).
+
 MCP registration differs by runtime.
 Codex registers servers in `.codex/config.toml`.
 Qoder and Cursor register the matching production servers (`hoi4_agent_tools`, `meshy`, `blender_hoi4`) in `.qoder/mcp.json` and `.cursor/mcp.json`.
 opencode registers them in `.opencode/opencode.json`, and Claude Code registers them in the repo-root `.mcp.json`.
+DSH registers them only in the active profile's `$DSH_HOME/profiles/<profile>/cordis.patch.yml`, so no repository file carries them.
 Codex-only keys such as approval modes and tool allowlists have no equivalent in the other runtimes, so the matching discipline is carried by the subagent prompts instead.
 `blender_lab_dev` remains a Codex-only diagnostic server.
 
 ### Anti-interference and instruction changes
 
-During a Qoder, Cursor, opencode, or Claude Code session, treat `.codex/**` as read-only reference.
+During a Qoder, Cursor, opencode, Claude Code, or DSH session, treat `.codex/**` as read-only reference.
 During a Codex session, leave `.qoder/**`, generated `.cursor/agents/**`, `.opencode/agent/**`, and `.claude/**` untouched.
 Any subagent instruction change lands in the TOML first, then propagates through the sync scripts.
 The same rule applies to skill changes: edit `.agents/skills/<name>/SKILL.md` and let the generators re-link it.

@@ -1,6 +1,6 @@
 ---
 name: chaos-redux-subagents
-description: Use when coordinating Chaos Redux project custom subagents (Codex TOML definitions or the generated Qoder, Cursor, opencode, and Claude Code definitions), routing bounded work, or defining parent/subagent ownership boundaries.
+description: Use when coordinating Chaos Redux project custom subagents (Codex TOML definitions or the generated Qoder, Cursor, opencode, and Claude Code definitions, plus DSH runtime-composed roles), routing bounded work, or defining parent/subagent ownership boundaries.
 ---
 
 # Chaos Redux Subagents
@@ -13,7 +13,7 @@ Do not use subagents to hide uncertainty or pass off responsibility. A subagent 
 
 ## Fork context rule
 
-All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. With the current Codex `collaboration.spawn_agent` tool, set `fork_turns="none"`. In the Qoder, Cursor, opencode, and Claude Code runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. Cursor loads generated `.cursor/agents/*.md` files as native project subagents, and Claude Code loads generated `.claude/agents/*.md` files as project subagents. Spawn them by hyphen-case name through `/name`, the Task tool, or the `Agent` tool. Do not substitute Cursor's built-in `explore`, `shell`, or `browser` agents, or Claude Code's built-in `Explore`, `Plan`, or `general-purpose` agents, for a named Chaos Redux specialist.
+All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context. With the current Codex `collaboration.spawn_agent` tool, set `fork_turns="none"`. In the Qoder, Cursor, opencode, Claude Code, and DSH runtimes subagents are isolated by design, and the parent prompt must still carry every needed input. Cursor loads generated `.cursor/agents/*.md` files as native project subagents, and Claude Code loads generated `.claude/agents/*.md` files as project subagents. Spawn them by hyphen-case name through `/name`, the Task tool, or the `Agent` tool. DSH composes each named role at runtime, so read the canonical identifier below as the role to instantiate. Do not substitute Cursor's built-in `explore`, `shell`, or `browser` agents, or Claude Code's built-in `Explore`, `Plan`, or `general-purpose` agents, for a named Chaos Redux specialist.
 
 Do not spawn any project subagent with inherited parent-thread context. The parent prompt must include every path, user correction, task constraint, scope boundary, previous handoff status, accepted plan, queued plan, and design rule the subagent needs.
 
@@ -36,6 +36,8 @@ The goal is to keep subagents narrow, reproducible, and grounded in explicit inp
 ## Available project subagents
 
 Identifiers below are the canonical snake_case Codex names. The Qoder, Cursor, opencode, and Claude Code runtimes use the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`). Qoder mappings live in `.qoder/agents/README.md` and regenerate with `python .tools/sync/sync_qoder_agents.py`. Cursor mappings live in `.cursor/agent-map.md` and regenerate with `python .tools/sync/sync_cursor_agents.py`. opencode mappings live in `.opencode/agent-map.md` and regenerate with `python .tools/sync/sync_opencode_agents.py`. Claude Code mappings live in `.claude/agent-map.md` and regenerate with `python .tools/sync/sync_claude_agents.py`, which also mirrors each repo skill into `.claude/skills/` because Claude Code cannot be pointed at `.agents/skills/` directly. Cursor agent files must stay Task-tool compatible, and Claude Code agent files must stay `Agent`-tool compatible: one Markdown file per agent in the runtime's `agents/` folder, YAML frontmatter, then the prompt body, with no non-agent Markdown in that folder.
+
+DSH composes subagents at runtime and loads no agent definition files, so there is no DSH agent map and no DSH generator. This skill is the DSH routing source: treat the canonical snake_case identifiers below as the named roles a DSH parent instantiates, and pass the same fully explicit, self-contained prompt. DSH layout and registration details are documented in `.dsh/README.md`.
 
 Use `chaosx_repo_explorer` only for read-only repo exploration when touched-file mapping, pattern search, vanilla reference mapping, missing-file recovery, dependency mapping, or edit-order planning is actually unclear. It is not a default preflight agent.
 
