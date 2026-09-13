@@ -17,7 +17,7 @@ DSH is the exception and needs no generator: it already reads `AGENTS.md` and `.
 Shared and runtime-agnostic: `.agents/skills/`, `AGENTS.md`, `docs/`, specs, plans, handoffs, and the `.tools/3d_pipeline/wrappers/` MCP wrappers.
 `AGENTS.md` remains the canonical project instruction file for every runtime.
 
-DSH is documented in [`.dsh/README.md`](../.dsh/README.md), which covers its native instruction and skill roots, its profile-scoped MCP registration, and the project-level surfaces it does not have.
+DSH is documented in [`docs/runtimes.md`](../docs/runtimes.md), which covers its native instruction and skill roots, its skill root priority, its runtime-composed subagents and model selection, and its profile-scoped MCP registration.
 
 ### Canonical source and generated output
 
@@ -58,8 +58,8 @@ Run the generator with `--mode copy` on a machine or archive where junctions are
 opencode has no Codex-style tool allowlist either, and it reads skills through the `skills.paths` entry in `.opencode/opencode.json` instead of a mirrored folder.
 
 DSH needs no generated file at all: `dsh-agent-instructions` loads `AGENTS.md` and `CLAUDE.md` from the project root down to the working directory, and `dsh-skill-filesystem` discovers project skills from `.agents/skills/`.
-DSH also reserves `.dsh/skills/` at a higher priority than `.agents/skills/`, and this repository deliberately leaves that directory absent so the shared skills folder stays the single source.
-DSH has no project-level MCP configuration and no repository-level subagent definition format, so both are profile-scoped or runtime-composed. See [`.dsh/README.md`](../.dsh/README.md).
+DSH also reserves `.dsh/skills/` at a higher priority than `.agents/skills/`, and this repository deliberately leaves it absent so the shared skills folder stays the single source.
+DSH has no project-level MCP configuration and no repository-level subagent definition format, so its MCP servers are profile-scoped and its subagents are composed at runtime. See [`docs/runtimes.md`](../docs/runtimes.md).
 
 MCP registration differs by runtime.
 Codex registers servers in `.codex/config.toml`.
