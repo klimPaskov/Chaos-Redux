@@ -43,7 +43,11 @@ Main explanations normally fit in one to three short lines. A tooltip for one va
 
 Use the installed `hoi4_agent_tools` service, registered in `.codex/config.toml` through `hoi4-agent-tools.cmd`. Discover the live schema before use. Tool exposure alone does not establish service health. The exposed GUI tools are `mcp__hoi4_agent_tools__hoi4_gui_inspect`, `mcp__hoi4_agent_tools__hoi4_gui_render`, and `mcp__hoi4_agent_tools__hoi4_gui_rewrite`. Inspection and rendering are read-only source operations. `gui_rewrite` is an optional applying/validation route.
 
+### Iterative live previews
+
 Use `gui_render` as the live preview of the current source after each meaningful layout, asset, text, or state-wiring change, including intermediate construction stages. Inspect the returned full-window image and affected detail/state views before proceeding to the next layout tranche; a tool success message or artifact path is not an image review. Fix visible defects in the current tranche and rerender the affected scenarios before building further on that layout. For a new window with no renderable baseline, record that absence and render as soon as the first native container is renderable, then continue the same preview loop. Keep intermediate source/scenario identities and findings in the owning task's evidence so the final handoff demonstrates iterative review as well as the final comparison.
+
+### Inspect, render, apply, and compare
 
 1. Inspect the exact linked window before editing. Supply `windowName` together with a valid explicit `scenario` for narrow inspection, and record source identity, hierarchy, parent/context, GFX, fonts, localisation, state logic, and click regions.
 2. Render the baseline before editing, preserving full-window images and relevant detail, hierarchy, click-region, diagnostic, state, and resolution artifacts returned by the route. Read the fidelity report, resolve supplied runtime values and flags, and inspect the actual images.
@@ -53,17 +57,21 @@ Use `gui_render` as the live preview of the current source after each meaningful
 
 The optional `gui_rewrite` transaction's automatic post-write/index validation and transaction success are not mandatory GUI completion gates. If that route blocks or rolls back, review its diagnostics and current source bytes, then directly apply the already authorized, reviewed edit without another fallback approval solely because the rewrite route failed. Record the route failure and application method. Resolve actual source defects and complete the required MCP inspection, renders, click-region checks, and matched scenario/reference comparison. Do not change the installed MCP package or configuration to remove its internal checks.
 
+### Scenario identity and assertions
+
 `gui_render` exposes `comparisonScenario`. Use it for supported scenario comparisons, not as an assumed snapshot of older source. There is no separately exposed GUI comparison tool: preserve pre-change artifacts and source identity, and compare them with matching post-change artifacts. Preserve exact manifest/sourceRevision/scenarioId identities from returned evidence. Never substitute whichever concurrent output has the latest filename. For tabbed windows, prefer explicit per-control states. A global selected-state render can activate mutually exclusive tabs and create an impossible fixture. Keep fixture choices and provenance in the evidence manifest, not invented scenario fields such as `fixtureChoices`. For exact regression fixtures use `generatedScenarios: { enabled: false }`. Generated exploratory scenarios require a stable seed and do not replace explicit boundary cases. At 1920×1080 use `uiScale: 1`. UI scale represents the game setting, not image enlargement.
 
 Where supported, add `scenario.expectations.visible`, `hidden`, `containedBy`, and `centeredOn` assertions against actual element selectors. `centeredOn` checks rendered glyph bounds and can catch a visually off-center label inside an apparently centered text box. A successful tool call or `validation.passed: true` does not prove visual acceptance. Warnings and rendered defects still require review and correction.
 
+### Visual acceptance and evidence blockers
+
 Treat the production MCP render as the one-to-one in-game visual review surface required by `AGENTS.md`. Every visible defect in the in-scope GUI blocks completion, including warnings the tool does not classify as fatal. Never dismiss bad alignment, spacing, clipping, backgrounds, states, assets, or click regions as a renderer discrepancy or defer correction for lack of a separate game screenshot. The render does not execute the game: preserve fidelity limits and unverified behavior without using them to waive visible defects. If required inspection/render evidence, artifacts, scenarios, or dependencies are unavailable, record the exact call, selector, error, and affected evidence as blocked. Source-only review is not equivalent. An incidental defect outside authorized scope becomes a parent-owned finding, not permission to edit another interface.
 
-### Scripted GUI visual and usability review
+## Scripted GUI visual and usability review
 
 Use this checklist when designing the native mapping and reviewing baseline and post-change MCP artifacts. Inspect the full composition at native output size and detailed crops for text and edges; record measurements where they reveal or verify a defect. Every applicable visible defect blocks visual completion regardless of the source-edit method or optional rewrite transaction outcome. Do not resize the preview or change UI scale to disguise a layout problem.
 
-#### Geometry, typography, and control bounds
+### Geometry, typography, and control bounds
 
 Distinguish the source texture canvas, the painted/alpha-visible shape, its designed usable interior, the logical GUI rectangle, the rendered glyph bounds, and the effective click region. Transparent padding, bevels, asymmetric ornaments, glyph bearings, borders, sprite frame dimensions, and parent transforms can make these differ. Measure the actual element after its scale, anchor/orientation, parent offsets, and frame selection; nominal texture width alone does not prove alignment.
 
@@ -80,7 +88,7 @@ Distinguish the source texture canvas, the painted/alpha-visible shape, its desi
 
 Use actual native properties documented by the installed game and existing consumers. Do not invent CSS-style alignment fields or assume a sprite's `scale` transforms label metrics and hit geometry identically. If native button text cannot meet the layout, use a proven native text/control composition with verified click-through and state synchronization; do not leave a second painted label underneath.
 
-#### Background and reference coverage
+### Background and reference coverage
 
 Treat a designed background as the composition blueprint. Map each prominent panel, inset, slot, medallion, divider, illustration, ornament, and functional anchor before placing content. Preserve intentional negative space while assigning each designed usable region a purpose; a crowded corner next to abandoned functional panels is a defect. Keep text and controls inside the intended usable interiors, clear of borders, handles, seals, illustrations, and other important art. If content cannot fit the art, revise the composition or background within the accepted design instead of layering an unrelated generic layout over it.
 
@@ -91,7 +99,7 @@ Record one mapping that covers both the reference and background:
 
 Compare full-window renders with the reference at corresponding aspect/scale and with the actual source background. Check composition, hierarchy, focal points, proportions, button placement, density, illustration clearance, borders, and intentional empty space. Generated gibberish, fake labels, impossible components, and non-HOI4 effects must be replaced with usable native design and recorded adaptations. No reference button, meter, list, selection, or dynamic label may survive merely as flattened art when it represents actual interaction/state.
 
-#### Click regions, overlap, and state behavior
+### Click regions, overlap, and state behavior
 
 - Match the effective hitbox to the visible intended control face after scaling and parent transforms; inspect edge and center coverage and separation between adjacent controls.
 - No invisible blocker may swallow input; decorative overlays and separate labels must have appropriate click-through behavior supported by their native element type.
@@ -103,7 +111,7 @@ Compare full-window renders with the reference at corresponding aspect/scale and
 - Inspect close/back/open, tabs, target selection, list scrolling, and tooltip placement in the actual parent context; navigation must stay discoverable and usable in crowded states.
 - Distinguish decorative texture, informational panels, and real controls visually; reject button-shaped decoration, dead controls, empty click boxes, and controls added to fill space.
 
-#### Scenario coverage and evidence
+### Scenario coverage and evidence
 
 Derive normal review scenarios from the linked source and accepted behavior, with coherent values and controls that can coexist on the same route. Label synthetic maximum-control stress fixtures explicitly and keep them separate from route-valid normal screens; do not present mutually impossible controls as normal behavior. Trace every rendered number to declared scenario inputs and its actual display source; for costs, also trace the value to the affordability checks and payment contract. Keep exact fixture values, selection, visibility/enabled state, localisation, list rows, reference version, source identity, and resource identities in the evidence manifest. Read each emitted scenario's actual resolution and UI scale before claiming coverage; an explicit scenario resolution can override a render request's resolution list. Use separately identified scenarios with explicit resolution and scale when the emitted matrix does not contain the requested combinations. Use the live route's supported scenario fields and selectors; keep commentary and fixture provenance outside tool requests.
 
@@ -111,7 +119,7 @@ Cover the applicable normal, hover, selected, disabled/locked, warning, active/c
 
 Use supported `expectations.centeredOn` for label/button relationships, `containedBy` for intended parent/background regions, and `visible`/`hidden` for known state boundaries. Review warnings, source diagnostics, fidelity limits, hit-region artifacts, and the images themselves alongside assertions. Record findings by element/state/resolution with before/after evidence and disposition; a passing validation boolean never overrides a visible defect.
 
-#### Usability and integration
+### Usability and integration
 
 Check that the player can identify the current state, main objective or pressure, next meaningful action, and its consequences without cross-referencing documentation. Keep related status, thresholds, costs, blocked reasons, and actions together, with concise labels and precise tooltips. Label counters truthfully as cumulative, periodic, or latest-receipt values, and distinguish all-cause totals from contributions attributed to the owning system. Show retained reserves as non-consumed requirements, separate from consumed costs, and make the actual debit clear. Apply the skill's mechanic-value/action budgets without using extra tabs to evade them. For gameplay controls, obtain the decision owner's evidence that shown costs and requirements match selection checks, payment, effect, AI equivalent, and cleanup; a visual pass cannot establish gameplay balance. For information-only or navigation controls, verify their declared purpose and enabled/selected behavior instead of demanding a gameplay effect. Report any out-of-scope shared-interface problem to the parent without editing it.
 

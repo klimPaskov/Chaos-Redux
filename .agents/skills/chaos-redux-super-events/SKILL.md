@@ -7,7 +7,7 @@ description: Use when designing, researching, wiring, or documenting Chaos Redux
 
 Use this skill when a Chaos Redux task creates, updates, researches, or wires a super-event.
 
-This skill covers super-event presentation, localisation, quote selection, audio research, image handoff, implementation wiring, and documentation.
+This skill covers presentation, localisation, quote selection, audio research, image handoff, implementation wiring, and documentation.
 
 General event implementation belongs to `chaos-redux-events`.
 
@@ -15,9 +15,7 @@ Visual asset sourcing and processing belongs to `chaos-redux-event-assets`.
 
 ## 1. Core purpose
 
-A Chaos Redux super-event is a major presentation moment.
-
-It should mark a major event, major escalation, defeat aftermath, or world-end scenario that deserves stronger treatment than a normal popup.
+A Chaos Redux super-event should give a major event, major escalation, defeat aftermath, or world-end scenario stronger presentation than a normal popup.
 
 A super-event package must keep these parts aligned:
 
@@ -260,11 +258,8 @@ Document the cultural source in the super-event research note when the button te
 
 The quote (`.q`) should deepen the super-event.
 
-Do not invent quotes.
-
-Do not misattribute quotes.
-
-Do not use a quote unless it fits the specific event.
+Do not invent or misattribute quotes.
+Use a quote only when it fits the specific event.
 
 Use the repository web research workflow from `AGENTS.md` to find and verify real quotes.
 
@@ -343,7 +338,7 @@ If a translation is used, state that it is a translation when relevant.
 
 If no strong quote is found, continue searching instead of inventing one.
 
-## 10.1 Cultural remark research workflow
+### Cultural remark research workflow
 
 The button text (`.a`) can be a meaningful remark or cultural reference.
 
@@ -526,8 +521,7 @@ Possible notes:
 - avoid loud ending
 - match super-event duration
 
-Do not perform destructive edits without preserving the original source file.
-
+Preserve the original source file before destructive edits.
 Document any edited derivative file.
 
 ## 16. Audio implementation expectations

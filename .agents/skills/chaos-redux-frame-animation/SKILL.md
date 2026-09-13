@@ -3,7 +3,59 @@ name: chaos-redux-frame-animation
 description: Use when Chaos Redux needs animated sprites, animated icons, animated scripted GUI pieces, animated portraits, GIF previews, frame sheets, hover loops, pulsing glows, floating seals, warning pulses, route emblems, or frame-by-frame asset packages. Requires real per-frame source artwork or source frames. For HOI4, the final in-game animation must be a frame sheet texture wired through the verified `.gfx` and `.gui` pattern, usually `frameAnimatedSpriteType`, not a saved GIF.
 ---
 
-## 1. Core rule
+# Chaos Redux Frame Animation
+
+## 1. When to use this skill
+
+Use this skill for:
+
+- animated decision category seals
+- animated scripted GUI buttons, cards, meters, borders, warning frames, and progress states
+- hover loops, pulse loops, shimmer loops, glow loops, and particle loops
+- animated focus route emblems
+- animated leader portraits for special routes, hidden formables, supernatural leaders, symbolic leaders, or high-chaos identities
+- animated icons, small sprites, warning sprites, route-state sprites, and formable seals
+- GIF previews and contact sheets for asset review
+- frame sheets that will be wired through `.gfx` or `.gui`
+
+## 2. Relationship with other skills
+
+Use this skill with `chaos-redux-event-assets`.
+
+`chaos-redux-event-assets` owns source mode, reference folders, DDS conversion, manifests, final asset placement, and sprite handoffs. This skill owns frame planning, per-frame generation discipline, anchor normalization, sheet construction, GIF previews, contact sheets, and HOI4 animation QA.
+
+Use `$imagegen` for generated frame art. If `$imagegen` is unavailable, stop and report the blocker. Do not invent another image generation route.
+
+Every animation asset and every animation frame must use ChatGPT Images 2.5 Sunburst only for generation, iteration, edits, and final frames, including seed images and quick drafts. Never use Flare for animation work; its quick-generation route applies only to static assets. Sunburst-only animation generation and editing is required to preserve pixel consistency across frames: stable canvas, transparent bounds, anchors, silhouette, palette, edge treatment, lighting, proportions, and unchanged regions. Model choice does not replace frame-to-frame validation or drift checks. When the active image tool exposes no model selector, retain Sunburst as the required named model when selection is available and accurately record the actual exposed execution path without claiming an unreported backend model.
+
+Read the event-assets skill's integrated [Generate and refine source art](../chaos-redux-event-assets/SKILL.md#generate-and-refine-source-art) workflow for reference roles, focused edits, and candidate lineage. After accepting the generated seed, prefer an accepted seed or neighbouring accepted frame as the edit target for each subsequent generated frame, state the exact motion-state delta, and preserve the seed's subject, camera, palette, canvas, and anchor invariants. Record the input candidate for each frame and each repair, restate transparency in every edit, and compare all accepted frames with the seed to catch accumulated drift and loop discontinuity. Every frame still requires its own real generated or sourced visual state; improved edit consistency does not authorize transform-only motion.
+
+For every alpha-backed animation family, request a genuine transparent background in the initial ImageGen call for every generated source frame and preserve the alpha through normalization, sheet assembly, preview creation, and DDS conversion. Do not generate opaque or chroma-backed frames as the normal route. Use the fallback background-removal workflow in `chaos-redux-event-assets` only when native transparency fails or an inherited, sourced, or user-provided frame begins with an unwanted opaque backdrop.
+
+Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.
+
+3D skeletal `.anim` actions are not frame-sheet assets. Route model rigs, retargeting, baked actions, root-motion policy, `.anim` export, reimport proof, and unit or entity runtime binding to `chaos-redux-3d-model-pipeline`. Do not manufacture a skeletal action by moving or filtering one still image, and do not replace a requested action with a 2D frame sheet.
+
+## 3. Required HOI4 references before wiring
+
+Before wiring an animated asset into the game, inspect the local sources that apply to the target surface.
+
+Required references:
+
+- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
+- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md` when the animation appears in GUI
+- `paradox_wiki/Scripted GUI Modding - Hearts of Iron 4 Wiki.md` when the animation appears in scripted GUI
+- `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md` when the animation is a portrait
+- relevant vanilla `.gfx` and `.gui` files under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
+- existing Chaos Redux `.gfx`, `.gui`, portrait, focus, decision, and scripted GUI examples when available
+
+The agent must record which local example was used.
+
+If the wiki and vanilla examples disagree, prefer vanilla and document the difference.
+
+If the surface has no clear vanilla or Chaos Redux animated precedent, report a blocker or ask for permission to run a narrow exploration pass.
+
+## 4. Core rule
 
 A final Chaos Redux animation is a HOI4 frame-sheet asset package.
 
@@ -27,7 +79,7 @@ The normal HOI4 deliverable is:
 
 If the user explicitly asks for a temporary mockup, a transform-only preview may be created, but it must be marked as a mockup and never recorded as a final asset.
 
-## 2. HOI4 animation model
+## 5. HOI4 animation model
 
 HOI4 does not play a GIF as a game asset.
 
@@ -45,56 +97,6 @@ The usual HOI4 animation pattern is a texture sheet plus sprite metadata:
 For the common horizontal-sheet pattern, `noOfFrames` divides the texture into equal-width frame columns from left to right. A 64x64 asset with 8 frames should produce a sheet that is 512x64. A 156x210 animated portrait with 10 frames should produce a sheet that is 1560x210.
 
 Do not assume every HOI4 surface accepts animated sprites in the same way. Before wiring, inspect the offline Paradox wiki snapshot, vanilla examples, local documentation, and existing Chaos Redux examples for the exact target surface.
-
-## 3. Relationship with other skills
-
-Use this skill with `chaos-redux-event-assets`.
-
-`chaos-redux-event-assets` owns source mode, reference folders, DDS conversion, manifests, final asset placement, and sprite handoffs. This skill owns frame planning, per-frame generation discipline, anchor normalization, sheet construction, GIF previews, contact sheets, and HOI4 animation QA.
-
-Use `$imagegen` for generated frame art. If `$imagegen` is unavailable, stop and report the blocker. Do not invent another image generation route.
-
-Every animation asset and every animation frame must use ChatGPT Images 2.5 Sunburst only for generation, iteration, edits, and final frames, including seed images and quick drafts. Never use Flare for animation work; its quick-generation route applies only to static assets. Sunburst-only animation generation and editing is required to preserve pixel consistency across frames: stable canvas, transparent bounds, anchors, silhouette, palette, edge treatment, lighting, proportions, and unchanged regions. Model choice does not replace frame-to-frame validation or drift checks. When the active image tool exposes no model selector, retain Sunburst as the required named model when selection is available and accurately record the actual exposed execution path without claiming an unreported backend model.
-
-Read the event-assets skill's integrated [Generate and refine source art](../chaos-redux-event-assets/SKILL.md#generate-and-refine-source-art) workflow for reference roles, focused edits, and candidate lineage. After accepting the generated seed, prefer an accepted seed or neighbouring accepted frame as the edit target for each subsequent generated frame, state the exact motion-state delta, and preserve the seed's subject, camera, palette, canvas, and anchor invariants. Record the input candidate for each frame and each repair, restate transparency in every edit, and compare all accepted frames with the seed to catch accumulated drift and loop discontinuity. Every frame still requires its own real generated or sourced visual state; improved edit consistency does not authorize transform-only motion.
-
-For every alpha-backed animation family, request a genuine transparent background in the initial ImageGen call for every generated source frame and preserve the alpha through normalization, sheet assembly, preview creation, and DDS conversion. Do not generate opaque or chroma-backed frames as the normal route. Use the fallback background-removal workflow in `chaos-redux-event-assets` only when native transparency fails or an inherited, sourced, or user-provided frame begins with an unwanted opaque backdrop.
-
-Use `chaos-redux-super-events`, `chaos-redux-focus-trees`, `chaos-redux-decisions-missions`, or `chaos-redux-events` for the gameplay surface that uses the animation.
-
-3D skeletal `.anim` actions are not frame-sheet assets. Route model rigs, retargeting, baked actions, root-motion policy, `.anim` export, reimport proof, and unit or entity runtime binding to `chaos-redux-3d-model-pipeline`. Do not manufacture a skeletal action by moving or filtering one still image, and do not replace a requested action with a 2D frame sheet.
-
-## 4. Required HOI4 references before wiring
-
-Before wiring an animated asset into the game, inspect the local sources that apply to the target surface.
-
-Required references:
-
-- `paradox_wiki/Graphical asset modding - Hearts of Iron 4 Wiki.md`
-- `paradox_wiki/Interface modding - Hearts of Iron 4 Wiki.md` when the animation appears in GUI
-- `paradox_wiki/Scripted GUI Modding - Hearts of Iron 4 Wiki.md` when the animation appears in scripted GUI
-- `paradox_wiki/Character modding - Hearts of Iron 4 Wiki.md` when the animation is a portrait
-- relevant vanilla `.gfx` and `.gui` files under `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/`
-- existing Chaos Redux `.gfx`, `.gui`, portrait, focus, decision, and scripted GUI examples when available
-
-The agent must record which local example was used.
-
-If the wiki and vanilla examples disagree, prefer vanilla and document the difference.
-
-If the surface has no clear vanilla or Chaos Redux animated precedent, report a blocker or ask for permission to run a narrow exploration pass.
-
-## 5. When to use this skill
-
-Use this skill for:
-
-- animated decision category seals
-- animated scripted GUI buttons, cards, meters, borders, warning frames, and progress states
-- hover loops, pulse loops, shimmer loops, glow loops, and particle loops
-- animated focus route emblems
-- animated leader portraits for special routes, hidden formables, supernatural leaders, symbolic leaders, or high-chaos identities
-- animated icons, small sprites, warning sprites, route-state sprites, and formable seals
-- GIF previews and contact sheets for asset review
-- frame sheets that will be wired through `.gfx` or `.gui`
 
 ## 6. What counts as a real source frame
 
@@ -229,42 +231,7 @@ A sheet path should describe that it is a sheet:
 
 Do not call the sheet `<asset_slug>_animated.gif`. Do not put `.gif` in `.gfx` texture paths.
 
-## 12. Required output package
-
-An animation package must include:
-
-- source frame PNGs
-- processed frame PNGs at exact target frame size
-- horizontal sheet PNG
-- final horizontal sheet DDS
-- static fallback PNG and DDS
-- GIF preview for review
-- contact sheet when practical
-- manifest entry
-- `gfx_handoff.md` entry
-- frame count, frame timing, loop behavior, target frame size, sheet size, and anchor point
-- static fallback sprite name and animated sprite name
-- source mode and source notes for every frame
-- validation notes
-
-Recommended working structure:
-
-```text
-docs/assets/<event_id>_<event_slug>/animations/<asset_slug>/
-  brief.md
-  frame_plan.md
-  source_frames/
-  processed_frames/
-  sheets/
-  previews/
-  notes/
-```
-
-Final in-game DDS files must still move into the correct mod asset folders. Do not leave final game assets under `docs/assets/`.
-
-The event-scoped `docs/assets/<event_id>_<event_slug>/animations/<asset_slug>/` tree is temporary evidence and working material. Keep it while the animation is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, promote durable frame metadata, provenance, review results, coverage, and sprite handoff facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, and delete the complete event-scoped workspace. An absent workspace is expected after full completion. Never delete the skill-local reference library or another event's workspace.
-
-## 13. Naming rules
+## 12. Naming rules
 
 Use lowercase snake_case.
 
@@ -303,6 +270,41 @@ GFX_<asset_slug>_animated
 ```
 
 Keep names stable once the main agent wires them.
+
+## 13. Required output package
+
+An animation package must include:
+
+- source frame PNGs
+- processed frame PNGs at exact target frame size
+- horizontal sheet PNG
+- final horizontal sheet DDS
+- static fallback PNG and DDS
+- GIF preview for review
+- contact sheet when practical
+- manifest entry
+- `gfx_handoff.md` entry
+- frame count, frame timing, loop behavior, target frame size, sheet size, and anchor point
+- static fallback sprite name and animated sprite name
+- source mode and source notes for every frame
+- validation notes
+
+Recommended working structure:
+
+```text
+docs/assets/<event_id>_<event_slug>/animations/<asset_slug>/
+  brief.md
+  frame_plan.md
+  source_frames/
+  processed_frames/
+  sheets/
+  previews/
+  notes/
+```
+
+Final in-game DDS files must still move into the correct mod asset folders. Do not leave final game assets under `docs/assets/`.
+
+The event-scoped `docs/assets/<event_id>_<event_slug>/animations/<asset_slug>/` tree is temporary evidence and working material. Keep it while the animation is active, blocked, awaiting review, or undergoing acceptance scenarios. Before declaring the event goal fully complete, promote durable frame metadata, provenance, review results, coverage, and sprite handoff facts into permanent event or plan documentation, verify that no runtime reference points into `docs/assets/`, and delete the complete event-scoped workspace. An absent workspace is expected after full completion. Never delete the skill-local reference library or another event's workspace.
 
 ## 14. `.gfx` handoff pattern
 

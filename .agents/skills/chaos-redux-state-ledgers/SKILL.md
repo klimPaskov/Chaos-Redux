@@ -13,6 +13,14 @@ Before editing a transfer or projection surface, read `AGENTS.md`, the relevant 
 
 Use `common\script_constants\` for shared tuning, `common\scripted_effects\` and `common\scripted_triggers\` for the contract, `common\on_actions\` for bounded lifecycle seams, and `common\map_modes\` plus scripted localisation for projections. Do not create a central MCP router or wrapper. Use the owning surface's actual MCP workflow when it exists and record an exact blocker when the installed route is unavailable.
 
+## Scope and temporary-variable rules
+
+Normal variables belong to their current country, state, or other scope. Temporary variables do not acquire scope prefixes, so `ROOT.some_temp` and `PREV.some_temp` do not persist or point to another scope. Use normal scoped variables for durable state or country ledgers, event targets for a short-lived scope pointer, and explicit outputs for cross-scope handoff.
+
+Regular event targets are appropriate for a destination or current transaction chain because the engine clears them when the originating effect chain ends. Use global event targets only for intentionally long-lived pointers and provide explicit clear and stale-target handling. Never treat a target name alone as a cohort id.
+
+Keep state effects in state scope and country effects in country scope. When a helper needs both, measure and update each ledger in its owning scope rather than relying on `OWNER`, `CONTROLLER`, `ROOT`, or `FROM` to remain unchanged through nested scopes. Prefer `state_population_k` over `state_population` for arithmetic to avoid variable overflow.
+
 ## Exact transfer contract
 
 Make one helper the sole owner of physical population movement. Owner systems submit explicit proof, amounts, route targets, and reason metadata. They do not debit or credit population themselves.
@@ -27,14 +35,6 @@ Make one helper the sole owner of physical population movement. Owner systems su
 8. Keep a conservation residual for review: `actual_debit - route_deaths - actual_destination_credit`. An accepted transaction is valid only when the residual is zero, with any bounded engine rounding handled before the acceptance result is published.
 
 Return actual debit, route deaths, survivor credit, destination credit, residual, and a valid or invalid result to the caller. Clear one-shot request variables after both success and rejection so a later decision or event cannot replay stale proof.
-
-## Scope and temporary-variable rules
-
-Normal variables belong to their current country, state, or other scope. Temporary variables do not acquire scope prefixes, so `ROOT.some_temp` and `PREV.some_temp` do not persist or point to another scope. Use normal scoped variables for durable state or country ledgers, event targets for a short-lived scope pointer, and explicit outputs for cross-scope handoff.
-
-Regular event targets are appropriate for a destination or current transaction chain because the engine clears them when the originating effect chain ends. Use global event targets only for intentionally long-lived pointers and provide explicit clear and stale-target handling. Never treat a target name alone as a cohort id.
-
-Keep state effects in state scope and country effects in country scope. When a helper needs both, measure and update each ledger in its owning scope rather than relying on `OWNER`, `CONTROLLER`, `ROOT`, or `FROM` to remain unchanged through nested scopes. Prefer `state_population_k` over `state_population` for arithmetic to avoid variable overflow.
 
 ## Sparse aligned cohort registry
 

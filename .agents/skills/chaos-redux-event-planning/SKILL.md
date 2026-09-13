@@ -30,6 +30,26 @@ Use those sources to understand how Chaos Redux already works, then expand creat
 
 Inspecting the repo is mandatory, but the specification should not read like a technical audit. Use repo findings to prevent mistakes and match patterns. Keep proof of inspection in the final response checklist, not in admin sections inside the spec.
 
+## Specification folder convention
+
+From now on, event source specifications should live in event-specific subfolders under `docs/specs/`.
+
+Use this shape:
+
+```text
+docs/specs/<event_id>_<event_slug>_specs/
+```
+
+Examples:
+
+```text
+docs/specs/006_independence_wave_specs/006_independence_wave_spec.md
+docs/specs/006_independence_wave_specs/006_independence_wave_focus_trees.md
+docs/specs/006_independence_wave_specs/006_independence_wave_country_packages.md
+```
+
+Use `docs/plans/<event_id>_<event_slug>_plans/` for subagent plans, improvement addenda, audit follow-up notes, blocked reports, and implementation handoffs. Plans can become source design later, but the main agent should promote or merge them into `docs/specs/` when they are accepted as part of the final event design.
+
 ## 2. Input
 
 The user will provide either:
@@ -55,7 +75,7 @@ The design should be ambitious. Do not get lazy, conservative, or minimal unless
 
 The finished spec should make the coding agent feel that the event has already been designed in full.
 
-## 3.1 Idea-first specification style
+### 3.1 Idea-first specification style
 
 The spec should focus on the event idea, not on obvious implementation plumbing.
 
@@ -82,7 +102,7 @@ Those are baseline system responsibilities. Include technical notes only when th
 
 Do not create negative capability notes for absent event surfaces. If an event does not have a world-end scenario, do not mention world-end scenarios. If an event does not have a manual triggerable scenario, do not mention triggerable scenarios. Do not write sections, bullets, event-detail notes, spreadsheet-facing summaries, implementation prompts, or player-facing text that say `no world-end scenario`, `does not have a world-end scenario`, `no manual triggerable scenario`, `does not have a triggerable scenario`, or similar absence wording. Omit the surface completely unless it actually exists or the user explicitly asks for an explanation of why it is absent.
 
-### Tone and presentation direction standard
+#### Tone and presentation direction standard
 
 For every player-facing text surface, the planning spec should define the writing direction and leave finished wording to implementation. This includes event titles, event descriptions, report text, news text, focus text, decision text, option text, achievement text, super-event setup, GUI labels, route flavour, event-detail text, and spreadsheet-facing summaries.
 
@@ -107,7 +127,7 @@ A report can make the player uneasy without naming the unease. Use mystery, info
 
 When a concept benefits from mystery, fantasy, surrealism, myth, occult signs, prophecy, impossible resolve, strange energy, or unclear public rumours, state that direction clearly without drafting the final prose.
 
-### Event option humour, irony, and cultural remark direction
+#### Event option humour, irony, and cultural remark direction
 
 The planning spec may define what an option should feel like, what stance it represents, and how it should vary by route or actor. It must not write final option text.
 
@@ -130,7 +150,7 @@ Do not list example option lines. Do not write sample buttons. Do not write plac
 
 Some events need one cutting reaction direction and one plain practical reaction direction. Some need several route-specific reaction directions. The spec should state the intended option tone and purpose, then leave the final wording to the coding agent.
 
-## 3.2 Depth standard
+### 3.2 Depth standard
 
 The specification should be as deep as the event idea deserves.
 
@@ -174,7 +194,7 @@ Do not add filler to reach a size target. Add depth by thinking through the even
 
 Every section should add usable design, player-facing detail, implementation clarity, asset direction, or system connection.
 
-## 3.3 Research depth standard
+### 3.3 Research depth standard
 
 Use research to make the event richer. Do not rely on the first obvious idea.
 
@@ -198,7 +218,7 @@ If the topic is niche, current, uncertain, or historically specific, verify with
 
 Research should not make the spec dry. Use it to create better event content.
 
-## 3.4 Full decision, rare variant, and branch mapping
+### 3.4 Full decision, rare variant, and branch mapping
 
 When the event includes decisions, rare variants, country paths, custom actors, or special outcomes, map them out fully.
 
@@ -238,7 +258,7 @@ For rare variants, map:
 
 For branch trees or outcome webs, show the structure. Use headings, named routes, tables, or lists. The coding agent should not have to invent the branch map.
 
-## 3.5 Focus tree path design standard
+### 3.5 Focus tree path design standard
 
 Focus trees must be planned clearly, but the event-planning spec should not try to micromanage every final focus node, every coordinate, or every exact connection. The spec writer should define the tree's routes, branch architecture, major choices, mutual exclusions, story logic, mechanics, rewards, and design standards. The implementation agent should then create the final in-game focus tree layout and exact focus connections cleanly.
 
@@ -261,7 +281,7 @@ Do not write only vague branch names. A focus-tree plan must still be detailed e
 
 Do not require a literal list of every focus unless the user specifically asks for a focus-by-focus blueprint. The default planning style should be path-level and branch-level design. It is acceptable to provide non-final focus-role labels or important anchor focus groups.
 
-### Focus tree architecture map
+#### Focus tree architecture map
 
 Every major focus tree still needs an architecture map. The architecture map should show the intended path structure, not every final focus.
 
@@ -282,7 +302,7 @@ The map should include:
 
 Use a readable structure such as a table, bullet tree, route diagram, or lane map. The implementation agent should understand the intended tree shape and design, but does not need exact focus coordinates from the spec unless the user asks for them.
 
-### Branch and path detail
+#### Branch and path detail
 
 For each major path, define:
 
@@ -311,7 +331,7 @@ For each important anchor focus or focus group, define:
 
 The coding agent may create more or fewer individual focuses than the spec examples as long as the final tree preserves the path design, story logic, route choices, and gameplay depth.
 
-### Focus reward diversity standard
+#### Focus reward diversity standard
 
 Focus rewards must be varied. Do not design focus trees where most focuses add a new national spirit, add political power, add stability, add war support, or repeat the same modifier pattern.
 
@@ -359,7 +379,7 @@ Every focus path should have a distinct purpose. If two focus groups would grant
 
 Reject focus trees where most focus groups grant new ideas without a clear reason. A tree that uses repeated new ideas as filler has failed even if it has many focuses.
 
-### Dynamic idea lifecycle standard
+#### Dynamic idea lifecycle standard
 
 New countries, transformed countries, civil-war splinters, emergency governments, and unstable successor states should not start with a long stack of generic positive ideas. It is usually better for them to start with a small number of deep, readable ideas that define their starting weakness, identity, and strategic problems.
 
@@ -398,7 +418,7 @@ Example table:
 Reject specs where a country starts with too many unrelated ideas, where every focus creates a separate idea, or where negative ideas cannot be meaningfully addressed through play.
 
 
-### Focus, politics, expansion, and decision integration
+#### Focus, politics, expansion, and decision integration
 
 When planning a major focus tree, define more than politics and industry. A large tree needs a distinct expansion, reunification, liberation, settlement, or regional ambition branch. This branch should be separate from the main political tree and separate from the industry tree.
 
@@ -413,7 +433,7 @@ Focus trees and decision systems must be planned together. Focuses should unlock
 For each major focus path, describe which decision or mission families it unlocks and how those decisions expand the mechanic.
 
 
-### Branch interaction, payoff, and country identity
+#### Branch interaction, payoff, and country identity
 
 Political, industry, and expansion are the minimum branch families, not the full design for important countries. Important countries should usually also define military, diplomacy, internal faction, intelligence or security, special mechanic, and late-game branches when their identity supports them.
 
@@ -434,7 +454,7 @@ Decision categories should evolve with focus progress. Early focuses may unlock 
 The fixed-purpose exception is narrow. A country is fixed-purpose only when its concept clearly cannot support normal politics, such as a death-state, machine-state, plague-state, or pure destruction actor. It still needs meaningful internal branches around method, hierarchy, economy, recruitment, expansion, and endgame.
 
 
-### Branch depth, AI, localisation, and aftermath
+#### Branch depth, AI, localisation, and aftermath
 
 A branch does not count as real unless it changes gameplay. In the spec, each major branch should have several focus groups, a mechanical unlock, a route consequence, and an end-state or payoff.
 
@@ -453,7 +473,7 @@ Large focus trees should include achievement hooks for difficult route completio
 The final implementation prompt should ask for a route coverage table comparing required routes against implemented routes. Missing, renamed, merged, simplified, fallback, or replaced routes must be reported.
 
 
-### Route visibility, pacing, tradeoffs, and failure states
+#### Route visibility, pacing, tradeoffs, and failure states
 
 A major route should leave visible evidence in the game. The spec should describe what the player actually sees or gains: map changes, decisions, units, advisors, leaders, flags, cosmetic names, faction behavior, focus availability, diplomacy, or visible mechanics. A route that only changes hidden variables or tiny modifiers is not meaningful.
 
@@ -468,13 +488,13 @@ Important routes should define failure states. A failed political reform can emp
 Focus and decision localisation should describe the visible baseline effect of the route or action. It should not reveal hidden effects, secret outcomes, hidden variables, or future surprises. The player-facing text should explain the public action and visible direction, not the hidden implementation.
 
 
-### Special mechanics, dynamic values, and faction systems
+#### Special mechanics, dynamic values, and faction systems
 
 Large events should usually include at least one special mechanic. A special mechanic can be a pressure meter, influence system, balance of power, faction cohesion system, legitimacy system, corruption system, outbreak tracker, coalition command system, resource race, regional authority map, or similar play layer.
 
 A special mechanic should define its important values clearly. Examples include legitimacy, authority, influence, cohesion, obedience, corruption, foreign penetration, military readiness, industrial capacity, public panic, faction unity, sponsor pressure, religious authority, revolutionary zeal, or regional control.
 
-#### Public-facing mechanic value budget
+##### Public-facing mechanic value budget
 
 A main mechanic should ask the player to actively track as few persistent custom values as possible. Complexity belongs in the simulation, not in the player's memory.
 
@@ -516,7 +536,7 @@ AI must understand mechanic values. It should know when to lower threat, build l
 For every special mechanic, the completion report should list mechanic values, what changes them, what they unlock, UI and localisation coverage, AI behavior, focus hooks, decision hooks, event hooks, and balance checks.
 
 
-### Mechanic presentation, faction outcomes, validity, and tuning
+#### Mechanic presentation, faction outcomes, validity, and tuning
 
 Every special mechanic should define where the player sees its public state: decision category header, custom scripted GUI, progress meter, scripted localisation tooltip, focus tooltip, national spirit tooltip, or another clear presentation surface. The player-facing state must fit within the public-facing mechanic value budget. Hidden internal values may remain entirely internal when the player does not need to track them directly. Do not create extra UI surfaces only to expose more counters.
 
@@ -537,7 +557,7 @@ Shared trees are allowed, but they must have country-specific localisation, rout
 Important mechanic thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a clearly documented tuning file. Do not scatter magic numbers across decisions, events, focuses, scripted effects, and scripted triggers.
 
 
-### Reward dumps and exploit checks
+#### Reward dumps and exploit checks
 
 Avoid one-time reward dumps as the main design. A focus, decision, or mission can give factories, units, equipment, resources, buildings, or influence, but important content should often unlock a repeatable decision, timed mission family, production route, advisor, mechanic, route branch, or long-term gameplay system.
 
@@ -548,7 +568,7 @@ Balance planning should include exploit checks. Look for free unit loops, repeat
 The spec should tell the implementation agent how to prevent abuse with flags, cooldowns, dynamic costs, escalating costs, one-time completion flags, route locks, target limits, AI limits, cleanup effects, or scripted triggers.
 
 
-### Decision category clutter control
+#### Decision category clutter control
 
 Large decision systems should not show every possible decision at once. The spec should define how decision categories stay readable.
 
@@ -568,7 +588,7 @@ Good planning patterns include:
 
 A decision category should feel curated by the current route and campaign state, not like a debug menu.
 
-### Decision category presentation choice
+#### Decision category presentation choice
 
 Every planned decision category should use the least complex presentation that communicates its purpose and current state clearly.
 
@@ -600,7 +620,7 @@ The asset handoff should point to this canonical picture reference family:
 
 If its `contact_sheet.png` is missing, the implementation prompt should require the asset agent to create it, label each reference with its filename and native dimensions, and update the reference README and catalog. The references and contact sheet are review-only assets.
 
-### What the implementation agent owns
+#### What the implementation agent owns
 
 The implementation agent is responsible for the final exact focus tree shape unless the user asks otherwise.
 
@@ -621,7 +641,7 @@ The implementation agent should:
 The spec should give enough creative and structural direction that the agent cannot make a shallow generic tree, while still allowing the agent to build a clean in-game layout.
 
 
-## 3.6 Focus tree visual planning standard
+### 3.6 Focus tree visual planning standard
 
 Focus tree visuals should help the user and implementation agent understand the intended branch structure. The spec may include a high-level branch diagram, lane map, or route sketch for major trees, but it should not try to lock every final focus coordinate unless the user explicitly asks for that.
 
@@ -646,7 +666,7 @@ If the spec creates a graph or diagram, it should be treated as a design guide u
 Do not spend excessive planning effort forcing exact graph coordinates if the result becomes ugly, brittle, or unhelpful. A clear path architecture is more important than a fake exact graph.
 
 
-## 3.7 Achievement design standard
+### 3.7 Achievement design standard
 
 Achievements are mandatory for event specifications unless the user explicitly says not to include them or the event is so small that achievements would be dishonest. Major events, custom countries, deep focus trees, rare variants, world-order routes, or super-events always need achievements.
 
@@ -689,7 +709,7 @@ The achievement list should include a spread of routes. Do not put all achieveme
 
 If an event creates many playable tags, design achievements for the most important ones and for the event-wide systems. A large event can justify dozens of achievements. The achievement prompt should still explain which ones are highest priority if implementation must be staged.
 
-## 3.8 Baseline stages versus evolutions
+### 3.8 Baseline stages versus evolutions
 
 Baseline stages and evolutions are different.
 
@@ -701,7 +721,7 @@ Do not log ordinary stages as evolutions.
 
 Do not use chaos tiers as simple walls that lock ordinary stage progression. Ordinary stages should flow from the event state. Chaos should affect intensity, probability, severity, weirdness, and opening strength.
 
-### Evolution entry paths
+#### Evolution entry paths
 
 When an event has evolutions, the spec must say how each evolution enters play. Do not write evolutions only as future modifiers or only as post-fire upgrades unless that is truly the design.
 
@@ -736,7 +756,7 @@ Each evolution should define:
 - how it interacts with chaos tier without being only a chaos-tier lock
 - how it can be contained, spread, or escalate
 
-## 3.8.1 Chaos generation and feedback standard
+#### 3.8.1 Chaos generation and feedback standard
 
 Chaos is a measure of global instability, abnormality, and breakdown. It is not a moral score. A beneficial but impossible incident can raise Chaos because the world has become stranger and less predictable, while successful containment can lower Chaos because a destabilizing force has actually been pushed back.
 
@@ -746,7 +766,7 @@ A genuinely strange, anomalous, violent, reality-breaking, extremist, supernatur
 
 Ordinary beneficial development should not raise Chaos just because it makes a country stronger. A factory program, normal military reform, ordinary election victory, or routine research success is not a Chaos source unless the event gives that success a wider destabilizing, anomalous, or threatening meaning.
 
-### Required Chaos impact map
+##### Required Chaos impact map
 
 Every event that can materially destabilize the campaign must include a Chaos impact map in its specification. The coding agent should never have to invent the event's Chaos feedback during implementation.
 
@@ -759,7 +779,7 @@ Map the event from first manifestation through later success, spread, evolution-
 
 If a genuinely strange or destabilizing event has no positive Chaos source, the spec must explain why. Do not omit Chaos simply because the event already uses Chaos as an evolution gate.
 
-### Chaos source families to inspect
+##### Chaos source families to inspect
 
 Actively look for Chaos sources in these event outcomes when they fit the event:
 
@@ -783,7 +803,7 @@ Do not treat this list as a requirement to add every source to every event. Use 
 
 Evolution status is never itself a real change for Chaos accounting. Eligibility, MTTH completion, stage activation, evolution logging, unlocking a branch, or incrementing an evolution variable must have zero direct Chaos effect unless the same operation also causes a separate concrete outcome.
 
-### Special Chaos country power growth
+##### Special Chaos country power growth
 
 When an event creates or manages a country that counts as a special Chaos actor, its growth should feed the Chaos Meter through meaningful milestones. Do not let a supernatural, extremist, plague, death-state, machine, cannibal, anomalous, or other event-created Chaos country become a continental power while the meter reacts only to its initial creation.
 
@@ -801,7 +821,7 @@ Useful power milestones include:
 
 Use thresholds and one-shot milestones. Do not award Chaos for every factory built, every division spawned, every daily population change, or every single state tick when several changes are part of one continuous expansion.
 
-### Source sizing and scaling
+##### Source sizing and scaling
 
 Use the existing shared Chaos sources as calibration. Event-specific additions should normally use several readable milestones instead of one huge opening jump. Suggested starting bands are:
 
@@ -818,7 +838,7 @@ Current Chaos can influence an event-specific gain when it genuinely changes the
 
 Do not use a giant event-specific Chaos grant merely to force the meter over `1000`. World-end readiness should emerge from accumulated campaign consequences and the owning terminal route's real prerequisites.
 
-### Shared-source overlap and abnormal significance
+##### Shared-source overlap and abnormal significance
 
 The shared Chaos Meter already reacts to wars, annexations, puppeting, faction changes, ideology changes, nuclear use, world tension, military buildup, deaths, air contamination, and other global systems. Event planning must account for those existing sources.
 
@@ -828,7 +848,7 @@ An event-specific premium is valid when the same action has additional abnormal 
 
 Cluster incidents should follow the same rule. Member events keep their distinct Chaos sources, while a separate cluster-level Chaos source should exist only when the combined incident creates an additional destabilizing condition that the members do not already represent.
 
-### Repetition, cooldowns, and anti-farming
+##### Repetition, cooldowns, and anti-farming
 
 Repeatable sources need explicit protection against farming. Use one or more of these patterns:
 
@@ -844,7 +864,7 @@ A repeatable event can still keep raising Chaos when each firing creates a real 
 
 Do not require recurring whole-world scans merely to discover that a Chaos actor became stronger. Prefer event-owned actions, state-control changes, focus or decision completions, evolution-owned incidents that actually change the world, war outcomes, and bounded milestone checks that already occur when the relevant state changes.
 
-### Evolutions and triggerable scenarios
+##### Evolutions and triggerable scenarios
 
 Reaching, unlocking, activating, logging, or advancing an evolution must not add Chaos by itself. Evolution state only changes what the event is capable of doing. Chaos changes when an evolution causes a concrete world consequence, such as spread, conquest, a spawned actor, government capture, a destructive incident, failed containment, or a dangerous capability actually being used or becoming materially present. Attach the Chaos source to that consequence and guard it there.
 
@@ -854,7 +874,7 @@ A pre-fire evolved opening receives no extra Chaos merely for starting at a high
 
 Triggerable scenarios already create instant Chaos from their setup controls. The spec should define how scenario type and intensity affect that initial amount when relevant. After setup, the resulting event actors and mechanics should continue to use the same normal Chaos impact map as automatic play. Manual launch must not suppress later movement victories, Chaos-country power milestones, evolution-enabled consequences, or containment reversals.
 
-### Containment, defeat, and Chaos reduction
+##### Containment, defeat, and Chaos reduction
 
 Events can lower Chaos when the player or AI materially reverses an event-created source of instability. Useful negative sources include:
 
@@ -867,13 +887,13 @@ Events can lower Chaos when the player or AI materially reverses an event-create
 
 Do not automatically refund every point previously added. Deaths, destruction, contamination, political fragmentation, and other lasting consequences may remain. A containment reduction should represent the instability that has genuinely been removed.
 
-### Handoff and completion requirements
+##### Handoff and completion requirements
 
 The coding-agent prompt must require implementation of the complete Chaos impact map, including positive sources, negative sources, dynamic scaling, repeat guards, shared-source overlap, evolution-enabled consequence sources, and special Chaos-country power milestones.
 
 The goal prompt must treat Chaos-source coverage as a pass or fail requirement for destabilizing events. A completed event should be able to show where its Chaos comes from across the full lifecycle, not only at the opening popup.
 
-## 3.9 Dynamic mechanics standard
+### 3.9 Dynamic mechanics standard
 
 Everything that acts like pressure, cooldown, progress, chance, support, duration, cost, tempo, AI willingness, spawn strength, aid amount, stage movement, or recognition should be dynamic by default.
 
@@ -905,7 +925,7 @@ Do not say only that a cooldown is 30 days or a pressure increase is 5. Say what
 Dynamic behavior should still be readable. Define cause and effect clearly so the player can learn the pattern through events and decisions. Dynamic does not mean public-facing. Internal calculations can track many values when useful, while the public layer should summarize them into one or two values when possible, three when needed, and never more than four persistent values the player must actively track for the mechanic.
 
 
-## 3.10 Cost and sacrifice design standard
+### 3.10 Cost and sacrifice design standard
 
 Political power and command power are useful, but they are usually the least interesting costs. Do not let major decisions, missions, focuses, or crisis responses become a long list of political power and command power purchases.
 
@@ -933,7 +953,7 @@ Map blocked localisation for nonstandard costs. The player should understand whe
 For every major decision family, include at least one cost or requirement that is not political power or command power unless the spec explains why that family is purely bureaucratic.
 
 
-## 3.11 AI strategy and behavior mapping standard
+### 3.11 AI strategy and behavior mapping standard
 
 Major event specs must include a real AI section. Do not leave AI behavior as a vague note that the coding agent can decide later.
 
@@ -959,7 +979,7 @@ For foreign influence mechanics, the AI section must explain how major powers de
 
 A good AI section should make the implementation agent unable to create generic AI weights while claiming to follow the spec.
 
-## 3.12 Country package and dynamic identity standard
+### 3.12 Country package and dynamic identity standard
 
 When an event creates, releases, transforms, or significantly modifies a country, the spec must define that country as a full package. This applies to new custom tags and to existing countries that gain event-specific political identities, focus trees, flags, leaders, cosmetic names, ideology names, starting forces, or mechanics.
 
@@ -994,13 +1014,13 @@ Do not treat a custom country as complete because it has a tag and one flag. A s
 
 Political identity should be dynamic when the content supports it. Focus routes, ideology changes, coups, faction victories, foreign puppeting, religious transformations, high-chaos mutations, monarchist restorations, military takeovers, revolutionary councils, or world-order paths should be able to change the country name, flag, ruling party, leader, leader portrait, leader trait, cosmetic tag, national spirits, available decisions, and available recruitment systems when appropriate.
 
-### Relevance-gated country detail pass
+#### Relevance-gated country detail pass
 
 Small country details must be assessed deliberately, but they must not become a quota. Include a detail only when it supports the country's identity, starting position, military role, route logic, or player experience. Omit optional surfaces that would exist only to make the package look larger. Do not add an absence section for every omitted surface.
 
 Persistent playable countries, countries with fixed historical or fictional identities, and countries expected to survive for a meaningful part of the campaign need the deepest assessment. Short-lived emergency actors and highly dynamic random countries may use shared packages when custom content would add no value. Dynamic generation does not excuse missing setup when the country still needs a valid capital, economy, army, laws, research base, or equipment package.
 
-#### Capitals, settlements, culture, and names
+##### Capitals, settlements, culture, and names
 
 Plan capital and settlement details when territory or cultural identity makes them meaningful.
 
@@ -1017,7 +1037,7 @@ For a dynamic country without fixed starting territory, define how the event sel
 
 Do not rename cities because a government changed its cabinet or party label. City and regional renames should reflect a deeper cultural, linguistic, religious, historical, colonial, revolutionary, or high-chaos identity change.
 
-#### Optional intelligence, MIO, and character flavour
+##### Optional intelligence, MIO, and character flavour
 
 An intelligence package is optional and should remain minimal. Plan it only when espionage, internal security, clandestine politics, resistance, infiltration, cryptology, foreign sponsorship, or a secret route is part of the country's identity or gameplay. A useful package may define a country-specific agency name and emblem, one or more meaningful upgrades, a small operative identity, or a relevant operation family. Do not create a custom agency package for a country that would play the same without it.
 
@@ -1027,7 +1047,7 @@ Advisors, theorists, high command, commanders, scientists, operatives, and other
 
 For every optional institution or character that is included, define its role, route connection, availability, removal or replacement conditions, AI use, localisation direction, and visible identity. If a surface does not add flavour or gameplay, omit it cleanly.
 
-#### Navy and air force relevance gate
+##### Navy and air force relevance gate
 
 Assess whether the country should have a navy or air force from its territory, ports, islands, airbases, inherited forces, strategic role, industrial capacity, culture, doctrine, and event premise.
 
@@ -1037,7 +1057,7 @@ When an air force matters, plan it thoroughly. Define the starting air wings or 
 
 Do not add a token navy or air force to satisfy a checklist. If naval or air power is part of the country's survival, expansion, geography, or identity, omitting its full plan is a country-package failure.
 
-#### Starting research, economy, laws, stockpiles, and equipment identity
+##### Starting research, economy, laws, stockpiles, and equipment identity
 
 Every persistent playable country and every country expected to fight or develop independently needs a coherent starting setup.
 
@@ -1056,7 +1076,7 @@ Plan:
 
 The setup can use exact values for a fixed country or clear generation rules for a dynamic country. Do not copy one default package across countries whose territory, culture, military role, or origin should produce different capabilities.
 
-#### DLC and feature compatibility
+##### DLC and feature compatibility
 
 Every event must remain playable and complete with every DLC combination, including no DLC. The spec must identify every planned surface that depends on DLC and define how the core event works when that DLC is absent.
 
@@ -1071,7 +1091,7 @@ For every relevant DLC-backed surface, define:
 
 If a DLC feature adds flavour only, it may be omitted in the no-DLC version without a substitute. If it carries core gameplay, the base-game implementation needs an equivalent playable action. The coding-agent prompt should require validation with no DLC, with each directly relevant DLC, and with the full supported DLC set.
 
-### Country naming rules
+#### Country naming rules
 
 Country names must be direct public country names that remain readable on the map.
 
@@ -1094,7 +1114,7 @@ Names may depend on ideology, route, leader, formable status, puppet status, or 
 
 For alternate governments, design internal bodies and party names separately from public country names. A route can have named councils, committees, directorates, juntas, congresses, restoration offices, cult offices, leagues, syndicates, ministries, synods, communes, or military commands. Those institution names should fit the country story, region, history, route, and ideological language without replacing the public country name.
 
-## Formable nations and formation routes
+#### Formable nations and formation routes
 
 When an event creates, transforms, releases, or empowers countries, check whether formable nations should be part of the design. A formable is a meaningful country identity that appears after a country satisfies territorial, political, event, focus, or hidden-route requirements. Do not treat formables as only a cosmetic rename.
 
@@ -1123,7 +1143,7 @@ Hidden formables should still be designed fully. The spec can hide player-facing
 
 Formation routes should interact with focus trees and decisions. A focus can reveal or prepare the claim, while a decision performs the formation after the map requirement is met. A decision can form the country directly, while later focuses stabilize it, core it, claim further territory, or resolve internal factions. Avoid giving a formable through a focus alone when the player should prove control over named land first.
 
-### Formable state-puzzle presentation
+##### Formable state-puzzle presentation
 
 When exact control of named states is the main proof for a formable, plan the reusable formable state-puzzle display from `chaos-redux-decisions-missions`.
 
@@ -1147,11 +1167,11 @@ The template package should cover the state manifest, GUI, GFX, scripted GUI, he
 
 A small formable whose map requirement is obvious may use a static territorial category picture instead. The spec should state why the static picture is clearer than a dynamic state-puzzle display.
 
-## 3.13 Starting forces and reinforcement pathway standard
+### 3.13 Starting forces and reinforcement pathway standard
 
 When an event creates, releases, transforms, restores, or revives a country that is expected to fight, survive, defend itself, or matter militarily, the spec must define its starting forces. Newly appearing countries should not spawn as empty tags unless they are explicitly non-military administrative placeholders and the spec explains why.
 
-### Distinct army identity and new unit-type gate
+#### Distinct army identity and new unit-type gate
 
 When an event introduces a new type of country with its own army, explicitly assess whether that army needs new unit types instead of only renamed vanilla division templates. Plan at least one distinct unit family when the country's biology, doctrine, recruitment source, battlefield role, equipment relationship, movement, supply behavior, or visual silhouette differs materially from an ordinary national army.
 
@@ -1234,7 +1254,7 @@ Each unit-creating focus or decision should define:
 
 For focus trees, military growth should be integrated into branches. Some focuses can spawn units directly, but others should unlock decisions, improve templates, recruit commanders, create volunteer corridors, integrate militias, convert irregulars into regulars, expand special units, or change mobilisation rules. A deep tree should offer different ways to build an army depending on politics, foreign influence, economy, terrain, ideology, and chaos state.
 
-## 3.13.1 3D model and skeletal animation planning standard
+#### 3.13.1 3D model and skeletal animation planning standard
 
 When a feature adds a visible unit, building, creature, vehicle, aircraft, naval object, map entity, or other 3D surface, plan the model package as a first-class feature surface rather than treating it as an optional render.
 
@@ -1268,7 +1288,7 @@ Route production to `chaosx_3d_model_pipeline` running `gpt-6-astra` with Codex 
 
 The coding-agent prompt must state that the main implementation agent owns `.asset`, entity, `.gfx`, unit/building/gameplay wiring, valid province and state placement, final source and MCP validation, and review of available in-game evidence. The user performs live runtime validation.
 
-### 3D model planning matrix
+##### 3D model planning matrix
 
 | Surface | Minimum planned evidence |
 | --- | --- |
@@ -1276,7 +1296,7 @@ The coding-agent prompt must state that the main implementation agent owns `.ass
 | Building or static map entity | Vanilla building precedent, valid state/province pair, entity and `.asset` existence, mesh/material proof, scale and zoom test, construction or level test, and screenshot |
 | Creature, vehicle, aircraft, or naval object | Profile-specific axis and contact calibration, topology/material proof, required action list, export/reimport proof, entity/runtime wiring, and domain-appropriate live test |
 
-## 3.14 Mandatory asset coverage and source-mode standard
+### 3.14 Mandatory asset coverage and source-mode standard
 
 Everything visible or meaningful needs an asset plan. A major spec should not only define a few event pictures. It should identify assets for countries, focus trees, decisions, ideas, national spirits, achievements, flags, portraits, faction emblems, super-events, event pictures, UI, unit systems, and route-specific identity changes.
 
@@ -1292,7 +1312,7 @@ Historical or real leaders must not be generated, and grounded polities must not
 
 When an asset source is historically sensitive, disputed, or politically loaded, the asset prompt must require source notes and a clear distinction between sourced historical use and fictional alternate-history invention.
 
-## 3.15 Effect strength and impact standard
+### 3.15 Effect strength and impact standard
 
 Do not design important event effects with timid, decorative, or micro values. If an idea, decision, focus, mission, national spirit, crisis response, starting debuff, or route payoff is supposed to matter, its effects must be strong enough for the player to feel and plan around.
 
@@ -1361,7 +1381,6 @@ Consider links to other existing Chaos Redux systems when they strengthen the ev
 Possible links include:
 
 - evolutions
-- evolutions
 - super-events
 - world-end scenarios
 - event clusters
@@ -1424,7 +1443,7 @@ Describe what the player sees, how it changes, and what visual assets are needed
 
 Map the UI states if the UI represents pressure, route choice, threat, stage, faction cohesion, recognition, contamination, loyalty, or any other living value.
 
-## Interactive mechanic UI and animated presentation in event specs
+### Interactive mechanic UI and animated presentation in event specs
 
 When an event has an important decision category, choose its presentation layer before designing a custom window. Start with an ordinary category, then test whether a static or animated category picture is enough. Use a richer scripted GUI or a separate mechanic window only when the system needs active visual management that normal decisions, tooltips, and one category picture cannot provide.
 
@@ -1555,42 +1574,63 @@ Important super-event boundary: this planning skill may define super-event role,
 
 1. Never use the em dash or semicolons in sentences.
 2. Absolutely avoid dialectical hedging. Do not frame sentences as thesis, antithesis, synthesis.
-  - Dialectical hedging examples:
-    - `The invasion is not merely a border crisis, but a crisis of identity.`
-    - `The regime is not only losing the war, it is losing itself.`
-    - `This is not just a strike. This is a warning.`
-    - `The cult is not fighting for land, but for meaning.`
-    - `The disaster is both a local tragedy and a global sign.`
-    - `The government is neither dead nor alive, but something worse.`
-    - `The army did not collapse. It transformed.`
-    - `This is less a rebellion than a confession.`
-    - `The question is not whether order can return, but what kind of order will survive.`
-    - `What looks like defeat is actually a new form of power.`
-  - Thesis, antithesis, synthesis examples:
-    - `The army claims the province is secure. Refugees say it is already lost. The truth lies between them.`
-    - `Some call the new state liberation. Others call it occupation. In reality, it is both.`
-    - `The priests call it a miracle. The generals call it a weapon. History will call it both.`
-    - `The committee promises order. The opposition sees tyranny. The new system contains both impulses.`
-    - `The papers call it a victory. The hospitals call it a defeat. The country has become both at once.`
-    - `The rebels ask for justice. The regime asks for peace. The settlement gives neither and both.`
+    - Dialectical hedging examples:
+      - `The invasion is not merely a border crisis, but a crisis of identity.`
+      - `The regime is not only losing the war, it is losing itself.`
+      - `This is not just a strike. This is a warning.`
+      - `The cult is not fighting for land, but for meaning.`
+      - `The disaster is both a local tragedy and a global sign.`
+      - `The government is neither dead nor alive, but something worse.`
+      - `The army did not collapse. It transformed.`
+      - `This is less a rebellion than a confession.`
+      - `The question is not whether order can return, but what kind of order will survive.`
+      - `What looks like defeat is actually a new form of power.`
+    - Thesis, antithesis, synthesis examples:
+      - `The army claims the province is secure. Refugees say it is already lost. The truth lies between them.`
+      - `Some call the new state liberation. Others call it occupation. In reality, it is both.`
+      - `The priests call it a miracle. The generals call it a weapon. History will call it both.`
+      - `The committee promises order. The opposition sees tyranny. The new system contains both impulses.`
+      - `The papers call it a victory. The hospitals call it a defeat. The country has become both at once.`
+      - `The rebels ask for justice. The regime asks for peace. The settlement gives neither and both.`
 3. Avoid AI-style explanatory templates. Do not write lines that sound prebuilt or reusable across any event.
 4. Absolutely avoid staccato sentences. Do not split one simple thought into a chain of tiny lines for artificial weight or dramatic effect. Use complete, readable sentences with enough context to be clear.
-  - Staccato examples:
-    - `The radios died. The roads emptied. The city listened.`
-    - `No orders. No mercy. No dawn.`
-    - `The border fell. Then the capital. Then the government.`
-    - `They marched. They burned. They vanished.`
-    - `A knock at the door. A list on the table. A train in the dark.`
-    - `The guns stopped. The screaming did not.`
-    - `First hunger. Then anger. Then flags.`
-    - `No king. No cabinet. No law.`
-    - `Ash in the streets. Smoke over the port. Silence at noon.`
-    - `One order. One shot. One missing officer.`
-    - `The gate opened. The crowd moved. The guards ran.`
+    - Staccato examples:
+      - `The radios died. The roads emptied. The city listened.`
+      - `No orders. No mercy. No dawn.`
+      - `The border fell. Then the capital. Then the government.`
+      - `They marched. They burned. They vanished.`
+      - `A knock at the door. A list on the table. A train in the dark.`
+      - `The guns stopped. The screaming did not.`
+      - `First hunger. Then anger. Then flags.`
+      - `No king. No cabinet. No law.`
+      - `Ash in the streets. Smoke over the port. Silence at noon.`
+      - `One order. One shot. One missing officer.`
+      - `The gate opened. The crowd moved. The guards ran.`
 5. Avoid staged contrast formulas. Do not write sentences or paired clauses built as `claim X while officials Y`, `reports say X while authorities Y`, `people do X before governments Y`, `X happens before Y admits it`, or similar. Do not manufacture tension by contrasting unofficial fear with official denial, silence, delay, admission, or reaction. Write the observed fear, behaviour, rumours, anomalies, and consequences directly.
 6. Absolutely avoid empty dramatic filler. Do not lean on vague intensity words when concrete detail would do the work.
 7. Do not paste instruction text, task labels, prompt fragments, or process notes into in-game text, specs, docs, localisation, spreadsheet fields, or reports.
-  - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`
+    - For example, when I say: `Do not reveal the hidden mechanics here.`, don't write `This path purposely doesn't reveal the hidden mechanics`
+
+### General localisation handoff
+
+When a spec includes text-bearing content, give a localisation handoff, not final copy.
+
+The handoff should list each needed text surface and describe its direction:
+
+- event title direction
+- event description direction
+- option reaction direction
+- news or report direction
+- decision name and description direction
+- focus name and description direction
+- achievement title and description direction
+- GUI label direction
+- event-detail and event-log wording direction
+- dynamic placeholders the coding agent should use
+- research gates for quotes, slogans, songs, films, books, speeches, scriptures, proverbs, or other source-dependent references
+
+The coding agent writes the final in-game text during implementation. The planning spec should not provide final prose for the coding agent to paste.
+
 
 ## 11. Specification shape
 
@@ -1760,7 +1800,7 @@ The asset prompt should include:
 - animation brief needs for every animated asset, including state logic, frame count target, target frame size, expected sheet size, frames per second, loop behavior, `play_on_show` expectation, static fallback, source mode, and target `.gfx` or `.gui` surface when known
 - achievement icon list with completed icon directions for every achievement
 - manifest requirements
-- source mode, including whether a flag, symbol, or portrait must be sourced historically instead of generated
+- source mode, including historically sourced design references for flags followed by imagegen reconstruction, and whether a symbol or portrait must be sourced historically instead of generated
 - reference example folder that must be inspected before asset work
 - decision category picture list, source mode, presentation role, static or animated state, and exact reference folder when category pictures are planned
 - formable state-puzzle manifest needs, exact state geometry source, grey and green qualification states, projection, sprite ownership, and static category-picture alternative when formables are planned
@@ -1854,6 +1894,10 @@ When `chaos-redux-improvement-loop` produces an expansion addendum, treat it as 
 
 An improvement-derived spec can be shaped freely. It does not need to copy the section order of this skill. It should still make the design concrete. A useful addendum explains the playable promise, the route or mechanic that feels shallow, the deeper player loop, the choices that change outcomes, the AI behavior, the visual and localisation needs, and the surfaces that must align.
 
+The planning agent should preserve the open structure of the addendum where that helps the idea. Use tables, route maps, prose, diagrams, or country package matrices only when they make the design easier to implement. Do not convert every improvement into a rigid checklist.
+
+When an accepted improvement addendum includes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry that accepted design into the relevant files instead of leaving it isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
+
 ### Mandatory near-completion improvement loop pass
 
 Before any event-planning goal is treated as near complete, the coding agent must spawn `chaosx_improvement_loop_planner` for a final depth and anti-bloat pass. This is mandatory for event specs, large addenda, country packages, focus-tree plans, decision systems, super-event planning, asset-heavy plans, formable plans, custom UI plans, and any goal that creates or changes meaningful Chaos Redux design.
@@ -1867,51 +1911,6 @@ The loop planner may return either an expansion addendum or a closure handoff. I
 A goal is not complete while an accepted loop addendum is unresolved, while a loop-recommended closure handoff has not been recorded, or while the mandatory loop pass was skipped without a tooling blocker. If the loop agent cannot be spawned because the tool is unavailable, the completion report must state that as a blocker and must not hide it as finished work.
 
 Tiny known-file text edits, narrow typo fixes, and direct one-line skill updates can skip the loop pass only when they do not create or change event design, mechanics, focus trees, decisions, country packages, assets, super-events, or implementation handoff rules.
-
-## General localisation handoff
-
-When a spec includes text-bearing content, give a localisation handoff, not final copy.
-
-The handoff should list each needed text surface and describe its direction:
-
-- event title direction
-- event description direction
-- option reaction direction
-- news or report direction
-- decision name and description direction
-- focus name and description direction
-- achievement title and description direction
-- GUI label direction
-- event-detail and event-log wording direction
-- dynamic placeholders the coding agent should use
-- research gates for quotes, slogans, songs, films, books, speeches, scriptures, proverbs, or other source-dependent references
-
-The coding agent writes the final in-game text during implementation. The planning spec should not provide final prose for the coding agent to paste.
-
-The planning agent should preserve the open structure of the addendum where that helps the idea. Use tables, route maps, prose, diagrams, or country package matrices only when they make the design easier to implement. Do not convert every improvement into a rigid checklist.
-
-When an accepted improvement addendum includes formables, scripted GUI, animated sprites, animated portraits, or hidden routes, the final spec pack should carry that accepted design into the relevant files instead of leaving it isolated. The core spec explains why the expansion matters. The decision and focus files explain how the player reaches it. The asset prompt explains the static and animated visual work. The coding prompt and goal prompt tell the implementation agent to wire and validate it.
-
-
-## Specification folder convention
-
-From now on, event source specifications should live in event-specific subfolders under `docs/specs/`.
-
-Use this shape:
-
-```text
-docs/specs/<event_id>_<event_slug>_specs/
-```
-
-Examples:
-
-```text
-docs/specs/006_independence_wave_specs/006_independence_wave_spec.md
-docs/specs/006_independence_wave_specs/006_independence_wave_focus_trees.md
-docs/specs/006_independence_wave_specs/006_independence_wave_country_packages.md
-```
-
-Use `docs/plans/<event_id>_<event_slug>_plans/` for subagent plans, improvement addenda, audit follow-up notes, blocked reports, and implementation handoffs. Plans can become source design later, but the main agent should promote or merge them into `docs/specs/` when they are accepted as part of the final event design.
 
 ## 18. Output rules
 
@@ -1939,7 +1938,7 @@ Create sequential files:
 Do not repeat earlier sections unless needed for clarity.
 
 
-## 18.1 Final ZIP package requirement
+### 18.1 Final ZIP package requirement
 
 The final chat-facing output must be delivered as one ZIP file containing every necessary file for the planning handoff. Individual files may also be linked for convenience, but the ZIP is the main deliverable.
 
@@ -2091,22 +2090,6 @@ A good goal prompt should include:
 
 If the goal prompt is near 4000 characters, shorten it by pointing to files instead of repeating details.
 
-## Formation and UI questions for planning passes
-
-Before finishing a major event spec, ask:
-
-- Can any country created or empowered by the event form a larger state later?
-- Are there regional, ideological, hidden, or high-chaos formables that should be locked behind focuses, decisions, or events?
-- Does each formable have concrete map requirements and a clear post-formation identity?
-- Do formation rewards avoid free core spam, free war-goal spam, and instant runaway snowballing?
-- Which presentation layer should each category use: ordinary category, static picture, animated picture, compact display, or full scripted GUI?
-- Would a static or animated category picture communicate the category more clearly than a complex custom window?
-- If exact state control is central to a formable, does the plan use exact state shapes as grey and green dynamic puzzle pieces and keep them synchronized with real eligibility?
-- If the named event introduces a full UI, does the plan route only the event-owned window to `chaosx_event_ui_worker` with exact identifiers and mandatory MCP before-and-after evidence while excluding shared interfaces?
-- Are animated sprites, leader portraits, particles, glow, warning states, selected states, or button states planned only where motion makes a changing state clearer?
-- Does the asset prompt include category pictures, formable state pieces, sprite names, state logic, static fallbacks, and frame-sheet needs where animation is actually used?
-- Does the goal prompt tell the implementation agent to verify formables, category pictures, state-puzzle eligibility, justified UI windows, and any animated sprite handoffs?
-
 ## 20. Final response checklist
 
 The final response should include:
@@ -2149,6 +2132,22 @@ The final response should include:
 - a brief package summary that does not repeat the full specification
 
 ## 21. Cleanup and quality gate
+
+### Formation and UI questions for planning passes
+
+Before finishing a major event spec, ask:
+
+- Can any country created or empowered by the event form a larger state later?
+- Are there regional, ideological, hidden, or high-chaos formables that should be locked behind focuses, decisions, or events?
+- Does each formable have concrete map requirements and a clear post-formation identity?
+- Do formation rewards avoid free core spam, free war-goal spam, and instant runaway snowballing?
+- Which presentation layer should each category use: ordinary category, static picture, animated picture, compact display, or full scripted GUI?
+- Would a static or animated category picture communicate the category more clearly than a complex custom window?
+- If exact state control is central to a formable, does the plan use exact state shapes as grey and green dynamic puzzle pieces and keep them synchronized with real eligibility?
+- If the named event introduces a full UI, does the plan route only the event-owned window to `chaosx_event_ui_worker` with exact identifiers and mandatory MCP before-and-after evidence while excluding shared interfaces?
+- Are animated sprites, leader portraits, particles, glow, warning states, selected states, or button states planned only where motion makes a changing state clearer?
+- Does the asset prompt include category pictures, formable state pieces, sprite names, state logic, static fallbacks, and frame-sheet needs where animation is actually used?
+- Does the goal prompt tell the implementation agent to verify formables, category pictures, state-puzzle eligibility, justified UI windows, and any animated sprite handoffs?
 
 Before saving the final files, perform a strict review.
 

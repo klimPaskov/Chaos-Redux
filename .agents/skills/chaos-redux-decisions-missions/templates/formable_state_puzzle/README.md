@@ -92,7 +92,7 @@ Complete [category_attachment_audit.md](category_attachment_audit.md) after the 
 
 ### 9. Validate before handing off
 
-Run every item in `validation_checklist.md`, including the universal registry provenance gate, mandatory map/GUI MCP inspect/render artifacts, and DDS decode round-trip evidence described in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). Record skipped checks with the exact reason. A skill-local package is not an in-game completion claim. The parent still owns runtime wiring, final source review, and live-consumer validation.
+Run every item in `validation_checklist.md`, including the universal registry provenance gate, mandatory map/GUI MCP inspect/render artifacts, and DDS decode round-trip evidence described in [universal_state_registry_workflow.md](universal_state_registry_workflow.md). Record skipped checks with the exact reason. A skill-local package is not an in-game completion claim. The parent owns runtime wiring and final source review. The user performs live-consumer validation.
 
 ## Helper contract and migration map
 
@@ -127,7 +127,7 @@ The puzzle does not use event targets. Scripted GUI context cannot safely use ev
 
 ## Ownership boundaries
 
-The template author owns the schema, examples, placeholder syntax, and validation guidance. The event/system owner owns state policy, map extraction, generated geometry, runtime source wiring, costs, decision effects, route gates, AI weighting, integration missions, and final in-game acceptance. Asset work must preserve source masks and checksums; it must not silently redraw a state. Localisation owners keep the YAML BOM and player-facing wording aligned with the actual decision and summary. No file in this directory is a runtime gameplay file.
+The template author owns the schema, examples, placeholder syntax, and validation guidance. The event/system owner owns state policy, map extraction, generated geometry, runtime source wiring, costs, decision effects, route gates, AI weighting, and integration missions. The user performs final in-game acceptance. Asset work must preserve source masks and checksums; it must not silently redraw a state. Localisation owners keep the YAML BOM and player-facing wording aligned with the actual decision and summary. No file in this directory is a runtime gameplay file.
 
 ## Reference evidence used for this package
 

@@ -1,23 +1,14 @@
 # Chaos Redux Event-Asset Tools
 
-These are the active reusable tools for the `chaos-redux-event-assets` skill.
-Call them from the mod root. Canonical engine-surface reference lookups use:
+These are the active reusable tools for the `chaos-redux-event-assets` skill. Call them from the mod root. Canonical engine-surface reference lookups use:
 
 `C:\Users\klimp\OneDrive\Documents\Paradox Interactive\Hearts of Iron IV\mod\chaos_redux\.agents\skills\chaos-redux-event-assets\assets\vanilla_reference`
 
-For leader/commander style review, inspect the canonical role-specific references.
-Advisor dossier cards use the separate canonical references under
-`.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
+For leader/commander style review, inspect the canonical role-specific references. Advisor dossier cards use the separate canonical references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
-The portrait source tool owns deterministic source-placeholder preparation. It
-does not approve identity, rights, role fit, likeness, or runtime wiring. Inspect
-the canonical role family (`leaders/`, `commanders/`, or `operatives/`), retain
-the source/crop/processed evidence, and obtain independent identity, framing,
-and provenance review before DDS or runtime promotion.
+The portrait source tool owns deterministic source-placeholder preparation. It does not approve identity, rights, role fit, likeness, or runtime wiring. Inspect the canonical role family (`leaders/`, `commanders/`, or `operatives/`), retain the source/crop/processed evidence, and obtain independent identity, framing, and provenance review before DDS or runtime promotion.
 
-Use the canonical role-specific references as style-family controls only. An
-independent auditor must compare the archival master, explicit archival crop, raw
-ImageGen result, processed candidate, and role-specific references separately.
+Use the canonical role-specific references as style-family controls only. An independent auditor must compare the archival master, explicit archival crop, raw ImageGen result, processed candidate, and role-specific references separately.
 
 ## `extract_portrait_source_crop.py`
 
@@ -32,16 +23,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_
 	<archival_master.jpg> <subject_source_crop.png>
 ```
 
-For `<runtime_basename>_source_crop.png`, the command writes
-`<runtime_basename>_source_crop.json`, `<runtime_basename>.txt`,
-`<runtime_basename>_156x210.png`, and an unchanged
-`<runtime_basename>_original.<source_suffix>`
-in the same folder. Pass `--processed`, `--source-copy`, or `--provenance` only
-when explicit co-located filenames are needed. The `.txt` file is a contract:
-complete subject/source/attribution/license and independent-review fields before
-claiming a grounded portrait is admissible. `source_placeholder` remains valid
-when that mode is explicitly selected; `styled_final` and `replacement_pending`
-are separate, user-requested provider branches. The agent never operates RunPod.
+For `<runtime_basename>_source_crop.png`, the command writes `<runtime_basename>_source_crop.json`, `<runtime_basename>.txt`, `<runtime_basename>_156x210.png`, and an unchanged `<runtime_basename>_original.<source_suffix>` in the same folder. Pass `--processed`, `--source-copy`, or `--provenance` only when explicit co-located filenames are needed. The `.txt` file is a contract: complete subject/source/attribution/license and independent-review fields before claiming a grounded portrait is admissible. `source_placeholder` remains valid when that mode is explicitly selected; `styled_final` and `replacement_pending` are separate, user-requested provider branches. The agent never operates RunPod.
 
 For a known boundary or a detector miss, retain the exact manual recovery path:
 
@@ -52,23 +34,13 @@ python -B .agents/skills/chaos-redux-event-assets/tools/extract_portrait_source_
 	--metadata <archival_crop.json>
 ```
 
-Manual `--crop` uses the same complete package transaction and naming defaults;
-the JSON labels `mode: manual_crop_override` and does not claim a face box or
-YuNet detection. The older `crop_source()` Python API remains available for
-callers that intentionally need only the two historical crop/evidence files.
+Manual `--crop` uses the same complete package transaction and naming defaults; the JSON labels `mode: manual_crop_override` and does not claim a face box or YuNet detection. The older `crop_source()` Python API remains available for callers that intentionally need only the two historical crop/evidence files.
 
-Keep the unchanged original, lossless crop, JSON evidence, resized PNG, and
-provenance `.txt` together under `docs/assets/portraits/<event_id>_<event_slug>/`
-(a subject subfolder is allowed). The JSON records tool/model versions and
-hashes, source/crop/processed dimensions, face box, crop rectangle, equality
-result, and normalized command. `ffmpeg` or ImageMagick crops are not immutable
-source evidence unless an independent check proves exact decoded-pixel equality
-against the same decoded master rectangle and retains equivalent evidence.
+Keep the unchanged original, lossless crop, JSON evidence, resized PNG, and provenance `.txt` together under `docs/assets/portraits/<event_id>_<event_slug>/` (a subject subfolder is allowed). The JSON records tool/model versions and hashes, source/crop/processed dimensions, face box, crop rectangle, equality result, and normalized command. `ffmpeg` or ImageMagick crops are not immutable source evidence unless an independent check proves exact decoded-pixel equality against the same decoded master rectangle and retains equivalent evidence.
 
 ## `convert_to_dds.py`
 
-Converts an approved PNG to the legacy one-level uncompressed BGRA DDS layout
-used by the relevant vanilla HOI4 UI assets.
+Converts an approved PNG to the legacy one-level uncompressed BGRA DDS layout used by the relevant vanilla HOI4 UI assets.
 
 ```powershell
 python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py `
@@ -76,9 +48,7 @@ python -B .agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py `
 	--width <pixels> --height <pixels>
 ```
 
-The command above is the supported converter; `.tools/convert_to_dds.py` is
-obsolete and must not be restored or used by active workflows. Follow the matching vanilla
-catalog entry for dimensions and compression.
+The command above is the supported converter; `.tools/convert_to_dds.py` is obsolete and must not be restored or used by active workflows. Follow the matching vanilla catalog entry for dimensions and compression.
 
 ## `process_achievement_icons.py`
 
@@ -125,6 +95,8 @@ Advisor, theorist, military-high-command, officer-corps, and army-small portrait
 
 Inspect the canonical native `65x67` references under `.agents/skills/chaos-redux-event-assets/assets/vanilla_reference/portraits/advisors/`.
 
+For grounded real people, complete the shared sourced identity gate through an independently approved `156x210` candidate first; fictional high-chaos or impossible or supernatural subjects may use an approved generated master.
+
 Use `create_advisor_icon.py` when the accepted design calls for the shared `advisor_template.png` dossier surface.
 
 The tool loads the complete approved source canvas without pre-cropping or pre-warping it. It measures the canonical opening center, rotated width and height, and angle directly from the template on every run. Never clip the portrait to the exact visible opening: the canonical frame has translucent antialiased inner-edge pixels, and exact-opening clipping exposes alpha seams when those pixels lack underlying portrait coverage. This supersedes the older exact-opening clipping language because the visible opening is the audit region, while the portrait must extend beneath the antialiased edge inside a verified mask.
@@ -164,8 +136,6 @@ Keep the complete head and shoulders readable, keep the face clear of the paper,
 
 Record the source hash, template hash, complete-source resize, selected dimensions, center, offset, rotation, sepia strength, candidate grids, independent review, processed PNG hash, and runtime DDS hash.
 
-For grounded real people, complete the shared sourced identity gate through an independently approved `156x210` candidate first; fictional high-chaos or impossible or supernatural subjects may use an approved generated master.
-
 Review the candidate at native size and at `4x` nearest-neighbour size against contrasting solid backgrounds, checker backgrounds, and the canonical advisor and high-command family.
 
 Keep this workflow generic. Do not hard-code event-specific advisor names into the reusable skill; record those names in the event manifest or handoff instead.
@@ -174,9 +144,7 @@ The producer may not approve the candidate.
 
 ## `process_report_event_image.py`
 
-Processes report-event source art according to the report-event workflow
-documented in the skill. It is not a portrait, flag, icon, or generic-image
-fallback.
+Processes report-event source art according to the report-event workflow documented in the skill. It is not a portrait, flag, icon, or generic-image fallback.
 
 ```powershell
 python -B .agents/skills/chaos-redux-event-assets/tools/process_report_event_image.py `

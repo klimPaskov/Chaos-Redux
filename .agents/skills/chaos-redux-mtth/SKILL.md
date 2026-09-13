@@ -10,6 +10,7 @@ description: Define and use HOI4 MTTH variables safely (base/modifiers, file-sco
 Use MTTH variables to compute a value from a base plus modifiers, then inject that value into other logic.
 
 Read first to see how Chaos Redux already implements them:
+
 - `C:/Users/klimp/OneDrive/Documents/Paradox Interactive/Hearts of Iron IV/mod/chaos_redux/common/mtth/chaosx_mtth_variables.txt`
 
 ## Defining an MTTH entry
@@ -32,6 +33,7 @@ example_mtth_value = {
 ```
 
 Notes:
+
 - `base` is the starting value.
 - `modifier` blocks use `factor` or `add` and standard triggers.
 
@@ -44,6 +46,7 @@ set_variable = { my_value = mtth:example_mtth_value }
 ```
 
 Typical usage:
+
 - `set_variable` or `set_temp_variable` to store the computed MTTH value.
 - Use the variable later (`add = temp`, `check_variable = { temp > 1 }`, etc.).
 

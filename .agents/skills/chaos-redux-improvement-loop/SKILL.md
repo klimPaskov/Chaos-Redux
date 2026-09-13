@@ -45,6 +45,38 @@ Common triggers:
 
 Do not use this skill to inflate simple bug fixes. Use it when the bug reveals a real design gap.
 
+## Relationship with other skills
+
+Use the system skill that owns the surface being improved.
+
+- `chaos-redux-event-planning` is the standard for expansion spec quality. The addendum should be idea-first, detailed, and implementation-ready, but not forced into a rigid template.
+- `chaos-redux-events` owns event chains, event details, evolutions, event logs, docs, and catalog alignment.
+- `chaos-redux-focus-trees` owns route depth, branch interaction, focus rewards, route AI, focus icons, and focus documentation.
+- `chaos-redux-decisions-missions` owns decisions, missions, costs, objectives, scripted GUI decision surfaces, hidden decision visibility, tooltips, AI actions, and cleanup.
+- `chaos-redux-event-assets` owns visual assets, animated sprites, animated portraits, source rules, DDS outputs, manifests, contact sheets, and sprite handoffs.
+- `chaos-redux-super-events` owns super-event role, title, description, quote, audio, image, trigger, localisation, docs, and spreadsheet alignment.
+- `chaos-redux-subagents` explains when to use a planner subagent, a patch-capable system subagent, an asset worker, a read-only auditor, or other subagents.
+
+When an improvement pass requires event-catalog alignment, the planner returns an alignment handoff to the parent and remains plan-only. Once implementation facts are available, the parent coordinates `chaosx_spreadsheet_doc_worker`, which owns updates to the authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook. After every successful workbook update, that worker runs `python .tools/export_event_catalog_csv.py` from the mod root. The three catalog CSVs are export-only snapshots and must never be edited directly.
+
+## Specs and plans folders
+
+Full event specification packs belong under:
+
+```text
+docs/specs/<event_id>_<event_slug>_specs/
+```
+
+Improvement addenda, audit follow-up plans, subagent handoffs, and implementation notes belong under:
+
+```text
+docs/plans/<event_id>_<event_slug>_plans/
+```
+
+The plans folder is where subagents add working handoffs. The specs folder holds source design whose acceptance basis must be recorded. A spec path, status label, old handoff, or implementation evidence does not establish approval. Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim. Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
+
+If an improvement addendum is accepted as source design, the main agent should fold it into the relevant spec file under `docs/specs/<event_id>_<event_slug>_specs/` or record it as `accepted and queued` with its acceptance basis and reason. Record implementation evidence separately from design acceptance.
+
 ## Deployment cadence
 
 The main agent should actively deploy the improvement loop during large event implementation, especially after a meaningful tranche of work adds several new mechanics, countries, focus routes, formables, decision systems, scripted GUI elements, or super-event candidates. This is the best moment to ask whether the new surfaces are connected, reactive, regionally grounded, and worth playing.
@@ -71,20 +103,6 @@ When this condition is met, the planner should not write a new large expansion. 
 
 A closure handoff should not claim implementation completion on its own. It tells the main agent that the design loop can stop, the new plan can be finished, final validations can run, and the goal can be marked complete if the main agent verifies there are no blockers, simplifications, fallbacks, or unresolved accepted plans.
 
-## Relationship with other skills
-
-Use the system skill that owns the surface being improved.
-
-- `chaos-redux-event-planning` is the standard for expansion spec quality. The addendum should be idea-first, detailed, and implementation-ready, but not forced into a rigid template.
-- `chaos-redux-events` owns event chains, event details, evolutions, event logs, docs, and catalog alignment.
-- `chaos-redux-focus-trees` owns route depth, branch interaction, focus rewards, route AI, focus icons, and focus documentation.
-- `chaos-redux-decisions-missions` owns decisions, missions, costs, objectives, scripted GUI decision surfaces, hidden decision visibility, tooltips, AI actions, and cleanup.
-- `chaos-redux-event-assets` owns visual assets, animated sprites, animated portraits, source rules, DDS outputs, manifests, contact sheets, and sprite handoffs.
-- `chaos-redux-super-events` owns super-event role, title, description, quote, audio, image, trigger, localisation, docs, and spreadsheet alignment.
-- `chaos-redux-subagents` explains when to use a planner subagent, a patch-capable system subagent, an asset worker, a read-only auditor, or other subagents.
-
-When an improvement pass requires event-catalog alignment, the planner returns an alignment handoff to the parent and remains plan-only. Once implementation facts are available, the parent coordinates `chaosx_spreadsheet_doc_worker`, which owns updates to the authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook. After every successful workbook update, that worker runs `python .tools/export_event_catalog_csv.py` from the mod root. The three catalog CSVs are export-only snapshots and must never be edited directly.
-
 ## Research and historical connection standard
 
 Deep research is part of improvement, not decoration. When a feature has historical, cultural, political, regional, military, scientific, religious, or ideological inspiration, the loop should look for concrete anchors that can improve the design.
@@ -102,24 +120,6 @@ Research should help the planner find:
 Use the approved repo research method from `AGENTS.md` when the existing files do not provide enough support. Do not invent source claims. If a historical connection is uncertain, mark it as uncertain and use it as inspiration rather than as a factual assertion.
 
 The result should still play well. Research should make mechanics sharper, not turn the plan into a dry history note.
-
-## Specs and plans folders
-
-Full event specification packs belong under:
-
-```text
-docs/specs/<event_id>_<event_slug>_specs/
-```
-
-Improvement addenda, audit follow-up plans, subagent handoffs, and implementation notes belong under:
-
-```text
-docs/plans/<event_id>_<event_slug>_plans/
-```
-
-The plans folder is where subagents add working handoffs. The specs folder holds source design whose acceptance basis must be recorded. A spec path, status label, old handoff, or implementation evidence does not establish approval. Record the explicit user decision or parent acceptance within the user-authorized scope that supports each accepted claim. Keep unsupported or conflicting claims unresolved and use the AGENTS.md Specs and Plans dispositions.
-
-If an improvement addendum is accepted as source design, the main agent should fold it into the relevant spec file under `docs/specs/<event_id>_<event_slug>_specs/` or record it as `accepted and queued` with its acceptance basis and reason. Record implementation evidence separately from design acceptance.
 
 ## The improvement question
 
@@ -174,13 +174,15 @@ Useful moves include:
 
 Weak moves include more flat modifiers, more repeated buttons, more generic events, more hidden content without a reveal path, and more spectacle without gameplay.
 
-## Event improvement
+## Surface-specific improvement
+
+### Event improvement
 
 For events, improve the incident into a chain or system only when the idea benefits from it. Ask what the event starts, what it pressures, what it changes, and what later systems remember.
 
 An event addendum can define event families for escalation, negotiation, failure, outside reaction, and aftermath. It can define baseline stages that are not evolutions, true evolutions that unlock new behavior, decisions and missions, AI strategies, country-specific reactions, ideology-specific reactions, super-event thresholds, and defeat aftermath.
 
-## Focus tree improvement
+### Focus tree improvement
 
 For focus trees, improve route meaning before adding length. A tree is the playable identity of a country. The player should be able to look at the branches and understand what kind of country they are building.
 
@@ -190,7 +192,7 @@ Good focus improvements make political choices alter industry, army, diplomacy, 
 
 Do not reward every route with the same factories, equipment, stability, war support, and political power.
 
-## Decision and mission improvement
+### Decision and mission improvement
 
 Decision systems should ask the player to do something. A decision commits resources, risks escalation, creates a timer, changes a value, targets a state, opens a mission, or shifts a route.
 
@@ -198,7 +200,7 @@ A decision addendum can define pressure values, timed missions, visible objectiv
 
 A decision category should not become a store. If it is only a store, redesign it around the action the country is taking.
 
-## Formable nation improvement
+### Formable nation improvement
 
 Formables should matter when a country earns a larger identity. They can be public, route-locked, ideology-locked, hidden, high-chaos, event-created, leader-bound, artifact-bound, or tied to a specific prior crisis.
 
@@ -210,7 +212,7 @@ Hidden formables require more design, not less. Define how the player discovers 
 
 Do not grant every core for free unless the story and balance justify it. Prefer staged integration for large, contested, foreign, or culturally mixed formables.
 
-## Scripted GUI and animated presentation improvement
+### Scripted GUI and animated presentation improvement
 
 A scripted GUI is useful when the player needs to manage a living system visually. It is not useful when a normal decision category would be clearer.
 
@@ -222,7 +224,7 @@ Every GUI action needs script ownership. Buttons need costs, requirements, toolt
 
 Animated leader portraits should be reserved for major identity changes, high-chaos leaders, supernatural leaders, final formables, route reveals, and dramatic defeat aftermath. Define the trigger, static fallback, source mode, visual mood, frame behavior, sprite handoff, and removal or replacement condition.
 
-## Country package improvement
+### Country package improvement
 
 A country package is weak if it only has a tag, flag, leader, and generic tree. It should have a starting problem, a political identity, a reason to survive, and a route plan.
 
@@ -232,7 +234,7 @@ If the improvement changes a technology or doctrine tree, require `hoi4.tech_ins
 
 If a shared tag can appear through more than one event, define origin logic. The same tag can use different mechanics depending on release origin, formation origin, or route origin.
 
-## Asset and visual improvement
+### Asset and visual improvement
 
 Visual improvement should support mechanic clarity. It should not become decoration detached from gameplay.
 
@@ -246,9 +248,9 @@ For animated assets, define the state. The asset worker needs to know what frame
 
 Use `docs/assets/<event_id>_<event_slug>/` only as a temporary event-scoped evidence and working folder for those source files, previews, contact sheets, manifests, animation plans, and handoffs. Keep it while implementation or review is active, blocked, or incomplete. The parent owns cleanup under the existing deletion authorization and completion/source rules. Before the event goal is fully complete, the parent promotes durable provenance, coverage, review, and runtime-wiring facts into permanent event or plan documentation, verifies that no runtime reference points into `docs/assets/`, and deletes the complete workspace. A closure handoff should treat the absence of the deleted workspace as expected, not as a missing asset. Never delete skill-local reference assets or another event's workspace.
 
-Use source-based assets for real people, real flags, real symbols, and real historical images. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
+Use source-based assets for real people, real symbols, and real historical images. Real flags require sourced design references followed by reference-constrained imagegen reconstruction. Use generated assets for fictional, symbolic, supernatural, or impossible content. If an asset cannot be sourced or generated safely, mark it blocked instead of substituting a weak image.
 
-## Super-event improvement
+### Super-event improvement
 
 A super-event addendum should explain why the moment is larger than a normal popup. Define the role first. Examples include first reveal, faction formation, global escalation, defeat aftermath, world-end threshold, hidden route reveal, final formable reveal, or regional order change.
 
@@ -256,7 +258,7 @@ A good super-event addendum includes trigger meaning, title direction, descripti
 
 Formables can deserve super-events when they alter a region, revive a major historical identity, complete a hidden route, or announce a new bloc. Most small formables do not need one.
 
-## AI improvement
+### AI improvement
 
 AI depth is part of design, not a late patch. The addendum should explain how AI chooses routes and when it refuses risky actions.
 

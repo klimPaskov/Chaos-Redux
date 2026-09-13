@@ -13,6 +13,10 @@ Use this option only when every gate is true:
 
 If any gate is false, copy the full state-puzzle package instead.
 
+### Rejection conditions
+
+Reject the static option if the owner later adds an alternate group, a live qualifying count, a subject or ally counting exception, a meaningful state hover, or any state-specific action. Re-evaluate the presentation choice when the requirement changes rather than stretching the picture into a pseudo-interface.
+
 ## Owner record
 
 Record the following in the owning plan or manifest before choosing the picture:
@@ -66,7 +70,3 @@ spriteTypes = {
 ```
 
 The picture should show the exact shape in the same projection used by the installed map. It is not a map control and must not contain an implied click target.
-
-## Rejection conditions
-
-Reject the static option if the owner later adds an alternate group, a live qualifying count, a subject or ally counting exception, a meaningful state hover, or any state-specific action. Re-evaluate the presentation choice when the requirement changes rather than stretching the picture into a pseudo-interface.

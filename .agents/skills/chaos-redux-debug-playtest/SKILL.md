@@ -9,7 +9,9 @@ Use this skill only after the user explicitly invokes it or explicitly asks Code
 
 Do not add this skill to `AGENTS.md`, `chaos-redux-subagents`, completion-audit routing, event implementation routing, or any default workflow unless the user separately requests that integration. Normal coding agents must not use this skill merely because a feature needs validation.
 
-## 1. Capability gate
+## Preconditions and scope
+
+### 1. Capability gate
 
 This skill does not itself grant Windows desktop control.
 
@@ -24,7 +26,7 @@ Before starting, verify that the active Codex environment can:
 
 If any required capability is unavailable, stop with a blocked report. Do not claim that the skill has controlled the user's computer when it has not.
 
-## 2. Default Chaos Redux configuration
+### 2. Default Chaos Redux configuration
 
 Use these defaults:
 
@@ -43,7 +45,7 @@ The supplied shortcut is declared by the user to launch HOI4 in debug mode. Pres
 
 Confirm the active log directory by freshness after launch. Do not assume the OneDrive candidate is active merely because the mod is stored in OneDrive.
 
-## 3. Invocation scope
+### 3. Invocation scope
 
 Every invocation must resolve one of these modes:
 
@@ -63,7 +65,7 @@ For catalog coverage:
 - reconcile catalog status with actual event registration and repository files
 - record discrepancies between catalog status and implementation rather than guessing which is authoritative
 
-## 4. Mandatory project reading before a run
+### 4. Mandatory project reading before a run
 
 At the start of each invocation, read:
 
@@ -88,7 +90,7 @@ Consult the required offline Paradox wiki pages and vanilla documentation before
 
 Do not reread the entire repository for a narrow known-feature run. Read the complete source-of-truth files for the scoped feature and use targeted search for dependencies.
 
-## 5. Repository boundary
+### 5. Repository boundary
 
 The only default editable repository is:
 
@@ -109,7 +111,9 @@ Vanilla, documentation, offline wiki, and approved reference mods are read-only 
 
 Preserve unrelated uncommitted changes. Do not reset or clean the repository. Before editing a file with pre-existing changes, inspect the exact diff and retain the user's work.
 
-## 6. Launch and clean-start gate
+## Launch and repair
+
+### 6. Launch and clean-start gate
 
 Use this startup sequence:
 
@@ -132,7 +136,7 @@ Start-Process -FilePath 'C:\Users\klimp\OneDrive\Desktop\hoi4.exe - Shortcut.lnk
 
 The clean-start gate passes when the current launch reaches the main menu and a country map without a new attributable blocking error. It does not require every harmless engine warning to disappear.
 
-## 7. Chaos Redux error triage
+### 7. Chaos Redux error triage
 
 Treat an error as attributable when the fresh line identifies or strongly implies a Chaos Redux path or identifier, including:
 
@@ -158,17 +162,27 @@ Classify findings as:
 
 Do not make broad speculative fixes from a generic warning. Find a reproducible connection to Chaos Redux first.
 
+#### Script-constant schemas
+
 For a repeated pre-menu crash with an empty fresh `error.log`, check `common/script_constants/` category schemas early; the empty log does not prove successful startup. Read installed vanilla `common/script_constants/documentation.md` and the Script Constants section of `documentation/script_concept_documentation.md`: each category requires `schema` as its first entry, and scalar declarations use `data = int` or `data = fixed_point`, not `any_value`. Preserve valid array declarations using the installed `common/script_constants/country_groups.txt` (`array = country`) and `state_groups.txt` (`array = state`) precedents; absence of scalar `data` alone is not an array-schema defect. Repair confirmed declaration defects without changing tuning values, constant names, or consumers. A parsed-object key recovered from a crash dump is an investigative lead, not proof that the named entry alone caused the crash; shortening or removing it does not establish a cause without a successful controlled retest. Resolving an early parse crash can expose a large downstream error batch that earlier launches never reached, so distinguish newly observable errors from demonstrated patch regressions using the recorded evidence. Keep the clean-start gate pending until the required main-menu and country-map observations and fresh-log checks pass.
+
+#### Variable comparisons
 
 For startup parse errors involving `check_variable`, distinguish valid shorthand such as `{ some_value > threshold }` from the malformed mixed form `{ var = some_value > threshold }`. Consult the `check_variable` section in `C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV\documentation\triggers_documentation.md` and the offline `paradox_wiki/Data structures - Hearts of Iron 4 Wiki.md` comparison examples. In a confirmed mixed form, remove only the redundant `var =`, preserving the comparator, scoped variable token, and right-hand value, including any `constant:category.threshold` token. Keep valid shorthand and genuine long-form blocks such as `{ var = some_value value = threshold compare = greater_than }` intact; `>` itself is supported syntax.
 
+#### Temporary-variable cleanup
+
 For an unsupported `clear_temp_variable`, do not mechanically rename it to `clear_variable` or delete all occurrences: the offline Data structures `clear_variable` entry restricts that command to regular variables. Inventory each exact identifier's writes, reads, callers, nested helpers, and caller continuations before choosing a repair. Delete a terminal cleanup only when every subsequent invocation initializes before any read and no downstream consumer observes the identifier's absence or retained value. Cross-helper inputs or sentinel semantics require an explicit repair that preserves the consumer contract; neither setting zero nor assuming deletion at a helper's closing brace proves equivalence to absence.
+
+#### Runtime country templates
 
 For deliberately inert ordinary country templates, a comment-only history file can still be reported missing by the loader. When the accepted package model supplies all country attributes at runtime, an empty dated history block such as `1936.1.1 = { }` can provide a recognized input with no child effects; confirm acceptance in fresh logs for the installed engine. Do not use this form instead of required starting history or OOB content, or switch the tags into a dynamic pool merely to remove the warning: inspect `create_dynamic_country` origin, copy-source, and reservation semantics first. Loader acceptance does not validate runtime country creation, reservation, transfer, or cleanup.
 
+#### Patch attribution
+
 When an error appears after the agent's patch, treat it as caused by the current change set until the agent proves otherwise from the pre-patch log evidence.
 
-## 8. Repair loop
+### 8. Repair loop
 
 For each attributable error:
 
@@ -189,7 +203,9 @@ For each attributable error:
 
 Default maximum repair cycles are `6`. The user may set a different limit. The loop should normally continue without requesting confirmation between cycles. Stop only for a hard blocker, ambiguous design decision, unsafe scope expansion, or exhausted cycle budget.
 
-## 9. Test-country rule
+## Test setup and artifacts
+
+### 9. Test-country rule
 
 Use one primary player country for a run unless the user explicitly authorizes multi-country coverage.
 
@@ -207,7 +223,7 @@ When a country-specific route cannot be reached from the primary country, mark i
 
 When the user explicitly requests multi-country coverage, use separate dedicated saves by country or feature. Do not perform uncontrolled tag switching inside one polluted save.
 
-## 10. Deterministic setup policy
+### 10. Deterministic setup policy
 
 Use the least invasive setup that preserves the behavior being tested:
 
@@ -223,7 +239,7 @@ Record every forced trigger, slider value, scenario type, console command, focus
 
 Never use a setup shortcut to prove the shortcut's bypassed condition works.
 
-## 11. Dedicated test artifacts
+### 11. Dedicated test artifacts
 
 Create:
 
@@ -251,7 +267,9 @@ Recommended screenshot names:
 
 Do not put ordinary save files in Git by default. Record the dedicated save name and save path in `run_manifest.md`.
 
-## 12. Chaos Redux smoke test
+## Smoke tests and catalog planning
+
+### 12. Chaos Redux smoke test
 
 Every live run that enters a campaign should perform this smoke pass unless the named issue crashes earlier:
 
@@ -272,7 +290,7 @@ Every live run that enters a campaign should perform this smoke pass unless the 
 
 If the scope is narrower and one of these actions would materially alter the feature under test, record the skipped smoke step and reason.
 
-## 13. Event-catalog coverage
+### 13. Event-catalog coverage
 
 Build the live event queue from the current repository catalog and actual implementation, not from memory.
 
@@ -301,7 +319,7 @@ For every candidate row record:
 - fixes and retest result
 - blocker or not-covered reason
 
-### Status handling
+#### Status handling
 
 - `Needs Testing`: highest priority for live coverage
 - `Implemented`: regression coverage after `Needs Testing`
@@ -313,7 +331,9 @@ If a catalog row says `Implemented` but no runnable implementation can be found,
 
 If implementation exists but the catalog is stale, test the implementation and report the mismatch. Update the catalog only when the parent task includes documentation alignment and implementation facts are verified.
 
-## 14. Event test protocol
+## Feature protocols
+
+### 14. Event test protocol
 
 For each event in scope:
 
@@ -334,7 +354,7 @@ For each event in scope:
 
 Do not log normal baseline stages as evolution passes. Test actual evolution tracks against their own unlock and log contract.
 
-## 15. Evolution test protocol
+### 15. Evolution test protocol
 
 For each implemented evolution in scope:
 
@@ -352,7 +372,7 @@ For each implemented evolution in scope:
 
 Use separate checkpoints for parallel or mutually exclusive evolution tracks.
 
-## 16. Cluster test protocol
+### 16. Cluster test protocol
 
 Use the current cluster catalog and actual registry.
 
@@ -372,7 +392,7 @@ For each implemented cluster in scope:
 
 Do not treat unimplemented catalog-only cluster ideas as live coverage.
 
-## 17. Triggerable scenario test protocol
+### 17. Triggerable scenario test protocol
 
 Use the current scenario catalog and registry.
 
@@ -395,7 +415,7 @@ For each implemented scenario in scope:
 
 A scenario marked `Needs Testing` remains unverified until its full launch flow and at least one intensity path pass live testing. Test all intensity paths when the user requests complete scenario coverage.
 
-## 18. Event Logs and Event Details visual audit
+### 18. Event Logs and Event Details visual audit
 
 Check every scoped surface at the active resolution:
 
@@ -420,7 +440,7 @@ Confirm:
 - impossible events show `N/A` rather than a misleading zero weight
 - unreworked events remain disabled by default when that is the current project contract
 
-## 19. Chaos Meter visual and gameplay audit
+### 19. Chaos Meter visual and gameplay audit
 
 When the scoped feature touches global systems, inspect:
 
@@ -444,7 +464,7 @@ When the feature changes chaos, contamination, condemnation, or deaths:
 
 Do not use a display-only change as proof that the underlying mechanic changed correctly.
 
-## 20. Decisions, missions, and scripted GUI
+### 20. Decisions, missions, and scripted GUI
 
 For every scoped decision or scripted GUI surface:
 
@@ -462,7 +482,7 @@ For every scoped decision or scripted GUI surface:
 
 If a scripted GUI is visually broken but its accepted layout is unclear, capture it and mark `needs_user_review`. Do not redesign the interface from taste alone.
 
-## 21. Focus-tree live audit
+### 21. Focus-tree live audit
 
 For every scoped tree:
 
@@ -478,7 +498,7 @@ For every scoped tree:
 
 A tree that renders without errors can still fail live QA. Record shallow or disconnected design as a design gap. Do not autonomously add a new route family under this testing skill.
 
-## 22. Country-package live audit
+### 22. Country-package live audit
 
 For event-created, restored, released, or transformed countries in scope, verify:
 
@@ -496,7 +516,7 @@ For event-created, restored, released, or transformed countries in scope, verify
 
 A fighting country that appears without a usable force package is a blocking gameplay defect unless the accepted spec explicitly makes it nonmilitary.
 
-## 23. Super-event live audit
+### 23. Super-event live audit
 
 For every scoped super-event:
 
@@ -513,7 +533,7 @@ For every scoped super-event:
 
 Do not substitute default audio, placeholder art, invented quotes, or an unrelated track to make the test pass.
 
-## 24. Asset and animation live audit
+### 24. Asset and animation live audit
 
 Inspect visible scoped assets at their actual in-game size:
 
@@ -540,7 +560,7 @@ Check for:
 
 A missing final asset is a blocker. Do not create a primitive placeholder or recolor another asset to close the issue.
 
-## 25. AI and time-progression pass
+### 25. AI and time-progression pass
 
 After deterministic interaction tests, run a bounded time-progression pass from a clean save.
 
@@ -560,7 +580,9 @@ Observe:
 
 Do not implement a new `on_daily`, `on_weekly`, `on_monthly`, or other all-country iteration as a live-fix shortcut unless the user has explicitly authorized that design under `AGENTS.md`.
 
-## 26. Defect ownership and routing
+## Defect routing and acceptance
+
+### 26. Defect ownership and routing
 
 Fix a defect directly when it is narrow, reproducible, and inside the current feature.
 
@@ -581,7 +603,7 @@ Do not use `chaosx_repo_explorer` for an error that already identifies exact fil
 
 The parent agent remains responsible for the live loop, integration, relaunch, retest, and completion claim.
 
-## 27. Fix acceptance
+### 27. Fix acceptance
 
 A Chaos Redux fix passes only when:
 
@@ -598,7 +620,9 @@ A Chaos Redux fix passes only when:
 
 Do not accept a fix solely because the parser error disappeared.
 
-## 28. Full-catalog coverage ledger
+## Coverage and completion
+
+### 28. Full-catalog coverage ledger
 
 For `catalog-coverage`, create `coverage.csv` with at least:
 
@@ -619,7 +643,7 @@ Allowed final statuses:
 
 Never convert `not_implemented` or `not_covered_single_country` into `pass` to improve the coverage percentage.
 
-## 29. Completion standard
+### 29. Completion standard
 
 A scoped Chaos Redux autonomous run is complete only when:
 
@@ -639,7 +663,7 @@ A scoped Chaos Redux autonomous run is complete only when:
 
 For catalog coverage, completion means the ledger is honest. It does not mean every unfinished idea in the catalog has become testable.
 
-## 30. Final report
+### 30. Final report
 
 Use:
 

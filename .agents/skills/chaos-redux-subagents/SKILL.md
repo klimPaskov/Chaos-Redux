@@ -33,7 +33,6 @@ This rule applies to every subagent type:
 
 The goal is to keep subagents narrow, reproducible, and grounded in explicit inputs instead of inherited conversation state.
 
-
 ## Available project subagents
 
 Identifiers below are the canonical snake_case Codex names. The Qoder and Cursor runtimes use the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`). Qoder mappings live in `.qoder/agents/README.md` and regenerate with `python .tools/sync/sync_qoder_agents.py`. Cursor mappings live in `.cursor/agent-map.md` and regenerate with `python .tools/sync/sync_cursor_agents.py`. Cursor agent files must stay Task-tool compatible: one Markdown file per agent in `.cursor/agents/`, YAML frontmatter with `name`, `description`, and `model`, then the prompt body.
@@ -78,7 +77,9 @@ Use `chaosx_spreadsheet_doc_worker` only for the event catalog workbook at `docs
 
 Do not route new work to `chaosx_mechanic_expander`. Its role is merged into `chaosx_improvement_loop_planner` and the `chaos-redux-improvement-loop` skill.
 
-## Event UI worker gate
+## Routing gates
+
+### Event UI worker gate
 
 Spawn `chaosx_event_ui_worker` with a fully explicit, self-contained prompt (Codex `collaboration.spawn_agent`: `fork_turns="none"`) only when the accepted event spec or implementation explicitly introduces a dedicated scripted GUI or mechanic window. The parent prompt must provide the event id and slug, exact GUI identifiers and owning files, entry point, accepted layout brief and acceptance basis, reference-image paths or a bounded reference-production assignment, image-to-native mapping, intended states and resolutions, linked decisions and scripted-GUI identifiers, approved asset handoffs, allowed files, and handoff path.
 
@@ -90,7 +91,7 @@ Apply `chaos-redux-scripted-gui` for reference creation before implementation, j
 
 Mandatory evidence includes `hoi4.gui_inspect`, pre-change `hoi4.gui_render` full-window and relevant cropped, annotated, state, resolution, hierarchy, click-region, and comparison views, then post-change inspect/render comparison over matching explicit scenarios, source identities, states, resolutions, and UI scales. There is no separately exposed GUI comparison tool; preserve baseline artifacts and use the render route's supported `comparisonScenario` only for its documented scenario comparison. The production renders are the one-to-one in-game visual review surface, so visible alignment, spacing, clipping, overflow, background, asset, text, state, and click-region defects block completion and may not be excused as renderer differences. Missing required inspect/render evidence blocks visual completion; source-only review is not equivalent. `gui_rewrite` is optional, and its automatic post-write/index validation or transaction success is not a completion gate; direct application of an authorized reviewed edit follows `chaos-redux-scripted-gui`.
 
-## Repo explorer use gate
+### Repo explorer use gate
 
 `chaosx_repo_explorer` is an optional scout for uncertain or broad work. It should save time by finding files, patterns, precedents, and edit order before the parent starts a complex implementation.
 
@@ -208,6 +209,24 @@ Active small patches do not include:
 
 When a patch-capable subagent sees a broad design gap, it writes a plan handoff and stops. The main agent decides whether to implement it.
 
+## Plan and spec paths
+
+Full accepted event specs belong under:
+
+```text
+docs/specs/<event_id>_<event_slug>_specs/
+```
+
+Subagent plans, expansion addenda, audit follow-up notes, blocked reports, implementation handoffs, and patch handoffs belong under:
+
+```text
+docs/plans/<event_id>_<event_slug>_plans/
+```
+
+The plans folder is the working area. The specs folder holds source design whose acceptance basis must be recorded. A spec location, date, status label, or old handoff does not prove approval. Cite the explicit user decision or parent acceptance within the user-authorized scope, and keep unsupported or conflicting claims unresolved. Current implementation proves what exists, not what was accepted. The main agent should fold accepted design into the relevant spec or record it as `accepted and queued` with its acceptance basis and reason.
+
+Do not create new planning folder names such as `docs/planning/` unless the user explicitly asks.
+
 ## Mandatory handoff after any patch
 
 Every subagent that edits files must write a handoff back to the parent. If the event id and slug are known, place it under:
@@ -242,25 +261,9 @@ Use the artifact template's `?offset=<bytes>&length=<bytes>` reads with small ra
 
 For probability work, `chaosx_ai_probability_auditor` must start with `hoi4.probability_inspect`, name the analyzed surface and scenario ids, state whether the candidate pool and external factors were complete, and distinguish exact, bounded, sampled, score-only, and unresolved results. It must use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_compare` according to the scenario, with `hoi4.probability_simulate`, `hoi4.probability_sequence`, and `hoi4.probability_render` only under their declared evidence conditions. For technology or doctrine work, list the affected technology, folder, unlock, grant, bonus, or asset ids and include the relevant `hoi4.tech_compare` result when source changed.
 
-## Plan and spec paths
+## Specialist routing
 
-Full accepted event specs belong under:
-
-```text
-docs/specs/<event_id>_<event_slug>_specs/
-```
-
-Subagent plans, expansion addenda, audit follow-up notes, blocked reports, implementation handoffs, and patch handoffs belong under:
-
-```text
-docs/plans/<event_id>_<event_slug>_plans/
-```
-
-The plans folder is the working area. The specs folder holds source design whose acceptance basis must be recorded. A spec location, date, status label, or old handoff does not prove approval. Cite the explicit user decision or parent acceptance within the user-authorized scope, and keep unsupported or conflicting claims unresolved. Current implementation proves what exists, not what was accepted. The main agent should fold accepted design into the relevant spec or record it as `accepted and queued` with its acceptance basis and reason.
-
-Do not create new planning folder names such as `docs/planning/` unless the user explicitly asks.
-
-## Asset routing
+### Asset routing
 
 Do not use one broad asset worker for mixed visual packages.
 
@@ -280,8 +283,6 @@ Country-identity asset work must not start until the parent has audited the cand
 
 Portrait prompts must inspect the canonical portrait references and route the complete package to `chaosx_portrait_creator`. Real people require portrait-worker-owned source research, an attributed source, explicit crop, durable storage under `docs/assets/portraits/`, and a wired source placeholder; the user supplies the HOI4-style final for validation and installation. Grounded identities must use sourced real people or authentic institutional material. The portrait worker invokes native ImageGen for fictional or impossible portraits and completes their processing and wiring.
 
-
-
 For `chaosx_icon_artist`, the parent prompt must require `$imagegen` source atlas or source PNG evidence, prompt and source-mode notes, native transparent-background generation for alpha-backed families, alpha preservation, contact sheets, dimension and alignment QA, no white matte or opaque square backgrounds, and confirmation that final generated icons are not primitive local drawings or resized unrelated icons. Background removal must be recorded only as a fallback after native transparency fails or for an inherited opaque source.
 
 For `chaosx_generated_event_art`, distinguish alpha-backed emblems, seals, overlays, and decorative UI pieces from full-canvas report/news/super-event scenes, flags, and painted panels. Alpha-backed outputs request native transparency in the initial ImageGen call; full-canvas outputs keep the background treatment required by their consumer. Do not flatten native alpha or make background removal a routine generation step.
@@ -290,7 +291,7 @@ For flags, the parent prompt must state whether each flag is a base flag, ideolo
 
 Asset subagents may create source files, PNG previews, DDS files, contact sheets, manifests, and `gfx_handoff.md`. They must not edit `.gfx`, localisation, GUI, event, focus, idea, decision, script, history, country, or spreadsheet files unless the parent explicitly expands scope. The portrait worker has a standing narrow exception for portrait-specific `.gfx` entries and existing character portrait references.
 
-## Super-event routing
+### Super-event routing
 
 Use separate research agents when the super-event package has enough work to justify it.
 
@@ -302,7 +303,7 @@ Use `chaosx_portrait_creator` for every character portrait. Use `chaosx_asset_so
 
 The main agent owns final non-portrait wiring, localisation, settings-aware playback, docs, and spreadsheet alignment. The portrait worker owns portrait-specific `.gfx` and existing character portrait references.
 
-## Improvement routing
+### Improvement routing
 
 Use `chaosx_improvement_loop_planner` when an event or event-adjacent mechanic needs new design material, not just an audit finding.
 
@@ -312,7 +313,7 @@ The main agent should deploy the planner often enough to keep major events from 
 
 Audit subagents may include compact improvement handoffs inside their reports. If a gap requires a new route family, new GUI system, new formable suite, new country package, or new event chain, they should recommend a plan-mode pass rather than trying to patch it.
 
-## Spreadsheet catalog routing
+### Spreadsheet catalog routing
 
 `chaosx_spreadsheet_doc_worker` is a context-light spreadsheet worker, not a general documentation agent.
 

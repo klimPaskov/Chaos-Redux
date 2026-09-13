@@ -115,7 +115,7 @@ Do not copy the same cost or duration across every country unless the story and 
 
 Dynamic does not mean player-facing. Keep formula inputs, intermediate pressures, score components, and other tuning values hidden when the player does not need to act on them directly. If several internal values contribute to one decision, summarize them into one meaningful state or total instead of exposing the full calculation.
 
-## 4.1 Effect strength and no fairy-dust rewards
+### 4.1 Effect strength and no fairy-dust rewards
 
 Do not fill decision systems, missions, scripted GUI buttons, or formable routes with tiny bonuses that feel meaningless. Small values such as plus 1 percent, plus 2 percent, minus 3 percent, tiny political power, tiny stability, tiny war support, small generic stockpiles, or slight production nudges do not count as meaningful design by themselves.
 
@@ -131,7 +131,7 @@ A decision or mission reward should usually do at least one meaningful thing:
 
 Tiny modifiers are allowed only when they belong to a visible stacking system, frequent tick, temporary crisis push, dynamic scaling formula, or larger effect package. They should never be the whole reward for an important decision, mission, GUI button, formable step, route unlock, or crisis response.
 
-If a decision family has many small rewards, combine them into fewer stronger actions, convert them into staged idea upgrades, make them change a visible mechanic value. Do not scatter small bonuses across a category to create the appearance of progress.
+If a decision family has many small rewards, combine them into fewer stronger actions, convert them into staged idea upgrades, or make them change a visible mechanic value. Do not scatter small bonuses across a category to create the appearance of progress.
 
 Starting penalties and negative mission outcomes must also matter. A failed objective, broken authority value, bad crisis decision, or starting debuff should create pressure the player must answer. Harmless negative modifiers that can be ignored are not valid crisis design.
 
@@ -486,7 +486,7 @@ Industry decision families should generally do real map work, such as building o
 Expansion decision families should generally create real strategic options, such as claims, cores, war goals, protectorates, leagues, declarations, border incidents, treaties, ultimatums, or postwar settlement choices.
 
 
-## 15.1 Progressive decision categories
+### 15.1 Progressive decision categories
 
 Decision categories should evolve as the focus tree develops.
 
@@ -516,7 +516,7 @@ Examples:
 If a focus branch says it changes the country, the decision layer should reflect that change.
 
 
-## 15.2 Route-aware decision depth
+### 15.2 Route-aware decision depth
 
 A decision family unlocked by a focus path must have enough content to matter.
 
@@ -541,7 +541,7 @@ Advisor, leader, and council decisions should match the route that unlocked them
 Decision families can include achievement tracking when they support difficult route completions, rare combinations, expansion victories, internal reform, or survival under high-chaos conditions.
 
 
-## 15.3 Decision pacing, tradeoffs, and visible effects
+### 15.3 Decision pacing, tradeoffs, and visible effects
 
 Decision categories unlocked by focuses should progress over time.
 
@@ -558,7 +558,7 @@ Important decision families should define failure states. Failed reforms, failed
 Decision localisation should describe the visible baseline effect of the decision. Do not reveal hidden outcomes, secret variables, hidden follow-up events, or future surprise branches. The player should understand the public action and likely visible direction without being spoiled.
 
 
-## 15.4 Special mechanic values and faction goals
+### 15.4 Special mechanic values and faction goals
 
 Large decision and mission systems should interact with special mechanic values.
 
@@ -587,7 +587,7 @@ Important event-created factions should usually have a mechanic such as cohesion
 A faction should not form just because one country exists. Use minimum membership, crisis pressure, ideological compatibility, war state, diplomatic preparation, or regional logic.
 
 
-## 15.5 Mechanic presentation, value clarity, and faction outcomes
+### 15.5 Mechanic presentation, value clarity, and faction outcomes
 
 Special mechanic values must be visible somewhere the player can understand them. A decision category can show values in its header, a custom scripted GUI, a progress meter, a scripted localisation tooltip, or national spirit tooltips.
 
@@ -602,7 +602,7 @@ Decision systems for shared trees or shared mechanics must still feel country-sp
 Important thresholds, caps, gains, losses, duration bands, AI weights, and scaling values should be centralized in script constants or a documented tuning file. Do not scatter magic numbers across decision files, events, focuses, scripted effects, and scripted triggers.
 
 
-## 15.6 Reward dumps and exploit checks
+### 15.6 Reward dumps and exploit checks
 
 Avoid one-time reward dumps as the main decision or mission design. A decision or mission can give units, equipment, factories, buildings, resources, or influence, but important decisions should usually connect to a repeatable system, timed objective family, mechanic value, advisor path, route branch, or long-term gameplay loop.
 
@@ -631,7 +631,7 @@ Check for:
 Fix exploits with route locks, flags, cooldowns, dynamic costs, limited targets, escalating costs, one-time completion flags, scripted triggers, AI limits, or cleanup effects.
 
 
-## 15.7 Decision category clutter control
+### 15.7 Decision category clutter control
 
 Large decision systems should not show every possible decision at once.
 
