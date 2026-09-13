@@ -54,6 +54,8 @@ The pre-existing tracked workspace patch and status are preserved under `baselin
 No balance redesign, new numeric chance, score addition, or threshold was introduced.
 The Random Terror incident pool retains 158 tickets, and the scenario/raid pools retain their exact original 100-ticket distributions.
 The probability auditor captured the complete incident baseline and bounded same-scenario comparisons; its final handoff records exact artifacts, declared fixtures, and unresolved direct dynamic-variable binding limitations.
+Incident, scenario-pattern, and high-raid declared-pool comparisons report zero changes; low/mid comparisons returned without an exposed retained `comparisonChanges` field, so that field is not treated as a pass.
+The inline declared-pool projections are narrower audit evidence than the full live-source call graph and are explicitly reported as an audit simplification.
 Source scenario contracts also cover the corrected leader, opinion, technology, controlled-terrain, target-readiness, and current zero-VP predicates.
 They do not establish campaign behavior that was not exercised.
 
