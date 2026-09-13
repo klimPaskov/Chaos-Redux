@@ -3,6 +3,9 @@
 Disposition: `implemented` for the requested safe editorial cleanup and preservation review.
 Unresolved conflicts and missing references remain explicitly pending below.
 
+The [category-picture policy and hash cleanup follow-up](category_pictures_and_hashes.md) records the subsequent explicit user corrections.
+The passage maps and citation inventories below describe the preceding cleanup snapshot; consult the follow-up for current picture eligibility and hash-bookkeeping changes.
+
 ## Scope and preservation
 
 Reviewed all 16 project `SKILL.md` files and their 12 supporting instruction/example documents against a pre-edit snapshot that includes existing user changes.

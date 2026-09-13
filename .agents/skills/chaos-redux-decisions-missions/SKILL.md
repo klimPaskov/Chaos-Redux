@@ -675,17 +675,22 @@ Do not leave stale, invalid, or irrelevant decisions visible simply because thei
 
 A complex scripted GUI is not the default presentation for a decision category. Choose the least complex surface that communicates the category's current state, purpose, and available actions clearly.
 
+Use static or animated category pictures only for simple categories containing a description, an ordinary decision list, and at most basic formatted value tables.
+Do not add a picture when the category already has complex UI, meters, additional custom buttons or controls, rich interactive panels, or other animations.
+Ordinary decision-list buttons and basic formatted value tables remain allowed, and an animated picture itself is supported as a simple-category alternative, but it must not accompany existing animated GUI.
+Identity, atmosphere, propaganda, and territorial context alone do not override this gate.
+
 Use this order:
 
 1. ordinary category icon with concise category text
-2. static category picture
-3. animated category picture with a static fallback
+2. static category picture when eligible
+3. animated category picture with a static fallback when eligible
 4. compact attached display or category header
 5. full scripted GUI or separate mechanic window
 
-Do not move to a more complex layer only because the category is important. A static or animated category picture is often stronger for a category that needs identity and atmosphere but does not require the player to manage several live values or targets.
+Do not move to a more complex layer only because the category is important. Within the eligibility gate, a static or animated category picture is often stronger for a category that needs identity and atmosphere but does not require the player to manage several live values or targets.
 
-Category pictures are especially suitable for:
+Within this gate, category pictures are especially suitable for:
 
 - propaganda and public campaigns
 - civil-war preparation, insurgency, and national preparedness
@@ -702,7 +707,7 @@ Use a full scripted GUI only when the player must manage a living system that ca
 
 Decision category descriptions, status summaries, scripted localisation, and compact attached displays must read as intentional game UI. Do not use repeated pipes or vertical bars, divider-character runs, ASCII or Unicode table rows, or other text separators to simulate columns, meters, ledger rows, buttons, or panel layout. Do not emit debug-style telemetry dumps such as `Label value | Label value | ...`, generic developer-state labels, raw variable names, or country-agnostic fallback prose that can leak another country's wording.
 
-Use short natural-language lines, properly wired icons or texticons, real meters or panels, and concise tooltips. Introduce a real scripted GUI only when a justified, functional layout gives the player interaction or state clarity that ordinary category text, decisions, tooltips, and pictures cannot provide. Category pictures and compact attached displays must not paint or textually simulate fake buttons, meters, ledger columns, or controls. Resolve country- or route-specific wording through explicit localisation branches with a neutral default fallback that cannot inherit another country's text, and verify the fallback in every supported context.
+Use short natural-language lines, properly wired icons or texticons, real meters or panels, and concise tooltips. Basic formatted value tables remain allowed and do not by themselves require scripted GUI or exclude category pictures. This does not permit the fake text layouts prohibited above. Introduce a real scripted GUI only when a justified, functional layout gives the player interaction or state clarity that ordinary category text, decisions, tooltips, and pictures cannot provide. Category pictures and compact attached displays must not paint or textually simulate fake buttons, meters, ledger columns, or controls. Resolve country- or route-specific wording through explicit localisation branches with a neutral default fallback that cannot inherit another country's text, and verify the fallback in every supported context.
 
 This restriction applies to runtime player-facing text and art. Internal Markdown audit tables may still use normal table syntax and must never be copied into localisation.
 
@@ -718,10 +723,10 @@ The reference family must contain its own `contact_sheet.png`. If the sheet is m
 
 When reviewing existing Chaos Redux decision categories, produce a category presentation audit with these columns:
 
-| Category id | Owner system | Current presentation | Recommended layer | Picture or GUI reason | Missing asset or implementation |
-| --- | --- | --- | --- | --- | --- |
+| Category id | Owner system | Current presentation | Picture eligibility, including existing UI and animations | Recommended layer | Picture or GUI reason | Missing asset or implementation |
+| --- | --- | --- | --- | --- | --- | --- |
 
-Identify existing categories that would benefit from a static or animated category picture and currently lack one. Do not add a picture to every category. Keep ordinary categories ordinary when a picture would add no useful identity, territorial context, or state feedback.
+Apply the eligibility gate before identifying existing categories that would benefit from a static or animated category picture and currently lack one. Categories with complex UI, meters, additional custom controls, rich interactive panels, or other animations are ineligible, not missing picture assets. Do not add a picture to every category. Keep ordinary categories ordinary when a picture would add no useful identity, territorial context, or state feedback.
 
 ## Formable nation decisions
 
@@ -775,7 +780,7 @@ The template package should include:
 - `.gui`, `.gfx`, and scripted-GUI templates
 - scripted trigger and scripted effect helper templates
 - scripted localisation and tooltip templates
-- a static category-picture option for formables that do not need per-state interaction
+- a static category-picture option for eligible simple formable categories that do not need per-state interaction, without an interactive state-puzzle GUI alongside it
 - a validation checklist covering exact geometry, projection, current control state, eligibility agreement, click and hover regions, resolution behavior, AI equivalence, cleanup, and runtime asset paths
 
 Templates are reference scaffolding. Future agents must copy and adapt them into event or system-owned files. Do not wire the skill-local template files directly into the game.
@@ -805,7 +810,7 @@ Formation systems should support partial success and failure. A country can form
 
 ## Scripted GUI decision categories and mechanic windows
 
-Choose the presentation layer from the hierarchy above before creating a custom window. Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly. A custom interface must have a gameplay reason and cannot compensate for weak actions.
+Choose the presentation layer from the hierarchy above before creating a custom window. Use an attached scripted GUI or a separate mechanic window only when active values, targets, meters, factions, or exact state pieces need a visual management surface that ordinary decisions, tooltips, and a category picture cannot provide clearly. Basic formatted value tables alone do not require this richer presentation. A custom interface must have a gameplay reason and cannot compensate for weak actions.
 
 Use the scripted GUI skill's [reference-image workflow](../chaos-redux-scripted-gui/SKILL.md#reference-image-before-implementation), [active MCP preview and comparison workflow](../chaos-redux-scripted-gui/SKILL.md#required-mcp-visual-review-and-optional-rewrite), and [visual and usability review](../chaos-redux-scripted-gui/SKILL.md#scripted-gui-visual-and-usability-review). These are mandatory for GUI layout, backgrounds, text, content budgets, interaction presentation, and visual evidence. Route layout work on a dedicated UI introduced and owned by one named event to `chaosx_event_ui_worker` under `chaos-redux-subagents`. Shared event log, event details, settings, super-event frameworks, and unrelated interfaces remain parent-owned and require their own authorization. The decision owner retains the gameplay rules below.
 
@@ -826,7 +831,9 @@ Do not add actions to fill layout space or manufacture depth. Merge duplicate ac
 
 ## Animated decision category presentation
 
-Animation is optional. First decide whether a static category picture is sufficient. Use an animated category picture or animated GUI sprite only when motion makes a changing state easier to notice or strengthens a category whose identity depends on active propaganda, mobilization, escalating crisis, or transformation. Every animated category picture needs a static fallback.
+Animation is optional. First apply the same category-picture eligibility gate to static and animated pictures, then decide whether a static picture is sufficient. Use an animated category picture or animated GUI sprite only when motion makes a changing state easier to notice or strengthens a category whose identity depends on active propaganda, mobilization, escalating crisis, or transformation. An animated picture remains a simple-category alternative and must not accompany existing animated GUI. Every animated category picture needs a static fallback.
+
+The examples below include GUI animations for their appropriate controls, meters, panels, and windows. They do not make those categories eligible for an additional static or animated category picture.
 
 Suitable uses include:
 
@@ -975,10 +982,11 @@ A decision or mission task is complete only when:
 - faction, league, bloc, or coalition decisions include goals, membership rules, AI behavior, rewards, and success or failure states
 - special mechanics have visible UI or tooltip presentation
 - every decision category has a documented presentation choice, and the least complex adequate layer was used
-- categories suited to propaganda, ideology, preparedness, civil-war, treaty, faction, or territorial pictures have picture coverage or a clear reason to remain text-only
+- eligible simple categories suited to propaganda, ideology, preparedness, civil-war, treaty, faction, or territorial pictures have picture coverage or a clear reason to remain text-only
+- static and animated category pictures obey the same eligibility gate and do not accompany complex UI, meters, additional custom controls, rich interactive panels, or other animations
 - the canonical decision-category picture reference folder and its contact sheet were inspected when category pictures were created or audited
-- full scripted GUI windows are not used where a normal category plus a static or animated picture would communicate the mechanic more clearly
-- formables whose central proof is exact state control use the reusable state-puzzle presentation or document why a static territorial picture is sufficient
+- full scripted GUI windows are not used where a normal category plus an eligible static or animated picture would communicate the mechanic more clearly
+- formables whose central proof is exact state control use the reusable state-puzzle presentation or document why an eligible static territorial picture is sufficient
 - state-puzzle pieces use exact current map geometry, stay synchronized with formation eligibility, show grey and green qualification states with non-colour cues, and use the reusable template package
 - every manifest-driven formable has a completed category attachment audit with no missing, duplicate, or mismatched category IDs
 - formable category families that declare the strict state-puzzle attachment policy have every in-scope category metadata block pointing to the matching generated `scripted_gui`

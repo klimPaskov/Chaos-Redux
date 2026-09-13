@@ -18,7 +18,7 @@ The shipped consumer manifests, projected PNG/DDS pairs, previews, and helper ho
 
 The runtime generator is `.tools/generate_formable_state_puzzle_runtime.mjs`. It discovers every `manifest.json` directly below `docs/formables/state_puzzles/*/` whose `status` is `complete`, validates each manifest and runtime DDS pair, rejects duplicate category or formable identifiers after runtime normalisation (including `a-b` versus `a_b`), and emits the shared GFX, GUI, scripted-GUI, scripted-localisation, and localisation surfaces. It has no hardcoded category allow-list.
 
-Runtime textures are converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. Preserve the processed PNG, final DDS, dimensions, hashes, and decoded round-trip evidence with the owning consumer package.
+Runtime textures are converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`. Preserve the processed PNG, final DDS, dimensions, and decoded round-trip evidence with the owning consumer package.
 
 ## Supported maintenance order
 
@@ -102,7 +102,7 @@ Record the returned artifact URIs and review that every piece stays inside the i
 
 Convert each processed PNG with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py` using the exact target dimensions and the repository's one-level uncompressed 32-bit BGRA contract. Decode every final DDS back to PNG at native size and compare it to the processed PNG pixel-for-pixel.
 
-Retain a machine-readable or tabular record of source and DDS paths, dimensions, SHA-256 values, DDS header and byte-length checks, alpha extrema, and decoded round-trip equality. A missing, dimension-mismatched, header-invalid, or pixel-different DDS blocks `status: "complete"` promotion.
+Retain a machine-readable or tabular record of source and DDS paths, dimensions, DDS header and byte-length checks, alpha extrema, and decoded round-trip equality. A missing, dimension-mismatched, header-invalid, or pixel-different DDS blocks `status: "complete"` promotion.
 
 There is no dedicated DDS MCP route in the installed HOI4 tool surface; the repository converter and local decode/round-trip evidence are the required asset checks. Do not claim that a map or GUI MCP artifact proves DDS integrity.
 

@@ -118,7 +118,7 @@ Preserve unrelated uncommitted changes. Do not reset or clean the repository. Be
 Use this startup sequence:
 
 1. Record the current repository commit, branch, changed files, and test scope.
-2. Record hashes and timestamps for `error.log`, `game.log`, `setup.log`, `text.og` and `exceptions.log` when present.
+2. Record timestamps for `error.log`, `game.log`, `setup.log`, `text.og` and `exceptions.log` when present.
 3. Launch:
 
 ```powershell

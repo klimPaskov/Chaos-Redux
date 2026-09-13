@@ -134,7 +134,7 @@ Use a separate placement study for every person. The measured opening-fill size,
 
 Keep the complete head and shoulders readable, keep the face clear of the paper, prevent portrait pixels from appearing outside the verified bleed mask, and retain the exact template as the final top layer.
 
-Record the source hash, template hash, complete-source resize, selected dimensions, center, offset, rotation, sepia strength, candidate grids, independent review, processed PNG hash, and runtime DDS hash.
+Record the complete-source resize, selected dimensions, center, offset, rotation, sepia strength, candidate grids, and independent review.
 
 Review the candidate at native size and at `4x` nearest-neighbour size against contrasting solid backgrounds, checker backgrounds, and the canonical advisor and high-command family.
 

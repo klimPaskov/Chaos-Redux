@@ -592,17 +592,22 @@ A decision category should feel curated by the current route and campaign state,
 
 Every planned decision category should use the least complex presentation that communicates its purpose and current state clearly.
 
+Use static or animated category pictures only for simple categories containing a description, an ordinary decision list, and at most basic formatted value tables.
+Do not add a picture when the category already has complex UI, meters, additional custom buttons or controls, rich interactive panels, or other animations.
+Ordinary decision-list buttons and basic formatted value tables remain allowed, and an animated picture itself is supported as a simple-category alternative, but it must not accompany existing animated GUI.
+Identity, atmosphere, propaganda, and territorial context alone do not override this gate.
+
 Use this order:
 
 1. ordinary category icon and concise text
-2. static category picture
-3. animated category picture with a static fallback
+2. static category picture when eligible
+3. animated category picture with a static fallback when eligible
 4. compact attached display or category header
 5. full scripted GUI or separate mechanic window
 
-Do not plan a full scripted GUI only because a category is important. A static or animated category picture is usually the better choice when the category needs identity, atmosphere, propaganda, territorial context, or a clear visual theme but the decisions already carry the gameplay.
+Do not plan a full scripted GUI only because a category is important. Within the eligibility gate, a static or animated category picture is usually the better choice when the category needs identity, atmosphere, propaganda, territorial context, or a clear visual theme but the decisions already carry the gameplay.
 
-Strong category-picture candidates include:
+Within this gate, strong category-picture candidates include:
 
 - propaganda, ideology, elections, monarchism, party control, and trade-union politics
 - civil-war preparation, insurgency, mobilization, and national preparedness
@@ -1165,7 +1170,7 @@ The coding prompt should require reusable templates under:
 
 The template package should cover the state manifest, GUI, GFX, scripted GUI, helper triggers and effects, scripted localisation, static category-picture alternative, AI equivalent, cleanup, and validation. Skill-local templates are reference scaffolding and must be copied into system-owned files before runtime use.
 
-A small formable whose map requirement is obvious may use a static territorial category picture instead. The spec should state why the static picture is clearer than a dynamic state-puzzle display.
+A small formable whose map requirement is obvious may use a static territorial category picture instead only when the category passes the picture eligibility gate and has no interactive state-puzzle GUI. The spec should state why the static picture is clearer than a dynamic state-puzzle display.
 
 ### 3.13 Starting forces and reinforcement pathway standard
 
@@ -1280,7 +1285,7 @@ For every requested skeletal action, define the semantic role, action name, FPS,
 
 Do not let a static render or still mesh stand in for a requested skeletal animation. If an action cannot be produced, the coding-agent prompt must mark it blocked or needs_user_review with the reason.
 
-The model package must plan provider lineage, Blender source and normalized/repaired/material/rigged/action/pre-export checkpoints, processed textures, PDX material channel mapping, `.mesh` and `.anim` exports, reimport proof, runtime hashes, and final live-consumer screenshots.
+The model package must plan provider lineage, Blender source and normalized/repaired/material/rigged/action/pre-export checkpoints, processed textures, PDX material channel mapping, `.mesh` and `.anim` exports, reimport proof, and final live-consumer screenshots.
 
 The asset prompt must distinguish provider source files from final runtime copies. It must require a final hash-aware synchronization step so an older mapped texture, mesh, entity, or animation cannot overwrite the approved runtime candidate.
 
@@ -1445,16 +1450,16 @@ Map the UI states if the UI represents pressure, route choice, threat, stage, fa
 
 ### Interactive mechanic UI and animated presentation in event specs
 
-When an event has an important decision category, choose its presentation layer before designing a custom window. Start with an ordinary category, then test whether a static or animated category picture is enough. Use a richer scripted GUI or a separate mechanic window only when the system needs active visual management that normal decisions, tooltips, and one category picture cannot provide.
+When an event has an important decision category, choose its presentation layer before designing a custom window. Start with an ordinary category, then apply the picture eligibility gate before testing whether a static or animated category picture is enough. Basic formatted value tables alone do not require a richer GUI. Use a richer scripted GUI or a separate mechanic window only when the system needs active visual management that normal decisions, tooltips, and one category picture cannot provide.
 
 For a new or redesigned scripted GUI, use `chaos-redux-scripted-gui` to create reference image(s) before native implementation and carry the image-to-element mapping, supported HOI4 adaptations, acceptance basis, assets, states, and matched MCP scenarios into the implementation handoff. A plan or image file does not establish approval; record explicit user direction or parent acceptance within the authorized scope. If the named event specifically introduces a dedicated scripted GUI, include a bounded `chaosx_event_ui_worker` handoff in the implementation prompt. Name the event-owned GUI identifiers, files, entry point, layout regions, states, resolutions, decisions, assets, allowed files, and handoff path. Require mandatory `hoi4.gui_inspect`, comprehensive `hoi4.gui_render`, and post-change comparison evidence plus the full reference-image, native-layout, and visual-review contract from `chaos-redux-scripted-gui`, which permits direct application of reviewed edits and makes `gui_rewrite` optional rather than requiring its automatic post-write/index validation to pass. Explicitly exclude the shared event log, event-details framework, settings, super-event framework, shared registries, and unrelated existing UIs.
 
-For major events, important decision categories, custom mechanic windows, formable routes, high-chaos route reveals, active crisis meters, special leader transformations, faction boards, patron influence networks, or occult and supernatural systems, run a presentation-choice pass. The pass must choose between ordinary category presentation, a static picture, an animated picture, a compact attached display, and a full scripted GUI. Animation should be planned only when it clarifies a changing state or materially strengthens the category. Static presentation needs no defensive justification when it is the clearer option.
+For major events, important decision categories, custom mechanic windows, formable routes, high-chaos route reveals, active crisis meters, special leader transformations, faction boards, patron influence networks, or occult and supernatural systems, run a presentation-choice pass. The pass must choose between ordinary category presentation, an eligible static or animated picture, a compact attached display, and a full scripted GUI. Existing complex UI, meters, additional custom controls, rich interactive panels, or other animations exclude category pictures from this choice. Animation should be planned only when it clarifies a changing state or materially strengthens the category. Static presentation needs no defensive justification when it is the clearer option.
 
 A mechanic UI spec should include:
 
 - chosen presentation layer and why a simpler layer would be insufficient
-- category picture direction when a static or animated picture is used
+- category picture eligibility and direction when a static or animated picture is used
 - formable state-puzzle layout and exact state-piece rules when map qualification is the mechanic
 - where the UI appears, such as decision category header, attached scripted GUI, custom window, event-details panel, or country mechanic panel
 - what button opens or closes the window
@@ -1475,7 +1480,7 @@ The spec should not make an interactive window for every small modifier. Use cus
 
 Animation is useful when the player needs to notice a changed state without reading a long tooltip. Use it for pressure rising, corruption spreading, a council activating, an occult meter pulsing, a patron influence network changing, a formable seal becoming available, a faction board entering crisis mode, a route emblem changing after a focus, or a warning frame appearing near failure. It should not hide information or add noise.
 
-Do not animate a category only to make it look important. Strong static pictures are often better for propaganda, ideology, civil-war preparation, national preparedness, elections, treaties, and formable territory overviews. Animated category pictures are appropriate when the picture itself represents active mobilization, escalating crisis, a changing map state, or route transformation.
+Do not animate a category only to make it look important. Within the picture eligibility gate, strong static pictures are often better for propaganda, ideology, civil-war preparation, national preparedness, elections, treaties, and formable territory overviews. Animated category pictures follow the same gate and are appropriate when the picture itself represents active mobilization, escalating crisis, a changing map state, or route transformation. The meter, board, control, and window animations above are GUI animation examples, not reasons to add a category picture alongside them.
 
 For each planned animated asset, the spec should define the in-game use, target surface, state logic, frame count expectation, loop behavior, static fallback, source mode, asset handoff owner, and proposed sprite names when they are known. The final animation must follow `chaos-redux-frame-animation`, meaning real source frames, a frame sheet, a static fallback, a preview GIF for review only, and a `.gfx` handoff. Do not describe a GIF, filter pulse, recolour loop, shifted still image, or transform-only mockup as the final game animation.
 
@@ -1710,7 +1715,7 @@ Consider whether the event needs:
 - national spirit icons
 - focus icons for every focus or focus-family in each mapped tree
 - decision category icons
-- static and animated decision category pictures for categories that need visual identity or territorial context
+- static and animated decision category pictures for eligible simple categories that need visual identity or territorial context
 - exact formable state-puzzle pieces and composed territory previews when dynamic state qualification is central
 - decision icons
 - achievement icons
@@ -1722,7 +1727,7 @@ Consider whether the event needs:
 - faction emblems
 - flags for every new country, modified country identity, ideology variant, focus-route variant, puppet identity, and major cosmetic transformation
 - UI
-- animated decision category seals, mechanic-window elements, warning pulses, route emblems, hover loops, selected states, glow loops, float loops, particle loops, and animated leader portraits when motion clarifies the mechanic
+- animated decision category seals for eligible simple categories, mechanic-window elements, warning pulses, route emblems, hover loops, selected states, glow loops, float loops, particle loops, and animated leader portraits when motion clarifies the mechanic
 - progression-state variants
 - static fallbacks for every animated UI piece, route emblem, icon, or portrait
 - country-selection, event-log, or custom-window graphics when relevant
@@ -1802,7 +1807,7 @@ The asset prompt should include:
 - manifest requirements
 - source mode, including historically sourced design references for flags followed by imagegen reconstruction, and whether a symbol or portrait must be sourced historically instead of generated
 - reference example folder that must be inspected before asset work
-- decision category picture list, source mode, presentation role, static or animated state, and exact reference folder when category pictures are planned
+- decision category picture list, eligibility, source mode, presentation role, static or animated state, and exact reference folder when category pictures are planned
 - formable state-puzzle manifest needs, exact state geometry source, grey and green qualification states, projection, sprite ownership, and static category-picture alternative when formables are planned
 - instruction to create the decision category picture reference contact sheet and catalog entries when the canonical sheet is missing
 
@@ -1812,7 +1817,7 @@ It must also state the relevant reference folder from the list above when a matc
 
 Use `chaos-redux-event-assets` rules for source selection. Symbolic icons usually use `$imagegen`. News event images, report event images, and super-event images may be sourced or generated. Prefer generated assets for fictional, alternate-history, symbolic, high-chaos, or unique scenes, and sourced assets for photographed events and archival artifacts. Every flag uses `$imagegen`. Historical flags first require a cited design reference and must remain flat, faithful reconstructions. Route all portrait prompts to `chaosx_portrait_creator`. Name the leader and advisor reference folders, require an explicit head-and-shoulders crop and identity preservation for grounded subjects, and request separate `156x210` leader and `65x67` advisor outputs when both uses exist.
 
-Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state. Use animation only when the state change benefits from motion. A completed formable or living mechanic may use a strong static category picture, an animated picture, a compact state-puzzle display, or a full window according to the presentation-choice pass.
+Do not make the asset prompt vague. If a country has multiple cosmetic identities, ideology names, focus-route transformations, or leader changes, the asset prompt must list the required assets for each visible identity state. Use animation only when the state change benefits from motion. A completed formable or living mechanic may use an eligible static or animated category picture, a compact state-puzzle display, or a full window according to the presentation-choice pass. Do not request category pictures alongside an interactive state-puzzle GUI or other excluded presentation.
 
 ## 15. HOI4 asset size reference
 
@@ -2104,7 +2109,7 @@ The final response should include:
 - Chaos impact map defined for strange or destabilizing events, including manifestation, movement success, special Chaos-country power milestones, spread, evolution-enabled consequences, failed containment, reversals, repeat guards, and shared-source overlap
 - assets defined when needed, including country identity assets
 - a presentation-choice pass for important decision categories, custom UI, formables, route reveals, high-chaos states, and major leader transformations
-- static or animated category picture needs mapped where a picture is clearer than a full GUI
+- static or animated category picture needs mapped only for eligible simple categories where a picture is clearer than a full GUI
 - formable state-puzzle requirements mapped with exact state shapes, dynamic qualification, static alternative, reusable templates, and eligibility agreement where relevant
 - animated sprite and portrait needs mapped with static fallbacks, state logic, and `chaos-redux-frame-animation` handoff expectations only when motion is useful
 - historical flags, symbols, and real leader portraits assigned the correct source workflow
@@ -2142,12 +2147,12 @@ Before finishing a major event spec, ask:
 - Does each formable have concrete map requirements and a clear post-formation identity?
 - Do formation rewards avoid free core spam, free war-goal spam, and instant runaway snowballing?
 - Which presentation layer should each category use: ordinary category, static picture, animated picture, compact display, or full scripted GUI?
-- Would a static or animated category picture communicate the category more clearly than a complex custom window?
+- Does the category pass the same eligibility gate for static and animated pictures, and if so, would a picture communicate the category more clearly than a complex custom window?
 - If exact state control is central to a formable, does the plan use exact state shapes as grey and green dynamic puzzle pieces and keep them synchronized with real eligibility?
 - If the named event introduces a full UI, does the plan route only the event-owned window to `chaosx_event_ui_worker` with exact identifiers and mandatory MCP before-and-after evidence while excluding shared interfaces?
 - Are animated sprites, leader portraits, particles, glow, warning states, selected states, or button states planned only where motion makes a changing state clearer?
-- Does the asset prompt include category pictures, formable state pieces, sprite names, state logic, static fallbacks, and frame-sheet needs where animation is actually used?
-- Does the goal prompt tell the implementation agent to verify formables, category pictures, state-puzzle eligibility, justified UI windows, and any animated sprite handoffs?
+- Does the asset prompt include eligible category pictures, formable state pieces, sprite names, state logic, static fallbacks, and frame-sheet needs where animation is actually used?
+- Does the goal prompt tell the implementation agent to verify formables, category-picture eligibility, state-puzzle eligibility, justified UI windows, and any animated sprite handoffs?
 
 Before saving the final files, perform a strict review.
 
@@ -2209,9 +2214,11 @@ Reject the draft if it has any of these problems:
 - event-created factions without goals, rules, membership logic, shared decisions, AI behavior, rewards, or success and failure states
 - special mechanics without a defined player-facing presentation surface
 - decision categories with no documented presentation choice
-- simple propaganda, ideology, civil-war, preparedness, treaty, faction, or territorial categories expanded into full scripted GUI windows when a category picture would be clearer
+- eligible simple propaganda, ideology, civil-war, preparedness, treaty, faction, or territorial categories expanded into full scripted GUI windows when a category picture would be clearer
+- static or animated category pictures added alongside complex UI, meters, additional custom buttons or controls, rich interactive panels, or other animations
+- basic formatted value tables or ordinary decision-list buttons treated as reasons to exclude category pictures or require rich GUI
 - scripted GUI mechanics that genuinely need progress meters, status frames, variants, or animation but define only static text
-- formable routes whose central proof is exact state control but have no exact-shape state-puzzle display or explicit reason for using a static territorial picture
+- formable routes whose central proof is exact state control but have no exact-shape state-puzzle display or explicit reason for using an eligible static territorial picture
 - special mechanics that hide basic visible cause and effect
 - generic playable country packages with no specific identity, map role, military style, economy, diplomacy, AI, or mechanic
 - shared trees with no country-specific localisation, route names, decisions, AI weights, leaders, or rewards

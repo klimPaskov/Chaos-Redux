@@ -67,6 +67,6 @@ This checklist records evidence for a copied owner implementation. It does not c
 - [ ] `mcp__hoi4_agent_tools__hoi4_map_inspect` covers the consumer state IDs and bounded province IDs, and `mcp__hoi4_agent_tools__hoi4_map_render` supplies the relevant state/province layer artifact with source revision recorded.
 - [ ] `mcp__hoi4_agent_tools__hoi4_gui_inspect` covers the linked category, hierarchy, click regions, hover regions, and sprite properties.
 - [ ] `mcp__hoi4_agent_tools__hoi4_gui_render` covers every supported resolution and the relevant normal, hover, unresolved, qualifying, optional-hidden, long-text, and missing-localisation states.
-- [ ] Every processed PNG was converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, and every DDS was decoded back at native size with exact dimensions, BGRA header/byte-length, alpha, hash, and pixel-equality evidence.
+- [ ] Every processed PNG was converted with `.agents/skills/chaos-redux-event-assets/tools/convert_to_dds.py`, and every DDS was decoded back at native size with exact dimensions, BGRA header/byte-length, alpha, and pixel-equality evidence.
 - [ ] The same named scenarios are used to compare piece status, summary status, and formation decision availability.
 - [ ] Any unavailable MCP route, unresolved engine dynamic-list scope, missing geometry artifact, DDS round-trip failure, or deferred in-game check is recorded with the exact reason.
