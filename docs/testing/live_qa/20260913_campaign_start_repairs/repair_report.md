@@ -1,6 +1,6 @@
 # Campaign-start error and Scientists popup repair
 
-Status: source repairs implemented and reviewed; campaign runtime not executed.
+Status: source repairs implemented and reviewed; the user reports the runtime errors are resolved.
 The user requested fixes for the pasted campaign-start errors and the unrequested Scientists window, with the persistent prohibition on Astra subagents and computer control.
 This report covers the new runtime batch separately from the earlier main-menu startup verification.
 
@@ -67,6 +67,9 @@ The first baseline-path comparison returned `PROBABILITY_SURFACE_EMPTY`; the aud
 Target eligibility is source-derived and declared in those scenarios rather than evaluated by a running campaign.
 
 ## Simplifications, omissions, and blockers
+
+User validation receipt on September 13, 2026: "okay, good. no errors now."
+This confirms that the user no longer sees the reported runtime errors; it is a user report rather than an agent-measured campaign error count.
 
 No gameplay simplification or substitute mechanic is introduced by these repairs.
 The source fixes and deterministic previews do not establish that a fresh campaign emits zero errors.
