@@ -187,6 +187,8 @@ chaosx_test_country_activate_camp_systems = {
 	set_country_flag = genocide_gulag_decisions_visible
 	camp_rework_gui_reveal_country_directives = yes
 	capital_scope = {
+		# The capital hosts CXT's own camp fixture, including on inherited sites.
+		set_variable = { genocide_responsible_country = PREV }
 		genocide_register_concentration_site_for_root = yes
 		set_temp_variable = { genocide_requested_concentration_level = constant:genocide_camp_level.major }
 		genocide_ensure_concentration_camp_level = yes
@@ -281,33 +283,30 @@ chaosx_test_country_sync_dynamic_content = {
 chaosx_test = {
 	if = {
 		limit = { tag = CXT }
-		if = {
-			limit = { NOT = { has_country_flag = chaosx_test_country_initialized } }
-			chaosx_test_country_initial_setup = yes
-		}
-		else = {
-			chaosx_test_country_refresh = yes
-		}
+		country_event = { id = chaosx_test_country.1 }
 	}
 	else = {
-		save_event_target_as = chaosx_test_origin_country
-		capital_scope = { save_event_target_as = chaosx_test_origin_capital_state }
-		CXT = {
-			change_tag_from = event_target:chaosx_test_origin_country
-			annex_country = {
-				target = event_target:chaosx_test_origin_country
-				transfer_troops = no
+		if = {
+			limit = { any_owned_state = { is_capital = yes } }
+			save_event_target_as = chaosx_test_origin_country
+			capital_scope = {
+				save_event_target_as = chaosx_test_origin_capital_state
+				transfer_state_to = CXT
+				set_state_controller_to = CXT
 			}
-			set_capital = {
-				state = event_target:chaosx_test_origin_capital_state
-				remember_old_capital = no
-			}
-			if = {
-				limit = { NOT = { has_country_flag = chaosx_test_country_initialized } }
-				chaosx_test_country_initial_setup = yes
-			}
-			else = {
-				chaosx_test_country_refresh = yes
+			# Resolve the dormant tag only after its capital has activated it.
+			# The receiver event gives every setup helper ROOT = CXT.
+			meta_effect = {
+				text = {
+					CXT = {
+						set_capital = {
+							state = event_target:chaosx_test_origin_capital_state
+							remember_old_capital = no
+						}
+						change_tag_from = event_target:chaosx_test_origin_country
+						country_event = { id = chaosx_test_country.1 }
+					}
+				}
 			}
 		}
 	}

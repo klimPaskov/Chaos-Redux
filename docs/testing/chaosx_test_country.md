@@ -14,7 +14,11 @@ A literal two-word engine command such as `chaosx test` cannot be registered thr
 
 ## Transition behavior
 
-The effect records the current country and its capital, switches the human player to CXT, annexes the former country, and restores that capital to CXT.
+The effect records the current country and its capital, then transfers ownership and control of that capital state to activate the dormant CXT tag.
+It resolves the CXT country scope through a runtime meta effect after this transfer, sets the recorded capital, switches the human player to CXT, and fires the hidden triggered-only receiver event `chaosx_test_country.1`.
+The receiver runs with `ROOT = CXT`, annexes any remaining states of the former country, restores the recorded capital, and invokes the ordinary initialization or refresh helpers only when CXT owns and controls a valid capital.
+This country ROOT also supplies the intended target for facility transfers, occupation fixtures, package extensions, and camp registration.
+For a one-state origin, the initial capital transfer supplies all of its land and the receiver skips an empty annex.
 
 The annex deliberately uses `transfer_troops = no`, which prevents vanilla divisions from entering the test roster.
 
@@ -131,6 +135,7 @@ Facilities, doctrines, and general systems do not use the project, equipment, or
 The shared genocide and camp-repression systems are initialized and activated for CXT.
 
 The capital receives a concentration camp, an extermination camp converted from the second concentration level, and a gulag labor-camp network, leaving the concentration and extermination buildings active together.
+The fixture assigns the capital's responsible-country pointer to CXT before registration, including when the transferred capital already contains a camp pointer belonging to the former country.
 
 The managed camp ledger, genocide decisions, gulag decisions, extreme doctrine authority, monthly active-site registry, and ordinary-country camp variables are active.
 
@@ -141,6 +146,7 @@ CXT is intentionally not classified as a special Chaos country because that clas
 Country wiring is defined in:
 
 - `common/country_tags/chaosx_test_country.txt`
+- `events/chaosx_test_country.txt`
 - `common/countries/Chaos Redux Test Country.txt`
 - `history/countries/CXT - Chaos Redux Test Country.txt`
 - `localisation/english/chaosx_test_country_l_english.yml`

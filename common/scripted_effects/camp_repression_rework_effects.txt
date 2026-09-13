@@ -622,18 +622,28 @@ camp_rework_refresh_state_site_profile = {
 }
 
 camp_rework_register_active_site = {
+	# State scope. Missing responsibility may only default from a living country
+	# ROOT. Migration must supply its country pointer before calling this helper.
 	if = {
-		limit = { NOT = { has_variable = genocide_responsible_country } }
+		limit = {
+			NOT = { has_variable = genocide_responsible_country }
+			country_exists = ROOT
+		}
 		set_variable = { genocide_responsible_country = ROOT }
 	}
 	if = {
 		limit = {
+			has_variable = genocide_responsible_country
+			country_exists = var:genocide_responsible_country
 			var:genocide_responsible_country = {
 				camp_rework_country_is_eligible = yes
 			}
 			OR = {
-				var:genocide_responsible_country = { tag = ROOT }
 				has_global_flag = camp_rework_migration_in_progress
+				AND = {
+					country_exists = ROOT
+					var:genocide_responsible_country = { tag = ROOT }
+				}
 			}
 		}
 		set_state_flag = genocide_site_has_responsible_country
@@ -672,6 +682,7 @@ camp_rework_register_active_site = {
 					NOT = { has_variable = camp_state_pool_type }
 					check_variable = { camp_state_pool_type = constant:camp_rework_pool_type.none }
 				}
+				country_exists = ROOT
 				var:genocide_responsible_country = { tag = ROOT }
 			}
 			camp_rework_classify_state_pool_for_root = yes

@@ -1,0 +1,63 @@
+# ============================================================================
+# CHAOS REDUX - TEST COUNTRY SETUP RECEIVER
+# ============================================================================
+# Re-enters the console harness in CXT country scope after activation and player
+# transfer. The saved origin targets carry through the originating effect chain.
+# The ordinary setup and extension bus therefore receive ROOT = CXT.
+# ============================================================================
+
+add_namespace = chaosx_test_country
+
+country_event = {
+	id = chaosx_test_country.1
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = { tag = CXT }
+
+	immediate = {
+		if = {
+			limit = { tag = CXT }
+			if = {
+				limit = { has_event_target = chaosx_test_origin_country }
+				if = {
+					limit = {
+						country_exists = event_target:chaosx_test_origin_country
+						event_target:chaosx_test_origin_country = {
+							NOT = { tag = CXT }
+							any_owned_state = { always = yes }
+						}
+					}
+					annex_country = {
+						target = event_target:chaosx_test_origin_country
+						transfer_troops = no
+					}
+				}
+			}
+			if = {
+				limit = { has_event_target = chaosx_test_origin_capital_state }
+				event_target:chaosx_test_origin_capital_state = {
+					if = {
+						limit = { is_owned_by = CXT }
+						CXT = {
+							set_capital = {
+								state = event_target:chaosx_test_origin_capital_state
+								remember_old_capital = no
+							}
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					any_owned_state = { is_capital = yes is_controlled_by = PREV }
+				}
+				if = {
+					limit = { NOT = { has_country_flag = chaosx_test_country_initialized } }
+					chaosx_test_country_initial_setup = yes
+				}
+				else = { chaosx_test_country_refresh = yes }
+			}
+		}
+	}
+}
