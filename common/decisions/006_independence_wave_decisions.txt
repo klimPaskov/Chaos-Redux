@@ -3837,8 +3837,17 @@ independence_wave_high_chaos_category = {
 				set_global_flag = independence_wave_radical_charter_active
 				set_variable = { global.independence_wave_league_route = constant:independence_wave_league_route.radical_revisionist }
 				independence_wave_record_revisionist_action = yes
+				# Snapshot the member scopes before leaving the League. The leave effect
+				# removes the current member from the live registry; iterating that same
+				# array would shift the next row into the cursor and skip low-standing
+				# members who must depart under the transformed charter.
+				clear_temp_array = independence_wave_radical_charter_member_entries
 				for_each_scope_loop = {
 					array = global.independence_wave_league_member_country_entries
+					add_to_temp_array = { array = independence_wave_radical_charter_member_entries value = THIS }
+				}
+				for_each_scope_loop = {
+					array = independence_wave_radical_charter_member_entries
 					if = {
 						limit = {
 							NOT = { has_country_flag = independence_wave_route_radical_sovereignty }
@@ -3848,6 +3857,7 @@ independence_wave_high_chaos_category = {
 					}
 					else = { set_country_flag = independence_wave_radical_charter_member }
 				}
+				clear_temp_array = independence_wave_radical_charter_member_entries
 				set_temp_variable = { independence_wave_decision_league_cohesion_delta = constant:independence_wave_decision_effect.league_major_loss }
 				set_temp_variable = { independence_wave_decision_league_common_cause_delta = constant:independence_wave_decision_effect.league_major }
 				set_temp_variable = { independence_wave_decision_league_patron_capture_delta = constant:independence_wave_decision_effect.league_standard }
