@@ -4,27 +4,35 @@
 # Overview:
 # - Enumerates the runtime technology database exposed by global.technology.
 # - Grants every installed vanilla and Chaos Redux technology without popups.
-# - Injects each runtime object token into native technology fields through
-#   meta_effect; the inventory remains runtime-driven, not a generated snapshot.
+# - Reads zero-based array elements explicitly within the captured runtime count.
+# - Passes each database object directly to the native var: technology fields.
+# - Temporary CXT_TECH_DIAGNOSTIC output identifies the unresolved database
+#   element rejected by both consumers; remove it after the issue is resolved.
 # ============================================================================
 
 chaosx_test_country_complete_all_technologies = {
 	set_temp_variable = { chaosx_test_country_technology_grant_applied = 0 }
-	for_each_loop = {
-		array = global.technology
-		value = chaosx_test_country_current_technology
-		meta_effect = {
-			text = {
-				if = {
-					limit = { NOT = { has_tech = [TECHNOLOGY] } }
-					set_technology = {
-						[TECHNOLOGY] = 1
-						popup = no
-					}
-					set_temp_variable = { chaosx_test_country_technology_grant_applied = 1 }
-				}
+	set_temp_variable = { chaosx_test_country_technology_count = global.technology^num }
+	set_temp_variable = { chaosx_test_country_technology_loop_break = 0 }
+	# Temporary diagnostic: distinguish database availability from object conversion.
+	log = "CXT_TECH_DIAGNOSTIC begin country=[THIS.GetTag] count=[?chaosx_test_country_technology_count|.0]"
+	for_loop_effect = {
+		start = 0
+		end = chaosx_test_country_technology_count
+		compare = less_than
+		value = chaosx_test_country_current_technology_index
+		break = chaosx_test_country_technology_loop_break
+		log = "CXT_TECH_DIAGNOSTIC read count=[?chaosx_test_country_technology_count|.0] index=[?chaosx_test_country_current_technology_index|.0]"
+		set_temp_variable = { chaosx_test_country_current_technology = global.technology^chaosx_test_country_current_technology_index }
+		# Token text is diagnostic only and never interpolated into technology fields.
+		log = "CXT_TECH_DIAGNOSTIC element index=[?chaosx_test_country_current_technology_index|.0] raw=[?chaosx_test_country_current_technology|.0] token=[?chaosx_test_country_current_technology.GetTokenKey]"
+		if = {
+			limit = { NOT = { has_tech = var:chaosx_test_country_current_technology } }
+			set_technology = {
+				var:chaosx_test_country_current_technology = 1
+				popup = no
 			}
-			TECHNOLOGY = "[?chaosx_test_country_current_technology.GetTokenKey]"
+			set_temp_variable = { chaosx_test_country_technology_grant_applied = 1 }
 		}
 	}
 	if = {

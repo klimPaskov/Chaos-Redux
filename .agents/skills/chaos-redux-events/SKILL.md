@@ -534,6 +534,10 @@ For a player-transfer bootstrap, queue the delayed recipient event before `chang
 Inject file-scoped duration constants as meta arguments when generating a new script buffer, rather than leaving an unresolved `@` token inside generated text.
 State transfers preserve stored variables, so a dedicated sandbox fixture must assign its intended responsible-country pointer before registration when it replaces an inherited site; ordinary historical responsibility should remain intact.
 
+History grants can run before the recipient has a capital or other countries are initialized.
+Keep their local grants and records, but queue capital-dependent scoring and diplomatic refreshes until country activation rather than dropping gameplay outputs.
+Guard capital entry with an owned-state capital check; entering `capital_scope` to test whether it exists can itself raise an invalid-target error.
+
 ### 7. Duration fields and constants
 
 Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.

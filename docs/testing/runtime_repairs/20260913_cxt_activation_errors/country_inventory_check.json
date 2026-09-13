@@ -1,0 +1,147 @@
+{
+  "audit_date": "2026-09-13",
+  "scope": "CXT activation, indexed runtime technology grant, and deferred condemnation refresh",
+  "status": "source_contract_verified_runtime_technology_acceptance_unresolved",
+  "ownership": {
+    "subagent_writes": [
+      "docs/testing/runtime_repairs/20260913_cxt_activation_errors/country_audit.md",
+      "docs/testing/runtime_repairs/20260913_cxt_activation_errors/country_inventory_check.json"
+    ],
+    "gameplay_source_owner": "parent"
+  },
+  "sources": {
+    "technology_current": {
+      "path": "common/scripted_effects/chaosx_test_country_technology_effects.txt",
+      "sha256": "90ae4b1fcfe0a27a51e87a5cfe99003dca77e4b522dfdb9fcf657abaef3442d8",
+      "baseline_path": "docs/testing/runtime_repairs/20260913_cxt_activation_errors/baseline/technology_effects.before.txt",
+      "baseline_sha256": "3e77a358755b797df592951282accbf7e2cf04727767ec9a1bfb2c52cd3f53de"
+    },
+    "condemnation_current": {
+      "path": "common/scripted_effects/condemnation_sanctions_effects.txt",
+      "sha256": "d04cae292225cd8f01174d870971c484a601e10cc5b337d011068c98637efe4d",
+      "baseline_sha256": "283f8a2be1a18c2bafa2d8df29dbe0cc68d36ce0c7eaf698bdca1f1e73fbeef0"
+    },
+    "cxt_core_current": {
+      "path": "common/scripted_effects/chaosx_test_country_effects.txt",
+      "sha256": "bf3601026565ea5b92731e3f796699f799adfbf60e9f631207a2d7155d23489e"
+    }
+  },
+  "technology": {
+    "database": "global.technology",
+    "runtime_count_expression": "global.technology^num",
+    "source_evidenced_count": 679,
+    "loop": {
+      "effect": "for_loop_effect",
+      "start": 0,
+      "end": "chaosx_test_country_technology_count",
+      "compare": "less_than",
+      "index_variable": "chaosx_test_country_current_technology_index",
+      "break_variable": "chaosx_test_country_technology_loop_break",
+      "break_initialized": true,
+      "indexed_read": "global.technology^chaosx_test_country_current_technology_index",
+      "expected_index_range": "0..678",
+      "entry_filter": false,
+      "static_inventory": false,
+      "early_break_by_content": false
+    },
+    "native_consumers": {
+      "has_tech": "has_tech = var:chaosx_test_country_current_technology",
+      "set_technology": "set_technology = { var:chaosx_test_country_current_technology = 1 popup = no }"
+    },
+    "iteration_limit": {
+      "define": "NGame.MAX_EFFECT_ITERATION",
+      "value": 1000,
+      "current_count_below_limit": true,
+      "future_over_limit_requires_design": true
+    },
+    "boundary_cases": [
+      {
+        "runtime_count": 0,
+        "read_count": 0,
+        "first_index": null,
+        "last_index": null,
+        "no_out_of_bounds_reads": true
+      },
+      {
+        "runtime_count": 1,
+        "read_count": 1,
+        "first_index": 0,
+        "last_index": 0,
+        "no_out_of_bounds_reads": true
+      },
+      {
+        "runtime_count": 679,
+        "read_count": 679,
+        "first_index": 0,
+        "last_index": 678,
+        "no_out_of_bounds_reads": true
+      }
+    ],
+    "diagnostics": {
+      "temporary_log_prefix": "CXT_TECH_DIAGNOSTIC",
+      "retained_while_unresolved": true,
+      "attachment_native_invalid_pairs": "two history-pass pairs plus one receiver-activation pair",
+      "failing_index_identified": false,
+      "runtime_consumer_acceptance_verified": false
+    }
+  },
+  "condemnation": {
+    "participant_wrapper": {
+      "name": "condemnation_recalculate_participants",
+      "guard": "tag = CXT AND NOT any_owned_state(is_capital = yes)",
+      "pending_flag": "condemnation_participant_refresh_pending",
+      "apply_helper": "condemnation_recalculate_participants_apply",
+      "normal_body_equal_baseline": true,
+      "actor_contract": "apply body still stores THIS as condemnation_recalculation_target and preserves existing ROOT relationships"
+    },
+    "targeted_pulse_wrapper": {
+      "name": "condemnation_start_targeted_pulse",
+      "guard": "tag = CXT AND NOT any_owned_state(is_capital = yes)",
+      "pending_flag": "condemnation_targeted_pulse_pending",
+      "apply_helper": "condemnation_start_targeted_pulse_apply",
+      "normal_body_equal_baseline": true,
+      "scheduled_event": "condemnation_sanctions.1"
+    },
+    "flush": {
+      "name": "condemnation_flush_deferred_refresh",
+      "guard": "any_owned_state(is_capital = yes)",
+      "clears_pending_before_apply": true,
+      "participant_apply_call": "condemnation_recalculate_participants",
+      "targeted_pulse_apply_call": "condemnation_start_targeted_pulse",
+      "called_first_in_initial_setup": true,
+      "called_first_in_registered_sync": true,
+      "pending_work_retained_without_capital": true,
+      "normal_country_body_preserved": true
+    }
+  },
+  "cxt_preservation": {
+    "public_effect": "chaosx_test",
+    "public_effect_equal_activation_baseline": true,
+    "receiver_event": "chaosx_test_country.1",
+    "setup_delay_expression": "hours = [SETUP_DELAY]",
+    "setup_delay_constant": "@CXT_SETUP_DELAY_HOURS",
+    "event_queued_before_change_tag": true,
+    "receiver_root": "CXT",
+    "camp_responsibility_assignment": "genocide_responsible_country = PREV inside CXT capital_scope",
+    "special_project_receipts": 83,
+    "zombie_fixture_preserved": true,
+    "facility_types": 6,
+    "stockpile_entries": 71,
+    "static_templates": 87,
+    "static_divisions": 261,
+    "extension_bus_preserved": true,
+    "daily_weekly_hooks_preserved": true
+  },
+  "validation_limits": [
+    "The indexed range and normal-country body comparisons are source proofs only.",
+    "The native technology error does not identify the rejected index or object representation.",
+    "HOI4 MCP technology analysis does not execute the scripted helper or establish variable/meta-generated consumer validity.",
+    "Live game execution and console validation were outside this read-only audit."
+  ],
+  "disposition": {
+    "country_transition": "accepted",
+    "condemnation_deferral": "accepted",
+    "technology_source_contract": "accepted",
+    "technology_runtime_outcome": "unresolved"
+  }
+}

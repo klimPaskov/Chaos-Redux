@@ -47,12 +47,16 @@ Three fully equipped, fully manned, fully experienced divisions are spawned from
 
 CXT history grants the installed technology inventory, initializes a complete zombie research profile, and completes its licensed special projects before console activation.
 The history receipt prevents the activation receiver from repeating the core completion pass.
-The technology helper enumerates `global.technology` and injects each object's documented `GetTokenKey` into native `has_tech` and `set_technology` fields through `meta_effect`, with `popup = no`.
+The technology helper captures `global.technology^num`, reads every zero-based index below that count explicitly, and passes each database object to native `var:` technology fields with `popup = no`.
+An empty database produces no technology reads, and the numeric loop has its own initialized break variable.
+Temporary `CXT_TECH_DIAGNOSTIC` output records the count, index, numeric value, and token text; the supplied error report does not include those values, so runtime error elimination remains unverified.
 Technologies are synchronized again before runtime facility placement, so facility permissions exist before construction.
 
 The static special-project inventory retains all 83 definitions: 49 installed vanilla projects and 34 Chaos Redux projects.
 Vanilla calls mirror their installed DLC requirements, and the seven country-restricted American chemical and Japanese medical projects explicitly accept CXT alongside their original countries.
 Core and registered project grants are idempotent and use `chaosx_test_country_silent_unlocks` to suppress completion reports while retaining their gameplay outputs.
+Project condemnation gains remain in CXT's country record during dormant history setup; participant calculations and pulse scheduling wait until it has an owned capital.
+Initialization and the existing registered-content bus flush the queued requests after activation, so scoring has valid capital and initialized-country scopes without repeating project completion.
 The D’Rhondan craft silent path runs the same authorization helper as its report option; Black Plague completion keeps equipment, technology, condemnation, progress, and achievements.
 The zombie fixture records existing research choices with strength 3, infectiousness 3, speed 2, durability 2, cure resistance 2, and obedience 2; its neurobiological, dead, expanded-resource profile uses ordinary refinement and skips field testing.
 Ordinary-country project choices, reports, and balance remain unchanged.

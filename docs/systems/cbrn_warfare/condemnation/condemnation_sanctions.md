@@ -39,6 +39,14 @@ This document describes the implemented system. The accepted design source remai
 
 ## Data model
 
+### Dormant test-country activation
+
+Dormant CXT history unlocks retain their condemnation source records, totals, tiers, and project outputs.
+`condemnation_recalculate_participants` and `condemnation_start_targeted_pulse` queue their requests through `condemnation_participant_refresh_pending` and `condemnation_targeted_pulse_pending` while CXT has no owned capital.
+Their `_apply` helpers retain the ordinary participant calculations, AI strategy values, native embargo ownership, and pulse timing.
+`condemnation_flush_deferred_refresh` runs through CXT initialization and its registered-content bus after capital activation, clears each queued flag before dispatch, and leaves it queued while no capital exists.
+Ordinary countries continue through the same immediate helpers.
+
 ### Public country record
 
 The public total is recalculated from six visible components:

@@ -346,7 +346,34 @@ condemnation_expose_hidden_evidence = {
 	condemnation_refresh_tier = yes
 }
 
+# Country scope. Preserve the requested refresh until dormant CXT has a capital.
+# Country scope. Inputs: queued refresh flags; no refresh is discarded.
+# CXT setup and its registered-content bus call this after capital activation.
+condemnation_flush_deferred_refresh = {
+	if = {
+		limit = { any_owned_state = { is_capital = yes } }
+		if = {
+			limit = { has_country_flag = condemnation_participant_refresh_pending }
+			clr_country_flag = condemnation_participant_refresh_pending
+			condemnation_recalculate_participants = yes
+		}
+		if = {
+			limit = { has_country_flag = condemnation_targeted_pulse_pending }
+			clr_country_flag = condemnation_targeted_pulse_pending
+			condemnation_start_targeted_pulse = yes
+		}
+	}
+}
+
 condemnation_start_targeted_pulse = {
+	if = {
+		limit = { tag = CXT NOT = { any_owned_state = { is_capital = yes } } }
+		set_country_flag = condemnation_targeted_pulse_pending
+	}
+	else = { condemnation_start_targeted_pulse_apply = yes }
+}
+
+condemnation_start_targeted_pulse_apply = {
 	if = {
 		limit = { NOT = { has_country_flag = condemnation_targeted_pulse_active } }
 		set_country_flag = condemnation_targeted_pulse_active
@@ -1782,7 +1809,16 @@ condemnation_cleanup_pair_statuses = {
 	}
 }
 
+# Country scope. Preserve the requested refresh until dormant CXT has a capital.
 condemnation_recalculate_participants = {
+	if = {
+		limit = { tag = CXT NOT = { any_owned_state = { is_capital = yes } } }
+		set_country_flag = condemnation_participant_refresh_pending
+	}
+	else = { condemnation_recalculate_participants_apply = yes }
+}
+
+condemnation_recalculate_participants_apply = {
 	condemnation_initialize_country = yes
 	set_temp_variable = { condemnation_recalculation_target = THIS }
 	save_event_target_as = condemnation_recalculation_target
