@@ -1,0 +1,2385 @@
+[
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_launch_predictive_campaign",
+    "name_key": "brilliant_scientist_launch_predictive_campaign",
+    "old_name": "Launch a Predictive Campaign",
+    "new_name": "Launch Predictive Campaign",
+    "cost_key": "brilliant_scientist_technology_action_standard_cost",
+    "blocked_key": "brilliant_scientist_technology_action_standard_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_standard_cost_tooltip",
+    "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+    "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+    "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+    "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.standard_command_power": 25.0,
+      "brilliant_scientist_technology_action.standard_support_refund": 100.0,
+      "brilliant_scientist_technology_action.standard_fuel_refund": 500.0,
+      "brilliant_scientist_technology_action.light_civilian_factories": 2.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.light_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R25 £command_power§!  §R100 £support_equipment_text_icon§!  §R500 £fuel_texticon§!  §R2 £civ_factory§!",
+        "new_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+        "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+        "full_tooltip_resolved": "£command_power §R25§!  £support_equipment_text_icon §R100§!  £fuel_texticon §R500§!  £civ_factory §R2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §R25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §R25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §R100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §R100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §R100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §R100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §R500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §R500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §R500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §R500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §R2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §R2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_saturate_sensor_region",
+    "name_key": "brilliant_scientist_saturate_sensor_region",
+    "old_name": "Saturate a Sensor Region",
+    "new_name": "Saturate Sensor Region",
+    "cost_key": "brilliant_scientist_technology_action_light_cost",
+    "blocked_key": "brilliant_scientist_technology_action_light_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_light_cost_tooltip",
+    "old_resolved": "§Y20 £command_power§!  §Y75 £support_equipment_text_icon§!  §Y250 £fuel_texticon§!  §Y2 £civ_factory§!",
+    "new_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+    "blocked_resolved": "£command_power §R20§! £support_equipment_text_icon §R75§! £fuel_texticon §R250§!",
+    "full_tooltip_resolved": "£command_power §Y20§!  £support_equipment_text_icon §Y75§!  £fuel_texticon §Y250§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.light_command_power": 20.0,
+      "brilliant_scientist_technology_action.light_support_refund": 75.0,
+      "brilliant_scientist_technology_action.light_fuel_refund": 250.0,
+      "brilliant_scientist_technology_action.light_civilian_factories": 2.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.light_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionLightCommandCost": {
+            "selected_leaf": "technology_action_light_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.light_command_power",
+            "threshold": 20.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightSupportCost": {
+            "selected_leaf": "technology_action_light_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate",
+            "threshold": 74.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFuelCost": {
+            "selected_leaf": "technology_action_light_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund",
+            "threshold": 250.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y20 £command_power§!  §Y75 £support_equipment_text_icon§!  §Y250 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+        "blocked_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+        "full_tooltip_resolved": "£command_power §Y20§!  £support_equipment_text_icon §Y75§!  £fuel_texticon §Y250§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionLightCommandCost": {
+            "selected_leaf": "technology_action_light_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.light_command_power",
+            "threshold": 20.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightSupportCost": {
+            "selected_leaf": "technology_action_light_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate",
+            "threshold": 74.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFuelCost": {
+            "selected_leaf": "technology_action_light_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund",
+            "threshold": 250.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R20 £command_power§!  §R75 £support_equipment_text_icon§!  §R250 £fuel_texticon§!  §R2 £civ_factory§!",
+        "new_resolved": "£command_power §R20§! £support_equipment_text_icon §R75§! £fuel_texticon §R250§!",
+        "blocked_resolved": "£command_power §R20§! £support_equipment_text_icon §R75§! £fuel_texticon §R250§!",
+        "full_tooltip_resolved": "£command_power §R20§!  £support_equipment_text_icon §R75§!  £fuel_texticon §R250§!  £civ_factory §R2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionLightCommandCost": {
+            "selected_leaf": "technology_action_light_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.light_command_power",
+            "threshold": 20.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightSupportCost": {
+            "selected_leaf": "technology_action_light_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate",
+            "threshold": 74.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFuelCost": {
+            "selected_leaf": "technology_action_light_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund",
+            "threshold": 250.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R20 £command_power§!  §Y75 £support_equipment_text_icon§!  §Y250 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §R20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+        "blocked_resolved": "£command_power §R20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+        "full_tooltip_resolved": "£command_power §R20§!  £support_equipment_text_icon §Y75§!  £fuel_texticon §Y250§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionLightCommandCost": {
+            "selected_leaf": "technology_action_light_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.light_command_power",
+            "threshold": 20.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightSupportCost": {
+            "selected_leaf": "technology_action_light_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate",
+            "threshold": 74.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFuelCost": {
+            "selected_leaf": "technology_action_light_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund",
+            "threshold": 250.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y20 £command_power§!  §R75 £support_equipment_text_icon§!  §Y250 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y20§! £support_equipment_text_icon §R75§! £fuel_texticon §Y250§!",
+        "blocked_resolved": "£command_power §Y20§! £support_equipment_text_icon §R75§! £fuel_texticon §Y250§!",
+        "full_tooltip_resolved": "£command_power §Y20§!  £support_equipment_text_icon §R75§!  £fuel_texticon §Y250§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionLightCommandCost": {
+            "selected_leaf": "technology_action_light_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.light_command_power",
+            "threshold": 20.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightSupportCost": {
+            "selected_leaf": "technology_action_light_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate",
+            "threshold": 74.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFuelCost": {
+            "selected_leaf": "technology_action_light_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund",
+            "threshold": 250.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y20 £command_power§!  §Y75 £support_equipment_text_icon§!  §R250 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §R250§!",
+        "blocked_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §R250§!",
+        "full_tooltip_resolved": "£command_power §Y20§!  £support_equipment_text_icon §Y75§!  £fuel_texticon §R250§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionLightCommandCost": {
+            "selected_leaf": "technology_action_light_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.light_command_power",
+            "threshold": 20.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightSupportCost": {
+            "selected_leaf": "technology_action_light_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.light_support_exclusive_gate",
+            "threshold": 74.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFuelCost": {
+            "selected_leaf": "technology_action_light_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.light_fuel_refund",
+            "threshold": 250.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y20 £command_power§!  §Y75 £support_equipment_text_icon§!  §Y250 £fuel_texticon§!  §R2 £civ_factory§!",
+        "new_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+        "blocked_resolved": "£command_power §Y20§! £support_equipment_text_icon §Y75§! £fuel_texticon §Y250§!",
+        "full_tooltip_resolved": "£command_power §Y20§!  £support_equipment_text_icon §Y75§!  £fuel_texticon §Y250§!  £civ_factory §R2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_construct_state_synthesis_works",
+    "name_key": "brilliant_scientist_construct_state_synthesis_works",
+    "old_name": "Construct State Synthesis Works",
+    "new_name": "Build Synthesis Works",
+    "cost_key": "brilliant_scientist_technology_action_synthesis_cost",
+    "blocked_key": "brilliant_scientist_technology_action_synthesis_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_synthesis_cost_tooltip",
+    "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y3 £civ_factory§!",
+    "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+    "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+    "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.standard_command_power": 25.0,
+      "brilliant_scientist_technology_action.standard_support_refund": 100.0,
+      "brilliant_scientist_technology_action.standard_fuel_refund": 500.0,
+      "brilliant_scientist_technology_action.heavy_civilian_factories": 3.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.heavy_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R25 £command_power§!  §R100 £support_equipment_text_icon§!  §R500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+        "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+        "full_tooltip_resolved": "£command_power §R25§!  £support_equipment_text_icon §R100§!  £fuel_texticon §R500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §R25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §R25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §R100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §R100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §R100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §R100§!  £fuel_texticon §Y500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §R500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §R500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §R500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §R500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_activate_high_speed_strike_network",
+    "name_key": "brilliant_scientist_activate_high_speed_strike_network",
+    "old_name": "Activate the High-Speed Strike Network",
+    "new_name": "Activate High-Speed Strikes",
+    "cost_key": "brilliant_scientist_technology_action_heavy_cost",
+    "blocked_key": "brilliant_scientist_technology_action_heavy_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_heavy_cost_tooltip",
+    "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+    "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+    "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+    "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.heavy_command_power": 40.0,
+      "brilliant_scientist_technology_action.heavy_support_refund": 200.0,
+      "brilliant_scientist_technology_action.heavy_fuel_refund": 1500.0,
+      "brilliant_scientist_technology_action.heavy_civilian_factories": 3.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.heavy_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §R200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §R1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §R200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §R1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_launch_long_range_delivery_strike",
+    "name_key": "brilliant_scientist_launch_long_range_delivery_strike",
+    "old_name": "Launch a Long-Range Delivery Strike",
+    "new_name": "Launch Long-Range Strike",
+    "cost_key": "brilliant_scientist_technology_action_heavy_cost",
+    "blocked_key": "brilliant_scientist_technology_action_heavy_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_heavy_cost_tooltip",
+    "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+    "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+    "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+    "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.heavy_command_power": 40.0,
+      "brilliant_scientist_technology_action.heavy_support_refund": 200.0,
+      "brilliant_scientist_technology_action.heavy_fuel_refund": 1500.0,
+      "brilliant_scientist_technology_action.heavy_civilian_factories": 3.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.heavy_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §R200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §R1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §R200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §R1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_raise_field_projectors",
+    "name_key": "brilliant_scientist_raise_field_projectors",
+    "old_name": "Raise the Field Projectors",
+    "new_name": "Raise Field Projectors",
+    "cost_key": "brilliant_scientist_technology_action_heavy_cost",
+    "blocked_key": "brilliant_scientist_technology_action_heavy_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_heavy_cost_tooltip",
+    "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+    "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+    "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+    "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.heavy_command_power": 40.0,
+      "brilliant_scientist_technology_action.heavy_support_refund": 200.0,
+      "brilliant_scientist_technology_action.heavy_fuel_refund": 1500.0,
+      "brilliant_scientist_technology_action.heavy_civilian_factories": 3.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.heavy_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §R200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §R1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §R200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §R1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_order_emergency_regeneration",
+    "name_key": "brilliant_scientist_order_emergency_regeneration",
+    "old_name": "Order Emergency Regeneration",
+    "new_name": "Emergency Regeneration",
+    "cost_key": "brilliant_scientist_technology_action_heavy_cost",
+    "blocked_key": "brilliant_scientist_technology_action_heavy_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_heavy_cost_tooltip",
+    "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+    "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+    "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+    "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.heavy_command_power": 40.0,
+      "brilliant_scientist_technology_action.heavy_support_refund": 200.0,
+      "brilliant_scientist_technology_action.heavy_fuel_refund": 1500.0,
+      "brilliant_scientist_technology_action.heavy_civilian_factories": 3.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.heavy_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §R200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §R200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §R1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §R40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §R40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §R200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §R200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §R200§!  £fuel_texticon §Y1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §R1,500 £fuel_texticon§!  §Y3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §R1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §R1,500§!  £civ_factory §Y3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionHeavyCommandCost": {
+            "selected_leaf": "technology_action_heavy_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.heavy_command_power",
+            "threshold": 40.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavySupportCost": {
+            "selected_leaf": "technology_action_heavy_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.heavy_support_exclusive_gate",
+            "threshold": 199.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionHeavyFuelCost": {
+            "selected_leaf": "technology_action_heavy_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.heavy_fuel_refund",
+            "threshold": 1500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionHeavyFactoryCost": {
+            "selected_leaf": "technology_action_heavy_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.heavy_civilian_factories",
+            "threshold": 3.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y40 £command_power§!  §Y200 £support_equipment_text_icon§!  §Y1,500 £fuel_texticon§!  §R3 £civ_factory§!",
+        "new_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "blocked_resolved": "£command_power §Y40§! £support_equipment_text_icon §Y200§! £fuel_texticon §Y1,500§!",
+        "full_tooltip_resolved": "£command_power §Y40§!  £support_equipment_text_icon §Y200§!  £fuel_texticon §Y1,500§!  £civ_factory §R3§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "conventional_technology_operations",
+    "decision_id": "brilliant_scientist_order_epidemic_control",
+    "name_key": "brilliant_scientist_order_epidemic_control",
+    "old_name": "Order Epidemic Control",
+    "new_name": "Order Epidemic Control",
+    "cost_key": "brilliant_scientist_technology_action_standard_cost",
+    "blocked_key": "brilliant_scientist_technology_action_standard_cost_blocked",
+    "tooltip_key": "brilliant_scientist_technology_action_standard_cost_tooltip",
+    "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+    "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+    "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+    "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories.",
+    "constants": {
+      "brilliant_scientist_technology_action.standard_command_power": 25.0,
+      "brilliant_scientist_technology_action.standard_support_refund": 100.0,
+      "brilliant_scientist_technology_action.standard_fuel_refund": 500.0,
+      "brilliant_scientist_technology_action.light_civilian_factories": 2.0
+    },
+    "icons": [
+      "command_power",
+      "support_equipment_text_icon",
+      "fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "brilliant_scientist_technology_action.light_civilian_factories"
+    ],
+    "affordability_scenarios": {
+      "all_affordable": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "all_resources_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 0,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§R25 £command_power§!  §R100 £support_equipment_text_icon§!  §R500 £fuel_texticon§!  §R2 £civ_factory§!",
+        "new_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+        "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §R100§! £fuel_texticon §R500§!",
+        "full_tooltip_resolved": "£command_power §R25§!  £support_equipment_text_icon §R100§!  £fuel_texticon §R500§!  £civ_factory §R2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "command_power_unmet": {
+        "predicate_inputs": {
+          "command_power": 0,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost_blocked",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§R25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §R25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §R25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §R25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "support_equipment_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 0,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost_blocked",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 0,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §R100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §R100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §R100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §R100§!  £fuel_texticon §Y500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "has_fuel_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 0,
+          "num_of_civilian_factories_available_for_projects": 100
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost_blocked",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 0,
+            "predicate_result": true
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 100,
+            "predicate_result": false
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §R500 £fuel_texticon§!  §Y2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §R500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §R500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §R500§!  £civ_factory §Y2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      },
+      "num_of_civilian_factories_available_for_projects_unmet": {
+        "predicate_inputs": {
+          "command_power": 100,
+          "support_equipment": 10000,
+          "has_fuel": 100000,
+          "num_of_civilian_factories_available_for_projects": 0
+        },
+        "selected_defined_text_leaves": {
+          "GetTechnologyActionStandardCommandCost": {
+            "selected_leaf": "technology_action_standard_command_cost",
+            "predicate": "command_power < constant:brilliant_scientist_technology_action.standard_command_power",
+            "threshold": 25.0,
+            "input": 100,
+            "predicate_result": false
+          },
+          "GetTechnologyActionStandardSupportCost": {
+            "selected_leaf": "technology_action_standard_support_cost",
+            "predicate": "support_equipment > constant:brilliant_scientist_technology_action.standard_support_exclusive_gate",
+            "threshold": 99.0,
+            "input": 10000,
+            "predicate_result": true
+          },
+          "GetTechnologyActionStandardFuelCost": {
+            "selected_leaf": "technology_action_standard_fuel_cost",
+            "predicate": "has_fuel < constant:brilliant_scientist_technology_action.standard_fuel_refund",
+            "threshold": 500.0,
+            "input": 100000,
+            "predicate_result": false
+          },
+          "GetTechnologyActionLightFactoryCost": {
+            "selected_leaf": "technology_action_light_factory_cost_blocked",
+            "predicate": "num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_technology_action.light_civilian_factories",
+            "threshold": 2.0,
+            "input": 0,
+            "predicate_result": true
+          }
+        },
+        "old_resolved": "§Y25 £command_power§!  §Y100 £support_equipment_text_icon§!  §Y500 £fuel_texticon§!  §R2 £civ_factory§!",
+        "new_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "blocked_resolved": "£command_power §Y25§! £support_equipment_text_icon §Y100§! £fuel_texticon §Y500§!",
+        "full_tooltip_resolved": "£command_power §Y25§!  £support_equipment_text_icon §Y100§!  £fuel_texticon §Y500§!  £civ_factory §R2§!\\nCommand Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+      }
+    }
+  },
+  {
+    "category": "chaosx_disease_containment_category",
+    "decision_id": "black_plague_weaponization_expand_stockpile",
+    "name_key": "black_plague_weaponization_expand_stockpile",
+    "old_name": "Expand the Payload Stockpile",
+    "new_name": "Expand Payload Stockpile",
+    "cost_key": "black_plague_weaponization_expand_stockpile_cost",
+    "blocked_key": "black_plague_weaponization_expand_stockpile_cost_blocked",
+    "tooltip_key": "black_plague_weaponization_expand_stockpile_cost_tooltip",
+    "old_resolved": "£support_equipment_text_icon §Y40§!  £motorized_equipment_text_icon §Y20§!  £command_power §Y20§!  £GFX_fuel_texticon §Y400§!",
+    "new_resolved": "£support_equipment_text_icon §Y40§! £command_power §Y20§! £GFX_fuel_texticon §Y400§!",
+    "blocked_resolved": "£support_equipment_text_icon §R40§! £command_power §R20§! £GFX_fuel_texticon §R400§!",
+    "full_tooltip_resolved": "£support_equipment_text_icon §Y40§!  £motorized_equipment_text_icon §Y20§!  £command_power §Y20§!  £GFX_fuel_texticon §Y400§!\\n£civ_factory §Y2§! £clock_texticon §Y60§!",
+    "constants": {
+      "black_plague_weaponization_program.stockpile_expansion_support_equipment": 40.0,
+      "black_plague_weaponization_program.stockpile_expansion_motorized_equipment": 20.0,
+      "black_plague_weaponization_program.stockpile_expansion_command_power": 20.0,
+      "black_plague_weaponization_program.stockpile_expansion_fuel": 400.0,
+      "black_plague_weaponization_program.stockpile_expansion_civilian_factories": 2.0,
+      "black_plague_weaponization_program.stockpile_expansion_days": 60.0
+    },
+    "icons": [
+      "support_equipment_text_icon",
+      "command_power",
+      "GFX_fuel_texticon"
+    ],
+    "omitted_inline_constants": [
+      "black_plague_weaponization_program.stockpile_expansion_motorized_equipment"
+    ]
+  },
+  {
+    "category": "chaosx_disease_containment_category",
+    "decision_id": "black_plague_weaponization_destroy_stockpile",
+    "name_key": "black_plague_weaponization_destroy_stockpile",
+    "old_name": "Destroy the Payload Stockpile",
+    "new_name": "Destroy Payload Stockpile",
+    "cost_key": "black_plague_weaponization_destroy_stockpile_cost",
+    "blocked_key": "black_plague_weaponization_destroy_stockpile_cost_blocked",
+    "tooltip_key": "black_plague_weaponization_destroy_stockpile_cost_tooltip",
+    "old_resolved": "£support_equipment_text_icon §Y20§!  £command_power §Y10§!  £GFX_fuel_texticon §Y100§!",
+    "new_resolved": "£support_equipment_text_icon §Y20§! £command_power §Y10§! £GFX_fuel_texticon §Y100§!",
+    "blocked_resolved": "£support_equipment_text_icon §R20§! £command_power §R10§! £GFX_fuel_texticon §R100§!",
+    "full_tooltip_resolved": "£support_equipment_text_icon §Y20§!  £command_power §Y10§!  £GFX_fuel_texticon §Y100§!\\n£civ_factory §Y1§! £clock_texticon §Y30§!",
+    "constants": {
+      "black_plague_weaponization_program.stockpile_destroy_support_equipment": 20.0,
+      "black_plague_weaponization_program.stockpile_destroy_command_power": 10.0,
+      "black_plague_weaponization_program.stockpile_destroy_fuel": 100.0,
+      "black_plague_weaponization_program.stockpile_destroy_civilian_factories": 1.0,
+      "black_plague_weaponization_program.stockpile_destroy_days": 30.0
+    },
+    "icons": [
+      "support_equipment_text_icon",
+      "command_power",
+      "GFX_fuel_texticon"
+    ],
+    "omitted_inline_constants": []
+  },
+  {
+    "category": "chaosx_disease_containment_category",
+    "decision_id": "bio_activate_surveillance_network",
+    "name_key": "bio_activate_surveillance_network",
+    "old_name": "Activate Biological Surveillance Network",
+    "new_name": "Activate Bio Surveillance",
+    "cost_key": "bio_activate_surveillance_network_cost",
+    "blocked_key": "bio_activate_surveillance_network_cost_blocked",
+    "tooltip_key": "bio_activate_surveillance_network_cost_tooltip",
+    "old_resolved": "§Y80 CBRN Instruments§! £support_equipment_text_icon §Y60§! £GFX_motorized_equipment_text_icon §Y20§! §Y10 Medical Capacity§!",
+    "new_resolved": "§Y80§! £cbrn_instruments_texticon §Y60§! £support_equipment_text_icon §Y10§! £medical_capacity_texticon",
+    "blocked_resolved": "§R80§! £cbrn_instruments_texticon §R60§! £support_equipment_text_icon §R10§! £medical_capacity_texticon",
+    "full_tooltip_resolved": "§Y80 CBRN Instruments§! £support_equipment_text_icon §Y60§! £GFX_motorized_equipment_text_icon §Y20§! §Y10 Medical Capacity§!",
+    "constants": {
+      "bio_countermeasure_cost.surveillance_instruments": 80.0,
+      "bio_countermeasure_cost.surveillance_support": 60.0,
+      "bio_countermeasure_cost.surveillance_trucks": 20.0,
+      "bio_countermeasure_capacity.surveillance_medical_commitment": 10.0
+    },
+    "icons": [
+      "cbrn_instruments_texticon",
+      "support_equipment_text_icon",
+      "medical_capacity_texticon"
+    ],
+    "omitted_inline_constants": [
+      "bio_countermeasure_cost.surveillance_trucks"
+    ]
+  },
+  {
+    "category": "chaosx_disease_containment_category",
+    "decision_id": "bio_stand_down_surveillance_network",
+    "name_key": "bio_stand_down_surveillance_network",
+    "old_name": "Stand Down Biological Surveillance Network",
+    "new_name": "Stand Down Bio Surveillance"
+  },
+  {
+    "category": "chaosx_disease_containment_category",
+    "decision_id": "smallpox_vaccination_mass_program",
+    "name_key": "smallpox_vaccination_mass_program",
+    "old_name": "National Smallpox Vaccination Program",
+    "new_name": "Smallpox Vaccination",
+    "cost_key": "smallpox_vaccination_mass_program_cost",
+    "blocked_key": "smallpox_vaccination_mass_program_cost_blocked",
+    "tooltip_key": "smallpox_vaccination_mass_program_cost_tooltip",
+    "old_resolved": "£support_equipment_text_icon §Y250§! £GFX_motorized_equipment_text_icon §Y100§! §Y50 CBRN Instruments§! §Y10 Medical Capacity§!",
+    "new_resolved": "§Y50§! £cbrn_instruments_texticon §Y250§! £support_equipment_text_icon §Y10§! £medical_capacity_texticon",
+    "blocked_resolved": "§R50§! £cbrn_instruments_texticon §R250§! £support_equipment_text_icon §R10§! £medical_capacity_texticon",
+    "full_tooltip_resolved": "£support_equipment_text_icon §Y250§! £GFX_motorized_equipment_text_icon §Y100§! §Y50 CBRN Instruments§! §Y10 Medical Capacity§!",
+    "constants": {
+      "bio_countermeasure_cost.vaccination_support": 250.0,
+      "bio_countermeasure_cost.vaccination_trucks": 100.0,
+      "bio_countermeasure_cost.vaccination_instruments": 50.0,
+      "bio_countermeasure_capacity.vaccination_medical_commitment": 10.0
+    },
+    "icons": [
+      "cbrn_instruments_texticon",
+      "support_equipment_text_icon",
+      "medical_capacity_texticon"
+    ],
+    "omitted_inline_constants": [
+      "bio_countermeasure_cost.vaccination_trucks"
+    ]
+  },
+  {
+    "category": "chaosx_disease_containment_category",
+    "decision_id": "revoke_smallpox_vaccination_mass_program",
+    "name_key": "revoke_smallpox_vaccination_mass_program",
+    "old_name": "End National Smallpox Vaccination",
+    "new_name": "End Smallpox Vaccination"
+  }
+]

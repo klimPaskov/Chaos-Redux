@@ -193,7 +193,10 @@ black_plague_weaponization_complete_program = {
 		set_country_flag = black_plague_weaponization_defensive_program_complete
 		clr_country_flag = black_plague_weaponization_project_active
 		add_to_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_safe_gain }
-		country_event = { id = chaosx_nr20_weaponization.6 }
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_test_country_silent_unlocks } }
+			country_event = { id = chaosx_nr20_weaponization.6 }
+		}
 	}
 	else = {
 		set_country_flag = black_plague_weaponization_complete
@@ -210,7 +213,10 @@ black_plague_weaponization_complete_program = {
 		set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
 		condemnation_add_source = yes
 		set_country_flag = used_unconventional_weapon
-		country_event = { id = chaosx_nr20_weaponization.2 }
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_test_country_silent_unlocks } }
+			country_event = { id = chaosx_nr20_weaponization.2 }
+		}
 	}
 	clr_country_flag = black_plague_weaponization_project_active
 	black_plague_weaponization_clamp_country_values = yes

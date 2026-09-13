@@ -7,91 +7,207 @@
 # - Projects are completed before the final technology grant so all project outputs resolve first.
 # ============================================================================
 
+# Country scope. PROJECT is a static installed project id; repeated calls are safe.
+chaosx_test_country_complete_special_project = {
+	if = {
+		limit = { NOT = { is_special_project_completed = sp:$PROJECT$ } }
+		complete_special_project = {
+			project = sp:$PROJECT$
+			show_modifiers = no
+		}
+	}
+}
+
 chaosx_test_country_complete_all_special_projects = {
-	complete_special_project = sp:anthrax_bomb
-	complete_special_project = sp:black_plague_weaponization_program
-	complete_special_project = sp:plague_bomb
-	complete_special_project = sp:smallpox_bomb
-	complete_special_project = sp:sp_air_axial_jet_engine
-	complete_special_project = sp:sp_air_bouncing_bomb
-	complete_special_project = sp:sp_air_earthshaker_bomb
-	complete_special_project = sp:sp_air_helicopter
-	complete_special_project = sp:sp_air_intercontinental_bomber
-	complete_special_project = sp:sp_air_jet_engine
-	complete_special_project = sp:sp_air_mothership_aircraft
-	complete_special_project = sp:sp_air_radar
-	complete_special_project = sp:sp_air_supersonic_jet
-	complete_special_project = sp:sp_brilliant_scientist_advanced_materials
-	complete_special_project = sp:sp_brilliant_scientist_alien_arms
-	complete_special_project = sp:sp_brilliant_scientist_autonomous_cognition
-	complete_special_project = sp:sp_brilliant_scientist_biomedical_acceleration
-	complete_special_project = sp:sp_brilliant_scientist_cloning
-	complete_special_project = sp:sp_brilliant_scientist_computational_engine
-	complete_special_project = sp:sp_brilliant_scientist_paleogenetics
-	complete_special_project = sp:sp_brilliant_scientist_quantum_transit
-	complete_special_project = sp:sp_brilliant_scientist_singularity_command_core
-	complete_special_project = sp:sp_brilliant_scientist_singularity_containment_lattice
-	complete_special_project = sp:sp_brilliant_scientist_singularity_delivery_architecture
-	complete_special_project = sp:sp_brilliant_scientist_singularity_fail_deadly_governor
-	complete_special_project = sp:sp_brilliant_scientist_singularity_power_link
-	complete_special_project = sp:sp_brilliant_scientist_singularity_temporal_authenticator
-	complete_special_project = sp:sp_brilliant_scientist_temporal_mechanics
-	complete_special_project = sp:sp_brilliant_scientist_xenobiological_synthesis
-	complete_special_project = sp:sp_commercial_nuclear_reactor
-	complete_special_project = sp:sp_cw_aphrodisiac_bomb_program
-	complete_special_project = sp:sp_cw_malodor_bomb_program
-	complete_special_project = sp:sp_cw_sarin_program
-	complete_special_project = sp:sp_cw_soman_program
-	complete_special_project = sp:sp_dhrondan_envoy_craft
-	complete_special_project = sp:sp_japan_cherry_blossom_dossier
-	complete_special_project = sp:sp_japan_epidemic_mapping_bureau
-	complete_special_project = sp:sp_japan_kwantung_medical_intelligence
-	complete_special_project = sp:sp_japan_occupation_test_ledger
-	complete_special_project = sp:sp_japan_pingfang_records_office
-	complete_special_project = sp:sp_land_flamethrower_tank
-	complete_special_project = sp:sp_land_land_cruiser
-	complete_special_project = sp:sp_land_large_caliber_kinetic_energy_sabot
-	complete_special_project = sp:sp_land_military_engineering_vehicles
-	complete_special_project = sp:sp_land_multi_charge_large_caliber_gun
-	complete_special_project = sp:sp_land_self_propelled_super_heavy_howitzer
-	complete_special_project = sp:sp_land_stronghold_network
-	complete_special_project = sp:sp_land_super_heavy_howitzer
-	complete_special_project = sp:sp_land_super_heavy_railway_gun
-	complete_special_project = sp:sp_mengele_cloning
-	complete_special_project = sp:sp_naval_aip_engine
-	complete_special_project = sp:sp_naval_anechoic_tiles
-	complete_special_project = sp:sp_naval_cruiser_submarine
-	complete_special_project = sp:sp_naval_escort_carrier
-	complete_special_project = sp:sp_naval_fleet_submarine
-	complete_special_project = sp:sp_naval_ice_carrier
-	complete_special_project = sp:sp_naval_midget_submarine
-	complete_special_project = sp:sp_naval_modern_battleship
-	complete_special_project = sp:sp_naval_modern_carrier
-	complete_special_project = sp:sp_naval_nuclear_missile_submarine
-	complete_special_project = sp:sp_naval_nuclear_submarine
-	complete_special_project = sp:sp_naval_nuclear_torpedo
-	complete_special_project = sp:sp_naval_proximity_fuze
-	complete_special_project = sp:sp_naval_rocket_launching_submarine
-	complete_special_project = sp:sp_naval_submarine_carrier
-	complete_special_project = sp:sp_naval_super_heavy_battleship
-	complete_special_project = sp:sp_naval_support_ships
-	complete_special_project = sp:sp_naval_torpedo_cruiser
-	complete_special_project = sp:sp_naval_underway_replenishment
-	complete_special_project = sp:sp_nuclear_bomb
-	complete_special_project = sp:sp_nuclear_engines
-	complete_special_project = sp:sp_nuclear_reactor
-	complete_special_project = sp:sp_nuclear_warheads
-	complete_special_project = sp:sp_rocket_interceptor
-	complete_special_project = sp:sp_rockets_ballistic_missile
-	complete_special_project = sp:sp_rockets_flying_bomb
-	complete_special_project = sp:sp_rockets_ground_to_air_missile
-	complete_special_project = sp:sp_rockets_long_range_ballistic_missile
-	complete_special_project = sp:sp_rockets_medium_range_ballistic_missile
-	complete_special_project = sp:sp_thermo_nuclear_bomb
-	complete_special_project = sp:tularemia_bomb
-	complete_special_project = sp:weaponize_the_zombies
-	complete_special_project = sp:zombie_cure_bomb
+	set_country_flag = chaosx_test_country_silent_unlocks
+	initialize_cxt_weaponized_zombie_profile = yes
+	chaosx_test_country_complete_special_project = { PROJECT = anthrax_bomb }
+	chaosx_test_country_complete_special_project = { PROJECT = black_plague_weaponization_program }
+	chaosx_test_country_complete_special_project = { PROJECT = plague_bomb }
+	chaosx_test_country_complete_special_project = { PROJECT = smallpox_bomb }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_air_axial_jet_engine }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_air_bouncing_bomb }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_air_earthshaker_bomb }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_air_helicopter }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_air_intercontinental_bomber }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_air_jet_engine }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_air_mothership_aircraft }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_air_radar }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_air_supersonic_jet }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_advanced_materials }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_alien_arms }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_autonomous_cognition }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_biomedical_acceleration }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_cloning }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_computational_engine }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_paleogenetics }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_quantum_transit }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_command_core }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_containment_lattice }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_delivery_architecture }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_fail_deadly_governor }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_power_link }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_temporal_authenticator }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_temporal_mechanics }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_xenobiological_synthesis }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_commercial_nuclear_reactor }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_aphrodisiac_bomb_program }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_malodor_bomb_program }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_sarin_program }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_soman_program }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_dhrondan_envoy_craft }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_cherry_blossom_dossier }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_epidemic_mapping_bureau }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_kwantung_medical_intelligence }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_occupation_test_ledger }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_pingfang_records_office }
+	if = {
+		limit = { has_dlc = "No Step Back" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_flamethrower_tank }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_land_cruiser }
+	}
+	if = {
+		limit = { has_dlc = "Peace For Our Time" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_large_caliber_kinetic_energy_sabot }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_land_military_engineering_vehicles }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_multi_charge_large_caliber_gun }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_self_propelled_super_heavy_howitzer }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_stronghold_network }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_super_heavy_howitzer }
+	}
+	if = {
+		limit = { has_dlc = "No Step Back" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_land_super_heavy_railway_gun }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_mengele_cloning }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_aip_engine }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_anechoic_tiles }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_cruiser_submarine }
+	if = {
+		limit = { has_dlc = "No Compromise, No Surrender" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_escort_carrier }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_fleet_submarine }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_ice_carrier }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_midget_submarine }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_modern_battleship }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_modern_carrier }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_nuclear_missile_submarine }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_nuclear_submarine }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" has_dlc = "Man the Guns" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_nuclear_torpedo }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_proximity_fuze }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_rocket_launching_submarine }
+	}
+	if = {
+		limit = { has_dlc = "No Compromise, No Surrender" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_submarine_carrier }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_super_heavy_battleship }
+	if = {
+		limit = { has_dlc = "No Compromise, No Surrender" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_support_ships }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_torpedo_cruiser }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_underway_replenishment }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_bomb }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_engines }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_reactor }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_warheads }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_rocket_interceptor }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_ballistic_missile }
+	chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_flying_bomb }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_ground_to_air_missile }
+	}
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_long_range_ballistic_missile }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_medium_range_ballistic_missile }
+	if = {
+		limit = { has_dlc = "Gotterdammerung" }
+		chaosx_test_country_complete_special_project = { PROJECT = sp_thermo_nuclear_bomb }
+	}
+	chaosx_test_country_complete_special_project = { PROJECT = tularemia_bomb }
+	chaosx_test_country_complete_special_project = { PROJECT = weaponize_the_zombies }
+	chaosx_test_country_complete_special_project = { PROJECT = zombie_cure_bomb }
 	chaosx_test_country_complete_registered_special_projects = yes
+	clr_country_flag = chaosx_test_country_silent_unlocks
 }
 
 # Input: temporary variable chaosx_test_country_registration_special_project
@@ -120,12 +236,14 @@ chaosx_test_country_register_special_project = {
 }
 
 chaosx_test_country_complete_registered_special_projects = {
+	set_country_flag = chaosx_test_country_silent_unlocks
 	for_each_loop = {
 		array = global.chaosx_test_country_registered_special_projects
 		value = chaosx_test_country_current_special_project
 		if = {
 			limit = { NOT = { is_special_project_completed = var:chaosx_test_country_current_special_project } }
-			complete_special_project = var:chaosx_test_country_current_special_project
+			complete_special_project = { project = var:chaosx_test_country_current_special_project show_modifiers = no }
 		}
 	}
+	clr_country_flag = chaosx_test_country_silent_unlocks
 }

@@ -28,61 +28,6 @@ chaosx_test_country_refill_resources = {
 	add_war_support = 1
 }
 
-chaosx_test_country_ensure_facility_states = {
-	if = {
-		limit = {
-			NOT = {
-				any_owned_state = {
-					is_controlled_by = ROOT
-					is_coastal = yes
-					NOT = { chaosx_test_country_state_has_special_facility = yes }
-				}
-			}
-		}
-		random_state = {
-			limit = {
-				is_coastal = yes
-				NOT = { is_owned_by = ROOT }
-				NOT = { chaosx_test_country_state_has_special_facility = yes }
-			}
-			transfer_state_to = ROOT
-		}
-	}
-
-	set_temp_variable = { chaosx_test_empty_facility_states = 0 }
-	every_owned_state = {
-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
-		add_to_temp_variable = { chaosx_test_empty_facility_states = 1 }
-	}
-	set_temp_variable = { chaosx_test_facility_state_transfer_failed = 0 }
-	while_loop_effect = {
-		break = chaosx_test_facility_state_transfer_failed
-		limit = {
-			check_variable = {
-				var = chaosx_test_empty_facility_states
-				value = constant:chaosx_test_country_count.minimum_facility_states
-				compare = less_than
-			}
-		}
-		set_temp_variable = { chaosx_test_facility_state_transfer_succeeded = 0 }
-		random_state = {
-			limit = {
-				NOT = { is_owned_by = ROOT }
-				NOT = { chaosx_test_country_state_has_special_facility = yes }
-			}
-			transfer_state_to = ROOT
-			set_temp_variable = { chaosx_test_facility_state_transfer_succeeded = 1 }
-		}
-		if = {
-			limit = { check_variable = { chaosx_test_facility_state_transfer_succeeded > 0 } }
-			add_to_temp_variable = { chaosx_test_empty_facility_states = 1 }
-		}
-		else = {
-			set_temp_variable = { chaosx_test_facility_state_transfer_failed = 1 }
-		}
-	}
-}
-
 chaosx_test_country_ensure_occupation_fixture = {
 	if = {
 		limit = {
@@ -105,35 +50,104 @@ chaosx_test_country_ensure_occupation_fixture = {
 	}
 }
 
-chaosx_test_country_build_special_facilities = {
-	chaosx_test_country_ensure_facility_states = yes
-	random_owned_controlled_state = {
+# Country scope. Preserve a legal installed campus or provision one exact
+# building type. Rejected temporary transfers restore owner and controller.
+# Inputs: FACILITY (building token), COASTAL_REQUIRED (yes/no).
+chaosx_test_country_provision_facility_type = {
+	if = {
 		limit = {
-			is_coastal = yes
-			chaosx_test_country_state_can_host_special_facility = yes
+			NOT = {
+				any_owned_state = {
+					is_controlled_by = ROOT
+					$FACILITY$ > 0
+				}
+			}
 		}
-		construct_building_in_random_province = { naval_facility = 1 }
+		clear_array = chaosx_test_facility_rejected_states
+		set_temp_variable = { chaosx_test_facility_type_candidate_failed = 0 }
+		while_loop_effect = {
+			break = chaosx_test_facility_type_candidate_failed
+			limit = {
+				NOT = {
+					any_owned_state = {
+						chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ }
+					}
+				}
+			}
+			set_temp_variable = { chaosx_test_facility_type_candidate_selected = 0 }
+			random_state = {
+				limit = {
+					NOT = { is_owned_by = ROOT }
+					NOT = { is_capital = yes }
+					impassable = no
+					is_demilitarized_zone = no
+					NOT = { chaosx_test_country_state_has_special_facility = yes }
+					OWNER = { exists = yes }
+					CONTROLLER = { exists = yes }
+					OR = {
+						NOT = { always = $COASTAL_REQUIRED$ }
+						is_coastal = yes
+					}
+					ROOT = {
+						NOT = {
+							is_in_array = {
+								array = chaosx_test_facility_rejected_states
+								value = PREV
+							}
+						}
+					}
+				}
+				set_temp_variable = { chaosx_test_facility_type_candidate_selected = 1 }
+				OWNER = { save_event_target_as = chaosx_test_facility_original_owner }
+				CONTROLLER = { save_event_target_as = chaosx_test_facility_original_controller }
+				transfer_state_to = ROOT
+				set_state_controller_to = ROOT
+				if = {
+					limit = { NOT = { chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ } } }
+					ROOT = {
+						add_to_array = {
+							array = chaosx_test_facility_rejected_states
+							value = PREV
+						}
+					}
+					transfer_state_to = event_target:chaosx_test_facility_original_owner
+					set_state_controller_to = event_target:chaosx_test_facility_original_controller
+				}
+			}
+			if = {
+				limit = { check_variable = { chaosx_test_facility_type_candidate_selected < 1 } }
+				set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
+			}
+		}
+		random_owned_controlled_state = {
+			limit = { chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ } }
+			construct_building_in_random_province = { $FACILITY$ = 1 }
+		}
+		clear_array = chaosx_test_facility_rejected_states
 	}
-	random_owned_controlled_state = {
-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
-		construct_building_in_random_province = { nuclear_facility = 1 }
+	if = {
+		limit = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				$FACILITY$ > 0
+			}
+		}
+		clr_country_flag = chaosx_test_facility_missing_$FACILITY$
 	}
-	random_owned_controlled_state = {
-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
-		construct_building_in_random_province = { air_facility = 1 }
+	else = {
+		set_country_flag = chaosx_test_country_facility_provisioning_incomplete
+		set_country_flag = chaosx_test_facility_missing_$FACILITY$
 	}
-	random_owned_controlled_state = {
-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
-		construct_building_in_random_province = { land_facility = 1 }
-	}
-	random_owned_controlled_state = {
-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
-		construct_building_in_random_province = { biowarfare_facility = 1 }
-	}
-	random_owned_controlled_state = {
-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
-		construct_building_in_random_province = { cw_facility = 1 }
-	}
+}
+
+chaosx_test_country_build_special_facilities = {
+	clr_country_flag = chaosx_test_country_facility_provisioning_incomplete
+	chaosx_test_country_provision_facility_type = { FACILITY = naval_facility COASTAL_REQUIRED = yes }
+	chaosx_test_country_provision_facility_type = { FACILITY = nuclear_facility COASTAL_REQUIRED = no }
+	chaosx_test_country_provision_facility_type = { FACILITY = air_facility COASTAL_REQUIRED = no }
+	chaosx_test_country_provision_facility_type = { FACILITY = land_facility COASTAL_REQUIRED = no }
+	chaosx_test_country_provision_facility_type = { FACILITY = biowarfare_facility COASTAL_REQUIRED = no }
+	chaosx_test_country_provision_facility_type = { FACILITY = cw_facility COASTAL_REQUIRED = no }
 }
 
 chaosx_test_country_complete_chaos_warfare = {
@@ -247,10 +261,16 @@ chaosx_test_country_apply_registered_extension_effects = {
 chaosx_test_country_initial_setup = {
 	set_country_flag = chaosx_test_country_initialized
 	set_research_slots = constant:chaosx_test_country_count.research_slots
+	# Technology unlocks precede every legal facility-placement attempt.
+	chaosx_test_country_complete_all_technologies = yes
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_test_country_history_unlocks_completed } }
+		chaosx_test_country_complete_all_special_projects = yes
+		chaosx_test_country_complete_all_technologies = yes
+		set_country_flag = chaosx_test_country_history_unlocks_completed
+	}
 	chaosx_test_country_build_special_facilities = yes
 	chaosx_test_country_ensure_occupation_fixture = yes
-	chaosx_test_country_complete_all_special_projects = yes
-	chaosx_test_country_complete_all_technologies = yes
 	chaosx_test_country_complete_chaos_warfare = yes
 	chaosx_test_country_activate_camp_systems = yes
 	chaosx_test_country_fill_stockpile = yes
@@ -269,10 +289,12 @@ chaosx_test_country_refresh = {
 # Daily CXT consumes package setup effects registered through the documented
 # startup and tag-scoped repair hooks. Every package effect must be idempotent.
 chaosx_test_country_sync_registered_content = {
+	set_country_flag = chaosx_test_country_silent_unlocks
 	chaosx_test_country_apply_registered_extension_effects = yes
 	chaosx_test_country_complete_registered_special_projects = yes
 	chaosx_test_country_fill_registered_equipment = yes
 	chaosx_test_country_create_registered_unit_roster = yes
+	clr_country_flag = chaosx_test_country_silent_unlocks
 }
 
 # Weekly CXT performs the bounded runtime technology scan. Its on-action caller

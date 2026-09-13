@@ -195,17 +195,22 @@ Every player-facing cost must have the correct texticon for the value it represe
 
 ## 6. Cost localisation
 
-Cost localisation must be compact, icon-first, and limited to four distinct cost entries.
+Inline decision cost localisation must be compact and show at most three values, each identified by its matching texticon.
+When normal text is necessary, use no more than four words in the entire inline cost/status string.
+Separate each texticon name from following formatting codes with whitespace, or use a closed texticon syntax verified in installed vanilla.
+Do not repeat a cost already drawn by the native row or expand resource names beside their texticons.
+Keep every payment and reserved resource explicit in the full cost tooltip, and verify the longest available and blocked strings beside the actual decision title in native MCP renders.
+The inline display limit does not change the payment contract or the separate gameplay cost budget.
 
-Every cost entry uses this form:
+Each cost entry pairs its amount with the matching texticon; either order is allowed when native renders confirm fit and valid icon separation.
 
-`<amount> <matching_texticon>`
+`<amount> <matching_texticon>` or `<matching_texticon> <amount>`
 
 Good examples:
 
 - `2,000 <infantry_equipment_texticon>`
 - `20 <army_xp_texticon> 20 <command_power_texticon>`
-- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon> 200 <support_equipment_texticon>`
+- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon>`
 
 Do not write literal cost labels such as `Manpower:`, `Fuel:`, `Political Power:`, or `Support Equipment:` in the cost string. Do not use filler words such as `and`, `plus`, `requires`, or `needed` between cost entries. The texticon identifies the resource.
 

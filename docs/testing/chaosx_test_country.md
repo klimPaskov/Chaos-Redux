@@ -45,9 +45,17 @@ Three fully equipped, fully manned, fully experienced divisions are spawned from
 
 ## Technology, projects, and doctrine
 
-The technology grant enumerates the engine's `global.technology` database at runtime and grants every installed vanilla and Chaos Redux technology without popups. New technology definitions loaded by the game are therefore included without editing a generated CXT list.
+CXT history grants the installed technology inventory, initializes a complete zombie research profile, and completes its licensed special projects before console activation.
+The history receipt prevents the activation receiver from repeating the core completion pass.
+The technology helper enumerates `global.technology` and injects each object's documented `GetTokenKey` into native `has_tech` and `set_technology` fields through `meta_effect`, with `popup = no`.
+Technologies are synchronized again before runtime facility placement, so facility permissions exist before construction.
 
-The current static special-project inventory contains 83 definitions, including 49 installed vanilla projects and 34 Chaos Redux projects, and the harness completes every one.
+The static special-project inventory retains all 83 definitions: 49 installed vanilla projects and 34 Chaos Redux projects.
+Vanilla calls mirror their installed DLC requirements, and the seven country-restricted American chemical and Japanese medical projects explicitly accept CXT alongside their original countries.
+Core and registered project grants are idempotent and use `chaosx_test_country_silent_unlocks` to suppress completion reports while retaining their gameplay outputs.
+The D’Rhondan craft silent path runs the same authorization helper as its report option; Black Plague completion keeps equipment, technology, condemnation, progress, and achievements.
+The zombie fixture records existing research choices with strength 3, infectiousness 3, speed 2, durability 2, cure resistance 2, and obedience 2; its neurobiological, dead, expanded-resource profile uses ordinary refinement and skips field testing.
+Ordinary-country project choices, reports, and balance remain unchanged.
 
 HOI4 does not expose a documented global special-project database array. Future projects use the opt-in registry described below; the static baseline remains explicit so omissions are visible in code review and inventory audits.
 
@@ -61,7 +69,8 @@ The test fixture records a confirmed chemical-attack history and a national resp
 
 The initial stockpile receives 1,000,000 units of every concrete Chaos Redux equipment type plus the vanilla equipment dependencies used by Chaos Redux divisions.
 
-Dedicated light, medium, and heavy flame-tank variants are registered so the custom chemical tank support companies have valid equipment in the No Step Back designer system.
+Dedicated light, medium, and heavy chemical-carrier variants use the concrete `light_tank_flame_chassis_3`, `medium_tank_flame_chassis_3`, and `heavy_tank_flame_chassis_3` types in the No Step Back designer system.
+Their named domestic variants are created before stockpile grants and unit creation, and stockpile calls identify both the concrete type and variant name.
 
 The tag-specific `on_weekly_CXT` hook replenishes that full stockpile throughout play, including equipment supplied through the opt-in registry.
 
@@ -121,11 +130,12 @@ Event 012 registers `chaosx_cxt_extension_event012_africa_gods` through the modi
 
 CXT receives one naval, nuclear, air, land, biowarfare, and chemical-warfare facility.
 
-HOI4 limits all special-project facilities in the shared `special_project_facility` group to one per state, so the effect guarantees six distinct facility-empty controlled states and one legal coastal campus.
-
-If the annexed country lacks enough eligible states or a coastal slot, the harness transfers only the additional random states required to satisfy those engine limits.
-
-The facility allocator counts a transferred state only after a valid random-state body executes and terminates safely if the world contains no further legal facility state.
+HOI4 limits special-project facilities in the shared `special_project_facility` group to one per state.
+Each type preserves an existing controlled campus or uses an owned, controlled, facility-empty state that passes the installed `can_construct_building` check for that exact building.
+When no owned candidate is legal, the bounded allocator considers non-capital foreign candidates, transfers ownership and control, and revalidates construction.
+Rejected candidates recover their original owner and controller and are excluded from further attempts for that type; the temporary rejection array is cleared after the search.
+Naval candidates require a coast.
+If the world has no legal candidate, the allocator terminates and records an explicit per-type missing-campus flag and aggregate provisioning-incomplete flag; it does not attempt illegal construction or substitute another facility.
 
 The `anomaly_signal_beacon_pilot` building is excluded because its definition is a non-buildable 3D asset pilot without a special-project specialization.
 

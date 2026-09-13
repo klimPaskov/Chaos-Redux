@@ -118,7 +118,60 @@ remove_weaponized_zombie_completion_ideas = {
     }
 }
 
+# Country scope. CXT fixture only; uses a recorded ordinary prototype-choice
+# profile without random selection, research costs, field tests, or reports.
+initialize_cxt_weaponized_zombie_profile = {
+	if = {
+		limit = {
+			tag = CXT
+			NOT = {
+				AND = {
+					has_country_flag = weaponized_zombie_step_strength_done
+					has_country_flag = weaponized_zombie_step_infectiousness_done
+					has_country_flag = weaponized_zombie_step_speed_done
+					has_country_flag = weaponized_zombie_step_durability_done
+					has_country_flag = weaponized_zombie_step_cure_done
+					has_country_flag = weaponized_zombie_step_friendliness_done
+					has_variable = weaponized_zombie_strength
+					has_variable = weaponized_zombie_infectiousness
+					has_variable = weaponized_zombie_speed
+					has_variable = weaponized_zombie_durability
+					has_variable = weaponized_zombie_cure_resistance
+					has_variable = weaponized_zombie_friendliness
+				}
+			}
+		}
+		reset_weaponized_zombie_project_tracking = yes
+		set_country_flag = weaponized_zombie_nature_neurobiological
+		set_country_flag = weaponized_zombie_life_dead
+		set_country_flag = weaponized_zombie_resource_expanded
+		set_country_flag = weaponized_zombie_step_acquisition_done
+		set_country_flag = weaponized_zombie_step_nature_done
+		set_country_flag = weaponized_zombie_step_life_state_done
+		set_country_flag = weaponized_zombie_step_strength_done
+		set_country_flag = weaponized_zombie_step_infectiousness_done
+		set_country_flag = weaponized_zombie_step_speed_done
+		set_country_flag = weaponized_zombie_step_durability_done
+		set_country_flag = weaponized_zombie_step_cure_done
+		set_country_flag = weaponized_zombie_step_friendliness_done
+		set_country_flag = weaponized_zombie_step_trials_done
+		set_country_flag = weaponized_zombie_step_resources_done
+		set_country_flag = weaponized_zombie_step_field_test_done
+		set_country_flag = weaponized_zombie_step_refinement_done
+		set_country_flag = weaponized_zombie_step_deployment_done
+		set_variable = { weaponized_zombie_strength = constant:weaponized_zombie_cxt_fixture.strength }
+		set_variable = { weaponized_zombie_infectiousness = constant:weaponized_zombie_cxt_fixture.infectiousness }
+		set_variable = { weaponized_zombie_speed = constant:weaponized_zombie_cxt_fixture.speed }
+		set_variable = { weaponized_zombie_durability = constant:weaponized_zombie_cxt_fixture.durability }
+		set_variable = { weaponized_zombie_cure_resistance = constant:weaponized_zombie_cxt_fixture.cure_resistance }
+		set_variable = { weaponized_zombie_friendliness = constant:weaponized_zombie_cxt_fixture.friendliness }
+		set_variable = { weaponized_zombie_test_subjects = constant:weaponized_zombie_cxt_fixture.test_subjects }
+		set_variable = { weaponized_zombie_accident_risk = constant:weaponized_zombie_cxt_fixture.accident_risk }
+	}
+}
+
 complete_weaponized_zombie_project_from_project_output = {
+	initialize_cxt_weaponized_zombie_profile = yes
     if = {
         limit = { has_country_flag = weaponized_zombie_console_skip_project_output }
         clr_country_flag = weaponized_zombie_console_skip_project_output
@@ -2490,6 +2543,7 @@ spawn_wendigo_incident_from_completion = {
 }
 
 complete_weaponized_zombie_project = {
+	initialize_cxt_weaponized_zombie_profile = yes
     resolve_weaponized_zombie_profile = yes
     weaponized_zombie_check_completion_wendigo_failure = yes
 
@@ -2513,7 +2567,10 @@ complete_weaponized_zombie_project = {
     else = {
         apply_weaponized_zombie_completed_bonuses = yes
         custom_effect_tooltip = weaponized_zombies_unlocked_tooltip
-        country_event = { id = chaosx.weaponized_zombies.1 }
+		if = {
+			limit = { NOT = { tag = CXT } }
+			country_event = { id = chaosx.weaponized_zombies.1 }
+		}
         set_country_flag = achievement_weaponize_the_end
     }
 }

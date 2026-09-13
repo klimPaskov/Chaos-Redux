@@ -9,11 +9,10 @@
 
 chaosx_test_country_register_flame_tank_variants = {
 	if = {
-		limit = { NOT = { has_country_flag = chaosx_test_flame_tank_variants_registered } }
-		set_country_flag = chaosx_test_flame_tank_variants_registered
+		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = chaosx_test_flame_tank_variants_registered } }
 		create_equipment_variant = {
 			name = "CXT Light Chemical Carrier"
-			type = light_tank_chassis_3
+			type = light_tank_flame_chassis_3
 			allow_without_tech = yes
 			modules = {
 				main_armament_slot = advanced_flamethrower
@@ -25,7 +24,7 @@ chaosx_test_country_register_flame_tank_variants = {
 		}
 		create_equipment_variant = {
 			name = "CXT Medium Chemical Carrier"
-			type = medium_tank_chassis_3
+			type = medium_tank_flame_chassis_3
 			allow_without_tech = yes
 			modules = {
 				main_armament_slot = advanced_flamethrower
@@ -37,7 +36,7 @@ chaosx_test_country_register_flame_tank_variants = {
 		}
 		create_equipment_variant = {
 			name = "CXT Heavy Chemical Carrier"
-			type = heavy_tank_chassis_3
+			type = heavy_tank_flame_chassis_3
 			allow_without_tech = yes
 			modules = {
 				main_armament_slot = advanced_flamethrower
@@ -47,6 +46,7 @@ chaosx_test_country_register_flame_tank_variants = {
 				engine_type_slot = tank_gasoline_engine
 			}
 		}
+		set_country_flag = chaosx_test_flame_tank_variants_registered
 	}
 }
 chaosx_test_country_fill_stockpile = {
@@ -323,17 +323,32 @@ chaosx_test_country_fill_stockpile = {
 		type = zombie_disease_bomb_1
 		amount = constant:chaosx_test_country.stockpile_amount
 	}
-	add_equipment_to_stockpile = {
-		type = light_tank_flame_chassis
-		amount = constant:chaosx_test_country.stockpile_amount
+	if = {
+		limit = { has_dlc = "No Step Back" }
+		add_equipment_to_stockpile = {
+			type = light_tank_flame_chassis_3
+			variant_name = "CXT Light Chemical Carrier"
+			producer = CXT
+			amount = constant:chaosx_test_country.stockpile_amount
+		}
 	}
-	add_equipment_to_stockpile = {
-		type = medium_tank_flame_chassis
-		amount = constant:chaosx_test_country.stockpile_amount
+	if = {
+		limit = { has_dlc = "No Step Back" }
+		add_equipment_to_stockpile = {
+			type = medium_tank_flame_chassis_3
+			variant_name = "CXT Medium Chemical Carrier"
+			producer = CXT
+			amount = constant:chaosx_test_country.stockpile_amount
+		}
 	}
-	add_equipment_to_stockpile = {
-		type = heavy_tank_flame_chassis
-		amount = constant:chaosx_test_country.stockpile_amount
+	if = {
+		limit = { has_dlc = "No Step Back" }
+		add_equipment_to_stockpile = {
+			type = heavy_tank_flame_chassis_3
+			variant_name = "CXT Heavy Chemical Carrier"
+			producer = CXT
+			amount = constant:chaosx_test_country.stockpile_amount
+		}
 	}
 	chaosx_test_country_fill_registered_equipment = yes
 }

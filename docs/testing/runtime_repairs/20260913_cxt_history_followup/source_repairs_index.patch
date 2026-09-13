@@ -1,0 +1,1251 @@
+diff --git a/.agents/skills/chaos-redux-decisions-missions/SKILL.md b/.agents/skills/chaos-redux-decisions-missions/SKILL.md
+index f930450745..b23e14cc9b 100644
+--- a/.agents/skills/chaos-redux-decisions-missions/SKILL.md
++++ b/.agents/skills/chaos-redux-decisions-missions/SKILL.md
+@@ -195,17 +195,22 @@ Every player-facing cost must have the correct texticon for the value it represe
+ 
+ ## 6. Cost localisation
+ 
+-Cost localisation must be compact, icon-first, and limited to four distinct cost entries.
++Inline decision cost localisation must be compact and show at most three values, each identified by its matching texticon.
++When normal text is necessary, use no more than four words in the entire inline cost/status string.
++Separate each texticon name from following formatting codes with whitespace, or use a closed texticon syntax verified in installed vanilla.
++Do not repeat a cost already drawn by the native row or expand resource names beside their texticons.
++Keep every payment and reserved resource explicit in the full cost tooltip, and verify the longest available and blocked strings beside the actual decision title in native MCP renders.
++The inline display limit does not change the payment contract or the separate gameplay cost budget.
+ 
+-Every cost entry uses this form:
++Each cost entry pairs its amount with the matching texticon; either order is allowed when native renders confirm fit and valid icon separation.
+ 
+-`<amount> <matching_texticon>`
++`<amount> <matching_texticon>` or `<matching_texticon> <amount>`
+ 
+ Good examples:
+ 
+ - `2,000 <infantry_equipment_texticon>`
+ - `20 <army_xp_texticon> 20 <command_power_texticon>`
+-- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon> 200 <support_equipment_texticon>`
++- `20 <army_xp_texticon> 20 <command_power_texticon> 2,000 <infantry_equipment_texticon>`
+ 
+ Do not write literal cost labels such as `Manpower:`, `Fuel:`, `Political Power:`, or `Support Equipment:` in the cost string. Do not use filler words such as `and`, `plus`, `requires`, or `needed` between cost entries. The texticon identifies the resource.
+ 
+diff --git a/common/script_constants/zombie_special_project_constants.txt b/common/script_constants/zombie_special_project_constants.txt
+index 4325400b72..a268c23e0a 100644
+--- a/common/script_constants/zombie_special_project_constants.txt
++++ b/common/script_constants/zombie_special_project_constants.txt
+@@ -199,3 +199,21 @@ weaponized_zombies = {
+ 	command_random_forbidden_caution_weight = 50
+ 	command_random_forbidden_pursue_weight = 50
+ }
++
++# Representative CXT sandbox profile: acquisition, neurobiological nature,
++# dead life state, six medium traits, trials, expanded resources, skipped
++# field test, routine refinement, deployment. Ordinary research is unchanged.
++weaponized_zombie_cxt_fixture = {
++	schema = {
++		any_key = yes
++		data = fixed_point
++	}
++	strength = 3
++	infectiousness = 3
++	speed = 2
++	durability = 2
++	cure_resistance = 2
++	friendliness = 2
++	test_subjects = 3
++	accident_risk = 1.55
++}
+\ No newline at end of file
+diff --git a/common/scripted_effects/016_dhrondan_contact_effects.txt b/common/scripted_effects/016_dhrondan_contact_effects.txt
+index 3d10e0bb18..e967358f29 100644
+--- a/common/scripted_effects/016_dhrondan_contact_effects.txt
++++ b/common/scripted_effects/016_dhrondan_contact_effects.txt
+@@ -30,7 +30,13 @@ dhrondan_complete_envoy_craft = {
+ 			set_country_flag = directorate_special_project_dhrondan_envoy_craft_completed
+ 			clr_country_flag = directorate_special_project_dhrondan_envoy_craft_available
+ 		}
+-		country_event = { id = chaosx.nr16.40 }
++		if = {
++			limit = { has_country_flag = chaosx_test_country_silent_unlocks }
++			dhrondan_ai_try_authorize_expedition = yes
++		}
++		else = {
++			country_event = { id = chaosx.nr16.40 }
++		}
+ 	}
+ }
+ 
+diff --git a/common/scripted_effects/020_black_plague_weaponization_effects.txt b/common/scripted_effects/020_black_plague_weaponization_effects.txt
+index 90d4041535..61fef67ab8 100644
+--- a/common/scripted_effects/020_black_plague_weaponization_effects.txt
++++ b/common/scripted_effects/020_black_plague_weaponization_effects.txt
+@@ -193,7 +193,10 @@ black_plague_weaponization_complete_program = {
+ 		set_country_flag = black_plague_weaponization_defensive_program_complete
+ 		clr_country_flag = black_plague_weaponization_project_active
+ 		add_to_variable = { black_plague_countermeasure_progress = constant:black_plague_weaponization_program.countermeasure_safe_gain }
+-		country_event = { id = chaosx_nr20_weaponization.6 }
++		if = {
++			limit = { NOT = { has_country_flag = chaosx_test_country_silent_unlocks } }
++			country_event = { id = chaosx_nr20_weaponization.6 }
++		}
+ 	}
+ 	else = {
+ 		set_country_flag = black_plague_weaponization_complete
+@@ -210,7 +213,10 @@ black_plague_weaponization_complete_program = {
+ 		set_temp_variable = { condemnation_context_type = constant:condemnation_context.biological_strike }
+ 		condemnation_add_source = yes
+ 		set_country_flag = used_unconventional_weapon
+-		country_event = { id = chaosx_nr20_weaponization.2 }
++		if = {
++			limit = { NOT = { has_country_flag = chaosx_test_country_silent_unlocks } }
++			country_event = { id = chaosx_nr20_weaponization.2 }
++		}
+ 	}
+ 	clr_country_flag = black_plague_weaponization_project_active
+ 	black_plague_weaponization_clamp_country_values = yes
+diff --git a/common/scripted_effects/chaosx_test_country_effects.txt b/common/scripted_effects/chaosx_test_country_effects.txt
+index e896fadd46..70fc9b3ff8 100644
+--- a/common/scripted_effects/chaosx_test_country_effects.txt
++++ b/common/scripted_effects/chaosx_test_country_effects.txt
+@@ -28,112 +28,126 @@ chaosx_test_country_refill_resources = {
+ 	add_war_support = 1
+ }
+ 
+-chaosx_test_country_ensure_facility_states = {
++chaosx_test_country_ensure_occupation_fixture = {
+ 	if = {
+ 		limit = {
+ 			NOT = {
+-				any_owned_state = {
+-					is_controlled_by = ROOT
+-					is_coastal = yes
+-					NOT = { chaosx_test_country_state_has_special_facility = yes }
++				any_controlled_state = {
++					NOT = { is_owned_by = ROOT }
++					NOT = { is_core_of = ROOT }
+ 				}
+ 			}
+ 		}
+ 		random_state = {
+ 			limit = {
+-				is_coastal = yes
+ 				NOT = { is_owned_by = ROOT }
+-				NOT = { chaosx_test_country_state_has_special_facility = yes }
++				NOT = { is_core_of = ROOT }
++				NOT = { is_capital = yes }
++				state_population_k > 0
+ 			}
+-			transfer_state_to = ROOT
++			set_state_controller_to = ROOT
+ 		}
+ 	}
++}
+ 
+-	set_temp_variable = { chaosx_test_empty_facility_states = 0 }
+-	every_owned_state = {
+-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+-		add_to_temp_variable = { chaosx_test_empty_facility_states = 1 }
+-	}
+-	set_temp_variable = { chaosx_test_facility_state_transfer_failed = 0 }
+-	while_loop_effect = {
+-		break = chaosx_test_facility_state_transfer_failed
++# Country scope. Preserve a legal installed campus or provision one exact
++# building type. Rejected temporary transfers restore owner and controller.
++# Inputs: FACILITY (building token), COASTAL_REQUIRED (yes/no).
++chaosx_test_country_provision_facility_type = {
++	if = {
+ 		limit = {
+-			check_variable = {
+-				var = chaosx_test_empty_facility_states
+-				value = constant:chaosx_test_country_count.minimum_facility_states
+-				compare = less_than
++			NOT = {
++				any_owned_state = {
++					is_controlled_by = ROOT
++					$FACILITY$ > 0
++				}
+ 			}
+ 		}
+-		set_temp_variable = { chaosx_test_facility_state_transfer_succeeded = 0 }
+-		random_state = {
++		clear_array = chaosx_test_facility_rejected_states
++		set_temp_variable = { chaosx_test_facility_type_candidate_failed = 0 }
++		while_loop_effect = {
++			break = chaosx_test_facility_type_candidate_failed
+ 			limit = {
+-				NOT = { is_owned_by = ROOT }
+-				NOT = { chaosx_test_country_state_has_special_facility = yes }
++				NOT = {
++					any_owned_state = {
++						chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ }
++					}
++				}
++			}
++			set_temp_variable = { chaosx_test_facility_type_candidate_selected = 0 }
++			random_state = {
++				limit = {
++					NOT = { is_owned_by = ROOT }
++					NOT = { is_capital = yes }
++					impassable = no
++					is_demilitarized_zone = no
++					NOT = { chaosx_test_country_state_has_special_facility = yes }
++					OWNER = { exists = yes }
++					CONTROLLER = { exists = yes }
++					OR = {
++						NOT = { always = $COASTAL_REQUIRED$ }
++						is_coastal = yes
++					}
++					ROOT = {
++						NOT = {
++							is_in_array = {
++								array = chaosx_test_facility_rejected_states
++								value = PREV
++							}
++						}
++					}
++				}
++				set_temp_variable = { chaosx_test_facility_type_candidate_selected = 1 }
++				OWNER = { save_event_target_as = chaosx_test_facility_original_owner }
++				CONTROLLER = { save_event_target_as = chaosx_test_facility_original_controller }
++				transfer_state_to = ROOT
++				set_state_controller_to = ROOT
++				if = {
++					limit = { NOT = { chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ } } }
++					ROOT = {
++						add_to_array = {
++							array = chaosx_test_facility_rejected_states
++							value = PREV
++						}
++					}
++					transfer_state_to = event_target:chaosx_test_facility_original_owner
++					set_state_controller_to = event_target:chaosx_test_facility_original_controller
++				}
++			}
++			if = {
++				limit = { check_variable = { chaosx_test_facility_type_candidate_selected < 1 } }
++				set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
+ 			}
+-			transfer_state_to = ROOT
+-			set_temp_variable = { chaosx_test_facility_state_transfer_succeeded = 1 }
+-		}
+-		if = {
+-			limit = { check_variable = { chaosx_test_facility_state_transfer_succeeded > 0 } }
+-			add_to_temp_variable = { chaosx_test_empty_facility_states = 1 }
+ 		}
+-		else = {
+-			set_temp_variable = { chaosx_test_facility_state_transfer_failed = 1 }
++		random_owned_controlled_state = {
++			limit = { chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ } }
++			construct_building_in_random_province = { $FACILITY$ = 1 }
+ 		}
++		clear_array = chaosx_test_facility_rejected_states
+ 	}
+-}
+-
+-chaosx_test_country_ensure_occupation_fixture = {
+ 	if = {
+ 		limit = {
+-			NOT = {
+-				any_controlled_state = {
+-					NOT = { is_owned_by = ROOT }
+-					NOT = { is_core_of = ROOT }
+-				}
++			any_owned_state = {
++				is_controlled_by = ROOT
++				$FACILITY$ > 0
+ 			}
+ 		}
+-		random_state = {
+-			limit = {
+-				NOT = { is_owned_by = ROOT }
+-				NOT = { is_core_of = ROOT }
+-				NOT = { is_capital = yes }
+-				state_population_k > 0
+-			}
+-			set_state_controller_to = ROOT
+-		}
++		clr_country_flag = chaosx_test_facility_missing_$FACILITY$
++	}
++	else = {
++		set_country_flag = chaosx_test_country_facility_provisioning_incomplete
++		set_country_flag = chaosx_test_facility_missing_$FACILITY$
+ 	}
+ }
+ 
+ chaosx_test_country_build_special_facilities = {
+-	chaosx_test_country_ensure_facility_states = yes
+-	random_owned_controlled_state = {
+-		limit = {
+-			is_coastal = yes
+-			chaosx_test_country_state_can_host_special_facility = yes
+-		}
+-		construct_building_in_random_province = { naval_facility = 1 }
+-	}
+-	random_owned_controlled_state = {
+-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+-		construct_building_in_random_province = { nuclear_facility = 1 }
+-	}
+-	random_owned_controlled_state = {
+-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+-		construct_building_in_random_province = { air_facility = 1 }
+-	}
+-	random_owned_controlled_state = {
+-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+-		construct_building_in_random_province = { land_facility = 1 }
+-	}
+-	random_owned_controlled_state = {
+-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+-		construct_building_in_random_province = { biowarfare_facility = 1 }
+-	}
+-	random_owned_controlled_state = {
+-		limit = { chaosx_test_country_state_can_host_special_facility = yes }
+-		construct_building_in_random_province = { cw_facility = 1 }
+-	}
++	clr_country_flag = chaosx_test_country_facility_provisioning_incomplete
++	chaosx_test_country_provision_facility_type = { FACILITY = naval_facility COASTAL_REQUIRED = yes }
++	chaosx_test_country_provision_facility_type = { FACILITY = nuclear_facility COASTAL_REQUIRED = no }
++	chaosx_test_country_provision_facility_type = { FACILITY = air_facility COASTAL_REQUIRED = no }
++	chaosx_test_country_provision_facility_type = { FACILITY = land_facility COASTAL_REQUIRED = no }
++	chaosx_test_country_provision_facility_type = { FACILITY = biowarfare_facility COASTAL_REQUIRED = no }
++	chaosx_test_country_provision_facility_type = { FACILITY = cw_facility COASTAL_REQUIRED = no }
+ }
+ 
+ chaosx_test_country_complete_chaos_warfare = {
+@@ -247,10 +261,16 @@ chaosx_test_country_apply_registered_extension_effects = {
+ chaosx_test_country_initial_setup = {
+ 	set_country_flag = chaosx_test_country_initialized
+ 	set_research_slots = constant:chaosx_test_country_count.research_slots
++	# Technology unlocks precede every legal facility-placement attempt.
++	chaosx_test_country_complete_all_technologies = yes
++	if = {
++		limit = { NOT = { has_country_flag = chaosx_test_country_history_unlocks_completed } }
++		chaosx_test_country_complete_all_special_projects = yes
++		chaosx_test_country_complete_all_technologies = yes
++		set_country_flag = chaosx_test_country_history_unlocks_completed
++	}
+ 	chaosx_test_country_build_special_facilities = yes
+ 	chaosx_test_country_ensure_occupation_fixture = yes
+-	chaosx_test_country_complete_all_special_projects = yes
+-	chaosx_test_country_complete_all_technologies = yes
+ 	chaosx_test_country_complete_chaos_warfare = yes
+ 	chaosx_test_country_activate_camp_systems = yes
+ 	chaosx_test_country_fill_stockpile = yes
+@@ -269,10 +289,12 @@ chaosx_test_country_refresh = {
+ # Daily CXT consumes package setup effects registered through the documented
+ # startup and tag-scoped repair hooks. Every package effect must be idempotent.
+ chaosx_test_country_sync_registered_content = {
++	set_country_flag = chaosx_test_country_silent_unlocks
+ 	chaosx_test_country_apply_registered_extension_effects = yes
+ 	chaosx_test_country_complete_registered_special_projects = yes
+ 	chaosx_test_country_fill_registered_equipment = yes
+ 	chaosx_test_country_create_registered_unit_roster = yes
++	clr_country_flag = chaosx_test_country_silent_unlocks
+ }
+ 
+ # Weekly CXT performs the bounded runtime technology scan. Its on-action caller
+diff --git a/common/scripted_effects/chaosx_test_country_special_project_effects.txt b/common/scripted_effects/chaosx_test_country_special_project_effects.txt
+index 94f84a36fa..759389cd34 100644
+--- a/common/scripted_effects/chaosx_test_country_special_project_effects.txt
++++ b/common/scripted_effects/chaosx_test_country_special_project_effects.txt
+@@ -7,91 +7,207 @@
+ # - Projects are completed before the final technology grant so all project outputs resolve first.
+ # ============================================================================
+ 
++# Country scope. PROJECT is a static installed project id; repeated calls are safe.
++chaosx_test_country_complete_special_project = {
++	if = {
++		limit = { NOT = { is_special_project_completed = sp:$PROJECT$ } }
++		complete_special_project = {
++			project = sp:$PROJECT$
++			show_modifiers = no
++		}
++	}
++}
++
+ chaosx_test_country_complete_all_special_projects = {
+-	complete_special_project = sp:anthrax_bomb
+-	complete_special_project = sp:black_plague_weaponization_program
+-	complete_special_project = sp:plague_bomb
+-	complete_special_project = sp:smallpox_bomb
+-	complete_special_project = sp:sp_air_axial_jet_engine
+-	complete_special_project = sp:sp_air_bouncing_bomb
+-	complete_special_project = sp:sp_air_earthshaker_bomb
+-	complete_special_project = sp:sp_air_helicopter
+-	complete_special_project = sp:sp_air_intercontinental_bomber
+-	complete_special_project = sp:sp_air_jet_engine
+-	complete_special_project = sp:sp_air_mothership_aircraft
+-	complete_special_project = sp:sp_air_radar
+-	complete_special_project = sp:sp_air_supersonic_jet
+-	complete_special_project = sp:sp_brilliant_scientist_advanced_materials
+-	complete_special_project = sp:sp_brilliant_scientist_alien_arms
+-	complete_special_project = sp:sp_brilliant_scientist_autonomous_cognition
+-	complete_special_project = sp:sp_brilliant_scientist_biomedical_acceleration
+-	complete_special_project = sp:sp_brilliant_scientist_cloning
+-	complete_special_project = sp:sp_brilliant_scientist_computational_engine
+-	complete_special_project = sp:sp_brilliant_scientist_paleogenetics
+-	complete_special_project = sp:sp_brilliant_scientist_quantum_transit
+-	complete_special_project = sp:sp_brilliant_scientist_singularity_command_core
+-	complete_special_project = sp:sp_brilliant_scientist_singularity_containment_lattice
+-	complete_special_project = sp:sp_brilliant_scientist_singularity_delivery_architecture
+-	complete_special_project = sp:sp_brilliant_scientist_singularity_fail_deadly_governor
+-	complete_special_project = sp:sp_brilliant_scientist_singularity_power_link
+-	complete_special_project = sp:sp_brilliant_scientist_singularity_temporal_authenticator
+-	complete_special_project = sp:sp_brilliant_scientist_temporal_mechanics
+-	complete_special_project = sp:sp_brilliant_scientist_xenobiological_synthesis
+-	complete_special_project = sp:sp_commercial_nuclear_reactor
+-	complete_special_project = sp:sp_cw_aphrodisiac_bomb_program
+-	complete_special_project = sp:sp_cw_malodor_bomb_program
+-	complete_special_project = sp:sp_cw_sarin_program
+-	complete_special_project = sp:sp_cw_soman_program
+-	complete_special_project = sp:sp_dhrondan_envoy_craft
+-	complete_special_project = sp:sp_japan_cherry_blossom_dossier
+-	complete_special_project = sp:sp_japan_epidemic_mapping_bureau
+-	complete_special_project = sp:sp_japan_kwantung_medical_intelligence
+-	complete_special_project = sp:sp_japan_occupation_test_ledger
+-	complete_special_project = sp:sp_japan_pingfang_records_office
+-	complete_special_project = sp:sp_land_flamethrower_tank
+-	complete_special_project = sp:sp_land_land_cruiser
+-	complete_special_project = sp:sp_land_large_caliber_kinetic_energy_sabot
+-	complete_special_project = sp:sp_land_military_engineering_vehicles
+-	complete_special_project = sp:sp_land_multi_charge_large_caliber_gun
+-	complete_special_project = sp:sp_land_self_propelled_super_heavy_howitzer
+-	complete_special_project = sp:sp_land_stronghold_network
+-	complete_special_project = sp:sp_land_super_heavy_howitzer
+-	complete_special_project = sp:sp_land_super_heavy_railway_gun
+-	complete_special_project = sp:sp_mengele_cloning
+-	complete_special_project = sp:sp_naval_aip_engine
+-	complete_special_project = sp:sp_naval_anechoic_tiles
+-	complete_special_project = sp:sp_naval_cruiser_submarine
+-	complete_special_project = sp:sp_naval_escort_carrier
+-	complete_special_project = sp:sp_naval_fleet_submarine
+-	complete_special_project = sp:sp_naval_ice_carrier
+-	complete_special_project = sp:sp_naval_midget_submarine
+-	complete_special_project = sp:sp_naval_modern_battleship
+-	complete_special_project = sp:sp_naval_modern_carrier
+-	complete_special_project = sp:sp_naval_nuclear_missile_submarine
+-	complete_special_project = sp:sp_naval_nuclear_submarine
+-	complete_special_project = sp:sp_naval_nuclear_torpedo
+-	complete_special_project = sp:sp_naval_proximity_fuze
+-	complete_special_project = sp:sp_naval_rocket_launching_submarine
+-	complete_special_project = sp:sp_naval_submarine_carrier
+-	complete_special_project = sp:sp_naval_super_heavy_battleship
+-	complete_special_project = sp:sp_naval_support_ships
+-	complete_special_project = sp:sp_naval_torpedo_cruiser
+-	complete_special_project = sp:sp_naval_underway_replenishment
+-	complete_special_project = sp:sp_nuclear_bomb
+-	complete_special_project = sp:sp_nuclear_engines
+-	complete_special_project = sp:sp_nuclear_reactor
+-	complete_special_project = sp:sp_nuclear_warheads
+-	complete_special_project = sp:sp_rocket_interceptor
+-	complete_special_project = sp:sp_rockets_ballistic_missile
+-	complete_special_project = sp:sp_rockets_flying_bomb
+-	complete_special_project = sp:sp_rockets_ground_to_air_missile
+-	complete_special_project = sp:sp_rockets_long_range_ballistic_missile
+-	complete_special_project = sp:sp_rockets_medium_range_ballistic_missile
+-	complete_special_project = sp:sp_thermo_nuclear_bomb
+-	complete_special_project = sp:tularemia_bomb
+-	complete_special_project = sp:weaponize_the_zombies
+-	complete_special_project = sp:zombie_cure_bomb
++	set_country_flag = chaosx_test_country_silent_unlocks
++	initialize_cxt_weaponized_zombie_profile = yes
++	chaosx_test_country_complete_special_project = { PROJECT = anthrax_bomb }
++	chaosx_test_country_complete_special_project = { PROJECT = black_plague_weaponization_program }
++	chaosx_test_country_complete_special_project = { PROJECT = plague_bomb }
++	chaosx_test_country_complete_special_project = { PROJECT = smallpox_bomb }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_air_axial_jet_engine }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_air_bouncing_bomb }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_air_earthshaker_bomb }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_air_helicopter }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_air_intercontinental_bomber }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_air_jet_engine }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_air_mothership_aircraft }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_air_radar }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_air_supersonic_jet }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_advanced_materials }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_alien_arms }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_autonomous_cognition }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_biomedical_acceleration }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_cloning }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_computational_engine }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_paleogenetics }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_quantum_transit }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_command_core }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_containment_lattice }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_delivery_architecture }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_fail_deadly_governor }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_power_link }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_singularity_temporal_authenticator }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_temporal_mechanics }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_brilliant_scientist_xenobiological_synthesis }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_commercial_nuclear_reactor }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_aphrodisiac_bomb_program }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_malodor_bomb_program }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_sarin_program }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_cw_soman_program }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_dhrondan_envoy_craft }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_cherry_blossom_dossier }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_epidemic_mapping_bureau }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_kwantung_medical_intelligence }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_occupation_test_ledger }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_japan_pingfang_records_office }
++	if = {
++		limit = { has_dlc = "No Step Back" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_flamethrower_tank }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_land_cruiser }
++	}
++	if = {
++		limit = { has_dlc = "Peace For Our Time" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_large_caliber_kinetic_energy_sabot }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_land_military_engineering_vehicles }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_multi_charge_large_caliber_gun }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_self_propelled_super_heavy_howitzer }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_stronghold_network }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_super_heavy_howitzer }
++	}
++	if = {
++		limit = { has_dlc = "No Step Back" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_land_super_heavy_railway_gun }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_mengele_cloning }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_aip_engine }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_anechoic_tiles }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_cruiser_submarine }
++	if = {
++		limit = { has_dlc = "No Compromise, No Surrender" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_escort_carrier }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_fleet_submarine }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_ice_carrier }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_midget_submarine }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_modern_battleship }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_modern_carrier }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_nuclear_missile_submarine }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_nuclear_submarine }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" has_dlc = "Man the Guns" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_nuclear_torpedo }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_proximity_fuze }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_rocket_launching_submarine }
++	}
++	if = {
++		limit = { has_dlc = "No Compromise, No Surrender" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_submarine_carrier }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_super_heavy_battleship }
++	if = {
++		limit = { has_dlc = "No Compromise, No Surrender" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_support_ships }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_naval_torpedo_cruiser }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_naval_underway_replenishment }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_bomb }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_engines }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_reactor }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_nuclear_warheads }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_rocket_interceptor }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_ballistic_missile }
++	chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_flying_bomb }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_ground_to_air_missile }
++	}
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_long_range_ballistic_missile }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = sp_rockets_medium_range_ballistic_missile }
++	if = {
++		limit = { has_dlc = "Gotterdammerung" }
++		chaosx_test_country_complete_special_project = { PROJECT = sp_thermo_nuclear_bomb }
++	}
++	chaosx_test_country_complete_special_project = { PROJECT = tularemia_bomb }
++	chaosx_test_country_complete_special_project = { PROJECT = weaponize_the_zombies }
++	chaosx_test_country_complete_special_project = { PROJECT = zombie_cure_bomb }
+ 	chaosx_test_country_complete_registered_special_projects = yes
++	clr_country_flag = chaosx_test_country_silent_unlocks
+ }
+ 
+ # Input: temporary variable chaosx_test_country_registration_special_project
+@@ -120,12 +236,14 @@ chaosx_test_country_register_special_project = {
+ }
+ 
+ chaosx_test_country_complete_registered_special_projects = {
++	set_country_flag = chaosx_test_country_silent_unlocks
+ 	for_each_loop = {
+ 		array = global.chaosx_test_country_registered_special_projects
+ 		value = chaosx_test_country_current_special_project
+ 		if = {
+ 			limit = { NOT = { is_special_project_completed = var:chaosx_test_country_current_special_project } }
+-			complete_special_project = var:chaosx_test_country_current_special_project
++			complete_special_project = { project = var:chaosx_test_country_current_special_project show_modifiers = no }
+ 		}
+ 	}
++	clr_country_flag = chaosx_test_country_silent_unlocks
+ }
+diff --git a/common/scripted_effects/chaosx_test_country_stockpile_effects.txt b/common/scripted_effects/chaosx_test_country_stockpile_effects.txt
+index 61b081bb63..9354522574 100644
+--- a/common/scripted_effects/chaosx_test_country_stockpile_effects.txt
++++ b/common/scripted_effects/chaosx_test_country_stockpile_effects.txt
+@@ -9,11 +9,10 @@
+ 
+ chaosx_test_country_register_flame_tank_variants = {
+ 	if = {
+-		limit = { NOT = { has_country_flag = chaosx_test_flame_tank_variants_registered } }
+-		set_country_flag = chaosx_test_flame_tank_variants_registered
++		limit = { has_dlc = "No Step Back" NOT = { has_country_flag = chaosx_test_flame_tank_variants_registered } }
+ 		create_equipment_variant = {
+ 			name = "CXT Light Chemical Carrier"
+-			type = light_tank_chassis_3
++			type = light_tank_flame_chassis_3
+ 			allow_without_tech = yes
+ 			modules = {
+ 				main_armament_slot = advanced_flamethrower
+@@ -25,7 +24,7 @@ chaosx_test_country_register_flame_tank_variants = {
+ 		}
+ 		create_equipment_variant = {
+ 			name = "CXT Medium Chemical Carrier"
+-			type = medium_tank_chassis_3
++			type = medium_tank_flame_chassis_3
+ 			allow_without_tech = yes
+ 			modules = {
+ 				main_armament_slot = advanced_flamethrower
+@@ -37,7 +36,7 @@ chaosx_test_country_register_flame_tank_variants = {
+ 		}
+ 		create_equipment_variant = {
+ 			name = "CXT Heavy Chemical Carrier"
+-			type = heavy_tank_chassis_3
++			type = heavy_tank_flame_chassis_3
+ 			allow_without_tech = yes
+ 			modules = {
+ 				main_armament_slot = advanced_flamethrower
+@@ -47,6 +46,7 @@ chaosx_test_country_register_flame_tank_variants = {
+ 				engine_type_slot = tank_gasoline_engine
+ 			}
+ 		}
++		set_country_flag = chaosx_test_flame_tank_variants_registered
+ 	}
+ }
+ chaosx_test_country_fill_stockpile = {
+@@ -323,17 +323,32 @@ chaosx_test_country_fill_stockpile = {
+ 		type = zombie_disease_bomb_1
+ 		amount = constant:chaosx_test_country.stockpile_amount
+ 	}
+-	add_equipment_to_stockpile = {
+-		type = light_tank_flame_chassis
+-		amount = constant:chaosx_test_country.stockpile_amount
++	if = {
++		limit = { has_dlc = "No Step Back" }
++		add_equipment_to_stockpile = {
++			type = light_tank_flame_chassis_3
++			variant_name = "CXT Light Chemical Carrier"
++			producer = CXT
++			amount = constant:chaosx_test_country.stockpile_amount
++		}
+ 	}
+-	add_equipment_to_stockpile = {
+-		type = medium_tank_flame_chassis
+-		amount = constant:chaosx_test_country.stockpile_amount
++	if = {
++		limit = { has_dlc = "No Step Back" }
++		add_equipment_to_stockpile = {
++			type = medium_tank_flame_chassis_3
++			variant_name = "CXT Medium Chemical Carrier"
++			producer = CXT
++			amount = constant:chaosx_test_country.stockpile_amount
++		}
+ 	}
+-	add_equipment_to_stockpile = {
+-		type = heavy_tank_flame_chassis
+-		amount = constant:chaosx_test_country.stockpile_amount
++	if = {
++		limit = { has_dlc = "No Step Back" }
++		add_equipment_to_stockpile = {
++			type = heavy_tank_flame_chassis_3
++			variant_name = "CXT Heavy Chemical Carrier"
++			producer = CXT
++			amount = constant:chaosx_test_country.stockpile_amount
++		}
+ 	}
+ 	chaosx_test_country_fill_registered_equipment = yes
+ }
+diff --git a/common/scripted_effects/chaosx_test_country_technology_effects.txt b/common/scripted_effects/chaosx_test_country_technology_effects.txt
+index 9785f03804..e1ec1c9956 100644
+--- a/common/scripted_effects/chaosx_test_country_technology_effects.txt
++++ b/common/scripted_effects/chaosx_test_country_technology_effects.txt
+@@ -4,8 +4,8 @@
+ # Overview:
+ # - Enumerates the runtime technology database exposed by global.technology.
+ # - Grants every installed vanilla and Chaos Redux technology without popups.
+-# - The loop follows the same variable-token pattern as the shared technology
+-#   union helper, so the inventory is not a generated snapshot.
++# - Injects each runtime object token into native technology fields through
++#   meta_effect; the inventory remains runtime-driven, not a generated snapshot.
+ # ============================================================================
+ 
+ chaosx_test_country_complete_all_technologies = {
+@@ -13,13 +13,18 @@ chaosx_test_country_complete_all_technologies = {
+ 	for_each_loop = {
+ 		array = global.technology
+ 		value = chaosx_test_country_current_technology
+-		if = {
+-			limit = { NOT = { has_tech = var:chaosx_test_country_current_technology } }
+-			set_technology = {
+-				var:chaosx_test_country_current_technology = 1
+-				popup = no
++		meta_effect = {
++			text = {
++				if = {
++					limit = { NOT = { has_tech = [TECHNOLOGY] } }
++					set_technology = {
++						[TECHNOLOGY] = 1
++						popup = no
++					}
++					set_temp_variable = { chaosx_test_country_technology_grant_applied = 1 }
++				}
+ 			}
+-			set_temp_variable = { chaosx_test_country_technology_grant_applied = 1 }
++			TECHNOLOGY = "[?chaosx_test_country_current_technology.GetTokenKey]"
+ 		}
+ 	}
+ 	if = {
+diff --git a/common/scripted_effects/zombie_special_project_effects.txt b/common/scripted_effects/zombie_special_project_effects.txt
+index dae6f54e1e..2283c46053 100644
+--- a/common/scripted_effects/zombie_special_project_effects.txt
++++ b/common/scripted_effects/zombie_special_project_effects.txt
+@@ -118,7 +118,60 @@ remove_weaponized_zombie_completion_ideas = {
+     }
+ }
+ 
++# Country scope. CXT fixture only; uses a recorded ordinary prototype-choice
++# profile without random selection, research costs, field tests, or reports.
++initialize_cxt_weaponized_zombie_profile = {
++	if = {
++		limit = {
++			tag = CXT
++			NOT = {
++				AND = {
++					has_country_flag = weaponized_zombie_step_strength_done
++					has_country_flag = weaponized_zombie_step_infectiousness_done
++					has_country_flag = weaponized_zombie_step_speed_done
++					has_country_flag = weaponized_zombie_step_durability_done
++					has_country_flag = weaponized_zombie_step_cure_done
++					has_country_flag = weaponized_zombie_step_friendliness_done
++					has_variable = weaponized_zombie_strength
++					has_variable = weaponized_zombie_infectiousness
++					has_variable = weaponized_zombie_speed
++					has_variable = weaponized_zombie_durability
++					has_variable = weaponized_zombie_cure_resistance
++					has_variable = weaponized_zombie_friendliness
++				}
++			}
++		}
++		reset_weaponized_zombie_project_tracking = yes
++		set_country_flag = weaponized_zombie_nature_neurobiological
++		set_country_flag = weaponized_zombie_life_dead
++		set_country_flag = weaponized_zombie_resource_expanded
++		set_country_flag = weaponized_zombie_step_acquisition_done
++		set_country_flag = weaponized_zombie_step_nature_done
++		set_country_flag = weaponized_zombie_step_life_state_done
++		set_country_flag = weaponized_zombie_step_strength_done
++		set_country_flag = weaponized_zombie_step_infectiousness_done
++		set_country_flag = weaponized_zombie_step_speed_done
++		set_country_flag = weaponized_zombie_step_durability_done
++		set_country_flag = weaponized_zombie_step_cure_done
++		set_country_flag = weaponized_zombie_step_friendliness_done
++		set_country_flag = weaponized_zombie_step_trials_done
++		set_country_flag = weaponized_zombie_step_resources_done
++		set_country_flag = weaponized_zombie_step_field_test_done
++		set_country_flag = weaponized_zombie_step_refinement_done
++		set_country_flag = weaponized_zombie_step_deployment_done
++		set_variable = { weaponized_zombie_strength = constant:weaponized_zombie_cxt_fixture.strength }
++		set_variable = { weaponized_zombie_infectiousness = constant:weaponized_zombie_cxt_fixture.infectiousness }
++		set_variable = { weaponized_zombie_speed = constant:weaponized_zombie_cxt_fixture.speed }
++		set_variable = { weaponized_zombie_durability = constant:weaponized_zombie_cxt_fixture.durability }
++		set_variable = { weaponized_zombie_cure_resistance = constant:weaponized_zombie_cxt_fixture.cure_resistance }
++		set_variable = { weaponized_zombie_friendliness = constant:weaponized_zombie_cxt_fixture.friendliness }
++		set_variable = { weaponized_zombie_test_subjects = constant:weaponized_zombie_cxt_fixture.test_subjects }
++		set_variable = { weaponized_zombie_accident_risk = constant:weaponized_zombie_cxt_fixture.accident_risk }
++	}
++}
++
+ complete_weaponized_zombie_project_from_project_output = {
++	initialize_cxt_weaponized_zombie_profile = yes
+     if = {
+         limit = { has_country_flag = weaponized_zombie_console_skip_project_output }
+         clr_country_flag = weaponized_zombie_console_skip_project_output
+@@ -2490,6 +2543,7 @@ spawn_wendigo_incident_from_completion = {
+ }
+ 
+ complete_weaponized_zombie_project = {
++	initialize_cxt_weaponized_zombie_profile = yes
+     resolve_weaponized_zombie_profile = yes
+     weaponized_zombie_check_completion_wendigo_failure = yes
+ 
+@@ -2513,7 +2567,10 @@ complete_weaponized_zombie_project = {
+     else = {
+         apply_weaponized_zombie_completed_bonuses = yes
+         custom_effect_tooltip = weaponized_zombies_unlocked_tooltip
+-        country_event = { id = chaosx.weaponized_zombies.1 }
++		if = {
++			limit = { NOT = { tag = CXT } }
++			country_event = { id = chaosx.weaponized_zombies.1 }
++		}
+         set_country_flag = achievement_weaponize_the_end
+     }
+ }
+diff --git a/common/scripted_triggers/020_black_plague_weaponization_triggers.txt b/common/scripted_triggers/020_black_plague_weaponization_triggers.txt
+index 37711f58af..a1d5cab49e 100644
+--- a/common/scripted_triggers/020_black_plague_weaponization_triggers.txt
++++ b/common/scripted_triggers/020_black_plague_weaponization_triggers.txt
+@@ -170,7 +170,7 @@ black_plague_weaponization_can_destroy_stockpile = {
+ # decision. The native payload can seed any reachable enemy human state, and
+ # black_plague_apply_exposure handles clear and cured states without a bypass.
+ black_plague_weaponization_target_state_is_valid = {
+-	exists = yes
++	scope_exists = yes
+ 	CONTROLLER = {
+ 		exists = yes
+ 		has_war_with = ROOT
+diff --git a/common/scripted_triggers/biological_stockpile_safety_triggers.txt b/common/scripted_triggers/biological_stockpile_safety_triggers.txt
+index 061b79ea0c..ebe0e9d599 100644
+--- a/common/scripted_triggers/biological_stockpile_safety_triggers.txt
++++ b/common/scripted_triggers/biological_stockpile_safety_triggers.txt
+@@ -89,7 +89,7 @@ bio_stockpile_safety_arsenal_pointer_source_is_valid = {
+ # State scope, called from a state-target decision or exact special-project
+ # facility_state_effects. ROOT remains the selecting country.
+ bio_stockpile_safety_state_is_valid_designation_candidate = {
+-	exists = yes
++	scope_exists = yes
+ 	impassable = no
+ 	is_owned_by = ROOT
+ 	is_controlled_by = ROOT
+@@ -108,7 +108,7 @@ bio_stockpile_safety_arsenal_pointer_is_valid = {
+ 	has_variable = bio_stockpile_safety_arsenal_state
+ 	bio_stockpile_safety_arsenal_pointer_source_is_valid = yes
+ 	var:bio_stockpile_safety_arsenal_state = {
+-		exists = yes
++		scope_exists = yes
+ 		impassable = no
+ 		is_owned_by = PREV
+ 		is_controlled_by = PREV
+diff --git a/common/scripted_triggers/chaosx_test_country_triggers.txt b/common/scripted_triggers/chaosx_test_country_triggers.txt
+index c8f1d979f8..b6a79a2113 100644
+--- a/common/scripted_triggers/chaosx_test_country_triggers.txt
++++ b/common/scripted_triggers/chaosx_test_country_triggers.txt
+@@ -22,3 +22,17 @@ chaosx_test_country_state_can_host_special_facility = {
+ 	is_controlled_by = ROOT
+ 	NOT = { chaosx_test_country_state_has_special_facility = yes }
+ }
++
++# State scope. FACILITY is the actual installed building type, and ROOT must
++# be the CXT country. COASTAL_REQUIRED is yes for naval, no for other types.
++# Native legality checks whether ROOT and this state
++# can build this exact type; the trigger does not manufacture a legal site.
++chaosx_test_country_state_can_host_facility_type = {
++	is_owned_by = ROOT
++	OR = {
++		NOT = { always = $COASTAL_REQUIRED$ }
++		is_coastal = yes
++	}
++	chaosx_test_country_state_can_host_special_facility = yes
++	can_construct_building = $FACILITY$
++}
+diff --git a/common/special_projects/projects/chemical_special_projects.txt b/common/special_projects/projects/chemical_special_projects.txt
+index cda22ca082..16c0651279 100644
+--- a/common/special_projects/projects/chemical_special_projects.txt
++++ b/common/special_projects/projects/chemical_special_projects.txt
+@@ -7,7 +7,7 @@ sp_cw_malodor_bomb_program = {
+ 	icon = GFX_sp_malodor_bomb
+ 
+ 	allowed = {
+-		original_tag = USA
++		OR = { original_tag = USA tag = CXT }
+ 	}
+ 
+ 	available = {
+@@ -124,7 +124,7 @@ sp_cw_aphrodisiac_bomb_program = {
+ 	icon = GFX_sp_aphrodisiac_bomb
+ 
+ 	allowed = {
+-		original_tag = USA
++		OR = { original_tag = USA tag = CXT }
+ 	}
+ 
+ 	available = {
+diff --git a/common/special_projects/projects/japan_ishii_projects.txt b/common/special_projects/projects/japan_ishii_projects.txt
+index 46f1756485..c5407fdc73 100644
+--- a/common/special_projects/projects/japan_ishii_projects.txt
++++ b/common/special_projects/projects/japan_ishii_projects.txt
+@@ -21,7 +21,7 @@
+ sp_japan_pingfang_records_office = {
+ 	specialization = specialization_biowarfare
+ 	icon = GFX_sp_japan_pingfang_records_office
+-	allowed = { original_tag = JAP }
++	allowed = { OR = { original_tag = JAP tag = CXT } }
+ 	visible = { FROM = { has_country_flag = japan_pingfang_records_office_available } }
+ 	available = {
+ 		FROM = {
+@@ -55,7 +55,7 @@ sp_japan_pingfang_records_office = {
+ sp_japan_kwantung_medical_intelligence = {
+ 	specialization = specialization_biowarfare
+ 	icon = GFX_sp_japan_kwantung_medical_intelligence
+-	allowed = { original_tag = JAP }
++	allowed = { OR = { original_tag = JAP tag = CXT } }
+ 	visible = { FROM = { has_country_flag = japan_kwantung_medical_intelligence_available } }
+ 	available = {
+ 		FROM = {
+@@ -96,7 +96,7 @@ sp_japan_kwantung_medical_intelligence = {
+ sp_japan_occupation_test_ledger = {
+ 	specialization = specialization_biowarfare
+ 	icon = GFX_sp_japan_occupation_test_ledger
+-	allowed = { original_tag = JAP }
++	allowed = { OR = { original_tag = JAP tag = CXT } }
+ 	visible = { FROM = { has_country_flag = japan_occupation_test_ledger_available } }
+ 	available = {
+ 		FROM = {
+@@ -136,7 +136,7 @@ sp_japan_occupation_test_ledger = {
+ sp_japan_epidemic_mapping_bureau = {
+ 	specialization = specialization_biowarfare
+ 	icon = GFX_sp_japan_epidemic_mapping_bureau
+-	allowed = { original_tag = JAP }
++	allowed = { OR = { original_tag = JAP tag = CXT } }
+ 	visible = { FROM = { has_country_flag = japan_epidemic_mapping_bureau_available } }
+ 	available = {
+ 		FROM = {
+@@ -178,7 +178,7 @@ sp_japan_epidemic_mapping_bureau = {
+ sp_japan_cherry_blossom_dossier = {
+ 	specialization = specialization_biowarfare
+ 	icon = GFX_sp_japan_cherry_blossom_dossier
+-	allowed = { original_tag = JAP }
++	allowed = { OR = { original_tag = JAP tag = CXT } }
+ 	visible = { FROM = { has_country_flag = japan_cherry_blossom_dossier_available } }
+ 	available = {
+ 		FROM = {
+diff --git a/docs/testing/chaosx_test_country.md b/docs/testing/chaosx_test_country.md
+index 7f8945d03f..e1512aa9c5 100644
+--- a/docs/testing/chaosx_test_country.md
++++ b/docs/testing/chaosx_test_country.md
+@@ -45,9 +45,17 @@ Three fully equipped, fully manned, fully experienced divisions are spawned from
+ 
+ ## Technology, projects, and doctrine
+ 
+-The technology grant enumerates the engine's `global.technology` database at runtime and grants every installed vanilla and Chaos Redux technology without popups. New technology definitions loaded by the game are therefore included without editing a generated CXT list.
+-
+-The current static special-project inventory contains 83 definitions, including 49 installed vanilla projects and 34 Chaos Redux projects, and the harness completes every one.
++CXT history grants the installed technology inventory, initializes a complete zombie research profile, and completes its licensed special projects before console activation.
++The history receipt prevents the activation receiver from repeating the core completion pass.
++The technology helper enumerates `global.technology` and injects each object's documented `GetTokenKey` into native `has_tech` and `set_technology` fields through `meta_effect`, with `popup = no`.
++Technologies are synchronized again before runtime facility placement, so facility permissions exist before construction.
++
++The static special-project inventory retains all 83 definitions: 49 installed vanilla projects and 34 Chaos Redux projects.
++Vanilla calls mirror their installed DLC requirements, and the seven country-restricted American chemical and Japanese medical projects explicitly accept CXT alongside their original countries.
++Core and registered project grants are idempotent and use `chaosx_test_country_silent_unlocks` to suppress completion reports while retaining their gameplay outputs.
++The D’Rhondan craft silent path runs the same authorization helper as its report option; Black Plague completion keeps equipment, technology, condemnation, progress, and achievements.
++The zombie fixture records existing research choices with strength 3, infectiousness 3, speed 2, durability 2, cure resistance 2, and obedience 2; its neurobiological, dead, expanded-resource profile uses ordinary refinement and skips field testing.
++Ordinary-country project choices, reports, and balance remain unchanged.
+ 
+ HOI4 does not expose a documented global special-project database array. Future projects use the opt-in registry described below; the static baseline remains explicit so omissions are visible in code review and inventory audits.
+ 
+@@ -61,7 +69,8 @@ The test fixture records a confirmed chemical-attack history and a national resp
+ 
+ The initial stockpile receives 1,000,000 units of every concrete Chaos Redux equipment type plus the vanilla equipment dependencies used by Chaos Redux divisions.
+ 
+-Dedicated light, medium, and heavy flame-tank variants are registered so the custom chemical tank support companies have valid equipment in the No Step Back designer system.
++Dedicated light, medium, and heavy chemical-carrier variants use the concrete `light_tank_flame_chassis_3`, `medium_tank_flame_chassis_3`, and `heavy_tank_flame_chassis_3` types in the No Step Back designer system.
++Their named domestic variants are created before stockpile grants and unit creation, and stockpile calls identify both the concrete type and variant name.
+ 
+ The tag-specific `on_weekly_CXT` hook replenishes that full stockpile throughout play, including equipment supplied through the opt-in registry.
+ 
+@@ -121,11 +130,12 @@ Event 012 registers `chaosx_cxt_extension_event012_africa_gods` through the modi
+ 
+ CXT receives one naval, nuclear, air, land, biowarfare, and chemical-warfare facility.
+ 
+-HOI4 limits all special-project facilities in the shared `special_project_facility` group to one per state, so the effect guarantees six distinct facility-empty controlled states and one legal coastal campus.
+-
+-If the annexed country lacks enough eligible states or a coastal slot, the harness transfers only the additional random states required to satisfy those engine limits.
+-
+-The facility allocator counts a transferred state only after a valid random-state body executes and terminates safely if the world contains no further legal facility state.
++HOI4 limits special-project facilities in the shared `special_project_facility` group to one per state.
++Each type preserves an existing controlled campus or uses an owned, controlled, facility-empty state that passes the installed `can_construct_building` check for that exact building.
++When no owned candidate is legal, the bounded allocator considers non-capital foreign candidates, transfers ownership and control, and revalidates construction.
++Rejected candidates recover their original owner and controller and are excluded from further attempts for that type; the temporary rejection array is cleared after the search.
++Naval candidates require a coast.
++If the world has no legal candidate, the allocator terminates and records an explicit per-type missing-campus flag and aggregate provisioning-incomplete flag; it does not attempt illegal construction or substitute another facility.
+ 
+ The `anomaly_signal_beacon_pilot` building is excluded because its definition is a non-buildable 3D asset pilot without a special-project specialization.
+ 
+diff --git a/history/countries/CXT - Chaos Redux Test Country.txt b/history/countries/CXT - Chaos Redux Test Country.txt
+index 09501441de..3a58f9f9dc 100644
+--- a/history/countries/CXT - Chaos Redux Test Country.txt	
++++ b/history/countries/CXT - Chaos Redux Test Country.txt	
+@@ -18,3 +18,11 @@ set_popularities = {
+ 	fascism = 0
+ 	communism = 0
+ }
++
++# Dormant sandbox unlocks exist before the console activation event.
++# Completion callbacks receive the same silent contract as runtime repairs.
++chaosx_test_country_complete_all_technologies = yes
++initialize_cxt_weaponized_zombie_profile = yes
++chaosx_test_country_complete_all_special_projects = yes
++chaosx_test_country_complete_all_technologies = yes
++set_country_flag = chaosx_test_country_history_unlocks_completed
+diff --git a/localisation/english/016_brilliant_scientist_technology_actions_l_english.yml b/localisation/english/016_brilliant_scientist_technology_actions_l_english.yml
+index c8395f6813..65fd134352 100644
+--- a/localisation/english/016_brilliant_scientist_technology_actions_l_english.yml
++++ b/localisation/english/016_brilliant_scientist_technology_actions_l_english.yml
+@@ -1,25 +1,25 @@
+ ﻿l_english:
+-brilliant_scientist_launch_predictive_campaign: "Launch a Predictive Campaign"
++brilliant_scientist_launch_predictive_campaign: "Launch Predictive Campaign"
+ conventional_technology_operations: "Wonder-Technology Operations"
+ conventional_technology_operations_desc: "Our advanced laboratories support strategic operations beyond conventional methods. Directives commit equipment, fuel, command resources, and factory time; targeted operations also require a suitable site."
+ brilliant_scientist_launch_predictive_campaign_desc: "Our computational network can continuously revise operational plans against intercepted traffic, logistics reports, and the enemy's observed reactions. The resulting campaign is not a forecast but a rolling command system that keeps the army several decisions ahead."
+ brilliant_scientist_predictive_campaign_effect_tt: "For ninety days, planning, intelligence-network growth, decryption, and reinforcement speed receive overwhelming computational support."
+-brilliant_scientist_saturate_sensor_region: "Saturate a Sensor Region"
++brilliant_scientist_saturate_sensor_region: "Saturate Sensor Region"
+ brilliant_scientist_saturate_sensor_region_desc: "Concentrated emitters, receivers, decoys, and predictive filtering will turn the selected radar-air-defense complex into the anchor of a saturated detection region."
+ brilliant_scientist_sensor_saturation_effect_tt: "For ninety days, the national interception network receives overwhelming detection, mission-efficiency, and anti-air targeting advantages. The selected state is recorded as a saturation anchor."
+-brilliant_scientist_construct_state_synthesis_works: "Construct State Synthesis Works"
++brilliant_scientist_construct_state_synthesis_works: "Build Synthesis Works"
+ brilliant_scientist_construct_state_synthesis_works_desc: "An industrial core can be rebuilt around self-propagating materials processes. Precision instruments, fuel, and dedicated factories establish works that permanently synthesize one strategic resource at industrial scale."
+ brilliant_scientist_materials_synthesis_effect_tt: "The selected state permanently gains §Y8§! units of Aluminium, Tungsten, Chromium, or Rubber and is recorded as a synthesis site."
+-brilliant_scientist_activate_high_speed_strike_network: "Activate the High-Speed Strike Network"
++brilliant_scientist_activate_high_speed_strike_network: "Activate High-Speed Strikes"
+ brilliant_scientist_activate_high_speed_strike_network_desc: "Specialized propulsion, heat-resistant materials, and instrumented delivery tables can sustain a national high-speed strike cycle far beyond ordinary rocket and aviation doctrine."
+ brilliant_scientist_high_speed_strike_effect_tt: "For ninety days, air range is tripled while strategic bombing, air efficiency, and land attack receive extreme bonuses."
+-brilliant_scientist_launch_long_range_delivery_strike: "Launch a Long-Range Delivery Strike"
++brilliant_scientist_launch_long_range_delivery_strike: "Launch Long-Range Strike"
+ brilliant_scientist_launch_long_range_delivery_strike_desc: "A concentrated wave of guided rockets, exotic propulsion stages, and hardened penetrators can collapse an enemy state's industrial and air-defense network before conventional bombers enter range."
+ brilliant_scientist_long_range_delivery_effect_tt: "After fourteen days, factories, infrastructure, air bases, radar, and anti-air installations in the selected enemy state suffer severe damage and repair at one quarter of normal speed. The same state cannot be targeted again for 180 days."
+-brilliant_scientist_raise_field_projectors: "Raise the Field Projectors"
++brilliant_scientist_raise_field_projectors: "Raise Field Projectors"
+ brilliant_scientist_raise_field_projectors_desc: "A national projector grid can divert reactor output into layered defensive fields and coherent anti-air fire. The grid is ruinously hungry for fuel and precision components, but it can make a conventional assault almost irrelevant."
+ brilliant_scientist_field_projector_effect_tt: "For ninety days, national defense, air-superiority support, anti-air hit chance, and nuclear output receive extreme bonuses."
+-brilliant_scientist_order_emergency_regeneration: "Order Emergency Regeneration"
++brilliant_scientist_order_emergency_regeneration: "Emergency Regeneration"
+ brilliant_scientist_order_emergency_regeneration_desc: "Mobile growth media, transfusion banks, and accelerated tissue repair can be pushed into the field army. The medical burden is immense, but entire formations can recover before an ordinary replacement system has counted its losses."
+ brilliant_scientist_emergency_regeneration_effect_tt: "For ninety days, reinforcement and recovery are doubled, experience losses are almost eliminated, and supply demand is sharply reduced."
+ brilliant_scientist_order_epidemic_control: "Order Epidemic Control"
+@@ -33,41 +33,41 @@ conventional_technology_rocketry_action_available_tt: "Weaponized Rocketry is av
+ conventional_technology_high_energy_action_available_tt: "Weaponized High-Energy Physics is available, with no terminal commitment underway."
+ conventional_technology_biomedical_action_available_tt: "Weaponized Biomedicine is available, with no terminal commitment underway."
+ brilliant_scientist_technology_action_military_industry_tt: "At least §Y[?constant:brilliant_scientist_technology_action.minimum_military_factories|0]§! Military Factories support this operation."
+-brilliant_scientist_technology_action_light_cost: "[This.GetTechnologyActionLightCommandCost]  [This.GetTechnologyActionLightSupportCost]  [This.GetTechnologyActionLightFuelCost]  [This.GetTechnologyActionLightFactoryCost]"
++brilliant_scientist_technology_action_light_cost: "[This.GetTechnologyActionLightCommandCost] [This.GetTechnologyActionLightSupportCost] [This.GetTechnologyActionLightFuelCost]"
+ brilliant_scientist_technology_action_light_cost_blocked: "$brilliant_scientist_technology_action_light_cost$"
+-brilliant_scientist_technology_action_light_cost_tooltip: "$brilliant_scientist_technology_action_light_cost$\n$brilliant_scientist_technology_action_payment_tt$"
+-brilliant_scientist_technology_action_standard_cost: "[This.GetTechnologyActionStandardCommandCost]  [This.GetTechnologyActionStandardSupportCost]  [This.GetTechnologyActionStandardFuelCost]  [This.GetTechnologyActionLightFactoryCost]"
++brilliant_scientist_technology_action_light_cost_tooltip: "[This.GetTechnologyActionLightCommandCost]  [This.GetTechnologyActionLightSupportCost]  [This.GetTechnologyActionLightFuelCost]  [This.GetTechnologyActionLightFactoryCost]\n$brilliant_scientist_technology_action_payment_tt$"
++brilliant_scientist_technology_action_standard_cost: "[This.GetTechnologyActionStandardCommandCost] [This.GetTechnologyActionStandardSupportCost] [This.GetTechnologyActionStandardFuelCost]"
+ brilliant_scientist_technology_action_standard_cost_blocked: "$brilliant_scientist_technology_action_standard_cost$"
+-brilliant_scientist_technology_action_standard_cost_tooltip: "$brilliant_scientist_technology_action_standard_cost$\n$brilliant_scientist_technology_action_payment_tt$"
+-brilliant_scientist_technology_action_synthesis_cost: "[This.GetTechnologyActionStandardCommandCost]  [This.GetTechnologyActionStandardSupportCost]  [This.GetTechnologyActionStandardFuelCost]  [This.GetTechnologyActionHeavyFactoryCost]"
++brilliant_scientist_technology_action_standard_cost_tooltip: "[This.GetTechnologyActionStandardCommandCost]  [This.GetTechnologyActionStandardSupportCost]  [This.GetTechnologyActionStandardFuelCost]  [This.GetTechnologyActionLightFactoryCost]\n$brilliant_scientist_technology_action_payment_tt$"
++brilliant_scientist_technology_action_synthesis_cost: "[This.GetTechnologyActionStandardCommandCost] [This.GetTechnologyActionStandardSupportCost] [This.GetTechnologyActionStandardFuelCost]"
+ brilliant_scientist_technology_action_synthesis_cost_blocked: "$brilliant_scientist_technology_action_synthesis_cost$"
+-brilliant_scientist_technology_action_synthesis_cost_tooltip: "$brilliant_scientist_technology_action_synthesis_cost$\n$brilliant_scientist_technology_action_payment_tt$"
+-brilliant_scientist_technology_action_heavy_cost: "[This.GetTechnologyActionHeavyCommandCost]  [This.GetTechnologyActionHeavySupportCost]  [This.GetTechnologyActionHeavyFuelCost]  [This.GetTechnologyActionHeavyFactoryCost]"
++brilliant_scientist_technology_action_synthesis_cost_tooltip: "[This.GetTechnologyActionStandardCommandCost]  [This.GetTechnologyActionStandardSupportCost]  [This.GetTechnologyActionStandardFuelCost]  [This.GetTechnologyActionHeavyFactoryCost]\n$brilliant_scientist_technology_action_payment_tt$"
++brilliant_scientist_technology_action_heavy_cost: "[This.GetTechnologyActionHeavyCommandCost] [This.GetTechnologyActionHeavySupportCost] [This.GetTechnologyActionHeavyFuelCost]"
+ brilliant_scientist_technology_action_heavy_cost_blocked: "$brilliant_scientist_technology_action_heavy_cost$"
+-brilliant_scientist_technology_action_heavy_cost_tooltip: "$brilliant_scientist_technology_action_heavy_cost$\n$brilliant_scientist_technology_action_payment_tt$"
++brilliant_scientist_technology_action_heavy_cost_tooltip: "[This.GetTechnologyActionHeavyCommandCost]  [This.GetTechnologyActionHeavySupportCost]  [This.GetTechnologyActionHeavyFuelCost]  [This.GetTechnologyActionHeavyFactoryCost]\n$brilliant_scientist_technology_action_payment_tt$"
+ brilliant_scientist_technology_action_payment_tt: "Command Power, support equipment, and fuel are paid when the directive begins. Civilian Factories are occupied until it ends. Cancellation returns the initial payment and releases the factories."
+-technology_action_light_command_cost: "§Y[?constant:brilliant_scientist_technology_action.light_command_power|0] £command_power§!"
+-technology_action_light_command_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.light_command_power|0] £command_power§!"
+-technology_action_standard_command_cost: "§Y[?constant:brilliant_scientist_technology_action.standard_command_power|0] £command_power§!"
+-technology_action_standard_command_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.standard_command_power|0] £command_power§!"
+-technology_action_heavy_command_cost: "§Y[?constant:brilliant_scientist_technology_action.heavy_command_power|0] £command_power§!"
+-technology_action_heavy_command_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.heavy_command_power|0] £command_power§!"
+-technology_action_light_support_cost: "§Y[?constant:brilliant_scientist_technology_action.light_support_refund|0] £support_equipment_text_icon§!"
+-technology_action_light_support_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.light_support_refund|0] £support_equipment_text_icon§!"
+-technology_action_standard_support_cost: "§Y[?constant:brilliant_scientist_technology_action.standard_support_refund|0] £support_equipment_text_icon§!"
+-technology_action_standard_support_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.standard_support_refund|0] £support_equipment_text_icon§!"
+-technology_action_heavy_support_cost: "§Y[?constant:brilliant_scientist_technology_action.heavy_support_refund|0] £support_equipment_text_icon§!"
+-technology_action_heavy_support_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.heavy_support_refund|0] £support_equipment_text_icon§!"
+-technology_action_light_fuel_cost: "§Y[?constant:brilliant_scientist_technology_action.light_fuel_refund|0] £fuel_texticon§!"
+-technology_action_light_fuel_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.light_fuel_refund|0] £fuel_texticon§!"
+-technology_action_standard_fuel_cost: "§Y[?constant:brilliant_scientist_technology_action.standard_fuel_refund|0] £fuel_texticon§!"
+-technology_action_standard_fuel_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.standard_fuel_refund|0] £fuel_texticon§!"
+-technology_action_heavy_fuel_cost: "§Y[?constant:brilliant_scientist_technology_action.heavy_fuel_refund|0] £fuel_texticon§!"
+-technology_action_heavy_fuel_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.heavy_fuel_refund|0] £fuel_texticon§!"
+-technology_action_light_factory_cost: "§Y[?constant:brilliant_scientist_technology_action.light_civilian_factories|0] £civ_factory§!"
+-technology_action_light_factory_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.light_civilian_factories|0] £civ_factory§!"
+-technology_action_heavy_factory_cost: "§Y[?constant:brilliant_scientist_technology_action.heavy_civilian_factories|0] £civ_factory§!"
+-technology_action_heavy_factory_cost_blocked: "§R[?constant:brilliant_scientist_technology_action.heavy_civilian_factories|0] £civ_factory§!"
++technology_action_light_command_cost: "£command_power §Y[?constant:brilliant_scientist_technology_action.light_command_power|0]§!"
++technology_action_light_command_cost_blocked: "£command_power §R[?constant:brilliant_scientist_technology_action.light_command_power|0]§!"
++technology_action_standard_command_cost: "£command_power §Y[?constant:brilliant_scientist_technology_action.standard_command_power|0]§!"
++technology_action_standard_command_cost_blocked: "£command_power §R[?constant:brilliant_scientist_technology_action.standard_command_power|0]§!"
++technology_action_heavy_command_cost: "£command_power §Y[?constant:brilliant_scientist_technology_action.heavy_command_power|0]§!"
++technology_action_heavy_command_cost_blocked: "£command_power §R[?constant:brilliant_scientist_technology_action.heavy_command_power|0]§!"
++technology_action_light_support_cost: "£support_equipment_text_icon §Y[?constant:brilliant_scientist_technology_action.light_support_refund|0]§!"
++technology_action_light_support_cost_blocked: "£support_equipment_text_icon §R[?constant:brilliant_scientist_technology_action.light_support_refund|0]§!"
++technology_action_standard_support_cost: "£support_equipment_text_icon §Y[?constant:brilliant_scientist_technology_action.standard_support_refund|0]§!"
++technology_action_standard_support_cost_blocked: "£support_equipment_text_icon §R[?constant:brilliant_scientist_technology_action.standard_support_refund|0]§!"
++technology_action_heavy_support_cost: "£support_equipment_text_icon §Y[?constant:brilliant_scientist_technology_action.heavy_support_refund|0]§!"
++technology_action_heavy_support_cost_blocked: "£support_equipment_text_icon §R[?constant:brilliant_scientist_technology_action.heavy_support_refund|0]§!"
++technology_action_light_fuel_cost: "£fuel_texticon §Y[?constant:brilliant_scientist_technology_action.light_fuel_refund|0]§!"
++technology_action_light_fuel_cost_blocked: "£fuel_texticon §R[?constant:brilliant_scientist_technology_action.light_fuel_refund|0]§!"
++technology_action_standard_fuel_cost: "£fuel_texticon §Y[?constant:brilliant_scientist_technology_action.standard_fuel_refund|0]§!"
++technology_action_standard_fuel_cost_blocked: "£fuel_texticon §R[?constant:brilliant_scientist_technology_action.standard_fuel_refund|0]§!"
++technology_action_heavy_fuel_cost: "£fuel_texticon §Y[?constant:brilliant_scientist_technology_action.heavy_fuel_refund|0]§!"
++technology_action_heavy_fuel_cost_blocked: "£fuel_texticon §R[?constant:brilliant_scientist_technology_action.heavy_fuel_refund|0]§!"
++technology_action_light_factory_cost: "£civ_factory §Y[?constant:brilliant_scientist_technology_action.light_civilian_factories|0]§!"
++technology_action_light_factory_cost_blocked: "£civ_factory §R[?constant:brilliant_scientist_technology_action.light_civilian_factories|0]§!"
++technology_action_heavy_factory_cost: "£civ_factory §Y[?constant:brilliant_scientist_technology_action.heavy_civilian_factories|0]§!"
++technology_action_heavy_factory_cost_blocked: "£civ_factory §R[?constant:brilliant_scientist_technology_action.heavy_civilian_factories|0]§!"
+ brilliant_scientist_predictive_campaign_active: "Predictive Campaign"
+ brilliant_scientist_predictive_campaign_active_desc: "Operational planning and intelligence are being continuously recomputed against the enemy's observed reactions."
+ brilliant_scientist_sensor_saturation_active: "Sensor Saturation"
+diff --git a/localisation/english/020_black_plague_weaponization_l_english.yml b/localisation/english/020_black_plague_weaponization_l_english.yml
+index e80481c0f7..9faa203231 100644
+--- a/localisation/english/020_black_plague_weaponization_l_english.yml
++++ b/localisation/english/020_black_plague_weaponization_l_english.yml
+@@ -22,15 +22,15 @@ black_plague_weaponization_delivery_cost: "§Y[?constant:black_plague_weaponizat
+ black_plague_weaponization_delivery_cost_blocked: "§R[?constant:black_plague_weaponization_program.weapon_stockpile_batch|0] $plague_bomb_1$§!  £support_equipment_text_icon §R[?constant:black_plague_weaponization_program.delivery_support_equipment|0]§!  £command_power §R[?constant:black_plague_weaponization_program.delivery_command_power|0]§!  £GFX_fuel_texticon §R[?constant:black_plague_weaponization_program.delivery_fuel|0]§!"
+ black_plague_weaponization_delivery_cost_tooltip: "$black_plague_weaponization_delivery_cost$\n£civ_factory §Y[?constant:black_plague_weaponization_program.delivery_civilian_factories|0]§!  £clock_texticon §Y[?constant:black_plague_weaponization_program.delivery_duration_days|0]§!"
+ black_plague_weaponization_deliver_payload_effect: "The selected state receives a weaponized Black Plague exposure."
+-black_plague_weaponization_expand_stockpile: "Expand the Payload Stockpile"
++black_plague_weaponization_expand_stockpile: "Expand Payload Stockpile"
+ black_plague_weaponization_expand_stockpile_desc: "Spend support equipment, motorized transport, command power, fuel, and two civilian factories to produce one additional native plague-bomb payload. The accident scheduler remains active and the programme's risk rises."
+-black_plague_weaponization_expand_stockpile_cost: "£support_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_support_equipment|0]§!  £motorized_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment|0]§!  £command_power §Y[?constant:black_plague_weaponization_program.stockpile_expansion_command_power|0]§!  £GFX_fuel_texticon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_fuel|0]§!"
+-black_plague_weaponization_expand_stockpile_cost_blocked: "§RThe expansion reserve cannot be paid with the current support, transport, command-power, fuel, or factory capacity.§!"
++black_plague_weaponization_expand_stockpile_cost: "£support_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_support_equipment|0]§! £command_power §Y[?constant:black_plague_weaponization_program.stockpile_expansion_command_power|0]§! £GFX_fuel_texticon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_fuel|0]§!"
++black_plague_weaponization_expand_stockpile_cost_blocked: "£support_equipment_text_icon §R[?constant:black_plague_weaponization_program.stockpile_expansion_support_equipment|0]§! £command_power §R[?constant:black_plague_weaponization_program.stockpile_expansion_command_power|0]§! £GFX_fuel_texticon §R[?constant:black_plague_weaponization_program.stockpile_expansion_fuel|0]§!"
+ black_plague_weaponization_expand_stockpile_effect: "One native payload is added to the stockpile, the accident scheduler remains active, and project risk rises."
+-black_plague_weaponization_destroy_stockpile: "Destroy the Payload Stockpile"
++black_plague_weaponization_destroy_stockpile: "Destroy Payload Stockpile"
+ black_plague_weaponization_destroy_stockpile_desc: "Dismantle every stored native payload under a guarded safety operation. The project and its delivery history remain. The accident scheduler closes until another expansion is completed."
+-black_plague_weaponization_destroy_stockpile_cost: "£support_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_support_equipment|0]§!  £command_power §Y[?constant:black_plague_weaponization_program.stockpile_destroy_command_power|0]§!  £GFX_fuel_texticon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_fuel|0]§!"
+-black_plague_weaponization_destroy_stockpile_cost_blocked: "§RThe reserve cannot be destroyed until the required support equipment, command power, and fuel are available.§!"
++black_plague_weaponization_destroy_stockpile_cost: "£support_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_support_equipment|0]§! £command_power §Y[?constant:black_plague_weaponization_program.stockpile_destroy_command_power|0]§! £GFX_fuel_texticon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_fuel|0]§!"
++black_plague_weaponization_destroy_stockpile_cost_blocked: "£support_equipment_text_icon §R[?constant:black_plague_weaponization_program.stockpile_destroy_support_equipment|0]§! £command_power §R[?constant:black_plague_weaponization_program.stockpile_destroy_command_power|0]§! £GFX_fuel_texticon §R[?constant:black_plague_weaponization_program.stockpile_destroy_fuel|0]§!"
+ black_plague_weaponization_destroy_stockpile_effect: "Every stored native payload is destroyed and project risk falls."
+ black_plague_weaponization_role_field_surveillance: "Field Surveillance"
+ black_plague_weaponization_role_clinical_sampling: "Clinical Sampling"
+@@ -73,3 +73,5 @@ chaosx_nr20_weaponization.5.a: "Seal the facility"
+ chaosx_nr20_weaponization.6.t: "The Programme Turns to Countermeasures"
+ chaosx_nr20_weaponization.6.d: "The facility has completed Defensive Conversion. No offensive payload has entered the stockpile. The programme's equipment, research record, and earlier accidents now serve the countermeasure board. Its progress rises, and the history of the work remains."
+ chaosx_nr20_weaponization.6.a: "Keep the defensive line staffed"
++black_plague_weaponization_expand_stockpile_cost_tooltip: "£support_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_support_equipment|0]§!  £motorized_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_motorized_equipment|0]§!  £command_power §Y[?constant:black_plague_weaponization_program.stockpile_expansion_command_power|0]§!  £GFX_fuel_texticon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_fuel|0]§!\n£civ_factory §Y[?constant:black_plague_weaponization_program.stockpile_expansion_civilian_factories|0]§! £clock_texticon §Y[?constant:black_plague_weaponization_program.stockpile_expansion_days|0]§!"
++black_plague_weaponization_destroy_stockpile_cost_tooltip: "£support_equipment_text_icon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_support_equipment|0]§!  £command_power §Y[?constant:black_plague_weaponization_program.stockpile_destroy_command_power|0]§!  £GFX_fuel_texticon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_fuel|0]§!\n£civ_factory §Y[?constant:black_plague_weaponization_program.stockpile_destroy_civilian_factories|0]§! £clock_texticon §Y[?constant:black_plague_weaponization_program.stockpile_destroy_days|0]§!"
+diff --git a/localisation/english/chaosx_decisions_l_english.yml b/localisation/english/chaosx_decisions_l_english.yml
+index f2f58a884d..ad179964a0 100644
+--- a/localisation/english/chaosx_decisions_l_english.yml
++++ b/localisation/english/chaosx_decisions_l_english.yml
+@@ -365,13 +365,13 @@ bio_expand_biosecurity_capacity_cost: "§Y[?constant:bio_countermeasure_cost.exp
+ bio_expand_biosecurity_capacity_cost_blocked: "Requires §R[?constant:bio_countermeasure_cost.expand_biosecurity_instruments|0] CBRN Instruments§! and £support_equipment_text_icon §R[?constant:bio_countermeasure_cost.expand_biosecurity_support|0]§!."
+ bio_expand_biosecurity_capacity_available_tt: "Requires Chemical Detection Paper, either Biological Surveillance Networks or Pathogen Handling Protocols, room for another Biological Security expansion, and the listed stores."
+ bio_expand_biosecurity_capacity_effect_tt: "Consume §Y[?constant:bio_countermeasure_cost.expand_biosecurity_instruments|0] CBRN Instruments§! and §Y[?constant:bio_countermeasure_cost.expand_biosecurity_support|0] Support Equipment§! now. After §Y[?constant:bio_countermeasure_timing.capacity_investment_days|0] days§!, gain §G[?constant:bio_countermeasure_capacity.biosecurity_investment_gain|0] Biological Security§!."
+-bio_activate_surveillance_network: "Activate Biological Surveillance Network"
++bio_activate_surveillance_network: "Activate Bio Surveillance"
+ bio_activate_surveillance_network_desc: "Link laboratories, hospitals, field epidemiologists, and military reporting offices into a standing warning network. Earlier detection improves containment and preserves stronger evidence of the agent and its source."
+-bio_activate_surveillance_network_cost: "§Y[?constant:bio_countermeasure_cost.surveillance_instruments|0] CBRN Instruments§! £support_equipment_text_icon §Y[?constant:bio_countermeasure_cost.surveillance_support|0]§! £GFX_motorized_equipment_text_icon §Y[?constant:bio_countermeasure_cost.surveillance_trucks|0]§! §Y[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0] Medical Capacity§!"
+-bio_activate_surveillance_network_cost_blocked: "Requires §R[?constant:bio_countermeasure_cost.surveillance_instruments|0] CBRN Instruments§!, £support_equipment_text_icon §R[?constant:bio_countermeasure_cost.surveillance_support|0]§!, £GFX_motorized_equipment_text_icon §R[?constant:bio_countermeasure_cost.surveillance_trucks|0]§!, and §R[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0] Medical Capacity§!."
++bio_activate_surveillance_network_cost: "§Y[?constant:bio_countermeasure_cost.surveillance_instruments|0]§! £cbrn_instruments_texticon §Y[?constant:bio_countermeasure_cost.surveillance_support|0]§! £support_equipment_text_icon §Y[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0]§! £medical_capacity_texticon"
++bio_activate_surveillance_network_cost_blocked: "§R[?constant:bio_countermeasure_cost.surveillance_instruments|0]§! £cbrn_instruments_texticon §R[?constant:bio_countermeasure_cost.surveillance_support|0]§! £support_equipment_text_icon §R[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0]§! £medical_capacity_texticon"
+ bio_activate_surveillance_network_available_tt: "Requires Biological Surveillance Networks, an inactive national network, §Y[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0] uncommitted Medical Capacity§!, and the listed stores."
+ bio_activate_surveillance_network_effect_tt: "Consume the listed equipment and commit §Y[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0] Medical Capacity§!. After §Y[?constant:bio_countermeasure_timing.surveillance_activation_days|0] days§!, activate a network that adds §G[?constant:bio_countermeasure_response.surveillance_network_add|0] Surveillance§! and strengthens evidence recovered when an agent is detected."
+-bio_stand_down_surveillance_network: "Stand Down Biological Surveillance Network"
++bio_stand_down_surveillance_network: "Stand Down Bio Surveillance"
+ bio_stand_down_surveillance_network_desc: "Dismantle the permanent warning network and return its committed medical teams to the national reserve. Detection will become slower and the evidence trail weaker."
+ bio_stand_down_surveillance_network_available_tt: "Requires an active Biological Surveillance Network."
+ bio_stand_down_surveillance_network_effect_tt: "After §Y[?constant:bio_countermeasure_timing.surveillance_stand_down_days|0] days§!, remove the surveillance network and restore its committed §G[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0] Medical Capacity§!."
+@@ -446,13 +446,13 @@ bio_distribute_tularemia_antibiotics_available_tt: "Requires active Tularemia-an
+ bio_distribute_tularemia_antibiotics_effect_tt: "Consume equipment now. The first supported course in the state immediately commits §Y[?constant:bio_countermeasure_capacity.antibiotic_service_medical_commitment|0] Medical Capacity§! while any Anthrax, Plague, or Tularemia course there is active or in transit. After §Y[?constant:bio_countermeasure_timing.antibiotic_distribution_days|0] days§!, apply a Tularemia treatment course and a §Y[?constant:bio_countermeasure_timing.antibiotic_course_cooldown_days|0]-day§! cooldown if the outbreak remains eligible. A failed arrival returns otherwise unused capacity, but Political Power and equipment already spent are not refunded."
+ bio_distribute_antibiotics_cost: "£support_equipment_text_icon §Y[?constant:bio_countermeasure_cost.antibiotic_distribution_support|0]§! £GFX_motorized_equipment_text_icon §Y[?constant:bio_countermeasure_cost.antibiotic_distribution_trucks|0]§!"
+ bio_distribute_antibiotics_cost_blocked: "Requires £support_equipment_text_icon §R[?constant:bio_countermeasure_cost.antibiotic_distribution_support|0]§! and £GFX_motorized_equipment_text_icon §R[?constant:bio_countermeasure_cost.antibiotic_distribution_trucks|0]§!."
+-smallpox_vaccination_mass_program: "National Smallpox Vaccination Program"
++smallpox_vaccination_mass_program: "Smallpox Vaccination"
+ smallpox_vaccination_mass_program_desc: "Undertake broad vaccination against Smallpox, the most severe ordinary biological weapon. The long program consumes equipment, commits national Medical Capacity, and imposes a major continuing civilian burden."
+-smallpox_vaccination_mass_program_cost: "£support_equipment_text_icon §Y[?constant:bio_countermeasure_cost.vaccination_support|0]§! £GFX_motorized_equipment_text_icon §Y[?constant:bio_countermeasure_cost.vaccination_trucks|0]§! §Y[?constant:bio_countermeasure_cost.vaccination_instruments|0] CBRN Instruments§! §Y[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0] Medical Capacity§!"
+-smallpox_vaccination_mass_program_cost_blocked: "Requires £support_equipment_text_icon §R[?constant:bio_countermeasure_cost.vaccination_support|0]§!, £GFX_motorized_equipment_text_icon §R[?constant:bio_countermeasure_cost.vaccination_trucks|0]§!, §R[?constant:bio_countermeasure_cost.vaccination_instruments|0] CBRN Instruments§!, and §R[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0] Medical Capacity§!."
++smallpox_vaccination_mass_program_cost: "§Y[?constant:bio_countermeasure_cost.vaccination_instruments|0]§! £cbrn_instruments_texticon §Y[?constant:bio_countermeasure_cost.vaccination_support|0]§! £support_equipment_text_icon §Y[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0]§! £medical_capacity_texticon"
++smallpox_vaccination_mass_program_cost_blocked: "§R[?constant:bio_countermeasure_cost.vaccination_instruments|0]§! £cbrn_instruments_texticon §R[?constant:bio_countermeasure_cost.vaccination_support|0]§! £support_equipment_text_icon §R[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0]§! £medical_capacity_texticon"
+ smallpox_vaccination_mass_program_available_tt: "Requires Integrated Epidemic Control, a detected domestic outbreak, publicly confirmed Smallpox use, or a known domestic Smallpox capability, an inactive vaccination program, §Y[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0] uncommitted Medical Capacity§!, and the listed stores."
+ smallpox_vaccination_mass_program_effect_tt: "Consume the listed equipment and commit §Y[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0] Medical Capacity§!. After §Y[?constant:bio_countermeasure_timing.vaccination_activation_days|0] days§!, activate national Smallpox vaccination, sharply reducing Smallpox growth, spread, and deaths at a §R[?constant:bio_countermeasure_idea.smallpox_consumer_goods|%0] Consumer Goods§! and §R[?constant:bio_countermeasure_idea.smallpox_political_power|%0] Political Power Gain§! burden."
+-revoke_smallpox_vaccination_mass_program: "End National Smallpox Vaccination"
++revoke_smallpox_vaccination_mass_program: "End Smallpox Vaccination"
+ revoke_smallpox_vaccination_mass_program_desc: "End the continuing vaccination program and return its medical teams to the national reserve. The population will lose its strongest protection against Smallpox."
+ revoke_smallpox_vaccination_mass_program_available_tt: "Requires an active National Smallpox Vaccination Program."
+ revoke_smallpox_vaccination_mass_program_effect_tt: "After §Y[?constant:bio_countermeasure_timing.vaccination_shutdown_days|0] days§!, remove national Smallpox vaccination and restore its committed §G[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0] Medical Capacity§!."
+@@ -582,3 +582,5 @@ genocide_support_resistance_networks: "Support Resistance Networks in [FROM.GetN
+ genocide_support_resistance_networks_desc: "Support resistance groups targeting [FROM.GetNameDef]'s camp infrastructure and occupation records."
+ genocide_prepare_tribunal_records: "Prepare Tribunal Records Against [FROM.GetNameDef]"
+ genocide_prepare_tribunal_records_desc: "Organize survivor statements, captured documents, and diplomatic files for a future tribunal against [FROM.GetNameDef]."
++bio_activate_surveillance_network_cost_tooltip: "§Y[?constant:bio_countermeasure_cost.surveillance_instruments|0] CBRN Instruments§! £support_equipment_text_icon §Y[?constant:bio_countermeasure_cost.surveillance_support|0]§! £GFX_motorized_equipment_text_icon §Y[?constant:bio_countermeasure_cost.surveillance_trucks|0]§! §Y[?constant:bio_countermeasure_capacity.surveillance_medical_commitment|0] Medical Capacity§!"
++smallpox_vaccination_mass_program_cost_tooltip: "£support_equipment_text_icon §Y[?constant:bio_countermeasure_cost.vaccination_support|0]§! £GFX_motorized_equipment_text_icon §Y[?constant:bio_countermeasure_cost.vaccination_trucks|0]§! §Y[?constant:bio_countermeasure_cost.vaccination_instruments|0] CBRN Instruments§! §Y[?constant:bio_countermeasure_capacity.vaccination_medical_commitment|0] Medical Capacity§!"
