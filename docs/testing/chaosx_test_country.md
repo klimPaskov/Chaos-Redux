@@ -59,6 +59,15 @@ Ordinary-country project choices, reports, and balance remain unchanged.
 
 HOI4 does not expose a documented global special-project database array. Future projects use the opt-in registry described below; the static baseline remains explicit so omissions are visible in code review and inventory audits.
 
+Core and registered project callers pass an `sp:<project_id>` scope through the temporary variable `chaosx_test_country_current_special_project` and invoke `chaosx_test_country_complete_special_project = yes`.
+That country-scoped helper skips completed projects and passes the object to native `complete_special_project` with `show_modifiers = no`; project completion executes the ordinary gameplay outputs and does not add a facility or scientist.
+The caller must assign a valid installed project scope before each core call; the registered-project loop supplies its current scope directly.
+
+Facility callers assign the temporary building token `chaosx_test_country_current_facility` before invoking `chaosx_test_country_provision_facility_type = yes`.
+The country-scoped helper resolves that explicit token inside a supported `meta_effect` template, while its state trigger resolves native `can_construct_building` inside `meta_trigger` with CXT as ROOT.
+Naval facilities require coast; the six types use distinct states, rejected foreign acquisitions restore their original owner and controller, and exhausted searches set the existing missing-facility flags.
+The temporary input is replaced by each subsequent type call; the rejection array is cleared before and after each search, and the helper grants no technology or project.
+
 The country adopts the Chaos Warfare grand doctrine, assigns `extermination_columns`, `contaminant_firebases`, `chemical_suppression`, and `integrated_chemical_operations`, grants enough mastery to complete every active track, and closes the establishment mission successfully.
 
 All shared CBRN capacities are raised to their maximum, the unrestricted Chaos Warfare use policy is selected, and protection, operations, disease-response, battlefield-operation, payload-logistics, occupation, civil-defence, and doctrine-owned camp surfaces are activated.

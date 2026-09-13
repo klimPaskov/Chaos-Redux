@@ -52,102 +52,114 @@ chaosx_test_country_ensure_occupation_fixture = {
 
 # Country scope. Preserve a legal installed campus or provision one exact
 # building type. Rejected temporary transfers restore owner and controller.
-# Inputs: FACILITY (building token), COASTAL_REQUIRED (yes/no).
+# Input: temporary building token chaosx_test_country_current_facility.
+# The meta template resolves its literal type; naval requires a coastal state.
 chaosx_test_country_provision_facility_type = {
-	if = {
-		limit = {
-			NOT = {
-				any_owned_state = {
-					is_controlled_by = ROOT
-					$FACILITY$ > 0
-				}
-			}
-		}
-		clear_array = chaosx_test_facility_rejected_states
-		set_temp_variable = { chaosx_test_facility_type_candidate_failed = 0 }
-		while_loop_effect = {
-			break = chaosx_test_facility_type_candidate_failed
-			limit = {
-				NOT = {
-					any_owned_state = {
-						chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ }
-					}
-				}
-			}
-			set_temp_variable = { chaosx_test_facility_type_candidate_selected = 0 }
-			random_state = {
+	meta_effect = {
+		text = {
+			if = {
 				limit = {
-					NOT = { is_owned_by = ROOT }
-					NOT = { is_capital = yes }
-					impassable = no
-					is_demilitarized_zone = no
-					NOT = { chaosx_test_country_state_has_special_facility = yes }
-					OWNER = { exists = yes }
-					CONTROLLER = { exists = yes }
-					OR = {
-						NOT = { always = $COASTAL_REQUIRED$ }
-						is_coastal = yes
+					NOT = {
+						any_owned_state = {
+							is_controlled_by = ROOT
+							[FACILITY] > 0
+						}
 					}
-					ROOT = {
+				}
+				clear_array = chaosx_test_facility_rejected_states
+				set_temp_variable = { chaosx_test_facility_type_candidate_failed = 0 }
+				while_loop_effect = {
+					break = chaosx_test_facility_type_candidate_failed
+					limit = {
 						NOT = {
-							is_in_array = {
-								array = chaosx_test_facility_rejected_states
-								value = PREV
+							any_owned_state = {
+								chaosx_test_country_state_can_host_facility_type = yes
 							}
 						}
 					}
-				}
-				set_temp_variable = { chaosx_test_facility_type_candidate_selected = 1 }
-				OWNER = { save_event_target_as = chaosx_test_facility_original_owner }
-				CONTROLLER = { save_event_target_as = chaosx_test_facility_original_controller }
-				transfer_state_to = ROOT
-				set_state_controller_to = ROOT
-				if = {
-					limit = { NOT = { chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ } } }
-					ROOT = {
-						add_to_array = {
-							array = chaosx_test_facility_rejected_states
-							value = PREV
+					set_temp_variable = { chaosx_test_facility_type_candidate_selected = 0 }
+					random_state = {
+						limit = {
+							NOT = { is_owned_by = ROOT }
+							NOT = { is_capital = yes }
+							impassable = no
+							is_demilitarized_zone = no
+							NOT = { chaosx_test_country_state_has_special_facility = yes }
+							OWNER = { exists = yes }
+							CONTROLLER = { exists = yes }
+							OR = {
+								NOT = { check_variable = { chaosx_test_country_current_facility = token:naval_facility } }
+								is_coastal = yes
+							}
+							ROOT = {
+								NOT = {
+									is_in_array = {
+										array = chaosx_test_facility_rejected_states
+										value = PREV
+									}
+								}
+							}
+						}
+						set_temp_variable = { chaosx_test_facility_type_candidate_selected = 1 }
+						OWNER = { save_event_target_as = chaosx_test_facility_original_owner }
+						CONTROLLER = { save_event_target_as = chaosx_test_facility_original_controller }
+						transfer_state_to = ROOT
+						set_state_controller_to = ROOT
+						if = {
+							limit = { NOT = { chaosx_test_country_state_can_host_facility_type = yes } }
+							ROOT = {
+								add_to_array = {
+									array = chaosx_test_facility_rejected_states
+									value = PREV
+								}
+							}
+							transfer_state_to = event_target:chaosx_test_facility_original_owner
+							set_state_controller_to = event_target:chaosx_test_facility_original_controller
 						}
 					}
-					transfer_state_to = event_target:chaosx_test_facility_original_owner
-					set_state_controller_to = event_target:chaosx_test_facility_original_controller
+					if = {
+						limit = { check_variable = { chaosx_test_facility_type_candidate_selected < 1 } }
+						set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
+					}
 				}
+				random_owned_controlled_state = {
+					limit = { chaosx_test_country_state_can_host_facility_type = yes }
+					construct_building_in_random_province = { [FACILITY] = 1 }
+				}
+				clear_array = chaosx_test_facility_rejected_states
 			}
 			if = {
-				limit = { check_variable = { chaosx_test_facility_type_candidate_selected < 1 } }
-				set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
+				limit = {
+					any_owned_state = {
+						is_controlled_by = ROOT
+						[FACILITY] > 0
+					}
+				}
+				clr_country_flag = chaosx_test_facility_missing_[FACILITY]
+			}
+			else = {
+				set_country_flag = chaosx_test_country_facility_provisioning_incomplete
+				set_country_flag = chaosx_test_facility_missing_[FACILITY]
 			}
 		}
-		random_owned_controlled_state = {
-			limit = { chaosx_test_country_state_can_host_facility_type = { FACILITY = $FACILITY$ COASTAL_REQUIRED = $COASTAL_REQUIRED$ } }
-			construct_building_in_random_province = { $FACILITY$ = 1 }
-		}
-		clear_array = chaosx_test_facility_rejected_states
-	}
-	if = {
-		limit = {
-			any_owned_state = {
-				is_controlled_by = ROOT
-				$FACILITY$ > 0
-			}
-		}
-		clr_country_flag = chaosx_test_facility_missing_$FACILITY$
-	}
-	else = {
-		set_country_flag = chaosx_test_country_facility_provisioning_incomplete
-		set_country_flag = chaosx_test_facility_missing_$FACILITY$
+		FACILITY = "[?chaosx_test_country_current_facility.GetTokenKey]"
 	}
 }
 
 chaosx_test_country_build_special_facilities = {
 	clr_country_flag = chaosx_test_country_facility_provisioning_incomplete
-	chaosx_test_country_provision_facility_type = { FACILITY = naval_facility COASTAL_REQUIRED = yes }
-	chaosx_test_country_provision_facility_type = { FACILITY = nuclear_facility COASTAL_REQUIRED = no }
-	chaosx_test_country_provision_facility_type = { FACILITY = air_facility COASTAL_REQUIRED = no }
-	chaosx_test_country_provision_facility_type = { FACILITY = land_facility COASTAL_REQUIRED = no }
-	chaosx_test_country_provision_facility_type = { FACILITY = biowarfare_facility COASTAL_REQUIRED = no }
-	chaosx_test_country_provision_facility_type = { FACILITY = cw_facility COASTAL_REQUIRED = no }
+	set_temp_variable = { chaosx_test_country_current_facility = token:naval_facility }
+	chaosx_test_country_provision_facility_type = yes
+	set_temp_variable = { chaosx_test_country_current_facility = token:nuclear_facility }
+	chaosx_test_country_provision_facility_type = yes
+	set_temp_variable = { chaosx_test_country_current_facility = token:air_facility }
+	chaosx_test_country_provision_facility_type = yes
+	set_temp_variable = { chaosx_test_country_current_facility = token:land_facility }
+	chaosx_test_country_provision_facility_type = yes
+	set_temp_variable = { chaosx_test_country_current_facility = token:biowarfare_facility }
+	chaosx_test_country_provision_facility_type = yes
+	set_temp_variable = { chaosx_test_country_current_facility = token:cw_facility }
+	chaosx_test_country_provision_facility_type = yes
 }
 
 chaosx_test_country_complete_chaos_warfare = {

@@ -23,16 +23,18 @@ chaosx_test_country_state_can_host_special_facility = {
 	NOT = { chaosx_test_country_state_has_special_facility = yes }
 }
 
-# State scope. FACILITY is the actual installed building type, and ROOT must
-# be the CXT country. COASTAL_REQUIRED is yes for naval, no for other types.
-# Native legality checks whether ROOT and this state
-# can build this exact type; the trigger does not manufacture a legal site.
+# State scope, ROOT = CXT. Input: temporary building token
+# chaosx_test_country_current_facility, assigned before the helper call.
+# Native construction legality remains specific to that installed type.
 chaosx_test_country_state_can_host_facility_type = {
 	is_owned_by = ROOT
 	OR = {
-		NOT = { always = $COASTAL_REQUIRED$ }
+		NOT = { check_variable = { chaosx_test_country_current_facility = token:naval_facility } }
 		is_coastal = yes
 	}
 	chaosx_test_country_state_can_host_special_facility = yes
-	can_construct_building = $FACILITY$
+	meta_trigger = {
+		text = { can_construct_building = [FACILITY] }
+		FACILITY = "[?chaosx_test_country_current_facility.GetTokenKey]"
+	}
 }

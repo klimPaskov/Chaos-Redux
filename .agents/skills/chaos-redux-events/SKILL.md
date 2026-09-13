@@ -548,6 +548,10 @@ For those fields, use a file-scoped `@NAME = literal` constant in the same scrip
 
 Do not work around this by setting a temp variable and passing `days = temp_name`. those fields can reject variable tokens too. In which case, a `meta_effect` must be used if possible.
 
+Scripted effects and scripted triggers do not expand `$PARAMETER$` placeholders or accept named argument blocks as a parameter API in HOI4.
+Pass inputs through documented variables or tokens and invoke the helper with `= yes`.
+For literal-only fields, use `[PARAMETER]` inside `meta_effect` or `meta_trigger` `text` with a matching replacement declared on that meta block; consult installed documentation and a vanilla precedent before relying on a substitution.
+
 ### 8. Super-event integration
 
 If the event shows or drives a super event, wire the whole package:
