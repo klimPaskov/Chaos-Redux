@@ -1,0 +1,128 @@
+--- before/common/scripted_guis/camp_repression_ledger_scripted_gui.txt
++++ after/common/scripted_guis/camp_repression_ledger_scripted_gui.txt
+@@ -165,6 +165,57 @@
+ 						AND = { has_country_flag = camp_ledger_tab_state_pools check_variable = { camp_gui_pool_states^num > 0 } }
+ 						AND = { has_country_flag = camp_ledger_tab_sites check_variable = { camp_gui_active_site_states^num > 0 } }
+ 					}
++				}
++			}
++			camp_ui_order_labor_surface_visible = { OR = { 
++				ROOT = {
++					has_country_flag = camp_ledger_tab_sites
++					camp_rework_country_uses_generic_kit = yes
++					has_active_camp_network = yes
++					has_variable = camp_selected_state_id
++				}
++			 
++				ROOT = {
++					has_country_flag = camp_ledger_tab_state_pools
++					camp_rework_country_uses_generic_kit = yes
++					has_variable = camp_selected_state_id
++				}
++			 } }
++			camp_ui_order_inspect_surface_visible = {
++				ROOT = {
++					has_country_flag = camp_ledger_tab_sites
++					camp_rework_country_uses_generic_kit = yes
++					camp_rework_country_can_open_site_inspection = yes
++					has_variable = camp_selected_state_id
++				}
++			}
++			camp_ui_order_dismantle_surface_visible = {
++				ROOT = {
++					has_country_flag = camp_ledger_tab_sites
++					camp_rework_country_can_reform = yes
++					has_variable = camp_selected_state_id
++				}
++			}
++			camp_ui_order_evidence_surface_visible = {
++				ROOT = {
++					has_country_flag = camp_ledger_tab_sites
++					camp_rework_country_can_destroy_retreat_evidence = yes
++					has_variable = camp_selected_state_id
++				}
++			}
++			camp_ui_order_chemical_surface_visible = {
++				ROOT = {
++					has_country_flag = camp_ledger_tab_sites
++					camp_rework_country_can_apply_chemical_camp_method = yes
++					has_variable = camp_selected_state_id
++				}
++			}
++			camp_ui_order_biological_surface_visible = {
++				ROOT = {
++					has_country_flag = camp_ledger_tab_sites
++					camp_rework_country_can_use_restricted_method_route = yes
++					camp_rework_country_has_biological_escalation_capacity = yes
++					has_variable = camp_selected_state_id
+ 				}
+ 			}
+ 			camp_ui_cost_expand_selected_pool_visible = {
+@@ -442,13 +493,11 @@
+ 					has_variable = camp_selected_state_id
+ 					NOT = { has_country_flag = camp_rework_expansion_frozen }
+ 					NOT = { has_country_flag = generic_labor_project_active }
+-					NOT = { has_political_power < constant:camp_rework_cost.labor_project_pp }
+-					has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
+-					has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
+-					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment }
++					camp_rework_can_pay_site_labor = { STATE = var:camp_selected_state_id }
+ 					num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
+ 					var:camp_selected_state_id = {
+ 						is_valid_camp_active_site_state = yes
++						camp_rework_state_is_actor_responsible_controlled = yes
+ 						infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
+ 						OR = {
+ 							is_controlled_by = ROOT
+@@ -480,7 +529,7 @@
+ 					camp_rework_country_uses_generic_kit = yes
+ 					camp_rework_country_can_open_site_inspection = yes
+ 					has_variable = camp_selected_state_id
+-					NOT = { has_political_power < constant:camp_rework_cost.review_pp }
++					camp_rework_can_pay_site_inspect = { STATE = var:camp_selected_state_id }
+ 					var:camp_selected_state_id = { is_valid_camp_inspection_state = yes }
+ 				}
+ 			}
+@@ -489,9 +538,7 @@
+ 					has_variable = camp_selected_state_id
+ 					camp_rework_country_can_reform = yes
+ 					NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
+-					NOT = { has_political_power < constant:camp_rework_cost.dismantle_pp }
+-					check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
+-					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
++					camp_rework_can_pay_site_dismantle = { STATE = var:camp_selected_state_id }
+ 					var:camp_selected_state_id = { is_valid_camp_dismantlement_state = yes }
+ 				}
+ 			}
+@@ -499,11 +546,8 @@
+ 				ROOT = {
+ 					camp_rework_country_can_destroy_retreat_evidence = yes
+ 					has_variable = camp_selected_state_id
+-					NOT = { has_political_power < constant:camp_rework_cost.evidence_pp }
+-					check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
+-					command_power > constant:camp_rework_cost.evidence_command
+-					has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+-					var:camp_selected_state_id = { is_valid_camp_enemy_proximity_state = yes }
++					camp_rework_can_pay_site_evidence = { STATE = var:camp_selected_state_id }
++					var:camp_selected_state_id = { camp_rework_state_is_actor_responsible_controlled = yes is_valid_camp_enemy_proximity_state = yes }
+ 				}
+ 			}
+ 			camp_gui_chemical_method_click_enabled = {
+@@ -512,7 +556,7 @@
+ 					has_variable = camp_selected_state_id
+ 					NOT = { has_country_flag = camp_rework_expansion_frozen }
+ 					OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
+-					NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
++					camp_rework_can_pay_site_restricted = { STATE = var:camp_selected_state_id }
+ 					var:camp_selected_state_id = { camp_rework_state_is_available_chemical_method_target = yes }
+ 				}
+ 			}
+@@ -522,7 +566,7 @@
+ 					has_variable = camp_selected_state_id
+ 					NOT = { has_country_flag = camp_rework_expansion_frozen }
+ 					OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
+-					NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
++					camp_rework_can_pay_site_restricted = { STATE = var:camp_selected_state_id }
+ 					camp_rework_country_has_biological_escalation_capacity = yes
+ 					var:camp_selected_state_id = { camp_rework_state_is_biological_escalation_target = yes }
+ 				}

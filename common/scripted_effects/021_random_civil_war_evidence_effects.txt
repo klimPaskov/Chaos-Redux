@@ -1,0 +1,459 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 FRACTURE EVIDENCE RECEIPTS
+# ============================================================================
+# Source-owned, expiring receipts for Event 021 route eligibility. The parent
+# planner may derive a route only from a live receipt; government form, leader
+# count, state count, and division count alone are not route evidence.
+#
+# Inputs to `event021_register_fracture_evidence` are temporary variables:
+# `event021_evidence_source`, `event021_evidence_strength`, and
+# `event021_evidence_duration`. Optional scope identifiers are carried in
+# `event021_evidence_actor_id`, `event021_evidence_package_id`, and
+# `event021_evidence_region_id`. A caller with a live country scope may also
+# set the normal scope variable `event021_evidence_actor_scope`; registration
+# copies it into the source-specific receipt and clears the API input. Every
+# receipt stores its source, strength, start, expiry, and cleanup owner on the
+# country that owns the evidence.
+#
+# Event 004 and Event 007 call only the convenience recorders below. They add
+# pressure evidence and never fire Event 021 or Event 006. The parent owns
+# route flags, actor creation, and all route cleanup.
+# ============================================================================
+
+event021_register_fracture_evidence = {
+	if = {
+		limit = {
+			check_variable = { var = event021_evidence_strength value = constant:event021_evidence_tuning.minimum_live_strength compare = greater_than_or_equals }
+			check_variable = { var = event021_evidence_duration value = constant:random_civil_war_value.zero compare = greater_than }
+		}
+		set_variable = { random_civil_war_evidence_last_source = event021_evidence_source }
+		set_variable = { random_civil_war_evidence_last_strength = event021_evidence_strength }
+		set_variable = { random_civil_war_evidence_last_start_date = global.date }
+		set_variable = { random_civil_war_evidence_cleanup_owner = constant:event021_evidence_tuning.receipt_cleanup_owner }
+		clear_variable = random_civil_war_evidence_last_actor_id
+		clear_variable = random_civil_war_evidence_last_package_id
+		clear_variable = random_civil_war_evidence_last_region_id
+		event021_capture_fracture_evidence_identity = yes
+		if = {
+			limit = { has_variable = event021_evidence_actor_id }
+			set_variable = { random_civil_war_evidence_last_actor_id = event021_evidence_actor_id }
+		}
+		if = {
+			limit = { has_variable = event021_evidence_package_id }
+			set_variable = { random_civil_war_evidence_last_package_id = event021_evidence_package_id }
+		}
+		if = {
+			limit = { has_variable = event021_evidence_region_id }
+			set_variable = { random_civil_war_evidence_last_region_id = event021_evidence_region_id }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.political
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_ideological_evidence_active
+			set_variable = { random_civil_war_ideological_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_ideological_evidence_start_date = global.date }
+			set_variable = { random_civil_war_ideological_evidence_until = global.date }
+			add_to_variable = { random_civil_war_ideological_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.legal
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_legal_evidence_active
+			set_variable = { random_civil_war_legal_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_legal_evidence_start_date = global.date }
+			set_variable = { random_civil_war_legal_evidence_until = global.date }
+			add_to_variable = { random_civil_war_legal_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.regional
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_regional_evidence_active
+			set_variable = { random_civil_war_regional_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_regional_evidence_start_date = global.date }
+			set_variable = { random_civil_war_regional_evidence_until = global.date }
+			add_to_variable = { random_civil_war_regional_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.command
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_command_evidence_active
+			set_variable = { random_civil_war_command_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_command_evidence_start_date = global.date }
+			set_variable = { random_civil_war_command_evidence_until = global.date }
+			add_to_variable = { random_civil_war_command_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.event006
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_event6_evidence_active
+			set_variable = { random_civil_war_event6_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_event6_evidence_start_date = global.date }
+			set_variable = { random_civil_war_event6_evidence_until = global.date }
+			add_to_variable = { random_civil_war_event6_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.same_tag
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_same_tag_evidence_active
+			set_variable = { random_civil_war_same_tag_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_same_tag_evidence_start_date = global.date }
+			set_variable = { random_civil_war_same_tag_evidence_until = global.date }
+			add_to_variable = { random_civil_war_same_tag_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.external_war
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_external_war_evidence_active
+			set_variable = { random_civil_war_external_war_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_external_war_evidence_start_date = global.date }
+			set_variable = { random_civil_war_external_war_evidence_until = global.date }
+			add_to_variable = { random_civil_war_external_war_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.fury
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_fury_evidence_active
+			set_variable = { random_civil_war_fury_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_fury_evidence_start_date = global.date }
+			set_variable = { random_civil_war_fury_evidence_until = global.date }
+			add_to_variable = { random_civil_war_fury_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.neighbor
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_neighbor_evidence_active
+			set_variable = { random_civil_war_neighbor_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_neighbor_evidence_start_date = global.date }
+			set_variable = { random_civil_war_neighbor_evidence_until = global.date }
+			add_to_variable = { random_civil_war_neighbor_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.sponsor
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_sponsor_evidence_active
+			set_variable = { random_civil_war_sponsor_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_sponsor_evidence_start_date = global.date }
+			set_variable = { random_civil_war_sponsor_evidence_until = global.date }
+			add_to_variable = { random_civil_war_sponsor_evidence_until = event021_evidence_duration }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_evidence_source
+					value = constant:random_civil_war_evidence_source.settlement
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_settlement_evidence_active
+			set_variable = { random_civil_war_settlement_evidence_strength = event021_evidence_strength }
+			set_variable = { random_civil_war_settlement_evidence_start_date = global.date }
+			set_variable = { random_civil_war_settlement_evidence_until = global.date }
+			add_to_variable = { random_civil_war_settlement_evidence_until = event021_evidence_duration }
+		}
+	}
+	clear_variable = event021_evidence_actor_scope
+}
+
+# COUNTRY scope. Copies optional identifiers into the receipt family that owns
+# them. Regional, command, and Event 006 receipts always carry a scope pointer:
+# an explicit referenced actor when supplied, otherwise the current country as
+# the institutional owner. Refresh can therefore invalidate a receipt when its
+# referenced actor ceases to exist without consulting overwriteable last-* data.
+event021_capture_fracture_evidence_identity = {
+	if = {
+		limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.regional compare = equals } }
+		set_variable = { random_civil_war_regional_evidence_actor_scope = THIS }
+		if = {
+			limit = { has_variable = event021_evidence_actor_scope var:event021_evidence_actor_scope = { exists = yes } }
+			set_variable = { random_civil_war_regional_evidence_actor_scope = var:event021_evidence_actor_scope }
+		}
+		if = { limit = { has_variable = event021_evidence_actor_id } set_variable = { random_civil_war_regional_evidence_actor_id = event021_evidence_actor_id } }
+		if = { limit = { has_variable = event021_evidence_region_id } set_variable = { random_civil_war_regional_evidence_region_id = event021_evidence_region_id } }
+	}
+	if = {
+		limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.command compare = equals } }
+		set_variable = { random_civil_war_command_evidence_actor_scope = THIS }
+		if = {
+			limit = { has_variable = event021_evidence_actor_scope var:event021_evidence_actor_scope = { exists = yes } }
+			set_variable = { random_civil_war_command_evidence_actor_scope = var:event021_evidence_actor_scope }
+		}
+		if = { limit = { has_variable = event021_evidence_actor_id } set_variable = { random_civil_war_command_evidence_actor_id = event021_evidence_actor_id } }
+	}
+	if = {
+		limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.event006 compare = equals } }
+		set_variable = { random_civil_war_event6_evidence_actor_scope = THIS }
+		if = {
+			limit = { has_variable = event021_evidence_actor_scope var:event021_evidence_actor_scope = { exists = yes } }
+			set_variable = { random_civil_war_event6_evidence_actor_scope = var:event021_evidence_actor_scope }
+		}
+		if = { limit = { has_variable = event021_evidence_actor_id } set_variable = { random_civil_war_event6_evidence_actor_id = event021_evidence_actor_id } }
+		if = { limit = { has_variable = event021_evidence_package_id } set_variable = { random_civil_war_event6_evidence_package_id = event021_evidence_package_id } }
+		if = { limit = { has_variable = event021_evidence_region_id } set_variable = { random_civil_war_event6_evidence_region_id = event021_evidence_region_id } }
+	}
+}
+
+event021_clear_fracture_evidence = {
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.political compare = equals } }
+		clr_country_flag = random_civil_war_ideological_evidence_active
+		clear_variable = random_civil_war_ideological_evidence_strength
+		clear_variable = random_civil_war_ideological_evidence_start_date
+		clear_variable = random_civil_war_ideological_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.legal compare = equals } }
+		clr_country_flag = random_civil_war_legal_evidence_active
+		clear_variable = random_civil_war_legal_evidence_strength
+		clear_variable = random_civil_war_legal_evidence_start_date
+		clear_variable = random_civil_war_legal_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.regional compare = equals } }
+		clr_country_flag = random_civil_war_regional_evidence_active
+		clear_variable = random_civil_war_regional_evidence_strength
+		clear_variable = random_civil_war_regional_evidence_start_date
+		clear_variable = random_civil_war_regional_evidence_until
+		clear_variable = random_civil_war_regional_evidence_actor_scope
+		clear_variable = random_civil_war_regional_evidence_actor_id
+		clear_variable = random_civil_war_regional_evidence_region_id
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.command compare = equals } }
+		clr_country_flag = random_civil_war_command_evidence_active
+		clear_variable = random_civil_war_command_evidence_strength
+		clear_variable = random_civil_war_command_evidence_start_date
+		clear_variable = random_civil_war_command_evidence_until
+		clear_variable = random_civil_war_command_evidence_actor_scope
+		clear_variable = random_civil_war_command_evidence_actor_id
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.event006 compare = equals } }
+		clr_country_flag = random_civil_war_event6_evidence_active
+		clear_variable = random_civil_war_event6_evidence_strength
+		clear_variable = random_civil_war_event6_evidence_start_date
+		clear_variable = random_civil_war_event6_evidence_until
+		clear_variable = random_civil_war_event6_evidence_actor_scope
+		clear_variable = random_civil_war_event6_evidence_actor_id
+		clear_variable = random_civil_war_event6_evidence_package_id
+		clear_variable = random_civil_war_event6_evidence_region_id
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.same_tag compare = equals } }
+		clr_country_flag = random_civil_war_same_tag_evidence_active
+		clr_country_flag = random_civil_war_same_tag_loyalty_contest_ready
+		clear_variable = random_civil_war_same_tag_evidence_strength
+		clear_variable = random_civil_war_same_tag_evidence_start_date
+		clear_variable = random_civil_war_same_tag_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.external_war compare = equals } }
+		clr_country_flag = random_civil_war_external_war_evidence_active
+		clear_variable = random_civil_war_external_war_evidence_strength
+		clear_variable = random_civil_war_external_war_evidence_start_date
+		clear_variable = random_civil_war_external_war_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.fury compare = equals } }
+		clr_country_flag = random_civil_war_fury_evidence_active
+		clear_variable = random_civil_war_fury_evidence_strength
+		clear_variable = random_civil_war_fury_evidence_start_date
+		clear_variable = random_civil_war_fury_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.neighbor compare = equals } }
+		clr_country_flag = random_civil_war_neighbor_evidence_active
+		clear_variable = random_civil_war_neighbor_evidence_strength
+		clear_variable = random_civil_war_neighbor_evidence_start_date
+		clear_variable = random_civil_war_neighbor_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.sponsor compare = equals } }
+		clr_country_flag = random_civil_war_sponsor_evidence_active
+		clear_variable = random_civil_war_sponsor_evidence_strength
+		clear_variable = random_civil_war_sponsor_evidence_start_date
+		clear_variable = random_civil_war_sponsor_evidence_until
+	}
+		if = {
+			limit = { check_variable = { var = event021_evidence_source value = constant:random_civil_war_evidence_source.settlement compare = equals } }
+		clr_country_flag = random_civil_war_settlement_evidence_active
+		clear_variable = random_civil_war_settlement_evidence_strength
+		clear_variable = random_civil_war_settlement_evidence_start_date
+		clear_variable = random_civil_war_settlement_evidence_until
+	}
+}
+
+event021_refresh_fracture_evidence = {
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_regional_evidence_active
+			OR = {
+				NOT = { has_variable = random_civil_war_regional_evidence_actor_scope }
+				var:random_civil_war_regional_evidence_actor_scope = { exists = no }
+			}
+		}
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.regional }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_command_evidence_active
+			OR = {
+				NOT = { has_variable = random_civil_war_command_evidence_actor_scope }
+				var:random_civil_war_command_evidence_actor_scope = { exists = no }
+			}
+		}
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.command }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_event6_evidence_active
+			OR = {
+				NOT = { has_variable = random_civil_war_event6_evidence_actor_scope }
+				var:random_civil_war_event6_evidence_actor_scope = { exists = no }
+			}
+		}
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.event006 }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_ideological_evidence_active has_variable = random_civil_war_ideological_evidence_until check_variable = { var = global.date value = random_civil_war_ideological_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.political }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_legal_evidence_active has_variable = random_civil_war_legal_evidence_until check_variable = { var = global.date value = random_civil_war_legal_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.legal }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_regional_evidence_active has_variable = random_civil_war_regional_evidence_until check_variable = { var = global.date value = random_civil_war_regional_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.regional }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_command_evidence_active has_variable = random_civil_war_command_evidence_until check_variable = { var = global.date value = random_civil_war_command_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.command }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_event6_evidence_active has_variable = random_civil_war_event6_evidence_until check_variable = { var = global.date value = random_civil_war_event6_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.event006 }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_same_tag_evidence_active has_variable = random_civil_war_same_tag_evidence_until check_variable = { var = global.date value = random_civil_war_same_tag_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.same_tag }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_external_war_evidence_active has_variable = random_civil_war_external_war_evidence_until check_variable = { var = global.date value = random_civil_war_external_war_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.external_war }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_fury_evidence_active has_variable = random_civil_war_fury_evidence_until check_variable = { var = global.date value = random_civil_war_fury_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.fury }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_neighbor_evidence_active has_variable = random_civil_war_neighbor_evidence_until check_variable = { var = global.date value = random_civil_war_neighbor_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.neighbor }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_sponsor_evidence_active has_variable = random_civil_war_sponsor_evidence_until check_variable = { var = global.date value = random_civil_war_sponsor_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.sponsor }
+		event021_clear_fracture_evidence = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_settlement_evidence_active has_variable = random_civil_war_settlement_evidence_until check_variable = { var = global.date value = random_civil_war_settlement_evidence_until compare = greater_than_or_equals } }
+		set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.settlement }
+		event021_clear_fracture_evidence = yes
+	}
+}
+
+event021_record_external_war_evidence = {
+	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.external_war }
+	set_temp_variable = { event021_evidence_strength = constant:random_civil_war_evidence_strength.acute }
+	set_temp_variable = { event021_evidence_duration = constant:event021_evidence_tuning.external_war_receipt_days }
+	event021_register_fracture_evidence = yes
+}
+
+event021_record_fury_evidence = {
+	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.fury }
+	set_temp_variable = { event021_evidence_strength = constant:random_civil_war_evidence_strength.acute }
+	set_temp_variable = { event021_evidence_duration = constant:event021_evidence_tuning.fury_receipt_days }
+	event021_register_fracture_evidence = yes
+}
+
+event021_record_neighbor_evidence = {
+	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.neighbor }
+	set_temp_variable = { event021_evidence_strength = constant:random_civil_war_evidence_strength.credible }
+	set_temp_variable = { event021_evidence_duration = constant:event021_evidence_tuning.neighbor_receipt_days }
+	event021_register_fracture_evidence = yes
+}
+
+event021_record_sponsor_commitment = {
+	set_country_flag = random_civil_war_sponsor_commitment_active
+	set_variable = { random_civil_war_sponsor_commitment_start_date = global.date }
+	if = { limit = { has_variable = event021_sponsor_id } set_variable = { random_civil_war_sponsor_id = event021_sponsor_id } }
+	if = { limit = { has_variable = event021_recipient_id } set_variable = { random_civil_war_sponsor_recipient_id = event021_recipient_id } }
+	if = { limit = { has_variable = event021_front_id } set_variable = { random_civil_war_sponsor_front_id = event021_front_id } }
+	if = { limit = { has_variable = event021_support_amount } set_variable = { random_civil_war_sponsor_support_amount = event021_support_amount } }
+	if = { limit = { has_variable = event021_sponsor_duration } set_variable = { random_civil_war_sponsor_commitment_until = global.date } add_to_variable = { random_civil_war_sponsor_commitment_until = event021_sponsor_duration } }
+	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.sponsor }
+	set_temp_variable = { event021_evidence_strength = constant:random_civil_war_evidence_strength.credible }
+	set_temp_variable = { event021_evidence_duration = constant:event021_evidence_tuning.sponsor_receipt_days }
+	event021_register_fracture_evidence = yes
+}

@@ -1,0 +1,1004 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 RANDOM CIVIL WAR LIFECYCLE EFFECTS
+# ============================================================================
+# This file owns the small lifecycle bridge that cannot live in the core
+# pressure/authority file without coupling it to parent-owned scheduling.
+#
+# Contracts in this file are intentionally bounded:
+# - target membership is reconciled only for the current country and uses the
+#   existing country candidate flag as its idempotent receipt;
+# - annex teardown removes only rows that identify the current country or its
+#   Event 021 crisis host, while an explicit successor transaction rebinds
+#   surviving host-linked rows instead of unregistering them;
+# - aligned front arrays are removed by one shared row index in reverse order;
+# - the Event 006 adapter cleanup clears only Event 021 bridge state and keeps
+#   Event 006 package identity/content state intact.
+#
+# No world iterator, new tuning constant, balance choice, or Event 006 normal
+# lifecycle call is introduced here.
+# ============================================================================
+
+# COUNTRY scope. Recomputes the current country's automatic target weight and
+# reconciles one live target-count receipt. The existing
+# `random_civil_war_target_pool_candidate` country flag is the receipt: a
+# transition from absent to valid increments the global count once, while a
+# transition from present to invalid decrements it once. The registered flag
+# and registry array are both required so an orphan country flag cannot enter
+# the bounded parent selection pool.
+event021_refresh_target_pool_membership = {
+	set_temp_variable = { event021_lifecycle_target_was_member = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_country_flag = random_civil_war_target_pool_candidate }
+		set_temp_variable = { event021_lifecycle_target_was_member = constant:random_civil_war_value.one }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.random_civil_war_live_target_count } }
+		set_variable = { global.random_civil_war_live_target_count = constant:random_civil_war_value.zero }
+	}
+	if = {
+		limit = { random_civil_war_is_normal_human_country = yes }
+		event021_random_civil_war_prepare_target = yes
+	}
+	else = {
+		set_variable = { random_civil_war_target_weight = constant:random_civil_war_target_weight.minimum }
+		clr_country_flag = random_civil_war_target_pool_candidate
+	}
+	if = {
+		limit = {
+			random_civil_war_is_normal_human_country = yes
+			has_country_flag = random_civil_war_global_registered
+			is_in_array = {
+				array = global.random_civil_war_registered_countries
+				value = THIS
+			}
+			random_civil_war_country_can_be_automatic_target = yes
+			has_country_flag = random_civil_war_target_pool_candidate
+			check_variable = {
+				var = random_civil_war_target_weight
+				value = constant:random_civil_war_target_weight.minimum
+				compare = greater_than
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_target_was_member
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+			}
+			add_to_variable = { global.random_civil_war_live_target_count = constant:random_civil_war_value.one }
+		}
+	}
+	else = {
+		set_variable = { random_civil_war_target_weight = constant:random_civil_war_target_weight.minimum }
+		clr_country_flag = random_civil_war_target_pool_candidate
+		clr_country_flag = random_civil_war_target_ready
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_target_was_member
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+				check_variable = {
+					var = global.random_civil_war_live_target_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+			subtract_from_variable = { global.random_civil_war_live_target_count = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Shared implementation for the on-annex lifecycle callback
+# and the Event 006 absorbed-adapter bridge. `event021_lifecycle_annexed_country`
+# is saved before any registry scope changes. The effect removes all matching
+# rows from each bounded registry in reverse order, repairs the three defined
+# country-queue cursors, and derives registry counts from the surviving rows.
+#
+# A front row matches when its actor is the disappearing country, when the
+# actor's `random_civil_war_crisis_host_scope` points to that country, or when
+# an optional parent `front_hosts` row points to it. In an on-annex callback,
+# ROOT is accepted as a successor only when it carries `successor_claimed` and
+# its `host_country_scope` still points to this FROM country. Host-linked rows
+# are then rebound to ROOT, including surviving actor host pointers and the
+# optional host row; actor/role receipts are not cleared. Without that exact
+# proof, host-linked rows are removed as ordinary annex teardown. This keeps a
+# same-crisis succession from silently orphaning or unregistering its fronts.
+#
+# Event 006 identity flags/variables and all `independence_wave_*` package
+# state are deliberately left intact. Adapter-only bridge flags are cleared
+# by `event021_cleanup_absorbed_event6_adapter` after this effect returns.
+event021_handle_annexed_country = {
+	save_event_target_as = event021_lifecycle_annexed_country
+	set_temp_variable = { event021_lifecycle_successor_transfer = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_lifecycle_annexed_crisis_present = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_lifecycle_annexed_crisis_id = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_variable = random_civil_war_crisis_id }
+		set_temp_variable = { event021_lifecycle_annexed_crisis_present = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_annexed_crisis_id = random_civil_war_crisis_id }
+	}
+	# The on_annex contract is ROOT = annexer and FROM = annexed country. A
+	# successor transfer is accepted only when ROOT is the explicitly promoted
+	# successor, its host pointer still names this FROM country, and both sides
+	# carry the same nonmissing crisis id. A direct helper call, or an unrelated
+	# annexation by a country with no matching predecessor pointer/crisis receipt,
+	# remains teardown-only.
+	ROOT = {
+		if = {
+			limit = {
+				exists = yes
+				has_country_flag = random_civil_war_successor_claimed
+				has_variable = random_civil_war_host_country_scope
+				has_variable = random_civil_war_crisis_id
+				check_variable = {
+					var = event021_lifecycle_annexed_crisis_present
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+				check_variable = {
+					var = random_civil_war_crisis_id
+					value = event021_lifecycle_annexed_crisis_id
+					compare = equals
+				}
+				var:random_civil_war_host_country_scope = {
+					tag = event_target:event021_lifecycle_annexed_country
+				}
+			}
+			save_event_target_as = event021_lifecycle_successor
+			set_temp_variable = { event021_lifecycle_successor_transfer = constant:random_civil_war_value.one }
+		}
+	}
+	set_temp_variable = { event021_lifecycle_target_was_member = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_country_flag = random_civil_war_target_pool_candidate }
+		set_temp_variable = { event021_lifecycle_target_was_member = constant:random_civil_war_value.one }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.random_civil_war_live_target_count } }
+		set_variable = { global.random_civil_war_live_target_count = constant:random_civil_war_value.zero }
+	}
+	set_variable = { random_civil_war_target_weight = constant:random_civil_war_target_weight.minimum }
+	clr_country_flag = random_civil_war_target_pool_candidate
+	clr_country_flag = random_civil_war_target_ready
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_target_was_member
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+			check_variable = {
+				var = global.random_civil_war_live_target_count
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_variable = { global.random_civil_war_live_target_count = constant:random_civil_war_value.one }
+	}
+
+	# Remove the disappearing country from the persistent review registry.
+	if = {
+		limit = { NOT = { has_variable = global.random_civil_war_review_cursor } }
+		set_variable = { global.random_civil_war_review_cursor = constant:random_civil_war_value.zero }
+	}
+	if = {
+		limit = { NOT = { has_variable = global.random_civil_war_prefire_cursor } }
+		set_variable = { global.random_civil_war_prefire_cursor = constant:random_civil_war_value.zero }
+	}
+	set_temp_variable = { event021_lifecycle_registry_index = global.random_civil_war_registered_countries^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_registry_index
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { event021_lifecycle_registry_index = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.zero }
+		var:global.random_civil_war_registered_countries^event021_lifecycle_registry_index = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_remove_row
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			remove_from_array = {
+				array = global.random_civil_war_registered_countries
+				index = event021_lifecycle_registry_index
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.random_civil_war_review_cursor
+						value = event021_lifecycle_registry_index
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { global.random_civil_war_review_cursor = constant:random_civil_war_value.one }
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.random_civil_war_prefire_cursor
+						value = event021_lifecycle_registry_index
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { global.random_civil_war_prefire_cursor = constant:random_civil_war_value.one }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.random_civil_war_review_cursor
+				value = global.random_civil_war_registered_countries^num
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_review_cursor = constant:random_civil_war_value.zero }
+	}
+	clr_country_flag = random_civil_war_global_registered
+
+	# Remove the disappearing country from the Critical queue and repair its
+	# cursor. The count is reset from the surviving array, including the empty
+	# queue case.
+	if = {
+		limit = { NOT = { has_variable = global.random_civil_war_critical_cursor } }
+		set_variable = { global.random_civil_war_critical_cursor = constant:random_civil_war_value.zero }
+	}
+	set_temp_variable = { event021_lifecycle_registry_index = global.random_civil_war_critical_queue^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_registry_index
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { event021_lifecycle_registry_index = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.zero }
+		var:global.random_civil_war_critical_queue^event021_lifecycle_registry_index = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_remove_row
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			remove_from_array = {
+				array = global.random_civil_war_critical_queue
+				index = event021_lifecycle_registry_index
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.random_civil_war_critical_cursor
+						value = event021_lifecycle_registry_index
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { global.random_civil_war_critical_cursor = constant:random_civil_war_value.one }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.random_civil_war_critical_cursor
+				value = global.random_civil_war_critical_queue^num
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_critical_cursor = constant:random_civil_war_value.zero }
+	}
+	set_variable = { global.random_civil_war_critical_queue_count = global.random_civil_war_critical_queue^num }
+	clr_country_flag = random_civil_war_critical_queued
+
+	# The prefire cursor was repaired alongside the review cursor during the
+	# reverse removal pass. Only its empty/end-of-array wrap remains here.
+	if = {
+		limit = {
+			check_variable = {
+				var = global.random_civil_war_prefire_cursor
+				value = global.random_civil_war_registered_countries^num
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { global.random_civil_war_prefire_cursor = constant:random_civil_war_value.zero }
+	}
+
+	# Remove exposure and CXT registry rows without touching Event 006 package
+	# state. These registries have no cursors and no independent row counters.
+	set_temp_variable = { event021_lifecycle_registry_index = global.random_civil_war_exposed_countries^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_registry_index
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { event021_lifecycle_registry_index = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.zero }
+		var:global.random_civil_war_exposed_countries^event021_lifecycle_registry_index = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_remove_row
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			remove_from_array = {
+				array = global.random_civil_war_exposed_countries
+				index = event021_lifecycle_registry_index
+			}
+		}
+	}
+	clr_country_flag = random_civil_war_exposure_active
+
+	set_temp_variable = { event021_lifecycle_registry_index = global.random_civil_war_cxt_extension_countries^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_registry_index
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { event021_lifecycle_registry_index = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.zero }
+		var:global.random_civil_war_cxt_extension_countries^event021_lifecycle_registry_index = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_remove_row
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			remove_from_array = {
+				array = global.random_civil_war_cxt_extension_countries
+				index = event021_lifecycle_registry_index
+			}
+		}
+	}
+	clr_country_flag = random_civil_war_cxt_extension_registered
+	clr_country_flag = random_civil_war_setup_carrier_pending
+	clr_country_flag = random_civil_war_setup_carrier_consumed
+
+	# Remove the disappearing host from the theater registry provisionally. If
+	# this is the explicit ROOT/FROM successor transaction and a surviving front
+	# row is rebound below, the successor is reinserted as the theater host.
+	set_temp_variable = { event021_lifecycle_registry_index = global.random_civil_war_active_theaters^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_registry_index
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { event021_lifecycle_registry_index = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.zero }
+		var:global.random_civil_war_active_theaters^event021_lifecycle_registry_index = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				set_temp_variable = { event021_lifecycle_remove_row = constant:random_civil_war_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_remove_row
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			remove_from_array = {
+				array = global.random_civil_war_active_theaters
+				index = event021_lifecycle_registry_index
+			}
+		}
+	}
+	clr_country_flag = random_civil_war_theater_registered
+
+	# Remove every front row whose actor or crisis host is the disappearing
+	# country. The core three arrays and all optional parent metadata arrays are
+	# removed at the same index. Optional arrays may be empty in a partially
+	# initialized save, so each removal is guarded by that array's row count.
+	set_temp_variable = { event021_lifecycle_rebound_front_count = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_lifecycle_registry_index = global.random_civil_war_front_ids^num }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_registry_index
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		subtract_from_temp_variable = { event021_lifecycle_registry_index = constant:random_civil_war_value.one }
+		set_temp_variable = { event021_lifecycle_front_row_matches = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_front_actor_is_annexed = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_front_actor_present = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_front_state_present = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_front_host_linked = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_front_host_row_matches = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_front_row_rebound = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_lifecycle_removed_front_id = constant:random_civil_war_value.zero }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_front_ids^num
+					value = event021_lifecycle_registry_index
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { event021_lifecycle_removed_front_id = global.random_civil_war_front_ids^event021_lifecycle_registry_index }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_front_actors^num
+					value = event021_lifecycle_registry_index
+					compare = greater_than
+				}
+			}
+			var:global.random_civil_war_front_actors^event021_lifecycle_registry_index = {
+				set_temp_variable = { event021_lifecycle_front_actor_present = constant:random_civil_war_value.one }
+				save_event_target_as = event021_lifecycle_front_actor
+				if = {
+					limit = { tag = event_target:event021_lifecycle_annexed_country }
+					set_temp_variable = { event021_lifecycle_front_row_matches = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_lifecycle_front_actor_is_annexed = constant:random_civil_war_value.one }
+				}
+				if = {
+					limit = {
+						has_variable = random_civil_war_crisis_host_scope
+						var:random_civil_war_crisis_host_scope = {
+							tag = event_target:event021_lifecycle_annexed_country
+						}
+					}
+					set_temp_variable = { event021_lifecycle_front_row_matches = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_lifecycle_front_host_linked = constant:random_civil_war_value.one }
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_front_hosts^num
+					value = event021_lifecycle_registry_index
+					compare = greater_than
+				}
+			}
+			var:global.random_civil_war_front_hosts^event021_lifecycle_registry_index = {
+				if = {
+					limit = { tag = event_target:event021_lifecycle_annexed_country }
+					set_temp_variable = { event021_lifecycle_front_row_matches = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_lifecycle_front_host_linked = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_lifecycle_front_host_row_matches = constant:random_civil_war_value.one }
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_front_states^num
+					value = event021_lifecycle_registry_index
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { event021_lifecycle_front_state_present = constant:random_civil_war_value.one }
+			var:global.random_civil_war_front_states^event021_lifecycle_registry_index = {
+				save_event_target_as = event021_lifecycle_removed_front_state
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_lifecycle_front_row_matches
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = event021_lifecycle_successor_transfer
+						value = constant:random_civil_war_value.one
+						compare = equals
+					}
+					check_variable = {
+						var = event021_lifecycle_front_host_linked
+						value = constant:random_civil_war_value.one
+						compare = equals
+					}
+					check_variable = {
+						var = event021_lifecycle_front_actor_is_annexed
+						value = constant:random_civil_war_value.zero
+						compare = equals
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_lifecycle_front_actor_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+					event_target:event021_lifecycle_front_actor = {
+						if = {
+							limit = {
+								has_variable = random_civil_war_crisis_host_scope
+								var:random_civil_war_crisis_host_scope = {
+									tag = event_target:event021_lifecycle_annexed_country
+								}
+							}
+							set_variable = { random_civil_war_crisis_host_scope = event_target:event021_lifecycle_successor }
+						}
+						if = {
+							limit = {
+								has_variable = random_civil_war_host_country_scope
+								var:random_civil_war_host_country_scope = {
+									tag = event_target:event021_lifecycle_annexed_country
+								}
+							}
+							set_variable = { random_civil_war_host_country_scope = event_target:event021_lifecycle_successor }
+						}
+						if = {
+							limit = { tag = event_target:event021_lifecycle_successor }
+							if = {
+								limit = {
+									has_variable = random_civil_war_immediate_opponent_scope
+									var:random_civil_war_immediate_opponent_scope = {
+										tag = event_target:event021_lifecycle_annexed_country
+									}
+								}
+								clear_variable = random_civil_war_immediate_opponent_scope
+							}
+						}
+						else = {
+							if = {
+								limit = {
+									has_variable = random_civil_war_immediate_opponent_scope
+									var:random_civil_war_immediate_opponent_scope = {
+										tag = event_target:event021_lifecycle_annexed_country
+									}
+								}
+								set_variable = { random_civil_war_immediate_opponent_scope = event_target:event021_lifecycle_successor }
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_lifecycle_front_host_row_matches
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+					remove_from_array = {
+						array = global.random_civil_war_front_hosts
+						index = event021_lifecycle_registry_index
+					}
+					add_to_array = {
+						array = global.random_civil_war_front_hosts
+						value = event_target:event021_lifecycle_successor
+						index = event021_lifecycle_registry_index
+					}
+				}
+				set_temp_variable = { event021_lifecycle_front_row_rebound = constant:random_civil_war_value.one }
+				add_to_temp_variable = { event021_lifecycle_rebound_front_count = constant:random_civil_war_value.one }
+			}
+			else = {
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_lifecycle_front_row_rebound
+							value = constant:random_civil_war_value.zero
+							compare = equals
+						}
+						check_variable = {
+							var = event021_lifecycle_front_state_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+						has_event_target = random_civil_war_priority_front_state
+					}
+					event_target:random_civil_war_priority_front_state = {
+						if = {
+							limit = { state = event_target:event021_lifecycle_removed_front_state }
+							clear_global_event_target = random_civil_war_priority_front_state
+							clr_global_flag = random_civil_war_priority_front_active
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_lifecycle_front_state_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+						has_event_target = random_civil_war_global_anchor_state
+					}
+					event_target:random_civil_war_global_anchor_state = {
+						if = {
+							limit = { state = event_target:event021_lifecycle_removed_front_state }
+							clear_global_event_target = random_civil_war_global_anchor_state
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_lifecycle_front_actor_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+						check_variable = {
+							var = event021_lifecycle_front_actor_is_annexed
+							value = constant:random_civil_war_value.zero
+							compare = equals
+						}
+					}
+					event_target:event021_lifecycle_front_actor = {
+						clr_country_flag = random_civil_war_front_registered
+						if = {
+							limit = {
+								has_variable = random_civil_war_front_id
+								check_variable = {
+									var = random_civil_war_front_id
+									value = event021_lifecycle_removed_front_id
+									compare = equals
+								}
+							}
+							clear_variable = random_civil_war_front_id
+							clear_variable = random_civil_war_front_registered_date
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.random_civil_war_front_ids^num
+							value = event021_lifecycle_registry_index
+							compare = greater_than
+						}
+					}
+					remove_from_array = {
+						array = global.random_civil_war_front_ids
+						index = event021_lifecycle_registry_index
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.random_civil_war_front_actors^num
+							value = event021_lifecycle_registry_index
+							compare = greater_than
+						}
+					}
+					remove_from_array = {
+						array = global.random_civil_war_front_actors
+						index = event021_lifecycle_registry_index
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.random_civil_war_front_states^num
+							value = event021_lifecycle_registry_index
+							compare = greater_than
+						}
+					}
+					remove_from_array = {
+						array = global.random_civil_war_front_states
+						index = event021_lifecycle_registry_index
+					}
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_hosts^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_hosts index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_capitals^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_capitals index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_generations^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_generations index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_crisis_ids^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_crisis_ids index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_archetypes^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_archetypes index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_route_sources^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_route_sources index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_package_ids^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_package_ids index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_region_counts^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_region_counts index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_goals^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_goals index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_statuses^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_statuses index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_settlements^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_settlements index = event021_lifecycle_registry_index }
+				}
+				if = {
+					limit = { check_variable = { var = global.random_civil_war_front_registered_dates^num value = event021_lifecycle_registry_index compare = greater_than } }
+					remove_from_array = { array = global.random_civil_war_front_registered_dates index = event021_lifecycle_registry_index }
+				}
+				}
+		}
+	}
+	set_variable = { global.random_civil_war_active_front_count = global.random_civil_war_front_ids^num }
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_lifecycle_successor_transfer
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+			check_variable = {
+				var = event021_lifecycle_rebound_front_count
+				value = constant:random_civil_war_value.zero
+				compare = greater_than
+			}
+		}
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.random_civil_war_active_theaters
+						value = event_target:event021_lifecycle_successor
+					}
+				}
+			}
+			add_to_array = {
+				array = global.random_civil_war_active_theaters
+				value = event_target:event021_lifecycle_successor
+			}
+		}
+		event_target:event021_lifecycle_successor = {
+			set_country_flag = random_civil_war_theater_registered
+		}
+	}
+	set_variable = { global.random_civil_war_active_theater_count = global.random_civil_war_active_theaters^num }
+	clr_country_flag = random_civil_war_front_registered
+
+	# These global pointers are cleared only when they point at the disappearing
+	# country. The explicit successor transaction rebinds only the host pointer;
+	# other theaters retain their own actor, launch, and exposure pointers.
+	if = {
+		limit = { has_event_target = random_civil_war_global_host_country }
+		event_target:random_civil_war_global_host_country = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_lifecycle_successor_transfer
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+					event_target:event021_lifecycle_successor = {
+						save_global_event_target_as = random_civil_war_global_host_country
+					}
+				}
+				else = { clear_global_event_target = random_civil_war_global_host_country }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_global_opposition_actor }
+		event_target:random_civil_war_global_opposition_actor = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				clear_global_event_target = random_civil_war_global_opposition_actor
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_launch_target }
+		event_target:random_civil_war_launch_target = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				clear_global_event_target = random_civil_war_launch_target
+				clr_global_flag = random_civil_war_launch_in_progress
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_exposure_source_country }
+		event_target:random_civil_war_exposure_source_country = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				clear_global_event_target = random_civil_war_exposure_source_country
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = random_civil_war_scenario_target }
+		event_target:random_civil_war_scenario_target = {
+			if = {
+				limit = { tag = event_target:event021_lifecycle_annexed_country }
+				clear_global_event_target = random_civil_war_scenario_target
+			}
+		}
+	}
+
+	# Event 021 transient country state. Durable settlement, recurrence,
+	# generation, achievement, and Event 006 identity receipts are retained.
+	# `random_civil_war_event6_origin` is only the transient selected
+	# actor/front-role receipt and is intentionally cleared here. The durable
+	# canonical Event 006 origin receipt is `random_civil_war_event6_origin_recorded`
+	# and is not cleared by this lifecycle helper.
+	clr_country_flag = random_civil_war_active
+	clr_country_flag = random_civil_war_government_side
+	clr_country_flag = random_civil_war_opposition_side
+	clr_country_flag = random_civil_war_opposition_actor
+	clr_country_flag = random_civil_war_sponsor_side
+	clr_country_flag = random_civil_war_plan_owner
+	clr_country_flag = random_civil_war_target_reserved
+	clr_country_flag = random_civil_war_plan_committed
+	clr_country_flag = random_civil_war_generation_seeded
+	clr_country_flag = random_civil_war_exposure_active
+	clr_country_flag = random_civil_war_same_tag_route_active
+	clr_country_flag = random_civil_war_same_tag_contest_active
+	clr_country_flag = random_civil_war_critical_queued
+	clr_country_flag = random_civil_war_cleanup_requested
+	clr_country_flag = random_civil_war_cleanup_lock
+	clr_country_flag = random_civil_war_opening_transfer_pending
+	clr_country_flag = random_civil_war_parent_plan_valid
+	clr_country_flag = random_civil_war_plan_rejected
+	clr_country_flag = random_civil_war_cluster_target_reserved
+	clr_country_flag = random_civil_war_event021_cluster_reservation_consumed
+	clr_country_flag = random_civil_war_target_ready
+	clr_country_flag = random_civil_war_scenario_bypass_active
+	clr_country_flag = random_civil_war_scenario_target_confirmed
+	clr_country_flag = random_civil_war_event6_origin
+	clr_country_flag = random_civil_war_event6_host_side
+	clr_country_flag = random_civil_war_event6_front_active
+	clr_country_flag = random_civil_war_event6_secondary_host_side
+	clr_country_flag = random_civil_war_event6_secondary_front_active
+	clr_country_flag = random_civil_war_event6_route_reserved
+	clr_country_flag = random_civil_war_event6_secondary_front_attempted
+	clr_country_flag = random_civil_war_event6_secondary_front_rejected
+	clr_country_flag = random_civil_war_event6_dormant_route_ready
+	clr_country_flag = random_civil_war_event6_adapter_complete
+	clr_country_flag = random_civil_war_origin_adapter_complete
+	clr_country_flag = random_civil_war_event6_package_admission_ready
+	clr_country_flag = random_civil_war_event6_identity_candidate_ready
+	clr_country_flag = random_civil_war_event6_adapter_preparing
+	clr_country_flag = random_civil_war_secondary_front_active
+	clr_country_flag = random_civil_war_multifront_active
+	clr_country_flag = random_civil_war_ideological_route_reserved
+	clr_country_flag = random_civil_war_legal_route_reserved
+	clr_country_flag = random_civil_war_regional_route_reserved
+	clr_country_flag = random_civil_war_command_route_reserved
+	clr_country_flag = random_civil_war_neighbor_exposure
+	clr_country_flag = random_civil_war_land_border_exposure_ready
+	clr_country_flag = random_civil_war_maritime_exposure_ready
+	clr_country_flag = random_civil_war_network_exposure_ready
+	clr_country_flag = random_civil_war_neighbor_armed_support
+	clr_country_flag = random_civil_war_civilian_relief_available
+	clr_country_flag = random_civil_war_theater_registered
+	clr_country_flag = random_civil_war_front_registered
+	clr_country_flag = random_civil_war_global_registered
+	clr_country_flag = random_civil_war_cxt_extension_registered
+	clr_country_flag = random_civil_war_setup_carrier_pending
+	clr_country_flag = random_civil_war_setup_carrier_consumed
+
+	clear_variable = random_civil_war_next_review_date
+	clear_variable = random_civil_war_target_reservation_date
+	clear_variable = random_civil_war_front_id
+	clear_variable = random_civil_war_front_registered_date
+	clear_variable = random_civil_war_crisis_id
+	clear_variable = random_civil_war_crisis_start_date
+	clear_variable = random_civil_war_opening_severity
+	clear_variable = random_civil_war_critical_queue_date
+	clear_variable = random_civil_war_scenario_start_date
+	clear_variable = random_civil_war_scenario_batch_deadline
+	clear_variable = random_civil_war_anchor_state
+	clear_variable = random_civil_war_front_goal
+	clear_variable = random_civil_war_archetype
+	clear_variable = random_civil_war_crisis_host_scope
+	clear_variable = random_civil_war_host_country_scope
+	clear_variable = random_civil_war_immediate_opponent_scope
+	clear_variable = random_civil_war_opposition_actor_scope
+	clear_variable = random_civil_war_generation_before_plan
+	clear_variable = random_civil_war_same_tag_start_date
+	clear_variable = random_civil_war_exposure_stage
+	clear_variable = random_civil_war_exposure_cooldown_until
+	clear_variable = random_civil_war_parent_log_payload
+	clear_variable = random_civil_war_event6_candidate_region
+	clear_variable = random_civil_war_event6_candidate_depth
+	clear_variable = random_civil_war_event6_candidate_archetype
+	clear_variable = random_civil_war_event6_opening_state_count
+	clear_variable = random_civil_war_event6_secondary_actor_scope
+	clear_variable = random_civil_war_event6_previous_generation
+	clear_variable = random_civil_war_opening_size
+	clear_variable = random_civil_war_opening_army_ratio
+	clear_variable = random_civil_war_opening_navy_ratio
+	clear_variable = random_civil_war_opening_air_ratio
+	clear_variable = random_civil_war_target_weight
+}
+
+# COUNTRY scope on an Event 006 adapter member authorized for formable
+# absorption. The caller has already proved the Event 006 consent/package
+# contract. This effect intentionally reuses the narrow Event 021 cleanup but
+# never calls `event021_cleanup_crisis` or an Event 006 normal-origin cleanup:
+# the former clears Event 006 identity, while the latter mutates Event 006's
+# active-origin lifecycle. Package ids, identity/origin receipts, and all
+# `independence_wave_*` content state survive this bridge cleanup.
+event021_cleanup_absorbed_event6_adapter = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_event6_adapter_complete
+				has_country_flag = random_civil_war_origin_adapter_complete
+				has_country_flag = random_civil_war_event6_adapter_preparing
+				has_country_flag = independence_wave_event021_adapter_setup_proven
+				has_country_flag = independence_wave_event6_adapter_package_ready
+			}
+		}
+		event021_handle_annexed_country = yes
+		clr_country_flag = random_civil_war_event6_adapter_complete
+		clr_country_flag = random_civil_war_origin_adapter_complete
+		clr_country_flag = random_civil_war_event6_package_admission_ready
+		clr_country_flag = random_civil_war_event6_identity_candidate_ready
+		clr_country_flag = random_civil_war_event6_adapter_preparing
+		clr_country_flag = independence_wave_event6_adapter_package_ready
+		clr_country_flag = independence_wave_event021_adapter_setup_proven
+	}
+}

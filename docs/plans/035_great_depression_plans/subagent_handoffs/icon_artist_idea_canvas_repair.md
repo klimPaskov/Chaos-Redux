@@ -1,8 +1,10 @@
 # Event 35 Idea Canvas Repair Handoff
 
+Status: historical first-pass canvas repair evidence. The original ten preserved candidates and the two flagged source compositions recorded below were superseded by the scoped source-specific readability replacement documented in `icon_artist_idea_readability_repair.md`.
+
 ## Result
 
-The 12 Event 35 idea/national-spirit textures were repaired from their own preserved source masters to the installed vanilla national-spirit canvas size of exactly 60x68. Ten are `repaired_ready_for_parent_review`; `legacy_public_works` and `post_depression_recovery` are `repaired_needs_user_review` because the source subjects remain dark or short at readable review scale. None are blocked.
+The first pass repaired all 12 Event 35 idea/national-spirit textures from their own preserved source masters to the installed vanilla national-spirit canvas size of exactly 60x68. Ten were `repaired_ready_for_parent_review`; `legacy_public_works` and `post_depression_recovery` were `repaired_needs_user_review` because the original source subjects remained dark or short at readable review scale. Those two are no longer the runtime candidates; their replacement status and current hashes are recorded in `icon_artist_idea_readability_repair.md`.
 
 The runtime basenames, sprite names, texture paths, and existing GFX wiring remain unchanged. The parent should keep wiring unchanged and own the final live-consumer review.
 
@@ -14,7 +16,7 @@ The active consumer is the installed vanilla `interface/countrydiplomacyview.gui
 
 Each candidate uses only its matching source master under `docs/assets/035_great_depression/source/conditions`. The source masters were not modified. The repair selected the visible alpha bounds using alpha greater than 8, added a two-source-pixel edge guard without deleting source pixels, and fit the result aspect-preservingly with premultiplied-alpha Lanczos into a centered 56x64 inner box on a transparent 60x68 canvas. This leaves a transparent two-pixel outer guard and avoids matte fringes.
 
-No decision, mission, state-modifier, evolution, achievement, or unrelated idea art was substituted. No primitive redraw, recolour, fake checkerboard, opaque square, white halo, or clipped subject was introduced. The current repair did not run background removal or ImageGen; it is a source-based canvas correction. The earlier source-generation transparency fallback remains documented in `docs/assets/035_great_depression/notes/icon_alpha_qa.md`, with the original source evidence retained.
+No decision, mission, state-modifier, evolution, achievement, or unrelated idea art was substituted. No primitive redraw, recolour, fake checkerboard, opaque square, white halo, or clipped subject was introduced in this first pass. This first pass did not run background removal or ImageGen; it was a source-based canvas correction. The later two-icon replacement pass is separately documented in `icon_artist_idea_readability_repair.md`, including its targeted transparency fallback and preserved prior candidates.
 
 ## Technical validation
 
@@ -46,6 +48,8 @@ The source, corrected processed, runtime DDS, decoded round-trip, sprite, dimens
 | `idea_035_great_depression_scar_hollow_recovery` / `GFX_idea_035_great_depression_scar_hollow_recovery` | `docs/assets/035_great_depression/source/conditions/idea_035_great_depression_scar_hollow_recovery.png`<br>342x203; alpha 0-253; bounds [0,0,342,203]; SHA-256 `81880B3646E3763B03F3D320026FBEC672E927B2520ED0FD432C2E736020112F` | `docs/assets/035_great_depression/processed/conditions/idea_035_great_depression_scar_hollow_recovery.png`<br>60x68; alpha 0-255; bounds [2,17,58,50]; SHA-256 `D5DE7D115032C1701E01039568169D964919DCCBB1D30D373090B0160CFD8BD3` | `gfx/interface/ideas/035_great_depression/idea_035_great_depression_scar_hollow_recovery.dds`<br>decoded `docs/assets/035_great_depression/audit/idea_canvas_repair/decoded_runtime_dds/idea_035_great_depression_scar_hollow_recovery.png`<br>60x68; 16,448 bytes; alpha 0-255; bounds [2,17,58,50]; SHA-256 `EBC295E7428AD426D3F137D0AE237BE5391D45766D227B1461440BC5B26BE1CC` | Technical pass; transparent corners; processed/runtime decode identical; visually readable. |
 
 ## Parent follow-up
+
+The ten unaffected rows below remain valid first-pass evidence. For the final runtime state of `legacy_public_works` and `post_depression_recovery`, use the later replacement handoff and the current `icon_manifest.json`, not the historical hashes in this table.
 
 1. Review `native_contact_sheet.png`, `enlarged_review_sheet.png`, and `contrast_review_sheet.png`, with particular attention to the two flagged subjects.
 2. Keep all existing sprite names and texture paths unchanged. The post-promotion validator found all 12 existing GFX texture paths present, so no GFX edit is required for this canvas repair.

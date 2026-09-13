@@ -7,6 +7,7 @@ Event-owned orchestration, validation, adapters, and lifecycle helpers belong in
 ## table_of_contents
 
 - [calculate_economy_scaled_factory_grant](#calculate_economy_scaled_factory_grant)
+- [damage_state_building_dynamic](#damage_state_building_dynamic)
 - [damage_buildings_in_random_states](#damage_buildings_in_random_states)
 - [get_random_sea_region](#get_random_sea_region)
 - [clear_special_chaos_country_civilian_effects](#clear_special_chaos_country_civilian_effects)
@@ -41,6 +42,49 @@ set_temp_variable = { economy_scaled_factory_grant_min = 1 }
 set_temp_variable = { economy_scaled_factory_grant_cap = 5 }
 calculate_economy_scaled_factory_grant = yes
 ```
+
+## damage_state_building_dynamic
+
+Purpose: apply a caller-selected building type and numeric damage amount in the current state through `meta_effect`, which supplies literal damage text to `damage_building`.
+
+Scope: state.
+
+Inputs: required caller-set temporary variables `dynamic_building_damage_type`, containing a building token such as `token:infrastructure`, and `dynamic_building_damage_amount`, containing the numeric damage amount.
+The helper reads both inputs without changing them.
+
+Output: one native `damage_building` effect in the current state with the requested building type and amount.
+There is no output variable.
+
+Defaults: none.
+The caller must initialize both inputs before use in the same effect chain.
+The amount can be initialized once before a bounded group of calls when no intervening effect overwrites it.
+An unset input is a caller error, and zero is an explicit amount rather than an absence sentinel.
+The helper applies no explicit arithmetic rounding, clamp, scaling, repair modifier, or replacement amount.
+Numeric interpolation uses the engine default formatter, matching the existing shared damage helper.
+The current Acid Rain amount of one is preserved, while exact serialization of arbitrary fractional or large amounts requires separate runtime validation.
+
+Side effects: building damage only.
+The native effect retains its state-building lookup and, for province buildings, its search for the first matching province building in the current state.
+The helper performs no random selection or scope change and writes no variables, flags, or event targets.
+Temporary inputs last for the caller's effect chain, so no persistent cleanup is required.
+Callers must overwrite inputs before an independent operation that requires different values.
+
+Example, inside the state already selected by the caller:
+
+```txt
+set_temp_variable = { dynamic_building_damage_amount = acid_rain_damage_one }
+set_temp_variable = { dynamic_building_damage_type = token:infrastructure }
+damage_state_building_dynamic = yes
+set_temp_variable = { dynamic_building_damage_type = token:arms_factory }
+damage_state_building_dynamic = yes
+```
+
+Call sites: the building-damage loop in `common/scripted_effects/033_acid_rain_effects.txt`.
+Building selection, damage tuning, and eligibility remain caller-owned.
+
+References: vanilla `documentation/effects_documentation.md` sections `damage_building` and `meta_effect`, vanilla `common/scripted_effects/00_scripted_effects.txt` effect `SF_PARA_sabotage_effect`, and the building-token interpolation in `natural_disaster_damage_selected_building` in `common/scripted_effects/013_natural_disasters_effects.txt`.
+The shared `damage_buildings_in_random_states` helper uses the same unformatted numeric interpolation.
+The offline Data structures and Localisation pages document building tokens and `GetTokenKey`.
 
 ## damage_buildings_in_random_states
 

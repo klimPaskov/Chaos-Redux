@@ -844,18 +844,15 @@ camp_rework_germany_apply_prisoner_transfer = {
 		}
 		genocide_activate_crisis = yes
 		add_to_variable = { genocide_decisions_taken = 1 }
-		set_temp_variable = { camp_germany_transfer_death_percent = constant:camp_rework_death_percent.decision_minor }
 		set_temp_variable = { camp_germany_transfer_autonomy = constant:germany_mengele_permission.extermination_restricted }
 		set_temp_variable = { camp_germany_transfer_progress = constant:camp_rework_germany.hidden_project_progress_minor }
 		if = {
 			limit = { check_variable = { mengele_permission_level > constant:germany_mengele_permission.full } }
-			set_temp_variable = { camp_germany_transfer_death_percent = constant:camp_rework_death_percent.decision_severe }
 			set_temp_variable = { camp_germany_transfer_autonomy = constant:germany_mengele_permission.extermination_bypass }
 			set_temp_variable = { camp_germany_transfer_progress = constant:camp_rework_germany.hidden_project_progress_major }
 		}
 		else_if = {
 			limit = { check_variable = { mengele_permission_level = constant:germany_mengele_permission.full } }
-			set_temp_variable = { camp_germany_transfer_death_percent = constant:camp_rework_death_percent.decision_major }
 			set_temp_variable = { camp_germany_transfer_autonomy = constant:germany_mengele_permission.extermination_full }
 			set_temp_variable = { camp_germany_transfer_progress = constant:camp_rework_germany.hidden_project_progress_major }
 		}
@@ -865,10 +862,8 @@ camp_rework_germany_apply_prisoner_transfer = {
 			set_state_flag = genocide_foreign_experimentation_source
 			set_state_flag = genocide_atrocity_site_known_to_regime
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
-			set_temp_variable = { camp_rework_death_burst_percent = camp_germany_transfer_death_percent }
-			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-			camp_rework_apply_state_death_burst = yes
+			# Finite monthly custody/occupation accounting owns physical losses.
+			camp_admin_initialize_site = yes
 			camp_rework_register_evidence_state = yes
 			set_variable = {
 				migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
@@ -1399,10 +1394,8 @@ camp_rework_japan_apply_prisoner_experiment = {
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_japan.occupation_records_major }
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
 			camp_rework_register_active_site = yes
-			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_major }
-			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-			camp_rework_apply_state_death_burst = yes
+			# Finite monthly custody/occupation accounting owns physical losses.
+			camp_admin_initialize_site = yes
 			camp_rework_register_evidence_state = yes
 			if = {
 				limit = { check_variable = { genocide_camp_conversion_succeeded > 0 } }
@@ -1454,10 +1447,8 @@ camp_rework_japan_apply_outbreak_to_current_state = {
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.failure_evidence_gain }
 		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.experiment }
 		camp_rework_register_active_site = yes
-		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_severe }
-		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-		camp_rework_apply_state_death_burst = yes
+		# Finite monthly custody/occupation accounting owns physical losses.
+			camp_admin_initialize_site = yes
 		camp_rework_register_evidence_state = yes
 		set_temp_variable = { camp_japan_outbreak_state_selected = 1 }
 	}
@@ -1676,10 +1667,8 @@ camp_rework_japan_suppress_resistance_in_action_state = {
 			set_state_flag = genocide_atrocity_site_known_to_regime
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.detention }
 			camp_rework_register_active_site = yes
-			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
-			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-			camp_rework_apply_state_death_burst = yes
+			# Finite monthly custody/occupation accounting owns physical losses.
+			camp_admin_initialize_site = yes
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 			camp_rework_register_evidence_state = yes
 		}
@@ -2123,6 +2112,7 @@ camp_rework_soviet_update_famine = {
 			camp_rework_soviet_paranoia_medium = yes
 			check_variable = { grain_extraction_burden > 0 }
 			check_variable = { famine_pressure > 0 }
+			NOT = { has_country_flag = camp_admin_initialized }
 			NOT = { has_active_mission = sov_famine_pressure_cycle }
 		}
 		set_country_flag = camp_rework_soviet_famine_pressure_cycle_active
@@ -2312,10 +2302,8 @@ camp_rework_soviet_transfer_prisoners_to_industrial_camps_in_action_state = {
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.gulag }
 			camp_rework_register_active_site = yes
-			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
-			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.gulag_repression }
-			camp_rework_apply_state_death_burst = yes
+			# Finite monthly custody/occupation accounting owns physical losses.
+			camp_admin_initialize_site = yes
 			camp_rework_register_evidence_state = yes
 			set_variable = {
 				migration_persecution_pending_owner = constant:migration_persecution_owner_class.gulag
@@ -2331,7 +2319,7 @@ camp_rework_soviet_transfer_prisoners_to_industrial_camps_in_action_state = {
 	set_temp_variable = { camp_rework_soviet_requested_relief = constant:camp_rework_soviet.suppression_relief_minor }
 	camp_rework_soviet_apply_union_crisis_repression_bridge = yes
 	if = {
-		limit = { NOT = { has_active_mission = sov_gulag_quota_cycle } }
+		limit = { NOT = { has_country_flag = camp_admin_initialized } NOT = { has_active_mission = sov_gulag_quota_cycle } }
 		set_country_flag = camp_rework_soviet_gulag_quota_cycle_active
 		activate_mission = sov_gulag_quota_cycle
 	}
@@ -2393,7 +2381,7 @@ camp_rework_soviet_cancel_party_review = {
 
 camp_rework_soviet_release_prisoners_for_military_service = {
 	camp_rework_soviet_initialize_country_values = yes
-	add_manpower = constant:camp_rework_soviet.release_manpower
+	camp_admin_country_release_registered_prisoners = yes
 	add_to_variable = { forced_labor_quota = constant:camp_rework_soviet.quota_relief }
 	add_to_variable = { famine_pressure = constant:camp_rework_soviet.grain_relief }
 	add_to_variable = { old_movement_grievance = constant:camp_rework_soviet.quota_relief }

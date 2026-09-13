@@ -1,0 +1,55 @@
+# ============================================================================
+# EVENT 016 - KRG CLONE MATURATION TRANSACTION GATES
+# ============================================================================
+# Country scope throughout. Admission checks all four costs; begin callbacks
+# recheck only direct costs after native admission, independent of whether CIC
+# reservation precedes or follows that callback. Real site markers
+# are accepted from paid KRG designation or inherited Kruger Deployment.
+# ============================================================================
+
+brilliant_scientist_krg_clone_maturation_is_operational = {
+	brilliant_scientist_krg_decisions_are_active = yes
+	has_capitulated = no
+	brilliant_scientist_kruger_focus_cloning_is_operational = yes
+	has_tech = clone_infantry_access_tech
+	any_owned_state = {
+		is_controlled_by = PREV
+		OR = {
+			has_state_flag = brilliant_scientist_krg_clone_growth_site
+			has_state_flag = brilliant_scientist_cloning_growth_site
+		}
+	}
+}
+
+brilliant_scientist_krg_clone_maturation_receipt_is_current = {
+	has_country_flag = brilliant_scientist_krg_clone_maturation_paid
+	has_variable = brilliant_scientist_krg_clone_maturation_paid_pp
+	has_variable = brilliant_scientist_krg_clone_maturation_paid_support
+	has_variable = brilliant_scientist_krg_clone_maturation_paid_fuel
+	has_variable = brilliant_scientist_krg_clone_maturation_paid_output
+	check_variable = { var = brilliant_scientist_krg_clone_maturation_paid_pp value = constant:clone_maturation.zero compare = greater_than_or_equals }
+	check_variable = { var = brilliant_scientist_krg_clone_maturation_paid_support value = constant:clone_maturation.zero compare = greater_than_or_equals }
+	check_variable = { var = brilliant_scientist_krg_clone_maturation_paid_fuel value = constant:clone_maturation.zero compare = greater_than_or_equals }
+	check_variable = { brilliant_scientist_krg_clone_maturation_paid_output > constant:clone_maturation.zero }
+}
+
+brilliant_scientist_krg_clone_maturation_can_pay_direct = {
+	check_variable = { var = political_power value = constant:clone_maturation.political_power compare = greater_than_or_equals }
+	NOT = { has_equipment = { support_equipment < constant:clone_maturation.support_equipment } }
+	NOT = { has_fuel < constant:clone_maturation.fuel }
+}
+
+brilliant_scientist_krg_clone_maturation_can_pay = {
+	brilliant_scientist_krg_clone_maturation_can_pay_direct = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:clone_maturation.civilian_factories }
+}
+
+brilliant_scientist_krg_clone_maturation_requirements_met = {
+	brilliant_scientist_krg_clone_maturation_is_operational = yes
+	NOT = { has_country_flag = brilliant_scientist_krg_clone_maturation_paid }
+}
+
+brilliant_scientist_krg_clone_maturation_can_start = {
+	brilliant_scientist_krg_clone_maturation_requirements_met = yes
+	brilliant_scientist_krg_clone_maturation_can_pay = yes
+}

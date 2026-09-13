@@ -63,3 +63,7 @@ Runtime definitions are `gfx/entities/alien_infantry.gfx`, `gfx/entities/alien_i
 No unapproved simplifications were used for the requested body/rig/action/held-object repair.
 The inherited counter review and per-subunit selection-audio consumer limitation remain open; this tranche does not claim those unrelated completion gates passed.
 Visual proof samples exported action phases and exact firing frames; no live-game completion is claimed.
+
+Independent read-only audit by pilot_integration_audit passed with zero mismatches: 14 payload pairs, seven role chains, eight material streams, scale, muzzle markers, particle/light definitions, five runtime sound files and six preserved audio evidence pairs all matched their manifests.
+
+The shared-index commit 3a9f88923b included this completed runtime tranche while another task committed its Event006 receipts; the parent preserved that shared history and records the independent audit separately.

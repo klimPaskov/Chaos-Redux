@@ -22,5 +22,7 @@ The workbook remains the catalog authority for event, cluster, and scenario rows
 - Events 1 through 20 use `Needs Testing` until their current implementation has been approved as playable.
 - Events above Event 20 with an actual `chaosx.nr<ID>.1` root definition use `To Be Reworked` until their replacement implementation is approved.
 - Event IDs without an actual `chaosx.nr<ID>.1` root definition use `Unavailable`.
-- The `Legend` sheet is the source for valid dropdown values and the fill colors assigned to Type, Status, Member Severity, evolution, and World-End cells. Data validation, conditional formatting, and populated-cell fills must remain synchronized with it.
+- The `Legend` sheet is the source for valid dropdown values and the fill colors assigned to Type, Status, cluster-member Severity, evolution, and World-End cells. Data validation, conditional formatting, and populated-cell fills must remain synchronized with it.
+- The Events sheet stores every distinct cluster ID for an event as a comma-separated list and has no member-severity column.
+- Exact repeated membership slots and their severities live in Cluster Memberships, while Clusters presents the aligned aggregate member-ID and severity lists.
 - Catalog status does not change runtime registration or default enablement.

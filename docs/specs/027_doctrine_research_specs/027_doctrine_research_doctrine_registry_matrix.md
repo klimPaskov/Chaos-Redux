@@ -51,7 +51,7 @@ The event queries the registry at country scope. It does not run a recurring who
 | Army | Required | Current vanilla Army Grand Doctrines | Arbitrary registered tracks, commonly infantry, armor, combat support, and operations | Adopt one eligible Army Grand Doctrine or advance one valid Army subdoctrine track. | Exact one-level effect and banked mastery order. |
 | Navy | Required when available in current ruleset | Current vanilla Navy Grand Doctrines | Current naval tracks and subdoctrines | Adopt one eligible Navy Grand Doctrine or advance one valid naval track. | DLC topology, domain icon consumer, and naval AI strategy. |
 | Air | Required when available in current ruleset | Current vanilla Air Grand Doctrines | Current air tracks and subdoctrines | Adopt one eligible Air Grand Doctrine or advance one valid air track. | DLC topology and air AI strategy. |
-| Supported Special Forces content | Conditional | Include only when the installed graph exposes a compatible doctrine hierarchy | Use the installed track structure | Participate through its own adapter. | Current version and DLC model must be proven. |
+| Supported Special Forces content | Conditional | Include only when the installed graph exposes a compatible doctrine hierarchy | Use the installed track structure | Participate through its own adapter only in states with a provable branch-to-track identity; omit an ambiguous occupied-track state. | Current version and DLC model must be proven. |
 | Chaos Warfare | Required custom domain | Conditional `chaos_warfare` Grand Doctrine | Four project tracks with five mastery levels each | Respect establishment gates, then advance only through the owning mastery route. | Bypassing equipment, formation, policy, readiness, technology, or operation state. |
 | Future custom domain | Registry extension | Owner-defined | Owner-defined arbitrary track structure | Participate only after full adapter, AI, asset, and documentation coverage. | Incomplete callback surface or unsupported mastery semantics. |
 
@@ -101,6 +101,8 @@ The adapter can be enabled when all of these are proven:
 - DLC gate
 
 If current Special Forces content uses a different model, Event 027 should omit it until an owner-specific adapter is designed. The event should not translate it into Army mastery or generic experience.
+
+Current-ruleset disposition: the installed Special Forces graph permits the same eight subdoctrine identities in either of its two native tracks, while the exposed mastery readback is subdoctrine-wide. Event 027 therefore supports adoption, empty-track assignment, and active mastery when the selected track identity is unambiguous, including the case where only one native track is occupied. When both native tracks are occupied, Special Forces is explicitly absent from the Event 027 pool for that country state until an owner-specific identity proof exists. This is a fail-closed absence, not a fallback reward or a translation into another doctrine domain.
 
 ## Chaos Warfare adapter expectations
 

@@ -1,0 +1,119 @@
+common\scripted_effects\035_great_depression_effects.txt-1094-			# progress and completed receipts for the successor contract.
+common\scripted_effects\035_great_depression_effects.txt-1095-			clr_country_flag = great_depression_center_project_active
+common\scripted_effects\035_great_depression_effects.txt-1096-			clr_country_flag = great_depression_public_works_project_active
+common\scripted_effects\035_great_depression_effects.txt-1097-			set_country_flag = great_depression_center_transfer_disqualifier
+common\scripted_effects\035_great_depression_effects.txt-1098-			clr_country_flag = great_depression_center_selected
+common\scripted_effects\035_great_depression_effects.txt-1099-			clear_variable = great_depression_selected_center_state
+common\scripted_effects\035_great_depression_effects.txt-1100-			if = {
+common\scripted_effects\035_great_depression_effects.txt-1101-				limit = { has_variable = great_depression_center_transfer_count }
+common\scripted_effects\035_great_depression_effects.txt-1102-				add_to_variable = { great_depression_center_transfer_count = constant:great_depression_api.one }
+common\scripted_effects\035_great_depression_effects.txt-1103-			}
+common\scripted_effects\035_great_depression_effects.txt-1104-			else = {
+common\scripted_effects\035_great_depression_effects.txt-1105-				set_variable = { great_depression_center_transfer_count = constant:great_depression_api.one }
+common\scripted_effects\035_great_depression_effects.txt-1106-			}
+common\scripted_effects\035_great_depression_effects.txt-1107-		}
+common\scripted_effects\035_great_depression_effects.txt:1108:		great_depression_submit_humanitarian_center_pressure = yes
+common\scripted_effects\035_great_depression_effects.txt-1109-	}
+common\scripted_effects\035_great_depression_effects.txt-1110-}
+common\scripted_effects\035_great_depression_effects.txt-1111-
+common\scripted_effects\035_great_depression_effects.txt-1112-great_depression_process_center_transfers = {
+common\scripted_effects\035_great_depression_effects.txt-1113-	if = {
+common\scripted_effects\035_great_depression_effects.txt-1114-		limit = {
+common\scripted_effects\035_great_depression_effects.txt-1115-			has_variable = great_depression_center_state_ids^num
+common\scripted_effects\035_great_depression_effects.txt-1116-			check_variable = { var = great_depression_center_state_ids^num value = constant:great_depression_api.zero compare = greater_than }
+common\scripted_effects\035_great_depression_effects.txt-1117-		}
+common\scripted_effects\035_great_depression_effects.txt-1118-		for_loop_effect = {
+common\scripted_effects\035_great_depression_effects.txt-1119-			start = 0
+common\scripted_effects\035_great_depression_effects.txt-1120-			end = great_depression_center_state_ids^num
+common\scripted_effects\035_great_depression_effects.txt-1121-			value = great_depression_center_transfer_scan_index
+common\scripted_effects\035_great_depression_effects.txt-1122-			var:great_depression_center_state_ids^great_depression_center_transfer_scan_index = {
+--
+common\scripted_effects\035_great_depression_effects.txt-3621-		set_temp_variable = { great_depression_center_factory_loss_amount = constant:great_depression_scaling.state_loss_factory_cap }
+common\scripted_effects\035_great_depression_effects.txt-3622-		great_depression_record_center_factory_loss = yes
+common\scripted_effects\035_great_depression_effects.txt-3623-		set_state_flag = great_depression_center_loss_receipt
+common\scripted_effects\035_great_depression_effects.txt-3624-		set_state_flag = great_depression_center_hollowed
+common\scripted_effects\035_great_depression_effects.txt-3625-		set_state_flag = great_depression_center_abandoned
+common\scripted_effects\035_great_depression_effects.txt-3626-		set_state_flag = great_depression_center_scarred
+common\scripted_effects\035_great_depression_effects.txt-3627-		set_variable = { great_depression_center_stage = constant:great_depression_center_stage.scarred }
+common\scripted_effects\035_great_depression_effects.txt-3628-		set_variable = { great_depression_center_ledger_stage = constant:great_depression_center_stage.scarred }
+common\scripted_effects\035_great_depression_effects.txt-3629-		great_depression_write_center_stage_ledger = yes
+common\scripted_effects\035_great_depression_effects.txt-3630-		add_dynamic_modifier = { modifier = great_depression_center_hollowed }
+common\scripted_effects\035_great_depression_effects.txt-3631-		ROOT = {
+common\scripted_effects\035_great_depression_effects.txt-3632-			set_country_flag = great_depression_material_center_loss
+common\scripted_effects\035_great_depression_effects.txt-3633-			set_variable = { great_depression_last_center_loss_day = global.num_days }
+common\scripted_effects\035_great_depression_effects.txt-3634-		}
+common\scripted_effects\035_great_depression_effects.txt:3635:		great_depression_submit_humanitarian_center_pressure = yes
+common\scripted_effects\035_great_depression_effects.txt-3636-	}
+common\scripted_effects\035_great_depression_effects.txt-3637-}
+common\scripted_effects\035_great_depression_effects.txt-3638-
+common\scripted_effects\035_great_depression_effects.txt-3639-great_depression_expire_center_protection = {
+common\scripted_effects\035_great_depression_effects.txt-3640-	if = {
+common\scripted_effects\035_great_depression_effects.txt-3641-		limit = {
+common\scripted_effects\035_great_depression_effects.txt-3642-			has_state_flag = great_depression_center_protected
+common\scripted_effects\035_great_depression_effects.txt-3643-			has_variable = great_depression_center_protection_expiry_day
+common\scripted_effects\035_great_depression_effects.txt-3644-			check_variable = {
+common\scripted_effects\035_great_depression_effects.txt-3645-				var = great_depression_center_protection_expiry_day
+common\scripted_effects\035_great_depression_effects.txt-3646-				value = global.num_days
+common\scripted_effects\035_great_depression_effects.txt-3647-				compare = less_than_or_equals
+common\scripted_effects\035_great_depression_effects.txt-3648-			}
+common\scripted_effects\035_great_depression_effects.txt-3649-		}
+--
+common\scripted_effects\035_great_depression_incident_effects.txt-978-		set_country_flag = great_depression_social_response_failed
+common\scripted_effects\035_great_depression_incident_effects.txt-979-		set_variable = { great_depression_social_stage = constant:great_depression_social_stage.emergency_government }
+common\scripted_effects\035_great_depression_incident_effects.txt-980-	}
+common\scripted_effects\035_great_depression_incident_effects.txt-981-	if = {
+common\scripted_effects\035_great_depression_incident_effects.txt-982-		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.factory_occupation compare = equals } }
+common\scripted_effects\035_great_depression_incident_effects.txt-983-		great_depression_register_factory_occupation = yes
+common\scripted_effects\035_great_depression_incident_effects.txt-984-	}
+common\scripted_effects\035_great_depression_incident_effects.txt-985-	if = {
+common\scripted_effects\035_great_depression_incident_effects.txt-986-		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.nationwide_factory_occupation compare = equals } }
+common\scripted_effects\035_great_depression_incident_effects.txt-987-		great_depression_register_factory_occupation = yes
+common\scripted_effects\035_great_depression_incident_effects.txt-988-	}
+common\scripted_effects\035_great_depression_incident_effects.txt-989-	if = {
+common\scripted_effects\035_great_depression_incident_effects.txt-990-		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.hunger_riots compare = equals }
+common\scripted_effects\035_great_depression_incident_effects.txt-991-		}
+common\scripted_effects\035_great_depression_incident_effects.txt:992:		var:great_depression_incident_state = { great_depression_submit_humanitarian_center_pressure = yes }
+common\scripted_effects\035_great_depression_incident_effects.txt-993-		set_country_flag = great_depression_hunger_riots_observed
+common\scripted_effects\035_great_depression_incident_effects.txt-994-	}
+common\scripted_effects\035_great_depression_incident_effects.txt-995-	if = {
+common\scripted_effects\035_great_depression_incident_effects.txt-996-		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.security_force_refusal compare = equals } }
+common\scripted_effects\035_great_depression_incident_effects.txt-997-		set_country_flag = great_depression_security_force_refusal_observed
+common\scripted_effects\035_great_depression_incident_effects.txt-998-		clr_country_flag = great_depression_security_forces_deployed
+common\scripted_effects\035_great_depression_incident_effects.txt-999-	}
+common\scripted_effects\035_great_depression_incident_effects.txt-1000-	if = {
+common\scripted_effects\035_great_depression_incident_effects.txt-1001-		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.mutiny_refusal compare = equals } }
+common\scripted_effects\035_great_depression_incident_effects.txt-1002-		set_country_flag = great_depression_mutiny_refusal_observed
+common\scripted_effects\035_great_depression_incident_effects.txt-1003-		set_country_flag = great_depression_social_force_package_proof
+common\scripted_effects\035_great_depression_incident_effects.txt-1004-	}
+common\scripted_effects\035_great_depression_incident_effects.txt-1005-	if = {
+common\scripted_effects\035_great_depression_incident_effects.txt-1006-		limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.parallel_administration compare = equals } }
+--
+common\scripted_effects\035_great_depression_external_adapters.txt-1-# ============================================================================
+common\scripted_effects\035_great_depression_external_adapters.txt-2-# CHAOS REDUX - EVENT 035 EXTERNAL OWNER ADAPTERS
+common\scripted_effects\035_great_depression_external_adapters.txt-3-# ============================================================================
+common\scripted_effects\035_great_depression_external_adapters.txt-4-# Event 35 owns the economic crisis, but shared humanitarian systems own food,
+common\scripted_effects\035_great_depression_external_adapters.txt-5-# movement, occupation context, Deaths, condemnation, and environmental
+common\scripted_effects\035_great_depression_external_adapters.txt-6-# consequences. These state-local adapters submit only bounded pressure when
+common\scripted_effects\035_great_depression_external_adapters.txt-7-# the depression proves a material center failure or transfer. They never
+common\scripted_effects\035_great_depression_external_adapters.txt-8-# fabricate deaths, condemnation, war, contamination, or state damage.
+common\scripted_effects\035_great_depression_external_adapters.txt-9-# ============================================================================
+common\scripted_effects\035_great_depression_external_adapters.txt-10-
+common\scripted_effects\035_great_depression_external_adapters.txt-11-# STATE scope. ROOT is the active Event 35 country. A state receives at most
+common\scripted_effects\035_great_depression_external_adapters.txt-12-# one Event 35 famine request and one Event 35 migration request per crisis.
+common\scripted_effects\035_great_depression_external_adapters.txt-13-# The shared owners validate the state, controller, source, and request before
+common\scripted_effects\035_great_depression_external_adapters.txt-14-# changing their own ledgers.
+common\scripted_effects\035_great_depression_external_adapters.txt:15:great_depression_submit_humanitarian_center_pressure = {
+common\scripted_effects\035_great_depression_external_adapters.txt-16-	if = {
+common\scripted_effects\035_great_depression_external_adapters.txt-17-		limit = {
+common\scripted_effects\035_great_depression_external_adapters.txt-18-			humanitarian_state_is_valid = yes
+common\scripted_effects\035_great_depression_external_adapters.txt-19-			ROOT = {
+common\scripted_effects\035_great_depression_external_adapters.txt-20-				great_depression_active_crisis_is_coherent = yes
+common\scripted_effects\035_great_depression_external_adapters.txt-21-				check_variable = {
+common\scripted_effects\035_great_depression_external_adapters.txt-22-					var = great_depression_depression_severity
+common\scripted_effects\035_great_depression_external_adapters.txt-23-					value = constant:great_depression_event.systemic_breakdown_threshold
+common\scripted_effects\035_great_depression_external_adapters.txt-24-					compare = greater_than_or_equals
+common\scripted_effects\035_great_depression_external_adapters.txt-25-				}
+common\scripted_effects\035_great_depression_external_adapters.txt-26-			}
+common\scripted_effects\035_great_depression_external_adapters.txt-27-			OR = {
+common\scripted_effects\035_great_depression_external_adapters.txt-28-				has_state_flag = great_depression_center_hollowed
+common\scripted_effects\035_great_depression_external_adapters.txt-29-				has_state_flag = great_depression_center_abandoned

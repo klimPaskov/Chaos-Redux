@@ -141,7 +141,7 @@ Hearts of Iron IV was not launched; live consumer validation remains parent/user
 
 Current model handoffs are mixed rather than uniformly absent: Oracle Recon has an accepted local Meshy 7 mesh and five action exports/reimports, but counter replacement, runtime/entity/GFX wiring, and live validation remain pending; Disaster Wardens intentionally uses vanilla `infantry` resolving to `infantry_rifle_entity` / `generic_western_european_rifle_infantry_mesh`, with custom registrations retired and live validation pending; Gorilla Heavy Infantry, Pan Sappers, Stone Cohorts, Riverborn, Forest Giants, and Plague Carriers remain blocked or unpromoted.
 
-The separate `chaosx_elephant` package is also blocked or unpromoted under its current recovery manifest and must not be inferred from this eight-family wiring handoff.
+The separate `chaosx_elephant` formation is intentionally outside this eight-family package gate and uses vanilla `elephantry`; no custom elephant model readiness is inferred from this eight-family wiring handoff.
 
 Because the manifest receipts and shared package gate remain absent by design, all eight runtime branches are dormant and will record explicit refusal if called.
 

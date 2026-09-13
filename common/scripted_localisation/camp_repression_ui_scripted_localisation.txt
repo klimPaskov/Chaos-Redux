@@ -317,3 +317,26 @@ defined_text = {
 	text = { trigger = { has_tech = tularemia_bomb_delivery_systems } localization_key = camp_ui_payload_tularemia_red }
 	text = { trigger = { always = yes } localization_key = camp_ui_payload_unavailable }
 }
+
+# Read-only selected-state measurements; cumulative state deaths include all causes.
+defined_text = {
+	name = GetCampUiSelectedSiteStatus
+	text = {
+		trigger = {
+			has_variable = camp_selected_state_id
+			set_temp_variable = { camp_ui_site_levels = 0 }
+			set_temp_variable = { camp_ui_state_deaths = 0 }
+			var:camp_selected_state_id = {
+				set_temp_variable = { camp_ui_site_levels = building_level@concentration_camp }
+				add_to_temp_variable = { camp_ui_site_levels = building_level@extermination_camp }
+				add_to_temp_variable = { camp_ui_site_levels = building_level@gulag_labor_camp_network }
+				if = {
+					limit = { has_variable = chaos_state_civilian_deaths_total }
+					set_temp_variable = { camp_ui_state_deaths = chaos_state_civilian_deaths_total }
+				}
+			}
+		}
+		localization_key = camp_ui_selected_status_value
+	}
+	text = { trigger = { always = yes } localization_key = camp_ui_selected_status_empty }
+}

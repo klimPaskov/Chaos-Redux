@@ -299,162 +299,165 @@ camp_rework_copy_colonial_country_display_values = {
 }
 
 camp_rework_update_colonial_country_monthly_bridge = {
-	camp_rework_initialize_colonial_country_variables = yes
 	if = {
-		limit = { original_tag = ENG }
-		set_variable = { imperial_detention_reach = camp_active_site_count }
-		if = { limit = { check_variable = { indian_autonomy_resistance > camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = indian_autonomy_resistance } }
-		if = { limit = { check_variable = { colonial_legitimacy_damage > camp_policy_legitimacy } } set_variable = { camp_policy_legitimacy = colonial_legitimacy_damage } }
-		if = { limit = { check_variable = { raj_labor_burden > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = raj_labor_burden } }
+		limit = { NOT = { has_country_flag = camp_admin_civil_initialized } }	
+		camp_rework_initialize_colonial_country_variables = yes
 		if = {
-			limit = {
-				check_variable = { camp_active_site_count > 0 }
-				NOT = { has_country_flag = camp_rework_crisis_exposed }
-				OR = {
-					check_variable = { var = indian_autonomy_resistance value = constant:camp_rework_threshold.severe_discovery compare = greater_than_or_equals }
-					AND = { RAJ = { exists = yes NOT = { is_subject_of = ROOT } } }
-				}
-			}
-			set_country_flag = camp_rework_crisis_exposed
+			limit = { original_tag = ENG }
+			set_variable = { imperial_detention_reach = camp_active_site_count }
+			if = { limit = { check_variable = { indian_autonomy_resistance > camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = indian_autonomy_resistance } }
+			if = { limit = { check_variable = { colonial_legitimacy_damage > camp_policy_legitimacy } } set_variable = { camp_policy_legitimacy = colonial_legitimacy_damage } }
+			if = { limit = { check_variable = { raj_labor_burden > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = raj_labor_burden } }
 			if = {
-				limit = { RAJ = { exists = yes NOT = { is_subject_of = ROOT } } }
-				set_country_flag = camp_rework_achievement_uk_colonial_revolt_occurred
-			}
-			add_to_variable = { colonial_legitimacy_damage = constant:camp_rework_colonial.accountability_major }
-			camp_rework_expose_first_colonial_evidence = yes
-		}
-	}
-	else_if = {
-		limit = { original_tag = USA }
-		set_variable = { wartime_security_reach = camp_active_site_count }
-		set_variable = { camp_democratic_legitimacy_damage = democratic_legitimacy_damage }
-		if = { limit = { check_variable = { court_challenge_pressure > camp_policy_reform } } set_variable = { camp_policy_reform = court_challenge_pressure } }
-		if = { limit = { check_variable = { democratic_legitimacy_damage > camp_policy_legitimacy } } set_variable = { camp_policy_legitimacy = democratic_legitimacy_damage } }
-		if = { limit = { check_variable = { relocation_population_disruption > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = relocation_population_disruption } }
-		if = {
-			limit = {
-				has_country_flag = camp_rework_usa_authority_active
-				has_war = no
-				NOT = { has_country_flag = camp_rework_crisis_exposed }
-			}
-			set_country_flag = camp_rework_crisis_exposed
-			add_to_variable = { court_challenge_pressure = constant:camp_rework_colonial.accountability_major }
-			camp_rework_expose_first_colonial_evidence = yes
-		}
-	}
-	else_if = {
-		limit = { OR = { original_tag = FRA tag = VIC } }
-		set_variable = { vichy_collaboration_reach = camp_active_site_count }
-		if = { limit = { check_variable = { refugee_pressure > camp_policy_visibility } } set_variable = { camp_policy_visibility = refugee_pressure } }
-		if = { limit = { check_variable = { north_africa_labor_burden > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = north_africa_labor_burden } }
-		if = {
-			limit = {
-				check_variable = { refugee_pressure > constant:camp_rework_threshold.band_medium }
-				check_variable = { camp_active_site_count > 0 }
-				NOT = { has_active_mission = fr_refugee_pressure_response }
-				NOT = { has_country_flag = camp_rework_france_refugee_response_pending }
-				NOT = { has_country_flag = camp_rework_france_refugee_response_cooldown }
-			}
-			camp_rework_begin_france_refugee_response = yes
-		}
-		if = {
-			limit = {
-				has_government = democratic
-				NOT = { has_country_flag = camp_rework_crisis_exposed }
-				OR = {
+				limit = {
 					check_variable = { camp_active_site_count > 0 }
-					any_controlled_state = { is_valid_camp_active_site_state = yes has_variable = genocide_responsible_country var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } } }
-					any_subject_country = { any_controlled_state = { is_valid_camp_active_site_state = yes has_variable = genocide_responsible_country var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } } } }
-				}
-			}
-			set_country_flag = camp_rework_crisis_exposed
-			add_to_variable = { refugee_pressure = constant:camp_rework_colonial.accountability_major }
-			camp_rework_expose_first_french_inherited_evidence = yes
-		}
-	}
-	else_if = {
-		limit = { original_tag = ITA }
-		set_variable = { colonial_repression_reach = camp_active_site_count }
-		if = { limit = { check_variable = { libyan_resistance_pressure > camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = libyan_resistance_pressure } }
-		if = { limit = { check_variable = { desert_camp_burden > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = desert_camp_burden } }
-		if = { limit = { check_variable = { postwar_colonial_claim_damage > camp_policy_tribunal } } set_variable = { camp_policy_tribunal = postwar_colonial_claim_damage } }
-		if = {
-			limit = {
-				check_variable = { camp_active_site_count > 0 }
-				OR = { has_government = democratic has_government = communism }
-				NOT = { has_country_flag = camp_rework_crisis_exposed }
-			}
-			set_country_flag = camp_rework_crisis_exposed
-			add_to_variable = { postwar_colonial_claim_damage = constant:camp_rework_colonial.accountability_major }
-			camp_rework_expose_first_colonial_evidence = yes
-		}
-	}
-	else_if = {
-		limit = { original_tag = BEL }
-		set_variable = { congo_extraction_pressure = camp_active_site_count }
-		if = { limit = { check_variable = { colonial_unrest_pressure > camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = colonial_unrest_pressure } }
-		if = { limit = { check_variable = { congo_population_damage > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = congo_population_damage } }
-		if = { limit = { check_variable = { postwar_accountability_pressure > camp_policy_tribunal } } set_variable = { camp_policy_tribunal = postwar_accountability_pressure } }
-		if = {
-			limit = {
-				OR = {
-					check_variable = { colonial_unrest_pressure > constant:camp_rework_threshold.band_medium }
-					check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_medium }
-				}
-				check_variable = { camp_active_site_count > 0 }
-				NOT = { has_active_mission = bel_colonial_strike_response }
-				NOT = { has_country_flag = camp_rework_belgium_strike_response_pending }
-				NOT = { has_country_flag = camp_rework_belgium_strike_response_cooldown }
-			}
-			camp_rework_begin_belgium_strike_response = yes
-		}
-		if = {
-			limit = {
-				check_variable = { camp_active_site_count > 0 }
-				NOT = { has_country_flag = camp_rework_crisis_exposed }
-				NOT = {
+					NOT = { has_country_flag = camp_rework_crisis_exposed }
 					OR = {
-						any_controlled_state = { is_bel_congo_concession_pool_state = yes }
-						any_subject_country = { any_controlled_state = { is_bel_congo_concession_pool_state = yes } }
+						check_variable = { var = indian_autonomy_resistance value = constant:camp_rework_threshold.severe_discovery compare = greater_than_or_equals }
+						AND = { RAJ = { exists = yes NOT = { is_subject_of = ROOT } } }
 					}
 				}
+				set_country_flag = camp_rework_crisis_exposed
+				if = {
+					limit = { RAJ = { exists = yes NOT = { is_subject_of = ROOT } } }
+					set_country_flag = camp_rework_achievement_uk_colonial_revolt_occurred
+				}
+				add_to_variable = { colonial_legitimacy_damage = constant:camp_rework_colonial.accountability_major }
+				camp_rework_expose_first_colonial_evidence = yes
 			}
-			set_country_flag = camp_rework_crisis_exposed
-			add_to_variable = { postwar_accountability_pressure = constant:camp_rework_colonial.accountability_major }
-			camp_rework_expose_first_colonial_evidence = yes
 		}
+		else_if = {
+			limit = { original_tag = USA }
+			set_variable = { wartime_security_reach = camp_active_site_count }
+			set_variable = { camp_democratic_legitimacy_damage = democratic_legitimacy_damage }
+			if = { limit = { check_variable = { court_challenge_pressure > camp_policy_reform } } set_variable = { camp_policy_reform = court_challenge_pressure } }
+			if = { limit = { check_variable = { democratic_legitimacy_damage > camp_policy_legitimacy } } set_variable = { camp_policy_legitimacy = democratic_legitimacy_damage } }
+			if = { limit = { check_variable = { relocation_population_disruption > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = relocation_population_disruption } }
+			if = {
+				limit = {
+					has_country_flag = camp_rework_usa_authority_active
+					has_war = no
+					NOT = { has_country_flag = camp_rework_crisis_exposed }
+				}
+				set_country_flag = camp_rework_crisis_exposed
+				add_to_variable = { court_challenge_pressure = constant:camp_rework_colonial.accountability_major }
+				camp_rework_expose_first_colonial_evidence = yes
+			}
+		}
+		else_if = {
+			limit = { OR = { original_tag = FRA tag = VIC } }
+			set_variable = { vichy_collaboration_reach = camp_active_site_count }
+			if = { limit = { check_variable = { refugee_pressure > camp_policy_visibility } } set_variable = { camp_policy_visibility = refugee_pressure } }
+			if = { limit = { check_variable = { north_africa_labor_burden > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = north_africa_labor_burden } }
+			if = {
+				limit = {
+					check_variable = { refugee_pressure > constant:camp_rework_threshold.band_medium }
+					check_variable = { camp_active_site_count > 0 }
+					NOT = { has_active_mission = fr_refugee_pressure_response }
+					NOT = { has_country_flag = camp_rework_france_refugee_response_pending }
+					NOT = { has_country_flag = camp_rework_france_refugee_response_cooldown }
+				}
+				camp_rework_begin_france_refugee_response = yes
+			}
+			if = {
+				limit = {
+					has_government = democratic
+					NOT = { has_country_flag = camp_rework_crisis_exposed }
+					OR = {
+						check_variable = { camp_active_site_count > 0 }
+						any_controlled_state = { is_valid_camp_active_site_state = yes has_variable = genocide_responsible_country var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } } }
+						any_subject_country = { any_controlled_state = { is_valid_camp_active_site_state = yes has_variable = genocide_responsible_country var:genocide_responsible_country = { OR = { original_tag = FRA tag = VIC } } } }
+					}
+				}
+				set_country_flag = camp_rework_crisis_exposed
+				add_to_variable = { refugee_pressure = constant:camp_rework_colonial.accountability_major }
+				camp_rework_expose_first_french_inherited_evidence = yes
+			}
+		}
+		else_if = {
+			limit = { original_tag = ITA }
+			set_variable = { colonial_repression_reach = camp_active_site_count }
+			if = { limit = { check_variable = { libyan_resistance_pressure > camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = libyan_resistance_pressure } }
+			if = { limit = { check_variable = { desert_camp_burden > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = desert_camp_burden } }
+			if = { limit = { check_variable = { postwar_colonial_claim_damage > camp_policy_tribunal } } set_variable = { camp_policy_tribunal = postwar_colonial_claim_damage } }
+			if = {
+				limit = {
+					check_variable = { camp_active_site_count > 0 }
+					OR = { has_government = democratic has_government = communism }
+					NOT = { has_country_flag = camp_rework_crisis_exposed }
+				}
+				set_country_flag = camp_rework_crisis_exposed
+				add_to_variable = { postwar_colonial_claim_damage = constant:camp_rework_colonial.accountability_major }
+				camp_rework_expose_first_colonial_evidence = yes
+			}
+		}
+		else_if = {
+			limit = { original_tag = BEL }
+			set_variable = { congo_extraction_pressure = camp_active_site_count }
+			if = { limit = { check_variable = { colonial_unrest_pressure > camp_policy_resistance_pressure } } set_variable = { camp_policy_resistance_pressure = colonial_unrest_pressure } }
+			if = { limit = { check_variable = { congo_population_damage > camp_policy_population_loss } } set_variable = { camp_policy_population_loss = congo_population_damage } }
+			if = { limit = { check_variable = { postwar_accountability_pressure > camp_policy_tribunal } } set_variable = { camp_policy_tribunal = postwar_accountability_pressure } }
+			if = {
+				limit = {
+					OR = {
+						check_variable = { colonial_unrest_pressure > constant:camp_rework_threshold.band_medium }
+						check_variable = { camp_resistance_pressure > constant:camp_rework_threshold.band_medium }
+					}
+					check_variable = { camp_active_site_count > 0 }
+					NOT = { has_active_mission = bel_colonial_strike_response }
+					NOT = { has_country_flag = camp_rework_belgium_strike_response_pending }
+					NOT = { has_country_flag = camp_rework_belgium_strike_response_cooldown }
+				}
+				camp_rework_begin_belgium_strike_response = yes
+			}
+			if = {
+				limit = {
+					check_variable = { camp_active_site_count > 0 }
+					NOT = { has_country_flag = camp_rework_crisis_exposed }
+					NOT = {
+						OR = {
+							any_controlled_state = { is_bel_congo_concession_pool_state = yes }
+							any_subject_country = { any_controlled_state = { is_bel_congo_concession_pool_state = yes } }
+						}
+					}
+				}
+				set_country_flag = camp_rework_crisis_exposed
+				add_to_variable = { postwar_accountability_pressure = constant:camp_rework_colonial.accountability_major }
+				camp_rework_expose_first_colonial_evidence = yes
+			}
+		}
+	
+		clamp_variable = { var = imperial_detention_reach min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = raj_labor_burden min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = dominion_control_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = indian_autonomy_resistance min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = colonial_legitimacy_damage min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = imperial_manpower_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = wartime_security_reach min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = civil_liberties_damage min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = court_challenge_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = democratic_legitimacy_damage min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = relocation_population_disruption min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = redress_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = french_camp_legacy min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = vichy_collaboration_reach min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = north_africa_labor_burden min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = refugee_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = free_french_reform_credit min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = colonial_repression_reach min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = desert_camp_burden min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = libyan_resistance_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = colonial_logistics_output min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = postwar_colonial_claim_damage min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = congo_extraction_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = concession_labor_burden min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = colonial_resource_output min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = congo_population_damage min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = colonial_unrest_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		clamp_variable = { var = postwar_accountability_pressure min = 0 max = constant:camp_rework_threshold.max_value }
+		camp_rework_refresh_colonial_country_ideas = yes
+		camp_rework_copy_colonial_country_display_values = yes
 	}
-
-	clamp_variable = { var = imperial_detention_reach min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = raj_labor_burden min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = dominion_control_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = indian_autonomy_resistance min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = colonial_legitimacy_damage min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = imperial_manpower_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = wartime_security_reach min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = civil_liberties_damage min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = court_challenge_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = democratic_legitimacy_damage min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = relocation_population_disruption min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = redress_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = french_camp_legacy min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = vichy_collaboration_reach min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = north_africa_labor_burden min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = refugee_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = free_french_reform_credit min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = colonial_repression_reach min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = desert_camp_burden min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = libyan_resistance_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = colonial_logistics_output min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = postwar_colonial_claim_damage min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = congo_extraction_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = concession_labor_burden min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = colonial_resource_output min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = congo_population_damage min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = colonial_unrest_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = postwar_accountability_pressure min = 0 max = constant:camp_rework_threshold.max_value }
-	camp_rework_refresh_colonial_country_ideas = yes
-	camp_rework_copy_colonial_country_display_values = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -463,7 +466,7 @@ camp_rework_update_colonial_country_monthly_bridge = {
 
 camp_rework_refresh_colonial_country_ideas = {
 	if = {
-		limit = { original_tag = ENG }
+		limit = { original_tag = ENG NOT = { has_country_flag = camp_admin_civil_initialized } }
 		remove_ideas = uk_imperial_detention_legacy
 		remove_ideas = uk_imperial_detention_administration
 		remove_ideas = uk_overextended_imperial_detention
@@ -730,6 +733,7 @@ camp_rework_refresh_colonial_country_ideas = {
 			add_ideas = bel_congo_reform_credit
 		}
 	}
+	camp_administration_civil_refresh_ideas = yes
 }
 
 # ---------------------------------------------------------------------------
@@ -914,10 +918,8 @@ camp_rework_colonial_register_current_state = {
 		camp_rework_register_active_site = yes
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_minor }
-		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
-		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		camp_rework_apply_state_death_burst = yes
+		camp_administration_civil_authorize_subject_site = yes
+		camp_admin_initialize_site = yes
 	}
 }
 
@@ -942,17 +944,10 @@ camp_rework_colonial_expand_current_state = {
 		set_state_flag = camp_rework_expanded_labor_site
 		set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.expanded_labor }
 		camp_rework_register_active_site = yes
-		set_temp_variable = { camp_colonial_modifier_days = constant:camp_rework_timing.idea_medium_days }
-		add_dynamic_modifier = {
-			modifier = genocide_forced_labor_exploitation_state
-			days = camp_colonial_modifier_days
-		}
+		remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_major }
-		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_major }
-		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		camp_rework_apply_state_death_burst = yes
+		camp_admin_initialize_site = yes
 	}
 }
 
@@ -964,25 +959,19 @@ camp_rework_colonial_apply_minor_project_to_current_state = {
 			var:genocide_responsible_country = { tag = ROOT }
 			OR = { is_controlled_by = ROOT CONTROLLER = { is_subject_of = ROOT } }
 		}
-		set_temp_variable = { camp_colonial_modifier_days = constant:camp_rework_timing.idea_long_days }
-		add_dynamic_modifier = {
-			modifier = genocide_forced_labor_exploitation_state
-			days = camp_colonial_modifier_days
-		}
+		remove_dynamic_modifier = { modifier = genocide_forced_labor_exploitation_state }
 		if = {
-			limit = { infrastructure < constant:camp_rework_state_threshold.low_infrastructure }
-			add_building_construction = {
-				type = infrastructure
-				level = @CAMP_COLONIAL_BUILDING_LEVEL
-				instant_build = yes
+			limit = { camp_admin_site_is_operational = yes ROOT = { NOT = { has_country_flag = camp_admin_economy_slot_active } } }
+			ROOT = {
+				set_variable = { camp_admin_economy_state_id = PREV }
+				set_variable = { camp_admin_economy_project_type = constant:camp_admin_priority.works }
+				set_variable = { camp_admin_economy_progress = constant:camp_admin_value.zero }
+				set_country_flag = camp_admin_economy_slot_active
 			}
 		}
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_minor }
-		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
-		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		camp_rework_apply_state_death_burst = yes
+		camp_admin_initialize_site = yes
 	}
 }
 
@@ -996,10 +985,8 @@ camp_rework_colonial_apply_major_harm_to_current_state = {
 		}
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 		add_to_variable = { camp_state_resistance_accumulation = constant:camp_rework_country_value.resistance_major }
-		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_major }
-		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
-		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		camp_rework_apply_state_death_burst = yes
+		camp_admin_initialize_site = yes
+		camp_administration_civil_record_legacy_violence = yes
 	}
 }
 
@@ -1717,6 +1704,7 @@ camp_rework_complete_all_colonial_site_dismantlement = {
 	for_each_scope_loop = {
 		array = camp_colonial_dismantlement_states
 		camp_rework_apply_major_colonial_subject_concession = yes
+		camp_admin_close_site = yes
 		camp_rework_complete_dismantlement = yes
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
@@ -1794,6 +1782,7 @@ camp_rework_complete_all_french_inherited_site_dismantlement = {
 	for_each_scope_loop = {
 		array = camp_colonial_dismantlement_states
 		camp_rework_apply_major_colonial_subject_concession = yes
+		camp_admin_close_site = yes
 		camp_rework_complete_dismantlement = yes
 	}
 	clear_temp_array = camp_colonial_dismantlement_states
@@ -2128,7 +2117,7 @@ camp_rework_complete_uk_raj_military_works = {
 	}
 	if = {
 		limit = { check_variable = { camp_colonial_project_succeeded > 0 } }
-		add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
 		add_to_variable = { dominion_control_pressure = constant:camp_rework_country_value.coercive_control_minor }
 	}
 	else = {
@@ -2276,7 +2265,7 @@ camp_rework_usa_assign_detainee_labor_to_local_works = {
 		var:camp_selected_state_id = { camp_rework_colonial_apply_minor_project_to_current_state = yes }
 		add_to_variable = { relocation_population_disruption = constant:camp_rework_colonial.local_burden_minor }
 		add_to_variable = { democratic_legitimacy_damage = constant:camp_rework_country_value.legitimacy_major }
-		add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
 }
@@ -2316,7 +2305,7 @@ camp_rework_usa_release_detainees_under_supervision = {
 		add_to_variable = { relocation_population_disruption = camp_colonial_relief }
 		add_to_variable = { wartime_security_reach = camp_colonial_relief }
 		add_to_variable = { court_challenge_pressure = constant:camp_rework_country_value.inspection_tribunal_relief }
-		var:camp_selected_state_id = { set_state_flag = camp_rework_site_reforming }
+		var:camp_selected_state_id = { camp_admin_release_survivors = yes set_state_flag = camp_rework_site_reforming }
 	}
 	camp_rework_update_colonial_country_monthly_bridge = yes
 }
@@ -2548,6 +2537,9 @@ camp_rework_france_transfer_collaboration_records = {
 	if = { limit = { is_ai = yes } camp_rework_select_france_unassigned_active_state = yes }
 	if = {
 		limit = {
+			camp_administration_civil_french_collaboration = yes
+			date > 1942.7.1
+			GER = { exists = yes has_government = fascism }
 			has_variable = camp_selected_state_id
 			GER = { exists = yes }
 			var:camp_selected_state_id = {
@@ -2699,7 +2691,7 @@ camp_rework_complete_france_north_africa_project = {
 	}
 	if = {
 		limit = { check_variable = { camp_colonial_project_succeeded > 0 } }
-		add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
 	}
 	else = {
 		add_to_variable = { north_africa_labor_burden = constant:camp_rework_colonial.local_burden_major }
@@ -2965,8 +2957,8 @@ camp_rework_complete_italy_desert_road_project = {
 	if = {
 		limit = { check_variable = { camp_colonial_project_succeeded > 0 } }
 		set_country_flag = camp_rework_achievement_italy_conventional_infrastructure_complete
-		add_to_variable = { colonial_logistics_output = constant:camp_rework_country_value.labor_output_major }
-		add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
+		camp_admin_refresh_country_economy = yes
 	}
 	else = {
 		add_to_variable = { desert_camp_burden = constant:camp_rework_colonial.local_burden_major }
@@ -3222,7 +3214,7 @@ camp_rework_belgium_suppress_colonial_strikes = {
 			camp_rework_colonial_apply_major_harm_to_current_state = yes
 			camp_rework_apply_major_colonial_subject_pressure = yes
 		}
-		add_to_variable = { colonial_resource_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
 		add_to_variable = { concession_labor_burden = constant:camp_rework_colonial.local_burden_major }
 		add_to_variable = { congo_population_damage = constant:camp_rework_colonial.local_burden_major }
 		add_to_variable = { colonial_unrest_pressure = constant:camp_rework_colonial.local_burden_major }
@@ -3343,8 +3335,8 @@ camp_rework_complete_belgium_quota_cycle = {
 	}
 	if = {
 		limit = { check_variable = { camp_colonial_project_succeeded > 0 } }
-		add_to_variable = { colonial_resource_output = constant:camp_rework_country_value.labor_output_major }
-		add_to_variable = { camp_policy_labor_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
+		camp_admin_refresh_country_economy = yes
 	}
 	else = {
 		add_to_variable = { colonial_unrest_pressure = constant:camp_rework_colonial.local_burden_major }
@@ -3373,7 +3365,7 @@ camp_rework_complete_belgium_transport_corridor = {
 	}
 	if = {
 		limit = { check_variable = { camp_colonial_project_succeeded > 0 } }
-		add_to_variable = { colonial_resource_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
 		add_to_variable = { camp_policy_overstretch = constant:camp_rework_country_value.guard_relief }
 	}
 	else = {
@@ -3401,7 +3393,7 @@ camp_rework_complete_belgium_strike_response = {
 	}
 	else_if = {
 		limit = { has_country_flag = camp_rework_belgium_strike_route_suppression }
-		add_to_variable = { colonial_resource_output = constant:camp_rework_country_value.labor_output_minor }
+		camp_admin_refresh_country_economy = yes
 		add_to_variable = { colonial_unrest_pressure = constant:camp_rework_country_value.resistance_major }
 		add_to_variable = { postwar_accountability_pressure = constant:camp_rework_colonial.accountability_minor }
 		add_to_variable = { camp_policy_evidence = constant:camp_rework_country_value.evidence_major }

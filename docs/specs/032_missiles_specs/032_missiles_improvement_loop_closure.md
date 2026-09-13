@@ -4,7 +4,7 @@
 
 This is a planning-time closure review performed against the complete Event 32 specification package.
 
-The project subagent runner was not available in this chat runtime, so this document applies the `chaosx_improvement_loop_planner` contract manually. It is not presented as an independent subagent report.
+The accepted closure below remains the design source of truth. A `chaosx_improvement_loop_planner` worker was dispatched with `fork_context=false` on 2026-09-05 for a final implementation-time addendum review, but it produced no handoff after bounded waits and was shut down. No new design addendum is therefore promoted from that worker; the missing independent handoff is recorded in `docs/plans/032_missiles_plans/subagent_handoffs/032_improvement_loop_planner_handoff_2026-09-05.md`.
 
 ## Playable promise
 

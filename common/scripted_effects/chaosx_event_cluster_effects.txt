@@ -461,11 +461,16 @@ event_belongs_to_cluster_legacy = {
 		                value = 4
 		                compare = equals
 		            }
-		            check_variable = {
-		                var = event_id
-		                value = 7
-		                compare = equals
-		            }
+	            check_variable = {
+	                var = event_id
+	                value = 7
+	                compare = equals
+	            }
+	            check_variable = {
+	                var = event_id
+	                value = constant:random_civil_war_event.id
+	                compare = equals
+	            }
 				}
 	        }
 	        set_temp_variable = { event_cluster_candidate_id = constant:event_cluster_id.wars }
@@ -1007,6 +1012,34 @@ event_cluster_get_member_base_participation_chance = {
 			set_temp_variable = { event_cluster_member_base_chance = constant:event_cluster_member_participation_matrix.collapse_severe }
 		}
 	}
+
+	# Event 033 owns a deliberately steeper six-tier participation curve than
+	# the generic Severe row. Its Chaos-level gate still prevents Calm World
+	# participation even if this resolver is called for a diagnostic preview.
+	if = {
+		limit = { check_variable = { event_cluster_member_event_id = constant:acid_rain_event.id } }
+		set_temp_variable = { event_cluster_member_base_chance = constant:acid_rain_cluster.calm_participation }
+		if = {
+			limit = { check_variable = { event_cluster_member_tier = constant:chaos_meter_tier_id.tier_1 } }
+			set_temp_variable = { event_cluster_member_base_chance = constant:acid_rain_cluster.gathering_participation }
+		}
+		else_if = {
+			limit = { check_variable = { event_cluster_member_tier = constant:chaos_meter_tier_id.tier_2 } }
+			set_temp_variable = { event_cluster_member_base_chance = constant:acid_rain_cluster.rising_participation }
+		}
+		else_if = {
+			limit = { check_variable = { event_cluster_member_tier = constant:chaos_meter_tier_id.tier_3 } }
+			set_temp_variable = { event_cluster_member_base_chance = constant:acid_rain_cluster.chaos_participation }
+		}
+		else_if = {
+			limit = { check_variable = { event_cluster_member_tier = constant:chaos_meter_tier_id.tier_4 } }
+			set_temp_variable = { event_cluster_member_base_chance = constant:acid_rain_cluster.totalen_participation }
+		}
+		else_if = {
+			limit = { check_variable = { event_cluster_member_tier = constant:chaos_meter_tier_id.tier_final } }
+			set_temp_variable = { event_cluster_member_base_chance = constant:acid_rain_cluster.world_collapse_participation }
+		}
+	}
 }
 
 event_cluster_get_eligible_count_factor = {
@@ -1308,6 +1341,14 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.wars_fury }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
 		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:random_civil_war_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.wars_random_civil_war }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.yes }
+		event_cluster_append_member_definition = yes
 	    }
 	else_if = {
 		limit = {
@@ -1350,13 +1391,7 @@ load_event_cluster_members = {
 		event_cluster_append_member_definition = yes
 	}
 	else_if = {
-		limit = {
-			check_variable = {
-				var = event_cluster_id
-				value = constant:event_cluster_id.natural_disasters
-                compare = equals
-            }
-        }
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.natural_disasters } }
 		# Five logical seasons all dispatch Event 013. Only the first is required.
 		set_temp_variable = { event_cluster_member_event_id = constant:natural_disaster_event.id }
 		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.required }
@@ -1377,7 +1412,7 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_event_id = constant:natural_disaster_event.id }
 		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
 		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_1 }
-		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.low }
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.natural_disasters_varied }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.no }
 		event_cluster_append_member_definition = yes
@@ -1385,7 +1420,7 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_event_id = constant:natural_disaster_event.id }
 		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
 		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_2 }
-		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.high }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.low }
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.natural_disasters_regional }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.no }
 		event_cluster_append_member_definition = yes
@@ -1393,11 +1428,27 @@ load_event_cluster_members = {
 		set_temp_variable = { event_cluster_member_event_id = constant:natural_disaster_event.id }
 		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
 		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_3 }
-		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.severe }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.medium }
 		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.natural_disasters_abnormal }
 		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.no }
 		event_cluster_append_member_definition = yes
-		}
+
+		set_temp_variable = { event_cluster_member_event_id = constant:acid_rain_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_1 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.severe }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.natural_disasters_acid_rain }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.no }
+		event_cluster_append_member_definition = yes
+
+		set_temp_variable = { event_cluster_member_event_id = constant:event_cluster_heat_wave_event.id }
+		set_temp_variable = { event_cluster_member_role = constant:event_cluster_member_role.optional }
+		set_temp_variable = { event_cluster_member_min_tier = constant:chaos_meter_tier_id.tier_0 }
+		set_temp_variable = { event_cluster_member_severity = constant:event_cluster_member_danger.high }
+		set_temp_variable = { event_cluster_member_row_id = constant:event_cluster_member_row_id.natural_disasters_heat_wave }
+		set_temp_variable = { event_cluster_member_primary_trigger = constant:event_cluster_member_primary_trigger.no }
+		event_cluster_append_member_definition = yes
+	}
 	else_if = {
 		limit = {
 			check_variable = {
@@ -3164,7 +3215,51 @@ event_cluster_schedule_next_pending_member = {
     country_event = { id = chaosx.event_clusters.2 days = event_cluster_next_member_delay_days }
 }
 
+event_cluster_prepare_acid_rain_major_contract = {
+	set_temp_variable = { event_cluster_acid_rain_selected = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { event_cluster_id = constant:event_cluster_id.natural_disasters } }
+		for_loop_effect = {
+			start = 0
+			end = temp_event_cluster_firing_order_event_id_entries^num
+			value = event_cluster_acid_rain_scan_index
+			if = {
+				limit = { check_variable = { temp_event_cluster_firing_order_event_id_entries^event_cluster_acid_rain_scan_index = constant:acid_rain_event.id } }
+				set_temp_variable = { event_cluster_acid_rain_selected = constant:acid_rain_runtime.one }
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { event_cluster_acid_rain_selected = constant:acid_rain_runtime.one } }
+		set_global_flag = acid_rain_cluster_reserved
+		set_global_flag = acid_rain_cluster_major_pacing_pending
+	}
+}
+
+event_cluster_cancel_acid_rain_major_contract = {
+	clr_global_flag = acid_rain_cluster_reserved
+	clr_global_flag = acid_rain_cluster_major_pacing_pending
+}
+
+event_cluster_release_acid_rain_reservation_from_pending_queue = {
+	set_temp_variable = { event_cluster_pending_queue_contains_acid_rain = constant:acid_rain_runtime.zero }
+	for_loop_effect = {
+		start = 0
+		end = event_cluster_pending_member_event_id_entries^num
+		value = event_cluster_pending_acid_rain_scan_index
+		if = {
+			limit = { check_variable = { event_cluster_pending_member_event_id_entries^event_cluster_pending_acid_rain_scan_index = constant:acid_rain_event.id } }
+			set_temp_variable = { event_cluster_pending_queue_contains_acid_rain = constant:acid_rain_runtime.one }
+		}
+	}
+	if = {
+		limit = { check_variable = { event_cluster_pending_queue_contains_acid_rain = constant:acid_rain_runtime.one } }
+		clr_global_flag = acid_rain_cluster_reserved
+	}
+}
+
 event_cluster_clear_pending_member_queue = {
+	event_cluster_release_acid_rain_reservation_from_pending_queue = yes
 	clear_array = event_cluster_pending_member_event_id_entries
 	clear_array = event_cluster_pending_member_batch_index_entries
 	clear_array = event_cluster_pending_member_event013_state_entries
@@ -3473,6 +3568,12 @@ event_cluster_fire_next_pending_member = {
 				set_temp_variable = { event_cluster_pending_member_result_reason = constant:event_system_event_unavailability_reason.unknown }
 			}
 			add_to_temp_variable = { event_cluster_pending_batch_skipped_count = 1 }
+		}
+		if = {
+			limit = { check_variable = { event_id = constant:acid_rain_event.id } }
+			# Successful formation clears this in the shared runtime. A stale or
+			# terminal rejection reaches the same idempotent release here.
+			clr_global_flag = acid_rain_cluster_reserved
 		}
 		set_variable = { event_cluster_pending_member_row_id_entries^event_cluster_pending_current_index = event_cluster_pending_member_row_id }
 		set_variable = { event_cluster_pending_member_fired_entries^event_cluster_pending_current_index = event_cluster_pending_batch_fired_count }
@@ -4742,6 +4843,7 @@ fire_event_cluster_by_temp_id = {
 				# re-evaluate it after preflight: transactional preparations such as the
 				# Liberations joint incident intentionally change the state being tested.
 				# Delayed members receive their own immediate evaluator recheck.
+				event_cluster_prepare_acid_rain_major_contract = yes
 				set_temp_variable = { event_fire_dispatched = 0 }
 				set_temp_variable = { event_id = temp_event_cluster_firing_order_event_id_entries^0 }
 				set_temp_variable = { event_cluster_current_member_batch_index = temp_event_cluster_firing_order_batch_index_entries^0 }
@@ -4751,6 +4853,10 @@ fire_event_cluster_by_temp_id = {
 				set_temp_variable = { event_cluster_current_member_event013_family = temp_event_cluster_firing_order_event013_family_entries^0 }
 				set_temp_variable = { event_cluster_current_member_event013_variant = temp_event_cluster_firing_order_event013_variant_entries^0 }
 				fire_event_cluster_member_by_temp_id = yes
+				if = {
+					limit = { check_variable = { event_fire_dispatched < 1 } }
+					event_cluster_cancel_acid_rain_major_contract = yes
+				}
 				if = {
 					limit = { check_variable = { event_fire_dispatched > 0 } }
 					# Snapshot the actual synchronous trigger result, then record the

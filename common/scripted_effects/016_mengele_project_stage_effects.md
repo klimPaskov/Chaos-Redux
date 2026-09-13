@@ -1,87 +1,139 @@
-# Event 016 Mengele Computation stage helpers
+# Event 016 Mengele project-stage provider API
 
-This owner-local helper family implements the accepted Mengele Computation slice for Event 016. It is intentionally bounded to existing family ID `constant:brilliant_scientist_project_family.computation` and existing stage IDs `theory`, `prototype`, `deployment`, and `weaponization`.
+This helper family is a private country-scope receipt and settlement layer for the fifteen existing Event 016 project families: Computation, Electronics, Materials, Rocketry, High Energy, Biomedical, Teleportation, Cloning, Robotics, Paleogenetics, Xenobiological Synthesis, Biological Weapons, Alien Arms, Temporal, and Strategic Singularity.
 
-## Public selector contract
+## Contract
 
-Every entry-point effect is country scope and reads these temporary selectors:
+The temporary selectors are `mengele_event016_project_family` and `mengele_event016_requested_stage`.
+Family IDs are one-based and receipt array indexes are family ID minus one.
+`brilliant_scientist_mengele_initialize_project_stage_receipts` extends each receipt array independently to the shared family count by appending zeros, preserving existing values and never truncating longer arrays.
+The size-based migration expands the earlier initialized one-slot Computation schema and becomes a no-op at fifteen slots.
+When the private component initialization marker is absent, it reconstructs the component count from surviving private flags without erasing them.
 
-- `mengele_event016_project_family` is the existing one-based Event 016 family ID and must equal `constant:brilliant_scientist_project_family.computation`.
-- `mengele_event016_requested_stage` is the existing stage ID and must equal one of `constant:brilliant_scientist_project_stage.theory`, `prototype`, `deployment`, or `weaponization`.
+The completion flags are `mengele_event016_<family>_theory_completed`, `mengele_event016_<family>_prototype_completed`, `mengele_event016_<family>_deployment_completed`, and `mengele_event016_<family>_weaponization_completed`. Singularity also keeps six provider-owned component flags and a component count for idempotent native component callbacks.
 
-`brilliant_scientist_mengele_clear_project_stage_selectors` resets only those two private selectors and the private index to the shared `none` or zero values. It does not clear the older `brilliant_scientist_project_family` selector or unrelated caller temporaries.
+`brilliant_scientist_mengele_begin_project_stage` validates the strict active-program-owner predicate, request, predecessor, quote, payment, and empty receipt before debiting political power, support equipment, and fuel. Civilian-factory/CIC quotes are stored in the receipt but never reserved or refunded by this API; the native parent decision owns that quote.
 
-Invalid, missing, unsupported-family, unsupported-stage, or malformed requests are no-ops. In particular, `brilliant_scientist_mengele_begin_project_stage` validates the request before calling the receipt initializer, so an invalid request never creates paid-history arrays or the initialization marker.
+`brilliant_scientist_mengele_cancel_project_stage` and `brilliant_scientist_mengele_finish_project_stage` authenticate the exact family/stage receipt, snapshot direct costs, clear the slot, and refund once when no output is accepted. Repeated callbacks see an empty slot and are no-ops.
 
-## Helper map
+## Quote provenance
 
-| Helper | Scope | Inputs | Outputs | Side effects |
-| --- | --- | --- | --- | --- |
-| `brilliant_scientist_mengele_initialize_project_stage_receipts` | Country | Validated provider request is required by the caller | `mengele_event016_provider_receipts_initialized` boolean country flag | Creates five aligned fifteen-slot arrays once; slots start at stage `none` and zero costs. |
-| `brilliant_scientist_mengele_load_computation_stage_quote` | Country | The two private selectors | Temporary quote fields and `_quote_loaded` | Reads existing Event 016 duration/stage-cost constants and the new Computation Prototype quote. |
-| `brilliant_scientist_mengele_begin_project_stage` | Country | The two private selectors | `mengele_event016_stage_started` temporary result | Validates provider, predecessor, stage ownership, and direct stockpiles; debits PP/support/fuel; stores the stage and all four quote receipts. |
-| `brilliant_scientist_mengele_cancel_project_stage` | Country | Exact family/stage callback selectors | `mengele_event016_stage_cancelled` temporary result | Snapshots and clears the exact receipt, then refunds PP/support/fuel once; it does not require provider validity or existence. |
-| `brilliant_scientist_mengele_finish_project_stage` | Country | Exact family/stage callback selectors | `mengele_event016_stage_finished` and output result temporaries | Settles an exact receipt even when the owner is invalid; only an existing valid provider can receive output, otherwise direct costs are refunded once. |
-| `brilliant_scientist_mengele_apply_family_stage_output` | Country | Internal authorization temporary plus exact selectors | `mengele_event016_computation_output_applied` temporary result | Sets provider history, reuses the existing Theory and Mengele Prototype modifiers, and calls the neutral conventional API for the two full later tiers. |
-| `brilliant_scientist_mengele_sync_native_project_prototypes` | Country | Computation selector and exact native output context | `mengele_event016_native_prototype_synced` temporary result | Authenticates the completed native computational engine, applies only provider Prototype history, and clears an optional pending marker. |
-| `brilliant_scientist_mengele_record_native_project_prototype` | Country | New family selector or existing native callback family selector | `mengele_event016_native_prototype_recorded` temporary result | Routes an exact Computation native callback to the adapter without copying native payment or unrelated rewards. The legacy-selector fallback is accepted only when the private family selector is `none`. |
-| `brilliant_scientist_mengele_reconcile_project_availability` | Country | Durable provider history and native state | `mengele_event016_project_availability_reconciled` temporary result | Sets or clears the existing Computation native presentation flag. |
-| `brilliant_scientist_mengele_cleanup_provider_receipts` | Country | Existing provider arrays, if initialized | `mengele_event016_provider_cleanup_applied` temporary result | Cancels an active Computation receipt once, clears native pending/presentation markers, and retains completion history and neutral entitlements. |
+The loader reads every duration from `brilliant_scientist_project_duration`, Theory/Deployment/Weaponization cost rows from `brilliant_scientist_project_stage_cost`, and all fifteen Prototype cost rows from `brilliant_scientist_project_fallback_prototype` in `016_brilliant_scientist_project_constants.txt`.
+The direct affordability trigger uses the same shared Prototype keys and accepts exactly the quoted amounts.
+Each valid quote sets `mengele_event016_stage_quote_loaded` and leaves `mengele_event016_stage_quote_source_gap` at zero.
+Invalid family or stage selectors retain zero quote values and cannot begin.
 
-The trigger file supplies the matching country-scope gates `brilliant_scientist_mengele_project_stage_provider_is_valid`, `brilliant_scientist_mengele_computation_stage_request_is_valid`, `brilliant_scientist_mengele_computation_stage_predecessor_is_valid`, `brilliant_scientist_mengele_computation_stage_can_pay`, `brilliant_scientist_mengele_computation_stage_receipt_is_empty`, `brilliant_scientist_mengele_computation_stage_receipt_matches`, and `brilliant_scientist_mengele_computation_native_output_is_authentic`.
+Computation remains 2 civilian factories, 68 Political Power, 200 Support Equipment, and 100 fuel.
+Its decision AI planning hint, four affordability comparisons, and four cost-localisation tokens read the shared keys directly, so the four private quote mirrors are removed.
+The existing native decision modifier retains its file-scoped factory value because that field rejects shared tokens.
+The DLC-aware decision/native presentation gate is unchanged, and native project callbacks do not invoke this payment path.
+Shared resource reserve fields are requirements owned by the parent adapter, not extra direct-payment receipts.
 
-The existing bridge trigger owns the shorter name `brilliant_scientist_mengele_project_provider_is_valid` and delegates to the stricter lifecycle predicate. The strict predicate requires the Directorate project registry plus one current owner form: the active full or restricted German program with its matching idea, the live Mengele civil-war laboratory state with its laboratory-state idea, the victorious Mengele state with its victory-state idea, or the non-Aryan triggerable Mengele scenario country with its scenario-state idea. A scenario, victory, or faction identity flag by itself is insufficient. Defeat, rejection, closure, Aryan replacement, Event 016 hosting, Event 016 terminal state, and the shared world end all fail closed.
+## Component integrity helper
 
-## Receipt storage and settlement order
+`brilliant_scientist_mengele_singularity_components_are_complete` is a read-only country-scope trigger with no parameters, defaults, writes, or event targets.
+Its input is the private component count and six private completion flags, and its output is true only when the count equals the shared six-component total and all command-core, power-link, containment-lattice, temporal-authenticator, delivery-architecture, and fail-deadly-governor flags exist.
+The Singularity Prototype predecessor branch and authenticated native completion branch both call it.
+Five flags fail both gates even when the count says six, and a wrong count fails even when all six flags exist.
 
-The provider stores these regular arrays aligned to the shared fifteen family IDs at zero-based indexes 0 through 14:
+The initializer runs in country scope with no arguments.
+Its outputs are receipt arrays of at least the shared family count, the receipt initialization flag, and, only if its marker is missing, the component initialization marker and a count reconstructed from existing flags.
+It never charges, refunds, starts, settles, or cancels work and never creates a completed component.
+Begin and native component callbacks retain their initializer calls, and provider cleanup calls it before scanning initialized receipts.
+No new event-target lifecycle or scheduler is introduced.
 
-- `mengele_event016_active_project_stage_entries`
-- `mengele_event016_active_cost_political_power_entries`
-- `mengele_event016_active_cost_support_equipment_entries`
-- `mengele_event016_active_cost_fuel_entries`
-- `mengele_event016_active_cost_civilian_factory_commitment_entries`
+```txt
+# Country scope, including the earlier initialized Computation-only schema.
+brilliant_scientist_mengele_initialize_project_stage_receipts = yes
+```
 
-Computation is family ID 1 and therefore uses index 0. The factory array is a native-CIC quote only. The parent decision's `civilian_factory_use` modifier owns reservation and release, and no helper in this file calls `add_factories` or fabricates a factory refund.
+## Output dispatch
 
-Begin validates all gates before initialization and payment. Completion and cancellation require the exact current stage receipt, snapshot the three direct costs, clear every active receipt field first, and then settle exactly once. A wrong family, wrong stage, repeated callback, or absent receipt cannot clear or refund another stage. Finish uses `exists = yes` only inside its output-authority gate; the exact receipt is still settled when an accessible owner is invalid or dead, producing a direct-cost refund and no output, while cancel remains usable without provider validity.
+`brilliant_scientist_mengele_apply_family_stage_output` records Theory and Prototype provider flags for every family. Native Prototype branches additionally clear their existing presentation availability flags. Conventional Computation, Electronics, Materials, Rocketry, High Energy, and Biomedical Deployment use `chaosx_grant_conventional_technology_package`; Weaponization calls the deployment package first and then the weaponization package. The fixed source is `constant:mengele_event016_project_stage.provenance_mengele`.
 
-## Computation tuning
+Teleportation, Cloning, Robotics, Paleogenetics, Xenobiological Synthesis, Alien Arms, and Temporal Deployment use `chaosx_grant_custom_operational_technology`. Their Weaponization branches establish the operational package first and then call `chaosx_grant_custom_technology_upgrade`, with the existing custom selector and upgrade constants. Selectors are reset after each call.
 
-Theory reads the existing quote of 1 CIC, 45 PP, 80 support equipment, 0 fuel, and 120 days. Prototype uses the new quote of 2 CIC, 68 PP, 200 support equipment, 100 fuel, and 180 days. Deployment reads the existing quote of 3 CIC, 90 PP, 600 support equipment, 500 fuel, and 270 days. Weaponization reads the existing quote of 5 CIC, 135 PP, 1200 support equipment, 1500 fuel, and 360 days.
+Biological Weapons and Singularity Deployment/Weaponization deliberately set `mengele_event016_stage_output_gap` and refund the direct receipt. No public/native adapter is source-proven inside this ownership boundary for those late stages.
 
-The Prototype quote corresponds to the existing base 2 CIC, 75 PP, 250 support equipment, and 500 fuel multiplied by the Computation profile factors 0.80 factory, 0.90 PP, 0.80 equipment, and 0.20 fuel and rounded to whole units. The other three stage values remain sourced from `constant:brilliant_scientist_project_stage_cost` and `constant:brilliant_scientist_project_duration`.
+## Native adapters
 
-Direct affordability is inclusive on this provider route. The equipment and fuel gates use `NOT = { has_equipment = { ... < quoted_cost } }` and `NOT = { has_fuel < quoted_cost }`, while Political Power uses `greater_than_or_equals`, so an exact balance is accepted without demanding one extra unit. Existing Kruger board gates remain unchanged. Native CIC availability is intentionally outside the scripted cost gate because it belongs to the decision modifier reservation.
+`brilliant_scientist_mengele_adopt_completed_native_after_theory` is an internal country-scope settlement helper.
+It runs after a successful paid Theory output, the refund decision, and the Theory incident dispatch, before the outer callback clears its selectors.
+Successful paid outputs for Electronics, Materials, Rocketry, High Energy, and Biomedical also dispatch their private family incident before this adoption boundary.
+The dispatcher rejects unsupported families and already-active family incidents; cancelled, rejected, duplicated, or merely reconciled outputs cannot reach a fresh stage roll through settlement.
+Its inputs are the current private family/stage selectors and successful output result; the generic native authentication trigger must also confirm the strict owner, matching Theory receipt, and actual completed project.
+It invokes the existing Prototype synchronization without paying again or replaying native completion.
+After successful synchronization, the shared private native-package helper grants the same operational entitlement as the original native bridge for Teleportation, Cloning, Robotics, Paleogenetics, Xenobiological Synthesis, Alien Arms, and Temporal Mechanics.
+That helper uses the saved family and the neutral technology API with Mengele provenance; conventional families receive no extra operational reward at Prototype.
+The adoption helper then restores the outer family, stage, index, output results, gap result, authorization, and availability result.
+The native synchronization result remains available as `mengele_event016_native_prototype_synced`; all normal finish results still describe the paid Theory callback.
+This covers the fourteen ordinary families when native research precedes Theory.
+For Singularity, the same post-settlement boundary walks the six component IDs through the existing exact native-component authentication helper, restoring the private family before each callback and the caller's component selector afterward.
+Only actually completed native components acquire private receipts, and Prototype is recorded only when all six component receipts exist.
+No component is completed by the adoption loop, and it cannot pay for, construct, arm, or detonate the device or change Chaos.
+An absent native completion, failed Theory output, invalid owner, or duplicate finished receipt cannot create a Prototype through this hook.
+The helper is not called by stage-output or availability reconciliation, so nested Prototype output cannot recursively adopt another stage.
+Callers continue using `brilliant_scientist_mengele_finish_project_stage = yes`; they must not invoke the internal adoption helper as an independent grant API.
 
-## Stage outputs and neutral API
+`brilliant_scientist_mengele_reconcile_reused_native_project_prototypes` is a country-scope, no-argument completion adapter for Electronics, Rocketry, High Energy, and Biological Weapons.
+The separate strict-Mengele branch of `on_project_completion` calls it; the existing Kruger synchronization and historical capture remain host-only.
+It uses four private family selectors and the existing authentic recording API, which requires matching Theory and native completion and rejects an already-recorded Prototype.
+Each recording call clears its selectors; no event target, cost, Capacity access, native output replay, or Kruger history is introduced.
+It reconciles all four eligible families on one completion notification without a periodic scheduler or whole-world scan.
+Source inventory and scenario evidence are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_native_callback_audit_2026-09-06.md` and the matching implementation handoff.
 
-Theory sets `mengele_event016_computation_theory_completed` and applies the existing `brilliant_scientist_computation_theory` modifier. The parent modifier owner must enable this modifier for the provider's durable Theory receipt.
+`brilliant_scientist_mengele_sync_native_project_prototypes` accepts only `brilliant_scientist_mengele_project_native_output_is_authentic`, which requires the strict live owner, the matching Theory receipt, and the exact existing special-project completion.
+Rocketry accepts either Flying Bomb or Air Jet Engine completion, matching its native alternative-project gate; it does not require both.
+Biological Weapons authenticates its existing native-project alternatives.
 
-Prototype sets `mengele_event016_computation_prototype_completed`, preserves the existing `directorate_special_project_computation_completed` flag, clears the existing presentation flag, and applies `mengele_directorate_computation_prototype` once. The parent modifier owner removes that temporary provider modifier when the neutral Computation operational package is learned.
+`brilliant_scientist_mengele_record_native_project_prototype` accepts a private family selector or copies the existing native family selector, then routes all ordinary families through the generic adapter. `brilliant_scientist_mengele_record_singularity_component` authenticates the exact component selector and native special project, records its provider component flag once, and records the Singularity Prototype only after all six components are present. It does not call the Kruger component registry or create Kruger history.
 
-Deployment calls `chaosx_grant_conventional_technology_package` with Computation, Deployment, and `constant:mengele_event016_project_stage.provenance_mengele`, then sets `mengele_event016_computation_deployment_completed` only after the API reports success. Weaponization does the same with the full Weaponization tier and sets `mengele_event016_computation_weaponization_completed` after success. The neutral API owns cumulative package flags, runtime reconciliation, provenance arrays, and one-slot research adoption.
+The bridge effect `brilliant_scientist_record_mengele_project_prototype` invokes the native adapter for Electronics, Rocketry, High Energy, Cloning, Biological Weapons, and all previously supported families. Custom native families then receive the existing custom operational API. `brilliant_scientist_record_mengele_singularity_component` is available for the parent Strategic Singularity output branch.
 
-The fixed non-event source is `constant:mengele_event016_project_stage.provenance_mengele = 100001`. A repository scan found no current consumer collision; the only textual hit outside this helper is an offline wiki event-number example. The helper does not inherit a caller's optional source and resets the shared neutral API selectors after each call. The existing `brilliant_scientist_project_family` selector remains untouched.
+## Cleanup and parent boundary
 
-## Native prototype adapter
+`brilliant_scientist_mengele_restore_deployment_project_modifiers` restores the existing seven custom-family Deployment modifiers only for the strict private owner with the matching durable paid Deployment receipt.
+It runs through the existing availability reconciliation boundary after successful stage output and existing lifecycle reconciliation calls.
+It neither grants neutral technology nor creates a Deployment receipt, and native Prototype history alone cannot satisfy it.
+The modifier's own enable/removal conditions accept the current Kruger host or the strict private owner with that exact private receipt, preserving the existing host behavior and removing private benefits on provider loss.
+This provides the existing operational-modifier payoff in addition to the idempotent technology grant.
+It does not implement the remaining physical-site, production, control, or strategic-action counterparts; those remain under parent design review and require separate integration before Deployment is complete.
 
-The parent native presentation path should retain `directorate_special_project_computation_available` as the durable presentation receipt after Theory and must leave it set while the native project is active. If the parent uses `mengele_event016_native_computation_prototype_pending`, that flag describes the exposed native route only; it is not a second clock, payment reservation, or required start callback. Vanilla special-project documentation exposes `project_output` and iteration effects but no project-start callback, so the parent must call `brilliant_scientist_mengele_record_native_project_prototype` only from the exact `sp_brilliant_scientist_computational_engine` `project_output` branch after setting the Computation family selector. The adapter then requires the strict provider, the provider Theory receipt, and `is_special_project_completed = sp:sp_brilliant_scientist_computational_engine`, so a native project that completed before Theory cannot fabricate provider history through a generic poll. It records only the provider Prototype output. It never debits or refunds native project resources, adds CIC, copies a payment, or creates unrelated stage rewards.
+`brilliant_scientist_mengele_restore_early_project_modifiers` is a no-argument country-scope restoration helper called by the existing `brilliant_scientist_mengele_reconcile_project_availability` entry point.
+It requires the strict valid private owner, checks each exact durable Theory/Prototype completion flag, and adds only its missing matching existing modifier ID before one modifier refresh.
+It never calls stage-output, payment, native-project completion, neutral grant, or history helpers and does not write selectors, receipt arrays, slots, equipment, or Directorate state.
+Present modifiers are not re-added, and conventional learned packages converge on the same IDs without duplication.
+Private Theory is not inferred from Prototype, and no private history is inferred from a neutral operational flag or a broader Directorate completion flag.
+Restoration occurs when the existing country reconciliation is invoked, including successful-stage-output and CXT call sites, the strictly guarded tail of `germany_mengele_mark_victory`, and the strictly guarded `MCL_directorate_project_registry` completion reward after its existing availability grant.
+The victory tail runs after master-claim handling and cleanup, so an overthrow cannot restore private modifiers; the focus establishes the registry flag before reconciliation.
+No periodic hook or automatic validity-change detector is added.
+The availability helper retains its Computation behavior and also publishes Electronics, Materials, Rocketry, High Energy, and Biomedical native Prototype paths for the strict live private owner after matching Theory.
+Each path is cleared when its private Prototype, shared completion receipt, or matching native project is complete; Rocketry treats Flying Bomb and Air Jet Engine as alternatives.
+The five conventional paths are not touched by this reconciliation for a non-private owner; provider cleanup retains responsibility for their removal on program loss.
+Availability publication never invokes stage output or creates project history, payments, or technology rewards.
+This resolves the missing receipt-to-modifier restoration path recorded by the early-modifier gate audit, with current evidence in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_early_modifier_restoration_2026-09-06.md`.
+The gameplay invocation boundary is documented in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_lifecycle_reconciliation_2026-09-06.md`.
 
-The existing computational native project's risky unique-reward branch still calls Kruger accident/incident helpers unconditionally. The smallest safe parent integration is an additive provider branch in that existing reward: a strict Mengele provider must use an existing provider-safe incident/recovery state or existing Event 016 event surface, while only the Kruger branch may call `brilliant_scientist_refresh_project_accident_pressure` and `brilliant_scientist_dispatch_project_accident`. If no provider-safe incident surface exists, the native route must remain an explicit integration blocker rather than silently dropping the risk. This helper intentionally does not edit the native project file.
+`brilliant_scientist_mengele_cleanup_provider_receipts` extends an initialized receipt schema before walking the fifteen family slots, cancels active receipts, clears presentation availability flags, and preserves durable completion flags and neutral entitlements.
+It retains the existing Computation incident cleanup hook and invokes aggregate cleanup for the five conventional private incidents before the stage-receipt loop.
+Each family refunds only its exact stored recovery receipt before removing its native recovery decision, clears transient penalties and payment state, and preserves permanent history and learned technology.
+The existing provider-loss, defeat, transfer, and terminal callers of the provider cleanup helper therefore include these recoveries without another scheduler or world scan.
 
-## Lifecycle, targets, and cleanup
+The parent still owns native project output call sites, Biological Weapons public/native adapter wiring, Strategic Singularity component dispatch, decision integration, localisation, and all event/special-project definitions. This tranche does not claim full Event 016 portfolio completion.
 
-This core uses no event targets. All provider state is country-scoped and persists through the aligned arrays, flags, and neutral API receipts. Parent-owned close, expiry, defeat, victory, annexation, death, and terminal callers must invoke `brilliant_scientist_mengele_cleanup_provider_receipts` in the original provider scope, using an explicit `FROM` or saved owner target when a transfer effect changes the current scope. The cleanup effect does not initialize arrays, does not require the provider gate, and does not delete completed provider history or neutral API entitlements. It clears any optional native pending marker and presentation flag only after settling an active provider decision receipt.
+## Validation evidence
 
-The remaining family IDs 2 through 15 are deliberately not implemented in this file. Terminal and singularity execution, registry-wide cleanup, decisions, localisation, AI, CXT, event surfaces, and native project wiring remain parent-owned.
+Current quote and migration evidence is recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_quote_integration_2026-09-06.md`.
+Source-model tests cover all fifteen quotes, inclusive affordability, settlement, concurrent receipts, migration, and component integrity.
+Current full `state_flow` and narrow `trace` MCP inspections for `chaosx.nr16.901` both timed out after 180 seconds, so current engine lifecycle, render, and comparison evidence remain blocked.
+Earlier focused traces are historical evidence only.
 
-## Presentation and assets boundary
+No new icons, localisation, GUI, event, focus, model, or asset files are required by this helper layer.
 
-This helper adds no player-facing localisation, icon, GUI, focus, or event surface. Parent-owned decision rows continue to reference the existing Event 016 family-stage icons and localisation; no new sprite or `.gfx` registration is required for these private effects.
+## Remaining integration
 
-## Validation notes
-
-Static source checks cover the four quote rows, the one-based-to-zero-based array mapping, invalid and unsupported request no-op ordering, exact receipt matching, three direct debits, no factory effects, and reset of API selectors. The intended source scenarios are repeat begin, wrong family, wrong stage, PP/support/fuel shortage, invalid-owner finish, cancel without provider validity, fixed source provenance, and native callback repeat suppression.
-
-The mandatory narrow read-only Event MCP inspection for `chaosx.nr16.1` completed with partial status and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f73ba8df62da3d8579b33366762517f6aaa6585734d6ed6f72b52c2e17b7cf0c/65d6dd558cbb5c6cfd7a88b4a79c57258b7505f20ac876b55862d37f1656506e/event-trace-d9bc467fb6be.json`. The result reported `blockingDiagnostics = 0` but deferred workspace-wide helper/lifecycle projections and therefore did not provide engine execution evidence. No weighted helper exists in this slice, so probability inspection and comparison are not applicable. Agents do not launch the game; live native callback and decision acceptance remain parent/user validation gates.
+The parent still owns non-Computation decision presentation, reserve requirements, factory commitments, and literal stage callbacks.
+Singularity's paid component presentation must establish authentic private component receipts before Prototype entry, and its native six-component completion already delivers Prototype without another payment.
+Biological Weapons and Singularity late-stage outputs remain unresolved as described above.
+Longer-than-current receipt arrays are preserved without truncation, but the current cleanup contract visits only the fifteen defined families.
+The migration cannot reconstruct missing historical payment values and does not fabricate them from current quotes.

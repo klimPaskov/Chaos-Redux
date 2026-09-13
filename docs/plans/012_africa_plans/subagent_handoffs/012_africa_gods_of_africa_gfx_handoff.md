@@ -2,6 +2,8 @@
 
 This is the GFX-only companion to `../012_africa_gods_icon_assets_handoff_2026-09-05.md`; the parent owns all `.gfx` edits and gameplay wiring.
 
+Reconciliation note, 2026-09-05: the asset package changed no GFX files, but the current parent working tree now contains the proposed aliases in `interface/012_africa.gfx` and the Event 012 category picture consumers. This source evidence supersedes the narrower pending-wiring wording below without constituting parent or user approval.
+
 ## Proposed sprite aliases
 
 The two compact mechanic sprites are `GFX_012_africa_gods_strength` and `GFX_012_africa_gods_wrath`, using `gfx/interface/012_africa/gods_of_africa/gods_of_africa_strength.dds` and `gfx/interface/012_africa/gods_of_africa/gods_of_africa_wrath.dds` respectively.
@@ -18,11 +20,11 @@ The eight focus-family aliases are `GFX_goal_012_africa_gods_proclamation_instit
 
 ## Wiring state
 
-No GFX files were changed, and none of these aliases currently exists in the inspected `interface/012_africa.gfx` or another active interface file.
+No GFX files were changed by this handoff. The current working tree contains the listed mechanic, decision, idea, and focus aliases in `interface/012_africa.gfx`; report-event aliases are tracked by the companion event-art handoff and `interface/012_africa_event_pictures.gfx`.
 
-The current five participant decision consumers still point to the existing charter-ledger or generic sprites, the six current ideas have no matching GFX aliases, and the current focus overlay still points to the prior broad Event 012 family sprites.
+The current five participant decision consumers, the Africa-side priority/leniency/offender/protection/pardon/escalation consumers, the six ideas, and the Gods focus overlay now have source references to the generated aliases described above; parent/user visual review and live playback remain open.
 
-The accepted priority, offender, pardon, and escalation action names are future-ready concepts without current decision ids in `common/decisions/012_africa_gods_decisions.txt`; keep them unconsumed until the parent accepts a bounded wiring change.
+The current decision file contains consumers for the listed priority, offender, pardon, and escalation aliases, while any future action concept without a current decision id remains unconsumed until a bounded owner change is accepted.
 
 The Strength and Wrath sprites have no current scripted-GUI consumer in the inspected source and should be wired only when their consumer is accepted.
 

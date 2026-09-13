@@ -1,6 +1,31 @@
 # Event 016 planning completion status
 
-## Binding closure status, 2026-09-01
+## Current curator checkpoint, 2026-09-05
+
+This section is the current status authority and supersedes the 2026-09-01 binding-closure snapshot below without rewriting its historical evidence.
+
+The accepted design basis is the parent-supplied Event 016 Final Completion Plan and [`016_final_completion_contract.md`](../specs/016_final_completion_contract.md).
+
+The repository HEAD at this read was `d156e8ee121e9c3ea9ea91acce221610567b4cb2`, a documentation-navigation commit after the unrelated Event 012 commit and the relevant Event 016 implementation checkpoints `63d9a51508`, `535ec5c4e8`, and `b0093d361f`.
+
+| Accepted design basis | Current implementation evidence | Disposition |
+| --- | --- | --- |
+| Event 016 remains a minor fire-once chain rooted at `chaosx.nr16.1`, with exactly four logged evolutions, no cluster, six mapped super-events, seventeen achievements, 100 KRG focuses, and 88 DHR focuses. | Current `hoi4.focus_inspect` reports 100 KRG focuses and 88 DHR focuses with zero Event 016 blocking diagnostics. Current event traces are focused partial inspections and do not independently certify the event, achievement, or super-event counts. | Accepted design remains binding; focus structure is implemented evidence, while whole-chain and catalog evidence remain unresolved. |
+| Actual biological equipment is authoritative and the former Event 016 numeric biological quantity ledger is retired. Native raids own preparation, reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution. Decision-led production, staging, battlefield release, and covert release use separate receipts. | The current biological decision source and native raid source are present in the worktree. The retired stockpile addendum and callback-boundary proposal are historical evidence only. | Promoted into the accepted spec; transaction ownership is documented, but the source and MCP transaction acceptance tranche remains unresolved. |
+| Mengele may act only through a strict active-program-owner provider and must never write the Kruger board. | `b0093d361f` records the strict predicate and thin alias. The current worktree helper tranche and `016_mengele_portfolio_core_2026-09-05.md` extend aligned receipts to all fifteen families, but parent decision and native callback wiring and source-proven late-stage adapters remain open. | Bounded helper tranche implemented; full accepted portfolio remains accepted and queued for owner integration. |
+| Portal breach reconstruction must be atomic, preserve existing geometry, create one locked six-battalion replacement, and keep its native sixty-unit equipment reservation separate. | `63d9a51508` and `016_portal_reconstruction_receipt_handoff_2026-09-04.md` record the committed-result guard and separate native reservation. | Source correction implemented; native callback behavior remains an external user-owned acceptance check after repository gates are ready. |
+| Existing geometry is authoritative for every named model package, and regeneration or substitute geometry is forbidden. | The 2026-09-05 xenobiological handoff records preserved geometry and genuine actions but blocked support_attack and retreat authoring. Other package gates remain individually mixed, rejected, or queued. | Accepted boundary remains binding; no model-package or whole-event completion claim is made. |
+| Repository readiness for user live acceptance requires reviewed source, MCP, audit, documentation, localisation, catalog, event-detail, achievement, super-event, and manifest agreement. | Event MCP is `EVENT_INSPECTED_PARTIAL`, GUI inspection timed out, technology inspection timed out or returned `ARTIFACT_NOT_FOUND`, map inspection reports truncated position errors, and no callable `chaosx_ai_probability_auditor` route exists. | Repository closure is unresolved. User live-game validation is user-owned and is not an additional repository completion requirement. |
+
+Current status is `unresolved` for whole-event closure, not `complete`.
+
+Current read-only evidence is recorded in the companion resume packet and the new curator handoff `../../../plans/016_brilliant_scientist_plans/subagent_handoffs/016_documentation_curator_closure_reconcile_2026-09-05.md`.
+
+The explicit owner queue is the fifteen-family Mengele decision and callback wiring, source-proven Biological Weapons and Strategic Singularity late-stage adapters, the KRG focus AI `allowed`-guard decision and comparison, four DHR diplomatic rewards plus the Synod no-DLC approval, current GUI and technology MCP evidence, map-position diagnostics, and package-specific model gates.
+
+Live-game validation is not listed as a repository blocker in this checkpoint. The user performs that validation once the repository has cleared its own source and evidence gates.
+
+## Superseded binding closure status, 2026-09-01
 
 The accepted [`016_final_completion_contract.md`](../specs/016_final_completion_contract.md) is the current authority for completion. Earlier statements that describe gameplay, assets, validation, or models as closed, optional, deferred outside scope, or complete are historical evidence when they conflict with that contract.
 

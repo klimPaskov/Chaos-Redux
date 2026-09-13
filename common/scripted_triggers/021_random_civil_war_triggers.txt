@@ -18,12 +18,13 @@
 # immunity bypass. No trigger in this file mutates state.
 # ============================================================================
 
-# COUNTRY scope. Internal Event 021 compatibility identity used only by its
-# cleanup path to preserve a fully proven adapter package. This predicate is
-# intentionally owned by Event 021 and is not consumed by any Event 006
-# player-surface gate or pre-event category, decision, queue, or pressure.
+# COUNTRY scope. Internal Event 021 compatibility identity used by the Event
+# 006 package-content and player-surface gates after the adapter is complete.
+# The predicate remains owned by Event 021 and does not publish Event 006
+# lifecycle, league, network, firing, or evolution state.
 is_independence_wave_event021_package_country = {
 	exists = yes
+	random_civil_war_is_normal_human_country = yes
 	has_country_flag = random_civil_war_event6_adapter_complete
 	has_country_flag = independence_wave_event021_adapter_setup_proven
 	has_country_flag = random_civil_war_event6_origin_recorded
@@ -72,12 +73,12 @@ random_civil_war_command_route_valid = {
 }
 
 # COUNTRY scope. The same-tag path is limited to a one-state or explicitly
-# all-island plan. The caller must prove the loyalty contest or armed-cell
-# route before setting `random_civil_war_same_tag_route_ready`.
+# proven all-island plan. The caller must prove the loyalty contest or armed-
+# cell route before setting `random_civil_war_same_tag_route_ready`.
 random_civil_war_same_tag_route_valid = {
 	has_country_flag = random_civil_war_same_tag_route_ready
-	NOT = { num_of_controlled_states > constant:random_civil_war_capacity.maximum_one_state_route_states }
 	OR = {
+		NOT = { num_of_controlled_states > constant:random_civil_war_capacity.maximum_one_state_route_states }
 		has_country_flag = random_civil_war_all_island_route_ready
 		has_country_flag = random_civil_war_same_tag_loyalty_contest_ready
 	}
@@ -92,7 +93,7 @@ random_civil_war_event6_package_admission_valid = {
 	NOT = { has_country_flag = independence_wave_active_origin }
 	NOT = { has_country_flag = soviet_collapse_active_origin }
 	NOT = { check_variable = { liberation_origin = constant:liberation_origin.independence_wave } }
-	has_independence_wave_runtime_package_preflight_ready = yes
+	is_independence_wave_runtime_package_preflight_ready = yes
 }
 
 # COUNTRY scope. Input is the Event 021 adapter receipt created after the
@@ -138,12 +139,6 @@ random_civil_war_has_valid_actor_route = {
 random_civil_war_has_valid_opposition_route = {
 	random_civil_war_has_valid_actor_route = yes
 	NOT = { has_country_flag = random_civil_war_no_valid_opposition }
-	OR = {
-		has_country_flag = random_civil_war_opposition_leader_ready
-		has_country_flag = random_civil_war_opposition_force_ready
-		has_country_flag = random_civil_war_event6_identity_ready
-		has_country_flag = random_civil_war_same_tag_loyalty_contest_ready
-	}
 }
 
 # COUNTRY scope. Baseline automatic selection uses this predicate. Subject
@@ -151,6 +146,14 @@ random_civil_war_has_valid_opposition_route = {
 # is allowed to supply a valid subject crisis under the active evolution.
 random_civil_war_country_can_be_target = {
 	random_civil_war_is_normal_human_country = yes
+	# The public automatic target receipt must remain empty until the owner
+	# deliberately publishes the rework-ready flag.
+	has_global_flag = random_civil_war_rework_ready
+	# Event 021 is a bounded individual crisis. Do not admit a country that is
+	# already carrying the shared package cap, even when its own route remains
+	# otherwise valid.
+	individual_crisis_load_is_below_cap = yes
+	random_civil_war_major_targeting_allowed = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
@@ -178,6 +181,7 @@ random_civil_war_country_can_be_automatic_target = {
 
 random_civil_war_country_can_be_scenario_target = {
 	random_civil_war_is_normal_human_country = yes
+	individual_crisis_load_is_below_cap = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { random_civil_war_has_terminal_lock = yes }
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
@@ -192,7 +196,13 @@ event021_country_can_be_target = {
 }
 
 random_civil_war_event_pool_available = {
-	random_civil_war_country_can_be_automatic_target = yes
+	has_global_flag = random_civil_war_rework_ready
+	has_variable = global.random_civil_war_live_target_count
+	check_variable = {
+		var = global.random_civil_war_live_target_count
+		value = constant:random_civil_war_value.zero
+		compare = greater_than
+	}
 }
 
 random_civil_war_country_can_manage_crisis = {
@@ -217,6 +227,16 @@ random_civil_war_major_severity_allowed = {
 		has_global_flag = random_civil_war_evolution_ii_active
 		has_global_flag = random_civil_war_evolution_iii_active
 		has_global_flag = random_civil_war_scenario_bypass_active
+	}
+}
+
+# COUNTRY scope. Majors enter automatic selection only once Evolution I has
+# unlocked multi-front play. Scenario bypass retains deterministic manual
+# coverage, while ordinary minor countries remain eligible at baseline.
+random_civil_war_major_targeting_allowed = {
+	OR = {
+		is_major = no
+		random_civil_war_major_severity_allowed = yes
 	}
 }
 
@@ -310,20 +330,11 @@ random_civil_war_authority_is_failing = {
 }
 
 random_civil_war_authority_is_collapsed = {
-	NOT = { has_variable = random_civil_war_state_authority }
-	OR = {
-		NOT = {
-			check_variable = {
-				var = random_civil_war_state_authority
-				value = constant:random_civil_war_authority.collapse_maximum
-				compare = greater_than
-			}
-		}
-		check_variable = {
-			var = random_civil_war_state_authority
-			value = constant:random_civil_war_authority.collapse_maximum
-			compare = less_than_or_equals
-		}
+	has_variable = random_civil_war_state_authority
+	check_variable = {
+		var = random_civil_war_state_authority
+		value = constant:random_civil_war_authority.collapse_maximum
+		compare = less_than_or_equals
 	}
 }
 
@@ -481,14 +492,36 @@ random_civil_war_review_due = {
 	}
 }
 
-random_civil_war_critical_queue_entry_valid = {
+random_civil_war_critical_queue_country_valid = {
 	random_civil_war_country_can_be_target = yes
-	NOT = { has_country_flag = random_civil_war_launch_in_progress }
+	random_civil_war_pressure_is_critical = yes
+}
+
+random_civil_war_critical_queue_entry_valid = {
+	random_civil_war_critical_queue_country_valid = yes
+	NOT = { has_global_flag = random_civil_war_launch_in_progress }
+	NOT = { has_country_flag = random_civil_war_critical_launch_pending }
 }
 
 random_civil_war_scenario_launch_valid = {
-	random_civil_war_country_can_be_scenario_target = yes
-	random_civil_war_theater_capacity_available = yes
+	# Manual scenario targets may be stable before the selected scenario type
+	# creates its route receipt. The target pool already proved the normal-human,
+	# type-preflight, terminal, and individual-crisis gates. Automatic consumers
+	# continue to require the stricter live-route target predicate.
+	OR = {
+		random_civil_war_country_can_be_scenario_target = yes
+		AND = {
+			event021_parent_scenario_country_eligible = yes
+			OR = {
+				has_country_flag = random_civil_war_scenario_target_confirmed
+				has_global_flag = random_civil_war_scenario_target_confirmed
+			}
+		}
+	}
+	OR = {
+		has_global_flag = random_civil_war_scenario_maximum_mode
+		random_civil_war_theater_capacity_available = yes
+	}
 	OR = {
 		has_country_flag = random_civil_war_scenario_target_confirmed
 		has_global_flag = random_civil_war_scenario_target_confirmed
@@ -523,39 +556,91 @@ random_civil_war_recurrence_valid = {
 	}
 }
 
-random_civil_war_achievement_survive_first_crisis_ready = {
+random_civil_war_achievement_eligible = {
+	is_ai = no
 	random_civil_war_is_normal_human_country = yes
-	has_country_flag = random_civil_war_settlement_recorded
-	NOT = { has_capitulated = yes }
-	has_country_flag = random_civil_war_parent_remnant_preserved
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+	NOT = { has_country_flag = random_civil_war_achievement_disqualified }
 }
 
-random_civil_war_achievement_settle_three_fronts_ready = {
-	has_variable = random_civil_war_settled_front_count
-	check_variable = {
-		var = random_civil_war_settled_front_count
-		value = constant:random_civil_war_settlement_tuning.achievement_front_count
-		compare = greater_than_or_equals
+random_civil_war_achievement_hold_the_center_ready = {
+	random_civil_war_achievement_eligible = yes
+	has_country_flag = random_civil_war_achievement_history_started
+	NOT = { has_country_flag = random_civil_war_decisive_capital_lost }
+	has_variable = random_civil_war_minimum_authority
+	check_variable = { var = random_civil_war_minimum_authority value = constant:random_civil_war_authority.collapse_maximum compare = greater_than }
+	has_country_flag = random_civil_war_original_player_government
+	has_country_flag = random_civil_war_government_victory
+	has_country_flag = random_civil_war_internal_fronts_resolved
+	OR = {
+		has_country_flag = random_civil_war_capital_secured
+		has_country_flag = random_civil_war_validated_replacement_capital
+	}
+	NOT = { has_country_flag = random_civil_war_authority_ever_collapsed }
+}
+
+random_civil_war_achievement_no_state_left_behind_ready = {
+	random_civil_war_achievement_eligible = yes
+	OR = {
+		has_country_flag = random_civil_war_original_player_government
+		has_country_flag = random_civil_war_successor_claimed
+	}
+	has_country_flag = random_civil_war_evolution_i_multifront
+	has_country_flag = random_civil_war_internal_fronts_resolved
+	has_country_flag = random_civil_war_opening_states_reintegrated
+	NOT = { has_country_flag = random_civil_war_harsh_settlement }
+	NOT = { has_country_flag = random_civil_war_settlement_partition }
+}
+
+random_civil_war_achievement_event6_milestone_complete = {
+	OR = {
+		has_country_flag = independence_wave_constitutional_state_complete
+		has_country_flag = independence_wave_formable_committed
+		has_country_flag = independence_wave_open_sovereignty_declared
+		has_independence_wave_treaty_backed_recognition = yes
 	}
 }
 
-random_civil_war_achievement_preserve_remnant_ready = {
-	random_civil_war_parent_remnant_valid = yes
-	has_country_flag = random_civil_war_parent_remnant_preserved
+random_civil_war_achievement_a_flag_of_our_own_ready = {
+	random_civil_war_achievement_eligible = yes
+	has_country_flag = random_civil_war_event6_origin_recorded
+	has_country_flag = random_civil_war_event6_recognized_independence
+	has_country_flag = random_civil_war_event6_postwar_survived
+	random_civil_war_achievement_event6_milestone_complete = yes
+	is_subject = no
 }
 
-random_civil_war_achievement_event6_origin_ready = {
-	random_civil_war_event6_origin_adapter_valid = yes
+random_civil_war_achievement_war_within_a_war_ready = {
+	random_civil_war_achievement_eligible = yes
+	OR = {
+		has_country_flag = random_civil_war_original_player_government
+		has_country_flag = random_civil_war_successor_claimed
+	}
+	has_country_flag = random_civil_war_external_war_at_opening
+	has_country_flag = random_civil_war_internal_fronts_resolved
+	NOT = { has_country_flag = random_civil_war_external_war_capitulated }
+	exists = yes
 }
 
-random_civil_war_achievement_global_stabilizer_ready = {
-	has_country_flag = random_civil_war_global_stabilizer_candidate
-	NOT = { has_country_flag = random_civil_war_global_stabilizer_failed }
+random_civil_war_achievement_the_terms_hold_ready = {
+	random_civil_war_achievement_eligible = yes
+	has_country_flag = random_civil_war_settlement_signatory
+	has_country_flag = random_civil_war_settlement_negotiated
+	event021_treaty_terms_hold_valid = yes
+	NOT = { has_country_flag = random_civil_war_settlement_violation }
+	NOT = { has_country_flag = random_civil_war_recurrence_committed }
 }
 
-random_civil_war_achievement_nested_recovery_ready = {
+random_civil_war_achievement_fractals_of_sovereignty_ready = {
+	random_civil_war_achievement_eligible = yes
+	has_country_flag = random_civil_war_event6_identity_at_opening
+	has_country_flag = random_civil_war_nested_crisis_candidate
 	has_country_flag = random_civil_war_nested_crisis_resolved
-	has_country_flag = random_civil_war_reconstruction_complete
+	has_country_flag = random_civil_war_nested_homeland_recovered
+	has_country_flag = random_civil_war_internal_fronts_resolved
+	is_subject = no
+	NOT = { is_actual_nonhuman_country = yes }
 }
 
 # Stable parent-facing setup-carrier contract. The carrier itself is owned by
@@ -574,6 +659,7 @@ random_civil_war_cleanup_allowed = {
 	OR = {
 		has_country_flag = random_civil_war_active
 		has_country_flag = random_civil_war_critical_queued
+		has_country_flag = random_civil_war_critical_launch_pending
 		has_country_flag = random_civil_war_front_registered
 		has_country_flag = random_civil_war_exposure_active
 		has_country_flag = random_civil_war_plan_owner

@@ -19,6 +19,8 @@ universal_cost_source_is_active = {
 
 # Input: universal_cost_affordability_resource_kind.
 # Output: true for kinds that the shared debit/credit helpers can execute.
+# custom_adapter remains deliberately false; its owner must perform payment
+# and refund before acknowledging the stored component.
 universal_cost_resource_kind_is_native = {
 	OR = {
 		check_variable = {
@@ -29,6 +31,31 @@ universal_cost_resource_kind_is_native = {
 		check_variable = {
 			var = universal_cost_affordability_resource_kind
 			value = constant:universal_cost_resource_kind.command_power
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.army_experience
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.navy_experience
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.air_experience
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.stability
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.war_support
 			compare = equals
 		}
 		check_variable = {
@@ -53,6 +80,11 @@ universal_cost_resource_kind_is_native = {
 		}
 		check_variable = {
 			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.support_equipment_1
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
 			value = constant:universal_cost_resource_kind.motorized_equipment
 			compare = equals
 		}
@@ -63,7 +95,27 @@ universal_cost_resource_kind_is_native = {
 		}
 		check_variable = {
 			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.train_equipment_1
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
 			value = constant:universal_cost_resource_kind.convoy
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.train_equipment_1
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.stability
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.war_support
 			compare = equals
 		}
 	}
@@ -87,7 +139,7 @@ universal_cost_component_is_affordable = {
 				compare = equals
 			}
 			NOT = {
-				political_power < universal_cost_affordability_amount
+				has_political_power < universal_cost_affordability_amount
 			}
 		}
 		AND = {
@@ -98,6 +150,36 @@ universal_cost_component_is_affordable = {
 			}
 			NOT = {
 				command_power < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.army_experience
+				compare = equals
+			}
+			NOT = {
+				has_army_experience < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.navy_experience
+				compare = equals
+			}
+			NOT = {
+				has_navy_experience < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.air_experience
+				compare = equals
+			}
+			NOT = {
+				has_air_experience < universal_cost_affordability_amount
 			}
 		}
 		AND = {
@@ -147,6 +229,18 @@ universal_cost_component_is_affordable = {
 		AND = {
 			check_variable = {
 				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.support_equipment_1
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment_1 < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
 				value = constant:universal_cost_resource_kind.motorized_equipment
 				compare = equals
 			}
@@ -171,6 +265,18 @@ universal_cost_component_is_affordable = {
 		AND = {
 			check_variable = {
 				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.train_equipment_1
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					train_equipment_1 < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
 				value = constant:universal_cost_resource_kind.convoy
 				compare = equals
 			}
@@ -178,6 +284,26 @@ universal_cost_component_is_affordable = {
 				has_equipment = {
 					convoy_1 < universal_cost_affordability_amount
 				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.stability
+				compare = equals
+			}
+			NOT = {
+				has_stability < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.war_support
+				compare = equals
+			}
+			NOT = {
+				has_war_support < universal_cost_affordability_amount
 			}
 		}
 	}

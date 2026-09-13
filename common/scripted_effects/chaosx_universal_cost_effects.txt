@@ -133,6 +133,15 @@ universal_cost_source_register = {
 			}
 		}
 		set_temp_variable = { universal_cost_source_register_result = constant:universal_cost_framework.result_success }
+		if = {
+			limit = {
+				is_in_array = {
+					array = global.universal_cost_source_ids
+					value = constant:universal_cost_framework.black_friday_source_id
+				}
+			}
+			universal_cost_rebuild_custom_quote_ratio_cache = yes
+		}
 	}
 }
 
@@ -194,6 +203,18 @@ universal_cost_source_clear = {
 			index = universal_cost_source_found_index
 		}
 		set_temp_variable = { universal_cost_source_clear_result = constant:universal_cost_framework.result_success }
+		if = {
+			limit = {
+				is_in_array = {
+					array = global.universal_cost_source_ids
+					value = constant:universal_cost_framework.black_friday_source_id
+				}
+			}
+			universal_cost_rebuild_custom_quote_ratio_cache = yes
+		}
+		else = {
+			universal_cost_clear_custom_quote_ratio_cache = yes
+		}
 	}
 }
 
@@ -229,6 +250,21 @@ universal_cost_source_register_black_friday = {
 			universal_cost_source_priority = constant:universal_cost_framework.black_friday_source_priority
 		}
 	}
+	if = {
+		limit = {
+			OR = {
+				NOT = { has_variable = universal_cost_source_eligibility_mask }
+				check_variable = {
+					var = universal_cost_source_eligibility_mask
+					value = constant:universal_cost_framework.zero
+					compare = less_than_or_equals
+				}
+			}
+		}
+	set_temp_variable = {
+			universal_cost_source_eligibility_mask = constant:universal_cost_framework.source_all_mask
+	}
+	}
 	universal_cost_source_register = yes
 }
 
@@ -252,10 +288,17 @@ universal_cost_source_matches_quote_family = {
 	set_temp_variable = { universal_cost_source_matches_quote = constant:universal_cost_framework.zero }
 	if = {
 		limit = {
-			check_variable = {
-				var = universal_cost_source_mask
-				value = constant:universal_cost_framework.source_all_mask
-				compare = equals
+			OR = {
+				check_variable = {
+					var = universal_cost_source_mask
+					value = constant:universal_cost_framework.zero
+					compare = equals
+				}
+				check_variable = {
+					var = universal_cost_source_mask
+					value = constant:universal_cost_framework.source_all_mask
+					compare = equals
+				}
 			}
 			check_variable = {
 				var = universal_cost_quote_family_mask
@@ -267,6 +310,7 @@ universal_cost_source_matches_quote_family = {
 	}
 	else = {
 		set_temp_variable = { universal_cost_source_mask_bit = constant:universal_cost_framework.one }
+		set_temp_variable = { universal_cost_quote_mask_bit = constant:universal_cost_framework.one }
 		set_temp_variable = { universal_cost_source_mask_break = constant:universal_cost_framework.zero }
 		for_loop_effect = {
 			start = constant:universal_cost_framework.zero
@@ -283,7 +327,7 @@ universal_cost_source_matches_quote_family = {
 			set_temp_variable = {
 				universal_cost_quote_mask_bit_presence = {
 					value = universal_cost_quote_family_mask
-					divide = universal_cost_source_mask_bit
+					divide = universal_cost_quote_mask_bit
 					mod = constant:universal_cost_framework.two
 				}
 			}
@@ -306,6 +350,9 @@ universal_cost_source_matches_quote_family = {
 			multiply_temp_variable = {
 				universal_cost_source_mask_bit = constant:universal_cost_framework.two
 			}
+			multiply_temp_variable = {
+				universal_cost_quote_mask_bit = constant:universal_cost_framework.two
+			}
 		}
 	}
 }
@@ -317,6 +364,12 @@ universal_cost_source_matches_quote_family = {
 universal_cost_round_up_to_quantum = {
 	set_temp_variable = { universal_cost_quantize_result = universal_cost_quantize_amount }
 	set_temp_variable = { universal_cost_quantize_units = constant:universal_cost_framework.zero }
+	if = {
+		limit = { NOT = { has_variable = universal_cost_quantize_quantum } }
+		set_temp_variable = {
+			universal_cost_quantize_quantum = constant:universal_cost_framework.default_rounding_quantum
+		}
+	}
 	if = {
 		limit = {
 			check_variable = {
@@ -538,6 +591,84 @@ universal_cost_quote_integer = {
 	}
 }
 
+# Rebuild the finite trigger-side quote cache from the same registered-source
+# composition used by universal_cost_quote_integer. HOI4 custom-cost triggers
+# cannot traverse arrays or call effects, so the owner bridge reads these
+# persistent ratios for the canonical family masks used by Event 026. The
+# cache is deliberately rebuilt after every public source registration and
+# cleared on source expiry; it is never a second pricing implementation.
+universal_cost_rebuild_custom_quote_ratio_cache = {
+	set_temp_variable = { universal_cost_custom_cache_ordinary_cost = constant:universal_cost_framework.basis }
+	set_temp_variable = { universal_cost_quote_rounding_quantum = constant:universal_cost_framework.default_rounding_quantum }
+
+	set_temp_variable = { universal_cost_quote_ordinary_cost = universal_cost_custom_cache_ordinary_cost }
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.political_power }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_political_power = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.command_power }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_command_power = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.manpower }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_manpower = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.fuel }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_fuel = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.equipment }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_equipment = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.trains }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_trains = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.convoy }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_convoy = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.army_experience }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_army_experience = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.navy_experience }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_navy_experience = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.air_experience }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_air_experience = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.stability }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_stability = universal_cost_quote_composed_ratio }
+
+	set_temp_variable = { universal_cost_quote_family_mask = constant:universal_cost_family.war_support }
+	universal_cost_quote_integer = yes
+	set_variable = { global.universal_cost_custom_quote_ratio_war_support = universal_cost_quote_composed_ratio }
+
+	set_variable = { global.universal_cost_custom_quote_cache_valid = constant:universal_cost_framework.one }
+}
+
+universal_cost_clear_custom_quote_ratio_cache = {
+	set_variable = { global.universal_cost_custom_quote_ratio_political_power = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_command_power = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_manpower = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_fuel = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_equipment = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_trains = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_convoy = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_army_experience = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_navy_experience = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_air_experience = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_stability = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_ratio_war_support = constant:universal_cost_framework.basis }
+	set_variable = { global.universal_cost_custom_quote_cache_valid = constant:universal_cost_framework.zero }
+}
+
 # Convert a quoted component into an affordability result without changing
 # resources. Inputs: universal_cost_quote_resource_kind and
 # universal_cost_quote_final_cost. Output: universal_cost_quote_affordable.
@@ -561,7 +692,9 @@ universal_cost_check_quote_affordable = {
 
 # Inputs: universal_cost_payment_resource_kind and positive
 # universal_cost_payment_amount. Output: universal_cost_payment_result.
-# Unsupported kinds return no_op and do not mutate the payer.
+# Unsupported kinds return no_op and do not mutate the payer. In particular,
+# custom_adapter remains owner-paid and owner-refunded rather than being
+# treated as a native resource branch.
 universal_cost_pay_component = {
 	set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_no_op }
 	set_temp_variable = {
@@ -611,6 +744,86 @@ universal_cost_pay_component = {
 				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
 			}
 			add_command_power = universal_cost_payment_delta
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.army_experience
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			army_experience = universal_cost_payment_delta
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.navy_experience
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			navy_experience = universal_cost_payment_delta
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.air_experience
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			air_experience = universal_cost_payment_delta
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.stability
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			add_stability = universal_cost_payment_delta
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.war_support
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			add_war_support = universal_cost_payment_delta
 			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
 		}
 		if = {
@@ -687,6 +900,25 @@ universal_cost_pay_component = {
 			limit = {
 				check_variable = {
 					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.support_equipment_1
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			add_equipment_to_stockpile = {
+				type = support_equipment_1
+				amount = universal_cost_payment_delta
+			}
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
 					value = constant:universal_cost_resource_kind.motorized_equipment
 					compare = equals
 				}
@@ -717,6 +949,25 @@ universal_cost_pay_component = {
 			}
 			add_equipment_to_stockpile = {
 				type = train_equipment
+				amount = universal_cost_payment_delta
+			}
+			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = universal_cost_payment_resource_kind
+					value = constant:universal_cost_resource_kind.train_equipment_1
+					compare = equals
+				}
+				universal_cost_component_is_affordable = yes
+			}
+			set_temp_variable = { universal_cost_payment_delta = universal_cost_payment_amount }
+			multiply_temp_variable = {
+				universal_cost_payment_delta = constant:universal_cost_framework.negative_one
+			}
+			add_equipment_to_stockpile = {
+				type = train_equipment_1
 				amount = universal_cost_payment_delta
 			}
 			set_temp_variable = { universal_cost_payment_result = constant:universal_cost_framework.result_success }
@@ -776,6 +1027,27 @@ universal_cost_credit_component = {
 		}
 		if = {
 			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.army_experience compare = equals }
+			}
+			army_experience = universal_cost_payment_amount
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.navy_experience compare = equals }
+			}
+			navy_experience = universal_cost_payment_amount
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.air_experience compare = equals }
+			}
+			air_experience = universal_cost_payment_amount
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
 				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.manpower compare = equals }
 			}
 			add_manpower = universal_cost_payment_amount
@@ -804,6 +1076,13 @@ universal_cost_credit_component = {
 		}
 		if = {
 			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.support_equipment_1 compare = equals }
+			}
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = universal_cost_payment_amount }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
 				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.motorized_equipment compare = equals }
 			}
 			add_equipment_to_stockpile = { type = motorized_equipment_1 amount = universal_cost_payment_amount }
@@ -818,9 +1097,30 @@ universal_cost_credit_component = {
 		}
 		if = {
 			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.train_equipment_1 compare = equals }
+			}
+			add_equipment_to_stockpile = { type = train_equipment_1 amount = universal_cost_payment_amount }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
 				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.convoy compare = equals }
 			}
 			add_equipment_to_stockpile = { type = convoy_1 amount = universal_cost_payment_amount }
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.stability compare = equals }
+			}
+			add_stability = universal_cost_payment_amount
+			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
+		}
+		if = {
+			limit = {
+				check_variable = { var = universal_cost_payment_resource_kind value = constant:universal_cost_resource_kind.war_support compare = equals }
+			}
+			add_war_support = universal_cost_payment_amount
 			set_temp_variable = { universal_cost_credit_result = constant:universal_cost_framework.result_success }
 		}
 	}
@@ -1181,7 +1481,7 @@ universal_cost_settle_transaction = {
 	}
 }
 
-# Inputs: universal_cost_transaction_id and universal_cost_component_id. This
+# Inputs: universal_cost_transaction_id and universal_cost_transaction_component_id. This
 # acknowledgement is for an owner adapter that already credited an unsupported
 # commitment/component. It uses the stored actual-paid value for the receipt;
 # the external adapter must credit exactly that amount before calling it.
@@ -1203,7 +1503,7 @@ universal_cost_mark_component_refunded = {
 			}
 		}
 		set_temp_variable = { universal_cost_component_lookup_transaction_id = universal_cost_transaction_id }
-		set_temp_variable = { universal_cost_component_lookup_id = universal_cost_component_id }
+		set_temp_variable = { universal_cost_component_lookup_id = universal_cost_transaction_component_id }
 		universal_cost_find_component_row = yes
 		if = {
 			limit = {
@@ -1306,7 +1606,7 @@ universal_cost_refund_transaction = {
 					set_variable = {
 						universal_cost_component_refunded_states^universal_cost_refund_cursor = constant:universal_cost_component_state.refunded
 					}
-					else = {
+				else = {
 						universal_cost_credit_component = yes
 						if = {
 							limit = {

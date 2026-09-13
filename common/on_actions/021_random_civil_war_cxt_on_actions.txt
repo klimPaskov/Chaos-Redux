@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 CXT REGISTRATION HOOKS
+# ============================================================================
+# Startup uses one bounded existing-country scope to initialize the framework,
+# publish its readiness gate, and register the CXT carrier. The tag-scoped
+# daily hook repairs initialized test saves without adding a world iteration.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				event021_parent_initialize_global_runtime = yes
+				random_civil_war_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				random_civil_war_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+
+	# Event-driven receipts, not whole-world periodic reviews.
+	on_state_control_changed = {
+		effect = {
+			FROM = { event021_record_capital_continuity = yes }
+		}
+	}
+
+	on_capitulation = {
+		effect = { event021_record_external_capitulation = yes }
+	}
+
+	# Natural civil-war victory reaches this boundary before the engine removes
+	# the losing country. Reuse the same explicit same-crisis successor proof so
+	# the front roster is prepared before any annex callback or teardown.
+	on_civil_war_end_before_annexation = {
+		effect = {
+			ROOT = { event021_parent_prepare_annex_successor = yes }
+		}
+	}
+
+	# ROOT is the annexer and FROM is the annexed country. This transaction-bound
+	# callback prevents removed countries from leaving stale bounded scheduler,
+	# target-count, queue, theater, or front membership.
+	on_annex = {
+		effect = {
+			event021_parent_prepare_annex_successor = yes
+			FROM = {
+				event021_treaty_rebind_successor = yes
+				event021_handle_annexed_country = yes
+			}
+			event021_adopt_successor_roster = yes
+		}
+	}
+}

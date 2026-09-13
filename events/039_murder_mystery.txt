@@ -1,53 +1,512 @@
 add_namespace = chaosx.nr39
 
-##############################################################################################################
-#    ##    ## ########      #######   #######
-#    ###   ## ##     ##    ##     ## ##     ##
-#    ####  ## ##     ##           ## ##     ##
-#    ## ## ## ########      #######   ########
-#    ##  #### ##   ##             ##        ##
-#    ##   ### ##    ##     ##     ## ##     ##
-#    ##    ## ##     ##     #######   #######
-##############################################################################################################
-#   #     #                                       #     #
-#   ##   ## #    # #####  #####  ###### #####     ##   ## #   #  ####  ##### ###### #####  #   #
-#   # # # # #    # #    # #    # #      #    #    # # # #  # #  #        #   #      #    #  # #
-#   #  #  # #    # #    # #    # #####  #    #    #  #  #   #    ####    #   #####  #    #   #
-#   #     # #    # #####  #    # #      #####     #     #   #        #   #   #      #####    #
-#   #     # #    # #   #  #    # #      #   #     #     #   #   #    #   #   #      #   #    #
-#   #     #  ####  #    # #####  ###### #    #    #     #   #    ####    #   ###### #    #   #
-
-##############################################################################################################
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MURDER MYSTERY
+# ============================================================================
+# Overview:
+# - The root is a hidden, fire-once entry point selected by the shared event
+#   pool or by the bounded Assassin Network scenario.
+# - The opening leader removal and successor installation are performed only by
+#   the validated integration transaction; no event option deletes a character.
+# - Visible reports describe the six investigation phases, evolution reveals,
+#   country split, terminal branch, and permanent outcomes. Decisions and
+#   missions own repeatable actions and costs.
+# ============================================================================
 
 country_event = {
-    id = chaosx.nr39.1
-    title = chaosx.nr39.1.t
-
-    hidden = yes
-    is_triggered_only = yes
-
-    immediate = {
-        random_country = {
-            country_event = { id = chaosx.nr39.2 days = 1 }
-        }
-    }
+	id = chaosx.nr39.1
+	title = chaosx.nr39.1.t
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		murder_mystery_prefire_host_is_valid = yes
+	}
+	immediate = {
+		if = {
+			limit = {
+				NOT = { has_global_flag = murder_mystery_scenario_launched }
+				NOT = { has_global_flag = murder_mystery_scenario_launch_in_progress }
+			}
+			set_global_flag = murder_mystery_natural_run
+		}
+		murder_mystery_prepare_opening_package = yes
+		murder_mystery_commit_opening_transaction = yes
+		if = {
+			limit = { NOT = { has_global_flag = murder_mystery_opening_transaction_committed } }
+			murder_mystery_abort_opening_transaction = yes
+		}
+		if = {
+			limit = {
+				has_global_flag = murder_mystery_opening_transaction_committed
+				has_global_flag = murder_mystery_scenario_launch_in_progress
+			}
+			set_global_flag = murder_mystery_scenario_launched
+			murder_mystery_apply_scenario_setup = yes
+		}
+		clr_global_flag = murder_mystery_scenario_launch_in_progress
+	}
 }
 
-##############################################################################################################
+country_event = {
+	id = chaosx.nr39.2
+	title = chaosx.nr39.2.t
+	desc = chaosx.nr39.2.d
+	picture = GFX_report_event_039_murder_mystery_opening_assassination
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = murder_mystery_opening_transaction_committed
+		has_country_flag = murder_mystery_investigation_open
+	}
+	immediate = {
+		if = {
+			limit = { NOT = { has_global_flag = murder_mystery_opening_news_sent } }
+			news_event = { id = chaosx.news.4401 }
+			set_global_flag = murder_mystery_opening_news_sent
+		}
+	}
+	option = {
+		name = chaosx.nr39.2.a
+		ai_chance = { base = 100 }
+		country_event = { id = chaosx.nr39.3 days = 1 }
+	}
+}
 
 country_event = {
-    id = chaosx.nr39.2
-    title = chaosx.nr39.2.t
-    desc = chaosx.nr39.2.d
-    picture = GFX_report_event_tur_ataturk_death
+	id = chaosx.nr39.3
+	title = chaosx.nr39.3.t
+	desc = chaosx.nr39.3.d
+	picture = GFX_report_event_039_murder_mystery_emergency_succession
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = murder_mystery_investigation_open
+		NOT = { has_country_flag = murder_mystery_response_profile_locked }
+	}
+	option = {
+		name = chaosx.nr39.3.a
+		ai_chance = {
+			base = constant:murder_mystery_response_ai.rule_bound_base
+			modifier = { add = constant:murder_mystery_response_ai.stability_add has_stability > constant:murder_mystery_response_stability.decision_threshold }
+			modifier = { add = constant:murder_mystery_response_ai.democratic_add has_government = democratic }
+			modifier = { add = constant:murder_mystery_response_ai.agency_add has_intelligence_agency = yes }
+		}
+		set_variable = { murder_mystery_response_profile_input = constant:murder_mystery_response_profile.rule_bound }
+		murder_mystery_set_government_response_profile = yes
+	}
+	option = {
+		name = chaosx.nr39.3.b
+		ai_chance = {
+			base = constant:murder_mystery_response_ai.integrated_security_base
+			modifier = { add = constant:murder_mystery_response_ai.war_add has_war = yes }
+			modifier = { add = constant:murder_mystery_response_ai.authoritarian_add has_government = fascism }
+			modifier = { add = constant:murder_mystery_response_ai.authoritarian_add has_government = communism }
+		}
+		set_variable = { murder_mystery_response_profile_input = constant:murder_mystery_response_profile.integrated_security }
+		murder_mystery_set_government_response_profile = yes
+	}
+	option = {
+		name = chaosx.nr39.3.c
+		ai_chance = {
+			base = constant:murder_mystery_response_ai.emergency_repression_base
+			modifier = { add = constant:murder_mystery_response_ai.war_add has_war = yes }
+			modifier = { add = constant:murder_mystery_response_ai.authoritarian_add has_government = fascism }
+			modifier = { add = constant:murder_mystery_response_ai.authoritarian_add has_government = communism }
+			modifier = { add = constant:murder_mystery_response_ai.stability_add has_stability < constant:murder_mystery_response_stability.crisis_threshold }
+		}
+		set_variable = { murder_mystery_response_profile_input = constant:murder_mystery_response_profile.emergency_repression }
+		murder_mystery_set_government_response_profile = yes
+	}
+}
 
-    is_triggered_only = yes
+country_event = {
+	id = chaosx.nr39.4
+	title = chaosx.nr39.4.t
+	desc = chaosx.nr39.4.d
+	picture = GFX_report_event_039_murder_mystery_evidence_preserved
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_investigation_open }
+	option = {
+		name = chaosx.nr39.4.a
+		ai_chance = { base = 100 }
+	}
+}
 
-    option = {
-        ai_chance = { base = 100 }
-        name = chaosx.nr39.2.a
-        news_event = { id = chaosx.news.44 }
-        kill_country_leader = yes
-        hidden_effect = { retire_country_leader = yes }
-    }
+country_event = {
+	id = chaosx.nr39.5
+	title = chaosx.nr39.5.t
+	desc = chaosx.nr39.5.d
+	picture = GFX_report_event_039_murder_mystery_foreign_cell_discovered
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_investigation_open }
+	option = {
+		name = chaosx.nr39.5.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.6
+	title = chaosx.nr39.6.t
+	desc = chaosx.nr39.6.d
+	picture = GFX_report_event_039_murder_mystery_witness_lost
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_investigation_open }
+	option = {
+		name = chaosx.nr39.6.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.7
+	title = chaosx.nr39.7.t
+	desc = chaosx.nr39.7.d
+	picture = GFX_report_event_039_murder_mystery_cell_exposed
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_investigation_open }
+	option = {
+		name = chaosx.nr39.7.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.8
+	title = chaosx.nr39.8.t
+	desc = chaosx.nr39.8.d
+	picture = GFX_report_event_039_murder_mystery_final_capture_failure
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_investigation_open }
+	option = {
+		name = chaosx.nr39.8.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.20
+	title = chaosx.nr39.20.t
+	desc = chaosx.nr39.20.d
+	picture = GFX_report_event_039_murder_mystery_final_capture_success
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_permanent_resolution_recorded }
+	option = {
+		name = chaosx.nr39.20.a
+		ai_chance = { base = 100 }
+		news_event = { id = chaosx.news.4402 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.21
+	title = chaosx.nr39.21.t
+	desc = chaosx.nr39.21.d
+	picture = GFX_report_event_039_murder_mystery_final_capture_failure
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_final_capture_partial }
+	option = {
+		name = chaosx.nr39.21.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.22
+	title = chaosx.nr39.22.t
+	desc = chaosx.nr39.22.d
+	picture = GFX_report_event_039_murder_mystery_first_failed_attempt
+	is_triggered_only = yes
+	trigger = { has_country_flag = murder_mystery_assassin_escape_recorded }
+	option = {
+		name = chaosx.nr39.22.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.23
+	title = chaosx.nr39.23.t
+	desc = chaosx.nr39.23.d
+	picture = GFX_report_event_039_murder_mystery_movement_inheritance
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_inheritance_test_pending }
+	option = {
+		name = chaosx.nr39.23.a
+		ai_chance = { base = 100 }
+		murder_mystery_apply_limited_inheritance = yes
+		clr_global_flag = murder_mystery_inheritance_test_pending
+		clr_global_flag = murder_mystery_inheritance_test_resolved
+		clr_global_flag = murder_mystery_inheritance_test_failed
+		if = {
+			limit = { has_global_flag = murder_mystery_inheritance_transaction_committed }
+			set_global_flag = murder_mystery_inheritance_test_resolved
+			country_event = { id = chaosx.nr39.24 days = 1 }
+		}
+		else = {
+			set_global_flag = murder_mystery_inheritance_test_failed
+			country_event = { id = chaosx.nr39.25 days = 1 }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.24
+	title = chaosx.nr39.24.t
+	desc = chaosx.nr39.24.d
+	picture = GFX_report_event_039_murder_mystery_movement_inheritance
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_inheritance_test_resolved }
+	option = {
+		name = chaosx.nr39.24.a
+		ai_chance = { base = 100 }
+		clr_global_flag = murder_mystery_inheritance_test_resolved
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.25
+	title = chaosx.nr39.25.t
+	desc = chaosx.nr39.25.d
+	picture = GFX_report_event_039_murder_mystery_movement_inheritance
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_inheritance_test_failed }
+	option = {
+		name = chaosx.nr39.25.a
+		ai_chance = { base = 100 }
+		clr_global_flag = murder_mystery_inheritance_test_failed
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.26
+	title = chaosx.nr39.26.t
+	desc = chaosx.nr39.26.d
+	picture = GFX_report_event_039_murder_mystery_first_failed_attempt
+	is_triggered_only = yes
+	trigger = {
+		murder_mystery_runtime_is_active = yes
+		has_country_flag = murder_mystery_cell_active
+	}
+	option = {
+		name = chaosx.nr39.26.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.27
+	title = chaosx.nr39.27.t
+	desc = chaosx.nr39.27.d
+	picture = GFX_report_event_039_murder_mystery_cell_exposed
+	is_triggered_only = yes
+	trigger = {
+		murder_mystery_runtime_is_active = yes
+		has_country_flag = murder_mystery_cell_active
+	}
+	option = {
+		name = chaosx.nr39.27.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.30
+	title = chaosx.nr39.30.t
+	desc = chaosx.nr39.30.d
+	picture = GFX_report_event_039_murder_mystery_murder_cult_revealed
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_evolution_i_committed }
+	option = {
+		name = chaosx.nr39.30.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.31
+	title = chaosx.nr39.31.t
+	desc = chaosx.nr39.31.d
+	picture = GFX_report_event_039_murder_mystery_foreign_cell_discovered
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_evolution_ii_committed }
+	option = {
+		name = chaosx.nr39.31.a
+		ai_chance = { base = 100 }
+		murder_mystery_select_foreign_cell_candidate = yes
+		murder_mystery_seed_bounded_cell = yes
+		murder_mystery_clear_selected_cell_context = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.32
+	title = chaosx.nr39.32.t
+	desc = chaosx.nr39.32.d
+	picture = GFX_news_event_039_murder_mystery_assassin_state_split
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_evolution_iii_committed }
+	option = {
+		name = chaosx.nr39.32.a
+		ai_chance = { base = 100 }
+		murder_mystery_select_assassin_state_cluster = yes
+		murder_mystery_create_assassin_state_candidate = yes
+		murder_mystery_commit_assassin_state_creation = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.33
+	title = chaosx.nr39.33.t
+	desc = chaosx.nr39.33.d
+	picture = GFX_news_event_039_murder_mystery_foreign_revolt
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_evolution_iv_committed }
+	option = {
+		name = chaosx.nr39.33.a
+		ai_chance = { base = 100 }
+		murder_mystery_start_derivative_creation = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.34
+	title = chaosx.nr39.34.t
+	desc = chaosx.nr39.34.d
+	picture = GFX_report_event_039_murder_mystery_remnant_cleanup
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_evolution_v_committed }
+	option = {
+		name = chaosx.nr39.34.a
+		ai_chance = { base = 100 }
+		set_country_flag = murder_mystery_terminal_branch_ready
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.40
+	title = chaosx.nr39.40.t
+	desc = chaosx.nr39.40.d
+	picture = GFX_news_event_039_murder_mystery_assassin_state_split
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_assassin_state_exists }
+	immediate = {
+		set_global_flag = {
+			flag = super_event_visible
+			days = constant:murder_mystery_super_event.visible_days
+			value = constant:murder_mystery_super_event.assassin_state_reveal_slot
+		}
+		set_variable = { global.current_super_event_audio_id = constant:murder_mystery_super_event.assassin_state_reveal_audio }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+		news_event = { id = chaosx.news.4403 }
+	}
+	option = {
+		name = chaosx.nr39.40.a
+		ai_chance = { base = 100 }
+		if = {
+			limit = { has_country_flag = murder_mystery_original_host_player_at_split }
+			set_country_flag = murder_mystery_original_player_remained_with_host
+			set_country_flag = murder_mystery_knife_breaks_player_side_valid
+		}
+	}
+	option = {
+		name = chaosx.nr39.40.b
+		trigger = {
+			is_ai = no
+			has_country_flag = murder_mystery_original_host_player_at_split
+			has_event_target = murder_mystery_assassin_state
+			event_target:murder_mystery_assassin_state = {
+				exists = yes
+				has_country_flag = murder_mystery_original_player_may_switch_here
+			}
+		}
+		ai_chance = { base = 0 }
+		set_country_flag = murder_mystery_original_player_switched_to_assassin_state
+		set_country_flag = murder_mystery_knife_breaks_disqualified_by_switch
+		set_global_flag = murder_mystery_original_player_switched_sides
+		event_target:murder_mystery_assassin_state = {
+			clr_country_flag = murder_mystery_original_player_may_switch_here
+			set_country_flag = murder_mystery_player_entered_assassin_state_at_split
+			change_tag_from = ROOT
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.50
+	title = chaosx.nr39.50.t
+	desc = chaosx.nr39.50.d
+	picture = GFX_super_event_039_murder_mystery_world_of_anarchy
+	is_triggered_only = yes
+	trigger = { has_global_flag = world_end_murder_mystery }
+	immediate = {
+		set_global_flag = {
+			flag = super_event_visible
+			days = constant:murder_mystery_super_event.visible_days
+			value = constant:murder_mystery_super_event.world_of_anarchy_slot
+		}
+		set_variable = { global.current_super_event_audio_id = constant:murder_mystery_super_event.world_of_anarchy_audio }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+	}
+	option = {
+		name = chaosx.nr39.50.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.60
+	title = chaosx.nr39.60.t
+	desc = chaosx.nr39.60.d
+	picture = GFX_report_event_039_murder_mystery_final_capture_success
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_terminal_victory_recorded }
+	option = {
+		name = chaosx.nr39.60.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.61
+	title = chaosx.nr39.61.t
+	desc = chaosx.nr39.61.d
+	picture = GFX_report_event_039_murder_mystery_assassin_state_defeat
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_terminal_defeat_recorded }
+	immediate = {
+		set_global_flag = {
+			flag = super_event_visible
+			days = constant:murder_mystery_super_event.visible_days
+			value = constant:murder_mystery_super_event.brotherhood_defeat_slot
+		}
+		set_variable = { global.current_super_event_audio_id = constant:murder_mystery_super_event.brotherhood_defeat_audio }
+		every_country = {
+			limit = { is_ai = no }
+			play_current_super_event_audio = yes
+		}
+		news_event = { id = chaosx.news.4405 }
+	}
+	option = {
+		name = chaosx.nr39.61.a
+		ai_chance = { base = 100 }
+		country_event = { id = chaosx.nr39.62 days = 1 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr39.62
+	title = chaosx.nr39.62.t
+	desc = chaosx.nr39.62.d
+	picture = GFX_report_event_039_murder_mystery_remnant_cleanup
+	is_triggered_only = yes
+	trigger = { has_global_flag = murder_mystery_terminal_defeat_recorded }
+	option = {
+		name = chaosx.nr39.62.a
+		ai_chance = { base = 100 }
+	}
 }

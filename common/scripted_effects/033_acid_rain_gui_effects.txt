@@ -1,0 +1,332 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 033 ACID RAIN GUI PROJECTION
+# ============================================================================
+# This file is a read model only. It copies managed Event 33 state into global
+# presentation variables and the current country's four component frame values.
+# It never selects a state, changes a front, spends a cost, applies mortality,
+# adds contamination, advances a timer, or writes a gameplay receipt.
+# ============================================================================
+
+acid_rain_gui_open_from_event_details = {
+	set_country_flag = acid_rain_event_details_gui_open
+	acid_rain_gui_refresh_read_only = yes
+}
+
+acid_rain_gui_close_event_details_view = {
+	clr_country_flag = acid_rain_event_details_gui_open
+}
+
+acid_rain_gui_refresh_read_only = {
+	set_variable = { global.acid_rain_gui_window_visible = constant:acid_rain_runtime.zero }
+	if = {
+		limit = {
+			OR = {
+				has_global_flag = acid_rain_runtime_active
+				has_global_flag = acid_rain_dissipation_pending
+			}
+		}
+		set_variable = { global.acid_rain_gui_window_visible = constant:acid_rain_runtime.one }
+	}
+
+	set_variable = { global.acid_rain_gui_phase = global.acid_rain_phase }
+	set_variable = { global.acid_rain_gui_current_air_contamination_bp = global.air_contamination_bp }
+	set_variable = { global.acid_rain_gui_lifetime_air_added_bp = global.acid_rain_air_lifetime_added_bp }
+	set_temp_variable = { acid_rain_gui_air_allowance = constant:acid_rain_air.lifetime_allowance_bp }
+	subtract_from_temp_variable = { acid_rain_gui_air_allowance = global.acid_rain_air_lifetime_added_bp }
+	clamp_temp_variable = { var = acid_rain_gui_air_allowance min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_air_allowance_remaining_bp = acid_rain_gui_air_allowance }
+	set_variable = { global.acid_rain_gui_global_deaths = global.acid_rain_total_deaths }
+	set_variable = { global.acid_rain_gui_refresh_enabled = constant:acid_rain_runtime.one }
+	set_variable = { acid_rain_gui_preparedness = constant:acid_rain_preparedness.minimum }
+	set_variable = { acid_rain_gui_current_warning_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_exposed_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_severe_warning_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_aftermath_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { acid_rain_gui_event_deaths = constant:chaos_meter_deaths.zero }
+	set_variable = { acid_rain_gui_deaths_prevented = constant:chaos_meter_deaths.zero }
+	set_variable = { acid_rain_gui_current_contamination_bp = global.air_contamination_bp }
+	if = {
+		limit = { has_variable = acid_rain_preparedness }
+		set_variable = { acid_rain_gui_preparedness = acid_rain_preparedness }
+	}
+	if = {
+		limit = { has_variable = acid_rain_event_deaths }
+		set_variable = { acid_rain_gui_event_deaths = acid_rain_event_deaths }
+	}
+	if = {
+		limit = { has_variable = acid_rain_prevented_deaths }
+		set_variable = { acid_rain_gui_deaths_prevented = acid_rain_prevented_deaths }
+	}
+	for_each_scope_loop = {
+		array = global.acid_rain_frozen_states
+		if = {
+			limit = { is_controlled_by = ROOT }
+			if = {
+				limit = { has_state_flag = acid_rain_front_target }
+				add_to_variable = { acid_rain_gui_current_warning_state_count = constant:acid_rain_runtime.loop_increment }
+			}
+			if = {
+				limit = { has_state_flag = acid_rain_touched }
+				add_to_variable = { acid_rain_gui_exposed_state_count = constant:acid_rain_runtime.loop_increment }
+			}
+			if = {
+				limit = { has_state_flag = acid_rain_severe_cell_target }
+				add_to_variable = { acid_rain_gui_severe_warning_state_count = constant:acid_rain_runtime.loop_increment }
+			}
+			if = {
+				limit = { has_state_flag = acid_rain_aftercare_unresolved }
+				add_to_variable = { acid_rain_gui_aftermath_state_count = constant:acid_rain_runtime.loop_increment }
+			}
+		}
+	}
+
+	set_variable = { global.acid_rain_gui_coverage_eligible = global.acid_rain_total_valid_states }
+	set_variable = { global.acid_rain_gui_coverage_touched = global.acid_rain_total_touched_states }
+	set_variable = { global.acid_rain_gui_coverage_percent = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = global.acid_rain_total_valid_states value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_temp_variable = { acid_rain_gui_coverage_value = global.acid_rain_total_touched_states }
+		multiply_temp_variable = { acid_rain_gui_coverage_value = constant:acid_rain_runtime.preparedness_precision }
+		divide_temp_variable = { acid_rain_gui_coverage_value = global.acid_rain_total_valid_states }
+		round_temp_variable = acid_rain_gui_coverage_value
+		set_variable = { global.acid_rain_gui_coverage_percent = acid_rain_gui_coverage_value }
+	}
+
+	set_variable = { global.acid_rain_gui_ordinary_layer_active = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_visited_layer_active = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_warning_layer_active = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_global_layer_active = constant:acid_rain_runtime.zero }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.regional compare = equals }
+				check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global_warning compare = equals }
+			}
+		}
+		set_variable = { global.acid_rain_gui_ordinary_layer_active = constant:acid_rain_runtime.one }
+		set_variable = { global.acid_rain_gui_visited_layer_active = constant:acid_rain_runtime.one }
+	}
+	if = {
+		limit = { check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global_warning compare = equals } }
+		set_variable = { global.acid_rain_gui_warning_layer_active = constant:acid_rain_runtime.one }
+	}
+	if = {
+		limit = { check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
+		set_variable = { global.acid_rain_gui_global_layer_active = constant:acid_rain_runtime.one }
+	}
+
+	set_temp_variable = { acid_rain_gui_days = global.date }
+	subtract_from_temp_variable = { acid_rain_gui_days = global.acid_rain_global_transition_day }
+	clamp_temp_variable = { var = acid_rain_gui_days min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_global_days_since_transition = acid_rain_gui_days }
+	set_temp_variable = { acid_rain_gui_days = global.acid_rain_global_minimum_dissipation_day }
+	subtract_from_temp_variable = { acid_rain_gui_days = global.date }
+	clamp_temp_variable = { var = acid_rain_gui_days min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_global_minimum_remaining_days = acid_rain_gui_days }
+	set_temp_variable = { acid_rain_gui_days = global.acid_rain_next_dissipation_check_day }
+	subtract_from_temp_variable = { acid_rain_gui_days = global.date }
+	clamp_temp_variable = { var = acid_rain_gui_days min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_global_next_dissipation_days = acid_rain_gui_days }
+	set_variable = { global.acid_rain_gui_global_superstorm_count = global.acid_rain_superstorm_count }
+	set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = global.acid_rain_phase value = constant:acid_rain_phase.global compare = equals } }
+		set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.superstorm }
+	}
+
+	for_loop_effect = {
+		start = constant:acid_rain_region.first
+		end = constant:acid_rain_runtime.region_loop_end
+		value = acid_rain_gui_region_index
+		set_variable = { global.acid_rain_gui_region_1_visible = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_2_visible = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_3_visible = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_4_visible = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_5_visible = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_6_visible = constant:acid_rain_runtime.zero }
+		set_variable = { global.acid_rain_gui_region_7_visible = constant:acid_rain_runtime.zero }
+	}
+	# The seven rows are explicit because GUI variable names are static tokens.
+	set_variable = { global.acid_rain_gui_region_1_eligible = global.acid_rain_region_valid_entries^1 }
+	set_variable = { global.acid_rain_gui_region_1_touched = global.acid_rain_region_touched_entries^1 }
+	set_variable = { global.acid_rain_gui_region_1_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^1 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_1_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^1 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_1_completed = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_region_2_eligible = global.acid_rain_region_valid_entries^2 }
+	set_variable = { global.acid_rain_gui_region_2_touched = global.acid_rain_region_touched_entries^2 }
+	set_variable = { global.acid_rain_gui_region_2_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^2 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_2_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^2 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_2_completed = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_region_3_eligible = global.acid_rain_region_valid_entries^3 }
+	set_variable = { global.acid_rain_gui_region_3_touched = global.acid_rain_region_touched_entries^3 }
+	set_variable = { global.acid_rain_gui_region_3_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^3 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_3_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^3 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_3_completed = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_region_4_eligible = global.acid_rain_region_valid_entries^4 }
+	set_variable = { global.acid_rain_gui_region_4_touched = global.acid_rain_region_touched_entries^4 }
+	set_variable = { global.acid_rain_gui_region_4_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^4 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_4_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^4 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_4_completed = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_region_5_eligible = global.acid_rain_region_valid_entries^5 }
+	set_variable = { global.acid_rain_gui_region_5_touched = global.acid_rain_region_touched_entries^5 }
+	set_variable = { global.acid_rain_gui_region_5_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^5 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_5_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^5 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_5_completed = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_region_6_eligible = global.acid_rain_region_valid_entries^6 }
+	set_variable = { global.acid_rain_gui_region_6_touched = global.acid_rain_region_touched_entries^6 }
+	set_variable = { global.acid_rain_gui_region_6_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^6 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_6_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^6 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_6_completed = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_region_7_eligible = global.acid_rain_region_valid_entries^7 }
+	set_variable = { global.acid_rain_gui_region_7_touched = global.acid_rain_region_touched_entries^7 }
+	set_variable = { global.acid_rain_gui_region_7_completed = constant:acid_rain_runtime.zero }
+	if = { limit = { check_variable = { var = global.acid_rain_region_valid_entries^7 value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_region_7_visible = constant:acid_rain_runtime.one } }
+	if = { limit = { check_variable = { var = global.acid_rain_region_state_entries^7 value = constant:acid_rain_region_state.complete compare = equals } } set_variable = { global.acid_rain_gui_region_7_completed = constant:acid_rain_runtime.one } }
+
+	set_variable = { global.acid_rain_gui_front_1_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_id = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_id = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_id = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_intensity = constant:acid_rain_intensity.default }
+	set_variable = { global.acid_rain_gui_front_2_intensity = constant:acid_rain_intensity.default }
+	set_variable = { global.acid_rain_gui_front_3_intensity = constant:acid_rain_intensity.default }
+	set_variable = { global.acid_rain_gui_front_1_active_states = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_active_states = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_active_states = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_movement_days = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_movement_days = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_movement_days = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_next_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_next_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_next_region = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_warning = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_warning = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_warning = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_severe = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_severe = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_severe = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_severe_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_severe_state_count = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_severe_state_count = constant:acid_rain_runtime.zero }
+
+	# Each card is a bounded projection of one stable front slot.
+	set_temp_variable = { acid_rain_gui_front_id = constant:acid_rain_runtime.one }
+	acid_rain_gui_project_front_1 = yes
+	set_temp_variable = { acid_rain_gui_front_id = constant:acid_rain_runtime.two }
+	acid_rain_gui_project_front_2 = yes
+	set_temp_variable = { acid_rain_gui_front_id = constant:acid_rain_runtime.three }
+	acid_rain_gui_project_front_3 = yes
+
+	set_variable = { global.acid_rain_gui_superstorm_1_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_2_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_3_visible = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_1_name = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_2_name = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_3_name = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_1_band = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_2_band = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_superstorm_3_band = constant:acid_rain_runtime.zero }
+	if = {
+		limit = { check_variable = { var = global.acid_rain_superstorm_count value = constant:acid_rain_runtime.zero compare = greater_than } }
+		set_variable = { global.acid_rain_gui_superstorm_1_visible = constant:acid_rain_runtime.one }
+		set_variable = { global.acid_rain_gui_superstorm_1_name = global.acid_rain_superstorm_ids^0 }
+		set_variable = { global.acid_rain_gui_superstorm_1_band = global.acid_rain_superstorm_target_count_entries^1 }
+	}
+	if = {
+		limit = { check_variable = { var = global.acid_rain_superstorm_count value = constant:acid_rain_runtime.one compare = greater_than } }
+		set_variable = { global.acid_rain_gui_superstorm_2_visible = constant:acid_rain_runtime.one }
+		set_variable = { global.acid_rain_gui_superstorm_2_name = global.acid_rain_superstorm_ids^1 }
+		set_variable = { global.acid_rain_gui_superstorm_2_band = global.acid_rain_superstorm_target_count_entries^2 }
+	}
+	if = {
+		limit = { check_variable = { var = global.acid_rain_superstorm_count value = constant:acid_rain_runtime.two compare = greater_than } }
+		set_variable = { global.acid_rain_gui_superstorm_3_visible = constant:acid_rain_runtime.one }
+		set_variable = { global.acid_rain_gui_superstorm_3_name = global.acid_rain_superstorm_ids^2 }
+		set_variable = { global.acid_rain_gui_superstorm_3_band = global.acid_rain_superstorm_target_count_entries^3 }
+	}
+
+	# These local frame values belong to the current decision-category country.
+	# The four numbers are presentation-only copies of managed Preparedness.
+	set_variable = { acid_rain_gui_component_1_tier = acid_rain_shelter_tier }
+	set_variable = { acid_rain_gui_component_2_tier = acid_rain_water_tier }
+	set_variable = { acid_rain_gui_component_3_tier = acid_rain_medical_tier }
+	set_variable = { acid_rain_gui_component_4_tier = acid_rain_transport_tier }
+}
+
+acid_rain_gui_project_front_1 = {
+	set_temp_variable = { acid_rain_gui_front_state = global.acid_rain_front_state_entries^1 }
+	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.inactive compare = greater_than } check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.retired compare = less_than } } set_variable = { global.acid_rain_gui_front_1_visible = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_front_1_id = constant:acid_rain_runtime.one }
+	set_variable = { global.acid_rain_gui_front_1_region = global.acid_rain_front_region_entries^1 }
+	set_variable = { global.acid_rain_gui_front_1_intensity = global.acid_rain_front_intensity_entries^1 }
+	set_temp_variable = { acid_rain_gui_front_days = global.acid_rain_front_next_work_day_entries^1 }
+	subtract_from_temp_variable = { acid_rain_gui_front_days = global.date }
+	clamp_temp_variable = { var = acid_rain_gui_front_days min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_1_movement_days = acid_rain_gui_front_days }
+	set_variable = { global.acid_rain_gui_front_1_next_region = global.acid_rain_front_next_region_entries^1 }
+	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_1_warning = constant:acid_rain_runtime.one } }
+	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { array = global.acid_rain_frozen_states if = { limit = { check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_runtime.one compare = equals } } add_to_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.loop_increment } } }
+	set_variable = { global.acid_rain_gui_front_1_active_states = acid_rain_gui_front_state_count }
+	set_temp_variable = { acid_rain_gui_severe_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_event.max_severe_cells }
+	add_to_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_runtime.loop_increment }
+	for_loop_effect = { start = constant:acid_rain_runtime.one end = acid_rain_gui_severe_loop_end value = acid_rain_gui_severe_index if = { limit = { check_variable = { var = global.acid_rain_severe_cell_front_entries^acid_rain_gui_severe_index value = constant:acid_rain_runtime.one compare = equals } check_variable = { var = global.acid_rain_severe_cell_end_entries^acid_rain_gui_severe_index value = global.date compare = greater_than } } add_to_temp_variable = { acid_rain_gui_severe_count = global.acid_rain_severe_cell_target_count_entries^acid_rain_gui_severe_index } } }
+	set_variable = { global.acid_rain_gui_front_1_severe_state_count = acid_rain_gui_severe_count }
+	if = { limit = { check_variable = { var = acid_rain_gui_severe_count value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_front_1_severe = constant:acid_rain_runtime.one } set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.severe } }
+}
+
+acid_rain_gui_project_front_2 = {
+	set_temp_variable = { acid_rain_gui_front_state = global.acid_rain_front_state_entries^2 }
+	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.inactive compare = greater_than } check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.retired compare = less_than } } set_variable = { global.acid_rain_gui_front_2_visible = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_front_2_id = constant:acid_rain_runtime.two }
+	set_variable = { global.acid_rain_gui_front_2_region = global.acid_rain_front_region_entries^2 }
+	set_variable = { global.acid_rain_gui_front_2_intensity = global.acid_rain_front_intensity_entries^2 }
+	set_temp_variable = { acid_rain_gui_front_days = global.acid_rain_front_next_work_day_entries^2 }
+	subtract_from_temp_variable = { acid_rain_gui_front_days = global.date }
+	clamp_temp_variable = { var = acid_rain_gui_front_days min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_2_movement_days = acid_rain_gui_front_days }
+	set_variable = { global.acid_rain_gui_front_2_next_region = global.acid_rain_front_next_region_entries^2 }
+	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_2_warning = constant:acid_rain_runtime.one } }
+	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { array = global.acid_rain_frozen_states if = { limit = { check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_runtime.two compare = equals } } add_to_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.loop_increment } } }
+	set_variable = { global.acid_rain_gui_front_2_active_states = acid_rain_gui_front_state_count }
+	set_temp_variable = { acid_rain_gui_severe_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_event.max_severe_cells }
+	add_to_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_runtime.loop_increment }
+	for_loop_effect = { start = constant:acid_rain_runtime.one end = acid_rain_gui_severe_loop_end value = acid_rain_gui_severe_index if = { limit = { check_variable = { var = global.acid_rain_severe_cell_front_entries^acid_rain_gui_severe_index value = constant:acid_rain_runtime.two compare = equals } check_variable = { var = global.acid_rain_severe_cell_end_entries^acid_rain_gui_severe_index value = global.date compare = greater_than } } add_to_temp_variable = { acid_rain_gui_severe_count = global.acid_rain_severe_cell_target_count_entries^acid_rain_gui_severe_index } } }
+	set_variable = { global.acid_rain_gui_front_2_severe_state_count = acid_rain_gui_severe_count }
+	if = { limit = { check_variable = { var = acid_rain_gui_severe_count value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_front_2_severe = constant:acid_rain_runtime.one } set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.severe } }
+}
+
+acid_rain_gui_project_front_3 = {
+	set_temp_variable = { acid_rain_gui_front_state = global.acid_rain_front_state_entries^3 }
+	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.inactive compare = greater_than } check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.retired compare = less_than } } set_variable = { global.acid_rain_gui_front_3_visible = constant:acid_rain_runtime.one } }
+	set_variable = { global.acid_rain_gui_front_3_id = constant:acid_rain_runtime.three }
+	set_variable = { global.acid_rain_gui_front_3_region = global.acid_rain_front_region_entries^3 }
+	set_variable = { global.acid_rain_gui_front_3_intensity = global.acid_rain_front_intensity_entries^3 }
+	set_temp_variable = { acid_rain_gui_front_days = global.acid_rain_front_next_work_day_entries^3 }
+	subtract_from_temp_variable = { acid_rain_gui_front_days = global.date }
+	clamp_temp_variable = { var = acid_rain_gui_front_days min = constant:acid_rain_runtime.zero }
+	set_variable = { global.acid_rain_gui_front_3_movement_days = acid_rain_gui_front_days }
+	set_variable = { global.acid_rain_gui_front_3_next_region = global.acid_rain_front_next_region_entries^3 }
+	if = { limit = { check_variable = { var = acid_rain_gui_front_state value = constant:acid_rain_front_state.warning compare = equals } } set_variable = { global.acid_rain_gui_front_3_warning = constant:acid_rain_runtime.one } }
+	set_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.zero }
+	for_each_scope_loop = { array = global.acid_rain_frozen_states if = { limit = { check_variable = { var = acid_rain_target_front_id value = constant:acid_rain_runtime.three compare = equals } } add_to_temp_variable = { acid_rain_gui_front_state_count = constant:acid_rain_runtime.loop_increment } } }
+	set_variable = { global.acid_rain_gui_front_3_active_states = acid_rain_gui_front_state_count }
+	set_temp_variable = { acid_rain_gui_severe_count = constant:acid_rain_runtime.zero }
+	set_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_event.max_severe_cells }
+	add_to_temp_variable = { acid_rain_gui_severe_loop_end = constant:acid_rain_runtime.loop_increment }
+	for_loop_effect = { start = constant:acid_rain_runtime.one end = acid_rain_gui_severe_loop_end value = acid_rain_gui_severe_index if = { limit = { check_variable = { var = global.acid_rain_severe_cell_front_entries^acid_rain_gui_severe_index value = constant:acid_rain_runtime.three compare = equals } check_variable = { var = global.acid_rain_severe_cell_end_entries^acid_rain_gui_severe_index value = global.date compare = greater_than } } add_to_temp_variable = { acid_rain_gui_severe_count = global.acid_rain_severe_cell_target_count_entries^acid_rain_gui_severe_index } } }
+	set_variable = { global.acid_rain_gui_front_3_severe_state_count = acid_rain_gui_severe_count }
+	if = { limit = { check_variable = { var = acid_rain_gui_severe_count value = constant:acid_rain_runtime.zero compare = greater_than } } set_variable = { global.acid_rain_gui_front_3_severe = constant:acid_rain_runtime.one } set_variable = { global.acid_rain_gui_global_strongest_band = constant:acid_rain_mortality_class.severe } }
+}
+
+acid_rain_refresh_gui_projection = {
+	acid_rain_gui_refresh_read_only = yes
+}

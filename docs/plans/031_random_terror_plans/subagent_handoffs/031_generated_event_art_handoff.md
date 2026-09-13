@@ -2,9 +2,9 @@
 
 Producer: `chaosx_generated_event_art`.
 
-Scope completed: fourteen missing fictional non-portrait report-event scenes were generated, processed, converted, and placed under `gfx/event_pictures/031_random_terror/`.
+Scope completed: fourteen missing fictional non-portrait report-event scenes were generated, processed, converted, and placed under `gfx/event_pictures/031_random_terror/`, and the existing report 04 scene was replaced with a generated fictional scene after its inherited provenance and evacuation readability defect was confirmed.
 
-No existing Event 31 runtime DDS was overwritten.
+No existing Event 31 runtime DDS other than the specifically authorized report 04 replacement was overwritten.
 
 ## Runtime report assets
 
@@ -12,6 +12,7 @@ Every row below has a generated source PNG under `docs/assets/031_random_terror/
 
 | Final DDS | Proposed sprite | Consumer target | Alpha/format | Review |
 |---|---|---|---|---|
+| `gfx/event_pictures/031_random_terror/report_event_04_bomb_damaged_rail_bridge.dds` | `GFX_report_event_031_random_terror_04_bomb_damaged_rail_bridge` | Event 31 report-event picture slot for damaged railway and civilian evacuation | RGBA card with transparent corners; one-level 32-bit BGRA DDS | Replacement generated and processed; parent visual review and `.gfx` wiring pending |
 | `gfx/event_pictures/031_random_terror/report_event_armed_enclave_captured_town.dds` | `GFX_report_event_031_random_terror_armed_enclave_captured_town` | Event 31 report-event picture slot for captured-town enclave scene | RGBA card with transparent corners; one-level 32-bit BGRA DDS | Parent visual review and `.gfx` wiring pending |
 | `gfx/event_pictures/031_random_terror/report_event_border_corridor_military_protection.dds` | `GFX_report_event_031_random_terror_border_corridor_military_protection` | Event 31 report-event picture slot for protected border corridor | RGBA card with transparent corners; one-level 32-bit BGRA DDS | Parent visual review and `.gfx` wiring pending |
 | `gfx/event_pictures/031_random_terror/report_event_burned_depot_captured_equipment.dds` | `GFX_report_event_031_random_terror_burned_depot_captured_equipment` | Event 31 report-event picture slot for burned depot aftermath | RGBA card with transparent corners; one-level 32-bit BGRA DDS | Parent visual review and `.gfx` wiring pending |
@@ -42,17 +43,19 @@ Replace `<basename>` with the stable basename in the runtime table and keep the 
 
 ## Existing assets preserved
 
-The following existing report DDS files were inspected and left untouched: `report_event_01_evacuation_station.dds`, `report_event_02_medic_civilian_aid.dds`, `report_event_03_railway_bridge_repair.dds`, and `report_event_04_bomb_damaged_rail_bridge.dds`.
+The following existing report DDS files were inspected and left untouched: `report_event_01_evacuation_station.dds`, `report_event_02_medic_civilian_aid.dds`, and `report_event_03_railway_bridge_repair.dds`.
+
+The inherited `report_event_04_bomb_damaged_rail_bridge.dds` was replaced with the generated source at `docs/assets/031_random_terror/source_png/report_event_04_bomb_damaged_rail_bridge_source.png` and the processed preview at `docs/assets/031_random_terror/processed_png/report_event_04_bomb_damaged_rail_bridge_processed.png`.
 
 The existing six Event 31 news DDS files, three decision-category picture DDS files, and two super-event DDS files were also inspected and left untouched because their dimensions and standard BGRA headers were valid.
 
 ## Evidence
 
-Source and processed contact sheets are `docs/assets/031_random_terror/contact_sheets/report_generated_sources_contact_sheet.png` and `docs/assets/031_random_terror/contact_sheets/report_generated_processed_contact_sheet.png`.
+Source and processed contact sheets are `docs/assets/031_random_terror/contact_sheets/report_generated_sources_contact_sheet.png` and `docs/assets/031_random_terror/contact_sheets/report_generated_processed_contact_sheet.png`; the four-report comparison is `docs/assets/031_random_terror/contact_sheets/report_source_candidates_contact_sheet.png`.
 
 Round-trip DDS decodes are retained under `docs/assets/031_random_terror/roundtrip/`.
 
-The complete source/prompt/hash manifest is `docs/plans/031_random_terror_plans/subagent_handoffs/031_generated_event_art_manifest.md`.
+The complete source/prompt/hash manifest is `docs/plans/031_random_terror_plans/subagent_handoffs/031_generated_event_art_manifest.md`, and the report 04 validation record is `docs/assets/031_random_terror/review/report_event_04_bomb_damaged_rail_bridge_validation.md`.
 
 The source prompt records are `docs/assets/031_random_terror/prompts/report_generated_prompts.md`.
 
@@ -68,6 +71,6 @@ The source prompt records are `docs/assets/031_random_terror/prompts/report_gene
 
 ## Validation summary
 
-All fourteen selected final DDS files passed exact 210x176 dimensions, repository legacy BGRA header fields, exact uncompressed byte length, transparent-corner checks, and decoded DDS round-trip pixel equality against the processed PNG.
+All fifteen selected final DDS files passed exact 210x176 dimensions, repository legacy BGRA header fields, exact uncompressed byte length, transparent-corner checks, and decoded DDS round-trip pixel equality against the processed PNG.
 
 Generated event scenes were checked for modern props, readable generated text, watermarks, fake UI, graphic gore, sacred hostile branding, real extremist symbols, and national-like banner risk; the first international-gathering candidate was rejected and replaced before handoff.

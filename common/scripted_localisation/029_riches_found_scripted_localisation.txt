@@ -22,6 +22,10 @@ defined_text = {
 defined_text = {
 	name = GetRichesFoundSelectedMinePhase
 	text = {
+		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_phase_occupation } }
+		localization_key = riches_found.phase.occupation
+	}
+	text = {
 		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.discovery_claims } } }
 		localization_key = riches_found.phase.discovery_claims
 	}
@@ -49,7 +53,7 @@ defined_text = {
 		trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis } } }
 		localization_key = riches_found.phase.closure_control_crisis
 	}
-	text = { localization_key = riches_found.phase.discovery_claims }
+	text = { localization_key = riches_found.value.na }
 }
 
 defined_text = {
@@ -101,4 +105,187 @@ defined_text = {
 	name = GetRichesFoundRevenueLegitimacyText
 	text = { trigger = { has_variable = riches_found_selected_mine } localization_key = riches_found.legitimacy.value }
 	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundExtractionPressureThresholdText
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_warning compare = less_than } } } localization_key = riches_found.pressure.threshold_warning }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_severe compare = less_than } } } localization_key = riches_found.pressure.threshold_severe }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_emergency compare = less_than } } } localization_key = riches_found.pressure.threshold_emergency }
+	text = { trigger = { has_variable = riches_found_selected_mine } localization_key = riches_found.pressure.threshold_terminal }
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundSelectedMineOperatingCondition
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.discovery compare = equals } } } localization_key = riches_found.operating.discovery }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_expanding compare = equals } } } localization_key = riches_found.operating.open_expanding }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_regulated compare = equals } } } localization_key = riches_found.operating.open_regulated }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_concession compare = equals } } } localization_key = riches_found.operating.open_concession }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_military compare = equals } } } localization_key = riches_found.operating.open_military }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.open_predatory compare = equals } } } localization_key = riches_found.operating.open_predatory }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.contested compare = equals } } } localization_key = riches_found.operating.contested }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.temporarily_closed compare = equals } } } localization_key = riches_found.operating.temporarily_closed }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.quarantined compare = equals } } } localization_key = riches_found.operating.quarantined }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.partially_sealed compare = equals } } } localization_key = riches_found.operating.partially_sealed }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.permanently_sealed compare = equals } } } localization_key = riches_found.operating.permanently_sealed }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.collapsed compare = equals } } } localization_key = riches_found.operating.collapsed }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_operating_state value = constant:riches_found_operating_state.exhausted compare = equals } } } localization_key = riches_found.operating.exhausted }
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundSelectedMinePolicyProfile
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.open_claims compare = equals } } } localization_key = riches_found.policy.open_claims }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.state_reserve compare = equals } } } localization_key = riches_found.policy.state_reserve }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.local_claims compare = equals } } } localization_key = riches_found.policy.local_claims }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.emergency_concession compare = equals } } } localization_key = riches_found.policy.emergency_concession }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.minimal_interference compare = equals } } } localization_key = riches_found.policy.minimal_interference }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.public_development compare = equals } } } localization_key = riches_found.policy.public_development }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.state_extraction compare = equals } } } localization_key = riches_found.policy.state_extraction }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.concession_economy compare = equals } } } localization_key = riches_found.policy.concession_economy }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.militarized compare = equals } } } localization_key = riches_found.policy.militarized }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { var = riches_found_policy value = constant:riches_found_policy.predatory compare = equals } } } localization_key = riches_found.policy.predatory }
+	text = { trigger = { has_variable = riches_found_selected_mine } localization_key = riches_found.policy.unassigned }
+	text = { localization_key = riches_found.value.na }
+}
+
+defined_text = {
+	name = GetRichesFoundSelectedMineObjective
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_secure_rush_subject } } localization_key = riches_found.objective.secure_rush }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_open_railhead_subject } } localization_key = riches_found.objective.open_railhead }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_protect_pay_train_subject } } localization_key = riches_found.objective.protect_pay_train }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_break_claim_war_subject } } localization_key = riches_found.objective.break_claim_war }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_restore_shaft_subject } } localization_key = riches_found.objective.restore_shaft }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_hold_mine_subject } } localization_key = riches_found.objective.hold_mine }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_public_settlement_subject } } localization_key = riches_found.objective.public_settlement }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_audit_concession_subject } } localization_key = riches_found.objective.audit_concession }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_mission_evacuate_workforce_subject } } localization_key = riches_found.objective.evacuate_workforce }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { has_state_flag = riches_found_phase_occupation } } localization_key = riches_found.objective.phase_occupation }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.discovery_claims } } } localization_key = riches_found.objective.phase_claims }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.rush } } } localization_key = riches_found.objective.phase_rush }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.physical_development } } } localization_key = riches_found.objective.phase_development }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.revenue_settlement } } } localization_key = riches_found.objective.phase_revenue }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.foreign_concessions } } } localization_key = riches_found.objective.phase_foreign }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.security_raids } } } localization_key = riches_found.objective.phase_security }
+	text = { trigger = { has_variable = riches_found_selected_mine var:riches_found_selected_mine = { check_variable = { riches_found_phase = constant:riches_found_phase.closure_control_crisis } } } localization_key = riches_found.objective.phase_emergency }
+	text = { localization_key = riches_found.objective.na }
+}
+
+defined_text = {
+	name = GetRichesFoundRaidActorText
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.criminal_group } } localization_key = riches_found.raid_actor.criminal_group }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.rival_claimants } } localization_key = riches_found.raid_actor.rival_claimants }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.private_guards } } localization_key = riches_found.raid_actor.private_guards }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.foreign_agents } } localization_key = riches_found.raid_actor.foreign_agents }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.hostile_neighbor } } localization_key = riches_found.raid_actor.hostile_neighbor }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.resistance } } localization_key = riches_found.raid_actor.resistance }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.retreating_forces } } localization_key = riches_found.raid_actor.retreating_forces }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.corrupt_unit } } localization_key = riches_found.raid_actor.corrupt_unit }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.smugglers } } localization_key = riches_found.raid_actor.smugglers }
+	text = { trigger = { check_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.worker_barricade } } localization_key = riches_found.raid_actor.worker_barricade }
+	text = { localization_key = riches_found.raid_actor.unknown }
+}
+
+defined_text = {
+	name = GetRichesFoundIncidentReportText
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_rich_strike } } localization_key = riches_found.incident.claims_rich_strike }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_fraudulent_assay } } localization_key = riches_found.incident.claims_fraudulent_assay }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_duplicate_documents } } localization_key = riches_found.incident.claims_duplicate_documents }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_jumpers } } localization_key = riches_found.incident.claims_jumpers }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_landowner_refusal } } localization_key = riches_found.incident.claims_landowner_refusal }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_local_recognition } } localization_key = riches_found.incident.claims_local_recognition }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_boundary_crossing } } localization_key = riches_found.incident.claims_boundary_crossing }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_soldier_stakes } } localization_key = riches_found.incident.claims_soldier_stakes }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_old_foreign_rights } } localization_key = riches_found.incident.claims_old_foreign_rights }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_bribed_court } } localization_key = riches_found.incident.claims_bribed_court }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_miners_assembly } } localization_key = riches_found.incident.claims_miners_assembly }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_violent_eviction } } localization_key = riches_found.incident.claims_violent_eviction }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_easement_dispute } } localization_key = riches_found.incident.claims_easement_dispute }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_false_discovery } } localization_key = riches_found.incident.claims_false_discovery }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_missing_specimen } } localization_key = riches_found.incident.claims_missing_specimen }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_housing_inflation } } localization_key = riches_found.incident.rush_housing_inflation }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_food_shortage } } localization_key = riches_found.incident.rush_food_shortage }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_sanitation_failure } } localization_key = riches_found.incident.rush_sanitation_failure }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_fire } } localization_key = riches_found.incident.rush_fire }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_theft } } localization_key = riches_found.incident.rush_theft }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_labor_exploitation } } localization_key = riches_found.incident.rush_labor_exploitation }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_displacement } } localization_key = riches_found.incident.rush_displacement }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_wage_dispute } } localization_key = riches_found.incident.rush_wage_dispute }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_gambling_debt } } localization_key = riches_found.incident.rush_gambling_debt }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_gang_violence } } localization_key = riches_found.incident.rush_gang_violence }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_price_gouging } } localization_key = riches_found.incident.rush_price_gouging }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_outsider_resentment } } localization_key = riches_found.incident.rush_outsider_resentment }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_police_corruption } } localization_key = riches_found.incident.rush_police_corruption }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_smuggling } } localization_key = riches_found.incident.rush_smuggling }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_route_washout } } localization_key = riches_found.incident.development_route_washout }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_pump_failure } } localization_key = riches_found.incident.development_pump_failure }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_ventilation_failure } } localization_key = riches_found.incident.development_ventilation_failure }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_magazine_fire } } localization_key = riches_found.incident.development_magazine_fire }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_sabotage } } localization_key = riches_found.incident.development_sabotage }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_material_shortage } } localization_key = riches_found.incident.development_material_shortage }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_engineer_strike } } localization_key = riches_found.incident.development_engineer_strike }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_false_invoice } } localization_key = riches_found.incident.development_false_invoice }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_missing_shipments } } localization_key = riches_found.incident.corruption_missing_shipments }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_local_share_demand } } localization_key = riches_found.incident.corruption_local_share_demand }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_royalty_change } } localization_key = riches_found.incident.corruption_royalty_change }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_bonus_strike } } localization_key = riches_found.incident.corruption_bonus_strike }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_false_dividend_names } } localization_key = riches_found.incident.corruption_false_dividend_names }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_visible_public_work } } localization_key = riches_found.incident.corruption_visible_public_work }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_diverted_central_fund } } localization_key = riches_found.incident.corruption_diverted_central_fund }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_theft_accusation } } localization_key = riches_found.incident.corruption_theft_accusation }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_missing_official } } localization_key = riches_found.incident.corruption_missing_official }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_assay_substitution } } localization_key = riches_found.incident.corruption_assay_substitution }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_party_machine } } localization_key = riches_found.incident.corruption_party_machine }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_payroll_dependence } } localization_key = riches_found.incident.corruption_payroll_dependence }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_worker_drain } } localization_key = riches_found.incident.corruption_worker_drain }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_fund_claimant } } localization_key = riches_found.incident.foreign_fund_claimant }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_bribe_officials } } localization_key = riches_found.incident.foreign_bribe_officials }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_steal_survey } } localization_key = riches_found.incident.foreign_steal_survey }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_recruit_engineers } } localization_key = riches_found.incident.foreign_recruit_engineers }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_sabotage_transport } } localization_key = riches_found.incident.foreign_sabotage_transport }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_support_armed_group } } localization_key = riches_found.incident.foreign_support_armed_group }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_expose_contract } } localization_key = riches_found.incident.foreign_expose_contract }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_demand_inspection } } localization_key = riches_found.incident.foreign_demand_inspection }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_threaten_sanctions } } localization_key = riches_found.incident.foreign_threaten_sanctions }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_prepare_seizure } } localization_key = riches_found.incident.foreign_prepare_seizure }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_recognize_local_claim } } localization_key = riches_found.incident.foreign_recognize_local_claim }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_offer_assistance } } localization_key = riches_found.incident.foreign_offer_assistance }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_assay_office } } localization_key = riches_found.incident.raid_assay_office }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_payroll } } localization_key = riches_found.incident.raid_payroll }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_rail_route } } localization_key = riches_found.incident.raid_rail_route }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_port_route } } localization_key = riches_found.incident.raid_port_route }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_processing_works } } localization_key = riches_found.incident.raid_processing_works }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_storage_compound } } localization_key = riches_found.incident.raid_storage_compound }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_contract_records } } localization_key = riches_found.incident.raid_contract_records }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_shaft_entrance } } localization_key = riches_found.incident.raid_shaft_entrance }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_warning_shift } } localization_key = riches_found.incident.collapse_warning_shift }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_local_cave_in } } localization_key = riches_found.incident.collapse_local_cave_in }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_major_failure } } localization_key = riches_found.incident.collapse_major_failure }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_catastrophic } } localization_key = riches_found.incident.collapse_catastrophic }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_hidden_samples } } localization_key = riches_found.incident.gold_hidden_samples }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_altered_records } } localization_key = riches_found.incident.gold_altered_records }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_endless_shift } } localization_key = riches_found.incident.gold_endless_shift }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_guard_theft } } localization_key = riches_found.incident.gold_guard_theft }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_gang_control } } localization_key = riches_found.incident.gold_gang_control }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_false_permits } } localization_key = riches_found.incident.gold_false_permits }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_shipment_fight } } localization_key = riches_found.incident.gold_shipment_fight }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_unsafe_digging } } localization_key = riches_found.incident.gold_unsafe_digging }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_answering_knocks } } localization_key = riches_found.incident.supernatural_answering_knocks }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_counting_voices } } localization_key = riches_found.incident.supernatural_counting_voices }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_returned_tools } } localization_key = riches_found.incident.supernatural_returned_tools }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_patterned_lamps } } localization_key = riches_found.incident.supernatural_patterned_lamps }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_balanced_payroll } } localization_key = riches_found.incident.supernatural_balanced_payroll }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_ore_after_violence } } localization_key = riches_found.incident.supernatural_ore_after_violence }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_accounting_marks } } localization_key = riches_found.incident.supernatural_accounting_marks }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_open_sealed_tunnel } } localization_key = riches_found.incident.supernatural_open_sealed_tunnel }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_clean_renewal } } localization_key = riches_found.incident.contract_clean_renewal }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_larger_share } } localization_key = riches_found.incident.contract_larger_share }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_infrastructure_offer } } localization_key = riches_found.incident.contract_infrastructure_offer }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_security_rights } } localization_key = riches_found.incident.contract_security_rights }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_local_intermediary } } localization_key = riches_found.incident.contract_local_intermediary }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_withdrawal } } localization_key = riches_found.incident.contract_withdrawal }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_rival_claimant } } localization_key = riches_found.incident.contract_rival_claimant }
+	text = { trigger = { check_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_breach_pressure } } localization_key = riches_found.incident.contract_breach_pressure }
+	text = { localization_key = riches_found.incident.fallback }
 }

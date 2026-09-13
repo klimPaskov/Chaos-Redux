@@ -1,0 +1,63 @@
+# Bounded registry retention and material record visibility for administration.
+camp_admin_integration_has_continuing_work = {
+	OR = {
+		check_variable = { camp_admin_civilian_states^num > 0 }
+		check_variable = { camp_occ_states^num > 0 }
+		camp_occ_country_has_records = yes
+		has_country_flag = camp_admin_civil_policy_authorized
+		has_country_flag = camp_admin_civil_review_active
+		has_country_flag = camp_admin_civil_claims_active
+		has_country_flag = camp_admin_institution_slot_active
+		has_country_flag = camp_admin_economy_slot_active
+		has_country_flag = camp_admin_country_archive_work_active
+		has_country_flag = camp_admin_country_oversight_active
+	}
+}
+
+# Country action bus. Guard/quota/role purchases have no equivalent automatic
+# control command; reject them before any legacy equipment or PP debit.
+camp_admin_legacy_generic_action_is_retired = {
+	OR = {
+		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_expand_labor_quotas }
+		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
+		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
+		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_allocate_additional_guards }
+		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_reduce_labor_quotas }
+		check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_upgrade_existing_site_to_radicalized_atrocity_site }
+	}
+}
+
+# Country quote mirrors the bounded mandate price from the shared command constants.
+# Replacement equipment is funded over time and never prevents immediate release.
+camp_admin_generic_reform_quote = {
+	set_temp_variable = { camp_admin_reform_quote_pp = camp_active_site_count }
+	multiply_temp_variable = { camp_admin_reform_quote_pp = constant:camp_admin_command.policy_pp_per_site }
+	add_to_temp_variable = { camp_admin_reform_quote_pp = constant:camp_admin_command.policy_pp }
+	clamp_temp_variable = { var = camp_admin_reform_quote_pp min = constant:camp_admin_command.policy_pp max = constant:camp_admin_command.policy_pp_max }
+	multiply_temp_variable = { camp_admin_reform_quote_pp = constant:camp_admin_command.mandate_pp_multiplier }
+	always = yes
+}
+
+camp_admin_generic_reform_visible = {
+	has_country_flag = camp_admin_initialized
+	camp_rework_country_uses_generic_kit = yes
+	NOT = { camp_administration_civil_country_supported = yes }
+	NOT = { has_country_flag = camp_admin_reforming }
+	check_variable = { camp_active_site_states^num > 0 }
+	camp_rework_country_can_reform = yes
+}
+
+camp_admin_generic_reform_available = {
+	camp_admin_generic_reform_visible = yes
+	NOT = { has_country_flag = camp_rework_site_closure_active }
+	NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
+	all_of_scopes = {
+		array = camp_active_site_states
+		has_state_flag = camp_admin_initialized
+		NOT = { has_state_flag = camp_admin_closed }
+		is_valid_camp_dismantlement_state = yes
+		var:camp_admin_responsible_country = { tag = PREV.PREV }
+	}
+	camp_admin_generic_reform_quote = yes
+	check_variable = { var = political_power value = camp_admin_reform_quote_pp compare = greater_than_or_equals }
+}

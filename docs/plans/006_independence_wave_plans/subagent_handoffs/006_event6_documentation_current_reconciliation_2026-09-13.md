@@ -87,3 +87,7 @@ Review the additive documentation patches alongside concurrent source and overvi
 The worktree contains extensive unrelated edits, and this curator preserved them without staging or committing.
 Existing source/handoff evidence remains time-bound, so later owner changes require matching specialist and MCP revalidation.
 The missing League acceptance contracts and all wider HOLD/PARTIAL gates remain unresolved.
+
+## Parent follow-up
+
+The later parent tranche `006_event6_league_transition_callers_2026-09-13.md` implements the eight accepted League callers and durability receipt inside the existing post-recognition category. Its implementation handoff supersedes this reconciliation's earlier statement that those callers were still absent; the remaining package, asset, route-cost, GUI, audio, provenance, formable, and probability gates remain unchanged.

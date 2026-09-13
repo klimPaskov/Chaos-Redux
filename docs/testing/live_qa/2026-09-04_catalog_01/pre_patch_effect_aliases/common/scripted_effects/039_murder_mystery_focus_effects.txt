@@ -1,0 +1,582 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 ASSASSIN STATE FOCUS EFFECTS
+# ============================================================================
+# Overview:
+# - This file contains the reusable rewards for the Assassin State focus tree.
+# - Every reward changes a live Event 039 value, unlocks a real decision or
+#   technology, repairs a named map consumer, or changes the route's country
+#   administration. The tree itself owns order and prerequisites.
+# - The effects are intentionally country-scoped and never perform a whole-world
+#   search. Foreign targets remain selected through the bounded cell registry.
+# ============================================================================
+
+murder_mystery_focus_initialize_assassin_state = {
+	murder_mystery_initialize_country_runtime = yes
+	set_country_flag = murder_mystery_assassin_state_focus_active
+	set_country_flag = murder_mystery_investigation_country
+	set_country_flag = murder_mystery_brotherhood_operations_open
+	if = {
+		limit = { NOT = { has_variable = murder_mystery_route } }
+		set_variable = { murder_mystery_route = constant:murder_mystery_route.none }
+	}
+	if = {
+		limit = { NOT = { has_idea = murder_mystery_underground_becomes_government } }
+		add_ideas = {
+			murder_mystery_underground_becomes_government
+			murder_mystery_cells_under_arms
+			murder_mystery_leadership_is_a_crime
+		}
+	}
+}
+
+murder_mystery_focus_record_opening_survival = {
+	murder_mystery_focus_initialize_assassin_state = yes
+	set_country_flag = murder_mystery_focus_capital_survival_recorded
+	set_country_flag = murder_mystery_operations_kit_unlocked
+	add_political_power = constant:murder_mystery_value.twenty
+	add_army_experience = constant:murder_mystery_value.ten
+	add_manpower = constant:murder_mystery_value.five
+	capital_scope = {
+		add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+	}
+}
+
+murder_mystery_focus_ration_the_front = {
+	set_country_flag = murder_mystery_front_rationing_recorded
+	add_manpower = constant:murder_mystery_value.ten
+	add_command_power = constant:murder_mystery_value.five
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_inventory_captured_state = {
+	set_country_flag = murder_mystery_captured_inventory_recorded
+	set_country_flag = murder_mystery_operations_kit_unlocked
+	add_political_power = constant:murder_mystery_value.fifteen
+	capital_scope = {
+		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+	}
+}
+
+murder_mystery_focus_open_case_team = {
+	murder_mystery_initialize_country_runtime = yes
+	set_country_flag = murder_mystery_investigation_command_ready
+	set_country_flag = murder_mystery_scene_preserved
+	set_country_flag = murder_mystery_case_team_committed
+	set_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+	set_variable = { murder_mystery_network_reach = constant:murder_mystery_value.fifteen }
+	add_ideas = murder_mystery_protected_leadership_system
+}
+
+murder_mystery_focus_map_first_routes = {
+	set_country_flag = murder_mystery_first_routes_mapped
+	set_country_flag = murder_mystery_foreign_contacts_open
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.ten }
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+	clamp_variable = { var = murder_mystery_network_reach min = constant:murder_mystery_value.zero max = constant:murder_mystery_value.hundred }
+	clamp_variable = { var = murder_mystery_case_progress min = constant:murder_mystery_value.zero max = constant:murder_mystery_value.hundred }
+}
+
+murder_mystery_focus_open_brotherhood_operations = {
+	set_country_flag = murder_mystery_brotherhood_operations_open
+	set_country_flag = murder_mystery_operation_kit_board_open
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.five }
+	add_command_power = constant:murder_mystery_value.five
+}
+
+murder_mystery_focus_stage_public_mask = {
+	set_country_flag = murder_mystery_public_mask_staged
+	set_country_flag = murder_mystery_nonterminal_play_enabled
+	add_stability = 0.05
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_choose_hidden_hand = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = murder_mystery_focus_route_locked }
+		}
+		set_variable = { murder_mystery_route = constant:murder_mystery_route.hidden_hand }
+		set_country_flag = murder_mystery_focus_route_locked
+		set_country_flag = murder_mystery_hidden_hand_route
+		remove_ideas = {
+			murder_mystery_underground_becomes_government
+			murder_mystery_cells_under_arms
+			murder_mystery_leadership_is_a_crime
+		}
+		add_ideas = {
+			murder_mystery_centralized_government
+			murder_mystery_centralized_cells_under_arms
+			murder_mystery_centralized_leadership_contradiction
+		}
+		add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.fifteen }
+	}
+}
+
+murder_mystery_focus_choose_cells_without_masters = {
+	if = {
+		limit = { NOT = { has_country_flag = murder_mystery_focus_route_locked } }
+		set_variable = { murder_mystery_route = constant:murder_mystery_route.cells_without_masters }
+		set_country_flag = murder_mystery_focus_route_locked
+		set_country_flag = murder_mystery_cells_without_masters_route
+		remove_ideas = {
+			murder_mystery_underground_becomes_government
+			murder_mystery_cells_under_arms
+			murder_mystery_leadership_is_a_crime
+		}
+		add_ideas = {
+			murder_mystery_decentralized_government
+			murder_mystery_decentralized_cells_under_arms
+			murder_mystery_decentralized_leadership_contradiction
+		}
+		add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.ten }
+		add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.negative_five }
+	}
+}
+
+murder_mystery_focus_choose_necessary_mask = {
+	if = {
+		limit = { NOT = { has_country_flag = murder_mystery_focus_route_locked } }
+		set_variable = { murder_mystery_route = constant:murder_mystery_route.necessary_mask }
+		set_country_flag = murder_mystery_focus_route_locked
+		set_country_flag = murder_mystery_necessary_mask_route
+		remove_ideas = {
+			murder_mystery_underground_becomes_government
+			murder_mystery_cells_under_arms
+			murder_mystery_leadership_is_a_crime
+		}
+		add_ideas = {
+			murder_mystery_pragmatic_government
+			murder_mystery_pragmatic_cells_under_arms
+			murder_mystery_pragmatic_leadership_contradiction
+		}
+		add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+		add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.negative_five }
+	}
+}
+
+murder_mystery_focus_centralize_command = {
+	set_country_flag = murder_mystery_central_command_established
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.ten }
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.ten }
+	add_political_power = constant:murder_mystery_value.fifteen
+}
+
+murder_mystery_focus_federate_command = {
+	set_country_flag = murder_mystery_cell_councils_established
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.fifteen }
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.negative_five }
+	set_country_flag = murder_mystery_cell_administration_open
+}
+
+murder_mystery_focus_formalize_mask = {
+	set_country_flag = murder_mystery_conventional_statehood_established
+	set_country_flag = murder_mystery_trade_contacts_open
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+	add_stability = 0.05
+}
+
+murder_mystery_focus_trade_without_recognition = {
+	set_country_flag = murder_mystery_trade_without_recognition
+	set_country_flag = murder_mystery_nonterminal_play_enabled
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.negative_five }
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_write_revocable_orders = {
+	set_country_flag = murder_mystery_revocable_orders_active
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.fifteen }
+	add_command_power = constant:murder_mystery_value.five
+}
+
+murder_mystery_focus_leadership_contradiction = {
+	set_country_flag = murder_mystery_leadership_contradiction_acknowledged
+	add_to_variable = { murder_mystery_succession_strain = constant:murder_mystery_value.five }
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_mandate_subjects = {
+	murder_mystery_focus_subject_compact = yes
+	set_country_flag = murder_mystery_subject_mandate_issued
+}
+
+murder_mystery_focus_three_answers = {
+	set_country_flag = murder_mystery_route_choice_open
+	set_country_flag = murder_mystery_route_compromise_recorded
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_protect_first_knife = {
+	set_country_flag = murder_mystery_first_knife_protected
+	set_country_flag = murder_mystery_first_knife_registered
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.ten }
+	set_variable = { murder_mystery_target_protection_input = constant:murder_mystery_target_protection.protected }
+}
+
+murder_mystery_focus_command_settlement = {
+	set_country_flag = murder_mystery_command_settlement_resolved
+	set_global_flag = murder_mystery_central_or_heir_validated
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.ten }
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_build_clandestine_workshops = {
+	set_country_flag = murder_mystery_clandestine_workshops_open
+	capital_scope = {
+		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+		add_building_construction = { type = supply_node level = 1 instant_build = yes }
+	}
+	set_country_flag = murder_mystery_operations_kit_unlocked
+}
+
+murder_mystery_focus_disperse_tools = {
+	set_country_flag = murder_mystery_dispersed_industry
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.ten }
+	capital_scope = { add_building_construction = { type = infrastructure level = 1 instant_build = yes } }
+}
+
+murder_mystery_focus_local_repair = {
+	set_country_flag = murder_mystery_local_repair_network
+	add_ideas = murder_mystery_cells_under_arms
+	capital_scope = { add_building_construction = { type = railway level = 1 instant_build = yes } }
+}
+
+murder_mystery_focus_hidden_supply = {
+	set_country_flag = murder_mystery_hidden_supply_routes
+	capital_scope = { add_building_construction = { type = supply_node level = 1 instant_build = yes } }
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_workshop_economy = {
+	remove_ideas = murder_mystery_underground_becomes_government
+	add_ideas = murder_mystery_centralized_government
+	set_country_flag = murder_mystery_operations_kit_production_board
+	add_political_power = constant:murder_mystery_value.twenty
+}
+
+murder_mystery_focus_seize_state_industry = {
+	set_country_flag = murder_mystery_state_industry_board
+	capital_scope = {
+		add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+		add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+	}
+	add_to_variable = { murder_mystery_succession_strain = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_capture_depots = {
+	set_country_flag = murder_mystery_depot_network_secured
+	capital_scope = { add_building_construction = { type = supply_node level = 1 instant_build = yes } }
+	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:murder_mystery_value.one }
+}
+
+murder_mystery_focus_rebuild_rail = {
+	set_country_flag = murder_mystery_rail_reconstruction_open
+	capital_scope = { add_building_construction = { type = railway level = 2 instant_build = yes } }
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_heavy_conversion = {
+	set_country_flag = murder_mystery_conventional_conversion_open
+	capital_scope = {
+		add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+		add_building_construction = { type = anti_air_building level = 1 instant_build = yes }
+	}
+	set_country_flag = murder_mystery_conventional_support_unlocked
+}
+
+murder_mystery_focus_industry_board = {
+	remove_ideas = murder_mystery_underground_becomes_government
+	add_ideas = murder_mystery_pragmatic_government
+	set_country_flag = murder_mystery_operations_kit_production_board
+	add_political_power = constant:murder_mystery_value.twenty
+}
+
+murder_mystery_focus_pragmatic_contracts = {
+	set_country_flag = murder_mystery_pragmatic_contracts_open
+	set_country_flag = murder_mystery_trade_contacts_open
+	add_stability = 0.05
+	add_research_slot = 1
+}
+
+murder_mystery_focus_neutral_imports = {
+	set_country_flag = murder_mystery_neutral_imports_open
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:murder_mystery_value.fifty }
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:murder_mystery_value.fifty }
+}
+
+murder_mystery_focus_vehicle_licenses = {
+	set_country_flag = murder_mystery_vehicle_licenses_open
+	set_technology = { motorized = 1 }
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:murder_mystery_value.fifty }
+}
+
+murder_mystery_focus_production_board = {
+	remove_ideas = murder_mystery_underground_becomes_government
+	add_ideas = murder_mystery_pragmatic_government
+	set_country_flag = murder_mystery_conventional_support_unlocked
+	add_political_power = constant:murder_mystery_value.twenty
+}
+
+murder_mystery_focus_cadre_training = {
+	set_country_flag = murder_mystery_cadre_training_open
+	set_technology = { murder_mystery_clandestine_combat_training = 1 }
+	set_country_flag = murder_mystery_operations_kit_unlocked
+	add_army_experience = constant:murder_mystery_value.fifteen
+}
+
+murder_mystery_focus_night_doctrine = {
+	set_country_flag = murder_mystery_night_doctrine_open
+	set_technology = { murder_mystery_compartmented_logistics = 1 }
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_saboteur_cells = {
+	set_country_flag = murder_mystery_saboteur_cells_open
+	set_technology = { murder_mystery_urban_rough_terrain_infiltration = 1 }
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_shadow_companies = {
+	set_country_flag = murder_mystery_shadow_companies_open
+	set_technology = { murder_mystery_shadow_operations_doctrine = 1 }
+	set_country_flag = murder_mystery_shadow_company_cap_expanded
+	add_army_experience = constant:murder_mystery_value.twenty
+}
+
+murder_mystery_focus_silent_guard = {
+	set_country_flag = murder_mystery_silent_guard_open
+	set_technology = { murder_mystery_protected_command_doctrine = 1 }
+	set_country_flag = murder_mystery_capital_guard_ready
+	capital_scope = { add_building_construction = { type = bunker level = 1 instant_build = yes } }
+}
+
+murder_mystery_focus_conventional_adaptation = {
+	set_country_flag = murder_mystery_conventional_support_unlocked
+	set_technology = { infantry_weapons = 2 support_weapons = 1 engineers = 1 }
+	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:murder_mystery_value.hundred }
+	add_equipment_to_stockpile = { type = artillery_equipment amount = constant:murder_mystery_value.fifty }
+}
+
+murder_mystery_focus_master_cadre = {
+	set_country_flag = murder_mystery_master_cadre_open
+	set_technology = { murder_mystery_master_cadre_system = 1 }
+	set_country_flag = murder_mystery_master_assassin_cap_expanded
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_mechanized_infiltration = {
+	set_country_flag = murder_mystery_mechanized_assassin_open
+	set_technology = { murder_mystery_mechanized_infiltration = 1 }
+	set_country_flag = murder_mystery_mechanized_cap_expanded
+	add_fuel = constant:murder_mystery_value.hundred
+}
+
+murder_mystery_focus_force_standards = {
+	set_country_flag = murder_mystery_force_reinforcement_open
+	set_country_flag = murder_mystery_force_ai_ratios_open
+	add_army_experience = constant:murder_mystery_value.twenty
+	add_command_power = constant:murder_mystery_value.ten
+}
+
+murder_mystery_focus_elite_force_caps = {
+	set_country_flag = murder_mystery_elite_force_caps_open
+	set_country_flag = murder_mystery_master_assassin_cap_expanded
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.five }
+	add_army_experience = constant:murder_mystery_value.fifteen
+}
+
+murder_mystery_focus_intelligence_registry = {
+	set_country_flag = murder_mystery_intelligence_registry_open
+	set_country_flag = murder_mystery_foreign_contacts_open
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_secure_comms = {
+	set_country_flag = murder_mystery_secure_comms_open
+	set_technology = { radio = 2 encryption_1 = 1 }
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.fifteen }
+}
+
+murder_mystery_focus_evidence_exchange = {
+	set_country_flag = murder_mystery_evidence_exchange_open
+	add_to_variable = { murder_mystery_evidence_integrity = constant:murder_mystery_value.fifteen }
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_foreign_contacts = {
+	set_country_flag = murder_mystery_foreign_contacts_open
+	set_global_flag = murder_mystery_international_network_open
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.fifteen }
+}
+
+murder_mystery_focus_foreign_cells = {
+	set_country_flag = murder_mystery_foreign_cell_support_open
+	set_country_flag = murder_mystery_cell_administration_open
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.fifteen }
+	add_to_variable = { murder_mystery_cell_maturity = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_counterintelligence = {
+	set_country_flag = murder_mystery_counterintelligence_open
+	add_to_variable = { murder_mystery_investigator_exposure = constant:murder_mystery_value.negative_fifteen }
+	add_to_variable = { murder_mystery_killer_adaptation = constant:murder_mystery_value.negative_five }
+}
+
+murder_mystery_focus_cell_immunity = {
+	set_country_flag = murder_mystery_cell_immunity_open
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.fifteen }
+}
+
+murder_mystery_focus_international_operations = {
+	set_country_flag = murder_mystery_international_operations_open
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.twenty }
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_insurgency_preparation = {
+	set_country_flag = murder_mystery_insurgency_preparation_open
+	set_global_flag = murder_mystery_foreign_network_milestone_validated
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.fifteen }
+}
+
+murder_mystery_focus_recognize_movement = {
+	set_country_flag = murder_mystery_recognition_pressure_open
+	add_political_power = constant:murder_mystery_value.twenty
+	add_stability = 0.05
+}
+
+murder_mystery_focus_provisional_administration = {
+	set_country_flag = murder_mystery_provisional_administration_open
+	add_ideas = murder_mystery_foreign_derivative_administration
+	add_to_variable = { murder_mystery_local_government_weakness = constant:murder_mystery_value.negative_ten }
+}
+
+murder_mystery_focus_subject_compact = {
+	set_country_flag = murder_mystery_subject_compact_open
+	set_country_flag = murder_mystery_subject_support_open
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_veiled_compact = {
+	if = {
+		limit = {
+			check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iv compare = greater_than_or_equals }
+			NOT = { has_country_flag = murder_mystery_veiled_compact_created }
+		}
+		if = { limit = { NOT = { has_rule = can_create_factions } } set_rule = { can_create_factions = yes } }
+		if = { limit = { NOT = { is_in_faction = yes } } create_faction = murder_mystery_veiled_compact }
+		set_country_flag = murder_mystery_veiled_compact_created
+		set_country_flag = murder_mystery_veiled_compact_open
+		add_ideas = murder_mystery_mature_international_network
+	}
+}
+
+murder_mystery_focus_campaign_sectors = {
+	set_country_flag = murder_mystery_campaign_sectors_open
+	set_variable = { murder_mystery_selected_terminal_sector = constant:murder_mystery_terminal.sector_one }
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_protect_derivatives = {
+	set_country_flag = murder_mystery_derivative_protection_open
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.five }
+	add_to_variable = { murder_mystery_route_security = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_central_demands = {
+	set_country_flag = murder_mystery_subject_demands_open
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.ten }
+	add_to_variable = { murder_mystery_succession_strain = constant:murder_mystery_value.five }
+}
+
+murder_mystery_focus_staged_integration = {
+	set_country_flag = murder_mystery_staged_integration_open
+	add_to_variable = { murder_mystery_local_government_weakness = constant:murder_mystery_value.negative_fifteen }
+	add_political_power = constant:murder_mystery_value.twenty
+}
+
+murder_mystery_focus_host_archive = {
+	set_country_flag = murder_mystery_host_archive_objective_open
+	set_country_flag = murder_mystery_host_conquest_branch_open
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_host_capital = {
+	set_country_flag = murder_mystery_host_capital_objective_open
+	set_country_flag = murder_mystery_original_host_objective_open
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.fifteen }
+}
+
+murder_mystery_focus_necessary_compromise = {
+	murder_mystery_focus_preserve_statehood = yes
+	set_country_flag = murder_mystery_necessary_compromise_recorded
+}
+
+murder_mystery_focus_prepare_world_collapse = {
+	if = {
+		limit = { murder_mystery_evolution_v_is_ready = yes }
+		set_country_flag = murder_mystery_world_collapse_prepared
+		set_country_flag = murder_mystery_world_without_leaders_open
+		add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.fifteen }
+	}
+}
+
+murder_mystery_focus_command_settlement_v = {
+	if = {
+		limit = { murder_mystery_evolution_v_is_ready = yes }
+		murder_mystery_focus_command_settlement = yes
+		set_country_flag = murder_mystery_terminal_command_settlement_open
+		add_ideas = murder_mystery_terminal_campaign_command
+	}
+}
+
+murder_mystery_focus_terminal_recruitment = {
+	set_country_flag = murder_mystery_terminal_recruitment_open
+	set_country_flag = murder_mystery_master_assassin_cap_expanded
+	set_technology = { murder_mystery_master_cadre_system = 1 }
+	add_army_experience = constant:murder_mystery_value.twenty
+}
+
+murder_mystery_focus_leadership_dossiers = {
+	set_country_flag = murder_mystery_terminal_leadership_dossiers_open
+	set_country_flag = murder_mystery_terminal_target_dossiers_open
+	add_to_variable = { murder_mystery_case_progress = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_synchronize_uprisings = {
+	set_country_flag = murder_mystery_terminal_uprising_coordination_open
+	set_country_flag = murder_mystery_terminal_capital_validated
+	add_to_variable = { murder_mystery_brotherhood_cohesion = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_dismantle_governments = {
+	set_country_flag = murder_mystery_terminal_government_dismantling_open
+	set_country_flag = murder_mystery_terminal_target_safe_callback
+	add_to_variable = { murder_mystery_network_reach = constant:murder_mystery_value.ten }
+}
+
+murder_mystery_focus_terminal_logistics = {
+	set_country_flag = murder_mystery_terminal_logistics_open
+	capital_scope = {
+		add_building_construction = { type = railway level = 1 instant_build = yes }
+		add_building_construction = { type = supply_node level = 1 instant_build = yes }
+	}
+	add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:murder_mystery_value.hundred }
+}
+
+murder_mystery_focus_activate_world_of_anarchy = {
+	if = {
+		limit = { murder_mystery_world_end_preparation_is_valid = yes }
+		murder_mystery_prepare_world_end_registry = yes
+		set_country_flag = murder_mystery_world_of_anarchy_activation_open
+	}
+}
+
+murder_mystery_focus_preserve_statehood = {
+	set_country_flag = murder_mystery_nonterminal_statehood_chosen
+	set_country_flag = murder_mystery_nonterminal_play_enabled
+	clr_country_flag = murder_mystery_world_of_anarchy_activation_open
+	add_ideas = murder_mystery_pragmatic_government
+	add_stability = 0.05
+}

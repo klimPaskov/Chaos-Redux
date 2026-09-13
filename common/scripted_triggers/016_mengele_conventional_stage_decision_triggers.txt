@@ -1,0 +1,616 @@
+# Event 016 private conventional decision gates.
+# COUNTRY scope. Fixed family/stage predicates have no inputs or side effects.
+# Outputs are booleans used by the matching decisions and cost localisation.
+# Receipts and cleanup belong to 016_mengele_project_stage_effects.txt.
+# Resource amount fields use local mirrors of shared stage/native constants.
+@MENGELE_ELECTRONICS_THEORY_RUBBER = 2
+@MENGELE_ELECTRONICS_DEPLOYMENT_RUBBER = 7
+@MENGELE_ELECTRONICS_WEAPONIZATION_RUBBER = 12
+@MENGELE_MATERIALS_THEORY_STEEL = 3
+@MENGELE_MATERIALS_THEORY_CHROMIUM = 3
+@MENGELE_MATERIALS_DEPLOYMENT_STEEL = 9
+@MENGELE_MATERIALS_DEPLOYMENT_CHROMIUM = 9
+@MENGELE_MATERIALS_WEAPONIZATION_STEEL = 15
+@MENGELE_MATERIALS_WEAPONIZATION_CHROMIUM = 15
+@MENGELE_ROCKETRY_THEORY_TUNGSTEN = 3
+@MENGELE_ROCKETRY_THEORY_RUBBER = 3
+@MENGELE_ROCKETRY_DEPLOYMENT_TUNGSTEN = 8
+@MENGELE_ROCKETRY_DEPLOYMENT_RUBBER = 8
+@MENGELE_ROCKETRY_WEAPONIZATION_TUNGSTEN = 13
+@MENGELE_ROCKETRY_WEAPONIZATION_RUBBER = 13
+@MENGELE_HIGH_ENERGY_THEORY_TUNGSTEN = 4
+@MENGELE_HIGH_ENERGY_THEORY_CHROMIUM = 4
+@MENGELE_HIGH_ENERGY_DEPLOYMENT_TUNGSTEN = 11
+@MENGELE_HIGH_ENERGY_DEPLOYMENT_CHROMIUM = 11
+@MENGELE_HIGH_ENERGY_WEAPONIZATION_TUNGSTEN = 18
+@MENGELE_HIGH_ENERGY_WEAPONIZATION_CHROMIUM = 18
+@MENGELE_BIOMEDICAL_THEORY_RUBBER = 1
+@MENGELE_BIOMEDICAL_DEPLOYMENT_RUBBER = 4
+@MENGELE_BIOMEDICAL_WEAPONIZATION_RUBBER = 7
+
+brilliant_scientist_mengele_electronics_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^1 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_materials_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^2 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^4 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_electronics_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^1 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_electronics_theory_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_electronics_theory_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+			NOT = { has_country_flag = mengele_event016_electronics_theory_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_electronics_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_electronics_theory_decision_visible = yes
+	has_tech = electronic_mechanical_engineering
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ELECTRONICS_THEORY_RUBBER } }
+}
+brilliant_scientist_mengele_electronics_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.electronics_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.electronics_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.electronics_theory_support_equipment } }
+}
+brilliant_scientist_mengele_electronics_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_electronics_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_electronics_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^1 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_electronics_deployment_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_electronics_deployment_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_electronics_prototype_completed
+			NOT = { has_country_flag = mengele_event016_electronics_deployment_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_electronics_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_electronics_deployment_decision_visible = yes
+	has_tech = radio_detection
+	is_special_project_completed = sp:sp_air_radar
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_deployment_military_factories }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ELECTRONICS_DEPLOYMENT_RUBBER } }
+}
+brilliant_scientist_mengele_electronics_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.electronics_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.electronics_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.electronics_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.electronics_deployment_fuel }
+}
+brilliant_scientist_mengele_electronics_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_electronics_deployment_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_electronics_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^1 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+brilliant_scientist_mengele_electronics_weaponization_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_electronics_weaponization_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_electronics_deployment_completed
+			NOT = { has_country_flag = mengele_event016_electronics_weaponization_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_electronics_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_electronics_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_electronics_weaponization_decision_visible = yes
+	OR = { has_tech = centimetric_radar has_tech = phased_array }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_military_factories }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ELECTRONICS_WEAPONIZATION_RUBBER } }
+}
+brilliant_scientist_mengele_electronics_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.electronics_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_fuel }
+}
+brilliant_scientist_mengele_electronics_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_electronics_weaponization_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_materials_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^2 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_materials_theory_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_materials_theory_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_materials_decision_receipt_is_empty = yes
+			NOT = { has_country_flag = mengele_event016_materials_theory_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_materials_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_materials_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_materials_theory_decision_visible = yes
+	has_tech = basic_machine_tools
+	NOT = { has_resources_in_country = { resource = steel amount < @MENGELE_MATERIALS_THEORY_STEEL } }
+	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_MATERIALS_THEORY_CHROMIUM } }
+}
+brilliant_scientist_mengele_materials_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.materials_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.materials_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.materials_theory_support_equipment } }
+}
+brilliant_scientist_mengele_materials_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_materials_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_materials_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^2 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_materials_deployment_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_materials_deployment_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_materials_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_materials_prototype_completed
+			NOT = { has_country_flag = mengele_event016_materials_deployment_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_materials_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_materials_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_materials_deployment_decision_visible = yes
+	OR = { has_tech = advanced_machine_tools has_tech = assembly_line_production }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.materials_deployment_military_factories }
+	NOT = { has_resources_in_country = { resource = steel amount < @MENGELE_MATERIALS_DEPLOYMENT_STEEL } }
+	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_MATERIALS_DEPLOYMENT_CHROMIUM } }
+}
+brilliant_scientist_mengele_materials_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.materials_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.materials_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.materials_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.materials_deployment_fuel }
+}
+brilliant_scientist_mengele_materials_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_materials_deployment_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_materials_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^2 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+brilliant_scientist_mengele_materials_weaponization_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_materials_weaponization_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_materials_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_materials_deployment_completed
+			NOT = { has_country_flag = mengele_event016_materials_weaponization_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_materials_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_materials_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_materials_weaponization_decision_visible = yes
+	has_tech = construction4
+	has_tech = excavation5
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.materials_weaponization_military_factories }
+	NOT = { has_resources_in_country = { resource = steel amount < @MENGELE_MATERIALS_WEAPONIZATION_STEEL } }
+	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_MATERIALS_WEAPONIZATION_CHROMIUM } }
+}
+brilliant_scientist_mengele_materials_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.materials_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.materials_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.materials_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.materials_weaponization_fuel }
+}
+brilliant_scientist_mengele_materials_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_materials_weaponization_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_rocketry_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_rocketry_theory_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_rocketry_theory_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+			NOT = { has_country_flag = mengele_event016_rocketry_theory_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_rocketry_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_rocketry_theory_decision_visible = yes
+	has_tech = rocket_engines
+	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_ROCKETRY_THEORY_TUNGSTEN } }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ROCKETRY_THEORY_RUBBER } }
+}
+brilliant_scientist_mengele_rocketry_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.rocketry_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.rocketry_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.rocketry_theory_support_equipment } }
+}
+brilliant_scientist_mengele_rocketry_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_rocketry_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_rocketry_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_rocketry_deployment_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_rocketry_deployment_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_rocketry_prototype_completed
+			NOT = { has_country_flag = mengele_event016_rocketry_deployment_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_rocketry_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_rocketry_deployment_decision_visible = yes
+	OR = { is_special_project_completed = sp:sp_rockets_ballistic_missile is_special_project_completed = sp:sp_air_axial_jet_engine }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_military_factories }
+	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_ROCKETRY_DEPLOYMENT_TUNGSTEN } }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ROCKETRY_DEPLOYMENT_RUBBER } }
+}
+brilliant_scientist_mengele_rocketry_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.rocketry_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_fuel }
+}
+brilliant_scientist_mengele_rocketry_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_rocketry_deployment_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_rocketry_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+brilliant_scientist_mengele_rocketry_weaponization_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_rocketry_weaponization_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_rocketry_deployment_completed
+			NOT = { has_country_flag = mengele_event016_rocketry_weaponization_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_rocketry_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_rocketry_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_rocketry_weaponization_decision_visible = yes
+	OR = { NOT = { has_dlc = "Gotterdammerung" } is_special_project_completed = sp:sp_rockets_long_range_ballistic_missile is_special_project_completed = sp:sp_air_supersonic_jet }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_military_factories }
+	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_ROCKETRY_WEAPONIZATION_TUNGSTEN } }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_ROCKETRY_WEAPONIZATION_RUBBER } }
+}
+brilliant_scientist_mengele_rocketry_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_fuel }
+}
+brilliant_scientist_mengele_rocketry_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_rocketry_weaponization_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_high_energy_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^4 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_high_energy_theory_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_high_energy_theory_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+			NOT = { has_country_flag = mengele_event016_high_energy_theory_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_high_energy_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_high_energy_theory_decision_visible = yes
+	has_tech = atomic_research
+	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_HIGH_ENERGY_THEORY_TUNGSTEN } }
+	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_HIGH_ENERGY_THEORY_CHROMIUM } }
+}
+brilliant_scientist_mengele_high_energy_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.high_energy_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.high_energy_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.high_energy_theory_support_equipment } }
+}
+brilliant_scientist_mengele_high_energy_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_high_energy_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_high_energy_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^4 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_high_energy_deployment_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_high_energy_deployment_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_high_energy_prototype_completed
+			NOT = { has_country_flag = mengele_event016_high_energy_deployment_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_high_energy_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_high_energy_deployment_decision_visible = yes
+	OR = { is_special_project_completed = sp:sp_commercial_nuclear_reactor is_special_project_completed = sp:sp_nuclear_bomb }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_military_factories }
+	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_HIGH_ENERGY_DEPLOYMENT_TUNGSTEN } }
+	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_HIGH_ENERGY_DEPLOYMENT_CHROMIUM } }
+}
+brilliant_scientist_mengele_high_energy_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.high_energy_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_fuel }
+}
+brilliant_scientist_mengele_high_energy_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_high_energy_deployment_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_high_energy_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^4 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+brilliant_scientist_mengele_high_energy_weaponization_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_high_energy_weaponization_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_high_energy_deployment_completed
+			NOT = { has_country_flag = mengele_event016_high_energy_weaponization_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_high_energy_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_high_energy_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_high_energy_weaponization_decision_visible = yes
+	OR = { NOT = { has_dlc = "Gotterdammerung" } is_special_project_completed = sp:sp_thermo_nuclear_bomb is_special_project_completed = sp:sp_nuclear_warheads }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_military_factories }
+	NOT = { has_resources_in_country = { resource = tungsten amount < @MENGELE_HIGH_ENERGY_WEAPONIZATION_TUNGSTEN } }
+	NOT = { has_resources_in_country = { resource = chromium amount < @MENGELE_HIGH_ENERGY_WEAPONIZATION_CHROMIUM } }
+}
+brilliant_scientist_mengele_high_energy_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_fuel }
+}
+brilliant_scientist_mengele_high_energy_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_high_energy_weaponization_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_biomedical_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_biomedical_theory_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_biomedical_theory_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+			NOT = { has_country_flag = mengele_event016_biomedical_theory_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_biomedical_theory_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_biomedical_theory_decision_visible = yes
+	OR = { has_tech = pathogen_handling_protocols has_tech = bio_surveillance_networks }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_BIOMEDICAL_THEORY_RUBBER } }
+}
+brilliant_scientist_mengele_biomedical_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.biomedical_theory_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.biomedical_theory_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.biomedical_theory_support_equipment } }
+}
+brilliant_scientist_mengele_biomedical_theory_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biomedical_theory_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_biomedical_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_biomedical_deployment_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_biomedical_deployment_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_biomedical_prototype_completed
+			NOT = { has_country_flag = mengele_event016_biomedical_deployment_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_biomedical_deployment_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_biomedical_deployment_decision_visible = yes
+	OR = { has_tech = field_epidemiology_teams has_tech = mobile_cbrn_hospitals }
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_military_factories }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_BIOMEDICAL_DEPLOYMENT_RUBBER } }
+}
+brilliant_scientist_mengele_biomedical_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.biomedical_deployment_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_fuel }
+}
+brilliant_scientist_mengele_biomedical_deployment_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biomedical_deployment_decision_receipt_matches = yes }
+	}
+}
+
+brilliant_scientist_mengele_biomedical_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+brilliant_scientist_mengele_biomedical_weaponization_decision_visible = {
+	OR = {
+		brilliant_scientist_mengele_biomedical_weaponization_decision_receipt_matches = yes
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+			has_country_flag = mengele_event016_biomedical_deployment_completed
+			NOT = { has_country_flag = mengele_event016_biomedical_weaponization_completed }
+		}
+	}
+}
+brilliant_scientist_mengele_biomedical_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_biomedical_decision_receipt_is_empty = yes
+	brilliant_scientist_mengele_biomedical_weaponization_decision_visible = yes
+	has_tech = integrated_epidemic_control
+	has_tech = fail_safe_containment_facilities
+	NOT = { num_of_available_military_factories < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_military_factories }
+	NOT = { has_resources_in_country = { resource = rubber amount < @MENGELE_BIOMEDICAL_WEAPONIZATION_RUBBER } }
+}
+brilliant_scientist_mengele_biomedical_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_civilian_factories }
+	NOT = { check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_political_power compare = less_than } }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_fuel }
+}
+brilliant_scientist_mengele_biomedical_weaponization_decision_cancel_trigger = {
+	OR = {
+		NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		NOT = { brilliant_scientist_mengele_biomedical_weaponization_decision_receipt_matches = yes }
+	}
+}

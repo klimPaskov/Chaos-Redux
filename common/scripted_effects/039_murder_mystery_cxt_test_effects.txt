@@ -1,0 +1,47 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 CXT TEST REGISTRATION
+# ============================================================================
+# Overview:
+# - Registers the operations-kit equipment, five Assassin Forces formations,
+#   and the support-only Saboteur Cell with the shared CXT extension bus.
+# - The carrier is modifier-free and the setup effect is idempotent, so a
+#   bounded startup scope and the tag-scoped daily repair can converge safely.
+# ============================================================================
+
+murder_mystery_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event039_assassin_forces
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event039_assassin_forces_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_cxt_extension_event039_assassin_forces_registered } }
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:assassin_cadre }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:shadow_company }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:silent_guard }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:master_assassin }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit value = token:mechanized_assassin }
+		chaosx_test_country_register_frontline_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:saboteur_cell }
+		set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:assassin_cadre }
+		chaosx_test_country_register_support_subunit = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:assassin_operations_kit_1 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:infantry_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:support_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:motorized_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:mechanized_equipment_1 }
+		chaosx_test_country_register_equipment = yes
+		set_global_flag = chaosx_cxt_extension_event039_assassin_forces_registered
+	}
+}

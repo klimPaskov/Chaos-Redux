@@ -6,7 +6,7 @@ This contract records the accepted Event 016 closure plan and supersedes earlier
 
 The authority order for closure work is:
 
-1. The user's accepted Event 016 Final Completion Plan.
+1. The user's accepted Event 016 Final Completion Plan, amended by the explicit 2026-09-08 instruction to use the new weapon-free regeneration workflow for firearm-bearing units.
 2. This contract.
 3. The ten-part Event 016 specification and the D'Rhondan addendum, except where this contract explicitly changes a disposition.
 4. Current implementation evidence, MCP artifacts, audit handoffs, and model manifests.
@@ -53,6 +53,25 @@ Conventional strategic directives use four spendable cost types: Command Power, 
 Military-industry and target infrastructure requirements are not consumed, and synthesis works require the same three available factories they occupy.
 The same inclusive affordability predicate governs selection and custom-cost presentation, with shortages coloured individually and the initial payment returned on native cancellation.
 
+### Clone maturation production correction
+
+Parent implementation acceptance, 2026-09-08, under the user's accepted meaningful-project, physical-stockpile, four-cost decision, and no-free-unit-loop requirements: the KRG controlled growth cycle produces actual `clone_equipment_1`, not an infantry/support-equipment kit.
+The selected tuning is 100 clone equipment for 65 Political Power, 150 Support Equipment, 1,000 fuel, four committed civilian factories, and 90 days, followed by the existing 30-day re-enable interval.
+These quantities are parent-owned balance choices, not a claim that the user specified these exact numbers.
+At the existing build cost of 12 per clone equipment, the batch contains 1,200 equipment IC and contributes 1,000 weekly manpower only while all 100 units remain in stockpile.
+Equipment consumed by divisions no longer contributes that reserve manpower, and no division or direct manpower reward is granted by the cycle.
+Ordinary production and training remain available through their existing operational technology rules.
+The paid cycle is constrained by its real inputs, one active receipt, and a currently owned-and-controlled growth site, not a lifetime production cap.
+The existing cycle count and its crisis/achievement thresholds remain permanent history rather than a production ceiling.
+Start records exact direct payments once; invalidation cancels and refunds only the matching receipt once; success consumes that receipt before adding clone equipment, refreshing the shared clone-stockpile consumer, and recording cycle history.
+The native decision owns civilian-factory reservation and release, so callback affordability never double-counts already-reserved factories.
+The existing decision icon and category are retained, with concise cost/output text and no additional GUI.
+This correction does not by itself close the separate private Mengele Deployment-site and supplemental-production payoff; that provider adapter remains accepted work pending its site contract and integration.
+Source acceptance, 2026-09-08: the isolated transaction, controlled-site predicates, exact history extraction, and receipt-first terminal cleanup passed independent review in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_clone_maturation_source_review_2026-09-08.md`.
+The parent accepts that bounded source review, not live completion.
+After freezing `E016_CLONE_MATURATION_2026_09_08`, the parent connected the live decision, exact custom costs, compatibility completion helper, and world-end cleanup to the transaction core.
+Native timer behavior, the matching comparison, and final post-integration acceptance remain unproven.
+
 ## Reusable API and generic-unit contract
 
 The public technology helpers remain:
@@ -87,6 +106,16 @@ The incident retains its own permanent history and applies the existing Computat
 Its recovery action occupies two civilian factories for sixty days and spends 35 Political Power, 300 Support Equipment, and 500 fuel, using the existing technical-response constants.
 An exact recovery receipt refunds those direct payments once if the provider becomes invalid before completion; the native decision owns the factory reservation.
 Recovery and program cleanup remove transient penalties while retaining incident, recovery, project, and learned-technology history.
+
+The same private-program boundary applies to Electronics, Materials, Rocketry, High Energy, and Biomedical incidents.
+Parent implementation acceptance on 2026-09-08 derives from the user's requirement for distinct incidents, recovery, and persistent history for every existing family, and the requirement that Mengele can operate the portfolio without Kruger Directorate state.
+Use the existing family incident identities and penalty constants: Guidance Phantom, Catalytic Spill, Test Stand Explosion, Reactor Containment Crisis, and Clinical Contamination.
+Each owns separate private active, recovery, and permanent-history receipts; different families do not share a payment receipt.
+Electronics recovery uses the existing technical response profile, Materials and Rocketry use industrial, High Energy uses exotic, and Biomedical uses biological.
+The four recovery burdens are Political Power, Support Equipment, fuel, and the native civilian-factory reservation; no additional hidden spendable burden is permitted.
+Intrinsic stage pressure follows the private Computation stage table, without reading Kruger Exposure or any other Directorate meter.
+Native risky outcomes and paid private stage outputs must invoke only their appropriate private family path once; ordinary native completion must not replay native costs or manufacture confirmed-use history.
+This mapping authorizes implementation, not a completion claim; weighted baselines, exact transaction tests, parent callback wiring, and MCP/auditor evidence remain required.
 Theory and both post-prototype decisions remain available in either DLC state under the existing program-registry gate.
 The existing Computation theory modifier accepts an explicit active Mengele theory receipt; the existing Mengele prototype modifier expires when the full neutral operational package is learned, preventing duplicate prototype and operational bonuses.
 Deployment and Weaponization call the full neutral conventional API with explicit Mengele provenance, leaving research-slot adoption and idempotent learned knowledge to that API.
@@ -110,6 +139,9 @@ Free or event-spawned formations may use hard caps. Normally trainable custom un
 Actual pathogen equipment stockpiles are authoritative. The former Event 016 numeric biological quantity ledger is retired.
 
 Native raids remain authoritative for raid preparation, equipment reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, and confirmed-use attribution. Event 016 does not duplicate or intercept that transaction.
+Weaponized Black Plague exposure initializes its existing shared runtime once when required and starts one accepted-state scheduler anchor if no valid outstanding shared pulse exists.
+Existing active anchors, runtime generation, outstanding tickets, eradication history, and scenario pulse suppression remain authoritative; a release does not invoke the natural outbreak root or debit the public delivery transaction a second time.
+The shared pulse deadline uses elapsed days, and only an accepted shared Black Plague exposure may create or repair its scheduling receipt.
 
 Decision-led biological deployments own a separate transaction. One selected operational agent covers every unlocked payload. Single-payload production lasts 30 days. Three-payload production lasts 60 days. Both use concrete factories, support equipment, manpower, and the selected native equipment type. A 90-day staging directive improves raid preparation, outcome weights, and Kruger AI willingness without reserving payload.
 
@@ -239,17 +271,22 @@ Durable-settlement certification revalidates its disarmament and nonterminal con
 
 ## Existing-model runtime contract
 
-Geometry regeneration is forbidden for clone, robot, Portal Raider, Alien Infantry, temporal, paleogenetic, and xenobiological packages. Existing geometry remains the source.
+The user explicitly answered the closure exception question on 2026-09-08: "Use the new weapon-free regeneration workflow".
+This accepted amendment supersedes the earlier no-regeneration restriction for firearm-bearing clone, robot, Portal Raider, and Alien Infantry bodies.
+Generate weapon-free bodies through Meshy 7, then use GPT-6-astra Blender rigging, weights, separately modeled firearms and held components, and genuine skeletal actions without Meshy rigging or animation submissions.
+Existing weapon-free Meshy 7 candidates with matching identity, approval, task lineage, and source evidence may continue through review rather than purchasing duplicate bodies.
+Temporal, paleogenetic, and xenobiological packages retain their existing non-firearm geometry and the authorized manual Blender recovery route.
 
-The user's explicit manual recovery permission governs this closure where it conflicts with the ordinary regeneration-first workflow. It authorizes rig, weight, contact, weapon, action, effect, and export recovery on the existing geometry. It does not authorize substitute geometry, a different model, transform-only motion, semantic action aliases, silent firing, or particleless firing.
+The prior preserved-firearm recovery handoffs remain historical evidence, not acceptance of the replacement bodies or a reason to resume fused-weapon repair.
+The amendment does not authorize unrelated redesigns, transform-only motion, semantic action aliases, silent firing, or particleless firing.
 
 Each promoted package requires final export and actual-byte reimport proof, distinct idle, move, attack, defend, support-attack, retreat, and death actions as applicable, exact runtime mappings, material paths, scale calibration, counters, hashes, and active entity, asset, GFX, particle, and sound wiring.
 
-Portal Raider keeps the existing body mesh and receives the approved retro laser gun, two-hand contact, aim, discharge, recoil, recovery, and a stable muzzle attachment. Alien Infantry must fit the verified exporter ceiling without changing its visible identity and requires a reimport-proven muzzle locator. Robot firing must synchronize the existing arm gun with particles, light, gunfire, mechanical motion, and death audio. Aryan clones use normal German infantry models.
+Portal Raider receives a weapon-free replacement body and a separately modeled approved retro laser gun, two-hand contact, aim, discharge, recoil, recovery, and a stable muzzle attachment. Alien Infantry retains its intended visual identity through the weapon-free replacement and requires a separately modeled laser weapon and reimport-proven muzzle locator. Robot arm-mounted guns are separately modeled and must synchronize with particles, light, gunfire, mechanical motion, and death audio. All assembled models must fit the verified exporter limits. Aryan clones use normal German infantry models.
 
 Every firing state has a visible discharge, matching particle or beam and light behavior where applicable, identity-matched sourced audio, exact synchronization timing, and runtime consumer evidence. Every unit receives distinct sourced movement, selection where supported, attack, retreat, impact, and death audio without replacing global infantry voices.
 
-If existing geometry cannot pass an export, firearm, or animation gate, the exact package remains blocked. Regeneration and substitute models are not permitted.
+If a selected candidate cannot pass an export, firearm, or animation gate, the exact package remains incomplete and its failure must be recorded. Non-firearm regeneration and unapproved substitute identities remain forbidden; firearm body recovery follows the accepted weapon-free workflow and its evidence gates.
 
 ## Completion and evidence boundary
 
@@ -257,7 +294,7 @@ Closure proceeds through reviewed commits for the contract, technology and API r
 
 MCP inspection, rendering, comparison, and supported rewrite routes are mandatory for technologies, events, probabilities, focus trees, the Directorate GUI, and relevant maps. Weighted changes require the same named baseline and post-change scenarios. The final planner and mapped auditors run before a near-completion claim.
 
-The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, every model package passes its no-regeneration gates, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
+The repository reaches `ready for user live acceptance` only after every accepted mechanic is wired, old generic-unit identifiers and unresolved asset references are gone, every model package passes its applicable weapon-free rebuild or preserved-geometry recovery gates, required MCP comparisons and audit findings are resolved, and documentation, localisation, manifests, Event Log, Event Details, achievements, super-events, workbook, and exports agree.
 An exact recorded blocker preserves the recovery task; it does not satisfy a completion gate or permit a ready-for-acceptance claim.
 
 The agent does not launch Hearts of Iron IV. In-game completion remains subject to the user's acceptance.

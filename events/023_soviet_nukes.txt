@@ -1,69 +1,455 @@
 add_namespace = chaosx.nr23
 
 ##############################################################################################################
-#    ##    ## ########      #######   #######
-#    ###   ## ##     ##    ##     ## ##     ##
-#    ####  ## ##     ##           ##        ##
-#    ## ## ## ########      #######   #######
-#    ##  #### ##   ##      ##               ##
-#    ##   ### ##    ##     ##        ##     ##
-#    ##    ## ##     ##    #########  #######
-##############################################################################################################
-#    #####  ####### #     #
-#   #     # #     # #     #    #    # #    # #    # ######  ####
-#   #       #     # #     #    ##   # #    # #   #  #      #
-#    #####  #     # #     #    # #  # #    # ####   #####   ####
-#         # #     #  #   #     #  # # #    # #  #   #           #
-#   #     # #     #   # #      #   ## #    # #   #  #      #    #
-#    #####  #######    #       #    #  ####  #    # ######  ####
-
+# Event 023: Soviet Nuclear Bombs.
+#
+# The opening event grants only the verified atomic capability and the additive
+# package, then asks for one mutually exclusive custody doctrine. All later
+# arsenal changes are owned by the Event 23 ledger and ordinary decision surface.
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr23.1
-    title = chaosx.nr23.1.t
+	id = chaosx.nr23.1
+	title = chaosx.nr23.1.t
+	hidden = yes
+	is_triggered_only = yes
 
-    hidden = yes
-
-    is_triggered_only = yes
-
-    immediate = {
-        SOV = {
-            country_event = { id = chaosx.nr23.2 days = 1 }
-        }
-    }
+	immediate = {
+		SOV = {
+			country_event = { id = chaosx.nr23.2 days = constant:sov_nuclear_bombs_tuning.opening_delay_days }
+		}
+	}
 }
 
-##############################################################################################################
+country_event = {
+	id = chaosx.nr23.2
+	title = chaosx.nr23.2.t
+	desc = chaosx.nr23.2.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+
+	trigger = { tag = SOV }
+
+	option = {
+		name = chaosx.nr23.2.party
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.25 has_government = communism } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.party }
+		sov_nuclear_bombs_opening_doctrine_option = yes
+	}
+	option = {
+		name = chaosx.nr23.2.military
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = constant:sov_nuclear_bombs_ai.wartime_factor has_war = yes } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.military }
+		sov_nuclear_bombs_opening_doctrine_option = yes
+	}
+	option = {
+		name = chaosx.nr23.2.scientific_safety
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.50 has_government = democratic } modifier = { factor = 1.40 has_country_flag = sov_nuclear_bombs_test_failure } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.scientific_safety }
+		sov_nuclear_bombs_opening_doctrine_option = yes
+	}
+	option = {
+		name = chaosx.nr23.2.dispersed_commands
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.20 has_war = yes } modifier = { factor = 1.20 has_country_flag = sov_nuclear_bombs_capital_threat_active } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.dispersed_commands }
+		sov_nuclear_bombs_opening_doctrine_option = yes
+	}
+}
+
+# Actor-scoped MTTH pulse. It is scheduled by Event 23 after opening and after
+# each progression attempt; it does not iterate over countries or states.
+country_event = {
+	id = chaosx.nr23.180
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		sov_nuclear_bombs_event_actor_is_valid = yes
+		has_country_flag = sov_nuclear_bombs_evolution_timing_active
+	}
+	immediate = {
+		clr_country_flag = sov_nuclear_bombs_evolution_timing_active
+		clear_variable = sov_nuclear_bombs_evolution_timing_stage
+		clear_variable = sov_nuclear_bombs_evolution_timing_delay
+		sov_nuclear_bombs_try_evolution_progression = yes
+	}
+}
+
+# Actor-scoped reactor verification pulse. It is event-driven and bounded to
+# pending Event 23 reactor states; it is not a whole-world maintenance loop.
+country_event = {
+	id = chaosx.nr23.181
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		sov_nuclear_bombs_event_actor_is_valid = yes
+		sov_nuclear_bombs_event_has_pending_reactor_construction = yes
+	}
+	immediate = {
+		sov_nuclear_bombs_verify_pending_reactor_construction = yes
+		if = {
+			limit = { sov_nuclear_bombs_event_has_pending_reactor_construction = yes }
+			country_event = { id = chaosx.nr23.181 days = constant:sov_nuclear_bombs_tuning.reactor_completion_check_days }
+		}
+	}
+}
 
 country_event = {
-    id = chaosx.nr23.2
-    title = chaosx.nr23.2.t
-    desc = chaosx.nr23.2.d
-    picture = GFX_report_event_sov_nukes
+	id = chaosx.nr23.100
+	title = chaosx.nr23.100.t
+	desc = chaosx.nr23.100.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
 
-    is_triggered_only = yes
+	option = {
+		name = chaosx.nr23.100.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_command_board_seen
+	}
+}
 
-    option = {
-        name = chaosx.nr23.2.a
-        ai_chance = { base = 100 }
-        set_technology = {
-            atomic_research = 1
-            nuclear_reactor = 1
-            nukes = 1
-        }
-        add_nuclear_bombs = 100
-        if = {
-            limit = {
-                brilliant_scientist_is_current_host = yes
-                NOT = { has_country_flag = brilliant_scientist_nuclear_milestone_recorded }
-                KRG_warren_kruger = {
-                    NOT = { has_character_flag = brilliant_scientist_personal_nuclear_milestone_recorded }
-                }
-            }
-            custom_effect_tooltip = brilliant_scientist_nuclear_milestone_effect_tt
-        }
-        hidden_effect = { brilliant_scientist_record_nuclear_milestone = yes }
-        news_event = { id = chaosx.news.23 days = 2 }
-    }
+country_event = {
+	id = chaosx.nr23.101
+	title = chaosx.nr23.101.t
+	desc = chaosx.nr23.101.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.101.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_test_report_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.102
+	title = chaosx.nr23.102.t
+	desc = chaosx.nr23.102.d
+	picture = GFX_report_event_sov_nuclear_accident_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.102.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_accident_report_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.106
+	title = chaosx.nr23.106.t
+	desc = chaosx.nr23.106.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.106.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_evolution_report_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.110
+	title = chaosx.nr23.110.t
+	desc = chaosx.nr23.110.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.110.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_collapse_board_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.120
+	title = chaosx.nr23.120.t
+	desc = chaosx.nr23.120.d
+	picture = GFX_news_event_sov_nuclear_ultimatum
+	is_triggered_only = yes
+	trigger = { has_country_flag = sov_nuclear_bombs_ultimatum_pending }
+
+	option = {
+		name = chaosx.nr23.120.a
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes }
+		ai_chance = { base = 35 }
+		set_country_flag = sov_nuclear_bombs_response_accepted
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr23.120.b
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes event_target:sov_nuclear_bombs_coercion_actor = { check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.minimum compare = greater_than } } }
+		ai_chance = { base = 25 }
+		set_country_flag = sov_nuclear_bombs_response_partial
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr23.120.c
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes NOT = { has_war = yes } }
+		ai_chance = { base = 20 }
+		set_country_flag = sov_nuclear_bombs_response_delayed
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr23.120.refuse
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes }
+		ai_chance = { base = 20 }
+		set_country_flag = sov_nuclear_bombs_response_refused
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr23.120.e
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes }
+		ai_chance = { base = 10 }
+		set_country_flag = sov_nuclear_bombs_response_exposed
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr23.120.f
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes is_in_faction = yes }
+		ai_chance = { base = 10 }
+		set_country_flag = sov_nuclear_bombs_response_foreign_support
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.140
+	title = chaosx.nr23.140.t
+	desc = chaosx.nr23.140.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
+
+	option = {
+		name = chaosx.nr23.140.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_authorization_report_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.150
+	title = chaosx.nr23.150.t
+	desc = chaosx.nr23.150.d
+	picture = GFX_news_event_sov_nuclear_first_use
+	is_triggered_only = yes
+	trigger = { has_global_flag = sov_nuclear_bombs_major_exchange_active }
+
+	option = {
+		name = chaosx.nr23.150.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_exchange_notice_seen
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.160
+	title = chaosx.nr23.160.t
+	desc = chaosx.nr23.160.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_atomic_moratorium has_country_flag = sov_nuclear_bombs_moratorium_verification_pending }
+
+	option = {
+		name = chaosx.nr23.160.a
+		ai_chance = { base = 100 }
+		if = {
+			limit = {
+				has_country_flag = sov_nuclear_bombs_moratorium_verification_pending
+				sov_nuclear_bombs_event_complete_accounting = yes
+				NOT = { has_country_flag = sov_nuclear_bombs_moratorium_violation }
+			}
+			set_country_flag = sov_nuclear_bombs_moratorium_verified
+			set_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
+			set_country_flag = sov_nuclear_bombs_verification_complete
+		}
+		else = { set_country_flag = sov_nuclear_bombs_moratorium_verification_failed }
+		clr_country_flag = sov_nuclear_bombs_moratorium_verification_pending
+		sov_nuclear_bombs_refresh_world_threat_source = yes
+		sov_nuclear_bombs_achievement_refresh_receipts = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.161
+	title = chaosx.nr23.161.t
+	desc = chaosx.nr23.161.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_standdown_verification_pending }
+
+	option = {
+		name = chaosx.nr23.161.a
+		ai_chance = { base = 100 }
+		if = {
+			limit = {
+				has_country_flag = sov_nuclear_bombs_standdown_verification_pending
+				has_country_flag = sov_nuclear_bombs_stand_down_recorded
+				has_event_target = sov_nuclear_bombs_standdown_partner
+				event_target:sov_nuclear_bombs_standdown_partner = {
+					exists = yes
+					is_major = yes
+					has_tech = nukes
+					has_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+					has_country_flag = sov_nuclear_bombs_release_orders_suspended
+					NOT = { has_country_flag = sov_nuclear_bombs_standdown_violated }
+					check_variable = { var = sov_nuclear_bombs_standdown_offer_nonce value = ROOT.sov_nuclear_bombs_standdown_nonce compare = equals }
+				}
+				NOT = { has_country_flag = sov_nuclear_bombs_standdown_violated }
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+				NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+			}
+			set_country_flag = sov_nuclear_bombs_hotline_standdown_verified
+			set_country_flag = sov_nuclear_bombs_major_exchange_stood_down
+			set_country_flag = sov_nuclear_bombs_verification_complete
+			set_country_flag = sov_nuclear_bombs_standdown_partner_verified
+			clr_country_flag = sov_nuclear_bombs_release_orders_suspended
+			clr_global_flag = sov_nuclear_bombs_major_exchange_active
+			if = {
+				limit = { has_event_target = sov_nuclear_bombs_standdown_partner }
+				event_target:sov_nuclear_bombs_standdown_partner = {
+					set_country_flag = sov_nuclear_bombs_standdown_verified
+					clr_country_flag = sov_nuclear_bombs_standdown_offer_pending
+					clr_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+					clr_country_flag = sov_nuclear_bombs_standdown_offer_refused
+					clr_country_flag = sov_nuclear_bombs_release_orders_suspended
+					clear_variable = sov_nuclear_bombs_standdown_offer_nonce
+				}
+			}
+		}
+		else = {
+			set_country_flag = sov_nuclear_bombs_standdown_verification_failed
+			clr_country_flag = sov_nuclear_bombs_release_orders_suspended
+			if = {
+				limit = { has_event_target = sov_nuclear_bombs_standdown_partner }
+				event_target:sov_nuclear_bombs_standdown_partner = {
+					clr_country_flag = sov_nuclear_bombs_standdown_offer_pending
+					clr_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+					clr_country_flag = sov_nuclear_bombs_standdown_offer_refused
+					clr_country_flag = sov_nuclear_bombs_release_orders_suspended
+					clear_variable = sov_nuclear_bombs_standdown_offer_nonce
+				}
+			}
+		}
+		clr_country_flag = sov_nuclear_bombs_standdown_verification_pending
+		clear_global_event_target = sov_nuclear_bombs_standdown_partner
+		clear_global_event_target = sov_nuclear_bombs_standdown_actor
+		sov_nuclear_bombs_achievement_refresh_receipts = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.163
+	title = chaosx.nr23.163.t
+	desc = chaosx.nr23.163.d
+	picture = GFX_report_event_sov_nuclear_test_report
+	is_triggered_only = yes
+	trigger = {
+		has_country_flag = sov_nuclear_bombs_standdown_offer_pending
+		has_event_target = sov_nuclear_bombs_standdown_actor
+		event_target:sov_nuclear_bombs_standdown_actor = {
+			exists = yes
+			tag = SOV
+			has_country_flag = sov_nuclear_bombs_hotline_open
+			check_variable = { var = sov_nuclear_bombs_standdown_nonce value = ROOT.sov_nuclear_bombs_standdown_offer_nonce compare = equals }
+		}
+	}
+
+	option = {
+		name = chaosx.nr23.163.a
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.standdown_acceptance }
+		trigger = {
+			event_target:sov_nuclear_bombs_standdown_actor = {
+				exists = yes
+				tag = SOV
+				has_country_flag = sov_nuclear_bombs_hotline_open
+			}
+		}
+		set_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+		clr_country_flag = sov_nuclear_bombs_standdown_offer_refused
+		clr_country_flag = sov_nuclear_bombs_standdown_offer_pending
+		set_country_flag = sov_nuclear_bombs_release_orders_suspended
+		event_target:sov_nuclear_bombs_standdown_actor = { sov_nuclear_bombs_resolve_hotline = yes }
+	}
+	option = {
+		name = chaosx.nr23.163.b
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.standdown_refusal }
+		set_country_flag = sov_nuclear_bombs_standdown_offer_refused
+		clr_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+		clr_country_flag = sov_nuclear_bombs_standdown_offer_pending
+		event_target:sov_nuclear_bombs_standdown_actor = { sov_nuclear_bombs_resolve_hotline = yes }
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.162
+	title = chaosx.nr23.162.t
+	desc = chaosx.nr23.162.d
+	picture = GFX_news_event_sov_nuclear_ultimatum
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_settlement_verification_pending }
+
+	option = {
+		name = chaosx.nr23.162.a
+		ai_chance = { base = 100 }
+		if = {
+			limit = {
+				has_country_flag = sov_nuclear_bombs_settlement_verification_pending
+				sov_nuclear_bombs_event_settlement_terms_are_valid = yes
+				NOT = { has_country_flag = sov_nuclear_bombs_settlement_verification_failed }
+			}
+			set_country_flag = sov_nuclear_bombs_settlement_verified
+			set_country_flag = sov_nuclear_bombs_world_threat_source_suppressed
+			set_country_flag = sov_nuclear_bombs_verification_complete
+		}
+		else = { set_country_flag = sov_nuclear_bombs_settlement_verification_failed }
+		clr_country_flag = sov_nuclear_bombs_settlement_verification_pending
+		clr_country_flag = sov_nuclear_bombs_coercion_settlement_open
+		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_target } event_target:sov_nuclear_bombs_coercion_target = { clr_country_flag = sov_nuclear_bombs_ultimatum_pending } }
+		clear_global_event_target = sov_nuclear_bombs_coercion_target
+		clear_global_event_target = sov_nuclear_bombs_coercion_actor
+		sov_nuclear_bombs_refresh_world_threat_source = yes
+		sov_nuclear_bombs_achievement_refresh_receipts = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.170
+	title = chaosx.nr23.170.t
+	desc = chaosx.nr23.170.d
+	picture = GFX_report_event_sov_nuclear_breakaway_custody
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_collapse_active }
+
+	option = {
+		name = chaosx.nr23.170.a
+		ai_chance = { base = 100 }
+		set_country_flag = sov_nuclear_bombs_breakaway_review_seen
+	}
 }

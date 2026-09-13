@@ -84,14 +84,22 @@ brilliant_scientist_activate_high_speed_strike = {
 brilliant_scientist_execute_long_range_delivery_strike = {
 	set_temp_variable = { brilliant_scientist_long_range_target_cooldown = constant:brilliant_scientist_technology_action.long_range_target_cooldown_days }
 	FROM = {
-		set_timed_state_flag = { flag = brilliant_scientist_long_range_strike_target_cooldown days = brilliant_scientist_long_range_target_cooldown }
+		set_state_flag = { flag = brilliant_scientist_long_range_strike_target_cooldown days = brilliant_scientist_long_range_target_cooldown }
 		set_state_flag = brilliant_scientist_long_range_strike_history
-		damage_building = { type = industrial_complex damage = constant:brilliant_scientist_technology_action.long_range_strike_damage repair_speed_modifier = constant:brilliant_scientist_technology_action.long_range_repair_speed }
-		damage_building = { type = arms_factory damage = constant:brilliant_scientist_technology_action.long_range_strike_damage repair_speed_modifier = constant:brilliant_scientist_technology_action.long_range_repair_speed }
-		damage_building = { type = infrastructure damage = constant:brilliant_scientist_technology_action.long_range_strike_damage repair_speed_modifier = constant:brilliant_scientist_technology_action.long_range_repair_speed }
-		damage_building = { type = air_base damage = constant:brilliant_scientist_technology_action.long_range_strike_damage repair_speed_modifier = constant:brilliant_scientist_technology_action.long_range_repair_speed }
-		damage_building = { type = radar_station damage = constant:brilliant_scientist_technology_action.long_range_strike_damage repair_speed_modifier = constant:brilliant_scientist_technology_action.long_range_repair_speed }
-		damage_building = { type = anti_air_building damage = constant:brilliant_scientist_technology_action.long_range_strike_damage repair_speed_modifier = constant:brilliant_scientist_technology_action.long_range_repair_speed }
+		set_temp_variable = { brilliant_scientist_long_range_repair_speed = constant:brilliant_scientist_technology_action.long_range_repair_speed }
+		set_temp_variable = { brilliant_scientist_long_range_building_damage = constant:brilliant_scientist_technology_action.long_range_strike_damage }
+		meta_effect = {
+			text = {
+				damage_building = { type = industrial_complex damage = [DAMAGE] repair_speed_modifier = [REPAIR_SPEED] }
+				damage_building = { type = arms_factory damage = [DAMAGE] repair_speed_modifier = [REPAIR_SPEED] }
+				damage_building = { type = infrastructure damage = [DAMAGE] repair_speed_modifier = [REPAIR_SPEED] }
+				damage_building = { type = air_base damage = [DAMAGE] repair_speed_modifier = [REPAIR_SPEED] }
+				damage_building = { type = radar_station damage = [DAMAGE] repair_speed_modifier = [REPAIR_SPEED] }
+				damage_building = { type = anti_air_building damage = [DAMAGE] repair_speed_modifier = [REPAIR_SPEED] }
+			}
+			DAMAGE = "[?brilliant_scientist_long_range_building_damage|.3]"
+			REPAIR_SPEED = "[?brilliant_scientist_long_range_repair_speed|.3]"
+		}
 	}
 	set_country_flag = brilliant_scientist_long_range_delivery_used
 }

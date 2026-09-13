@@ -2,7 +2,7 @@
 
 ## Disposition
 
-Implemented as a bounded audit with no safe workbook cell changes required. The current shared workbook already matches the current player-facing localisation and preserves the newer catalog row and sheet structure.
+Implemented as a bounded audit with no workbook cell changes required. The current shared workbook already matches the current player-facing localisation and preserves the newer catalog row and sheet structure. A mechanical exporter-width defect was repaired separately in `.tools/export_event_catalog_csv.py` so the read-only snapshots now match the workbook schemas.
 
 ## Audited workbook scope
 
@@ -22,13 +22,12 @@ The audit left `Events!M7` as `Needs Testing`, `Clusters!H3` as `Partially Avail
 
 Ran `python .tools/export_event_catalog_csv.py` from the mod root successfully after the audit.
 
-- `docs/spreadsheets/chaos_redux_events_catalog.csv`: 166 rows, 14 columns, SHA-256 `2513570a9dcba604101d6258549882ba33740e56d7dba005cfbf424da83261b4`.
-- `docs/spreadsheets/chaos_redux_clusters_catalog.csv`: 20 rows, 7 columns, SHA-256 `a5b37060ddcd4063f10eb326c21ca8b4b3f557b2be2be48dc2c3c0cbe60ff28e`.
+- `docs/spreadsheets/chaos_redux_events_catalog.csv`: 166 rows, 13 columns, SHA-256 `e2e457ba96ae89b316aa01248eebe41d9aacbafc590f4940b56a55133fcd35c6`.
+- `docs/spreadsheets/chaos_redux_clusters_catalog.csv`: 20 rows, 8 columns, SHA-256 `689fe07883da14abe2ceb7c29c151db50808cf97a366e60808281b16e37c76a2`.
 - `docs/spreadsheets/chaos_redux_scenarios_catalog.csv`: 16 rows, 6 columns, SHA-256 `8b944de19817b3887eac22e3d12437e62990273c8b0db1c6f27928f349d4b2e7`.
 
 Each export contains its target row for Event ID `6`, Cluster ID `2`, and Scenario ID `SCN-008`. The workbook contains zero formulas and zero Excel error cells. Current tables are `Events!A1:M1014`, `Clusters!A1:H20`, `Cluster Memberships!A1:G76`, and `Scenarios!A1:F16`.
 
-## Remaining review item
+## Exporter repair
 
-The exporter currently emits a trailing blank Events CSV column and omits the workbook-only Clusters status column because its fixed export widths are 14 and 7 respectively. This is an exporter-contract issue outside the workbook-only audit; no exporter or workbook structure change was made.
-
+The exporter width map now uses 13 columns for Events and 8 for Clusters, matching the authoritative workbook headers. The regenerated snapshots have uniform row widths of 13, 8, and 6 respectively, with no trailing blank field and with `Clusters!Status` preserved. No workbook cell, player-facing wording, or catalog status changed.

@@ -87,7 +87,7 @@ A normal automatic firing requires at least one valid target and at least one va
 - normal manual triggering explains that no valid country can currently fracture
 - force-trigger testing may bypass ordinary target preference but may not create an invalid actor, broken map, duplicate country, or unsafe terminal conflict
 
-The event remains disabled by default while its catalog status is unreworked or unavailable. It enters the reworked-event default allowlist only after the complete package is implemented.
+The event remains disabled by default while its catalog status is unreworked or unavailable. Once the complete rework is implemented for test entry, it enters the reworked-event default allowlist while retaining `Needs Testing` until acceptance certification is complete.
 
 ## Universal exclusions
 

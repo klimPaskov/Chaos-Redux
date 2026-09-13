@@ -1,5 +1,7 @@
 # Event 027 Doctrine Research — final AI probability audit handoff
 
+> **Superseded status notice (2026-09-01):** This dated probability handoff is preserved as historical evidence and is superseded as a current status authority by ../documentation_state.md. Its source snapshot and MCP artifact paths predate the current source reconciliation.
+
 Audit date: 2026-08-30.
 
 Audit role: read-only `chaosx_ai_probability_auditor`.

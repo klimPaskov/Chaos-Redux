@@ -62,10 +62,9 @@ brilliant_scientist_mengele_computation_incident_recovery_is_active = {
 	has_variable = mengele_event016_computation_incident_recovery_cost_fuel
 }
 
-# COUNTRY scope. This is the single inclusive affordability predicate used by
-# both the recovery decision and its custom-cost trigger. Equality is valid for
-# every direct payment and the two-factory native reservation.
-brilliant_scientist_mengele_computation_incident_recovery_can_pay = {
+# COUNTRY scope. Inclusive direct-payment predicate shared by admission and
+# the native-decision debit callback; it deliberately excludes reserved CIC.
+brilliant_scientist_mengele_computation_incident_recovery_can_pay_direct_costs = {
 	check_variable = {
 		var = political_power
 		value = constant:brilliant_scientist_project_board.response_technical_political_power
@@ -79,6 +78,10 @@ brilliant_scientist_mengele_computation_incident_recovery_can_pay = {
 	NOT = {
 		has_fuel < constant:brilliant_scientist_project_board.response_technical_fuel
 	}
+}
+
+brilliant_scientist_mengele_computation_incident_recovery_can_pay = {
+	brilliant_scientist_mengele_computation_incident_recovery_can_pay_direct_costs = yes
 	NOT = {
 		num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_board.response_technical_civilian_factories
 	}
@@ -88,11 +91,18 @@ brilliant_scientist_mengele_computation_incident_recovery_can_pay = {
 # active, the provider is valid, no other recovery receipt is live, and all
 # four spendable axes are affordable.
 brilliant_scientist_mengele_computation_incident_recovery_can_start = {
+	brilliant_scientist_mengele_computation_incident_recovery_can_debit = yes
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_board.response_technical_civilian_factories }
+}
+
+# Native-decision callback only. The decision admission gate owns the factory
+# check; its modifier may already reserve those factories before this debit.
+brilliant_scientist_mengele_computation_incident_recovery_can_debit = {
 	brilliant_scientist_mengele_computation_incident_is_active = yes
 	brilliant_scientist_mengele_computation_incident_provider_is_valid = yes
 	NOT = { has_country_flag = mengele_event016_computation_incident_recovery_active }
 	NOT = { brilliant_scientist_mengele_computation_incident_recovery_is_active = yes }
-	brilliant_scientist_mengele_computation_incident_recovery_can_pay = yes
+	brilliant_scientist_mengele_computation_incident_recovery_can_pay_direct_costs = yes
 }
 
 # COUNTRY scope. This guard is used by the decision cancel and finish paths so

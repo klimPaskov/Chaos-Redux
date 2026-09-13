@@ -1,0 +1,118 @@
+# ============================================================================
+# CHAOS REDUX - SHARED INDIVIDUAL CRISIS TARGETING TRIGGERS
+# ============================================================================
+# Derived-load contract for bounded country-assigned crisis packages.
+#
+# The load is rebuilt in a hidden trigger from one authoritative lifecycle
+# marker per provider. It deliberately does not maintain a persistent counter
+# or iterate over the world. Callers evaluate this trigger in the candidate
+# country scope while building their own bounded pool.
+# ============================================================================
+
+individual_crisis_load_is_below_cap = {
+	hidden_trigger = {
+		tooltip_evaluation = eval
+		set_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.zero }
+
+		if = {
+			limit = { is_holy_realm_country = yes }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { is_soviet_collapse_active_origin_country = yes }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { is_fury_actor = yes }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = secret_alliance_target_country
+					has_country_flag = secret_alliance_active_member
+				}
+			}
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = natural_disaster_queue_active
+					has_country_flag = natural_disaster_chain_mission_active
+					natural_disaster_country_has_warning = yes
+					natural_disaster_country_has_open_aftermath = yes
+				}
+			}
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { has_country_flag = utopia_manifesto_accepted }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { brilliant_scientist_is_current_host = yes }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = resources_found_field_system_participant
+					any_controlled_state = { resources_found_is_active_field = yes }
+				}
+			}
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { has_country_flag = random_civil_war_active }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { has_country_flag = video_game_in_sweden_program_active }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = { any_controlled_state = { riches_found_is_active_mine = yes } }
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = time_traveler_prefire_pending
+					has_idea = time_traveler
+				}
+			}
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = {
+				AND = {
+					NOT = {
+						check_variable = {
+							var = individual_crisis_exclude_random_terror
+							value = constant:individual_crisis_targeting.one
+							compare = equals
+						}
+					}
+					random_terror_country_has_active_package = yes
+				}
+			}
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+		if = {
+			limit = {
+				AND = {
+					murder_mystery_runtime_is_active = yes
+					has_country_flag = murder_mystery_original_host
+				}
+			}
+			add_to_temp_variable = { individual_crisis_active_load = constant:individual_crisis_targeting.one }
+		}
+
+		check_variable = {
+			var = individual_crisis_active_load
+			value = constant:individual_crisis_targeting.active_cap
+			compare = less_than
+		}
+	}
+}

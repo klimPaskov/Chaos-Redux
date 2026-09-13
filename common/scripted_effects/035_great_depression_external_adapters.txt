@@ -1,0 +1,190 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 EXTERNAL OWNER ADAPTERS
+# ============================================================================
+# Event 35 owns the economic crisis, but shared humanitarian systems own food,
+# movement, occupation context, Deaths, condemnation, and environmental
+# consequences. These state-local adapters submit only bounded pressure when
+# the depression proves a material center failure or transfer. They never
+# fabricate deaths, condemnation, war, contamination, or state damage.
+# ============================================================================
+
+# STATE scope. ROOT is the active Event 35 country. A state receives at most
+# one Event 35 famine request and one Event 35 migration request per crisis.
+# The shared owners validate the state, controller, source, and request before
+# changing their own ledgers.
+great_depression_submit_humanitarian_center_pressure = {
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			ROOT = {
+				great_depression_active_crisis_is_coherent = yes
+				check_variable = {
+					var = great_depression_depression_severity
+					value = constant:great_depression_event.systemic_breakdown_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			OR = {
+				has_state_flag = great_depression_center_hollowed
+				has_state_flag = great_depression_center_abandoned
+				has_state_flag = great_depression_center_transfer_receipt
+			}
+			NOT = { has_state_flag = great_depression_humanitarian_famine_receipt }
+		}
+		set_temp_variable = { great_depression_famine_people_request = state_population_k }
+		multiply_temp_variable = { great_depression_famine_people_request = constant:humanitarian_population.people_per_k }
+		multiply_temp_variable = { great_depression_famine_people_request = constant:great_depression_humanitarian_adapter.famine_population_share }
+		round_temp_variable = great_depression_famine_people_request
+		clamp_temp_variable = {
+			var = great_depression_famine_people_request
+			min = constant:humanitarian_population.minimum_request
+			max = constant:great_depression_humanitarian_adapter.maximum_famine_people
+		}
+		set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { famine_pressure_request_amount = great_depression_famine_people_request }
+		set_temp_variable = { famine_pressure_request_actor_proven = ROOT.id }
+		famine_request_event_pressure = yes
+		if = {
+			limit = { check_variable = { var = famine_pressure_request_result value = constant:humanitarian_runtime.one compare = equals } }
+			set_state_flag = great_depression_humanitarian_famine_receipt
+			ROOT = { set_country_flag = great_depression_humanitarian_pressure_observed }
+		}
+	}
+	if = {
+		limit = {
+			humanitarian_state_is_valid = yes
+			ROOT = { great_depression_active_crisis_is_coherent = yes }
+			has_state_flag = great_depression_center_transfer_receipt
+			NOT = { has_state_flag = great_depression_humanitarian_migration_receipt }
+		}
+		set_temp_variable = { great_depression_migration_people_request = state_population_k }
+		multiply_temp_variable = { great_depression_migration_people_request = constant:humanitarian_population.people_per_k }
+		multiply_temp_variable = { great_depression_migration_people_request = constant:great_depression_humanitarian_adapter.migration_population_share }
+		round_temp_variable = great_depression_migration_people_request
+		clamp_temp_variable = {
+			var = great_depression_migration_people_request
+			min = constant:humanitarian_population.minimum_request
+			max = constant:great_depression_humanitarian_adapter.maximum_migration_people
+		}
+		set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
+		set_temp_variable = { migration_pressure_request_amount = great_depression_migration_people_request }
+		set_temp_variable = { migration_pressure_request_actor_proven = ROOT.id }
+		migration_request_event_pressure = yes
+		if = {
+			limit = { check_variable = { var = migration_pressure_request_result value = constant:humanitarian_runtime.one compare = equals } }
+			set_state_flag = great_depression_humanitarian_migration_receipt
+			ROOT = { set_country_flag = great_depression_migration_pressure_observed }
+		}
+	}
+	if = {
+		limit = { has_resistance = yes }
+		famine_resolve_occupation_profile = yes
+		if = {
+			limit = { check_variable = { var = famine_occupation_context_proven value = constant:humanitarian_runtime.one compare = equals } }
+			set_state_flag = great_depression_occupation_context_observed
+			ROOT = { set_country_flag = great_depression_occupation_context_observed }
+		}
+	}
+}
+
+# STATE scope. The native control-change callback supplies exact old/new
+# controllers through saved event targets. This compact history exists only to
+# weight later independent Event 35 targeting; it never applies a crisis or a
+# player-facing penalty by itself.
+great_depression_record_major_industrial_state_loss = {
+	event_target:great_depression_state_loss_old_controller = { set_temp_variable = { great_depression_state_loss_old_controller_id = id } }
+	event_target:great_depression_state_loss_new_controller = { set_temp_variable = { great_depression_state_loss_new_controller_id = id } }
+	set_temp_variable = { great_depression_industrial_state_loss_factories = building_level@industrial_complex }
+	set_temp_variable = { great_depression_industrial_state_loss_military = building_level@arms_factory }
+	set_temp_variable = { great_depression_industrial_state_loss_dockyards = building_level@dockyard }
+	add_to_temp_variable = { great_depression_industrial_state_loss_factories = great_depression_industrial_state_loss_military }
+	add_to_temp_variable = { great_depression_industrial_state_loss_factories = great_depression_industrial_state_loss_dockyards }
+	if = {
+		limit = {
+			has_event_target = great_depression_state_loss_old_controller
+			has_event_target = great_depression_state_loss_new_controller
+			NOT = {
+				check_variable = {
+					var = great_depression_state_loss_old_controller_id
+					value = great_depression_state_loss_new_controller_id
+					compare = equals
+				}
+			}
+			check_variable = {
+				var = great_depression_industrial_state_loss_factories
+				value = constant:great_depression_target_history.major_industrial_state_factory_floor
+				compare = greater_than_or_equals
+			}
+		}
+		save_event_target_as = great_depression_state_loss_state
+		event_target:great_depression_state_loss_old_controller = {
+			if = {
+				limit = { NOT = { has_country_flag = great_depression_recent_major_industrial_state_loss } }
+				clear_array = great_depression_recent_industrial_state_loss_ids
+				set_variable = { great_depression_recent_major_industrial_state_loss_factories = constant:great_depression_api.zero }
+			}
+			if = {
+				limit = {
+					NOT = { is_in_array = { array = great_depression_recent_industrial_state_loss_ids value = event_target:great_depression_state_loss_state } }
+					OR = {
+						NOT = { has_variable = great_depression_recent_industrial_state_loss_ids^num }
+						NOT = {
+							check_variable = {
+								var = great_depression_recent_industrial_state_loss_ids^num
+								value = constant:great_depression_target_history.major_industrial_state_loss_history_cap
+								compare = greater_than_or_equals
+							}
+						}
+					}
+				}
+				add_to_array = { array = great_depression_recent_industrial_state_loss_ids value = event_target:great_depression_state_loss_state }
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = great_depression_recent_major_industrial_state_loss_factories }
+						check_variable = {
+							var = great_depression_industrial_state_loss_factories
+							value = great_depression_recent_major_industrial_state_loss_factories
+							compare = greater_than
+						}
+					}
+				}
+				set_variable = { great_depression_recent_major_industrial_state_loss_factories = great_depression_industrial_state_loss_factories }
+			}
+			set_variable = { great_depression_recent_major_industrial_state_loss_day = global.num_days }
+			set_temp_variable = { great_depression_industrial_state_loss_memory_days = constant:great_depression_target_history.major_industrial_state_loss_memory_days }
+			set_country_flag = { flag = great_depression_recent_major_industrial_state_loss days = great_depression_industrial_state_loss_memory_days }
+		}
+	}
+}
+
+# COUNTRY scope. Event 35 supplies the concrete abnormal-outcome proof, while
+# Event 021 owns route selection, state reservation, force sizing, war start,
+# Deaths, and the shared Chaos transaction. A failed admission remains a
+# non-war Event 35 outcome and never creates a synthetic faction.
+great_depression_start_shared_civil_conflict = {
+	if = {
+		limit = {
+			event021_parent_country_is_opening_candidate = yes
+			event021_parent_global_capacity_ready = yes
+		}
+		event021_parent_prepare_target = yes
+		if = {
+			limit = { has_country_flag = random_civil_war_target_ready }
+			if = {
+				limit = { has_country_flag = random_civil_war_regional_route_ready }
+				set_variable = { random_civil_war_archetype = constant:random_civil_war_archetype.regional }
+			}
+			else_if = {
+				limit = { has_country_flag = random_civil_war_command_route_ready }
+				set_variable = { random_civil_war_archetype = constant:random_civil_war_archetype.command }
+			}
+			else = {
+				set_variable = { random_civil_war_archetype = constant:random_civil_war_archetype.ideological }
+			}
+			set_variable = { random_civil_war_opening_severity = constant:random_civil_war_severity.severe }
+			event021_parent_dispatch_opening = yes
+		}
+	}
+}

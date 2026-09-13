@@ -1,0 +1,224 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 EVENT 019 ASSASSIN FORCES PROVIDER
+# ============================================================================
+# Overview:
+# - Provider 524 is the complete Event 019 owner adapter for Assassin Forces.
+# - The adapter publishes one custom operations-kit obligation profile and a
+#   locked baseline template of three Assassin Cadres plus one Saboteur Cell.
+# - Shadow, Guard, Master, and Mechanized profiles remain Event 039 progression
+#   formations and never leak into Event 019's standalone provider package.
+# - Every callback is country-scoped and fails closed outside a validated
+#   Assassin State or derivative country.
+# ============================================================================
+
+murder_mystery_register_event19_assassin_provider = {
+	chaos_unit_family_provider_524_register = yes
+}
+
+chaos_unit_family_provider_524_register = {
+	set_temp_variable = { chaos_unit_family_register_id = constant:chaos_unit_family_event39_assassin_forces.family_id }
+	set_temp_variable = { chaos_unit_family_register_provider_id = constant:chaos_unit_family_event39_assassin_forces.provider_id }
+	set_temp_variable = { chaos_unit_family_register_source_event_id = constant:chaos_unit_family_event39_assassin_forces.source_event_id }
+	set_temp_variable = { chaos_unit_family_register_availability_mode = constant:chaos_unit_family_availability.trainable_and_spawnable }
+	set_temp_variable = { chaos_unit_family_register_event19_lot_policy = constant:chaos_unit_family_event19_lot_policy.both }
+	set_temp_variable = { chaos_unit_family_register_derivative_profile = constant:chaos_unit_family_event39_assassin_forces.derivative_profile }
+	set_temp_variable = { chaos_unit_family_register_sustainment_profile = constant:chaos_unit_family_event39_assassin_forces.sustainment_profile }
+	set_temp_variable = { chaos_unit_family_register_containment_profile = constant:chaos_unit_family_event39_assassin_forces.containment_profile }
+	set_temp_variable = { chaos_unit_family_register_ai_class = constant:chaos_unit_family_event39_assassin_forces.ai_class }
+	set_temp_variable = { chaos_unit_family_register_visual_profile = constant:chaos_unit_family_event39_assassin_forces.visual_profile }
+	set_temp_variable = { chaos_unit_family_register_cleanup_profile = constant:chaos_unit_family_event39_assassin_forces.cleanup_profile }
+	set_temp_variable = { chaos_unit_family_register_parent_isolation_profile = constant:chaos_unit_family_event39_assassin_forces.parent_isolation_profile }
+	set_temp_variable = { chaos_unit_family_register_spawn_weight = constant:chaos_unit_family_event39_assassin_forces.spawn_weight }
+	set_temp_variable = { chaos_unit_family_register_contract_version = constant:chaos_unit_family_registry.contract_version }
+	chaos_unit_family_register_current_provider = yes
+}
+
+chaos_unit_family_provider_524_event19_evaluate_eligibility = {
+	set_temp_variable = { chaos_unit_family_candidate_eligible = 0 }
+	set_temp_variable = { chaos_unit_family_candidate_native = 0 }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+			NOT = { has_global_flag = murder_mystery_cleanup_in_progress }
+		}
+		set_temp_variable = { chaos_unit_family_candidate_eligible = 1 }
+		set_temp_variable = { chaos_unit_family_candidate_native = 1 }
+	}
+}
+
+chaos_unit_family_provider_524_event19_build_template = {
+	meta_effect = {
+		text = {
+			division_template = {
+				name = "Assassin Forces Muster [TEMPLATE_UID]"
+				is_locked = yes
+				force_allow_recruiting = no
+				priority = 0
+				regiments = {
+					assassin_cadre = { x = 0 y = 0 }
+					assassin_cadre = { x = 0 y = 1 }
+					assassin_cadre = { x = 0 y = 2 }
+				}
+				support = {
+					saboteur_cell = { x = 0 y = 0 }
+				}
+			}
+		}
+		TEMPLATE_UID = "[?infantry_spawn_current_template_uid|.0]"
+	}
+	set_temp_variable = { infantry_spawn_provider_component_count = constant:chaos_unit_family_event39_assassin_forces.template_combat_battalions }
+	set_temp_variable = { infantry_spawn_provider_component_profile = constant:chaos_unit_family_event39_assassin_forces.family_id }
+	infantry_spawn_append_provider_combat_column_manifest = yes
+	set_temp_variable = { infantry_spawn_current_component_slot_kind = constant:infantry_spawn_component_kind.support }
+	set_temp_variable = { infantry_spawn_current_component_unit_profile = constant:chaos_unit_family_event39_assassin_forces.family_id }
+	set_temp_variable = { infantry_spawn_current_component_column = 0 }
+	set_temp_variable = { infantry_spawn_current_component_row = 0 }
+	infantry_spawn_append_current_template_component = yes
+}
+
+chaos_unit_family_provider_524_event19_spawn_unit = {
+	infantry_spawn_spawn_current_template_unit = yes
+}
+
+chaos_unit_family_provider_524_event19_reconcile_sustainment = {
+	infantry_spawn_clear_provider_obligation_manifest = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event39_assassin_forces.cadre_manpower_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = constant:chaos_unit_family_event39_assassin_forces.template_combat_battalions }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.infantry_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event39_assassin_forces.cadre_infantry_equipment_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:chaos_unit_family_event39_assassin_forces.operations_kit_resource_profile }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event39_assassin_forces.cadre_operations_kit_per_battalion }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_component_count = constant:chaos_unit_family_event39_assassin_forces.template_support_companies }
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.manpower }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event39_assassin_forces.saboteur_manpower_per_company }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.manpower }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:infantry_spawn_equipment_family.support_equipment }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event39_assassin_forces.saboteur_support_equipment_per_company }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	set_temp_variable = { infantry_spawn_provider_manifest_profile = constant:chaos_unit_family_event39_assassin_forces.operations_kit_resource_profile }
+	set_temp_variable = { infantry_spawn_provider_manifest_per_battalion = constant:chaos_unit_family_event39_assassin_forces.saboteur_operations_kit_per_company }
+	set_temp_variable = { infantry_spawn_provider_manifest_scale_kind = constant:infantry_spawn_provider_manifest_scale_kind.equipment }
+	infantry_spawn_queue_provider_obligation = yes
+	infantry_spawn_record_provider_obligation_manifest = yes
+	infantry_spawn_clear_provider_obligation_manifest = yes
+}
+
+chaos_unit_family_provider_524_event19_get_equipment_token = {
+	set_temp_variable = { infantry_spawn_family_provider_equipment_is_specialist = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+	if = {
+		limit = {
+			check_variable = {
+				var = infantry_spawn_exact_current_profile
+				value = constant:chaos_unit_family_event39_assassin_forces.operations_kit_resource_profile
+				compare = equals
+			}
+		}
+		set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:assassin_operations_kit_1 }
+	}
+	else = {
+		infantry_spawn_provider_get_standard_equipment_token = yes
+	}
+}
+
+chaos_unit_family_provider_524_event19_publish_custom_equipment_tokens = {
+	set_temp_variable = { var = infantry_spawn_family_provider_equipment_token value = token:assassin_operations_kit_1 }
+	infantry_spawn_register_current_family_custom_equipment_token = yes
+	set_temp_variable = { infantry_spawn_family_provider_equipment_token = 0 }
+}
+
+chaos_unit_family_provider_524_event19_get_presentation = {
+	set_temp_variable = { var = infantry_spawn_family_provider_name_loc_token value = token:chaos_unit_family_524_name_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_request_cost_loc_token value = token:chaos_unit_family_524_request_cost_loc }
+	set_temp_variable = { var = infantry_spawn_family_provider_sustainment_cost_loc_token value = token:chaos_unit_family_524_sustainment_cost_loc }
+}
+
+chaos_unit_family_provider_524_event19_evaluate_management = {
+	set_temp_variable = { infantry_spawn_family_provider_can_train = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_spawn = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_can_sustain = 0 }
+	set_temp_variable = { infantry_spawn_family_provider_uses_training = 0 }
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+			infantry_spawn_country_has_eligible_state = yes
+			OR = {
+				has_country_flag = murder_mystery_force_reinforcement_open
+				has_tech = murder_mystery_clandestine_combat_training
+			}
+			check_variable = { var = num_equipment@assassin_operations_kit_1 value = constant:chaos_unit_family_event39_assassin_forces.minimum_operations_kit_stockpile compare = greater_than_or_equals }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_train = 1 }
+		set_temp_variable = { infantry_spawn_family_provider_can_spawn = 1 }
+		set_temp_variable = { infantry_spawn_family_provider_uses_training = 1 }
+	}
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_live_division_count > constant:chaos_unit_family_registry.first_index }
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		set_temp_variable = { infantry_spawn_family_provider_can_sustain = 1 }
+	}
+}
+
+chaos_unit_family_provider_524_event19_pay_management_action = {
+	set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.train_or_spawn }
+			check_variable = { infantry_spawn_family_provider_can_spawn > constant:chaos_unit_family_registry.first_index }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+	else_if = {
+		limit = {
+			check_variable = { infantry_spawn_family_management_action = constant:infantry_spawn_family_management_action.sustainment }
+			check_variable = { infantry_spawn_family_provider_can_sustain > constant:chaos_unit_family_registry.first_index }
+		}
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 1 }
+	}
+}
+
+chaos_unit_family_provider_524_event19_refund_management_action = {
+	if = {
+		limit = { check_variable = { infantry_spawn_family_provider_payment_succeeded > constant:chaos_unit_family_registry.first_index } }
+		set_temp_variable = { infantry_spawn_family_provider_payment_succeeded = 0 }
+	}
+}
+
+chaos_unit_family_provider_524_event19_setup_derivative = {
+	set_technology = {
+		murder_mystery_clandestine_combat_training = 1
+		murder_mystery_compartmented_logistics = 1
+		murder_mystery_urban_rough_terrain_infiltration = 1
+	}
+	set_country_flag = murder_mystery_event19_derivative_provider_ready
+}
+
+chaos_unit_family_provider_524_event19_remove_public_additions = {
+	clr_country_flag = murder_mystery_event19_derivative_provider_ready
+}
+
+chaos_unit_family_provider_524_event19_cleanup_derivative = {
+	clr_country_flag = murder_mystery_event19_derivative_provider_ready
+}

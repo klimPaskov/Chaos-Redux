@@ -1,0 +1,31 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 CXT EXTENSION EFFECTS
+# ============================================================================
+# Registers the Event 028 general-system fixture with the shared CXT extension
+# bus. The fixture is deliberately inert: it exposes a stable test-country
+# readiness flag without firing the global asteroid, creating a crater, or
+# modifying a live country outside an initialized CXT harness.
+# ============================================================================
+
+# COUNTRY scope. The hidden carrier token is resolved by the shared CXT
+# dispatcher and its `_apply` suffix is appended by GetTokenKey.
+asteroid_incoming_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event028_asteroid_incoming
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+# COUNTRY scope. Idempotent fixture for the initialized test country. Event
+# 028 remains globally dormant until its normal Chaos Meter dispatcher fires.
+chaosx_cxt_extension_event028_asteroid_incoming_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = asteroid_incoming_cxt_fixture_initialized }
+		}
+		set_country_flag = asteroid_incoming_cxt_fixture_initialized
+		set_country_flag = asteroid_incoming_cxt_fixture_ready
+	}
+}

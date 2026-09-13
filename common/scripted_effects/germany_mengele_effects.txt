@@ -1620,6 +1620,7 @@ mengele_clone_world_order_launch = {
         limit = { mengele_clone_world_order_can_launch = yes }
         save_event_target_as = mengele_clone_world_order_directorate
         set_global_flag = world_end
+		brilliant_scientist_mengele_cleanup_provider_receipts = yes
 		africa_achievement_record_other_world_end = yes
 		random_faction_cleanup_after_world_end = yes
         set_global_flag = world_threat_source_mengele
@@ -1774,6 +1775,7 @@ germany_mengele_restrict_program = {
 
 germany_mengele_reject_program = {
     set_country_flag = germany_mengele_program_rejected
+	brilliant_scientist_mengele_cleanup_provider_receipts = yes
     clr_country_flag = germany_mengele_cloning_project_available
     clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
@@ -1789,6 +1791,7 @@ germany_mengele_reject_program = {
 
 germany_mengele_cancel_program = {
     set_country_flag = germany_mengele_program_closed
+	brilliant_scientist_mengele_cleanup_provider_receipts = yes
     clr_country_flag = germany_mengele_cloning_project_available
     clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
@@ -1802,6 +1805,7 @@ germany_mengele_cancel_program = {
 germany_mengele_expire_program = {
     set_country_flag = germany_mengele_program_expired
     set_country_flag = germany_mengele_program_closed
+	brilliant_scientist_mengele_cleanup_provider_receipts = yes
     clr_country_flag = germany_mengele_cloning_project_available
     clr_country_flag = germany_mengele_cloning_unlock_pending
     set_variable = { mengele_permission_level = constant:germany_mengele_permission.rejected }
@@ -2101,6 +2105,7 @@ germany_mengele_start_coup_internal = {
 
 germany_mengele_mark_defeated = {
     set_country_flag = germany_mengele_defeated
+	brilliant_scientist_mengele_cleanup_provider_receipts = yes
     clr_global_flag = germany_mengele_civil_war_active
     if = { limit = { has_idea = germany_mengele_emergency_crackdown } remove_ideas = germany_mengele_emergency_crackdown }
     if = {
@@ -2108,6 +2113,7 @@ germany_mengele_mark_defeated = {
             has_event_target = germany_mengele_faction
             event_target:germany_mengele_faction = { exists = yes }
         }
+		event_target:germany_mengele_faction = { brilliant_scientist_mengele_cleanup_provider_receipts = yes }
         annex_country = {
             target = event_target:germany_mengele_faction
             transfer_troops = no
@@ -2164,6 +2170,10 @@ germany_mengele_mark_victory = {
     if = { limit = { has_event_target = germany_mengele_faction } clear_global_event_target = germany_mengele_faction }
     if = { limit = { has_event_target = germany_mengele_emergency_site } clear_global_event_target = germany_mengele_emergency_site }
     if = { limit = { has_event_target = germany_mengele_emergency_invader } clear_global_event_target = germany_mengele_emergency_invader }
+	if = {
+		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		brilliant_scientist_mengele_reconcile_project_availability = yes
+	}
 }
 
 germany_tibet_reset_expedition_variables = {

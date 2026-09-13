@@ -13,7 +13,7 @@ The package defines a reusable internal-war framework that can create country-sp
 - Event chaos level: `1`, Calm World
 - Cluster: `1`, Wars
 - Member severity: `Medium`
-- Catalog status remains `Unavailable` until full implementation, assets, AI, validation, documentation, and workbook alignment are complete
+- Catalog status is `Needs Testing`. The rework implementation phase is complete for test entry, the runtime test-release gate is open, and final acceptance certification remains incomplete.
 
 All event, evolution, scenario, decision, mission, achievement, idea, and UI names in this package are working labels unless a file states otherwise. Final player-facing wording belongs to implementation.
 
@@ -48,6 +48,8 @@ The one main visible crisis value is `State Authority`. Hidden `Fracture Pressur
 
 ## Implementation boundary
 
-This package is planning material. It does not claim that Event 021 is implemented.
+The implementation and current evidence are recorded in `docs/events/021_random_civil_war/` and `docs/plans/021_random_civil_war_plans/`. This package remains the design source and does not itself constitute an acceptance certificate.
 
-The live repository, offline Paradox wiki snapshot, installed vanilla documentation, vanilla game files, Workshop references, HOI4 MCP, and project subagent execution must be inspected during implementation. Their absence from the planning environment is recorded in the source-read ledger.
+The catalog is intentionally marked `Needs Testing`, and the test-release runtime surfaces are enabled by `random_civil_war_rework_ready`. The player owns live consumer validation; the repository evidence records source, static, MCP, probability, and asset limits separately. This test release is not an unconditional completion certificate.
+
+The offline Paradox wiki snapshot, installed vanilla documentation, vanilla game files, Workshop references, HOI4 MCP, and project subagent evidence used for the implementation are recorded in the source-read ledger and current handoffs.

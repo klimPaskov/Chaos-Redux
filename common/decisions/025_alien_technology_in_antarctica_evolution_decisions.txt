@@ -1,0 +1,252 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 EVOLUTION ACTIONS
+# ============================================================================
+# Secondary hazard-response tray for the five independently gated Event 025
+# evolutions. Only the highest active evolution's actions are shown at once;
+# previously activated hazards remain active in the country-scoped pulse. This
+# keeps the primary phase tray bounded while preserving every route.
+# ============================================================================
+
+chaosx_nr25_evolution_category = {
+	chaosx_nr25_signal_remote = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_active_signal check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = equals } }
+		available = { chaosx_nr25_evolution_active_signal_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_text = chaosx_nr25_signal_remote_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_signal_remote_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.remote } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 }
+	}
+	chaosx_nr25_signal_follow = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_active_signal check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = equals } }
+		available = { chaosx_nr25_evolution_active_signal_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_text = chaosx_nr25_signal_follow_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_signal_follow_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.follow } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 10 }
+	}
+	chaosx_nr25_signal_shield = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_active_signal check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = equals } }
+		available = { chaosx_nr25_evolution_active_signal_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_text = chaosx_nr25_signal_shield_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_signal_shield_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.shield } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 12 }
+	}
+	chaosx_nr25_signal_jam = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_active_signal check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = equals } }
+		available = { chaosx_nr25_evolution_active_signal_action_available = yes has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_trigger = { has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_text = chaosx_nr25_signal_jam_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_signal_jam_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.jam } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 10 }
+	}
+	chaosx_nr25_signal_broadcast = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_active_signal check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = equals } }
+		available = { chaosx_nr25_evolution_active_signal_action_available = yes has_political_power > constant:chaosx_nr25_cost.pp_public_evolution_required }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_public_evolution_required }
+		custom_cost_text = chaosx_nr25_signal_broadcast_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_signal_broadcast_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.broadcast } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 4 modifier = { add = 10 has_country_flag = chaosx_nr25_action_radio_used } }
+	}
+
+	chaosx_nr25_survivor_avoid = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_something_survived check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = equals } }
+		available = { chaosx_nr25_evolution_something_survived_action_available = yes }
+		custom_cost_trigger = { always = yes }
+		custom_cost_text = chaosx_nr25_survivor_avoid_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_survivor_avoid_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.avoid } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 }
+	}
+	chaosx_nr25_survivor_guard = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_something_survived check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = equals } }
+		available = { chaosx_nr25_evolution_something_survived_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_text = chaosx_nr25_survivor_guard_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_survivor_guard_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.guard } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 12 }
+	}
+	chaosx_nr25_survivor_capture = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_something_survived check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = equals } }
+		available = { chaosx_nr25_evolution_something_survived_action_available = yes has_manpower > constant:chaosx_nr25_cost.manpower_survivor_required }
+		custom_cost_trigger = { has_manpower > constant:chaosx_nr25_cost.manpower_survivor_required }
+		custom_cost_text = chaosx_nr25_survivor_capture_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_survivor_capture_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.capture } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 modifier = { add = 12 has_country_flag = chaosx_nr25_action_recon_used } }
+	}
+	chaosx_nr25_survivor_path = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_something_survived check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = equals } }
+		available = { chaosx_nr25_evolution_something_survived_action_available = yes has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_trigger = { has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_text = chaosx_nr25_survivor_path_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_survivor_path_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.path } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 10 }
+	}
+	chaosx_nr25_survivor_turn = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_something_survived check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = equals } }
+		available = { chaosx_nr25_evolution_something_survived_action_available = yes has_political_power > constant:chaosx_nr25_cost.pp_evolution_required }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_evolution_required }
+		custom_cost_text = chaosx_nr25_survivor_turn_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_survivor_turn_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.turn } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 6 }
+	}
+
+	chaosx_nr25_militarisation_blockade = {
+		icon = GFX_decision_generic_military
+		target_array = global.chaosx_nr25_participants
+		target_root_trigger = { chaosx_nr25_base_action_available = yes }
+		target_trigger = { FROM = { chaosx_nr25_target_participant_valid = yes } }
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_militarised_antarctica check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = equals } }
+		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_text = chaosx_nr25_militarisation_blockade_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_blockade_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.blockade } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 }
+	}
+	chaosx_nr25_militarisation_seize = {
+		icon = GFX_decision_generic_military
+		target_array = global.chaosx_nr25_participants
+		target_root_trigger = { chaosx_nr25_base_action_available = yes }
+		target_trigger = { FROM = { chaosx_nr25_target_participant_valid = yes } }
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_militarised_antarctica check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = equals } }
+		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_manpower > constant:chaosx_nr25_cost.manpower_militarisation_required }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } has_manpower > constant:chaosx_nr25_cost.manpower_militarisation_required }
+		custom_cost_text = chaosx_nr25_militarisation_seize_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_seize_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.seize } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 modifier = { add = 10 has_war = yes } }
+	}
+	chaosx_nr25_militarisation_rescue = {
+		icon = GFX_decision_generic_military
+		target_array = global.chaosx_nr25_participants
+		target_root_trigger = { chaosx_nr25_base_action_available = yes }
+		target_trigger = { FROM = { chaosx_nr25_target_participant_valid = yes has_country_flag = chaosx_nr25_casualty_memory_ready NOT = { has_country_flag = chaosx_nr25_rescue_received } } }
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_militarised_antarctica check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = equals } }
+		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_manpower > constant:chaosx_nr25_cost.manpower_militarisation_required }
+		custom_cost_trigger = { has_manpower > constant:chaosx_nr25_cost.manpower_militarisation_required }
+		custom_cost_text = chaosx_nr25_militarisation_rescue_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_rescue_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.rescue } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 12 modifier = { add = 10 has_country_flag = chaosx_nr25_casualty_memory_ready } }
+	}
+	chaosx_nr25_militarisation_intercept = {
+		icon = GFX_decision_generic_research
+		target_array = global.chaosx_nr25_participants
+		target_root_trigger = { chaosx_nr25_base_action_available = yes }
+		target_trigger = { FROM = { chaosx_nr25_target_participant_valid = yes } }
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_militarised_antarctica check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = equals } }
+		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_trigger = { has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_text = chaosx_nr25_militarisation_intercept_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_intercept_effect hidden_effect = { FROM = { save_event_target_as = chaosx_nr25_rival_target_scope } set_variable = { chaosx_nr25_rival_target = FROM } set_variable = { chaosx_nr25_rival_target_id = FROM.id } set_country_flag = chaosx_nr25_rival_target_selected set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.intercept } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 10 }
+	}
+	chaosx_nr25_militarisation_demilitarized = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_militarised_antarctica check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = equals } }
+		available = { chaosx_nr25_evolution_militarised_antarctica_action_available = yes has_political_power > constant:chaosx_nr25_cost.pp_public_evolution_required }
+		custom_cost_trigger = { has_political_power > constant:chaosx_nr25_cost.pp_public_evolution_required }
+		custom_cost_text = chaosx_nr25_militarisation_demilitarized_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_militarisation_demilitarized_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.demilitarized } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 14 }
+	}
+
+	chaosx_nr25_wreck_stabilize = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals } }
+		available = { chaosx_nr25_evolution_wreck_breaking_apart_action_available = yes has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_trigger = { has_equipment = { support_equipment > constant:chaosx_nr25_cost.support_evolution_required } }
+		custom_cost_text = chaosx_nr25_wreck_stabilize_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_wreck_stabilize_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.stabilize } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 16 }
+	}
+	chaosx_nr25_wreck_cut = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals } }
+		available = { chaosx_nr25_evolution_wreck_breaking_apart_action_available = yes has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_trigger = { has_fuel > constant:chaosx_nr25_cost.fuel_evolution_required }
+		custom_cost_text = chaosx_nr25_wreck_cut_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_wreck_cut_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.cut } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 }
+	}
+	chaosx_nr25_wreck_map = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals } }
+		available = { chaosx_nr25_evolution_wreck_breaking_apart_action_available = yes }
+		custom_cost_trigger = { always = yes }
+		custom_cost_text = chaosx_nr25_wreck_map_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_wreck_map_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.map } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 10 }
+	}
+	chaosx_nr25_wreck_distribute = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals } }
+		available = { chaosx_nr25_evolution_wreck_breaking_apart_action_available = yes has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_evolution_required } }
+		custom_cost_trigger = { has_equipment = { convoy > constant:chaosx_nr25_cost.convoy_evolution_required } }
+		custom_cost_text = chaosx_nr25_wreck_distribute_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_wreck_distribute_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.distribute } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 }
+	}
+	chaosx_nr25_wreck_leave = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = equals } }
+		available = { chaosx_nr25_evolution_wreck_breaking_apart_action_available = yes }
+		custom_cost_trigger = { always = yes }
+		custom_cost_text = chaosx_nr25_wreck_leave_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_wreck_leave_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.leave } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 4 }
+	}
+
+	chaosx_nr25_dependence_contain = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
+		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_contain_cost_available = yes }
+		custom_cost_trigger = { chaosx_nr25_dependence_contain_cost_available = yes }
+		custom_cost_text = chaosx_nr25_dependence_contain_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_contain_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.contain } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 14 }
+	}
+	chaosx_nr25_dependence_destroy = {
+		icon = GFX_decision_generic_military
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
+		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_destroy_cost_available = yes }
+		custom_cost_trigger = { chaosx_nr25_dependence_destroy_cost_available = yes }
+		custom_cost_text = chaosx_nr25_dependence_destroy_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_destroy_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.destroy } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 8 }
+	}
+	chaosx_nr25_dependence_transfer = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
+		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_transfer_cost_available = yes }
+		custom_cost_trigger = { chaosx_nr25_dependence_transfer_cost_available = yes }
+		custom_cost_text = chaosx_nr25_dependence_transfer_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_transfer_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.transfer } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 7 }
+	}
+	chaosx_nr25_dependence_conceal = {
+		icon = GFX_decision_oppression
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
+		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_conceal_cost_available = yes }
+		custom_cost_trigger = { chaosx_nr25_dependence_conceal_cost_available = yes }
+		custom_cost_text = chaosx_nr25_dependence_conceal_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_conceal_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.conceal } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 6 }
+	}
+	chaosx_nr25_dependence_integrate = {
+		icon = GFX_decision_generic_research
+		visible = { has_country_flag = chaosx_nr25_participant has_global_flag = chaosx_nr25_evolution_technology_changes_users chaosx_nr25_evolution_v_holder_valid = yes }
+		available = { chaosx_nr25_evolution_technology_changes_users_action_available = yes chaosx_nr25_dependence_integrate_cost_available = yes }
+		custom_cost_trigger = { chaosx_nr25_dependence_integrate_cost_available = yes }
+		custom_cost_text = chaosx_nr25_dependence_integrate_cost
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_dependence_integrate_effect hidden_effect = { set_temp_variable = { chaosx_nr25_evolution_action = constant:chaosx_nr25_evolution_action.integrate } chaosx_nr25_execute_evolution_action = yes } }
+		ai_will_do = { base = 5 modifier = { add = 15 check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.sixty compare = greater_than_or_equals } } }
+	}
+}

@@ -17,6 +17,8 @@
 # engine surface, so this file-scoped value mirrors the existing technical
 # response constant without creating a second gameplay tuning source.
 @CR_SC_MENGELE_COMPUTATION_INCIDENT_RECOVERY_FACTORIES = 2
+# Native AI hint field mirror of the authoritative technical response cost.
+@CR_SC_MENGELE_COMPUTATION_INCIDENT_RECOVERY_POLITICAL_POWER = 35
 
 mengele_clone_army_category = {
 	mengele_event016_computation_incident_recovery = {
@@ -44,15 +46,18 @@ mengele_clone_army_category = {
 			brilliant_scientist_mengele_computation_incident_recovery_can_pay = yes
 		}
 		custom_cost_text = mengele_event016_computation_incident_recovery_cost
-		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_technical_political_power
+		ai_hint_pp_cost = @CR_SC_MENGELE_COMPUTATION_INCIDENT_RECOVERY_POLITICAL_POWER
 		modifier = {
 			civilian_factory_use = @CR_SC_MENGELE_COMPUTATION_INCIDENT_RECOVERY_FACTORIES
 		}
 		days_remove = constant:brilliant_scientist_project_board.response_technical_days
 		complete_effect = {
-			custom_effect_tooltip = mengele_event016_computation_incident_recovery_started_tt
 			hidden_effect = {
 				brilliant_scientist_mengele_begin_computation_incident_recovery = yes
+			}
+			if = {
+				limit = { brilliant_scientist_mengele_computation_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_computation_incident_recovery_started_tt
 			}
 		}
 		cancel_if_not_visible = no
@@ -75,9 +80,12 @@ mengele_clone_army_category = {
 			}
 		}
 		remove_effect = {
-			custom_effect_tooltip = mengele_event016_computation_incident_recovery_effect_tt
 			hidden_effect = {
 				brilliant_scientist_mengele_finish_computation_incident_recovery = yes
+			}
+			if = {
+				limit = { check_variable = { var = mengele_event016_computation_incident_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_computation_incident_recovery_effect_tt
 			}
 		}
 		ai_will_do = {

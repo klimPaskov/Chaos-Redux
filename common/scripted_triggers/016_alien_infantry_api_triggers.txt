@@ -65,19 +65,29 @@ alien_infantry_landing_reservation_is_valid = {
 	NOT = { has_global_flag = world_end }
 }
 
-# COUNTRY scope. This is the public decision/API gate. Stockpile equipment is
-# checked before reservation and the target-specific check runs in target_trigger.
-alien_infantry_can_call_landing = {
+# COUNTRY scope. Shared non-resource gate for the public decision/API and the
+# Event 026 owner adapter. The stockpile threshold is intentionally kept in the
+# two callers below so a discounted reservation can quote its payable amount
+# without weakening contact, target, cooldown, or terminal-state checks.
+alien_infantry_can_call_landing_without_reserve = {
 	alien_infantry_has_contact = yes
 	NOT = { has_country_flag = alien_infantry_landing_pending }
 	NOT = { has_country_flag = alien_infantry_landing_cooldown }
 	NOT = { has_global_flag = world_end }
+	any_controlled_state = {
+		alien_infantry_landing_state_is_valid = yes
+	}
+}
+
+# COUNTRY scope. This is the fixed-price public decision/API gate. Stockpile
+# equipment is checked before reservation and the target-specific check runs in
+# target_trigger. Existing Event 019, sovereignty, and direct callers retain
+# this exact 2,000-weapon contract.
+alien_infantry_can_call_landing = {
+	alien_infantry_can_call_landing_without_reserve = yes
 	check_variable = {
 		var = num_equipment@alien_laser_weapon_equipment_1
 		value = constant:alien_infantry_landing.reserve_equipment
 		compare = greater_than_or_equals
-	}
-	any_controlled_state = {
-		alien_infantry_landing_state_is_valid = yes
 	}
 }

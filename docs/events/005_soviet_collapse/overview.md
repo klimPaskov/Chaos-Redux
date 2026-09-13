@@ -23,6 +23,16 @@ Event 005 is a major Soviet crisis started through `chaosx.nr5.1` and visible ev
 
 The historical asset archive `docs/assets/005_soviet_union_collapse/` was deleted by Git commit `79bb425aa6`. Retain that path for provenance only. The current `docs/assets/005_soviet_collapse/` folder contains the 2026-09-01 audio evidence package, while runtime assets remain under the `gfx/`, `interface/`, `music/`, and `sound/` paths above.
 
+## Event 023 custody bridge
+
+When Event 005 releases a state, each Event 023-registered storage site is snapshotted immediately before the release effect transfers ownership or control. The snapshot records operational, assigned, reserved, transferred, dismantled, missing, holder, owner, controller, custody, and reconciliation values for that exact state.
+
+The post-transfer reconciliation hooks run on `on_release_as_free`, `on_release_as_puppet`, and `on_state_control_changed`. They classify the site as central Soviet custody, Soviet custody under siege, breakaway physical custody, joint custody, foreign custody, technical denial, missing, or destroyed/dismantled without altering the Event 023 ledger total.
+
+Physical custody, technical access, command formation, and delivery integration remain separate gates. A breakaway with a site or personnel does not become an operational nuclear actor immediately. The staged Event 023 technical-access, command-formation, and delivery-integration missions must complete against the same selected site. If `SOV` disappears, Soviet-only production, evolution timing, and actor decisions stop, while valid local custody records continue through the shared ledger and later reconciliation.
+
+The Event 023 bridge is implemented by `sov_nuclear_bombs_snapshot_event5_release_tranche` in `common/scripted_effects/023_sov_nuclear_bombs_runtime_effects.txt`, the four pre-release calls in `common/scripted_effects/005_soviet_collapse_effects.txt`, and the bounded transfer hooks in `common/on_actions/023_sov_nuclear_bombs_on_actions.txt`.
+
 The main active systems are:
 
 - a dynamic Union Collapse Threat model

@@ -1,0 +1,34 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 024 CXT REGISTRATION AND FIXTURE
+# ============================================================================
+# Registers the Event 024 simulation-reliance system with the shared CXT
+# extension bus and exposes an inert fixture receipt after CXT initialization.
+# The fixture never selects a Swedish host, fires Event 024, spends resources,
+# or creates the normal country-scoped program.
+# ============================================================================
+
+# COUNTRY scope. Registers this package's `_apply` effect with the existing CXT
+# dynamic extension dispatcher. The token is the hidden carrier id above.
+video_game_in_sweden_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event024_video_game_in_sweden
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+# COUNTRY scope. Idempotent CXT fixture. It records the public value bands so
+# the harness can inspect Event 024's schema without pretending CXT is Sweden.
+chaosx_cxt_extension_event024_video_game_in_sweden_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = video_game_in_sweden_cxt_fixture_initialized }
+		}
+		set_country_flag = video_game_in_sweden_cxt_fixture_initialized
+		set_country_flag = video_game_in_sweden_cxt_fixture_ready
+		set_variable = { video_game_in_sweden_cxt_fixture_event_id = constant:video_game_in_sweden_event.id }
+		set_variable = { video_game_in_sweden_cxt_fixture_reliance_instrument_max = constant:video_game_in_sweden_reliance.instrument_max }
+		set_variable = { video_game_in_sweden_cxt_fixture_reliance_worldview_max = constant:video_game_in_sweden_reliance.worldview_max }
+	}
+}

@@ -22,6 +22,11 @@ black_plague_apply_weaponized_exposure_runtime = {
 	set_temp_variable = { black_plague_weaponized_runtime_bridge_result = constant:black_plague_value.zero }
 	set_temp_variable = { black_plague_exposure_result = constant:black_plague_value.zero }
 
+	# Private snapshots are overwritten on every call, including omitted optional inputs.
+	set_temp_variable = { black_plague_weaponized_runtime_input_amount = constant:black_plague_spread.minimum_exposure }
+	set_temp_variable = { black_plague_weaponized_runtime_input_route = constant:black_plague_route.land_border }
+	set_temp_variable = { black_plague_weaponized_runtime_input_provenance = constant:black_plague_provenance.natural }
+
 	# The one-time initializer runs in ROOT and may rewrite runtime-wide
 	# temporary context. Snapshot every caller input before entering it.
 	if = {
@@ -82,11 +87,9 @@ black_plague_apply_weaponized_exposure_runtime = {
 	}
 
 	# Temporary variables are scope-less, so the result is already available to
-	# the country-scope caller after this state block returns. Remove only the
-	# bridge's private input snapshots; keep both public result values intact.
-	clear_temp_variable = black_plague_weaponized_runtime_input_amount
-	clear_temp_variable = black_plague_weaponized_runtime_input_route
-	clear_temp_variable = black_plague_weaponized_runtime_input_provenance
+	# the country-scope caller after this state block returns. Private snapshots
+	# expire with the chain and are overwritten on the next call.
+	# Keep both public result values intact.
 }
 
 # STATE scope. Reconciles exactly one scheduler anchor after an accepted

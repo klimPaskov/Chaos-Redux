@@ -48,6 +48,28 @@ is_independence_wave_package_content_active = {
 	}
 }
 
+# Package-local identity gate. A real Event 006 origin keeps its historical
+# origin value. The Event 021 adapter receives an origin-neutral compatibility
+# receipt during setup and after completion, so the reused package roots can
+# use internal package checks without being misclassified as an Event 006
+# origin or publishing an Event 006 player surface.
+is_independence_wave_package_origin_compatible = {
+	OR = {
+		check_variable = { liberation_origin = constant:liberation_origin.independence_wave }
+		AND = {
+			random_civil_war_is_normal_human_country = yes
+			OR = {
+				AND = {
+					has_country_flag = random_civil_war_event6_adapter_preparing
+					has_country_flag = independence_wave_event6_adapter_package_ready
+					has_valid_independence_wave_setup_input = yes
+				}
+				is_independence_wave_event021_package_country = yes
+			}
+		}
+	}
+}
+
 # Player-facing Event 006 categories and decisions stay closed while Event 021
 # is borrowing an Event 006 package as an origin-neutral adapter. The adapter
 # still needs the package-content predicate for leaders, forces, and setup,

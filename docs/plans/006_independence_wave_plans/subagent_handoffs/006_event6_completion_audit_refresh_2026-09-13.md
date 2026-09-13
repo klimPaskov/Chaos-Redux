@@ -140,3 +140,7 @@ A full historical per-document promotion/disposition sweep was not repeated, so 
 
 There are no undisclosed gameplay simplifications introduced by this audit because no gameplay was changed.
 Existing omissions, blocked branches, asset acceptance limits, and incomplete validation remain explicitly partial rather than presented as completion.
+
+## Parent follow-up
+
+The later parent tranche `006_event6_league_transition_callers_2026-09-13.md` implements the eight accepted League callers and the timed durability receipt inside the existing post-recognition category. That implementation supersedes this refresh's earlier P1 statement that those callers were absent; the package, route-cost, asset, GUI, audio, provenance, formable, and probability findings remain open and the whole-event disposition remains **HOLD / PARTIAL**.

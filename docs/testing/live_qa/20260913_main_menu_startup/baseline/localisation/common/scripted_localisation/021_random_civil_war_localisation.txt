@@ -1,0 +1,387 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 SCRIPTED LOCALISATION
+# ============================================================================
+# Public values expose the current crisis without leaking target formulas,
+# implementation flags, or raw pressure arithmetic.
+# ============================================================================
+
+defined_text = {
+	name = event021_GetAuthorityBand
+	text = {
+		trigger = { random_civil_war_authority_is_cohesive = yes }
+		localization_key = event021_authority_cohesive
+	}
+	text = {
+		trigger = { random_civil_war_authority_is_contested = yes }
+		localization_key = event021_authority_contested
+	}
+	text = {
+		trigger = { random_civil_war_authority_is_failing = yes }
+		localization_key = event021_authority_failing
+	}
+	text = {
+		trigger = { random_civil_war_authority_is_collapsed = yes }
+		localization_key = event021_authority_collapse
+	}
+	text = { localization_key = event021_target_na }
+}
+
+defined_text = {
+	name = event021_GetAuthorityValue
+	text = {
+		trigger = { has_variable = random_civil_war_state_authority }
+		localization_key = event021_authority_value_present
+	}
+	text = { localization_key = event021_target_na }
+}
+
+defined_text = {
+	name = event021_GetCrisisPhase
+	text = {
+		trigger = { has_country_flag = random_civil_war_reconstruction_phase }
+		localization_key = event021_phase_reconstruction
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_settlement_phase }
+		localization_key = event021_phase_settlement
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_neighbor_exposure }
+		localization_key = event021_phase_exposure
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_multifront_active }
+		localization_key = event021_phase_multi_front
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_active }
+		localization_key = event021_phase_active
+	}
+	text = { localization_key = event021_phase_prevention }
+}
+
+defined_text = {
+	name = event021_GetCrisisSummary
+	text = {
+		trigger = { has_country_flag = random_civil_war_settlement_phase }
+		localization_key = event021_summary_settlement
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_neighbor_exposure }
+		localization_key = event021_summary_neighbor
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_command_claimant }
+		localization_key = event021_summary_command
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_ideological_claimant }
+		localization_key = event021_summary_politics
+	}
+	text = {
+		trigger = { has_country_flag = random_civil_war_capital_supply_risk }
+		localization_key = event021_summary_supply
+	}
+	text = { localization_key = event021_summary_stable }
+}
+
+defined_text = {
+	name = event021_GetCrisisTargetName
+	text = {
+		trigger = {
+			has_country_flag = random_civil_war_neighbor_exposure
+			has_variable = random_civil_war_exposure_source_country_scope
+			var:random_civil_war_exposure_source_country_scope = { exists = yes }
+		}
+		localization_key = "[?random_civil_war_exposure_source_country_scope.GetName]"
+	}
+	text = {
+		trigger = {
+			has_country_flag = random_civil_war_reconstruction_phase
+			has_variable = random_civil_war_rail_mission_state
+			has_variable = random_civil_war_rail_mission_state_id
+			random_civil_war_rail_mission_state_id > 0
+		}
+		localization_key = "[?random_civil_war_rail_mission_state.GetName]"
+	}
+	text = {
+		trigger = {
+			has_variable = random_civil_war_priority_front_state
+			has_variable = random_civil_war_priority_front_state_id
+			random_civil_war_priority_front_state_id > 0
+		}
+		localization_key = "[?random_civil_war_priority_front_state.GetName]"
+	}
+	text = { localization_key = event021_target_na }
+}
+
+defined_text = {
+	name = event021_GetPriorityFrontName
+	text = {
+		trigger = {
+			has_variable = random_civil_war_priority_front_state
+			has_variable = random_civil_war_priority_front_state_id
+			random_civil_war_priority_front_state_id > 0
+		}
+		localization_key = "[?random_civil_war_priority_front_state.GetName]"
+	}
+	text = { localization_key = event021_target_na }
+}
+
+defined_text = {
+	name = event021_GetRailMissionStateName
+	text = {
+		trigger = {
+			has_variable = random_civil_war_rail_mission_state
+			has_variable = random_civil_war_rail_mission_state_id
+			random_civil_war_rail_mission_state_id > 0
+		}
+		localization_key = "[?random_civil_war_rail_mission_state.GetName]"
+	}
+	text = { localization_key = event021_target_na }
+}
+
+defined_text = {
+	name = event021_GetSettlementObligationName
+	text = {
+		trigger = { check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.recognition compare = equals } }
+		localization_key = event021_obligation_recognition
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.disarmament compare = equals } }
+		localization_key = event021_obligation_disarmament
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.rail_security compare = equals } }
+		localization_key = event021_obligation_rail_security
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.sponsor_repayment compare = equals } }
+		localization_key = event021_obligation_sponsor_repayment
+	}
+	text = {
+		trigger = { check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.coalition_governance compare = equals } }
+		localization_key = event021_obligation_coalition_governance
+	}
+	text = { localization_key = event021_obligation_none }
+}
+
+defined_text = {
+	name = event021_GetScenarioTypeName
+	text = {
+		trigger = { check_variable = { var = triggerable_scenarios_random_civil_war_type value = constant:random_civil_war_scenario_type.political_fracture compare = equals } }
+		localization_key = chaosx.scenarios.random_civil_war.desc.political
+	}
+	text = {
+		trigger = { check_variable = { var = triggerable_scenarios_random_civil_war_type value = constant:random_civil_war_scenario_type.independence_cascade compare = equals } }
+		localization_key = chaosx.scenarios.random_civil_war.desc.independence
+	}
+	text = {
+		trigger = { check_variable = { var = triggerable_scenarios_random_civil_war_type value = constant:random_civil_war_scenario_type.command_collapse compare = equals } }
+		localization_key = chaosx.scenarios.random_civil_war.desc.command
+	}
+	text = { localization_key = chaosx.scenarios.random_civil_war.desc.universal }
+}
+
+defined_text = {
+	name = event021_GetScenarioIntensityName
+	text = {
+		trigger = { check_variable = { var = triggerable_scenarios_intensity value = constant:random_civil_war_scenario_intensity.maximum compare = equals } }
+		localization_key = chaosx.scenarios.random_civil_war.impact.maximum
+	}
+	text = {
+		trigger = { check_variable = { var = triggerable_scenarios_intensity value = constant:random_civil_war_scenario_intensity.high compare = equals } }
+		localization_key = chaosx.scenarios.random_civil_war.impact.high
+	}
+	text = {
+		trigger = { check_variable = { var = triggerable_scenarios_intensity value = constant:random_civil_war_scenario_intensity.medium compare = equals } }
+		localization_key = chaosx.scenarios.random_civil_war.impact.medium
+	}
+	text = { localization_key = chaosx.scenarios.random_civil_war.impact.low }
+}
+
+# Event Log snapshot labels use the row selected by the shared history view.
+defined_text = {
+	name = event021_GetHistorySnapshotSummary
+	text = {
+		trigger = { check_variable = { events_log_history_selected_event021_snapshot_index > 0 } }
+		localization_key = event021_event_log_snapshot_summary
+	}
+	text = { localization_key = event021_event_log_snapshot_empty }
+}
+
+defined_text = {
+	name = event021_GetHistoryRowPhase
+	text = { trigger = { check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:random_civil_war_log.opening compare = equals } } localization_key = event021_log_phase_opening }
+	text = { trigger = { check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:random_civil_war_log.multi_front compare = equals } } localization_key = event021_log_phase_multi_front }
+	text = { trigger = { check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:random_civil_war_log.exposure compare = equals } } localization_key = event021_log_phase_exposure }
+	text = { trigger = { check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:random_civil_war_log.settlement compare = equals } } localization_key = event021_log_phase_settlement }
+	text = { trigger = { check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:random_civil_war_log.reconstruction compare = equals } } localization_key = event021_log_phase_reconstruction }
+	text = { trigger = { check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:random_civil_war_log.failed_opening compare = equals } } localization_key = event021_log_phase_failed }
+	text = { localization_key = event021_log_phase_crisis }
+}
+
+defined_text = {
+	name = event021_GetHistoryArchetype
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_archetype_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_archetype.ideological compare = equals } } localization_key = event021_log_archetype_ideological }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_archetype_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_archetype.legal compare = equals } } localization_key = event021_log_archetype_legal }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_archetype_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_archetype.regional compare = equals } } localization_key = event021_log_archetype_regional }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_archetype_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_archetype.event006 compare = equals } } localization_key = event021_log_archetype_event006 }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_archetype_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_archetype.command compare = equals } } localization_key = event021_log_archetype_command }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_archetype_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_archetype.same_tag compare = equals } } localization_key = event021_log_archetype_same_tag }
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistorySeverity
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_severity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_severity.limited compare = equals } } localization_key = event021_log_severity_limited }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_severity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_severity.serious compare = equals } } localization_key = event021_log_severity_serious }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_severity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_severity.severe compare = equals } } localization_key = event021_log_severity_severe }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_severity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_severity.critical compare = equals } } localization_key = event021_log_severity_critical }
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistoryRouteSource
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.political compare = equals } } localization_key = event021_log_route_political }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.legal compare = equals } } localization_key = event021_log_route_legal }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.regional compare = equals } } localization_key = event021_log_route_regional }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.command compare = equals } } localization_key = event021_log_route_command }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.event006 compare = equals } } localization_key = event021_log_route_event006 }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.same_tag compare = equals } } localization_key = event021_log_route_same_tag }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.external_war compare = equals } } localization_key = event021_log_route_external_war }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.fury compare = equals } } localization_key = event021_log_route_fury }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.neighbor compare = equals } } localization_key = event021_log_route_neighbor }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.sponsor compare = equals } } localization_key = event021_log_route_sponsor }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_route_source_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_evidence_source.settlement compare = equals } } localization_key = event021_log_route_settlement }
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistoryEquipmentBand
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_equipment_band_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.three compare = equals } } localization_key = event021_log_equipment_abundant }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_equipment_band_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.two compare = equals } } localization_key = event021_log_equipment_adequate }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_equipment_band_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.one compare = equals } } localization_key = event021_log_equipment_limited }
+	text = { localization_key = event021_log_equipment_depleted }
+}
+
+defined_text = {
+	name = event021_GetHistoryCapital
+	text = {
+		trigger = { check_variable = { var = global.random_civil_war_log_snapshot_capital_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than } }
+		localization_key = event021_log_capital_present
+	}
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistoryClaimantLine
+	text = {
+		trigger = { check_variable = { var = global.random_civil_war_log_snapshot_claimant_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than } }
+		localization_key = event021_log_claimant_present
+	}
+	text = { localization_key = event021_log_claimant_same_tag }
+}
+
+defined_text = {
+	name = event021_GetHistoryPackageLine
+	text = {
+		trigger = { check_variable = { var = global.random_civil_war_log_snapshot_package_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than } }
+		localization_key = event021_log_package_present
+	}
+	text = { localization_key = event021_log_package_none }
+}
+
+defined_text = {
+	name = event021_GetHistoryAnchor
+	text = {
+		trigger = { check_variable = { var = global.random_civil_war_log_snapshot_anchor_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than } }
+		localization_key = event021_log_anchor_present
+	}
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistoryPriorityFront
+	text = {
+		trigger = { check_variable = { var = global.random_civil_war_log_snapshot_priority_state_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than } }
+		localization_key = event021_log_priority_present
+	}
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistorySettlement
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.government_victory compare = equals } } localization_key = event021_log_settlement_government }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.opposition_victory compare = equals } } localization_key = event021_log_settlement_opposition }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.independence compare = equals } } localization_key = event021_log_settlement_independence }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.autonomy compare = equals } } localization_key = event021_log_settlement_autonomy }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.coalition compare = equals } } localization_key = event021_log_settlement_coalition }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.partition compare = equals } } localization_key = event021_log_settlement_partition }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.merger compare = equals } } localization_key = event021_log_settlement_merger }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_settlement_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_settlement.evolution compare = equals } } localization_key = event021_log_settlement_evolution }
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistoryObligation
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_obligation_entries^events_log_history_selected_event021_snapshot_row value = constant:event021_settlement_obligation.recognition compare = equals } } localization_key = event021_obligation_recognition }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_obligation_entries^events_log_history_selected_event021_snapshot_row value = constant:event021_settlement_obligation.disarmament compare = equals } } localization_key = event021_obligation_disarmament }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_obligation_entries^events_log_history_selected_event021_snapshot_row value = constant:event021_settlement_obligation.rail_security compare = equals } } localization_key = event021_obligation_rail_security }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_obligation_entries^events_log_history_selected_event021_snapshot_row value = constant:event021_settlement_obligation.sponsor_repayment compare = equals } } localization_key = event021_obligation_sponsor_repayment }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_obligation_entries^events_log_history_selected_event021_snapshot_row value = constant:event021_settlement_obligation.coalition_governance compare = equals } } localization_key = event021_obligation_coalition_governance }
+	text = { localization_key = event021_obligation_none }
+}
+
+defined_text = {
+	name = event021_GetHistorySponsorLine
+	text = {
+		trigger = {
+			check_variable = { var = global.random_civil_war_log_snapshot_sponsor_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than }
+			check_variable = { var = global.random_civil_war_log_snapshot_recipient_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than }
+		}
+		localization_key = event021_log_sponsor_present
+	}
+	text = { localization_key = event021_log_sponsor_none }
+}
+
+defined_text = {
+	name = event021_GetHistoryClusterSkip
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.no_eligible_actor compare = equals } } localization_key = event021_log_skip_no_actor }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.no_eligible_target compare = equals } } localization_key = event021_log_skip_no_target }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.role_collision compare = equals } } localization_key = event021_log_skip_role_collision }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.tag_occupied compare = equals } } localization_key = event021_log_skip_tag_occupied }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.state_reservation_failed compare = equals } } localization_key = event021_log_skip_state_reservation }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.cap_reached compare = equals } } localization_key = event021_log_skip_cap }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.generation_blocked compare = equals } } localization_key = event021_log_skip_generation }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.stale_delayed_reservation compare = equals } } localization_key = event021_log_skip_stale }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_cluster_skip_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_cluster_skip_reason.package_incomplete compare = equals } } localization_key = event021_log_skip_package_incomplete }
+	text = { localization_key = event021_log_skip_none }
+}
+
+defined_text = {
+	name = event021_GetHistoryScenarioLine
+	text = {
+		trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_type_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_value.zero compare = greater_than } }
+		localization_key = event021_log_scenario_present
+	}
+	text = { localization_key = event021_log_scenario_none }
+}
+
+defined_text = {
+	name = event021_GetHistoryScenarioType
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_type_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_type.political_fracture compare = equals } } localization_key = event021_log_scenario_political }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_type_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_type.independence_cascade compare = equals } } localization_key = event021_log_scenario_independence }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_type_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_type.command_collapse compare = equals } } localization_key = event021_log_scenario_command }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_type_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_type.universal_fragmentation compare = equals } } localization_key = event021_log_scenario_universal }
+	text = { localization_key = event021_log_value_na }
+}
+
+defined_text = {
+	name = event021_GetHistoryScenarioIntensity
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_intensity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_intensity.low compare = equals } } localization_key = event021_log_intensity_low }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_intensity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_intensity.medium compare = equals } } localization_key = event021_log_intensity_medium }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_intensity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_intensity.high compare = equals } } localization_key = event021_log_intensity_high }
+	text = { trigger = { check_variable = { var = global.random_civil_war_log_snapshot_scenario_intensity_entries^events_log_history_selected_event021_snapshot_row value = constant:random_civil_war_scenario_intensity.maximum compare = equals } } localization_key = event021_log_intensity_maximum }
+	text = { localization_key = event021_log_value_na }
+}

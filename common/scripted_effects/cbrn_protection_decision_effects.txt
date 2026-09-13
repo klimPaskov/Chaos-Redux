@@ -496,9 +496,7 @@ cbrn_apply_civilian_shelter_movement = {
 			check_variable = { var = cbrn_support_equipment_debit_completed value = cbrn_response_shelter_support_cost compare = greater_than_or_equals }
 			check_variable = { var = cbrn_train_equipment_debit_completed value = cbrn_response_shelter_train_cost compare = greater_than_or_equals }
 		}
-		set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
-		set_state_flag = { flag = cbrn_civilians_moved_to_shelters days = var:cbrn_response_duration_local }
-		add_dynamic_modifier = { modifier = cbrn_civilian_shelter_disruption days = cbrn_response_duration_local }
+		cbrn_complete_civilian_shelter_movement = yes
 	}
 }
 
@@ -513,4 +511,12 @@ cbrn_apply_industrial_continuity_order = {
 	set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
 	set_state_flag = { flag = cbrn_industry_ordered_to_continue days = var:cbrn_response_duration_local }
 	add_dynamic_modifier = { modifier = cbrn_industry_kept_operating days = cbrn_response_duration_local }
+}
+
+# STATE scope. Caller has already paid its own shelter transaction.
+# Applies shared duration, shelter protection, and movement disruption without resource debit.
+cbrn_complete_civilian_shelter_movement = {
+	set_temp_variable = { cbrn_response_duration_local = constant:cbrn_protection_decision_timing.response_effect_days }
+	set_state_flag = { flag = cbrn_civilians_moved_to_shelters days = var:cbrn_response_duration_local }
+	add_dynamic_modifier = { modifier = cbrn_civilian_shelter_disruption days = cbrn_response_duration_local }
 }

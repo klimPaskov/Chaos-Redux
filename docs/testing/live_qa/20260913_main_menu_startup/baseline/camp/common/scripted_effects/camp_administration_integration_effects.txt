@@ -1,0 +1,213 @@
+# Camp administration integration: bounded legacy registry and lifecycle adapters.
+# Country defaults, institutional callbacks and civilian replacement remain owned
+# by their modules. No helper here creates population or logs a second debit.
+
+camp_admin_integration_initialize_country = {
+	camp_admin_initialize_country = yes
+	camp_admin_country_initialize = yes
+	camp_occ_initialize_country = yes
+	camp_admin_integration_cancel_routine_projects = yes
+}
+
+# The calendar guard covers every callback, including legacy state entry points.
+# Scope is the actual registered country; ROOT may still be the global host.
+camp_admin_integration_monthly_country = {
+	if = {
+		limit = { exists = yes camp_rework_country_is_eligible = yes }
+		country_event = { id = camp_administration_country.1 }
+	}
+}
+
+# Only the hidden recipient event calls this runner: ROOT is the actual country,
+# including for legacy registration and state-pool predicates in prepare/tail.
+camp_admin_integration_monthly_country_recipient = {
+	camp_admin_integration_initialize_country = yes
+	camp_admin_prepare_month_key = yes
+	if = {
+		limit = {
+			camp_rework_country_is_eligible = yes
+			OR = {
+				NOT = { has_variable = camp_admin_integration_month }
+				NOT = { check_variable = { camp_admin_integration_month = camp_admin_month_key } }
+			}
+		}
+		set_variable = { camp_admin_integration_month = camp_admin_month_key }
+		camp_admin_integration_cancel_routine_projects = yes
+		camp_admin_integration_seed_japan_labor_host = yes
+		camp_admin_country_prepare_monthly = yes
+		camp_admin_monthly_country = yes
+		camp_admin_integration_record_completed_project = yes
+		camp_occ_monthly_country = yes
+		camp_admin_country_monthly = yes
+		camp_rework_apply_country_monthly_pressure = yes
+	}
+}
+
+# Accepted South Manchurian industrial host: only Liaotung716 under Japan or
+# Japan's Manchukuo subject. No new building, population or general subject gate.
+camp_admin_integration_seed_japan_labor_host = {
+	if = {
+		limit = {
+			original_tag = JAP
+			date > 1937.7.6
+			NOT = { has_country_flag = camp_admin_japan_liaotung_registered }
+			NOT = { has_country_flag = camp_admin_reforming }
+			NOT = { has_country_flag = camp_rework_expansion_frozen }
+			716 = {
+				OR = { is_controlled_by = ROOT AND = { is_controlled_by = MAN MAN = { is_subject_of = ROOT } } }
+				camp_rework_state_can_accept_responsibility_from_root = yes
+				OR = { NOT = { has_variable = camp_admin_responsible_country } var:camp_admin_responsible_country = { tag = ROOT } }
+				NOT = { has_state_flag = camp_admin_closed }
+				NOT = { has_state_flag = camp_rework_experiment_site }
+				NOT = { extermination_camp > 0 }
+				OR = { arms_factory > 0 industrial_complex > 0 }
+			}
+		}
+		716 = {
+			if = { limit = { NOT = { has_variable = genocide_responsible_country } } set_variable = { genocide_responsible_country = ROOT } }
+			set_state_flag = camp_rework_expanded_labor_site
+			set_state_flag = camp_rework_historical_baseline_registration
+			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.expanded_labor }
+			camp_rework_register_active_site = yes
+			clr_state_flag = camp_rework_historical_baseline_registration
+		}
+		set_country_flag = camp_admin_japan_liaotung_registered
+	}
+}
+
+# remove_mission has no timeout/complete payout. Clear the old reserve and target
+# explicitly; do not call completion helpers when retiring a routine project.
+camp_admin_integration_cancel_routine_projects = {
+	if = {
+		limit = { has_variable = generic_labor_project_state_id }
+		var:generic_labor_project_state_id = {
+			set_variable = { migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project }
+			if = {
+				limit = { has_variable = migration_persecution_labor_project_generation }
+				set_variable = { migration_persecution_pending_clear_generation = migration_persecution_labor_project_generation }
+			}
+			clr_state_flag = camp_rework_labor_project_active
+			migration_persecution_clear_owner_state = yes
+		}
+	}
+	clr_country_flag = generic_labor_project_active
+	clear_variable = generic_labor_project_state_id
+	clear_variable = generic_labor_project_type
+	camp_rework_clear_site_labor_reserve = yes
+	if = { limit = { has_active_mission = generic_labor_project_cycle } remove_mission = generic_labor_project_cycle }
+	if = { limit = { has_active_mission = generic_reform_and_dismantlement } remove_mission = generic_reform_and_dismantlement }
+}
+
+# Terminal country cleanup runs before legacy arrays are cleared.
+# Cohorts release in their existing state; cumulative evidence is immutable.
+camp_admin_integration_close_country = {
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		camp_admin_integration_close_site = yes
+	}
+	camp_admin_country_halt = yes
+	camp_administration_civil_cleanup = yes
+	camp_occ_close_country = yes
+	camp_admin_integration_cancel_routine_projects = yes
+}
+
+# State scope, literal history-kind constant. Immutable attribution survives
+# current-owner changes and does not create a population or payment transaction.
+camp_admin_integration_record_site_history = {
+	if = {
+		limit = { has_variable = camp_admin_responsible_country }
+		set_temp_variable = { camp_admin_record_state_id = THIS.id }
+		set_temp_variable = { camp_admin_record_kind = $KIND$ }
+		var:camp_admin_responsible_country = { camp_admin_record_history = yes }
+	}
+}
+
+camp_admin_integration_close_site = {
+	if = {
+		limit = { has_state_flag = camp_admin_initialized NOT = { has_state_flag = camp_admin_closed } }
+		if = {
+			limit = {
+				NOT = { OR = { is_controlled_by = var:camp_admin_responsible_country CONTROLLER = { is_subject_of = var:PREV.camp_admin_responsible_country } } }
+			}
+			camp_admin_integration_record_site_history = { KIND = constant:camp_admin_history_kind.liberation }
+		}
+		else = { camp_admin_integration_record_site_history = { KIND = constant:camp_admin_history_kind.closure } }
+	}
+	camp_admin_close_site = yes
+}
+
+camp_admin_integration_reform_site = {
+	if = {
+		limit = {
+			has_state_flag = camp_admin_initialized
+			NOT = { has_state_flag = camp_admin_closed }
+			OR = { is_controlled_by = var:camp_admin_responsible_country CONTROLLER = { is_subject_of = var:PREV.camp_admin_responsible_country } }
+		}
+		camp_admin_integration_record_site_history = { KIND = constant:camp_admin_history_kind.closure }
+	}
+	camp_admin_reform_site = yes
+}
+
+camp_admin_integration_record_completed_project = {
+	if = {
+		limit = { has_country_flag = camp_admin_economy_completed_this_month }
+		set_temp_variable = { camp_admin_record_state_id = camp_admin_economy_completed_state_id }
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.economic_project }
+		if = {
+			limit = { check_variable = { camp_admin_economy_completed_type = constant:camp_admin_priority.civilian } }
+			set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.civilian_conversion }
+		}
+		camp_admin_record_history = yes
+		clr_country_flag = camp_admin_economy_completed_this_month
+	}
+}
+
+camp_admin_register_cxt_content = {
+	set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:chaosx_cxt_extension_camp_administration }
+	chaosx_test_country_register_extension_effect = yes
+}
+
+# The shared CXT harness already supplies camp locations. Initialize their empty
+# finite ledgers once; this extension never invents admissions, deaths or money.
+chaosx_cxt_extension_camp_administration_apply = {
+	if = {
+		limit = { has_country_flag = chaosx_test_country_initialized NOT = { has_country_flag = camp_admin_cxt_fixture_ready } }
+		camp_admin_integration_initialize_country = yes
+		for_each_scope_loop = { array = camp_active_site_states camp_admin_initialize_site = yes }
+		camp_admin_refresh_interface = yes
+		set_country_flag = camp_admin_cxt_fixture_ready
+	}
+}
+
+# Country scope; UI/decision use this same fresh quote and inclusive validation.
+camp_admin_generic_reform_refresh_quote = {
+	if = { limit = { camp_admin_generic_reform_quote = yes }
+		set_variable = { camp_admin_generic_reform_pp = camp_admin_reform_quote_pp }
+	}
+}
+
+camp_admin_generic_reform = {
+	if = {
+		limit = { camp_admin_generic_reform_available = yes }
+		multiply_temp_variable = { camp_admin_reform_quote_pp = -1 }
+		add_political_power = camp_admin_reform_quote_pp
+		clear_array = camp_admin_generic_reform_states
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			camp_admin_integration_record_site_history = { KIND = constant:camp_admin_history_kind.closure }
+			PREV = { add_to_array = { camp_admin_generic_reform_states = PREV } }
+		}
+		camp_occ_close_country = yes
+		camp_admin_begin_reform = yes
+		set_temp_variable = { camp_rework_enemy_liberation = 0 }
+		for_each_scope_loop = { array = camp_admin_generic_reform_states camp_rework_unregister_inactive_site = yes }
+		clear_array = camp_admin_generic_reform_states
+		# Preserve completed-reform projections without the legacy mission's
+		# expansion unlock or delayed site teardown.
+		set_country_flag = camp_rework_reformed_legacy
+		clr_country_flag = camp_rework_dismantlement_in_progress
+		camp_admin_integration_cancel_routine_projects = yes
+		camp_rework_refresh_country_specific_ideas = yes
+		camp_rework_rebuild_display_values = yes
+	}
+}

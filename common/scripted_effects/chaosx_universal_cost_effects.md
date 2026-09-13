@@ -6,6 +6,14 @@ The framework does not decide purchase eligibility, ordinary modifiers, cooldown
 
 The caller supplies the ordinary current payable cost and invokes the quote again at confirmation or delayed-installment time.
 
+## Event 026 identifier coverage
+
+The family mask enum includes the broad `equipment` mask `112` (`16 + 32 + 64`) for infantry, support, and motorized equipment, the `trains` alias `128` for `train_equipment`, and the `convoys` alias `256` for `convoy`.
+
+Event 026 also uses dedicated mask bits for `army_experience`, `consumer_goods`, `diplomatic`, `intelligence`, `laws`, `officer_corps`, `personnel`, `special_project`, and `state_project`, all within the matcher’s low-thirty-bit range.
+
+The fixed-point constant `constant:universal_cost_fixed_point.gate_epsilon` is `0.00001`, the smallest declared fixed-point step used by an owner’s strict affordability gate when an exact quoted balance must remain payable.
+
 ## Shared storage
 
 The source registry is global and consists of four aligned arrays: `global.universal_cost_source_ids`, `global.universal_cost_source_ratios`, `global.universal_cost_source_priorities`, and `global.universal_cost_source_eligibility_masks`.
@@ -132,6 +140,20 @@ Side effects: temporary arrays are used for deterministic priority traversal, an
 
 The ordinary cost must already include all ordinary consumer modifiers because the engine exposes no generic scripted value that returns every purchase surface's current payable price.
 
+## universal_cost_rebuild_custom_quote_ratio_cache
+
+Purpose: materialize the effect-side source composition for HOI4 custom-cost trigger callers that cannot traverse the source arrays or invoke an effect.
+
+Scope: any effect scope that can write global variables.
+
+Inputs: the active source registry.
+
+Outputs: `global.universal_cost_custom_quote_ratio_political_power`, `global.universal_cost_custom_quote_ratio_command_power`, `global.universal_cost_custom_quote_ratio_manpower`, `global.universal_cost_custom_quote_ratio_equipment`, `global.universal_cost_custom_quote_ratio_trains`, `global.universal_cost_custom_quote_ratio_convoy`, `global.universal_cost_custom_quote_ratio_fuel`, `global.universal_cost_custom_quote_ratio_army_experience`, `global.universal_cost_custom_quote_ratio_navy_experience`, `global.universal_cost_custom_quote_ratio_air_experience`, `global.universal_cost_custom_quote_ratio_stability`, `global.universal_cost_custom_quote_ratio_war_support`, and `global.universal_cost_custom_quote_cache_valid`.
+
+Side effects: invokes `universal_cost_quote_integer` once for each canonical family mask using an ordinary basis-sized probe cost, so each stored ratio is produced by the same source-composition code used for payment. The cache is scalar and deliberately finite; custom triggers using another family mask fail closed.
+
+The cache is cleared by `universal_cost_clear_custom_quote_ratio_cache` when Event 026 is no longer registered. A source expiry does not change any existing transaction receipt.
+
 ## universal_cost_check_quote_affordable
 
 Purpose: check the quoted final amount against a native resource without debiting it.
@@ -146,6 +168,35 @@ Defaults: zero and negative amounts are affordable; unsupported owner-adapter re
 
 Side effects: none.
 
+## Native resource branch map
+
+The following native kinds are dispatched by both `universal_cost_pay_component` and `universal_cost_credit_component`; each payment branch first runs the same inclusive affordability check, while each credit branch adds the stored actual-paid amount without an affordability gate.
+
+| Resource kind | Kind id | Affordability evidence | Debit effect | Credit effect |
+| --- | ---: | --- | --- | --- |
+| `political_power` | 1 | `NOT = { political_power < universal_cost_affordability_amount }` | `add_political_power = universal_cost_payment_delta` | `add_political_power = universal_cost_payment_amount` |
+| `command_power` | 2 | `NOT = { command_power < universal_cost_affordability_amount }` | `add_command_power = universal_cost_payment_delta` | `add_command_power = universal_cost_payment_amount` |
+| `army_experience` | 10 | `NOT = { has_army_experience < universal_cost_affordability_amount }` | `army_experience = universal_cost_payment_delta` | `army_experience = universal_cost_payment_amount` |
+| `navy_experience` | 13 | `NOT = { has_navy_experience < universal_cost_affordability_amount }` | `navy_experience = universal_cost_payment_delta` | `navy_experience = universal_cost_payment_amount` |
+| `air_experience` | 14 | `NOT = { has_air_experience < universal_cost_affordability_amount }` | `air_experience = universal_cost_payment_delta` | `air_experience = universal_cost_payment_amount` |
+| `manpower` | 3 | `NOT = { has_manpower < universal_cost_affordability_amount }` | `add_manpower = universal_cost_payment_delta` | `add_manpower = universal_cost_payment_amount` |
+| `fuel` | 4 | `NOT = { has_fuel < universal_cost_affordability_amount }` | `add_fuel = universal_cost_payment_delta` | `add_fuel = universal_cost_payment_amount` |
+| `infantry_equipment` | 5 | `NOT = { has_equipment = { infantry_equipment < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = infantry_equipment amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = infantry_equipment amount = universal_cost_payment_amount }` |
+| `support_equipment` | 6 | `NOT = { has_equipment = { support_equipment < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = support_equipment amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = support_equipment amount = universal_cost_payment_amount }` |
+| `support_equipment_1` | 11 | `NOT = { has_equipment = { support_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = support_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = support_equipment_1 amount = universal_cost_payment_amount }` |
+| `motorized_equipment` | 7 | `NOT = { has_equipment = { motorized_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = motorized_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = motorized_equipment_1 amount = universal_cost_payment_amount }` |
+| `train_equipment` | 8 | `NOT = { has_equipment = { train_equipment < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = train_equipment amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = train_equipment amount = universal_cost_payment_amount }` |
+| `train_equipment_1` | 12 | `NOT = { has_equipment = { train_equipment_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = train_equipment_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = train_equipment_1 amount = universal_cost_payment_amount }` |
+| `convoy` | 9 | `NOT = { has_equipment = { convoy_1 < universal_cost_affordability_amount } }` | `add_equipment_to_stockpile = { type = convoy_1 amount = universal_cost_payment_delta }` | `add_equipment_to_stockpile = { type = convoy_1 amount = universal_cost_payment_amount }` |
+| `stability` | 15 | `NOT = { has_stability < universal_cost_affordability_amount }` | `add_stability = universal_cost_payment_delta` | `add_stability = universal_cost_payment_amount` |
+| `war_support` | 16 | `NOT = { has_war_support < universal_cost_affordability_amount }` | `add_war_support = universal_cost_payment_delta` | `add_war_support = universal_cost_payment_amount` |
+
+Evidence for the three added native branches is the installed vanilla documentation at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/triggers_documentation.md`, which documents `has_army_experience` and `has_equipment`, and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/effects_documentation.md`, which documents the country-scope `army_experience` effect and country-scope `add_equipment_to_stockpile` effect.
+
+The installed equipment definitions corroborate the concrete aliases at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/equipment/support.txt` (`support_equipment_1`) and `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/units/equipment/trains.txt` (`train_equipment_1`).
+
+Event 026 consumes these exact aliases in `common/scripted_effects/026_black_friday_effects.txt` and `common/scripted_triggers/026_black_friday_triggers.txt`, so the framework keeps their resource-kind ids distinct while dispatching the exact native equipment tokens.
+
 ## universal_cost_pay_component
 
 Purpose: debit one positive quoted component through a supported native resource effect.
@@ -156,7 +207,7 @@ Inputs: temporary `universal_cost_payment_resource_kind` and positive `universal
 
 Output: temporary `universal_cost_payment_result`.
 
-Supported kinds: Political Power, Command Power, Manpower, Fuel, Infantry Equipment, Support Equipment, Motorized Equipment 1, Train Equipment, and Convoy 1.
+Supported kinds: Political Power, Command Power, Army Experience, Navy Experience, Air Experience, Stability, War Support, Manpower, Fuel, Infantry Equipment, Support Equipment, Support Equipment 1, Motorized Equipment 1, Train Equipment, Train Equipment 1, and Convoy 1.
 
 Defaults: zero and negative amounts are successful no-ops; unsupported kinds do not mutate the payer and return `result_no_op`.
 
@@ -212,7 +263,7 @@ Purpose: acknowledge a refund performed by an owner adapter for a resource kind 
 
 Scope: payer country.
 
-Inputs: temporary `universal_cost_transaction_id` and `universal_cost_component_id`.
+Inputs: temporary `universal_cost_transaction_id` and `universal_cost_transaction_component_id`.
 
 Output: temporary `universal_cost_mark_component_refunded_result`.
 
@@ -238,6 +289,10 @@ Side effects: native components are credited once, their per-component state cha
 
 The engine does not provide one generic effect that accepts an arbitrary dynamic resource token, one generic value for every ordinary purchase modifier, a dynamic global-flag name, or a transactional rollback spanning unrelated native effects.
 
-The framework therefore uses numeric source/family/resource enums, aligned arrays, fixed native payment branches, and an explicit owner adapter for factory commitments, technology, advisor, idea, operation, equipment-design, and other inaccessible surfaces.
+The framework therefore uses numeric source/family/resource enums, aligned arrays, sixteen fixed native payment branches, fixed-point quanta for deliberate Stability and War Support payments, and an explicit owner adapter for factory commitments, technology, advisor, idea, operation, equipment-design, and other inaccessible surfaces.
+
+The native resource contract includes Political Power, Command Power, Army Experience, Navy Experience, Air Experience, Manpower, Fuel, Infantry Equipment, Support Equipment, Motorized Equipment, Trains, Convoys, Stability, and War Support. Stability and War Support callers must pass `constant:universal_cost_fixed_point_quantum.stability` or `constant:universal_cost_fixed_point_quantum.war_support` as their rounding quantum; integer callers use the default one-unit quantum.
+
+`custom_adapter` remains an explicit owner-paid and owner-refunded resource kind and is intentionally absent from the native branch map.
 
 An owner adapter must keep eligibility and reserve checks unchanged, compute the ordinary current payable cost, call `universal_cost_quote_integer` for display and again immediately before payment, execute its own unsupported payment effect, call `universal_cost_record_transaction` with actual paid amount equal to the displayed quote, and call either `universal_cost_mark_component_refunded` after an external refund or `universal_cost_settle_transaction` after the cancellation window closes.

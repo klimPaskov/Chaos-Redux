@@ -27,9 +27,11 @@ These summaries describe their recorded source and validation evidence, which do
 | 018 Resources Found | [`018_resources_found/overview.md`](018_resources_found/overview.md) | Cave-country and helper contracts |
 | 019 Infantry Spawn | [`019_infantry_spawn/overview.md`](019_infantry_spawn/overview.md) | [`systems/`](019_infantry_spawn/systems/) |
 | 020 Black Plague | [`020_black_plague/overview.md`](020_black_plague/overview.md) | Shared disease response |
+| 021 Random Civil War | [`021_random_civil_war/overview.md`](021_random_civil_war/overview.md) | Reusable fracture framework, Event 006 adapter, Wars cluster, and SCN-018 scenario |
 | 024 Video Game in Sweden | [`024_video_game_in_sweden/overview.md`](024_video_game_in_sweden/overview.md) | Event package |
 | 026 Black Friday | [`026_black_friday/overview.md`](026_black_friday/overview.md) | [Expanded lifecycle and validation record](026_black_friday.md), universal cost registry, and achievement contract |
 | 027 Doctrine Research | [`027_doctrine_research/overview.md`](027_doctrine_research/overview.md) | Doctrine research and evidence limits |
+| 029 Riches Found | [`029_riches_found/overview.md`](029_riches_found/overview.md) | Persistent state mines, controller transfer, contracts, crises, and three evolutions |
 | 031 Random Terror | [`031_random_terror/overview.md`](031_random_terror/overview.md) | Routes, actors, assets, and validation records |
 | 032 Missiles | [`032_missiles/overview.md`](032_missiles/overview.md) | [Expanded API, custody, scenario, and validation record](032_missiles.md) |
 | 033 Acid Rain | [`033_acid_rain/overview.md`](033_acid_rain/overview.md) | Weather and contamination contracts |

@@ -9677,6 +9677,9 @@ def health(req: Dict[str, Any]) -> Dict[str, Any]:
 
 def run(req: Dict[str, Any]) -> Dict[str, Any]:
     operation = req["operation"]
+    if operation == "collapse_identity_leaf_joints":
+        from identity_leaf_alias import collapse_identity_leaf_joints
+        return collapse_identity_leaf_joints(req, globals())
     if operation in {"repair_explicit_mesh_winding_batch", "repair_explicit_skin_batch", "replace_explicit_corner_normals"}:
         import explicit_batch_repair
         return explicit_batch_repair.run_repair(req, sys.modules[__name__])

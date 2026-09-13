@@ -1,0 +1,46 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 SOVIET NUCLEAR BOMBS MTTH
+# ============================================================================
+# The four entries pace one actor-scoped evolution check at a time. Event 023
+# schedules the resulting country event only for SOV; no global periodic scan
+# is introduced. The gate that actually grants a stage remains in the Event 23
+# scripted trigger layer, so a timing pulse can never bypass a disabled stage
+# or a world-state requirement.
+# ============================================================================
+
+sov_nuclear_bombs_evolution_i_interval = {
+	base = constant:sov_nuclear_bombs_mtth.evolution_i_days
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.public_acceleration has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.serious_crisis_acceleration has_country_flag = sov_nuclear_bombs_serious_crisis }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.low_integrity_delay check_variable = { var = sov_nuclear_bombs_integrity value = 40 compare = less_than } }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.moratorium_delay has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+}
+
+sov_nuclear_bombs_evolution_ii_interval = {
+	base = constant:sov_nuclear_bombs_mtth.evolution_ii_days
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.breakaway_acceleration has_country_flag = sov_nuclear_bombs_collapse_active }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.war_acceleration has_war = yes }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.public_acceleration has_country_flag = sov_nuclear_bombs_public_arsenal_confirmed }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.low_integrity_delay check_variable = { var = sov_nuclear_bombs_integrity value = 40 compare = less_than } }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.moratorium_delay has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+}
+
+sov_nuclear_bombs_evolution_iii_interval = {
+	base = constant:sov_nuclear_bombs_mtth.evolution_iii_days
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.major_exchange_acceleration has_global_flag = sov_nuclear_bombs_major_exchange_active }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.serious_crisis_acceleration has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.war_acceleration has_war = yes }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.low_integrity_delay check_variable = { var = sov_nuclear_bombs_integrity value = 40 compare = less_than } }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.moratorium_delay has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+}
+
+sov_nuclear_bombs_evolution_iv_interval = {
+	base = constant:sov_nuclear_bombs_mtth.evolution_iv_days
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.collapse_acceleration has_country_flag = sov_nuclear_bombs_collapse_active }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.major_exchange_acceleration has_global_flag = sov_nuclear_bombs_major_exchange_active }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.serious_crisis_acceleration has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.restraint_delay has_country_flag = sov_nuclear_bombs_reciprocal_restraint_recorded }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.stable_command_delay has_country_flag = sov_nuclear_bombs_authority_centralized }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.low_integrity_delay check_variable = { var = sov_nuclear_bombs_integrity value = 40 compare = less_than } }
+	modifier = { factor = constant:sov_nuclear_bombs_mtth_factor.moratorium_delay has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+}

@@ -1,0 +1,37 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 RESOURCE COST EFFECTS
+# ============================================================================
+# Payment helpers mirror the four visible cost profiles used by Event 23
+# decisions. They are called only after the matching custom cost trigger has
+# passed and never touch the nuclear ledger.
+# ============================================================================
+
+sov_nuclear_bombs_pay_command_cost = {
+	add_political_power = constant:sov_nuclear_bombs_cost.political_power_command_spend
+	add_command_power = constant:sov_nuclear_bombs_cost.command_power_standard_spend
+}
+
+sov_nuclear_bombs_pay_security_cost = {
+	add_political_power = constant:sov_nuclear_bombs_cost.political_power_security_spend
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:sov_nuclear_bombs_cost.support_equipment_light_spend }
+	add_manpower = constant:sov_nuclear_bombs_cost.manpower_light_spend
+}
+
+sov_nuclear_bombs_pay_logistics_cost = {
+	add_command_power = constant:sov_nuclear_bombs_cost.command_power_light_spend
+	add_equipment_to_stockpile = { type = train_equipment amount = constant:sov_nuclear_bombs_cost.train_equipment_light_spend }
+	add_fuel = constant:sov_nuclear_bombs_cost.fuel_light_spend
+}
+
+sov_nuclear_bombs_pay_diplomatic_cost = {
+	add_political_power = constant:sov_nuclear_bombs_cost.political_power_diplomatic_spend
+	add_command_power = constant:sov_nuclear_bombs_cost.command_power_light_spend
+	add_equipment_to_stockpile = { type = convoy amount = constant:sov_nuclear_bombs_cost.convoy_light_spend }
+}
+
+sov_nuclear_bombs_pay_strategic_cost = {
+	add_political_power = constant:sov_nuclear_bombs_cost.political_power_strategic_spend
+	add_command_power = constant:sov_nuclear_bombs_cost.command_power_heavy_spend
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:sov_nuclear_bombs_cost.support_equipment_light_spend }
+	add_fuel = constant:sov_nuclear_bombs_cost.fuel_light_spend
+}

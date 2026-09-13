@@ -1,0 +1,23 @@
+--- before/common/scripted_triggers/camp_repression_rework_triggers.txt
++++ after/common/scripted_triggers/camp_repression_rework_triggers.txt
+@@ -2118,9 +2118,17 @@
+ 
+ camp_rework_generic_labor_project_requirements_met = {
+ 	has_variable = generic_labor_project_state_id
+-	has_equipment = { motorized_equipment_1 > constant:camp_rework_mission_equipment_reserve.motorized_equipment }
+-	has_equipment = { train_equipment_1 > constant:camp_rework_mission_equipment_reserve.trains }
+-	has_equipment = { support_equipment_1 > constant:camp_rework_mission_equipment_reserve.support_equipment }
++	if = {
++		limit = { has_variable = generic_labor_project_support_reserve }
++		check_variable = { var = num_equipment@motorized_equipment_1 value = generic_labor_project_motorized_reserve compare = greater_than_or_equals }
++		check_variable = { var = num_equipment@train_equipment_1 value = generic_labor_project_trains_reserve compare = greater_than_or_equals }
++		check_variable = { var = num_equipment@support_equipment_1 value = generic_labor_project_support_reserve compare = greater_than_or_equals }
++	}
++	else = {
++		has_equipment = { motorized_equipment_1 > constant:camp_rework_mission_equipment_reserve.motorized_equipment }
++		has_equipment = { train_equipment_1 > constant:camp_rework_mission_equipment_reserve.trains }
++		has_equipment = { support_equipment_1 > constant:camp_rework_mission_equipment_reserve.support_equipment }
++	}
+ 	OR = {
+ 		check_variable = { generic_labor_project_type = constant:camp_rework_project_type.extraction }
+ 		AND = {

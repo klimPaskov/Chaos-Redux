@@ -1,0 +1,23 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 CXT REGISTRATION HOOKS
+# ============================================================================
+# Registers the Event 026 runtime package with the Chaos Redux test-country
+# extension bus. The carrier is a modifier-free hidden idea token; the setup
+# effect is idempotent and only initializes the shared Event 26 runtime state.
+# ============================================================================
+
+black_friday_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event026_black_friday
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event026_black_friday_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = black_friday_cxt_content_registered } }
+		black_friday_initialize_runtime = yes
+		set_global_flag = black_friday_cxt_content_registered
+	}
+}

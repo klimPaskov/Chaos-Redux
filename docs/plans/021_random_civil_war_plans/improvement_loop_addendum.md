@@ -4,9 +4,29 @@ Date: 2026-08-30
 
 Entry event: `chaosx.nr21.1`
 
-Status: Open implementation addendum
+Status: Implementation resolved; specialist closure evidence blocked
 
-Recommendation: Continue with one bounded expansion tranche. Event 021 has a substantial framework, but it is not ready for closure because several accepted promises are represented by generic proxies, Scotland-only adapters, shallow or unreachable branches, and weighted systems that do not yet have complete probability evidence.
+Status note for 2026-09-12: This is a historical planning addendum. The current disposition is `docs/plans/021_random_civil_war_plans/improvement_loop_disposition_2026-09-06.md`, and the current catalog state is `Needs Testing` with automatic release still gated. The numbered Event 021 specifications retain the deterministic severity-band contract. The weighted-severity replacement described below was not promoted.
+
+Recommendation: Treat the design and implementation tranches below as historical review criteria. Do not issue a final completion claim until the full named probability matrix, runtime fixtures, and shared-owner GUI finding are dispositioned.
+
+## Resolution ledger
+
+This addendum is a historical pre-patch review. Its findings remain useful as acceptance criteria, but statements describing the old implementation are not current implementation facts.
+
+| Addendum tranche | Current disposition | Authoritative implementation evidence |
+| --- | --- | --- |
+| P0.1 evidence receipts and adapters | Resolved | `021_random_civil_war_evidence_triggers.txt` and `021_random_civil_war_evidence_effects.txt` provide bounded external-war, Fury, territorial, command, Event 006, same-tag, and neighboring-exposure receipts without importing another event's lifecycle. |
+| P0.2 target, archetype, and severity selection | Resolved for test entry; specialist certification blocked | Target and archetype selection are centralized and exposed to the current probability tooling. Severity remains the deterministic pressure-and-viability band required by the numbered Event 021 specification. The full named probability matrix and same-scenario comparison remain pending. |
+| P0.3 connected planning and force receipts | Resolved | The parent transaction recursively grows connected regions within caps, proves a viable capital and protected remnant, records opening state/force/stockpile/navy/air receipts, and rolls back before mutation when a receipt fails. |
+| P0.4 generic Event 006 adapter | Resolved | The package registry covers all 32 content-attested packages. The adapter uses generic package admission, anchor, setup, final validation, focus, decision, formable, force, reinforcement, identity, leader, flag, politics, idea, AI, and asset paths. Package-content access is separated from strict Event 006 origin/network lifecycle access. |
+| P0.5 scheduler, scenario, and Wars cluster fairness | Resolved | Registered-country due dates, cursors, bounded review/critical budgets, theater/front/generation caps, row 1003 reservations, collision skip reasons, one Wars pacing event, and immediate SCN-018 setup are implemented. Maximum explicitly visits every eligible normal human country. |
+| P1.1 front registry and same-tag route | Resolved | Stable front IDs, hosts, actors, states, capitals, goals, generations, crisis IDs, status and settlement rows are recorded. One-state and all-island targets use the same-tag contest path. Evolution I supports two to four minor/non-severe belligerents and two to five severe/critical major belligerents within tested source caps. |
+| P1.2 decisions, missions, exposure, and sponsors | Resolved | The normal category exposes phase-bound three-to-five-action menus, three disjoint missions, selected-front state, separate civilian relief and armed support, sponsor commitments, mediation, and objective cleanup. |
+| P1.3 settlement, reconstruction, recurrence, and cleanup | Resolved | Government, opposition, independence, autonomy, coalition, partition, merger, and evolution settlements preserve durable results while clearing temporary fronts, sponsors, missions, ideas, reservations, package-adapter receipts, queues, and global targets. Reconstruction and recurrence use finite due dates, successor grace, memory, and generation caps. |
+| P2 presentation and evidence | Source-complete; certification blocked | Event Log, Event Details, three evolution records, six achievements, static assets, GFX registration, localisation, docs, workbook, and CSV exports are present. Current Event 021 lint reports zero selected issues, current focus inspection/render is clean, and the shared Event Details checkbox-overlap finding is dispositioned as mutually exclusive state replacement. The full named probability matrix, runtime fixtures, and current helper-expanded lifecycle projection remain pending. |
+
+The severity review retains a deterministic ladder so the numbered specification and acceptance matrix remain authoritative. Limited, Serious, Severe, and Critical are derived from pressure, authority, country scale, territory, military, actor, and war evidence. The complete named matrix and any future weighted replacement require separate certification and accepted balance targets.
 
 ## Addendum gate and ownership
 
@@ -58,7 +78,7 @@ It must not become claims about real religions, ethnic groups, or atrocities.
 
 | Surface | Current evidence | Addendum disposition |
 |---|---|---|
-| Event availability | Event 021 is present in the default event allowlist and has availability, prefire, and no-target handling. | Preserve. The old default-disabled audit finding is stale. |
+| Event availability | Event 021 has availability, prefire, and no-target handling, while the default event allowlist and runtime release flag remain closed. | Preserve the fail-closed test handoff until acceptance evidence is complete. |
 | Reusable state core | `event021_initialize_country_state`, `event021_refresh_country_state`, `event021_reduce_pressure`, `event021_add_authority`, clamping, and pressure/authority bands exist. | Extend through evidence receipts and expiry; do not replace the core variables. |
 | Target weight application | `event021_random_civil_war_prepare_target`, `event021_parent_add_target_to_selection_pool`, and `event021_parent_prepare_random_event_fire` make target weight affect the draw. | Preserve the concept, but replace repeated array copies and the world prefire scan with a declared fair pool. The old claim that target weights were ignored is stale. |
 | Transaction safety | `event021_parent_begin_target_transaction`, state reservations, `event021_parent_validate_opening_plan`, and `event021_parent_rollback_transaction` exist. | Preserve and expand final topology, remnant, actor, and receipt validation. |
@@ -478,7 +498,7 @@ No new report art, news art, portrait, flag, animation, custom panel, super-even
 
 After implementation and audit, reconcile `docs/events/021_random_civil_war/overview.md`, the Event 021 asset manifest and handoffs, the accepted specs, and `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
-Keep the workbook event status `To Be Reworked` and scenario status `Needs Testing` until the implementation and scenario evidence pass.
+Keep the workbook event status `Needs Testing` and scenario status `Needs Testing` while implementation is handed to testing and scenario evidence remains open.
 
 After a successful workbook update, run `python .tools/export_event_catalog_csv.py` and never edit the exported CSV files directly.
 
@@ -534,7 +554,9 @@ Shared and adjacent owners, only where the contracts above require them:
 7. Run focused country-package, focus, decision/mission, localisation, completion, asset, docs, workbook, and collision audits.
 8. The user retains in-game validation; agents do not launch Hearts of Iron IV.
 
-## MCP evidence and unresolved tooling limits
+## MCP evidence and unresolved tooling limits — historical pre-patch snapshot
+
+The following MCP evidence predates the current-revision refresh recorded in the closure addendum and acceptance ledger. It is retained for audit provenance and must not be read as the current Event 021 status.
 
 ### Event chains
 
@@ -664,13 +686,13 @@ If implementation later introduces technology or doctrine effects, that conclusi
 
 ## Promotion and closure handoff
 
-Keep this file under `docs/plans/021_random_civil_war_plans/` while it is open.
+Keep this file under `docs/plans/021_random_civil_war_plans/` as the historical improvement ledger and acceptance crosswalk.
 
-If accepted, merge its contracts into spec parts 2, 3, 4, 5, 6, 7, 8, 9, and 10, the probability scenario matrix, package manifest, overlap reconciliation, revision notes, and master spec.
+The accepted contracts are implemented in the current Event 021 package and summarized in `docs/events/021_random_civil_war/overview.md` plus `acceptance_evidence.md`; the original specification remains the design source of truth.
 
 The promoted spec must record every accepted identifier, scenario, cap, route gate, state rule, outcome disposition, and audit requirement.
 
-After promotion, mark this addendum promoted or superseded rather than leaving two active design sources.
+This addendum is dispositioned as implementation-resolved and is not a second active design source.
 
 The parent implementation problem is to make the existing Event 021 framework prove its actors, territory, resources, choices, queues, settlements, and records.
 
@@ -682,8 +704,6 @@ Affected implementation surfaces are Event 021 core/parent effects and triggers,
 
 No prior improvement-loop addendum remains unresolved because this is the first one.
 
-This addendum itself remains unresolved until the parent implements, promotes, explicitly queues, or rejects it.
-
-Closure is not recommended yet.
+The implementation findings in this addendum are resolved. Final goal closure is not recommended yet because successful specialist audit handoffs and the remaining MCP evidence boundaries are still required.
 
 After this tranche, the next improvement-loop decision should be a closure audit rather than another broad expansion unless implementation evidence reveals a distinct accepted gap.

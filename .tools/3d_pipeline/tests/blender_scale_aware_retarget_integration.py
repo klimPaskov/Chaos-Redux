@@ -63,7 +63,7 @@ def make_source(path: Path) -> tuple[str, str]:
             bone.rotation_quaternion = (math.cos(angle / 2), math.sin(angle / 2), 0.0, 0.0)
             bone.keyframe_insert("rotation_quaternion", frame=frame, group=bone_name)
         root = rig.pose.bones["Root"]
-        root.location = (0.0, 0.0, root_z)
+        root.location = root.bone.matrix_local.to_3x3().inverted() @ blender_worker.Vector((root_z * 0.1, 0.0, root_z))
         root.keyframe_insert("location", frame=frame, group="Root")
     bpy.ops.object.select_all(action="DESELECT")
     rig.select_set(True)
@@ -210,14 +210,14 @@ def main() -> None:
         for frame in range(result["frame_start"], result["frame_end"] + 1):
             bpy.context.scene.frame_set(frame)
             bpy.context.view_layer.update()
-            root_peak = max(root_peak, abs(float(rig.pose.bones["Root"].location.z)))
+            root_peak = max(root_peak, float(rig.pose.bones["Root"].location.length))
             bounds.append(blender_worker.world_bounds([bpy.data.objects["TargetMesh"]]))
         assert root_peak <= 51.42
         assert max(float(maximum.z - minimum.z) for minimum, maximum in bounds) < 15.0
-        source_world_peak = (
-            result["root_cleanup"]["source_root_z_delta_peak"]
-            * result["source_armature_world_scale"][2]
-        )
+        source_world_peak = max(abs(row["expected_target_delta"][2]) for row in result["root_cleanup"]["world_root_displacement_proof"])
+        assert source_world_peak > 1.39
+        assert all(abs(row["actual_target_delta"][0]) < 1e-5 and abs(row["actual_target_delta"][1]) < 1e-5
+                   for row in result["root_cleanup"]["world_root_displacement_proof"])
         target_world_peak = root_peak * result["target_armature_world_scale"][2]
         assert math.isclose(source_world_peak, target_world_peak, abs_tol=1e-5), (
             source_world_peak,
@@ -244,7 +244,7 @@ def main() -> None:
         for frame in range(result["frame_start"], result["frame_end"] + 1):
             bpy.context.scene.frame_set(frame)
             bpy.context.view_layer.update()
-            baked_root_peak = max(baked_root_peak, abs(float(rig.pose.bones["Root"].location.z)))
+            baked_root_peak = max(baked_root_peak, float(rig.pose.bones["Root"].location.length))
         assert math.isclose(baked_root_peak, target_world_peak, abs_tol=1e-5)
         after_export_bounds = blender_worker.world_bounds([bpy.data.objects["TargetMesh"]])
         for before, after in zip(before_export_bounds, after_export_bounds):

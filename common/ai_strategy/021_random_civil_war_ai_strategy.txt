@@ -1,0 +1,150 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 ROLE-SPECIFIC AI
+# ============================================================================
+# The crisis planner assigns one role flag to each live side. These additive
+# profiles shape production and war posture while the decision ai_will_do blocks
+# choose the concrete action. They abort when the role is cleaned up.
+# ============================================================================
+
+event021_government_consolidator_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_government_side
+		has_country_flag = random_civil_war_consolidator_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 100 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 70 }
+	ai_strategy = { type = equipment_production_factor id = support value = 40 }
+	ai_strategy = { type = avoid_starting_wars value = -50 }
+}
+
+event021_government_hardliner_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_government_side
+		has_country_flag = random_civil_war_hardliner_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 125 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 90 }
+	ai_strategy = { type = equipment_production_factor id = artillery value = 70 }
+}
+
+event021_government_negotiator_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_government_side
+		has_country_flag = random_civil_war_negotiator_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 75 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 55 }
+	ai_strategy = { type = avoid_starting_wars value = 100 }
+}
+
+event021_revolutionary_claimant_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_opposition_side
+		has_country_flag = random_civil_war_revolutionary_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 120 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 85 }
+	ai_strategy = { type = equipment_production_factor id = artillery value = 45 }
+}
+
+event021_constitutional_claimant_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_opposition_side
+		has_country_flag = random_civil_war_constitutional_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 85 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 65 }
+	ai_strategy = { type = avoid_starting_wars value = 25 }
+}
+
+event021_independence_actor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_event6_front_active
+		NOT = { has_country_flag = random_civil_war_settlement_recorded }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 100 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 75 }
+	ai_strategy = { type = build_building id = infrastructure value = 70 }
+	ai_strategy = { type = avoid_starting_wars value = -25 }
+}
+
+event021_command_claimant_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_opposition_side
+		has_country_flag = random_civil_war_command_claimant
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 135 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 95 }
+	ai_strategy = { type = equipment_production_factor id = artillery value = 60 }
+}
+
+event021_neighbor_containment_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_neighbor_exposure
+		has_country_flag = random_civil_war_containment_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 65 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 50 }
+	ai_strategy = { type = avoid_starting_wars value = 90 }
+}
+
+event021_neutral_mediator_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_neighbor_exposure
+		has_country_flag = random_civil_war_mediator_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = 150 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 35 }
+}
+
+event021_opportunistic_sponsor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_neighbor_exposure
+		has_country_flag = random_civil_war_opportunistic_sponsor_profile
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 95 }
+	ai_strategy = { type = equipment_production_factor id = infantry value = 80 }
+	ai_strategy = { type = equipment_production_factor id = artillery value = 50 }
+	ai_strategy = { type = avoid_starting_wars value = -35 }
+}
+
+event021_survivalist_successor_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_successor_side
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = build_army value = 80 }
+	ai_strategy = { type = build_building id = infrastructure value = 90 }
+	ai_strategy = { type = avoid_starting_wars value = 115 }
+}
+
+event021_global_prevention_ai = {
+	allowed = { always = yes }
+	enable = {
+		has_country_flag = random_civil_war_global_registered
+		NOT = { has_country_flag = random_civil_war_active }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = { type = avoid_starting_wars value = 50 }
+}

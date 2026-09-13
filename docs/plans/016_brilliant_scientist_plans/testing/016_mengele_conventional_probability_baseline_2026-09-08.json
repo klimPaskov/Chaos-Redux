@@ -1,0 +1,195 @@
+{
+  "schemaVersion": "1.0",
+  "id": "E016_MENGELE_CONVENTIONAL_ADAPTERS_2026_09_08",
+  "purpose": "Read-only baseline contract for the two existing Kruger weaponization adapters and the added private Mengele conventional stage candidate boundary.",
+  "sourceSnapshots": {
+    "newPrivateSourceInitial": {
+      "path": "common/decisions/016_mengele_conventional_stage_decisions.txt",
+      "status": "absent_at_initial_inspect",
+      "inspectCode": "PROBABILITY_SOURCE_NOT_FOUND",
+      "inspectArtifact": null
+    },
+    "newPrivateSourceCurrent": {
+      "path": "common/decisions/016_mengele_conventional_stage_decisions.txt",
+      "status": "present_without_ai_will_do_at_baseline_freeze",
+      "sourceRevision": "9462f377e5a93b3d2c8887a95159d48a2f388878ad7fca79a4c821b4f9f9a053",
+      "sourceHash": "891f7f7b01acb000caf6452e0bb24c58534e639d938a153f9c74bda3b4e681a4"
+    },
+    "krugerSource": {
+      "path": "common/decisions/016_brilliant_scientist_directorate_project_board.txt",
+      "sourceHash": "c7038588658afc29f36bc502277226d36171de0a74be4f678ad9b810e54d0d58",
+      "sourceRevisionAtEvaluate": "c834f98283cbf3d38f0aa633788522266db29f3d222986efc34f992b27b61b88"
+    }
+  },
+  "candidatePools": {
+    "newPrivateConventional15": [
+      "mengele_event016_electronics_theory",
+      "mengele_event016_electronics_deployment",
+      "mengele_event016_electronics_weaponization",
+      "mengele_event016_materials_theory",
+      "mengele_event016_materials_deployment",
+      "mengele_event016_materials_weaponization",
+      "mengele_event016_rocketry_theory",
+      "mengele_event016_rocketry_deployment",
+      "mengele_event016_rocketry_weaponization",
+      "mengele_event016_high_energy_theory",
+      "mengele_event016_high_energy_deployment",
+      "mengele_event016_high_energy_weaponization",
+      "mengele_event016_biomedical_theory",
+      "mengele_event016_biomedical_deployment",
+      "mengele_event016_biomedical_weaponization"
+    ],
+    "krugerWeaponization2": [
+      "brilliant_scientist_advance_rocketry_weaponization",
+      "brilliant_scientist_advance_high_energy_weaponization"
+    ]
+  },
+  "externalFactors": {
+    "adapterBoundary": "mission_ai_will_do",
+    "selectionRule": "score_only",
+    "normalizedSelectionProbability": false,
+    "candidateEligibility": "Declared in candidateOverrides for score evaluation; live private-owner, board, predecessor, native-project, DLC, cost, capacity, active-family, and completed-stage gates are not fully typed by the flat scenario schema.",
+    "nativeWeaponizationGates": {
+      "rocketry": [
+        "sp:sp_rockets_long_range_ballistic_missile",
+        "sp:sp_air_supersonic_jet"
+      ],
+      "high_energy": [
+        "sp:sp_thermo_nuclear_bomb",
+        "sp:sp_nuclear_warheads"
+      ]
+    }
+  },
+  "scenarioSet": {
+    "id": "E016_MENGELE_CONVENTIONAL_ADAPTERS_2026_09_08",
+    "scenarios": [
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_PRIVATE_ELIGIBLE_PEACE",
+        "state": { "tag": "MEN", "is_ai": true, "has_war": false, "private_owner": true, "current_kruger_host": false, "exact_affordability": true },
+        "flags": ["private_owner", "no_war"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_PRIVATE_ELIGIBLE_WAR",
+        "state": { "tag": "MEN", "is_ai": true, "has_war": true, "private_owner": true, "current_kruger_host": false, "exact_affordability": true },
+        "flags": ["private_owner", "at_war"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_NONOWNER",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "private_owner": false, "current_kruger_host": false, "exact_affordability": true },
+        "flags": ["nonowner"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_CURRENT_KRUGER_HOST",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["current_kruger_host", "dlc", "correct_predecessor", "native_complete"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_PREDECESSOR_ABSENT",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": true, "predecessor_correct": false, "predecessor_absent": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["current_kruger_host", "predecessor_absent", "native_complete"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_EXACT_AFFORDABILITY",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["current_kruger_host", "exact_affordability", "native_complete"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_SHORT_SUPPORT_EQUIPMENT",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": false, "short_support_equipment": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["short_support_equipment"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_SHORT_FUEL",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": false, "short_fuel": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["short_fuel"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_SHORT_MANPOWER",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": false, "short_manpower": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["short_manpower"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_ACTIVE_OTHER_FAMILY",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": true, "active_other_family": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["active_other_family"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_ACTIVE_SAME_FAMILY",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "exact_affordability": true, "active_same_family": true, "predecessor_correct": true, "native_project_completed": true, "has_dlc_gotterdammerung": true },
+        "flags": ["active_same_family"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_DLC_NATIVE_PROTOTYPE",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": true, "native_project_completed": true, "predecessor_correct": true, "exact_affordability": true },
+        "flags": ["dlc_native_prototype"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_NO_DLC_DECISION_PROTOTYPE",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": false, "native_project_completed": false, "decision_owned_predecessor": true, "predecessor_correct": true, "exact_affordability": true },
+        "flags": ["no_dlc_decision_prototype", "decision_owned_predecessor"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_COMPLETED_STAGE",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": true, "native_project_completed": true, "predecessor_correct": true, "completed_stage": true, "exact_affordability": true },
+        "flags": ["completed_stage"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_DLC_CORRECT_PREDECESSOR_NATIVE_ABSENT",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": true, "native_project_completed": false, "predecessor_correct": true, "exact_affordability": true },
+        "flags": ["dlc", "correct_predecessor", "native_absent"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_DLC_WRONG_PREDECESSOR_NATIVE_COMPLETE",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": true, "native_project_completed": true, "predecessor_correct": false, "exact_affordability": true },
+        "flags": ["dlc", "wrong_predecessor", "native_complete"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_NO_DLC_CORRECT_PREDECESSOR_NATIVE_ABSENT",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": false, "native_project_completed": false, "decision_owned_predecessor": true, "predecessor_correct": true, "exact_affordability": true },
+        "flags": ["no_dlc", "correct_decision_predecessor", "native_absent"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_NO_DLC_WRONG_PREDECESSOR_NATIVE_ABSENT",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": false, "native_project_completed": false, "decision_owned_predecessor": false, "predecessor_correct": false, "exact_affordability": true },
+        "flags": ["no_dlc", "wrong_predecessor", "native_absent"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_NO_DLC_CORRECT_PREDECESSOR_NATIVE_COMPLETE",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": false, "native_project_completed": true, "decision_owned_predecessor": true, "predecessor_correct": true, "exact_affordability": true },
+        "flags": ["no_dlc", "correct_decision_predecessor", "native_complete"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      },
+      {
+        "id": "E016_MENGELE_CONVENTIONAL_NO_DLC_WRONG_PREDECESSOR_NATIVE_COMPLETE",
+        "state": { "tag": "GER", "is_ai": true, "has_war": true, "current_kruger_host": true, "has_dlc_gotterdammerung": false, "native_project_completed": true, "decision_owned_predecessor": false, "predecessor_correct": false, "exact_affordability": true },
+        "flags": ["no_dlc", "wrong_predecessor", "native_complete"],
+        "candidateOverrides": { "brilliant_scientist_advance_rocketry_weaponization": true, "brilliant_scientist_advance_high_energy_weaponization": true }
+      }
+    ]
+  },
+  "expectedAvailability": {
+    "scoreFixtureUsesOverrides": true,
+    "sourceGateConclusion": "The current Kruger weaponization candidates remain source-gated by their native special-project OR branches. The no-DLC decision-owned predecessor state is recorded as ineligible by source review until the owner patch adds an alternative branch.",
+    "positiveNativeCases": ["E016_MENGELE_CONVENTIONAL_CURRENT_KRUGER_HOST", "E016_MENGELE_CONVENTIONAL_EXACT_AFFORDABILITY", "E016_MENGELE_CONVENTIONAL_NO_DLC_CORRECT_PREDECESSOR_NATIVE_COMPLETE"],
+    "negativeNoDlcCases": ["E016_MENGELE_CONVENTIONAL_NO_DLC_CORRECT_PREDECESSOR_NATIVE_ABSENT", "E016_MENGELE_CONVENTIONAL_NO_DLC_WRONG_PREDECESSOR_NATIVE_ABSENT"],
+    "negativePredecessorCases": ["E016_MENGELE_CONVENTIONAL_PREDECESSOR_ABSENT", "E016_MENGELE_CONVENTIONAL_DLC_WRONG_PREDECESSOR_NATIVE_COMPLETE", "E016_MENGELE_CONVENTIONAL_NO_DLC_WRONG_PREDECESSOR_NATIVE_COMPLETE"]
+  }
+}

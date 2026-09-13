@@ -1,52 +1,640 @@
 add_namespace = chaosx.nr29
 
-##############################################################################################################
-#    ##    ## ########      #######   #######
-#    ###   ## ##     ##    ##     ## ##     ##
-#    ####  ## ##     ##           ## ##     ##
-#    ## ## ## ########      #######   ########
-#    ##  #### ##   ##      ##               ##
-#    ##   ### ##    ##     ##        ##     ##
-#    ##    ## ##     ##    #########  #######
-##############################################################################################################
-#   ######
-#   #     # #  ####  #    # ######  ####     ######  ####  #    # #    # #####
-#   #     # # #    # #    # #      #         #      #    # #    # ##   # #    #
-#   ######  # #      ###### #####   ####     #####  #    # #    # # #  # #    #
-#   #   #   # #      #    # #           #    #      #    # #    # #  # # #    #
-#   #    #  # #    # #    # #      #    #    #      #    # #    # #   ## #    #
-#   #     # #  ####  #    # ######  ####     #       ####   ####  #    # #####
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND
+# ============================================================================
+# The root event is a repeatable discovery. Automatic firing prepares one
+# load-weighted ordinary country and one valid state before this event is
+# shown. The state then owns the durable mine record; controller changes are
+# handled by the narrow on_state_control_changed hook and the bounded registry.
+# Hidden state callbacks pace evolutions and reports without a world scan.
+# ============================================================================
 
-##############################################################################################################
+# ---------------------------------------------------------------------------
+# Canonical discovery
+# ---------------------------------------------------------------------------
 
 country_event = {
-    id = chaosx.nr29.1
-    title = chaosx.nr29.1.t
+	id = chaosx.nr29.1
+	title = chaosx.nr29.1.t
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_iii
+		trigger = { event_target:riches_found_mine_state = { has_state_flag = riches_found_prefire_evolution_iii } }
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_ii
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_ii
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc.evolution_i
+		trigger = {
+			event_target:riches_found_mine_state = {
+				has_state_flag = riches_found_prefire_evolution_i
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	desc = {
+		text = chaosx.nr29.1.desc
+		trigger = {
+			event_target:riches_found_mine_state = {
+				NOT = { has_state_flag = riches_found_prefire_evolution_i }
+				NOT = { has_state_flag = riches_found_prefire_evolution_ii }
+				NOT = { has_state_flag = riches_found_prefire_evolution_iii }
+			}
+		}
+	}
+	picture = GFX_report_event_riches_found_discovery
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
+	trigger = {
+		OR = {
+			AND = {
+				check_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+				has_event_target = riches_found_prefire_owner
+				has_event_target = riches_found_prefire_state
+				event_target:riches_found_prefire_owner = { tag = ROOT }
+				event_target:riches_found_prefire_state = {
+					is_owned_and_controlled_by = ROOT
+					riches_found_is_valid_discovery_state = yes
+				}
+			}
+			AND = {
+				NOT = { has_event_target = riches_found_prefire_owner }
+				NOT = { has_event_target = riches_found_prefire_state }
+				riches_found_is_eligible_discovery_country = yes
+			}
+		}
+	}
 
-    immediate = {
-        random_country = {
-            country_event = { id = chaosx.nr29.2 days = 1 }
-        }
-    }
+	immediate = {
+		hidden_effect = {
+			# A direct country-event invocation is still bounded to one current
+			# country and one valid state. Automatic dispatcher invocations have
+			# already prepared the load-weighted recipient above.
+			if = {
+				limit = {
+					NOT = { has_event_target = riches_found_prefire_owner }
+					NOT = { has_event_target = riches_found_prefire_state }
+					riches_found_is_eligible_discovery_country = yes
+				}
+				save_event_target_as = riches_found_prefire_owner
+	random_owned_controlled_state = {
+		limit = { riches_found_is_valid_discovery_state = yes }
+		riches_found_save_prefire_state = yes
+	}
+				if = {
+					limit = { has_event_target = riches_found_prefire_state }
+					set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+				}
+			}
+
+			if = {
+				limit = {
+					OR = {
+						check_variable = { riches_found_prefire_ready = constant:riches_found_value.one }
+						has_event_target = riches_found_prefire_state
+					}
+					has_event_target = riches_found_prefire_owner
+					has_event_target = riches_found_prefire_state
+					event_target:riches_found_prefire_owner = { tag = ROOT }
+					event_target:riches_found_prefire_state = {
+					is_owned_and_controlled_by = ROOT
+					riches_found_is_valid_discovery_state = yes
+				}
+			}
+				event_target:riches_found_prefire_state = {
+					save_event_target_as = riches_found_prepared_mine_state
+					save_event_target_as = riches_found_mine_state
+				}
+				riches_found_commit_discovery = yes
+				event_target:riches_found_mine_state = {
+					riches_found_prepare_prefire_evolution_opening = yes
+					set_state_flag = riches_found_opening_notice_pending
+				}
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.a
+		custom_effect_tooltip = chaosx.nr29.1.a.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_public_development
+			modifier = { add = constant:riches_found_ai_weight.policy_democratic_public_add has_government = democratic }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.public_development }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.two }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.two }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.b
+		custom_effect_tooltip = chaosx.nr29.1.b.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_state_extraction
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_state_add OR = { has_government = fascism has_government = communism } }
+			modifier = { add = constant:riches_found_ai_weight.policy_major_state_add is_major = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_war_state_add has_war = yes }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.state_extraction }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.two }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.c
+		custom_effect_tooltip = chaosx.nr29.1.c.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_concession_economy
+			modifier = { add = constant:riches_found_ai_weight.policy_poor_concession_add num_of_civilian_factories < constant:riches_found_foreign_interest_threshold.weak_factory_count }
+			modifier = { add = constant:riches_found_ai_weight.policy_minor_concession_add is_major = no }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.concession_economy }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.one }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.four }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.two }
+				add_to_variable = { riches_found_concession_exposure = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.d
+		custom_effect_tooltip = chaosx.nr29.1.d.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_militarized
+			modifier = { add = constant:riches_found_ai_weight.policy_war_militarized_add has_war = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_militarized_add OR = { has_government = fascism has_government = communism } }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.militarized }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.one }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.four }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_private_security_autonomy = constant:riches_found_value.two }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	option = {
+		name = chaosx.nr29.1.e
+		custom_effect_tooltip = chaosx.nr29.1.e.tt
+		ai_chance = {
+			base = constant:riches_found_ai_weight.policy_predatory
+			modifier = { add = constant:riches_found_ai_weight.policy_desperate_predatory_add has_war = yes }
+			modifier = { add = constant:riches_found_ai_weight.policy_desperate_predatory_add has_stability < constant:riches_found_achievement_threshold.account_stability_floor }
+			modifier = { add = constant:riches_found_ai_weight.policy_authoritarian_predatory_add OR = { has_government = fascism has_government = communism } }
+		}
+		hidden_effect = {
+			event_target:riches_found_mine_state = {
+				set_state_flag = riches_found_opening_choice_made
+				set_variable = { riches_found_policy = constant:riches_found_policy.predatory }
+				add_to_variable = { riches_found_mine_development = constant:riches_found_value.four }
+				add_to_variable = { riches_found_local_order = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_revenue_legitimacy = constant:riches_found_value.negative_one }
+				add_to_variable = { riches_found_extraction_pressure = constant:riches_found_value.four }
+				add_to_variable = { riches_found_illicit_capture = constant:riches_found_value.four }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+			}
+		}
+	}
+
+	after = {
+		if = {
+			limit = { has_event_target = riches_found_mine_state }
+			event_target:riches_found_mine_state = {
+				clr_state_flag = riches_found_opening_notice_pending
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+				riches_found_refresh_evolution_gates = yes
+			}
+		}
+		clr_country_flag = riches_found_discovery_pending
+	}
 }
 
-##############################################################################################################
+# ---------------------------------------------------------------------------
+# Bounded controller pulse and state callbacks
+# ---------------------------------------------------------------------------
 
 country_event = {
-    id = chaosx.nr29.2
-    title = chaosx.nr29.2.t
-    desc = chaosx.nr29.2.d
-    picture = GFX_report_event_FIN_petsamo_mine
+	id = chaosx.nr29.900
+	hidden = yes
+	is_triggered_only = yes
 
-    is_triggered_only = yes
+	trigger = {
+		has_country_flag = riches_found_controller_pulse_scheduled
+		has_country_flag = riches_found_controller_aggregate_active
+	}
 
-    option = {
-        ai_chance = { base = 100 }
-        name = chaosx.nr29.2.a
-        news_event = { id = chaosx.news.31 days = 3 }
-        add_political_power = 2000
-    }
+	immediate = {
+		hidden_effect = { riches_found_run_controller_pulse = yes }
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.901
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_evolution_i_pending
+		riches_found_evolution_i_gate = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			riches_found_enter_evolution_i = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.902
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_evolution_ii_pending
+		riches_found_evolution_ii_gate = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			riches_found_enter_evolution_ii = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.903
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_evolution_iii_pending
+		riches_found_evolution_iii_gate = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			riches_found_enter_evolution_iii = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.904
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_gilded_sovereignty_pending
+		riches_found_gilded_sovereignty_gate = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			riches_found_enter_gilded_sovereignty = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.905
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_bottomless_account_pending
+		riches_found_bottomless_account_gate = yes
+	}
+
+	immediate = {
+		hidden_effect = {
+			riches_found_enter_bottomless_account = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.906
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_mine_state
+		has_state_flag = riches_found_demons_evacuation_authorized
+		has_state_flag = riches_found_demons_evacuation_preparation_pending
+		NOT = { riches_found_mission_is_active = yes }
+		CONTROLLER = {
+			exists = yes
+			riches_found_country_can_start_evacuate_workforce_mission = yes
+		}
+		OR = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_port_route }
+	}
+
+	immediate = {
+		hidden_effect = {
+			clr_state_flag = riches_found_demons_evacuation_preparation_pending
+			set_state_flag = riches_found_demons_evacuation_ready
+			set_state_flag = riches_found_demons_evacuation_route_active
+			set_variable = { riches_found_demons_evacuation_completion_date = global.date }
+			add_to_variable = { riches_found_demons_evacuation_completion_date = constant:riches_found_duration.evacuation_mission_hold_days }
+			set_temp_variable = { riches_found_input_mission_kind = constant:riches_found_mission_kind.evacuate_workforce }
+			set_temp_variable = { riches_found_input_mission_duration_days = constant:riches_found_duration.evacuation_mission_days }
+			riches_found_start_requested_mission = yes
+			riches_found_refresh_mine_presentation = yes
+			riches_found_refresh_mine_contribution = yes
+			riches_found_refresh_state_achievement_timers = yes
+		}
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.910
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_state_flag = riches_found_report_pending
+		has_state_flag = riches_found_report_scheduled
+		CONTROLLER = { exists = yes }
+	}
+
+	immediate = {
+		hidden_effect = { riches_found_run_queued_report = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evolution entry reports
+# ---------------------------------------------------------------------------
+
+state_event = {
+	id = chaosx.nr29.101
+	title = chaosx.nr29.101.t
+	desc = chaosx.nr29.101.d
+	picture = GFX_report_event_riches_found_rush
+	is_triggered_only = yes
+
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_evolution_i_recorded
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.resource_curse compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+
+	option = {
+		name = chaosx.nr29.101.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.102
+	title = chaosx.nr29.102.t
+	desc = chaosx.nr29.102.d
+	picture = GFX_report_event_riches_found_gold_disease
+	is_triggered_only = yes
+
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_evolution_ii_recorded
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_disease compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+
+	option = {
+		name = chaosx.nr29.102.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.103
+	title = chaosx.nr29.103.t
+	desc = chaosx.nr29.103.d
+	picture = GFX_report_event_riches_found_opened_depths
+	is_triggered_only = yes
+
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_evolution_iii_recorded
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.opened_depths compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+
+	option = {
+		name = chaosx.nr29.103.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Baseline and late outcome reports
+# ---------------------------------------------------------------------------
+
+state_event = {
+	id = chaosx.nr29.10
+	title = chaosx.nr29.10.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_rush
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.rush compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.10.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.20
+	title = chaosx.nr29.20.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_concession
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.concession compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.20.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.30
+	title = chaosx.nr29.30.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_raid
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.raid compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.30.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.40
+	title = chaosx.nr29.40.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_collapse
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.collapse compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.40.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.111
+	title = chaosx.nr29.111.t
+	desc = chaosx.nr29.111.d
+	picture = GFX_report_event_riches_found_gilded_sovereignty
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_gilded_sovereignty
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gilded_sovereignty compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.111.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.112
+	title = chaosx.nr29.112.t
+	desc = chaosx.nr29.112.d
+	picture = GFX_report_event_riches_found_bottomless_account
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_bottomless_account
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.bottomless_account compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.112.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.120
+	title = chaosx.nr29.120.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_gold_disease
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_evolution_gold_disease
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.gold_incident compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.incident.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
+}
+
+state_event = {
+	id = chaosx.nr29.130
+	title = chaosx.nr29.130.t
+	desc = chaosx.nr29.incident.d
+	picture = GFX_report_event_riches_found_opened_depths
+	is_triggered_only = yes
+	trigger = {
+		riches_found_mine_is_registered = yes
+		has_state_flag = riches_found_evolution_demons
+		has_state_flag = riches_found_report_pending
+		check_variable = { var = riches_found_report_kind value = constant:riches_found_report.supernatural_incident compare = equals }
+		CONTROLLER = { exists = yes }
+	}
+	option = {
+		name = chaosx.nr29.incident.a
+		custom_effect_tooltip = riches_found.report_acknowledged
+		riches_found_complete_report = yes
+	}
 }

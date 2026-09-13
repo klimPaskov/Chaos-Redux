@@ -91,7 +91,7 @@ Event Chaos Level assignments remain unchanged.
 
 Event Details shows the event's existing Chaos Level separately from cluster member severity and effective minimum.
 
-The severity corrections are Fury as Medium, Tensions Rising as Low, and Black Plague as Severe.
+The current catalogue assigns Fury separate Medium and High rows, Tensions Rising Medium severity, and Black Plague Severe severity.
 
 The shared evaluate_event_pool_candidate_unavailability resolver owns the ordered automatic-pool reason contract used by both normal selection and the Events tab.
 
@@ -191,7 +191,7 @@ Required rows follow after ordinary eligibility.
 
 Optional rows use a dynamic severity-biased shuffle. Low through Severe bands are preserved in 90 percent of Calm World batches and gradually fall to 80 percent at World Collapse, while the remaining multi-band batches invert one random adjacent severity boundary.
 
-Opening duplicate rows for Events 6, 9, and 13 have explicit stable primary trigger rows.
+Opening duplicate rows for Events 4, 6, 7, 9, and 13 have explicit stable primary trigger rows.
 
 Every activation has a stable batch identity.
 

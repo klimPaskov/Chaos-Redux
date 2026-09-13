@@ -15,7 +15,25 @@ This document is the implementation-facing summary for the cluster registry, run
 
 A cluster can join related events into one activation, but it cannot replace or weaken ordinary event-system fireability.
 
+## Catalogue and runtime authority
+
+The fixed catalogue in this document is the v2 catalogue from `C:/Users/klimp/Downloads/chaos_redux_clusters_catalog_updated_v2.csv`.
+
 Historical source note: `C:/Users/klimp/Downloads/chaos_redux_clusters_catalog_updated_v2.csv` was absent at that absolute Downloads path when checked on 2026-09-05. Related current catalog surfaces are `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and the export `docs/spreadsheets/chaos_redux_clusters_catalog.csv`. Those files remain outside this bounded documentation scope, and this note does not assert that either current artifact replaces the historical CSV.
+
+The fixed catalogue contains cluster IDs 1 through 18 exactly as listed in the catalogue table below.
+
+The memberless Random Stuff runtime cluster is retained at ID 19 and is documented separately from the 18-row fixed catalogue.
+
+Catalogue `Chaos level` values map to zero-based internal unlock tiers as follows: level 1 maps to tier 0, level 2 maps to tier 1, level 3 maps to tier 2, and level 4 maps to tier 3.
+
+Catalogue types map as follows: `Minor Fire-Once` is the runtime `one_time` type, and `Minor Repeatable` is the runtime `repeatable` type.
+
+Required status and declared minimum-tier values remain runtime architecture metadata.
+
+The exact membership matrix below is authoritative only for event slot and member severity.
+
+The event-system fireability contract remains authoritative for whether a trigger or member can actually dispatch.
 
 ## Ordinary event-system eligibility
 
@@ -67,7 +85,7 @@ Pass two applies the support requirement to High and Severe non-trigger rows usi
 
 The eligible logical count for activation chance is the count that remains after both passes.
 
-The cluster-facing severity corrections are Fury as Medium, Tensions Rising as Low, and Black Plague as Severe.
+The current catalogue assigns Fury separate Medium and High rows, Tensions Rising Medium severity, and Black Plague Severe severity.
 
 ## Activation chance
 
@@ -138,7 +156,7 @@ Only the selected winner commits success fatigue, history, pacing, and cooldown.
 
 ### Random Stuff whole-pool activation
 
-Random Stuff is the one registered cluster without configured member rows.
+Random Stuff is the retained memberless runtime cluster at ID 19 and has no configured fixed-member rows.
 
 It unlocks at Chaos Tier 3 and receives exactly one dynamic automatic attempt after a successfully dispatched ordinary minor event.
 
@@ -222,7 +240,7 @@ Every configured fixed member has a stable logical row identity.
 
 Stable logical rows keep duplicate event IDs distinct.
 
-Events 6, 9, and 13 have explicit primary trigger rows for their opening duplicate groups.
+Events 4, 6, 7, 9, and 13 have explicit primary trigger rows for their opening duplicate groups.
 
 Later staged rows retain their own role, severity, declared minimum, chance, and status.
 
@@ -237,6 +255,24 @@ A row that fails that recheck is skipped and invalidated with N/A and the first 
 A queued row never substitutes another event, logical row, target, or batch context.
 
 Overlapping batches remain isolated by their batch identity and aligned context.
+
+### Non-destructive semantic-ID migration
+
+Runtime version 2 preserves stable semantic row IDs for pre-existing logical rows.
+
+Every new logical row receives a globally unique runtime row ID.
+
+The versioned migration remaps only persisted cluster-ID fields after the complete legacy 1–12 registry sequence proves their old meanings. Snapshotted member severity, role, tier, chance, roll, status, batch context, and event-specific queue context remain unchanged.
+
+Cluster ID 3 retains the Diplomacy semantic identity formerly named Diplomatic Panic.
+
+IDs 8 through 12 are semantically reassigned to Intelligence, Scientific Research, Negative Economy, Various Anomalies, and Pacts.
+
+Diseases uses ID 13, and the memberless Random Stuff runtime cluster uses ID 19.
+
+Legacy numeric IDs are migration inputs only and are not additional registered clusters.
+
+Settings navigation follows the registered 1–19 sequence and never exposes unregistered numeric IDs.
 
 Runtime state is versioned and non-destructive, so historical snapshots are not rewritten when current definitions or state change.
 
@@ -285,57 +321,167 @@ Automatic fatigue and previous-participation memory exclude manual activations.
 
 ## Registered cluster families
 
-The current registry artifacts define these stable cluster IDs and member patterns.
+The v2 fixed catalogue is reproduced exactly below so that cluster IDs, names, player-facing details, member ID lists, severity lists, types, catalogue Chaos levels, and catalogue statuses can be reviewed together.
 
-| Cluster | ID | Member pattern | Scope |
+| Cluster ID | Cluster Name | Details | Members (ID) | Member Severities | Type | Chaos level | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Wars | Sudden wars and armed conflicts break out between countries, turning local disputes, opportunistic attacks, internal fractures, and alliance betrayals into wider fighting. | 4, 4, 4, 4, 7, 7, 21, 45, 62 | Low, Low, Medium, High, Medium, High, Medium, High, High | Minor Repeatable | 1 | In progress |
+| 2 | Liberations | Liberation shocks create independent countries, break subjects and unions apart, and connect newly freed states through wider liberation crises. | 5, 6, 6, 6, 63 | Severe, Low, Medium, High, Medium | Minor Repeatable | 1 | In progress |
+| 3 | Diplomacy | International relations destabilize through diplomatic crises, faction pressure, treaties, strategic alignment, aggressive posturing, and intervention. | 8, 17, 36, 59 | Medium, Medium, High, High | Minor Repeatable | 1 | In progress |
+| 4 | Peace | Peace shocks reduce or reverse conflict through settlements, ceasefires, demobilization, exhaustion, negotiations, and forced returns toward peacetime. | 9, 9, 9, 9, 61 | Low, Low, Medium, High, High | Minor Repeatable | 1 | In progress |
+| 5 | Natural Disasters | Natural and environmental catastrophes strike states or regions through five distinct Natural Disasters slots, followed by optional Acid Rain and Heat Wave crises. A sequence containing Acid Rain commits Major-event pacing once while preserving the cluster history. | 13, 13, 13, 13, 13, 33, 51 | Low, Low, Low, Low, Medium, Severe, High | Minor Repeatable | 1 | In progress |
+| 6 | Formables | Countries revive, construct, or transform into major historical, religious, imperial, or alternative political formations. | 3, 12, 38, 48 | High, Severe, High, Medium | Minor Repeatable | 3 | In progress |
+| 7 | Positive Economy | Beneficial economic shocks create sudden growth, wealth, industry, infrastructure, construction, cheaper activity, or profitable underground markets. | 18, 26, 29, 34, 55, 57, 58 | Medium, Medium, Medium, Low, Medium, High, Medium | Minor Repeatable | 1 | In progress |
+| 8 | Intelligence | Espionage, leaks, investigations, covert information, and intelligence failures expose or manipulate states through hidden information. | 39, 52 | Medium, Low | Minor Fire-Once | 1 | New |
+| 9 | Scientific Research | Scientific and technological shocks accelerate, distort, gift, or destroy research progress and the institutions that produce it. | 16, 24, 27, 54, 60 | Severe, High, Medium, Medium, High | Minor Fire-Once | 2 | New |
+| 10 | Negative Economy | Economic crises damage production, trade, employment, and industrial capacity. Great Depression 2.0 is the cluster's Low baseline member, while harsher consequences depend on the crisis conditions it develops. | 35, 50 | Low, Medium | Minor Fire-Once | 1 | New |
+| 11 | Various Anomalies | Genuinely anomalous events that do not fit a more specific thematic cluster. | 47 | Low | Minor Fire-Once | 4 | New |
+| 12 | Pacts | Countries create secret, unusual, or rapidly assembled pacts and alliance arrangements that can reshape later conflicts. | 11 | High | Minor Fire-Once | 3 | New |
+| 13 | Diseases | Disease outbreaks and biological crises spread through countries, armies, and populations, creating escalating health and military emergencies. | 2, 20, 41 | Severe, Severe, Low | Minor Repeatable | 1 | New |
+| 14 | Randomizations | Core parts of the game state are deliberately randomized, producing large systemic changes rather than a conventional political or economic incident. | 46 | Medium | Minor Repeatable | 1 | New |
+| 15 | Sudden Abundance | Countries suddenly receive large quantities of manpower, wealth, equipment, weapons, fleets, structures, or other valuable assets without normal buildup. | 19, 29, 32, 37, 42, 56, 64 | Medium, Medium, Medium, Medium, Low, Medium, Medium | Minor Repeatable | 1 | New |
+| 16 | Domestic Unrest | Internal instability produces insurgency, separatism, terrorism, civil conflict, and breakaway movements inside or against existing states. | 1, 6, 21, 31, 63 | Medium, High, Low, Medium, Medium | Minor Repeatable | 1 | New |
+| 17 | Alien Invasions | Extraterrestrial or non-human invasion forces directly threaten countries, territory, and the existing international order. | 43 | Severe | Minor Fire-Once | 1 | New |
+| 18 | Military Preparation | States rapidly acquire the doctrine, strategic weapons, equipment, fortifications, institutions, and military capacity needed for future conflict. | 22, 27, 32, 42, 56, 64 | High, Medium, Medium, Low, Medium, Medium | Minor Repeatable | 1 | New |
+
+The fixed catalogue table contains 18 rows.
+
+The current membership matrix contains 75 logical rows.
+
+It retains the supplied v2 matrix outside the explicitly revised Wars and Natural Disasters repeated-slot sequences.
+
+| Cluster ID | Cluster Name | Slot | Event ID | Event Name | Severity | Membership Notes |
+| --- | --- | ---: | ---: | --- | --- | --- |
+| 1 | Wars | 1 | 4 | Random War | Low | Logical slot 1 of 4 in Wars. |
+| 1 | Wars | 2 | 4 | Random War | Low | Logical slot 2 of 4 in Wars. |
+| 1 | Wars | 3 | 4 | Random War | Medium | Logical slot 3 of 4 in Wars. |
+| 1 | Wars | 4 | 4 | Random War | High | Logical slot 4 of 4 in Wars. |
+| 1 | Wars | 5 | 7 | Fury | Medium | Logical slot 1 of 2 in Wars. |
+| 1 | Wars | 6 | 7 | Fury | High | Logical slot 2 of 2 in Wars. |
+| 1 | Wars | 7 | 21 | Random Civil War | Medium | Also Domestic Unrest at Low severity. |
+| 1 | Wars | 8 | 45 | Third Balkan War | High |  |
+| 1 | Wars | 9 | 62 | Allies Backstab | High |  |
+| 2 | Liberations | 1 | 5 | Soviet Union Collapse | Severe |  |
+| 2 | Liberations | 2 | 6 | Independence Wave | Low | Logical slot 1 of 3 in Liberations. |
+| 2 | Liberations | 3 | 6 | Independence Wave | Medium | Logical slot 2 of 3 in Liberations. |
+| 2 | Liberations | 4 | 6 | Independence Wave | High | Logical slot 3 of 3 in Liberations. |
+| 2 | Liberations | 5 | 63 | Subjects Break Free | Medium | Also Domestic Unrest at Medium severity. |
+| 3 | Diplomacy | 1 | 8 | Tensions Rising | Medium |  |
+| 3 | Diplomacy | 2 | 17 | A Faction Comes Calling | Medium |  |
+| 3 | Diplomacy | 3 | 36 | Chemical and Biological Weapons Convention | High |  |
+| 3 | Diplomacy | 4 | 59 | The Offensive | High | Moved from Wars to Diplomacy. |
+| 4 | Peace | 1 | 9 | White Peace | Low | Logical slot 1 of 4 in Peace. |
+| 4 | Peace | 2 | 9 | White Peace | Low | Logical slot 2 of 4 in Peace. |
+| 4 | Peace | 3 | 9 | White Peace | Medium | Logical slot 3 of 4 in Peace. |
+| 4 | Peace | 4 | 9 | White Peace | High | Logical slot 4 of 4 in Peace. |
+| 4 | Peace | 5 | 61 | Return to Peacetime | High | Moved from Negative Economy to Peace. |
+| 5 | Natural Disasters | 1 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 1 of 5. |
+| 5 | Natural Disasters | 2 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 2 of 5. |
+| 5 | Natural Disasters | 3 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 3 of 5. |
+| 5 | Natural Disasters | 4 | 13 | Natural Disasters | Low | Logical Natural Disasters slot 4 of 5. |
+| 5 | Natural Disasters | 5 | 13 | Natural Disasters | Medium | Logical Natural Disasters slot 5 of 5. |
+| 5 | Natural Disasters | 6 | 33 | Acid Rain | Severe | Optional Severe member. A prepared queue containing Acid Rain commits Major pacing once. |
+| 5 | Natural Disasters | 7 | 51 | Heat Wave | High | Optional High member after Acid Rain. |
+| 6 | Formables | 1 | 3 | The Holy Realm | High |  |
+| 6 | Formables | 2 | 12 | Africa Is One | Severe |  |
+| 6 | Formables | 3 | 38 | Malta Crusaders | High |  |
+| 6 | Formables | 4 | 48 | Old Great Bulgaria | Medium |  |
+| 7 | Positive Economy | 1 | 18 | Resources Found | Medium |  |
+| 7 | Positive Economy | 2 | 26 | Black Friday | Medium |  |
+| 7 | Positive Economy | 3 | 29 | Riches Found | Medium | Also Sudden Abundance at Medium severity. |
+| 7 | Positive Economy | 4 | 34 | Industrial Boom | Low |  |
+| 7 | Positive Economy | 5 | 55 | The Great Infrastructure Project | Medium |  |
+| 7 | Positive Economy | 6 | 57 | The Black Market | High |  |
+| 7 | Positive Economy | 7 | 58 | Random Buildings | Medium |  |
+| 8 | Intelligence | 1 | 39 | Murder Mystery | Medium |  |
+| 8 | Intelligence | 2 | 52 | Intel Leaked | Low |  |
+| 9 | Scientific Research | 1 | 16 | Brilliant Scientist | Severe |  |
+| 9 | Scientific Research | 2 | 24 | Video Game in Sweden | High |  |
+| 9 | Scientific Research | 3 | 27 | Doctrine Research | Medium | Also Military Preparation at Medium severity. |
+| 9 | Scientific Research | 4 | 54 | Gift from Scientists | Medium |  |
+| 9 | Scientific Research | 5 | 60 | Research Failure | High |  |
+| 10 | Negative Economy | 1 | 35 | Great Depression 2.0 | Low |  |
+| 10 | Negative Economy | 2 | 50 | The Great Embargo | Medium |  |
+| 11 | Various Anomalies | 1 | 47 | BOOM | Low |  |
+| 12 | Pacts | 1 | 11 | Secret Alliance | High |  |
+| 13 | Diseases | 1 | 2 | Zombie Outbreak | Severe |  |
+| 13 | Diseases | 2 | 20 | Black Plague | Severe |  |
+| 13 | Diseases | 3 | 41 | Disease in Divisions | Low |  |
+| 14 | Randomizations | 1 | 46 | The Great Shuffle | Medium |  |
+| 15 | Sudden Abundance | 1 | 19 | Soldiers from Nowhere | Medium |  |
+| 15 | Sudden Abundance | 2 | 29 | Riches Found | Medium | Also Positive Economy at Medium severity. |
+| 15 | Sudden Abundance | 3 | 32 | Missiles | Medium | Also Military Preparation at Medium severity. |
+| 15 | Sudden Abundance | 4 | 37 | Mysterious People | Medium |  |
+| 15 | Sudden Abundance | 5 | 42 | Equipment from Heavens | Low | Also Military Preparation at Low severity. |
+| 15 | Sudden Abundance | 6 | 56 | The Navy | Medium | Also Military Preparation at Medium severity. |
+| 15 | Sudden Abundance | 7 | 64 | Border Fortifications | Medium | Also Military Preparation at Medium severity. |
+| 16 | Domestic Unrest | 1 | 1 | Communist Insurgency | Medium |  |
+| 16 | Domestic Unrest | 2 | 6 | Independence Wave | High | Also three separate Liberations slots. |
+| 16 | Domestic Unrest | 3 | 21 | Random Civil War | Low | Also Wars at Medium severity. |
+| 16 | Domestic Unrest | 4 | 31 | Random Terror | Medium |  |
+| 16 | Domestic Unrest | 5 | 63 | Subjects Break Free | Medium | Also Liberations at Medium severity. |
+| 17 | Alien Invasions | 1 | 43 | Monsters from the Deep | Severe |  |
+| 18 | Military Preparation | 1 | 22 | Concentration Camps | High |  |
+| 18 | Military Preparation | 2 | 27 | Doctrine Research | Medium | Also Scientific Research at Medium severity. |
+| 18 | Military Preparation | 3 | 32 | Missiles | Medium | Also Sudden Abundance at Medium severity. |
+| 18 | Military Preparation | 4 | 42 | Equipment from Heavens | Low | Also Sudden Abundance at Low severity. |
+| 18 | Military Preparation | 5 | 56 | The Navy | Medium | Also Sudden Abundance at Medium severity. |
+| 18 | Military Preparation | 6 | 64 | Border Fortifications | Medium | Also Sudden Abundance at Medium severity. |
+
+Repeated Event IDs represent distinct logical slots and are not deduplicated.
+
+When an event belongs to multiple clusters, each cluster rolls independently.
+
+If several cluster rolls succeed, winner selection is uniform across the successful clusters.
+
+The repeated slots remain separate within their cluster and increase that event's trigger-specific chance through the cluster multiplicity rule.
+
+Acid Rain is an optional Severe member from Gathering Storm onward. Its tier-aware participation stays subject to the cluster cap, while a prepared queue containing it reserves Event 33 and commits Major pacing once before member dispatch.
+Event 33's shared runtime then suppresses a second Major reset.
+
+### Retained memberless runtime cluster
+
+| Cluster ID | Cluster Name | Fixed members | Runtime status |
 | --- | --- | --- | --- |
-| Wars | event_cluster_id.wars | Event 4 Random War with optional Fury support | Sudden wars and armed conflicts that can widen through linked incidents. |
-| Liberations | event_cluster_id.liberations | Event 6 opening, escalation, and crisis rows with optional Event 5 Soviet Union Collapse | Independence waves, subject breakaways, imperial ruptures, and secession disorder. |
-| Diplomatic Panic | event_cluster_id.diplomatic_panic | Event 8 Tensions Rising with optional Event 17 Random Faction | Pressure spikes, ministry reactions, and relation shocks without direct new war goals. |
-| Peace | event_cluster_id.peace | Event 9 opening and follow-up rows | Settlements, ceasefires, exhaustion, negotiations, and de-escalation shocks. |
-| Natural Disasters | event_cluster_id.natural_disasters | Event 13 opening and staged seasonal rows | Disaster seasons that grow from local incidents into varied, regional, and abnormal sequences. |
-| Formables | event_cluster_id.formables | Event 12 Africa Is One | Negotiated restoration and union projects, including the protection-first Charter League route. |
-| Positive Economy | event_cluster_id.economy_positive | Event 18 Resources Found | Beneficial economic shocks with persistent development choices. |
-| Diseases | event_cluster_id.diseases | Event 20 Black Plague with optional Event 2 Zombie Outbreak | Severe disease outbreaks with public state conditions, spread, and sustained containment work. |
-| Random Stuff | event_cluster_id.random_stuff | No fixed members; 3 to 5 uniformly drawn currently eligible events | Rare whole-pool bonus batches after ordinary minor events from Chaos Tier 3 onward. |
+| 19 | Random Stuff | None | Retained memberless whole-pool runtime cluster. |
 
-The first logical rows for Events 6, 9, and 13 are primary trigger rows.
+Random Stuff has no fixed membership row in the supplied v2 matrix.
 
-The member registry remains authoritative for each row's declared minimum, role, event mapping, and event-specific runtime preparation.
+The runtime ID 19 entry retains the separate whole-pool activation contract documented above.
 
-When Event 17 is queued as a Diplomatic Panic member, its event-specific pre-fire helper builds the eligible minor pool and saves its own target country instead of reusing another member's actor.
+### Negative Economy: Great Depression 2.0
 
-Natural Disasters rows are logical Event 013 season slots rather than separate event IDs.
+Cluster ID `10` is the Negative Economy cluster.
 
-Each season slot retains its own stable row ID and event-specific target, evolution, severity, presentation, and scaling context before entering the pending queue, so overlapping batches cannot borrow another slot's disaster context.
+Event 035 Great Depression 2.0 is the Negative Economy slot 1 member with Low severity.
 
-Resources Found uses the same pre-fire preparation as ordinary automatic firing to select a valid owner and exact owned or controlled state before dispatch.
+Its runtime role and declared minimum remain architecture metadata rather than membership-catalogue fields.
 
-The cluster preserves one Positive Economy member while the event-specific discovery and repeat-enrichment paths remain owned by Event 018.
+The cluster dispatch preserves the selected Event 35 country and enters the same fail-closed independent start contract used by standalone firing. Cluster dispatch never rerolls the target, never duplicates an active depression, and never gives contagion, worldwide conversion, Event 34 inheritance, or relapse ownership of normal pacing.
 
-The stable logical row registry is event_cluster_member_row_id.
+### Wars: Random War, Fury, and Random Civil War
 
-| Logical row | Stable row ID |
-| --- | --- |
-| Wars Random War | wars_random_war |
-| Wars Fury | wars_fury |
-| Liberations Independence opening | liberations_independence_opening |
-| Liberations Independence escalation | liberations_independence_escalation |
-| Liberations Independence crisis | liberations_independence_crisis |
-| Liberations Soviet Collapse | liberations_soviet_collapse |
-| Diplomatic Panic Tensions | diplomatic_panic_tensions |
-| Diplomatic Panic Faction | diplomatic_panic_faction |
-| Peace White Peace opening | peace_white_peace_opening |
-| Peace White Peace follow-up | peace_white_peace_followup |
-| Natural Disasters opening | natural_disasters_opening |
-| Natural Disasters early | natural_disasters_early |
-| Natural Disasters varied | natural_disasters_varied |
-| Natural Disasters regional | natural_disasters_regional |
-| Natural Disasters abnormal | natural_disasters_abnormal |
-| Formables Africa | formables_africa |
-| Positive Economy Resources | economy_resources |
-| Diseases Black Plague | diseases_black_plague |
-| Diseases Zombie | diseases_zombie |
+The Wars cluster contains four Event 004 Random War rows at Low, Low, Medium, and High severity, followed by two Event 007 Fury rows at Medium and High severity.
+
+Event 021 Random Civil War follows at Medium severity, with Third Balkan War and Allies Backstab retaining High severity.
+
+The first Random War and Fury rows are their primary trigger rows, so a selected Random War uses Low trigger severity and a selected Fury uses Medium trigger severity for activation.
+
+Their later duplicate rows retain their own severity floors, participation chances, and order scores.
+
+Event 021 also belongs to Domestic Unrest at slot 3 with Low severity.
+
+Those two Event 021 memberships roll independently and remain distinct logical rows.
+
+Event 004, Event 007, and Event 021 reserve a target before opening mutations, treat an existing reservation as a collision, and retain a stable reservation receipt until the member succeeds or rolls back.
+
+The Event 021 target reservation is `random_civil_war_cluster_target_reserved`, and a failed route, missing capital, missing remnant, unavailable package, exhausted capacity, or collision records an explicit skip reason.
+
+When no valid Event 021 target exists, the member presents `N/A` and its live automatic weight is zero.
+
+The Wars cluster continues to use one pacing event and one cluster cooldown, so Event 021’s scheduler does not create an additional unbounded pacing loop.
+
+Manual cluster forcing bypasses cluster-only tier, cooldown, enable, and roll gates but still passes Event 021 route, reservation, plan, capacity, and cleanup checks.
 
 ## Event Logs and Settings
 

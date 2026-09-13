@@ -1,9 +1,58 @@
 # Selected-location cost contract review
 
-Disposition: `unresolved` architecture proposal for parent selection of formulas and balance coefficients.
-Acceptance basis: the parent authorized a read-only review responding to the user's expensive fixed-cost and misleading-stat complaints, restricted to repression-owned consumers.
-This review changes no gameplay, AI weights, GUI source, or shared accounting.
-The parent explicitly retains countrywide policy pricing and owns final implementation, balance targets, and realistic GUI fixtures.
+Disposition: `implemented`; parent integration, native visual, balance, and bounded AI comparison acceptance are recorded in `completion_review.md`, with native game execution limits explicit.
+Acceptance basis: after accepting the read-only architecture review, the parent explicitly authorized the level-based coefficients and selected-action integrations on 2026-09-05, then added Gulag building levels to the same physical-level sum.
+The parent explicitly retains countrywide policy pricing and owns final balance targets, localisation, and realistic GUI fixtures.
+The baseline analysis below records pre-implementation source findings; its population/reach formula proposal is superseded by the accepted physical-level formula.
+
+## Implemented integration handoff
+
+Added `common/script_constants/camp_repression_site_cost_constants.txt`, `common/scripted_triggers/camp_repression_site_cost_triggers.txt`, `common/scripted_effects/camp_repression_site_cost_effects.txt`, and matching helper documentation `common/scripted_effects/camp_repression_site_cost_effects.md`.
+The API documentation is the current source of truth for exact outputs, caller initialization, payment preconditions, and reserve lifecycle.
+Final integration uses boolean helper calls with a required unscoped `camp_site_cost_state_id` temporary initialized at every external quote, affordability, and payment call.
+The earlier `STATE` argument notation in the baseline analysis below is superseded by that API; formulas and explicit target ownership are unchanged.
+No shared dynamic registry, universal-cost framework, death-accounting file, countrywide consumer, AI weight, or AI hint was edited.
+The six selected GUI wrappers and six targeted decisions use the owner-local quote; the two restricted orders change administrative PP only.
+
+Accepted L is the maximum of one and the sum of concentration-camp, extermination-camp, and Gulag labor-network building levels.
+Labor costs 10+2L PP, 8L trucks, L trains, and 12L support; inspection costs 10+3L PP; dismantlement costs 15+3L PP, 250+100L manpower, and 5L support; evidence costs 10+2L PP, 100+50L manpower, 2+L CP, and 3L support; restricted administrative PP is 20+3L.
+Each labor reserve is 25 percent of the corresponding paid equipment rounded upward with minimum one, and start need is payment plus reserve.
+Territory population, reach, observed deaths, and unrelated facilities do not enter these accepted formulas.
+
+| L | Labor PP / trucks / trains / support | Retained trucks / trains / support | Inspection PP | Dismantle PP / manpower / support | Evidence PP / manpower / CP / support | Restricted PP |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 12 / 8 / 1 / 12 | 2 / 1 / 3 | 13 | 18 / 350 / 5 | 12 / 150 / 3 / 3 | 23 |
+| 3 | 16 / 24 / 3 / 36 | 6 / 1 / 9 | 19 | 24 / 550 / 15 | 16 / 250 / 5 / 9 | 29 |
+| 4, Gulag-only synthetic stress | 18 / 32 / 4 / 48 | 8 / 1 / 12 | 22 | 27 / 650 / 20 | 18 / 300 / 6 / 12 | 32 |
+| 5 | 20 / 40 / 5 / 60 | 10 / 2 / 15 | 25 | 30 / 750 / 25 | 20 / 350 / 7 / 15 | 35 |
+
+The Gulag-only four-level arithmetic case deliberately exceeds the installed one-level building cap; it is a helper stress case, not a normal playable site.
+The two other camp building types each declare a five-level cap in the shared camp-network group.
+See the final interaction audit for the L1/L3/L5 and conservative L6 balance review.
+The implementation handoff below describes the architect's original patch; subsequent parent audit fixes and AI hint preservation are recorded in `completion_review.md` and supersede unchanged-source claims for those exact repression-owned blocks.
+
+Call-site changes are limited to `camp_repression_rework_effects.txt`, its generic action dispatcher, the generic labor mission predicate, the six targeted decision definitions, and six GUI cost gates.
+The labor payload was separated into `camp_rework_start_generic_labor_project_payload_in_action_state`; selected callers pay the new quote before that payload, while the legacy paying entry point retains its fixed consumer.
+Three `generic_labor_project_*_reserve` country variables snapshot the mission's retained equipment and clear on completion/failure/cancellation, forced expansion cancellation, or a legacy start.
+Existing mission target/type fields remain the persistence contract; no global quote mode or global event target was introduced.
+
+Exact pre-edit source bytes are preserved in `site_cost_source_backups/*.before`.
+`site_cost_source_review.json` identifies hashes and changed blocks; its GUI diff includes concurrent parent-owned decorative visibility blocks, while this subagent owns only the six cost gates and their matching target responsibility checks.
+The patch files alongside backups are review aids and must not be applied wholesale over concurrent work.
+Comparison against those backups confirms that the old shared labor/evidence/dismantlement debit helpers, country GUI cost preparation, and restricted inventory/outcome helpers retain their previous bodies.
+All targeted decision AI weight blocks are unchanged; the parent's final integration restores the fixed saving hints documented in the API and comparison evidence.
+
+`site_cost_arithmetic_scenarios.json` records evaluation of the actual new arithmetic, affordability, payment, and reserve cleanup source for six level combinations, including zero physical levels, mixed buildings, and a Gulag-only site.
+Every case accepted exact balances, rejected a one-unit shortage in each paid/required resource, debited its displayed quote exactly once, and saved/cleared the intended reserve values.
+This small source evaluator does not prove native HOI4 execution or temporary-variable lifetime; those limits remain explicit.
+Source review confirms target/route guards precede payment and that mission checks read the saved reserve rather than the current UI selection.
+
+Post-change read-only MCP event lint returned `EVENT_INSPECTED_PARTIAL`, revision `d1b1deacde71076676d9f3a8922e7d45b97be37b957c82abd5293f57c6ee523a`, with helper/lifecycle projections deferred.
+Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d78243c186f96247f29058741395f1ad72f0190c687cc107cc03e264fdc323df/6b800c957690009302a33159c979bd47666ab38d1c78f38e41519f835f5b2099/event-lint-d1b1deacde71.json`.
+This is partial inspection evidence and does not establish native payment correctness.
+The parent owns final matched GUI fixtures, localisation, and independent balance evidence.
+Final parent review and integration evidence are recorded in `completion_review.md`.
+No simplification of the accepted level formulas, resource packages, or existing restricted outcomes was made.
 
 ## Findings and bounded migration surface
 
@@ -177,7 +226,7 @@ Compare one-level, multilevel, small-population, large-population, and changed-r
 No probabilistic helper or balance target was designed here; the separate parent-owned auditor retains AI/weighted evidence responsibility.
 No gameplay tests or visual acceptance were claimed for this read-only plan.
 
-Completed: bounded source trace, native support evidence, formula and helper proposal, shared-consumer exclusions, truthful counter semantics, and MCP inspection references.
-Unresolved: parent-selected coefficients, final implementation choices, actual runtime arithmetic/payment behavior, and final matched visual/balance evidence.
+Completed: bounded source trace, native support evidence, accepted level-based quote/payment implementation, shared-consumer preservation checks, reserve lifecycle, truthful counter semantics, and MCP inspection references.
+Validation limit: native game arithmetic/payment execution was not performed; parent-owned native MCP visual, source balance, and AI comparison acceptance are recorded in `completion_review.md`.
 Skills used: `chaos-redux-events`, `chaos-redux-decisions-missions`, `chaos-redux-scripted-gui`, `chaos-redux-subagents`.
 No skill was created or updated.

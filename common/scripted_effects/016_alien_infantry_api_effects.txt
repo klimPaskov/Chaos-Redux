@@ -242,18 +242,73 @@ alien_infantry_begin_landing_reservation = {
 	}
 }
 
+# COUNTRY scope. Event 026's voluntary decision supplies the already quoted
+# positive equipment amount through `alien_infantry_landing_reserve_amount`.
+# This is a separate entry point so Event 019, sovereignty batches, and direct
+# public callers keep the fixed 2,000-weapon API above. The discounted amount is
+# stored on the country until the refundable landing either materializes or is
+# canceled.
+alien_infantry_begin_landing_reservation_with_amount = {
+	set_temp_variable = { alien_infantry_landing_reservation_result = constant:alien_infantry_landing.zero }
+	if = {
+		limit = {
+			alien_infantry_can_call_landing_without_reserve = yes
+			alien_infantry_landing_target_is_valid = yes
+			check_variable = {
+				var = alien_infantry_landing_reserve_amount
+				value = constant:alien_infantry_landing.zero
+				compare = greater_than
+			}
+			check_variable = {
+				var = num_equipment@alien_laser_weapon_equipment_1
+				value = alien_infantry_landing_reserve_amount
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { alien_infantry_equipment_debit = alien_infantry_landing_reserve_amount }
+		multiply_temp_variable = { alien_infantry_equipment_debit = constant:alien_infantry_landing.negative_one }
+		add_equipment_to_stockpile = {
+			type = alien_laser_weapon_equipment_1
+			amount = alien_infantry_equipment_debit
+		}
+		set_variable = { alien_infantry_landing_reserved_amount = alien_infantry_landing_reserve_amount }
+		set_country_flag = alien_infantry_landing_pending
+		set_variable = { alien_infantry_landing_reservation_days = constant:alien_infantry_landing.reservation_days }
+		activate_mission = alien_infantry_landing_mission
+		set_temp_variable = { alien_infantry_landing_reservation_result = constant:alien_infantry_landing.one }
+	}
+	else = {
+		clear_variable = alien_infantry_landing_reservation_days
+		clear_variable = dhrondan_landing_state_id
+	}
+}
+
 # COUNTRY scope. Refunds exactly one pending reserve and clears only landing
 # lifecycle state. Clearing the pending flag first makes cancellation repeat-safe.
 alien_infantry_cancel_landing_reservation = {
 	if = {
 		limit = { has_country_flag = alien_infantry_landing_pending }
 		clr_country_flag = alien_infantry_landing_pending
-		add_equipment_to_stockpile = {
-			type = alien_laser_weapon_equipment_1
-			amount = constant:alien_infantry_landing.reserve_equipment
+		if = {
+			limit = { has_variable = alien_infantry_landing_reserved_amount }
+			add_equipment_to_stockpile = {
+				type = alien_laser_weapon_equipment_1
+				amount = alien_infantry_landing_reserved_amount
+			}
+		}
+		else = {
+			add_equipment_to_stockpile = {
+				type = alien_laser_weapon_equipment_1
+				amount = constant:alien_infantry_landing.reserve_equipment
+			}
+		}
+		if = {
+			limit = { has_variable = alien_infantry_landing_universal_transaction_id }
+			black_friday_refund_alien_infantry_landing_transaction = yes
 		}
 		remove_mission = alien_infantry_landing_mission
 		clear_variable = alien_infantry_landing_reservation_days
+		clear_variable = alien_infantry_landing_reserved_amount
 		clear_variable = dhrondan_landing_state_id
 	}
 }
@@ -490,6 +545,11 @@ alien_infantry_spawn_landing_cohort = {
 				clr_country_flag = alien_infantry_landing_pending
 				remove_mission = alien_infantry_landing_mission
 				clear_variable = alien_infantry_landing_reservation_days
+				if = {
+					limit = { has_variable = alien_infantry_landing_universal_transaction_id }
+					black_friday_settle_alien_infantry_landing_transaction = yes
+				}
+				clear_variable = alien_infantry_landing_reserved_amount
 			}
 			# DHR sovereignty batch calls are an explicit one-time expedition input.
 			# They still debit 2,000 weapons per cohort, but do not establish a

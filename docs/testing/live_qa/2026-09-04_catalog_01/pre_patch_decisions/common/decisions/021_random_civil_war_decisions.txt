@@ -1,0 +1,823 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 DECISIONS AND MISSIONS
+# ============================================================================
+# A normal decision category with a deliberately small phase-sensitive surface.
+# Every action has an explicit resource gate and spends no more than four
+# resource types.  Missions express map objectives without a custom GUI.
+# ============================================================================
+
+# `ai_hint_pp_cost` does not parse script-constant tokens. These file-scoped
+# hints mirror the centralized 15/20/25 PP gates used by Event 021 actions.
+@event021_ai_pp_low = 15
+@event021_ai_pp_medium = 20
+@event021_ai_pp_high = 25
+
+event021_civil_war_crisis_category = {
+	event021_secure_arsenals = {
+		icon = GFX_decision_event021_secure_arsenals
+		visible = { event021_country_can_manage_opening = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_arsenal_action_used }
+				NOT = { command_power < constant:event021_action_cost.secure_arsenals_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.secure_arsenals_infantry_gate } }
+				NOT = { has_equipment = { trains < constant:event021_action_cost.secure_arsenals_trains_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.secure_arsenals_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.secure_arsenals_infantry_gate } }
+				NOT = { has_equipment = { trains < constant:event021_action_cost.secure_arsenals_trains_gate } }
+			}
+		}
+		custom_cost_text = event021_secure_arsenals_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_secure_arsenals_tt
+			add_command_power = constant:event021_action_cost.secure_arsenals_command_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.secure_arsenals_infantry_spend }
+			add_equipment_to_stockpile = { type = trains amount = constant:event021_action_cost.secure_arsenals_trains_spend }
+			event021_decision_secure_arsenals = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_government_side }
+			modifier = { factor = 0 has_country_flag = random_civil_war_settlement_pending }
+		}
+	}
+
+	event021_defend_capital = {
+		icon = GFX_decision_event021_capital_defense
+		visible = { event021_country_can_manage_opening = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_capital_action_used }
+				NOT = { command_power < constant:event021_action_cost.capital_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.capital_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.capital_manpower_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.capital_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.capital_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.capital_manpower_gate }
+			}
+		}
+		custom_cost_text = event021_defend_capital_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_defend_capital_tt
+			add_command_power = constant:event021_action_cost.capital_command_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.capital_infantry_spend }
+			add_manpower = constant:event021_action_cost.capital_manpower_spend
+			event021_decision_defend_capital = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major capital_scope = { is_controlled_by = ROOT } }
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_government_side }
+		}
+	}
+
+	event021_review_loyalty = {
+		icon = GFX_decision_event021_loyalty_review
+		ai_hint_pp_cost = @event021_ai_pp_high
+		visible = {
+			OR = {
+				event021_country_can_manage_opening = yes
+				event021_country_can_manage_fronts = yes
+				event021_country_can_prevent_fracture = yes
+			}
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_loyalty_action_used }
+				NOT = { command_power < constant:event021_action_cost.loyalty_command_power_gate }
+				NOT = { army_experience < constant:event021_action_cost.loyalty_army_xp_gate }
+				NOT = { political_power < constant:event021_action_cost.loyalty_political_power_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.loyalty_command_power_gate }
+				NOT = { army_experience < constant:event021_action_cost.loyalty_army_xp_gate }
+				NOT = { political_power < constant:event021_action_cost.loyalty_political_power_gate }
+			}
+		}
+		custom_cost_text = event021_review_loyalty_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_review_loyalty_tt
+			add_command_power = constant:event021_action_cost.loyalty_command_power_spend
+			add_army_experience = constant:event021_action_cost.loyalty_army_xp_spend
+			add_political_power = constant:event021_action_cost.loyalty_political_power_spend
+			event021_decision_review_loyalty = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_command_claimant }
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_government_side }
+			modifier = { factor = constant:event021_ai.discourage_repression has_country_flag = random_civil_war_low_authority }
+		}
+	}
+
+	event021_seize_depot = {
+		icon = GFX_decision_event021_depot_seizure
+		visible = {
+			event021_country_can_manage_opening = yes
+			has_country_flag = random_civil_war_opposition_side
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = event021_depot_target_requirement_tt
+				event021_priority_front_depot_target_valid = yes
+			}
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_depot_action_used }
+				NOT = { command_power < constant:event021_action_cost.depot_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.depot_infantry_gate } }
+				NOT = { has_equipment = { trucks < constant:event021_action_cost.depot_trucks_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.depot_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.depot_infantry_gate } }
+				NOT = { has_equipment = { trucks < constant:event021_action_cost.depot_trucks_gate } }
+			}
+		}
+		custom_cost_text = event021_seize_depot_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_seize_depot_tt
+			if = {
+				limit = { event021_priority_front_depot_target_valid = yes }
+				add_command_power = constant:event021_action_cost.depot_command_power_spend
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.depot_infantry_spend }
+				add_equipment_to_stockpile = { type = trucks amount = constant:event021_action_cost.depot_trucks_spend }
+				event021_decision_seize_depot = yes
+			}
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_opposition_side }
+			modifier = { factor = 0 NOT = { event021_priority_front_depot_target_valid = yes } }
+		}
+	}
+
+	event021_open_relief_corridor = {
+		icon = GFX_decision_event021_relief_corridor
+		ai_hint_pp_cost = @event021_ai_pp_low
+		visible = { event021_country_can_manage_exposure = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_relief_action_used }
+				NOT = { has_country_flag = event021_relief_corridor_recent }
+				NOT = { political_power < constant:event021_action_cost.relief_political_power_gate }
+				NOT = { has_equipment = { trucks < constant:event021_action_cost.relief_trucks_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.relief_convoys_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.relief_political_power_gate }
+				NOT = { has_equipment = { trucks < constant:event021_action_cost.relief_trucks_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.relief_convoys_gate } }
+			}
+		}
+		custom_cost_text = event021_open_relief_corridor_cost_text
+		days_re_enable = constant:event021_action_tuning.relief_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_open_relief_corridor_tt
+			add_political_power = constant:event021_action_cost.relief_political_power_spend
+			add_equipment_to_stockpile = { type = trucks amount = constant:event021_action_cost.relief_trucks_spend }
+			add_equipment_to_stockpile = { type = convoys amount = constant:event021_action_cost.relief_convoys_spend }
+			event021_decision_open_relief_corridor = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_neighbor_exposure }
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_humanitarian_pressure }
+		}
+	}
+
+	event021_offer_emergency_settlement = {
+		icon = GFX_decision_event021_emergency_settlement
+		ai_hint_pp_cost = @event021_ai_pp_high
+		visible = {
+			OR = {
+				event021_country_can_manage_settlement = yes
+				event021_country_can_offer_settlement = yes
+			}
+			NOT = { has_country_flag = event021_settlement_resolved }
+			NOT = { has_country_flag = event021_settlement_talks_open }
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_settlement_talks_open }
+				NOT = { political_power < constant:event021_action_cost.settlement_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.settlement_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.settlement_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.settlement_manpower_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.settlement_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.settlement_command_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.settlement_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.settlement_manpower_gate }
+			}
+		}
+		custom_cost_text = event021_offer_emergency_settlement_cost_text
+		days_re_enable = constant:event021_action_tuning.settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_offer_emergency_settlement_tt
+			add_political_power = constant:event021_action_cost.settlement_political_power_spend
+			add_command_power = constant:event021_action_cost.settlement_command_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.settlement_infantry_spend }
+			add_manpower = constant:event021_action_cost.settlement_manpower_spend
+			event021_decision_offer_settlement = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_negotiator_profile }
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_low_authority }
+			modifier = { factor = constant:event021_ai.discourage_concession has_country_flag = random_civil_war_hardliner_profile }
+		}
+	}
+
+	event021_reconstruct_administration = {
+		icon = GFX_decision_event021_reconstruction
+		ai_hint_pp_cost = @event021_ai_pp_medium
+		visible = { event021_country_can_manage_reconstruction = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_reconstruction_action_used }
+				NOT = { political_power < constant:event021_action_cost.reconstruction_political_power_gate }
+				NOT = { has_equipment = { trains < constant:event021_action_cost.reconstruction_trains_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.reconstruction_manpower_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.reconstruction_political_power_gate }
+				NOT = { has_equipment = { trains < constant:event021_action_cost.reconstruction_trains_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.reconstruction_manpower_gate }
+			}
+		}
+		custom_cost_text = event021_reconstruct_administration_cost_text
+		days_re_enable = constant:event021_action_tuning.reconstruction_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_reconstruct_administration_tt
+			add_political_power = constant:event021_action_cost.reconstruction_political_power_spend
+			add_equipment_to_stockpile = { type = trains amount = constant:event021_action_cost.reconstruction_trains_spend }
+			add_manpower = constant:event021_action_cost.reconstruction_manpower_spend
+			event021_decision_reconstruct_administration = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_successor_side }
+		}
+	}
+
+	event021_integrate_formations = {
+		icon = GFX_decision_event021_loyalty_review
+		visible = { event021_country_can_manage_fronts = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_integration_action_used }
+				NOT = { army_experience < constant:event021_action_cost.integration_army_xp_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.integration_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.integration_manpower_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { army_experience < constant:event021_action_cost.integration_army_xp_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.integration_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.integration_manpower_gate }
+			}
+		}
+		custom_cost_text = event021_integrate_formations_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_integrate_formations_tt
+			add_army_experience = constant:event021_action_cost.integration_army_xp_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.integration_infantry_spend }
+			add_manpower = constant:event021_action_cost.integration_manpower_spend
+			event021_decision_integrate_formations = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_multifront_active }
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_command_claimant }
+		}
+	}
+
+	event021_set_priority_front = {
+		icon = GFX_decision_event021_priority_front
+		visible = { event021_country_can_manage_fronts = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.priority_command_power_gate }
+				check_variable = {
+					var = random_civil_war_opening_core_states^num
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+		}
+		custom_cost_trigger = { hidden_trigger = { NOT = { command_power < constant:event021_action_cost.priority_command_power_gate } } }
+		custom_cost_text = event021_set_priority_front_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_set_priority_front_tt
+			add_command_power = constant:event021_action_cost.priority_command_power_spend
+			event021_decision_set_priority_front = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_multifront_active }
+		}
+	}
+
+	event021_monitor_border = {
+		icon = GFX_decision_event021_monitor_border
+		visible = { event021_country_can_manage_exposure = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_neighbor_action_used }
+				NOT = { command_power < constant:event021_action_cost.border_command_power_gate }
+				NOT = { has_equipment = { trucks < constant:event021_action_cost.border_trucks_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.border_convoys_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.border_command_power_gate }
+				NOT = { has_equipment = { trucks < constant:event021_action_cost.border_trucks_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.border_convoys_gate } }
+			}
+		}
+		custom_cost_text = event021_monitor_border_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_monitor_border_tt
+			add_command_power = constant:event021_action_cost.border_command_power_spend
+			add_equipment_to_stockpile = { type = trucks amount = constant:event021_action_cost.border_trucks_spend }
+			add_equipment_to_stockpile = { type = convoys amount = constant:event021_action_cost.border_convoys_spend }
+			event021_decision_monitor_border = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_containment_profile }
+		}
+	}
+
+	event021_support_government = {
+		icon = GFX_decision_event021_support_government
+		ai_hint_pp_cost = @event021_ai_pp_medium
+		visible = {
+			event021_country_can_manage_exposure = yes
+			event021_exposure_government_target_valid = yes
+		}
+		available = {
+			hidden_trigger = {
+				event021_exposure_government_target_valid = yes
+				event021_exposure_government_target_viable = yes
+				NOT = { has_country_flag = event021_neighbor_action_used }
+				NOT = { political_power < constant:event021_action_cost.government_support_political_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.government_support_infantry_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.government_support_convoys_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.government_support_political_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.government_support_infantry_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.government_support_convoys_gate } }
+			}
+		}
+		custom_cost_text = event021_support_government_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_support_government_tt
+			add_political_power = constant:event021_action_cost.government_support_political_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.government_support_infantry_spend }
+			add_equipment_to_stockpile = { type = convoys amount = constant:event021_action_cost.government_support_convoys_spend }
+			event021_decision_support_government = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_mediator_profile }
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { event021_exposure_government_target_viable = yes } }
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				OR = {
+					AND = {
+						has_war = yes
+						surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+					}
+					has_equipment = { infantry_equipment < constant:event021_action_cost.government_support_infantry_gate }
+					political_power < constant:event021_action_cost.government_support_political_power_gate
+					has_equipment = { convoys < constant:event021_action_cost.government_support_convoys_gate }
+				}
+			}
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_opportunistic_sponsor_profile }
+			modifier = { factor = constant:event021_ai.priority_major event021_exposure_government_target_aligned = yes }
+			modifier = { factor = constant:event021_ai.discourage_concession event021_exposure_opposition_target_aligned = yes }
+		}
+	}
+
+	event021_support_opposition = {
+		icon = GFX_decision_event021_support_opposition
+		ai_hint_pp_cost = @event021_ai_pp_medium
+		visible = {
+			event021_country_can_manage_exposure = yes
+			event021_exposure_opposition_target_valid = yes
+		}
+		available = {
+			hidden_trigger = {
+				event021_exposure_opposition_target_valid = yes
+				event021_exposure_opposition_target_viable = yes
+				NOT = { has_country_flag = event021_neighbor_action_used }
+				NOT = { political_power < constant:event021_action_cost.opposition_support_political_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.opposition_support_infantry_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.opposition_support_convoys_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.opposition_support_political_power_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.opposition_support_infantry_gate } }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.opposition_support_convoys_gate } }
+			}
+		}
+		custom_cost_text = event021_support_opposition_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_support_opposition_tt
+			add_political_power = constant:event021_action_cost.opposition_support_political_power_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.opposition_support_infantry_spend }
+			add_equipment_to_stockpile = { type = convoys amount = constant:event021_action_cost.opposition_support_convoys_spend }
+			event021_decision_support_opposition = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:random_civil_war_value.zero has_country_flag = random_civil_war_mediator_profile }
+			modifier = { factor = constant:random_civil_war_value.zero NOT = { event021_exposure_opposition_target_viable = yes } }
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				OR = {
+					AND = {
+						has_war = yes
+						surrender_progress > constant:random_civil_war_evolution_mtth.near_defeat_threshold
+					}
+					has_equipment = { infantry_equipment < constant:event021_action_cost.opposition_support_infantry_gate }
+					political_power < constant:event021_action_cost.opposition_support_political_power_gate
+					has_equipment = { convoys < constant:event021_action_cost.opposition_support_convoys_gate }
+				}
+			}
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_opportunistic_sponsor_profile }
+			modifier = { factor = constant:event021_ai.priority_major event021_exposure_opposition_target_aligned = yes }
+			modifier = { factor = constant:event021_ai.discourage_concession event021_exposure_government_target_aligned = yes }
+		}
+	}
+
+	event021_offer_mediation = {
+		icon = GFX_decision_event021_emergency_settlement
+		ai_hint_pp_cost = @event021_ai_pp_medium
+		visible = { event021_country_can_manage_exposure = yes }
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_neighbor_action_used }
+				NOT = { political_power < constant:event021_action_cost.mediation_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.mediation_command_power_gate }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.mediation_convoys_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.mediation_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.mediation_command_power_gate }
+				NOT = { has_equipment = { convoys < constant:event021_action_cost.mediation_convoys_gate } }
+			}
+		}
+		custom_cost_text = event021_offer_mediation_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_offer_mediation_tt
+			add_political_power = constant:event021_action_cost.mediation_political_power_spend
+			add_command_power = constant:event021_action_cost.mediation_command_power_spend
+			add_equipment_to_stockpile = { type = convoys amount = constant:event021_action_cost.mediation_convoys_spend }
+			event021_decision_offer_mediation = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_mediator_profile }
+			modifier = {
+				factor = constant:random_civil_war_value.zero
+				OR = {
+					political_power < constant:event021_action_cost.mediation_political_power_gate
+					command_power < constant:event021_action_cost.mediation_command_power_gate
+					has_equipment = { convoys < constant:event021_action_cost.mediation_convoys_gate }
+				}
+			}
+			modifier = { factor = constant:event021_ai.discourage_concession has_country_flag = random_civil_war_opportunistic_sponsor_profile }
+		}
+	}
+
+	event021_end_sponsor_commitment = {
+		icon = GFX_decision_event021_emergency_settlement
+		ai_hint_pp_cost = @event021_ai_pp_low
+		visible = {
+			event021_country_can_manage_settlement = yes
+			has_country_flag = random_civil_war_sponsor_commitment_active
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_sponsor_disengagement_used }
+				NOT = { political_power < constant:event021_action_cost.disengage_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.disengage_command_power_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.disengage_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.disengage_command_power_gate }
+			}
+		}
+		custom_cost_text = event021_end_sponsor_commitment_cost_text
+		days_re_enable = constant:event021_action_tuning.settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_end_sponsor_commitment_tt
+			add_political_power = constant:event021_action_cost.disengage_political_power_spend
+			add_command_power = constant:event021_action_cost.disengage_command_power_spend
+			event021_decision_end_sponsor_commitment = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_negotiator_profile }
+		}
+	}
+
+	event021_complete_disarmament = {
+		icon = GFX_decision_event021_secure_arsenals
+		visible = {
+			event021_country_can_manage_settlement = yes
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.disarmament compare = equals }
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_disarmament_action_used }
+				NOT = { army_experience < constant:event021_action_cost.disarmament_army_xp_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.disarmament_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.disarmament_manpower_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { army_experience < constant:event021_action_cost.disarmament_army_xp_gate }
+				NOT = { has_equipment = { infantry_equipment < constant:event021_action_cost.disarmament_infantry_gate } }
+				NOT = { has_manpower < constant:event021_action_cost.disarmament_manpower_gate }
+			}
+		}
+		custom_cost_text = event021_complete_disarmament_cost_text
+		days_re_enable = constant:event021_action_tuning.settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_complete_disarmament_tt
+			add_army_experience = constant:event021_action_cost.disarmament_army_xp_spend
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:event021_action_cost.disarmament_infantry_spend }
+			add_manpower = constant:event021_action_cost.disarmament_manpower_spend
+			event021_decision_complete_disarmament = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_government_side }
+		}
+	}
+
+	event021_complete_coalition_governance = {
+		icon = GFX_decision_event021_emergency_settlement
+		ai_hint_pp_cost = @event021_ai_pp_medium
+		visible = {
+			event021_country_can_manage_settlement = yes
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.coalition_governance compare = equals }
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_coalition_action_used }
+				NOT = { political_power < constant:event021_action_cost.mediation_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.mediation_command_power_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.mediation_political_power_gate }
+				NOT = { command_power < constant:event021_action_cost.mediation_command_power_gate }
+			}
+		}
+		custom_cost_text = event021_complete_coalition_governance_cost_text
+		days_re_enable = constant:event021_action_tuning.settlement_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_complete_coalition_governance_tt
+			add_political_power = constant:event021_action_cost.mediation_political_power_spend
+			add_command_power = constant:event021_action_cost.mediation_command_power_spend
+			event021_decision_complete_coalition_governance = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_negotiator_profile }
+		}
+	}
+
+	event021_protect_communications = {
+		icon = GFX_decision_event021_secure_arsenals
+		visible = {
+			OR = {
+				event021_country_can_prevent_fracture = yes
+				event021_country_can_manage_reconstruction = yes
+				event021_country_can_manage_settlement = yes
+			}
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_prevention_communications_used }
+				NOT = { command_power < constant:event021_action_cost.prevention_command_power_gate }
+				NOT = { has_equipment = { trains < constant:event021_action_cost.prevention_trains_gate } }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { command_power < constant:event021_action_cost.prevention_command_power_gate }
+				NOT = { has_equipment = { trains < constant:event021_action_cost.prevention_trains_gate } }
+			}
+		}
+		custom_cost_text = event021_protect_communications_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_protect_communications_tt
+			add_command_power = constant:event021_action_cost.prevention_command_power_spend
+			add_equipment_to_stockpile = { type = trains amount = constant:event021_action_cost.prevention_trains_spend }
+			event021_decision_protect_communications = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_capital_supply_risk }
+		}
+	}
+
+	event021_review_regional_administration = {
+		icon = GFX_decision_event021_loyalty_review
+		ai_hint_pp_cost = @event021_ai_pp_low
+		visible = {
+			OR = {
+				event021_country_can_prevent_fracture = yes
+				event021_country_can_manage_reconstruction = yes
+				event021_country_can_manage_settlement = yes
+			}
+		}
+		available = {
+			hidden_trigger = {
+				NOT = { has_country_flag = event021_prevention_administration_used }
+				NOT = { political_power < constant:event021_action_cost.prevention_political_power_gate }
+				NOT = { has_manpower < constant:event021_action_cost.prevention_manpower_gate }
+			}
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				NOT = { political_power < constant:event021_action_cost.prevention_political_power_gate }
+				NOT = { has_manpower < constant:event021_action_cost.prevention_manpower_gate }
+			}
+		}
+		custom_cost_text = event021_review_regional_administration_cost_text
+		days_re_enable = constant:event021_action_tuning.action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = event021_review_regional_administration_tt
+			add_political_power = constant:event021_action_cost.prevention_political_power_spend
+			add_manpower = constant:event021_action_cost.prevention_manpower_spend
+			event021_decision_review_regional_administration = yes
+		}
+		ai_will_do = {
+			base = constant:event021_ai.base_action
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_low_authority }
+		}
+	}
+
+	event021_hold_the_capital_mission = {
+		icon = GFX_mission_event021_hold_capital
+		days_mission_timeout = constant:event021_mission_tuning.hold_capital_days
+		is_good = yes
+		selectable_mission = yes
+		fire_only_once = no
+		activation = {
+			OR = {
+				event021_country_can_manage_opening = yes
+				event021_country_can_manage_fronts = yes
+			}
+			NOT = { has_country_flag = event021_settlement_resolved }
+			NOT = { has_country_flag = event021_hold_capital_success }
+			NOT = { has_country_flag = event021_hold_capital_mission_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = event021_hold_capital_requirement_tt
+				capital_scope = {
+					is_controlled_by = ROOT
+					infrastructure > constant:random_civil_war_value.zero
+					supply_node > constant:random_civil_war_value.zero
+				}
+			}
+			OR = {
+				has_country_flag = event021_capital_defense_active
+				has_country_flag = event021_capital_held
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { event021_country_can_manage_crisis = yes }
+				has_country_flag = event021_settlement_resolved
+			}
+		}
+		complete_effect = { set_country_flag = event021_hold_capital_mission_active }
+		timeout_effect = { event021_mission_hold_capital_resolve = yes }
+		ai_will_do = {
+			base = constant:event021_ai.base_mission
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_government_side }
+		}
+	}
+
+	event021_secure_rail_spine_mission = {
+		icon = GFX_mission_event021_secure_rail
+		days_mission_timeout = constant:event021_mission_tuning.secure_rail_days
+		is_good = yes
+		selectable_mission = yes
+		fire_only_once = no
+		activation = {
+			event021_country_can_manage_reconstruction = yes
+			NOT = { has_country_flag = event021_rail_spine_secured }
+			NOT = { has_country_flag = event021_secure_rail_mission_active }
+		}
+		available = {
+			has_variable = random_civil_war_rail_mission_state
+			custom_trigger_tooltip = {
+				tooltip = event021_secure_rail_requirement_tt
+				var:random_civil_war_rail_mission_state = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
+					OR = {
+						supply_node > constant:random_civil_war_value.zero
+						infrastructure > constant:event021_mission_tuning.rail_infrastructure_gate
+					}
+				}
+			}
+		}
+		cancel_trigger = {
+			NOT = { event021_country_can_manage_reconstruction = yes }
+		}
+		complete_effect = { set_country_flag = event021_secure_rail_mission_active }
+		timeout_effect = { event021_mission_secure_rail_resolve = yes }
+		ai_will_do = {
+			base = constant:event021_ai.base_mission
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_reconstruction_phase }
+		}
+	}
+
+	event021_hold_settlement_terms_mission = {
+		icon = GFX_mission_event021_settlement_terms
+		days_mission_timeout = constant:event021_mission_tuning.settlement_terms_days
+		is_good = yes
+		selectable_mission = yes
+		fire_only_once = no
+		activation = {
+			event021_country_can_manage_settlement = yes
+			has_country_flag = random_civil_war_settlement_obligation_active
+			NOT = { has_country_flag = random_civil_war_settlement_obligation_objective_met }
+			NOT = { has_country_flag = event021_settlement_terms_mission_active }
+		}
+		available = {
+			has_variable = random_civil_war_settlement_terms_hold_until
+			NOT = { has_country_flag = random_civil_war_settlement_obligation_failed }
+			custom_trigger_tooltip = {
+				tooltip = event021_settlement_terms_requirement_tt
+				has_country_flag = random_civil_war_settlement_obligation_active
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { event021_country_can_manage_settlement = yes }
+				NOT = { has_country_flag = random_civil_war_settlement_obligation_active }
+			}
+		}
+		complete_effect = { set_country_flag = event021_settlement_terms_mission_active }
+		timeout_effect = { event021_mission_hold_settlement_terms_resolve = yes }
+		ai_will_do = {
+			base = constant:event021_ai.base_mission
+			modifier = { factor = constant:event021_ai.priority_major has_country_flag = random_civil_war_settlement_phase }
+		}
+	}
+}

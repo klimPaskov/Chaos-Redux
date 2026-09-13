@@ -230,6 +230,8 @@ Lower the score for:
 
 The domain remains absent when the local graph does not provide a verified mastery-compatible adapter.
 
+Under the current installed Special Forces graph, the adapter is enabled for adoption and mastery states whose native track identity can be proven. If both Special Forces tracks are occupied, the domain is explicitly absent for Event 027 because the shared subdoctrine identities and subdoctrine-wide mastery readback cannot prove which track owns a selected branch. The event does not substitute Army mastery, generic experience, or another reward for that absent state.
+
 ### Chaos Warfare domain
 
 Raise the score for:

@@ -1,5 +1,7 @@
 # Event 018 - Resources Found
 
+This overview retains the package implementation and balance record. The [documentation review](../../plans/repo_cleanup/subagent_handoffs/2026-09-06_events_015_018_documentation.md) records its source-reading boundary and archive checks, without a current event-wide completion claim.
+
 Event 018 is a Minor Repeatable event that is not assigned to an event cluster. Its canonical entry is `chaosx.nr18.1`. Each accepted firing selects one valid state owned and controlled by the firing country, then either creates a persistent field or enriches an existing eligible field. The baseline is complete with all evolutions disabled.
 
 The system uses the six standard HOI4 resources only: oil, aluminium, rubber, tungsten, steel, and chromium. A baseline discovery chooses one of them with equal probability and adds 80 to 120 units, centered on 100. Resource legality is never terrain-gated. Terrain, infrastructure, coast, population, and existing development affect state weighting and presentation only.
@@ -16,11 +18,11 @@ Invalid discovery owners include terminal actors, special chaos countries, and a
 
 The state is the authoritative physical record. It stores:
 
-- field sequence, discoverer, current owner, current controller, discovery date, discovery count, stage, posture, and status;
-- separate Event 018 additions for oil, aluminium, rubber, tungsten, steel, and chromium;
-- total Event 018 addition, current total state resources, distinct-resource count, and largest Event 018 resource;
-- Developed Yield, Excavation Depth, Workforce Safety, Foreign Pressure, Subsurface Disturbance, Breach Pressure, and exploitation history;
-- contract partner, contract term and stage, concession partner, commission sponsor and stage, border claimant and stage;
+- field sequence, discoverer, current owner, current controller, discovery date, discovery count, stage, posture, and status.
+- separate Event 018 additions for oil, aluminium, rubber, tungsten, steel, and chromium.
+- total Event 018 addition, current total state resources, distinct-resource count, and largest Event 018 resource.
+- Developed Yield, Excavation Depth, Workforce Safety, Foreign Pressure, Subsurface Disturbance, Breach Pressure, and exploitation history.
+- contract partner, contract term and stage, concession partner, commission sponsor and stage, border claimant and stage.
 - suspension, occupation, closure, incident, evacuation, hunt, sealing, cave-entry, and achievement evidence.
 
 The owning country keeps a bounded array of its fields and a selected-field pointer. State ownership transfer migrates the pointer and physical record, then reviews diplomatic rights separately. Temporary occupation suspends vulnerable delivery and development behavior without transferring the resource ledger. Annexation, actor removal, peace-conference ownership, and selected-field loss use one-shot reconciliation hooks rather than a world-wide periodic country loop.
@@ -29,32 +31,32 @@ The owning country keeps a bounded array of its fields and a selected-field poin
 
 The `Selected Resource Field` category owns a compact scripted GUI. It displays the state, current owner and controller, discovery count, all six Event 018 ledgers, their added total, and the state's full strategic-resource total. A compact legal and lifecycle block shows posture, development stage, operating/closure/suspension status, contract status, and commission status. The core values appear as integers with named bands:
 
-- Developed Yield records usable output and industrial maturity;
-- Excavation Depth records the physical commitment and later risk burden;
-- Workforce Safety records training, engineering, evacuation, and labor protection;
+- Developed Yield records usable output and industrial maturity.
+- Excavation Depth records the physical commitment and later risk burden.
+- Workforce Safety records training, engineering, evacuation, and labor protection.
 - Foreign Pressure records material demand, contracts, claims, smuggling, and strategic competition.
 
 Subsurface Disturbance is hidden until Evolution II evidence reveals it. Breach Pressure is hidden until the Evolution III public crisis. Every value tooltip explains the actions that raise or lower it. Previous and next controls cycle valid owned fields. Human selection changes only presentation and the chosen player project. AI field evaluation uses the underlying owned-field set and stable scheduler targets.
 
 Five field identities have real source-frame animation packages and registered static fallbacks: ordinary seal, unsafe workings, revealed disturbance, public breach, and sealing operation. Suspended uses a static identity. Exact closure stores the six reversed ledgers and a bounded `last closed field` pointer, removes the state from active selection, and opens a separate history view with the Closed sprite. The parent category remains visible through that history record even when the seal removed the country's last active field. The History control never moves the gameplay selection onto that state, so a closed record cannot receive projects, cycle among active fields, or become eligible for discovery again. The category includes an animation toggle that swaps every animated active identity to its fallback.
 
-Every priced decision displays its exact rounded payment, required available civilian and military factory capacity, and either its computed project duration or its immediate-execution status before selection. A shared ledger stores 13 cost profiles and 16 duration rows. The same calculator rebuilds those rows and rechecks the selected row immediately before payment; political power, command power, army experience, manpower, infantry equipment, support equipment, anti-tank equipment, trucks, trains, convoys, and fuel all use the displayed rounded values. Changes to national scale, war status, the selected field, excavation, breach, disturbance, safety, infrastructure band, or contract validity hide priced actions until the appropriate category's visible refresh control rebuilds the ledger. Discovery, enrichment, cave setup, cave-war registration, foreign-actor selection, and field cycling also initialize or refresh it directly so AI countries do not depend on a player click.
+Every priced decision displays its exact rounded payment, required available civilian and military factory capacity, and either its computed project duration or its immediate-execution status before selection. A shared ledger stores 13 cost profiles and 16 duration rows. The same calculator rebuilds those rows and rechecks the selected row immediately before payment. Political power, command power, army experience, manpower, infantry equipment, support equipment, anti-tank equipment, trucks, trains, convoys, and fuel all use the displayed rounded values. Changes to national scale, war status, the selected field, excavation, breach, disturbance, safety, infrastructure band, or contract validity hide priced actions until the appropriate category's visible refresh control rebuilds the ledger. Discovery, enrichment, cave setup, cave-war registration, foreign-actor selection, and field cycling also initialize or refresh it directly so AI countries do not depend on a player click.
 
 The selected-field decision list uses five field-persistent workboard pages: Administration, Development, Infrastructure, Safety, and Operations. Each page exposes at most six player-facing actions including the page control. Casualty response replaces routine extraction controls on the Operations page, and suspension replaces them with reactivation. The page variable is presentation-only: AI countries bypass every page gate and continue to evaluate the complete valid project pool.
 
-The ten player-facing missions keep immutable field, partner, border-pair, state, or country targets for their lifetime. The eight MTTH evolution clocks and their one-day reschedule mission remain engine missions for their existing cancel and timeout behavior, but live only under `resources_found_hidden_clock_category`; that category is permanently invisible because mission-level `visible` does not hide missions.
+The ten player-facing missions keep immutable field, partner, border-pair, state, or country targets for their lifetime. The eight MTTH evolution clocks and their one-day reschedule mission remain engine missions for their existing cancel and timeout behavior, but live only under `resources_found_hidden_clock_category`. That category is permanently invisible because mission-level `visible` does not hide missions.
 
 ## Administration and development
 
 Field posture is a real transition project rather than a free instant switch. Available postures are:
 
-- National Resource Authority;
-- Domestic Commercial Charter;
-- Foreign Concession;
-- International Commission when negotiated;
+- National Resource Authority.
+- Domestic Commercial Charter.
+- Foreign Concession.
+- International Commission when negotiated.
 - Strategic Reserve and suspension.
 
-Development includes geological appraisal, deeper testing, basin mapping, primary works, a rail and road corridor, heavy machinery, local processing, worker settlement, regional labor, crew rotation, ventilation and medical facilities, guarded access, and integrated compound processing. Projects calculate country scale, field scale, danger, infrastructure, war, occupation, and contract context before setting cost and duration. Payments draw from political power, command power, army experience, manpower, equipment, convoys, and fuel according to the project's physical identity; civilian and military factory values are exact availability gates.
+Development includes geological appraisal, deeper testing, basin mapping, primary works, a rail and road corridor, heavy machinery, local processing, worker settlement, regional labor, crew rotation, ventilation and medical facilities, guarded access, and integrated compound processing. Projects calculate country scale, field scale, danger, infrastructure, war, occupation, and contract context before setting cost and duration. Payments draw from political power, command power, army experience, manpower, equipment, convoys, and fuel according to the project's physical identity. Civilian and military factory values are exact availability gates.
 
 Project outcomes update the state map, field values, posture, AI weights, and later incident profile. Mature fields use a small number of meaningful state-output identities instead of accumulating tiny permanent national modifiers.
 
@@ -106,7 +108,7 @@ Monster hunts require suitable armed forces and real anti-armor preparation. Eva
 
 Full sealing requires suspension, workforce evacuation or control, engineering preparation, surface containment, and completion of the timed seal. Success subtracts every Event 018 resource addition, closes the field exactly, and permanently blocks Evolution IV for that field. It has no hidden retaliation. Partial sealing delays danger but does not make that claim. Evolution III remains containable when Evolution IV is disabled.
 
-Every event option that physically starts a partial or emergency seal uses the same calculated payment and containment-mission launcher as the matching decision. Options presented from inside a mission completion callback record closure intent instead of overwriting that live mission; after demobilization, the separately priced full-seal decision remains reachable. Cancellation, occupation, or transfer clears every partial/full/emergency closing flag on the locked state before project runtime is released, so no field can remain closing without a mission.
+Every event option that physically starts a partial or emergency seal uses the same calculated payment and containment-mission launcher as the matching decision. Options presented from inside a mission completion callback record closure intent instead of overwriting that live mission. After demobilization, the separately priced full-seal decision remains reachable. Cancellation, occupation, or transfer clears every partial/full/emergency closing flag on the locked state before project runtime is released, so no field can remain closing without a mission.
 
 ## Evolution IV - The Oth-Kesh Host
 
@@ -120,13 +122,13 @@ Reusable scope, input, output, and side-effect contracts are documented in `docs
 
 ## Captured-resource deployment
 
-For every controlled non-origin state, DHO sums current oil, aluminium, rubber, tungsten, steel, and chromium. Capacity is `floor(total / 10)`, capped at 10. The origin always contributes zero future capacity. A state must remain continuously controlled for 30 days. Its activation is visible and can be interrupted by recapture or resource denial. A prepared denial adds 30 days to each interrupted activation attempt and subtracts three capacity, clamped at zero, exactly once when an activation succeeds; the preparation is not consumed merely because an attempt began. Active anchors spawn divisions sequentially at the configured interval.
+For every controlled non-origin state, DHO sums current oil, aluminium, rubber, tungsten, steel, and chromium. Capacity is `floor(total / 10)`, capped at 10. The origin always contributes zero future capacity. A state must remain continuously controlled for 30 days. Its activation is visible and can be interrupted by recapture or resource denial. A prepared denial adds 30 days to each interrupted activation attempt and subtracts three capacity, clamped at zero, exactly once when an activation succeeds. The preparation is not consumed merely because an attempt began. Active anchors spawn divisions sequentially at the configured interval.
 
 Losing an anchor starts a 21-day grace period. Expired excess units receive Unfed Broods rather than vanishing. Recapture can restore support. Liberation opens exact anchor cleanup and resource restoration with an explicit scar.
 
-Burrow War preparation can begin only when a defended enemy capital, supply hub, or level-3 fortified state borders an active nondisrupted anchor. Project completion snapshots the exact state, its defending formation, and its qualifying objective type, then opens one visible 90-day mission. Only DHO control of that stored state during the live mission and before World End records the route achievement; retargeting, timeout, cancellation, cave defeat, and terminal transition clear every live marker and pointer.
+Burrow War preparation can begin only when a defended enemy capital, supply hub, or level-3 fortified state borders an active nondisrupted anchor. Project completion snapshots the exact state, its defending formation, and its qualifying objective type, then opens one visible 90-day mission. Only DHO control of that stored state during the live mission and before World End records the route achievement. Retargeting, timeout, cancellation, cave defeat, and terminal transition clear every live marker and pointer.
 
-Scree Tide uses the deployed Oth-Kesh Scree Pack battalion identity rather than a generic division total. Release Raiding Broods always creates its paid formation, but it opens a qualifying 180-day surge only with at least three active Scree Packs and total divisions within live brood capacity. Five different state captures and two different country capitulations must enter the same window; per-attempt marks prevent repeat credit. The final qualifying hook rechecks the three formations, capacity, and pre-World-End state before latching success.
+Scree Tide uses the deployed Oth-Kesh Scree Pack battalion identity rather than a generic division total. Release Raiding Broods always creates its paid formation, but it opens a qualifying 180-day surge only with at least three active Scree Packs and total divisions within live brood capacity. Five different state captures and two different country capitulations must enter the same window. Per-attempt marks prevent repeat credit. The final qualifying hook rechecks the three formations, capacity, and pre-World-End state before latching success.
 
 ## World end and defeat
 
@@ -142,11 +144,11 @@ The reconstruction choice is offered only after global-defeat eligibility, a thr
 
 Event 018 reserves three super-event displays:
 
-- display 82, cave emergence, audio 54, *Pictures at an Exhibition: IV. Bydło*;
-- display 83, world end, audio 55, Brahms's *Symphony No. 1 in C minor: I. Un poco sostenuto - Allegro*;
+- display 82, cave emergence, audio 54, *Pictures at an Exhibition: IV. Bydło*.
+- display 83, world end, audio 55, Brahms's *Symphony No. 1 in C minor: I. Un poco sostenuto - Allegro*.
 - display 84, global defeat, audio 56, Chopin's Prelude in E minor, Op. 28 No. 4.
 
-All three use unique 44.1 kHz stereo WAV packages lasting 115, 110, and 109 seconds. IDs 54 and 55 have worldwide public-domain/CC0 recording grants; ID 56 is CC BY 3.0 with complete attribution and change notice. The reconciled text, quote, image, trigger, audio, rights, and rejection authority is `docs/super_events/018_resources_found/overview.md`; the detailed audio manifest and split research notes retain the underlying evidence.
+All three use unique 44.1 kHz stereo WAV packages lasting 115, 110, and 109 seconds. IDs 54 and 55 have worldwide public-domain/CC0 recording grants. ID 56 is CC BY 3.0 with complete attribution and change notice. The reconciled text, quote, image, trigger, audio, rights, and rejection authority is `docs/super_events/018_resources_found/overview.md`. The detailed audio manifest and split research notes retain the underlying evidence.
 
 News events 84 to 89 cover the global field, border crisis, public attack, cave emergence, regional containment, and global defeat. Their images are true grayscale. Regional and global defeat news are mutually gated by the scale of the threat.
 
@@ -158,39 +160,39 @@ Definitions, visible requirements, and icon triplets are documented in `docs/ach
 
 ## Gameplay files
 
-- event chain: `events/018_random_resource.txt`;
-- tuning: `common/script_constants/018_resources_found_constants.txt`, `common/script_constants/018_resources_found_decision_constants.txt`, `common/script_constants/018_resources_found_foreign_interest_constants.txt`, and `common/script_constants/018_resources_found_cave_constants.txt`;
-- MTTH: `common/mtth/018_resources_found_mtth.txt`;
-- field, incident, decision, cave, UI, log, news, and achievement effects: `common/scripted_effects/018_resources_found_*.txt`;
-- field, decision, cave, and achievement triggers: `common/scripted_triggers/018_resources_found_*.txt`;
-- decisions and categories: `common/decisions/018_resources_found_decisions.txt` and `common/decisions/categories/018_resources_found_categories.txt`;
-- field and cave modifiers: `common/dynamic_modifiers/018_resources_found_state_modifiers.txt`, `common/ideas/018_resources_found_cave_ideas.txt`, and `common/opinion_modifiers/018_resources_found_opinion_modifiers.txt`;
-- narrow hooks: `common/on_actions/018_resources_found_on_actions.txt`;
-- scripted GUI: `common/scripted_guis/018_resources_found_scripted_gui.txt`, `interface/018_resources_found.gui`, and `interface/018_resources_found.gfx`;
-- English text: `localisation/english/018_random_resource_l_english.yml` and `localisation/english/018_resources_found_system_l_english.yml`;
-- scripted text: `common/scripted_localisation/018_resources_found_scripted_localisation.txt` plus the shared Event Details, settings, and super-event selectors;
-- shared integrations: event dispatcher, Event Details/log, the clickable World Opens Below world-end row and independent automatic-selection checkbox, Deaths cause 16, world threat, terminal progression, news, achievements, music, and sound registries;
+- event chain: `events/018_random_resource.txt`.
+- tuning: `common/script_constants/018_resources_found_constants.txt`, `common/script_constants/018_resources_found_decision_constants.txt`, `common/script_constants/018_resources_found_foreign_interest_constants.txt`, and `common/script_constants/018_resources_found_cave_constants.txt`.
+- MTTH: `common/mtth/018_resources_found_mtth.txt`.
+- field, incident, decision, cave, UI, log, news, and achievement effects: `common/scripted_effects/018_resources_found_*.txt`.
+- field, decision, cave, and achievement triggers: `common/scripted_triggers/018_resources_found_*.txt`.
+- decisions and categories: `common/decisions/018_resources_found_decisions.txt` and `common/decisions/categories/018_resources_found_categories.txt`.
+- field and cave modifiers: `common/dynamic_modifiers/018_resources_found_state_modifiers.txt`, `common/ideas/018_resources_found_cave_ideas.txt`, and `common/opinion_modifiers/018_resources_found_opinion_modifiers.txt`.
+- narrow hooks: `common/on_actions/018_resources_found_on_actions.txt`.
+- scripted GUI: `common/scripted_guis/018_resources_found_scripted_gui.txt`, `interface/018_resources_found.gui`, and `interface/018_resources_found.gfx`.
+- English text: `localisation/english/018_random_resource_l_english.yml` and `localisation/english/018_resources_found_system_l_english.yml`.
+- scripted text: `common/scripted_localisation/018_resources_found_scripted_localisation.txt` plus the shared Event Details, settings, and super-event selectors.
+- shared integrations: event dispatcher, Event Details/log, the clickable World Opens Below world-end row and independent automatic-selection checkbox, Deaths cause 16, world threat, terminal progression, news, achievements, music, and sound registries.
 - catalog: `docs/spreadsheets/chaos_redux_events_catalog.xlsx`.
 
 ## Asset wiring
 
 Event art:
 
-- reports: `gfx/event_pictures/018_resources_found/`, registered in `interface/018_resources_found.gfx`;
-- news: `gfx/event_pictures/news/018_resources_found/`, registered in the same GFX file;
-- super-events: `gfx/super_events/018_resources_found/`, registered in `interface/chaosx_super_events.gfx`;
-- portraits: `gfx/leaders/018_resources_found/`, registered in `interface/chaosx_characters.gfx`;
+- reports: `gfx/event_pictures/018_resources_found/`, registered in `interface/018_resources_found.gfx`.
+- news: `gfx/event_pictures/news/018_resources_found/`, registered in the same GFX file.
+- super-events: `gfx/super_events/018_resources_found/`, registered in `interface/chaosx_super_events.gfx`.
+- portraits: `gfx/leaders/018_resources_found/`, registered in `interface/chaosx_characters.gfx`.
 - flags: `gfx/flags/DHO*.tga` and matching medium/small files.
 
 Icons and UI:
 
-- 67 focus icons: `gfx/interface/goals/018_resources_found/`;
-- cave and countermeasure ideas: `gfx/interface/ideas/018_resources_found/`;
-- decision, category, and category-picture art: `gfx/interface/decisions/018_resources_found/`;
-- selected-field static and animated assets: `gfx/interface/018_resources_found/` and `gfx/interface/animated/018_resources_found/`;
+- 67 focus icons: `gfx/interface/goals/018_resources_found/`.
+- cave and countermeasure ideas: `gfx/interface/ideas/018_resources_found/`.
+- decision, category, and category-picture art: `gfx/interface/decisions/018_resources_found/`.
+- selected-field static and animated assets: `gfx/interface/018_resources_found/` and `gfx/interface/animated/018_resources_found/`.
 - 15 achievement complete, grey, and not-eligible triplets: `gfx/achievements/`.
 
-The permanent runtime inventory, dimensions, animation frame counts, fallbacks, provenance conclusions, sprite identifiers, licences, and specialist evidence links are recorded in `docs/events/018_resources_found/assets.md`. The event-scoped `docs/assets/018_resources_found/` workspace is temporary evidence, not a runtime dependency. Its bounded cave-monster reconstruction tranche remains available while final evidence gates are open and must be deleted only after genuine Event 018 closure.
+The permanent runtime inventory, dimensions, animation frame counts, fallbacks, provenance conclusions, sprite identifiers, licences, and specialist evidence links are recorded in `docs/events/018_resources_found/assets.md`. The event-scoped `docs/assets/018_resources_found/` workspace is temporary evidence, not a runtime dependency. That workspace is absent in the current checkout, despite the retained availability claim for its bounded cave-monster reconstruction tranche. This absence does not prove Event 018 closure or runtime asset loss. The original retention requirement and unresolved source-evidence question remain recorded in the documentation review.
 
 The exact-estimate refresh controls reuse `GFX_decision_generic_research`. The internal clock category and its nine non-rendered missions require no category art, mission icons, or localisation.
 
@@ -201,6 +203,8 @@ The baseline discovery is economically valuable immediately but requires 90 to 2
 The cave opening is bounded at 30 divisions. Later growth is map-based and delayed: 10 resources per capacity, 10 capacity maximum per state, zero from the origin, 30 days of uninterrupted control, and sequential spawning. Counterplay therefore has three distinct windows: prevent emergence by full sealing, recapture an activating state, or break a mature anchor with hard-attack capable forces.
 
 ## Future plans
+
+These retained proposals have unresolved current acceptance and do not authorize implementation through this documentation cleanup.
 
 - Add more post-closure flavor only when it uses the closed-field history without reopening the resource ledger.
 - Extend foreign contract identities when new route or trade APIs provide stronger material distinctions.

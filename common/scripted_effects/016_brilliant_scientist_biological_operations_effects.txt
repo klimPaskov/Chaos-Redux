@@ -351,16 +351,19 @@ brilliant_scientist_dispatch_weaponized_zombie_release = {
 		set_temp_variable = { victim_country = THIS }
 	}
 	else = { set_temp_variable = { victim_country = var:brilliant_scientist_biological_deployment_victim } }
-	if = {
-		limit = { check_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero } }
-		apply_weaponized_zombie_strike_consequences = yes
-	}
 	var:brilliant_scientist_biological_release_target_state = {
 		PREV = { spawn_weaponized_zombie_outbreak_from_creator = yes }
 		if = {
 			limit = { OWNER = { tag = var:weaponized_zombie_new_country } }
 			set_temp_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied }
 		}
+	}
+	if = {
+		limit = {
+			check_variable = { brilliant_scientist_biological_release_dispatched = constant:bio_lifecycle_proof.supplied }
+			check_variable = { brilliant_scientist_biological_release_is_accident = constant:brilliant_scientist_value.zero }
+		}
+		apply_weaponized_zombie_strike_consequences = yes
 	}
 }
 

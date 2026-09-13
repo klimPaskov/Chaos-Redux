@@ -1,0 +1,1069 @@
+{
+  "schema_version": "1.0",
+  "snapshot": "2026-09-06",
+  "scope": {
+    "owner_files": [
+      "docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\reconciliation.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\source_inventory.json"
+    ],
+    "read_only_evidence": [
+      "common\\decisions",
+      "common\\scripted_effects",
+      "common\\scripted_triggers",
+      "common\\scripted_guis",
+      "common\\ideas",
+      "common\\dynamic_modifiers",
+      "common\\script_constants",
+      "localisation\\english",
+      "interface",
+      "docs\\systems",
+      "docs\\specs",
+      "docs\\plans"
+    ],
+    "excluded_edits": [
+      "gameplay",
+      "localisation",
+      "GUI",
+      "spreadsheet",
+      "configuration",
+      "assets",
+      "MCP source"
+    ]
+  },
+  "acceptance": {
+    "accepted_plan": "docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\accepted_implementation.md",
+    "acceptance_basis": "The user explicitly requested implementation of the complete Camps, Forced Labor and Repression plan on 2026-09-06.",
+    "design_status": "accepted and queued",
+    "implementation_claim": "No completion claim is made. Current source is evidence of present definitions and partial integration only.",
+    "required_behavior": [
+      "Automatic administration is governed by national priority, repression mandate and spending ceiling.",
+      "Maintenance, eligible development and authorized institutional work remain quiet.",
+      "Economic and institutional work use separate slots with continuing support and valid authority.",
+      "Surviving allocated workforce, supported capacity and opportunity determine output within the accepted caps.",
+      "Institutional awards are 0.5 to 1.0 limited-use bonuses with at most two accepted awards per calendar year and no stacking exploit.",
+      "Payments, commitments, reserves, quotes, bounds and durations use a centralized contract.",
+      "The interface presents administration, locations and records views with native controls.",
+      "Finite cohorts produce exact-once physical losses with monthly and cumulative, location, cause and responsible-authority records.",
+      "Reform releases survivors in place and does not restore deaths or delete built civilian infrastructure.",
+      "Mengele's Auschwitz branch is hidden before 1943-05-30 and requires the correct regime, authority and controlled institution."
+    ]
+  },
+  "source_of_truth": [
+    {
+      "type": "accepted_design",
+      "path": "docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\accepted_implementation.md",
+      "basis": "Explicit user acceptance recorded in the plan.",
+      "status": "accepted and queued"
+    },
+    {
+      "type": "current_system_description",
+      "path": "docs\\systems\\cbrn_warfare\\genocide\\genocide_crisis_system.md",
+      "evidence": "Legacy package counts and current source references.",
+      "status": "historical/current runtime evidence; stale for redesign claims"
+    },
+    {
+      "type": "foundation_contract",
+      "path": "common\\scripted_effects\\camp_administration_effects.md",
+      "evidence": "Finite cohort, payment, separate-slot, release, reform and award contracts.",
+      "status": "current source contract; implementation evidence only"
+    },
+    {
+      "type": "integration_handoff",
+      "path": "docs\\plans\\system_camp_repression_rework_plans\\administration_redesign_2026-09-06\\integration_handoff.md",
+      "evidence": "Bounded source integration, lifecycle order, retired-candidate gates and validation limits.",
+      "status": "accepted and queued for parent review"
+    }
+  ],
+  "current_counts": {
+    "legacy_operational_player_actions": 84,
+    "legacy_ledger_controls": 4,
+    "legacy_missions": 41,
+    "new_major_administration_decisions": 9,
+    "new_civil_administration_decisions": 2,
+    "genocide_crisis_nested_decisions": 33,
+    "cbrn_occupation_decisions": 9,
+    "legacy_gui_country_slots": 4,
+    "legacy_gui_tabs": 5,
+    "accepted_gui_views": 3
+  },
+  "foundation_runtime": {
+    "files": [
+      "common\\script_constants\\camp_administration_constants.txt",
+      "common\\script_constants\\camp_administration_country_constants.txt",
+      "common\\script_constants\\camp_administration_civil_constants.txt",
+      "common\\scripted_effects\\camp_administration_effects.txt",
+      "common\\scripted_effects\\camp_administration_occupation_effects.txt",
+      "common\\scripted_effects\\camp_administration_integration_effects.txt",
+      "common\\scripted_effects\\camp_administration_country_effects.txt",
+      "common\\scripted_effects\\camp_administration_civil_effects.txt",
+      "common\\scripted_effects\\camp_administration_ui_effects.txt",
+      "common\\scripted_triggers\\camp_administration_triggers.txt",
+      "common\\scripted_triggers\\camp_administration_country_triggers.txt",
+      "common\\scripted_triggers\\camp_administration_civil_triggers.txt",
+      "common\\scripted_triggers\\camp_administration_integration_triggers.txt",
+      "common\\scripted_triggers\\camp_administration_ui_triggers.txt",
+      "common\\dynamic_modifiers\\camp_administration_dynamic_modifiers.txt"
+    ],
+    "defined_helpers": [
+      "camp_admin_initialize_country",
+      "camp_admin_initialize_site",
+      "camp_admin_admit_detainees",
+      "camp_admin_record_deaths",
+      "camp_admin_refresh_state_economy",
+      "camp_admin_refresh_country_economy",
+      "camp_admin_prepare_project_quote",
+      "camp_admin_try_pay_project",
+      "camp_admin_pay_monthly_maintenance",
+      "camp_admin_release_survivors",
+      "camp_admin_close_site",
+      "camp_admin_reopen_site",
+      "camp_admin_begin_reform",
+      "camp_admin_select_economy_project",
+      "camp_admin_progress_economy_project",
+      "camp_admin_monthly_state",
+      "camp_admin_monthly_country",
+      "camp_admin_try_claim_research_award",
+      "camp_occ_initialize_country",
+      "camp_occ_monthly_country",
+      "camp_occ_close_country",
+      "camp_admin_country_release_registered_prisoners",
+      "camp_admin_set_priority",
+      "camp_admin_set_budget",
+      "camp_admin_set_mandate",
+      "camp_admin_set_selected_role",
+      "camp_admin_toggle_selected_work",
+      "camp_admin_release_selected"
+    ],
+    "current_evidence": [
+      "Finite cohorts are admitted only with explicit state/source proof and are not created from a pressure score.",
+      "The monthly country adapter is calendar-guarded and orders maintenance, state processing, economy refresh and project progress.",
+      "Country programs call the annual award helper and apply add_tech_bonus only after accepted=1 with uses=1.",
+      "Soviet engineer release calls camp_admin_release_survivors and does not add manpower in the current country effect source.",
+      "Civil modules use economy and institution slot flags and cancel routine project missions before reform or cleanup."
+    ],
+    "queued_proof": [
+      "No engine execution proves helper syntax, exact-once loss accounting, population conservation or target-loss cleanup.",
+      "No current GUI consumer was found for the new UI helper contract.",
+      "The parent still owns final integration, scenario validation, localization review, specialist audits and completion claims."
+    ]
+  },
+  "action_dispatcher": {
+    "source": "common\\scripted_effects\\camp_repression_action_dispatcher_effects.txt",
+    "current_helpers": [
+      "camp_rework_prepare_selected_action_state",
+      "camp_rework_dispatch_prepare_colonial_selection",
+      "camp_rework_dispatch_restore_colonial_selection",
+      "camp_rework_dispatch_generic_action",
+      "camp_rework_dispatch_generic_action_legacy",
+      "camp_rework_dispatch_germany_action",
+      "camp_rework_dispatch_japan_action",
+      "camp_rework_dispatch_soviet_action",
+      "camp_rework_dispatch_uk_action",
+      "camp_rework_dispatch_usa_action",
+      "camp_rework_dispatch_france_action",
+      "camp_rework_dispatch_italy_action",
+      "camp_rework_dispatch_belgium_action"
+    ],
+    "accepted_plan_disposition": "retain one adapter bus or replace in place",
+    "reason": "The accepted plan does not authorize a second action dispatcher; legacy IDs must route through administration contracts or be retired.",
+    "implementation_status": "accepted and queued"
+  },
+  "player_actions": {
+    "generic_controls": {
+      "source": "common\\decisions\\camp_repression_generic_decisions.txt",
+      "count": 4,
+      "ids": [
+        "camp_repression_open_ledger",
+        "camp_repression_close_ledger",
+        "camp_repression_show_actions",
+        "camp_repression_hide_actions"
+      ],
+      "accepted_plan_disposition": "replaced",
+      "reason": "Replace legacy Ledger visibility and five-tab navigation with the three-view administration interface.",
+      "implementation_status": "accepted and queued"
+    },
+    "generic_retained": {
+      "source": "common\\decisions\\camp_repression_generic_decisions.txt",
+      "ids": [
+        "generic_activate_detention_network",
+        "generic_restricted_contaminated_site_escalation",
+        "generic_destroy_evidence_before_retreat",
+        "generic_inspect_active_site",
+        "generic_dismantle_detention_network",
+        "camp_repression_close_dormant_legacy_site"
+      ],
+      "accepted_plan_disposition": "retained",
+      "reason": "These remain explicit activation, location, evidence or closure outcomes, subject to centralized costs and valid authority.",
+      "implementation_status": "accepted and queued"
+    },
+    "generic_merged_or_replaced": {
+      "source": "common\\decisions\\camp_repression_generic_decisions.txt",
+      "merged_into_automatic_administration": [
+        "generic_expand_labor_quotas",
+        "generic_redirect_labor_to_construction",
+        "generic_redirect_labor_to_resource_extraction",
+        "generic_allocate_additional_guards",
+        "generic_reduce_labor_quotas"
+      ],
+      "replaced_by_mandate_or_institution": [
+        "generic_upgrade_existing_site_to_radicalized_atrocity_site"
+      ],
+      "reason": "Routine output, guards, quotas and development belong to priority, mandate, budget, support and separate slots; radicalization is a bounded authority state.",
+      "implementation_status": "accepted and queued"
+    },
+    "major_germany": {
+      "source": "common\\decisions\\camp_repression_major_country_decisions.txt",
+      "merged_into_administration": [
+        "germany_route_prisoner_labor_to_war_construction",
+        "germany_redirect_prisoner_labor_to_eastern_fortifications",
+        "germany_tighten_deportation_logistics",
+        "germany_increase_guard_allocation_to_ss_sites"
+      ],
+      "replaced_by_bounded_institution": [
+        "germany_build_ss_laboratory_annex_at_auschwitz"
+      ],
+      "retained_as_records_or_lifecycle": [
+        "germany_destroy_auschwitz_evidence_before_retreat",
+        "germany_dismantle_auschwitz_complex"
+      ],
+      "reason": "Retain Germany's distinct authority and evidence history while moving routine labor and laboratory effects into the national contract.",
+      "implementation_status": "accepted and queued"
+    },
+    "major_japan": {
+      "source": "common\\decisions\\camp_repression_major_country_decisions.txt",
+      "replaced_by_bounded_institution_or_award": [
+        "japan_establish_pingfang_research_bureau",
+        "japan_expand_occupation_test_records",
+        "japan_shield_ishii_from_army_review",
+        "japan_redirect_records_to_army_medical_control",
+        "japan_invite_kwantung_army_medical_officers"
+      ],
+      "merged_into_administration_or_authority": [
+        "japan_suppress_chinese_resistance_cells",
+        "japan_route_supplies_to_epidemic_prevention"
+      ],
+      "retained_as_institution_or_records": [
+        "japan_open_epidemic_containment_office",
+        "japan_destroy_pingfang_records",
+        "japan_evacuate_pingfang_research_staff",
+        "japan_submit_to_army_review",
+        "japan_remove_ishii_from_program_control",
+        "japan_shut_down_prisoner_experiments"
+      ],
+      "reason": "Keep Japan distinct but replace permanent research-speed and flat project benefits with bounded single-use awards and meaningful review, outbreak, record and reform outcomes.",
+      "implementation_status": "accepted and queued"
+    },
+    "major_soviet": {
+      "source": "common\\decisions\\camp_repression_major_country_decisions.txt",
+      "merged_into_administration_or_authority": [
+        "sov_transfer_prisoners_to_industrial_camps",
+        "sov_reinforce_nkvd_authority",
+        "sov_reduce_paranoia_through_party_review",
+        "sov_conceal_famine_mortality",
+        "sov_authorize_extreme_periphery_repression"
+      ],
+      "replaced_by_finite_release_in_place": [
+        "sov_release_prisoners_for_military_service"
+      ],
+      "retained_as_lifecycle_or_crisis": [
+        "sov_dismantle_overextended_gulags",
+        "sov_emergency_famine_relief",
+        "sov_admit_local_administrative_collapse"
+      ],
+      "reason": "Soviet release must use the finite registered detainee cohort and never create army reserves or manpower; famine, records, authority and closure remain meaningful outcomes.",
+      "implementation_status": "accepted and queued"
+    },
+    "colonial_uk_raj": {
+      "source": "common\\decisions\\camp_repression_colonial_country_decisions.txt",
+      "retained": [
+        "uk_survey_raj_emergency_detention",
+        "uk_activate_raj_emergency_detention",
+        "uk_tighten_dominion_security_coordination",
+        "uk_release_political_prisoners_for_negotiations",
+        "uk_reform_colonial_labor_administration",
+        "uk_dismantle_raj_detention_network"
+      ],
+      "merged_into_automatic_administration": [
+        "uk_route_colonial_labor_to_military_construction",
+        "uk_expand_raj_detention_districts",
+        "uk_demand_indian_manpower_levy",
+        "uk_allocate_additional_colonial_guards"
+      ],
+      "reason": "Retain distinct Raj custody, coordination, negotiation, reform and closure while routine labor, intake, guards and construction use civil administration slots.",
+      "implementation_status": "accepted and queued"
+    },
+    "colonial_usa": {
+      "source": "common\\decisions\\camp_repression_colonial_country_decisions.txt",
+      "retained": [
+        "usa_authorize_emergency_relocation_zones",
+        "usa_strengthen_wartime_review_boards",
+        "usa_allow_court_review",
+        "usa_release_detainees_under_supervision",
+        "usa_terminate_relocation_authority",
+        "usa_establish_redress_commission"
+      ],
+      "merged_into_automatic_administration": [
+        "usa_expand_interior_security_camps",
+        "usa_assign_detainee_labor_to_local_works"
+      ],
+      "reason": "Keep USA authority, court, release, sunset and redress as distinct civil outcomes while routine capacity and local works use the economic slot.",
+      "implementation_status": "accepted and queued"
+    },
+    "colonial_france_vichy": {
+      "source": "common\\decisions\\camp_repression_colonial_country_decisions.txt",
+      "retained": [
+        "fr_inspect_camp_legacy",
+        "fr_close_camp_legacy_sites",
+        "fr_expand_vichy_internment_administration",
+        "fr_collaboration_transfer_records",
+        "fr_suppress_refugee_and_rescue_networks",
+        "fr_support_refugee_and_rescue_networks",
+        "fr_open_colonial_labor_review",
+        "fr_dismantle_north_africa_labor_network"
+      ],
+      "merged_into_automatic_administration": [
+        "fr_route_north_africa_labor_to_rail_projects"
+      ],
+      "reason": "Retain the France/Vichy distinction, records, refugee choices, inspection, review and dismantlement while rail labor becomes quiet eligible development.",
+      "implementation_status": "accepted and queued"
+    },
+    "colonial_italy": {
+      "source": "common\\decisions\\camp_repression_colonial_country_decisions.txt",
+      "retained": [
+        "ita_reopen_desert_camp_administration",
+        "ita_authorize_homeland_emergency_detention",
+        "ita_force_settlement_of_rebel_districts",
+        "ita_close_desert_camps",
+        "ita_compensate_local_communities"
+      ],
+      "merged_into_automatic_administration_or_authority": [
+        "ita_redirect_colonial_labor_to_roads_and_forts",
+        "ita_raise_colonial_security_battalions",
+        "ita_expand_desert_transport_guard"
+      ],
+      "reason": "Keep Italian custody, settlement, closure and compensation outcomes; route routine roads, guards and transport through the civil administration contract.",
+      "implementation_status": "accepted and queued"
+    },
+    "colonial_belgium_congo": {
+      "source": "common\\decisions\\camp_repression_colonial_country_decisions.txt",
+      "retained": [
+        "bel_suppress_colonial_strikes",
+        "bel_negotiate_colonial_strike_settlement",
+        "bel_open_international_inspection",
+        "bel_reform_concession_system",
+        "bel_recognize_local_administration"
+      ],
+      "merged_into_automatic_administration": [
+        "bel_expand_concession_labor_quotas",
+        "bel_route_labor_to_rubber_and_minerals",
+        "bel_build_congo_transport_corridors"
+      ],
+      "reason": "Preserve distinct Congo strike, inspection, reform and local-administration outcomes while quotas, extraction and corridors use the economic slot.",
+      "implementation_status": "accepted and queued"
+    },
+    "new_major_administration": {
+      "source": "common\\decisions\\camp_administration_country_decisions.txt",
+      "count": 9,
+      "retained": [
+        "camp_admin_ger_economic_authority",
+        "camp_admin_ger_ministerial_review",
+        "camp_admin_ger_preserve_archives",
+        "camp_admin_jap_kwantung_allocation",
+        "camp_admin_jap_central_army_review",
+        "camp_admin_jap_preserve_occupation_records",
+        "camp_admin_sov_commission_design_bureaux",
+        "camp_admin_sov_review_engineer_detention",
+        "camp_admin_sov_open_release_registers"
+      ],
+      "reason": "These are the canonical country authority, oversight and aftermath controls under the accepted administration model.",
+      "implementation_status": "accepted and queued"
+    },
+    "new_civil_administration": {
+      "source": "common\\decisions\\camp_administration_civil_decisions.txt",
+      "count": 2,
+      "retained_as_hidden_ai_controls": [
+        "camp_admin_civil_authorize_policy_ai",
+        "camp_admin_civil_review_policy_ai"
+      ],
+      "reason": "Civil administration must remain automatic and quiet while AI authorization and review preserve country-specific policy behavior.",
+      "implementation_status": "accepted and queued"
+    },
+    "legacy_genocide_crisis": {
+      "source": "common\\decisions\\genocide_crisis_decisions.txt",
+      "visibility_controls_retired": [
+        "genocide_show_hidden_decisions",
+        "genocide_hide_hidden_decisions",
+        "sov_show_gulag_decisions",
+        "sov_hide_gulag_decisions"
+      ],
+      "merge_or_replace_operational": [
+        {
+          "ids": [
+            "germany_wartime_camp_administration",
+            "germany_expand_occupied_poland_camp_system",
+            "germany_expand_extermination_site_network",
+            "genocide_build_extermination_camp",
+            "japan_expand_forced_labor_camps",
+            "sov_expand_gulag_network"
+          ],
+          "accepted_plan_disposition": "merged",
+          "target": "automatic administration, eligible development and valid authority"
+        },
+        {
+          "ids": [
+            "germany_intensify_extermination_policy",
+            "germany_transfer_prisoners_to_experiment_site",
+            "genocide_intensify_deportations",
+            "genocide_redirect_trains_and_supplies",
+            "japan_transfer_prisoners_to_experimental_facilities",
+            "sov_deport_suspected_opposition_groups",
+            "sov_confiscate_food_from_disloyal_regions",
+            "sov_raise_forced_labor_quotas"
+          ],
+          "accepted_plan_disposition": "replaced",
+          "target": "bounded authority, finite cohorts, country programs and cause-specific records"
+        }
+      ],
+      "retained_meaningful_routes": [
+        "genocide_restricted_chemical_site_escalation",
+        "genocide_hide_evidence_from_foreign_observers",
+        "genocide_suppress_internal_reports",
+        "genocide_deal_with_resistance_sabotage",
+        "genocide_handle_refugee_waves",
+        "genocide_manage_military_objections",
+        "genocide_destroy_camp_evidence",
+        "genocide_cover_up_liberated_camps",
+        "japan_conduct_anti_partisan_reprisals",
+        "japan_destroy_occupation_records",
+        "sov_purge_camp_administrators",
+        "sov_destroy_gulag_records",
+        "genocide_publicize_survivor_testimony",
+        "genocide_support_resistance_networks",
+        "genocide_prepare_tribunal_records"
+      ],
+      "reason": "Legacy routes cannot remain a second administration or payment bus; meaningful evidence, crisis and foreign-response outcomes may survive behind new authority and target gates.",
+      "implementation_status": "accepted and queued"
+    },
+    "cbrn_occupation": {
+      "source": "common\\decisions\\cbrn_occupation_decisions.txt",
+      "count": 9,
+      "ids": [
+        "cbrn_authorize_coercive_security",
+        "cbrn_adopt_protected_occupation",
+        "cbrn_nerve_suppression_sarin",
+        "cbrn_nerve_suppression_soman",
+        "cbrn_deploy_protective_aid",
+        "cbrn_seal_state",
+        "cbrn_destroy_contaminated_records",
+        "cbrn_admit_accidental_release",
+        "cbrn_permit_inspection"
+      ],
+      "accepted_plan_disposition": "retained outside camp owner",
+      "reason": "Keep the CBRN occupation owner distinct and require an explicit shared-location adapter to prevent duplicate cost, lifecycle or loss application.",
+      "implementation_status": "parent decision required"
+    }
+  },
+  "missions": {
+    "source_files": [
+      "common\\decisions\\camp_repression_generic_decisions.txt",
+      "common\\decisions\\camp_repression_major_country_decisions.txt",
+      "common\\decisions\\camp_repression_colonial_country_decisions.txt"
+    ],
+    "count": 41,
+    "retained_meaningful": [
+      "generic_network_overstretch_crisis",
+      "generic_retreat_evidence_crisis",
+      "camp_gui_selected_dismantlement_mission",
+      "germany_auschwitz_military_review_mission",
+      "germany_auschwitz_evidence_destruction_mission",
+      "germany_auschwitz_dismantlement_mission",
+      "japan_army_medical_review_mission",
+      "japan_epidemic_containment_mission",
+      "japan_pingfang_evacuation_mission",
+      "japan_prisoner_experiment_shutdown_mission",
+      "sov_emergency_famine_relief_mission",
+      "sov_camp_administrator_review_mission",
+      "sov_overextended_gulag_dismantlement_mission",
+      "sov_retreat_records_crisis_mission",
+      "uk_postwar_raj_review",
+      "uk_negotiate_indian_release_terms",
+      "usa_court_review_period",
+      "usa_security_authority_sunset",
+      "usa_redress_commission_work",
+      "fr_gurs_legacy_review",
+      "fr_refugee_pressure_response",
+      "fr_post_liberation_reckoning",
+      "ita_colonial_security_sweep",
+      "ita_desert_camp_closure",
+      "ita_postwar_colonial_compensation",
+      "bel_colonial_strike_response",
+      "bel_concession_reform_mandate"
+    ],
+    "replaced_by_quiet_automatic_or_institutional_progress": [
+      "generic_labor_project_cycle",
+      "generic_reform_and_dismantlement",
+      "germany_occupied_poland_camp_expansion_mission",
+      "germany_eastern_fortifications_labor_mission",
+      "germany_ss_laboratory_annex_mission",
+      "japan_pingfang_research_bureau_mission",
+      "sov_gulag_quota_cycle",
+      "sov_famine_pressure_cycle",
+      "uk_hold_raj_security_line",
+      "uk_complete_raj_military_works",
+      "fr_north_africa_rail_labor_project",
+      "ita_desert_road_labor_project",
+      "bel_congo_resource_quota_cycle",
+      "bel_congo_transport_corridor_project"
+    ],
+    "reason": "Automatic maintenance, eligible development and authorized institution work must not require routine clicks or ordinary completion popups.",
+    "implementation_status": "accepted and queued",
+    "current_cleanup_evidence": [
+      "camp_admin_integration_cancel_routine_projects removes generic_labor_project_cycle and generic_reform_and_dismantlement.",
+      "camp_administration_civil_cancel_routine_projects removes the identified UK, USA, France, Italy and Belgium routine project missions.",
+      "The remaining mission completion effects require parent-owned quieting or explicit retention review."
+    ]
+  },
+  "country_bridges": [
+    {
+      "id": "camp_rework_germany_monthly_bridge",
+      "source": "common\\scripted_effects\\camp_repression_major_country_effects.txt:564",
+      "accepted_plan_disposition": "retained as adapter",
+      "merge_target": "camp_admin_country_* and camp_admin_monthly_country",
+      "keep": "Meaningful authority, evidence, threshold and reform outcomes.",
+      "remove_or_merge": "Routine output, labor, guard and institutional progress that duplicates slots.",
+      "implementation_status": "accepted and queued"
+    },
+    {
+      "id": "camp_rework_japan_monthly_bridge",
+      "source": "common\\scripted_effects\\camp_repression_major_country_effects.txt:582",
+      "accepted_plan_disposition": "retained as adapter",
+      "events": ["japan_ishii.1", "japan_ishii.2", "japan_ishii.3", "japan_ishii.5"],
+      "merge_target": "camp_admin_country programs and limited-use awards",
+      "implementation_status": "accepted and queued"
+    },
+    {
+      "id": "camp_rework_soviet_monthly_bridge",
+      "source": "common\\scripted_effects\\camp_repression_major_country_effects.txt:665",
+      "accepted_plan_disposition": "retained as adapter",
+      "events": ["soviet_gulag.3", "soviet_gulag.5"],
+      "merge_target": "finite release, famine records, authority and reform",
+      "implementation_status": "accepted and queued"
+    },
+    {
+      "id": "camp_rework_refresh_colonial_focus_hooks",
+      "source": "common\\scripted_effects\\camp_repression_colonial_country_effects.txt:23",
+      "accepted_plan_disposition": "retained as country adapter",
+      "countries": ["ENG", "RAJ", "USA", "FRA", "VIC", "ITA", "BEL", "COG"],
+      "implementation_status": "accepted and queued"
+    },
+    {
+      "id": "camp_rework_update_colonial_country_monthly_bridge",
+      "source": "common\\scripted_effects\\camp_repression_colonial_country_effects.txt:301",
+      "accepted_plan_disposition": "retained as country adapter",
+      "keep": "Refugee, strike, review, reform and post-liberation outcomes.",
+      "merge_target": "Civil custody, economy and institution slots.",
+      "implementation_status": "accepted and queued"
+    },
+    {
+      "id": "camp_rework_update_country_specific_monthly_bridges",
+      "source": "common\\scripted_effects\\camp_repression_rework_effects.txt:4642",
+      "accepted_plan_disposition": "retained as one bounded caller",
+      "constraint": "No second whole-world recurring hook and no duplicate monthly debit.",
+      "implementation_status": "accepted and queued"
+    }
+  ],
+  "legacy_gui": {
+    "source_files": [
+      "common\\scripted_guis\\camp_repression_ledger_scripted_gui.txt",
+      "interface\\camp_repression_ledger.gui",
+      "common\\scripted_localisation\\camp_repression_ledger_scripted_localisation.txt",
+      "common\\scripted_localisation\\camp_repression_ui_scripted_localisation.txt"
+    ],
+    "definitions": [
+      "camp_repression_ledger_category_scripted_gui",
+      "camp_repression_ledger_scripted_gui",
+      "repression_ledger_window"
+    ],
+    "current_tabs": [
+      "camp_gui_tab_overview",
+      "camp_gui_tab_state_pools",
+      "camp_gui_tab_sites",
+      "camp_gui_tab_country",
+      "camp_gui_tab_discovery"
+    ],
+    "accepted_views": [
+      "administration",
+      "locations",
+      "records"
+    ],
+    "click_actions": {
+      "retained_navigation_or_selection": [
+        "repression_ledger_category_open_button_click",
+        "camp_gui_close_window_click",
+        "camp_ui_pool_select_click",
+        "camp_ui_site_select_click"
+      ],
+      "replaced_navigation": [
+        "camp_gui_tab_overview_click",
+        "camp_gui_tab_state_pools_click",
+        "camp_gui_tab_sites_click",
+        "camp_gui_tab_country_click",
+        "camp_gui_tab_discovery_click"
+      ],
+      "replaced_by_administration_controls": [
+        "camp_gui_expand_selected_pool_click",
+        "camp_gui_start_labor_project_click",
+        "camp_gui_allocate_guards_click",
+        "camp_gui_reduce_quotas_click"
+      ],
+      "retained_location_or_records": [
+        "camp_gui_inspect_selected_site_click",
+        "camp_gui_dismantle_selected_site_click",
+        "camp_gui_destroy_evidence_click"
+      ],
+      "retained_as_explicit_cbrn_adapter": [
+        "camp_gui_chemical_method_click",
+        "camp_gui_biological_method_click"
+      ],
+      "replaced_country_slots": [
+        "camp_gui_country_specific_primary_click",
+        "camp_gui_country_action_2_click",
+        "camp_gui_country_action_3_click",
+        "camp_gui_country_action_4_click"
+      ]
+    },
+    "effect_routes": [
+      "camp_rework_gui_reveal_country_directives",
+      "camp_rework_gui_expand_selected_pool",
+      "camp_rework_gui_start_labor_project",
+      "camp_rework_gui_allocate_guards",
+      "camp_rework_gui_reduce_quotas",
+      "camp_rework_gui_inspect_selected_site",
+      "camp_rework_gui_begin_selected_dismantlement",
+      "camp_rework_gui_complete_selected_dismantlement",
+      "camp_rework_gui_cancel_selected_dismantlement",
+      "camp_rework_gui_destroy_selected_evidence",
+      "camp_rework_gui_apply_selected_chemical_method",
+      "camp_rework_gui_apply_selected_biological_method",
+      "camp_rework_gui_execute_country_action_1",
+      "camp_rework_gui_execute_country_action_2",
+      "camp_rework_gui_execute_country_action_3",
+      "camp_rework_gui_execute_country_action_4"
+    ],
+    "new_ui_contract": {
+      "source_files": [
+        "common\\scripted_effects\\camp_administration_ui_effects.txt",
+        "common\\scripted_triggers\\camp_administration_ui_triggers.txt",
+        "common\\scripted_effects\\camp_administration_ui_effects.md"
+      ],
+      "actions": [
+        "camp_admin_set_priority",
+        "camp_admin_set_budget",
+        "camp_admin_set_mandate",
+        "camp_admin_set_selected_role",
+        "camp_admin_toggle_selected_work",
+        "camp_admin_release_selected"
+      ],
+      "accepted_plan_disposition": "retained as canonical administration controls",
+      "implementation_status": "accepted and queued",
+      "consumer_gap": "No interface or scripted GUI consumer was found in this snapshot."
+    },
+    "country_slot_mapping": {
+      "GER": [
+        "germany_route_prisoner_labor_to_war_construction",
+        "germany_increase_guard_allocation_to_ss_sites",
+        "germany_destroy_auschwitz_evidence_before_retreat",
+        "germany_dismantle_auschwitz_complex"
+      ],
+      "JAP": [
+        "japan_submit_to_army_review",
+        "japan_shut_down_prisoner_experiments",
+        "japan_evacuate_pingfang_research_staff",
+        "japan_open_epidemic_containment_office"
+      ],
+      "SOV": [
+        "sov_reduce_paranoia_through_party_review",
+        "sov_emergency_famine_relief",
+        "sov_release_prisoners_for_military_service",
+        "sov_dismantle_overextended_gulags"
+      ],
+      "ENG_RAJ": [
+        "uk_reform_colonial_labor_administration",
+        "uk_release_political_prisoners_for_negotiations",
+        "uk_dismantle_raj_detention_network",
+        "uk_allocate_additional_colonial_guards"
+      ],
+      "USA": [
+        "usa_allow_court_review",
+        "usa_release_detainees_under_supervision",
+        "usa_terminate_relocation_authority",
+        "usa_establish_redress_commission"
+      ],
+      "FRA_VIC": [
+        "fr_inspect_camp_legacy",
+        "fr_support_refugee_and_rescue_networks",
+        "fr_open_colonial_labor_review",
+        "fr_dismantle_north_africa_labor_network"
+      ],
+      "ITA": [
+        "ita_close_desert_camps",
+        "ita_compensate_local_communities",
+        "ita_expand_desert_transport_guard",
+        "ita_raise_colonial_security_battalions"
+      ],
+      "BEL_COG": [
+        "bel_open_international_inspection",
+        "bel_reform_concession_system",
+        "bel_recognize_local_administration",
+        "bel_negotiate_colonial_strike_settlement"
+      ]
+    },
+    "accepted_plan_disposition": "replaced by three-view native administration interface",
+    "implementation_status": "accepted and queued",
+    "mcp_status": "Required read-only GUI inspect/render/compare route unavailable in this environment; no standalone viewer health was verified."
+  },
+  "ideas": {
+    "source_files": [
+      "common\\ideas\\camp_repression_rework_ideas.txt",
+      "common\\ideas\\camp_repression_major_country_ideas.txt",
+      "common\\ideas\\camp_repression_colonial_country_ideas.txt",
+      "common\\ideas\\genocide_crisis_ideas.txt",
+      "common\\ideas\\germany_mengele_ideas.txt"
+    ],
+    "merge_into_administration_or_dynamic_modifiers": [
+      "camp_repression_network_overstretch",
+      "generic_detention_network_administration",
+      "generic_expanded_labor_network",
+      "generic_overextended_repression_network",
+      "generic_radicalized_atrocity_policy",
+      "germany_ss_camp_administration",
+      "germany_occupied_labor_network",
+      "germany_ss_camp_overextension",
+      "japan_imperial_occupation_repression",
+      "sov_gulag_network_administration",
+      "sov_forced_labor_output",
+      "sov_gulag_corruption_and_overextension",
+      "uk_imperial_detention_administration",
+      "uk_overextended_imperial_detention",
+      "raj_colonial_labor_burden",
+      "usa_relocation_population_disruption",
+      "fr_north_africa_labor_burden",
+      "ita_desert_camp_administration",
+      "ita_colonial_logistics_output",
+      "bel_congo_concession_labor_system",
+      "bel_congo_extraction_pressure",
+      "congo_concession_labor_burden",
+      "bel_colonial_resource_output",
+      "genocide_rail_deportation_priority"
+    ],
+    "replace_permanent_research_or_flat_benefit_carriers": [
+      "japan_forced_labor_experiment_network",
+      "japan_ishii_program_authority",
+      "japan_reformed_biowarfare_legacy",
+      "germany_auschwitz_experiments",
+      "germany_auschwitz_experiments_restricted",
+      "germany_mengele_laboratory_state"
+    ],
+    "retain_meaningful_pressure_reform_legacy_or_records": [
+      "camp_democratic_legitimacy_crisis",
+      "camp_repression_reform_pressure",
+      "camp_rework_site_inspection_burden",
+      "generic_reform_pressure",
+      "generic_reformed_legacy",
+      "germany_dormant_ss_camp_legacy",
+      "germany_auschwitz_evidence_pressure",
+      "germany_camp_reform_pressure",
+      "germany_post_regime_camp_reckoning",
+      "japan_dormant_occupation_apparatus",
+      "japan_kwantung_medical_autonomy",
+      "japan_biowarfare_outbreak_pressure",
+      "japan_imperial_army_review",
+      "japan_pingfang_exposure_pressure",
+      "japan_biowarfare_program_overextension",
+      "sov_dormant_gulag_legacy",
+      "sov_nkvd_repression_authority",
+      "sov_famine_pressure",
+      "sov_republic_fear_and_grievance",
+      "sov_gulag_reform_pressure",
+      "sov_post_collapse_repression_legacy",
+      "uk_imperial_detention_legacy",
+      "uk_imperial_reform_credit",
+      "uk_colonial_reckoning_pressure",
+      "usa_wartime_security_authority",
+      "usa_contested_relocation_authority",
+      "usa_civil_liberties_damage",
+      "usa_redress_pressure",
+      "usa_reform_credit",
+      "fr_camp_legacy",
+      "vichy_collaboration_repression",
+      "fr_refugee_pressure",
+      "fr_refugee_aid_commitment",
+      "free_france_reform_credit",
+      "fr_post_liberation_reckoning",
+      "ita_colonial_repression_legacy",
+      "ita_libyan_resistance_pressure",
+      "ita_postwar_colonial_claim_damage",
+      "ita_colonial_reform_credit",
+      "bel_postwar_accountability_pressure",
+      "bel_strike_settlement_commitment",
+      "bel_congo_reform_credit",
+      "camp_admin_civil_british_custody",
+      "camp_admin_civil_british_review",
+      "camp_admin_civil_congo_strike",
+      "radical_hardliner_support",
+      "genocide_tribunal_preparation",
+      "genocide_military_objections_suppressed"
+    ],
+    "notes": [
+      "Japanese institutional ideas and localization retain research or economic language in places even though the current major-country source now mostly carries stability, supply and authority modifiers; the final split must not stack with temporary awards.",
+      "Current German Mengele/Auschwitz ideas still carry special-project and biowarfare-facility speed modifiers; their source and labels require owner review against the accepted bounded-award contract.",
+      "New country-only administration localization belongs in localisation\\english\\camp_administration_country_l_english.yml; this task does not edit it."
+    ],
+    "implementation_status": "accepted and queued"
+  },
+  "dynamic_modifiers": {
+    "canonical_retained": [
+      "camp_admin_country_economy",
+      "camp_admin_state_economy"
+    ],
+    "merge_output_but_preserve_unique_liabilities": [
+      "genocide_concentration_camp_network_state",
+      "genocide_forced_labor_exploitation_state"
+    ],
+    "retain_distinct_evidence_or_pressure": [
+      "genocide_camp_sabotage_pressure_state",
+      "genocide_evidence_burned_state",
+      "genocide_refugee_pressure_state",
+      "genocide_foreign_resistance_support_state",
+      "sov_famine_pressure_state"
+    ],
+    "retain_outside_camp_owner": [
+      "cbrn_nerve_suppression_active_state",
+      "cbrn_nerve_suppression_trauma_state",
+      "cbrn_occupation_backlash_state",
+      "cbrn_occupation_state_sealed_modifier"
+    ],
+    "implementation_status": "accepted and queued",
+    "evidence": {
+      "canonical_file": "common\\dynamic_modifiers\\camp_administration_dynamic_modifiers.txt",
+      "legacy_major_file": "common\\dynamic_modifiers\\camp_repression_major_country_dynamic_modifiers.txt",
+      "legacy_genocide_file": "common\\dynamic_modifiers\\genocide_crisis_dynamic_modifiers.txt",
+      "cbrn_file": "common\\dynamic_modifiers\\cbrn_occupation_dynamic_modifiers.txt"
+    }
+  },
+  "cost_and_lifecycle_routes": [
+    {
+      "family": "countrywide_legacy",
+      "paths": [
+        "common\\script_constants\\camp_repression_rework_constants.txt",
+        "common\\scripted_effects\\camp_repression_rework_effects.txt",
+        "common\\scripted_effects\\camp_repression_action_dispatcher_effects.txt"
+      ],
+      "status": "merge or adapt",
+      "reason": "Existing camp_rework_cost, equipment and reserve tables overlap the new national support and political-power ceilings."
+    },
+    {
+      "family": "selected_site",
+      "paths": [
+        "common\\script_constants\\camp_repression_site_cost_constants.txt",
+        "common\\scripted_triggers\\camp_repression_site_cost_triggers.txt",
+        "common\\scripted_effects\\camp_repression_site_cost_effects.txt"
+      ],
+      "status": "adapter decision required",
+      "reason": "Location quotes remain useful but must not pay in addition to the centralized administration contract."
+    },
+    {
+      "family": "legacy_genocide",
+      "paths": [
+        "common\\script_constants\\genocide_crisis_constants.txt",
+        "common\\decisions\\genocide_crisis_decisions.txt",
+        "common\\scripted_effects\\genocide_crisis_effects.txt"
+      ],
+      "status": "retire or merge",
+      "reason": "Legacy genocide_decision_cost routes overlap canonical actions and lack the full administration slot and finite-cohort contract."
+    },
+    {
+      "family": "lifecycle",
+      "paths": [
+        "common\\scripted_effects\\camp_repression_rework_effects.txt",
+        "common\\scripted_effects\\camp_administration_effects.txt",
+        "common\\scripted_effects\\camp_administration_integration_effects.txt"
+      ],
+      "status": "retain one bounded order",
+      "reason": "Close and release cohorts before pointer or registry teardown; prevent old state-percent death bursts, duplicate release and second project cancellation."
+    }
+  ],
+  "hidden_gate_audit": [
+    {
+      "surface": "genocide_decisions_visible and genocide_gulag_decisions_visible",
+      "risk": "Broad legacy visibility can expose routes without regime, authority, slot, support, budget or target validation.",
+      "required_action": "Replace with administration state and route-specific gates.",
+      "status": "accepted and queued"
+    },
+    {
+      "surface": "camp_rework_country_uses_generic_kit and has_camp_category_visible_action",
+      "risk": "Compatibility predicates can present old routes beside initialized administration.",
+      "required_action": "Keep only explicit compatibility adapters with no duplicate payment or lifecycle effect.",
+      "status": "accepted and queued"
+    },
+    {
+      "surface": "germany_transfer_prisoners_to_experiment_site and japan_transfer_prisoners_to_experimental_facilities",
+      "risk": "Old experiment routes use legacy variables/costs and do not prove the new 1943-05-30, authority, controlled-institution and award gates.",
+      "required_action": "Retire or route through country programs and finite cohort admission.",
+      "status": "accepted and queued"
+    },
+    {
+      "surface": "camp_admin_country_mengele_historical_gate",
+      "source": "common\\scripted_triggers\\camp_administration_country_triggers.txt:68",
+      "evidence": "The current trigger checks the post-1943-05-29 date, Nazi authority, controlled state 88 and an operational site.",
+      "required_action": "Use this gate through the canonical country program and keep the legacy experiment decision from bypassing it.",
+      "status": "current source evidence; accepted and queued"
+    },
+    {
+      "surface": "camp_gui_country_action_1..4 versus camp_admin_country_action_1..2 predicates",
+      "risk": "The old GUI can show stale or blank slot buttons.",
+      "required_action": "Replace four-slot mapping with the accepted administration views and valid country module actions.",
+      "status": "accepted and queued"
+    },
+    {
+      "surface": "automatic maintenance and eligible development",
+      "risk": "Routine work could accidentally remain player-visible as compulsory clicks or completion missions.",
+      "required_action": "Keep automatic monthly work quiet and expose only policy choices or meaningful outcomes.",
+      "status": "accepted and queued"
+    }
+  ],
+  "localisation_followups": [
+    {
+      "file": "localisation\\english\\camp_repression_country_kits_l_english.yml",
+      "owner": "major-country owner or chaosx_localisation_auditor",
+      "keys": [
+        "sov_release_prisoners_for_military_service",
+        "sov_release_prisoners_for_military_service_desc",
+        "japan_forced_labor_experiment_network_desc",
+        "japan_ishii_program_authority_desc",
+        "japan_reformed_biowarfare_legacy_desc",
+        "japan_home_island_fallback_penalty_tt",
+        "japan_pingfang_records_choice_tt"
+      ],
+      "reason": "Soviet text promises army manpower; Japanese text promises permanent research or research consequences that conflict with finite release and temporary limited-use awards.",
+      "status": "accepted and queued"
+    },
+    {
+      "file": "localisation\\english\\germany_mengele_l_english.yml",
+      "owner": "major-country owner or chaosx_localisation_auditor",
+      "keys": [
+        "germany_auschwitz_experiments",
+        "germany_auschwitz_experiments_desc",
+        "germany_auschwitz_experiments_restricted",
+        "germany_auschwitz_experiments_restricted_desc",
+        "germany_mengele_laboratory_state",
+        "germany_mengele_laboratory_state_desc"
+      ],
+      "reason": "Descriptions retain biological-discovery, research-channel and laboratory-state wording after flat research, construction and efficiency benefits are removed or replaced by bounded programs.",
+      "status": "accepted and queued"
+    },
+    {
+      "file": "localisation\\english\\camp_repression_rework_l_english.yml",
+      "owner": "parent localization review",
+      "keys": [
+        "generic_detention_network_administration_desc",
+        "generic_expanded_labor_network_desc",
+        "generic_overextended_repression_network_desc",
+        "chaosx_genocide.discovery_liberate.tt"
+      ],
+      "reason": "Current descriptions promise flat output or a manpower grant that the accepted administration and finite release contracts do not permit.",
+      "status": "accepted and queued"
+    },
+    {
+      "file": "localisation\\english\\camp_administration_country_l_english.yml",
+      "owner": "country administration owner",
+      "keys": [
+        "camp_admin_sov_release_and_convert",
+        "camp_admin_country_authorize_tt",
+        "camp_admin_country_halt_tt",
+        "camp_admin_country_reform_tt"
+      ],
+      "reason": "This is the current country-only administration localization source and already describes finite release, paid civilian replacement and limited-use awards; keep it aligned with implementation evidence.",
+      "status": "current source evidence; queued review"
+    }
+  ],
+  "documentation_cleanup": {
+    "current_system_doc": "docs\\systems\\cbrn_warfare\\genocide\\genocide_crisis_system.md",
+    "stale_reference": {
+      "file": "docs\\specs\\system_camp_repression_rework_specs\\package_index.md",
+      "line": 13,
+      "current_target": "../../systems/genocide_crisis_system.md",
+      "correct_target": "../../systems/cbrn_warfare/genocide/genocide_crisis_system.md",
+      "status": "stale; outside owned patch scope"
+    },
+    "historical_status_surfaces": [
+      "docs\\plans\\system_camp_repression_rework_plans\\source_of_truth_and_completion_tracker.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\completion_report.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\core_contract_audit.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\major_country_kit_implementation_map.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\colonial_country_kit_implementation_map.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\repression_ui_redesign_2026-09-05.md",
+      "docs\\plans\\system_camp_repression_rework_plans\\system_camp_repression_rework_improvement_addendum.md"
+    ],
+    "status": "historical evidence; do not promote old complete or 84-action claims"
+  },
+  "mcp_evidence": {
+    "required_routes": [
+      "hoi4.event_inspect",
+      "hoi4.probability_inspect",
+      "hoi4.probability_compare",
+      "hoi4.gui_inspect",
+      "hoi4.gui_render"
+    ],
+    "availability": "No hoi4-agent-tools MCP route was callable in this session.",
+    "historical_blocker": "integration_handoff.md records a timed-out hoi4.event_inspect call and no artifact or revision.",
+    "standalone_viewer": "Standalone technology or GUI viewer availability was not verified.",
+    "interpretation": "Historical request JSON and handoff text are provenance only and do not establish current service health or engine validation.",
+    "status": "blocked for required engine evidence"
+  },
+  "dispositions": {
+    "accepted_and_queued": [
+      "accepted_implementation.md",
+      "integration_handoff.md",
+      "camp_administration_effects.md",
+      "gui_native_mapping.md",
+      "all route, bridge, mission, idea, modifier and GUI reconciliations in this inventory"
+    ],
+    "implemented_source_evidence_only": [
+      "camp_administration_effects.txt",
+      "camp_administration_integration_effects.txt",
+      "camp_administration_occupation_effects.txt",
+      "camp_administration_country_effects.txt",
+      "camp_administration_civil_effects.txt"
+    ],
+    "blocked": [
+      "final probability MCP comparison",
+      "current GUI inspect/render/compare",
+      "engine scenario proof for finite population, exact-once losses, awards, release, capture and annexation"
+    ],
+    "superseded_or_historical": [
+      "legacy four-slot and five-tab GUI behavior as accepted design",
+      "permanent Japanese research-speed carrier behavior",
+      "Soviet release-as-manpower behavior",
+      "old package completion claims as proof of redesign completion"
+    ]
+  },
+  "validation": {
+    "performed": [
+      "Targeted rg inventory of decision IDs and source line starts.",
+      "Targeted rg inventory of helper definitions, bridge callbacks, GUI click/effect names, idea IDs, dynamic modifiers and stale links.",
+      "Read-only source comparison against named accepted plan and integration handoff.",
+      "No live game launch and no gameplay or localization edits."
+    ],
+    "pending_after_write": [
+      "ConvertFrom-Json validation of this file.",
+      "Path-scoped diff and changed-file check confirming only reconciliation.md and source_inventory.json are owned by this task.",
+      "Markdown hard-wrap review of reconciliation.md."
+    ],
+    "limitations": [
+      "Concurrent worktree edits are present and were not reverted.",
+      "MCP evidence is unavailable, so source review is not equivalent to engine validation.",
+      "Existing docs outside ownership were not patched even where stale links or hard-wrap issues were found."
+    ]
+  }
+}

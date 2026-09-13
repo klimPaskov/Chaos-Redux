@@ -57,22 +57,22 @@ The live GitHub repository was also inspected in a targeted way for the current 
 | `chaosx_super_event_audio_researcher.toml` | 65 | 3333 | `16df05752d0ebff6838e2580a35cfac30e781ab1eef3d16e8deec2835a5a2834` | Fully read |
 | `chaosx_super_event_text_researcher.toml` | 62 | 3921 | `c918dae02f2b1127f71134065558f313faec82fba49f3e43022bfeaf3bfb66cb` | Fully read |
 
-## Catalog observations
+## Pre-implementation catalog observations
 
-- The Events CSV contains ID `26` as `Desert question` with status `Unavailable`.
-- The same CSV contains a separate final no-ID row named `Black Friday`, also marked `Unavailable`.
+- The source snapshot's Events CSV contained ID `26` as `Desert question` with status `Unavailable`.
+- The source snapshot's Events CSV also contained a separate final no-ID row named `Black Friday`, marked `Unavailable`.
 - The Clusters CSV contains no Event 26 membership.
 - The Scenarios CSV contains no Event 26 manual scenario.
 - The authoritative workbook must replace the old ID 26 row and resolve the no-ID duplicate. The CSVs remain export-only evidence.
 
 ## Targeted live repository inspection
 
-The connected GitHub repository `klimPaskov/Chaos-Redux` was inspected at the indexed revision `2d1653381c8f495bb587cc22941e428db810bc09`. The targeted inspection covered these current surfaces:
+The connected GitHub repository `klimPaskov/Chaos-Redux` was inspected at the indexed revision `2d1653381c8f495bb587cc22941e428db810bc09`. The targeted inspection covered these pre-implementation surfaces:
 
-- `events/026_industry_to_desert.txt`, which still defines `chaosx.nr26.1` and the old desert-industry chain
-- `localisation/english/026_industry_to_desert_l_english.yml`, which still contains Desert Industry and Operation Desert Forge wording
-- `common/scripted_effects/chaosx_logic_effects.txt`, which registers ID 26 as a fire-once event and still labels it as moving industry to the desert
-- `docs/spreadsheets/chaos_redux_events_catalog.csv`, which contains the Black Friday backlog row
+- `events/026_industry_to_desert.txt`, which defined `chaosx.nr26.1` and the old desert-industry chain
+- `localisation/english/026_industry_to_desert_l_english.yml`, which contained Desert Industry and Operation Desert Forge wording
+- `common/scripted_effects/chaosx_logic_effects.txt`, which registered ID 26 as a fire-once event and labelled it as moving industry to the desert
+- `docs/spreadsheets/chaos_redux_events_catalog.csv`, which contained the Black Friday backlog row
 
 The repository inspection was used to make the replacement crosswalk concrete. Exact implementation-time file discovery remains required because cost coverage must be built against the final implementation commit and installed game data.
 

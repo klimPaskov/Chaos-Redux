@@ -24,7 +24,7 @@ These navigation groups do not define the scope of a new task.
 | 010 Death | [`010_death_specs/README.md`](010_death_specs/README.md) |
 | 011 Secret Alliance | [`011_secret_alliance_specs/README.md`](011_secret_alliance_specs/README.md) |
 | 012 Africa | [`012_africa_specs/README.md`](012_africa_specs/README.md) |
-| 012 Gods of Africa | [`012_africa_is_one_gods_of_africa_specs/README.md`](012_africa_is_one_gods_of_africa_specs/README.md) |
+| 012 Gods of Africa | [`012_africa_specs/README.md`](012_africa_specs/README.md) (the standalone `012_africa_is_one_gods_of_africa_specs/` package is retained as superseded historical planning) |
 | 013 Natural Disasters | [`013_natural_disasters_specs/README.md`](013_natural_disasters_specs/README.md) |
 | 014 Cannibalism | [`014_cannibalism_specs/README.md`](014_cannibalism_specs/README.md) |
 | 015 Utopia Manifesto | [`015_utopia_manifesto_specs/README.md`](015_utopia_manifesto_specs/README.md) |

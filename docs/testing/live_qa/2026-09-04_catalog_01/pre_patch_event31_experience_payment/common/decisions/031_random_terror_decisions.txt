@@ -1,0 +1,3288 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR DECISIONS
+# ============================================================================
+# Decision-owned surface for the Random Terror response and territorial actors.
+# Categories stay ordinary and compact.  State-targeted actions use the same
+# state flags consumed by the Event 31 runtime, save the selected state as the
+# short-lived random_terror_action_state target, and never use a capital proxy.
+#
+# UI budget: phase and route gates keep normal government lanes at three to
+# five visible actions (six hard maximum).  Mission slot flags reserve three
+# concurrent lanes; the parent runtime must use the same slot contract for
+# event-created missions.  All custom costs are manually debited below.
+# ============================================================================
+
+@rt_ai_never = 0
+@rt_ai_low = 1
+@rt_ai_medium = 3
+@rt_ai_high = 7
+@rt_ai_urgent = 12
+@rt_ai_low_factor = 0.5
+@rt_ai_high_factor = 2
+@rt_ai_urgent_factor = 4
+@rt_restriction_days = 45
+@rt_support_commitment_days = 60
+@rt_recovery_commitment_days = 90
+@rt_state_mission_cooldown_days = 28
+
+random_terror_government_response_category = {
+
+	random_terror_establish_response_cell = {
+		icon = GFX_decision_random_terror_government_response_coordination
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_initial = yes
+			random_terror_can_government_response = yes
+			NOT = { has_country_flag = random_terror_response_cell_active }
+			NOT = { has_country_flag = random_terror_mission_slot_1 }
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_establish_response_cell_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_response_cell_active }
+				NOT = { has_country_flag = random_terror_mission_slot_1 }
+				FROM = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					random_terror_state_is_active_crisis = yes
+				}
+			}
+		}
+		target_root_trigger = {
+			any_owned_state = {
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.response_cell_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.response_cell_support_equipment }
+		}
+		custom_cost_text = random_terror_establish_response_cell_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_establish_response_cell_effect_tt
+			add_command_power = -constant:random_terror_cost.response_cell_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.response_cell_support_equipment }
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_establish_response_cell = yes
+			set_country_flag = random_terror_mission_slot_1
+			FROM = {
+				set_state_flag = random_terror_containment_mission_subject
+				clr_state_flag = random_terror_containment_success
+			}
+			activate_mission = random_terror_contain_attack_wave
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor random_terror_country_has_active_state = yes }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_failed_raid_recorded }
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_pressure > constant:random_terror_value.high } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_protect_transport = {
+		icon = GFX_decision_random_terror_government_transport_protection
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_initial = yes
+			random_terror_can_government_response = yes
+			NOT = { has_country_flag = random_terror_response_cell_active }
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				OR = {
+					infrastructure > 0
+					has_state_flag = random_terror_transport_disrupted
+					has_state_flag = random_terror_port_disrupted
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_protect_transport_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_response_cell_active }
+				NOT = { has_country_flag = random_terror_mission_slot_1 }
+				FROM = {
+					is_controlled_by = ROOT
+					random_terror_state_is_active_crisis = yes
+					OR = {
+						infrastructure > 0
+						has_state_flag = random_terror_transport_disrupted
+						has_state_flag = random_terror_port_disrupted
+					}
+					NOT = { has_state_flag = random_terror_transport_mission_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+				OR = { infrastructure > 0 has_state_flag = random_terror_transport_disrupted has_state_flag = random_terror_port_disrupted }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+				OR = { infrastructure > 0 has_state_flag = random_terror_transport_disrupted has_state_flag = random_terror_port_disrupted }
+				NOT = { has_state_flag = random_terror_transport_mission_subject }
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { train_equipment > constant:random_terror_cost.transport_trains }
+			has_fuel > constant:random_terror_cost.transport_fuel
+			has_equipment = { support_equipment > constant:random_terror_cost.response_cell_support_equipment }
+		}
+		custom_cost_text = random_terror_protect_transport_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_protect_transport_effect_tt
+			add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
+			add_fuel = -constant:random_terror_cost.transport_fuel
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.response_cell_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_transport_mission_subject
+				set_state_flag = random_terror_transport_protection_committed
+			}
+			random_terror_decision_protect_transport = yes
+			# The generic response wrapper records the initial outcome marker.  The
+			# mission owns the real completion signal, so do not resolve it on the
+			# commitment tick.
+			FROM = { clr_state_flag = random_terror_transport_protection_success }
+			set_country_flag = random_terror_mission_slot_1
+			activate_mission = random_terror_protect_transport_network
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_urgent_factor FROM = { is_capital = yes } }
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_transport_disrupted } }
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_port_disrupted } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_support_victims = {
+		icon = GFX_decision_random_terror_government_victim_support
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_initial = yes
+			random_terror_can_government_response = yes
+			NOT = { has_country_flag = random_terror_victim_support_active }
+			OR = {
+				NOT = { has_country_flag = random_terror_response_cell_active }
+				FROM = { has_state_flag = random_terror_state_recovery }
+			}
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+					has_state_flag = random_terror_state_recovery
+					has_state_flag = random_terror_relief_strain_recorded
+					has_state_flag = random_terror_transport_disrupted
+					has_state_flag = random_terror_port_disrupted
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_support_victims_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_victim_support_active }
+				OR = {
+					NOT = { has_country_flag = random_terror_response_cell_active }
+					FROM = { has_state_flag = random_terror_state_recovery }
+				}
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+						has_state_flag = random_terror_state_recovery
+						has_state_flag = random_terror_relief_strain_recorded
+						has_state_flag = random_terror_transport_disrupted
+						has_state_flag = random_terror_port_disrupted
+					}
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+					has_state_flag = random_terror_state_recovery
+					has_state_flag = random_terror_relief_strain_recorded
+					has_state_flag = random_terror_transport_disrupted
+					has_state_flag = random_terror_port_disrupted
+				}
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+					has_state_flag = random_terror_state_recovery
+					has_state_flag = random_terror_relief_strain_recorded
+					has_state_flag = random_terror_transport_disrupted
+					has_state_flag = random_terror_port_disrupted
+				}
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { support_equipment > constant:random_terror_cost.victim_support_equipment }
+			has_equipment = { train_equipment > constant:random_terror_cost.transport_trains }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_support_victims_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_support_victims_effect_tt
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.victim_support_equipment }
+			add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_support_victims = yes
+			set_country_flag = { flag = random_terror_victim_support_active days = @rt_support_commitment_days }
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_relief_strain_recorded } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_urgent_factor has_country_flag = random_terror_recent_incident }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_intelligence_sweep = {
+		icon = GFX_decision_random_terror_government_intelligence
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_initial = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			NOT = { has_country_flag = random_terror_intelligence_breakthrough }
+			NOT = {
+				OR = {
+					any_owned_state = {
+						OR = {
+							has_state_flag = random_terror_sponsor_evidence_recorded
+							has_state_flag = random_terror_smuggling_corridor_recorded
+							has_state_flag = random_terror_defection_recorded
+							has_state_flag = random_terror_community_rejection_recorded
+						}
+					}
+					check_variable = { random_terror_pressure > constant:random_terror_value.high }
+				}
+			}
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_intelligence_sweep_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				NOT = { has_country_flag = random_terror_intelligence_breakthrough }
+				NOT = {
+					OR = {
+						any_owned_state = {
+							OR = {
+								has_state_flag = random_terror_sponsor_evidence_recorded
+								has_state_flag = random_terror_smuggling_corridor_recorded
+								has_state_flag = random_terror_defection_recorded
+								has_state_flag = random_terror_community_rejection_recorded
+							}
+						}
+						check_variable = { random_terror_pressure > constant:random_terror_value.high }
+					}
+				}
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+					}
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+			is_controlled_by = ROOT
+			OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+			NOT = { has_state_flag = random_terror_intelligence_sweep_completed }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				NOT = { has_state_flag = random_terror_intelligence_sweep_completed }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.intelligence_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_intelligence_sweep_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_intelligence_sweep_effect_tt
+			add_command_power = -constant:random_terror_cost.intelligence_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_intelligence_sweep_completed
+			}
+			random_terror_decision_intelligence_sweep = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_intelligence_breakthrough_recorded } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_security_surge = {
+		icon = GFX_decision_random_terror_government_rapid_security_deployment
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_initial = yes
+			random_terror_can_government_response = yes
+			NOT = { has_country_flag = random_terror_response_cell_active }
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+					has_state_flag = random_terror_state_armed_insurgency
+				}
+				OR = {
+					has_state_flag = random_terror_capital_infiltration_recorded
+					has_state_flag = random_terror_hostage_crisis_recorded
+					has_state_flag = random_terror_security_site_attack_recorded
+					has_state_flag = random_terror_state_active
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_security_surge_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_response_cell_active }
+				NOT = { has_country_flag = random_terror_mission_slot_1 }
+				FROM = {
+					is_controlled_by = ROOT
+					random_terror_state_is_active_crisis = yes
+					NOT = { has_state_flag = random_terror_security_surge_target }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				random_terror_state_is_active_crisis = yes
+				NOT = { has_state_flag = random_terror_security_surge_target }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.security_command_power
+			has_fuel > constant:random_terror_cost.security_fuel
+			has_equipment = { support_equipment > constant:random_terror_cost.security_support_equipment }
+		}
+		custom_cost_text = random_terror_security_surge_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_security_surge_effect_tt
+			add_command_power = -constant:random_terror_cost.security_command_power
+			add_fuel = -constant:random_terror_cost.security_fuel
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_security_surge_target
+				set_state_flag = random_terror_containment_mission_subject
+				clr_state_flag = random_terror_containment_success
+			}
+			random_terror_decision_security_surge = yes
+			set_country_flag = random_terror_mission_slot_1
+			activate_mission = random_terror_contain_attack_wave
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_capital_infiltration_recorded } }
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_hostage_crisis_recorded } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_recent_incident }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_targeted_raid = {
+		icon = GFX_decision_random_terror_government_targeted_raid
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_initial = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			OR = {
+				has_country_flag = random_terror_intelligence_breakthrough
+				check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high }
+			}
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_targeted_raid_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				OR = {
+					has_country_flag = random_terror_intelligence_breakthrough
+					check_variable = { random_terror_response_legitimacy > constant:random_terror_value.high }
+				}
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+					}
+					NOT = { has_state_flag = random_terror_raid_target }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				NOT = { has_state_flag = random_terror_raid_target }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				NOT = { has_state_flag = random_terror_raid_target }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.targeted_raid_command_power
+			has_army_experience > constant:random_terror_cost.targeted_raid_army_experience
+			has_equipment = { support_equipment > constant:random_terror_cost.targeted_raid_support_equipment }
+		}
+		custom_cost_text = random_terror_targeted_raid_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_targeted_raid_effect_tt
+			add_command_power = -constant:random_terror_cost.targeted_raid_command_power
+			army_experience = -constant:random_terror_cost.targeted_raid_army_experience
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.targeted_raid_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_raid_target
+			}
+			random_terror_decision_targeted_raid = yes
+			# Parent-owned outcome resolver: clean, costly, partial, failed, and
+			# abusive failure outcomes remain hidden behind the public risk band.
+			random_terror_resolve_targeted_raid_outcome = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_intelligence_breakthrough }
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_capital_infiltration_recorded } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+			modifier = { factor = @rt_ai_low_factor FROM = { has_state_flag = random_terror_failed_raid_recorded } }
+		}
+	}
+
+	random_terror_disrupt_support = {
+		icon = GFX_decision_random_terror_government_support_disruption
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			NOT = { has_country_flag = random_terror_mission_slot_2 }
+			has_global_flag = random_terror_evolution_2_unlocked
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_sponsor_evidence_recorded
+					has_state_flag = random_terror_smuggling_corridor_recorded
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_disrupt_support_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				NOT = { has_country_flag = random_terror_mission_slot_2 }
+				has_global_flag = random_terror_evolution_2_unlocked
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_sponsor_evidence_recorded
+						has_state_flag = random_terror_smuggling_corridor_recorded
+					}
+					NOT = { has_state_flag = random_terror_corridor_mission_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			has_global_flag = random_terror_evolution_2_unlocked
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_sponsor_evidence_recorded has_state_flag = random_terror_smuggling_corridor_recorded }
+			}
+		}
+		target_trigger = {
+			has_global_flag = random_terror_evolution_2_unlocked
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_sponsor_evidence_recorded has_state_flag = random_terror_smuggling_corridor_recorded }
+				NOT = { has_state_flag = random_terror_corridor_mission_subject }
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { convoy_1 > constant:random_terror_cost.disrupt_convoys }
+			command_power > constant:random_terror_cost.disrupt_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_disrupt_support_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_disrupt_support_effect_tt
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.disrupt_convoys }
+			add_command_power = -constant:random_terror_cost.disrupt_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_corridor_mission_subject
+				set_state_flag = random_terror_support_disruption_committed
+			}
+			random_terror_decision_disrupt_support = yes
+			set_country_flag = random_terror_mission_slot_2
+			activate_mission = random_terror_break_cross_border_corridor
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_smuggling_corridor_recorded } }
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_sponsor_evidence_recorded } }
+			modifier = { factor = @rt_ai_urgent_factor has_country_flag = random_terror_support_disrupted }
+			modifier = { factor = @rt_ai_low_factor check_variable = { global.random_terror_network_reach < constant:random_terror_value.low } }
+		}
+	}
+
+	random_terror_request_allied_intelligence = {
+		icon = GFX_decision_random_terror_government_allied_intelligence
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			is_in_faction = yes
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_request_allied_intelligence_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				is_in_faction = yes
+				any_country = {
+					is_in_faction_with = ROOT
+					NOT = { has_capitulated = yes }
+					command_power > constant:random_terror_cost.partner_intelligence_command_power
+					has_equipment = { support_equipment > constant:random_terror_cost.partner_intelligence_support_equipment }
+				}
+				FROM = {
+					is_controlled_by = ROOT
+					OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.allied_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_request_allied_intelligence_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_request_allied_intelligence_effect_tt
+			add_command_power = -constant:random_terror_cost.allied_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_request_allied_intelligence = yes
+			random_terror_open_allied_intelligence_request = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_low
+			modifier = { factor = @rt_ai_high_factor is_in_faction = yes }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_intelligence_breakthrough }
+			modifier = { factor = @rt_ai_urgent_factor has_war = yes }
+		}
+	}
+
+	random_terror_offer_defection_channel = {
+		icon = GFX_decision_random_terror_government_defection_channel
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_defection_recorded has_state_flag = random_terror_military_defection_recorded }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_offer_defection_channel_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				NOT = { has_country_flag = random_terror_defection_channel_open }
+				FROM = {
+					is_controlled_by = ROOT
+					OR = { has_state_flag = random_terror_defection_recorded has_state_flag = random_terror_military_defection_recorded }
+				}
+				any_country = {
+					random_terror_is_actor = yes
+					NOT = { has_country_flag = random_terror_final_actor }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_defection_recorded has_state_flag = random_terror_military_defection_recorded }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_defection_recorded has_state_flag = random_terror_military_defection_recorded }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.defection_command_power
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_offer_defection_channel_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_offer_defection_channel_effect_tt
+			add_command_power = -constant:random_terror_cost.defection_command_power
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_offer_defection_channel = yes
+			random_terror_resolve_defection_channel = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_defection_recorded } }
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_military_defection_recorded } }
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+		}
+	}
+
+	random_terror_movement_restrictions = {
+		icon = GFX_decision_random_terror_government_movement_restriction
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_crisis = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				check_variable = { random_terror_state_pressure > constant:random_terror_value.high }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_movement_restrictions_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				NOT = { has_country_flag = random_terror_movement_restrictions_active }
+				FROM = {
+					is_controlled_by = ROOT
+					OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+					check_variable = { random_terror_state_pressure > constant:random_terror_value.high }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				check_variable = { random_terror_state_pressure > constant:random_terror_value.high }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				check_variable = { random_terror_state_pressure > constant:random_terror_value.high }
+			}
+		}
+		custom_cost_trigger = {
+			has_stability > constant:random_terror_cost.movement_stability
+			has_equipment = { support_equipment > constant:random_terror_cost.movement_support_equipment }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_movement_restrictions_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_movement_restrictions_effect_tt
+			add_stability = -constant:random_terror_cost.movement_stability
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.movement_support_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_movement_restrictions = yes
+			set_country_flag = { flag = random_terror_movement_restrictions_active days = @rt_restriction_days }
+		}
+		ai_will_do = {
+			base = @rt_ai_low
+			modifier = { factor = @rt_ai_urgent_factor FROM = { check_variable = { random_terror_state_pressure > constant:random_terror_value.severe } } }
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_protect_community_sites = {
+		icon = GFX_decision_random_terror_government_community_site_protection
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			NOT = {
+				any_owned_state = { has_state_flag = random_terror_sponsor_evidence_recorded }
+			}
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_community_rejection_recorded
+					has_state_flag = random_terror_muslim_community_opposition_recorded
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_protect_community_sites_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_community_rejection_recorded
+						has_state_flag = random_terror_muslim_community_opposition_recorded
+					}
+					NOT = { has_state_flag = random_terror_community_protection_committed }
+				}
+				NOT = { any_owned_state = { has_state_flag = random_terror_sponsor_evidence_recorded } }
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_community_rejection_recorded has_state_flag = random_terror_muslim_community_opposition_recorded }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = { has_state_flag = random_terror_community_rejection_recorded has_state_flag = random_terror_muslim_community_opposition_recorded }
+				NOT = { has_state_flag = random_terror_community_protection_committed }
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { support_equipment > constant:random_terror_cost.community_support_equipment }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_protect_community_sites_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_protect_community_sites_effect_tt
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.community_support_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_community_protection_committed
+			}
+			random_terror_decision_protect_community_sites = yes
+			set_country_flag = { flag = random_terror_community_protection_active days = @rt_support_commitment_days }
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_muslim_community_opposition_recorded } }
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_community_rejection_recorded } }
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+		}
+	}
+
+	random_terror_expose_sponsor = {
+		icon = GFX_decision_random_terror_government_sponsor_exposure
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			NOT = { has_country_flag = random_terror_sponsor_exposed }
+			NOT = { has_country_flag = random_terror_quiet_leverage_available }
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_sponsor_evidence_recorded
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_expose_sponsor_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				NOT = { has_country_flag = random_terror_sponsor_exposed }
+				NOT = { has_country_flag = random_terror_quiet_leverage_available }
+				FROM = {
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_sponsor_evidence_recorded
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_sponsor_evidence_recorded
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_sponsor_evidence_recorded
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.sponsor_exposure_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_expose_sponsor_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_expose_sponsor_effect_tt
+			add_command_power = -constant:random_terror_cost.sponsor_exposure_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_expose_sponsor = yes
+			random_terror_resolve_sponsor_exposure = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_sponsor_evidence_recorded } }
+			modifier = { factor = @rt_ai_high_factor is_in_faction = yes }
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+		}
+	}
+
+	random_terror_quiet_sponsor_leverage = {
+		icon = GFX_decision_random_terror_government_sponsor_exposure
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_network = yes
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_response_cell_active
+			has_country_flag = random_terror_quiet_leverage_available
+			NOT = { has_country_flag = random_terror_sponsor_exposed }
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_sponsor_evidence_recorded
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_quiet_sponsor_leverage_requirements_tt
+				random_terror_can_government_response = yes
+				has_country_flag = random_terror_response_cell_active
+				has_country_flag = random_terror_quiet_leverage_available
+				NOT = { has_country_flag = random_terror_sponsor_exposed }
+				FROM = {
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_sponsor_evidence_recorded
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_sponsor_evidence_recorded
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_sponsor_evidence_recorded
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.sponsor_exposure_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_quiet_sponsor_leverage_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_quiet_sponsor_leverage_effect_tt
+			add_command_power = -constant:random_terror_cost.sponsor_exposure_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = { save_event_target_as = random_terror_action_state }
+			random_terror_decision_quiet_sponsor_leverage = yes
+			random_terror_resolve_quiet_sponsor_leverage = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor has_government = democratic }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_intelligence_breakthrough }
+			modifier = { factor = @rt_ai_low_factor has_country_flag = random_terror_sponsor_exposed }
+		}
+	}
+
+	random_terror_military_reinforcement = {
+		icon = GFX_decision_random_terror_government_military_reinforcement
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_crisis = yes
+			random_terror_can_government_response = yes
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_armed_insurgency
+				NOT = { has_state_flag = random_terror_state_lost_local_control }
+			}
+			NOT = { any_state = { has_state_flag = random_terror_state_lost_local_control OR = { is_claimed_by = ROOT is_core_of = ROOT } } }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_military_reinforcement_requirements_tt
+				random_terror_can_government_response = yes
+				FROM = {
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_state_armed_insurgency
+					NOT = { has_state_flag = random_terror_reinforcement_subject }
+				}
+				NOT = { any_state = { has_state_flag = random_terror_state_lost_local_control OR = { is_claimed_by = ROOT is_core_of = ROOT } } }
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_armed_insurgency
+				NOT = { has_state_flag = random_terror_state_lost_local_control }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_armed_insurgency
+				NOT = { has_state_flag = random_terror_reinforcement_subject }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.security_command_power
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+			has_equipment = { infantry_equipment > constant:random_terror_tuning.government_military_equipment }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_military_reinforcement_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_military_reinforcement_effect_tt
+			add_command_power = -constant:random_terror_cost.security_command_power
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_tuning.government_military_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_reinforcement_subject
+			}
+			random_terror_decision_military_reinforcement = yes
+			# The response helper provisions the committed reserve; debit its
+			# returned manpower and equipment to keep the commitment concrete.
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_tuning.government_military_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			# The parent runtime must bind and release the actual divisions.
+			random_terror_commit_reinforcement = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { is_capital = yes } }
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_armed_insurgency } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_capital_security = {
+		icon = GFX_decision_random_terror_government_capital_security
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_crisis = yes
+			random_terror_can_government_response = yes
+			FROM = {
+				is_capital = yes
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_capital_infiltration_recorded
+			}
+			NOT = { has_country_flag = random_terror_capital_security_active }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_capital_security_requirements_tt
+				random_terror_can_government_response = yes
+				FROM = {
+					is_capital = yes
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_capital_infiltration_recorded
+				}
+				NOT = { has_country_flag = random_terror_mission_slot_2 }
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_capital = yes
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_capital_infiltration_recorded
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_capital = yes
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_capital_infiltration_recorded
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.security_command_power
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+			has_equipment = { support_equipment > constant:random_terror_cost.security_support_equipment }
+		}
+		custom_cost_text = random_terror_capital_security_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_capital_security_effect_tt
+			add_command_power = -constant:random_terror_cost.security_command_power
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_capital_mission_subject
+			}
+			random_terror_decision_capital_security = yes
+			# The generic wrapper records a marker for the action.  The mission
+			# owns completion and the parent runtime must set it after continuity
+			# has actually been maintained.
+			FROM = { clr_state_flag = random_terror_capital_security_success }
+			set_country_flag = random_terror_mission_slot_2
+			activate_mission = random_terror_prevent_capital_seizure
+		}
+		ai_will_do = {
+			base = @rt_ai_urgent
+			modifier = { factor = @rt_ai_urgent_factor has_war = yes }
+			modifier = { factor = @rt_ai_high_factor is_major = yes }
+		}
+	}
+
+	random_terror_isolate_enclave = {
+		icon = GFX_decision_random_terror_government_enclave_isolation
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_territorial = yes
+			random_terror_can_government_response = yes
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_enclave_isolation_committed }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_isolate_enclave_requirements_tt
+				random_terror_can_government_response = yes
+				FROM = {
+					state_population_k > constant:random_terror_value.zero
+					has_state_flag = random_terror_state_lost_local_control
+					OR = { is_claimed_by = ROOT is_core_of = ROOT }
+					NOT = { has_state_flag = random_terror_enclave_isolation_committed }
+					NOT = { has_state_flag = random_terror_relief_corridor_active }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_state = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_enclave_isolation_committed }
+			}
+		}
+			target_trigger = {
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_enclave_isolation_committed }
+				NOT = { has_state_flag = random_terror_relief_corridor_active }
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { train_equipment > constant:random_terror_cost.transport_trains }
+			has_fuel > constant:random_terror_cost.isolate_fuel
+			has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+			has_equipment = { support_equipment > constant:random_terror_cost.security_support_equipment }
+		}
+		custom_cost_text = random_terror_isolate_enclave_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_isolate_enclave_effect_tt
+			add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
+			add_fuel = -constant:random_terror_cost.isolate_fuel
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.relief_convoys }
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_enclave_isolated
+			}
+			random_terror_decision_isolate_enclave = yes
+			random_terror_commit_enclave_isolation = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { check_variable = { random_terror_state_pressure > constant:random_terror_value.severe } } }
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_smuggling_corridor_recorded } }
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+		}
+	}
+
+	random_terror_relief_corridor = {
+		icon = GFX_decision_random_terror_government_relief_corridor
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_territorial = yes
+			random_terror_can_government_response = yes
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				OR = {
+					has_state_flag = random_terror_state_lost_local_control
+					has_state_flag = random_terror_state_armed_insurgency
+					has_state_flag = random_terror_state_recovery
+				}
+				has_state_flag = random_terror_relief_strain_recorded
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_relief_corridor_requirements_tt
+				random_terror_can_government_response = yes
+				FROM = {
+					state_population_k > constant:random_terror_value.zero
+					OR = {
+						has_state_flag = random_terror_state_lost_local_control
+						has_state_flag = random_terror_state_armed_insurgency
+						has_state_flag = random_terror_state_recovery
+					}
+					has_state_flag = random_terror_relief_strain_recorded
+					OR = { is_claimed_by = ROOT is_core_of = ROOT }
+					NOT = { has_state_flag = random_terror_relief_corridor_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_state = {
+				state_population_k > constant:random_terror_value.zero
+				OR = { has_state_flag = random_terror_state_lost_local_control has_state_flag = random_terror_state_armed_insurgency has_state_flag = random_terror_state_recovery }
+				has_state_flag = random_terror_relief_strain_recorded
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				OR = { has_state_flag = random_terror_state_lost_local_control has_state_flag = random_terror_state_armed_insurgency has_state_flag = random_terror_state_recovery }
+				has_state_flag = random_terror_relief_strain_recorded
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_relief_corridor_subject }
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+			has_equipment = { support_equipment > constant:random_terror_cost.relief_support_equipment }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_relief_corridor_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_relief_corridor_effect_tt
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.relief_convoys }
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.relief_support_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_relief_corridor_subject
+			}
+			random_terror_decision_relief_corridor = yes
+			random_terror_commit_relief_corridor = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_relief_strain_recorded } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_prepare_retake = {
+		icon = GFX_decision_random_terror_government_state_retaking
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_territorial = yes
+			random_terror_can_government_response = yes
+			has_war = yes
+			num_divisions > constant:random_terror_value.zero
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_retake_prepared }
+				infrastructure > constant:random_terror_value.zero
+				CONTROLLER = { random_terror_is_actor = yes has_war_with = ROOT }
+				OR = {
+					any_neighbor_state = { is_controlled_by = ROOT }
+					AND = {
+						is_coastal = yes
+						ROOT = {
+							has_navy_size = { size > constant:random_terror_value.zero }
+							has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+						}
+					}
+				}
+			}
+			NOT = { has_country_flag = random_terror_mission_slot_3 }
+			NOT = { has_country_flag = random_terror_reconstruction_available }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_prepare_retake_requirements_tt
+				random_terror_can_government_response = yes
+				has_war = yes
+				num_divisions > constant:random_terror_value.zero
+				NOT = { has_country_flag = random_terror_mission_slot_3 }
+				FROM = {
+					state_population_k > constant:random_terror_value.zero
+					has_state_flag = random_terror_state_lost_local_control
+					OR = { is_claimed_by = ROOT is_core_of = ROOT }
+					NOT = { has_state_flag = random_terror_retake_prepared }
+					infrastructure > constant:random_terror_value.zero
+					CONTROLLER = { random_terror_is_actor = yes has_war_with = ROOT }
+					OR = {
+						any_neighbor_state = { is_controlled_by = ROOT }
+						AND = {
+							is_coastal = yes
+							ROOT = {
+								has_navy_size = { size > constant:random_terror_value.zero }
+								has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+							}
+						}
+					}
+				}
+			}
+		}
+		target_root_trigger = {
+			has_war = yes
+			num_divisions > constant:random_terror_value.zero
+			any_state = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_retake_prepared }
+				infrastructure > constant:random_terror_value.zero
+				CONTROLLER = { random_terror_is_actor = yes has_war_with = ROOT }
+				OR = {
+					any_neighbor_state = { is_controlled_by = ROOT }
+					AND = {
+						is_coastal = yes
+						ROOT = {
+							has_navy_size = { size > constant:random_terror_value.zero }
+							has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+						}
+					}
+				}
+			}
+		}
+		target_trigger = {
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				NOT = { has_state_flag = random_terror_retake_prepared }
+				infrastructure > constant:random_terror_value.zero
+				CONTROLLER = { random_terror_is_actor = yes has_war_with = ROOT }
+				OR = {
+					any_neighbor_state = { is_controlled_by = ROOT }
+					AND = {
+						is_coastal = yes
+						ROOT = {
+							has_navy_size = { size > constant:random_terror_value.zero }
+							has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+						}
+					}
+				}
+			}
+		}
+		custom_cost_trigger = {
+			has_army_experience > constant:random_terror_cost.retake_army_experience
+			has_fuel > constant:random_terror_cost.retake_fuel
+			has_equipment = { infantry_equipment > constant:random_terror_tuning.government_military_equipment }
+		}
+		custom_cost_text = random_terror_prepare_retake_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_prepare_retake_effect_tt
+			army_experience = -constant:random_terror_cost.retake_army_experience
+			add_fuel = -constant:random_terror_cost.retake_fuel
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_tuning.government_military_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_retake_mission_subject
+			}
+			random_terror_decision_prepare_retake = yes
+			# The existing helper grants preparation XP; the two debits make the
+			# displayed XP charge net real rather than a refund.
+			army_experience = -constant:random_terror_cost.retake_army_experience
+			set_country_flag = random_terror_mission_slot_3
+			activate_mission = random_terror_retake_lost_state
+			random_terror_commit_state_retake = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { check_variable = { random_terror_state_pressure > constant:random_terror_value.severe } } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_military_reinforcement_active }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+
+	random_terror_negotiate_surrender = {
+		icon = GFX_decision_random_terror_government_negotiated_surrender
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_territorial = yes
+			random_terror_can_government_response = yes
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				OR = {
+					has_state_flag = random_terror_enclave_isolated
+					has_state_flag = random_terror_surrender_window
+				}
+				owner = {
+					random_terror_is_actor = yes
+					NOT = { has_country_flag = random_terror_final_actor }
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_negotiate_surrender_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_surrender_negotiations_active }
+				FROM = {
+					state_population_k > constant:random_terror_value.zero
+					has_state_flag = random_terror_state_lost_local_control
+					OR = { is_claimed_by = ROOT is_core_of = ROOT }
+					OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
+					owner = {
+						random_terror_is_actor = yes
+						NOT = { has_country_flag = random_terror_final_actor }
+					}
+				}
+			}
+		}
+		target_root_trigger = {
+			any_state = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
+				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				has_state_flag = random_terror_state_lost_local_control
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				OR = { has_state_flag = random_terror_enclave_isolated has_state_flag = random_terror_surrender_window }
+				owner = { random_terror_is_actor = yes NOT = { has_country_flag = random_terror_final_actor } }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.surrender_command_power
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_negotiate_surrender_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_negotiate_surrender_effect_tt
+			add_command_power = -constant:random_terror_cost.surrender_command_power
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = { save_event_target_as = random_terror_action_state }
+			save_event_target_as = random_terror_surrender_government
+			random_terror_decision_negotiate_surrender = yes
+			random_terror_begin_surrender_negotiation = yes
+			FROM = { owner = { random_terror_actor_surrender = yes } }
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_enclave_isolated } }
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor is_major = yes }
+		}
+	}
+
+	random_terror_request_intervention = {
+		icon = GFX_decision_random_terror_government_foreign_intervention
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_territorial = yes
+			random_terror_can_government_response = yes
+			is_in_faction = yes
+			NOT = { has_country_flag = random_terror_intervention_requested }
+			NOT = { capital_scope = { has_state_flag = random_terror_capital_infiltration_recorded } }
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				OR = {
+					has_state_flag = random_terror_state_lost_local_control
+					has_state_flag = random_terror_state_armed_insurgency
+				}
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_request_intervention_requirements_tt
+				random_terror_can_government_response = yes
+				is_in_faction = yes
+				NOT = { has_country_flag = random_terror_intervention_requested }
+				NOT = { capital_scope = { has_state_flag = random_terror_capital_infiltration_recorded } }
+				any_country = {
+					is_in_faction_with = ROOT
+					NOT = { has_capitulated = yes }
+					command_power > constant:random_terror_cost.partner_intervention_command_power
+					has_equipment = { convoy_1 > constant:random_terror_cost.partner_intervention_convoys }
+					has_equipment = { support_equipment > constant:random_terror_cost.partner_intervention_support_equipment }
+				}
+				FROM = {
+					state_population_k > constant:random_terror_value.zero
+					OR = { has_state_flag = random_terror_state_lost_local_control has_state_flag = random_terror_state_armed_insurgency }
+					OR = { is_claimed_by = ROOT is_core_of = ROOT }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_state = {
+				state_population_k > constant:random_terror_value.zero
+				OR = { has_state_flag = random_terror_state_lost_local_control has_state_flag = random_terror_state_armed_insurgency }
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				OR = { has_state_flag = random_terror_state_lost_local_control has_state_flag = random_terror_state_armed_insurgency }
+				OR = { is_claimed_by = ROOT is_core_of = ROOT }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.intervention_command_power
+			has_equipment = { convoy_1 > constant:random_terror_cost.relief_convoys }
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_request_intervention_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_request_intervention_effect_tt
+			add_command_power = -constant:random_terror_cost.intervention_command_power
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.relief_convoys }
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_intervention_subject
+			}
+			random_terror_decision_request_intervention = yes
+			random_terror_open_intervention_request = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor is_major = yes }
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_state_lost_local_control } }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+
+	random_terror_restore_services = {
+		icon = GFX_decision_random_terror_government_service_restoration
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_government_phase_recovery = yes
+			random_terror_can_government_response = yes
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_recovery
+				NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+			}
+			NOT = { has_country_flag = random_terror_mission_slot_3 }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_restore_services_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_mission_slot_3 }
+				FROM = {
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_state_recovery
+					NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			any_controlled_state = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_recovery
+				NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_recovery
+				NOT = { has_state_flag = random_terror_restore_civil_authority_subject }
+			}
+		}
+		custom_cost_trigger = {
+			has_equipment = { support_equipment > constant:random_terror_cost.restore_support_equipment }
+			has_equipment = { train_equipment > constant:random_terror_cost.transport_trains }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_restore_services_cost
+		days_re_enable = constant:random_terror_tuning.decision_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_restore_services_effect_tt
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.restore_support_equipment }
+			add_equipment_to_stockpile = { type = train_equipment amount = -constant:random_terror_cost.transport_trains }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_restore_civil_authority_subject
+			}
+			random_terror_decision_restore_services = yes
+			# The generic response wrapper records the initial outcome marker.  The
+			# mission owns the real completion signal, so do not resolve it on the
+			# commitment tick.
+			FROM = { clr_state_flag = random_terror_civil_authority_restored }
+			set_country_flag = random_terror_mission_slot_3
+			activate_mission = random_terror_restore_civil_authority
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_state_recovery } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.high } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_public_accounting = {
+		icon = GFX_decision_random_terror_government_public_accounting
+		visible = {
+			random_terror_government_phase_recovery = yes
+			random_terror_can_government_response = yes
+			OR = {
+				has_country_flag = random_terror_recent_incident
+				has_country_flag = random_terror_sponsor_exposed
+				has_country_flag = random_terror_failed_raid_recorded
+			}
+			NOT = { has_country_flag = random_terror_public_accounting_complete }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_public_accounting_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_public_accounting_complete }
+				OR = {
+					has_country_flag = random_terror_recent_incident
+					has_country_flag = random_terror_sponsor_exposed
+					has_country_flag = random_terror_failed_raid_recorded
+				}
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.accounting_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_public_accounting_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_public_accounting_effect_tt
+			add_command_power = -constant:random_terror_cost.accounting_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			random_terror_decision_public_accounting = yes
+			random_terror_record_event31_history = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor has_government = democratic }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_failed_raid_recorded }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_sponsor_exposed }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_security_reform = {
+		icon = GFX_decision_random_terror_government_security_reform
+		visible = {
+			random_terror_government_phase_recovery = yes
+			random_terror_can_government_response = yes
+			OR = {
+				has_country_flag = random_terror_reconstruction_available
+				has_country_flag = random_terror_public_accounting_complete
+			}
+			NOT = { has_country_flag = random_terror_security_reform_complete }
+			NOT = { random_terror_country_has_active_state = yes }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_security_reform_requirements_tt
+				random_terror_can_government_response = yes
+				NOT = { has_country_flag = random_terror_security_reform_complete }
+				NOT = { random_terror_country_has_active_state = yes }
+				OR = {
+					has_country_flag = random_terror_reconstruction_available
+					has_country_flag = random_terror_public_accounting_complete
+				}
+			}
+		}
+		custom_cost_trigger = {
+			has_army_experience > constant:random_terror_cost.reform_army_experience
+			has_equipment = { support_equipment > constant:random_terror_cost.restore_support_equipment }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_security_reform_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_security_reform_effect_tt
+			army_experience = -constant:random_terror_cost.reform_army_experience
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.restore_support_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			random_terror_decision_security_reform = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor has_government = democratic }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_public_accounting_complete }
+			modifier = { factor = @rt_ai_urgent_factor is_major = yes }
+		}
+	}
+
+	random_terror_terminal_counteroffensive = {
+		icon = GFX_decision_random_terror_government_security_reform
+		visible = {
+			random_terror_government_phase_terminal = yes
+			random_terror_can_government_response = yes
+			has_global_flag = random_terror_terminal_active
+			has_country_flag = random_terror_affected_country
+			NOT = { has_country_flag = random_terror_actor }
+			NOT = { has_country_flag = random_terror_terminal_counteroffensive_recorded }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_terminal_counteroffensive_requirements_tt
+				random_terror_can_government_response = yes
+				has_global_flag = random_terror_terminal_active
+				has_country_flag = random_terror_affected_country
+				NOT = { has_country_flag = random_terror_actor }
+			}
+		}
+		custom_cost_trigger = {
+			command_power > constant:random_terror_cost.security_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.security_support_equipment }
+		}
+		custom_cost_text = random_terror_terminal_counteroffensive_cost
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_terminal_counteroffensive_effect_tt
+			add_command_power = -constant:random_terror_cost.security_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+			random_terror_terminal_counteroffensive = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_urgent
+			modifier = { factor = @rt_ai_high_factor has_war = yes }
+			modifier = { factor = @rt_ai_low_factor check_variable = { random_terror_response_legitimacy < constant:random_terror_value.low } }
+		}
+	}
+}
+
+random_terror_actor_command_category = {
+
+	random_terror_raise_local_militia = {
+		icon = GFX_decision_random_terror_actor_local_recruitment
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_survival = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				state_population_k > constant:random_terror_value.zero
+				OR = {
+					has_state_flag = random_terror_state_dormant
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				NOT = { has_state_flag = random_terror_militia_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_raise_local_militia_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+				FROM = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					state_population_k > constant:random_terror_value.zero
+					OR = { has_state_flag = random_terror_state_dormant has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+					NOT = { has_state_flag = random_terror_militia_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+			any_owned_state = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				state_population_k > constant:random_terror_value.zero
+				OR = { has_state_flag = random_terror_state_dormant has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				NOT = { has_state_flag = random_terror_militia_subject }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				state_population_k > constant:random_terror_value.zero
+				OR = { has_state_flag = random_terror_state_dormant has_state_flag = random_terror_state_active has_state_flag = random_terror_state_entrenched }
+				NOT = { has_state_flag = random_terror_militia_subject }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_tuning.actor_authority_defector_gain }
+			has_manpower > constant:random_terror_cost.actor_militia_manpower
+			has_equipment = { infantry_equipment > constant:random_terror_cost.actor_militia_equipment }
+		}
+		custom_cost_text = random_terror_raise_local_militia_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_raise_local_militia_effect_tt
+			add_manpower = -constant:random_terror_cost.actor_militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_cost.actor_militia_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_militia_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
+			random_terror_actor_raise_local_militia = yes
+			# The existing outcome helper returns the requested local manpower;
+			# debit both returned resources again so the displayed commitment is a
+			# real net cost and cannot farm equipment or manpower.
+			add_manpower = -constant:random_terror_cost.actor_militia_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_cost.actor_militia_equipment }
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_active } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_actor_control < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_integrate_defectors = {
+		icon = GFX_decision_random_terror_actor_defector_integration
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_survival = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_defection_recorded
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_integrate_defectors_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+				FROM = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_defection_recorded
+				}
+			}
+		}
+		target_root_trigger = {
+			NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+			any_owned_state = { is_owned_by = ROOT is_controlled_by = ROOT has_state_flag = random_terror_defection_recorded }
+		}
+		target_trigger = {
+			FROM = { is_owned_by = ROOT is_controlled_by = ROOT has_state_flag = random_terror_defection_recorded }
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_tuning.actor_authority_defector_gain }
+			has_equipment = { infantry_equipment > constant:random_terror_cost.actor_defector_equipment }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+		}
+		custom_cost_text = random_terror_integrate_defectors_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_integrate_defectors_effect_tt
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_cost.actor_defector_equipment }
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				clr_state_flag = random_terror_defection_recorded
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
+			random_terror_actor_integrate_defectors = yes
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_authority_defector_gain }
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_defection_recorded } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_actor_control < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_repair_captured_depot = {
+		icon = GFX_decision_random_terror_actor_captured_depot_repair
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			OR = {
+				random_terror_actor_phase_survival = yes
+				random_terror_actor_phase_network = yes
+				random_terror_actor_phase_territorial = yes
+			}
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			OR = {
+				has_country_flag = random_terror_route_war_directorate
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_depot_compromised
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_repair_captured_depot_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				OR = {
+					has_country_flag = random_terror_route_war_directorate
+					has_country_flag = random_terror_route_ideological_secretariat
+					has_country_flag = random_terror_route_jihadist_international
+				}
+				FROM = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_depot_compromised
+				}
+			}
+		}
+		target_root_trigger = {
+			OR = {
+				has_country_flag = random_terror_route_war_directorate
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			any_owned_state = { is_owned_by = ROOT is_controlled_by = ROOT has_state_flag = random_terror_depot_compromised }
+		}
+		target_trigger = {
+			FROM = { is_owned_by = ROOT is_controlled_by = ROOT has_state_flag = random_terror_depot_compromised }
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_tuning.actor_supply_depot_gain }
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+		}
+		custom_cost_text = random_terror_repair_captured_depot_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_repair_captured_depot_effect_tt
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				clr_state_flag = random_terror_depot_compromised
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_tuning.actor_supply_depot_gain }
+			random_terror_actor_repair_captured_depot = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_depot_compromised } }
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_open_external_corridor = {
+		icon = GFX_decision_random_terror_actor_external_corridor
+		state_target = any_owned_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			OR = {
+				random_terror_actor_phase_network = yes
+				random_terror_actor_phase_jihadist = yes
+				random_terror_actor_phase_final = yes
+			}
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			OR = {
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			has_global_flag = random_terror_evolution_2_unlocked
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				state_population_k > constant:random_terror_value.zero
+				OR = {
+					AND = { is_coastal = yes naval_base > constant:random_terror_value.zero }
+					any_neighbor_state = { NOT = { is_owned_by = ROOT } }
+				}
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_open_external_corridor_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				OR = {
+					has_country_flag = random_terror_route_ideological_secretariat
+					has_country_flag = random_terror_route_jihadist_international
+				}
+				has_global_flag = random_terror_evolution_2_unlocked
+				FROM = {
+					is_owned_by = ROOT
+					is_controlled_by = ROOT
+					state_population_k > constant:random_terror_value.zero
+					NOT = { has_state_flag = random_terror_smuggling_corridor_active }
+					OR = {
+						AND = { is_coastal = yes naval_base > constant:random_terror_value.zero }
+						any_neighbor_state = { NOT = { is_owned_by = ROOT } }
+					}
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_2_unlocked
+			any_owned_state = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				state_population_k > constant:random_terror_value.zero
+				OR = {
+					AND = { is_coastal = yes naval_base > constant:random_terror_value.zero }
+					any_neighbor_state = { NOT = { is_owned_by = ROOT } }
+				}
+			}
+		}
+		target_trigger = {
+			FROM = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				state_population_k > constant:random_terror_value.zero
+				NOT = { has_state_flag = random_terror_smuggling_corridor_active }
+				OR = {
+					AND = { is_coastal = yes naval_base > constant:random_terror_value.zero }
+					any_neighbor_state = { NOT = { is_owned_by = ROOT } }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_corridor_authority }
+			has_equipment = { convoy_1 > constant:random_terror_cost.actor_corridor_convoys }
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+		}
+		custom_cost_text = random_terror_open_external_corridor_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_open_external_corridor_effect_tt
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.actor_corridor_convoys }
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_external_corridor_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_corridor_authority }
+			random_terror_actor_open_external_corridor = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_sponsor_contact_recorded }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_seek_sponsor = {
+		icon = GFX_decision_random_terror_actor_sponsor_search
+		visible = {
+			OR = {
+				random_terror_actor_phase_network = yes
+				random_terror_actor_phase_territorial = yes
+			}
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			check_variable = { random_terror_actor_control > constant:random_terror_value.low }
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				NOT = { random_terror_is_actor = yes }
+				NOT = { has_capitulated = yes }
+				OR = { is_neighbor_of = ROOT is_in_faction_with = ROOT }
+				has_political_power > constant:random_terror_cost.partner_sponsor_political_power
+				has_equipment = { infantry_equipment > constant:random_terror_cost.partner_sponsor_infantry_equipment }
+				has_equipment = { support_equipment > constant:random_terror_cost.partner_sponsor_support_equipment }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_seek_sponsor_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				check_variable = { random_terror_actor_control > constant:random_terror_value.low }
+				FROM = {
+					exists = yes
+					NOT = { tag = ROOT }
+					NOT = { random_terror_is_actor = yes }
+					NOT = { has_capitulated = yes }
+					OR = { is_neighbor_of = ROOT is_in_faction_with = ROOT }
+					has_political_power > constant:random_terror_cost.partner_sponsor_political_power
+					has_equipment = { infantry_equipment > constant:random_terror_cost.partner_sponsor_infantry_equipment }
+					has_equipment = { support_equipment > constant:random_terror_cost.partner_sponsor_support_equipment }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			check_variable = { random_terror_actor_control > constant:random_terror_value.low }
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				NOT = { random_terror_is_actor = yes }
+				NOT = { has_capitulated = yes }
+				OR = { is_neighbor_of = ROOT is_in_faction_with = ROOT }
+				has_political_power > constant:random_terror_cost.partner_sponsor_political_power
+				has_equipment = { infantry_equipment > constant:random_terror_cost.partner_sponsor_infantry_equipment }
+				has_equipment = { support_equipment > constant:random_terror_cost.partner_sponsor_support_equipment }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_sponsor_authority }
+			command_power > constant:random_terror_cost.allied_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_seek_sponsor_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_seek_sponsor_effect_tt
+			add_command_power = -constant:random_terror_cost.allied_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_sponsor_authority }
+			FROM = { save_event_target_as = random_terror_sponsor_target }
+			random_terror_actor_seek_sponsor = yes
+			random_terror_commit_sponsor_request = yes
+			random_terror_clamp_actor_values = yes
+			random_terror_record_event31_history = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_route_ideological_secretariat }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_support_foreign_cell = {
+		icon = GFX_decision_random_terror_actor_foreign_cell_support
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_network = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			OR = {
+				has_country_flag = random_terror_route_war_directorate
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			has_global_flag = random_terror_evolution_2_unlocked
+			NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+			FROM = {
+				exists = yes
+				random_terror_state_is_active_crisis = yes
+				NOT = { is_controlled_by = ROOT }
+				owner = {
+					exists = yes
+					NOT = { tag = ROOT }
+					NOT = { random_terror_is_actor = yes }
+					NOT = { has_capitulated = yes }
+				}
+				NOT = { has_state_flag = random_terror_foreign_cell_support_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_support_foreign_cell_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_2_unlocked
+				NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+				FROM = {
+					random_terror_state_is_active_crisis = yes
+					has_state_flag = random_terror_transnational_link_active
+					NOT = { is_controlled_by = ROOT }
+					owner = {
+						exists = yes
+						NOT = { tag = ROOT }
+						NOT = { random_terror_is_actor = yes }
+						NOT = { has_capitulated = yes }
+					}
+					NOT = { has_state_flag = random_terror_foreign_cell_support_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_2_unlocked
+			NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+			check_variable = { global.random_terror_network_reach > constant:random_terror_value.low }
+			OR = {
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				random_terror_state_is_active_crisis = yes
+				NOT = { is_controlled_by = ROOT }
+				owner = {
+					exists = yes
+					NOT = { tag = ROOT }
+					NOT = { random_terror_is_actor = yes }
+					NOT = { has_capitulated = yes }
+				}
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_foreign_cell_authority }
+			has_equipment = { convoy_1 > constant:random_terror_cost.actor_corridor_convoys }
+			has_equipment = { support_equipment > constant:random_terror_cost.intelligence_support_equipment }
+		}
+		custom_cost_text = random_terror_support_foreign_cell_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_support_foreign_cell_effect_tt
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.actor_corridor_convoys }
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.intelligence_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_foreign_cell_support_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_foreign_cell_authority }
+			random_terror_actor_support_foreign_cell = yes
+			random_terror_resolve_foreign_cell_support = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { global.random_terror_network_reach < constant:random_terror_value.high } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_route_jihadist_international }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_relocate_network = {
+		icon = GFX_decision_random_terror_actor_network_relocation
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_network = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_country_flag = random_terror_relocation_threat_recorded
+			has_country_flag = random_terror_route_shadow_council
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				has_state_flag = random_terror_relocation_threat
+				NOT = { has_state_flag = random_terror_network_relocation_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_relocate_network_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_country_flag = random_terror_relocation_threat_recorded
+				has_country_flag = random_terror_route_shadow_council
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+					}
+					has_state_flag = random_terror_relocation_threat
+					NOT = { has_state_flag = random_terror_network_relocation_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_country_flag = random_terror_relocation_threat_recorded
+			has_country_flag = random_terror_route_shadow_council
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				has_state_flag = random_terror_relocation_threat
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_relocate_authority }
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+			has_equipment = { support_equipment > constant:random_terror_cost.security_support_equipment }
+		}
+		custom_cost_text = random_terror_relocate_network_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_relocate_network_effect_tt
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_network_relocation_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_relocate_authority }
+			random_terror_actor_relocate_network = yes
+			random_terror_clamp_actor_values = yes
+			random_terror_record_event31_history = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_state_entrenched } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_convert_militia = {
+		icon = GFX_decision_random_terror_actor_militia_conversion
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_network = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+			has_country_flag = random_terror_route_war_directorate
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				has_state_flag = random_terror_actor_militia_present
+				NOT = { has_state_flag = random_terror_militia_conversion_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_convert_militia_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+				has_country_flag = random_terror_route_war_directorate
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+					}
+					has_state_flag = random_terror_actor_militia_present
+					NOT = { has_state_flag = random_terror_militia_conversion_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+			has_country_flag = random_terror_route_war_directorate
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				has_state_flag = random_terror_actor_militia_present
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_convert_experience }
+			has_army_experience > constant:random_terror_cost.actor_convert_experience
+			has_equipment = { infantry_equipment > constant:random_terror_cost.actor_militia_equipment }
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_convert_militia_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_convert_militia_effect_tt
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_cost.actor_militia_equipment }
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_militia_conversion_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_convert_experience }
+			army_experience = -constant:random_terror_cost.actor_convert_experience
+			random_terror_actor_convert_militia = yes
+			army_experience = -constant:random_terror_cost.actor_convert_experience
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_armed_insurgency } }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+
+	random_terror_ideological_mobilization = {
+		icon = GFX_decision_random_terror_actor_ideological_mobilization
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_network = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+			has_country_flag = random_terror_route_ideological_secretariat
+			NOT = { has_country_flag = random_terror_ideological_mobilization_active }
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				NOT = { has_state_flag = random_terror_ideological_mobilization_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_ideological_mobilization_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+				has_country_flag = random_terror_route_ideological_secretariat
+				NOT = { has_country_flag = random_terror_ideological_mobilization_active }
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+					}
+					NOT = { has_state_flag = random_terror_ideological_mobilization_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+			has_country_flag = random_terror_route_ideological_secretariat
+			NOT = { has_country_flag = random_terror_ideological_mobilization_active }
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_foreign_cell_authority }
+			has_manpower > constant:random_terror_cost.actor_mobilization_manpower
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_ideological_mobilization_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_ideological_mobilization_effect_tt
+			add_manpower = -constant:random_terror_cost.actor_mobilization_manpower
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_ideological_mobilization_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_foreign_cell_authority }
+			random_terror_actor_ideological_mobilization = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_active } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_absorb_actor = {
+		icon = GFX_decision_random_terror_actor_absorb_actor
+		visible = {
+			OR = {
+				random_terror_actor_phase_territorial = yes
+				random_terror_actor_phase_jihadist = yes
+				random_terror_actor_phase_final = yes
+			}
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			OR = {
+				has_country_flag = random_terror_route_war_directorate
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			has_global_flag = random_terror_evolution_2_unlocked
+			NOT = { has_global_flag = random_terror_evolution_5_unlocked }
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_absorb_authority }
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				random_terror_is_actor = yes
+				NOT = { random_terror_is_final_actor = yes }
+				NOT = { has_capitulated = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_absorb_actor_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				OR = {
+					has_country_flag = random_terror_route_war_directorate
+					has_country_flag = random_terror_route_ideological_secretariat
+					has_country_flag = random_terror_route_jihadist_international
+				}
+				has_global_flag = random_terror_evolution_2_unlocked
+				NOT = { has_global_flag = random_terror_evolution_5_unlocked }
+				FROM = {
+					exists = yes
+					NOT = { tag = ROOT }
+					random_terror_is_actor = yes
+					NOT = { random_terror_is_final_actor = yes }
+					NOT = { has_capitulated = yes }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_2_unlocked
+			NOT = { has_global_flag = random_terror_evolution_5_unlocked }
+			OR = {
+				has_country_flag = random_terror_route_war_directorate
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				random_terror_is_actor = yes
+				NOT = { random_terror_is_final_actor = yes }
+				NOT = { has_capitulated = yes }
+				OR = {
+					has_country_flag = random_terror_route_war_directorate
+					has_country_flag = random_terror_route_ideological_secretariat
+					has_country_flag = random_terror_route_jihadist_international
+				}
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_absorb_authority }
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+		}
+		custom_cost_text = random_terror_absorb_actor_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_absorb_actor_effect_tt
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			FROM = { save_event_target_as = random_terror_actor_absorption_target }
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_absorb_authority }
+			random_terror_actor_absorb_actor = yes
+			random_terror_commit_actor_absorption = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_medium
+			modifier = { factor = @rt_ai_high_factor FROM = { check_variable = { random_terror_actor_control < constant:random_terror_value.low } } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_route_ideological_secretariat }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_contest_network_leader = {
+		icon = GFX_decision_random_terror_actor_network_contest
+		visible = {
+			OR = {
+				random_terror_actor_phase_jihadist = yes
+				random_terror_actor_phase_final = yes
+			}
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_4_unlocked
+			has_country_flag = random_terror_route_jihadist_international
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_contest_authority }
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_capitulated = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_contest_network_leader_requirements_tt
+					random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_4_unlocked
+				has_country_flag = random_terror_route_jihadist_international
+				FROM = {
+					exists = yes
+					NOT = { tag = ROOT }
+					random_terror_is_jihadist_actor = yes
+					has_country_flag = random_terror_network_leader
+					NOT = { has_capitulated = yes }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_4_unlocked
+			has_country_flag = random_terror_route_jihadist_international
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_capitulated = yes }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_contest_authority }
+			command_power > constant:random_terror_cost.allied_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_contest_network_leader_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_contest_network_leader_effect_tt
+			add_command_power = -constant:random_terror_cost.allied_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			FROM = { save_event_target_as = random_terror_network_leader_target }
+			random_terror_actor_contest_network_leader = yes
+			random_terror_resolve_network_leadership_contest = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { global.random_terror_international_unity < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+
+	random_terror_prepare_state_offensive = {
+		icon = GFX_decision_random_terror_actor_state_offensive
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_territorial = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_3_unlocked
+			has_country_flag = random_terror_route_war_directorate
+			has_war = yes
+			num_divisions > constant:random_terror_value.zero
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				infrastructure > constant:random_terror_value.zero
+				NOT = { is_controlled_by = ROOT }
+				CONTROLLER = { exists = yes has_war_with = ROOT }
+				any_neighbor_state = { is_controlled_by = ROOT }
+				NOT = { has_state_flag = random_terror_state_offensive_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_prepare_state_offensive_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_3_unlocked
+				has_country_flag = random_terror_route_war_directorate
+				has_war = yes
+				num_divisions > constant:random_terror_value.zero
+				FROM = {
+					state_population_k > constant:random_terror_value.zero
+					infrastructure > constant:random_terror_value.zero
+					NOT = { is_controlled_by = ROOT }
+					CONTROLLER = { exists = yes has_war_with = ROOT }
+					any_neighbor_state = { is_controlled_by = ROOT }
+					NOT = { has_state_flag = random_terror_state_offensive_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_3_unlocked
+			has_country_flag = random_terror_route_war_directorate
+			has_war = yes
+			num_divisions > constant:random_terror_value.zero
+			any_state = {
+				state_population_k > constant:random_terror_value.zero
+				infrastructure > constant:random_terror_value.zero
+				NOT = { is_controlled_by = ROOT }
+				CONTROLLER = { exists = yes has_war_with = ROOT }
+				any_neighbor_state = { is_controlled_by = ROOT }
+				NOT = { has_state_flag = random_terror_state_offensive_subject }
+			}
+		}
+		target_trigger = {
+			FROM = {
+				state_population_k > constant:random_terror_value.zero
+				infrastructure > constant:random_terror_value.zero
+				NOT = { is_controlled_by = ROOT }
+				CONTROLLER = { exists = yes has_war_with = ROOT }
+				any_neighbor_state = { is_controlled_by = ROOT }
+				NOT = { has_state_flag = random_terror_state_offensive_subject }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_offensive_experience }
+			has_army_experience > constant:random_terror_cost.actor_offensive_experience
+			has_fuel > constant:random_terror_cost.military_reinforcement_fuel
+			has_equipment = { infantry_equipment > constant:random_terror_tuning.government_military_equipment }
+		}
+		custom_cost_text = random_terror_prepare_state_offensive_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_prepare_state_offensive_effect_tt
+			army_experience = -constant:random_terror_cost.actor_offensive_experience
+			add_fuel = -constant:random_terror_cost.military_reinforcement_fuel
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_tuning.government_military_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_state_offensive_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_offensive_experience }
+			random_terror_actor_prepare_state_offensive = yes
+			random_terror_commit_state_offensive = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_urgent
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_armed_insurgency } }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+
+	random_terror_build_civil_administration = {
+		icon = GFX_decision_random_terror_actor_civil_administration
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_territorial = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_3_unlocked
+			has_country_flag = random_terror_route_war_directorate
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_lost_local_control
+				NOT = { has_state_flag = random_terror_civil_administration_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_build_civil_administration_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_3_unlocked
+				has_country_flag = random_terror_route_war_directorate
+				FROM = {
+					is_controlled_by = ROOT
+					has_state_flag = random_terror_state_lost_local_control
+					NOT = { has_state_flag = random_terror_civil_administration_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_3_unlocked
+			has_country_flag = random_terror_route_war_directorate
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				has_state_flag = random_terror_state_lost_local_control
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_administration_civilian_factories }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_build_civil_administration_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_build_civil_administration_effect_tt
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_civil_administration_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_administration_civilian_factories }
+			random_terror_actor_build_civil_administration = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor FROM = { has_state_flag = random_terror_state_lost_local_control } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_force_extraction = {
+		icon = GFX_decision_random_terror_actor_force_extraction
+		state_target = any_controlled_state
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_territorial = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_3_unlocked
+			has_country_flag = random_terror_route_war_directorate
+			check_variable = { random_terror_actor_control > constant:random_terror_value.low }
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+				NOT = { has_state_flag = random_terror_force_extraction_subject }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_force_extraction_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_3_unlocked
+				has_country_flag = random_terror_route_war_directorate
+				check_variable = { random_terror_actor_control > constant:random_terror_value.low }
+				FROM = {
+					is_controlled_by = ROOT
+					OR = {
+						has_state_flag = random_terror_state_active
+						has_state_flag = random_terror_state_entrenched
+					}
+					NOT = { has_state_flag = random_terror_force_extraction_subject }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_3_unlocked
+			has_country_flag = random_terror_route_war_directorate
+		}
+		target_trigger = {
+			FROM = {
+				is_controlled_by = ROOT
+				OR = {
+					has_state_flag = random_terror_state_active
+					has_state_flag = random_terror_state_entrenched
+				}
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_extraction_legitimacy }
+			has_manpower > constant:random_terror_tuning.government_military_manpower
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_force_extraction_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_force_extraction_effect_tt
+			add_manpower = -constant:random_terror_tuning.government_military_manpower
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			FROM = {
+				save_event_target_as = random_terror_action_state
+				set_state_flag = random_terror_force_extraction_subject
+			}
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_extraction_legitimacy }
+			random_terror_actor_force_extraction = yes
+			random_terror_commit_force_extraction = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_low
+			modifier = { factor = @rt_ai_high_factor FROM = { has_state_flag = random_terror_state_armed_insurgency } }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+
+	random_terror_recruit_foreign_fighters = {
+		icon = GFX_decision_random_terror_actor_foreign_fighter_recruitment
+		visible = {
+			OR = {
+				random_terror_actor_phase_jihadist = yes
+				random_terror_actor_phase_final = yes
+			}
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_4_unlocked
+			OR = {
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			check_variable = { random_terror_external_supply > constant:random_terror_value.low }
+			NOT = { has_country_flag = random_terror_foreign_fighters_recruited }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_recruit_foreign_fighters_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_4_unlocked
+				OR = {
+					has_country_flag = random_terror_route_ideological_secretariat
+					has_country_flag = random_terror_route_jihadist_international
+				}
+				check_variable = { random_terror_external_supply > constant:random_terror_value.low }
+				NOT = { has_country_flag = random_terror_foreign_fighters_recruited }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_foreign_fighters_authority }
+			has_equipment = { convoy_1 > constant:random_terror_cost.actor_corridor_convoys }
+			has_equipment = { infantry_equipment > constant:random_terror_cost.actor_foreign_fighters_equipment }
+			has_manpower > constant:random_terror_tuning.foreign_fighter_manpower
+		}
+		custom_cost_text = random_terror_recruit_foreign_fighters_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_recruit_foreign_fighters_effect_tt
+			add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.actor_corridor_convoys }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_cost.actor_foreign_fighters_equipment }
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_foreign_fighters_authority }
+			random_terror_actor_recruit_foreign_fighters = yes
+			random_terror_commit_foreign_fighter_recruitment = yes
+			# The intake helper grants the recruited manpower; debit that returned
+			# pool so this one-shot route cannot create free fighters.
+			add_manpower = -constant:random_terror_tuning.foreign_fighter_manpower
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { random_terror_external_supply < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_high_factor has_global_flag = random_terror_evolution_4_unlocked }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_join_jihadist_international = {
+		icon = GFX_decision_random_terror_actor_jihadist_international
+		visible = {
+			random_terror_actor_phase_jihadist = yes
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_4_unlocked
+			OR = {
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_capitulated = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_join_jihadist_international_requirements_tt
+				random_terror_can_actor_action = yes
+				NOT = { random_terror_is_final_actor = yes }
+				has_global_flag = random_terror_evolution_4_unlocked
+				OR = {
+					has_country_flag = random_terror_route_ideological_secretariat
+					has_country_flag = random_terror_route_jihadist_international
+				}
+				FROM = {
+					exists = yes
+					NOT = { tag = ROOT }
+					random_terror_is_jihadist_actor = yes
+					has_country_flag = random_terror_network_leader
+					NOT = { has_capitulated = yes }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			NOT = { random_terror_is_final_actor = yes }
+			has_global_flag = random_terror_evolution_4_unlocked
+			OR = {
+				has_country_flag = random_terror_route_ideological_secretariat
+				has_country_flag = random_terror_route_jihadist_international
+			}
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { tag = ROOT }
+				random_terror_is_jihadist_actor = yes
+				has_country_flag = random_terror_network_leader
+				NOT = { has_capitulated = yes }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_jihad_membership_authority }
+			command_power > constant:random_terror_cost.allied_command_power
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_join_jihadist_international_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_join_jihadist_international_effect_tt
+			add_command_power = -constant:random_terror_cost.allied_command_power
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			FROM = { save_event_target_as = random_terror_jihadist_international_target }
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_jihad_membership_authority }
+			random_terror_validate_jihad_transaction = yes
+			random_terror_actor_join_jihadist_international = yes
+			random_terror_commit_jihad_transaction = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_high
+			modifier = { factor = @rt_ai_urgent_factor check_variable = { global.random_terror_international_unity < constant:random_terror_value.low } }
+			modifier = { factor = @rt_ai_high_factor has_country_flag = random_terror_route_jihadist_international }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+	random_terror_call_coordinated_uprising = {
+		icon = GFX_decision_random_terror_actor_coordinated_uprising
+		state_target = any
+		on_map_mode = map_and_decisions_view
+		visible = {
+			random_terror_actor_phase_final = yes
+			random_terror_can_actor_action = yes
+			has_global_flag = random_terror_evolution_5_unlocked
+			OR = {
+				has_country_flag = random_terror_route_jihadist_international
+				has_country_flag = random_terror_route_false_revelation
+			}
+			FROM = {
+				exists = yes
+				NOT = { is_controlled_by = ROOT }
+				random_terror_state_is_active_crisis = yes
+				CONTROLLER = {
+					check_variable = { random_terror_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
+					NOT = { has_country_flag = random_terror_mission_slot_2 }
+				}
+				NOT = { has_state_flag = random_terror_uprising_recent }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_call_coordinated_uprising_requirements_tt
+				random_terror_can_actor_action = yes
+				has_global_flag = random_terror_evolution_5_unlocked
+				OR = {
+					has_country_flag = random_terror_route_jihadist_international
+					has_country_flag = random_terror_route_false_revelation
+				}
+				FROM = {
+					exists = yes
+					NOT = { is_controlled_by = ROOT }
+					random_terror_state_is_active_crisis = yes
+					has_state_flag = random_terror_transnational_link_active
+					CONTROLLER = {
+						check_variable = { random_terror_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
+						NOT = { has_country_flag = random_terror_mission_slot_2 }
+					}
+					NOT = { has_state_flag = random_terror_uprising_recent }
+				}
+			}
+		}
+		target_root_trigger = {
+			random_terror_can_actor_action = yes
+			has_global_flag = random_terror_evolution_5_unlocked
+			OR = {
+				has_country_flag = random_terror_route_jihadist_international
+				has_country_flag = random_terror_route_false_revelation
+			}
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_uprising_authority }
+		}
+		target_trigger = {
+			FROM = {
+				exists = yes
+				NOT = { is_controlled_by = ROOT }
+				random_terror_state_is_active_crisis = yes
+				has_state_flag = random_terror_transnational_link_active
+				CONTROLLER = {
+					check_variable = { random_terror_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
+					NOT = { has_country_flag = random_terror_mission_slot_2 }
+				}
+				NOT = { has_state_flag = random_terror_uprising_recent }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_uprising_authority }
+			has_equipment = { convoy_1 > constant:random_terror_cost.actor_corridor_convoys }
+			has_equipment = { support_equipment > constant:random_terror_cost.security_support_equipment }
+		}
+		custom_cost_text = random_terror_call_coordinated_uprising_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		complete_effect = {
+			custom_effect_tooltip = random_terror_call_coordinated_uprising_effect_tt
+			if = {
+				limit = { random_terror_coordinated_uprising_transaction_valid = yes }
+				add_equipment_to_stockpile = { type = convoy_1 amount = -constant:random_terror_cost.actor_corridor_convoys }
+				add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.security_support_equipment }
+				FROM = {
+					save_event_target_as = random_terror_action_state
+					save_event_target_as = random_terror_uprising_state
+					set_state_flag = random_terror_uprising_subject
+				}
+				subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_uprising_authority }
+				add_to_variable = { global.random_terror_international_unity = constant:random_terror_cost.actor_uprising_authority }
+				set_country_flag = random_terror_coordinated_uprising_called
+				random_terror_actor_action_common = yes
+				event_target:random_terror_uprising_state = { random_terror_start_pressure_uprising = yes }
+				random_terror_try_takeover_state = yes
+				FROM = {
+					CONTROLLER = {
+						set_country_flag = random_terror_mission_slot_2
+						activate_mission = random_terror_stop_coordinated_uprising
+					}
+				}
+				random_terror_commit_coordinated_uprising = yes
+				random_terror_clamp_actor_values = yes
+			}
+			else = {
+				set_country_flag = random_terror_coordinated_uprising_failed
+			}
+		}
+		ai_will_do = {
+			base = @rt_ai_urgent
+			modifier = { factor = @rt_ai_urgent_factor FROM = { CONTROLLER = { check_variable = { random_terror_pressure > constant:random_terror_value.high } } } }
+			modifier = { factor = @rt_ai_low_factor has_war = yes }
+		}
+	}
+
+}
+
+random_terror_false_revelation_category = {
+	random_terror_accelerate_revelation = {
+		icon = GFX_decision_random_terror_actor_revelation_acceleration
+		visible = {
+			random_terror_is_final_actor = yes
+			OR = {
+				has_global_flag = random_terror_terminal_active
+				has_global_flag = random_terror_false_revelation_enabled
+		}
+			NOT = { has_country_flag = random_terror_revelation_requested }
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = random_terror_accelerate_revelation_requirements_tt
+				random_terror_can_begin_false_revelation = yes
+				NOT = { has_country_flag = random_terror_revelation_requested }
+			}
+		}
+		custom_cost_trigger = {
+			check_variable = { random_terror_network_authority > constant:random_terror_cost.actor_revelation_authority }
+			has_equipment = { infantry_equipment > constant:random_terror_cost.actor_foreign_fighters_equipment }
+			has_equipment = { support_equipment > constant:random_terror_cost.actor_depot_support_equipment }
+		}
+		custom_cost_text = random_terror_accelerate_revelation_cost
+		days_re_enable = constant:random_terror_tuning.actor_action_cooldown_days
+		fire_only_once = yes
+		complete_effect = {
+			custom_effect_tooltip = random_terror_accelerate_revelation_effect_tt
+			add_equipment_to_stockpile = { type = infantry_equipment amount = -constant:random_terror_cost.actor_foreign_fighters_equipment }
+			add_equipment_to_stockpile = { type = support_equipment amount = -constant:random_terror_cost.actor_depot_support_equipment }
+			subtract_from_variable = { random_terror_network_authority = constant:random_terror_cost.actor_revelation_authority }
+			random_terror_actor_accelerate_revelation = yes
+			random_terror_clamp_actor_values = yes
+		}
+		ai_will_do = {
+			base = @rt_ai_urgent
+			modifier = { factor = @rt_ai_high_factor has_global_flag = random_terror_terminal_active }
+			modifier = { factor = @rt_ai_low_factor has_war = no }
+		}
+	}
+}

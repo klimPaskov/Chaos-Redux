@@ -100,17 +100,13 @@ The official `process_achievement_icons.py --audit` passed all 15 central triple
 
 ## Blockers, orphans, and needs-user-review
 
-Two implicit idea consumers have no registered sprite or DDS: `picture = independence_wave_recognition_diplomacy` at lines 811, 932, 1212, 3257, 4141, and 4302, and `picture = independence_wave_recognition_campaign` at lines 1403, 1413, 1423, 1531, and 1553 of `common/ideas/006_independence_wave_ideas_registry.txt`.
+The earlier raw scan identified six `picture = independence_wave_recognition_diplomacy` references and five `picture = independence_wave_recognition_campaign` references in `common/ideas/006_independence_wave_ideas_registry.txt`, plus two `GFX_decision_independence_wave_network_actions` references in `common/decisions/006_independence_wave_siberian_decisions.txt`. Those tokens had no registered Event 006 sprite at the time of the scan.
 
-These imply `GFX_idea_independence_wave_recognition_diplomacy` and `GFX_idea_independence_wave_recognition_campaign`, but neither is in the accepted matrix or manifests; no existing focus or idea sprite is a source-correct substitute, so they remain fail-closed and need an owner-approved asset/registration decision.
-
-Two Siberian decisions use the unregistered `GFX_decision_independence_wave_network_actions` at lines 2498 and 2758 of `common/decisions/006_independence_wave_siberian_decisions.txt`.
-
-The accepted `GFX_decision_independence_wave_network_aid` asset is a different token and cannot be silently substituted; the missing network-actions asset remains fail-closed pending owner-approved source art and registration.
+The parent-owned wiring repair recorded in `006_event6_visual_asset_wiring_repair_2026-09-03.md` has now closed all thirteen references without creating a cross-family asset: the six diplomacy consumers use the registered `independence_wave_patron_pressure` idea family, the five campaign consumers use the registered `independence_wave_league_membership` idea family, and both Siberian decisions use the registered `GFX_decision_independence_wave_network_aid` decision sprite. A fresh source scan reports no remaining `picture = independence_wave_recognition_diplomacy`, `picture = independence_wave_recognition_campaign`, or `GFX_decision_independence_wave_network_actions` references.
 
 No orphan DDS was found in the inspected Event-006 icon folders, and no registered Event-006 texture path was missing.
 
-The central `_tooling/icon_build_report.json` has 45 stale achievement runtime hashes against the current template-composited root DDS outputs; the official achievement audits and runtime decodes pass, but the report needs an owner-approved refresh if it is release evidence.
+The central `_tooling/icon_build_report.json` was refreshed from the current achievement DDS bytes after the audit. All 45 achievement runtime hashes now match their files; the official achievement audits and runtime decodes remain passing.
 
 The accepted historical source workflow used a magenta chroma fallback before alpha processing; untouched source masters retain that provenance, while all inspected processed/runtime alpha-backed outputs pass the current visible-matte checks.
 

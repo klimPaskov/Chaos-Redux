@@ -64,7 +64,12 @@ Weighted country pools use `adjust_individual_crisis_candidate_ticket_weight` af
 Bounded triggerable scenarios use the same curve: Fury retains its continent and country-size passes for both triggerable and world-end continental seeds, Random Civil War retains its intensity-derived unique-country budget, and Random Terror retains its scenario target count while drawing each new country from load-sensitive tickets.
 
 The central event picker does not currently consume `apply_individual_crisis_fixed_target_event_pressure`.
-That companion remains a separately scoped follow-up for Holy Realm's fixed Tibet host, Soviet Collapse, Secret Alliance's headline target, Natural Disasters, Resources Found, and Video Game in Sweden.
+That companion remains a separately scoped follow-up whose first consumer must declare its explicit country scope and event-pressure input and output.
+The previously listed packages require current owner-side target classification before migration.
+Holy Realm prefers eligible Tibet, then selects a Bhutan or Nepal refuge host when Tibet does not exist, while Video Game in Sweden resolves its host through owner-side prefire selection.
+Neither selection path proves that the central event picker already has a fixed target available.
+The weighted picker evaluates each candidate in both the total-weight and running-weight passes, so a target resolver used there must remain consistent across both passes without selecting randomly or changing package state.
+The blocked architecture contract, smallest next integration change, and validation limits are recorded in [the fixed-target companion handoff](../../plans/021_random_civil_war_plans/subagent_handoffs/individual_crisis_fixed_target_contract_2026-09-13.md).
 
 Natural Disaster automatic and Disaster Barrage routes, Resources Found and Riches Found direct-entry routes, Video Game in Sweden, and the other package-owned preflight routes recheck capacity before accepting their final target.
 

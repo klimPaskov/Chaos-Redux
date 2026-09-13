@@ -25,6 +25,8 @@ The matching `hoi4.event_render` overview returned `EVENT_RENDERED_PARTIAL` with
 
 The event inspect and render share the same graph revision and remain explicitly partial.
 
+A fresh read-only retry on 2026-09-12 after the documentation/exporter reconciliation reproduced the same revision, graph hash, and helper/lifecycle deferral. The retry artifacts are `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2e45434337fdfda54ce04734e77b032767b170040e9bad335c86dbaeb6affb63/236c783a90494a66646e692a21d583ce283a96f49c0c971d11a5e61c375ebbf6/event-lint-4bccb6ec7fe1.json` and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/0641f047130fa836101d53185c9aa3a0ecdfffab8996411d48fe0d194ea056d4/c7cd817e70f09a53953ec0333ac68a75e6586fb75c1dd5a5d45483172c0beb56/event-overview-4bccb6ec7fe1-manifest.json`; no gameplay source or completion boundary changed.
+
 ## Shared focus tree
 
 The focused `hoi4.focus_inspect` request targeted `common/national_focus/006_independence_wave_focus.txt`, tree `independence_wave_focus_tree`, and returned `FOCUS_INSPECTED` with validation passed.

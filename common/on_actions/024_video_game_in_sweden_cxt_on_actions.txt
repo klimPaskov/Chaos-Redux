@@ -1,0 +1,31 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 024 CXT REGISTRATION HOOKS
+# ============================================================================
+# Startup registers the package through one bounded existing country. The
+# CXT-tagged daily fallback repairs existing initialized test saves without a
+# global scan and never starts the live Swedish program.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				video_game_in_sweden_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				video_game_in_sweden_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { var = chaosx_test_country_extension_registration_added value = constant:video_game_in_sweden_value.zero compare = greater_than } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

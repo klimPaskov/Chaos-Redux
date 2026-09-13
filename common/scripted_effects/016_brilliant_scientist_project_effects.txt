@@ -9,6 +9,13 @@
 # COUNTRY scope. Inputs: temporary project family and requested stage.
 brilliant_scientist_begin_project_stage = {
 	brilliant_scientist_load_project_cost_and_duration = yes
+	if = {
+		limit = {
+			NOT = { has_dlc = "Gotterdammerung" }
+			check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		}
+		brilliant_scientist_load_no_dlc_prototype_cost = yes
+	}
 	brilliant_scientist_load_project_index = yes
 	set_temp_variable = { brilliant_scientist_project_previous_stage = brilliant_scientist_requested_project_stage }
 	subtract_from_temp_variable = { brilliant_scientist_project_previous_stage = constant:brilliant_scientist_value.one }
@@ -27,6 +34,10 @@ brilliant_scientist_begin_project_stage = {
 		if = {
 			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.deployment } }
 			set_temp_variable = { brilliant_scientist_project_capacity_delta = constant:brilliant_scientist_project_board.capacity_deployment }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype } }
+			set_temp_variable = { brilliant_scientist_project_capacity_delta = constant:brilliant_scientist_project_board.capacity_prototype }
 		}
 		else_if = {
 			limit = { check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.weaponization } }
@@ -78,6 +89,10 @@ brilliant_scientist_cancel_project_stage = {
 
 # COUNTRY scope. Terminal owner only; does not need the now-invalid live context.
 brilliant_scientist_close_active_project_stage_on_terminal = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_singularity_component_fallback_in_progress }
+		brilliant_scientist_cancel_singularity_component_fallback = yes
+	}
 	if = {
 		limit = {
 			has_country_flag = brilliant_scientist_project_stage_in_progress
@@ -1294,27 +1309,122 @@ brilliant_scientist_record_new_project_prototype = {
 	}
 }
 
-# COUNTRY scope. Input: temporary singularity component.
+# COUNTRY scope. No-DLC Singularity component adapter. Each component is a
+# paid, timed receipt; completion records the existing component flag/array
+# through the canonical registry and never advances Prototype on a partial
+# chain.
+brilliant_scientist_begin_singularity_component_fallback = {
+	if = {
+		limit = {
+			NOT = { has_dlc = "Gotterdammerung" }
+			brilliant_scientist_project_board_is_ready = yes
+			brilliant_scientist_singularity_component_input_is_valid = yes
+			OR = {
+				AND = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core } brilliant_scientist_can_pay_singularity_command_core_fallback = yes }
+				AND = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link } brilliant_scientist_can_pay_singularity_power_link_fallback = yes }
+				AND = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice } brilliant_scientist_can_pay_singularity_containment_lattice_fallback = yes }
+				AND = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator } brilliant_scientist_can_pay_singularity_temporal_authenticator_fallback = yes }
+				AND = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture } brilliant_scientist_can_pay_singularity_delivery_architecture_fallback = yes }
+				AND = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor } brilliant_scientist_can_pay_singularity_fail_deadly_governor_fallback = yes }
+			}
+		}
+		set_country_flag = brilliant_scientist_singularity_component_fallback_in_progress
+		set_variable = { brilliant_scientist_singularity_fallback_active_component = brilliant_scientist_singularity_component }
+		set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_value.zero }
+		if = {
+			limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core } }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_project_fallback_singularity_component.command_core_support_equipment }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_project_fallback_singularity_component.command_core_fuel }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link } }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_project_fallback_singularity_component.power_link_support_equipment }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_project_fallback_singularity_component.power_link_fuel }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice } }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_project_fallback_singularity_component.containment_lattice_support_equipment }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_project_fallback_singularity_component.containment_lattice_fuel }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator } }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_project_fallback_singularity_component.temporal_authenticator_support_equipment }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_project_fallback_singularity_component.temporal_authenticator_fuel }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture } }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_project_fallback_singularity_component.delivery_architecture_support_equipment }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_project_fallback_singularity_component.delivery_architecture_fuel }
+		}
+		else_if = {
+			limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor } }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_project_fallback_singularity_component.fail_deadly_governor_support_equipment }
+			set_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_project_fallback_singularity_component.fail_deadly_governor_fuel }
+		}
+		multiply_temp_variable = { brilliant_scientist_singularity_fallback_payment_support = constant:brilliant_scientist_directorate_value.negative_one }
+		multiply_temp_variable = { brilliant_scientist_singularity_fallback_payment_fuel = constant:brilliant_scientist_directorate_value.negative_one }
+		add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_singularity_fallback_payment_support }
+		add_fuel = brilliant_scientist_singularity_fallback_payment_fuel
+	}
+}
+
+brilliant_scientist_cancel_singularity_component_fallback = {
+	if = {
+		limit = { has_country_flag = brilliant_scientist_singularity_component_fallback_in_progress }
+		clr_country_flag = brilliant_scientist_singularity_component_fallback_in_progress
+		clear_variable = brilliant_scientist_singularity_fallback_active_component
+	}
+}
+
+brilliant_scientist_finish_singularity_component_fallback = {
+	if = {
+		limit = {
+			has_country_flag = brilliant_scientist_singularity_component_fallback_in_progress
+			has_variable = brilliant_scientist_singularity_fallback_active_component
+		}
+		set_temp_variable = { brilliant_scientist_singularity_component = brilliant_scientist_singularity_fallback_active_component }
+		brilliant_scientist_register_singularity_component = yes
+		clr_country_flag = brilliant_scientist_singularity_component_fallback_in_progress
+		clear_variable = brilliant_scientist_singularity_fallback_active_component
+	}
+}
+
+# COUNTRY scope. Input: temporary singularity component. A valid Mengele
+# provider is dispatched to its private authenticated registry; only the
+# current Event 016 host may write the Kruger component registry.
 brilliant_scientist_register_singularity_component = {
 	if = {
-		limit = { NOT = { is_in_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component } } }
-		add_to_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component }
-		add_to_variable = { brilliant_scientist_singularity_component_count = constant:brilliant_scientist_value.one }
-		if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core } } set_country_flag = brilliant_scientist_singularity_command_core_complete }
-		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link } } set_country_flag = brilliant_scientist_singularity_power_link_complete }
-		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice } } set_country_flag = brilliant_scientist_singularity_containment_lattice_complete }
-		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator } } set_country_flag = brilliant_scientist_singularity_temporal_authenticator_complete }
-		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture } } set_country_flag = brilliant_scientist_singularity_delivery_architecture_complete }
-		else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor } } set_country_flag = brilliant_scientist_singularity_fail_deadly_governor_complete }
-		if = {
-			limit = {
-				check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.theory }
-				check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
-			}
-			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
-			brilliant_scientist_complete_native_prototype_stage = yes
+		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+		brilliant_scientist_record_mengele_singularity_component = yes
+	}
+	else_if = {
+		limit = {
+			brilliant_scientist_is_current_host = yes
+			brilliant_scientist_singularity_component_input_is_valid = yes
 		}
-		set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.components }
+		if = {
+			limit = { NOT = { is_in_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component } } }
+			add_to_array = { array = brilliant_scientist_singularity_component_entries value = brilliant_scientist_singularity_component }
+			add_to_variable = { brilliant_scientist_singularity_component_count = constant:brilliant_scientist_value.one }
+			if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.command_core } } set_country_flag = brilliant_scientist_singularity_command_core_complete }
+			else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.power_link } } set_country_flag = brilliant_scientist_singularity_power_link_complete }
+			else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.containment_lattice } } set_country_flag = brilliant_scientist_singularity_containment_lattice_complete }
+			else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.temporal_authenticator } } set_country_flag = brilliant_scientist_singularity_temporal_authenticator_complete }
+			else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.delivery_architecture } } set_country_flag = brilliant_scientist_singularity_delivery_architecture_complete }
+			else_if = { limit = { check_variable = { brilliant_scientist_singularity_component = constant:brilliant_scientist_singularity_component.fail_deadly_governor } } set_country_flag = brilliant_scientist_singularity_fail_deadly_governor_complete }
+			if = {
+				limit = {
+					has_dlc = "Gotterdammerung"
+					check_variable = { brilliant_scientist_project_stage_entries^14 = constant:brilliant_scientist_project_stage.theory }
+					brilliant_scientist_singularity_components_are_complete = yes
+					check_variable = { var = brilliant_scientist_project_capacity value = constant:brilliant_scientist_project_board.capacity_prototype compare = greater_than_or_equals }
+				}
+				set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity }
+				brilliant_scientist_complete_native_prototype_stage = yes
+			}
+			set_variable = { brilliant_scientist_singularity_arming_state = constant:brilliant_scientist_singularity_arming_state.components }
+		}
 	}
 }
 

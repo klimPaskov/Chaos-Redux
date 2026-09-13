@@ -18,7 +18,7 @@ When an event implementation creates broad visible text, spawn `chaosx_localisat
 
 ## Working model
 
-In Chaos Redux, an event is not just an event block.
+An event spans several implementation surfaces.
 
 Treat every event as a contract across some or all of these surfaces:
 
@@ -45,6 +45,16 @@ Wire CXT coverage for every new land sub-unit or concrete equipment type through
 Before completion, run a full inventory over all installed land sub-unit definitions under `common/units/` and concrete equipment definitions under `common/units/equipment/`, including support definitions, then cross-check provider or parent-owned dispositions, owner registrations, concrete equipment tokens, presentation and localisation tokens, CXT registrations and synchronizers, and duplicate or missing IDs. Every entry must be covered or explicitly blocked with the engine reason.
 
 Do not extend a central consumer-maintained family list, equipment switch, or localisation selector when an owner-side provider contract can supply the data. A missing provider or malformed registry row is a blocking integration failure, not permission to substitute a generic family.
+
+### Parent and subagent implementation ownership
+
+Patch-capable subagents are active by default inside the current task scope. Use them when a large event touches focus trees, decisions, country packages, localisation, GUI, scripted helpers, or assets at the same time.
+
+Small subagent patches are allowed when they improve a specific surface without changing the event design. A decision subagent can vary costs, clarify tooltips, add cleanup, improve AI weights, and patch related localisation. A focus subagent can fix a route lock, prerequisite, bypass, focus AI, icon reference, small reward, or formable unlock hook. A country package subagent can patch tag setup, party names, focus loading, leader references, country localisation, simple starting setup, or existing formable requirements. A localisation subagent can patch dynamic text directly. A scripted-system architect can add narrow helpers and direct call sites when the repeated logic is already present.
+
+The parent still owns final integration, docs, spreadsheets, event chain direction, completion claims, and any broad mechanic expansion. If a subagent sees a needed route family, new country package, new formable suite, new scripted GUI system, new event chain, or major balance redesign, it writes a plan under `docs/plans/<event_id>_<event_slug>_plans/` and stops.
+
+Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/` when the event id and slug are known. The handoff lists changed files, identifiers, behavior before and after, meaningful validation, remaining gaps, and follow-up work for the parent.
 
 ### Custom subagent use during event implementation
 
@@ -139,15 +149,13 @@ Do not expose hidden routes, secret variables, future surprises, achievement pat
 
 For super-events, do not invent quotes, cultural remarks, song fragments, title references, or final audio choices. Use `chaos-redux-super-events` and the relevant research subagents when the event needs sourced wording or audio.
 
-## Parent and subagent implementation ownership
+### Detail text, immediate effects, and value formatting
 
-Patch-capable subagents are active by default inside the current task scope. Use them when a large event touches focus trees, decisions, country packages, localisation, GUI, scripted helpers, or assets at the same time.
+Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.
 
-Small subagent patches are allowed when they improve a specific surface without changing the event design. A decision subagent can vary costs, clarify tooltips, add cleanup, improve AI weights, and patch related localisation. A focus subagent can fix a route lock, prerequisite, bypass, focus AI, icon reference, small reward, or formable unlock hook. A country package subagent can patch tag setup, party names, focus loading, leader references, country localisation, simple starting setup, or existing formable requirements. A localisation subagent can patch dynamic text directly. A scripted-system architect can add narrow helpers and direct call sites when the repeated logic is already present.
+Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path. Keep achievement conditions in achievement UI and docs, and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe what people see, fear, suffer, or fail to explain. Do not directly label the incident as a warning, a non-warning, a danger signal, or the absence of one.
 
-The parent still owns final integration, docs, spreadsheets, event chain direction, completion claims, and any broad mechanic expansion. If a subagent sees a needed route family, new country package, new formable suite, new scripted GUI system, new event chain, or major balance redesign, it writes a plan under `docs/plans/<event_id>_<event_slug>_plans/` and stops.
-
-Every subagent edit must produce a handoff under `docs/plans/<event_id>_<event_slug>_plans/subagent_handoffs/` when the event id and slug are known. The handoff lists changed files, identifiers, behavior before and after, meaningful validation, remaining gaps, and follow-up work for the parent.
+Visible dynamic values often display decimal places unless their localisation formatter says otherwise. If a value is conceptually an integer, show it as an integer with `|0` formatting or an equivalent scripted-localisation helper. Only show decimal places when the value genuinely needs fractional precision, such as ratios, percentages, fractional costs, or progress values where the fraction changes player decisions.
 
 ## Event anatomy
 
@@ -434,6 +442,39 @@ Keep the complete bodies of `is_special_chaos_country`, `is_actual_nonhuman_coun
 
 If you add a new reusable dynamic scripted effect (an effect that could be generalized for all events), document it in `common/scripted_effects/chaosx_dynamic_effects.md` in the same change.
 
+#### Event-created country setup and audit
+
+If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
+
+When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
+
+Before registering any new country, cosmetic, formable, or route tag, audit it against vanilla, Chaos Redux, every installed Workshop mod, and other local mods. Do not add a duplicate new country for a national identity that already exists in vanilla: reuse the vanilla tag, preserve the living country and its meaningful content, and add only safely gated Event content. If a proposed new tag conflicts anywhere in the installed set, remap it and update every script, history, localisation, asset, manifest, scenario, documentation, and catalog reference together. Apply any event-specific suffix convention only after the collision-free tag is locked.
+
+When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, custom-tag history files, additive startup grants for existing countries, generated startup scientists when needed, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag. Do not copy vanilla country, state, or unit history only to add Chaos Redux technologies, equipment, facilities, traits, or other additive setup. Put that setup in `common/scripted_effects/chaosx_startup_history_effects.txt` and call it from `on_startup`. Do not put `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists. It is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
+
+#### Country activation and ROOT
+
+Entering another country scope does not rebind ROOT.
+When setup helpers require the recipient country as ROOT, invoke them from a hidden triggered-only country event received by that country; regular event targets carry through events fired by the originating effect chain.
+Give a dormant tag owned land and a valid capital before entering capital-based setup or spawning units; use runtime meta construction when its TAG scope must be deferred until activation.
+For a player-transfer bootstrap, queue the delayed recipient event before `change_tag_from` and make player transfer the final effect in that country block, so receiver scheduling does not reuse an invalidated country scope.
+Inject file-scoped duration constants as meta arguments when generating a new script buffer, rather than leaving an unresolved `@` token inside generated text.
+State transfers preserve stored variables, so a dedicated sandbox fixture must assign its intended responsible-country pointer before registration when it replaces an inherited site; ordinary historical responsibility should remain intact.
+
+History grants can run before the recipient has a capital or other countries are initialized.
+Keep their local grants and records, but queue capital-dependent scoring and diplomatic refreshes until country activation rather than dropping gameplay outputs.
+Guard capital entry with an owned-state capital check; entering `capital_scope` to test whether it exists can itself raise an invalid-target error.
+
+An exposed database array may include its reserved default object alongside real content.
+Before excluding an entry, verify the array's registration order, the database's default-object initialization, and the consuming effect or trigger's validity check against installed documentation or other direct engine evidence.
+Exclude only the confirmed reserved slot; do not guess that a numeric value or token is invalid, and preserve dynamic coverage of every real entry.
+Keep read-only engine inspection distinct from executed runtime validation.
+
+When additive tag-specific hooks can each request a full registry synchronization, coalesce their requests behind one pending recipient event instead of repeating the full consumer pass inside each hook.
+Track scheduled delivery separately from pending work when an immediate refresh can consume that work before the queued event fires; this avoids scheduling duplicate receivers for a later request.
+Set the scheduling flag before enqueueing, clear scheduling and pending-work flags before dispatch, and retain an immediate apply path for explicit setup or refresh.
+Verify registration convergence, repeated requests, and refresh while a request is pending; preserve every registry consumer and package repair hook.
+
 ### 5. Event log integration
 
 Events must appear in Chaos Redux’s event log, wire the full log contract in the same change.
@@ -524,29 +565,6 @@ Cluster firing rules:
 - Automatic firing respects cluster unlock tier, cooldown, one-time state, member eligibility, optional participation rolls, and runtime context.
 - Manual firing from Settings uses `force_fire_event_cluster_by_temp_id`. it bypasses tier, cooldown, disabled-state, and member availability checks. Runtime context can still fail if the event cannot build the required scopes.
 - Cluster history rows are recorded by `record_events_log_cluster_entry`. cluster catalogue rows are rebuilt by `rebuild_events_log_cluster_view`.
-
-### Country activation and ROOT
-
-Entering another country scope does not rebind ROOT.
-When setup helpers require the recipient country as ROOT, invoke them from a hidden triggered-only country event received by that country; regular event targets carry through events fired by the originating effect chain.
-Give a dormant tag owned land and a valid capital before entering capital-based setup or spawning units; use runtime meta construction when its TAG scope must be deferred until activation.
-For a player-transfer bootstrap, queue the delayed recipient event before `change_tag_from` and make player transfer the final effect in that country block, so receiver scheduling does not reuse an invalidated country scope.
-Inject file-scoped duration constants as meta arguments when generating a new script buffer, rather than leaving an unresolved `@` token inside generated text.
-State transfers preserve stored variables, so a dedicated sandbox fixture must assign its intended responsible-country pointer before registration when it replaces an inherited site; ordinary historical responsibility should remain intact.
-
-History grants can run before the recipient has a capital or other countries are initialized.
-Keep their local grants and records, but queue capital-dependent scoring and diplomatic refreshes until country activation rather than dropping gameplay outputs.
-Guard capital entry with an owned-state capital check; entering `capital_scope` to test whether it exists can itself raise an invalid-target error.
-
-An exposed database array may include its reserved default object alongside real content.
-Before excluding an entry, verify the array's registration order, the database's default-object initialization, and the consuming effect or trigger's validity check against installed documentation or other direct engine evidence.
-Exclude only the confirmed reserved slot; do not guess that a numeric value or token is invalid, and preserve dynamic coverage of every real entry.
-Keep read-only engine inspection distinct from executed runtime validation.
-
-When additive tag-specific hooks can each request a full registry synchronization, coalesce their requests behind one pending recipient event instead of repeating the full consumer pass inside each hook.
-Track scheduled delivery separately from pending work when an immediate refresh can consume that work before the queued event fires; this avoids scheduling duplicate receivers for a later request.
-Set the scheduling flag before enqueueing, clear scheduling and pending-work flags before dispatch, and retain an immediate apply path for explicit setup or refresh.
-Verify registration convergence, repeated requests, and refresh while a request is pending; preserve every registry consumer and package repair hook.
 
 When inlining a multi-condition scripted trigger inside `NOT`, keep the conditions in an explicit `AND` block; sibling conditions in `NOT` use NOR semantics.
 Preserve the original rejection behavior when either a shared precondition or the native legality check fails.
@@ -692,22 +710,6 @@ Rules:
 - Treat the workbook `Legend` sheet as the source for status, Type, Member Severity, evolution-column, and World-End colors. Keep dropdown ranges, conditional-formatting rules, static fills, and exported values synchronized with the Legend.
 - These status rules classify catalog entries only and must not silently change runtime registration or enablement.
 
-### Extra rules to follow
-
-Event Details text must never display mechanical effects. The Event Details window, spreadsheet `Details` field, and player-facing detail summaries should describe the situation and premise, not list rewards, penalties, modifiers, variable changes, or script effects. If an event is meant to apply gameplay effects immediately regardless of which option the player chooses, place the real effects in the event `immediate` block inside a `hidden_effect`. The option should not reapply those effects. The option may show the immediate result only through a custom tooltip for cosmetic clarity, so the player sees the consequence without turning Event Details into an effects list.
-
-Player-facing event, decision, focus, and Event Details text must describe in-world consequences rather than meta reward routes. Do not advertise that a choice opens, grants, counts toward, or completes an achievement path. Keep achievement conditions in achievement UI and docs, and use ordinary in-world consequence text elsewhere. For ambiguous report-stage incidents, describe what people see, fear, suffer, or fail to explain. Do not directly label the incident as a warning, a non-warning, a danger signal, or the absence of one.
-
-Visible dynamic values often display decimal places unless their localisation formatter says otherwise. If a value is conceptually an integer, show it as an integer with `|0` formatting or an equivalent scripted-localisation helper. Only show decimal places when the value genuinely needs fractional precision, such as ratios, percentages, fractional costs, or progress values where the fraction changes player decisions.
-
-If the event creates or manages non-standard countries, account for that in shared classification triggers. Any event-created or event-managed chaos country must be registered in `is_special_chaos_country` in `common/scripted_triggers/chaosx_dynamic_triggers.txt` and documented in `common/scripted_triggers/chaosx_dynamic_triggers.md`. If that chaos country is actually nonhuman rather than merely unusual, supernatural, extremist, or scenario-specific, also register it in `is_actual_nonhuman_country` and update the same documentation. Do not create event-specific duplicate classifiers such as `is_<event>_chaos_enemy`, `is_<event>_special_country`, or per-event nonhuman triggers when the shared triggers can express the category. Events interact with each other, so systems that usually affect normal countries, such as black plague, mass panic, civilian migration, or ideology spread, should exclude zombie, alien, and other nonhuman countries through the shared triggers instead of one-off checks.
-
-When an event can create a normal tag that may also already exist from vanilla, another mod, or prior campaign state, track whether the event actually created it before loading a runtime focus tree. A good pattern is to set a country flag immediately after `release = TAG` and have the focus-tree loader check that flag before `load_focus_tree`. Existing tags with their own meaningful trees should get crisis ideas, decisions, events, or additive branch integration, not a blind replacement tree.
-
-Before registering any new country, cosmetic, formable, or route tag, audit it against vanilla, Chaos Redux, every installed Workshop mod, and other local mods. Do not add a duplicate new country for a national identity that already exists in vanilla: reuse the vanilla tag, preserve the living country and its meaningful content, and add only safely gated Event content. If a proposed new tag conflicts anywhere in the installed set, remap it and update every script, history, localisation, asset, manifest, scenario, documentation, and catalog reference together. Apply any event-specific suffix convention only after the collision-free tag is locked.
-
-When auditing event-created country packages, verify the whole playable-country surface, not only the release effect. Check country files, custom-tag history files, additive startup grants for existing countries, generated startup scientists when needed, tag registration, base localisation, ideology-specific cosmetic localisation (`TAG_democratic`, `TAG_communism`, `TAG_fascism`, `TAG_neutrality` plus `_DEF` and `_ADJ`), flags, decision/focus/idea icons, focus loading, AI strategy, docs, and manifests together. For existing-country variants, verify the event-created flag is set only on the release path and every `load_focus_tree` path is gated by that flag. Do not copy vanilla country, state, or unit history only to add Chaos Redux technologies, equipment, facilities, traits, or other additive setup. Put that setup in `common/scripted_effects/chaosx_startup_history_effects.txt` and call it from `on_startup`. Do not put `recruit_character` in scripted effects or on_actions. Do not use `history/general` for country-specific Chaos Redux scientists. It is for generic character pools. For named existing-country startup scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, mark/select the newly generated scientist with the startup helper flags, apply `set_character_name` and the intended portrait if needed, and set a persistent identity flag for later scripted references.
-
 ## Formable nations as event surfaces
 
 When an event can create or empower countries, consider whether it should create formable nation routes. A formable can be a major event payoff, a late-game ambition, a hidden branch, a rare evolution reward, a country package route, or a post-crisis consolidation goal.
@@ -818,14 +820,14 @@ Before closing an event task, verify:
 10. Hidden or easter-egg terminal branches are absent from public Event Details controls, public docs, and spreadsheet-facing public fields. Every terminal branch still preserves its scenario-specific flag, matching super-event linkage, 1000+ Chaos gate, world-state selection rules, and `world_end` guard.
 11. If the event has a super-event, `chaos-redux-super-events` has been used for quote, remark, audio, and presentation planning.
 12. Supporting decisions, ideas, AI, country setup, or exclusions are updated if relevant.
-12a. For every manifest-driven formable, the category attachment audit lists all in-scope category IDs and proves each one points to the generated state-puzzle scripted GUI. A formable family that declares strict all-category coverage has no static or text-only substitute where exact state control is central.
-13. `docs/events/` is updated.
-14. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
-15. If assets are required, `chaos-redux-event-assets` has been used.
-16. During active work, generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in the temporary asset manifest and crosswalk. Before completion, durable facts are promoted and the event-scoped `docs/assets/<event_id>_<event_slug>/` workspace is deleted, with no runtime reference left to it.
-17. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
-18. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
-19. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
-20. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.
-21. Every new land sub-unit or equipment-backed special family has an explicit provider, support-attachment, or parent-owned disposition, owner-side registration and callback coverage, CXT coverage, and full unit-inventory audit.
-22. Mapped event-owned Chaos changes are tied to concrete outcomes, guarded against repeat farming, and do not double count shared sources.
+13. For every manifest-driven formable, the category attachment audit lists all in-scope category IDs and proves each one points to the generated state-puzzle scripted GUI. A formable family that declares strict all-category coverage has no static or text-only substitute where exact state control is central.
+14. `docs/events/` is updated.
+15. `docs/spreadsheets/chaos_redux_events_catalog.xlsx` is updated, then `.tools/export_event_catalog_csv.py` is run so all three export-only CSV snapshots are refreshed.
+16. If assets are required, `chaos-redux-event-assets` has been used.
+17. During active work, generated assets are resized, converted to DDS 32 bit unsigned BGRB 8.8.8.8, moved into the correct folders, wired in `.gfx`, and recorded in the temporary asset manifest and crosswalk. Before completion, durable facts are promoted and the event-scoped `docs/assets/<event_id>_<event_slug>/` workspace is deleted, with no runtime reference left to it.
+18. Spec-mapped mechanics, routes, countries, decisions, achievements, assets, and super-events are implemented or clearly reported as blocked, merged, renamed, skipped, or simplified.
+19. Dynamic values, concrete costs, mechanic visibility, decision category filtering, and effect strength are checked where the spec calls for them.
+20. Focus trees preserve route structure, focus filters, varied rewards, idea lifecycles, route-specific AI, and visible branch payoffs where relevant.
+21. New fighting countries have dynamic starting forces, template assumptions, equipment and manpower handling, and reinforcement pathways.
+22. Every new land sub-unit or equipment-backed special family has an explicit provider, support-attachment, or parent-owned disposition, owner-side registration and callback coverage, CXT coverage, and full unit-inventory audit.
+23. Mapped event-owned Chaos changes are tied to concrete outcomes, guarded against repeat farming, and do not double count shared sources.

@@ -1,0 +1,330 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING IDEAS
+# ============================================================================
+# Country ideas for the bounded Event 028 lifecycle. The impact stage ideas
+# are replaced as the global Dust Load changes; protection ideas replace one
+# another and end when the dust ledger reaches zero. Preparedness ideas are
+# short-lived pre-impact commitments, while the post-impact dislocation and
+# recovery ideas are timed by the event-owned effects.
+#
+# Idea modifier fields do not accept the shared script-constant namespace in
+# this game version. These file-scoped values therefore mirror the accepted
+# Event 028 tuning matrix and keep every repeated idea value centralized in
+# this file.
+# ============================================================================
+
+@ASTEROID_PREPARED_COMMAND_STABILITY = 0.03
+@ASTEROID_PREPARED_COMMAND_POWER = 0.05
+@ASTEROID_PREPARED_COMMAND_ORG = 0.03
+@ASTEROID_PREPARED_TRANSPORT_SUPPLY = -0.03
+@ASTEROID_PREPARED_TRANSPORT_SPEED = -0.02
+@ASTEROID_PREPARED_MEDICAL_STABILITY = 0.02
+@ASTEROID_PREPARED_MEDICAL_SUPPLY = -0.02
+
+@ASTEROID_DISLOCATION_STABILITY = -0.05
+@ASTEROID_DISLOCATION_POLITICAL_POWER = -0.10
+@ASTEROID_DISLOCATION_CONSTRUCTION = -0.05
+@ASTEROID_DISLOCATION_ORG = -0.03
+@ASTEROID_DISLOCATION_PREPARED_STABILITY = -0.02
+@ASTEROID_DISLOCATION_PREPARED_POLITICAL_POWER = -0.04
+@ASTEROID_DISLOCATION_PREPARED_CONSTRUCTION = -0.02
+@ASTEROID_DISLOCATION_PREPARED_ORG = -0.01
+
+@ASTEROID_DUST_RESIDUAL_FACTORY = -0.03
+@ASTEROID_DUST_RESIDUAL_CONSTRUCTION = -0.02
+@ASTEROID_DUST_RESIDUAL_EFFICIENCY = 0.00
+@ASTEROID_DUST_RESIDUAL_SUPPLY = 0.02
+@ASTEROID_DUST_RESIDUAL_AIR = -0.01
+@ASTEROID_DUST_VEIL_FACTORY = -0.07
+@ASTEROID_DUST_VEIL_CONSTRUCTION = -0.05
+@ASTEROID_DUST_VEIL_EFFICIENCY = -0.03
+@ASTEROID_DUST_VEIL_SUPPLY = 0.05
+@ASTEROID_DUST_VEIL_AIR = -0.03
+@ASTEROID_DUST_WINTER_FACTORY = -0.12
+@ASTEROID_DUST_WINTER_CONSTRUCTION = -0.10
+@ASTEROID_DUST_WINTER_EFFICIENCY = -0.08
+@ASTEROID_DUST_WINTER_SUPPLY = 0.10
+@ASTEROID_DUST_WINTER_AIR = -0.05
+@ASTEROID_DUST_SEVERE_FACTORY = -0.20
+@ASTEROID_DUST_SEVERE_CONSTRUCTION = -0.15
+@ASTEROID_DUST_SEVERE_EFFICIENCY = -0.12
+@ASTEROID_DUST_SEVERE_SUPPLY = 0.15
+@ASTEROID_DUST_SEVERE_AIR = -0.10
+
+@ASTEROID_RECOVERY_BURDEN_FACTORY = -0.05
+@ASTEROID_RECOVERY_BURDEN_SUPPLY = 0.05
+@ASTEROID_RECOVERY_BURDEN_CONSUMER_GOODS = 0.05
+@ASTEROID_RECOVERY_BURDEN_STABILITY = -0.02
+@ASTEROID_RECOVERY_LEGACY_REPAIR = 0.05
+@ASTEROID_RECOVERY_LEGACY_CONSTRUCTION = 0.03
+@ASTEROID_RECOVERY_LEGACY_STABILITY = 0.02
+
+@ASTEROID_PROTECTION_BASIC_FACTORY = 0.03
+@ASTEROID_PROTECTION_BASIC_CONSTRUCTION = 0.02
+@ASTEROID_PROTECTION_BASIC_SUPPLY = -0.02
+@ASTEROID_PROTECTION_ORGANIZED_FACTORY = 0.07
+@ASTEROID_PROTECTION_ORGANIZED_CONSTRUCTION = 0.05
+@ASTEROID_PROTECTION_ORGANIZED_EFFICIENCY = 0.03
+@ASTEROID_PROTECTION_ORGANIZED_SUPPLY = -0.05
+@ASTEROID_PROTECTION_ORGANIZED_AIR = 0.03
+@ASTEROID_PROTECTION_HARDENED_FACTORY = 0.12
+@ASTEROID_PROTECTION_HARDENED_CONSTRUCTION = 0.10
+@ASTEROID_PROTECTION_HARDENED_EFFICIENCY = 0.08
+@ASTEROID_PROTECTION_HARDENED_SUPPLY = -0.10
+@ASTEROID_PROTECTION_HARDENED_AIR = 0.05
+
+@ASTEROID_DUST_RESIDUAL_WEATHER = 0.00
+@ASTEROID_DUST_VEIL_WEATHER = -0.03
+@ASTEROID_DUST_WINTER_WEATHER = -0.05
+@ASTEROID_DUST_SEVERE_WEATHER = -0.10
+@ASTEROID_PROTECTION_BASIC_WEATHER = 0.00
+@ASTEROID_PROTECTION_ORGANIZED_WEATHER = 0.02
+@ASTEROID_PROTECTION_HARDENED_WEATHER = 0.05
+
+@ASTEROID_MAIN_CRATER_ARMOUR = 1.00
+@ASTEROID_FRAGMENT_SITE_ARMOUR = 0.20
+
+ideas = {
+	country = {
+		asteroid_incoming_command_continuity = {
+			picture = GFX_idea_asteroid_incoming_preparedness
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				stability_factor = @ASTEROID_PREPARED_COMMAND_STABILITY
+				political_power_gain = @ASTEROID_PREPARED_COMMAND_POWER
+				army_org_factor = @ASTEROID_PREPARED_COMMAND_ORG
+			}
+		}
+
+		asteroid_incoming_transport_dispersion = {
+			picture = GFX_idea_asteroid_incoming_preparedness
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				supply_consumption_factor = @ASTEROID_PREPARED_TRANSPORT_SUPPLY
+				army_speed_factor = @ASTEROID_PREPARED_TRANSPORT_SPEED
+			}
+		}
+
+		asteroid_incoming_medical_mobilization = {
+			picture = GFX_idea_asteroid_incoming_preparedness
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				stability_factor = @ASTEROID_PREPARED_MEDICAL_STABILITY
+				supply_consumption_factor = @ASTEROID_PREPARED_MEDICAL_SUPPLY
+			}
+		}
+
+		asteroid_incoming_government_dislocation = {
+			picture = GFX_idea_asteroid_incoming_recovery_burden
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				stability_factor = @ASTEROID_DISLOCATION_STABILITY
+				political_power_gain = @ASTEROID_DISLOCATION_POLITICAL_POWER
+				production_speed_buildings_factor = @ASTEROID_DISLOCATION_CONSTRUCTION
+				army_org_factor = @ASTEROID_DISLOCATION_ORG
+			}
+		}
+
+		asteroid_incoming_government_dislocation_prepared = {
+			picture = GFX_idea_asteroid_incoming_preparedness
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				stability_factor = @ASTEROID_DISLOCATION_PREPARED_STABILITY
+				political_power_gain = @ASTEROID_DISLOCATION_PREPARED_POLITICAL_POWER
+				production_speed_buildings_factor = @ASTEROID_DISLOCATION_PREPARED_CONSTRUCTION
+				army_org_factor = @ASTEROID_DISLOCATION_PREPARED_ORG
+			}
+		}
+
+		asteroid_incoming_residual_haze = {
+			picture = GFX_idea_asteroid_incoming_residual_haze
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_DUST_RESIDUAL_FACTORY
+				production_speed_buildings_factor = @ASTEROID_DUST_RESIDUAL_CONSTRUCTION
+				production_factory_efficiency_gain_factor = @ASTEROID_DUST_RESIDUAL_EFFICIENCY
+				supply_consumption_factor = @ASTEROID_DUST_RESIDUAL_SUPPLY
+				air_mission_efficiency = @ASTEROID_DUST_RESIDUAL_AIR
+				air_weather_penalty = @ASTEROID_DUST_RESIDUAL_WEATHER
+			}
+		}
+
+		asteroid_incoming_global_dust_veil = {
+			picture = GFX_idea_asteroid_incoming_global_dust_veil
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_DUST_VEIL_FACTORY
+				production_speed_buildings_factor = @ASTEROID_DUST_VEIL_CONSTRUCTION
+				production_factory_efficiency_gain_factor = @ASTEROID_DUST_VEIL_EFFICIENCY
+				supply_consumption_factor = @ASTEROID_DUST_VEIL_SUPPLY
+				air_mission_efficiency = @ASTEROID_DUST_VEIL_AIR
+				air_weather_penalty = @ASTEROID_DUST_VEIL_WEATHER
+			}
+		}
+
+		asteroid_incoming_impact_winter = {
+			picture = GFX_idea_asteroid_incoming_impact_winter
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_DUST_WINTER_FACTORY
+				production_speed_buildings_factor = @ASTEROID_DUST_WINTER_CONSTRUCTION
+				production_factory_efficiency_gain_factor = @ASTEROID_DUST_WINTER_EFFICIENCY
+				supply_consumption_factor = @ASTEROID_DUST_WINTER_SUPPLY
+				air_mission_efficiency = @ASTEROID_DUST_WINTER_AIR
+				air_weather_penalty = @ASTEROID_DUST_WINTER_WEATHER
+			}
+		}
+
+		asteroid_incoming_severe_impact_winter = {
+			picture = GFX_idea_asteroid_incoming_severe_impact_winter
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_DUST_SEVERE_FACTORY
+				production_speed_buildings_factor = @ASTEROID_DUST_SEVERE_CONSTRUCTION
+				production_factory_efficiency_gain_factor = @ASTEROID_DUST_SEVERE_EFFICIENCY
+				supply_consumption_factor = @ASTEROID_DUST_SEVERE_SUPPLY
+				air_mission_efficiency = @ASTEROID_DUST_SEVERE_AIR
+				air_weather_penalty = @ASTEROID_DUST_SEVERE_WEATHER
+			}
+		}
+
+		asteroid_incoming_recovery_burden = {
+			picture = GFX_idea_asteroid_incoming_recovery_burden
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_RECOVERY_BURDEN_FACTORY
+				supply_consumption_factor = @ASTEROID_RECOVERY_BURDEN_SUPPLY
+				consumer_goods_factor = @ASTEROID_RECOVERY_BURDEN_CONSUMER_GOODS
+				stability_factor = @ASTEROID_RECOVERY_BURDEN_STABILITY
+			}
+		}
+
+		asteroid_incoming_recovery_legacy = {
+			picture = GFX_idea_asteroid_incoming_recovery_burden
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				repair_speed_factor = @ASTEROID_RECOVERY_LEGACY_REPAIR
+				production_speed_buildings_factor = @ASTEROID_RECOVERY_LEGACY_CONSTRUCTION
+				stability_factor = @ASTEROID_RECOVERY_LEGACY_STABILITY
+			}
+		}
+
+		asteroid_incoming_dust_protection_basic = {
+			picture = GFX_idea_asteroid_incoming_dust_protection
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_PROTECTION_BASIC_FACTORY
+				production_speed_buildings_factor = @ASTEROID_PROTECTION_BASIC_CONSTRUCTION
+				supply_consumption_factor = @ASTEROID_PROTECTION_BASIC_SUPPLY
+				air_weather_penalty = @ASTEROID_PROTECTION_BASIC_WEATHER
+			}
+		}
+
+		asteroid_incoming_dust_protection_organized = {
+			picture = GFX_idea_asteroid_incoming_dust_protection
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_PROTECTION_ORGANIZED_FACTORY
+				production_speed_buildings_factor = @ASTEROID_PROTECTION_ORGANIZED_CONSTRUCTION
+				production_factory_efficiency_gain_factor = @ASTEROID_PROTECTION_ORGANIZED_EFFICIENCY
+				supply_consumption_factor = @ASTEROID_PROTECTION_ORGANIZED_SUPPLY
+				air_mission_efficiency = @ASTEROID_PROTECTION_ORGANIZED_AIR
+				air_weather_penalty = @ASTEROID_PROTECTION_ORGANIZED_WEATHER
+			}
+		}
+
+		asteroid_incoming_dust_protection_hardened = {
+			picture = GFX_idea_asteroid_incoming_dust_protection
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				industrial_capacity_factory = @ASTEROID_PROTECTION_HARDENED_FACTORY
+				production_speed_buildings_factor = @ASTEROID_PROTECTION_HARDENED_CONSTRUCTION
+				production_factory_efficiency_gain_factor = @ASTEROID_PROTECTION_HARDENED_EFFICIENCY
+				supply_consumption_factor = @ASTEROID_PROTECTION_HARDENED_SUPPLY
+				air_mission_efficiency = @ASTEROID_PROTECTION_HARDENED_AIR
+				air_weather_penalty = @ASTEROID_PROTECTION_HARDENED_WEATHER
+			}
+		}
+
+		asteroid_incoming_main_crater_material = {
+			picture = GFX_idea_asteroid_incoming_main_crater_material
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = {
+				armor_factor = @ASTEROID_MAIN_CRATER_ARMOUR
+			}
+		}
+
+		asteroid_incoming_fragment_material_1 = {
+			picture = GFX_idea_asteroid_incoming_minerals
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = { armor_factor = @ASTEROID_FRAGMENT_SITE_ARMOUR }
+		}
+		asteroid_incoming_fragment_material_2 = {
+			picture = GFX_idea_asteroid_incoming_minerals
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = { armor_factor = @ASTEROID_FRAGMENT_SITE_ARMOUR }
+		}
+		asteroid_incoming_fragment_material_3 = {
+			picture = GFX_idea_asteroid_incoming_minerals
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = { armor_factor = @ASTEROID_FRAGMENT_SITE_ARMOUR }
+		}
+		asteroid_incoming_fragment_material_4 = {
+			picture = GFX_idea_asteroid_incoming_minerals
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = { armor_factor = @ASTEROID_FRAGMENT_SITE_ARMOUR }
+		}
+		asteroid_incoming_fragment_material_5 = {
+			picture = GFX_idea_asteroid_incoming_minerals
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = { armor_factor = @ASTEROID_FRAGMENT_SITE_ARMOUR }
+		}
+		asteroid_incoming_fragment_material_6 = {
+			picture = GFX_idea_asteroid_incoming_minerals
+			allowed = { always = yes }
+			allowed_civil_war = { always = yes }
+			removal_cost = -1
+			modifier = { armor_factor = @ASTEROID_FRAGMENT_SITE_ARMOUR }
+		}
+	}
+}

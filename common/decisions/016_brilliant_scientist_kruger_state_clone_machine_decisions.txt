@@ -3,6 +3,10 @@
 @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE = 4
 @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_LIGHT_FACTORY_USE = 1
 @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_STANDARD_FACTORY_USE = 2
+# Native modifier field mirror of constant:clone_maturation.civilian_factories.
+@CLONE_MATURATION_CIC = 4
+# Native AI hint field mirror of constant:clone_maturation.political_power.
+@CR_SC_CLONE_MATURATION_POLITICAL_POWER = 65
 # ============================================================================
 # CHAOS REDUX - EVENT 016 KRUGER STATE CLONE AND MACHINE DECISIONS
 # ============================================================================
@@ -73,26 +77,49 @@ brilliant_scientist_krg_clone_and_machine_category = {
 			}
 		}
 		available = {
-			brilliant_scientist_kruger_focus_cloning_is_operational = yes
-			OR = {
-				brilliant_scientist_kruger_raid_ai_is_active = yes
-				has_country_flag = brilliant_scientist_krg_clone_growth_site_operational
+			custom_trigger_tooltip = {
+				tooltip = clone_maturation_requirements_tt
+				brilliant_scientist_krg_clone_maturation_requirements_met = yes
 			}
-			brilliant_scientist_krg_can_pay_project_batch_cost = yes
-			check_variable = { brilliant_scientist_krg_clone_growth_cycles < constant:brilliant_scientist_krg_capacity.clone_growth_cycle_maximum }
+			hidden_trigger = { brilliant_scientist_krg_clone_maturation_can_pay = yes }
 		}
-		cost = constant:brilliant_scientist_krg_cost.pp_heavy
-		days_remove = constant:brilliant_scientist_krg_timing.heavy_days
-		days_re_enable = constant:brilliant_scientist_krg_timing.reenable_short_days
-		modifier = { civilian_factory_use = @CR_SC_BRILLIANT_SCIENTIST_KRG_MODIFIER_HEAVY_FACTORY_USE }
-		complete_effect = { brilliant_scientist_krg_pay_project_batch_cost = yes }
+		cost = 0
+		custom_cost_trigger = { brilliant_scientist_krg_clone_maturation_can_pay = yes }
+		custom_cost_text = clone_maturation_custom_cost
+		ai_hint_pp_cost = @CR_SC_CLONE_MATURATION_POLITICAL_POWER
+		days_remove = constant:clone_maturation.duration_days
+		days_re_enable = constant:clone_maturation.cooldown_days
+		modifier = { civilian_factory_use = @CLONE_MATURATION_CIC }
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_krg_begin_clone_maturation = yes }
+			if = {
+				limit = { check_variable = { var = brilliant_scientist_krg_clone_maturation_started value = constant:clone_maturation.one compare = equals } }
+				custom_effect_tooltip = clone_maturation_started_tt
+			}
+		}
+		cancel_if_not_visible = no
 		cancel_trigger = {
-			OR = {
-				NOT = { brilliant_scientist_krg_decisions_are_active = yes }
-				NOT = { brilliant_scientist_kruger_focus_cloning_is_operational = yes }
+			custom_trigger_tooltip = {
+				tooltip = clone_maturation_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { brilliant_scientist_krg_clone_maturation_receipt_is_current = yes }
+						NOT = { brilliant_scientist_krg_clone_maturation_is_operational = yes }
+					}
+				}
 			}
 		}
-		remove_effect = { brilliant_scientist_krg_complete_clone_growth_cycle = yes }
+		cancel_effect = {
+			custom_effect_tooltip = clone_maturation_cancelled_tt
+			hidden_effect = { brilliant_scientist_krg_cancel_clone_maturation = yes }
+		}
+		remove_effect = {
+			hidden_effect = { brilliant_scientist_krg_complete_clone_growth_cycle = yes }
+			if = {
+				limit = { check_variable = { var = brilliant_scientist_krg_clone_maturation_finished value = constant:clone_maturation.one compare = equals } }
+				custom_effect_tooltip = clone_maturation_completed_tt
+			}
+		}
 		ai_will_do = { base = constant:brilliant_scientist_krg_ai.medium }
 	}
 

@@ -1821,6 +1821,7 @@ toggle_event_system = {
         log = "CHAOS REDUX SETTINGS: Event system has been ENABLED for [This.GetName]"
     }
     update_enabled_countries_list = yes
+    black_friday_on_event_system_resumed = yes
 }
 
 # Toggle force trigger mode for current country
@@ -1844,11 +1845,21 @@ toggle_event_disabled = {
             limit = { is_in_array = { global.disabled_events = settings_selected_event_id } }
             remove_from_array = { global.disabled_events = settings_selected_event_id }
         }
-        else = {
-            add_to_array = { global.disabled_events = settings_selected_event_id }
-        }
-        calculate_dynamic_major_weight_gain = yes
-    }
+		else = {
+			add_to_array = { global.disabled_events = settings_selected_event_id }
+		}
+		if = {
+			limit = { check_variable = { settings_selected_event_id = constant:black_friday_event.id } }
+			if = {
+				limit = { is_in_array = { global.disabled_events = settings_selected_event_id } }
+				black_friday_on_event_disabled = yes
+			}
+			else = {
+				black_friday_on_event_system_resumed = yes
+			}
+		}
+		calculate_dynamic_major_weight_gain = yes
+	}
 
     if = {
         limit = {
@@ -3215,6 +3226,7 @@ enable_for_selected_tag = {
         # Use the stored selected country
         var:settings_current_selected_country = {
             set_country_flag = events_activated
+            black_friday_refresh_active_cost_modifier = yes
             log = "CHAOS REDUX TAG MANAGEMENT: Event system ENABLED for [This.GetTag] ([This.GetName])"
 
             # Add to enabled countries list if not already there
@@ -3227,6 +3239,7 @@ enable_for_selected_tag = {
             }
         }
         update_enabled_countries_list = yes
+        black_friday_on_event_system_resumed = yes
     }
     else = {
         log = "CHAOS REDUX TAG MANAGEMENT: Cannot enable - no country selected in current filter"
@@ -3373,6 +3386,8 @@ handle_player_tag_switch = {
 
     # Update the enabled countries list
     update_enabled_countries_list = yes
+    black_friday_on_event_system_resumed = yes
+    black_friday_refresh_active_cost_modifier = yes
 }
 
 
@@ -4550,6 +4565,21 @@ fire_event_by_temp_id_no_cluster = {
 		}
 		set_temp_variable = { event_single_fire_allowed = 0 }
 	}
+	if = {
+		limit = { check_variable = { event_id = constant:random_civil_war_event.id } }
+		event021_parent_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { event021_parent_prefire_ready < constant:random_civil_war_value.one } }
+			set_temp_variable = { event_single_fire_allowed = constant:random_civil_war_value.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:random_civil_war_value.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
 
 	if = {
 		limit = { check_variable = { event_id = constant:fury_event_log.event_id } }
@@ -4571,6 +4601,47 @@ fire_event_by_temp_id_no_cluster = {
 				limit = {
 					has_variable = automatic_event_firing_context
 					check_variable = { automatic_event_firing_context > 0 }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:missiles_event.id } }
+		set_temp_variable = { missiles_prefire_ready = constant:missiles_event.zero }
+		missiles_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { missiles_prefire_ready < constant:missiles_event.one } }
+			set_temp_variable = { event_single_fire_allowed = constant:missiles_event.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:missiles_event.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:black_friday_event.id } }
+		# Event 26 owns delayed fire accounting: selection reserves first, while
+		# the canonical entry records the single fire only at Friday activation.
+		black_friday_dispatch_selected_event = yes
+		set_temp_variable = { event_single_fire_allowed = 0 }
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:acid_rain_event.id } }
+		if = {
+			limit = { acid_rain_launch_preflight_is_valid = yes }
+			clr_global_flag = acid_rain_cluster_reserved
+		}
+		else = {
+			set_temp_variable = { event_single_fire_allowed = constant:acid_rain_runtime.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:acid_rain_runtime.zero }
+					NOT = { has_country_flag = event_cluster_member_fire_context }
 				}
 				calculate_next_timer_value = yes
 			}
@@ -4613,6 +4684,21 @@ fire_event_by_temp_id_no_cluster = {
 				}
 			}
 			set_temp_variable = { event_single_fire_allowed = 0 }
+		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:riches_found_event.id } }
+		set_temp_variable = { riches_found_prefire_ready = constant:riches_found_value.zero }
+		riches_found_prepare_random_event_fire = yes
+		if = {
+			limit = {
+				OR = {
+					check_variable = { riches_found_prefire_ready < constant:riches_found_value.one }
+					NOT = { has_event_target = riches_found_prefire_owner }
+					NOT = { has_event_target = riches_found_prefire_state }
+				}
+			}
+			set_temp_variable = { event_single_fire_allowed = constant:riches_found_value.zero }
 		}
 	}
 	if = {
@@ -4704,6 +4790,38 @@ fire_event_by_temp_id_no_cluster = {
 		}
 	}
 	if = {
+		limit = { check_variable = { event_id = constant:video_game_in_sweden_event.id } }
+		set_temp_variable = { video_game_in_sweden_prefire_ready = 0 }
+		video_game_in_sweden_prepare_random_event_fire = yes
+		if = {
+			limit = { check_variable = { video_game_in_sweden_prefire_ready < 1 } }
+			set_temp_variable = { event_single_fire_allowed = 0 }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > 0 }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
+		limit = { check_variable = { event_id = constant:random_terror_identity.event_id } }
+		set_temp_variable = { random_terror_prefire_ready = constant:random_terror_value.zero }
+		random_terror_prepare_dispatch = yes
+		if = {
+			limit = { check_variable = { random_terror_prefire_ready < constant:random_terror_value.one } }
+			set_temp_variable = { event_single_fire_allowed = constant:random_terror_value.zero }
+			if = {
+				limit = {
+					has_variable = automatic_event_firing_context
+					check_variable = { automatic_event_firing_context > constant:random_terror_value.zero }
+				}
+				calculate_next_timer_value = yes
+			}
+		}
+	}
+	if = {
 		limit = {
 			check_variable = {
 				var = event_single_fire_allowed
@@ -4784,6 +4902,37 @@ fire_event_by_temp_id_no_cluster = {
 			}
 			event_target:africa_prefire_host = {
 				country_event = { id = chaosx.nr12.1 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:riches_found_event.id }
+				has_event_target = riches_found_prefire_owner
+				has_event_target = riches_found_prefire_state
+			}
+			event_target:riches_found_prefire_owner = {
+				country_event = { id = chaosx.nr29.1 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:random_civil_war_event.id }
+				has_event_target = random_civil_war_prefire_target
+			}
+			event_target:random_civil_war_prefire_target = {
+				country_event = { id = chaosx.nr21.1 }
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = { event_fire_record_id = constant:video_game_in_sweden_event.id }
+				has_event_target = video_game_in_sweden_host
+				event_target:video_game_in_sweden_host = {
+					video_game_in_sweden_is_valid_host = yes
+				}
+			}
+			event_target:video_game_in_sweden_host = {
+				country_event = { id = chaosx.nr24.1 }
 			}
 		}
 		else = {

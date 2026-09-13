@@ -1,0 +1,74 @@
+# Event 40 Source Read Manifest
+
+## Reading declaration
+
+Every supplied top-level project source file listed below was read in full before the specification was written. Every TOML definition inside the supplied subagent archive was also extracted and read in full. The catalog CSV files were processed as complete tables. No source was represented by only its shortened preview.
+
+The available conversation tool registry did not expose a project-subagent spawn action or the HOI4 MCP actions. The package therefore uses the supplied subagent definitions to write complete future handoffs, but it does not claim that any subagent or MCP audit ran.
+
+## Top-level supplied files
+
+| File | Bytes | SHA-256 | Read status |
+| --- | ---: | --- | --- |
+| `chaosx_dynamic_triggers.md` | 3935 | `7f6733ef08b816c38aba6d5c675f98c054e9167accd5be3bdf536b65bb60291e` | Fully read |
+| `chaosx_dynamic_effects.md` | 14618 | `2ed4e8f3d220d7d09fd32eabe5e2d35226816d417dbbc11a9635758080bccdf7` | Fully read |
+| `CHAOS_REDUX_MECHANICS(9).md` | 71678 | `f3a4276d534056b5349c17e029df8f0821dd2b7728237af07d377375a3c38291` | Fully read |
+| `chaos_redux_clusters_catalog(4).csv` | 2836 | `ae37b095ccf1e264397284b1c9e2e9184433e75c5bb6957ef50ea14cef1c63f7` | Fully read |
+| `chaos_redux_scenarios_catalog(4).csv` | 12239 | `0704f9c5a77b6c1bb06f5eead93eb9e130986718763ed7cc212225fc84e22ce2` | Fully read |
+| `chaos_redux_events_catalog(4).csv` | 52722 | `a2d1edcd12a2891eb4b9040139447993f0657af93b166fa0ddd4a1b1186a6fbf` | Fully read |
+| `chaos-redux-improvement-loop.md` | 27478 | `dd1cea075f7d76a5a0c1c8a55ce65bc69d677afd3010cf51d42baa39054cfa53` | Fully read |
+| `AGENTS(10).md` | 43195 | `5fd1111fc9acb189987b5d11b371a1d4202f63c91f5d9487f6408515321d7567` | Fully read |
+| `chaos-redux-subagents(1).md` | 36164 | `ff5e08f96238d5cc3a353fd71253252e7f06d638f4261a6715bbb16d7d6ede9d` | Fully read |
+| `config(2).toml` | 11385 | `df72462c8abcafffeb8250bcd5934680928604a4c64181bd401340c57f508adb` | Fully read |
+| `chaos-redux-decisions-missions(1).md` | 74499 | `8503d548c92d96ffa4419e760045d726201a69fa78a4a55a87087d855b1af5a5` | Fully read |
+| `chaos-redux-event-assets.md` | 124623 | `7c15faa859cd40540cd1d64a00ff2112d68327aa37ae8dbe762763e5ba405cc8` | Fully read |
+| `chaos-redux-3d-model-pipeline.md` | 87136 | `ced1ca88126e46f860d55abb66d5507c48aa40b9687715855497e8b0cf71a377` | Fully read |
+| `chaos-redux-events(1).md` | 72941 | `91463e91407af1fe88358050729cb247793f004ac96e890e3ff659c455b85714` | Fully read |
+| `chaos-redux-comfyui.md` | 2123 | `128acd133fedc56b14612eed163de11d7261dac887f11eacf4c8b695dae97fa0` | Fully read |
+| `chaos-redux-debug-playtest.md` | 30145 | `ec9d66e433e9d964a2561844aa45281342842b973e059a09fab18f2107283a43` | Fully read |
+| `chaos-redux-focus-trees.md` | 98154 | `51f741f8abde30c7772be46072fa4530361dcf4fc348da97b69c86206761789b` | Fully read |
+| `chaos-redux-frame-animation.md` | 27086 | `a8dd6bdcec2b849c6f5c85abffb863510a5585418f2e608c713c8ba83154aa48` | Fully read |
+| `chaos-redux-super-events.md` | 33028 | `d7afffcf25b70333fd50aaef1f72378c1c270b8057269597f085c96204e01607` | Fully read |
+| `README(20260830-071218).md` | 2351 | `bb4b9587eddce00479b5792a7897dbe6f41cc48c5a46fe67b2e129dafbaf8978` | Fully read |
+| `chaos-redux-event-planning(1).md` | 195156 | `09a18e704984a9d08cb20851f6599acc494ff1939016e384fd049c3b3c412464` | Fully read |
+| `subagents(4).zip` | 59612 | `799dfd4e95715d0840b90009558e4d719e2f42eba16db4a258644bc990bd796d` | Fully read |
+
+## Subagent definitions inside `subagents(4).zip`
+
+| Archive member | Uncompressed bytes | SHA-256 | Read status |
+| --- | ---: | --- | --- |
+| `chaosx_3d_model_pipeline.toml` | 24375 | `235cb326978966a6b284c64dd0dfe8acf9d2be668393b8122c5e37b88875cb92` | Fully read |
+| `chaosx_ai_probability_auditor.toml` | 6348 | `20336a1ec04210d7f468e364fa48ca59427a5fa1292e8765af9eb746a73e6856` | Fully read |
+| `chaosx_asset_source_researcher.toml` | 3017 | `4db7e102822821201eb80055d45ad89272de7cdc4c6c695953d45854bd0e8df6` | Fully read |
+| `chaosx_country_package_auditor.toml` | 7965 | `b140694067beb96d77ab31f6bf1eaa595eff02cf6ae83ce33e50e7ef2bedece4` | Fully read |
+| `chaosx_decision_mission_auditor.toml` | 8443 | `b8d579a9aec9fae7f9a6c5a291976660460ee8a3f1b69e8ef77af70535315433` | Fully read |
+| `chaosx_documentation_curator.toml` | 10140 | `8aea5aad0f4c5350013377041e57029d3cd296774a6713977f2e34cccf533885` | Fully read |
+| `chaosx_event_completion_auditor.toml` | 4117 | `59cbca30c23cd810ac31618eb0ece7a1280455b641096dd2c701e680b261aaee` | Fully read |
+| `chaosx_event_ui_worker.toml` | 10720 | `4afc059508881379bc272bbfac519ddbbe0c448c1fa5f46626cd78fd459f736d` | Fully read |
+| `chaosx_focus_tree_auditor.toml` | 4499 | `83149977d6749cfe743d8ec4c2afa769a019dbfbbc8fd62390460b3629f444e3` | Fully read |
+| `chaosx_generated_event_art.toml` | 3909 | `f7c85c45acf334f76b93ed95409b0165affdc801fea6dd1094651533d89ae3ea` | Fully read |
+| `chaosx_icon_artist.toml` | 7611 | `1afbd89167f2dab6bba6271d2da7523c923a5faba495dbeedde43950af70c0f7` | Fully read |
+| `chaosx_improvement_loop_planner.toml` | 7069 | `a90323b1cbbd664fa61e245186fe7dd912498018e07f3e2393e2641555fbd2bf` | Fully read |
+| `chaosx_localisation_auditor.toml` | 9109 | `f754134bb8df4ec8c99a50c3de69eda2c2b6a211a026aae396af600f224bf30e` | Fully read |
+| `chaosx_portrait_creator.toml` | 2029 | `87b001c6fb5afc33267eb77a3187ff654dbf6b03ae5d669cb2d5182bf7ac2174` | Fully read |
+| `chaosx_repo_explorer.toml` | 12690 | `3b7380b83e0dd6bba741b5c5cd5419e3e5bf22c284459d28d60706b246d964a1` | Fully read |
+| `chaosx_scripted_system_architect.toml` | 5387 | `b2e012aaec78bc875ae27275eb03f86d425aa19ece182716d2570117ff56cacf` | Fully read |
+| `chaosx_skill_maintainer.toml` | 3819 | `1c5efb578a007fc1e3e7f0561d7353876d73918be830f754870041f9d2f66ac2` | Fully read |
+| `chaosx_spreadsheet_doc_worker.toml` | 4605 | `896cb63222484317280d31c340edfc282847774f8edab31a68d7fc2b8b0be33b` | Fully read |
+| `chaosx_super_event_audio_researcher.toml` | 3339 | `248c26c573151ac503886da9bc8cf1942d2af41608528fb2e92161a7808f7d9b` | Fully read |
+| `chaosx_super_event_text_researcher.toml` | 3921 | `c918dae02f2b1127f71134065558f313faec82fba49f3e43022bfeaf3bfb66cb` | Fully read |
+
+## Applied source hierarchy
+
+The current user brief is the accepted Event 40 design source. Repository rules and skills govern structure, quality, assets, AI, decisions, focus trees, completion evidence, and catalog handling. The current catalog export is evidence of the old row and must be corrected during implementation where it conflicts with the accepted brief.
+
+## Catalog conflict recorded
+
+- The accepted brief defines Event 40 as Minor Fire-Once.
+- The current event catalog export defines Event 40 as Minor Repeatable.
+- This specification adopts Minor Fire-Once and requires a future workbook correction.
+- The event remains unassigned to a cluster.
+
+## Simplification statement
+
+The planning package was not shortened to produce a faster answer. The design deliberately rejects a custom scripted GUI, triggerable scenario, custom 3D unit, baseline animation, and full focus trees for every target because those surfaces do not improve the event enough to justify their cost. These are design decisions, not omitted work.

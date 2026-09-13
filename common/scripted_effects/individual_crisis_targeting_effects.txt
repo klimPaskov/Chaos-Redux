@@ -1,0 +1,79 @@
+# ============================================================================
+# CHAOS REDUX - SHARED INDIVIDUAL CRISIS TARGETING EFFECTS
+# ============================================================================
+# Bounded, load-aware candidate ticket helpers for country-assigned crisis
+# packages. The public effects own only temporary variables and never mutate
+# persistent country state, arrays, flags, ideas, or event targets.
+# ============================================================================
+
+# COUNTRY scope. Input: individual_crisis_candidate_base_weight.
+# Output: individual_crisis_candidate_adjusted_weight.
+adjust_individual_crisis_candidate_ticket_weight = {
+	set_temp_variable = { individual_crisis_exclude_random_terror = constant:individual_crisis_targeting.zero }
+	individual_crisis_apply_candidate_ticket_curve = yes
+	set_temp_variable = { individual_crisis_exclude_random_terror = constant:individual_crisis_targeting.zero }
+}
+
+# COUNTRY scope. This distinct entry point is used when the current country
+# already owns Random Terror. It omits exactly that provider once, while still
+# counting every other active individual package.
+adjust_individual_crisis_existing_provider_candidate_ticket_weight = {
+	set_temp_variable = { individual_crisis_exclude_random_terror = constant:individual_crisis_targeting.one }
+	individual_crisis_apply_candidate_ticket_curve = yes
+	set_temp_variable = { individual_crisis_exclude_random_terror = constant:individual_crisis_targeting.zero }
+}
+
+# COUNTRY scope. Shared worker for the two public ticket helpers.
+individual_crisis_apply_candidate_ticket_curve = {
+	set_temp_variable = {
+		individual_crisis_candidate_adjusted_weight = constant:individual_crisis_targeting.zero
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = individual_crisis_candidate_base_weight
+				value = constant:individual_crisis_targeting.zero
+				compare = greater_than
+			}
+			individual_crisis_load_is_below_cap = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = individual_crisis_active_load
+					value = constant:individual_crisis_targeting.zero
+					compare = equals
+				}
+			}
+			set_temp_variable = {
+				individual_crisis_candidate_adjusted_weight = individual_crisis_candidate_base_weight
+			}
+			multiply_temp_variable = {
+				individual_crisis_candidate_adjusted_weight = constant:individual_crisis_targeting.load_zero_tickets
+			}
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = individual_crisis_active_load
+					value = constant:individual_crisis_targeting.load_one_upper_bound
+					compare = less_than
+				}
+			}
+			set_temp_variable = {
+				individual_crisis_candidate_adjusted_weight = individual_crisis_candidate_base_weight
+			}
+			multiply_temp_variable = {
+				individual_crisis_candidate_adjusted_weight = constant:individual_crisis_targeting.load_one_tickets
+			}
+		}
+		else = {
+			set_temp_variable = {
+				individual_crisis_candidate_adjusted_weight = individual_crisis_candidate_base_weight
+			}
+			multiply_temp_variable = {
+				individual_crisis_candidate_adjusted_weight = constant:individual_crisis_targeting.load_two_tickets
+			}
+		}
+	}
+}

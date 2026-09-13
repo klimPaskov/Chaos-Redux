@@ -1,9 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - MENGELE DIRECTORATE EVENT 016 PROJECT GATES
 # ============================================================================
-# Native Event 016 projects keep their Kruger gates unchanged. These separate
-# provider gates expose only the nine non-cloning prototype families to the
-# Mengele Directorate and never require Kruger's host, facility, or ledgers.
+# Thin provider alias plus existing special-project availability gates.
+# The strict live-owner predicate remains in the stage trigger file.
 # ============================================================================
 
 brilliant_scientist_mengele_project_provider_is_valid = {
@@ -11,25 +10,75 @@ brilliant_scientist_mengele_project_provider_is_valid = {
 }
 
 brilliant_scientist_can_research_mengele_computation_prototype = {
-	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_project_provider_is_valid = yes
 	has_country_flag = mengele_event016_computation_theory_completed
 	NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_computation_completed }
 	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_computational_engine }
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_computation_available
+	}
+}
+brilliant_scientist_can_research_mengele_electronics_prototype = {
+	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_electronics_theory_completed
+	NOT = { has_country_flag = mengele_event016_electronics_prototype_completed }
+	NOT = { has_country_flag = directorate_special_project_electronics_completed }
+	NOT = { is_special_project_completed = sp:sp_air_radar }
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_electronics_available
+	}
 }
 
 brilliant_scientist_can_research_mengele_materials_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_materials_theory_completed
+	NOT = { has_country_flag = mengele_event016_materials_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_materials_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_advanced_materials }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_materials_available
 	}
 }
 
+brilliant_scientist_can_research_mengele_rocketry_prototype = {
+	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_rocketry_theory_completed
+	NOT = { has_country_flag = mengele_event016_rocketry_prototype_completed }
+	NOT = { has_country_flag = directorate_special_project_rocketry_completed }
+	NOT = {
+		OR = {
+			is_special_project_completed = sp:sp_rockets_flying_bomb
+			is_special_project_completed = sp:sp_air_jet_engine
+		}
+	}
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_rocketry_available
+	}
+}
+
+brilliant_scientist_can_research_mengele_high_energy_prototype = {
+	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_high_energy_theory_completed
+	NOT = { has_country_flag = mengele_event016_high_energy_prototype_completed }
+	NOT = { has_country_flag = directorate_special_project_high_energy_completed }
+	NOT = { is_special_project_completed = sp:sp_nuclear_reactor }
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_high_energy_available
+	}
+}
+
 brilliant_scientist_can_research_mengele_biomedical_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_biomedical_theory_completed
+	NOT = { has_country_flag = mengele_event016_biomedical_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_biomedical_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_biomedical_available
@@ -38,16 +87,34 @@ brilliant_scientist_can_research_mengele_biomedical_prototype = {
 
 brilliant_scientist_can_research_mengele_teleportation_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_teleportation_theory_completed
+	NOT = { has_country_flag = mengele_event016_teleportation_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_teleportation_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_quantum_transit }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_teleportation_available
 	}
 }
 
+brilliant_scientist_can_research_mengele_cloning_prototype = {
+	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_cloning_theory_completed
+	NOT = { has_country_flag = mengele_event016_cloning_prototype_completed }
+	NOT = { has_country_flag = directorate_special_project_cloning_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_cloning }
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_cloning_available
+	}
+}
+
 brilliant_scientist_can_research_mengele_robotics_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_robotics_theory_completed
+	NOT = { has_country_flag = mengele_event016_robotics_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_robotics_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_autonomous_cognition }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_robotics_available
@@ -56,7 +123,10 @@ brilliant_scientist_can_research_mengele_robotics_prototype = {
 
 brilliant_scientist_can_research_mengele_paleogenetics_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_paleogenetics_theory_completed
+	NOT = { has_country_flag = mengele_event016_paleogenetics_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_paleogenetics_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_paleogenetics }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_paleogenetics_available
@@ -65,16 +135,43 @@ brilliant_scientist_can_research_mengele_paleogenetics_prototype = {
 
 brilliant_scientist_can_research_mengele_xenobiological_synthesis_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_xenobiological_synthesis_theory_completed
+	NOT = { has_country_flag = mengele_event016_xenobiological_synthesis_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_xenobiological_synthesis_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_xenobiological_synthesis }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_xenobiological_synthesis_available
 	}
 }
 
+brilliant_scientist_can_research_mengele_biological_weapons_prototype = {
+	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_biological_weapons_theory_completed
+	NOT = { has_country_flag = mengele_event016_biological_weapons_prototype_completed }
+	NOT = { has_country_flag = directorate_special_project_biological_weapons_completed }
+	NOT = {
+		OR = {
+			is_special_project_completed = sp:anthrax_bomb
+			is_special_project_completed = sp:plague_bomb
+			is_special_project_completed = sp:tularemia_bomb
+			is_special_project_completed = sp:smallpox_bomb
+			is_special_project_completed = sp:weaponize_the_zombies
+			is_special_project_completed = sp:black_plague_weaponization_program
+		}
+	}
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_biological_weapons_available
+	}
+}
+
 brilliant_scientist_can_research_mengele_alien_arms_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_alien_arms_theory_completed
+	NOT = { has_country_flag = mengele_event016_alien_arms_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_alien_arms_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_alien_arms }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_alien_arms_available
@@ -83,9 +180,23 @@ brilliant_scientist_can_research_mengele_alien_arms_prototype = {
 
 brilliant_scientist_can_research_mengele_temporal_prototype = {
 	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_temporal_theory_completed
+	NOT = { has_country_flag = mengele_event016_temporal_prototype_completed }
 	NOT = { has_country_flag = directorate_special_project_temporal_completed }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_temporal_mechanics }
 	OR = {
 		has_country_flag = directorate_special_projects_all_available
 		has_country_flag = directorate_special_project_temporal_available
+	}
+}
+
+brilliant_scientist_can_research_mengele_singularity_prototype = {
+	brilliant_scientist_mengele_project_provider_is_valid = yes
+	has_country_flag = mengele_event016_singularity_theory_completed
+	NOT = { has_country_flag = mengele_event016_singularity_prototype_completed }
+	NOT = { has_country_flag = directorate_special_project_singularity_completed }
+	OR = {
+		has_country_flag = directorate_special_projects_all_available
+		has_country_flag = directorate_special_project_singularity_available
 	}
 }

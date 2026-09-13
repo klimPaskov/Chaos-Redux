@@ -1,0 +1,73 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 OPERATIONS-KIT EQUIPMENT
+# ============================================================================
+# Overview:
+# - Operations kits are a real, producible specialist equipment archetype for
+#   investigations, raids, and Assassin Forces.
+# - The kit represents radios, breaching tools, concealment, secure papers,
+#   field medicine, and compact demolition material; it is not a free action
+#   charge or a generic infantry substitute.
+# - Production is exposed only to an Event 039 government or movement after
+#   the owner-side unlock flag is installed. The concrete variant is inactive
+#   until its technology is granted by the owner transaction.
+# ============================================================================
+
+@MURDER_MYSTERY_KIT_YEAR = 1936
+@MURDER_MYSTERY_KIT_PRIORITY = 125
+@MURDER_MYSTERY_KIT_BUILD_COST = 1
+@MURDER_MYSTERY_KIT_RELIABILITY = 0.72
+@MURDER_MYSTERY_KIT_LEND_LEASE_COST = 2
+@MURDER_MYSTERY_KIT_STEEL = 1
+@MURDER_MYSTERY_KIT_RUBBER = 1
+
+equipments = {
+	assassin_operations_kit = {
+		year = @MURDER_MYSTERY_KIT_YEAR
+		is_archetype = yes
+		is_buildable = no
+		type = support
+		group_by = archetype
+		sprite = assassin_operations_kit_equipment
+		picture = assassin_operations_kit_equipment
+		can_license = no
+		interface_category = interface_category_land
+		reliability = @MURDER_MYSTERY_KIT_RELIABILITY
+		lend_lease_cost = @MURDER_MYSTERY_KIT_LEND_LEASE_COST
+		build_cost_ic = @MURDER_MYSTERY_KIT_BUILD_COST
+		resources = {
+			steel = @MURDER_MYSTERY_KIT_STEEL
+			rubber = @MURDER_MYSTERY_KIT_RUBBER
+		}
+		can_be_produced = {
+			OR = {
+				has_country_flag = murder_mystery_operations_kit_unlocked
+				has_country_flag = murder_mystery_investigation_open
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		can_be_lend_leased = { always = no }
+	}
+
+	assassin_operations_kit_1 = {
+		year = @MURDER_MYSTERY_KIT_YEAR
+		archetype = assassin_operations_kit
+		active = no
+		is_buildable = yes
+		priority = @MURDER_MYSTERY_KIT_PRIORITY
+		build_cost_ic = @MURDER_MYSTERY_KIT_BUILD_COST
+		reliability = @MURDER_MYSTERY_KIT_RELIABILITY
+		resources = {
+			steel = @MURDER_MYSTERY_KIT_STEEL
+			rubber = @MURDER_MYSTERY_KIT_RUBBER
+		}
+		can_be_produced = {
+			OR = {
+				has_country_flag = murder_mystery_operations_kit_unlocked
+				has_country_flag = murder_mystery_investigation_open
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+	}
+}

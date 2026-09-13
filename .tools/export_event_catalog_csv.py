@@ -36,8 +36,8 @@ SHEET_EXPORTS = {
 # Keep exports limited to the declared player-facing columns so those cells do
 # not turn into phantom CSV fields or blank records.
 SHEET_WIDTHS = {
-	"Events": 14,
-	"Clusters": 7,
+	"Events": 13,
+	"Clusters": 8,
 	"Scenarios": 6,
 }
 

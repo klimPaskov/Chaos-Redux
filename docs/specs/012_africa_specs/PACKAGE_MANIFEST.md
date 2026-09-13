@@ -1,8 +1,10 @@
 # Event 12 Africa expanded package manifest
 
-> Manifest provenance notice, 2026-08-10: this manifest is the frozen 2026-07-10 specification-package inventory and its byte counts and hashes are not the current runtime ledger. Use `docs/events/012_africa/overview.md`, the authoritative asset matrix, and `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` for reconciled implementation status. The manifest remains a design-package integrity record and has not been silently regenerated during this documentation-only pass.
+> Manifest provenance notice, 2026-08-10: this manifest is the frozen 2026-07-10 specification-package inventory and its byte counts and hashes are not the current runtime ledger. Use `docs/events/012_africa/overview.md`, the authoritative asset matrix, and `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv` for reconciled implementation status. The manifest remains a design-package integrity record, and only the explicitly changed README and Part 1 rows below were refreshed for the 2026-09-05 documentation reconciliation.
 
-> Current reconciliation pointer, 2026-08-11: the source-completion certification records 44/44 achievements, 64/64 AI profiles, 102/102 actions with six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool candidates, and 239 visual dispositions. See `docs/plans/012_africa_plans/subagent_handoffs/012_africa_final_current_source_certification_2026-08-11.md` and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_final_documentation_reconcile_2026-08-11.md` for current evidence boundaries.
+> Current reconciliation pointer, 2026-08-11: the source-completion certification records 44/44 achievements, 64/64 AI profiles, 102/102 actions with six deliberate runtime gates, 16 implemented conditional priority packages, 16 matching implemented polity rows, 199 queued controlled-pool candidates, and 239 visual dispositions. Those dated certification handoffs remain historical provenance; current Event 012 ownership, `SCN-011`, Gods, elephant, Event 070, and MCP evidence boundaries are governed by `docs/plans/012_africa_plans/documentation_cleanup_handoff_2026-09-05.md`.
+
+> Current Event 012 pointer, 2026-09-05: Gods of Africa is owned by Event 012 and uses `SCN-011`; `chaosx_elephant` reuses vanilla `elephantry`, while the accepted nine-package count retains historical elephant-package provenance. The approximately 340 MB `docs/assets/012_africa/models_3d/elephant_shared_base/` package is archival/non-promoted, and retention or deletion remains an explicit owner decision outside this documentation-only pass. Generated Gods report, category, and icon handoffs have source and final-DDS evidence with parent/user visual review still open. Former Event 070 Gods runtime files have deletion evidence, and the current generated catalog export records a blank Event 070 identity with `Unavailable` status; workbook-source parity remains a spreadsheet-owner check. This manifest remains a frozen package-integrity record rather than a runtime completion ledger.
 
 ## Package identity
 
@@ -46,7 +48,7 @@ The manifest excludes its own hash. Paths are relative to `012_africa_specs/`.
 
 | Path | Bytes | Lines | SHA-256 |
 | --- | ---: | ---: | --- |
-| `README.md` | 7,644 | 130 | `c1d7c2dce640d4362f24dc595332acd1de3004574e810622a0a97282bfb18ab0` |
+| `README.md` | 14,466 | 161 | `1dbaa40f75c6498e32402c3686bd16d334ed6ac0cd42d806a30ebfd26403b28e` |
 | `diagrams/012_africa_evolution_and_world_order_state_machine.md` | 3,051 | 56 | `a18437c3f03b29106f770bfb55500962b76ea1960cfe3437471a53071e55f7e6` |
 | `diagrams/012_africa_focus_route_interaction_map.md` | 3,070 | 134 | `5872a6660cf07aaaed4576a3cf3dffb6493d987043748bdbce568d9119c67e3e` |
 | `diagrams/012_africa_host_overlay_selection_flow.md` | 2,608 | 68 | `664f1901f6a10ebbd510ecc98f7031464241f9e0b43fe07eacc9503c43836612` |
@@ -74,14 +76,14 @@ The manifest excludes its own hash. Paths are relative to `012_africa_specs/`.
 | `matrices/012_africa_priority_member_package_matrix_notes.md` | 1,854 | 32 | `a9f8671e36142412bd5be245f7365ac65c04583e30ce63f76349464cceaeb3e7` |
 | `prompts/africa_achievement_prompt.md` | 4,717 | 64 | `6c09e6341a583d0e58fae49c6b30b8ae7f46ef86dd3da8c12a2e055a37fcb29b` |
 | `prompts/africa_asset_prompt.md` | 7,469 | 134 | `ed53fd78e05e2c08df55d02eba38a2c83e5f7fd82f35d1563f8f73ba82d3e894` |
-| `prompts/africa_coding_agent_prompt.md` | 6,004 | 64 | `7a494f24beda2bc1c83da19a02b9a5a26fa36b448b8104e26d52cca7102a5b70` |
+| `prompts/africa_coding_agent_prompt.md` | 7,822 | 68 | `3565a3ffcc4488ff4a22436ecf81333e2cc0a581ed8a2397817b7c3eed9656c4` |
 | `prompts/africa_decision_mission_prompt.md` | 5,257 | 99 | `5269a7f568f27e0f98db450a37e2c72bb63598e98dc0ca117f49cd84a6063639` |
-| `prompts/africa_goal_prompt.md` | 3,998 | 25 | `fe5b6cbc47494aac9bf69e03a53856111cdf2667b6397228b601f2664f03584a` |
+| `prompts/africa_goal_prompt.md` | 5,499 | 27 | `6b20fa09b7e8f8c2161d9f47aa09ffeb13c13cbbcb268ef14a5515365310740d` |
 | `prompts/africa_super_event_prompt.md` | 6,417 | 105 | `9daa8a8a4eabbc12a0894aac5c4a324ca741a0d3e94542d8832a3b8e30485bb5` |
 | `research/012_africa_historical_research_and_bibliography.md` | 17,975 | 406 | `ef99cda60ff76ff0e3dc2a744c5db927e99b97c73cae81acf02483643b9ba564` |
 | `research/012_africa_host_country_research_addendum.md` | 20,889 | 340 | `917078f0fea29b2f36018ed566a36c0d79c7249f259e503a5bc3a600149e48e5` |
 | `research/012_africa_language_names_and_sensitivity_protocol.md` | 7,458 | 220 | `a252dd21f3a921e0ab915b338e5b83752f3a382680e89cfe59e023042c384f13` |
-| `specs/012_africa_spec_part_1_core_progression.md` | 31,612 | 532 | `8c293e8351cdfe2b40cdf19b990fc66f692078215bff591e77d1cd5202047523` |
+| `specs/012_africa_spec_part_1_core_progression.md` | 31,811 | 520 | `f6b673a1a4a0c04e3702b5bd7a105aa9f86ae5a9c057241ab5387479c97cbe68` |
 | `specs/012_africa_spec_part_2_charter_league_integration.md` | 30,885 | 817 | `a25078ff69c8e708cb4849083c097b84ec1f52c812897c4ad748f357d74f32db` |
 | `specs/012_africa_spec_part_3_focus_tree_architecture.md` | 37,391 | 977 | `444a91fdfc8873bd87d7cf5020825eed71d7f9d47d43db6ed7d28905b8f8d245` |
 | `specs/012_africa_spec_part_4_country_packages_formables.md` | 34,608 | 897 | `f2ac337a235b967898661cd0a98091330144790959785061a3da84e2f0664606` |

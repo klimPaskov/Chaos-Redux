@@ -402,6 +402,48 @@ defined_text = {
 	name = GetEventsLogEventWeightColored
 	text = {
 		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:riches_found_event.id compare = equals }
+			NOT = { riches_found_is_eligible_discovery_country = yes }
+		}
+		localization_key = chaosx.events_log.events.weight.locked
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_active = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_active
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_reserved = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_reserved
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_fired = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_fired
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_disabled = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_disabled
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			check_variable = { var = global.chaos_meter_value value = constant:black_friday_event.required_chaos compare = less_than }
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_unavailable
+	}
+	text = {
+		trigger = {
 			check_variable = {
 				var = global.events_log_events_view_weight_entries^events_log_history_index
 				value = 0
@@ -611,6 +653,10 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogDetailClusterLine
 	text = {
+		trigger = { check_variable = { var = global.events_log_open_event_detail_entries^events_log_open_event_detail_index value = constant:black_friday_event.id compare = equals } }
+		localization_key = black_friday.scope.global
+	}
+	text = {
 		trigger = { check_variable = { global.events_log_open_event_detail_cluster_activation_mode_entries^events_log_open_event_detail_index = 3 } }
 		localization_key = chaosx.events_log.window.event_details.cluster.multiple
 	}
@@ -788,6 +834,10 @@ defined_text = {
 defined_text = {
 	name = GetEventsLogHistoryDetailsActorLine
 	text = {
+		trigger = { check_variable = { var = events_log_history_selected_event_id value = constant:black_friday_event.id compare = equals } }
+		localization_key = black_friday.scope.global
+	}
+	text = {
 		trigger = {
 			check_variable = { var = events_log_history_selected_has_actor value = 0 compare = greater_than }
 			check_variable = { var = events_log_history_selected_has_secondary_actor value = 0 compare = greater_than }
@@ -866,6 +916,13 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogEvolutionTypeView
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } } localization_key = sov_nuclear_bombs.event_log.evolution_type }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:riches_found_event.evolution_type compare = equals } } localization_key = riches_found.evolution.type }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } } localization_key = acid_rain.evolution.type }
+	text = {
+		trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:black_friday_event.evolution_type compare = equals } }
+		localization_key = black_friday.evolution.type
+	}
 	text = {
 		trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } }
 		localization_key = black_plague.evolution.type
@@ -1007,6 +1064,16 @@ defined_text = {
 			}
 			localization_key = independence_wave.evolution.type
 		}
+		text = {
+			trigger = {
+				check_variable = {
+					var = global.events_log_evolution_view_type_entries^events_log_evolution_index
+					value = constant:video_game_in_sweden_event.evolution_type
+					compare = equals
+				}
+			}
+			localization_key = video_game_in_sweden.evolution.type
+		}
 
 
 
@@ -1095,6 +1162,11 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogEvolutionSourceEventNameView
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_event_id_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_event.id compare = equals } } localization_key = chaosx.event_name.23 }
+	text = {
+		trigger = { check_variable = { var = global.events_log_evolution_view_event_id_entries^events_log_evolution_index value = constant:black_friday_event.id compare = equals } }
+		localization_key = black_friday.event_name
+	}
 	text = {
 		trigger = {
 			check_variable = {
@@ -1423,7 +1495,7 @@ defined_text = {
 		trigger = {
 			check_variable = {
 				var = global.events_log_evolution_view_event_id_entries^events_log_evolution_index
-				value = 33
+				value = constant:acid_rain_event.id
 				compare = equals
 			}
 		}
@@ -2097,6 +2169,17 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogEvolutionNameView
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_i compare = equals } } localization_key = sov_nuclear_bombs.evolution.i.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_ii compare = equals } } localization_key = sov_nuclear_bombs.evolution.ii.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_iii compare = equals } } localization_key = sov_nuclear_bombs.evolution.iii.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_iv compare = equals } } localization_key = sov_nuclear_bombs.evolution.iv.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:riches_found_event.evolution_i_stage compare = equals } } localization_key = riches_found.evolution.stage_1.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:riches_found_event.evolution_ii_stage compare = equals } } localization_key = riches_found.evolution.stage_2.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:riches_found_event.evolution_iii_stage compare = equals } } localization_key = riches_found.evolution.stage_3.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_i_stage compare = equals } } localization_key = acid_rain.evolution.stage_1.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_ii_stage compare = equals } } localization_key = acid_rain.evolution.stage_2.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:acid_rain_event.evolution_iii_stage compare = equals } } localization_key = acid_rain.evolution.stage_3.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:black_friday_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:black_friday_event.evolution_stage_i compare = equals } } localization_key = black_friday.evolution.1.title }
 	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:black_plague_evolution_runtime.evolution_i_stage compare = equals } } localization_key = black_plague.evolution.stage_1.title }
 	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:black_plague_evolution_runtime.evolution_ii_stage compare = equals } } localization_key = black_plague.evolution.stage_2.title }
 	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:black_plague_evolution_runtime.evolution_iii_stage compare = equals } } localization_key = black_plague.evolution.stage_3.title }
@@ -2149,6 +2232,9 @@ defined_text = {
 		trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:resources_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:resources_found_event.evolution_iv_stage compare = equals } }
 		localization_key = resources_found.evolution.stage_4.title
 	}
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:video_game_in_sweden_event.evolution_i_stage compare = equals } } localization_key = video_game_in_sweden.evolution.1.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:video_game_in_sweden_event.evolution_ii_stage compare = equals } } localization_key = video_game_in_sweden.evolution.2.title }
+	text = { trigger = { check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } check_variable = { var = global.events_log_evolution_view_stage_entries^events_log_evolution_index value = constant:video_game_in_sweden_event.evolution_iii_stage compare = equals } } localization_key = video_game_in_sweden.evolution.3.title }
 	text = {
 		trigger = {
 			check_variable = { var = global.events_log_evolution_view_type_entries^events_log_evolution_index value = constant:natural_disaster_event.evolution_type compare = equals }
@@ -2985,6 +3071,14 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogSelectedHistoryEvolutionTypeView
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } } localization_key = sov_nuclear_bombs.event_log.evolution_type }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } } localization_key = riches_found.evolution.type }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } } localization_key = acid_rain.evolution.type }
+	text = {
+		trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } }
+		localization_key = video_game_in_sweden.evolution.type
+	}
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:black_friday_event.evolution_type compare = equals } } localization_key = black_friday.evolution.type }
 	text = {
 		trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } }
 		localization_key = black_plague.evolution.type
@@ -3206,6 +3300,17 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogSelectedHistoryEvolutionNameView
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_i compare = equals } } localization_key = sov_nuclear_bombs.evolution.i.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_ii compare = equals } } localization_key = sov_nuclear_bombs.evolution.ii.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_iii compare = equals } } localization_key = sov_nuclear_bombs.evolution.iii.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_iv compare = equals } } localization_key = sov_nuclear_bombs.evolution.iv.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_i_stage compare = equals } } localization_key = riches_found.evolution.stage_1.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_ii_stage compare = equals } } localization_key = riches_found.evolution.stage_2.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:riches_found_event.evolution_iii_stage compare = equals } } localization_key = riches_found.evolution.stage_3.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_i_stage compare = equals } } localization_key = acid_rain.evolution.stage_1.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_ii_stage compare = equals } } localization_key = acid_rain.evolution.stage_2.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:acid_rain_event.evolution_iii_stage compare = equals } } localization_key = acid_rain.evolution.stage_3.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:black_friday_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:black_friday_event.evolution_stage_i compare = equals } } localization_key = black_friday.evolution.1.title }
 	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:black_plague_evolution_runtime.evolution_i_stage compare = equals } } localization_key = black_plague.evolution.stage_1.title }
 	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:black_plague_evolution_runtime.evolution_ii_stage compare = equals } } localization_key = black_plague.evolution.stage_2.title }
 	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:black_plague_evolution_runtime.evolution_iii_stage compare = equals } } localization_key = black_plague.evolution.stage_3.title }
@@ -3258,6 +3363,9 @@ defined_text = {
 		trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:resources_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:resources_found_event.evolution_iv_stage compare = equals } }
 		localization_key = resources_found.evolution.stage_4.title
 	}
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_i_stage compare = equals } } localization_key = video_game_in_sweden.evolution.1.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_ii_stage compare = equals } } localization_key = video_game_in_sweden.evolution.2.title }
+	text = { trigger = { check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } check_variable = { var = global.events_log_history_detail_evolution_stage_entries^events_log_history_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_iii_stage compare = equals } } localization_key = video_game_in_sweden.evolution.3.title }
 	text = {
 		trigger = {
 			check_variable = { var = global.events_log_history_detail_evolution_type_entries^events_log_history_detail_evolution_index value = constant:natural_disaster_event.evolution_type compare = equals }
@@ -4082,6 +4190,13 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogEventDetailEvolutionTypeView
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } } localization_key = sov_nuclear_bombs.event_log.evolution_type }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } } localization_key = riches_found.evolution.type }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } } localization_key = acid_rain.evolution.type }
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:black_friday_event.evolution_type compare = equals } }
+		localization_key = black_friday.evolution.type
+	}
 	text = {
 		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:africa_event.evolution_type compare = equals } }
 		localization_key = africa.evolution.type
@@ -4101,6 +4216,10 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:resources_found_event.evolution_type compare = equals } }
 		localization_key = resources_found.evolution.type
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } }
+		localization_key = video_game_in_sweden.evolution.type
 	}
 	text = {
 		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:natural_disaster_event.evolution_type compare = equals } }
@@ -5596,6 +5715,24 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogEventDetailDescription
+	text = { trigger = { check_variable = { var = event_id value = constant:sov_nuclear_bombs_event.id compare = equals } } localization_key = sov_nuclear_bombs.event_details.description }
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:riches_found_event.id compare = equals }
+			has_country_flag = riches_found_history_payload_loaded
+		}
+		localization_key = riches_found.event_details.history
+	}
+	text = { trigger = { check_variable = { var = event_id value = constant:riches_found_event.id compare = equals } } localization_key = riches_found.event_details.description }
+	text = { trigger = { check_variable = { var = event_id value = constant:acid_rain_event.id compare = equals } } localization_key = acid_rain.event_details.description }
+	text = {
+		trigger = { check_variable = { var = event_id value = constant:video_game_in_sweden_event.id compare = equals } }
+		localization_key = chaosx.event_details.24
+	}
+	text = {
+		trigger = { check_variable = { var = event_id value = constant:black_friday_event.id compare = equals } }
+		localization_key = black_friday.event_detail.premise
+	}
 	text = {
 		trigger = { check_variable = { var = event_id value = constant:cbrn_action_record_event_log.event_id compare = equals } }
 		localization_key = cbrn.event_log.details
@@ -6488,6 +6625,55 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_activation }
+		}
+		localization_key = africa.event_log.gods.activation.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_first_demand }
+		}
+		localization_key = africa.event_log.gods.first_demand.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_first_punishment }
+		}
+		localization_key = africa.event_log.gods.first_punishment.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_defiance }
+		}
+		localization_key = africa.event_log.gods.defiance.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_protection }
+		}
+		localization_key = africa.event_log.gods.protection.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_continental_settlement }
+		}
+		localization_key = africa.event_log.gods.continental_settlement.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
+			check_variable = { events_log_history_selected_payload = constant:africa_event_log.gods_unifier_defeat }
+		}
+		localization_key = africa.event_log.gods.unifier_defeat.detail
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:africa_event.id compare = equals }
 			check_variable = { events_log_history_selected_payload = constant:africa_rsa_log.opening_coalition }
 		}
 		localization_key = africa_rsa.event_log.opening_coalition.detail
@@ -6674,6 +6860,17 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogEventDetailEvolutionTitle
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_i compare = equals } } localization_key = sov_nuclear_bombs.evolution.i.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_ii compare = equals } } localization_key = sov_nuclear_bombs.evolution.ii.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_iii compare = equals } } localization_key = sov_nuclear_bombs.evolution.iii.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:sov_nuclear_bombs_evolution.stage_iv compare = equals } } localization_key = sov_nuclear_bombs.evolution.iv.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_i_stage compare = equals } } localization_key = riches_found.evolution.stage_1.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_ii_stage compare = equals } } localization_key = riches_found.evolution.stage_2.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:riches_found_event.evolution_iii_stage compare = equals } } localization_key = riches_found.evolution.stage_3.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_i_stage compare = equals } } localization_key = acid_rain.evolution.stage_1.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_ii_stage compare = equals } } localization_key = acid_rain.evolution.stage_2.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:acid_rain_event.evolution_iii_stage compare = equals } } localization_key = acid_rain.evolution.stage_3.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:black_friday_event.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:black_friday_event.evolution_stage_i compare = equals } } localization_key = black_friday.evolution.1.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:black_plague_evolution_runtime.evolution_i_stage compare = equals } NOT = { has_global_flag = black_plague_evolution_i_active } } localization_key = black_plague.evolution.stage_1.prefire.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:black_plague_evolution_runtime.evolution_ii_stage compare = equals } NOT = { has_global_flag = black_plague_evolution_ii_active } } localization_key = black_plague.evolution.stage_2.prefire.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:black_plague_identity.evolution_type compare = equals } check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:black_plague_evolution_runtime.evolution_iii_stage compare = equals } NOT = { has_global_flag = black_plague_evolution_iii_active } } localization_key = black_plague.evolution.stage_3.prefire.title }
@@ -6980,6 +7177,31 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:secret_alliance_event.evolution_type compare = equals } }
 		localization_key = chaosx.events_log.evolution.type.secret_alliance
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals }
+			check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_i_stage compare = equals }
+		}
+		localization_key = video_game_in_sweden.evolution.1.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals }
+			check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_ii_stage compare = equals }
+		}
+		localization_key = video_game_in_sweden.evolution.2.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals }
+			check_variable = { var = global.events_log_event_detail_evolution_stage_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_iii_stage compare = equals }
+		}
+		localization_key = video_game_in_sweden.evolution.3.title
+	}
+	text = {
+		trigger = { check_variable = { var = global.events_log_event_detail_evolution_type_entries^events_log_event_detail_evolution_index value = constant:video_game_in_sweden_event.evolution_type compare = equals } }
+		localization_key = video_game_in_sweden.evolution.type
 	}
 	text = {
 		trigger = {
@@ -7431,6 +7653,17 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogSelectedEvolutionTitle
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_i } } localization_key = sov_nuclear_bombs.evolution.i.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_ii } } localization_key = sov_nuclear_bombs.evolution.ii.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_iii } } localization_key = sov_nuclear_bombs.evolution.iii.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_iv } } localization_key = sov_nuclear_bombs.evolution.iv.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:riches_found_event.evolution_i_stage } } localization_key = riches_found.evolution.stage_1.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:riches_found_event.evolution_ii_stage } } localization_key = riches_found.evolution.stage_2.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:riches_found_event.evolution_iii_stage } } localization_key = riches_found.evolution.stage_3.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:acid_rain_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:acid_rain_event.evolution_i_stage } } localization_key = acid_rain.evolution.stage_1.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:acid_rain_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:acid_rain_event.evolution_ii_stage } } localization_key = acid_rain.evolution.stage_2.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:acid_rain_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:acid_rain_event.evolution_iii_stage } } localization_key = acid_rain.evolution.stage_3.title }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_friday_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_friday_event.evolution_stage_i } } localization_key = black_friday.evolution.1.title }
 	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_plague_evolution_runtime.evolution_i_stage } NOT = { has_global_flag = black_plague_evolution_i_active } } localization_key = black_plague.evolution.stage_1.prefire.title }
 	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_plague_evolution_runtime.evolution_ii_stage } NOT = { has_global_flag = black_plague_evolution_ii_active } } localization_key = black_plague.evolution.stage_2.prefire.title }
 	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_plague_evolution_runtime.evolution_iii_stage } NOT = { has_global_flag = black_plague_evolution_iii_active } } localization_key = black_plague.evolution.stage_3.prefire.title }
@@ -7737,6 +7970,31 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { events_log_selected_evolution_type = constant:secret_alliance_event.evolution_type } }
 		localization_key = chaosx.events_log.evolution.type.secret_alliance
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:video_game_in_sweden_event.evolution_i_stage }
+		}
+		localization_key = video_game_in_sweden.evolution.1.title
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:video_game_in_sweden_event.evolution_ii_stage }
+		}
+		localization_key = video_game_in_sweden.evolution.2.title
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:video_game_in_sweden_event.evolution_iii_stage }
+		}
+		localization_key = video_game_in_sweden.evolution.3.title
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type } }
+		localization_key = video_game_in_sweden.evolution.type
 	}
 	text = {
 		trigger = {
@@ -8188,6 +8446,17 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogSelectedEvolutionBody
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_i } } localization_key = sov_nuclear_bombs.evolution.i.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_ii } } localization_key = sov_nuclear_bombs.evolution.ii.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_iii } } localization_key = sov_nuclear_bombs.evolution.iii.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:sov_nuclear_bombs_evolution.stage_iv } } localization_key = sov_nuclear_bombs.evolution.iv.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:riches_found_event.evolution_i_stage } } localization_key = riches_found.evolution.stage_1.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:riches_found_event.evolution_ii_stage } } localization_key = riches_found.evolution.stage_2.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:riches_found_event.evolution_iii_stage } } localization_key = riches_found.evolution.stage_3.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:acid_rain_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:acid_rain_event.evolution_i_stage } } localization_key = acid_rain.evolution.stage_1.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:acid_rain_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:acid_rain_event.evolution_ii_stage } } localization_key = acid_rain.evolution.stage_2.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:acid_rain_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:acid_rain_event.evolution_iii_stage } } localization_key = acid_rain.evolution.stage_3.body }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_friday_event.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_friday_event.evolution_stage_i } } localization_key = black_friday.evolution.1.body }
 	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_plague_evolution_runtime.evolution_i_stage } NOT = { has_global_flag = black_plague_evolution_i_active } } localization_key = black_plague.evolution.stage_1.body }
 	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_plague_evolution_runtime.evolution_ii_stage } NOT = { has_global_flag = black_plague_evolution_ii_active } } localization_key = black_plague.evolution.stage_2.body }
 	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } check_variable = { events_log_selected_evolution_stage = constant:black_plague_evolution_runtime.evolution_iii_stage } NOT = { has_global_flag = black_plague_evolution_iii_active } } localization_key = black_plague.evolution.stage_3.body }
@@ -8509,6 +8778,27 @@ defined_text = {
 	}
 	text = {
 		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:video_game_in_sweden_event.evolution_i_stage }
+		}
+		localization_key = video_game_in_sweden.evolution.1.body
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:video_game_in_sweden_event.evolution_ii_stage }
+		}
+		localization_key = video_game_in_sweden.evolution.2.body
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:video_game_in_sweden_event.evolution_iii_stage }
+		}
+		localization_key = video_game_in_sweden.evolution.3.body
+	}
+	text = {
+		trigger = {
 			check_variable = { events_log_selected_evolution_type = constant:random_faction_event.evolution_type }
 			check_variable = { events_log_selected_evolution_stage = constant:random_faction_evolution_stage.regional_bloc_race }
 		}
@@ -8665,6 +8955,9 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogSelectedEvolutionSummary
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:sov_nuclear_bombs_event.evolution_type } } localization_key = sov_nuclear_bombs.evolution.summary }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:riches_found_event.evolution_type } } localization_key = riches_found.evolution.summary }
+	text = { trigger = { check_variable = { events_log_selected_evolution_type = constant:black_friday_event.evolution_type } } localization_key = black_friday.evolution.1.summary }
 	text = {
 		trigger = { check_variable = { events_log_selected_evolution_type = constant:africa_event.evolution_type } }
 		localization_key = africa.evolution.summary
@@ -8704,6 +8997,10 @@ defined_text = {
 	text = {
 		trigger = { check_variable = { events_log_selected_evolution_type = constant:black_plague_identity.evolution_type } }
 		localization_key = black_plague.evolution.summary
+	}
+	text = {
+		trigger = { check_variable = { events_log_selected_evolution_type = constant:video_game_in_sweden_event.evolution_type } }
+		localization_key = video_game_in_sweden.evolution.summary
 	}
 	text = {
 		trigger = {
@@ -9087,6 +9384,46 @@ defined_text = {
 	}
 	text = {
 		trigger = {
+			check_variable = { events_log_selected_evolution_event_id = constant:random_terror_identity.event_id }
+			check_variable = { events_log_selected_evolution_type = constant:random_terror_identity.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:random_terror_evolution.organized_cells }
+		}
+		localization_key = "GFX_Portrait_Random_Terror_Clandestine_01"
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_event_id = constant:random_terror_identity.event_id }
+			check_variable = { events_log_selected_evolution_type = constant:random_terror_identity.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:random_terror_evolution.transnational_network }
+		}
+		localization_key = "GFX_Portrait_Random_Terror_Council_01"
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_event_id = constant:random_terror_identity.event_id }
+			check_variable = { events_log_selected_evolution_type = constant:random_terror_identity.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:random_terror_evolution.territorial_insurgency }
+		}
+		localization_key = "GFX_Portrait_Random_Terror_Military_01"
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_event_id = constant:random_terror_identity.event_id }
+			check_variable = { events_log_selected_evolution_type = constant:random_terror_identity.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:random_terror_evolution.jihadist_international }
+		}
+		localization_key = "GFX_Portrait_Random_Terror_Jihadist_01"
+	}
+	text = {
+		trigger = {
+			check_variable = { events_log_selected_evolution_event_id = constant:random_terror_identity.event_id }
+			check_variable = { events_log_selected_evolution_type = constant:random_terror_identity.evolution_type }
+			check_variable = { events_log_selected_evolution_stage = constant:random_terror_evolution.final_jihad }
+		}
+		localization_key = "GFX_Portrait_Random_Terror_Entity_Animated"
+	}
+	text = {
+		trigger = {
 			has_events_log_selected_soviet_collapse_evolution = yes
 		}
 		localization_key = "GFX_soviet_collapse_evolution_portraits_animated"
@@ -9111,6 +9448,36 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogHistoryRowText
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = constant:black_friday_event.id
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_view_payload_entries^events_log_history_index
+				value = constant:black_friday_event.baseline_payment_ratio
+				compare = equals
+			}
+		}
+		localization_key = black_friday.history.50
+	}
+	text = {
+		trigger = {
+			check_variable = {
+				var = global.events_log_view_event_id_entries^events_log_history_index
+				value = constant:black_friday_event.id
+				compare = equals
+			}
+			check_variable = {
+				var = global.events_log_view_payload_entries^events_log_history_index
+				value = constant:black_friday_event.evolution_payment_ratio
+				compare = equals
+			}
+		}
+		localization_key = black_friday.history.75
+	}
 	text = {
 		trigger = {
 			check_variable = {
@@ -9182,6 +9549,11 @@ defined_text = {
 
 defined_text = {
 	name = GetEventsLogHistoryEventName
+	text = { trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:sov_nuclear_bombs_event.id compare = equals } } localization_key = chaosx.event_name.23 }
+	text = {
+		trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals } }
+		localization_key = black_friday.event_name
+	}
 	text = {
 		trigger = { check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:cbrn_action_record_event_log.event_id compare = equals } }
 		localization_key = chaosx.event_name.991
@@ -9976,6 +10348,55 @@ defined_text = {
 	text = {
 		trigger = {
 			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_activation compare = equals }
+		}
+		localization_key = africa.event_log.gods.activation.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_first_demand compare = equals }
+		}
+		localization_key = africa.event_log.gods.first_demand.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_first_punishment compare = equals }
+		}
+		localization_key = africa.event_log.gods.first_punishment.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_defiance compare = equals }
+		}
+		localization_key = africa.event_log.gods.defiance.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_protection compare = equals }
+		}
+		localization_key = africa.event_log.gods.protection.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_continental_settlement compare = equals }
+		}
+		localization_key = africa.event_log.gods.continental_settlement.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
+			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_event_log.gods_unifier_defeat compare = equals }
+		}
+		localization_key = africa.event_log.gods.unifier_defeat.title
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_view_event_id_entries^events_log_history_index value = constant:africa_event.id compare = equals }
 			check_variable = { var = global.events_log_view_payload_entries^events_log_history_index value = constant:africa_rsa_log.opening_coalition compare = equals }
 		}
 		localization_key = africa_rsa.event_log.opening_coalition.title
@@ -10352,7 +10773,7 @@ defined_text = {
 		trigger = {
 			check_variable = {
 				var = global.events_log_view_event_id_entries^events_log_history_index
-				value = 33
+				value = constant:acid_rain_event.id
 				compare = equals
 			}
 		}
@@ -12096,7 +12517,7 @@ defined_text = {
 		trigger = {
 			check_variable = {
 				var = global.events_log_cluster_detail_member_event_id_entries^events_log_cluster_detail_member_index
-				value = 33
+				value = constant:acid_rain_event.id
 				compare = equals
 			}
 		}
@@ -12997,6 +13418,7 @@ defined_text = {
 	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.black_plague_origin } } localization_key = chaosx.events_log.events.na_reason.black_plague_origin }
 	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.zombie_outbreak_started } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_started }
 	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.zombie_outbreak_disabled } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_disabled }
+	text = { trigger = { check_variable = { global.events_log_cluster_detail_member_unavailability_reason_entries^events_log_cluster_detail_member_index = constant:event_system_event_unavailability_reason.doctrine_research_no_valid_participant } } localization_key = chaosx.events_log.events.na_reason.doctrine_research_no_valid_participant }
 	text = { trigger = { always = yes } localization_key = chaosx.events_log.events.na_reason.unknown }
 }
 
@@ -13110,6 +13532,7 @@ defined_text = {
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.laboratory_world compare = equals } } localization_key = chaosx.events_log.world_end.laboratory_world.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.strategic_singularity compare = equals } } localization_key = chaosx.events_log.world_end.strategic_singularity.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.africa_the_world compare = equals } } localization_key = chaosx.events_log.world_end.africa_the_world.title }
+	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.global_jihad compare = equals } } localization_key = chaosx.events_log.world_end.global_jihad.title }
 	text = { trigger = { check_variable = { var = global.events_log_event_detail_world_end_title_key_entries^events_log_event_detail_world_end_index value = constant:world_end_scenario_id.weaponized_wendigo_ascendancy compare = equals } } localization_key = chaosx.events_log.world_end.weaponized_wendigo_ascendancy.title }
 }
 
@@ -13166,12 +13589,14 @@ defined_text = {
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.africa_resolved compare = equals } } localization_key = chaosx.events_log.events.na_reason.africa_resolved }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.africa_world_end compare = equals } } localization_key = chaosx.events_log.events.na_reason.africa_world_end }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.africa_host compare = equals } } localization_key = chaosx.events_log.events.na_reason.africa_host }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.video_game_in_sweden_host compare = equals } } localization_key = chaosx.events_log.events.na_reason.video_game_in_sweden_host }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_started compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_started }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_terminal compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_terminal }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_world_end compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_world_end }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.black_plague_origin compare = equals } } localization_key = chaosx.events_log.events.na_reason.black_plague_origin }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.zombie_outbreak_started compare = equals } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_started }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.zombie_outbreak_disabled compare = equals } } localization_key = chaosx.events_log.events.na_reason.zombie_outbreak_disabled }
+	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.doctrine_research_no_valid_participant compare = equals } } localization_key = chaosx.events_log.events.na_reason.doctrine_research_no_valid_participant }
 	text = { trigger = { check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than } check_variable = { var = global.events_log_events_view_unavailability_reason_entries^events_log_history_index value = constant:event_system_event_unavailability_reason.unknown compare = equals } } localization_key = chaosx.events_log.events.na_reason.unknown }
 	text = { trigger = { always = yes } localization_key = chaosx.events_log.events.na_reason.none }
 }
@@ -13209,6 +13634,7 @@ defined_text = {
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.laboratory_world } } localization_key = chaosx.events_log.world_end.laboratory_world.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.strategic_singularity } } localization_key = chaosx.events_log.world_end.strategic_singularity.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.africa_the_world } } localization_key = chaosx.events_log.world_end.africa_the_world.title }
+	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.global_jihad } } localization_key = chaosx.events_log.world_end.global_jihad.title }
 	text = { trigger = { check_variable = { events_log_selected_world_end_title_key = constant:world_end_scenario_id.weaponized_wendigo_ascendancy } } localization_key = chaosx.events_log.world_end.weaponized_wendigo_ascendancy.title }
 }
 
@@ -13223,6 +13649,7 @@ defined_text = {
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.resources_found } } localization_key = chaosx.event_name.18 }
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.brilliant_scientist } } localization_key = chaosx.event_name.16 }
 	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.africa_world_order } } localization_key = chaosx.event_name.12 }
+	text = { trigger = { check_variable = { global.events_log_event_detail_world_end_owner_event_id_entries^events_log_event_detail_world_end_index = constant:world_end_scenario_owner_event.random_terror } } localization_key = chaosx.event_name.31 }
 }
 
 defined_text = {
@@ -13236,6 +13663,7 @@ defined_text = {
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.resources_found } } localization_key = chaosx.event_name.18 }
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.brilliant_scientist } } localization_key = chaosx.event_name.16 }
 	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.africa_world_order } } localization_key = chaosx.event_name.12 }
+	text = { trigger = { check_variable = { events_log_selected_world_end_owner_event_id = constant:world_end_scenario_owner_event.random_terror } } localization_key = chaosx.event_name.31 }
 }
 
 defined_text = {
@@ -13267,6 +13695,7 @@ defined_text = {
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.laboratory_world } } localization_key = chaosx.events_log.world_end.laboratory_world.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.strategic_singularity } } localization_key = chaosx.events_log.world_end.strategic_singularity.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.africa_the_world } } localization_key = chaosx.events_log.world_end.africa_the_world.details }
+	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.global_jihad } } localization_key = chaosx.events_log.world_end.global_jihad.details }
 	text = { trigger = { check_variable = { events_log_selected_world_end_details_key = constant:world_end_scenario_id.weaponized_wendigo_ascendancy } } localization_key = chaosx.events_log.world_end.weaponized_wendigo_ascendancy.details }
 }
 defined_text = {

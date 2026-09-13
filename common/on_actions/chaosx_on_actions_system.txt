@@ -6,6 +6,7 @@ on_actions = {
             # Global initialization
             random_country = {
                 initialize_event_system = yes
+                doctrine_research_initialize_adapter_registry = yes
                 initialize_chaos_meter_system = yes
                 initialize_global_settings_system = yes
                 initialize_welcome_screen_values = yes
@@ -56,6 +57,17 @@ on_actions = {
     # Daily check (for every country)
     on_daily = {
         effect = {
+            # Event 031 achievement tag-switch guard.  This runs only for a
+            # country that already owns an Event 031 achievement ledger.
+            if = {
+                limit = {
+                    is_ai = yes
+                    has_country_flag = was_human_yesterday
+                    has_country_flag = random_terror_achievement_ledger_initialized
+                }
+                random_terror_achievement_record_tag_switch = yes
+            }
+
             # Tag switch detection system
             if = {
                 limit = {
@@ -89,7 +101,9 @@ on_actions = {
                         }
 
                         log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for new human player [This.GetTag] ([This.GetName])"
+                        black_friday_on_event_system_resumed = yes
                     }
+                    black_friday_refresh_active_cost_modifier = yes
                 }
 
                 # Check for tag switch FROM this country (now AI, was human yesterday)
@@ -127,6 +141,30 @@ on_actions = {
                 else = {
                     clr_country_flag = was_human_yesterday
                 }
+            }
+
+            # Keep the historical human marker current even when the global
+            # tag-management settings are disabled.  Event 031 uses the
+            # marker above to reject switching away from a tracked country.
+            if = {
+                limit = { is_ai = no }
+                set_country_flag = was_human_yesterday
+            }
+            else = {
+                clr_country_flag = was_human_yesterday
+            }
+
+            # Event 031 achievement proof is reconciled in this existing
+            # country pass; no additional world-iteration on_action is added.
+            if = {
+                limit = {
+                    OR = {
+                        has_country_flag = random_terror_affected_country
+                        has_country_flag = random_terror_actor
+                        has_country_flag = random_terror_achievement_ledger_initialized
+                    }
+                }
+                random_terror_achievement_daily_tick = yes
             }
 
             # Handle event timers for countries with events activated

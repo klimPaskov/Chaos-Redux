@@ -1,0 +1,291 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 FINAL RECOVERY MISSIONS
+# ============================================================================
+# Each final action pays its expedition costs immediately, then starts one
+# named timed mission. A country-scoped event opens the completion window one
+# day before timeout. The player confirms the mission card to submit a valid
+# same-day candidate; timeout is a partial failure and never eliminates the
+# expedition by itself.
+
+chaosx_nr25_expedition_category = {
+	chaosx_nr25_organize_southern_expedition_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_organize_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.organize compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_organize_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_organize_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 16 }
+	}
+
+	chaosx_nr25_reach_gateway_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_gateway_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_gateway_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_gateway_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 15 }
+	}
+
+	chaosx_nr25_establish_antarctic_outpost_mission = {
+		icon = GFX_decision_generic_military
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_outpost_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.establish_outpost compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_outpost_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_outpost_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 16 }
+	}
+
+	chaosx_nr25_triangulate_crash_zone_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_triangulate_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.triangulate_crash_zone compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_triangulate_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_triangulate_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 14 }
+	}
+
+	chaosx_nr25_protect_supply_route_mission = {
+		icon = GFX_decision_generic_military
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_protect_route_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.protect_supply_route compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_supply_route_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_supply_route_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 13 }
+	}
+
+	chaosx_nr25_confirm_primary_site_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_confirm_site_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.confirm_primary_site compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_confirm_site_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_confirm_site_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 15 }
+	}
+
+	chaosx_nr25_evacuate_expedition_mission = {
+		icon = GFX_decision_generic_military
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_evacuate_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_evacuation_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_evacuation_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 20 }
+	}
+
+	chaosx_nr25_stabilize_wreck_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_stabilize_wreck_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.stabilize_wreck compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal has_global_flag = chaosx_nr25_final_recovery_resolved NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_stabilize_wreck_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_stabilize_wreck_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 15 }
+	}
+
+	chaosx_nr25_contain_alien_systems_mission = {
+		icon = GFX_decision_generic_military
+		days_mission_timeout = constant:chaosx_nr25_cost.mission_contain_systems_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant has_country_flag = chaosx_nr25_phase_mission_active }
+		available = { has_country_flag = chaosx_nr25_phase_mission_active check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals } }
+		cancel_trigger = { OR = { NOT = { has_country_flag = chaosx_nr25_participant } has_country_flag = chaosx_nr25_terminal NOT = { has_country_flag = chaosx_nr25_phase_mission_active } } }
+		complete_effect = { custom_effect_tooltip = chaosx_nr25_contain_systems_mission_success_tt hidden_effect = { chaosx_nr25_complete_phase_mission = yes } }
+		timeout_effect = { custom_effect_tooltip = chaosx_nr25_contain_systems_mission_timeout_tt hidden_effect = { chaosx_nr25_fail_phase_mission = yes } }
+		ai_will_do = { base = 18 }
+	}
+
+	chaosx_nr25_secure_recovery_core_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.final_mission_controlled_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant }
+		available = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			has_country_flag = chaosx_nr25_final_mission_ready
+			check_variable = { var = chaosx_nr25_final_mission_kind value = constant:chaosx_nr25_action.controlled_recovery compare = equals }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = chaosx_nr25_participant }
+				has_country_flag = chaosx_nr25_terminal
+				has_global_flag = chaosx_nr25_final_recovery_resolved
+				NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_success_tt
+			hidden_effect = { chaosx_nr25_complete_final_mission = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_timeout_tt
+			hidden_effect = { chaosx_nr25_fail_final_mission = yes }
+		}
+		ai_will_do = { base = 20 }
+	}
+
+	chaosx_nr25_rapid_extraction_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.final_mission_rapid_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant }
+		available = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			has_country_flag = chaosx_nr25_final_mission_ready
+			check_variable = { var = chaosx_nr25_final_mission_kind value = constant:chaosx_nr25_action.rapid_extraction compare = equals }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = chaosx_nr25_participant }
+				has_country_flag = chaosx_nr25_terminal
+				has_global_flag = chaosx_nr25_final_recovery_resolved
+				NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_success_tt
+			hidden_effect = { chaosx_nr25_complete_final_mission = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_timeout_tt
+			hidden_effect = { chaosx_nr25_fail_final_mission = yes }
+		}
+		ai_will_do = { base = 16 }
+	}
+
+	chaosx_nr25_remote_recovery_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.final_mission_remote_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant }
+		available = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			has_country_flag = chaosx_nr25_final_mission_ready
+			check_variable = { var = chaosx_nr25_final_mission_kind value = constant:chaosx_nr25_action.remote_rig compare = equals }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = chaosx_nr25_participant }
+				has_country_flag = chaosx_nr25_terminal
+				has_global_flag = chaosx_nr25_final_recovery_resolved
+				NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_success_tt
+			hidden_effect = { chaosx_nr25_complete_final_mission = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_timeout_tt
+			hidden_effect = { chaosx_nr25_fail_final_mission = yes }
+		}
+		ai_will_do = { base = 14 }
+	}
+
+	chaosx_nr25_armed_retrieval_mission = {
+		icon = GFX_decision_generic_military
+		days_mission_timeout = constant:chaosx_nr25_cost.final_mission_armed_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant }
+		available = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			has_country_flag = chaosx_nr25_final_mission_ready
+			check_variable = { var = chaosx_nr25_final_mission_kind value = constant:chaosx_nr25_action.armed_retrieval compare = equals }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = chaosx_nr25_participant }
+				has_country_flag = chaosx_nr25_terminal
+				has_global_flag = chaosx_nr25_final_recovery_resolved
+				NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_success_tt
+			hidden_effect = { chaosx_nr25_complete_final_mission = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_timeout_tt
+			hidden_effect = { chaosx_nr25_fail_final_mission = yes }
+		}
+		ai_will_do = { base = 10 modifier = { add = 8 has_war = yes } }
+	}
+
+	chaosx_nr25_distributed_salvage_mission = {
+		icon = GFX_decision_generic_research
+		days_mission_timeout = constant:chaosx_nr25_cost.final_mission_distributed_days
+		is_good = yes
+		fire_only_once = no
+		activation = { always = no }
+		visible = { has_country_flag = chaosx_nr25_participant }
+		available = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			has_country_flag = chaosx_nr25_final_mission_ready
+			check_variable = { var = chaosx_nr25_final_mission_kind value = constant:chaosx_nr25_action.distributed_salvage compare = equals }
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { has_country_flag = chaosx_nr25_participant }
+				has_country_flag = chaosx_nr25_terminal
+				has_global_flag = chaosx_nr25_final_recovery_resolved
+				NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_success_tt
+			hidden_effect = { chaosx_nr25_complete_final_mission = yes }
+		}
+		timeout_effect = {
+			custom_effect_tooltip = chaosx_nr25_final_mission_timeout_tt
+			hidden_effect = { chaosx_nr25_fail_final_mission = yes }
+		}
+		ai_will_do = { base = 13 }
+	}
+}

@@ -1,0 +1,317 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 SOVIET NUCLEAR BOMBS RUNTIME TRIGGERS
+# ============================================================================
+# Neutral validation and custody predicates used by the Event 023 runtime
+# adapter and its narrow Event 005 bridge.
+# ============================================================================
+
+sov_nuclear_bombs_terminal_world_state_is_active = {
+	OR = {
+		has_global_flag = fallout_transition_active
+		has_global_flag = fallout_active
+		has_global_flag = world_end_final_silence
+		has_global_flag = world_end_final_silence_completed
+	}
+}
+
+sov_nuclear_bombs_ledger_is_active = {
+	has_global_flag = sov_nuclear_bombs_ledger_active
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+}
+
+sov_nuclear_bombs_state_is_registered = {
+	has_state_flag = sov_nuclear_bombs_registered_storage_site
+}
+
+sov_nuclear_bombs_state_has_pending_event5_snapshot = {
+	has_state_flag = sov_nuclear_bombs_event5_snapshot_pending
+}
+
+sov_nuclear_bombs_event5_bridge_is_active = {
+	is_soviet_collapse_active = yes
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+	has_global_flag = sov_nuclear_bombs_ledger_active
+}
+
+sov_nuclear_bombs_action_target_is_valid = {
+	has_variable = sov_nuclear_bombs_action_state
+	has_variable = sov_nuclear_bombs_action_target
+	var:sov_nuclear_bombs_action_state = {
+		exists = yes
+		impassable = no
+		OR = {
+			is_owned_by = var:ROOT.sov_nuclear_bombs_action_target
+			is_controlled_by = var:ROOT.sov_nuclear_bombs_action_target
+		}
+	}
+	var:sov_nuclear_bombs_action_target = {
+		exists = yes
+	}
+}
+
+# Country scope. Limited non-major combat use is an Evolution II action and
+# deliberately records generic Soviet first use. A major-target first use has
+# a stricter shared-release boundary so no caller can bypass Evolution IV and
+# the severe emergency gate by reaching the native adapter directly.
+sov_nuclear_bombs_action_major_first_use_gate_is_valid = {
+	OR = {
+		NOT = {
+			AND = {
+				check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals }
+				has_variable = sov_nuclear_bombs_action_state
+				var:sov_nuclear_bombs_action_state = {
+					sov_nuclear_bombs_event_target_is_nuclear_major = yes
+				}
+				NOT = { has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
+			}
+		}
+		has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+		sov_nuclear_bombs_event_severe_first_use_gate = yes
+	}
+}
+
+sov_nuclear_bombs_action_context_is_valid = {
+	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+	sov_nuclear_bombs_ledger_is_active = yes
+	NOT = { sov_nuclear_bombs_terminal_world_state_is_active = yes }
+	has_country_flag = sov_nuclear_bombs_actor_registered
+	has_variable = sov_nuclear_bombs_action_actor_proven
+	has_variable = sov_nuclear_bombs_action_authorized
+	has_variable = sov_nuclear_bombs_action_type
+	has_variable = sov_nuclear_bombs_action_weapon
+	has_variable = sov_nuclear_bombs_action_route
+	has_variable = sov_nuclear_bombs_action_detonation
+	has_variable = sov_nuclear_bombs_action_nonce
+	check_variable = { var = sov_nuclear_bombs_action_actor_proven value = constant:sov_nuclear_bombs_ledger.one compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_authorized value = constant:sov_nuclear_bombs_ledger.one compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_nonce value = constant:sov_nuclear_bombs_ledger.zero compare = greater_than }
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_actor_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_actor_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			check_variable = { var = global.sov_nuclear_bombs_ledger_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			has_country_flag = sov_nuclear_bombs_action_reservation_active
+			check_variable = { var = sov_nuclear_bombs_action_reservation_source value = constant:sov_nuclear_bombs_ledger.reservation_source_transferred compare = equals }
+			check_variable = { var = global.sov_nuclear_bombs_ledger_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			has_variable = sov_nuclear_bombs_action_reservation_holder
+			var:sov_nuclear_bombs_action_reservation_holder = {
+				check_variable = { var = sov_nuclear_bombs_actor_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_actor_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			has_variable = sov_nuclear_bombs_action_source_state
+			var:sov_nuclear_bombs_action_source_state = {
+				sov_nuclear_bombs_state_is_registered = yes
+				check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			check_variable = { var = sov_nuclear_bombs_actor_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			check_variable = { var = global.sov_nuclear_bombs_ledger_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			has_variable = sov_nuclear_bombs_action_source_state
+			var:sov_nuclear_bombs_action_source_state = {
+				sov_nuclear_bombs_state_is_registered = yes
+				check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			}
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_remote_recovery_authorized value = constant:sov_nuclear_bombs_ledger.one compare = equals }
+			check_variable = { var = global.sov_nuclear_bombs_ledger_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+			has_variable = sov_nuclear_bombs_action_source_state
+			var:sov_nuclear_bombs_action_source_state = {
+				sov_nuclear_bombs_state_is_registered = yes
+				check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+				has_variable = sov_nuclear_bombs_site_holder
+				var:sov_nuclear_bombs_site_holder = {
+					check_variable = { var = sov_nuclear_bombs_actor_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+				}
+			}
+		}
+	}
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demonstration compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.accident compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+	}
+	check_variable = { var = sov_nuclear_bombs_action_weapon value = constant:sov_nuclear_bombs_action.nuclear_bomb compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_route value = constant:sov_nuclear_bombs_action.native_launch_nuke compare = equals }
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.detonation_required compare = equals }
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals }
+		}
+	}
+	if = {
+		limit = { has_variable = sov_nuclear_bombs_last_action_nonce }
+		check_variable = { var = sov_nuclear_bombs_action_nonce value = sov_nuclear_bombs_last_action_nonce compare = greater_than }
+	}
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+	OR = {
+		AND = {
+			NOT = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals } }
+			has_tech = atomic_research
+			has_tech = nukes
+			num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			has_tech = atomic_research
+			has_tech = nukes
+		}
+	}
+	sov_nuclear_bombs_action_target_is_valid = yes
+	sov_nuclear_bombs_action_delivery_route_is_valid = yes
+	sov_nuclear_bombs_action_major_first_use_gate_is_valid = yes
+}
+
+sov_nuclear_bombs_action_delivery_route_is_valid = {
+	has_variable = sov_nuclear_bombs_action_state
+	has_variable = sov_nuclear_bombs_action_target
+	if = {
+		limit = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals } }
+		check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals }
+		}
+		always = yes
+	}
+	else = {
+		var:sov_nuclear_bombs_action_state = {
+			sov_nuclear_bombs_event_state_has_delivery_access = yes
+		}
+	}
+}
+
+# Country scope. This is the outbound preflight for the native callback
+# contract. It is evaluated before the pending marker exists.
+sov_nuclear_bombs_native_delivery_request_is_valid = {
+	sov_nuclear_bombs_action_context_is_valid = yes
+	has_variable = sov_nuclear_bombs_action_state_id
+	check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.detonation_required compare = equals }
+	NOT = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals } }
+}
+
+# Country scope. This is the part of the native callback contract that can be
+# evaluated without the callback's FROM state. The on_nuke_drop owner below
+# supplies the exact state and controller correlation before calling the
+# Event 023 confirmation effect.
+sov_nuclear_bombs_native_delivery_country_is_valid = {
+	has_country_flag = sov_nuclear_bombs_native_delivery_pending
+	has_country_flag = sov_nuclear_bombs_action_reservation_active
+	sov_nuclear_bombs_ledger_is_active = yes
+	NOT = { sov_nuclear_bombs_terminal_world_state_is_active = yes }
+	has_variable = sov_nuclear_bombs_action_actor_proven
+	has_variable = sov_nuclear_bombs_action_authorized
+	has_variable = sov_nuclear_bombs_action_type
+	has_variable = sov_nuclear_bombs_action_weapon
+	has_variable = sov_nuclear_bombs_action_route
+	has_variable = sov_nuclear_bombs_action_detonation
+	has_variable = sov_nuclear_bombs_action_nonce
+	has_variable = sov_nuclear_bombs_action_state
+	has_variable = sov_nuclear_bombs_action_state_id
+	has_variable = sov_nuclear_bombs_action_target
+	check_variable = { var = sov_nuclear_bombs_action_actor_proven value = constant:sov_nuclear_bombs_ledger.one compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_authorized value = constant:sov_nuclear_bombs_ledger.one compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_weapon value = constant:sov_nuclear_bombs_action.nuclear_bomb compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_route value = constant:sov_nuclear_bombs_action.native_launch_nuke compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.detonation_required compare = equals }
+	NOT = { check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals } }
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demonstration compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.accident compare = equals }
+	}
+	var:sov_nuclear_bombs_action_state = {
+		exists = yes
+		impassable = no
+	}
+	var:sov_nuclear_bombs_action_target = {
+		exists = yes
+	}
+}
+
+# Country scope. A synchronous demolition remains the only non-detonating
+# commit path; detonations use sov_nuclear_bombs_native_delivery_country_is_valid
+# plus the exact FROM-state checks in on_nuke_drop.
+sov_nuclear_bombs_action_can_commit = {
+	sov_nuclear_bombs_action_context_is_valid = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+	has_country_flag = sov_nuclear_bombs_action_reservation_active
+	check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+}
+
+# A failed instrumented test is an accepted, non-detonating action. Its
+# reservation is released intact and it never reaches the native launch route.
+sov_nuclear_bombs_action_test_failure_can_return = {
+	sov_nuclear_bombs_action_context_is_valid = yes
+	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+	has_country_flag = sov_nuclear_bombs_action_reservation_active
+	check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals }
+}
+
+# Country scope. A receipt also needs the nonce that the runtime committed.
+sov_nuclear_bombs_action_receipt_is_valid = {
+	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_action_reservation_active }
+	has_country_flag = sov_nuclear_bombs_last_action_accepted
+	has_variable = sov_nuclear_bombs_action_nonce
+	check_variable = { var = sov_nuclear_bombs_action_nonce value = sov_nuclear_bombs_last_action_nonce compare = equals }
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demonstration compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.combat_strike compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.accident compare = equals }
+		check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+	}
+	check_variable = { var = sov_nuclear_bombs_action_weapon value = constant:sov_nuclear_bombs_action.nuclear_bomb compare = equals }
+	check_variable = { var = sov_nuclear_bombs_action_route value = constant:sov_nuclear_bombs_action.native_launch_nuke compare = equals }
+	OR = {
+		check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.detonation_required compare = equals }
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals }
+		}
+	}
+	if = {
+		limit = { has_variable = sov_nuclear_bombs_recorded_action_nonce }
+		check_variable = {
+			var = sov_nuclear_bombs_action_nonce
+			value = sov_nuclear_bombs_recorded_action_nonce
+			compare = greater_than
+		}
+	}
+}
+
+sov_nuclear_bombs_actor_can_execute_shared_action = {
+	sov_nuclear_bombs_action_context_is_valid = yes
+	has_country_flag = sov_nuclear_bombs_action_reservation_active
+}

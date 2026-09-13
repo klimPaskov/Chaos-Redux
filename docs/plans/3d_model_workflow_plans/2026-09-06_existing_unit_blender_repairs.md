@@ -212,19 +212,25 @@ Commit `f51b3446a` installed the reviewed two-state clone counter DDS files.
 
 Autonomous Robot is installed from the selected weapon-free biped body, separate left and right gun and feed assemblies, eight authored roles, and exact six-stream entity bindings.
 Commit `dd48a40ea` promoted fifteen payloads; the selected 728-frame proof includes exact muzzle-locator attachment evidence.
-The revised robot counter is visually accepted, but its manifest hashes are currently stale against its final DDS bytes, so runtime promotion remains blocked until the asset package reconciles those hashes.
+Commit `475839ff20` installed the reviewed Autonomous Robot counters, and commit `372898098` reconciled the package manifest and final handoff against the promoted runtime hashes.
+Commit `4bb1975e3` records the corresponding final physical closure for Clone Infantry.
 
 Commit `cc2176dae` installed the reviewed Chaos Assault Battalion counters.
 Commit `9fd024026` installed the reviewed Stone Cohorts and Forest Giants counters.
+Commit `ee831d8cc` installed the reviewed Riverborn and Pan Sapper counters.
 These counter promotions do not establish completion of their skeletal model packages.
 
 The remaining physical model work is still incomplete for the base, infected, rabid, undead, parasitic, mutant, necrotic, and demonic zombie families; Riverborn; Pan Sappers; Stone Cohorts; Forest Giants; and the Chaos Assault Battalion.
 Continuous-frame review found unsupported zombie collapse phases, joint-boundary stretch in Stone and Forest, support-hand and hose drift in the assault battalion, and unresolved water-entry and held-flask behavior for Riverborn and Pan.
-The selected repairs are waiting for a coherent adapter release that can apply explicit multi-mesh winding and skin replacements and isolated selected-corner normal replacements under one source/spec-hash-bound save and reopen transaction.
+Commit `f8cf13409` releases adapter 1.10.47 with explicit multi-mesh winding and skin replacements and isolated selected-corner normal replacements under one source/spec-hash-bound save and reopen transaction.
 No affected runtime model or action will be promoted from pose snapshots alone.
 
-The adapter candidate also adds snapshot-local image-content memoization without weakening the exact cached/uncached fingerprint digest.
-The parent requires native positive and negative regressions, a selected-corner quantization no-op rejection, unchanged unselected raw normal storage, the existing 0.5-degree native normal ceiling, and a clean environment-lock verification before releasing the paused Blender calls.
+The release also adds snapshot-local image-content memoization without weakening the exact cached/uncached fingerprint digest.
+The release passed 121 focused tests, 32 native negative cases, all three native two-mesh save/reopen transactions, 58-mesh winding and 296-mesh skin production preflights, cached/uncached fingerprint equality, the selected-corner quantization no-op rejection, unchanged unselected raw normal storage, the existing 0.5-degree native normal ceiling, and a clean environment-lock verification.
+Fresh live schema probes then reproduced one response-less exit among six calls through the 1.10.47 wrapper.
+Commit `916646784` releases adapter 1.10.48, which waits for each matching JSON-RPC response before closing stdin and does not retry or replay requests.
+The transport release passed 41 focused tests, six consecutive 51-tool discovery calls, three health calls, one immutable native inspection, exact 19-source lock verification, and zero surviving owned processes.
+The transport hold is lifted; every remaining worker must use adapter 1.10.48 through the committed lock-selected route and verify its returned version and source/config hashes before mutation.
 
 The humanoid and variant zombie counter candidates are also not accepted yet.
 Humanoid alternate frames require opaque pale filled fields with dark concise schematics, and the variant processor must correct its integer-overflow palette conversion before new DDS files can be reviewed.

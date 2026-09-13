@@ -81,11 +81,17 @@ brilliant_scientist_has_technology_action_military_industry = {
 }
 
 brilliant_scientist_has_strategic_resource_shortage = {
-	OR = {
-		has_resources_in_country = { resource = aluminium amount < constant:brilliant_scientist_technology_action.resource_shortage_exclusive_threshold }
-		has_resources_in_country = { resource = tungsten amount < constant:brilliant_scientist_technology_action.resource_shortage_exclusive_threshold }
-		has_resources_in_country = { resource = chromium amount < constant:brilliant_scientist_technology_action.resource_shortage_exclusive_threshold }
-		has_resources_in_country = { resource = rubber amount < constant:brilliant_scientist_technology_action.resource_shortage_exclusive_threshold }
+	set_temp_variable = { brilliant_scientist_resource_shortage_threshold = constant:brilliant_scientist_technology_action.resource_shortage_exclusive_threshold }
+	meta_trigger = {
+		text = {
+			OR = {
+				has_resources_in_country = { resource = aluminium amount < [THRESHOLD] }
+				has_resources_in_country = { resource = tungsten amount < [THRESHOLD] }
+				has_resources_in_country = { resource = chromium amount < [THRESHOLD] }
+				has_resources_in_country = { resource = rubber amount < [THRESHOLD] }
+			}
+		}
+		THRESHOLD = "[?brilliant_scientist_resource_shortage_threshold|.0]"
 	}
 }
 

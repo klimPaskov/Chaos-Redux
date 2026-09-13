@@ -1,0 +1,27 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 CXT REGISTRATION AND FIXTURE
+# ============================================================================
+# Registers the Event 032 launch-state system with the shared CXT extension
+# bus. The fixture initializes only inert ledgers and readiness proof; it does
+# not fire Event 032, grant technology, create a site, or stock a reserve.
+# ============================================================================
+
+missiles_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event032_missiles
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event032_missiles_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = missiles_cxt_fixture_initialized }
+		}
+		missiles_initialize_program_record = yes
+		set_country_flag = missiles_cxt_fixture_initialized
+		set_country_flag = missiles_cxt_fixture_ready
+	}
+}

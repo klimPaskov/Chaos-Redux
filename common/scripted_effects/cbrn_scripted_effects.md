@@ -1124,3 +1124,14 @@ It never estimates a target, substitutes a state, dispatches from idle aircraft,
 `cbrn_camp_effects.txt` and `cbrn_occupation_effects.txt` remain route-specific adapters. Camp efficiency may be improved by the accepted terminal doctrine and extreme policy, but those effects do not create, reveal, or authorize camps or other extermination infrastructure. Nerve suppression consumes the exact restricted-site package and records protection failure, deaths, contamination, medical saturation, resistance trauma, evidence, attribution, and diplomatic consequence through the shared contract.
 
 `cbrn_hq_effects.txt` owns Army Headquarters preparation and regimental-support operating packages. It debits essential equipment, filter wear, decontamination, instruments, transport, fuel, medical capacity, and manpower using finite preparation, active, upkeep, cooldown, and cleanup events. It is the theater layer; regimental support remains the division layer. None of these helpers performs a broad all-country periodic pulse.
+
+## cbrn_complete_civilian_shelter_movement
+
+State scope completion helper for an already paid civilian shelter transaction.
+Inputs: caller-guaranteed successful payment and the current state.
+Outputs and side effects: sets `cbrn_response_duration_local` from `constant:cbrn_protection_decision_timing.response_effect_days`, sets the timed `cbrn_civilians_moved_to_shelters` flag, and applies `cbrn_civilian_shelter_disruption` for the same duration.
+There are no optional inputs, resource debits, refunds, event targets, or persistent working variables.
+The ordinary `cbrn_apply_civilian_shelter_movement` calls this only after both equipment debits succeed.
+`black_friday_apply_cbrn_civilian_shelter_movement` calls it in `FROM` state scope only after its quoted PP, support, and train transaction succeeds.
+Example inside that successful country transaction: `FROM = { cbrn_complete_civilian_shelter_movement = yes }`.
+The existing timed flag and modifier expiration own cleanup.

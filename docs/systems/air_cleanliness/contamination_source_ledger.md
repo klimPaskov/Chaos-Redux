@@ -10,14 +10,16 @@ The ledger is an Air Cleanliness system surface. It is not an Event Details row,
 
 ## Source Families
 
-The ledger uses four stable source ids from `common/script_constants/chaos_meter_constants.txt`.
+The ledger uses six stable source ids from `common/script_constants/chaos_meter_constants.txt`.
 
 - `chemical` records changes from chemical contamination state classes.
 - `biological` records changes from biological outbreak agents and intensity bands.
 - `fallout` records active fallout intensity, direct terminal nuclear deltas, and the permanent Fallout atmospheric footprint.
 - `aerosols` records the shared minor reservoir used by large wildfire smoke, volcanic eruptions, lingering ash, and other bounded atmospheric particulate aftermath.
+- `asteroid` records the dedicated atmospheric burden applied by the Event 98 impact system.
+- `acid_rain` records only the actual positive basis points accepted from Event 33's central Air gateway.
 
-The aerosol family stays grouped because its engine contribution is one shared capped reservoir. Splitting the visible row into disaster-specific statistics would invent precision that the runtime does not store.
+The aerosol family stays grouped because its engine contribution is one shared capped reservoir. Splitting the visible row into disaster-specific statistics would invent precision that the runtime does not store. Asteroid and Acid Rain contributions remain separate because both systems retain their own exact lifetime and current accounting.
 
 ## Persistent Accounting
 
@@ -41,11 +43,15 @@ The exact global ledger separately records total Air Contamination rises and fal
 
 Chemical and biological state transitions pass a stable source id and their updated global footprint into `air_contamination_apply_delta_bp`. The central delta effect replaces the requested change with the actual clamped change before registering the source activity.
 
+Event 33 routes formation and weekly pressure through `acid_rain_apply_air_request`. That gateway clamps each request to the request itself, the unused portion of its `1500 bp` lifetime allowance, and the distance below `5000 bp` global contamination before calling the shared Air mutation once. It adds nothing when either allowance is exhausted, and it increments Event 33 lifetime/current totals only by `air_contamination_source_applied_delta_bp`, the actual positive delta returned by the shared ledger. No pulse or evolution calls the Air mutation directly.
+
 The monthly host update registers fallout and aerosol gross inputs before applying their combined net change. After the combined change is clamped, the update derives the exact atmospheric recovery that reached the global total.
 
 The strategic singularity terminal consequence is owned by the fallout source family.
 
-`air_contamination_refresh_values` synchronizes all four current footprints, records exact changes to the global total, rebuilds summary percentages, and creates a truthful legacy record when a loaded campaign already has an active source but no ledger receipt.
+`air_contamination_refresh_values` synchronizes all six current footprints, records exact changes to the global total, rebuilds summary percentages, and creates a truthful legacy record when a loaded campaign already has an active source but no ledger receipt.
+
+Event 33 dissipation closes the weather runtime without subtracting its accepted atmospheric contribution or deleting the Acid Rain source row. Later global atmospheric recovery may reduce the shared total through the ordinary Air system, while the source's lifetime additions and permanent first-observed record remain available for audit.
 
 When Fallout permanently fixes Air Contamination at 99 percent, the refresh path attributes the actual transition rise to the fallout source when that change is observable. A campaign loaded after that boundary receives a current fallout footprint without inventing a historical rise that occurred before the ledger existed.
 

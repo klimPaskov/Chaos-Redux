@@ -1,0 +1,2828 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 RUNTIME EFFECTS
+# ============================================================================
+# Country-scoped participant registry, phase actions, bounded pulse, evolution
+# gates, final-candidate arbitration, and settlement handoff for Event 025.
+# The registry is initialized once by the entry event. Every scheduled pulse
+# runs only in the participant country that owns it. No effect in this file
+# performs a recurring whole-world scan.
+# ============================================================================
+
+# COUNTRY scope. Initializes one participant row and schedules its private
+# pulse. The global arrays hold only active country scopes and are never used by
+# the pulse as a world iterator.
+chaosx_nr25_register_participant = {
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_active
+			NOT = { has_country_flag = chaosx_nr25_participant }
+		}
+		set_country_flag = chaosx_nr25_participant
+		set_variable = { chaosx_nr25_phase = global.chaosx_nr25_phase }
+		set_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.twenty }
+		set_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_value.five }
+		set_variable = { chaosx_nr25_crew = constant:chaosx_nr25_value.two }
+		set_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_scientific_capacity = constant:chaosx_nr25_value.one }
+		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.none }
+		set_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_outpost_emphasis = constant:chaosx_nr25_outpost_emphasis.none }
+		set_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_value.max }
+		set_variable = { chaosx_nr25_fragment_count = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_casualties = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_final_cooldown = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_action_cooldown = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_received_cooldown = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_default }
+		set_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_shared_evidence_targets = constant:chaosx_nr25_value.zero }
+		clear_array = chaosx_nr25_shared_evidence_target_ids
+		set_variable = { chaosx_nr25_pre_winner_exchange_targets = constant:chaosx_nr25_value.zero }
+		clear_array = chaosx_nr25_pre_winner_exchange_target_ids
+		if = {
+			limit = { any_owned_state = { is_coastal = yes } }
+			set_country_flag = chaosx_nr25_entry_direct_coastal_access
+		}
+		else = { set_country_flag = chaosx_nr25_entry_lacked_direct_coastal_access }
+		set_variable = { chaosx_nr25_sector_cursor = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_current_sector = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_final_ready_date = constant:chaosx_nr25_value.zero }
+		# The registry sequence is the stable final tie-breaker. It is assigned
+		# once, before any AI roster selection or phase action can run.
+		set_variable = { chaosx_nr25_entry_order = global.chaosx_nr25_next_entry_order }
+		set_variable = { chaosx_nr25_last_action = constant:chaosx_nr25_action.none }
+		set_variable = { chaosx_nr25_rival_target_id = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_card_count = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_slot_1_id = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_slot_2_id = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_slot_3_id = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_slot_1_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_slot_2_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_rival_slot_3_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_action_slot_1_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_action_slot_2_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_action_slot_3_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_action_slot_4_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_action_slot_5_state = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_civilian_commitment = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_nr25_sector_ice_shelf_state = constant:chaosx_nr25_sector.unresolved }
+		set_variable = { chaosx_nr25_sector_mountain_shadow_state = constant:chaosx_nr25_sector.unresolved }
+		set_variable = { chaosx_nr25_sector_signal_basin_state = constant:chaosx_nr25_sector.unresolved }
+		set_variable = { chaosx_nr25_sector_coastal_fracture_state = constant:chaosx_nr25_sector.unresolved }
+		set_variable = { chaosx_nr25_sector_magnetic_silence_state = constant:chaosx_nr25_sector.unresolved }
+		set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.unresolved }
+	add_to_array = { array = global.chaosx_nr25_participants value = THIS }
+	add_to_variable = { global.chaosx_nr25_next_entry_order = constant:chaosx_nr25_value.one }
+	add_to_variable = { global.chaosx_nr25_participant_count = constant:chaosx_nr25_value.one }
+	add_to_variable = { global.chaosx_nr25_active_participant_count = constant:chaosx_nr25_value.one }
+		if = {
+			limit = { is_ai = no }
+			add_to_variable = { global.chaosx_nr25_human_count = constant:chaosx_nr25_value.one }
+		}
+		set_country_flag = chaosx_nr25_entry_accepted
+		chaosx_nr25_prepare_board_slots = yes
+		country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
+	}
+}
+
+# COUNTRY scope. Builds at most three anonymous rival cards from the stored
+# participant registry. The card IDs are private viewer-local variables; the
+# board reveals only an evidence band and uses the ID for a later target
+# resolution. This helper never scans the world.
+chaosx_nr25_prepare_rival_cards = {
+	set_temp_variable = { chaosx_nr25_previous_rival_target_id = chaosx_nr25_rival_target_id }
+	set_variable = { chaosx_nr25_rival_card_count = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_1_id = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_2_id = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_3_id = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_1_state = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_2_state = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_3_state = constant:chaosx_nr25_value.zero }
+	clr_country_flag = chaosx_nr25_rival_slot_1_visible
+	clr_country_flag = chaosx_nr25_rival_slot_2_visible
+	clr_country_flag = chaosx_nr25_rival_slot_3_visible
+	clr_country_flag = chaosx_nr25_rival_slot_1_selected
+	clr_country_flag = chaosx_nr25_rival_slot_2_selected
+	clr_country_flag = chaosx_nr25_rival_slot_3_selected
+	clr_country_flag = chaosx_nr25_rival_target_selected
+	for_each_scope_loop = {
+		array = global.chaosx_nr25_participants
+		if = {
+			limit = {
+				chaosx_nr25_target_participant_valid = yes
+				check_variable = { var = ROOT.chaosx_nr25_rival_card_count value = constant:chaosx_nr25_value.three compare = less_than }
+			}
+			ROOT = { add_to_variable = { chaosx_nr25_rival_card_count = constant:chaosx_nr25_value.one } }
+			if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_rival_card_count value = constant:chaosx_nr25_value.one compare = equals } }
+				set_variable = { ROOT.chaosx_nr25_rival_slot_1_id = THIS.id }
+				ROOT = { set_country_flag = chaosx_nr25_rival_slot_1_visible }
+				if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+					ROOT = { set_country_flag = chaosx_nr25_rival_slot_1_selected set_country_flag = chaosx_nr25_rival_target_selected }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_rival_card_count value = constant:chaosx_nr25_value.two compare = equals } }
+				set_variable = { ROOT.chaosx_nr25_rival_slot_2_id = THIS.id }
+				ROOT = { set_country_flag = chaosx_nr25_rival_slot_2_visible }
+				if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+					ROOT = { set_country_flag = chaosx_nr25_rival_slot_2_selected set_country_flag = chaosx_nr25_rival_target_selected }
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_rival_card_count value = constant:chaosx_nr25_value.three compare = equals } }
+				set_variable = { ROOT.chaosx_nr25_rival_slot_3_id = THIS.id }
+				ROOT = { set_country_flag = chaosx_nr25_rival_slot_3_visible }
+				if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_previous_rival_target_id value = THIS.id compare = equals } }
+					ROOT = { set_country_flag = chaosx_nr25_rival_slot_3_selected set_country_flag = chaosx_nr25_rival_target_selected }
+				}
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_rival_target_selected } }
+		set_variable = { chaosx_nr25_rival_target_id = constant:chaosx_nr25_value.zero }
+	}
+}
+
+# COUNTRY scope. Resolves a board-selected rival ID through the stored
+# participant registry immediately before a hostile action. The board never
+# stores a country scope in UI state, and a withdrawn target is cleared rather
+# than silently retargeted.
+chaosx_nr25_resolve_rival_target_id = {
+	if = {
+		limit = {
+			has_variable = chaosx_nr25_rival_target_id
+			check_variable = {
+				var = chaosx_nr25_rival_target_id
+				value = constant:chaosx_nr25_value.zero
+				compare = greater_than
+			}
+		}
+		# Rebuild from the durable ID even if an earlier action left a chain-local target.
+		clear_variable = chaosx_nr25_rival_target
+		for_each_scope_loop = {
+			array = global.chaosx_nr25_participants
+			if = {
+				limit = {
+					chaosx_nr25_target_participant_valid = yes
+					check_variable = { var = ROOT.chaosx_nr25_rival_target_id value = THIS.id compare = equals }
+				}
+				save_event_target_as = chaosx_nr25_rival_target_scope
+				ROOT = { set_variable = { chaosx_nr25_rival_target = PREV.id } }
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_variable = chaosx_nr25_rival_target_id
+			check_variable = {
+				var = chaosx_nr25_rival_target_id
+				value = constant:chaosx_nr25_value.zero
+				compare = greater_than
+			}
+			NOT = { has_variable = chaosx_nr25_rival_target }
+		}
+		set_variable = { chaosx_nr25_rival_target_id = constant:chaosx_nr25_value.zero }
+		clr_country_flag = chaosx_nr25_rival_target_selected
+	}
+}
+
+# COUNTRY scope. Selects a bounded AI-major roster after all human invitations
+# have been answered. The only non-major exception is the named KRG tag.
+chaosx_nr25_select_bounded_ai_roster = {
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_human_count value = constant:chaosx_nr25_value.zero compare = equals } }
+		set_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_roster.ai_slots_zero_humans }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaosx_nr25_human_count value = constant:chaosx_nr25_value.one compare = equals } }
+		set_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_roster.ai_slots_one_human }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaosx_nr25_human_count value = constant:chaosx_nr25_roster.human_count_three compare = less_than_or_equals } }
+		set_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_roster.ai_slots_three_humans }
+	}
+	else_if = {
+		limit = { check_variable = { var = global.chaosx_nr25_human_count value = constant:chaosx_nr25_roster.human_count_six compare = less_than_or_equals } }
+		set_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_roster.ai_slots_six_humans }
+	}
+	else = { set_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_roster.ai_slots_many_humans } }
+
+	while_loop_effect = {
+		limit = {
+			check_variable = { var = global.chaosx_nr25_ai_slots value = constant:chaosx_nr25_value.zero compare = greater_than }
+			any_country = { chaosx_nr25_ai_candidate_available = yes }
+		}
+		random_country = {
+			limit = { chaosx_nr25_ai_candidate_available = yes }
+			chaosx_nr25_register_participant = yes
+			set_temp_variable = { chaosx_nr25_action = constant:chaosx_nr25_action.authorize }
+			chaosx_nr25_execute_action = yes
+			subtract_from_variable = { global.chaosx_nr25_ai_slots = constant:chaosx_nr25_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Adds the public Chaos meter pressure for one completed
+# expedition action. This is deliberately routed through the shared meter
+# helper so Event 025 does not create a second Chaos system.
+chaosx_nr25_raise_chaos = {
+	set_temp_variable = { chaos_change = constant:chaosx_nr25_tuning.action_chaos }
+	set_temp_variable = { chaos_history_reason_custom = constant:chaos_meter_history_reason.generic.increase }
+	add_chaos_meter_value = yes
+	add_to_variable = { global.chaosx_nr25_chaos = constant:chaosx_nr25_tuning.action_chaos }
+}
+
+# COUNTRY scope. Registers one expedition casualty in the shared Chaos deaths
+# history and leaves a durable rescue-memory marker for Evolution III. The
+# amount is intentionally one per verified accident or rival seizure; callers
+# cannot bypass the shared ledger with an unrelated Event 016 cause.
+chaosx_nr25_record_casualties = {
+	set_temp_variable = { chaosx_nr25_casualty_amount = constant:chaosx_nr25_value.one }
+	add_to_variable = { chaosx_nr25_casualties = chaosx_nr25_casualty_amount }
+	set_country_flag = chaosx_nr25_casualty_memory_ready
+	set_temp_variable = { chaos_deaths_change = chaosx_nr25_casualty_amount }
+	set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.military_casualties }
+	set_temp_variable = { chaos_deaths_is_civilian = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaos_deaths_target_country = THIS }
+	set_temp_variable = { chaos_deaths_has_target_country = constant:chaosx_nr25_value.one }
+	chaos_meter_register_deaths = yes
+}
+
+# COUNTRY scope. Emergency evacuation failures record the configured field
+# loss through the same shared deaths API without duplicating an inline call
+# site. The batch is deliberately bounded to the two-casualty contract.
+chaosx_nr25_record_evacuate_failure_casualties = {
+	set_temp_variable = { chaosx_nr25_evacuate_failure_casualties = constant:chaosx_nr25_cost.mission_evacuate_failure_casualties }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evacuate_failure_casualties value = constant:chaosx_nr25_value.two compare = greater_than_or_equals } }
+		chaosx_nr25_record_casualties = yes
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evacuate_failure_casualties value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
+		chaosx_nr25_record_casualties = yes
+	}
+}
+
+# COUNTRY scope. Phase mission cleanup is idempotent and is used by objective
+# completion, timeout, cancellation, and participant removal paths.
+chaosx_nr25_remove_phase_missions = {
+	if = { limit = { has_active_mission = chaosx_nr25_organize_southern_expedition_mission } remove_mission = chaosx_nr25_organize_southern_expedition_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_reach_gateway_mission } remove_mission = chaosx_nr25_reach_gateway_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_establish_antarctic_outpost_mission } remove_mission = chaosx_nr25_establish_antarctic_outpost_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_triangulate_crash_zone_mission } remove_mission = chaosx_nr25_triangulate_crash_zone_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_protect_supply_route_mission } remove_mission = chaosx_nr25_protect_supply_route_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_confirm_primary_site_mission } remove_mission = chaosx_nr25_confirm_primary_site_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_evacuate_expedition_mission } remove_mission = chaosx_nr25_evacuate_expedition_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_stabilize_wreck_mission } remove_mission = chaosx_nr25_stabilize_wreck_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_contain_alien_systems_mission } remove_mission = chaosx_nr25_contain_alien_systems_mission }
+	clr_country_flag = chaosx_nr25_phase_mission_active
+	clear_variable = chaosx_nr25_phase_mission_kind
+}
+
+# COUNTRY scope. Final mission cleanup is idempotent and is used by success,
+# timeout, cancellation, and participant removal paths. It deliberately does
+# not touch phase objectives, which may coexist with a final-race cooldown.
+chaosx_nr25_remove_final_missions = {
+	if = { limit = { has_active_mission = chaosx_nr25_secure_recovery_core_mission } remove_mission = chaosx_nr25_secure_recovery_core_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_rapid_extraction_mission } remove_mission = chaosx_nr25_rapid_extraction_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_remote_recovery_mission } remove_mission = chaosx_nr25_remote_recovery_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_armed_retrieval_mission } remove_mission = chaosx_nr25_armed_retrieval_mission }
+	if = { limit = { has_active_mission = chaosx_nr25_distributed_salvage_mission } remove_mission = chaosx_nr25_distributed_salvage_mission }
+}
+
+# COUNTRY scope. Clears transient selectors and action presentation state while
+# preserving durable incident, survey, fragment, and settlement evidence.
+chaosx_nr25_clear_selection_state = {
+	clear_variable = chaosx_nr25_rival_target
+	clear_variable = chaosx_nr25_rival_target_id
+	# The regular target expires with its chain. Cleared rival_target invalidates every consumer.
+	clear_variable = chaosx_nr25_analysis_target
+	clear_variable = chaosx_nr25_analysis_target_id
+	clear_variable = chaosx_nr25_selected_sector
+	set_variable = { chaosx_nr25_rival_card_count = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_1_id = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_2_id = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_rival_slot_3_id = constant:chaosx_nr25_value.zero }
+	clr_country_flag = chaosx_nr25_rival_target_selected
+	clr_country_flag = chaosx_nr25_rival_slot_1_selected
+	clr_country_flag = chaosx_nr25_rival_slot_2_selected
+	clr_country_flag = chaosx_nr25_rival_slot_3_selected
+	clr_country_flag = chaosx_nr25_rival_slot_1_visible
+	clr_country_flag = chaosx_nr25_rival_slot_2_visible
+	clr_country_flag = chaosx_nr25_rival_slot_3_visible
+	clr_country_flag = chaosx_nr25_sector_1_selected
+	clr_country_flag = chaosx_nr25_sector_2_selected
+	clr_country_flag = chaosx_nr25_sector_3_selected
+	clr_country_flag = chaosx_nr25_sector_4_selected
+	clr_country_flag = chaosx_nr25_sector_5_selected
+	clr_country_flag = chaosx_nr25_sector_6_selected
+	clr_country_flag = chaosx_nr25_action_slot_1_enabled
+	clr_country_flag = chaosx_nr25_action_slot_2_enabled
+	clr_country_flag = chaosx_nr25_action_slot_3_enabled
+	clr_country_flag = chaosx_nr25_action_slot_4_enabled
+	clr_country_flag = chaosx_nr25_action_slot_5_enabled
+}
+
+# COUNTRY scope. Closes the race when every registered expedition has been
+# withdrawn, invalidated, or failed its final mission. The current country is
+# the sole recipient of the bounded closure notice; no world scan is needed.
+chaosx_nr25_close_if_no_active_participants = {
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_active
+			check_variable = { var = global.chaosx_nr25_active_participant_count value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+			check_variable = { var = global.chaosx_nr25_final_resolution_pending value = constant:chaosx_nr25_value.zero compare = equals }
+		}
+		clr_global_flag = chaosx_nr25_active
+		clr_global_flag = chaosx_nr25_entry_open
+		chaosx_nr25_clear_pending_evolutions = yes
+		set_global_flag = chaosx_nr25_closed_after_expeditions
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+		country_event = { id = chaosx.nr25.298 days = 1 }
+	}
+}
+
+# COUNTRY scope. Evolution scheduling is global only for the pending marker and
+# the one country target that owns the delayed opening. This helper clears both
+# pieces together so a closed race cannot leave an orphaned hazard clock.
+chaosx_nr25_clear_pending_evolutions = {
+	clr_global_flag = chaosx_nr25_evolution_active_signal_pending
+	clr_global_flag = chaosx_nr25_evolution_something_survived_pending
+	clr_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending
+	clr_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending
+	clr_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
+	clr_global_flag = chaosx_nr25_evolution_active_signal_scheduler_rehome_needed
+	clr_global_flag = chaosx_nr25_evolution_something_survived_scheduler_rehome_needed
+	clr_global_flag = chaosx_nr25_evolution_militarised_antarctica_scheduler_rehome_needed
+	clr_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_scheduler_rehome_needed
+	clr_global_flag = chaosx_nr25_evolution_technology_changes_users_scheduler_rehome_needed
+	clear_global_event_target = chaosx_nr25_evolution_active_signal_scheduler
+	clear_global_event_target = chaosx_nr25_evolution_something_survived_scheduler
+	clear_global_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler
+	clear_global_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+	clear_global_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+}
+
+# COUNTRY scope. Rehomes a pending evolution only when its delayed event no
+# longer has a valid owner, or when the setting was disabled before delivery.
+# The current participant becomes the new scheduler; no country scan is used.
+chaosx_nr25_rehome_pending_evolutions = {
+	if = {
+		limit = { has_global_flag = chaosx_nr25_evolution_active_signal_pending }
+		if = {
+			limit = { NOT = { is_current_evolution_enabled = yes } }
+			clr_global_flag = chaosx_nr25_evolution_active_signal_pending
+			clear_global_event_target = chaosx_nr25_evolution_active_signal_scheduler
+			set_global_flag = chaosx_nr25_evolution_active_signal_disabled
+		}
+		else_if = {
+			limit = { NOT = { has_event_target = chaosx_nr25_evolution_active_signal_scheduler } }
+			set_global_flag = chaosx_nr25_evolution_active_signal_scheduler_rehome_needed
+		}
+		else_if = {
+			limit = { NOT = { event_target:chaosx_nr25_evolution_active_signal_scheduler = { chaosx_nr25_scheduler_participant_valid = yes } } }
+			set_global_flag = chaosx_nr25_evolution_active_signal_scheduler_rehome_needed
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_active_signal_scheduler_rehome_needed }
+			clr_global_flag = chaosx_nr25_evolution_active_signal_scheduler_rehome_needed
+			clear_global_event_target = chaosx_nr25_evolution_active_signal_scheduler
+			save_global_event_target_as = chaosx_nr25_evolution_active_signal_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_i_interval }
+			country_event = { id = chaosx.nr25.100 days = chaosx_nr25_evolution_delay }
+		}
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_evolution_something_survived_pending }
+		if = {
+			limit = { NOT = { is_current_evolution_enabled = yes } }
+			clr_global_flag = chaosx_nr25_evolution_something_survived_pending
+			clear_global_event_target = chaosx_nr25_evolution_something_survived_scheduler
+			set_global_flag = chaosx_nr25_evolution_something_survived_disabled
+		}
+		else_if = {
+			limit = { NOT = { has_event_target = chaosx_nr25_evolution_something_survived_scheduler } }
+			set_global_flag = chaosx_nr25_evolution_something_survived_scheduler_rehome_needed
+		}
+		else_if = {
+			limit = { NOT = { event_target:chaosx_nr25_evolution_something_survived_scheduler = { chaosx_nr25_scheduler_participant_valid = yes } } }
+			set_global_flag = chaosx_nr25_evolution_something_survived_scheduler_rehome_needed
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_something_survived_scheduler_rehome_needed }
+			clr_global_flag = chaosx_nr25_evolution_something_survived_scheduler_rehome_needed
+			clear_global_event_target = chaosx_nr25_evolution_something_survived_scheduler
+			save_global_event_target_as = chaosx_nr25_evolution_something_survived_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_ii_interval }
+			country_event = { id = chaosx.nr25.130 days = chaosx_nr25_evolution_delay }
+		}
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending }
+		if = {
+			limit = { NOT = { is_current_evolution_enabled = yes } }
+			clr_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending
+			clear_global_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler
+			set_global_flag = chaosx_nr25_evolution_militarised_antarctica_disabled
+		}
+		else_if = {
+			limit = { NOT = { has_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler } }
+			set_global_flag = chaosx_nr25_evolution_militarised_antarctica_scheduler_rehome_needed
+		}
+		else_if = {
+			limit = { NOT = { event_target:chaosx_nr25_evolution_militarised_antarctica_scheduler = { chaosx_nr25_scheduler_participant_valid = yes } } }
+			set_global_flag = chaosx_nr25_evolution_militarised_antarctica_scheduler_rehome_needed
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica_scheduler_rehome_needed }
+			clr_global_flag = chaosx_nr25_evolution_militarised_antarctica_scheduler_rehome_needed
+			clear_global_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler
+			save_global_event_target_as = chaosx_nr25_evolution_militarised_antarctica_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_iii_interval }
+			country_event = { id = chaosx.nr25.160 days = chaosx_nr25_evolution_delay }
+		}
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending }
+		if = {
+			limit = { NOT = { is_current_evolution_enabled = yes } }
+			clr_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending
+			clear_global_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+			set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_disabled
+		}
+		else_if = {
+			limit = { NOT = { has_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler } }
+			set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_scheduler_rehome_needed
+		}
+		else_if = {
+			limit = { NOT = { event_target:chaosx_nr25_evolution_wreck_breaking_apart_scheduler = { chaosx_nr25_scheduler_participant_valid = yes } } }
+			set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_scheduler_rehome_needed
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_scheduler_rehome_needed }
+			clr_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_scheduler_rehome_needed
+			clear_global_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+			save_global_event_target_as = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_iv_interval }
+			country_event = { id = chaosx.nr25.190 days = chaosx_nr25_evolution_delay }
+		}
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_evolution_technology_changes_users_pending }
+		if = {
+			limit = { NOT = { is_current_evolution_enabled = yes } }
+			clr_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
+			clear_global_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+			set_global_flag = chaosx_nr25_evolution_technology_changes_users_disabled
+		}
+		else_if = {
+			limit = { NOT = { has_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler } }
+			set_global_flag = chaosx_nr25_evolution_technology_changes_users_scheduler_rehome_needed
+		}
+		else_if = {
+			limit = { NOT = { event_target:chaosx_nr25_evolution_technology_changes_users_scheduler = { chaosx_nr25_scheduler_participant_valid = yes } } }
+			set_global_flag = chaosx_nr25_evolution_technology_changes_users_scheduler_rehome_needed
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_technology_changes_users_scheduler_rehome_needed }
+			clr_global_flag = chaosx_nr25_evolution_technology_changes_users_scheduler_rehome_needed
+			clear_global_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+			save_global_event_target_as = chaosx_nr25_evolution_technology_changes_users_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_v_interval }
+			country_event = { id = chaosx.nr25.220 days = chaosx_nr25_evolution_delay }
+		}
+	}
+}
+
+# COUNTRY scope. Caps the three displayed values and the supporting ledgers.
+chaosx_nr25_clamp_values = {
+	clamp_variable = { var = chaosx_nr25_progress min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_logistics_readiness min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_exposure_risk min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_intelligence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_scientific_capacity min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_outpost_security min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_survey_evidence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_wreck_access min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_dependence min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_signal_intensity min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+	clamp_variable = { var = chaosx_nr25_wreck_integrity min = constant:chaosx_nr25_value.zero max = constant:chaosx_nr25_value.max }
+}
+
+# COUNTRY scope. Applies or reverses one public outpost emphasis. The
+# reversible ledger prevents reconfiguration from stacking permanent bonuses;
+# the emphasis remains supporting board state rather than a fourth main value.
+# The caller supplies the bounded selection in the temporary
+# `chaosx_nr25_emphasis_selection` variable.
+chaosx_nr25_apply_outpost_emphasis = {
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.logistics_depot compare = equals } }
+		subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_outpost_emphasis_delta.logistics_readiness }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_outpost_emphasis_delta.logistics_progress_penalty }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.survey_station compare = equals } }
+		subtract_from_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_outpost_emphasis_delta.survey_evidence }
+		subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_outpost_emphasis_delta.survey_progress }
+		add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_outpost_emphasis_delta.survey_security_penalty }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals } }
+		subtract_from_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_outpost_emphasis_delta.signals_intelligence }
+		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_outpost_emphasis_delta.signals_intensity }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_outpost_emphasis_delta.signals_exposure }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.fortified_camp compare = equals } }
+		subtract_from_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_outpost_emphasis_delta.fortified_security }
+		subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_outpost_emphasis_delta.fortified_readiness }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_outpost_emphasis value = constant:chaosx_nr25_outpost_emphasis.mobile_traverse compare = equals } }
+		subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_outpost_emphasis_delta.mobile_progress }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_outpost_emphasis_delta.mobile_exposure }
+		add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_outpost_emphasis_delta.mobile_security_penalty }
+	}
+
+	set_variable = { chaosx_nr25_outpost_emphasis = chaosx_nr25_emphasis_selection }
+	clr_country_flag = chaosx_nr25_emphasis_logistics_depot
+	clr_country_flag = chaosx_nr25_emphasis_survey_station
+	clr_country_flag = chaosx_nr25_emphasis_signals_station
+	clr_country_flag = chaosx_nr25_emphasis_fortified_camp
+	clr_country_flag = chaosx_nr25_emphasis_mobile_traverse
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_emphasis_selection value = constant:chaosx_nr25_outpost_emphasis.logistics_depot compare = equals } }
+		set_country_flag = chaosx_nr25_emphasis_logistics_depot
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_outpost_emphasis_delta.logistics_readiness }
+		subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_outpost_emphasis_delta.logistics_progress_penalty }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_emphasis_selection value = constant:chaosx_nr25_outpost_emphasis.survey_station compare = equals } }
+		set_country_flag = chaosx_nr25_emphasis_survey_station
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_outpost_emphasis_delta.survey_evidence }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_outpost_emphasis_delta.survey_progress }
+		subtract_from_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_outpost_emphasis_delta.survey_security_penalty }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_emphasis_selection value = constant:chaosx_nr25_outpost_emphasis.signals_station compare = equals } }
+		set_country_flag = chaosx_nr25_emphasis_signals_station
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_outpost_emphasis_delta.signals_intelligence }
+		add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_outpost_emphasis_delta.signals_intensity }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_outpost_emphasis_delta.signals_exposure }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_emphasis_selection value = constant:chaosx_nr25_outpost_emphasis.fortified_camp compare = equals } }
+		set_country_flag = chaosx_nr25_emphasis_fortified_camp
+		add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_outpost_emphasis_delta.fortified_security }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_outpost_emphasis_delta.fortified_readiness }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_emphasis_selection value = constant:chaosx_nr25_outpost_emphasis.mobile_traverse compare = equals } }
+		set_country_flag = chaosx_nr25_emphasis_mobile_traverse
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_outpost_emphasis_delta.mobile_progress }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_outpost_emphasis_delta.mobile_exposure }
+		subtract_from_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_outpost_emphasis_delta.mobile_security_penalty }
+	}
+	clr_country_flag = chaosx_nr25_outpost_emphasis_pending
+	set_country_flag = chaosx_nr25_outpost_emphasis_selected
+	chaosx_nr25_clamp_values = yes
+}
+
+# COUNTRY scope. Reconfiguration pays the same bounded cost for every new
+# emphasis and consumes the normal action cooldown. The actual bonus ledger is
+# shared with the initial public choice so switching cannot stack bonuses.
+chaosx_nr25_change_outpost_emphasis = {
+	add_political_power = constant:chaosx_nr25_cost.pp_emphasis_change
+	add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_emphasis_change }
+	chaosx_nr25_apply_outpost_emphasis = yes
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope. Advances a rotating supporting sector ledger after a valid
+# survey action. Each expedition keeps its own sector states for multiplayer
+# privacy; only public aggregate evidence is exposed in the shared log.
+chaosx_nr25_mark_next_sector = {
+	add_to_variable = { chaosx_nr25_sector_cursor = constant:chaosx_nr25_value.one }
+	set_variable = { chaosx_nr25_current_sector = chaosx_nr25_sector_cursor }
+	set_variable = { chaosx_nr25_fragment_role = chaosx_nr25_current_sector }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.one compare = equals } }
+		set_variable = { chaosx_nr25_sector_ice_shelf_state = constant:chaosx_nr25_sector.surveyed }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.two compare = equals } }
+		set_variable = { chaosx_nr25_sector_mountain_shadow_state = constant:chaosx_nr25_sector.surveyed }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.three compare = equals } }
+		set_variable = { chaosx_nr25_sector_signal_basin_state = constant:chaosx_nr25_sector.surveyed }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.four compare = equals } }
+		set_variable = { chaosx_nr25_sector_coastal_fracture_state = constant:chaosx_nr25_sector.surveyed }
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.five compare = equals } }
+		set_variable = { chaosx_nr25_sector_magnetic_silence_state = constant:chaosx_nr25_sector.surveyed }
+	}
+	else = { set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.surveyed } }
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_nr25_current_sector
+				value = global.chaosx_nr25_primary_sector
+				compare = equals
+			}
+			NOT = { has_country_flag = chaosx_nr25_false_map_active }
+		}
+		set_country_flag = chaosx_nr25_primary_site_candidate_found
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_sector_cursor value = constant:chaosx_nr25_value.six compare = greater_than_or_equals } }
+		set_variable = { chaosx_nr25_sector_cursor = constant:chaosx_nr25_value.zero }
+	}
+}
+
+# COUNTRY scope. Promotes the current private sector marker after a fragment
+# assignment succeeds. The marker is intentionally local to the participant;
+# the shared ledger owns only the exclusive fragment slot.
+chaosx_nr25_confirm_current_sector = {
+	if = { limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.one compare = equals } } set_variable = { chaosx_nr25_sector_ice_shelf_state = constant:chaosx_nr25_sector.confirmed } }
+	if = { limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.two compare = equals } } set_variable = { chaosx_nr25_sector_mountain_shadow_state = constant:chaosx_nr25_sector.confirmed } }
+	if = { limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.three compare = equals } } set_variable = { chaosx_nr25_sector_signal_basin_state = constant:chaosx_nr25_sector.confirmed } }
+	if = { limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.four compare = equals } } set_variable = { chaosx_nr25_sector_coastal_fracture_state = constant:chaosx_nr25_sector.confirmed } }
+	if = { limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.five compare = equals } } set_variable = { chaosx_nr25_sector_magnetic_silence_state = constant:chaosx_nr25_sector.confirmed } }
+	if = { limit = { check_variable = { var = chaosx_nr25_current_sector value = constant:chaosx_nr25_value.six compare = equals } } set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.confirmed } }
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_nr25_current_sector
+				value = global.chaosx_nr25_primary_sector
+				compare = equals
+			}
+		}
+		set_country_flag = chaosx_nr25_primary_site_confirmed
+	}
+}
+
+# COUNTRY scope. Rebuilds the five presentation slots used by the Expedition
+# Board. The slots mirror the same primary actions exposed in the decision
+# category; they carry no extra state and never reveal another participant's
+# private variables.
+chaosx_nr25_prepare_board_slots = {
+	set_variable = { chaosx_nr25_phase = global.chaosx_nr25_phase }
+	clr_country_flag = chaosx_nr25_action_slot_1_visible
+	clr_country_flag = chaosx_nr25_action_slot_2_visible
+	clr_country_flag = chaosx_nr25_action_slot_3_visible
+	clr_country_flag = chaosx_nr25_action_slot_4_visible
+	clr_country_flag = chaosx_nr25_action_slot_5_visible
+	clr_country_flag = chaosx_nr25_action_slot_1_enabled
+	clr_country_flag = chaosx_nr25_action_slot_2_enabled
+	clr_country_flag = chaosx_nr25_action_slot_3_enabled
+	clr_country_flag = chaosx_nr25_action_slot_4_enabled
+	clr_country_flag = chaosx_nr25_action_slot_5_enabled
+	set_variable = { chaosx_nr25_action_slot_1_state = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_action_slot_2_state = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_action_slot_3_state = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_action_slot_4_state = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_nr25_action_slot_5_state = constant:chaosx_nr25_value.zero }
+
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } }
+		set_variable = { chaosx_nr25_action_slot_1 = constant:chaosx_nr25_action.authorize }
+		set_variable = { chaosx_nr25_action_slot_2 = constant:chaosx_nr25_action.charter }
+		set_variable = { chaosx_nr25_action_slot_3 = constant:chaosx_nr25_action.science_exchange }
+		set_variable = { chaosx_nr25_action_slot_4 = constant:chaosx_nr25_action.conceal_departure }
+		set_country_flag = chaosx_nr25_action_slot_1_visible
+		set_country_flag = chaosx_nr25_action_slot_2_visible
+		set_country_flag = chaosx_nr25_action_slot_3_visible
+		set_country_flag = chaosx_nr25_action_slot_4_visible
+	}
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } }
+		set_variable = { chaosx_nr25_action_slot_1 = constant:chaosx_nr25_action.depot }
+		set_variable = { chaosx_nr25_action_slot_2 = constant:chaosx_nr25_action.aerial }
+		set_variable = { chaosx_nr25_action_slot_3 = constant:chaosx_nr25_action.radio }
+		set_variable = { chaosx_nr25_action_slot_4 = constant:chaosx_nr25_action.crew }
+		set_country_flag = chaosx_nr25_action_slot_1_visible
+		set_country_flag = chaosx_nr25_action_slot_2_visible
+		set_country_flag = chaosx_nr25_action_slot_3_visible
+		set_country_flag = chaosx_nr25_action_slot_4_visible
+	}
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } }
+		set_variable = { chaosx_nr25_action_slot_1 = constant:chaosx_nr25_action.south_america_gateway }
+		set_variable = { chaosx_nr25_action_slot_2 = constant:chaosx_nr25_action.africa_gateway }
+		set_variable = { chaosx_nr25_action_slot_3 = constant:chaosx_nr25_action.tasmania_gateway }
+		set_country_flag = chaosx_nr25_action_slot_1_visible
+		set_country_flag = chaosx_nr25_action_slot_2_visible
+		set_country_flag = chaosx_nr25_action_slot_3_visible
+	}
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } }
+		set_variable = { chaosx_nr25_action_slot_1 = constant:chaosx_nr25_action.establish_outpost }
+		set_variable = { chaosx_nr25_action_slot_2 = constant:chaosx_nr25_action.reinforce_outpost }
+		set_variable = { chaosx_nr25_action_slot_3 = constant:chaosx_nr25_action.rotate_crew }
+		set_variable = { chaosx_nr25_action_slot_4 = constant:chaosx_nr25_action.emergency_shelter }
+		set_variable = { chaosx_nr25_action_slot_5 = constant:chaosx_nr25_action.alternate_landing }
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = chaosx_nr25_convoy_incident
+					has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+					has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
+				}
+			}
+			set_variable = { chaosx_nr25_action_slot_5 = constant:chaosx_nr25_action.escort_convoys }
+		}
+		set_country_flag = chaosx_nr25_action_slot_1_visible
+		set_country_flag = chaosx_nr25_action_slot_2_visible
+		set_country_flag = chaosx_nr25_action_slot_3_visible
+		set_country_flag = chaosx_nr25_action_slot_4_visible
+		set_country_flag = chaosx_nr25_action_slot_5_visible
+	}
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } }
+		set_variable = { chaosx_nr25_action_slot_1 = constant:chaosx_nr25_action.aerial_grid }
+		set_variable = { chaosx_nr25_action_slot_2 = constant:chaosx_nr25_action.ground_transect }
+		set_variable = { chaosx_nr25_action_slot_3 = constant:chaosx_nr25_action.signal_triangulation }
+		set_variable = { chaosx_nr25_action_slot_4 = constant:chaosx_nr25_action.rival_recon }
+		set_variable = { chaosx_nr25_action_slot_5 = constant:chaosx_nr25_action.recover_fragment }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			set_variable = { chaosx_nr25_action_slot_5 = constant:chaosx_nr25_action.analyze_recovered_fragment }
+		}
+		set_country_flag = chaosx_nr25_action_slot_1_visible
+		set_country_flag = chaosx_nr25_action_slot_2_visible
+		set_country_flag = chaosx_nr25_action_slot_3_visible
+		set_country_flag = chaosx_nr25_action_slot_4_visible
+		set_country_flag = chaosx_nr25_action_slot_5_visible
+	}
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } }
+		set_variable = { chaosx_nr25_action_slot_1 = constant:chaosx_nr25_action.controlled_recovery }
+		set_variable = { chaosx_nr25_action_slot_2 = constant:chaosx_nr25_action.rapid_extraction }
+		set_variable = { chaosx_nr25_action_slot_3 = constant:chaosx_nr25_action.remote_rig }
+		set_variable = { chaosx_nr25_action_slot_4 = constant:chaosx_nr25_action.armed_retrieval }
+		set_variable = { chaosx_nr25_action_slot_5 = constant:chaosx_nr25_action.distributed_salvage }
+		set_country_flag = chaosx_nr25_action_slot_1_visible
+		set_country_flag = chaosx_nr25_action_slot_2_visible
+		set_country_flag = chaosx_nr25_action_slot_3_visible
+		set_country_flag = chaosx_nr25_action_slot_4_visible
+		set_country_flag = chaosx_nr25_action_slot_5_visible
+	}
+
+	set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_1 }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_1_visible chaosx_nr25_board_action_contract_available = yes } set_country_flag = chaosx_nr25_action_slot_1_enabled }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_1_visible NOT = { chaosx_nr25_board_action_contract_available = yes } } set_variable = { chaosx_nr25_action_slot_1_state = constant:chaosx_nr25_value.one } }
+	set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_2 }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_2_visible chaosx_nr25_board_action_contract_available = yes } set_country_flag = chaosx_nr25_action_slot_2_enabled }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_2_visible NOT = { chaosx_nr25_board_action_contract_available = yes } } set_variable = { chaosx_nr25_action_slot_2_state = constant:chaosx_nr25_value.one } }
+	set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_3 }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_3_visible chaosx_nr25_board_action_contract_available = yes } set_country_flag = chaosx_nr25_action_slot_3_enabled }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_3_visible NOT = { chaosx_nr25_board_action_contract_available = yes } } set_variable = { chaosx_nr25_action_slot_3_state = constant:chaosx_nr25_value.one } }
+	set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_4 }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_4_visible chaosx_nr25_board_action_contract_available = yes } set_country_flag = chaosx_nr25_action_slot_4_enabled }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_4_visible NOT = { chaosx_nr25_board_action_contract_available = yes } } set_variable = { chaosx_nr25_action_slot_4_state = constant:chaosx_nr25_value.one } }
+	set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_5 }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_5_visible chaosx_nr25_board_action_contract_available = yes } set_country_flag = chaosx_nr25_action_slot_5_enabled }
+	if = { limit = { has_country_flag = chaosx_nr25_action_slot_5_visible NOT = { chaosx_nr25_board_action_contract_available = yes } } set_variable = { chaosx_nr25_action_slot_5_state = constant:chaosx_nr25_value.one } }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_1_visible } set_variable = { chaosx_nr25_action_slot_1_state = constant:chaosx_nr25_value.two } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_2_visible } set_variable = { chaosx_nr25_action_slot_2_state = constant:chaosx_nr25_value.two } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_3_visible } set_variable = { chaosx_nr25_action_slot_3_state = constant:chaosx_nr25_value.two } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_4_visible } set_variable = { chaosx_nr25_action_slot_4_state = constant:chaosx_nr25_value.two } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_5_visible } set_variable = { chaosx_nr25_action_slot_5_state = constant:chaosx_nr25_value.two } }
+	}
+	if = {
+		limit = { has_country_flag = chaosx_nr25_final_mission_active }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_1_visible } set_variable = { chaosx_nr25_action_slot_1_state = constant:chaosx_nr25_value.three } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_2_visible } set_variable = { chaosx_nr25_action_slot_2_state = constant:chaosx_nr25_value.three } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_3_visible } set_variable = { chaosx_nr25_action_slot_3_state = constant:chaosx_nr25_value.three } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_4_visible } set_variable = { chaosx_nr25_action_slot_4_state = constant:chaosx_nr25_value.three } }
+		if = { limit = { has_country_flag = chaosx_nr25_action_slot_5_visible } set_variable = { chaosx_nr25_action_slot_5_state = constant:chaosx_nr25_value.three } }
+	}
+	chaosx_nr25_prepare_rival_cards = yes
+}
+
+# COUNTRY scope. The board sends a slot number to this effect. It repeats the
+# decision cost gate before executing, so a stale GUI click cannot bypass a
+# resource, phase, cooldown, or final-recovery requirement.
+chaosx_nr25_execute_board_slot = {
+	set_temp_variable = { chaosx_nr25_board_action = constant:chaosx_nr25_action.none }
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.one compare = equals } } set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_1 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.two compare = equals } } set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_2 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.three compare = equals } } set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_3 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.four compare = equals } } set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_4 } }
+	else_if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.five compare = equals } } set_temp_variable = { chaosx_nr25_board_action = chaosx_nr25_action_slot_5 } }
+
+	if = {
+		limit = { chaosx_nr25_board_action_contract_available = yes }
+		set_temp_variable = { chaosx_nr25_action = chaosx_nr25_board_action }
+		chaosx_nr25_execute_action = yes
+		chaosx_nr25_prepare_board_slots = yes
+	}
+}
+
+# COUNTRY scope. Board-only selection state is deliberately non-authoritative;
+# the existing targeted decision validates rival ownership and availability.
+chaosx_nr25_select_board_sector = {
+	clear_variable = chaosx_nr25_selected_sector
+	set_variable = { chaosx_nr25_selected_sector = chaosx_nr25_board_slot }
+	clr_country_flag = chaosx_nr25_sector_1_selected
+	clr_country_flag = chaosx_nr25_sector_2_selected
+	clr_country_flag = chaosx_nr25_sector_3_selected
+	clr_country_flag = chaosx_nr25_sector_4_selected
+	clr_country_flag = chaosx_nr25_sector_5_selected
+	clr_country_flag = chaosx_nr25_sector_6_selected
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.one compare = equals } } set_country_flag = chaosx_nr25_sector_1_selected }
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.two compare = equals } } set_country_flag = chaosx_nr25_sector_2_selected }
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.three compare = equals } } set_country_flag = chaosx_nr25_sector_3_selected }
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.four compare = equals } } set_country_flag = chaosx_nr25_sector_4_selected }
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.five compare = equals } } set_country_flag = chaosx_nr25_sector_5_selected }
+	if = { limit = { check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.six compare = equals } } set_country_flag = chaosx_nr25_sector_6_selected }
+}
+
+# COUNTRY scope. Stores the selected rival's country ID while keeping the
+# visible card anonymous. The action executor resolves that ID against the
+# stored participant registry immediately before applying an effect.
+chaosx_nr25_select_board_rival = {
+	clr_country_flag = chaosx_nr25_rival_slot_1_selected
+	clr_country_flag = chaosx_nr25_rival_slot_2_selected
+	clr_country_flag = chaosx_nr25_rival_slot_3_selected
+	clr_country_flag = chaosx_nr25_rival_target_selected
+	if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.one compare = equals }
+			has_country_flag = chaosx_nr25_rival_slot_1_visible
+		}
+		set_variable = { chaosx_nr25_rival_target_id = chaosx_nr25_rival_slot_1_id }
+		set_country_flag = chaosx_nr25_rival_slot_1_selected
+		set_country_flag = chaosx_nr25_rival_target_selected
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.two compare = equals }
+			has_country_flag = chaosx_nr25_rival_slot_2_visible
+		}
+		set_variable = { chaosx_nr25_rival_target_id = chaosx_nr25_rival_slot_2_id }
+		set_country_flag = chaosx_nr25_rival_slot_2_selected
+		set_country_flag = chaosx_nr25_rival_target_selected
+	}
+	else_if = {
+		limit = {
+			check_variable = { var = chaosx_nr25_board_slot value = constant:chaosx_nr25_value.three compare = equals }
+			has_country_flag = chaosx_nr25_rival_slot_3_visible
+		}
+		set_variable = { chaosx_nr25_rival_target_id = chaosx_nr25_rival_slot_3_id }
+		set_country_flag = chaosx_nr25_rival_slot_3_selected
+		set_country_flag = chaosx_nr25_rival_target_selected
+	}
+}
+
+# COUNTRY scope. The pulse is the only recurring Event 025 effect. It handles
+# cooldowns, passive hazards, independent evolution clocks, cleanup, and the
+# next country-scoped pulse.
+chaosx_nr25_run_bounded_pulse = {
+	if = {
+		limit = {
+			OR = {
+				NOT = { exists = yes }
+				NOT = { has_country_flag = chaosx_nr25_participant }
+				is_subject = yes
+				has_capitulated = yes
+			}
+		}
+		chaosx_nr25_cleanup_invalid_participant = yes
+	}
+	else = {
+		if = { limit = { has_global_flag = chaosx_nr25_active } chaosx_nr25_rehome_pending_evolutions = yes }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			subtract_from_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.pulse_days }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_final_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			subtract_from_variable = { chaosx_nr25_final_cooldown = constant:chaosx_nr25_timing.pulse_days }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_rival_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			subtract_from_variable = { chaosx_nr25_rival_action_cooldown = constant:chaosx_nr25_timing.pulse_days }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_rival_received_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			subtract_from_variable = { chaosx_nr25_rival_received_cooldown = constant:chaosx_nr25_timing.pulse_days }
+		}
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_active
+				NOT = { has_country_flag = chaosx_nr25_terminal }
+			}
+			subtract_from_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_pulse_drain }
+			set_country_flag = chaosx_nr25_supply_pressure
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } }
+			subtract_from_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_timing.pulse_days }
+		}
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_pulse }
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_active_signal }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_pulse }
+			add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_pulse_intensity }
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_something_survived }
+			subtract_from_variable = { chaosx_nr25_crew = constant:chaosx_nr25_cost.crew_survivor_burden }
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_pulse }
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_pulse }
+			if = { limit = { NOT = { has_country_flag = chaosx_nr25_wreck_stabilized } } subtract_from_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_cost.wreck_integrity_pulse } }
+			if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_fragment_field_active }
+			if = { limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.twenty compare = less_than_or_equals } } set_country_flag = chaosx_nr25_wreck_critical }
+		}
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+				OR = {
+					has_country_flag = chaosx_nr25_recovery_winner
+					has_country_flag = chaosx_nr25_dependence_started
+				}
+			}
+			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_pulse }
+		}
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_evolution_active_signal
+				NOT = { has_country_flag = chaosx_nr25_signal_profile_initialized }
+			}
+			set_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_cost.signal_opening_intensity }
+			set_country_flag = chaosx_nr25_signal_profile_initialized
+		}
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_evolution_something_survived
+				NOT = { has_country_flag = chaosx_nr25_survivor_profile_initialized }
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_entry_order value = constant:chaosx_nr25_value.two compare = less_than_or_equals } }
+				set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_default }
+			}
+			else_if = {
+				limit = { check_variable = { var = chaosx_nr25_entry_order value = constant:chaosx_nr25_value.four compare = less_than_or_equals } }
+				set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_alt }
+			}
+			else = { set_variable = { chaosx_nr25_survivor_profile = constant:chaosx_nr25_cost.survivor_profile_autonomous } }
+			set_country_flag = chaosx_nr25_survivor_profile_initialized
+		}
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+				has_country_flag = chaosx_nr25_outpost_established
+				NOT = { has_country_flag = chaosx_nr25_outpost_lost }
+				check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.eighty_five compare = greater_than }
+			}
+			set_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.zero }
+			clr_country_flag = chaosx_nr25_outpost_established
+			set_country_flag = chaosx_nr25_outpost_compromised
+			set_country_flag = chaosx_nr25_outpost_lost
+			subtract_from_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
+		}
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+				has_country_flag = chaosx_nr25_dependence_started
+				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_accident_threshold compare = greater_than_or_equals }
+				check_variable = { var = chaosx_nr25_dependence_accident_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+			}
+			chaosx_nr25_record_casualties = yes
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.dependence_accident_exposure }
+			subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_destroy_reduction }
+			set_variable = { chaosx_nr25_dependence_accident_cooldown = constant:chaosx_nr25_cost.dependence_accident_cooldown_days }
+			set_country_flag = chaosx_nr25_dependence_accident
+			set_country_flag = chaosx_nr25_dependence_accident_history
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_dependence_contained
+				NOT = { has_country_flag = chaosx_nr25_dependence_accident }
+			}
+			add_to_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_timing.pulse_days }
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_dependence_started
+				NOT = { has_country_flag = chaosx_nr25_dependence_accident }
+				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_stable_threshold compare = greater_than_or_equals }
+			}
+			add_to_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_timing.pulse_days }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_cost.exposure_max compare = greater_than_or_equals } }
+			set_country_flag = chaosx_nr25_emergency_weather
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_crew value = constant:chaosx_nr25_value.zero compare = less_than_or_equals } }
+			set_country_flag = chaosx_nr25_crew_exhausted
+		}
+		chaosx_nr25_clamp_values = yes
+		if = {
+			limit = { has_global_flag = chaosx_nr25_active }
+			chaosx_nr25_check_evolution_gates = yes
+		}
+		chaosx_nr25_update_achievement_tracking = yes
+		chaosx_nr25_prepare_board_slots = yes
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						has_global_flag = chaosx_nr25_active
+						NOT = { has_country_flag = chaosx_nr25_terminal }
+					}
+					AND = {
+						has_global_flag = chaosx_nr25_aftermath_active
+						has_country_flag = chaosx_nr25_recovery_winner
+						NOT = { has_country_flag = chaosx_nr25_aftermath_closed }
+					}
+				}
+			}
+			country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
+		}
+	}
+}
+
+# COUNTRY scope. Invalid registry members are removed from the bounded array
+# and retain only a cleanup marker. No other country is inspected here.
+chaosx_nr25_cleanup_invalid_participant = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_participant
+			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+			chaosx_alien_recovery_ledger_has_loser_evidence = yes
+		}
+		chaosx_nr25_apply_loser_settlement = yes
+	}
+	chaosx_nr25_remove_phase_missions = yes
+	chaosx_nr25_remove_final_missions = yes
+	remove_ideas = chaosx_nr25_civilian_commitment
+	chaosx_nr25_clear_selection_state = yes
+	clear_variable = chaosx_nr25_final_mission_kind
+	clr_country_flag = chaosx_nr25_final_mission_active
+	clr_country_flag = chaosx_nr25_final_mission_ready
+	if = { limit = { is_in_array = { array = global.chaosx_nr25_participants value = THIS } } remove_from_array = { array = global.chaosx_nr25_participants value = THIS } }
+	clr_country_flag = chaosx_nr25_participant
+	set_country_flag = chaosx_nr25_terminal
+	set_variable = { chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_active_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		subtract_from_variable = { global.chaosx_nr25_active_participant_count = constant:chaosx_nr25_value.one }
+	}
+	chaosx_nr25_close_if_no_active_participants = yes
+}
+
+# COUNTRY scope. Voluntary withdrawal uses the same settlement and registry
+# cleanup contract as an invalidated expedition, while preserving verified
+# survey notes and exclusive fragment records.
+chaosx_nr25_begin_evacuation = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_participant
+			has_global_flag = chaosx_nr25_active
+			NOT = { has_country_flag = chaosx_nr25_terminal }
+			NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+		}
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evacuation }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evacuation
+		set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.evacuate_expedition }
+		set_country_flag = chaosx_nr25_phase_mission_active
+		set_country_flag = chaosx_nr25_evacuation_requested
+		activate_mission = chaosx_nr25_evacuate_expedition_mission
+	}
+}
+
+chaosx_nr25_withdraw_participant = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_participant
+			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+			chaosx_alien_recovery_ledger_has_loser_evidence = yes
+		}
+		chaosx_nr25_apply_loser_settlement = yes
+	}
+	chaosx_nr25_remove_phase_missions = yes
+	chaosx_nr25_remove_final_missions = yes
+	remove_ideas = chaosx_nr25_civilian_commitment
+	chaosx_nr25_clear_selection_state = yes
+	clear_variable = chaosx_nr25_final_mission_kind
+	clr_country_flag = chaosx_nr25_final_mission_active
+	clr_country_flag = chaosx_nr25_final_mission_ready
+	if = { limit = { is_in_array = { array = global.chaosx_nr25_participants value = THIS } } remove_from_array = { array = global.chaosx_nr25_participants value = THIS } }
+	clr_country_flag = chaosx_nr25_participant
+	set_country_flag = chaosx_nr25_terminal
+	set_variable = { chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+	if = {
+		limit = { check_variable = { var = global.chaosx_nr25_active_participant_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		subtract_from_variable = { global.chaosx_nr25_active_participant_count = constant:chaosx_nr25_value.one }
+	}
+	chaosx_nr25_close_if_no_active_participants = yes
+}
+
+# COUNTRY scope. Bounded gates are sampled from the current participant pulse.
+# Each evolution has its own setting check and MTTH delay. A disabled evolution
+# records a disabled marker and leaves the baseline race untouched.
+chaosx_nr25_check_evolution_gates = {
+	set_temp_variable = { events_log_evolution_event_id = constant:chaosx_nr25_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:chaosx_nr25_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_tier = constant:chaosx_nr25_value.one }
+
+	if = {
+		limit = {
+			check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.active_signal compare = greater_than_or_equals }
+			NOT = { has_global_flag = chaosx_nr25_evolution_active_signal }
+			NOT = { has_global_flag = chaosx_nr25_evolution_active_signal_pending }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:chaosx_nr25_evolution.active_signal }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = chaosx_nr25_evolution_active_signal_pending
+			save_global_event_target_as = chaosx_nr25_evolution_active_signal_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_i_interval }
+			country_event = { id = chaosx.nr25.100 days = chaosx_nr25_evolution_delay }
+		}
+		else = { set_global_flag = chaosx_nr25_evolution_active_signal_disabled }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.something_survived compare = greater_than_or_equals }
+			NOT = { has_global_flag = chaosx_nr25_evolution_something_survived }
+			NOT = { has_global_flag = chaosx_nr25_evolution_something_survived_pending }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:chaosx_nr25_evolution.something_survived }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = chaosx_nr25_evolution_something_survived_pending
+			save_global_event_target_as = chaosx_nr25_evolution_something_survived_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_ii_interval }
+			country_event = { id = chaosx.nr25.130 days = chaosx_nr25_evolution_delay }
+		}
+		else = { set_global_flag = chaosx_nr25_evolution_something_survived_disabled }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.militarised_antarctica compare = greater_than_or_equals }
+			NOT = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica }
+			NOT = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:chaosx_nr25_evolution.militarised_antarctica }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending
+			save_global_event_target_as = chaosx_nr25_evolution_militarised_antarctica_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_iii_interval }
+			country_event = { id = chaosx.nr25.160 days = chaosx_nr25_evolution_delay }
+		}
+		else = { set_global_flag = chaosx_nr25_evolution_militarised_antarctica_disabled }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.wreck_breaking_apart compare = greater_than_or_equals }
+			NOT = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart }
+			NOT = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:chaosx_nr25_evolution.wreck_breaking_apart }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending
+			save_global_event_target_as = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_iv_interval }
+			country_event = { id = chaosx.nr25.190 days = chaosx_nr25_evolution_delay }
+		}
+		else = { set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_disabled }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.technology_changes_users compare = greater_than_or_equals }
+			NOT = { has_global_flag = chaosx_nr25_evolution_technology_changes_users }
+			NOT = { has_global_flag = chaosx_nr25_evolution_technology_changes_users_pending }
+		}
+		set_temp_variable = { events_log_evolution_stage = constant:chaosx_nr25_evolution.technology_changes_users }
+		if = {
+			limit = { is_current_evolution_enabled = yes }
+			set_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
+			save_global_event_target_as = chaosx_nr25_evolution_technology_changes_users_scheduler
+			set_temp_variable = { chaosx_nr25_evolution_delay = mtth:chaosx_nr25_evolution_v_interval }
+			country_event = { id = chaosx.nr25.220 days = chaosx_nr25_evolution_delay }
+		}
+		else = { set_global_flag = chaosx_nr25_evolution_technology_changes_users_disabled }
+	}
+}
+
+# COUNTRY scope. Executes one primary phase action. Decision visibility and
+# cost triggers are kept in the decision file, while this shared executor keeps
+# AI and human outcomes identical and caps the action cooldown in one place.
+chaosx_nr25_start_final_mission = {
+	set_country_flag = chaosx_nr25_final_mission_active
+	clr_country_flag = chaosx_nr25_final_mission_ready
+	clr_country_flag = chaosx_nr25_final_mission_failed
+	set_variable = { chaosx_nr25_final_mission_kind = chaosx_nr25_action }
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.controlled_recovery compare = equals } }
+		set_temp_variable = { chaosx_nr25_final_mission_days = constant:chaosx_nr25_cost.final_mission_controlled_days }
+		activate_mission = chaosx_nr25_secure_recovery_core_mission
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rapid_extraction compare = equals } }
+		set_temp_variable = { chaosx_nr25_final_mission_days = constant:chaosx_nr25_cost.final_mission_rapid_days }
+		activate_mission = chaosx_nr25_rapid_extraction_mission
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.remote_rig compare = equals } }
+		set_temp_variable = { chaosx_nr25_final_mission_days = constant:chaosx_nr25_cost.final_mission_remote_days }
+		activate_mission = chaosx_nr25_remote_recovery_mission
+	}
+	else_if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.armed_retrieval compare = equals } }
+		set_temp_variable = { chaosx_nr25_final_mission_days = constant:chaosx_nr25_cost.final_mission_armed_days }
+		activate_mission = chaosx_nr25_armed_retrieval_mission
+	}
+	else = {
+		set_temp_variable = { chaosx_nr25_final_mission_days = constant:chaosx_nr25_cost.final_mission_distributed_days }
+		activate_mission = chaosx_nr25_distributed_salvage_mission
+	}
+	subtract_from_temp_variable = { chaosx_nr25_final_mission_days = constant:chaosx_nr25_value.one }
+	country_event = { id = chaosx.nr25.85 days = chaosx_nr25_final_mission_days }
+}
+
+# COUNTRY scope. Phase missions are one-at-a-time, country-owned objectives.
+# Their action that opened the objective still uses the same immediate cost and
+# ledger helper, while the mission supplies a visible time window and a
+# distinct success/partial/failure settlement.
+chaosx_nr25_start_phase_mission = {
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_nr25_phase_mission_active } }
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.authorize compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.charter compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.science_exchange compare = equals }
+				}
+			}
+			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.organize }
+			set_country_flag = chaosx_nr25_phase_mission_active
+			activate_mission = chaosx_nr25_organize_southern_expedition_mission
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.south_america_gateway compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.africa_gateway compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.tasmania_gateway compare = equals }
+				}
+			}
+			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.reach_gateway }
+			set_country_flag = chaosx_nr25_phase_mission_active
+			activate_mission = chaosx_nr25_reach_gateway_mission
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.establish_outpost compare = equals } }
+			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.establish_outpost }
+			set_country_flag = chaosx_nr25_phase_mission_active
+			activate_mission = chaosx_nr25_establish_antarctic_outpost_mission
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.signal_triangulation compare = equals } }
+			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.triangulate_crash_zone }
+			set_country_flag = chaosx_nr25_phase_mission_active
+			activate_mission = chaosx_nr25_triangulate_crash_zone_mission
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.reinforce_outpost compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rotate_crew compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.emergency_shelter compare = equals }
+				}
+			}
+			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.protect_supply_route }
+			set_country_flag = chaosx_nr25_phase_mission_active
+			activate_mission = chaosx_nr25_protect_supply_route_mission
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.aerial_grid compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.ground_transect compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rival_recon compare = equals }
+					check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.recover_fragment compare = equals }
+				}
+				check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_phase_gate.survey_evidence compare = greater_than_or_equals }
+			}
+			set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.confirm_primary_site }
+			set_country_flag = chaosx_nr25_phase_mission_active
+			activate_mission = chaosx_nr25_confirm_primary_site_mission
+		}
+	}
+}
+
+# COUNTRY scope. Full success and bounded partial success share the same
+# cleanup path. Partial success is selected by the current ledger state, not a
+# random hidden roll, so the result is reproducible and visible in reports.
+chaosx_nr25_complete_phase_mission = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_phase_mission_active
+			has_country_flag = chaosx_nr25_participant
+		}
+		set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
+			set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.one }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.organize compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals } }
+				set_country_flag = chaosx_nr25_organize_mission_success
+				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_success_progress }
+			else = { set_country_flag = chaosx_nr25_organize_mission_partial add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_partial_readiness } }
+		}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_access value = constant:chaosx_nr25_value.two compare = greater_than_or_equals } }
+				set_country_flag = chaosx_nr25_gateway_mission_success
+				add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_success_readiness }
+			else = { set_country_flag = chaosx_nr25_gateway_mission_partial add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_partial_exposure } }
+		}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.establish_outpost compare = equals } }
+			if = {
+				limit = { has_country_flag = chaosx_nr25_outpost_established }
+				set_country_flag = chaosx_nr25_outpost_mission_success
+				add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_cost.mission_success_readiness }
+			else = { set_country_flag = chaosx_nr25_outpost_mission_partial add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_cost.mission_partial_readiness } }
+		}
+			if = {
+				limit = {
+					has_country_flag = chaosx_nr25_outpost_established
+					NOT = { has_country_flag = chaosx_nr25_outpost_emphasis_selected }
+					NOT = { has_country_flag = chaosx_nr25_outpost_emphasis_pending }
+				}
+				set_country_flag = chaosx_nr25_outpost_emphasis_pending
+				country_event = { id = chaosx.nr25.70 days = 1 }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.triangulate_crash_zone compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } }
+				set_country_flag = chaosx_nr25_triangulate_mission_success
+				add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_signal }
+			else = { set_country_flag = chaosx_nr25_triangulate_mission_partial set_country_flag = chaosx_nr25_false_map_exposed }
+		}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.protect_supply_route compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_cost.outpost_min compare = greater_than_or_equals } }
+				set_country_flag = chaosx_nr25_supply_route_mission_success
+				add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_success_readiness }
+			else = { set_country_flag = chaosx_nr25_supply_route_mission_partial add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_partial_readiness } }
+		}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.confirm_primary_site compare = equals } }
+			if = {
+				limit = {
+					check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_phase_gate.survey_evidence compare = greater_than_or_equals }
+					has_country_flag = chaosx_nr25_primary_site_candidate_found
+				}
+				set_country_flag = chaosx_nr25_confirm_site_mission_success
+				set_country_flag = chaosx_nr25_primary_site_confirmed
+				add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_cost.mission_success_progress }
+			else = { set_country_flag = chaosx_nr25_confirm_site_mission_partial add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_partial_exposure } }
+		}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.stabilize_wreck compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals } }
+				set_country_flag = chaosx_nr25_stabilize_wreck_mission_success
+				set_country_flag = chaosx_nr25_wreck_stabilized
+				add_to_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_value.twenty }
+				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_success_progress }
+				subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_stabilize_reduction }
+			}
+			else_if = {
+				limit = { check_variable = { var = chaosx_nr25_wreck_integrity value = constant:chaosx_nr25_value.zero compare = greater_than } }
+				set_country_flag = chaosx_nr25_stabilize_wreck_mission_partial
+				set_country_flag = chaosx_nr25_wreck_stabilized
+				add_to_variable = { chaosx_nr25_wreck_integrity = constant:chaosx_nr25_value.ten }
+				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_partial_progress }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_partial_exposure }
+			}
+			else = {
+				set_country_flag = chaosx_nr25_stabilize_wreck_mission_failed
+				set_country_flag = chaosx_nr25_fragment_field_active
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals } }
+			if = {
+				limit = { has_country_flag = chaosx_nr25_dependence_accident }
+				set_country_flag = chaosx_nr25_contain_systems_mission_failed
+				clr_country_flag = chaosx_nr25_dependence_contained
+				add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_contain }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure }
+			}
+			else_if = {
+				limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_accident_threshold compare = less_than } }
+				set_country_flag = chaosx_nr25_contain_systems_mission_success
+				set_country_flag = chaosx_nr25_dependence_started
+				set_country_flag = chaosx_nr25_dependence_contained
+				clr_country_flag = chaosx_nr25_dependence_accident
+				subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_contain_reduction }
+				subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_contain }
+				set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero }
+				set_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_value.zero }
+			}
+			else = {
+				set_country_flag = chaosx_nr25_contain_systems_mission_partial
+				set_country_flag = chaosx_nr25_dependence_started
+				set_country_flag = chaosx_nr25_dependence_contained
+				clr_country_flag = chaosx_nr25_dependence_accident
+				subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_contain_reduction }
+				subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_contain }
+				set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero }
+				set_variable = { chaosx_nr25_dependence_stable_days = constant:chaosx_nr25_value.zero }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
+			set_country_flag = chaosx_nr25_evacuation_mission_success
+			chaosx_nr25_withdraw_participant = yes
+		}
+		if = {
+			limit = { NOT = { check_variable = { var = chaosx_nr25_phase_mission_was_evacuation value = constant:chaosx_nr25_value.one compare = equals } } }
+			chaosx_nr25_remove_phase_missions = yes
+			chaosx_nr25_clamp_values = yes
+			chaosx_nr25_advance_phase_if_ready = yes
+			chaosx_nr25_update_achievement_tracking = yes
+		}
+	}
+}
+
+# COUNTRY scope. A phase-mission timeout is a partial field failure, not an
+# automatic expedition elimination. The objective-specific markers preserve a
+# reportable reason and the normal action cooldown remains the only retry gate.
+chaosx_nr25_fail_phase_mission = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_phase_mission_active
+			has_country_flag = chaosx_nr25_participant
+		}
+		set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
+			set_temp_variable = { chaosx_nr25_phase_mission_was_evacuation = constant:chaosx_nr25_value.one }
+		}
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.organize compare = equals } } set_country_flag = chaosx_nr25_organize_mission_failed set_country_flag = chaosx_nr25_emergency_resupply }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.reach_gateway compare = equals } } set_country_flag = chaosx_nr25_gateway_mission_failed set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.one } set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland } set_country_flag = chaosx_nr25_route_improvised }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.establish_outpost compare = equals } } set_country_flag = chaosx_nr25_outpost_mission_failed set_country_flag = chaosx_nr25_outpost_compromised subtract_from_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.four } }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.triangulate_crash_zone compare = equals } } set_country_flag = chaosx_nr25_triangulate_mission_failed set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.compromised } }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.protect_supply_route compare = equals } } set_country_flag = chaosx_nr25_supply_route_mission_failed add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.mission_failure_readiness } set_country_flag = chaosx_nr25_convoy_incident }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.confirm_primary_site compare = equals } } set_country_flag = chaosx_nr25_confirm_site_mission_failed add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.mission_failure_progress } add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure } }
+		if = { limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.stabilize_wreck compare = equals } } set_country_flag = chaosx_nr25_stabilize_wreck_mission_failed set_country_flag = chaosx_nr25_fragment_field_active add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure } }
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.contain_alien_systems compare = equals } }
+			set_country_flag = chaosx_nr25_contain_systems_mission_failed
+			clr_country_flag = chaosx_nr25_dependence_contained
+			add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_contain }
+			add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.mission_failure_exposure }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_phase_mission_kind value = constant:chaosx_nr25_phase_mission.evacuate_expedition compare = equals } }
+			set_country_flag = chaosx_nr25_evacuation_mission_failed
+			chaosx_nr25_record_evacuate_failure_casualties = yes
+			chaosx_nr25_withdraw_participant = yes
+		}
+		if = {
+			limit = { NOT = { check_variable = { var = chaosx_nr25_phase_mission_was_evacuation value = constant:chaosx_nr25_value.one compare = equals } } }
+			chaosx_nr25_remove_phase_missions = yes
+			set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+			chaosx_nr25_clamp_values = yes
+			chaosx_nr25_update_achievement_tracking = yes
+		}
+	}
+}
+
+# COUNTRY scope. The timed mission reaches its completion window on this
+# event's date; the player must confirm the mission card to submit the result.
+chaosx_nr25_prepare_final_mission_completion = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			NOT = { has_country_flag = chaosx_nr25_final_mission_ready }
+			has_global_flag = chaosx_nr25_active
+			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+		}
+		set_country_flag = chaosx_nr25_final_mission_ready
+	}
+}
+
+# COUNTRY scope. Completes the currently armed final recovery mission and
+# submits its verified candidate to the deterministic same-day arbitration.
+chaosx_nr25_complete_final_mission = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			has_country_flag = chaosx_nr25_final_mission_ready
+			has_global_flag = chaosx_nr25_active
+			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+		}
+		chaosx_nr25_remove_final_missions = yes
+		clr_country_flag = chaosx_nr25_final_mission_active
+		clr_country_flag = chaosx_nr25_final_mission_ready
+		set_country_flag = chaosx_nr25_final_mission_success
+		clear_variable = chaosx_nr25_final_mission_kind
+		chaosx_nr25_submit_final_candidate = yes
+	}
+}
+
+# COUNTRY scope. A timed-out or cancelled final mission loses partial progress
+# and readiness but leaves the expedition in the race with a normal retry
+# cooldown. The mission failure is deliberately not an automatic elimination.
+chaosx_nr25_fail_final_mission = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_final_mission_active
+			NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+		}
+		chaosx_nr25_remove_final_missions = yes
+		clr_country_flag = chaosx_nr25_final_mission_active
+		clr_country_flag = chaosx_nr25_final_mission_ready
+		set_country_flag = chaosx_nr25_final_mission_failed
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.final_mission_failure_progress_loss }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.final_mission_failure_readiness_loss }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.final_mission_failure_exposure }
+		set_variable = { chaosx_nr25_final_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
+		set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+		clear_variable = chaosx_nr25_final_mission_kind
+		chaosx_nr25_clamp_values = yes
+		country_event = { id = chaosx.nr25.86 days = 1 }
+		chaosx_nr25_update_achievement_tracking = yes
+	}
+}
+
+chaosx_nr25_execute_action = {
+	set_variable = { chaosx_nr25_last_action = chaosx_nr25_action }
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.authorize compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_authorize
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_authorize }
+		add_fuel = constant:chaosx_nr25_cost.fuel_authorize
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_authorize }
+		set_temp_variable = { chaosx_nr25_civilian_commitment_days = constant:chaosx_nr25_cost.civilian_commitment_days }
+		add_timed_idea = { idea = chaosx_nr25_civilian_commitment days = chaosx_nr25_civilian_commitment_days }
+		set_variable = { chaosx_nr25_civilian_commitment = constant:chaosx_nr25_value.one }
+		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.one }
+		if = {
+			limit = { has_country_flag = chaosx_nr25_entry_lacked_direct_coastal_access }
+			set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland }
+			set_country_flag = chaosx_nr25_route_chartered
+		}
+		else = {
+			set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.south_america }
+			set_country_flag = chaosx_nr25_route_direct_access
+		}
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_authorize }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_authorize }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_entry }
+		add_to_variable = { chaosx_nr25_crew = constant:chaosx_nr25_value.one }
+		set_country_flag = chaosx_nr25_action_authorize_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.charter compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_charter
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_charter }
+		add_fuel = constant:chaosx_nr25_cost.fuel_charter
+		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.one }
+		set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.south_america }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_charter }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.ten }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_charter }
+		set_country_flag = chaosx_nr25_action_charter_used
+		set_country_flag = chaosx_nr25_route_chartered
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.science_exchange compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_science
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_science }
+		add_to_variable = { chaosx_nr25_scientific_capacity = constant:chaosx_nr25_value.two }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.six }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_science }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_science }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_science }
+		set_country_flag = chaosx_nr25_action_science_exchange_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.conceal_departure compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_conceal_departure
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_conceal_departure }
+		set_temp_variable = { chaosx_nr25_civilian_commitment_days = constant:chaosx_nr25_cost.civilian_commitment_days }
+		add_timed_idea = { idea = chaosx_nr25_civilian_commitment days = chaosx_nr25_civilian_commitment_days }
+		set_variable = { chaosx_nr25_civilian_commitment = constant:chaosx_nr25_value.one }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_conceal_departure }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_conceal_departure }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_cost.intelligence_conceal_departure }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_conceal_departure }
+		set_country_flag = chaosx_nr25_departure_concealed
+		set_country_flag = chaosx_nr25_action_conceal_departure_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.depot compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_depot }
+		add_fuel = constant:chaosx_nr25_cost.fuel_depot
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_depot }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.eighteen }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_mobilisation }
+		set_country_flag = chaosx_nr25_action_depot_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.aerial compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_survey }
+		add_fuel = constant:chaosx_nr25_cost.fuel_aerial
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_aerial }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.eight }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_aerial }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_crossing }
+		set_country_flag = chaosx_nr25_action_aerial_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.radio compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_radio }
+		add_fuel = constant:chaosx_nr25_cost.fuel_radio
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_radio }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.ten }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_radio }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_science }
+		set_country_flag = chaosx_nr25_action_radio_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.crew compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_crew }
+		add_manpower = constant:chaosx_nr25_cost.manpower_crew
+		add_to_variable = { chaosx_nr25_crew = constant:chaosx_nr25_value.three }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_crew }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_crew }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_science }
+		set_country_flag = chaosx_nr25_action_crew_used
+	}
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.south_america_gateway compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.africa_gateway compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.tasmania_gateway compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_crossing }
+		add_fuel = constant:chaosx_nr25_cost.fuel_crossing
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_crossing }
+		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.two }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_gateway }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_gateway }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_crossing }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.africa_gateway compare = equals } } set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.africa } }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.tasmania_gateway compare = equals } } set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.tasmania } }
+		if = { limit = { has_country_flag = chaosx_nr25_entry_lacked_direct_coastal_access } set_country_flag = chaosx_nr25_route_sponsored }
+		set_country_flag = chaosx_nr25_action_gateway_used
+	}
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.establish_outpost compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_outpost }
+		add_fuel = constant:chaosx_nr25_cost.fuel_outpost
+		add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.twenty }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_outpost }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_outpost }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_outpost }
+		set_country_flag = chaosx_nr25_outpost_established
+		clr_country_flag = chaosx_nr25_outpost_compromised
+		if = {
+			limit = { NOT = { has_country_flag = chaosx_nr25_outpost_counted } }
+			set_country_flag = chaosx_nr25_outpost_counted
+			add_to_variable = { global.chaosx_nr25_outpost_participant_count = constant:chaosx_nr25_value.one }
+		}
+		set_country_flag = chaosx_nr25_action_establish_outpost_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.reinforce_outpost compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_outpost }
+		add_fuel = constant:chaosx_nr25_cost.fuel_outpost
+		add_to_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.twelve }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_reinforce }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_reinforce }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_outpost }
+		if = {
+			limit = { has_country_flag = chaosx_nr25_outpost_lost }
+			set_country_flag = chaosx_nr25_outpost_restored
+			clr_country_flag = chaosx_nr25_outpost_lost
+			clr_country_flag = chaosx_nr25_outpost_compromised
+		}
+		set_country_flag = chaosx_nr25_action_reinforce_outpost_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rotate_crew compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_crew }
+		add_fuel = constant:chaosx_nr25_cost.fuel_crew
+		add_manpower = constant:chaosx_nr25_cost.manpower_crew
+		add_to_variable = { chaosx_nr25_crew = constant:chaosx_nr25_value.two }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_rotate }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_rotate }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_response }
+		set_country_flag = chaosx_nr25_action_rotate_crew_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.emergency_shelter compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_shelter }
+		add_fuel = constant:chaosx_nr25_cost.fuel_shelter
+		add_manpower = constant:chaosx_nr25_cost.manpower_shelter
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_shelter }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_shelter_reduction }
+		clr_country_flag = chaosx_nr25_emergency_weather
+		set_country_flag = chaosx_nr25_action_emergency_shelter_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.alternate_landing compare = equals } }
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_alternate_landing }
+		add_fuel = constant:chaosx_nr25_cost.fuel_alternate_landing
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_alternate_landing }
+		set_variable = { chaosx_nr25_route = constant:chaosx_nr25_route.inland }
+		set_variable = { chaosx_nr25_access = constant:chaosx_nr25_value.two }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_alternate_landing }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_alternate_landing }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_alternate_landing }
+		set_country_flag = chaosx_nr25_route_alternate_landing
+		set_country_flag = chaosx_nr25_route_improvised
+		set_country_flag = chaosx_nr25_action_alternate_landing_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.escort_convoys compare = equals } }
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_escort }
+		add_fuel = constant:chaosx_nr25_cost.fuel_escort
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_escort }
+		add_manpower = constant:chaosx_nr25_cost.manpower_escort
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_escort }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_escort }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_escort }
+		clr_country_flag = chaosx_nr25_convoy_incident
+		set_country_flag = chaosx_nr25_route_escorted
+		set_country_flag = chaosx_nr25_action_escort_convoys_used
+	}
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.aerial_grid compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.ground_transect compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.signal_triangulation compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rival_recon compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.recover_fragment compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_survey }
+		add_fuel = constant:chaosx_nr25_cost.fuel_survey
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_survey }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_cost.intelligence_survey }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_survey }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survey }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_survey }
+		chaosx_nr25_mark_next_sector = yes
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.signal_triangulation compare = equals } }
+			add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.ten }
+			if = { limit = { has_country_flag = chaosx_nr25_false_map_active } clr_country_flag = chaosx_nr25_false_map_active set_country_flag = chaosx_nr25_false_map_exposed }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.recover_fragment compare = equals } }
+			set_temp_variable = { chaosx_alien_recovery_fragment_id = chaosx_nr25_current_sector }
+			set_temp_variable = { chaosx_alien_recovery_fragment_role = chaosx_nr25_fragment_role }
+			chaosx_alien_recovery_ledger_assign_fragment = yes
+			if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
+				add_to_variable = { chaosx_nr25_fragment_count = constant:chaosx_nr25_value.one }
+				set_country_flag = chaosx_nr25_fragment_recovered
+				chaosx_nr25_confirm_current_sector = yes
+			}
+		}
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.aerial_grid compare = equals } } set_country_flag = chaosx_nr25_aerial_grid_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.ground_transect compare = equals } } set_country_flag = chaosx_nr25_ground_transect_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.signal_triangulation compare = equals } } set_country_flag = chaosx_nr25_signal_triangulation_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rival_recon compare = equals } } set_country_flag = chaosx_nr25_rival_recon_used }
+		if = {
+			limit = {
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rival_recon compare = equals }
+				has_country_flag = chaosx_nr25_false_map_operation
+				has_country_flag = chaosx_nr25_false_map_exposed
+			}
+			set_country_flag = chaosx_nr25_false_map_recovered
+		}
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.recover_fragment compare = equals } } set_country_flag = chaosx_nr25_recover_fragment_used }
+		set_country_flag = chaosx_nr25_action_survey_used
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.analyze_recovered_fragment compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_fragment_analysis
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_fragment_analysis }
+		set_temp_variable = { chaosx_nr25_civilian_commitment_days = constant:chaosx_nr25_cost.civilian_commitment_days }
+		add_timed_idea = { idea = chaosx_nr25_civilian_commitment days = chaosx_nr25_civilian_commitment_days }
+		set_variable = { chaosx_nr25_civilian_commitment = constant:chaosx_nr25_value.one }
+		set_variable = { chaosx_nr25_fragment_analysis_strength = chaosx_nr25_fragment_count }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_fragment_analysis }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_fragment_analysis }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_cost.intelligence_fragment_analysis }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_fragment_analysis }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_fragment }
+		set_country_flag = chaosx_nr25_fragment_analysis_complete
+		set_country_flag = chaosx_nr25_action_fragment_analysis_used
+	}
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.controlled_recovery compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rapid_extraction compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.remote_rig compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.armed_retrieval compare = equals }
+				check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.distributed_salvage compare = equals }
+			}
+		}
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_final }
+		add_fuel = constant:chaosx_nr25_cost.fuel_final
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_final }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.controlled_recovery compare = equals } } add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_controlled } add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_controlled } }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rapid_extraction compare = equals } } add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_rapid } add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_rapid } add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_rapid } }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.remote_rig compare = equals } } add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_remote } add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_remote } add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_remote } }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.armed_retrieval compare = equals } } add_manpower = constant:chaosx_nr25_cost.manpower_armed add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_armed } add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_armed } add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_armed } }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.distributed_salvage compare = equals } } add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.progress_distributed } add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_distributed } add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_distributed } }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.controlled_recovery compare = equals } } set_country_flag = chaosx_nr25_final_controlled_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.rapid_extraction compare = equals } } set_country_flag = chaosx_nr25_final_rapid_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.remote_rig compare = equals } } set_country_flag = chaosx_nr25_final_remote_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.armed_retrieval compare = equals } } set_country_flag = chaosx_nr25_final_armed_used }
+		if = { limit = { check_variable = { var = chaosx_nr25_action value = constant:chaosx_nr25_action.distributed_salvage compare = equals } } set_country_flag = chaosx_nr25_final_distributed_used }
+		add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.twenty }
+		set_country_flag = chaosx_nr25_final_attempt_made
+		chaosx_nr25_start_final_mission = yes
+	}
+
+	chaosx_nr25_clamp_values = yes
+	chaosx_nr25_start_phase_mission = yes
+	chaosx_nr25_advance_phase_if_ready = yes
+	chaosx_nr25_raise_chaos = yes
+	if = {
+		limit = { has_global_flag = chaosx_nr25_active }
+		chaosx_nr25_check_evolution_gates = yes
+	}
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope. Phase progression is bounded by the participant's own
+# evidence and readiness, so no action can skip crossing or outpost setup.
+chaosx_nr25_advance_phase_if_ready = {
+	if = {
+		limit = {
+			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals }
+			check_variable = { var = chaosx_nr25_access value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_phase_gate.mobilization_progress compare = greater_than_or_equals }
+		}
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.crossing }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals }
+			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_phase_gate.crossing_progress compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals }
+		}
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.outpost }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals }
+			check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_phase_gate.outpost_progress compare = greater_than_or_equals }
+		}
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.survey }
+	}
+	if = {
+		limit = {
+			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals }
+			check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_phase_gate.survey_evidence compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_phase_gate.survey_progress compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.survey_readiness compare = greater_than_or_equals }
+		}
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.final_recovery }
+		if = {
+			limit = {
+				check_variable = {
+					var = chaosx_nr25_final_ready_date
+					value = constant:chaosx_nr25_value.zero
+					compare = equals
+				}
+			}
+			set_variable = { chaosx_nr25_final_ready_date = global.date }
+		}
+	}
+}
+
+# COUNTRY scope. Lexical comparator for candidates that become valid on the
+# same day. The date window is handled by the caller; this helper only applies
+# the accepted evidence ordering and ends with stable participant identifiers.
+chaosx_nr25_candidate_is_better_same_day = {
+	set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_nr25_survey_evidence
+				value = global.chaosx_nr25_final_candidate_survey
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = chaosx_nr25_survey_evidence
+				value = global.chaosx_nr25_final_candidate_survey
+				compare = equals
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = global.chaosx_nr25_final_candidate_readiness compare = greater_than } }
+			set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = global.chaosx_nr25_final_candidate_readiness compare = equals } }
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_outpost_security value = global.chaosx_nr25_final_candidate_outpost compare = greater_than } }
+				set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
+			}
+			else_if = {
+				limit = { check_variable = { var = chaosx_nr25_outpost_security value = global.chaosx_nr25_final_candidate_outpost compare = equals } }
+				if = {
+					limit = { check_variable = { var = chaosx_nr25_exposure_risk value = global.chaosx_nr25_final_candidate_exposure compare = less_than } }
+					set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
+				}
+				else_if = {
+					limit = { check_variable = { var = chaosx_nr25_exposure_risk value = global.chaosx_nr25_final_candidate_exposure compare = equals } }
+					if = {
+						limit = { check_variable = { var = chaosx_nr25_final_ready_date value = global.chaosx_nr25_final_candidate_ready_date compare = less_than } }
+						set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
+					}
+					else_if = {
+						limit = { check_variable = { var = chaosx_nr25_final_ready_date value = global.chaosx_nr25_final_candidate_ready_date compare = equals } }
+						if = {
+							limit = { check_variable = { var = chaosx_nr25_entry_order value = global.chaosx_nr25_final_candidate_entry compare = less_than } }
+							set_temp_variable = { chaosx_nr25_candidate_is_better = constant:chaosx_nr25_value.one }
+						}
+						# Equal registry positions are impossible for valid participants.
+						# No random seed is used as a hidden fifth tie-breaker.
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope. A valid final recovery is submitted to the single same-day
+# candidate window. The comparator is deterministic and does not use a global
+# random scan. A later day cannot displace an earlier candidate.
+chaosx_nr25_submit_final_candidate = {
+	if = {
+		limit = {
+			check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals }
+			check_variable = { var = chaosx_nr25_progress value = constant:chaosx_nr25_cost.progress_min compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_cost.readiness_min compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_cost.outpost_min compare = greater_than_or_equals }
+			check_variable = { var = chaosx_nr25_access value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+			NOT = { has_country_flag = chaosx_nr25_emergency_weather }
+			NOT = { has_country_flag = chaosx_nr25_crew_exhausted }
+			NOT = { has_country_flag = chaosx_nr25_final_mission_active }
+			check_variable = { var = chaosx_nr25_final_cooldown value = constant:chaosx_nr25_value.zero compare = less_than_or_equals }
+		}
+		set_variable = { chaosx_nr25_final_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
+		set_temp_variable = { chaosx_nr25_candidate_score = chaosx_nr25_survey_evidence }
+		add_to_variable = { global.chaosx_nr25_recovery_order = constant:chaosx_nr25_value.one }
+		if = {
+			limit = { check_variable = { var = global.chaosx_nr25_final_resolution_pending value = constant:chaosx_nr25_value.zero compare = equals } }
+			set_variable = { global.chaosx_nr25_final_resolution_pending = constant:chaosx_nr25_value.one }
+			set_variable = { global.chaosx_nr25_final_candidate_date = global.date }
+			set_variable = { global.chaosx_nr25_final_candidate_score = chaosx_nr25_candidate_score }
+			set_variable = { global.chaosx_nr25_final_candidate_survey = chaosx_nr25_survey_evidence }
+			set_variable = { global.chaosx_nr25_final_candidate_readiness = chaosx_nr25_logistics_readiness }
+			set_variable = { global.chaosx_nr25_final_candidate_exposure = chaosx_nr25_exposure_risk }
+			set_variable = { global.chaosx_nr25_final_candidate_outpost = chaosx_nr25_outpost_security }
+			set_variable = { global.chaosx_nr25_final_candidate_ready_date = chaosx_nr25_final_ready_date }
+			set_variable = { global.chaosx_nr25_final_candidate_entry = chaosx_nr25_entry_order }
+			save_global_event_target_as = chaosx_nr25_final_candidate_country
+			country_event = { id = chaosx.nr25.84 days = 1 }
+		}
+		else_if = {
+			limit = { check_variable = { var = global.chaosx_nr25_final_candidate_date value = global.date compare = equals } }
+			chaosx_nr25_candidate_is_better_same_day = yes
+			if = {
+				limit = {
+					check_variable = { var = chaosx_nr25_candidate_is_better value = constant:chaosx_nr25_value.one compare = equals }
+				}
+				set_variable = { global.chaosx_nr25_final_candidate_score = chaosx_nr25_candidate_score }
+				set_variable = { global.chaosx_nr25_final_candidate_survey = chaosx_nr25_survey_evidence }
+				set_variable = { global.chaosx_nr25_final_candidate_readiness = chaosx_nr25_logistics_readiness }
+				set_variable = { global.chaosx_nr25_final_candidate_exposure = chaosx_nr25_exposure_risk }
+				set_variable = { global.chaosx_nr25_final_candidate_outpost = chaosx_nr25_outpost_security }
+				set_variable = { global.chaosx_nr25_final_candidate_ready_date = chaosx_nr25_final_ready_date }
+				set_variable = { global.chaosx_nr25_final_candidate_entry = chaosx_nr25_entry_order }
+				save_global_event_target_as = chaosx_nr25_final_candidate_country
+			}
+		}
+	}
+}
+
+# COUNTRY scope. The current event target is the already selected same-day
+# candidate. All participant outcomes are queued once, and the shared target is
+# then cleared so no saved pointer leaks into later events.
+chaosx_nr25_resolve_final_candidate = {
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_active
+			has_event_target = chaosx_nr25_final_candidate_country
+		}
+		set_global_flag = chaosx_nr25_final_recovery_resolved
+		clr_global_flag = chaosx_nr25_active
+		chaosx_nr25_clear_pending_evolutions = yes
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.analysis }
+			event_target:chaosx_nr25_final_candidate_country = {
+			chaosx_nr25_remove_phase_missions = yes
+			chaosx_nr25_remove_final_missions = yes
+			chaosx_nr25_clear_selection_state = yes
+			clr_country_flag = chaosx_nr25_final_mission_active
+			clr_country_flag = chaosx_nr25_final_mission_ready
+			set_country_flag = chaosx_nr25_recovery_winner
+			set_country_flag = chaosx_nr25_terminal
+			country_event = { id = chaosx.nr25.81 days = 1 }
+		}
+			every_country = {
+			limit = {
+			has_country_flag = chaosx_nr25_participant
+			NOT = { has_country_flag = chaosx_nr25_recovery_winner }
+			}
+			chaosx_nr25_remove_phase_missions = yes
+			chaosx_nr25_remove_final_missions = yes
+			chaosx_nr25_clear_selection_state = yes
+			clr_country_flag = chaosx_nr25_final_mission_active
+			clr_country_flag = chaosx_nr25_final_mission_ready
+			set_country_flag = chaosx_nr25_terminal
+			country_event = { id = chaosx.nr25.82 days = 1 }
+		}
+		clear_global_event_target = chaosx_nr25_final_candidate_country
+		clear_global_event_target = chaosx_nr25_history_actor
+	}
+}
+
+# COUNTRY scope. Applies one evolution-specific route. Evolution actions are
+# secondary board actions and never remove the baseline phase actions, so a
+# hazard can be managed without making final recovery impossible.
+chaosx_nr25_apply_militarisation_target = {
+	if = {
+		limit = {
+			has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope
+			event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes }
+		}
+		event_target:chaosx_nr25_rival_target_scope = {
+			if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
+				if = {
+					limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals } }
+					add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss }
+				}
+				else = { add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_readiness_loss } }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_blockade }
+				set_country_flag = chaosx_nr25_militarisation_blockaded
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
+			}
+			if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } }
+				if = {
+					limit = { has_country_flag = chaosx_nr25_outpost_established }
+					set_variable = { chaosx_nr25_outpost_security = constant:chaosx_nr25_value.zero }
+					clr_country_flag = chaosx_nr25_outpost_established
+					set_country_flag = chaosx_nr25_outpost_compromised
+					set_country_flag = chaosx_nr25_outpost_lost
+					add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_progress_loss }
+				}
+				else = { add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss } }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_seize }
+				chaosx_nr25_record_casualties = yes
+				set_country_flag = chaosx_nr25_militarisation_seized
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
+			}
+			if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } }
+				add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss }
+				add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_readiness_loss }
+				add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_rival }
+				set_country_flag = chaosx_nr25_militarisation_intercepted
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_armed_incident }
+			}
+			if = {
+				limit = { check_variable = { var = ROOT.chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } }
+				set_country_flag = chaosx_nr25_rescue_received
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_rescue_debt }
+				ROOT = { set_country_flag = chaosx_nr25_rescue_target_was_valid }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } }
+			add_named_threat = { threat = constant:chaosx_nr25_cost.threat_public_blockade name = chaosx_nr25_public_blockade }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } }
+			add_named_threat = { threat = constant:chaosx_nr25_cost.threat_public_seizure name = chaosx_nr25_public_seizure }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } }
+			add_named_threat = { threat = constant:chaosx_nr25_cost.threat_public_intercept name = chaosx_nr25_public_intercept }
+		}
+	}
+	clear_variable = chaosx_nr25_rival_target
+	clear_variable = chaosx_nr25_rival_target_id
+	clr_country_flag = chaosx_nr25_rival_target_selected
+}
+
+chaosx_nr25_execute_evolution_action = {
+	set_variable = { chaosx_nr25_last_action = chaosx_nr25_evolution_action }
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+	if = {
+		limit = {
+			NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+			check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.stabilize compare = equals }
+		}
+		set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.stabilize_wreck }
+		set_country_flag = chaosx_nr25_phase_mission_active
+		activate_mission = chaosx_nr25_stabilize_wreck_mission
+	}
+	if = {
+		limit = {
+			NOT = { has_country_flag = chaosx_nr25_phase_mission_active }
+			check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.contain compare = equals }
+		}
+		set_variable = { chaosx_nr25_phase_mission_kind = constant:chaosx_nr25_phase_mission.contain_alien_systems }
+		set_country_flag = chaosx_nr25_phase_mission_active
+		activate_mission = chaosx_nr25_contain_alien_systems_mission
+	}
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.remote compare = equals } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.twelve }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_remote }
+		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.two }
+		set_country_flag = chaosx_nr25_signal_remote_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.follow compare = equals } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.eight }
+		add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.four }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_follow }
+		add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.two }
+		set_country_flag = chaosx_nr25_signal_follow_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.shield compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.eight }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_shield_reduction }
+		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.five }
+		set_country_flag = chaosx_nr25_signal_shield_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.jam compare = equals } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.six }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_jam }
+		subtract_from_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.eight }
+		set_country_flag = chaosx_nr25_signal_jam_route
+		set_variable = { chaosx_nr25_rival_action_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.broadcast compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_public_evolution
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.fifteen }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_signal_broadcast }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_signal_broadcast }
+		add_to_variable = { chaosx_nr25_signal_intensity = constant:chaosx_nr25_value.ten }
+		set_country_flag = chaosx_nr25_signal_broadcast_route
+	}
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.avoid compare = equals } }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_avoid_reduction }
+		set_country_flag = chaosx_nr25_survivor_avoid_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.guard compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.ten }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_guard }
+		set_country_flag = chaosx_nr25_survivor_guard_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.capture compare = equals } }
+		add_manpower = constant:chaosx_nr25_cost.manpower_survivor
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.ten }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.ten }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_capture }
+		set_country_flag = chaosx_nr25_survivor_capture_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.path compare = equals } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_to_variable = { chaosx_nr25_wreck_access = constant:chaosx_nr25_value.eight }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.six }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_path }
+		set_country_flag = chaosx_nr25_survivor_path_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.turn compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_evolution
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.eight }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_survivor_turn_reduction }
+		set_country_flag = chaosx_nr25_survivor_turn_route
+	}
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.blockade compare = equals } has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.seven }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_blockade }
+		set_country_flag = chaosx_nr25_militarisation_blockade_route
+		chaosx_nr25_apply_militarisation_target = yes
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.seize compare = equals } has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		add_manpower = constant:chaosx_nr25_cost.manpower_militarisation
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.fifteen }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_seize }
+		set_country_flag = chaosx_nr25_militarisation_seize_route
+		chaosx_nr25_apply_militarisation_target = yes
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.rescue compare = equals } has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes } }
+		add_manpower = constant:chaosx_nr25_cost.manpower_militarisation
+		add_to_variable = { chaosx_nr25_crew = constant:chaosx_nr25_value.three }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.five }
+			if = {
+				limit = { has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope }
+			chaosx_nr25_apply_militarisation_target = yes
+		}
+		set_country_flag = chaosx_nr25_militarisation_rescue_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.intercept compare = equals } has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.eight }
+		add_to_variable = { chaosx_nr25_rival_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+		set_country_flag = chaosx_nr25_militarisation_intercept_route
+		chaosx_nr25_apply_militarisation_target = yes
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.demilitarized compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_public_evolution
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.six }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_militarisation_demilitarized_reduction }
+		set_country_flag = chaosx_nr25_militarisation_demilitarized_route
+	}
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.stabilize compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		set_country_flag = chaosx_nr25_stabilize_wreck_attempted
+		set_country_flag = chaosx_nr25_wreck_stabilize_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.cut compare = equals } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.twelve }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_cut }
+		chaosx_nr25_mark_next_sector = yes
+		set_temp_variable = { chaosx_alien_recovery_fragment_id = chaosx_nr25_current_sector }
+		set_temp_variable = { chaosx_alien_recovery_fragment_role = chaosx_nr25_fragment_role }
+		chaosx_alien_recovery_ledger_assign_fragment = yes
+		if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_fragment_assigned value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } }
+			add_to_variable = { chaosx_nr25_fragment_count = constant:chaosx_nr25_value.one }
+			set_country_flag = chaosx_nr25_fragment_recovered
+			chaosx_nr25_confirm_current_sector = yes
+		}
+		set_country_flag = chaosx_nr25_wreck_cut_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.map compare = equals } }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.twelve }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_value.one }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.eight }
+		set_country_flag = chaosx_nr25_wreck_map_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.distribute compare = equals } }
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_value.two }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_value.five }
+		set_country_flag = chaosx_nr25_wreck_distribute_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.leave compare = equals } }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.four }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_wreck_leave_reduction }
+		set_country_flag = chaosx_nr25_wreck_leave_route
+	}
+
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.contain compare = equals } }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_evolution }
+		set_country_flag = chaosx_nr25_contain_systems_attempted
+		set_country_flag = chaosx_nr25_dependence_contain_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.destroy compare = equals } }
+		add_fuel = constant:chaosx_nr25_cost.fuel_evolution
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_destroy }
+		subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_destroy_reduction }
+		set_country_flag = chaosx_nr25_dependence_started
+		clr_country_flag = chaosx_nr25_dependence_contained
+		clr_country_flag = chaosx_nr25_dependence_accident
+		set_country_flag = chaosx_nr25_dependence_destroy_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.transfer compare = equals } }
+		add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_evolution }
+		add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_transfer }
+		add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.six }
+		set_country_flag = chaosx_nr25_dependence_started
+		set_country_flag = chaosx_nr25_dependence_transfer_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.conceal compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_conceal
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_conceal_reduction }
+		subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_conceal_reduction }
+		set_country_flag = chaosx_nr25_dependence_started
+		set_country_flag = chaosx_nr25_dependence_contained
+		clr_country_flag = chaosx_nr25_dependence_accident
+		set_country_flag = chaosx_nr25_dependence_conceal_route
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_evolution_action value = constant:chaosx_nr25_evolution_action.integrate compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_integrate
+		add_to_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_integrate }
+		add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_value.ten }
+		add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_integrate }
+		set_country_flag = chaosx_nr25_dependence_started
+		clr_country_flag = chaosx_nr25_dependence_contained
+		set_country_flag = chaosx_nr25_dependence_integrate_route
+	}
+
+	chaosx_nr25_clamp_values = yes
+	chaosx_nr25_raise_chaos = yes
+	if = {
+		limit = { has_global_flag = chaosx_nr25_active }
+		chaosx_nr25_check_evolution_gates = yes
+	}
+	chaosx_nr25_prepare_board_slots = yes
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope. Exchanges a verified weather or route note with one selected
+# rival before the main recovery is resolved. The initiator keeps a bounded
+# unique target list so post-recovery analysis cannot satisfy the cooperation
+# achievement and repeated exchanges with one country are never double-counted.
+chaosx_nr25_execute_pre_winner_data_exchange = {
+	set_variable = { chaosx_nr25_last_action = constant:chaosx_nr25_action.exchange_weather_data }
+	set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_timing.action_cooldown_days }
+	chaosx_nr25_resolve_rival_target_id = yes
+	if = {
+		limit = {
+			has_variable = chaosx_nr25_rival_target
+			has_event_target = chaosx_nr25_rival_target_scope
+			event_target:chaosx_nr25_rival_target_scope = {
+				chaosx_nr25_target_participant_valid = yes
+				NOT = { is_in_array = { array = ROOT.chaosx_nr25_pre_winner_exchange_target_ids value = THIS } }
+			}
+		}
+		add_political_power = constant:chaosx_nr25_cost.pp_data_exchange
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_data_exchange }
+		add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_survey }
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_countermeasure }
+		add_to_variable = { chaosx_nr25_pre_winner_exchange_targets = constant:chaosx_nr25_value.one }
+		add_to_array = { array = chaosx_nr25_pre_winner_exchange_target_ids value = event_target:chaosx_nr25_rival_target_scope }
+		set_country_flag = chaosx_nr25_pre_winner_data_exchange_used
+		set_country_flag = chaosx_nr25_diplomacy_evidence_shared
+		event_target:chaosx_nr25_rival_target_scope = {
+			add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.evidence_survey }
+			add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_countermeasure }
+			set_country_flag = chaosx_nr25_received_pre_winner_data
+			add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_shared_evidence }
+		}
+	}
+	clear_variable = chaosx_nr25_rival_target
+	clear_variable = chaosx_nr25_rival_target_id
+	# The regular target expires with its chain. Cleared rival_target invalidates every consumer.
+	clr_country_flag = chaosx_nr25_rival_target_selected
+	chaosx_nr25_clamp_values = yes
+	chaosx_nr25_prepare_board_slots = yes
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope. A named rival target is supplied by the decision context and
+# copied into a short-lived event target before this effect is called. Strong
+# logistics produce a partial result; a ready countermeasure nullifies it.
+chaosx_nr25_execute_rival_sabotage = {
+	if = {
+		limit = { NOT = { has_variable = chaosx_nr25_rival_operation } }
+		set_variable = { chaosx_nr25_rival_operation = constant:chaosx_nr25_rival_operation.sabotage }
+	}
+	chaosx_nr25_resolve_rival_target_id = yes
+	if = {
+		limit = { has_variable = chaosx_nr25_rival_target }
+		if = {
+			limit = {
+				has_variable = chaosx_nr25_rival_target has_event_target = chaosx_nr25_rival_target_scope
+				event_target:chaosx_nr25_rival_target_scope = { chaosx_nr25_target_participant_valid = yes }
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.sabotage compare = equals }
+						check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.steal_survey_data compare = equals }
+						check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals }
+						check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.compromise_stores compare = equals }
+					}
+				}
+				add_political_power = constant:chaosx_nr25_cost.pp_rival
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.sabotage compare = equals }
+						check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.intercept_convoy compare = equals }
+					}
+				}
+				add_fuel = constant:chaosx_nr25_cost.fuel_rival
+			}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.steal_survey_data compare = equals }
+					check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals }
+					check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.compromise_stores compare = equals }
+				}
+			}
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_rival }
+		}
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.intercept_convoy compare = equals } }
+			add_equipment_to_stockpile = { type = convoy amount = constant:chaosx_nr25_cost.convoy_intercept }
+		}
+			set_variable = { chaosx_nr25_rival_action_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
+			event_target:chaosx_nr25_rival_target_scope = {
+				if = {
+					limit = { has_country_flag = chaosx_nr25_countermeasure_ready }
+					if = { limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } } ROOT = { set_country_flag = chaosx_nr25_false_map_exposed } }
+					clr_country_flag = chaosx_nr25_countermeasure_ready
+					if = { limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } } clr_country_flag = chaosx_nr25_false_map_active set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.confirmed } }
+					set_country_flag = chaosx_nr25_sabotage_intercepted
+					add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.two }
+				}
+				else_if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.steal_survey_data compare = equals } }
+					if = {
+						limit = { check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } }
+						add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.rival_survey_partial_evidence_loss }
+						ROOT = { add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_cost.rival_attacker_intelligence_partial } }
+						set_country_flag = chaosx_nr25_sabotage_partial
+					}
+					else = {
+						add_to_variable = { chaosx_nr25_survey_evidence = constant:chaosx_nr25_cost.rival_survey_evidence_loss }
+						ROOT = {
+							add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_cost.rival_attacker_intelligence_success }
+							add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_attacker_progress }
+						}
+						set_country_flag = chaosx_nr25_survey_data_stolen
+					}
+				}
+				else_if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } }
+					set_country_flag = chaosx_nr25_false_map_active
+					set_variable = { chaosx_nr25_sector_false_map_state = constant:chaosx_nr25_sector.compromised }
+					if = { limit = { check_variable = { var = chaosx_nr25_intelligence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } } ROOT = { set_country_flag = chaosx_nr25_false_map_exposed } }
+					set_country_flag = chaosx_nr25_sabotage_partial
+				}
+				else_if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.compromise_stores compare = equals } }
+					if = {
+						limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals } }
+						add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_stores_partial_readiness_loss }
+						set_country_flag = chaosx_nr25_sabotage_partial
+					}
+					else = {
+						add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_stores_readiness_loss }
+						if = { limit = { has_country_flag = chaosx_nr25_outpost_established } } set_country_flag = chaosx_nr25_outpost_compromised
+						set_country_flag = chaosx_nr25_sabotage_landed
+					}
+				}
+				else_if = {
+					limit = { check_variable = { var = ROOT.chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.intercept_convoy compare = equals } }
+					if = {
+						limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals } }
+						add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_partial_progress_loss }
+						set_country_flag = chaosx_nr25_sabotage_partial
+					}
+					else = {
+						add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_readiness_loss }
+						set_country_flag = chaosx_nr25_sabotage_landed
+					}
+					set_country_flag = chaosx_nr25_convoy_intercepted
+					ROOT = { add_to_variable = { chaosx_nr25_intelligence = constant:chaosx_nr25_value.two } }
+				}
+				else_if = {
+					limit = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_phase_gate.crossing_readiness compare = greater_than_or_equals } }
+					add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_partial_progress_loss }
+					add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_rival }
+					set_country_flag = chaosx_nr25_sabotage_partial
+				}
+				else = {
+					add_to_variable = { chaosx_nr25_progress = constant:chaosx_nr25_cost.rival_progress_loss }
+					add_to_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_rival }
+					add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.rival_readiness_loss }
+					set_country_flag = chaosx_nr25_sabotage_landed
+				}
+				set_variable = { chaosx_nr25_rival_received_cooldown = constant:chaosx_nr25_timing.final_cooldown_days }
+				add_opinion_modifier = { target = ROOT modifier = chaosx_nr25_sabotage_suspicion }
+				set_country_flag = chaosx_nr25_sabotaged
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_rival_operation value = constant:chaosx_nr25_rival_operation.feed_false_coordinates compare = equals } }
+				set_country_flag = chaosx_nr25_false_map_operation
+				set_variable = { chaosx_nr25_false_map_baseline_evidence = chaosx_nr25_survey_evidence }
+			}
+			set_country_flag = chaosx_nr25_rival_action_used
+			clear_variable = chaosx_nr25_rival_operation
+			clear_variable = chaosx_nr25_rival_target
+			clear_variable = chaosx_nr25_rival_target_id
+			clr_country_flag = chaosx_nr25_rival_target_selected
+		}
+		else = {
+			clear_variable = chaosx_nr25_rival_target
+			clear_variable = chaosx_nr25_rival_target_id
+			clr_country_flag = chaosx_nr25_rival_target_selected
+		}
+	}
+	chaosx_nr25_clamp_values = yes
+	chaosx_nr25_raise_chaos = yes
+}
+
+# COUNTRY scope. A countermeasure is the target's partial counterplay against
+# the sabotage action. It uses one selected rival's evidence rather than a
+# broad diplomatic action.
+chaosx_nr25_execute_countermeasure = {
+	if = {
+		limit = { has_country_flag = chaosx_nr25_sabotaged }
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_countermeasure }
+		add_political_power = constant:chaosx_nr25_cost.pp_countermeasure
+		set_country_flag = chaosx_nr25_countermeasure_ready
+		clr_country_flag = chaosx_nr25_sabotaged
+		clr_country_flag = chaosx_nr25_sabotage_partial
+		clr_country_flag = chaosx_nr25_sabotage_landed
+		add_to_variable = { chaosx_nr25_logistics_readiness = constant:chaosx_nr25_cost.readiness_countermeasure }
+		subtract_from_variable = { chaosx_nr25_exposure_risk = constant:chaosx_nr25_cost.exposure_countermeasure_reduction }
+		set_country_flag = chaosx_nr25_countermeasure_used
+		if = {
+			limit = { has_country_flag = chaosx_nr25_false_map_operation }
+			set_country_flag = chaosx_nr25_false_map_exposed
+		}
+	}
+	chaosx_nr25_clamp_values = yes
+}
+
+# COUNTRY scope. One evolution activation creates one milestone row in the
+# shared evolution log and stores an actor on the active expedition. It never
+# creates a country, leader, formation, or Event 016 project history.
+chaosx_nr25_record_evolution_milestone = {
+	set_temp_variable = { events_log_evolution_event_id = constant:chaosx_nr25_identity.event_id }
+	set_temp_variable = { events_log_evolution_type = constant:chaosx_nr25_identity.evolution_type }
+	set_temp_variable = { events_log_evolution_stage = chaosx_nr25_evolution_stage }
+	set_temp_variable = { events_log_evolution_tier = constant:chaosx_nr25_value.one }
+	set_temp_variable = { events_log_evolution_has_actor = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_evolution_technology_changes_users
+			has_country_flag = chaosx_nr25_evolution_technology_changes_users_holder
+		}
+		set_temp_variable = { events_log_evolution_has_actor = constant:chaosx_nr25_value.one }
+		save_event_target_as = events_log_evolution_actor
+	}
+	record_events_log_evolution_entry = yes
+}
+
+chaosx_nr25_activate_evolution_active_signal = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_evolution_active_signal } }
+		set_global_flag = chaosx_nr25_evolution_active_signal
+		clr_global_flag = chaosx_nr25_evolution_active_signal_pending
+		clear_global_event_target = chaosx_nr25_evolution_active_signal_scheduler
+		set_country_flag = chaosx_nr25_evolution_active_signal_holder
+		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.active_signal }
+		chaosx_nr25_record_evolution_milestone = yes
+		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.active_signal compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.active_signal } }
+	}
+}
+
+chaosx_nr25_activate_evolution_something_survived = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_evolution_something_survived } }
+		set_global_flag = chaosx_nr25_evolution_something_survived
+		clr_global_flag = chaosx_nr25_evolution_something_survived_pending
+		clear_global_event_target = chaosx_nr25_evolution_something_survived_scheduler
+		set_country_flag = chaosx_nr25_evolution_something_survived_holder
+		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.something_survived }
+		chaosx_nr25_record_evolution_milestone = yes
+		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.something_survived compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.something_survived } }
+	}
+}
+
+chaosx_nr25_activate_evolution_militarised_antarctica = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_evolution_militarised_antarctica } }
+		set_global_flag = chaosx_nr25_evolution_militarised_antarctica
+		clr_global_flag = chaosx_nr25_evolution_militarised_antarctica_pending
+		clear_global_event_target = chaosx_nr25_evolution_militarised_antarctica_scheduler
+		set_country_flag = chaosx_nr25_evolution_militarised_antarctica_holder
+		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.militarised_antarctica }
+		chaosx_nr25_record_evolution_milestone = yes
+		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.militarised_antarctica compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.militarised_antarctica } }
+	}
+}
+
+chaosx_nr25_activate_evolution_wreck_breaking_apart = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart } }
+		set_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
+		clr_global_flag = chaosx_nr25_evolution_wreck_breaking_apart_pending
+		clear_global_event_target = chaosx_nr25_evolution_wreck_breaking_apart_scheduler
+		set_country_flag = chaosx_nr25_evolution_wreck_breaking_apart_holder
+		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.wreck_breaking_apart }
+		chaosx_nr25_record_evolution_milestone = yes
+		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.wreck_breaking_apart compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.wreck_breaking_apart } }
+	}
+}
+
+chaosx_nr25_activate_evolution_technology_changes_users = {
+	if = {
+		limit = { NOT = { has_global_flag = chaosx_nr25_evolution_technology_changes_users } }
+		set_global_flag = chaosx_nr25_evolution_technology_changes_users
+		clr_global_flag = chaosx_nr25_evolution_technology_changes_users_pending
+		clear_global_event_target = chaosx_nr25_evolution_technology_changes_users_scheduler
+		set_temp_variable = { chaosx_nr25_evolution_stage = constant:chaosx_nr25_evolution.technology_changes_users }
+		chaosx_nr25_record_evolution_milestone = yes
+		if = { limit = { check_variable = { var = global.chaosx_nr25_current_evolution value = constant:chaosx_nr25_evolution.technology_changes_users compare = less_than } } set_variable = { global.chaosx_nr25_current_evolution = constant:chaosx_nr25_evolution.technology_changes_users } }
+	}
+}
+
+# COUNTRY scope. The Event 016 owner API receives only the external alien
+# recovery input. Exact aircraft/propulsion overlap is supplied by the shared
+# Event 025/Event 036 ledger and is never represented as Kruger provenance.
+chaosx_nr25_apply_winner_settlement = {
+	set_temp_variable = { chaosx_alien_recovery_overlap = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			# Exact overlap is country-scoped. The global Event 036 counter only
+			# records that another recovery happened somewhere in the world; it
+			# must not turn two independent countries' rewards into a collision.
+			has_country_flag = chaosx_alien_recovery_event036_recorded
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = chaosx_alien_recovery_036_aircraft_family
+					has_country_flag = brilliant_scientist_alien_spacecraft_recovered
+				}
+			}
+			set_temp_variable = { chaosx_alien_recovery_overlap = constant:chaosx_nr25_value.one }
+		}
+		if = {
+			limit = { has_country_flag = chaosx_alien_recovery_036_propulsion_family }
+			set_temp_variable = { chaosx_alien_recovery_overlap = constant:chaosx_nr25_value.two }
+		}
+	}
+	chaosx_alien_recovery_ledger_resolve_event025 = yes
+	add_ideas = chaosx_nr25_winner_analysis
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		add_ideas = chaosx_nr25_alien_dependence
+	}
+	if = {
+		limit = { has_global_flag = chaosx_nr25_evolution_technology_changes_users }
+		set_country_flag = chaosx_nr25_evolution_technology_changes_users_holder
+		set_country_flag = chaosx_nr25_dependence_started
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = less_than_or_equals } }
+			set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_opening }
+		}
+		add_ideas = chaosx_nr25_alien_dependence
+		set_global_flag = chaosx_nr25_aftermath_active
+		set_country_flag = chaosx_nr25_aftermath_open
+		clr_country_flag = chaosx_nr25_terminal
+		set_variable = { chaosx_nr25_action_cooldown = constant:chaosx_nr25_value.zero }
+		country_event = { id = chaosx.nr25.280 days = constant:chaosx_nr25_timing.pulse_days }
+	}
+	set_country_flag = chaosx_nr25_winner_settlement_complete
+	set_global_flag = chaosx_nr25_winner_report_ready
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope. Losers receive only verified survey notes and exclusive
+# fragment records. This helper deliberately has no technology grant path.
+chaosx_nr25_apply_loser_settlement = {
+	chaosx_alien_recovery_ledger_grant_loser_result = yes
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_survey_evidence value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		add_ideas = chaosx_nr25_verified_survey_notes
+		set_country_flag = chaosx_nr25_verified_survey_reward
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } }
+		add_ideas = chaosx_nr25_fragment_record
+		set_country_flag = chaosx_nr25_fragment_reward
+		if = {
+			limit = { check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_cost.fragment_major_threshold compare = greater_than_or_equals } }
+			set_country_flag = chaosx_nr25_highest_losing_fragment_tier
+		}
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_technology_changes_users }
+			set_country_flag = chaosx_nr25_evolution_technology_changes_users_holder
+			set_country_flag = chaosx_nr25_dependence_started
+			if = {
+				limit = { check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.zero compare = less_than_or_equals } }
+				set_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_opening }
+			}
+			add_ideas = chaosx_nr25_alien_dependence
+		}
+	}
+	set_country_flag = chaosx_nr25_loser_settlement_complete
+	chaosx_nr25_update_achievement_tracking = yes
+}
+
+# COUNTRY scope. Event 025 uses one shared history row created by the opening
+# event. The settlement stores report-ready state without creating a second
+# major-event row or borrowing Event 016 history.
+chaosx_nr25_record_winner_history = {
+	set_global_flag = chaosx_nr25_final_report_recorded
+	set_global_flag = chaosx_nr25_event_details_settlement_ready
+	if = { limit = { has_variable = chaosx_nr25_casualties } set_global_flag = chaosx_nr25_casualty_memory_ready }
+}

@@ -1,0 +1,66 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM OWNER ADAPTERS
+# ============================================================================
+# Event 034 owns the active boom, Overheating, and supplier contract. Event 35
+# submits a bounded depressed-market demand request through this file and only
+# consumes the accepted result. This adapter never opens a Great Depression,
+# changes Event 35 Severity, or creates a second supplier ledger.
+# ============================================================================
+
+# COUNTRY scope: the active Event 34 supplier. ROOT is the Event 35 country
+# requesting demand. The request is rejected unless both owners have a live,
+# non-overlapping episode and the supplier can carry the contract.
+industrial_boom_receive_depressed_market_demand = {
+	clr_country_flag = industrial_boom_supplier_demand_accepted
+	if = {
+		limit = {
+			industrial_boom_supplier_market_demand_target_is_valid = yes
+			ROOT = {
+				great_depression_active_crisis_is_coherent = yes
+				great_depression_financial_contagion_surface_is_active = yes
+				NOT = { has_country_flag = great_depression_boom_supply_contract_active }
+			}
+		}
+		if = {
+			limit = { NOT = { has_variable = global.great_depression_next_receipt_id } }
+			set_variable = { global.great_depression_next_receipt_id = constant:great_depression_api.minimum_receipt_id }
+		}
+		set_variable = { industrial_boom_supplier_demand_receipt_id = global.great_depression_next_receipt_id }
+		add_to_variable = { global.great_depression_next_receipt_id = constant:great_depression_api.receipt_increment }
+		set_temp_variable = { industrial_boom_supplier_contract_duration = constant:industrial_boom_event.supplier_contract_days }
+		add_to_variable = { industrial_boom_overheating = constant:industrial_boom_event.supplier_demand_overheating }
+		if = {
+			limit = {
+				check_variable = {
+					var = industrial_boom_overheating
+					value = constant:great_depression_event.public_value_maximum
+					compare = greater_than
+				}
+			}
+			set_variable = { industrial_boom_overheating = constant:great_depression_event.public_value_maximum }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = industrial_boom_peak_overheating }
+					check_variable = { var = industrial_boom_overheating value = industrial_boom_peak_overheating compare = greater_than }
+				}
+			}
+			set_variable = { industrial_boom_peak_overheating = industrial_boom_overheating }
+		}
+		set_country_flag = { flag = industrial_boom_supplier_contract_active days = industrial_boom_supplier_contract_duration }
+		if = {
+			limit = {
+				check_variable = {
+					var = industrial_boom_overheating
+					value = constant:industrial_boom_event.supplier_contract_overheat_risk
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = { flag = industrial_boom_supplier_contract_at_risk days = industrial_boom_supplier_contract_duration }
+		}
+		set_country_flag = industrial_boom_supplier_demand_accepted
+		set_country_flag = { flag = industrial_boom_supplier_contract days = industrial_boom_supplier_contract_duration }
+		ROOT = { set_country_flag = great_depression_event34_supplier_demand_accepted }
+	}
+}

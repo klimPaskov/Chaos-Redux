@@ -1,0 +1,151 @@
+add_namespace = chaosx.nr35
+
+# Event 35 is a repeatable, low-severity Negative Economy member. The normal
+# pool selects a country here, while a cluster dispatch has already selected
+# the current country and must not be rerolled.
+
+country_event = {
+	id = chaosx.nr35.1
+	title = chaosx.nr35.1.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = event_cluster_member_fire_context
+				great_depression_is_valid_independent_target = yes
+			}
+			great_depression_prepare_independent_call = yes
+			great_depression_start_or_deepen = yes
+		}
+		else_if = {
+			limit = { NOT = { has_country_flag = event_cluster_member_fire_context } }
+			great_depression_select_independent_target = yes
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr35.2
+	title = chaosx.nr35.2.t
+	desc = chaosx.nr35.2.d
+	picture = [GetGreatDepressionEventPicture]
+
+	is_triggered_only = yes
+
+	option = {
+		ai_chance = { base = constant:great_depression_event_option_weight.automatic }
+		name = chaosx.nr35.2.a
+		if = {
+			limit = { has_country_flag = great_depression_news_pending }
+			news_event = { id = chaosx.news.40 days = 2 }
+			clear_country_flag = great_depression_news_pending
+		}
+		clear_country_flag = great_depression_report_pending
+		show_ideas_tooltip = great_depression_active
+	}
+}
+
+# Baseline National Breakdown is opened only by the sustained-severe pulse
+# adapter. The hidden callback gives the mission surface a durable chain
+# receipt without introducing a second pacing route or a duplicate popup.
+
+country_event = {
+	id = chaosx.nr35.3
+	title = chaosx.nr35.3.t
+
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_country_flag = great_depression_active
+				has_country_flag = great_depression_national_breakdown_warning
+				check_variable = { var = great_depression_evolution_floor value = constant:great_depression_evolution.baseline compare = equals }
+				check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.breakdown_threshold compare = greater_than_or_equals }
+				NOT = { has_country_flag = great_depression_social_incident_open }
+			}
+			set_country_flag = great_depression_national_breakdown_chain_open
+			set_variable = { great_depression_national_breakdown_chain_day = global.num_days }
+		}
+	}
+}
+
+country_event = {
+	id = chaosx.nr35.4
+	title = chaosx.nr35.4.t
+	desc = chaosx.nr35.4.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.4.a
+		ai_chance = { base = constant:great_depression_event_option_weight.coup_execute }
+		great_depression_execute_social_coup = yes
+	}
+	option = {
+		name = chaosx.nr35.4.b
+		ai_chance = { base = constant:great_depression_event_option_weight.coup_stand_down }
+		great_depression_stand_down_social_coup = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr35.5
+	title = chaosx.nr35.5.t
+	desc = chaosx.nr35.5.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	option = {
+		name = chaosx.nr35.5.a
+		ai_chance = { base = constant:great_depression_event_option_weight.autonomy_recognize }
+		great_depression_recognize_regional_autonomy = yes
+	}
+	option = {
+		name = chaosx.nr35.5.b
+		ai_chance = { base = constant:great_depression_event_option_weight.autonomy_integrate }
+		great_depression_integrate_regional_autonomy = yes
+	}
+}
+
+# Baseline National Breakdown remains distinct from Social Collapse. The
+# ordinary non-war outcomes always remain available, while civil conflict is
+# a bounded AI outcome and a player choice only after the complete force,
+# territory, capacity, and recent-war gates succeed.
+country_event = {
+	id = chaosx.nr35.6
+	title = chaosx.nr35.6.t
+	desc = chaosx.nr35.6.d
+	picture = GFX_report_event_great_depression_social_collapse
+
+	is_triggered_only = yes
+
+	trigger = {
+		has_country_flag = great_depression_national_breakdown_resolution_queued
+		NOT = { has_country_flag = great_depression_evolution_social_collapse }
+		NOT = { has_country_flag = great_depression_national_breakdown_resolved }
+	}
+
+	option = {
+		name = chaosx.nr35.6.a
+		ai_chance = { base = constant:great_depression_event_option_weight.breakdown_emergency_settlement }
+		great_depression_resolve_national_breakdown_emergency_settlement = yes
+	}
+	option = {
+		name = chaosx.nr35.6.b
+		ai_chance = { base = constant:great_depression_event_option_weight.breakdown_cabinet_replacement }
+		great_depression_resolve_national_breakdown_cabinet_replacement = yes
+	}
+	option = {
+		name = chaosx.nr35.6.c
+		trigger = { great_depression_baseline_breakdown_civil_conflict_gate = yes }
+		ai_chance = { base = constant:great_depression_event_option_weight.breakdown_civil_conflict }
+		great_depression_resolve_national_breakdown_civil_conflict = yes
+	}
+}

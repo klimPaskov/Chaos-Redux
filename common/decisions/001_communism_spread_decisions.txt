@@ -4,13 +4,10 @@ chaosx_communism_fight_category = {
 		icon = GFX_decision_generic_political_discourse
 		days_remove = constant:communism_spread_timing.national_counter_agitation_days
 		days_re_enable = constant:communism_spread_timing.national_counter_agitation_reenable_days
-		custom_cost_text = communism_national_counter_agitation_cost
+		custom_cost_text = black_friday_communism_national_counter_agitation_cost
 		ai_hint_pp_cost = 35
 
-		custom_cost_trigger = {
-			command_power > communism_counter_agitation_command_power_cost
-			has_political_power > communism_counter_agitation_political_power_cost
-		}
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_national_counter_agitation_cost = yes } }
 
 		available = {
 			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
@@ -38,9 +35,20 @@ chaosx_communism_fight_category = {
 		}
 
 		complete_effect = {
-			add_political_power = communism_counter_agitation_political_power_cost_negative
-			add_command_power = communism_counter_agitation_command_power_cost_negative
-			add_stability = constant:communism_spread_countermeasures.national_stability_cost
+			hidden_effect = {
+				if = {
+					limit = { black_friday_is_active = yes }
+					black_friday_pay_communism_national_counter_agitation = yes
+				}
+				else = {
+					add_political_power = communism_counter_agitation_political_power_cost_negative
+					add_command_power = communism_counter_agitation_command_power_cost_negative
+				}
+				if = {
+					limit = { black_friday_owner_payment_succeeded = yes }
+					add_stability = constant:communism_spread_countermeasures.national_stability_cost
+				}
+			}
 		}
 
 		remove_effect = {
@@ -62,7 +70,7 @@ chaosx_communism_fight_category = {
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
-		custom_cost_text = communism_local_military_intervention_level_1_cost
+		custom_cost_text = black_friday_communism_local_intervention_level_1_cost
 		ai_hint_pp_cost = 50
 
 		highlight_states = {
@@ -104,11 +112,7 @@ chaosx_communism_fight_category = {
 			}
 		}
 
-		custom_cost_trigger = {
-			command_power > constant:communism_spread_intervention.level_1_command_power
-			has_manpower > constant:communism_spread_intervention.level_1_manpower
-			has_equipment = { infantry_equipment > constant:communism_spread_intervention.level_1_equipment }
-		}
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_local_intervention_level_1_cost = yes } }
 
 		visible = {
 			has_global_flag = communism_spread
@@ -149,7 +153,7 @@ chaosx_communism_fight_category = {
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
-		custom_cost_text = communism_local_military_intervention_level_2_cost
+		custom_cost_text = black_friday_communism_local_intervention_level_2_cost
 		ai_hint_pp_cost = 50
 
 		highlight_states = {
@@ -184,11 +188,7 @@ chaosx_communism_fight_category = {
 			}
 		}
 
-		custom_cost_trigger = {
-			command_power > constant:communism_spread_intervention.level_2_command_power
-			has_manpower > constant:communism_spread_intervention.level_2_manpower
-			has_equipment = { infantry_equipment > constant:communism_spread_intervention.level_2_equipment }
-		}
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_local_intervention_level_2_cost = yes } }
 
 		visible = {
 			has_global_flag = communism_spread
@@ -233,7 +233,7 @@ chaosx_communism_fight_category = {
 		on_map_mode = map_and_decisions_view
 		days_remove = constant:communism_spread_timing.local_intervention_days
 		days_re_enable = constant:communism_spread_timing.local_intervention_reenable_days
-		custom_cost_text = communism_local_military_intervention_level_3_cost
+		custom_cost_text = black_friday_communism_local_intervention_level_3_cost
 		ai_hint_pp_cost = 50
 
 		highlight_states = {
@@ -268,11 +268,7 @@ chaosx_communism_fight_category = {
 			}
 		}
 
-		custom_cost_trigger = {
-			command_power > constant:communism_spread_intervention.level_3_command_power
-			has_manpower > constant:communism_spread_intervention.level_3_manpower
-			has_equipment = { infantry_equipment > constant:communism_spread_intervention.level_3_equipment }
-		}
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_local_intervention_level_3_cost = yes } }
 
 		visible = {
 			has_global_flag = communism_spread
@@ -315,15 +311,10 @@ chaosx_communism_fight_category = {
 		icon = GFX_decision_generic_protection
 		days_remove = constant:communism_spread_timing.emergency_intervention_days
 		days_re_enable = constant:communism_spread_timing.emergency_intervention_reenable_days
-		custom_cost_text = communism_emergency_intervention_cost
+		custom_cost_text = black_friday_communism_emergency_intervention_cost
 		ai_hint_pp_cost = 100
 
-		custom_cost_trigger = {
-			command_power > communism_emergency_command_power_cost
-			has_manpower > communism_emergency_manpower_cost
-			has_equipment = { infantry_equipment > communism_emergency_equipment_cost }
-			has_political_power > communism_emergency_political_power_cost
-		}
+		custom_cost_trigger = { hidden_trigger = { black_friday_communism_emergency_intervention_cost = yes } }
 
 		available = {
 			hidden_trigger = { NOT = { is_special_chaos_country = yes } }
@@ -360,18 +351,29 @@ chaosx_communism_fight_category = {
 		}
 
 		complete_effect = {
-			add_political_power = communism_emergency_political_power_cost_negative
-			add_command_power = communism_emergency_command_power_cost_negative
-			add_manpower = communism_emergency_manpower_cost_negative
-			add_equipment_to_stockpile = {
-				type = infantry_equipment
-				amount = communism_emergency_equipment_cost_negative
-			}
-			add_stability = constant:communism_spread_emergency.stability_loss
-			add_war_support = constant:communism_spread_emergency.war_support_loss
-			add_dynamic_modifier = {
-				modifier = communism_emergency_disruption
-				days = 150
+			hidden_effect = {
+				if = {
+					limit = { black_friday_is_active = yes }
+					black_friday_pay_communism_emergency_intervention = yes
+				}
+				else = {
+					add_political_power = communism_emergency_political_power_cost_negative
+					add_command_power = communism_emergency_command_power_cost_negative
+					add_manpower = communism_emergency_manpower_cost_negative
+					add_equipment_to_stockpile = {
+						type = infantry_equipment
+						amount = communism_emergency_equipment_cost_negative
+					}
+				}
+				if = {
+					limit = { black_friday_owner_payment_succeeded = yes }
+					add_stability = constant:communism_spread_emergency.stability_loss
+					add_war_support = constant:communism_spread_emergency.war_support_loss
+					add_dynamic_modifier = {
+						modifier = communism_emergency_disruption
+						days = 150
+					}
+				}
 			}
 		}
 

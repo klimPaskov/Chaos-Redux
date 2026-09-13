@@ -1,0 +1,74 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ANALYSIS AND DIPLOMACY EFFECTS
+# ============================================================================
+# Terminal analysis choices remain country-scoped. They convert verified
+# expedition evidence into a persistent record, a diplomatic exchange, or a
+# containment decision without reopening the race or granting technology.
+# ============================================================================
+
+chaosx_nr25_execute_analysis_action = {
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_analysis_action value = constant:chaosx_nr25_analysis_action.archive compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_analysis
+		add_ideas = chaosx_nr25_winner_analysis
+		set_country_flag = chaosx_nr25_analysis_archived
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_analysis_action value = constant:chaosx_nr25_analysis_action.share compare = equals } }
+		if = {
+			limit = {
+				has_event_target = chaosx_nr25_analysis_target_scope
+				event_target:chaosx_nr25_analysis_target_scope = { chaosx_nr25_target_participant_valid = yes }
+			}
+			add_political_power = constant:chaosx_nr25_cost.pp_analysis
+			add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_analysis }
+			event_target:chaosx_nr25_analysis_target_scope = {
+				if = {
+					limit = { chaosx_nr25_target_participant_valid = yes NOT = { has_country_flag = chaosx_nr25_received_shared_evidence } NOT = { is_in_array = { array = ROOT.chaosx_nr25_shared_evidence_target_ids value = THIS } } }
+					add_opinion_modifier = {
+						target = ROOT
+						modifier = chaosx_nr25_shared_evidence
+					}
+					set_country_flag = chaosx_nr25_received_shared_evidence
+					ROOT = {
+						add_to_array = { array = chaosx_nr25_shared_evidence_target_ids value = event_target:chaosx_nr25_analysis_target_scope }
+						add_to_variable = { chaosx_nr25_shared_evidence_targets = constant:chaosx_nr25_value.one }
+						set_country_flag = chaosx_nr25_analysis_exchange_opened
+						set_country_flag = chaosx_nr25_diplomacy_evidence_shared
+					}
+				}
+			}
+		}
+		clear_variable = chaosx_nr25_analysis_target
+		clear_variable = chaosx_nr25_analysis_target_id
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_analysis_action value = constant:chaosx_nr25_analysis_action.contain compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_analysis
+		add_equipment_to_stockpile = { type = support_equipment amount = constant:chaosx_nr25_cost.support_analysis }
+		subtract_from_variable = { chaosx_nr25_dependence = constant:chaosx_nr25_cost.dependence_contain }
+		set_country_flag = chaosx_nr25_analysis_contained
+		if = {
+			limit = { has_global_flag = chaosx_nr25_evolution_technology_changes_users }
+			set_country_flag = chaosx_nr25_dependence_started
+			set_country_flag = chaosx_nr25_dependence_contained
+			clr_country_flag = chaosx_nr25_dependence_accident
+			set_variable = { chaosx_nr25_dependence_safe_days = constant:chaosx_nr25_value.zero }
+		}
+	}
+	if = {
+		limit = { check_variable = { var = chaosx_nr25_analysis_action value = constant:chaosx_nr25_analysis_action.seal compare = equals } }
+		add_political_power = constant:chaosx_nr25_cost.pp_analysis
+		set_country_flag = chaosx_nr25_analysis_sealed
+		set_country_flag = chaosx_nr25_analysis_evidence_preserved
+		set_country_flag = chaosx_nr25_aftermath_closed
+		clr_country_flag = chaosx_nr25_aftermath_open
+		clr_global_flag = chaosx_nr25_aftermath_active
+		set_global_flag = chaosx_nr25_closed
+		set_variable = { global.chaosx_nr25_phase = constant:chaosx_nr25_phase.closed }
+		set_country_flag = chaosx_nr25_terminal
+	}
+	chaosx_nr25_clamp_values = yes
+	chaosx_nr25_update_achievement_tracking = yes
+	clear_variable = chaosx_nr25_analysis_action
+}

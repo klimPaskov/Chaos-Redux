@@ -1,0 +1,845 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 / EVENT 036 ALIEN RECOVERY CONSTANTS
+# ============================================================================
+# Overview:
+# - These shared script constants are the deterministic public vocabulary for
+#   the Event 025 Antarctic recovery race and its Event 036 aircraft overlap.
+# - Identity, phase, action, evolution, sector, route, result, tie-break, and
+#   value namespaces are stable integration contracts for parent event files.
+# - The cost namespace contains the requested signed resource deltas and the
+#   positive requirement mirrors used by trigger thresholds and callers.
+# - The extra roster and tuning aliases are retained because the current
+#   Event 025 runtime already references them; they do not create gameplay.
+# - This file grants no technology, equipment, history, country, or event.
+# ============================================================================
+
+chaosx_nr25_identity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 25
+	# 109 is the first free presentation/audio slot after the existing 105-108 reservations.
+	super_event_id = 109
+	super_event_audio_id = 109
+	event_type = 1
+	evolution_type = 25
+}
+
+chaosx_nr25_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	entry = 0
+	mobilization = 1
+	crossing = 2
+	outpost = 3
+	survey = 4
+	final_recovery = 5
+	analysis = 6
+	closed = 7
+}
+
+chaosx_nr25_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	active_signal = 1
+	something_survived = 2
+	militarised_antarctica = 3
+	wreck_breaking_apart = 4
+	technology_changes_users = 5
+}
+
+chaosx_nr25_evolution_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Event Details stores one independently enabled milestone per evolution.
+	tier = 1
+	active_signal_stage = 1
+	something_survived_stage = 2
+	militarised_antarctica_stage = 3
+	wreck_breaking_apart_stage = 4
+	technology_changes_users_stage = 5
+}
+
+chaosx_nr25_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	authorize = 1
+	charter = 2
+	science_exchange = 3
+	depot = 4
+	aerial = 5
+	radio = 6
+	crew = 7
+	south_america_gateway = 8
+	africa_gateway = 9
+	tasmania_gateway = 10
+	establish_outpost = 11
+	reinforce_outpost = 12
+	rotate_crew = 13
+	emergency_shelter = 14
+	aerial_grid = 15
+	ground_transect = 16
+	signal_triangulation = 17
+	rival_recon = 18
+	recover_fragment = 19
+	controlled_recovery = 20
+	rapid_extraction = 21
+	remote_rig = 22
+	armed_retrieval = 23
+	distributed_salvage = 24
+	contain = 25
+	destroy = 26
+	transfer = 27
+	conceal = 28
+	integrate = 29
+	rival_sabotage = 30
+	exchange_weather_data = 31
+	conceal_departure = 32
+	alternate_landing = 33
+	escort_convoys = 34
+	analyze_recovered_fragment = 35
+}
+
+chaosx_nr25_evolution_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	remote = 101
+	follow = 102
+	shield = 103
+	jam = 104
+	broadcast = 105
+	avoid = 111
+	guard = 112
+	capture = 113
+	path = 114
+	turn = 115
+	blockade = 121
+	seize = 122
+	rescue = 123
+	intercept = 124
+	demilitarized = 125
+	stabilize = 131
+	cut = 132
+	map = 133
+	distribute = 134
+	leave = 135
+	contain = 141
+	destroy = 142
+	transfer = 143
+	conceal = 144
+	integrate = 145
+}
+
+chaosx_nr25_rival_operation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	steal_survey_data = 1
+	feed_false_coordinates = 2
+	compromise_stores = 3
+	intercept_convoy = 4
+	sabotage = 5
+}
+
+chaosx_nr25_analysis_action = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	archive = 1
+	share = 2
+	contain = 3
+	seal = 4
+}
+
+chaosx_nr25_phase_mission = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	organize = 1
+	reach_gateway = 2
+	establish_outpost = 3
+	triangulate_crash_zone = 4
+	protect_supply_route = 5
+	confirm_primary_site = 6
+	secure_recovery_core = 7
+	evacuate_expedition = 8
+	stabilize_wreck = 9
+	contain_alien_systems = 10
+}
+
+chaosx_nr25_evolution_gate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	active_signal = 200
+	something_survived = 400
+	militarised_antarctica = 600
+	wreck_breaking_apart = 800
+	technology_changes_users = 1000
+}
+
+chaosx_nr25_phase_gate = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	mobilization_progress = 6
+	crossing_progress = 25
+	crossing_readiness = 20
+	outpost_progress = 45
+	survey_evidence = 3
+	survey_progress = 70
+	survey_readiness = 40
+}
+
+chaosx_nr25_sector = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unresolved = 0
+	surveyed = 1
+	confirmed = 2
+	compromised = 3
+	lost = 4
+}
+
+chaosx_nr25_route = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	south_america = 1
+	africa = 2
+	tasmania = 3
+	inland = 4
+}
+
+chaosx_nr25_outpost_emphasis = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	logistics_depot = 1
+	survey_station = 2
+	signals_station = 3
+	fortified_camp = 4
+	mobile_traverse = 5
+}
+
+chaosx_nr25_outpost_emphasis_delta = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	logistics_readiness = 10
+	logistics_progress_penalty = 4
+	survey_evidence = 1
+	survey_progress = 6
+	survey_security_penalty = 4
+	signals_intelligence = 6
+	signals_intensity = 6
+	signals_exposure = 2
+	fortified_security = 12
+	fortified_readiness = 4
+	mobile_progress = 8
+	mobile_exposure = 2
+	mobile_security_penalty = 5
+}
+
+chaosx_nr25_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	base_operational = 1
+	compatible_upgrade = 2
+	alien_systems_integration = 3
+	overlap_conversion = 4
+	fragment = 5
+	verified_survey = 6
+}
+
+chaosx_nr25_alien_field = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	aircraft = 1
+	propulsion = 2
+}
+
+chaosx_nr25_tie = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	survey_weight = 100000
+	readiness_weight = 1000
+	exposure_weight = 10
+	outpost_weight = 100
+	entry_order_weight = 1
+	score_seed_weight = 1
+}
+
+chaosx_nr25_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	super_event_visible_days = 30
+	entry_window_days = 30
+	pulse_days = 12
+	action_cooldown_days = 12
+	final_cooldown_days = 90
+	evolution_check_days = 12
+	evolution_active_days = 90
+	evolution_base_days = 90
+	evolution_war_factor = 0.75
+	evolution_low_readiness_factor = 0.80
+	evolution_high_exposure_factor = 0.75
+	evolution_high_chaos_factor = 0.80
+	evolution_type = 25
+}
+
+chaosx_nr25_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Shared timing, threshold, and registry bounds.
+	pulse_days = 12
+	entry_days = 30
+	entry_window_days = 30
+	action_cooldown_days = 12
+	final_cooldown_days = 90
+	evolution_check_days = 12
+	progress_min = 100
+	readiness_min = 60
+	outpost_min = 1
+	exposure_max = 100
+	fragments_total = 6
+	sector_total = 6
+	civilian_commitment_days = 60
+
+	# Signed base-action resource deltas.
+	pp_authorize = -25
+	pp_charter = -15
+	pp_science = -20
+	convoy_authorize = -10
+	convoy_charter = -8
+	convoy_crossing = -12
+	convoy_final = -10
+	fuel_authorize = -100
+	fuel_charter = -50
+	fuel_crossing = -150
+	fuel_final = -100
+	support_authorize = -100
+	support_science = -75
+	support_depot = -150
+	support_radio = -100
+	support_outpost = -150
+	support_survey = -75
+	support_final = -125
+	support_analysis = -50
+	manpower_crew = -50
+
+	# Positive requirement mirrors for signed costs.
+	pp_authorize_required = 25
+	pp_charter_required = 15
+	pp_science_required = 20
+	convoy_authorize_required = 10
+	convoy_charter_required = 8
+	convoy_crossing_required = 12
+	convoy_final_required = 10
+	fuel_authorize_required = 100
+	fuel_charter_required = 50
+	fuel_crossing_required = 150
+	fuel_final_required = 100
+	support_authorize_required = 100
+	support_science_required = 75
+	support_depot_required = 150
+	support_radio_required = 100
+	support_outpost_required = 150
+	support_survey_required = 75
+	support_final_required = 125
+	manpower_crew_required = 50
+
+	# Signed action progress deltas.
+	progress_authorize = 8
+	progress_charter = 5
+	progress_science = 4
+	progress_depot = 8
+	progress_aerial = 10
+	progress_radio = 7
+	progress_crew = 6
+	progress_gateway = 12
+	progress_outpost = 10
+	progress_reinforce = 8
+	progress_rotate = 5
+	progress_shelter = 4
+	progress_aerial_grid = 12
+	progress_ground = 10
+	progress_signal = 14
+	progress_recon = 6
+	progress_fragment = 8
+	progress_controlled = 35
+	progress_rapid = 45
+	progress_remote = 25
+	progress_armed = 40
+	progress_distributed = 30
+	progress_survey = 15
+	progress_mobilisation = 8
+	progress_conceal_departure = 4
+	progress_alternate_landing = 4
+	progress_escort = 3
+	progress_fragment_analysis = 6
+
+	# Exposure pressure and action outcome deltas.
+	exposure_pulse = 1
+	exposure_action = 2
+	exposure_rival = 5
+	exposure_entry = 2
+	exposure_charter = 2
+	exposure_science = 1
+	exposure_mobilisation = 2
+	exposure_crossing = 3
+	exposure_outpost = 4
+	exposure_survey = 3
+	exposure_final = 6
+	exposure_response = 2
+	exposure_signal_pulse = 1
+	exposure_militarisation_pulse = 1
+	exposure_wreck_pulse = 1
+	exposure_contain = -8
+	exposure_destroy = 10
+	exposure_transfer = 4
+	exposure_conceal = -10
+	exposure_integrate = 12
+
+	# Evolution action exposure additions and positive reductions.
+	exposure_rapid = 6
+	exposure_remote = 2
+	exposure_armed = 8
+	exposure_distributed = 3
+	exposure_signal_remote = 1
+	exposure_signal_follow = 2
+	exposure_signal_shield_reduction = 2
+	exposure_signal_jam = 3
+	exposure_signal_broadcast = 4
+	exposure_survivor_avoid_reduction = 3
+	exposure_survivor_guard = 2
+	exposure_survivor_capture = 5
+	exposure_survivor_path = 2
+	exposure_survivor_turn_reduction = 2
+	exposure_militarisation_blockade = 3
+	exposure_militarisation_seize = 5
+	exposure_militarisation_demilitarized_reduction = 3
+	exposure_wreck_stabilize_reduction = 4
+	exposure_wreck_cut = 4
+	exposure_wreck_leave_reduction = 2
+	exposure_shelter_reduction = 4
+	exposure_countermeasure_reduction = 5
+	exposure_contain_reduction = 8
+	exposure_conceal_reduction = 10
+
+	# Readiness deltas.
+	readiness_authorize = 5
+	readiness_charter = 4
+	readiness_science = 4
+	readiness_mobilisation = 6
+	readiness_aerial = 4
+	readiness_radio = 5
+	readiness_crew = 8
+	readiness_gateway = 3
+	readiness_depot = 6
+	readiness_outpost = 10
+	readiness_reinforce = 8
+	readiness_rotate = 10
+	readiness_shelter = 6
+	readiness_aerial_grid = 5
+	readiness_ground = 7
+	readiness_signal = 10
+	readiness_fragment = 4
+	readiness_controlled = 10
+	readiness_rapid = -5
+	readiness_remote = 4
+	readiness_armed = -8
+	readiness_distributed = 6
+	readiness_survey = 5
+	readiness_countermeasure = 4
+	readiness_conceal_departure = 3
+	readiness_alternate_landing = 6
+	readiness_escort = 10
+	readiness_fragment_analysis = 2
+
+	# Evidence and supporting ledger deltas.
+	evidence_aerial = 1
+	evidence_ground = 1
+	evidence_signal = 2
+	evidence_recon = 1
+	evidence_fragment = 1
+	evidence_survivor = 1
+	evidence_signal_broadcast = 2
+	evidence_survey = 1
+	intelligence_survey = 2
+	intelligence_conceal_departure = 4
+	intelligence_fragment_analysis = 8
+	crew_survivor_burden = 1
+	dependence_pulse = 1
+	dependence_contain = 8
+	dependence_destroy = -12
+	dependence_transfer = 5
+	dependence_conceal = -5
+	dependence_integrate = 18
+	dependence_opening = 10
+	dependence_destroy_reduction = 12
+	dependence_conceal_reduction = 5
+	dependence_accident_threshold = 80
+	dependence_contained_threshold = 60
+	dependence_stable_threshold = 75
+	dependence_safe_year_days = 365
+	dependence_stable_two_year_days = 730
+	dependence_accident_cooldown_days = 120
+	dependence_accident_casualties = 1
+	dependence_accident_exposure = 10
+	signal_opening_intensity = 20
+	signal_pulse_intensity = 5
+	survivor_profile_default = 1
+	survivor_profile_alt = 2
+	survivor_profile_autonomous = 3
+	fragment_major_threshold = 2
+	shared_evidence_achievement_targets = 2
+	wreck_integrity_pulse = 5
+	action_chaos = 1
+	exposure_conceal_departure = -6
+	exposure_alternate_landing = -2
+	exposure_escort = 3
+	exposure_fragment_analysis = 2
+
+	# Bounded race and final-mission controls.
+	outpost_participant_target = 5
+	readiness_pulse_drain = 2
+	final_mission_controlled_days = 120
+	final_mission_rapid_days = 90
+	final_mission_remote_days = 150
+	final_mission_armed_days = 105
+	final_mission_distributed_days = 135
+	final_mission_failure_progress_loss = -8
+	final_mission_failure_readiness_loss = -6
+	final_mission_failure_exposure = 6
+	threat_public_blockade = 1
+	threat_public_seizure = 2
+	threat_public_intercept = 1
+	ai_reserve_pp = 50
+	ai_reserve_fuel = 500
+	ai_reserve_convoys = 20
+	ai_reserve_support = 200
+	civilian_factory_floor = 0
+	pp_public_evolution = -20
+	pp_public_evolution_required = 20
+	pp_conceal = -20
+	pp_conceal_required = 20
+	pp_integrate = -30
+	pp_integrate_required = 30
+	pp_analysis = -20
+	pp_analysis_required = 20
+	pp_data_exchange = -5
+	pp_data_exchange_required = 5
+	support_data_exchange = -25
+	support_data_exchange_required = 25
+	pp_conceal_departure = -10
+	pp_conceal_departure_required = 10
+	pp_fragment_analysis = -10
+	pp_fragment_analysis_required = 10
+	pp_emphasis_change = -10
+	pp_emphasis_change_required = 10
+	convoy_alternate_landing = -6
+	convoy_alternate_landing_required = 6
+	convoy_escort = -5
+	convoy_escort_required = 5
+	fuel_alternate_landing = -75
+	fuel_alternate_landing_required = 75
+	fuel_escort = -100
+	fuel_escort_required = 100
+	support_conceal_departure = -25
+	support_conceal_departure_required = 25
+	support_alternate_landing = -75
+	support_alternate_landing_required = 75
+	support_escort = -75
+	support_escort_required = 75
+	support_fragment_analysis = -50
+	support_fragment_analysis_required = 50
+	support_emphasis_change = -50
+	support_emphasis_change_required = 50
+	manpower_escort = -50
+	manpower_escort_required = 50
+	manpower_recruit_ai_threshold = 5000
+	support_rival = -50
+	convoy_intercept = -5
+	convoy_evacuation = -5
+	fuel_evacuation = -50
+	support_rival_required = 50
+	convoy_intercept_required = 5
+	convoy_evacuation_required = 5
+	fuel_evacuation_required = 50
+	mission_organize_days = 120
+	mission_gateway_days = 120
+	mission_outpost_days = 150
+	mission_triangulate_days = 180
+	mission_protect_route_days = 120
+	mission_confirm_site_days = 120
+	mission_secure_core_days = 120
+	mission_evacuate_days = 105
+	mission_stabilize_wreck_days = 150
+	mission_contain_systems_days = 240
+	mission_success_progress = 4
+	mission_success_readiness = 4
+	mission_partial_progress = -4
+	mission_partial_readiness = -4
+	mission_partial_exposure = 4
+	mission_failure_progress = -8
+	mission_failure_readiness = -6
+	mission_failure_exposure = 6
+	mission_evacuate_failure_casualties = 2
+
+	# Rival losses are signed values applied to participant ledgers.
+	rival_partial_progress_loss = -4
+	rival_progress_loss = -8
+	rival_readiness_loss = -6
+	rival_survey_partial_evidence_loss = -1
+	rival_survey_evidence_loss = -2
+	rival_stores_readiness_loss = -8
+	rival_stores_partial_readiness_loss = -4
+	rival_attacker_intelligence_partial = 6
+	rival_attacker_intelligence_success = 12
+	rival_attacker_progress = 4
+
+	# Resource amounts used by the bounded evolution and response actions.
+	pp_countermeasure = -10
+	pp_evolution = -10
+	pp_rival = -10
+	convoy_evolution = -5
+	convoy_rival = -5
+	fuel_aerial = -100
+	fuel_crew = -50
+	fuel_depot = -100
+	fuel_evolution = -100
+	fuel_outpost = -100
+	fuel_radio = -50
+	fuel_rival = -50
+	fuel_shelter = -50
+	fuel_survey = -75
+	support_crossing = -100
+	support_crew = -50
+	support_evolution = -50
+	support_shelter = -50
+	support_countermeasure = -75
+	manpower_armed = -100
+	manpower_militarisation = -100
+	manpower_shelter = -25
+	manpower_survivor = -25
+
+	# Positive requirement mirrors for every additional signed resource amount.
+	pp_countermeasure_required = 10
+	pp_evolution_required = 10
+	pp_rival_required = 10
+	convoy_evolution_required = 5
+	convoy_rival_required = 5
+	fuel_aerial_required = 100
+	fuel_crew_required = 50
+	fuel_depot_required = 100
+	fuel_evolution_required = 100
+	fuel_outpost_required = 100
+	fuel_radio_required = 50
+	fuel_rival_required = 50
+	fuel_shelter_required = 50
+	fuel_survey_required = 75
+	support_crossing_required = 100
+	support_crew_required = 50
+	support_evolution_required = 50
+	support_shelter_required = 50
+	support_countermeasure_required = 75
+	support_analysis_required = 50
+	manpower_armed_required = 100
+	manpower_militarisation_required = 100
+	manpower_shelter_required = 25
+	manpower_survivor_required = 25
+}
+
+chaosx_nr25_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+	six = 6
+	seven = 7
+	eight = 8
+	nine = 9
+	ten = 10
+	eleven = 11
+	twelve = 12
+	thirteen = 13
+	fourteen = 14
+	fifteen = 15
+	sixteen = 16
+	seventeen = 17
+	eighteen = 18
+	nineteen = 19
+	twenty = 20
+	twenty_one = 21
+	twenty_two = 22
+	twenty_three = 23
+	twenty_four = 24
+	twenty_five = 25
+	twenty_six = 26
+	twenty_seven = 27
+	twenty_eight = 28
+	twenty_nine = 29
+	thirty = 30
+	thirty_one = 31
+	thirty_two = 32
+	thirty_three = 33
+	thirty_four = 34
+	thirty_five = 35
+	thirty_six = 36
+	thirty_seven = 37
+	thirty_eight = 38
+	thirty_nine = 39
+	forty = 40
+	forty_one = 41
+	forty_two = 42
+	forty_three = 43
+	forty_four = 44
+	forty_five = 45
+	forty_six = 46
+	forty_seven = 47
+	forty_eight = 48
+	forty_nine = 49
+	fifty = 50
+	fifty_one = 51
+	fifty_two = 52
+	fifty_three = 53
+	fifty_four = 54
+	fifty_five = 55
+	fifty_six = 56
+	fifty_seven = 57
+	fifty_eight = 58
+	fifty_nine = 59
+	sixty = 60
+	sixty_one = 61
+	sixty_two = 62
+	sixty_three = 63
+	sixty_four = 64
+	sixty_five = 65
+	sixty_six = 66
+	sixty_seven = 67
+	sixty_eight = 68
+	sixty_nine = 69
+	seventy = 70
+	seventy_one = 71
+	seventy_two = 72
+	seventy_three = 73
+	seventy_four = 74
+	seventy_five = 75
+	seventy_six = 76
+	seventy_seven = 77
+	seventy_eight = 78
+	seventy_nine = 79
+	eighty = 80
+	eighty_one = 81
+	eighty_two = 82
+	eighty_three = 83
+	eighty_four = 84
+	eighty_five = 85
+	eighty_six = 86
+	eighty_seven = 87
+	eighty_eight = 88
+	eighty_nine = 89
+	ninety = 90
+	ninety_one = 91
+	ninety_two = 92
+	ninety_three = 93
+	ninety_four = 94
+	ninety_five = 95
+	ninety_six = 96
+	ninety_seven = 97
+	ninety_eight = 98
+	ninety_nine = 99
+	max = 100
+}
+
+# Bounded-roster values consumed by the current Event 025 runtime.
+chaosx_nr25_roster = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ai_slots_zero_humans = 6
+	ai_slots_one_human = 5
+	ai_slots_three_humans = 3
+	ai_slots_six_humans = 1
+	ai_slots_many_humans = 0
+	human_count_three = 3
+	human_count_six = 6
+}
+
+# The current Event 025 runtime routes its shared Chaos increment through this
+# alias. It remains a tuning value rather than a second Chaos implementation.
+chaosx_nr25_tuning = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	action_chaos = 1
+}

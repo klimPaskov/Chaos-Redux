@@ -49,7 +49,9 @@ chaosx_disease_containment_category = {
 
 	bio_expand_medical_capacity = {
 		icon = GFX_decision_bio_expand_medical_capacity
-		cost = constant:bio_countermeasure_cost.expand_medical_pp
+		# The shared Event 26 owner adapter owns the real PP component so the
+		# delayed investment cannot be charged twice by the native decision cost.
+		cost = 0
 		days_remove = constant:bio_countermeasure_timing.capacity_investment_days
 		visible = {
 			has_tech = tech_field_hospital
@@ -68,13 +70,19 @@ chaosx_disease_containment_category = {
 				bio_countermeasure_can_expand_medical_capacity = yes
 			}
 		}
-		custom_cost_trigger = { bio_countermeasure_can_expand_medical_capacity = yes }
+		custom_cost_trigger = { black_friday_can_pay_bio_expand_medical_capacity = yes }
 		custom_cost_text = bio_expand_medical_capacity_cost
 		complete_effect = {
 			custom_effect_tooltip = bio_expand_medical_capacity_effect_tt
-			bio_countermeasure_pay_expand_medical_capacity = yes
+			black_friday_pay_bio_expand_medical_capacity = yes
 		}
-		remove_effect = { bio_countermeasure_complete_medical_capacity_investment = yes }
+		remove_effect = {
+			if = {
+				limit = { has_country_flag = black_friday_bio_medical_investment_paid }
+				bio_countermeasure_complete_medical_capacity_investment = yes
+				clr_country_flag = black_friday_bio_medical_investment_paid
+			}
+		}
 		ai_will_do = {
 			base = constant:bio_countermeasure_ai.base
 			modifier = {

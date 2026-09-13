@@ -1,10 +1,14 @@
 # Event 007: Fury
 
+This overview records package implementation claims. The [documentation review](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_events_007_010_documentation.md) distinguishes source checks, historical records, and unresolved acceptance or validation.
+
 Event 007 Fury is a repeatable Wars-cluster event that transforms safe AI minors into aggressive border-war actors.
+
+Fury occupies two logical Wars rows at Medium and High severity. The Medium row is its primary trigger row, so a selected Fury uses Medium trigger severity for cluster activation. The High row remains a separate optional slot with its own tier floor, participation chance, order score, and history identity.
 
 ## Runtime Flow
 
-1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`; existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor. The selection lottery keeps every eligible minor possible while weighting weak, low-state, low-industry, neighbor-rich countries higher.
+1. Each `chaosx.nr7.1` firing selects a fresh eligible AI minor through `fury_can_be_selected`. Existing Fury actors are excluded, so repeat firings create additional Fury countries instead of reapplying Fury to the previous actor. The selection lottery keeps every eligible minor possible while weighting weak, low-state, low-industry, neighbor-rich countries higher.
 2. The selected country receives `fury_national_fury`, the shared `fury_focus_tree`, starting Fury variables, the base support-equipment and engineer-company unlocks required by the Fury Column template, starting units, equipment, a hidden finite reinforcement reserve, and a self-scheduled weekly event loop.
 3. `chaosx.nr7.10` scores every valid neighboring target, prefers weak isolated neighbors, penalizes faction-backed or major targets, saves the best target, and declares an annexation war.
 4. `chaosx.nr7.20` runs only on active Fury actors every seven days. Each weekly tick draws one division from the actor's finite reinforcement reserve while any reserve remains, updates Momentum and Overextension, checks whether the current war has ended, and queues another target scan when appropriate.
@@ -27,7 +31,7 @@ Fury selection excludes:
 
 Ordinary Fury selection uses a weighted random pool built from every `fury_can_be_selected` country. Every eligible minor receives a base chance, then gains weight for one-, two-, or three-state size, weak industry, low divisions, low manpower, and several valid neighboring targets. Stronger minors remain possible but lose relative weight when they have more states, more factories, or a larger field army. Repeat random firings choose fresh eligible actors instead of reapplying Fury to an existing Fury country. Evolution II, Evolution III, triggerable scenario fallback filling, and terminal world-end fallback seeding use the same weighted eligible pool when their setup needs additional actors.
 
-Ordinary targets can be AI or player-controlled countries. Target validity does not exclude a country for being player-controlled or player-linked; targets must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
+Ordinary targets can be AI or player-controlled countries. Target validity does not exclude a country for being player-controlled or player-linked. Targets must not be subjects, Fury actors, allies, subjects of the Fury actor, or countries already at war with the Fury actor.
 
 ## Variables and Flags
 
@@ -40,7 +44,7 @@ Ordinary targets can be AI or player-controlled countries. Target validity does 
 - `fury_momentum`: escalation strength and target pressure.
 - `fury_reinforcement_reserve_pool`: hidden finite reserve pool consumed by weekly spawning.
 - `fury_reinforcement_reserve_total_granted`: hidden lifetime reserve counter capped at 100 divisions per Fury actor.
-- `fury_reinforcement_spawn_tick`: hidden weekly cadence counter; reserve spawning creates one division per weekly tick while reserve remains.
+- `fury_reinforcement_spawn_tick`: hidden weekly cadence counter. Reserve spawning creates one division per weekly tick while reserve remains.
 - `fury_overextension`: occupation strain.
 - `fury_compliance_drive`: settlement and coring pressure.
 - `fury_reach`: no-neighbor recovery pressure.
@@ -87,7 +91,7 @@ Non-Fury responders use `anti_fury_response_category` after the major-Fury thres
 - `anti_fury_start_supply_denial`: pays rifles and command authority to start `anti_fury_supply_denial_mission`.
 - `anti_fury_recognition_denial`: lowers Fury pact cohesion and adds containment pressure.
 
-Anti-Fury mission success sets responder-side containment hooks used by achievements; stale missions cancel when the local Fury threat disappears.
+Anti-Fury mission success sets responder-side containment hooks used by achievements. Stale missions cancel when the local Fury threat disappears.
 
 ## Focus Tree
 
@@ -125,14 +129,14 @@ Disabled evolutions do not record entries because the record effects require the
 - Intensity: Low 2 actors, Medium 5 actors, High 9 actors, Maximum up to 16 actors when enough safe AI minors exist.
 - Intensity changes the starting package and capped hidden reserve bonus. It never changes weekly spawning into an uncapped loop.
 - Actor selection makes repeated continent passes before using a global fallback, so the scenario starts dispersed instead of concentrating nearby minors.
-- Player countries and player-linked countries remain excluded from becoming Fury actors; after launch they can still become Fury targets when normal target gates allow it.
+- Player countries and player-linked countries remain excluded from becoming Fury actors. After launch they can still become Fury targets when normal target gates allow it.
 - Hostile Fury attempts Fury-on-Fury declarations in addition to neighbor wars, which supports the rival-fires achievement route.
 
 ## Terminal World-End Branch
 
 `The World in Fury` is separate from the triggerable scenario. It starts only from a prepared Fury actor that has completed the world-end focus path, passes terminal readiness through no-neutral-map doctrine, major status, broad state control, or no remaining valid neighbors, is not in an extreme unresolved occupation crisis unless the final route is unlocked, and the global chaos meter has reached World Collapse.
 
-Event Details lists The World in Fury beneath the evolution preview. Its checkbox removes only this terminal branch from automatic readiness; Event 7 and its ordinary Fury progression remain enabled.
+Event Details lists The World in Fury beneath the evolution preview. Its checkbox removes only this terminal branch from automatic readiness. Event 7 and its ordinary Fury progression remain enabled.
 
 When it begins, the branch:
 
@@ -140,7 +144,7 @@ When it begins, the branch:
 - saves the starting actor as `fury_world_end_leader`
 - creates `The World in Fury` faction and brings all active Fury actors into it
 - applies `fury_world_in_fury` to terminal actors
-- warns all player countries before terminal Fury rules can threaten them directly; ordinary neighbor targeting can already hit player-controlled countries that meet normal target gates, while the separate `fury_terminal_can_threaten_player_linked_country` helper handles post-grace terminal threats outside the ordinary neighbor scan
+- warns all player countries before terminal Fury rules can threaten them directly. Ordinary neighbor targeting can already hit player-controlled countries that meet normal target gates, while the separate `fury_terminal_can_threaten_player_linked_country` helper handles post-grace terminal threats outside the ordinary neighbor scan
 - seeds Fury actors across unrepresented continents first, then fills to `fury_balance.world_end_required_actor_count` when enough safe AI minors exist
 - unlocks terminal reserve sharing through `fury_share_terminal_reserves` and `fury_assign_terminal_fronts`
 - fires super-event slot `60` with `GFX_super_event_world_in_fury`
@@ -164,7 +168,7 @@ Event 007 adds ten achievements in `common/achievements/chaos_redux_achievements
 
 Achievement checks require player-side containment participation through war contribution or the anti-Fury Border Watch path, plus relevant Fury outcome flags. The player remains excluded from normal Fury assignment.
 
-Achievement art uses final Fury-specific DDS triplets under `gfx/achievements/`, with source and contact-sheet notes in `docs/assets/007_fury/achievement_icons/manifest.md`.
+Achievement art uses final Fury-specific DDS triplets under `gfx/achievements/`, with the former source and contact-sheet notes recorded at `docs/assets/007_fury/achievement_icons/manifest.md`. That manifest is absent and Git records its deletion in `87d441ac758d515e1abca34167fcd45b51acf028`. The historical archive reference does not establish current source availability or invalidate the separately registered runtime DDS files.
 
 ## Assets
 
@@ -174,10 +178,10 @@ Current wiring uses stable Fury-specific assets:
 - news event: `GFX_news_event_fury_first_conquest`
 - super-event slot: `59`
 - super-event image: `GFX_super_event_fury_becomes_a_state`, backed by generated final art at `gfx/super_events/007_fury/fury_becomes_a_state.dds`
-- major Fury super-event audio: ID `29`, `sound/007_fury/super_event_29_fury_becomes_a_state.wav`, `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
+- major Fury super-event audio: ID `29`, `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
 - world-end super-event slot: `60`
 - world-end super-event image: `GFX_super_event_world_in_fury`, backed by generated final art at `gfx/super_events/007_fury/super_event_world_in_fury.dds`
-- world-end super-event audio: ID `30`, `sound/007_fury/super_event_30_world_in_fury.wav`, `sound/007_fury/super_event_30_world_in_fury.wav`
+- world-end super-event audio: ID `30`, `sound/007_fury/super_event_30_world_in_fury.wav`
 - achievement icons: final filenames registered in `interface/chaosx_achievements.gfx`
 - Fury leader overlay: `GFX_fury_leader_flame_overlay_animated`, backed by an 8-frame looping sheet at `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_sheet.dds`
 - Fury leader overlay static fallback: `GFX_fury_leader_flame_overlay_static`, backed by `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
@@ -198,12 +202,9 @@ Recommended final asset paths:
 - `gfx/interface/decisions/007_fury/decision_category_fury_war_office.dds`
 - `gfx/interface/decisions/007_fury/decision_fury_target.dds`
 - `gfx/interface/goals/007_fury/goal_fury_war_office.dds`
-- `gfx/event_pictures/007_fury/fury_first_conquest.dds`
 - `gfx/super_events/007_fury/fury_becomes_a_state.dds`
 - `gfx/super_events/007_fury/super_event_world_in_fury.dds`
 - `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
-- `sound/007_fury/super_event_29_fury_becomes_a_state.wav`
-- `sound/007_fury/super_event_30_world_in_fury.wav`
 - `sound/007_fury/super_event_30_world_in_fury.wav`
 - `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_sheet.dds`
 - `gfx/interface/leader_frames/007_fury/fury_leader_flame_overlay_static.dds`
@@ -213,7 +214,7 @@ Recommended final asset paths:
 
 - Target scoring reads size, industry, divisions, manpower, war state, faction state, major status, rough terrain, supply nodes, Fury momentum, Fury overextension, target preparation, evolution state, and last-target churn.
 - Achievement conditions are tied to containment contribution, scenario intensity/type flags, all-safe-candidate Maximum fallback, Fury-on-Fury declarations, major-Fury defeat, no-coring containment, and terminal world-end defeat.
-- Event details intentionally stay concise; live Momentum, Overextension, and current target remain visible through gameplay state rather than expanded event-log text.
+- Event details intentionally stay concise. Live Momentum, Overextension, and current target remain visible through gameplay state rather than expanded event-log text.
 
 ## Source Notes
 

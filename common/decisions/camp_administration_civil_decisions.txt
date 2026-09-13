@@ -1,0 +1,39 @@
+# AI-only policy calls. Human controls use the same two GUI callbacks.
+# No immediate debit: monthly quotes use the foundation spending envelope.
+camp_repression_network_category = {
+	camp_admin_civil_authorize_policy_ai = {
+		icon = generic_political_discourse
+		allowed = { camp_administration_civil_country_supported = yes }
+		visible = { is_ai = yes camp_administration_civil_action_one_visible = yes }
+		available = { camp_administration_civil_action_one_available = yes }
+		complete_effect = { camp_administration_civil_action_one = yes }
+		ai_will_do = {
+			base = constant:camp_admin_civil.ai_blocked
+			modifier = {
+				add = constant:camp_admin_civil.ai_authorize
+				OR = { has_war = yes camp_administration_civil_french_refugee_authority = yes }
+			}
+		}
+	}
+	camp_admin_civil_review_policy_ai = {
+		icon = generic_political_discourse
+		allowed = { camp_administration_civil_country_supported = yes }
+		visible = { is_ai = yes camp_administration_civil_action_two_visible = yes }
+		available = { camp_administration_civil_action_two_available = yes }
+		complete_effect = { camp_administration_civil_action_two = yes }
+		ai_will_do = {
+			base = constant:camp_admin_civil.ai_blocked
+			modifier = {
+				add = constant:camp_admin_civil.ai_review
+				OR = {
+					has_war = no
+					NOT = { camp_administration_civil_custody_authority = yes }
+					AND = { original_tag = ENG date > 1940.7.31 }
+					AND = { original_tag = USA date > 1944.12.17 }
+					AND = { original_tag = RAJ date > 1945.5.31 }
+					AND = { OR = { original_tag = BEL original_tag = COG } has_country_flag = camp_admin_civil_strike_active }
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,31 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 LIFECYCLE AND CXT HOOKS
+# ============================================================================
+# The startup registration enters one bounded existing-country scope. The
+# daily fallback is tag-scoped to CXT and never scans the world.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				murder_mystery_register_event19_assassin_provider = yes
+				murder_mystery_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				murder_mystery_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

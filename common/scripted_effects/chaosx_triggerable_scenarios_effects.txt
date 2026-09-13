@@ -55,6 +55,18 @@ initialize_triggerable_scenarios_settings = {
 		limit = { NOT = { has_variable = triggerable_scenarios_africa_type } }
 		set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.africa_is_one }
 	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_missiles_type } }
+		set_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.global_proliferation }
+	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_global_jihad_type } }
+		set_variable = { triggerable_scenarios_global_jihad_type = constant:random_terror_jihad_type.random_pattern }
+	}
+	if = {
+		limit = { NOT = { has_variable = triggerable_scenarios_random_civil_war_type } }
+		set_variable = { triggerable_scenarios_random_civil_war_type = constant:random_civil_war_scenario_type.political_fracture }
+	}
 	independence_wave_scenario_initialize_settings = yes
 	if = {
 		limit = { NOT = { has_variable = triggerable_scenarios_sort_mode } }
@@ -172,6 +184,30 @@ triggerable_scenarios_initialize_registry = {
 		array = global.triggerable_scenario_all_name_sort_values
 		value = constant:triggerable_scenario_sort_value.fallout_name
 	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.missile_age
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.missile_age_name
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.global_jihad
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.global_jihad_name
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_ids
+		value = constant:triggerable_scenario_id.random_civil_war
+	}
+	add_to_array = {
+		array = global.triggerable_scenario_all_name_sort_values
+		value = constant:triggerable_scenario_sort_value.random_civil_war_name
+	}
 }
 
 triggerable_scenarios_rebuild_view = {
@@ -241,6 +277,14 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.global_jihad
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.global_jihad_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.soviet_collapse
 		}
 		add_to_array = {
@@ -265,11 +309,27 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.missile_age
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.missile_age_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.infantry_spawn
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.random_civil_war
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.random_civil_war_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -312,11 +372,27 @@ triggerable_scenarios_rebuild_view = {
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.random_civil_war
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.random_civil_war_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
 			value = constant:triggerable_scenario_id.infantry_spawn
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.infantry_spawn_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.missile_age
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.missile_age_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -341,6 +417,22 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.soviet_collapse_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.global_jihad
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.global_jihad_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.random_civil_war
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.random_civil_war_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -403,6 +495,22 @@ triggerable_scenarios_rebuild_view = {
 		limit = {
 			check_variable = { triggerable_scenarios_sort_mode = constant:triggerable_scenario_sort_mode.id }
 			has_country_flag = triggerable_scenarios_sort_descending
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.global_jihad
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.global_jihad_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.missile_age
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.missile_age_name
 		}
 		add_to_array = {
 			array = global.triggerable_scenario_view_ids
@@ -613,6 +721,30 @@ triggerable_scenarios_rebuild_view = {
 		add_to_array = {
 			array = global.triggerable_scenario_view_name_sort_values
 			value = constant:triggerable_scenario_sort_value.fallout_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.missile_age
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.missile_age_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.global_jihad
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.global_jihad_name
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_ids
+			value = constant:triggerable_scenario_id.random_civil_war
+		}
+		add_to_array = {
+			array = global.triggerable_scenario_view_name_sort_values
+			value = constant:triggerable_scenario_sort_value.random_civil_war_name
 		}
 	}
 }
@@ -728,6 +860,21 @@ select_triggerable_scenario_black_plague = {
 select_triggerable_scenario_africa = {
 	initialize_triggerable_scenarios_settings = yes
 	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.africa_is_one }
+}
+
+select_triggerable_scenario_missile_age = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.missile_age }
+}
+
+select_triggerable_scenario_global_jihad = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.global_jihad }
+}
+
+select_triggerable_scenario_random_civil_war = {
+	initialize_triggerable_scenarios_settings = yes
+	set_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.random_civil_war }
 }
 
 set_triggerable_scenario_intensity_low = {
@@ -862,6 +1009,30 @@ triggerable_scenario_type_previous = {
 			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.world_is_one }
 		}
 	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.missile_age } }
+		subtract_from_variable = { triggerable_scenarios_missiles_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_missiles_type < constant:missiles_scenario_profile.global_proliferation } }
+			set_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.retaliation_network }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.global_jihad } }
+		subtract_from_variable = { triggerable_scenarios_global_jihad_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_global_jihad_type < constant:random_terror_jihad_type.dispersed_networks } }
+			set_variable = { triggerable_scenarios_global_jihad_type = constant:random_terror_jihad_type.random_pattern }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.random_civil_war } }
+		subtract_from_variable = { triggerable_scenarios_random_civil_war_type = constant:random_civil_war_value.one }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_random_civil_war_type < constant:random_civil_war_scenario_type.political_fracture } }
+			set_variable = { triggerable_scenarios_random_civil_war_type = constant:random_civil_war_scenario_type.universal_fragmentation }
+		}
+	}
 }
 
 triggerable_scenario_type_next = {
@@ -944,6 +1115,30 @@ triggerable_scenario_type_next = {
 		if = {
 			limit = { check_variable = { triggerable_scenarios_africa_type > constant:triggerable_scenario_africa_type.world_is_one } }
 			set_variable = { triggerable_scenarios_africa_type = constant:triggerable_scenario_africa_type.africa_is_one }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.missile_age } }
+		add_to_variable = { triggerable_scenarios_missiles_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_missiles_type > constant:missiles_scenario_profile.retaliation_network } }
+			set_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.global_proliferation }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.global_jihad } }
+		add_to_variable = { triggerable_scenarios_global_jihad_type = 1 }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_global_jihad_type > constant:random_terror_jihad_type.random_pattern } }
+			set_variable = { triggerable_scenarios_global_jihad_type = constant:random_terror_jihad_type.dispersed_networks }
+		}
+	}
+	else_if = {
+		limit = { check_variable = { triggerable_scenarios_selected = constant:triggerable_scenario_id.random_civil_war } }
+		add_to_variable = { triggerable_scenarios_random_civil_war_type = constant:random_civil_war_value.one }
+		if = {
+			limit = { check_variable = { triggerable_scenarios_random_civil_war_type > constant:random_civil_war_scenario_type.universal_fragmentation } }
+			set_variable = { triggerable_scenarios_random_civil_war_type = constant:random_civil_war_scenario_type.political_fracture }
 		}
 	}
 }
@@ -1107,6 +1302,40 @@ trigger_selected_chaosx_scenario = {
 			}
 		}
 		black_plague_triggerable_scenario_launch = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.missile_age
+				compare = equals
+			}
+		}
+		missiles_scenario_launch_unregistered = yes
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.global_jihad
+				compare = equals
+			}
+		}
+		set_variable = { random_terror_global_jihad_requested_type = triggerable_scenarios_global_jihad_type }
+		set_variable = { random_terror_global_jihad_requested_intensity = triggerable_scenarios_intensity }
+		random_terror_launch_global_jihad = yes
+		clear_variable = random_terror_global_jihad_requested_type
+		clear_variable = random_terror_global_jihad_requested_intensity
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = triggerable_scenario_launch_id
+				value = constant:triggerable_scenario_id.random_civil_war
+				compare = equals
+			}
+		}
+		random_civil_war_trigger_manual_scenario = yes
 	}
 	if = {
 		limit = { has_country_flag = triggerable_scenario_preserved_event_timer }

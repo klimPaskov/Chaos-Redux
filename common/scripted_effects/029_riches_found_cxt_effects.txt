@@ -1,0 +1,59 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 CXT REGISTRATION AND FIXTURE
+# ============================================================================
+# Registers the Event 029 state-bound mechanic with the shared CXT extension
+# bus and creates one idempotent capital-state mine fixture for the initialized
+# test country. The fixture uses the same persistent registry, state modifier,
+# controller aggregate, cleanup, and evolution gates as normal Event 029 code.
+# ============================================================================
+
+# COUNTRY scope. Registers this package's `_apply` effect with the existing CXT
+# dynamic extension dispatcher. The token is the hidden carrier id above.
+riches_found_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event029_riches_found
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+# COUNTRY scope. Idempotent CXT fixture. It deliberately does not pay the
+# normal discovery grant: CXT applies a test mine directly so the test country
+# can exercise state values, transfer, cleanup, and aggregate paths without
+# creating a second discovery event.
+chaosx_cxt_extension_event029_riches_found_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = riches_found_cxt_fixture_initialized }
+			capital_scope = { scope_exists = yes }
+		}
+		capital_scope = {
+			if = {
+				limit = {
+					NOT = { riches_found_mine_is_registered = yes }
+					riches_found_state_is_valid_target = yes
+				}
+				riches_found_initialize_mine_record = yes
+			}
+			if = {
+				limit = { riches_found_mine_is_registered = yes }
+				set_state_flag = riches_found_cxt_fixture_mine
+				set_variable = { riches_found_operating_state = constant:riches_found_operating_state.open_regulated }
+				set_variable = { riches_found_phase = constant:riches_found_phase.physical_development }
+				set_variable = { riches_found_policy = constant:riches_found_policy.public_development }
+				set_variable = { riches_found_mine_development = constant:riches_found_threshold.minimum_operating_development }
+				set_variable = { riches_found_local_order = constant:riches_found_threshold.order_stable }
+				set_variable = { riches_found_revenue_legitimacy = constant:riches_found_threshold.legitimacy_stable }
+				riches_found_clamp_mine_values = yes
+				riches_found_refresh_mine_presentation = yes
+				riches_found_refresh_mine_contribution = yes
+				CONTROLLER = { riches_found_refresh_controller_aggregate = yes }
+			}
+		}
+		if = {
+			limit = { capital_scope = { has_state_flag = riches_found_cxt_fixture_mine } }
+			set_country_flag = riches_found_cxt_fixture_initialized
+		}
+	}
+}

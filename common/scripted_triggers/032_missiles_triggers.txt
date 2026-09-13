@@ -1,0 +1,627 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILES SCRIPTED TRIGGERS
+# ============================================================================
+# This file contains the read-only side of the Event 032 contract. Country
+# program values and state launch-site records are persistent; operation and
+# incident receipts are only considered usable while their owning flags and
+# scopes remain valid. The firing transaction is the only Event 032 helper
+# that is allowed to enumerate all countries, and it lives in the companion
+# effects file rather than in any recurring trigger.
+# ============================================================================
+
+# -----------------------------------------------------------------------------
+# Recipient and program validity
+# -----------------------------------------------------------------------------
+
+missiles_country_has_controlled_land = {
+	exists = yes
+	any_owned_state = {
+		impassable = no
+	}
+	any_controlled_state = {
+		impassable = no
+	}
+}
+
+missiles_country_has_usable_command = {
+	OR = {
+		uses_normal_civilian_systems = yes
+		AND = {
+			is_special_chaos_country = yes
+			has_country_flag = missiles_special_industrial_actor
+			has_country_flag = missiles_special_command_structure
+			num_of_factories > constant:missiles_program_value.zero
+		}
+	}
+}
+
+missiles_is_valid_recipient = {
+	exists = yes
+	has_capitulated = no
+	NOT = { has_country_flag = missiles_system_carrier }
+	NOT = { has_country_flag = missiles_temporary_actor }
+	NOT = { has_country_flag = missiles_permanently_ineligible }
+	NOT = { has_country_flag = chaosx_test_country_carrier_only }
+	missiles_country_has_usable_command = yes
+	missiles_country_has_controlled_land = yes
+	any_controlled_state = {
+		impassable = no
+	}
+}
+
+missiles_is_deferred_recipient = {
+	exists = yes
+	OR = {
+		is_government_in_exile = yes
+		AND = {
+			is_subject = yes
+			any_owned_state = { impassable = no }
+		}
+	}
+	NOT = { missiles_country_has_controlled_land = yes }
+}
+
+missiles_is_skipped_recipient = {
+	exists = yes
+	NOT = { missiles_is_valid_recipient = yes }
+	NOT = { missiles_is_deferred_recipient = yes }
+}
+
+missiles_country_can_manage_program = {
+	exists = yes
+	has_country_flag = missiles_program_initialized
+	NOT = { has_country_flag = missiles_program_cleanup_complete }
+	NOT = { has_country_flag = missiles_system_carrier }
+	NOT = { has_country_flag = missiles_temporary_actor }
+	missiles_country_has_controlled_land = yes
+	has_variable = missiles_program_stage
+	has_variable = missiles_operational_reserve
+	has_variable = missiles_launch_readiness
+	has_variable = missiles_command_control
+}
+
+missiles_country_has_active_site = {
+	missiles_country_can_manage_program = yes
+	any_controlled_state = {
+		missiles_site_can_launch = yes
+	}
+}
+
+missiles_program_is_mature = {
+	has_variable = missiles_program_stage
+	check_variable = {
+		var = missiles_program_stage
+		value = constant:missiles_stage.complete
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_country_has_operation = {
+	has_country_flag = missiles_operation_active
+	has_variable = missiles_operation_state
+	check_variable = {
+		var = missiles_operation_state
+		value = constant:missiles_operation_state.none
+		compare = greater_than
+	}
+}
+
+missiles_operation_active = {
+	missiles_country_has_operation = yes
+	NOT = { has_country_flag = missiles_operation_cleanup_complete }
+}
+
+missiles_operation_ready = {
+	missiles_operation_active = yes
+	has_country_flag = missiles_operation_ready
+	check_variable = {
+		var = missiles_operation_state
+		value = constant:missiles_operation_state.ready
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_incident_active = {
+	has_country_flag = missiles_incident_active
+	has_variable = missiles_active_incident_id
+	check_variable = {
+		var = missiles_active_incident_id
+		value = constant:missiles_program_value.zero
+		compare = greater_than
+	}
+}
+
+missiles_neutral_incident_active = {
+	missiles_incident_active = yes
+		has_country_flag = missiles_neutral_incident_active
+}
+
+# -----------------------------------------------------------------------------
+# Site and state gates
+# -----------------------------------------------------------------------------
+
+missiles_state_is_valid_site_target = {
+	scope_exists = yes
+	impassable = no
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	OR = {
+		infrastructure > constant:missiles_tuning.site_min_infrastructure
+		is_capital = yes
+		ROOT = { num_of_controlled_states < constant:missiles_program_value.two }
+	}
+	NOT = { has_state_flag = missiles_site_scuttled }
+	NOT = { has_state_flag = missiles_site_isolated }
+}
+
+missiles_state_is_valid_secondary_site = {
+	missiles_state_is_valid_site_target = yes
+	NOT = { rocket_site > constant:missiles_program_value.zero }
+	NOT = { is_capital = yes }
+}
+
+missiles_site_can_launch = {
+	scope_exists = yes
+	impassable = no
+	OR = {
+		has_state_flag = missiles_site_active
+		has_state_flag = missiles_site_hardened
+		has_state_flag = missiles_site_compromised
+	}
+	NOT = { has_state_flag = missiles_site_damaged_beyond_use }
+	NOT = { has_state_flag = missiles_site_captured }
+	NOT = { has_state_flag = missiles_site_rogue }
+	NOT = { has_state_flag = missiles_site_scuttled }
+	NOT = { has_state_flag = missiles_site_isolated }
+	OR = {
+		NOT = { has_variable = missiles_site_damage }
+		check_variable = {
+			var = missiles_site_damage
+			value = constant:missiles_tuning.site_capture_threshold
+			compare = less_than
+		}
+	}
+	OR = {
+		NOT = { has_variable = missiles_site_capacity }
+		check_variable = { var = missiles_site_capacity value = constant:missiles_site_capacity.minimum compare = greater_than }
+	}
+}
+
+missiles_site_is_operational = {
+	missiles_site_can_launch = yes
+	OR = {
+		NOT = { has_variable = missiles_site_damage }
+		check_variable = { var = missiles_site_damage value = constant:missiles_tuning.site_capture_threshold compare = less_than }
+	}
+}
+
+missiles_site_can_upgrade = {
+	scope_exists = yes
+	NOT = { has_state_flag = missiles_site_scuttled }
+	NOT = { has_state_flag = missiles_site_captured }
+	NOT = { has_state_flag = missiles_site_rogue }
+	OR = {
+		NOT = { has_variable = missiles_site_damage }
+		check_variable = {
+			var = missiles_site_damage
+			value = constant:missiles_reserve.site_destroyed_threshold
+			compare = less_than
+		}
+	}
+	NOT = { has_state_flag = missiles_site_upgrade_locked }
+	OR = {
+		NOT = { has_variable = missiles_site_level }
+		check_variable = { var = missiles_site_level value = constant:missiles_site_level.strategic compare = less_than }
+	}
+}
+
+missiles_site_can_repair = {
+	scope_exists = yes
+	OR = {
+		has_state_flag = missiles_site_damaged
+		has_state_flag = missiles_site_compromised
+		has_state_flag = missiles_site_captured
+	}
+	NOT = { has_state_flag = missiles_site_scuttled }
+}
+
+missiles_site_is_captured = {
+	scope_exists = yes
+	has_state_flag = missiles_site_captured
+	NOT = { has_state_flag = missiles_site_scuttled }
+}
+
+# The target-country trigger is deliberately country-scoped. State targeting
+# is auto-selected by the operation helper after the country selector closes,
+# because the ordinary decision system cannot safely expose a foreign state
+# target and an enemy-country array in the same decision.
+missiles_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	has_war_with = ROOT
+	any_controlled_state = {
+		impassable = no
+	}
+	NOT = { is_subject_of = ROOT }
+}
+
+# Ordinary operations may not select a faction partner. Retaliation and rogue
+# incident paths continue to use missiles_target_is_valid because they model a
+# warning or compromised command relationship rather than a normal strike.
+missiles_ordinary_target_is_valid = {
+	missiles_target_is_valid = yes
+	NOT = { is_in_faction_with = ROOT }
+}
+
+missiles_target_state_is_valid = {
+	scope_exists = yes
+	impassable = no
+	NOT = { is_owned_by = ROOT }
+	OR = {
+		is_controlled_by = var:ROOT.missiles_selected_target
+		is_owned_by = var:ROOT.missiles_selected_target
+	}
+}
+
+missiles_country_can_prepare_operation = {
+	missiles_country_can_manage_program = yes
+	missiles_country_has_active_site = yes
+	NOT = { missiles_operation_active = yes }
+	OR = {
+		NOT = { has_country_flag = missiles_program_phase_incident }
+		has_country_flag = missiles_rogue_operation_bypass_active
+	}
+	OR = {
+		NOT = { has_variable = missiles_operational_reserve }
+		check_variable = {
+			var = missiles_operational_reserve
+			value = constant:missiles_tuning.operation_minimum_reserve
+			compare = greater_than_or_equals
+		}
+	}
+	OR = {
+		NOT = { has_variable = missiles_launch_readiness }
+		check_variable = {
+			var = missiles_launch_readiness
+			value = constant:missiles_tuning.operation_minimum_readiness
+			compare = greater_than_or_equals
+		}
+	}
+	OR = {
+		NOT = { has_variable = missiles_command_control }
+		check_variable = {
+			var = missiles_command_control
+			value = constant:missiles_tuning.operation_minimum_control
+			compare = greater_than_or_equals
+		}
+	}
+	OR = {
+		NOT = { has_variable = missiles_next_launch_date }
+		check_variable = { var = global.date value = missiles_next_launch_date compare = greater_than_or_equals }
+	}
+}
+
+missiles_country_can_use_precision_strike = {
+	missiles_country_can_prepare_operation = yes
+	has_war = yes
+	check_variable = {
+		var = missiles_launch_readiness
+		value = constant:missiles_program_value.precision_readiness_gate
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_country_can_use_strategic_strike = {
+	missiles_country_can_prepare_operation = yes
+	has_war = yes
+	check_variable = {
+		var = missiles_launch_readiness
+		value = constant:missiles_program_value.baseline_launch_readiness_gate
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_country_can_use_saturation_strike = {
+	missiles_country_can_use_strategic_strike = yes
+	has_country_flag = missiles_evolution_saturation_arsenals
+	has_country_flag = missiles_saturation_doctrine_adopted
+	check_variable = {
+		var = missiles_operational_reserve
+		value = constant:missiles_tuning.evolution_saturation_reserve
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_country_can_use_counterforce_strike = {
+	missiles_country_can_use_strategic_strike = yes
+	has_war = yes
+}
+
+missiles_payload_is_eligible = {
+	missiles_country_can_manage_program = yes
+	has_country_flag = missiles_evolution_special_warheads
+	has_country_flag = missiles_special_payload_selected
+	missiles_country_has_active_site = yes
+	check_variable = {
+		var = missiles_launch_readiness
+		value = constant:missiles_program_value.precision_readiness_gate
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = missiles_command_control
+		value = constant:missiles_program_value.secure_command_gate
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_special_payload_available = {
+	has_country_flag = missiles_evolution_special_warheads
+	OR = {
+		has_country_flag = missiles_chemical_integration_operational
+		has_country_flag = missiles_biological_integration_operational
+		has_country_flag = missiles_nuclear_integration_operational
+		has_country_flag = missiles_thermonuclear_integration_operational
+	}
+}
+
+missiles_has_unintegrated_payload_candidate = {
+	OR = {
+		AND = { missiles_country_has_chemical_payload_candidate = yes NOT = { has_country_flag = missiles_chemical_integration_operational } }
+		AND = { missiles_country_has_biological_payload_candidate = yes NOT = { has_country_flag = missiles_biological_integration_operational } }
+		AND = { missiles_country_has_nuclear_payload_candidate = yes NOT = { has_country_flag = missiles_nuclear_integration_operational } }
+		AND = { missiles_country_has_thermonuclear_payload_candidate = yes NOT = { has_country_flag = missiles_thermonuclear_integration_operational } }
+	}
+}
+
+missiles_special_payload_policy_allows_operation = {
+	has_variable = missiles_special_payload_policy
+	OR = {
+		AND = {
+			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.retaliatory_only compare = equals }
+			OR = {
+				has_country_flag = missiles_warning_verified
+				check_variable = { var = missiles_operation_type value = constant:missiles_operation.retaliation compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.military_targets_only compare = equals }
+			NOT = { check_variable = { var = missiles_operation_target_profile value = constant:missiles_target_profile.command compare = equals } }
+			NOT = { check_variable = { var = missiles_operation_target_profile value = constant:missiles_target_profile.broad_strategic compare = equals } }
+		}
+		AND = {
+			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.unrestricted_war compare = equals }
+			has_war = yes
+		}
+		AND = {
+			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.emergency_delegation compare = equals }
+			OR = { has_country_flag = missiles_warning_active has_country_flag = missiles_rogue_command_active }
+		}
+		AND = {
+			check_variable = { var = missiles_special_payload_policy value = constant:missiles_special_payload_policy.rogue_control compare = equals }
+			has_country_flag = missiles_rogue_command_active
+		}
+	}
+}
+
+missiles_country_has_chemical_payload_candidate = {
+	has_tech = chemical_air_interdiction
+	has_variable = cbrn_air_payload_agent
+	check_variable = { var = cbrn_air_payload_agent value = constant:cbrn_agent.none compare = not_equals }
+}
+
+missiles_country_has_biological_payload_candidate = {
+	OR = {
+		AND = { has_tech = anthrax_bomb_delivery_systems check_variable = { var = num_equipment@anthrax_bomb_1 value = constant:missiles_program_value.zero compare = greater_than } }
+		AND = { has_tech = plague_bomb_delivery_systems check_variable = { var = num_equipment@plague_bomb_1 value = constant:missiles_program_value.zero compare = greater_than } }
+		AND = { has_tech = tularemia_bomb_delivery_systems check_variable = { var = num_equipment@tularemia_bomb_1 value = constant:missiles_program_value.zero compare = greater_than } }
+		AND = { has_tech = smallpox_bomb_delivery_systems check_variable = { var = num_equipment@smallpox_bomb_1 value = constant:missiles_program_value.zero compare = greater_than } }
+	}
+}
+
+missiles_country_has_nuclear_payload_candidate = {
+	has_tech = atomic_research
+	has_tech = nukes
+	num_of_nukes > constant:missiles_program_value.zero
+}
+
+missiles_country_has_thermonuclear_payload_candidate = {
+	has_tech = thermonuclear_bombs
+	has_tech = nukes
+	num_of_nukes > constant:missiles_program_value.zero
+}
+
+# -----------------------------------------------------------------------------
+# Evolution, posture, scenario and achievement gates
+# -----------------------------------------------------------------------------
+
+missiles_evolution_enabled = {
+	OR = {
+		AND = {
+			check_variable = { var = evolution value = constant:missiles_evolution.saturation_arsenals compare = equals }
+			NOT = { has_global_flag = event_evolution_disabled_32_1 }
+		}
+		AND = {
+			check_variable = { var = evolution value = constant:missiles_evolution.unreliable_guidance compare = equals }
+			NOT = { has_global_flag = event_evolution_disabled_32_2 }
+		}
+		AND = {
+			check_variable = { var = evolution value = constant:missiles_evolution.special_warheads compare = equals }
+			NOT = { has_global_flag = event_evolution_disabled_32_3 }
+		}
+		AND = {
+			check_variable = { var = evolution value = constant:missiles_evolution.rogue_launch_commands compare = equals }
+			NOT = { has_global_flag = event_evolution_disabled_32_4 }
+		}
+		AND = {
+			check_variable = { var = evolution value = constant:missiles_evolution.automatic_retaliation compare = equals }
+			NOT = { has_global_flag = event_evolution_disabled_32_5 }
+		}
+	}
+}
+
+missiles_retaliation_network_available = {
+	has_country_flag = missiles_evolution_automatic_retaliation
+	missiles_country_can_manage_program = yes
+	check_variable = {
+		var = missiles_command_control
+		value = constant:missiles_tuning.evolution_retaliation_control
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_automatic_posture_allowed = {
+	missiles_retaliation_network_available = yes
+	check_variable = {
+		var = missiles_command_control
+		value = constant:missiles_program_value.automatic_command_gate
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = missiles_rogue_command_active }
+}
+
+missiles_scenario_is_available = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_scenario_active }
+	NOT = { has_global_flag = missiles_scenario_active }
+	missiles_global_has_operational_program = yes
+}
+
+missiles_global_has_operational_program = {
+	OR = {
+		has_global_flag = missiles_program_ever_initialized
+		check_variable = { var = global.missiles_program_count value = constant:missiles_program_value.zero compare = greater_than }
+	}
+}
+
+missiles_can_open_rogue_incident = {
+	missiles_country_can_manage_program = yes
+	has_country_flag = missiles_evolution_rogue_launch_commands
+	NOT = { has_global_flag = event_evolution_disabled_32_4 }
+	OR = {
+		check_variable = { var = missiles_command_control value = constant:missiles_tuning.retaliation_low_control_block compare = less_than }
+		has_country_flag = missiles_site_compromise_active
+		has_country_flag = missiles_code_compromise_active
+		has_country_flag = missiles_civil_war_command_split
+	}
+	NOT = { has_country_flag = missiles_rogue_command_active }
+	NOT = { has_country_flag = missiles_incident_active }
+	OR = {
+		NOT = { has_variable = missiles_rogue_incident_cooldown_date }
+		check_variable = { var = global.date value = missiles_rogue_incident_cooldown_date compare = greater_than_or_equals }
+	}
+	OR = {
+		NOT = { has_variable = global.missiles_rogue_active_incidents }
+		check_variable = { var = global.missiles_rogue_active_incidents value = constant:missiles_rogue_tuning.global_active_cap compare = less_than }
+	}
+	OR = {
+		NOT = { has_variable = global.missiles_scenario_incident_cap }
+		NOT = { has_variable = global.missiles_rogue_active_incidents }
+		check_variable = { var = global.missiles_rogue_active_incidents value = global.missiles_scenario_incident_cap compare = less_than }
+	}
+	any_of_scopes = {
+		array = missiles_launch_site_states
+		missiles_site_can_host_rogue_incident = yes
+	}
+}
+
+missiles_site_can_host_rogue_incident = {
+	scope_exists = yes
+	NOT = { has_state_flag = missiles_site_scuttled }
+	OR = {
+		has_state_flag = missiles_site_active
+		has_state_flag = missiles_site_hardened
+		has_state_flag = missiles_site_compromised
+		has_state_flag = missiles_site_captured
+		has_state_flag = missiles_site_isolated
+	}
+	OR = {
+		NOT = { has_variable = missiles_site_capacity }
+		check_variable = { var = missiles_site_capacity value = constant:missiles_site_capacity.minimum compare = greater_than }
+	}
+}
+
+missiles_state_has_registered_site = {
+	scope_exists = yes
+	NOT = { has_state_flag = missiles_site_scuttled }
+	has_variable = missiles_site_capacity
+	OR = {
+		has_state_flag = missiles_site_active
+		has_state_flag = missiles_site_hardened
+		has_state_flag = missiles_site_compromised
+		has_state_flag = missiles_site_captured
+		has_state_flag = missiles_site_rogue
+		has_state_flag = missiles_site_isolated
+	}
+}
+
+missiles_site_has_special_payload_custody = {
+	has_state_flag = missiles_site_special_payload_custody
+	OR = {
+		has_state_flag = missiles_site_custody_chemical
+		has_state_flag = missiles_site_custody_biological
+		has_state_flag = missiles_site_custody_nuclear
+		has_state_flag = missiles_site_custody_thermonuclear
+	}
+}
+
+missiles_rogue_foreign_actor_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { is_subject_of = ROOT }
+	any_controlled_state = { impassable = no }
+	OR = {
+		has_war_with = ROOT
+		AND = {
+			has_intelligence_agency = yes
+			network_strength = { target = ROOT value > constant:missiles_rogue_tuning.foreign_network_minimum }
+		}
+	}
+}
+
+missiles_rogue_defection_recipient_is_valid = {
+	missiles_rogue_foreign_actor_is_valid = yes
+	has_country_flag = missiles_program_initialized
+	missiles_country_has_controlled_land = yes
+}
+
+missiles_rogue_incident_site_has_reserve = {
+	has_variable = missiles_incident_site
+	var:missiles_incident_site = {
+		has_variable = missiles_site_reserve
+		check_variable = { var = missiles_site_reserve value = constant:missiles_program_value.zero compare = greater_than }
+	}
+	check_variable = { var = missiles_operational_reserve value = constant:missiles_program_value.zero compare = greater_than }
+}
+
+missiles_rogue_incident_site_has_payload = {
+	has_variable = missiles_incident_site
+	var:missiles_incident_site = { missiles_site_has_special_payload_custody = yes }
+}
+
+missiles_achievement_operation_is_valid = {
+	missiles_country_can_manage_program = yes
+	NOT = { has_country_flag = missiles_scenario_origin }
+	has_variable = missiles_last_operation_id
+}
+
+missiles_achievement_campaign_is_valid = {
+	exists = yes
+	is_ai = no
+	NOT = { has_country_flag = missiles_achievement_disqualified }
+	NOT = { has_country_flag = missiles_scenario_disqualified }
+	NOT = { has_country_flag = missiles_program_cleanup_complete }
+}
+
+# -----------------------------------------------------------------------------
+# CXT registration and cleanup helpers
+# -----------------------------------------------------------------------------
+
+missiles_cxt_registration_candidate = {
+	exists = yes
+	has_country_flag = chaosx_test_country_initialized
+	NOT = { has_country_flag = chaosx_cxt_extension_event032_missiles }
+}
+
+missiles_cxt_registered = {
+	has_country_flag = chaosx_cxt_extension_event032_missiles
+}

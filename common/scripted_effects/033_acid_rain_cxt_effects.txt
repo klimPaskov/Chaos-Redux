@@ -1,0 +1,24 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 033 ACID RAIN CXT EXTENSION
+# ============================================================================
+# The CXT setup path registers one idempotent Event 033 fixture through the
+# shared hidden-idea extension bus. It never starts the live event and never
+# enumerates countries or states.
+# ============================================================================
+
+acid_rain_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event033_acid_rain
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event033_acid_rain_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = acid_rain_cxt_content_registered } }
+		set_global_flag = acid_rain_cxt_content_registered
+		set_variable = { global.acid_rain_cxt_fixture_schema = constant:acid_rain_event.schema1 }
+		set_country_flag = acid_rain_cxt_fixture_ready
+	}
+}

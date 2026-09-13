@@ -105,7 +105,7 @@ Evolution log flags prevent duplicate first-stage milestone rows:
 
 ## Cluster Integration
 
-Random War is the required member of the repeatable **Wars** cluster. The cluster unlocks at Gathering Storm, rolls with the chaos-scaled cluster chance, and can be manually triggered from Settings regardless of current availability. The event can still fire normally when the automatic cluster roll does not fire. When the cluster fires, Random War runs through the same repeatable-event accounting path and appears in normal event history as well as the cluster log.
+Random War occupies four logical rows in the repeatable **Wars** cluster at Low, Low, Medium, and High severity. The first Low row is the required primary trigger row, while the later rows remain separate optional participation slots with their own severity floors, chances, and history identities. A selected Random War therefore uses Low trigger severity for activation, and every currently eligible matching row contributes to its multiplicity bonus. The event can still fire normally when the automatic cluster roll does not fire. When the cluster fires, accepted Random War rows use the same repeatable-event accounting path and appear in normal event history as well as the cluster log.
 
 ## Icons And Assets
 
@@ -145,7 +145,7 @@ If a dedicated news image is added later, use:
 
 ## Future Plans
 
-- Add more Wars cluster members so Random War can fire alongside related war incidents.
+- Add richer interactions between Random War and the existing Wars cluster members when their accepted rows share a batch.
 - Add regional weighting for neighbors, claims, cores, and hostile relations.
 - Add temporary target-side defensive ideas if the event needs stronger country-specific aftermath.
 - Add cluster-specific detail text for why a Random War firing picked its countries.

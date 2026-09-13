@@ -115,15 +115,20 @@ brilliant_scientist_directorate_category = {
 			NOT = { has_country_flag = brilliant_scientist_joint_laboratory_ever_established }
 		}
 		available = {
-			NOT = { has_country_flag = brilliant_scientist_foreign_action_in_progress }
-			has_event_target = brilliant_scientist_foreign_actor
-			event_target:brilliant_scientist_foreign_actor = {
-				brilliant_scientist_foreign_can_open_joint_laboratory = yes
-				any_owned_state = { brilliant_scientist_is_valid_facility_state = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_joint_laboratory_requirements_tt
+				hidden_trigger = {
+					NOT = { has_country_flag = brilliant_scientist_foreign_action_in_progress }
+					has_event_target = brilliant_scientist_foreign_actor
+					event_target:brilliant_scientist_foreign_actor = {
+						brilliant_scientist_foreign_can_open_joint_laboratory = yes
+						any_owned_state = { brilliant_scientist_is_valid_facility_state = yes }
+					}
+					has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.joint_laboratory_support_gate }
+					has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.joint_laboratory_truck_gate }
+					has_fuel > constant:brilliant_scientist_directorate_cost.joint_laboratory_fuel_gate
+				}
 			}
-			has_equipment = { support_equipment > constant:brilliant_scientist_directorate_cost.joint_laboratory_support_gate }
-			has_equipment = { motorized_equipment > constant:brilliant_scientist_directorate_cost.joint_laboratory_truck_gate }
-			has_fuel > constant:brilliant_scientist_directorate_cost.joint_laboratory_fuel_gate
 		}
 		cost = constant:brilliant_scientist_directorate_cost.joint_laboratory_pp
 		days_remove = constant:brilliant_scientist_directorate_timing.joint_laboratory_days

@@ -1,0 +1,108 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 GREAT DEPRESSION EVOLUTION MTTH
+# ============================================================================
+# These entries provide bounded, country-scoped delays for Event 35 evolution
+# activation. The weekly owner pulse schedules no world iteration here; it
+# only reads one entry for the active country it is already processing.
+# ============================================================================
+
+great_depression_financial_contagion_activation_interval = {
+	base = constant:great_depression_evolution_mtth.financial_contagion_days
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.high_severity_factor
+		check_variable = {
+			var = great_depression_depression_severity
+			value = constant:great_depression_event.deep_depression_threshold
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.severe_social_pressure_factor
+		has_stability < constant:great_depression_thresholds.social_peace_stability_floor
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.strong_link_factor
+		OR = {
+			is_in_faction = yes
+			is_subject = yes
+			has_country_flag = great_depression_event34_supplier_contract
+		}
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.improving_trend_factor
+		check_variable = { var = great_depression_severity_trend value = constant:great_depression_api.zero compare = less_than }
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.weak_link_factor
+		NOT = { is_in_faction = yes }
+		NOT = { is_subject = yes }
+		NOT = { has_country_flag = great_depression_event34_supplier_contract }
+	}
+}
+
+great_depression_social_collapse_activation_interval = {
+	base = constant:great_depression_evolution_mtth.social_collapse_days
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.high_severity_factor
+		check_variable = {
+			var = great_depression_depression_severity
+			value = constant:great_depression_event.systemic_breakdown_threshold
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.severe_social_pressure_factor
+		check_variable = {
+			var = great_depression_social_extreme_days
+			value = constant:great_depression_event.pulse_days
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.reopened_centers_factor
+		check_variable = { var = great_depression_centers_reopened_count value = great_depression_center_count compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.high_stability_factor
+		has_stability > constant:great_depression_evolution_mtth.high_stability_floor
+	}
+}
+
+great_depression_second_great_depression_activation_interval = {
+	base = constant:great_depression_evolution_mtth.second_great_depression_days
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.high_severity_factor
+		check_variable = {
+			var = great_depression_depression_severity
+			value = constant:great_depression_event.systemic_breakdown_threshold
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.organized_actor_factor
+		has_country_flag = great_depression_social_organized_actor_proof
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.global_link_factor
+		has_country_flag = great_depression_contagion_conversion_attributable
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.multiple_active_crises_factor
+		is_major = yes
+		check_variable = {
+			var = global.great_depression_active_countries^num
+			value = constant:great_depression_evolution_mtth.multiple_active_crises_threshold
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:great_depression_evolution_mtth.small_recovering_origin_factor
+		is_major = no
+		check_variable = { var = great_depression_severity_trend value = constant:great_depression_api.zero compare = less_than }
+		check_variable = {
+			var = global.great_depression_active_countries^num
+			value = constant:great_depression_api.two
+			compare = less_than
+		}
+	}
+}

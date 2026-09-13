@@ -45,8 +45,26 @@ The corrected baseline request was:
 ```
 
 `hoi4.gui_inspect` failed with `tool call error: tool call failed for hoi4_agent_tools/hoi4.gui_inspect`, caused by `timed out awaiting tools/call after 180s`.
-`hoi4.gui_render` received the same request plus `states: ["normal"]`; its result is pending at this handoff draft.
-No new MCP artifact, sourceRevision, hierarchy, click-region, fidelity report, or production image has been returned for review.
+`hoi4.gui_render` received the same request plus `states: ["normal"]` and completed as `GUI_RENDERED` with 27 artifacts and no server blockers.
+Its exact sourceRevision is `1178ad59092abf8b6378f57b77b83f6c5801bc86f93bd0ebf6f826bf9d170a90`, scenarioId `event006_status_repair_baseline`.
+The response reports `validation.passed = true` but also 64 `GUI_VISIBLE_OVERLAP` findings and fidelity counts of 556 modelled, 5 approximated, 15 ignored, 0 missing, 4 unsupported, and 12 unresolved.
+It reports one state, one scenario, and four resolution entries; only the explicitly requested 1920×1080 full image was reviewed, so no wider resolution coverage is claimed.
+The same-scenario cached `gui_inspect` retry also failed with `timed out awaiting tools/call after 180s`.
+There are two failed corrected inspect attempts and one successful baseline render; inspection evidence remains unavailable, so the bounded repair stops here.
+
+Current render artifacts:
+
+- Full PNG: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b69c93a2569d4392d07bd27e1e37652f29cc4edbbecb1d183e58f5d02b41c284/282f1b14a019b038bc4cac04cb658114990d9afe356820f630ddf6439d11a2d5/independence_wave_status_window-full.png`
+- Hierarchy: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d6ab51bd1a02d1bcc37371410041db872f48ec537d4ffcbc31799ba71b7e9c69/401da573a53b83b56dc62856ce2bfdb5b5478335ba8f0093319448b1635cbfc5/independence_wave_status_window-hierarchy.svg`
+- Click regions: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f6eb93da154f832d2b6df86dfb764b56b893af485e1ce1e537e5135601b85f24/0ee20007e5c5fe552dcad978d51d3fea39a1f9db4a1774847ca758fc2c3e7143/independence_wave_status_window-click-regions.png`
+- Fidelity: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/85d50111a5225411f583b688d9e33a1bb67053e92d3e9bf4e1405e0cd6c1636d/ab957634c94fa6da1a9bb9097541925ac9bb51fe309bf10f18b790433e679478/independence_wave_status_window-fidelity.json`
+- Validation: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/cf5a982f9a7afaa664cabb8d5b04ef50c5b5a731e2eeda09bcbce6419d9e5d89/362e30c4450fa3d894241ce44b9e90d365043600cb1943754b4e86507ed83acd/independence_wave_status_window-validation.json`
+
+The complete PNG was retrieved through the artifact resource's documented byte-range selectors in 24,000-byte chunks after a single large resource response could not be decoded.
+The actual full image was reviewed: the bottom-right native tab text panels visibly overprint one another, dynamic values display `[X]`/`[dynamic_loc]`, and the instability warning touches the unresolved instability text.
+These are visibly unacceptable findings in the current baseline, not waived by its passing validation boolean.
+The scenario declares no runtime flags, numeric values, or dynamic localisation substitutions; a coherent per-tab fixture is still necessary to distinguish exact state evaluation from source defects.
+No post-change render or matched source comparison exists because no runtime source was changed.
 Per `chaos-redux-scripted-gui`, missing mandatory inspect/render evidence blocks edits and visual completion; source-only review is not substituted.
 
 ## Source-level observations, not visual acceptance
@@ -90,9 +108,9 @@ This worker neither reset nor rewrote it and did not commit any runtime or unrel
 
 ## Remaining acceptance work and omissions
 
-- Mandatory current baseline inspection/render and before/after comparison are absent.
+- Mandatory current baseline inspection and before/after comparison are absent; one normal baseline render exists and has visible defects.
 - No correction reference image or completed native-region mapping was produced because the baseline gate failed.
-- Full-window, cropped, annotated, hierarchy, click-region, label-centering, text-density, painted-bounds, and reference-fidelity review remain incomplete.
+- Full-window review found overprinted tab text and unresolved values; cropped, annotated, hierarchy, click-region, label-centering, text-density, painted-bounds, and reference-fidelity review remain incomplete.
 - Explicit coherent Government, Recognition, Security, League, and Ambitions fixtures, warning thresholds, animated/static variants, closed/pre-event state, 1920×1080, and 1280×720 evidence remain pending.
 - The prior handoff describes broad/global-state fixtures; it does not provide a reproducible per-tab runtime-input matrix.
 - Costs, refresh effects, AI equivalence, source helper lifecycle, no-pre-event runtime behavior, and final decision-category integration remain parent/decision-owner responsibilities and were not changed.

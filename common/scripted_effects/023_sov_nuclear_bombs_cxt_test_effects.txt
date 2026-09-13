@@ -1,0 +1,26 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 CXT REGISTRATION HOOKS
+# ============================================================================
+# The CXT fixture registers the event-neutral nuclear ledger contract without
+# firing Event 023 or granting its 100-bomb opening package. The carrier and
+# this `_apply` effect are intentionally idempotent.
+# ============================================================================
+
+sov_nuclear_bombs_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:sov_nuclear_bombs_cxt_extension_event023
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+sov_nuclear_bombs_cxt_extension_event023_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_global_flag = sov_nuclear_bombs_cxt_content_registered }
+		}
+		sov_nuclear_bombs_initialize_ledger = yes
+		set_global_flag = sov_nuclear_bombs_cxt_content_registered
+	}
+}

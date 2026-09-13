@@ -19,7 +19,7 @@ The bridge accepts only a live receivable state passing the existing `black_plag
 
 When the runtime has not started, the bridge calls `black_plague_initialize_runtime` in `ROOT` before exposure, but only when pulse suppression is absent. The initializer is already idempotent and its one-time state pass is treated as bootstrap, not a new periodic loop.
 
-The bridge snapshots all three exposure inputs before bootstrap and restores them before both the post-bootstrap validity check and the shared exposure call. Missing amount or route values retain the defaults implemented by `black_plague_apply_exposure`; the caller's explicit values are not replaced by bootstrap side effects.
+The bridge initializes private snapshots on every call with the shared exposure defaults, then copies the three provided exposure inputs before bootstrap and restores them before both the post-bootstrap validity check and the shared exposure call. Missing amount or route values retain the defaults implemented by `black_plague_apply_exposure`; the caller's explicit values are not replaced by bootstrap side effects.
 
 `black_plague_apply_exposure` remains the only exposure mutation. Its temporary `black_plague_exposure_result` is copied immediately to `black_plague_weaponized_runtime_bridge_result`; temporary variables are scope-less, so the country-scope caller reads that result directly after the state block returns. A value of `constant:black_plague_value.one` is the only accepted result.
 
@@ -54,6 +54,9 @@ No constants or weighted surfaces are added. The bridge reuses `black_plague_val
 ## Event targets and cleanup
 
 The bridge uses the existing global `black_plague_scheduler_anchor_state` target because that is the Event 020 scheduler's authoritative pointer. It clears only a reachable old target during repair and leaves the target owned by the shared scheduler thereafter. No new global target, origin pointer, periodic on-action, or cleanup pass is introduced.
+
+Private temporary input snapshots expire with the effect chain and are overwritten before every use on a later invocation.
+Only the bridge reads these snapshots; the two callers consume the public acceptance result and retain their own transaction state.
 
 Queued stale state events are invalidated by the shared generation and ticket checks rather than by an unsupported event cancellation effect. A stale anchor flag whose state cannot be reached through the global pointer is intentionally outside the bridge's bounded cleanup boundary.
 

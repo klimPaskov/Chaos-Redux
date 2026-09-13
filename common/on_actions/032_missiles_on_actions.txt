@@ -1,0 +1,191 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILE LIFECYCLE ON ACTIONS
+# ============================================================================
+# Exact transaction-boundary hooks only. ROOT is the new controller, FROM is
+# the old controller, and FROM.FROM is the changed state for state control.
+# No recurring country or whole-world scan is used.
+# ============================================================================
+
+on_actions = {
+	on_war_relation_added = {
+		effect = {
+			if = {
+				limit = { ROOT = { exists = yes } FROM = { exists = yes } }
+				if = { limit = { NOT = { has_variable = global.missiles_achievement_war_sequence } } set_variable = { global.missiles_achievement_war_sequence = constant:missiles_program_value.zero } }
+				if = {
+					limit = { ROOT = { has_variable = missiles_achievement_current_war_id check_variable = { var = missiles_achievement_current_war_id value = constant:missiles_program_value.zero compare = greater_than } } }
+					FROM = { set_variable = { missiles_achievement_current_war_id = ROOT.missiles_achievement_current_war_id } }
+				}
+				else_if = {
+					limit = { FROM = { has_variable = missiles_achievement_current_war_id check_variable = { var = missiles_achievement_current_war_id value = constant:missiles_program_value.zero compare = greater_than } } }
+					ROOT = { set_variable = { missiles_achievement_current_war_id = FROM.missiles_achievement_current_war_id } }
+				}
+				else = {
+					add_to_variable = { global.missiles_achievement_war_sequence = constant:missiles_program_value.one }
+					ROOT = { set_variable = { missiles_achievement_current_war_id = global.missiles_achievement_war_sequence } }
+					FROM = { set_variable = { missiles_achievement_current_war_id = global.missiles_achievement_war_sequence } }
+				}
+				if = {
+					limit = { FROM = { is_major = yes } }
+					ROOT = { set_country_flag = chaosx_032_achievement_at_war_with_major }
+				}
+				if = {
+					limit = { ROOT = { is_major = yes } }
+					FROM = { set_country_flag = chaosx_032_achievement_at_war_with_major }
+				}
+				ROOT = {
+					if = {
+						limit = { has_country_flag = missiles_program_initialized }
+						set_variable = { chaosx_032_input_war_id = missiles_achievement_current_war_id }
+						chaosx_032_achievement_record_war_start = yes
+					}
+				}
+				FROM = {
+					if = {
+						limit = { has_country_flag = missiles_program_initialized }
+						set_variable = { chaosx_032_input_war_id = missiles_achievement_current_war_id }
+						chaosx_032_achievement_record_war_start = yes
+					}
+				}
+
+				# Freeze the mature enemy site count at the relation boundary for
+				# Empty the Silos. The target receives only an event-driven marker
+				# used to detect a later rebuilt operational site.
+				FROM = { if = { limit = { has_country_flag = missiles_program_initialized } missiles_recalculate_network = yes } }
+				ROOT = {
+					if = {
+						limit = {
+							has_country_flag = missiles_program_initialized
+							FROM = {
+								OR = { is_major = yes missiles_program_is_mature = yes }
+								check_variable = { var = missiles_active_site_count value = constant:missiles_event.three compare = greater_than_or_equals }
+							}
+						}
+						set_variable = { chaosx_032_input_opening_site_count = FROM.missiles_active_site_count }
+						set_variable = { chaosx_032_input_target_country_id = FROM.id }
+						set_variable = { chaosx_032_empty_the_silos_target_country = FROM }
+						chaosx_032_achievement_record_empty_silos_war_start = yes
+						FROM = {
+							for_each_scope_loop = {
+								array = missiles_launch_site_states
+								if = {
+									limit = { missiles_site_can_launch = yes }
+									ROOT = { add_to_array = { array = chaosx_032_empty_the_silos_opening_sites value = PREV.id } }
+								}
+							}
+						}
+						FROM = {
+							set_country_flag = chaosx_032_empty_silos_tracked_enemy
+							if = {
+								limit = { NOT = { is_in_array = { array = chaosx_032_empty_silos_tracking_attackers value = ROOT } } }
+								add_to_array = { array = chaosx_032_empty_silos_tracking_attackers value = ROOT }
+								if = { limit = { NOT = { has_variable = chaosx_032_empty_silos_tracking_count } } set_variable = { chaosx_032_empty_silos_tracking_count = constant:missiles_program_value.zero } }
+								add_to_variable = { chaosx_032_empty_silos_tracking_count = constant:missiles_program_value.one }
+							}
+						}
+					}
+				}
+				FROM = {
+					if = {
+						limit = {
+							has_country_flag = missiles_program_initialized
+							ROOT = {
+								OR = { is_major = yes missiles_program_is_mature = yes }
+								has_variable = missiles_active_site_count
+								check_variable = { var = missiles_active_site_count value = constant:missiles_event.three compare = greater_than_or_equals }
+							}
+						}
+						set_variable = { chaosx_032_input_opening_site_count = ROOT.missiles_active_site_count }
+						set_variable = { chaosx_032_input_target_country_id = ROOT.id }
+						set_variable = { chaosx_032_empty_the_silos_target_country = ROOT }
+						chaosx_032_achievement_record_empty_silos_war_start = yes
+						ROOT = {
+							for_each_scope_loop = {
+								array = missiles_launch_site_states
+								if = {
+									limit = { missiles_site_can_launch = yes }
+									FROM = { add_to_array = { array = chaosx_032_empty_the_silos_opening_sites value = PREV.id } }
+								}
+							}
+						}
+						ROOT = {
+							set_country_flag = chaosx_032_empty_silos_tracked_enemy
+							if = {
+								limit = { NOT = { is_in_array = { array = chaosx_032_empty_silos_tracking_attackers value = FROM } } }
+								add_to_array = { array = chaosx_032_empty_silos_tracking_attackers value = FROM }
+								if = { limit = { NOT = { has_variable = chaosx_032_empty_silos_tracking_count } } set_variable = { chaosx_032_empty_silos_tracking_count = constant:missiles_program_value.zero } }
+								add_to_variable = { chaosx_032_empty_silos_tracking_count = constant:missiles_program_value.one }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	on_capitulation = {
+		effect = {
+			if = {
+				limit = { FROM = { exists = yes has_country_flag = missiles_program_initialized } }
+				FROM = { set_variable = { missiles_achievement_war_won_pending = constant:missiles_program_value.one } }
+			}
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			if = {
+				limit = { ROOT = { exists = yes has_country_flag = missiles_program_initialized } }
+				ROOT = { set_variable = { missiles_achievement_war_won_pending = constant:missiles_program_value.one } }
+			}
+		}
+	}
+
+	on_peace = {
+		effect = {
+			ROOT = {
+				if = {
+					limit = { has_country_flag = missiles_program_initialized has_variable = missiles_achievement_current_war_id check_variable = { var = missiles_achievement_current_war_id value = constant:missiles_program_value.zero compare = greater_than } }
+					clr_country_flag = chaosx_032_achievement_at_war_with_major
+					chaosx_032_achievement_record_war_resolution = yes
+				}
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						missiles_state_has_registered_site = yes
+						NOT = { has_state_flag = missiles_site_planned_inheritance }
+						NOT = { has_state_flag = missiles_site_civil_war_split_pending }
+					}
+				}
+				FROM.FROM = { missiles_handle_site_control_changed = yes }
+			}
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			ROOT = { missiles_reconcile_released_country_sites = yes }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			ROOT = { missiles_reconcile_released_country_sites = yes }
+		}
+	}
+
+	on_annex = {
+		effect = {
+			ROOT = { save_event_target_as = missiles_annexing_country }
+			FROM = {
+				if = { limit = { has_country_flag = missiles_program_initialized } missiles_cleanup_removed_country = yes }
+			}
+		}
+	}
+}

@@ -41,6 +41,17 @@ universal_cost_framework = {
 	result_rejected = 3
 }
 
+# Fixed-point guard used by owner-side strict affordability gates when an
+# exact quoted balance must remain payable.
+universal_cost_fixed_point = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	gate_epsilon = 0.00001
+}
+
 # A family mask is a positive bit mask. The zero value means every family.
 # Keep custom family bits within the thirty-bit range used by the matcher.
 universal_cost_family = {
@@ -56,19 +67,38 @@ universal_cost_family = {
 	infantry_equipment = 16
 	support_equipment = 32
 	motorized_equipment = 64
+	# Broad equipment quotes match infantry, support, and motorized equipment.
+	equipment = 112
 	train_equipment = 128
+	# Event-owned semantic aliases retain the existing train and convoy bits.
+	trains = 128
 	convoy = 256
+	convoys = 256
 	factory_commitment = 512
 	technology = 1024
 	advisor = 2048
 	idea = 4096
 	operation = 8192
 	equipment_design = 16384
+	army_experience = 32768
+	consumer_goods = 65536
+	diplomatic = 131072
+	intelligence = 262144
+	laws = 524288
+	officer_corps = 1048576
+	personnel = 2097152
+	special_project = 4194304
+	state_project = 8388608
+	navy_experience = 16777216
+	air_experience = 33554432
+	stability = 67108864
+	war_support = 134217728
 }
 
 # Resource kinds with native debit/credit branches in the shared payment
-# helpers. The adapter may record additional kinds, but must own their actual
-# payment and refund effects.
+# helpers occupy ids 1-12. The adapter may record additional kinds, but must
+# own their actual payment and refund effects. custom_adapter is intentionally
+# an owner-paid id and must never be added to the native dispatch set.
 universal_cost_resource_kind = {
 	schema = {
 		any_key = yes
@@ -84,6 +114,13 @@ universal_cost_resource_kind = {
 	motorized_equipment = 7
 	train_equipment = 8
 	convoy = 9
+	army_experience = 10
+	support_equipment_1 = 11
+	train_equipment_1 = 12
+	navy_experience = 13
+	air_experience = 14
+	stability = 15
+	war_support = 16
 	civilian_factory_commitment = 100
 	military_factory_commitment = 101
 	dockyard_commitment = 102
@@ -93,6 +130,18 @@ universal_cost_resource_kind = {
 	operation = 106
 	equipment_design = 107
 	custom_adapter = 199
+}
+
+# Fixed-point quanta for deliberate Stability and War Support payments. The
+# owning surface must pass one of these values instead of the integer default.
+universal_cost_fixed_point_quantum = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	stability = 0.01
+	war_support = 0.01
 }
 
 # A component ledger uses a numeric state because each component must retain

@@ -1,0 +1,603 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR TRIGGERS
+# ============================================================================
+# Country, state, actor, decision, mission, scenario, and terminal predicates
+# for the Random Terror system.  Baseline target selection is deliberately
+# mechanical: live state activity, pressure, response capacity, and prior
+# incident memory are inputs; religion, ethnicity, nationality, refugee status,
+# civilization, and ordinary ideology are never inputs.
+# ============================================================================
+
+random_terror_is_actor = {
+	exists = yes
+	has_country_flag = random_terror_actor
+	NOT = { has_country_flag = random_terror_cleanup_complete }
+}
+
+random_terror_is_jihadist_actor = {
+	random_terror_is_actor = yes
+	OR = {
+		check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.jihadist }
+		check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+	}
+}
+
+random_terror_is_final_actor = {
+	random_terror_is_actor = yes
+	check_variable = { random_terror_actor_profile = constant:random_terror_actor_profile.final }
+}
+
+random_terror_is_viable_actor = {
+	random_terror_is_actor = yes
+	NOT = { has_capitulated = yes }
+	num_of_controlled_states > constant:random_terror_value.zero
+	OR = {
+		check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
+		check_variable = { random_terror_network_authority > constant:random_terror_value.unity_gate }
+	}
+}
+
+random_terror_country_is_normal_target = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = random_terror_actor }
+	NOT = { has_country_flag = random_terror_cleanup_complete }
+	NOT = { has_country_flag = random_terror_target_reserved }
+	NOT = { has_country_flag = random_terror_incompatible_route }
+	NOT = { has_global_flag = world_end }
+	num_of_controlled_states > constant:random_terror_value.zero
+	any_owned_state = {
+		is_controlled_by = ROOT
+		state_population_k > constant:random_terror_value.zero
+		OR = {
+			NOT = { has_variable = random_terror_state_cooldown_until }
+			check_variable = { var = random_terror_state_cooldown_until value = global.date compare = less_than_or_equals }
+		}
+	}
+}
+
+random_terror_state_is_valid_target = {
+	state_population_k > constant:random_terror_value.zero
+	OR = {
+		NOT = { has_variable = random_terror_state_cooldown_until }
+		check_variable = { var = random_terror_state_cooldown_until value = global.date compare = less_than_or_equals }
+	}
+	NOT = { has_state_flag = random_terror_state_lost_local_control }
+	OR = {
+		is_controlled_by = ROOT
+		is_owned_by = ROOT
+	}
+}
+
+random_terror_state_is_active_crisis = {
+	OR = {
+		has_state_flag = random_terror_state_active
+		has_state_flag = random_terror_state_entrenched
+		has_state_flag = random_terror_state_armed_insurgency
+		has_state_flag = random_terror_state_lost_local_control
+	}
+}
+
+random_terror_country_has_valid_state = {
+	any_owned_state = {
+		is_controlled_by = ROOT
+		random_terror_state_is_valid_target = yes
+	}
+}
+
+random_terror_country_has_active_state = {
+	any_owned_state = {
+		random_terror_state_is_active_crisis = yes
+	}
+}
+
+random_terror_country_has_active_package = {
+	OR = {
+		has_country_flag = random_terror_affected_country
+		random_terror_country_has_active_state = yes
+	}
+}
+
+random_terror_country_is_eligible_wave_target = {
+	random_terror_country_is_normal_target = yes
+	random_terror_country_has_valid_state = yes
+	OR = {
+		random_terror_country_has_active_package = yes
+		individual_crisis_load_is_below_cap = yes
+	}
+}
+
+random_terror_event_pool_available = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_global_lock }
+	NOT = { has_global_flag = random_terror_defeat_resolved }
+	NOT = { has_global_flag = random_terror_global_jihad_active }
+	NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress }
+	any_country = {
+		random_terror_country_is_eligible_wave_target = yes
+	}
+}
+
+random_terror_can_prepare_dispatch = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_global_lock }
+	NOT = { has_global_flag = random_terror_defeat_resolved }
+	random_terror_event_pool_available = yes
+}
+
+random_terror_can_government_response = {
+	exists = yes
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_country_flag = random_terror_actor }
+	NOT = { has_country_flag = random_terror_action_recent }
+	OR = {
+		has_country_flag = random_terror_affected_country
+		random_terror_country_has_active_state = yes
+	}
+}
+
+random_terror_can_actor_action = {
+	random_terror_is_actor = yes
+	NOT = { has_global_flag = random_terror_terminal_active }
+	NOT = { has_country_flag = random_terror_actor_action_lock }
+}
+
+random_terror_government_phase_terminal = {
+	has_global_flag = random_terror_terminal_active
+}
+
+random_terror_government_phase_recovery = {
+	NOT = { random_terror_government_phase_terminal = yes }
+	NOT = { random_terror_country_has_active_state = yes }
+	OR = {
+		has_country_flag = random_terror_reconstruction_available
+		has_country_flag = random_terror_public_accounting_complete
+		has_country_flag = random_terror_services_restored
+		any_owned_state = { has_state_flag = random_terror_state_recovery }
+	}
+}
+
+random_terror_government_phase_territorial = {
+	NOT = { random_terror_government_phase_terminal = yes }
+	any_owned_state = {
+		OR = {
+			has_state_flag = random_terror_state_armed_insurgency
+			has_state_flag = random_terror_state_lost_local_control
+		}
+	}
+}
+
+random_terror_government_phase_crisis = {
+	NOT = { random_terror_government_phase_terminal = yes }
+	NOT = { random_terror_government_phase_territorial = yes }
+	any_owned_state = {
+		random_terror_state_is_active_crisis = yes
+		OR = {
+			has_state_flag = random_terror_hostage_crisis_recorded
+			has_state_flag = random_terror_capital_infiltration_recorded
+			check_variable = { var = random_terror_state_pressure value = constant:random_terror_value.high compare = greater_than_or_equals }
+			check_variable = { var = random_terror_state_activity value = constant:random_terror_tuning.state_activity_armed_threshold compare = greater_than_or_equals }
+		}
+	}
+}
+
+random_terror_government_phase_network = {
+	NOT = { random_terror_government_phase_terminal = yes }
+	NOT = { random_terror_government_phase_recovery = yes }
+	NOT = { random_terror_government_phase_territorial = yes }
+	NOT = { random_terror_government_phase_crisis = yes }
+	has_global_flag = random_terror_evolution_2_unlocked
+	OR = {
+		check_variable = { var = global.random_terror_network_reach value = constant:random_terror_value.low compare = greater_than_or_equals }
+		any_owned_state = {
+			OR = {
+				has_state_flag = random_terror_sponsor_evidence_recorded
+				has_state_flag = random_terror_smuggling_corridor_recorded
+				has_state_flag = random_terror_defection_recorded
+				has_state_flag = random_terror_military_defection_recorded
+				has_state_flag = random_terror_community_rejection_recorded
+				has_state_flag = random_terror_muslim_community_opposition_recorded
+			}
+		}
+	}
+}
+
+random_terror_government_phase_initial = {
+	NOT = { random_terror_government_phase_terminal = yes }
+	NOT = { random_terror_government_phase_recovery = yes }
+	NOT = { random_terror_government_phase_territorial = yes }
+	NOT = { random_terror_government_phase_crisis = yes }
+	NOT = { random_terror_government_phase_network = yes }
+}
+
+random_terror_actor_phase_survival = {
+	random_terror_is_actor = yes
+	NOT = { has_global_flag = random_terror_evolution_2_unlocked }
+}
+
+random_terror_actor_phase_network = {
+	random_terror_is_actor = yes
+	has_global_flag = random_terror_evolution_2_unlocked
+	NOT = { has_global_flag = random_terror_evolution_3_unlocked }
+}
+
+random_terror_actor_phase_territorial = {
+	random_terror_is_actor = yes
+	has_global_flag = random_terror_evolution_3_unlocked
+	NOT = { has_global_flag = random_terror_evolution_4_unlocked }
+}
+
+random_terror_actor_phase_jihadist = {
+	random_terror_is_actor = yes
+	has_global_flag = random_terror_evolution_4_unlocked
+	NOT = { has_global_flag = random_terror_evolution_5_unlocked }
+}
+
+random_terror_actor_phase_final = {
+	random_terror_is_actor = yes
+	has_global_flag = random_terror_evolution_5_unlocked
+}
+
+random_terror_action_target_is_valid = {
+	FROM = {
+		random_terror_state_is_valid_target = yes
+	}
+}
+
+random_terror_coordinated_uprising_transaction_valid = {
+	random_terror_can_actor_action = yes
+	has_global_flag = random_terror_evolution_5_unlocked
+	OR = {
+		has_country_flag = random_terror_route_jihadist_international
+		has_country_flag = random_terror_route_false_revelation
+	}
+	FROM = {
+		exists = yes
+		NOT = { is_controlled_by = ROOT }
+		random_terror_state_is_active_crisis = yes
+		NOT = { has_state_flag = random_terror_uprising_recent }
+		CONTROLLER = {
+			check_variable = { var = random_terror_pressure value = constant:random_terror_value.minimum_pressure_for_uprising compare = greater_than_or_equals }
+			NOT = { has_country_flag = random_terror_mission_slot_2 }
+		}
+	}
+}
+
+random_terror_can_launch_global_jihad = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_global_jihad_active }
+	NOT = { has_global_flag = random_terror_global_jihad_setup_in_progress }
+	NOT = { has_global_flag = random_terror_defeat_resolved }
+	NOT = { has_global_flag = random_terror_false_revelation_resolved }
+	OR = {
+		check_variable = { triggerable_scenarios_selected = constant:random_terror_identity.triggerable_scenario_id }
+		has_global_flag = random_terror_global_jihad_manual_request
+	}
+	OR = {
+		JHX = { exists = yes NOT = { has_global_flag = random_terror_slot_jhx_used } }
+		JIX = { exists = yes NOT = { has_global_flag = random_terror_slot_jix_used } }
+		JKX = { exists = yes NOT = { has_global_flag = random_terror_slot_jkx_used } }
+		JLX = { exists = yes NOT = { has_global_flag = random_terror_slot_jlx_used } }
+		JMX = { exists = yes NOT = { has_global_flag = random_terror_slot_jmx_used } }
+		JNX = { exists = yes NOT = { has_global_flag = random_terror_slot_jnx_used } }
+		JOX = { exists = yes NOT = { has_global_flag = random_terror_slot_jox_used } }
+		JPX = { exists = yes NOT = { has_global_flag = random_terror_slot_jpx_used } }
+		any_country = { random_terror_is_actor = yes }
+	}
+	any_country = {
+		random_terror_country_is_eligible_wave_target = yes
+	}
+}
+
+random_terror_scenario_candidate_country = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = random_terror_actor }
+	NOT = { has_country_flag = random_terror_cleanup_complete }
+	NOT = { has_country_flag = random_terror_target_reserved }
+	num_of_controlled_states > constant:random_terror_value.zero
+	OR = {
+		random_terror_country_is_normal_target = yes
+		has_country_flag = random_terror_scenario_target
+		has_country_flag = random_terror_affected_country
+	}
+	OR = {
+		random_terror_country_has_active_package = yes
+		individual_crisis_load_is_below_cap = yes
+	}
+}
+
+random_terror_scenario_actor_parent = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = random_terror_actor }
+	NOT = { has_country_flag = random_terror_cleanup_complete }
+	num_of_controlled_states > constant:random_terror_value.zero
+	OR = {
+		random_terror_country_is_normal_target = yes
+		has_country_flag = random_terror_scenario_target
+		has_country_flag = random_terror_affected_country
+	}
+}
+
+random_terror_scenario_candidate_state = {
+	state_population_k > constant:random_terror_value.zero
+	NOT = { has_state_flag = random_terror_state_lost_local_control }
+	NOT = { has_state_flag = random_terror_scenario_actor_state_reserved }
+}
+
+random_terror_scenario_actor_state = {
+	random_terror_scenario_candidate_state = yes
+	owner = { random_terror_scenario_actor_parent = yes }
+	OR = {
+		NOT = { is_capital = yes }
+		owner = { num_of_controlled_states > constant:random_terror_value.one }
+	}
+}
+
+random_terror_scenario_extra_state = {
+	random_terror_scenario_candidate_state = yes
+	NOT = { has_state_flag = random_terror_scenario_state_seeded }
+	owner = { has_country_flag = random_terror_scenario_target }
+}
+
+random_terror_scenario_has_free_carrier = {
+	OR = {
+		JHX = { exists = yes NOT = { has_global_flag = random_terror_slot_jhx_used } }
+		JIX = { exists = yes NOT = { has_global_flag = random_terror_slot_jix_used } }
+		JKX = { exists = yes NOT = { has_global_flag = random_terror_slot_jkx_used } }
+		JLX = { exists = yes NOT = { has_global_flag = random_terror_slot_jlx_used } }
+		JMX = { exists = yes NOT = { has_global_flag = random_terror_slot_jmx_used } }
+		JNX = { exists = yes NOT = { has_global_flag = random_terror_slot_jnx_used } }
+		JOX = { exists = yes NOT = { has_global_flag = random_terror_slot_jox_used } }
+		JPX = { exists = yes NOT = { has_global_flag = random_terror_slot_jpx_used } }
+	}
+}
+
+random_terror_global_jihad_context_valid = {
+	NOT = { has_global_flag = world_end }
+	OR = {
+		has_global_flag = random_terror_global_jihad_active
+		has_global_flag = random_terror_global_jihad_manual_request
+	}
+	OR = {
+		check_variable = { global.random_terror_global_jihad_scenario_intensity > constant:random_terror_intensity.low }
+		check_variable = { global.random_terror_jihad_intensity > constant:random_terror_intensity.low }
+	}
+}
+
+random_terror_can_begin_false_revelation = {
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_terror_terminal_active }
+	NOT = { has_global_flag = random_terror_false_revelation_resolved }
+	has_global_flag = random_terror_evolution_5_unlocked
+	has_global_flag = random_terror_false_revelation_enabled
+	world_end_random_terror_global_jihad_scenario_enabled = yes
+	check_variable = { var = global.chaos_meter_value value = constant:random_terror_value.chaos_world_end compare = greater_than_or_equals }
+	check_variable = { var = global.random_terror_apocalyptic_readiness value = constant:random_terror_value.readiness_gate compare = greater_than_or_equals }
+	check_variable = { var = global.random_terror_international_unity value = constant:random_terror_value.unity_gate compare = greater_than_or_equals }
+	check_variable = { var = global.random_terror_territorial_control value = constant:random_terror_value.territorial_gate compare = greater_than_or_equals }
+	check_variable = { var = global.random_terror_territorial_state_count value = constant:random_terror_value.capital_gate compare = greater_than_or_equals }
+	check_variable = { var = global.random_terror_crisis_state_count value = constant:random_terror_value.capital_gate compare = greater_than_or_equals }
+	check_variable = { var = global.random_terror_strategic_victories value = constant:random_terror_value.capital_gate compare = greater_than_or_equals }
+	any_country = {
+		random_terror_is_viable_actor = yes
+		random_terror_is_jihadist_actor = yes
+	}
+}
+
+random_terror_can_defeat_actor = {
+	random_terror_is_actor = yes
+	OR = {
+		AND = {
+			NOT = { random_terror_is_final_actor = yes }
+			OR = {
+				NOT = { num_of_controlled_states > constant:random_terror_value.zero }
+				AND = {
+					check_variable = { random_terror_territorial_control < constant:random_terror_value.territorial_gate }
+					check_variable = { random_terror_network_authority < constant:random_terror_value.unity_gate }
+				}
+			}
+		}
+		AND = {
+			random_terror_is_final_actor = yes
+			has_global_flag = random_terror_false_revelation_denied
+			OR = {
+				NOT = { num_of_controlled_states > constant:random_terror_value.zero }
+				check_variable = { random_terror_territorial_control < constant:random_terror_value.territorial_gate }
+				check_variable = { random_terror_network_authority < constant:random_terror_value.unity_gate }
+			}
+		}
+		AND = {
+			has_capitulated = yes
+			NOT = { random_terror_is_final_actor = yes }
+		}
+	}
+}
+
+random_terror_has_unresolved_actor = {
+	OR = {
+		any_country = {
+			random_terror_is_actor = yes
+			NOT = { random_terror_can_defeat_actor = yes }
+		}
+		any_country = {
+			random_terror_country_has_active_state = yes
+		}
+		any_country = {
+			has_country_flag = random_terror_affected_country
+			check_variable = { random_terror_pressure > constant:random_terror_value.zero }
+		}
+	}
+}
+
+random_terror_can_takeover_state = {
+	random_terror_is_actor = yes
+	check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
+	FROM = {
+		state_population_k > constant:random_terror_value.zero
+		NOT = { has_state_flag = random_terror_state_lost_local_control }
+	}
+}
+
+random_terror_can_start_pressure_uprising = {
+	FROM = {
+		check_variable = { random_terror_pressure > constant:random_terror_value.minimum_pressure_for_uprising }
+		NOT = { has_state_flag = random_terror_uprising_recent }
+		OR = {
+			NOT = { has_variable = random_terror_uprising_cooldown_until }
+			check_variable = { var = random_terror_uprising_cooldown_until value = global.date compare = less_than_or_equals }
+		}
+	}
+}
+
+random_terror_can_partition = {
+	random_terror_is_actor = yes
+	check_variable = { random_terror_territorial_control > constant:random_terror_value.territorial_gate }
+	check_variable = { random_terror_network_authority > constant:random_terror_value.unity_gate }
+	FROM = {
+		is_owned_by = ROOT
+		state_population_k > constant:random_terror_value.zero
+	}
+}
+
+random_terror_can_register_cxt_extension = {
+	OR = {
+		has_country_flag = chaosx_test_country_initialized
+		has_country_flag = chaosx_test_country_extension_registration_pending
+	}
+}
+
+random_terror_is_later_religious_opposition_context = {
+	OR = {
+		has_country_flag = random_terror_later_religious_opposition_registry
+		has_country_flag = random_terror_community_rejection_recorded
+		has_country_flag = random_terror_clerical_opposition_recorded
+		has_country_flag = random_terror_muslim_government_opposition_recorded
+	}
+}
+
+# Achievement registry predicates.  The persistent proof flags are written by
+# the Event 031 ledger, while this shared eligibility gate blocks AI and tag
+# switched contexts from being evaluated as player achievements.
+random_terror_achievement_campaign_is_valid = {
+	exists = yes
+	is_ai = no
+	game_rules_allow_achievements = yes
+	NOT = { has_global_flag = random_terror_achievement_tag_switch_disqualified }
+	NOT = { has_country_flag = random_terror_achievement_tag_switch_disqualified }
+}
+
+random_terror_achievement_no_second_blast_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_no_second_blast
+}
+
+random_terror_achievement_no_second_blast_is_complete = {
+	random_terror_achievement_no_second_blast_criteria_met = yes
+}
+
+random_terror_achievement_the_long_watch_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_the_long_watch
+}
+
+random_terror_achievement_the_long_watch_is_complete = {
+	random_terror_achievement_the_long_watch_criteria_met = yes
+}
+
+random_terror_achievement_the_city_still_stands_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_the_city_still_stands
+}
+
+random_terror_achievement_the_city_still_stands_is_complete = {
+	random_terror_achievement_the_city_still_stands_criteria_met = yes
+}
+
+random_terror_achievement_cut_every_route_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_cut_every_route
+}
+
+random_terror_achievement_cut_every_route_is_complete = {
+	random_terror_achievement_cut_every_route_criteria_met = yes
+}
+
+random_terror_achievement_false_claim_rejected_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_false_claim_rejected
+}
+
+random_terror_achievement_false_claim_rejected_is_complete = {
+	random_terror_achievement_false_claim_rejected_criteria_met = yes
+}
+
+random_terror_achievement_no_collective_punishment_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_no_collective_punishment
+}
+
+random_terror_achievement_no_collective_punishment_is_complete = {
+	random_terror_achievement_no_collective_punishment_criteria_met = yes
+}
+
+random_terror_achievement_enemy_of_my_enemy_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_enemy_of_my_enemy
+}
+
+random_terror_achievement_enemy_of_my_enemy_is_complete = {
+	random_terror_achievement_enemy_of_my_enemy_criteria_met = yes
+}
+
+random_terror_achievement_fracture_from_within_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_fracture_from_within
+}
+
+random_terror_achievement_fracture_from_within_is_complete = {
+	random_terror_achievement_fracture_from_within_criteria_met = yes
+}
+
+random_terror_achievement_maximum_survivor_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_maximum_survivor
+}
+
+random_terror_achievement_maximum_survivor_is_complete = {
+	random_terror_achievement_maximum_survivor_criteria_met = yes
+}
+
+random_terror_achievement_false_revelation_denied_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_false_revelation_denied
+}
+
+random_terror_achievement_false_revelation_denied_is_complete = {
+	random_terror_achievement_false_revelation_denied_criteria_met = yes
+}
+
+random_terror_achievement_victims_before_victory_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_victims_before_victory
+}
+
+random_terror_achievement_victims_before_victory_is_complete = {
+	random_terror_achievement_victims_before_victory_criteria_met = yes
+}
+
+random_terror_achievement_war_without_a_capital_criteria_met = {
+	random_terror_achievement_campaign_is_valid = yes
+	has_country_flag = random_terror_achievement_war_without_a_capital
+}
+
+random_terror_achievement_war_without_a_capital_is_complete = {
+	random_terror_achievement_war_without_a_capital_criteria_met = yes
+}

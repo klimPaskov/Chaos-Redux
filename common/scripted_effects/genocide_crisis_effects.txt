@@ -1058,19 +1058,12 @@ genocide_publicize_discovery_report = {
 
 genocide_liberate_discovered_camp = {
 	custom_effect_tooltip = chaosx_genocide.discovery_liberate.tt
-	set_temp_variable = { genocide_liberated_camp_levels = 0 }
 	set_temp_variable = { camp_rework_enemy_liberation = 1 }
 	event_target:genocide_discovered_state = {
-		set_temp_variable = { genocide_liberated_camp_levels = building_level@concentration_camp }
-		add_to_temp_variable = { genocide_liberated_camp_levels = building_level@extermination_camp }
-		add_to_temp_variable = { genocide_liberated_camp_levels = building_level@gulag_labor_camp_network }
 		set_state_flag = camp_rework_prisoners_liberated
 		camp_rework_complete_dismantlement = yes
 	}
-	multiply_temp_variable = {
-		genocide_liberated_camp_levels = constant:genocide_liberation.manpower_per_camp_level
-	}
-	add_manpower = genocide_liberated_camp_levels
+	# Release is a finite cohort status change, never a building-count manpower grant.
 	add_stability = constant:genocide_liberation.stability
 	add_war_support = constant:genocide_liberation.war_support
 	set_country_flag = camp_rework_liberated_enemy_camp
@@ -1450,6 +1443,7 @@ genocide_try_discover_state_atrocity = {
 
 genocide_on_state_control_changed = {
 	FROM.FROM = {
+		camp_occ_on_state_control_changed = yes
 		save_event_target_as = genocide_discovered_state
 	}
 	save_event_target_as = genocide_discovering_country
@@ -1508,8 +1502,7 @@ genocide_register_decision_deaths_in_from_state = {
 	FROM = {
 		set_temp_variable = { chaos_deaths_change = 0 }
 		set_temp_variable = { chaos_state_deaths_cap_factor = constant:genocide_death_cap.decision }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 }
 
@@ -1527,8 +1520,7 @@ genocide_intensify_deportations = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 	genocide_add_radical_hardliner_support = yes
 }
@@ -1593,8 +1585,7 @@ genocide_redirect_trains_and_supplies = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 }
 
@@ -1615,8 +1606,7 @@ genocide_deal_with_resistance_sabotage = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 }
 
@@ -1723,8 +1713,7 @@ genocide_japan_anti_partisan_reprisals_in_from_accepted = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 }
 
@@ -1764,7 +1753,7 @@ genocide_japan_prisoner_experimentation_in_from_accepted = {
 			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_major }
 			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.biowarfare_outbreak }
-			camp_rework_apply_state_death_burst = yes
+			# Institutional outcomes are recorded from supported finite cohorts during administration.
 			set_state_flag = genocide_biowarfare_experiment_no_outbreak
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_japan.occupation_records_major }
 			camp_rework_register_evidence_state = yes
@@ -1850,8 +1839,7 @@ genocide_germany_transfer_prisoners_to_experiment_site_in_from_accepted = {
 		}
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 		set_variable = {
 			migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
 		}
@@ -1961,8 +1949,7 @@ genocide_soviet_deport_suspected_groups_in_from_accepted = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 	if = {
 		limit = { original_tag = SOV }
@@ -1998,8 +1985,7 @@ genocide_soviet_confiscate_food_in_from_accepted = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 	if = {
 		limit = { original_tag = SOV }
@@ -2037,8 +2023,7 @@ genocide_soviet_purge_camp_administrators_in_from_accepted = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 	soviet_collapse_apply_genocide_gulag_repression_memory = yes
 }
@@ -2075,8 +2060,7 @@ genocide_soviet_forced_labor_quotas_in_from_accepted = {
 		set_temp_variable = { chaos_deaths_reason = constant:chaos_meter_deaths_reason.gulag_repression }
 		genocide_prepare_death_multiplier_from_responsible = yes
 		set_temp_variable = { chaos_deaths_change = 0 }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		# Policy changes are resolved by finite monthly administration; no instant population debit.
 	}
 	soviet_collapse_apply_genocide_gulag_repression_memory = yes
 }

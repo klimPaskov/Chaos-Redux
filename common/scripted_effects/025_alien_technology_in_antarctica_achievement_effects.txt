@@ -1,0 +1,149 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 ACHIEVEMENT TRACKING
+# ============================================================================
+# Overview:
+# - Country-scoped tracking for the fourteen Event 025 achievement routes.
+# - The helper is called by participant pulses and settlement/action seams; it
+#   never scans the world and never grants an achievement directly.
+# - Durable flags are used for route evidence so progress survives a save,
+#   reload, terminal settlement, and a later Event 036 overlap conversion.
+# ============================================================================
+
+# COUNTRY scope. Converts already-recorded expedition evidence into durable
+# achievement route flags. The achievement definitions remain in the shared
+# achievement file and read only these flags.
+chaosx_nr25_update_achievement_tracking = {
+	if = {
+		limit = { has_country_flag = chaosx_nr25_fragment_recovered }
+		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.one compare = equals } } set_country_flag = chaosx_nr25_fragment_role_one }
+		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.two compare = equals } } set_country_flag = chaosx_nr25_fragment_role_two }
+		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.three compare = equals } } set_country_flag = chaosx_nr25_fragment_role_three }
+		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.four compare = equals } } set_country_flag = chaosx_nr25_fragment_role_four }
+		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.five compare = equals } } set_country_flag = chaosx_nr25_fragment_role_five }
+		if = { limit = { check_variable = { var = chaosx_nr25_fragment_role value = constant:chaosx_nr25_value.six compare = equals } } set_country_flag = chaosx_nr25_fragment_role_six }
+	}
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_recovery_winner
+			has_country_flag = chaosx_alien_recovery_reward_applied_flag
+		}
+		set_country_flag = chaosx_nr25_achievement_antarctic_vanguard
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_entry_lacked_direct_coastal_access
+				OR = {
+					has_country_flag = chaosx_nr25_route_chartered
+					has_country_flag = chaosx_nr25_route_sponsored
+					has_country_flag = chaosx_nr25_route_improvised
+				}
+			}
+			set_country_flag = chaosx_nr25_achievement_long_way_south
+		}
+		if = {
+			limit = {
+				NOT = { has_country_flag = chaosx_nr25_rival_action_used }
+				NOT = { has_country_flag = chaosx_nr25_militarisation_blockade_route }
+				NOT = { has_country_flag = chaosx_nr25_militarisation_seize_route }
+				NOT = { has_country_flag = chaosx_nr25_militarisation_intercept_route }
+				NOT = { has_country_flag = chaosx_nr25_final_armed_used }
+			}
+			set_country_flag = chaosx_nr25_achievement_white_science
+		}
+		if = {
+			limit = { has_country_flag = chaosx_nr25_militarisation_rescue_route has_country_flag = chaosx_nr25_rescue_target_was_valid }
+			set_country_flag = chaosx_nr25_achievement_nobody_left_on_ice
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_false_map_operation
+				has_country_flag = chaosx_nr25_false_map_exposed
+				has_country_flag = chaosx_nr25_false_map_recovered
+			}
+			set_country_flag = chaosx_nr25_achievement_false_map
+		}
+		if = {
+			limit = {
+				OR = {
+					has_global_flag = chaosx_nr25_evolution_something_survived
+					has_global_flag = chaosx_nr25_evolution_militarised_antarctica
+				}
+				NOT = { has_country_flag = chaosx_nr25_militarisation_blockade_route }
+				NOT = { has_country_flag = chaosx_nr25_militarisation_seize_route }
+				NOT = { has_country_flag = chaosx_nr25_militarisation_intercept_route }
+				NOT = { has_country_flag = chaosx_nr25_survivor_guard_route }
+			}
+			set_country_flag = chaosx_nr25_achievement_without_escort
+		}
+		if = { limit = { has_country_flag = chaosx_nr25_outpost_restored } set_country_flag = chaosx_nr25_achievement_reclaim_the_station }
+		if = {
+			limit = {
+				has_global_flag = chaosx_nr25_evolution_active_signal
+				has_country_flag = chaosx_nr25_signal_remote_route
+				NOT = { has_country_flag = chaosx_nr25_signal_follow_route }
+				NOT = { has_country_flag = chaosx_nr25_signal_jam_route }
+				NOT = { has_country_flag = chaosx_nr25_signal_broadcast_route }
+			}
+			set_country_flag = chaosx_nr25_achievement_listen_without_answering
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_dependence_contained
+				has_country_flag = chaosx_nr25_recovery_winner
+				has_country_flag = chaosx_alien_recovery_reward_applied_flag
+				NOT = { has_country_flag = chaosx_nr25_dependence_accident_history }
+				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_contained_threshold compare = less_than }
+				check_variable = { var = chaosx_nr25_dependence_safe_days value = constant:chaosx_nr25_cost.dependence_safe_year_days compare = greater_than_or_equals }
+			}
+			set_country_flag = chaosx_nr25_achievement_human_factors
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_nr25_dependence_integrate_route
+				has_country_flag = chaosx_nr25_recovery_winner
+				has_country_flag = chaosx_alien_recovery_reward_applied_flag
+				NOT = { has_country_flag = chaosx_nr25_dependence_destroy_route }
+				NOT = { has_country_flag = chaosx_nr25_dependence_transfer_route }
+				check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_cost.dependence_stable_threshold compare = greater_than_or_equals }
+				check_variable = { var = chaosx_nr25_dependence_stable_days value = constant:chaosx_nr25_cost.dependence_stable_two_year_days compare = greater_than_or_equals }
+			}
+			set_country_flag = chaosx_nr25_achievement_system_prefers_us
+		}
+		if = {
+			limit = {
+				has_country_flag = chaosx_alien_recovery_event025_recorded
+				has_country_flag = chaosx_alien_recovery_event036_recorded
+				has_country_flag = chaosx_alien_recovery_overlap_conversion_used
+				check_variable = { var = chaosx_alien_recovery_result_tier value = constant:chaosx_nr25_value.one compare = greater_than_or_equals }
+			}
+			set_country_flag = chaosx_nr25_achievement_two_crashes_one_answer
+		}
+		if = {
+			limit = {
+				check_variable = { var = global.chaosx_nr25_outpost_participant_count value = constant:chaosx_nr25_cost.outpost_participant_target compare = greater_than_or_equals }
+				check_variable = { var = chaosx_nr25_pre_winner_exchange_targets value = constant:chaosx_nr25_cost.shared_evidence_achievement_targets compare = greater_than_or_equals }
+			}
+			set_country_flag = chaosx_nr25_achievement_first_among_equals
+		}
+	}
+
+	if = {
+		limit = {
+			has_country_flag = chaosx_nr25_loser_settlement_complete
+			has_country_flag = chaosx_nr25_highest_losing_fragment_tier
+		}
+		set_country_flag = chaosx_nr25_achievement_fragments_of_a_losing_cause
+	}
+
+	if = {
+		limit = {
+			has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
+			has_country_flag = chaosx_nr25_fragment_role_one
+			has_country_flag = chaosx_nr25_fragment_role_two
+			has_country_flag = chaosx_nr25_fragment_role_three
+			has_country_flag = chaosx_nr25_fragment_role_four
+			has_country_flag = chaosx_nr25_fragment_role_five
+			has_country_flag = chaosx_nr25_fragment_role_six
+		}
+		set_country_flag = chaosx_nr25_achievement_six_fields_of_debris
+	}
+}

@@ -45,6 +45,41 @@ camp_rework_dispatch_restore_colonial_selection = {
 }
 
 camp_rework_dispatch_generic_action = {
+	if = {
+		limit = {
+			has_country_flag = camp_admin_initialized
+			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_dismantle_detention_network }
+		}
+		camp_admin_generic_reform = yes
+	}
+	else_if = {
+		limit = {
+			has_country_flag = camp_admin_initialized
+			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
+		}
+		set_temp_variable = { camp_admin_control_requested = constant:camp_admin_priority.works }
+		camp_admin_set_priority = yes
+	}
+	else_if = {
+		limit = {
+			has_country_flag = camp_admin_initialized
+			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
+		}
+		set_temp_variable = { camp_admin_control_requested = constant:camp_admin_priority.extraction }
+		camp_admin_set_priority = yes
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_country_flag = camp_admin_initialized }
+				NOT = { camp_admin_legacy_generic_action_is_retired = yes }
+			}
+		}
+		camp_rework_dispatch_generic_action_legacy = yes
+	}
+}
+
+camp_rework_dispatch_generic_action_legacy = {
 	clear_variable = camp_rework_exact_custody_action_request
 	clear_variable = camp_rework_exact_custody_actor_token
 	if = {
@@ -111,6 +146,10 @@ camp_rework_dispatch_generic_action = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_construction }
 			has_variable = camp_rework_action_state_id
+			set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+			camp_rework_can_pay_site_labor = yes
+			NOT = { has_country_flag = generic_labor_project_active }
+			num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
 			OR = {
 				camp_rework_country_can_expand_generic_labor = yes
 				AND = {
@@ -129,13 +168,18 @@ camp_rework_dispatch_generic_action = {
 			}
 		}
 		set_temp_variable = { camp_requested_project_type = constant:camp_rework_project_type.construction }
-		camp_rework_start_generic_labor_project_in_action_state = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+		camp_rework_pay_site_labor = yes
+		camp_rework_start_generic_labor_project_payload_in_action_state = yes
 		activate_mission = generic_labor_project_cycle
 	}
 	else_if = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_redirect_labor_to_resource_extraction }
 			has_variable = camp_rework_action_state_id
+			set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+			camp_rework_can_pay_site_labor = yes
+			NOT = { has_country_flag = generic_labor_project_active }
 			OR = {
 				camp_rework_country_can_expand_generic_labor = yes
 				AND = {
@@ -154,7 +198,9 @@ camp_rework_dispatch_generic_action = {
 			}
 		}
 		set_temp_variable = { camp_requested_project_type = constant:camp_rework_project_type.extraction }
-		camp_rework_start_generic_labor_project_in_action_state = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+		camp_rework_pay_site_labor = yes
+		camp_rework_start_generic_labor_project_payload_in_action_state = yes
 		activate_mission = generic_labor_project_cycle
 	}
 	else_if = {
@@ -169,10 +215,14 @@ camp_rework_dispatch_generic_action = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_inspect_active_site }
 			camp_rework_country_uses_generic_kit = yes
+			set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+			camp_rework_can_pay_site_inspect = yes
 			camp_rework_country_can_open_site_inspection = yes
 			has_variable = camp_rework_action_state_id
 			var:camp_rework_action_state_id = { is_valid_camp_inspection_state = yes }
 		}
+		set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+		camp_rework_pay_site_inspect = yes
 		camp_rework_apply_site_inspection_in_action_state = yes
 	}
 	else_if = {
@@ -195,35 +245,54 @@ camp_rework_dispatch_generic_action = {
 				camp_rework_country_can_apply_chemical_camp_method = yes
 				var:camp_rework_action_state_id = { camp_rework_state_is_available_chemical_method_target = yes }
 			}
-			camp_rework_apply_chemical_escalation_in_action_state = yes
+			if = {
+				limit = { set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id } camp_rework_can_pay_site_restricted = yes }
+				set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+				camp_rework_pay_site_restricted = yes
+				camp_rework_apply_chemical_escalation_in_action_state = yes
+			}
 		}
 		else_if = {
 			limit = {
 				camp_rework_country_has_biological_escalation_capacity = yes
 				var:camp_rework_action_state_id = { camp_rework_state_is_biological_escalation_target = yes }
 			}
-			camp_rework_apply_biological_escalation_in_action_state = yes
+			if = {
+				limit = { set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id } camp_rework_can_pay_site_restricted = yes }
+				set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+				camp_rework_pay_site_restricted = yes
+				camp_rework_apply_biological_escalation_in_action_state = yes
+			}
 		}
 	}
 	else_if = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_destroy_evidence_before_retreat }
 			has_variable = camp_rework_action_state_id
+			set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+			camp_rework_can_pay_site_evidence = yes
+			camp_rework_country_can_destroy_retreat_evidence = yes
 			var:camp_rework_action_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				is_valid_camp_enemy_proximity_state = yes
 			}
 		}
-		camp_rework_consume_evidence_resources = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+		camp_rework_pay_site_evidence = yes
 		genocide_destroy_camp_evidence_in_action_state = yes
 	}
 	else_if = {
 		limit = {
 			check_variable = { camp_rework_action_id = constant:camp_rework_action.generic_dismantle_detention_network }
 			has_variable = camp_rework_action_state_id
+			set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+			camp_rework_can_pay_site_dismantle = yes
+			camp_rework_country_can_reform = yes
+			NOT = { has_country_flag = camp_rework_site_closure_active }
 			var:camp_rework_action_state_id = { is_valid_camp_dismantlement_state = yes }
 		}
-		camp_rework_consume_dismantlement_resources = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_rework_action_state_id }
+		camp_rework_pay_site_dismantle = yes
 		set_country_flag = camp_rework_site_closure_active
 		var:camp_rework_action_state_id = { camp_rework_start_dismantlement = yes }
 	}

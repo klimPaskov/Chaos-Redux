@@ -1,0 +1,30 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 CXT REGISTRATION HOOKS
+# ============================================================================
+# Startup uses one bounded existing-country scope. The tag-scoped daily hook
+# repairs initialized test saves without adding a world iteration.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				black_friday_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				black_friday_register_cxt_test_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

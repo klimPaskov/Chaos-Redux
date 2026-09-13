@@ -16,31 +16,50 @@
 # the opening referral, but permits AI and persists the recipient across the
 # visible decision window. The global target is always cleared at resolution.
 brilliant_scientist_select_containment_exile_recipient = {
+	set_temp_variable = { brilliant_scientist_containment_exile_recipient_preserved = constant:brilliant_scientist_value.zero }
 	if = {
-		limit = { has_event_target = brilliant_scientist_containment_exile_recipient }
-		clear_global_event_target = brilliant_scientist_containment_exile_recipient
-	}
-	clear_temp_array = brilliant_scientist_send_away_selection_pool
-	set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
-	save_event_target_as = brilliant_scientist_send_away_rejector
-	every_country = {
 		limit = {
-			brilliant_scientist_is_valid_transfer_recipient = yes
-			NOT = { has_war_with = event_target:brilliant_scientist_send_away_rejector }
+			has_event_target = brilliant_scientist_containment_exile_recipient
+			event_target:brilliant_scientist_containment_exile_recipient = {
+				exists = yes
+				brilliant_scientist_is_valid_transfer_recipient = yes
+			}
+			NOT = { has_war_with = event_target:brilliant_scientist_containment_exile_recipient }
 		}
-		brilliant_scientist_add_current_country_to_send_away_pool = yes
+		set_temp_variable = { brilliant_scientist_containment_exile_recipient_preserved = constant:brilliant_scientist_value.one }
 	}
 	if = {
-		limit = { check_variable = { brilliant_scientist_send_away_pool_count > constant:brilliant_scientist_value.zero } }
-		random_scope_in_array = {
-			array = brilliant_scientist_send_away_selection_pool
-			save_global_event_target_as = brilliant_scientist_containment_exile_recipient
+		limit = {
+			check_variable = {
+				brilliant_scientist_containment_exile_recipient_preserved = constant:brilliant_scientist_value.zero
+			}
 		}
+		if = {
+			limit = { has_event_target = brilliant_scientist_containment_exile_recipient }
+			clear_global_event_target = brilliant_scientist_containment_exile_recipient
+		}
+		clear_temp_array = brilliant_scientist_send_away_selection_pool
+		set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
+		save_event_target_as = brilliant_scientist_send_away_rejector
+		every_country = {
+			limit = {
+				brilliant_scientist_is_valid_transfer_recipient = yes
+				NOT = { has_war_with = event_target:brilliant_scientist_send_away_rejector }
+			}
+			brilliant_scientist_add_current_country_to_send_away_pool = yes
+		}
+		if = {
+			limit = { check_variable = { brilliant_scientist_send_away_pool_count > constant:brilliant_scientist_value.zero } }
+			random_scope_in_array = {
+				array = brilliant_scientist_send_away_selection_pool
+				save_global_event_target_as = brilliant_scientist_containment_exile_recipient
+			}
+		}
+		clear_temp_array = brilliant_scientist_send_away_selection_pool
+		set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_send_away_weight_remaining = constant:brilliant_scientist_value.zero }
+		set_temp_variable = { brilliant_scientist_send_away_selection_weight = constant:brilliant_scientist_value.zero }
 	}
-	clear_temp_array = brilliant_scientist_send_away_selection_pool
-	set_temp_variable = { brilliant_scientist_send_away_pool_count = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_send_away_weight_remaining = constant:brilliant_scientist_value.zero }
-	set_temp_variable = { brilliant_scientist_send_away_selection_weight = constant:brilliant_scientist_value.zero }
 }
 
 # COUNTRY scope. This one-shot state scan counts only actual Event 016 sites.
@@ -508,25 +527,30 @@ brilliant_scientist_resolve_coercive_containment = {
 	else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
 }
 
-# COUNTRY scope. ACTION identifies the receipt; POLITICAL_POWER and STABILITY
-# are positive payments. Native decision modifiers own the timed commitment.
+# COUNTRY scope. Required temporary inputs, initialized immediately by callers:
+# brilliant_scientist_containment_action identifies the receipt;
+# brilliant_scientist_containment_political_power_cost and
+# brilliant_scientist_containment_stability_cost are positive payments, no defaults.
+# Sets the receipt, lock and start date; debits PP/stability via payment scratch.
+# Native decision modifiers own the timed commitment.
 brilliant_scientist_begin_containment_action = {
 	set_country_flag = brilliant_scientist_containment_action_in_progress
-	set_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
+	set_variable = { brilliant_scientist_active_containment_action = brilliant_scientist_containment_action }
 	set_variable = { brilliant_scientist_containment_action_started_date = global.date }
-	set_temp_variable = { brilliant_scientist_containment_payment = $POLITICAL_POWER$ }
+	set_temp_variable = { brilliant_scientist_containment_payment = brilliant_scientist_containment_political_power_cost }
 	multiply_temp_variable = { brilliant_scientist_containment_payment = constant:brilliant_scientist_directorate_value.negative_one }
 	add_political_power = brilliant_scientist_containment_payment
-	set_temp_variable = { brilliant_scientist_containment_payment = $STABILITY$ }
+	set_temp_variable = { brilliant_scientist_containment_payment = brilliant_scientist_containment_stability_cost }
 	multiply_temp_variable = { brilliant_scientist_containment_payment = constant:brilliant_scientist_directorate_value.negative_one }
 	add_stability = brilliant_scientist_containment_payment
 }
 
-# COUNTRY scope. ACTION is the cancelling timer's receipt. Preparation is sunk;
-# cancelling an older timer must not release the newer action's lock.
+# COUNTRY scope. Required temporary brilliant_scientist_containment_action,
+# initialized immediately by the cancelling timer; no default or refund.
+# Clears only the matching receipt and lock; newer action receipts are preserved.
 brilliant_scientist_cancel_containment_action = {
 	if = {
-		limit = { check_variable = { brilliant_scientist_active_containment_action = $ACTION$ } }
+		limit = { check_variable = { brilliant_scientist_active_containment_action = brilliant_scientist_containment_action } }
 		clr_country_flag = brilliant_scientist_containment_action_in_progress
 		clear_variable = brilliant_scientist_active_containment_action
 	}

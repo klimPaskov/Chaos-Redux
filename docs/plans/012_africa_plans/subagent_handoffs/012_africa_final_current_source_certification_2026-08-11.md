@@ -1,5 +1,7 @@
 # Event 012 Africa final current-source certification — 2026-08-11
 
+> Superseded by the 2026-09-05 Event 012 documentation reconciliation: this file remains a dated source census and its retired-fake `SCN-011` statement, MCP limitations, and certification wording are historical provenance. The current manual scenario is live `SCN-011`, and current Event 012/Gods status is governed by `docs/events/012_africa/overview.md` and `docs/plans/012_africa_plans/documentation_cleanup_handoff_2026-09-05.md`.
+
 ## Certification boundary
 
 This is an independent documentation and source-completion certification for the current Event 012 Africa worktree. It does not replace live campaign validation, a parent-owned final review, or engine acceptance, and it made no gameplay, localisation, spreadsheet, asset-binary, staging, or commit changes.
@@ -21,7 +23,7 @@ The certification reconciles the current source census with the owner handoffs, 
 
 The six runtime gates are the accepted fictional-disease and strange-formation readiness contracts for actions 71–76. They are intentional fail-closed runtime gates, not missing action concepts, dead choices, or omitted selectors.
 
-The retired fake Event012 `SCN-011`/Africa scenario reservation has no current source or documentation ownership claim. Triggerable-scenario documentation and the Event012 source map no longer reserve that route.
+The retired-fake Event012 `SCN-011`/Africa scenario statement in this dated certification is historical provenance. The current live `SCN-011` route, its two types, and four intensity stops are recorded in the triggerable-scenario documentation, Event012 source map, and current release overview.
 
 ## MCP evidence and limitations
 

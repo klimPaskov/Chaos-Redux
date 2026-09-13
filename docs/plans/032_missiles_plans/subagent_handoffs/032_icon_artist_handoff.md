@@ -1,5 +1,7 @@
 # Event 032 Missiles icon artist handoff
 
+Disposition: implemented for all authorized icon families and superseded by the parent wiring pass. The exact conventional/saturation raid-consumer blocker remains intentionally unresolved because no matching installed runtime entity exists; it is tracked in `docs/events/032_missiles/asset_audit.md`.
+
 Status: complete for the authorized transparent icon package, with parent-owned runtime wiring and two explicit review items.
 
 ## Ownership and changed surfaces

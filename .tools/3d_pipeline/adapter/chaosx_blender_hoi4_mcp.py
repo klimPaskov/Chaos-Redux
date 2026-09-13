@@ -1268,6 +1268,12 @@ def chaosx_blender_hoi4_rotate_existing_assembly_yaw(job_id: str, blend_rel: str
     return _run(job_id,"rotate_existing_assembly_yaw",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"target_armature_name":target_armature_name,"object_names":object_names,"action_names":action_names,"yaw_degrees":yaw_degrees})
 
 
+@mcp.tool()
+def chaosx_blender_hoi4_collapse_identity_leaf_joints(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, target_mesh_names: list[str], bone_aliases: Dict[str, str], action_hashes: Dict[str, str]) -> Dict[str, Any]:
+    """Collapse only constant-identity leaves into direct parents, proving all-frame skin/action/locator preservation."""
+    return _run(job_id, "collapse_identity_leaf_joints", {"blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel, "expected_source_sha256": expected_source_sha256, "target_armature_name": target_armature_name, "target_mesh_names": target_mesh_names, "bone_aliases": bone_aliases, "action_hashes": action_hashes})
+
+
 def main() -> None:
     mcp.run(transport="stdio")
 

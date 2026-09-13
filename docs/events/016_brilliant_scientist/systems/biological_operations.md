@@ -53,7 +53,9 @@ Standard pathogens dispatch into `bio_lifecycle_dispatch_seed` with explicit act
 The lifecycle owns subsequent detection, attribution, and condemnation; an operational success is not fabricated public confirmation.
 Weaponized zombies use the existing outbreak creator, and only a deliberate successful release invokes the strike-consequence effect.
 An attacker accident cannot grant the confirmed-offensive-use history.
-Black Plague uses the ordinary plague lifecycle plus `black_plague_apply_exposure`; it does not call the Event 020 public delivery effect and therefore cannot debit the same payload twice.
+Black Plague uses the ordinary plague lifecycle plus `black_plague_apply_weaponized_exposure_runtime`; it does not call the Event 020 public delivery effect and therefore cannot debit the same payload twice.
+The runtime bridge initializes Event 020 only when its shared runtime has never started, applies the accepted weaponized exposure once, and creates or repairs one event-owned seven-day scheduler receipt without inventing a natural origin or recognition report.
+The bridge exports an exact acceptance result, so Event 016 records Black Plague provenance and delivery history only when the shared state machine accepted the selected state.
 
 ## Native raid authority
 
@@ -91,6 +93,7 @@ Other events grant access through the technology API and let those decisions own
 ## Black Plague elapsed timing
 
 Black Plague state devastation uses `black_plague_next_devastation_num_days` on the elapsed-day axis `global.num_days`.
+Its event-owned pulse scheduler likewise stores `black_plague_scheduler_due_num_days` on `global.num_days`, keeping the delayed `.900` callback and its validation receipt in the same unit.
 The shared phase-dependent intervals and once-per-pulse application remain authoritative; calendar snapshots used for history are not deadlines.
 
 ## Visual assets and sprite wiring

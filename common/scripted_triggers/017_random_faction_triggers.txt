@@ -967,3 +967,640 @@ can_pay_random_faction_commitment_cost = {
 	NOT = { has_political_power < constant:random_faction_decision_cost.pp_high }
 	NOT = { command_power < constant:random_faction_decision_cost.command_power_medium }
 }
+
+# Event 026 owner adapters. The inactive branch delegates to the exact
+# ordinary trigger. The active branch quotes every positive payment component
+# from the shared cache, checks the quoted amounts, and leaves fixed penalties
+# and requirements outside the sale.
+
+random_faction_black_friday_can_pay_stabilize_alignment_cost = {
+	set_temp_variable = { black_friday_random_faction_stabilize_pp_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_random_faction_stabilize_support_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { black_friday_random_faction_stabilize_command_power_cost = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_stabilize_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_stabilize_pp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_stabilize_support_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_stabilize_command_power_ready = constant:universal_cost_framework.one }
+	set_temp_variable = { random_faction_black_friday_stabilize_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_stabilize_support_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_stabilize_command_power_affordable = constant:universal_cost_framework.one }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { has_variable = random_faction_stabilize_pp_cost }
+		set_temp_variable = { black_friday_random_faction_stabilize_pp_cost = random_faction_stabilize_pp_cost }
+	}
+	if = {
+		limit = { has_variable = random_faction_stabilize_support_cost }
+		set_temp_variable = { black_friday_random_faction_stabilize_support_cost = random_faction_stabilize_support_cost }
+	}
+	if = {
+		limit = { has_country_flag = random_faction_stabilize_wartime_cost has_variable = random_faction_stabilize_command_power_cost }
+		set_temp_variable = { black_friday_random_faction_stabilize_command_power_cost = random_faction_stabilize_command_power_cost }
+	}
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_stabilize_alignment_cost = yes }
+			set_temp_variable = { random_faction_black_friday_stabilize_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				universal_cost_source_is_active = yes
+				has_variable = random_faction_stabilize_pp_cost
+				has_variable = random_faction_stabilize_support_cost
+				OR = {
+					NOT = { has_country_flag = random_faction_stabilize_wartime_cost }
+					has_variable = random_faction_stabilize_command_power_cost
+				}
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = random_faction_stabilize_pp_cost }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_stabilize_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_stabilize_pp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_stabilize_pp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = random_faction_stabilize_support_cost }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_stabilize_support_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_stabilize_support_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_stabilize_support_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = { has_country_flag = random_faction_stabilize_wartime_cost has_variable = random_faction_stabilize_command_power_cost }
+				set_temp_variable = { random_faction_black_friday_stabilize_command_power_ready = constant:universal_cost_framework.zero }
+				set_temp_variable = { random_faction_black_friday_stabilize_command_power_affordable = constant:universal_cost_framework.zero }
+				set_temp_variable = { black_friday_quote_ordinary_cost = random_faction_stabilize_command_power_cost }
+				set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+				if = {
+					limit = { black_friday_quote_custom_cost = yes }
+					set_temp_variable = { black_friday_random_faction_stabilize_command_power_cost = black_friday_quote_final_cost }
+					set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+					if = {
+						limit = { black_friday_active_component_is_affordable = yes }
+						set_temp_variable = { random_faction_black_friday_stabilize_command_power_affordable = constant:universal_cost_framework.one }
+					}
+					set_temp_variable = { random_faction_black_friday_stabilize_command_power_ready = constant:universal_cost_framework.one }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_stabilize_pp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_stabilize_support_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_stabilize_command_power_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_stabilize_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_stabilize_support_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_stabilize_command_power_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				if = {
+					limit = { has_country_flag = random_faction_stabilize_wartime_cost }
+					NOT = { has_war_support < constant:random_faction_decision_fixed_gate.war_support_low }
+				}
+				set_temp_variable = { random_faction_black_friday_stabilize_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_stabilize_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_request_liaison_cost = {
+	set_temp_variable = { black_friday_random_faction_liaison_command_power_cost = constant:random_faction_decision_cost.command_power_low }
+	set_temp_variable = { black_friday_random_faction_liaison_support_equipment_cost = constant:random_faction_decision_cost.support_equipment_low }
+	set_temp_variable = { random_faction_black_friday_liaison_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_liaison_command_power_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_liaison_support_equipment_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_liaison_command_power_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_liaison_support_equipment_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_request_liaison_cost = yes }
+			set_temp_variable = { random_faction_black_friday_liaison_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				universal_cost_source_is_active = yes
+				FROM = {
+					exists = yes
+					random_faction_is_current_faction_leader_for_root = yes
+				}
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.command_power_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_liaison_command_power_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_liaison_command_power_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_liaison_command_power_ready = constant:universal_cost_framework.one }
+			}
+			FROM = {
+				set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.support_equipment_low }
+				set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+				if = {
+					limit = { black_friday_quote_custom_cost = yes }
+					set_temp_variable = { black_friday_random_faction_liaison_support_equipment_cost = black_friday_quote_final_cost }
+					set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+					if = {
+						limit = { black_friday_active_component_is_affordable = yes }
+						set_temp_variable = { random_faction_black_friday_liaison_support_equipment_affordable = constant:universal_cost_framework.one }
+					}
+					set_temp_variable = { random_faction_black_friday_liaison_support_equipment_ready = constant:universal_cost_framework.one }
+				}
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_liaison_command_power_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_liaison_support_equipment_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_liaison_command_power_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_liaison_support_equipment_affordable value = constant:universal_cost_framework.one compare = equals }
+					FROM = { random_faction_is_current_faction_leader_for_root = yes }
+				}
+				set_temp_variable = { random_faction_black_friday_liaison_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_liaison_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_quiet_opposition_cost = {
+	set_temp_variable = { black_friday_random_faction_quiet_pp_cost = constant:random_faction_decision_cost.pp_low }
+	set_temp_variable = { black_friday_random_faction_quiet_infantry_equipment_cost = constant:random_faction_decision_cost.infantry_equipment_medium }
+	set_temp_variable = { random_faction_black_friday_quiet_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_quiet_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_quiet_infantry_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_quiet_pp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_quiet_infantry_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_quiet_opposition_cost = yes }
+			set_temp_variable = { random_faction_black_friday_quiet_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.pp_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_quiet_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_quiet_pp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_quiet_pp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.infantry_equipment_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_quiet_infantry_equipment_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.infantry_equipment }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_quiet_infantry_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_quiet_infantry_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_quiet_pp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_quiet_infantry_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_quiet_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_quiet_infantry_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				NOT = { has_stability < constant:random_faction_decision_fixed_gate.stability_low }
+				if = {
+					limit = { has_war = yes }
+					NOT = { has_war_support < constant:random_faction_decision_fixed_gate.war_support_low }
+				}
+				set_temp_variable = { random_faction_black_friday_quiet_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_quiet_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_neutrality_council_cost = {
+	set_temp_variable = { black_friday_random_faction_council_pp_cost = constant:random_faction_decision_cost.pp_medium }
+	set_temp_variable = { black_friday_random_faction_council_command_power_cost = constant:random_faction_decision_cost.command_power_low }
+	set_temp_variable = { random_faction_black_friday_council_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_council_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_council_cp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_council_pp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_council_cp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_neutrality_council_cost = yes }
+			set_temp_variable = { random_faction_black_friday_council_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.pp_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_council_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_council_pp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_council_pp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.command_power_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_council_command_power_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_council_cp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_council_cp_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_council_pp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_council_cp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_council_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_council_cp_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				NOT = { has_stability < constant:random_faction_decision_fixed_gate.stability_low }
+				set_temp_variable = { random_faction_black_friday_council_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_council_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_invite_observers_cost = {
+	set_temp_variable = { black_friday_random_faction_invite_command_power_cost = constant:random_faction_decision_cost.command_power_low }
+	set_temp_variable = { black_friday_random_faction_invite_convoy_cost = constant:random_faction_decision_cost.convoy_low }
+	set_temp_variable = { random_faction_black_friday_invite_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_invite_cp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_invite_convoy_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_invite_cp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_invite_convoy_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_invite_observers_cost = yes }
+			set_temp_variable = { random_faction_black_friday_invite_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.command_power_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_invite_command_power_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_invite_cp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_invite_cp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.convoy_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.convoy }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_invite_convoy_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.convoy }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_invite_convoy_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_invite_convoy_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_invite_cp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_invite_convoy_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_invite_cp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_invite_convoy_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				set_temp_variable = { random_faction_black_friday_invite_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_invite_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_publish_neutrality_cost = {
+	set_temp_variable = { black_friday_random_faction_publish_pp_cost = constant:random_faction_decision_cost.pp_low }
+	set_temp_variable = { random_faction_black_friday_publish_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_publish_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_publish_pp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_publish_neutrality_cost = yes }
+			set_temp_variable = { random_faction_black_friday_publish_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.pp_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_publish_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_publish_pp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_publish_pp_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_publish_pp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_publish_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				NOT = { has_stability < constant:random_faction_decision_fixed_gate.stability_low }
+				set_temp_variable = { random_faction_black_friday_publish_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_publish_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_staff_mission_cost = {
+	set_temp_variable = { black_friday_random_faction_staff_command_power_cost = constant:random_faction_decision_cost.command_power_medium }
+	set_temp_variable = { black_friday_random_faction_staff_support_equipment_cost = constant:random_faction_decision_cost.support_equipment_medium }
+	set_temp_variable = { random_faction_black_friday_staff_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_staff_cp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_staff_support_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_staff_cp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_staff_support_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_staff_mission_cost = yes }
+			set_temp_variable = { random_faction_black_friday_staff_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.command_power_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_staff_command_power_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_staff_cp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_staff_cp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.support_equipment_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_staff_support_equipment_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_staff_support_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_staff_support_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_staff_cp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_staff_support_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_staff_cp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_staff_support_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				set_temp_variable = { random_faction_black_friday_staff_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_staff_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_radio_networks_cost = {
+	set_temp_variable = { black_friday_random_faction_radio_pp_cost = constant:random_faction_decision_cost.pp_low }
+	set_temp_variable = { black_friday_random_faction_radio_support_equipment_cost = constant:random_faction_decision_cost.support_equipment_medium }
+	set_temp_variable = { random_faction_black_friday_radio_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_radio_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_radio_support_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_radio_pp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_radio_support_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_radio_networks_cost = yes }
+			set_temp_variable = { random_faction_black_friday_radio_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.pp_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_radio_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_radio_pp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_radio_pp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.support_equipment_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_radio_support_equipment_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.support_equipment_1 }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_radio_support_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_radio_support_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_radio_pp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_radio_support_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_radio_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_radio_support_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				set_temp_variable = { random_faction_black_friday_radio_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_radio_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_corridor_cost = {
+	set_temp_variable = { black_friday_random_faction_corridor_command_power_cost = constant:random_faction_decision_cost.command_power_low }
+	set_temp_variable = { black_friday_random_faction_corridor_infantry_equipment_cost = constant:random_faction_decision_cost.infantry_equipment_medium }
+	set_temp_variable = { black_friday_random_faction_corridor_convoy_cost = constant:random_faction_decision_cost.convoy_low }
+	set_temp_variable = { random_faction_black_friday_corridor_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_corridor_cp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_corridor_infantry_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_corridor_convoy_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_corridor_cp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_corridor_infantry_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_corridor_convoy_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_corridor_cost = yes }
+			set_temp_variable = { random_faction_black_friday_corridor_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.command_power_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_corridor_command_power_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_corridor_cp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_corridor_cp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.infantry_equipment_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.equipment }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_corridor_infantry_equipment_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.infantry_equipment }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_corridor_infantry_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_corridor_infantry_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.convoy_low }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.convoy }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_corridor_convoy_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.convoy }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_corridor_convoy_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_corridor_convoy_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_corridor_cp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_corridor_infantry_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_corridor_convoy_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_corridor_cp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_corridor_infantry_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_corridor_convoy_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				set_temp_variable = { random_faction_black_friday_corridor_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_corridor_can_pay value = constant:universal_cost_framework.one compare = equals }
+}
+
+random_faction_black_friday_can_pay_commitment_cost = {
+	set_temp_variable = { black_friday_random_faction_commitment_pp_cost = constant:random_faction_decision_cost.pp_high }
+	set_temp_variable = { black_friday_random_faction_commitment_command_power_cost = constant:random_faction_decision_cost.command_power_medium }
+	set_temp_variable = { random_faction_black_friday_commitment_can_pay = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_commitment_pp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_commitment_cp_affordable = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_commitment_pp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { random_faction_black_friday_commitment_cp_ready = constant:universal_cost_framework.zero }
+	set_temp_variable = { universal_cost_source_query_id = constant:universal_cost_framework.black_friday_source_id }
+	if = {
+		limit = { NOT = { black_friday_is_active = yes } }
+		if = {
+			limit = { can_pay_random_faction_commitment_cost = yes }
+			set_temp_variable = { random_faction_black_friday_commitment_can_pay = constant:universal_cost_framework.one }
+		}
+	}
+	else = {
+		if = {
+			limit = { universal_cost_source_is_active = yes }
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.pp_high }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.political_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_commitment_pp_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.political_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_commitment_pp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_commitment_pp_ready = constant:universal_cost_framework.one }
+			}
+			set_temp_variable = { black_friday_quote_ordinary_cost = constant:random_faction_decision_cost.command_power_medium }
+			set_temp_variable = { black_friday_quote_family_mask = constant:universal_cost_family.command_power }
+			if = {
+				limit = { black_friday_quote_custom_cost = yes }
+				set_temp_variable = { black_friday_random_faction_commitment_command_power_cost = black_friday_quote_final_cost }
+				set_temp_variable = { black_friday_current_resource_kind = constant:universal_cost_resource_kind.command_power }
+				if = {
+					limit = { black_friday_active_component_is_affordable = yes }
+					set_temp_variable = { random_faction_black_friday_commitment_cp_affordable = constant:universal_cost_framework.one }
+				}
+				set_temp_variable = { random_faction_black_friday_commitment_cp_ready = constant:universal_cost_framework.one }
+			}
+			if = {
+				limit = {
+					check_variable = { var = random_faction_black_friday_commitment_pp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_commitment_cp_ready value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_commitment_pp_affordable value = constant:universal_cost_framework.one compare = equals }
+					check_variable = { var = random_faction_black_friday_commitment_cp_affordable value = constant:universal_cost_framework.one compare = equals }
+				}
+				set_temp_variable = { random_faction_black_friday_commitment_can_pay = constant:universal_cost_framework.one }
+			}
+		}
+	}
+	check_variable = { var = random_faction_black_friday_commitment_can_pay value = constant:universal_cost_framework.one compare = equals }
+}

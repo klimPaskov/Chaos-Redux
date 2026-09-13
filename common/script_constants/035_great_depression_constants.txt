@@ -1,0 +1,1339 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 GREAT DEPRESSION 2.0 SCRIPT CONSTANTS
+# ============================================================================
+# Central tuning for the bounded national depression lifecycle. The public
+# Severity value is the only Event 035 country number exposed to the player.
+# Centre stages, source receipts, evolution floors, pacing, costs, and AI
+# profiles are kept here so the event and its decisions share one contract.
+# ============================================================================
+
+great_depression_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 35
+	evolution_type = 35
+	chaos_level = 1
+	registry_version = 1
+	center_registry_cap = 4
+	normal_center_cap = 3
+	minimum_center_cap = 1
+	active_country_registry_cap = 64
+	contagion_source_cap = 12
+	receipt_history_cap = 96
+	global_pressure_country_cap = 256
+	global_pressure_announcement_minimum = 3
+	recovery_watch_country_cap = 32
+
+	public_value_minimum = 0
+	public_value_maximum = 100
+	opening_minimum = 58
+	opening_maximum = 74
+	independent_severity_floor = 50
+	recovery_floor = 14
+	stabilization_floor = 40
+	relapse_threshold = 50
+	paralysis_threshold = 100
+	breakdown_threshold = 95
+	deep_depression_threshold = 70
+	systemic_breakdown_threshold = 85
+	panic_minimum_days = 35
+	stabilization_proof_days = 42
+	recovery_proof_days = 60
+	refire_safeguard_days = 180
+	doctrine_switch_cooldown_days = 105
+	maximum_emergency_cooldown_days = 120
+	paralysis_proof_days = 35
+	breakdown_warning_days = 105
+	opening_mission_days = 84
+	employment_guarantee_proof_days = 56
+	freight_mission_days = 70
+	center_mission_days = 135
+	relapse_mission_days = 90
+	maximum_emergency_days = 120
+	breakdown_mission_days = 150
+	pulse_days = 7
+	opening_shock_days = 35
+	shock_memory_days = 42
+	policy_whiplash_days = 42
+	global_pressure_days = 30
+	recovery_watch_days = 90
+	relapse_guard_days = 180
+	social_extreme_gate_days = 98
+	global_coordination_days = 45
+	global_retirement_days = 30
+	worldwide_conversion_interval_days = 30
+	worldwide_conversion_delay_days = 60
+	center_project_total_days = 133
+	center_project_pause_fail_days = 28
+	center_project_certification_days = 42
+	center_project_certification_start_days = 91
+	center_protection_days = 42
+	foreign_support_cooldown_days = 30
+	worldwide_super_event_slot = 105
+	worldwide_super_event_audio_id = 106
+
+	base_civilian_cost = 1
+	base_military_cost = 1
+	base_train_cost = 2
+	base_truck_cost = 5
+	base_convoy_cost = 3
+	base_support_equipment_cost = 10
+	base_fuel_cost = 500
+	base_manpower_cost = 500
+	base_political_power_cost = 25
+	base_stability_cost = 0.03
+	base_war_support_cost = 0.02
+	maximum_spendable_cost_types = 4
+	maximum_active_missions = 3
+	maximum_main_missions = 1
+	maximum_support_missions = 2
+	minimum_usable_civilian_factories = 1
+	minimum_usable_military_factories = 1
+	minimum_state_population_thousands = 1
+
+	severity_pulse_minimum = -4
+	severity_pulse_maximum = 5
+	opening_shock_minimum = 8
+	opening_shock_maximum = 18
+	deepening_minimum = 3
+	deepening_maximum = 18
+	contagion_severity_maximum = 20
+	worldwide_severity_maximum = 18
+	paralysis_consequence_chaos = 1
+	contagion_conversion_chaos = 2
+	social_outcome_chaos = 2
+	civil_conflict_chaos = 3
+	worldwide_wave_chaos = 20
+	worldwide_conversion_chaos = 2
+	supplier_collapse_chaos = 2
+	international_recovery_chaos_relief = 10
+	strong_recovery_chaos_relief = 2
+}
+
+great_depression_thresholds = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	social_peace_stability_floor = 0.35
+	social_medium_stability_floor = 0.50
+	social_high_stability_floor = 0.60
+	global_supplier_risk_final_cap = 1
+	global_recovery_contribution_minimum = 3
+	global_recovery_industrial_weight_minimum = 45
+	global_recovery_proof_days = 120
+	global_recovery_severe_industrial_share_percent = 35
+	global_light_exposure_score = 2
+	global_severe_exposure_score = 5
+}
+
+great_depression_worldwide_classification = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	invalid = 0
+	protected = 1
+	contraction = 2
+	severe = 3
+	full_crisis = 4
+	boom_supplier = 5
+}
+
+great_depression_public_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	recovery_floor = 14
+	stabilizing_floor = 15
+	fragile_floor = 30
+	depression_floor = 50
+	deep_depression_floor = 70
+	systemic_breakdown_floor = 85
+	paralysis_floor = 100
+}
+
+great_depression_trend = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rapid_improving_limit = -6
+	improving_limit = -1
+	stable_limit = 0
+	worsening_limit = 3
+	accelerating_limit = 3
+}
+
+great_depression_hidden_component = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	minimum = -5
+	maximum = 5
+	credit_trade_failure = 2
+	credit_supplier_risk = 2
+	credit_boom_inheritance = 1
+	credit_policy_whiplash = 1
+	credit_audit_relief = -2
+	demand_distressed_center = 1
+	demand_idled_center = 2
+	demand_shuttered_center = 3
+	demand_abandoned_center = 4
+	demand_hollowed_center = 4
+	demand_public_works_relief = -2
+	demand_reopened_relief = -1
+	trade_failure = 2
+	trade_supplier_risk = 2
+	trade_global_contraction = 1
+	trade_clearing_relief = -2
+	trade_freight_relief = -1
+	industrial_inherited_region = 1
+	industrial_center_pressure = 1
+	industrial_recovery_relief = -2
+	fiscal_policy_whiplash = 2
+	fiscal_response = -1
+	fiscal_reserves = -1
+	fiscal_capacity_shortage = 2
+	social_low_stability = 3
+	social_medium_stability = 1
+	social_incident = 2
+	social_failed_response = 2
+	social_compact_relief = -2
+	war_supply_shortage = 2
+	war_stability_pressure = 1
+	war_supply_relief = -1
+	war_stability_relief = -1
+}
+
+great_depression_evolution_mtth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	financial_contagion_days = 120
+	social_collapse_days = 140
+	second_great_depression_days = 180
+	high_severity_factor = 0.65
+	severe_social_pressure_factor = 0.70
+	organized_actor_factor = 0.75
+	global_link_factor = 0.80
+	strong_link_factor = 0.80
+	improving_trend_factor = 1.25
+	weak_link_factor = 1.15
+	reopened_centers_factor = 1.35
+	high_stability_factor = 1.20
+	multiple_active_crises_factor = 0.70
+	small_recovering_origin_factor = 1.35
+	high_stability_floor = 0.65
+	multiple_active_crises_threshold = 3
+}
+
+great_depression_phase = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	panic_and_contraction = 1
+	depression = 2
+	stabilization = 3
+	recovery = 4
+	economic_paralysis = 5
+}
+
+great_depression_caller = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	independent_event_35 = 1
+	industrial_boom_collapse = 2
+	financial_contagion_conversion = 3
+	worldwide_depression_conversion = 4
+	post_recovery_relapse = 5
+	debug_or_test = 6
+}
+
+great_depression_pacing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	normal_event = 1
+	consequence_no_pacing = 2
+	conversion_no_pacing = 3
+	debug_no_pacing = 4
+	panic_interval_days = 4
+	depression_interval_days = 7
+	stabilization_interval_days = 12
+	recovery_interval_days = 8
+	paralysis_interval_days = 4
+}
+
+great_depression_history_mode = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	normal = 1
+	inherited = 2
+	contagion = 3
+	worldwide = 4
+	relapse = 5
+	deepening = 6
+	milestone = 7
+}
+
+great_depression_api = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	contract_version = 1
+	event_35_id = 35
+	event_34_id = 34
+	minimum_receipt_id = 1
+	minimum_episode_id = 1
+	minimum_exposure_stage = 1
+	minimum_worldwide_stage = 1
+	minimum_relapse_profile = 1
+	minimum_viable_factory_count = 1
+	minimum_usable_factory_count = 1
+	minimum_viable_state_population_k = 1
+	episode_increment = 1
+	receipt_increment = 1
+}
+
+great_depression_severity_input = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	starting_severity = 1
+	deepen_amount = 2
+	severity_profile = 3
+}
+
+great_depression_report_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	suppress = 0
+	queue = 1
+	force = 2
+}
+
+great_depression_report_variant = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base = 0
+	boom_collapse = 1
+	financial_contagion = 2
+	worldwide_contraction = 3
+	social_collapse = 4
+	recovery = 5
+}
+
+great_depression_news_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	suppress = 0
+	queue = 1
+	force = 2
+}
+
+great_depression_severity_seed = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	independent = 66
+	stable_independent = 60
+	fragile_independent = 72
+	inherited_baseline = 70
+	inherited_contagion = 74
+	inherited_social = 82
+	inherited_worldwide = 90
+	contagion_conversion = 56
+	worldwide_conversion = 64
+	relapse = 64
+	active_deepening = 0
+}
+
+great_depression_inherited_snapshot = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Event 34 starts from its baseline collapse and adds only the proven
+	# snapshot pressure that the handoff supplied.
+	baseline = 70
+	evolution_contagion_delta = 4
+	evolution_social_delta = 12
+	evolution_worldwide_delta = 20
+	final_overheating_weight = 0.08
+	peak_overheating_weight = 0.04
+	dangerous_days_weight = 0.03
+	recent_shock_weight = 3
+	landing_failed_pressure = 7
+	landing_prepared_relief = 3
+	reserve_available_relief = 4
+	reserve_depleted_pressure = 6
+	active_project_pressure = 3
+	region_pressure = 3
+	shock_pressure = 3
+	repeat_history_pressure = 2
+	maximum_adjustment = 25
+}
+
+great_depression_event34_snapshot_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unknown = 0
+	prepared = 1
+	failed = 2
+}
+
+great_depression_shock_strength = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	independent_severe = 8
+	event_34_baseline_collapse = 10
+	event_34_speculative_collapse = 12
+	event_34_miracle_collapse = 14
+	event_34_runaway_collapse = 18
+	contagion_conversion = 6
+	worldwide_conversion = 8
+	active_crisis_deepening = 4
+	relapse = 7
+}
+
+great_depression_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_factor = 0.35
+	maximum_factor = 2.50
+	standard_civilian = 1
+	major_civilian = 2
+	standard_military = 1
+	standard_trains = 2
+	standard_trucks = 5
+	standard_convoys = 3
+	standard_support_equipment = 10
+	standard_fuel = 500
+	standard_manpower = 500
+	standard_political_power = 25
+	standard_stability = 0.03
+	standard_war_support = 0.02
+	civilian_commitment_major_threshold = 1.25
+	mission_political_power = 15
+	mission_manpower = 250
+	mission_fuel = 250
+	mission_trains = 1
+	mission_convoys = 2
+	mission_support_equipment = 5
+}
+
+great_depression_cost_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	doctrine_choice = 1
+	policy_review = 2
+	emergency_relief = 3
+	foreign_support = 4
+	center_protection = 5
+	center_reopen = 6
+	center_restructure = 7
+	center_abandon = 8
+	public_works = 9
+	strategic_rescue = 10
+	finance_trade = 11
+	austerity = 12
+	state_planning = 13
+	market_clear = 14
+	contagion = 15
+	social_response = 16
+	global_reconstruction = 17
+}
+
+great_depression_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	severe_start = 50
+	maximum_severity = 100
+	social_peace_peak = 90
+	protected_factory_floor = 1
+	material_exposure_stage = 3
+	containment_required_minimum = 1
+	containment_required_maximum = 3
+}
+
+great_depression_action = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	action_lock_days = 7
+	doctrine_relief = -3
+	strong_relief = -5
+	standard_relief = -3
+	light_relief = -2
+	no_change = 0
+	moderate_pressure = 2
+	strong_pressure = 4
+	mission_failure = 5
+	mission_relief = -4
+	maximum_emergency_relief = -6
+	center_reopen_relief = -5
+	center_protection_relief = -3
+	center_restructure_relief = -2
+	center_liquidation_pressure = 4
+	global_recovery_relief = -8
+	panic_pulse_delta = 2
+	public_works_pulse_delta = -2
+	strategic_pulse_delta = -1
+	finance_pulse_delta = -2
+	austerity_pulse_delta = -1
+	state_planning_pulse_delta = -1
+	market_clear_pulse_delta = 0
+	protected_pulse_relief = -1
+	incident_pulse_pressure = 1
+	contagion_pulse_pressure = 1
+	social_coup_stability_delta = -0.05
+	social_regional_stability_delta = -0.03
+	national_breakdown_stability_delta = -0.08
+	social_resolution_stability_relief = 0.03
+	second_action_threshold = 3
+	third_action_threshold = 6
+	center_idled_after_days = 42
+	center_shuttered_after_days = 84
+}
+
+great_depression_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = 0
+	financial_contagion = 1
+	social_collapse = 2
+	second_great_depression = 3
+}
+
+great_depression_evolution_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	event_id = 35
+	evolution_type = 35
+	financial_contagion_stage = 1
+	financial_contagion_tier = 2
+	social_collapse_stage = 2
+	social_collapse_tier = 3
+	second_great_depression_stage = 3
+	second_great_depression_tier = 4
+}
+
+great_depression_severity_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	independent = 1
+	stable_independent = 2
+	fragile_independent = 3
+	inherited_baseline = 4
+	inherited_contagion = 5
+	inherited_social = 6
+	inherited_worldwide = 7
+	contagion_conversion = 8
+	worldwide_conversion = 9
+	relapse = 10
+	active_deepening = 11
+}
+
+great_depression_shock_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	independent_severe = 1
+	event_34_baseline_collapse = 2
+	event_34_speculative_collapse = 3
+	event_34_miracle_collapse = 4
+	event_34_runaway_collapse = 5
+	contagion_conversion = 6
+	worldwide_conversion = 7
+	active_crisis_deepening = 8
+	bank_panic = 9
+	freight_collapse = 10
+	center_loss = 11
+	policy_reversal = 12
+	relapse = 13
+}
+
+great_depression_center_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	registered = 0
+	distressed = 1
+	idled = 2
+	shuttered = 3
+	abandoned = 4
+	reopened = 5
+	liquidated = 6
+	restructured = 7
+	scarred = 8
+}
+
+great_depression_center_project = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	public_works = 1
+	strategic_rescue = 2
+	finance_restoration = 3
+	transport_integration = 4
+	trusteeship = 5
+	asset_reorganization = 6
+	lasting_capacity = 7
+	international_reconstruction = 8
+	# Short treatment projects use distinct ids so a completed treatment can be
+	# audited without conflating it with an international or industrial route.
+	reopened_capacity = 9
+	protection = 10
+}
+
+great_depression_doctrine = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unassigned = 0
+	emergency_public_works = 1
+	rescue_strategic_industry = 2
+	stabilize_finance_and_trade = 3
+	austerity_and_retrenchment = 4
+	direct_state_planning = 5
+	let_the_market_clear = 6
+}
+
+great_depression_mission = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	halt_the_panic = 1
+	keep_essential_freight_moving = 2
+	reopen_depression_center = 3
+	prevent_a_relapse = 4
+	maximum_severity_emergency = 5
+	prevent_national_breakdown = 6
+	contain_financial_contagion = 7
+	prevent_general_strike = 8
+	international_reconstruction = 9
+	national_employment_guarantee = 10
+	complete_national_recovery_plan = 11
+	certify_cleared_economy = 12
+	coordinate_international_rescue = 13
+	restore_essential_production = 14
+	emergency_government_mandate = 15
+}
+
+great_depression_exposure_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	observed = 1
+	pressured = 2
+	dependent = 3
+	conversion_ready = 4
+	converted = 5
+	resolved = 6
+}
+
+great_depression_exposure_relationship = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	neighbor = 1
+	allied = 2
+	faction = 3
+	subject_market = 4
+	event_agreement = 5
+	supplier_contract = 6
+}
+
+great_depression_contagion_material_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	severity = 1
+	relationship = 2
+	partner_aid = 3
+	abandonment = 4
+	supplier_collapse = 5
+}
+
+great_depression_contagion_aid_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	aid_offered = 1
+	aid_received = 2
+	abandoned = 3
+	contained = 4
+	converted = 5
+}
+
+great_depression_contagion_row = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	maximum_propagation_depth = 2
+	pair_cooldown_days = 30
+}
+
+great_depression_social_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	grievance = 1
+	organized_strike = 2
+	political_mandate = 3
+	emergency_government = 4
+	coup_crisis = 5
+	separatist_crisis = 6
+	civil_conflict_eligible = 7
+	resolved = 8
+}
+
+great_depression_social_actor = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	trade_union_coalition = 1
+	communist_council = 2
+	syndicalist_occupation = 3
+	nationalist_mass = 4
+	military_emergency = 5
+	traditional_authority = 6
+	regional_autonomy = 7
+	business_creditor = 8
+	rural_protest = 9
+}
+
+great_depression_social_ladder = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	organized_protest = 1
+	sector_conflict = 2
+	national_unrest = 3
+	government_crisis = 4
+	revolutionary_breakdown = 5
+	resolved = 6
+}
+
+great_depression_social_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	sector_conflict_days = 21
+	national_unrest_days = 42
+	government_crisis_days = 63
+	revolutionary_breakdown_days = 84
+	emergency_mandate_days = 120
+	protected_aftermath_days = 180
+}
+
+great_depression_incident_pool = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = 1
+	financial_contagion = 2
+	social_collapse = 3
+	no_incident = 4
+}
+
+great_depression_incident_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	factory_gate_closure = 10
+	unpaid_wages = 11
+	freight_yards_idle = 12
+	local_credit_cooperative = 13
+	municipal_relief_failure = 14
+	successful_reopening_shift = 15
+	skilled_workers_leave = 16
+	unfinished_works_abandoned = 17
+	regional_aid_request = 18
+	war_orders_revival = 19
+	correspondent_failure = 20
+	foreign_currency_obligation = 21
+	trade_credit_withdrawn = 22
+	bank_holiday = 23
+	debt_conference = 24
+	rescue_loan_failure = 25
+	supplier_concessions = 26
+	capital_flight = 27
+	clearing_bloc = 28
+	coordinated_rescue = 29
+	partner_abandonment = 30
+	local_strike_committee = 31
+	unemployed_march = 32
+	plant_closure_wage_dispute = 33
+	relief_offices_overwhelmed = 34
+	veterans_demand_employment = 35
+	regional_council_retrenchment_refusal = 36
+	sector_strike = 37
+	factory_occupation = 38
+	coordinated_layoff_refusal = 39
+	business_lockout = 40
+	relief_demonstration = 41
+	security_force_refusal = 42
+	general_strike = 43
+	nationwide_factory_occupation = 44
+	hunger_riots = 45
+	mutiny_refusal = 46
+	emergency_cabinet_collapse = 47
+	rival_movements = 48
+	cabinet_authority_loss = 49
+	recovery_program_failure = 50
+	army_emergency_powers = 51
+	parallel_administration = 52
+	regional_secession_threat = 53
+	foreign_patron_conditions_aid = 54
+	coup_attempt = 55
+	regional_uprising = 56
+	separatist_conflict = 57
+	full_civil_war = 58
+	negotiated_power_transfer = 59
+	emergency_dictatorship = 60
+	revolutionary_coalition = 61
+}
+
+great_depression_incident_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	baseline_pool = 6
+	contagion_pool = 5
+	social_pool = 6
+	common = 20
+	uncommon = 14
+	rare = 9
+	major = 5
+	severe = 2
+	positive = 8
+	no_incident = 3
+}
+
+great_depression_incident_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	disabled = 0
+	low = 0.5
+	high = 1.5
+	severe = 2
+}
+
+great_depression_incident_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	base_interval_days = 21
+	evolution_interval_days = 14
+	active_window_days = 14
+	family_cooldown_days = 42
+	no_op_retry_days = 7
+	receipt_history_cap = 48
+	pressure_pulse = 1
+}
+
+great_depression_incident_delta = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minor_pressure = 2
+	major_pressure = 4
+	severe_pressure = 6
+	light_relief = -2
+	strong_relief = -3
+}
+
+great_depression_global_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	shock = 1
+	contraction = 2
+	coordination = 3
+	recovery = 4
+	international_reconstruction = 5
+	retired = 6
+}
+
+great_depression_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	independent = 1
+	industrial_boom = 2
+	contagion = 3
+	worldwide = 4
+	relapse = 5
+	deepening = 6
+	incident = 7
+	mission = 8
+}
+
+great_depression_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rejected = 0
+	accepted_new_crisis = 1
+	accepted_deepening = 2
+	accepted_merge = 3
+	accepted_merge_without_severity_change = 3
+	duplicate_receipt = 4
+	closed = 5
+	invalid_context = 6
+	rejected_invalid_context = 6
+	rejected_invalid_country = 10
+	rejected_invalid_caller = 11
+	rejected_missing_contract = 12
+	rejected_duplicate_receipt = 13
+	rejected_conflicting_severity_inputs = 14
+	rejected_invalid_evolution_floor = 15
+	rejected_missing_source_context = 16
+	rejected_incompatible_active_state = 17
+	rejected_invalid_snapshot = 18
+	rejected_invalid_economy = 19
+}
+
+great_depression_recovery_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unknown = 0
+	strong = 1
+	uneven = 2
+	hollow = 3
+}
+
+great_depression_center_project_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	authorized = 1
+	active_work = 2
+	paused = 3
+	certification = 4
+	completed = 5
+	failed = 6
+}
+
+great_depression_reject_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	invalid_country = 1
+	invalid_caller = 2
+	missing_contract = 3
+	duplicate_receipt = 4
+	conflicting_severity_inputs = 5
+	invalid_evolution_floor = 6
+	missing_source_context = 7
+	incompatible_active_state = 8
+	invalid_snapshot = 9
+	no_viable_state = 10
+	active_target = 11
+	refire_safeguard = 12
+	invalid_exposure = 13
+	invalid_worldwide_episode = 14
+	invalid_relapse = 15
+	transaction_rollback = 16
+	invalid_severity_input = 17
+	receipt_ledger_full = 18
+	active_country_registry_full = 19
+	invalid_context = 20
+}
+
+great_depression_target_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 10
+	major = 50
+	player = 35
+	usable_civilian_factory = 4
+	usable_military_factory = 2
+	connected_state = 8
+	stable_country = 6
+	previous_episode = -12
+	recent_episode = -30
+	recent_major_industrial_state_loss_per_factory = 3
+	recent_major_industrial_state_loss_cap = 24
+	strong_reform = -18
+	hollow_recovery = 22
+	active_boom = -1000
+	incompatible_crisis = -1000
+	nonhuman = -1000
+	special_actor = -1000
+	minimum = 1
+	maximum = 64
+}
+
+# Independent selection has its own capped scale. The broader target_weight
+# table remains shared by decision and relationship target profiles.
+great_depression_independent_target_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base = 10
+	major = 8
+	player = 12
+	usable_civilian_factory = 1
+	usable_civilian_factory_cap = 18
+	usable_military_factory = 0.5
+	usable_military_factory_cap = 12
+	high_trade_dependence = 8
+	low_stability = 10
+	recent_industrial_expansion = 8
+	severe_supply_disruption = 10
+	rough_event34_landing = 10
+	war_exhaustion = 8
+	previous_episode = -8
+	recent_episode = -24
+	recent_major_industrial_state_loss_per_factory = 2
+	recent_major_industrial_state_loss_cap = 16
+	strong_reform = -12
+	hollow_recovery = 12
+	minimum = 1
+	maximum = 64
+}
+
+great_depression_target_signal = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	imported_resource_floor = 4
+	low_stability_ceiling = 0.40
+	convoy_threat_floor = 0.45
+	convoy_loss_malus_floor = 0.05
+	critical_fuel_ratio = 0.25
+	war_exhaustion_support_ceiling = 0.45
+	war_exhaustion_days = 365
+	recent_expansion_memory_days = 730
+}
+
+great_depression_target_history = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	major_industrial_state_factory_floor = 6
+	major_industrial_state_loss_memory_days = 730
+	major_industrial_state_loss_history_cap = 8
+}
+
+great_depression_humanitarian_adapter = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	famine_population_share = 0.02
+	migration_population_share = 0.01
+	maximum_famine_people = 250000
+	maximum_migration_people = 100000
+}
+
+great_depression_scaling = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	small_economy_civilian_limit = 5
+	medium_economy_civilian_limit = 15
+	large_economy_civilian_limit = 30
+	second_center_usable_civilian = 8
+	third_center_usable_civilian = 18
+	fourth_center_usable_civilian = 45
+	minimum_cost_factor = 0.35
+	maximum_cost_factor = 2.50
+	small_cost_factor = 0.50
+	medium_cost_factor = 1.00
+	large_cost_factor = 1.50
+	opening_stability_weight = 12
+	opening_trade_weight = 8
+	opening_logistics_weight = 8
+	opening_history_weight = 6
+	center_industry_weight = 4
+	center_infrastructure_weight = 2
+	center_population_weight = 1
+	center_capital_penalty = -16
+	center_adjacency_penalty = -10
+	invalid_center_candidate_score = -1
+	center_tie_break_sentinel = 100000
+	second_center_count = 2
+	third_center_count = 3
+	fourth_center_count = 4
+	state_loss_factory_cap = 1
+	liquidation_factory_cap = 1
+	global_pressure_factor = 0.35
+	contagion_factor = 0.50
+	diminishing_return_first = 1.00
+	diminishing_return_second = 0.65
+	diminishing_return_third = 0.40
+	legacy_factory_cap_small = 0
+	legacy_factory_cap_medium = 1
+	legacy_factory_cap_large = 2
+}
+
+great_depression_ai_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	relief_coalition = 1
+	strategic_mobilizer = 2
+	financial_stabilizer = 3
+	state_coordinator = 4
+	fiscal_retrencher = 5
+	liquidation_gambler = 6
+}
+
+# Shared AI tuning ladder. Decision weights reference these labels so profile
+# and scenario balance can be adjusted without hunting through action files.
+great_depression_ai_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	blocked = 0
+	minor = 2
+	light = 4
+	modest = 5
+	standard = 6
+	strong = 8
+	elevated = 10
+	preferred = 12
+	dominant = 14
+	priority = 16
+	urgent = 18
+	decisive = 20
+}
+
+great_depression_event_option_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	automatic = 100
+	coup_execute = 75
+	coup_stand_down = 25
+	autonomy_recognize = 60
+	autonomy_integrate = 40
+	breakdown_emergency_settlement = 45
+	breakdown_cabinet_replacement = 35
+	breakdown_civil_conflict = 20
+}
+
+great_depression_probability_scenario = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	tgt_01_major_pool = 1
+	tgt_02_player_non_major = 2
+	tgt_03_active_exclusion = 3
+	tgt_04_special_actor_exclusion = 4
+	tgt_05_nonhuman_exclusion = 5
+	tgt_06_incompatible_crisis = 6
+	tgt_07_scaling = 7
+	tgt_08_empty_pool = 8
+	tgt_09_multiplayer = 9
+	tgt_10_cluster_actor = 10
+	doc_01_balanced = 11
+	doc_02_wartime = 12
+	doc_03_blockaded = 13
+	doc_04_fiscal = 14
+	doc_05_social = 15
+	doc_06_private_capacity = 16
+	doc_07_evolution_iii = 17
+	act_01_low_stabilization = 18
+	act_02_freight_collapse = 19
+	act_03_paralysis = 20
+	act_04_state_loss = 21
+	act_05_relapse = 22
+	ctg_01_ally_ring_fence = 23
+	ctg_02_subject_aid = 24
+	ctg_03_light_link = 25
+	ctg_04_provider_unable = 26
+	ctg_05_improving_source = 27
+	ctg_06_failed_rescue = 28
+	ctg_07_merged_sources = 29
+	ctg_08_no_duplicate_conversion = 30
+	ctg_09_depth_three = 31
+	ctg_10_overheating_restraint = 32
+	bdp_01_contained_unrest = 33
+	bdp_02_no_coherent_side = 34
+	bdp_03_valid_civil_conflict = 35
+	bdp_04_recent_civil_war = 36
+	soc_01_negotiation = 37
+	soc_02_vital_plant = 38
+	soc_03_coup_gate = 39
+	soc_04_separatist_gate = 40
+	soc_05_recent_civil_war = 41
+	glb_01_one_episode = 42
+	glb_02_light_pressure = 43
+	glb_03_exposed_conversion = 44
+	glb_04_low_overheating = 45
+	glb_05_dangerous_overheating = 46
+	glb_06_one_global_shock = 47
+	glb_07_recovery_stage = 48
+	glb_08_proof_reset = 49
+	glb_09_join_no_duplicate = 50
+	glb_10_disabled = 51
+	evo_01_strong_links = 52
+	evo_02_improving_links = 53
+	evo_03_social_pressure = 54
+	evo_04_reopened = 55
+	evo_05_several_majors = 56
+	evo_06_small_recovery = 57
+	evo_07_inherited = 58
+	evo_08_disabled = 59
+}

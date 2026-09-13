@@ -1,196 +1,391 @@
 add_namespace = chaosx.nr33
 
-##############################################################################################################
-#    ##    ## ########      #######   #######
-#    ###   ## ##     ##    ##     ## ##     ##
-#    ####  ## ##     ##           ##        ##
-#    ## ## ## ########      #######   #######
-#    ##  #### ##   ##             ##        ##
-#    ##   ### ##    ##     ##     ## ##     ##
-#    ##    ## ##     ##     #######   #######
-##############################################################################################################
-#      #
-#     # #    ####  # #####     #####    ##   # #    #
-#    #   #  #    # # #    #    #    #  #  #  # ##   #
-#   #     # #      # #    #    #    # #    # # # #  #
-#   ####### #      # #    #    #####  ###### # #  # #
-#   #     # #    # # #    #    #   #  #    # # #   ##
-#   #     #  ####  # #####     #    # #    # # #    #
-
-##############################################################################################################
-
+# Event 033 is a single runtime. The root event is the only public launch
+# surface; all later callbacks are hidden, generation-checked, and bounded by
+# the registries created by acid_rain_start_runtime.
 country_event = {
-    id = chaosx.nr33.1
-    title = chaosx.nr33.1.t
+	id = chaosx.nr33.1
+	hidden = yes
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
-
-    immediate = {
-        hidden_effect = {
-            news_event = { id = chaosx.news.37 days = 2 }
-            random_list = {
-                10 = {
-                    set_variable = { global.acid_rain_continent = 1 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = europe }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = europe }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = europe }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                } 10 = {
-                    set_variable = { global.acid_rain_continent = 2 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = middle_east }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = middle_east }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = middle_east }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                } 10 = {
-                    set_variable = { global.acid_rain_continent = 3 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = asia }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = asia }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = asia }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                } 10 = {
-                    set_variable = { global.acid_rain_continent = 4 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = africa }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = africa }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = africa }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                } 10 = {
-                    set_variable = { global.acid_rain_continent = 5 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = australia }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = australia }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = australia }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                } 10 = {
-                    set_variable = { global.acid_rain_continent = 6 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = north_america }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = north_america }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = north_america }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                } 10 = {
-                    set_variable = { global.acid_rain_continent = 7 }
-                    add_to_array = { global.acid_rain_continents = global.acid_rain_continent }
-                    get_num_acid_states_in_continent = yes
-                    every_state = {
-                        limit = { is_on_continent = south_america }
-                        add_dynamic_modifier = { modifier = acid_clouds_state days = global.acid_clouds_time }
-                    }
-                    random_state = {
-                        limit = { is_on_continent = south_america }
-                        add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        every_neighbor_state = {
-                            limit = { is_on_continent = south_america }
-                            add_dynamic_modifier = { modifier = acid_rain_state days = 14 }
-                        }
-                    }
-                    every_country = {
-                        limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-                        country_event = { id = chaosx.nr33.2 days = 1 }
-                    }
-                }
-            }
-            set_global_flag = acid_rain
-            activate_mission = chaosx_acid_rain_timeout
-            activate_mission = chaosx_acid_clouds_timeout
-        }
-    }
+	immediate = {
+		acid_rain_start_runtime = yes
+		acid_rain_gui_refresh_read_only = yes
+		if = {
+			limit = {
+				has_global_flag = acid_rain_runtime_active
+				NOT = { has_global_flag = acid_rain_super_event_sent }
+			}
+			set_global_flag = acid_rain_super_event_sent
+			set_global_flag = { flag = super_event_visible days = constant:acid_rain_event.super_event_visible_days value = constant:acid_rain_event.super_event_id }
+			set_variable = { global.current_super_event_audio_id = constant:acid_rain_event.super_event_audio_id }
+			every_country = {
+				limit = { is_ai = no }
+				play_current_super_event_audio = yes
+			}
+			news_event = { id = chaosx.nr33.201 days = 2 }
+		}
+		acid_rain_apply_formation_stage = yes
+	}
 }
 
-##############################################################################################################
+# The only recurring callback. It runs on the stored host country, never on a
+# world iterator, and the worker re-schedules itself only while the runtime is
+# active.
+country_event = {
+	id = chaosx.nr33.20
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = acid_rain_runtime_active
+		has_country_flag = acid_rain_runtime_host
+	}
+
+	immediate = {
+		acid_rain_host_worker = yes
+	}
+}
+
+# Exact seven-day movement callbacks for the three stable front slots. The
+# same guarded move effect is also checked by the bounded host worker after a
+# reload, so neither callback loss nor duplicate delivery changes gameplay.
+country_event = {
+	id = chaosx.nr33.21
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = acid_rain_runtime_active
+		has_country_flag = acid_rain_runtime_host
+		check_variable = { var = global.acid_rain_front_generation_entries^1 value = global.acid_rain_generation_id compare = equals }
+		check_variable = { var = global.acid_rain_front_state_entries^1 value = constant:acid_rain_front_state.retiring compare = equals }
+		check_variable = { var = global.acid_rain_front_next_region_entries^1 value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = global.date value = global.acid_rain_front_move_day_entries^1 compare = greater_than_or_equals }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_front_id = constant:acid_rain_runtime.one }
+		acid_rain_execute_front_move = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
 
 country_event = {
-    id = chaosx.nr33.2
-    title = chaosx.nr33.2.t
-    desc = chaosx.nr33.2.d
-    picture = GFX_report_event_acid_rain
+	id = chaosx.nr33.22
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = acid_rain_runtime_active
+		has_country_flag = acid_rain_runtime_host
+		check_variable = { var = global.acid_rain_front_generation_entries^2 value = global.acid_rain_generation_id compare = equals }
+		check_variable = { var = global.acid_rain_front_state_entries^2 value = constant:acid_rain_front_state.retiring compare = equals }
+		check_variable = { var = global.acid_rain_front_next_region_entries^2 value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = global.date value = global.acid_rain_front_move_day_entries^2 compare = greater_than_or_equals }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_front_id = constant:acid_rain_runtime.two }
+		acid_rain_execute_front_move = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
 
-    is_triggered_only = yes
+country_event = {
+	id = chaosx.nr33.23
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = acid_rain_runtime_active
+		has_country_flag = acid_rain_runtime_host
+		check_variable = { var = global.acid_rain_front_generation_entries^3 value = global.acid_rain_generation_id compare = equals }
+		check_variable = { var = global.acid_rain_front_state_entries^3 value = constant:acid_rain_front_state.retiring compare = equals }
+		check_variable = { var = global.acid_rain_front_next_region_entries^3 value = constant:acid_rain_runtime.zero compare = greater_than }
+		check_variable = { var = global.date value = global.acid_rain_front_move_day_entries^3 compare = greater_than_or_equals }
+	}
+	immediate = {
+		set_temp_variable = { acid_rain_front_id = constant:acid_rain_runtime.three }
+		acid_rain_execute_front_move = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
 
-    option = {
-        ai_chance = { base = 100 }
-        name = chaosx.nr33.2.a
-    }
+# Four prepared-project completion callbacks. The selected index and the
+# generation are written by the decision transaction before this event is
+# scheduled; stale callbacks therefore have no gameplay effect.
+country_event = {
+	id = chaosx.nr33.30
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		check_variable = { var = acid_rain_project_active_entries^1 value = constant:acid_rain_runtime.one compare = equals }
+		check_variable = { var = global.date value = acid_rain_project_end_day_entries^1 compare = greater_than_or_equals }
+		check_variable = { var = acid_rain_project_generation_entries^1 value = global.acid_rain_generation_id compare = equals }
+	}
+	immediate = {
+		set_variable = { acid_rain_selected_project = constant:acid_rain_project.shelter }
+		acid_rain_complete_project = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.31
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		check_variable = { var = acid_rain_project_active_entries^2 value = constant:acid_rain_runtime.one compare = equals }
+		check_variable = { var = global.date value = acid_rain_project_end_day_entries^2 compare = greater_than_or_equals }
+		check_variable = { var = acid_rain_project_generation_entries^2 value = global.acid_rain_generation_id compare = equals }
+	}
+	immediate = {
+		set_variable = { acid_rain_selected_project = constant:acid_rain_project.water }
+		acid_rain_complete_project = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.32
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		check_variable = { var = acid_rain_project_active_entries^3 value = constant:acid_rain_runtime.one compare = equals }
+		check_variable = { var = global.date value = acid_rain_project_end_day_entries^3 compare = greater_than_or_equals }
+		check_variable = { var = acid_rain_project_generation_entries^3 value = global.acid_rain_generation_id compare = equals }
+	}
+	immediate = {
+		set_variable = { acid_rain_selected_project = constant:acid_rain_project.medical }
+		acid_rain_complete_project = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr33.33
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		check_variable = { var = acid_rain_project_active_entries^4 value = constant:acid_rain_runtime.one compare = equals }
+		check_variable = { var = global.date value = acid_rain_project_end_day_entries^4 compare = greater_than_or_equals }
+		check_variable = { var = acid_rain_project_generation_entries^4 value = global.acid_rain_generation_id compare = equals }
+	}
+	immediate = {
+		set_variable = { acid_rain_selected_project = constant:acid_rain_project.transport }
+		acid_rain_complete_project = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+# One callback serves all nine urgent/recovery actions. The country ledger
+# stores the selected action and its generation, so a stale delayed event is a
+# no-op even after a reload or a second Event 033 generation.
+country_event = {
+	id = chaosx.nr33.40
+	hidden = yes
+	is_triggered_only = yes
+	trigger = {
+		OR = {
+			has_global_flag = acid_rain_runtime_active
+			has_global_flag = acid_rain_aftermath_retained
+		}
+		has_country_flag = acid_rain_national_action_active
+		check_variable = { var = global.date value = acid_rain_action_end_day compare = greater_than_or_equals }
+		check_variable = { var = acid_rain_action_generation value = global.acid_rain_generation_id compare = equals }
+	}
+	immediate = {
+		acid_rain_complete_action = yes
+		acid_rain_gui_refresh_read_only = yes
+	}
+}
+
+# Player-facing event reports use the state target saved by the bounded runtime
+# or the host country for world milestones. They never own gameplay effects.
+country_event = {
+	id = chaosx.nr33.101
+	title = chaosx.nr33.101.t
+	desc = chaosx.nr33.101.d
+	picture = GFX_event_033_acid_rain_arrival
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.102
+	title = chaosx.nr33.102.t
+	desc = chaosx.nr33.102.d
+	picture = GFX_event_033_acid_rain_warning
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.103
+	title = chaosx.nr33.103.t
+	desc = chaosx.nr33.103.d
+	picture = GFX_event_033_acid_rain_severe
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.104
+	title = chaosx.nr33.104.t
+	desc = chaosx.nr33.104.d
+	picture = GFX_event_033_acid_rain_severe
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.105
+	title = chaosx.nr33.105.t
+	desc = chaosx.nr33.105.d
+	picture = GFX_event_033_acid_rain_arrival
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.106
+	title = chaosx.nr33.106.t
+	desc = chaosx.nr33.106.d
+	picture = GFX_event_033_acid_rain_shelter
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.107
+	title = chaosx.nr33.107.t
+	desc = chaosx.nr33.107.d
+	picture = GFX_event_033_acid_rain_transport
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.108
+	title = chaosx.nr33.108.t
+	desc = chaosx.nr33.108.d
+	picture = GFX_event_033_acid_rain_severe
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.109
+	title = chaosx.nr33.109.t
+	desc = chaosx.nr33.109.d
+	picture = GFX_event_033_acid_rain_dissipation
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.110
+	title = chaosx.nr33.110.t
+	desc = chaosx.nr33.110.d
+	picture = GFX_event_033_acid_rain_transport
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.111
+	title = chaosx.nr33.111.t
+	desc = chaosx.nr33.111.d
+	picture = GFX_event_033_acid_rain_global
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.112
+	title = chaosx.nr33.112.t
+	desc = chaosx.nr33.112.d
+	picture = GFX_event_033_acid_rain_global
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.113
+	title = chaosx.nr33.113.t
+	desc = chaosx.nr33.113.d
+	picture = GFX_event_033_acid_rain_warning
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+country_event = {
+	id = chaosx.nr33.114
+	title = chaosx.nr33.114.t
+	desc = chaosx.nr33.114.d
+	picture = GFX_event_033_acid_rain_severe
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.report_close }
+}
+
+news_event = {
+	id = chaosx.nr33.201
+	title = chaosx.nr33.201.t
+	desc = chaosx.nr33.201.d
+	picture = GFX_news_event_033_acid_rain
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.news_close }
+}
+
+news_event = {
+	id = chaosx.nr33.202
+	title = chaosx.nr33.202.t
+	desc = chaosx.nr33.202.d
+	picture = GFX_news_event_033_acid_rain
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.news_close }
+}
+
+news_event = {
+	id = chaosx.nr33.203
+	title = chaosx.nr33.203.t
+	desc = chaosx.nr33.203.d
+	picture = GFX_news_event_033_acid_rain
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.news_close }
+}
+
+news_event = {
+	id = chaosx.nr33.204
+	title = chaosx.nr33.204.t
+	desc = chaosx.nr33.204.d
+	picture = GFX_news_event_033_acid_rain_global
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.news_close }
+}
+
+news_event = {
+	id = chaosx.nr33.205
+	title = chaosx.nr33.205.t
+	desc = chaosx.nr33.205.d
+	picture = GFX_news_event_033_acid_rain_global
+	major = yes
+	is_triggered_only = yes
+	option = { name = chaosx.nr33.news_close }
 }

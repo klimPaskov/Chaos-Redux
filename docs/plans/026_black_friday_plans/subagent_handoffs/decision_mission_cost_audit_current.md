@@ -3,12 +3,13 @@
 Status: BLOCKED and incomplete. This is a read-only source audit handoff and does not approve Event 26 or claim universal cost coverage.
 
 Audit date: 2026-08-30, against the physical shared worktree at audit time.
+Documentation refresh: 2026-09-02 against the current worktree; this refresh changes documentation only.
 
 ## Scope and changed file
 
 The complete package under `docs/specs/026_black_friday_specs/`, `AGENTS.md`, the decisions, events, subagent, focus-tree, and event skills, the universal-cost framework documentation, the exact custom and native inventories, the current Chaos Redux source tree, the offline Paradox wiki core pages, and the installed Vanilla documentation and precedents were reviewed.
 
-HOI4 was not launched and no gameplay file, save, log, spreadsheet, generated export, or asset was changed.
+HOI4 was not launched for this audit, and no save or game log was used; the current worktree includes the parent implementation and its source, documentation, catalog, export, and asset changes.
 
 Changed file from this audit:
 
@@ -16,33 +17,36 @@ Changed file from this audit:
 
 ## Executive result
 
-The requested `2,160` custom trigger and `2,160` custom text totals are not confirmed against the current worktree.
+The earlier requested `2,160` custom trigger and `2,160` custom text target is superseded by the current exact source inventory.
 
-The current exhaustive scan finds `2,174` `custom_cost_trigger` declarations in 77 decision files and `2,175` `custom_cost_text` declarations in the same 77 files.
+The current anchored exhaustive scan finds `2,224` `custom_cost_trigger` declarations and `2,225` `custom_cost_text` declarations in 81 decision files. The only count difference is the text-only requirement disclosure at `common/decisions/020_black_plague_rat_decisions.txt:923`; the current nuclear-bomb declarations are paired at 63 trigger and 63 text declarations, and the Brilliant Scientist technology-action declarations add eight paired rows.
 
-The current anchored native scan finds `1,323` top-level decision `cost =` declarations in 60 files, consisting of `1,040` non-zero declarations and `283` literal `cost = 0` sentinels.
+The current anchored native scan finds `1,328` top-level decision `cost =` declarations in 62 files, consisting of `1,033` declarations not written as the literal `cost = 0` and `295` literal zero/free sentinels.
 
 The native total is confirmed by the current native inventory contract, but that source inventory is evidence of declarations rather than proof of engine display and payment behavior.
 
-The shared universal-cost framework has zero owner callsites for quote, affordability, payment, receipt, settlement, component-refund acknowledgement, or refund under `common` outside its own definitions.
+The shared universal-cost framework is now exercised by bounded owner adapters in the Event 26 adapter file and in the biological, Japan chemical, Japan biological, Germany Mengele, D'Rhondan alien-infantry, Random Faction, and Africa Elephant owner files, with component receipts, settlement, and owner-specific refund acknowledgements where the source owns a custom payload. This is ten bounded owner tranches covering 104 logical components, not universal owner coverage.
 
-Event 26 only registers the source at `common/scripted_effects/026_black_friday_effects.txt:667` and clears it at `:556`.
+The bounded tranches are five Communist-spread logical actions, seventeen reachable Fury decisions, the Japan chemical campaign attack, biological medical-capacity expansion, CBRN civilian-shelter movement, two Japan biological campaign agents, four Germany Mengele command-power actions, and the D'Rhondan alien-infantry landing reservation. Their source adapters preserve ordinary requirements and effects while quoting, preflighting, paying, recording actual amounts, settling, and acknowledging owner-controlled refunds where applicable, and remain pending live proof. The CBRN diplomacy, CBRN doctrine, CBRN occupation, and genocide-crisis owner audits rejected unsafe partial adapters and remain explicit blockers.
 
-Event 26 therefore remains blocked by missing owner adapters, missing engine proof for native surfaces, missing static variants for inaccessible surfaces, and missing current decision-MCP evidence.
+Event 26 registers and clears its source through `common/scripted_effects/026_black_friday_effects.txt`; the exact lifecycle remains source-present and live-unverified.
+
+Event 26 therefore remains blocked by the many unadapted owner surfaces, missing engine proof for native surfaces, missing static variants for inaccessible surfaces, missing refund acknowledgements, and missing current decision-MCP evidence.
 
 ## Recomputed inventory
 
 | Surface | Current count | Exact evidence | Disposition |
 | --- | ---: | --- | --- |
-| Chaos Redux `custom_cost_trigger` | 2,174 in 77 files | Anchored scan of `common/decisions/*.txt` | Current count; all owner payment paths remain unproven |
-| Chaos Redux `custom_cost_text` | 2,175 in 77 files | Anchored scan of `common/decisions/*.txt` | Current count; one text-only requirement disclosure remains |
-| Chaos Redux native `cost =` | 1,323 in 60 files | `docs/plans/026_black_friday_plans/event26_cost_surface_native_inventory.md:6-12` and current scan | Current count; 1,040 non-zero and 283 zero/free |
-| Inventory header target | 2,160 / 2,160 | `docs/plans/026_black_friday_plans/event26_cost_surface_custom_inventory.md:11` | Stale aggregate header |
+| Chaos Redux `custom_cost_trigger` | 2,224 in 81 files | Anchored scan of `common/decisions/*.txt` | Current count; 104 logical component rows are source-adapted across ten bounded tranches, while all other owner payment paths remain unproven |
+| Chaos Redux `custom_cost_text` | 2,225 in 81 files | Anchored scan of `common/decisions/*.txt` | Current count; the text-only requirement disclosure remains explicitly classified |
+| Chaos Redux native `cost =` | 1,328 in 62 files | `docs/plans/026_black_friday_plans/event26_cost_surface_native_inventory.md:6-12` and current scan | Current count; 1,033 are not literal `cost = 0` and 295 are zero/free sentinels |
+| Inventory header target | 2,224 / 2,225 | `docs/plans/026_black_friday_plans/event26_cost_surface_custom_inventory.md:11` | Aggregate corrected; bounded owner tranches recorded and owner line inventories match the current scan |
 
 The custom inventory rows identify the exact drift.
 
-- `common/decisions/035_great_depression_decisions.txt` is currently 89 trigger and 89 text declarations, versus the inventory row's 74 and 74; the additional paired rows are at `:2785/:2788`, `:2820/:2823`, `:2855/:2858`, `:2890/:2893`, `:2925/:2928`, `:2960/:2963`, `:2995/:2998`, `:3030/:3033`, `:3065/:3068`, `:3100/:3103`, `:3135/:3138`, `:3170/:3173`, `:3205/:3208`, `:3240/:3243`, and `:3275/:3278`.
-- `common/decisions/023_sov_nuclear_bombs_decisions.txt` is currently 62 trigger and 62 text declarations, one fewer trigger than the inventory row at `docs/plans/026_black_friday_plans/event26_cost_surface_custom_inventory.md:69`.
+- `common/decisions/035_great_depression_decisions.txt` is currently 89 trigger and 89 text declarations, matching the exact inventory row.
+- `common/decisions/016_brilliant_scientist_technology_actions.txt` contributes eight paired trigger and text declarations at `:25/:26`, `:47/:48`, `:69/:70`, `:88/:89`, `:112/:113`, `:137/:138`, `:157/:158`, and `:176/:177`; these were absent from the previous documentation snapshot and remain blocked pending an owner adapter.
+- `common/decisions/023_sov_nuclear_bombs_decisions.txt` is currently 63 trigger and 63 text declarations, matching the inventory row at `docs/plans/026_black_friday_plans/event26_cost_surface_custom_inventory.md:71`.
 - `common/decisions/020_black_plague_rat_decisions.txt:923` remains a text-only `custom_cost_text` declaration for `black_plague_rat_king_execute_terminal_takeover`; the owning block has no matching custom trigger and proceeds to `complete_effect` at `:925`.
 
 The native inventory's current summary is internally consistent: `common/decisions/003_holy_realm_decisions.txt:51` is a zero-cost sentinel, `:103` is a non-zero native cost, `common/decisions/005_soviet_collapse_decisions.txt:14150` is a dynamic native cost, and `common/decisions/006_independence_wave_decisions.txt:1020` is another zero-cost sentinel.
@@ -51,15 +55,7 @@ The native inventory's current summary is internally consistent: `common/decisio
 
 The public contract is documented at `docs/systems/universal_cost_modifier.md:11-21`, with owner requirements at `:67-75`, `:83-89`, and `:116-120`.
 
-| Required owner operation | Current owner callsites outside framework definitions |
-| --- | ---: |
-| `universal_cost_quote_integer` | 0 |
-| `universal_cost_check_quote_affordable` | 0 |
-| `universal_cost_pay_component` | 0 |
-| `universal_cost_record_transaction` | 0 |
-| `universal_cost_settle_transaction` | 0 |
-| `universal_cost_mark_component_refunded` | 0 |
-| `universal_cost_refund_transaction` | 0 |
+The earlier zero-callsite table is superseded by the current registry and owner handoffs. They record 104 bounded logical component rows invoking shared quote, affordability, payment, receipt, settlement, and owner-specific refund paths across ten bounded tranches. Direct callsite totals are implementation snapshots rather than logical-row counts because several owner selectors and effects are reused. This documentation refresh does not claim a universal helper-callsite count, and unadapted owners remain unconnected.
 
 The helper definitions exist at `common/scripted_effects/chaosx_universal_cost_effects.txt:389`, `:561`, `:582`, `:939`, `:1177`, `:1205`, and `:1260`, but definitions are not interception or owner coverage.
 
@@ -67,7 +63,7 @@ The only current Event 26 framework callsites are `universal_cost_source_clear_b
 
 The native payment helper has explicit branches only for political power, command power, manpower, fuel, infantry equipment, support equipment, motorized equipment, train equipment, and convoy at `common/scripted_effects/chaosx_universal_cost_effects.txt:605-745`.
 
-It has no automatic owner path for factory commitments, laws, advisors, ideas, technology, operations, equipment designs, special projects, MIO, custom currencies, stability, war support, or arbitrary equipment types.
+It has no automatic owner path for factory commitments, laws, advisors, ideas, technology, operations, equipment designs, special projects, custom currencies, stability, war support, or arbitrary equipment types. MIO assignment and policy costs remain engine-inaccessible in the Event 26 registry, and no Event 26 MIO fields or generic confirmation adapter are installed.
 
 ## Named cost-family coverage
 
@@ -75,40 +71,40 @@ Part 4 requires the families at `docs/specs/026_black_friday_specs/026_black_fri
 
 | Family | Current source evidence | Current status and blocker |
 | --- | --- | --- |
-| Political power | `common/ideas/026_black_friday_ideas.txt:18` and `:127` | Native source factor exists; custom PP owners have no quote, payment, receipt, refund, or AI adapter |
+| Political power | `common/ideas/026_black_friday_ideas.txt:18` and `:127`; bounded adapters in `common/scripted_effects/026_black_friday_effects.txt`, `common/scripted_effects/biological_countermeasure_effects.txt`, and `common/scripted_effects/JAP_chemical_campaign_effects.txt` | Native source factor exists; Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, and Japan biological adapters quote and pay bounded PP components, while remaining custom PP owners have no adapter |
 | Laws | Economy, mobilization, and trade factors at `common/ideas/026_black_friday_ideas.txt:25-27` and `:134-136` | Native route is source-only; no distinct additional political-law factor was found; custom law actions remain blocked |
 | Advisors and personnel | Advisor and staff factors at `common/ideas/026_black_friday_ideas.txt:19-24` and `:28-30` | Native source exists; owner-level display/payment proof is unavailable |
-| Command power | Command-ability factor at `common/ideas/026_black_friday_ideas.txt:31` and leader factors at `common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt:688-692` | Native source covers documented factors; custom CP actions and inaccessible flat costs remain blocked |
-| Army, navy, and air experience | Doctrine factors at `common/ideas/026_black_friday_ideas.txt:32-35` and equipment-upgrade factors at `:94-97` | Native source exists; custom experience actions have no adapter |
+| Command power | Command-ability factor in `common/ideas/026_black_friday_ideas.txt`, leader factors in `common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt`, and bounded adapters in the Event 26, Japan biological, and Germany Mengele owner files | Native source covers documented factors; bounded Communist-spread, Fury, Japan chemical, Japan biological, and Germany Mengele owners quote and pay CP components, while other custom CP actions and inaccessible flat costs remain blocked |
+| Army, navy, and air experience | Doctrine factors at `common/ideas/026_black_friday_ideas.txt:32-35` and equipment-design factors at `:94-97` | Native source exists for the documented design factors; equipment-upgrade XP fields remain engine-inaccessible and custom experience actions have no adapter |
 | Officer corps | Staff, spirit, leader, promotion, and assignable-trait surfaces | Assignable traits are engine-inaccessible; all custom owner paths remain blocked |
 | Doctrine unlocks | Doctrine factors at `common/ideas/026_black_friday_ideas.txt:32-35` | Native source-only evidence; no decision inspection or payment proof |
-| Equipment stockpile | Native helper branches at `common/scripted_effects/chaosx_universal_cost_effects.txt:669-735` | Only four concrete equipment kinds are native helper branches; custom and other equipment types have no owner adapter |
-| Convoys and trains | Native helper branches at `common/scripted_effects/chaosx_universal_cost_effects.txt:726-745` | Helpers exist but no owner invokes them; custom rows remain undiscounted or unproven |
+| Equipment stockpile | Native helper branches at `common/scripted_effects/chaosx_universal_cost_effects.txt:669-735` and bounded owner adapters in the Event 26, biological, CBRN, Japan chemical, Japan biological, Germany Mengele, and D'Rhondan files | Native helper branches cover registered aggregate/exact kinds; bounded owners also handle custom payload acknowledgements, while custom and other equipment types have no owner adapter |
+| Convoys and trains | Native helper branches at `common/scripted_effects/chaosx_universal_cost_effects.txt:726-745` and bounded CBRN/train owner adapter at `common/scripted_effects/026_black_friday_effects.txt` | CBRN shelter movement quotes and pays exact train equipment through the shared transaction, while other convoy/train owners remain undiscounted or unproven |
 | Fuel | Native helper branch at `:653` and `:803` | Helper exists but no owner invokes it |
-| Manpower | Native helper branch at `:637` and `:796` | Helper exists but no owner invokes it |
+| Manpower | Native helper branch at `:637` and `:796`, bounded owner adapters in `common/scripted_effects/026_black_friday_effects.txt` | Communist-spread and Fury components invoke bounded native manpower payment where applicable; remaining manpower owners remain unadapted |
 | Stability and war support | Current custom direct-payment examples include `common/scripted_effects/035_great_depression_effects.txt:299-324` | No universal branch or owner adapter; floor, precision, receipt, and refund are unproven |
 | Civilian, military, and dockyard commitments | Current decisions contain 602 factory-commitment signals, including `civilian_factory_use` such as `common/decisions/006_independence_wave_balkan_decisions.txt:73`; no `military_factory_use` or `dockyard_use` declaration was found in the current decision scan | No generic reservation/payment/refund helper; factory components require explicit owner treatment and D-CF evidence |
 | Intelligence agency upgrades | No `agency_upgrade` match exists in the Event 26 idea or dynamic-modifier files | No current native route and no owner adapter; this family is not covered |
-| Intelligence operations | `operation_cost`, infiltration, coup, and target-sabotage fields at `common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt:15-20` and `:695-699` | Native operation source exists; custom operation preparation and factory components remain blocked |
-| Military-industrial organizations | Installed Vanilla docs expose MIO cost fields at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md:3360-3385` | MIO-scoped assignment and policy surfaces have no Event 26 modifier or owner adapter |
-| International market and agreements | License and trade factors at `common/ideas/026_black_friday_ideas.txt:107-119` and `:216-228` | Documented license route is source-only; custom market and agreement fees remain blocked |
+| Intelligence operations | Installed operation documentation for `operation_cost`, infiltration, coup, and target-sabotage fields; the corresponding Event 26 relative-factor route is absent from `common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt` | Operation costs remain engine-inaccessible because the fields are flat absolute values; custom operation preparation and factory components remain blocked |
+| Military-industrial organizations | Installed Vanilla docs expose MIO cost fields at `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/documentation/modifiers_documentation.md:3360-3388`; Vanilla country dynamic-modifier precedent is `common/dynamic_modifiers/wuw_dynamic_modifiers.txt:462-492` | The four MIO fields remain engine-inaccessible in the Event 26 registry; Event 26 installs no MIO flat fields or generic confirmation adapter, and live MIO-panel evidence is unavailable |
+| International market and agreements | Licensed-equipment and trade factors at `common/ideas/026_black_friday_ideas.txt:107-119` and `:216-228` | Licensed-equipment factor source is present, but flat license-purchase fields and custom market/agreement fees remain engine-inaccessible or owner-bound and blocked |
 | Special projects | Current Chaos Redux has 34 anchored `resource_cost` blocks and installed Vanilla has 47; examples are `common/special_projects/projects/020_black_plague_weaponization_projects.txt:29-30` and `common/special_projects/projects/016_dhrondan_envoy_project.txt:24-25` | Project resource blocks have no universal owner adapter or refund path |
 | Diplomatic transactions | Embargo, guarantee, annex, puppet, and trade factors at `common/ideas/026_black_friday_ideas.txt:101-119` | Native fields are source-only; custom diplomatic payments remain blocked |
 | State-targeted projects | Current custom/factory owners and project effects | No owner quote/payment/refund path for target-scoped commitments |
 | Custom mechanic currencies | No generic resource-kind branch or owner callsite | Blocked pending per-system adapters and quantum definitions |
 | Scripted GUI actions | Event 26 specifies existing event and status surfaces and no dedicated scripted GUI at `docs/specs/026_black_friday_specs/026_black_friday_spec_part_9_implementation_crosswalk.md:162` | No Event 26-owned scripted GUI is in scope; shared GUI is not evidence of cost coverage |
 | Event options with payment | `events/026_black_friday.txt:18-27` is an informational popup with `ai_chance = 100`, not a paid option | No Event 26 paid option; other paid event options remain owner surfaces |
-| Research and design | The Event 26 dynamic modifier contains 668 country fields in both ratios, 5 leader fields in both ratios, and concrete design fields at `common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt:15-20`, `:687-693`, `:695-699`, and `:1367-1373` | Source inventory shows 195 equipment-design, 312 module-design, and 157 unit-design fields, but no engine decision route or payment proof |
+| Research and design | The Event 26 dynamic modifier contains 672 country fields in both ratios, 5 leader fields in both ratios, and concrete design fields at `common/dynamic_modifiers/026_black_friday_dynamic_modifiers.txt:15-25`, `:701-710`, and the corresponding design inventory ranges | Source inventory shows 195 equipment-design, 312 module-design, and 157 unit-design fields, but no live designer display/debit/save proof |
 | Subject and autonomy actions | Annex and puppet factors at `common/ideas/026_black_friday_ideas.txt:104-106` and `:210-212` | Native source-only; custom subject/autonomy payments remain blocked |
 | Trade and resource agreements | Trade and license factors above plus custom agreement owners | No universal adapter for custom fees or commitments |
-| Shared stockpile helpers | Native helper kinds at `common/scripted_effects/chaosx_universal_cost_effects.txt:605-745` | No owner callsites, so helper existence does not provide coverage |
+| Shared stockpile helpers | Native helper kinds at `common/scripted_effects/chaosx_universal_cost_effects.txt:605-745` and owner adapters in the Event 26, biological, CBRN, and Japan chemical files | Bounded owner callsites now use the helper for registered native kinds, but helper existence and bounded use do not provide universal coverage |
 
 ## Engine-inaccessible and static-variant surfaces
 
 The following surfaces remain explicit compatibility blockers rather than silently supported rows.
 
 - Flat army/navy leader assignment and preferred tactics use `assign_army_leader_cp_cost`, `assign_navy_leader_cp_cost`, and `choose_preferred_tactics_cost`, documented in installed Vanilla at `documentation/modifiers_documentation.md:1982`, `:1987`, and `:2172`; no relative Event 26 factor route is present.
-- MIO assignment and policy costs are MIO-scoped fields documented at `documentation/modifiers_documentation.md:3360-3385` and have no Event 26 country or leader modifier route.
+- MIO assignment and policy costs are documented at `documentation/modifiers_documentation.md:3360-3388`, but the Event 26 source and registry install no corresponding flat fields or generic confirmation adapter; the Vanilla country dynamic-modifier precedent at `common/dynamic_modifiers/wuw_dynamic_modifiers.txt:462-492` is reference evidence only.
 - Special-project resource blocks are defined by project owners rather than a shared percentage cost modifier; current examples are `common/special_projects/projects/020_black_plague_weaponization_projects.txt:29-30` and `common/special_projects/projects/016_dhrondan_envoy_project.txt:24-25`.
 - The Chaos Redux assignable trait has a static `cost` at `common/unit_leader/chaosx_traits.txt:29-34`.
 - The current installed Vanilla scan has 229 anchored `cost =` fields in `C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/common/unit_leader/*.txt`; the earlier registry value of 234 is stale.
@@ -124,11 +120,11 @@ The specification requires `discounted_unrounded = ordinary_current_cost * payme
 
 The owner must quote for display, re-quote at payment, check every component, pay once, record actual paid amounts, and settle or refund the actual paid amounts at `docs/systems/universal_cost_modifier.md:67-75` and `common/scripted_effects/chaosx_universal_cost_effects.md:245`.
 
-No current owner does this.
+The ten bounded source tranches use the shared quote, affordability, payment, receipt, and settlement paths for their registered components, with external refund acknowledgements for owner-controlled biological, chemical, and Africa Elephant payloads. They do not provide universal owner coverage, and the remaining owner surfaces do not call the contract.
 
 Event 26's achievement recorder requires a positive transaction id, family id, ordinary cost, and actual paid cost at `common/scripted_effects/026_black_friday_effects.txt:207-214`.
 
-It can confirm or retract pending achievement transactions at `:286-338`, but no owner calls it and no owner calls the universal receipt helper.
+It can confirm or retract pending achievement transactions at `:286-338`; each bounded adapter supplies its registry-defined primary family, while the remaining owners supply no universal receipt.
 
 Expiry clears current achievement progress at `common/scripted_effects/026_black_friday_effects.txt:56-64` while the source itself is cleared at `:553-561`; this does not repair missing owner receipts or refunds.
 
@@ -137,9 +133,9 @@ The current custom display surface is mixed rather than icon-complete.
 - Correct icon-first examples include `localisation/english/001_communism_spread_l_english.yml:115` and `localisation/english/007_random_expansion_l_english.yml:111`.
 - Literal resource names and prose remain at `localisation/english/035_great_depression_l_english.yml:78-79` and `localisation/english/cbrn_occupation_l_english.yml:19`.
 - `localisation/english/020_black_plague_rat_decisions_l_english.yml:154` is a requirement sentence exposed as custom-cost text rather than a spendable cost.
-- Event 26 defines source strings at `localisation/english/026_black_friday_l_english.yml:28-34`, but no current consumer callsite was found for the cost-source name, line, rounding, or requirement strings.
+- Event 26 defines source strings at `localisation/english/026_black_friday_l_english.yml:28-34`; the bounded owner adapters consume the shared quote paths, while universal consumption by every custom owner remains unproven.
 
-There is no current complete per-reference texticon proof for all 2,175 custom text references.
+There is no current complete per-reference texticon proof for all 2,224 purchase-bearing custom text references.
 
 ## Mission quality and lifecycle notes
 
@@ -184,7 +180,7 @@ Event 26's informational popup has `ai_chance = 100` at `events/026_black_friday
 
 The lifecycle route preserves the key global locks: reservation requires the running system, enabled and unfired state, no existing reservation or active sale, and the chaos threshold at `common/scripted_triggers/026_black_friday_triggers.txt:38-49`; natural activation requires reservation, Friday, and the same threshold at `:51-63`.
 
-The activation path snapshots the ratio, marks the event fired, registers the source, refreshes native modifiers, and updates the global state at `common/scripted_effects/026_black_friday_effects.txt:622-682`.
+The activation path snapshots the ratio, marks the event fired, registers the source, refreshes native modifiers, and updates the global state at `common/scripted_effects/026_black_friday_effects.txt:1046-1091`.
 
 Those lifecycle locks do not make custom AI affordability valid.
 
@@ -192,44 +188,44 @@ Custom owners still need discounted affordability, ordinary reserve floors, targ
 
 The callable HOI4 MCP registry has no decision-specific inspect, render, or compare route.
 
-The event route is available but partial: `hoi4_event_inspect` with selector `chaosx.nr26.1` returned `EVENT_INSPECTED_PARTIAL`, validation false with deferred helper/lifecycle analysis, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/1bf5d603a0cd5c624d8102f7576611a53a9043d3a6b3af15fda52da9d4b76f13/ce35c3f090645a07b35eb268aa0e841daed24fab31176a02954cf3291d2ca91e/event-scan-903a0ec1e1c7.json`.
+The event route is available but partial: the 2026-09-02 `hoi4_event_inspect` run with selector `chaosx.nr26.1` returned `EVENT_INSPECTED_PARTIAL`, validation false with deferred helper/lifecycle analysis, revision `27c77545e9241b4398d074f7bae0aaedf8ebba6790c26141f6e3508bf4238175`, and graph hash `9231a40d3395079e08c9610848afcd4d0fc93e97e2dd33dcff81f5d140de7291`.
 
-An event render attempt failed with the exact MCP result `INTERNAL_ERROR` and zero artifacts.
+The 2026-09-02 overview render returned `EVENT_RENDERED_PARTIAL` with no selector-specific blockers and layout hash `3ea884981b1b4ab3fcaf97c911a7503b65b619f8757e3164f29a88b151b0d96a`; workspace-wide validation remains false because helper/lifecycle analysis is deferred.
 
-The available probability route inspected `events/026_black_friday.txt` with the `event_option_ai_chance` adapter and returned `PROBABILITY_SOURCE_INSPECTED`, `candidates = 1`, `availableCandidates = 0`, `requiredInputs = 0`, `unresolved = 0`, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f241835aa28f883fb7a333427f21802333d0dffce3d4334dfa44c2be149e4e25/55186b1bc7e74b220f9e0830834e5accaeaf16babf07892eac7b9d2757317da4/probability-inspect-3b514b589d57.json`.
+The available probability route freshly inspected `events/026_black_friday.txt` with the `event_option_ai_chance` adapter and returned `PROBABILITY_SOURCE_INSPECTED`, source revision `a477c32d9183b75725e09db4c376b6207faf6cfb97047b2b577b89c455cf75d5`, source hash `135da139b2368e30cf374cdcb389692bc649162f9bf7409dab57350a090b0995`, `poolComplete = true`, `candidates = 1`, `availableCandidates = 0`, `requiredInputs = 0`, and `unresolved = 0`. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/eab86ce19d442fff7e62eb716544540fad3d998f002fa2a3e2277514a31d133/155fd9cbd71664a2568e3ccef139b912d4a1ae58c6466b419a6c2a883932a2e4/probability-inspect-135da139b236.json`.
 
-No probability comparison is claimed because this audit changed no AI weight and no owner adapter exists to provide a stable before/after surface.
+No probability comparison is claimed because no stable before/after owner-weight surface exists. The current narrow option evaluation covers only `chaosx.nr26.2.a` at 100 percent across the eight named empty scenarios; the custom-pool inspect returned an incomplete zero-candidate pool and the event-option/custom-pool inspect settings returned `INTERNAL_ERROR`.
 
 No GUI inspect/render evidence is claimed because Event 26 has no Event 26-owned scripted GUI; the shared event log, event details, popup, and status surfaces are explicitly outside the dedicated-GUI route.
 
 ## Cleanup and exploit risk
 
-The Event 26 native lifecycle cleanup is present: active ideas, dynamic country modifiers, and leader modifiers are removed at `common/scripted_effects/026_black_friday_effects.txt:408-418` and `:471-505`, source registration is cleared at `:553-561`, and the active sale is created with its snapshot at `:622-667`.
+The Event 26 native lifecycle cleanup is present: active ideas, dynamic country modifiers, and leader modifiers are removed at `common/scripted_effects/026_black_friday_effects.txt:408-418` and `:471-505`, source registration is cleared at `:980`, and the active sale is created with its snapshot at `:1046-1091`.
 
 The unresolved risks are at the owner boundary.
 
 - A mixed native/custom action can charge the native cost and its custom debit unless the owner reconciles the logical transaction.
-- A custom multi-resource action can pay partially because no universal preflight, atomic commit, receipt, or refund call is present.
-- A delayed or canceled custom action can return no money or return the ordinary rather than actual paid amount because no owner refund path is wired.
+- The bounded Communist-spread adapters preflight their components and record receipts, but a race after preflight can still produce partial payment because no engine-level atomic commit is available.
+- A delayed or canceled unadapted custom action can return no money or return the ordinary rather than actual paid amount because no owner refund path is wired; the bounded biological and chemical payload paths acknowledge their external credits explicitly.
 - Factory reservations can be treated as absent by the universal resource helper even when the custom tooltip names them.
 - AI can evaluate a custom action using ordinary affordability while the player sees no verified discounted price.
-- The achievement cannot progress from owner actions because no owner supplies the required universal transaction receipt.
+- The bounded adapters supply primary-family achievement receipts, but the achievement cannot progress universally because the remaining owners supply no transaction receipt.
 - No static normal/50/75 variants exist, so duplicate-variant suppression and one-candidate AI behavior are not demonstrated.
 
 ## Severity-sorted blockers
 
 ### Critical
 
-1. Zero universal owner callsites leave all custom cost payment, display, receipt, settlement, and refund behavior unintegrated.
-2. The current custom inventory aggregate is stale at 2,160/2,160; the live worktree is 2,174/2,175.
+1. Only the bounded Communist-spread, Fury, Japan chemical, biological medical-capacity, CBRN shelter, Japan biological, and Germany Mengele tranches call the universal quote/payment/receipt contract; the remaining custom cost owners leave payment, display, settlement, and refund behavior unintegrated.
+2. The current custom inventory aggregate is corrected to 2,224/2,225, with the text-only 020 row and the eight paired Brilliant Scientist technology-action rows explicitly recorded and owner line inventories reconciled.
 3. Native/custom actions are not reconciled at the transaction boundary, creating double-payment or undiscounted-payment risk.
 4. Factory commitments and other unsupported components have no generic quote/payment/refund provider.
 
 ### High
 
-1. No decision-specific HOI4 MCP inspection/render/compare route is callable, so native decision display and payment cannot be promoted from source evidence to engine evidence.
+1. No decision-specific HOI4 MCP inspection/render/compare route is callable, so native decision display and payment cannot be promoted from source evidence to engine evidence; the available event and probability routes remain partial or narrow.
 2. No static normal/50/75 variants exist for engine-inaccessible surfaces.
-3. Engine-inaccessible flat leader costs, MIO costs, special-project resource blocks, assignable leader traits, and factory commitments remain unresolved.
+3. Engine-inaccessible flat leader/tactic, native one-time decision, equipment-upgrade, guarantee, operation, license-purchase, MIO assignment and policy, special-project, assignable-trait, and factory/dockyard commitment surfaces remain unresolved; Event 26 installs no generic route for these surfaces.
 4. Intelligence agency upgrades have no Event 26 modifier match and no owner adapter.
 5. Custom cost display is not universally icon-first or semantically limited to spendable costs.
 
@@ -237,14 +233,14 @@ The unresolved risks are at the owner boundary.
 
 1. The Event 35 mission tranche contains 15 additional custom owner rows whose activation, timeout, cancellation, direct payment, and custom text paths are not on the universal contract.
 2. Event 26 source and lifecycle status are present, but the cost-source localisation is not proven to be consumed by every owner UI.
-3. Event render returned an internal MCP error, and the partial event inspection deferred helper/lifecycle validation.
+3. The current event timing render returned a partial artifact with no MCP blockers, while the partial event inspection still defers helper/lifecycle validation.
 
 ## Concrete next fixes for the parent
 
 1. Rebuild and freeze the custom registry after the current Event 35 and nuclear-file drift, preserving exact file and line evidence.
 2. For each custom owner, decompose one logical action into no more than four spendable component types and keep requirements, targets, cooldowns, reserve floors, and route locks separate.
 3. Wire display and payment to the same quote, re-quote at click time, preflight all components, debit once, record actual paid amounts, and settle or refund actual paid amounts.
-4. Add explicit external providers and `universal_cost_mark_component_refunded` handling for factories, custom currencies, MIO, special projects, and other unsupported components, or record accepted engine-inaccessible evidence and static variants.
+4. Add explicit external providers and `universal_cost_mark_component_refunded` handling for factories, custom currencies, special projects, and other unsupported components, or record accepted engine-inaccessible evidence and static variants.
 5. Reconcile every native/custom overlap before enabling the Event 26 source.
 6. Replace literal resource names in spendable cost strings with the correct texticons and move non-consumed requirements out of `custom_cost_text`.
 7. Add the same discounted affordability and reserve logic to AI owners; run baseline and comparison probability audits for every changed weighted surface.
@@ -252,10 +248,10 @@ The unresolved risks are at the owner boundary.
 
 ## Current disposition
 
-Event 26 has a source registration, native modifier source, global reservation/activation/expiry lifecycle, and cleanup path, but it does not currently have universal decision/mission cost coverage.
+Event 26 has a source registration, native modifier source, global reservation/activation/expiry lifecycle, and cleanup path, but it does not currently have universal decision/mission cost coverage. Eight bounded owner tranches are source-adapted through shared quote/payment/receipt paths, pending probability/live proof and universal owner completion.
 
-The current worktree confirms `2,174` custom triggers, `2,175` custom text references, and `1,323` native top-level decision cost declarations.
+The current worktree confirms `2,224` custom triggers, `2,225` custom text references, and `1,328` native top-level decision cost declarations across 62 files, including 1,033 nonzero/non-literal-zero declarations and 295 literal zero/free sentinels.
 
-No owner callsite invokes universal quote, affordability, payment, receipt, settlement, component-refund, or refund helpers.
+The bounded owners invoke universal quote, affordability, payment, receipt, settlement, and owner-specific refund paths through their adapters; unadapted owners still lack those paths.
 
-The audit is therefore incomplete and blocked; no gameplay implementation was performed and no universal coverage claim is made.
+The audit is therefore incomplete and blocked; the source implementation is present, but no universal coverage claim is made and Event 26 remains disabled.

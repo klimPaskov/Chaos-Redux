@@ -608,15 +608,17 @@ cbrn_civil_defence_category = {
 		icon = GFX_decision_cbrn_move_civilians_to_shelters
 		state_target = yes
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_protection_decision_cost.move_to_shelters_pp
+		cost = 0
 		days_re_enable = constant:cbrn_protection_decision_timing.response_reenable_days
 		visible = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
 		target_root_trigger = { any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active } }
-		target_trigger = { FROM = { cbrn_state_can_move_civilians_to_shelters = yes } }
-		available = { FROM = { cbrn_state_can_move_civilians_to_shelters = yes } }
+		target_trigger = { FROM = { black_friday_cbrn_state_can_move_civilians_to_shelters = yes } }
+		available = { FROM = { black_friday_cbrn_state_can_move_civilians_to_shelters = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_cbrn_move_civilians_to_shelters = yes } }
+		custom_cost_text = black_friday_cbrn_move_civilians_to_shelters_cost
 		complete_effect = {
 			custom_effect_tooltip = cbrn_move_civilians_to_shelters_complete_tt
-			hidden_effect = { FROM = { cbrn_apply_civilian_shelter_movement = yes } }
+			hidden_effect = { black_friday_apply_cbrn_civilian_shelter_movement = yes }
 		}
 		ai_will_do = {
 			base = constant:cbrn_protection_ai.base_response

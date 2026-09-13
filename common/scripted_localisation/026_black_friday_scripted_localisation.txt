@@ -1,0 +1,1061 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 026 BLACK FRIDAY SCRIPTED LOCALISATION
+# ============================================================================
+# Presentation helpers for the actorless global sale. The shared Event Log
+# supplies the event id; these selectors read the persistent global state.
+# ============================================================================
+
+defined_text = {
+	name = GetBlackFridayEventDetailStatusLine
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_is_active = yes
+		}
+		localization_key = black_friday.event_detail.status.active
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_is_reserved = yes
+		}
+		localization_key = black_friday.event_detail.status.reserved
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_is_fired = yes
+		}
+		localization_key = black_friday.event_detail.status.expired
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_is_disabled = yes
+		}
+		localization_key = black_friday.event_detail.status.disabled
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:black_friday_event.required_chaos
+				compare = less_than
+			}
+		}
+		localization_key = black_friday.event_detail.status.unavailable
+	}
+	text = {
+		trigger = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_can_reserve = yes
+		}
+		localization_key = black_friday.event_detail.status.eligible
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = black_friday.event_detail.status.none
+	}
+}
+
+defined_text = {
+	name = GetBlackFridayEventListStatus
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_active = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_active
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_reserved = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_reserved
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_fired = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_fired
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			black_friday_is_disabled = yes
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_disabled
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			check_variable = { var = global.chaos_meter_value value = constant:black_friday_event.required_chaos compare = less_than }
+		}
+		localization_key = chaosx.events_log.events.weight.black_friday_unavailable
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = less_than }
+		}
+		localization_key = chaosx.events_log.events.weight.locked
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+			check_variable = { var = global.events_log_events_view_weight_entries^events_log_history_index value = 0 compare = greater_than }
+		}
+		localization_key = chaosx.events_log.events.weight.positive
+	}
+	text = {
+		trigger = {
+			check_variable = { var = global.events_log_events_view_event_id_entries^events_log_history_index value = constant:black_friday_event.id compare = equals }
+		}
+		localization_key = chaosx.events_log.events.weight.zero
+	}
+	text = {
+		trigger = { always = yes }
+		localization_key = black_friday.event_detail.status.none
+	}
+}
+
+
+# Event 007 custom-cost displays use the same finite normal, baseline-sale,
+# and Evolution I variants that the Fury owner adapters quote and debit.
+defined_text = {
+	name = GetFuryTargetCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_target_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_target_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_target_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryTargetCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_target_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_target_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_target_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryReinforcementCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_reinforcement_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_reinforcement_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_reinforcement_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryReinforcementCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_reinforcement_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_reinforcement_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_reinforcement_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFurySettlementCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_settlement_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_settlement_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_settlement_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFurySettlementCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_settlement_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_settlement_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_settlement_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryCoreCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_core_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_core_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_core_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryCoreCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_core_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_core_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_core_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryCooperationCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_cooperation_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_cooperation_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_cooperation_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryCooperationCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_cooperation_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_cooperation_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_cooperation_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryRivalryCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_rivalry_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_rivalry_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_rivalry_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryRivalryCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_rivalry_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_rivalry_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_rivalry_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFurySurveyCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_survey_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_survey_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_survey_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFurySurveyCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_survey_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_survey_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_survey_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetAntiFuryBorderWatchCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_border_watch_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_border_watch_cost_text_sale_evolution
+	}
+	text = { localization_key = anti_fury_border_watch_cost_text_normal }
+}
+
+defined_text = {
+	name = GetAntiFuryBorderWatchCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_border_watch_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_border_watch_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = anti_fury_border_watch_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryRegistersCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_registers_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_registers_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_registers_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryRegistersCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_registers_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_registers_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_registers_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryRailRegistryCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_rail_registry_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_rail_registry_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_rail_registry_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryRailRegistryCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_rail_registry_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_rail_registry_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_rail_registry_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryAdminCoreCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_admin_core_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_admin_core_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_admin_core_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryAdminCoreCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_admin_core_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_admin_core_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_admin_core_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryMarchCoreCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_march_core_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_march_core_cost_text_sale_evolution
+	}
+	text = { localization_key = fury_march_core_cost_text_normal }
+}
+
+defined_text = {
+	name = GetFuryMarchCoreCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_march_core_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_march_core_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = fury_march_core_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetAntiFuryEmergencyAidCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_emergency_aid_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_emergency_aid_cost_text_sale_evolution
+	}
+	text = { localization_key = anti_fury_emergency_aid_cost_text_normal }
+}
+
+defined_text = {
+	name = GetAntiFuryEmergencyAidCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_emergency_aid_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_emergency_aid_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = anti_fury_emergency_aid_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetAntiFuryStaffTalksCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_staff_talks_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_staff_talks_cost_text_sale_evolution
+	}
+	text = { localization_key = anti_fury_staff_talks_cost_text_normal }
+}
+
+defined_text = {
+	name = GetAntiFuryStaffTalksCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_staff_talks_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_staff_talks_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = anti_fury_staff_talks_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetAntiFurySupplyDenialCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_supply_denial_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_supply_denial_cost_text_sale_evolution
+	}
+	text = { localization_key = anti_fury_supply_denial_cost_text_normal }
+}
+
+defined_text = {
+	name = GetAntiFurySupplyDenialCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_supply_denial_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_supply_denial_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = anti_fury_supply_denial_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetAntiFuryRecognitionDenialCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_recognition_denial_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_recognition_denial_cost_text_sale_evolution
+	}
+	text = { localization_key = anti_fury_recognition_denial_cost_text_normal }
+}
+
+defined_text = {
+	name = GetAntiFuryRecognitionDenialCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_recognition_denial_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = anti_fury_recognition_denial_cost_text_sale_evolution_blocked
+	}
+	text = { localization_key = anti_fury_recognition_denial_cost_text_normal_blocked }
+}
+
+defined_text = {
+	name = GetFuryTerminalReservesCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_reserves_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_reserves_cost_text_sale_evolution
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { black_friday_terminal_display_command_power = constant:fury_decision_cost.terminal_reserves_cp_spend }
+			multiply_temp_variable = { black_friday_terminal_display_command_power = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_manpower = constant:fury_decision_cost.terminal_reserves_manpower }
+			multiply_temp_variable = { black_friday_terminal_display_manpower = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_infantry_equipment = constant:fury_decision_cost.terminal_reserves_equipment }
+			multiply_temp_variable = { black_friday_terminal_display_infantry_equipment = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_support_equipment = constant:fury_decision_cost.terminal_reserves_support }
+			multiply_temp_variable = { black_friday_terminal_display_support_equipment = constant:universal_cost_framework.negative_one }
+		}
+		localization_key = fury_terminal_reserves_cost_text_normal
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalReservesCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_reserves_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_reserves_cost_text_sale_evolution_blocked
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { black_friday_terminal_display_command_power = constant:fury_decision_cost.terminal_reserves_cp_spend }
+			multiply_temp_variable = { black_friday_terminal_display_command_power = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_manpower = constant:fury_decision_cost.terminal_reserves_manpower }
+			multiply_temp_variable = { black_friday_terminal_display_manpower = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_infantry_equipment = constant:fury_decision_cost.terminal_reserves_equipment }
+			multiply_temp_variable = { black_friday_terminal_display_infantry_equipment = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_support_equipment = constant:fury_decision_cost.terminal_reserves_support }
+			multiply_temp_variable = { black_friday_terminal_display_support_equipment = constant:universal_cost_framework.negative_one }
+		}
+		localization_key = fury_terminal_reserves_cost_text_normal_blocked
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalFrontsCostText
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_fronts_cost_text_sale
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_fronts_cost_text_sale_evolution
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { black_friday_terminal_display_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend }
+			multiply_temp_variable = { black_friday_terminal_display_command_power = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_army_experience = constant:fury_decision_cost.terminal_fronts_army_xp }
+			multiply_temp_variable = { black_friday_terminal_display_army_experience = constant:universal_cost_framework.negative_one }
+		}
+		localization_key = fury_terminal_fronts_cost_text_normal
+	}
+}
+
+defined_text = {
+	name = GetFuryTerminalFrontsCostTextBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_fronts_cost_text_sale_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = fury_terminal_fronts_cost_text_sale_evolution_blocked
+	}
+	text = {
+		trigger = {
+			set_temp_variable = { black_friday_terminal_display_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend }
+			multiply_temp_variable = { black_friday_terminal_display_command_power = constant:universal_cost_framework.negative_one }
+			set_temp_variable = { black_friday_terminal_display_army_experience = constant:fury_decision_cost.terminal_fronts_army_xp }
+			multiply_temp_variable = { black_friday_terminal_display_army_experience = constant:universal_cost_framework.negative_one }
+		}
+		localization_key = fury_terminal_fronts_cost_text_normal_blocked
+	}
+}
+
+defined_text = {
+	name = GetBlackFridayJapanChemicalCampaignAttackCost
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+			ROOT = { has_idea = chemical_command_reagent_optimization_spirit }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.evolution_optimized
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.evolution
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+			ROOT = { has_idea = chemical_command_reagent_optimization_spirit }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.sale_optimized
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.sale
+	}
+	text = {
+		trigger = { ROOT = { has_idea = chemical_command_reagent_optimization_spirit } }
+		localization_key = japan_chemical_campaign.attack_cost.normal_optimized
+	}
+	text = { localization_key = japan_chemical_campaign.attack_cost.normal }
+}
+
+defined_text = {
+	name = GetBlackFridayJapanChemicalCampaignAttackCostBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+			ROOT = { has_idea = chemical_command_reagent_optimization_spirit }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.evolution_optimized_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.evolution_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+			ROOT = { has_idea = chemical_command_reagent_optimization_spirit }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.sale_optimized_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_chemical_campaign.attack_cost.sale_blocked
+	}
+	text = {
+		trigger = { ROOT = { has_idea = chemical_command_reagent_optimization_spirit } }
+		localization_key = japan_chemical_campaign.attack_cost.normal_optimized_blocked
+	}
+	text = { localization_key = japan_chemical_campaign.attack_cost.normal_blocked }
+}
+
+defined_text = {
+	name = GetBlackFridayJapanChemicalCampaignCylinderRequirement
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_chemical_campaign.attack_cylinder_requirement.evolution
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_chemical_campaign.attack_cylinder_requirement.sale
+	}
+	text = { localization_key = japan_chemical_campaign.attack_cylinder_requirement.normal }
+}
+
+defined_text = {
+	name = GetBlackFridayBioExpandMedicalCapacityCost
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = bio_expand_medical_capacity.cost.evolution
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = bio_expand_medical_capacity.cost.sale
+	}
+text = { localization_key = bio_expand_medical_capacity.cost.normal }
+}
+
+defined_text = {
+	name = GetBlackFridayBioExpandMedicalCapacityCostBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = bio_expand_medical_capacity.cost.evolution_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = bio_expand_medical_capacity.cost.sale_blocked
+	}
+	text = { localization_key = bio_expand_medical_capacity.cost.normal_blocked }
+}
+
+defined_text = {
+	name = GetBlackFridayJapanBioAnthraxCost
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.anthrax_cost.evolution
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.anthrax_cost.sale
+	}
+	text = { localization_key = japan_bio_campaign.anthrax_cost.normal }
+}
+
+defined_text = {
+	name = GetBlackFridayJapanBioAnthraxCostBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.anthrax_cost.evolution_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.anthrax_cost.sale_blocked
+	}
+	text = { localization_key = japan_bio_campaign.anthrax_cost.normal_blocked }
+}
+
+defined_text = {
+	name = GetBlackFridayJapanBioPlagueCost
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.plague_cost.evolution
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.plague_cost.sale
+	}
+	text = { localization_key = japan_bio_campaign.plague_cost.normal }
+}
+
+defined_text = {
+	name = GetBlackFridayJapanBioPlagueCostBlocked
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.plague_cost.evolution_blocked
+	}
+	text = {
+		trigger = {
+			black_friday_is_active = yes
+			check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+		}
+		localization_key = japan_bio_campaign.plague_cost.sale_blocked
+	}
+	text = { localization_key = japan_bio_campaign.plague_cost.normal_blocked }
+}

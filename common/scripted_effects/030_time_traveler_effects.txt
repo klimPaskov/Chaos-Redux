@@ -1,0 +1,39 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 030 TIME TRAVELER EFFECTS
+# ============================================================================
+# Load-aware country prefire selection for the timed Time Traveler package.
+# The timed idea remains the lifecycle authority and expires normally.
+# ============================================================================
+
+time_traveler_add_current_country_to_prefire_pool = {
+	set_temp_variable = { individual_crisis_candidate_base_weight = constant:individual_crisis_targeting.one }
+	adjust_individual_crisis_candidate_ticket_weight = yes
+	set_temp_variable = { time_traveler_prefire_pool_remaining = individual_crisis_candidate_adjusted_weight }
+	while_loop_effect = {
+		limit = { check_variable = { time_traveler_prefire_pool_remaining > constant:individual_crisis_targeting.zero } }
+		add_to_temp_array = { time_traveler_prefire_host_pool = THIS }
+		subtract_from_temp_variable = { time_traveler_prefire_pool_remaining = constant:individual_crisis_targeting.one }
+	}
+}
+
+time_traveler_select_weighted_prefire_host = {
+	set_temp_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.zero }
+	clear_temp_array = time_traveler_prefire_host_pool
+	every_country = {
+		limit = { exists = yes }
+		time_traveler_add_current_country_to_prefire_pool = yes
+	}
+	if = {
+		limit = { check_variable = { time_traveler_prefire_host_pool^num > constant:individual_crisis_targeting.zero } }
+		random_scope_in_array = {
+			array = time_traveler_prefire_host_pool
+			save_event_target_as = time_traveler_prefire_host
+			set_temp_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.one }
+		}
+	}
+	clear_temp_array = time_traveler_prefire_host_pool
+}
+
+time_traveler_prepare_random_event_fire = {
+	time_traveler_select_weighted_prefire_host = yes
+}

@@ -19,8 +19,9 @@ The workbook source remains authoritative for actual catalog editing. Update the
 | Type | Major |
 | Chaos level | `2` |
 | Cluster ID | `5` |
-| Member Severity | Severe |
 | Status | To Be Reworked until implementation acceptance |
+
+The Events sheet does not store member severity. Acid Rain's Severe value belongs to its logical row in Cluster Memberships and the aggregate Natural Disasters row in Clusters.
 
 ## Cluster-catalog row
 
@@ -30,12 +31,12 @@ Keep Cluster ID 5 and its existing root identity. Update members from:
 
 to:
 
-`13, 13, 13, 13, 13, 33`
+`13, 13, 13, 13, 13, 33, 51`
 
 Cluster Details direction:
 
-- identify five logical Event 13 season slots and one optional Severe Acid Rain member
-- explain that Event 33 resolves after the Event 13 sequence when selected
+- identify five logical Event 13 season slots, one optional Severe Acid Rain member, and one optional High Heat Wave member
+- explain that Event 33 and Event 51 are separate logical rows after the Event 13 sequence
 - explain mixed Major pacing without exposing internal queue jargon in final player-facing text
 - write final spreadsheet wording during implementation and localisation review
 
@@ -45,7 +46,7 @@ Other cluster fields:
 | --- | --- |
 | Cluster ID | `5` |
 | Cluster Name | Natural Disasters |
-| Members | `13, 13, 13, 13, 13, 33` |
+| Members | `13, 13, 13, 13, 13, 33, 51` |
 | Type | Minor Repeatable root with documented mixed Major pacing |
 | Chaos level | `1` |
 | Status | Partially Available until Event 33 and mixed pacing are implemented |

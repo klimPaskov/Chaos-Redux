@@ -1,0 +1,394 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 EXPEDITION BOARD SCRIPTED GUI
+# ============================================================================
+# Event-owned presentation and input contract for the Expedition Board.
+# Gameplay helpers remain parent-owned; action clicks stage a pending slot and
+# the confirmation control hands that slot to the existing execution helper.
+# ============================================================================
+
+scripted_gui = {
+	chaosx_nr25_expedition_board_scripted_gui = {
+		# The Event 025 category attaches this independent board through its
+		# scripted_gui field. Decision-category context keeps ROOT as the
+		# participant/player country while preserving the category entry point.
+		context_type = decision_category
+		window_name = "nr25_expedition_board_window"
+
+                visible = {
+                        is_ai = no
+                        has_country_flag = chaosx_nr25_participant
+                        NOT = { has_country_flag = chaosx_nr25_board_closed }
+                        OR = {
+				has_global_flag = chaosx_nr25_active
+				has_global_flag = chaosx_nr25_final_recovery_resolved
+				has_country_flag = chaosx_nr25_terminal
+			}
+		}
+
+                effects = {
+                # Board controls remain presentation-safe. History and details
+                # use the existing shared log views; refresh rebuilds only this
+                # participant's five local action slots.
+				nr25_board_refresh_click = {
+					clr_country_flag = chaosx_nr25_board_confirmation_open
+					clear_variable = chaosx_nr25_pending_action_slot
+					clr_country_flag = chaosx_nr25_board_closed
+					chaosx_nr25_prepare_board_slots = yes
+                }
+                nr25_board_history_click = {
+                        set_country_flag = events_log_window_open
+                        set_country_flag = events_log_history_tab
+                        refresh_events_log_system_history_views = yes
+                }
+				nr25_board_details_click = {
+					set_country_flag = events_log_window_open
+					set_country_flag = events_log_event_details_open
+					refresh_events_log_system_history_views = yes
+				}
+				nr25_board_close_click = {
+					clr_country_flag = chaosx_nr25_board_confirmation_open
+					clear_variable = chaosx_nr25_pending_action_slot
+					set_country_flag = chaosx_nr25_board_closed
+				}
+
+		# Sector and rival selection hooks carry no gameplay effect in this
+		# worker patch. The parent can route them to the existing country-scoped
+		# action helpers without changing the board layout.
+                nr25_sector_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_sector = yes }
+                nr25_sector_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_sector = yes }
+                nr25_sector_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_sector = yes }
+                nr25_sector_4_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.four } chaosx_nr25_select_board_sector = yes }
+                nr25_sector_5_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.five } chaosx_nr25_select_board_sector = yes }
+                nr25_sector_6_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.six } chaosx_nr25_select_board_sector = yes }
+                nr25_rival_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_rival = yes }
+                nr25_rival_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_rival = yes }
+                nr25_rival_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_rival = yes }
+
+				# Action clicks only stage the slot. The parent-owned execution helper
+				# remains the sole authority for costs, requirements, and effects.
+				nr25_action_1_click = { set_variable = { chaosx_nr25_pending_action_slot = constant:chaosx_nr25_value.one } set_country_flag = chaosx_nr25_board_confirmation_open }
+				nr25_action_2_click = { set_variable = { chaosx_nr25_pending_action_slot = constant:chaosx_nr25_value.two } set_country_flag = chaosx_nr25_board_confirmation_open }
+				nr25_action_3_click = { set_variable = { chaosx_nr25_pending_action_slot = constant:chaosx_nr25_value.three } set_country_flag = chaosx_nr25_board_confirmation_open }
+				nr25_action_4_click = { set_variable = { chaosx_nr25_pending_action_slot = constant:chaosx_nr25_value.four } set_country_flag = chaosx_nr25_board_confirmation_open }
+				nr25_action_5_click = { set_variable = { chaosx_nr25_pending_action_slot = constant:chaosx_nr25_value.five } set_country_flag = chaosx_nr25_board_confirmation_open }
+				nr25_board_confirmation_confirm_click = {
+					set_temp_variable = { chaosx_nr25_board_slot = chaosx_nr25_pending_action_slot }
+					chaosx_nr25_execute_board_slot = yes
+					clr_country_flag = chaosx_nr25_board_confirmation_open
+					clear_variable = chaosx_nr25_pending_action_slot
+				}
+				nr25_board_confirmation_cancel_click = {
+					clr_country_flag = chaosx_nr25_board_confirmation_open
+					clear_variable = chaosx_nr25_pending_action_slot
+				}
+		}
+
+		triggers = {
+			nr25_board_live_visible = {
+				has_global_flag = chaosx_nr25_active
+				NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+			}
+			nr25_board_resolved_visible = {
+				OR = {
+					has_global_flag = chaosx_nr25_final_recovery_resolved
+					has_country_flag = chaosx_nr25_terminal
+				}
+			}
+			nr25_board_winner_visible = {
+				OR = {
+					has_global_flag = chaosx_nr25_final_recovery_resolved
+					has_country_flag = chaosx_nr25_terminal
+				}
+				has_country_flag = chaosx_nr25_recovery_winner
+			}
+			nr25_board_loser_visible = {
+				OR = {
+					has_global_flag = chaosx_nr25_final_recovery_resolved
+					has_country_flag = chaosx_nr25_terminal
+				}
+				NOT = { has_country_flag = chaosx_nr25_recovery_winner }
+			}
+				nr25_action_tray_visible = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+
+				nr25_board_refresh_click_enabled = { NOT = { has_country_flag = chaosx_nr25_board_confirmation_open } }
+				nr25_board_history_click_enabled = { NOT = { has_country_flag = chaosx_nr25_board_confirmation_open } }
+				nr25_board_details_click_enabled = { NOT = { has_country_flag = chaosx_nr25_board_confirmation_open } }
+				nr25_board_close_click_enabled = { always = yes }
+
+			# A sector remains a visible selection surface throughout the live
+			# race. The parent action helper supplies the state-specific blocked
+			# reason after the click without exposing hidden sector weights.
+				nr25_sector_1_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_sector_2_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_sector_3_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_sector_4_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_sector_5_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_sector_6_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+			nr25_sector_1_selected_visible = { has_country_flag = chaosx_nr25_sector_1_selected }
+			nr25_sector_2_selected_visible = { has_country_flag = chaosx_nr25_sector_2_selected }
+			nr25_sector_3_selected_visible = { has_country_flag = chaosx_nr25_sector_3_selected }
+			nr25_sector_4_selected_visible = { has_country_flag = chaosx_nr25_sector_4_selected }
+			nr25_sector_5_selected_visible = { has_country_flag = chaosx_nr25_sector_5_selected }
+			nr25_sector_6_selected_visible = { has_country_flag = chaosx_nr25_sector_6_selected }
+
+			# Rival visibility is intentionally opt-in per slot. The parent must
+			# populate these flags only for public or intelligence-derived data.
+			nr25_rival_1_visible = { has_country_flag = chaosx_nr25_rival_slot_1_visible }
+			nr25_rival_2_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
+			nr25_rival_3_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
+			nr25_rival_1_flag_visible = { has_country_flag = chaosx_nr25_rival_slot_1_visible }
+			nr25_rival_2_flag_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
+			nr25_rival_3_flag_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
+			nr25_rival_1_state_marker_visible = { has_country_flag = chaosx_nr25_rival_slot_1_visible }
+			nr25_rival_2_state_marker_visible = { has_country_flag = chaosx_nr25_rival_slot_2_visible }
+			nr25_rival_3_state_marker_visible = { has_country_flag = chaosx_nr25_rival_slot_3_visible }
+				nr25_rival_1_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+					has_country_flag = chaosx_nr25_rival_slot_1_visible
+				}
+				nr25_rival_2_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+					has_country_flag = chaosx_nr25_rival_slot_2_visible
+				}
+				nr25_rival_3_select_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+					has_country_flag = chaosx_nr25_rival_slot_3_visible
+				}
+			nr25_rival_1_selected_visible = { has_country_flag = chaosx_nr25_rival_slot_1_selected }
+			nr25_rival_2_selected_visible = { has_country_flag = chaosx_nr25_rival_slot_2_selected }
+			nr25_rival_3_selected_visible = { has_country_flag = chaosx_nr25_rival_slot_3_selected }
+			nr25_rival_1_incident_visible = { has_country_flag = chaosx_nr25_rival_slot_1_incident }
+			nr25_rival_2_incident_visible = { has_country_flag = chaosx_nr25_rival_slot_2_incident }
+			nr25_rival_3_incident_visible = { has_country_flag = chaosx_nr25_rival_slot_3_incident }
+			nr25_rival_empty_visible = {
+				has_global_flag = chaosx_nr25_active
+				NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+				NOT = { has_country_flag = chaosx_nr25_terminal }
+				NOT = {
+					OR = {
+						has_country_flag = chaosx_nr25_rival_slot_1_visible
+						has_country_flag = chaosx_nr25_rival_slot_2_visible
+						has_country_flag = chaosx_nr25_rival_slot_3_visible
+					}
+				}
+			}
+
+			# Five bounded slots let the parent hide obsolete actions while keeping
+			# the tray stable across phases. The slot-local enabled flags keep an
+			# unavailable action visibly disabled until its requirements are met.
+			nr25_action_1_visible = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_action_slot_1_visible
+			}
+			nr25_action_2_visible = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_action_slot_2_visible
+			}
+			nr25_action_3_visible = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_action_slot_3_visible
+			}
+			nr25_action_4_visible = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_action_slot_4_visible
+			}
+			nr25_action_5_visible = {
+				has_global_flag = chaosx_nr25_active
+				has_country_flag = chaosx_nr25_action_slot_5_visible
+			}
+			nr25_action_1_icon_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
+			nr25_action_2_icon_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
+			nr25_action_3_icon_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
+			nr25_action_4_icon_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
+			nr25_action_5_icon_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
+			nr25_action_1_state_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
+			nr25_action_2_state_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
+			nr25_action_3_state_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
+			nr25_action_4_state_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
+			nr25_action_5_state_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
+			nr25_action_1_name_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
+			nr25_action_2_name_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
+			nr25_action_3_name_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
+			nr25_action_4_name_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
+			nr25_action_5_name_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
+			nr25_action_1_cost_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
+			nr25_action_2_cost_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
+			nr25_action_3_cost_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
+			nr25_action_4_cost_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
+			nr25_action_5_cost_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
+			nr25_action_1_status_visible = { has_country_flag = chaosx_nr25_action_slot_1_visible }
+			nr25_action_2_status_visible = { has_country_flag = chaosx_nr25_action_slot_2_visible }
+			nr25_action_3_status_visible = { has_country_flag = chaosx_nr25_action_slot_3_visible }
+			nr25_action_4_status_visible = { has_country_flag = chaosx_nr25_action_slot_4_visible }
+			nr25_action_5_status_visible = { has_country_flag = chaosx_nr25_action_slot_5_visible }
+				nr25_action_1_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					has_country_flag = chaosx_nr25_action_slot_1_visible
+					has_country_flag = chaosx_nr25_action_slot_1_enabled
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_action_2_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					has_country_flag = chaosx_nr25_action_slot_2_visible
+					has_country_flag = chaosx_nr25_action_slot_2_enabled
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_action_3_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					has_country_flag = chaosx_nr25_action_slot_3_visible
+					has_country_flag = chaosx_nr25_action_slot_3_enabled
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_action_4_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					has_country_flag = chaosx_nr25_action_slot_4_visible
+					has_country_flag = chaosx_nr25_action_slot_4_enabled
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+				nr25_action_5_click_enabled = {
+					has_global_flag = chaosx_nr25_active
+					has_country_flag = chaosx_nr25_action_slot_5_visible
+					has_country_flag = chaosx_nr25_action_slot_5_enabled
+					NOT = { has_country_flag = chaosx_nr25_board_confirmation_open }
+				}
+
+				nr25_board_confirmation_visible = {
+					has_country_flag = chaosx_nr25_board_confirmation_open
+					has_variable = chaosx_nr25_pending_action_slot
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+				}
+				nr25_board_confirmation_confirm_click_enabled = {
+					has_country_flag = chaosx_nr25_board_confirmation_open
+					has_variable = chaosx_nr25_pending_action_slot
+					has_global_flag = chaosx_nr25_active
+					NOT = { has_global_flag = chaosx_nr25_final_recovery_resolved }
+					NOT = { has_country_flag = chaosx_nr25_terminal }
+				}
+				nr25_board_confirmation_cancel_click_enabled = { has_country_flag = chaosx_nr25_board_confirmation_open }
+
+				nr25_board_selected_target_visible = { has_country_flag = chaosx_nr25_rival_target_selected }
+			nr25_board_winner_badge_visible = {
+				OR = {
+					has_global_flag = chaosx_nr25_final_recovery_resolved
+					has_country_flag = chaosx_nr25_terminal
+				}
+				has_country_flag = chaosx_nr25_recovery_winner
+			}
+			nr25_board_loser_badge_visible = {
+				OR = {
+					has_global_flag = chaosx_nr25_final_recovery_resolved
+					has_country_flag = chaosx_nr25_terminal
+				}
+				NOT = { has_country_flag = chaosx_nr25_recovery_winner }
+			}
+			nr25_board_resolved_summary_visible = {
+				OR = {
+					has_global_flag = chaosx_nr25_final_recovery_resolved
+					has_country_flag = chaosx_nr25_terminal
+				}
+			}
+
+			nr25_signal_static_visible = {
+				has_global_flag = chaosx_nr25_evolution_active_signal
+			}
+			nr25_survivor_static_visible = {
+				has_global_flag = chaosx_nr25_evolution_something_survived
+			}
+			nr25_fragment_static_visible = {
+				has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart
+			}
+			nr25_dependence_static_visible = {
+				has_global_flag = chaosx_nr25_evolution_technology_changes_users
+			}
+			nr25_board_phase_banner_animated_visible = {
+			NOT = { has_country_flag = chaosx_nr25_animations_disabled }
+		}
+			nr25_board_phase_banner_static_visible = {
+			has_country_flag = chaosx_nr25_animations_disabled
+		}
+		}
+
+		properties = {
+			# Meter sprite selection is presentation-only. Each helper must return
+			# a staged sprite without exposing another visible mechanic value.
+			nr25_board_progress_meter = { image = "[GetChaosxNr25BoardProgressMeter]" }
+			nr25_board_logistics_meter = { image = "[GetChaosxNr25BoardLogisticsMeter]" }
+			nr25_board_exposure_meter = { image = "[GetChaosxNr25BoardThirdValueMeter]" }
+			nr25_board_exposure_icon = { image = "[GetChaosxNr25BoardThirdValueIcon]" }
+			nr25_sector_1_state_icon = { frame = ROOT.chaosx_nr25_sector_ice_shelf_state }
+			nr25_sector_2_state_icon = { frame = ROOT.chaosx_nr25_sector_mountain_shadow_state }
+			nr25_sector_3_state_icon = { frame = ROOT.chaosx_nr25_sector_signal_basin_state }
+			nr25_sector_4_state_icon = { frame = ROOT.chaosx_nr25_sector_coastal_fracture_state }
+			nr25_sector_5_state_icon = { frame = ROOT.chaosx_nr25_sector_magnetic_silence_state }
+			nr25_sector_6_state_icon = { frame = ROOT.chaosx_nr25_sector_false_map_state }
+
+			nr25_rival_1_flag = { image = "[GetChaosxNr25Rival1FlagSprite]" }
+			nr25_rival_2_flag = { image = "[GetChaosxNr25Rival2FlagSprite]" }
+			nr25_rival_3_flag = { image = "[GetChaosxNr25Rival3FlagSprite]" }
+			nr25_rival_1_state_marker = { frame = ROOT.chaosx_nr25_rival_slot_1_state }
+			nr25_rival_2_state_marker = { frame = ROOT.chaosx_nr25_rival_slot_2_state }
+			nr25_rival_3_state_marker = { frame = ROOT.chaosx_nr25_rival_slot_3_state }
+
+			nr25_action_1_icon = { image = "[GetChaosxNr25Action1IconSprite]" }
+			nr25_action_2_icon = { image = "[GetChaosxNr25Action2IconSprite]" }
+			nr25_action_3_icon = { image = "[GetChaosxNr25Action3IconSprite]" }
+			nr25_action_4_icon = { image = "[GetChaosxNr25Action4IconSprite]" }
+			nr25_action_5_icon = { image = "[GetChaosxNr25Action5IconSprite]" }
+			nr25_action_1_state = { frame = ROOT.chaosx_nr25_action_slot_1_state }
+			nr25_action_2_state = { frame = ROOT.chaosx_nr25_action_slot_2_state }
+			nr25_action_3_state = { frame = ROOT.chaosx_nr25_action_slot_3_state }
+			nr25_action_4_state = { frame = ROOT.chaosx_nr25_action_slot_4_state }
+			nr25_action_5_state = { frame = ROOT.chaosx_nr25_action_slot_5_state }
+		}
+
+		# The board is a human presentation surface. AI advances the same
+		# country-scoped state through the parent scheduled action logic.
+		ai_enabled = { always = no }
+	}
+}

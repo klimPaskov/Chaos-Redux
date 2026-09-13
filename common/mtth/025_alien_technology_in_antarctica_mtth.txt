@@ -1,0 +1,68 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 EVOLUTION MTTH
+# ============================================================================
+# Each evolution has an independent interval. The active expedition pulse owns
+# the scheduling call, so these entries never create a whole-world recurring
+# scan. Chaos and expedition conditions alter pacing without making any
+# evolution a prerequisite for baseline recovery.
+# ============================================================================
+
+chaosx_nr25_evolution_i_interval = {
+	base = constant:chaosx_nr25_timing.evolution_base_days
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_chaos_factor
+		check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.active_signal compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_low_readiness_factor
+		check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_value.twenty compare = less_than }
+	}
+}
+
+chaosx_nr25_evolution_ii_interval = {
+	base = constant:chaosx_nr25_timing.evolution_base_days
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_chaos_factor
+		check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.something_survived compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_exposure_factor
+		check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals }
+	}
+}
+
+chaosx_nr25_evolution_iii_interval = {
+	base = constant:chaosx_nr25_timing.evolution_base_days
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_war_factor
+		has_war = yes
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_chaos_factor
+		check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.militarised_antarctica compare = greater_than_or_equals }
+	}
+}
+
+chaosx_nr25_evolution_iv_interval = {
+	base = constant:chaosx_nr25_timing.evolution_base_days
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_exposure_factor
+		check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_low_readiness_factor
+		check_variable = { var = chaosx_nr25_wreck_access value = constant:chaosx_nr25_value.twenty compare = less_than }
+	}
+}
+
+chaosx_nr25_evolution_v_interval = {
+	base = constant:chaosx_nr25_timing.evolution_base_days
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_chaos_factor
+		check_variable = { var = global.chaos_meter_value value = constant:chaosx_nr25_evolution_gate.technology_changes_users compare = greater_than_or_equals }
+	}
+	modifier = {
+		factor = constant:chaosx_nr25_timing.evolution_high_exposure_factor
+		check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals }
+	}
+}

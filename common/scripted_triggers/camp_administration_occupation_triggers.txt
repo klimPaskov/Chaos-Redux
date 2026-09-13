@@ -1,0 +1,30 @@
+# Occupation consequence gates. No demographic choice, custody requirement or reward per death.
+camp_occ_state_is_china_region = {
+	NOT = { is_core_of = JAP }
+	OR = { is_core_of = CHI is_core_of = PRC is_core_of = GXC is_core_of = MEN is_core_of = MAN is_core_of = YUN is_core_of = SHX is_core_of = XSM }
+}
+camp_occ_authority_has_campaign = {
+	camp_admin_country_regime_valid = yes
+	NOT = { has_country_flag = camp_occ_country_closed }
+	OR = {
+		AND = { original_tag = JAP date > 1937.7.6 check_variable = { camp_admin_mandate > 1 } }
+		AND = { camp_admin_country_nazi_authority = yes date > 1941.6.21 check_variable = { camp_admin_mandate = 3 } }
+	}
+}
+camp_occ_state_has_current_authority = {
+	has_state_flag = camp_occ_registered
+	NOT = { has_state_flag = camp_occ_closed }
+	has_variable = camp_occ_responsible_country
+	var:camp_occ_responsible_country = { exists = yes camp_occ_authority_has_campaign = yes }
+	is_controlled_by = var:camp_occ_responsible_country
+}
+camp_occ_state_can_pulse = {
+	camp_occ_state_has_current_authority = yes
+	check_variable = { camp_occ_remaining_k > 0 }
+	NOT = { has_global_flag = settings_chaos_deaths_disabled }
+	# External receipts retire exposure before each distinct campaign transaction.
+	# A generic occupation law is not a second debit of that transaction.
+}
+camp_occ_country_has_records = {
+	OR = { check_variable = { camp_occ_states^num > 0 } check_variable = { camp_occ_eligible_states^num > 0 } }
+}

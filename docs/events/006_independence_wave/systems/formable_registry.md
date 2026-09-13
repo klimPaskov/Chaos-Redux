@@ -47,7 +47,7 @@ The working family names are resolved through GetIndependenceWaveSelectedFormabl
 6. The shared preparation trigger verifies that the territory, identity, flags, and integration adapters are ready before allowing a congress to open.
 7. independence_wave_convene_formation_congress is a selectable 360-day congress window. Ratifying it pays the strategic congress cost, rebuilds the ledger, freezes the exact proposal-bound consent rows, calculates the profile and member risk, and resolves the congress.
 8. A successful congress opens the final ratification decision. Failure ends the transaction, invalidates its invitations, and applies the recorded political consequences.
-9. independence_wave_proclaim_military_union, retained as a stable legacy decision ID, presents a dynamic Ratify title and pays the method-specific commit cost.
+9. independence_wave_proclaim_military_union, retained as a stable legacy decision ID, presents a dynamic Ratify title and pays the method-specific commit cost. Civic, dynastic, and league methods use the four-entry civic palette; revolutionary uses standard security; military and hidden high-chaos methods use major security. The civilian-factory check is project capacity, not a second debit.
 10. Identity and integration adapters run only after readiness and family-specific mutation preconditions pass in the same effect chain.
 11. A successful integration adapter marks the transaction committed and may publish a bounded state array for independence_wave_integrate_member_region.
 

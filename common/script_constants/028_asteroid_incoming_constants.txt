@@ -1,0 +1,439 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING CONSTANTS
+# ============================================================================
+# Event-owned identifiers and tuning for the target lock, bounded land-state
+# planner, physical receipts, dust ledger, and mineral-site adapter. The main
+# event, decisions, and presentation layers own their own identifiers; these
+# values are the narrow contracts consumed by 028 helper files.
+# ============================================================================
+
+asteroid_incoming_runtime = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	zero = 0
+	one = 1
+	first_array_index = 0
+	loop_increment = 1
+	lock_duration_days = 2
+	maximum_footprint_ring = 3
+	maximum_fragment_ring = 2
+	minimum_fragment_sites = 3
+	minimum_fragment_centers_to_apply = 2
+	maximum_fragment_sites = 6
+	fragment_slot_one = 1
+	fragment_slot_two = 2
+	fragment_slot_three = 3
+	fragment_slot_four = 4
+	fragment_slot_five = 5
+	fragment_slot_six = 6
+	minimum_target_pair_count = 3
+	maximum_fragment_selection_attempts = 100
+	secondary_disaster_maximum = 4
+	secondary_dust_per_event = 2
+	super_event_visible_days = 14
+	fragment_site_goal_at_600 = 3
+	fragment_site_goal_at_700 = 4
+	fragment_site_goal_at_800 = 5
+	fragment_site_goal_at_900 = 6
+	recovery_month_days = 30
+	collector_hold_days = 180
+	global_achievement_deadline_days = 1095
+	main_capture_hold_days = 30
+	fragmentation_chaos_threshold = 600
+	minerals_chaos_threshold = 800
+	fragment_site_threshold_700 = 700
+	fragment_site_threshold_800 = 800
+	fragment_site_threshold_900 = 900
+	collector_minimum_controlled_fragments = 3
+	planner_main = 1
+	planner_fragment = 2
+	ring_one = 1
+	ring_two = 2
+	ring_three = 3
+	target_score_base = 100
+	target_score_capital = 40
+	target_score_victory_point = 25
+	target_score_population_large = 30
+	target_score_population_medium = 15
+	target_score_industry = 15
+	target_score_supply = 15
+	target_score_rail = 10
+	target_score_infrastructure = 10
+	target_score_air_base = 12
+	target_score_naval_base = 12
+	target_score_neighbor = 10
+	target_score_frontline_penalty = -30
+	target_score_reachable_state = 8
+	target_score_isolation_threshold = 6
+	main_ring_one_modifier_days = 720
+	main_ring_two_modifier_days = 405
+	main_ring_three_modifier_days = 180
+	fragment_ring_one_modifier_days = 270
+	fragment_ring_two_modifier_days = 120
+	fragment_center_recovery_days = 540
+	preimpact_preparedness_days = 3
+	medical_mobilization_days = 180
+	government_dislocation_capital_days = 180
+	government_dislocation_noncapital_days = 90
+	government_dislocation_prepared_capital_days = 100
+	government_dislocation_prepared_noncapital_days = 50
+	transport_preserved_train_equipment = 1
+	transport_preserved_support_equipment = 40
+	transport_preserved_motorized_equipment = 15
+	transport_preserved_fuel = 75
+	opening_air_residual_bp = 50
+	opening_air_veil_bp = 100
+	opening_air_impact_winter_bp = 200
+	opening_air_severe_bp = 350
+	monthly_air_residual_bp = 1
+	monthly_air_veil_bp = 2
+	monthly_air_impact_winter_bp = 4
+	monthly_air_severe_bp = 6
+	recovery_reserve_manpower = 1000
+	recovery_reserve_support_equipment = 100
+	recovery_reserve_motorized_equipment = 100
+	recovery_reserve_train_equipment = 2
+	recovery_reserve_fuel = 500
+	decision_civilian_factory_days = 30
+	emergency_mission_days = 150
+	transport_mission_days = 180
+	outer_ring_mission_days = 270
+	economy_mission_days = 365
+}
+
+asteroid_incoming_recovery = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	decision_civilian_factory_use = 1
+	decision_support_equipment = 80
+	decision_motorized_equipment = 60
+	decision_manpower = 800
+	decision_train_equipment = 2
+	decision_fuel = 300
+	decision_convoys = 20
+	decision_command_power = 5
+	decision_support_equipment_negative = -80
+	decision_motorized_equipment_negative = -60
+	decision_manpower_negative = -800
+	decision_train_equipment_negative = -2
+	decision_fuel_negative = -300
+	decision_convoys_negative = -20
+	decision_command_power_negative = -5
+	prepared_decision_support_equipment = 60
+	prepared_decision_motorized_equipment = 45
+	prepared_decision_manpower = 600
+	prepared_decision_train_equipment = 1
+	prepared_decision_fuel = 225
+	prepared_decision_support_equipment_negative = -60
+	prepared_decision_motorized_equipment_negative = -45
+	prepared_decision_manpower_negative = -600
+	prepared_decision_train_equipment_negative = -1
+	prepared_decision_fuel_negative = -225
+	prepared_decision_manpower_after_reserve = 1600
+	prepared_decision_support_equipment_after_reserve = 160
+	prepared_decision_motorized_equipment_after_reserve = 145
+	prepared_decision_train_equipment_after_reserve = 3
+	prepared_decision_fuel_after_reserve = 725
+
+	minimum_train_reserve = 2
+	minimum_support_reserve = 100
+	minimum_motorized_reserve = 100
+	minimum_fuel_reserve = 500
+	minimum_manpower_reserve = 1000
+	minimum_command_power_reserve = 10
+	minimum_convoy_reserve = 20
+	# Availability thresholds include the listed action payment, so the
+	# protected reserve remains after the custom cost is manually subtracted.
+	decision_manpower_after_reserve = 1800
+	decision_support_equipment_after_reserve = 180
+	decision_motorized_equipment_after_reserve = 160
+	decision_train_equipment_after_reserve = 4
+	decision_fuel_after_reserve = 800
+	decision_convoys_after_reserve = 40
+	decision_command_power_after_reserve = 15
+
+	mission_route_days = 150
+	mission_network_days = 180
+	mission_outer_ring_days = 270
+	mission_economy_days = 365
+	mission_failure_pressure_days = 90
+	mission_rescue_route_days = 150
+	mission_stabilize_zone_days = 120
+	mission_infrastructure_floor = 3
+	mission_railway_floor = 1
+	mission_supply_node_floor = 0
+	mission_industry_floor = 0
+
+	phase_emergency = 1
+	phase_reconstruction = 2
+	phase_dust = 3
+	phase_crater = 4
+
+	protection_unprepared = 0
+	protection_basic = 1
+	protection_organized = 2
+	protection_hardened = 3
+	observation_contribution_limit = 3
+	ai_low = 1
+	ai_medium = 4
+	ai_high = 8
+	ai_urgent = 14
+	ai_war_priority_factor = 2
+	ai_peace_priority_factor = 2
+	ai_impact_winter_priority_factor = 2
+	ai_major_priority_factor = 2
+	ai_rescue_priority_factor = 3
+	ai_disconnected_route_factor = 3
+	ai_severe_dust_factor = 3
+	ai_main_crater_priority_factor = 3
+	ai_losing_war_optional_factor = 0.25
+}
+
+asteroid_incoming_preparedness = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	local_burden_duration_multiplier = 0.75
+	medical_response_restore_fraction = 0.30
+	transport_response_restore_fraction = 0.30
+}
+
+asteroid_incoming_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	preparedness_base = 20
+	preparedness_high_add = 60
+	preparedness_medium_add = 35
+	preparedness_low_add = 15
+	strike_base = 1
+	strike_enemy_add = 400
+	strike_major_add = 150
+	strike_faction_leader_add = 200
+	strike_capital_add = 200
+	strike_logistics_add = 75
+	strike_fascist_factor = 2
+	strike_desperate_factor = 3
+	strike_democratic_factor = 0.25
+	strike_fragment_risk_factor = 0.75
+	strike_mineral_holder_factor = 0.50
+	strike_near_capitulation_target_factor = 0.25
+	strike_high_chaos_factor = 1.25
+	protected_target_factor = 0
+	miss_base = 1000
+	miss_democratic_add = 500
+	miss_peace_add = 250
+	miss_stable_add = 250
+	miss_fragmentation_add = 400
+	miss_mineral_holder_add = 300
+	miss_desperate_factor = 0.35
+	miss_fascist_war_factor = 0.65
+	miss_high_chaos_factor = 0.75
+	desperate_surrender_threshold = 0.65
+	desperate_stability_threshold = 0.35
+	desperate_war_support_threshold = 0.35
+	stable_stability_threshold = 0.50
+	target_near_capitulation_threshold = 0.80
+}
+
+asteroid_incoming_recovery_fraction = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	emergency = 0.20
+	reconstruction = 0.35
+	industry = 0.25
+	network = 0.40
+	crater_access = 0.15
+	hardening = 0.10
+	rehousing = 0.15
+	minimum_supply_ratio = 0.50
+	rescue_death_fraction = 0.01
+	rescue_death_fraction_heavy = 0.02
+	rescue_death_cap_people = 25000.00
+}
+
+asteroid_incoming_target = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_population_k = 1.00
+	medium_population_k = 25.00
+	large_population_k = 100.00
+	minimum_victory_points = 0.00
+	minimum_building_level = 0.00
+	minimum_strategic_value = 0.00
+	isolation_multiplier = 0.60
+}
+
+asteroid_incoming_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	fragment_ring_two = 10
+	main_ring_three = 20
+	fragment_ring_one = 30
+	main_ring_two = 40
+	fragment_center = 50
+	main_ring_one = 60
+	main_center = 70
+}
+
+asteroid_incoming_population_loss = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_remaining_people = 0.00
+	main_center = 1.00
+	main_ring_one = 0.50
+	main_ring_two = 0.25
+	main_ring_three = 0.05
+	fragment_center = 0.50
+	fragment_ring_one = 0.25
+	fragment_ring_two = 0.05
+
+	rescue_main_ring_one = 0.0004
+	rescue_main_ring_two = 0.0002
+	rescue_fragment_center = 0.0003
+	rescue_fragment_ring_one = 0.00015
+	rescue_medical_preparation_multiplier = 0.50
+	rescue_minimum_remaining_people = 1000.00
+	rescue_monthly_death_cap_people = 25000.00
+	rescue_main_ring_one_months = 6.00
+	rescue_main_ring_two_months = 4.00
+	rescue_fragment_center_months = 6.00
+	rescue_fragment_ring_one_months = 3.00
+}
+
+# The matrix uses ranges for non-population damage. These defaults are the
+# midpoint of each accepted range and remain replaceable by a parent-owned
+# tuning layer before the physical receipt helper is called.
+asteroid_incoming_building_loss = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	main_center_industry = 1.00
+	main_center_logistics = 1.00
+	main_center_strategic = 1.00
+
+	main_ring_one_industry = 0.70
+	main_ring_one_logistics = 0.80
+	main_ring_one_strategic = 0.75
+	main_ring_two_industry = 0.45
+	main_ring_two_logistics = 0.55
+	main_ring_two_strategic = 0.50
+	main_ring_three_industry = 0.15
+	main_ring_three_logistics = 0.225
+	main_ring_three_strategic = 0.225
+
+	fragment_center_industry = 0.50
+	fragment_center_logistics = 0.625
+	fragment_center_strategic = 0.60
+	fragment_ring_one_industry = 0.325
+	fragment_ring_one_logistics = 0.425
+	fragment_ring_one_strategic = 0.40
+	fragment_ring_two_industry = 0.10
+	fragment_ring_two_logistics = 0.15
+	fragment_ring_two_strategic = 0.15
+}
+
+asteroid_incoming_dust = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum = 0.00
+	maximum = 100.00
+	main_crater_base = 25.00
+	deaths_per_point = 500000.00
+	industry_levels_per_point = 4.00
+	logistics_levels_per_point = 6.00
+	main_state_point_cap = 10.00
+	death_point_cap = 25.00
+	industry_point_cap = 20.00
+	logistics_point_cap = 15.00
+	fragment_center_point = 3.00
+	fragment_point_cap = 20.00
+	secondary_disaster_point_cap = 10.00
+
+	main_center_state_weight = 2.00
+	main_ring_one_state_weight = 1.50
+	main_ring_two_state_weight = 1.00
+	main_ring_three_state_weight = 0.50
+	fragment_center_state_weight = 1.50
+	fragment_ring_one_state_weight = 1.00
+	fragment_ring_two_state_weight = 0.50
+
+	stage_none = 0
+	stage_residual = 1
+	stage_veil = 2
+	stage_impact_winter = 3
+	stage_severe = 4
+	veil_threshold = 25.00
+	impact_winter_threshold = 50.00
+	severe_threshold = 75.00
+
+	air_injection_residual = 0.50
+	air_injection_veil = 1.00
+	air_injection_impact_winter = 2.00
+	air_injection_severe = 3.50
+	monthly_decay_residual = 3.00
+	monthly_decay_veil = 4.00
+	monthly_decay_impact_winter = 5.00
+	monthly_decay_severe = 6.00
+	maximum_mitigation_decay = 3.00
+	opening_stage_hold_days = 30
+}
+
+asteroid_incoming_mineral = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	main_crater_armour_factor = 1.00
+	fragment_site_armour_factor = 0.20
+}
+
+asteroid_incoming_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 28
+	evolution_i_type = 2801
+	evolution_ii_type = 2802
+	evolution_i_stage = 1
+	evolution_ii_stage = 1
+	evolution_i_tier = 3
+	evolution_ii_tier = 4
+	super_event_id = 116
+	super_event_audio_id = 116
+	history_payload_opening = 280
+	history_payload_miss = 281
+	history_payload_impact = 282
+	history_payload_fail_closed = 283
+}

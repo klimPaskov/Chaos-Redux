@@ -1,0 +1,1280 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILES CONSTANTS
+# ============================================================================
+# Stable identifiers and tuning for the Event 032 missile-program layer.
+# Event 032 owns the program, launch-state, conventional strike, incident, and
+# retaliation records. Payload systems keep ownership of their own stockpiles
+# and consequence ledgers. All values consumed across files live here so the
+# event, decisions, AI, scenario adapter, and localisation share one contract.
+# ============================================================================
+
+missiles_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	id = 32
+	evolution_type = 32
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	evolution_iv_stage = 4
+	evolution_v_stage = 5
+	evolution_i_tier = 3
+	evolution_ii_tier = 4
+	evolution_iii_tier = 5
+	evolution_iv_tier = 6
+	evolution_v_tier = 7
+	registry_version = 1
+	incident_registry_cap = 256
+	retaliation_registry_cap = 128
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+	minus_one = -1
+}
+
+missiles_achievement = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# Five conventional saturation operations at the canonical resolution
+	# damage value define the minimum strategic-building damage receipt.
+	saturation_required_damage = 100
+}
+
+missiles_map = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	first_strategic_region = 1
+	maximum_strategic_region = 304
+}
+
+missiles_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	experimental = 1
+	guided = 2
+	extended = 3
+	advanced = 4
+	strategic = 5
+	complete = 6
+}
+
+missiles_recipient_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	ordinary = 1
+	special_industrial = 2
+	government_in_exile = 3
+	temporary_actor = 4
+	system_carrier = 5
+	invalid_landless = 6
+}
+
+missiles_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	rejected = 0
+	accepted = 1
+	deferred = 2
+	skipped = 3
+	completed = 4
+	aborted = 5
+	invalidated = 6
+	blocked = 7
+}
+
+missiles_reject_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	no_country = 1
+	no_land = 2
+	no_controlled_state = 3
+	temporary_scope = 4
+	system_scope = 5
+	no_industry_or_command = 6
+	deferred_exile = 7
+	duplicate_receipt = 8
+	unresolved_technology = 9
+	no_site_capacity = 10
+	no_reserve = 11
+	invalid_target = 12
+	invalid_target_state = 13
+	no_reach = 14
+	low_readiness = 15
+	low_command_control = 16
+	missing_payload = 17
+	missing_policy = 18
+	missing_site_custody = 19
+	occupied_or_captured = 20
+	cooldown = 21
+	chain_cap = 22
+	terminal_conflict = 23
+	disabled_evolution = 24
+	already_complete = 25
+}
+
+missiles_program_value = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+	ten = 10
+	twenty = 20
+	fifty = 50
+	one_hundred = 100
+	minimum = 0
+	maximum = 100
+	initial_readiness = 60
+	initial_command_control = 70
+	launch_readiness_floor = 25
+	baseline_launch_readiness_gate = 50
+	precision_readiness_gate = 60
+	automatic_command_gate = 75
+	secure_command_gate = 65
+	hardened_command_gate = 85
+	rogue_command_gate = 40
+	repair_readiness_gain = 12
+	maintenance_readiness_gain = 8
+	guidance_training_gain = 10
+	launch_readiness_cost_precision = 8
+	launch_readiness_cost_strategic = 14
+	launch_readiness_cost_saturation = 24
+	launch_readiness_cost_special = 18
+	command_cost_precision = 3
+	command_cost_strategic = 6
+	command_cost_saturation = 10
+	command_cost_special = 8
+	command_civil_war_loss = 25
+	command_capture_loss = 20
+	command_rogue_loss = 15
+	command_recovery_gain = 15
+	command_code_rotation_gain = 8
+	command_loyal_force_gain = 12
+	guidance_poor = 19
+	guidance_uncertain = 39
+	guidance_serviceable = 59
+	guidance_accurate = 79
+	guidance_precise = 100
+}
+
+missiles_reserve = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	initial_base = 4
+	mature_base = 8
+	factories_per_bonus = 8
+	factory_bonus_cap = 8
+	states_per_bonus = 10
+	state_bonus_cap = 4
+	wartime_bonus = 2
+	initial_cap = 18
+	mature_cap = 24
+	saturation_cap = 40
+	minimum_floor = 1
+	operation_reservation_floor = 2
+	replenishment_amount = 2
+	replenishment_cooldown_days = 30
+	captured_reserve_loss_percent = 25
+	civil_war_central_share_percent = 50
+	scuttle_loss_percent = 100
+	retaliation_reserve_cap = 4
+	automatic_reserve_floor = 6
+	site_repair_step = 20
+	site_capture_reserve_percent = 25
+	site_civil_war_command_loss = 25
+	site_civil_war_reserve_share_percent = 50
+	site_damage_disabled_threshold = 50
+	site_destroyed_threshold = 90
+	site_secure_hardening_threshold = 70
+	site_secure_security_threshold = 70
+}
+
+missiles_site_level = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	initial = 1
+	reinforced = 2
+	expanded = 3
+	strategic = 4
+}
+
+missiles_site_capacity = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	initial = 4
+	reinforced = 6
+	expanded = 8
+	strategic = 10
+	minimum = 0
+}
+
+missiles_site_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	active = 1
+	hardened = 2
+	damaged = 3
+	compromised = 4
+	captured = 5
+	rogue = 6
+	scuttled = 7
+	isolated = 8
+}
+
+missiles_operation_state = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	selecting = 1
+	preparing = 2
+	resources_reserved = 3
+	ready = 4
+	committed = 5
+	resolving = 6
+	completed = 7
+	aborted = 8
+	invalidated = 9
+}
+
+missiles_target_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	logistics = 1
+	industrial = 2
+	air_coastal = 3
+	command = 4
+	counterforce = 5
+	broad_strategic = 6
+}
+
+missiles_strike_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	precision = 1
+	strategic = 2
+	saturation = 3
+}
+
+missiles_payload = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	conventional = 0
+	chemical = 1
+	biological = 2
+	nuclear = 3
+	thermonuclear = 4
+}
+
+missiles_special_payload_policy = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	prohibited = 0
+	retaliatory_only = 1
+	military_targets_only = 2
+	unrestricted_war = 3
+	emergency_delegation = 4
+	rogue_control = 5
+}
+
+missiles_guidance_outcome = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	on_target = 1
+	degraded = 2
+	wrong_object = 3
+	near_miss = 4
+	breakup = 5
+	wrong_state = 6
+	neutral_accident = 7
+	self_strike = 8
+	site_accident = 9
+	payload_dud = 10
+}
+
+missiles_incident_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	conventional_strike = 1
+	precision_strike = 2
+	strategic_barrage = 3
+	saturation_barrage = 4
+	counterforce_strike = 5
+	guidance_failure = 6
+	neutral_accident = 7
+	self_strike = 8
+	site_accident = 9
+	rogue_preparation = 10
+	rogue_launch = 11
+	retaliation_warning = 12
+	retaliation_launch = 13
+	chemical_delivery = 14
+	biological_delivery = 15
+	nuclear_delivery = 16
+	thermonuclear_delivery = 17
+	site_damage = 18
+	site_capture = 19
+}
+
+missiles_evolution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	saturation_arsenals = 1
+	saturation = 1
+	unreliable_guidance = 2
+	special_warheads = 3
+	rogue_launch_commands = 4
+	rogue_commands = 4
+	automatic_retaliation = 5
+}
+
+missiles_evolution_tier = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	saturation = 3
+	guidance = 4
+	special = 5
+	rogue = 6
+	retaliation = 7
+}
+
+missiles_evolution_timing = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	saturation_days = 90
+	guidance_days = 105
+	special_days = 120
+	rogue_days = 120
+	retaliation_days = 150
+	warning_response_days = 3
+	warning_expiry_days = 14
+	launch_preparation_days = 30
+	launch_cooldown_days = 30
+	repair_mission_days = 45
+	secondary_site_mission_days = 90
+	network_restore_days = 60
+	chain_survival_days = 90
+}
+
+missiles_retaliation_posture = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	off = 0
+	supervised = 1
+	delegated = 2
+	automatic = 3
+}
+
+missiles_queue_kind = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	warning = 1
+	verified_response = 2
+	delegated_response = 3
+	automatic_response = 4
+	closure = 5
+}
+
+missiles_chain_limits = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	maximum_generation = 3
+	maximum_countries = 6
+	maximum_incidents = 12
+	maximum_launches_per_country = 1
+	maximum_active_queue = 24
+}
+
+missiles_rogue_incident_family = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	unauthorized_preparation = 1
+	launch_site_mutiny = 2
+	crew_defection = 3
+	regional_seizure = 4
+	foreign_bribery = 5
+	captured_arsenal = 6
+	special_payload_custody = 7
+}
+
+missiles_rogue_tuning = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	global_active_cap = 12
+	incident_cooldown_days = 120
+	crisis_window_days = 30
+	code_rotation_protection_days = 120
+	foreign_network_minimum = 10
+	pressure_low = 25
+	pressure_high = 55
+	pressure_severe = 80
+	stability_pressure_multiplier = 0.50
+	civil_war_pressure = 35
+	captured_site_pressure = 30
+	compromised_site_pressure = 15
+	isolated_site_pressure = 20
+	multiple_site_threshold = 2
+	multiple_site_pressure = 10
+	large_reserve_threshold = 8
+	large_reserve_pressure = 12
+	special_payload_pressure = 20
+	recent_rotation_reduction = 35
+	secure_site_reduction = 15
+	weight_no_incident = 100
+	weight_incident = 5
+	weight_unauthorized = 8
+	weight_mutiny = 12
+	weight_defection = 6
+	weight_regional = 8
+	weight_bribery = 6
+	weight_captured = 10
+	weight_payload = 4
+	factor_zero = 0
+	factor_protected = 0.20
+	factor_low_pressure = 0.35
+	factor_elevated = 2.00
+	factor_high = 3.00
+	factor_severe = 5.00
+}
+
+missiles_rogue_action_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	command_low = 8
+	command_standard = 15
+	command_high = 25
+	command_low_negative = -8
+	command_standard_negative = -15
+	command_high_negative = -25
+	fuel_low = 250
+	fuel_low_negative = -250
+	support_low = 40
+	support_low_negative = -40
+	manpower_low = 300
+	manpower_low_negative = -300
+}
+
+missiles_ai_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	restrained_deterrent = 1
+	conventional_interdiction = 2
+	saturation_offender = 3
+	counterforce_guardian = 4
+	special_warhead_escalator = 5
+	brittle_command = 6
+	rogue_command = 7
+	retaliation_network = 8
+}
+
+missiles_ai_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimal = 1
+	low = 3
+	medium = 6
+	high = 10
+	certain = 100
+}
+
+missiles_ai_factor = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	reject = 0
+	prefer_verification = 2.00
+	prefer_restraint = 2.00
+	prefer_escalation = 2.00
+	prefer_special = 1.50
+	profile_restrained = 1.50
+	profile_interdiction = 2.00
+	profile_saturation = 2.50
+	profile_counterforce = 2.25
+	profile_special = 1.75
+	profile_rogue = 2.00
+	profile_retaliation = 2.00
+}
+
+missiles_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	reserve_replenishment_support = 60
+	reserve_replenishment_fuel = 80
+	readiness_restore_support = 40
+	readiness_restore_fuel = 60
+	guidance_improvement_support = 80
+	guidance_improvement_army_experience = 5
+	security_codes_command_power = 8
+	security_codes_support = 50
+	hardening_civilian_factories = 1
+	hardening_support = 100
+	capacity_civilian_factories = 2
+	capacity_steel = 80
+	secondary_site_civilian_factories = 3
+	secondary_site_support = 120
+	strike_precision_command_power = 8
+	strike_precision_fuel = 100
+	strike_strategic_command_power = 12
+	strike_strategic_fuel = 180
+	strike_saturation_command_power = 18
+	strike_saturation_fuel = 300
+	strike_counterforce_army_experience = 8
+	strike_counterforce_fuel = 220
+	payload_integration_command_power = 16
+	payload_integration_support = 100
+	warning_verify_command_power = 6
+	warning_verify_support = 60
+	network_restore_command_power = 12
+	network_restore_support = 100
+}
+
+missiles_damage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	logistics_precision = 0.20
+	industrial_precision = 0.15
+	air_coastal_precision = 0.18
+	command_precision = 0.12
+	counterforce_precision = 0.14
+	logistics_strategic = 0.45
+	industrial_strategic = 0.38
+	air_coastal_strategic = 0.40
+	command_strategic = 0.32
+	counterforce_strategic = 0.35
+	broad_strategic = 0.30
+	saturation_multiplier = 1.50
+	hardened_damage_reduction = 0.35
+	damaged_damage_reduction = 0.20
+	civilian_deaths_precision = 120
+	civilian_deaths_strategic = 350
+	civilian_deaths_saturation = 700
+	minimum_remaining_population = 1000
+	site_damage_precision = 10
+	site_damage_strategic = 24
+	site_damage_saturation = 40
+}
+
+missiles_natural_disaster = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	site_damage_local = 10
+	site_damage_severe = 24
+	site_damage_regional = 40
+	site_damage_catastrophic = 60
+	site_damage_abnormal = 80
+	capacity_loss_local = 0
+	capacity_loss_severe = 1
+	capacity_loss_regional = 2
+	capacity_loss_catastrophic = 3
+	capacity_loss_abnormal = 4
+	reserve_loss_local = 15
+	reserve_loss_severe = 25
+	reserve_loss_regional = 40
+	reserve_loss_catastrophic = 60
+	reserve_loss_abnormal = 80
+	readiness_loss_local = 6
+	readiness_loss_severe = 10
+	readiness_loss_regional = 16
+	readiness_loss_catastrophic = 24
+	readiness_loss_abnormal = 32
+	control_loss_local = 4
+	control_loss_severe = 8
+	control_loss_regional = 14
+	control_loss_catastrophic = 20
+	control_loss_abnormal = 28
+	guidance_backlog_local = 4
+	guidance_backlog_severe = 8
+	guidance_backlog_regional = 14
+	guidance_backlog_catastrophic = 22
+	guidance_backlog_abnormal = 30
+	false_warning_pressure_local = 3
+	false_warning_pressure_severe = 6
+	false_warning_pressure_regional = 10
+	false_warning_pressure_catastrophic = 16
+	false_warning_pressure_abnormal = 22
+	capacity_loss_recovery_step = 1
+}
+
+missiles_guidance = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	base_score = 45
+	technology_step = 8
+	readiness_step = 0.20
+	command_step = 0.15
+	training_step = 0.80
+	hardened_site_bonus = 8
+	extended_range_penalty = 12
+	saturation_penalty = 14
+	special_payload_penalty = 10
+	unstable_program_penalty = 20
+	emergency_recalibration_bonus = 15
+	poor_score = 20
+	uncertain_score = 40
+	serviceable_score = 60
+	accurate_score = 80
+	precise_score = 100
+	on_target_weight = 60
+	degraded_weight = 22
+	wrong_object_weight = 8
+	near_miss_weight = 6
+	breakup_weight = 4
+	wrong_state_weight = 7
+	neutral_accident_weight = 3
+	self_strike_weight = 2
+	site_accident_weight = 2
+	payload_dud_weight = 3
+	unstable_failure_weight = 10
+	minimum_pool_size = 1
+}
+
+missiles_operation_damage = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	precision_building_damage = 1.00
+	strategic_building_damage = 2.00
+	saturation_building_damage = 3.00
+	counterforce_building_damage = 2.00
+	precision_infrastructure_damage = 0.40
+	strategic_infrastructure_damage = 1.00
+	saturation_infrastructure_damage = 2.00
+	counterforce_infrastructure_damage = 0.80
+	precision_railway_damage = 0.20
+	strategic_railway_damage = 0.80
+	saturation_railway_damage = 1.50
+	counterforce_railway_damage = 0.60
+	precision_death_factor = 0.50
+	strategic_death_factor = 1.00
+	saturation_death_factor = 1.50
+	counterforce_death_factor = 0.80
+	degraded_damage_mult = 0.65
+	wrong_object_damage_mult = 0.45
+	near_miss_damage_mult = 0.25
+	wrong_state_damage_mult = 0.50
+	neutral_damage_mult = 0.35
+	self_damage_mult = 0.40
+	site_accident_damage_mult = 0.50
+	defence_damage_reduction = 0.35
+	capital_damage_bonus = 1.20
+	industrial_damage_bonus = 1.15
+	command_damage_bonus = 1.10
+	logistics_damage_bonus = 1.10
+	air_coastal_damage_bonus = 1.05
+	counterforce_damage_bonus = 1.20
+	population_minimum = 1000
+}
+
+missiles_evolution_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_operational_programs = 2
+	minimum_mature_programs = 2
+	minimum_war_programs = 2
+	minimum_payload_owners = 1
+	minimum_retaliation_programs = 2
+	minimum_guidance_stage = 2
+	minimum_saturation_reserve = 16
+	minimum_vulnerable_control = 55
+	minimum_retaliation_control = 75
+	minimum_chaos_rogue = 200
+	minimum_chaos_guidance = 400
+	minimum_chaos_saturation = 600
+	minimum_chaos_special = 800
+	minimum_chaos_retaliation = 900
+	delay_shortening_multiplier = 0.50
+	delay_lengthening_multiplier = 1.50
+}
+
+missiles_tuning = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	first_chaos = 10
+	repeat_chaos = 4
+	rogue_unlock_chaos = 6
+	guidance_unlock_chaos = 6
+	saturation_unlock_chaos = 10
+	special_unlock_chaos = 15
+	retaliation_unlock_chaos = 20
+	site_min_infrastructure = 2
+	site_min_supply = 0.40
+	site_frontline_penalty = 100
+	site_core_bonus = 40
+	site_existing_bonus = 1000
+	site_capital_fallback_score = 1
+	site_hardening_initial = 20
+	site_security_initial = 55
+	site_hardening_gain = 15
+	site_security_gain = 12
+	site_damage_maximum = 100
+	site_capture_threshold = 50
+	site_count_base = 1
+	site_count_state_threshold = 8
+	site_count_state_step = 12
+	site_count_maximum = 4
+	saturation_site_bonus = 1
+	operation_minimum_reserve = 1
+	operation_minimum_readiness = 50
+	operation_minimum_control = 40
+	operation_neutral_drift_threshold = 34
+	operation_wrong_state_threshold = 24
+	operation_breakup_threshold = 14
+	operation_interception_threshold = 20
+	operation_range_base = 100
+	operation_range_stage_step = 25
+	operation_range_maximum = 400
+	operation_barrage_strain = 8
+	operation_special_strain = 12
+	operation_site_accident_threshold = 18
+	operation_guidance_high_threshold = 80
+	operation_guidance_low_threshold = 20
+	operation_incident_memory_days = 180
+	operation_repair_days = 45
+	operation_target_lock_days = 30
+	operation_max_active_per_country = 1
+	operation_max_sites_per_strike = 4
+	operation_saturation_min_sites = 2
+	operation_saturation_min_capacity = 6
+	operation_saturation_missiles = 4
+	operation_precision_missiles = 1
+	operation_strategic_missiles = 2
+	operation_counterforce_missiles = 2
+	operation_special_missiles = 1
+	operation_retaliation_missiles = 2
+	operation_thermonuclear_cap = 1
+	operation_retaliation_readiness_cost = 18
+	operation_retaliation_control_cost = 10
+	operation_cleanup_days = 1
+	operation_precision_preparation_days = 14
+	operation_strategic_preparation_days = 22
+	operation_saturation_preparation_days = 32
+	operation_counterforce_preparation_days = 24
+	operation_retaliation_preparation_days = 5
+	operation_preparation_minimum_days = 10
+	operation_preparation_maximum_days = 45
+	operation_guidance_base_adjustment = 45
+	operation_guidance_stage_step = 8
+	operation_guidance_readiness_step = 0.20
+	operation_guidance_control_step = 0.15
+	operation_guidance_training_step = 0.80
+	operation_guidance_site_step = 8
+	operation_guidance_damage_penalty = 12
+	operation_guidance_payload_penalty = 10
+	operation_guidance_saturation_penalty = 14
+	operation_guidance_unreliable_penalty = 20
+	operation_conventional_death_precision = 120
+	operation_conventional_death_strategic = 350
+	operation_conventional_death_saturation = 700
+	operation_conventional_death_counterforce = 260
+	operation_near_miss_death_factor = 0.25
+	operation_degraded_death_factor = 0.65
+	operation_wrong_object_death_factor = 0.45
+	operation_wrong_state_death_factor = 0.50
+	operation_neutral_death_factor = 0.35
+	operation_self_death_factor = 0.40
+	operation_site_accident_death_factor = 0.50
+	operation_minimum_death = 1
+	operation_incident_id_start = 1
+	operation_incident_id_step = 1
+	operation_chain_id_start = 1
+	operation_warning_queue_step = 1
+	operation_retaliation_queue_step = 1
+	operation_target_selection_success = 1
+	operation_site_selection_success = 1
+	operation_operation_success = 1
+	operation_preparation_readiness_shortening = 4
+	operation_preparation_control_shortening = 3
+	operation_preparation_instability_extension = 7
+	operation_preparation_wartime_shortening = 2
+	operation_preparation_damage_extension = 6
+	operation_preparation_special_extension = 8
+	operation_preparation_saturation_extension = 8
+	operation_preparation_retaliation_shortening = 8
+	operation_cooldown_precision_days = 30
+	operation_cooldown_strategic_days = 45
+	operation_cooldown_saturation_days = 75
+	operation_cooldown_counterforce_days = 45
+	operation_cooldown_retaliation_days = 30
+	operation_readiness_loss_precision = 8
+	operation_readiness_loss_strategic = 14
+	operation_readiness_loss_saturation = 24
+	operation_readiness_loss_counterforce = 16
+	operation_readiness_loss_retaliation = 18
+	operation_control_loss_precision = 3
+	operation_control_loss_strategic = 6
+	operation_control_loss_saturation = 10
+	operation_control_loss_counterforce = 7
+	operation_control_loss_retaliation = 10
+	operation_guidance_snapshot_minimum = 1
+	operation_damage_minimum = 1
+	operation_damage_maximum = 20
+	operation_incident_conventional = 1
+	operation_incident_precision = 2
+	operation_incident_strategic = 3
+	operation_incident_saturation = 4
+	operation_incident_counterforce = 5
+	operation_incident_guidance_failure = 6
+	operation_incident_neutral = 7
+	operation_incident_self = 8
+	operation_incident_site = 9
+	operation_incident_chemical = 14
+	operation_incident_biological = 15
+	operation_incident_nuclear = 16
+	operation_incident_thermonuclear = 17
+	program_mature_readiness_gain = 10
+	program_mature_hardening_gain = 10
+	program_mature_security_gain = 8
+	program_mature_capacity_gain = 2
+	program_repeat_readiness_gain = 6
+	program_repeat_security_gain = 4
+	program_repeat_hardening_gain = 4
+	program_wartime_readiness_loss = 4
+	program_fuel_readiness_loss = 8
+	program_civil_war_readiness_loss = 20
+	program_civil_war_readiness_loss_negative = -20
+	program_capture_readiness_loss = 30
+	program_legacy_migration_grace_days = 1
+	incident_global_cap = 256
+	retaliation_queue_cap = 24
+	retaliation_generation_cap = 3
+	retaliation_country_cap = 6
+	retaliation_incident_cap = 12
+	retaliation_duplicate_memory_days = 30
+	retaliation_warning_days = 3
+	retaliation_warning_expiry_days = 14
+	retaliation_delay_days = 7
+	retaliation_posture_adoption_days = 30
+	retaliation_low_control_block = 40
+	retaliation_chaos_gate = 900
+	evolution_adoption_readiness = 60
+	evolution_adoption_control = 60
+	evolution_saturation_reserve = 16
+	evolution_guidance_stage = 2
+	evolution_special_stage = 3
+	evolution_rogue_control = 55
+	evolution_retaliation_control = 75
+	scenario_low_reserve = 6
+	scenario_medium_reserve = 10
+	scenario_high_reserve = 16
+	scenario_maximum_reserve = 24
+	scenario_low_readiness = 70
+	scenario_medium_readiness = 75
+	scenario_high_readiness = 82
+	scenario_maximum_readiness = 90
+	scenario_low_control = 75
+	scenario_medium_control = 80
+	scenario_high_control = 85
+	scenario_maximum_control = 90
+	state_population_loss_reason = 2
+}
+
+missiles_site_score = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = -100000
+	existing_rocket_site = 1000
+	existing_event_site = 500
+	core = 40
+	infrastructure_step = 5
+	supply_connection = 20
+	air_defence = 12
+	radars = 10
+	strategic_depth = 25
+	industrial_access = 8
+	secure_control = 15
+	different_region = 30
+	capital_penalty = -25
+	frontline_penalty = -100
+	occupied_penalty = -200
+	damaged_penalty = -40
+	island_penalty = -20
+	resistance_penalty = -30
+	minimum_candidate = 1
+}
+
+missiles_target_score = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	baseline = -100000
+	major = 180
+	factory_step = 4
+	controlled_state_step = 5
+	active_war = 45
+	first_use_pressure = 30
+	evidence_pressure = 35
+	strategic_depth = 25
+	profile_value = 100
+	profile_logistics = 120
+	profile_industrial = 120
+	profile_air_coastal = 115
+	profile_command = 120
+	profile_counterforce = 130
+	profile_broad = 100
+	capital = 70
+	frontline = -35
+	island = -20
+	resistance = -30
+	secure_state = 20
+	poor_guidance_isolation = 45
+}
+
+missiles_technology = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	stage_one = 1
+	stage_two = 2
+	stage_three = 3
+	stage_four = 4
+	stage_five = 5
+	stage_complete = 6
+	stage_unresolved = -1
+}
+
+missiles_operation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	precision = 1
+	strategic = 2
+	saturation = 3
+	counterforce = 4
+	retaliation = 5
+	conventional = 6
+	prepared = 1
+	committed = 2
+	resolved = 3
+	failed = 4
+	neutral = 5
+	chain_closed = 6
+}
+
+missiles_evidence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	prepared = 1
+	committed = 2
+	released = 3
+	on_target = 4
+	degraded = 5
+	failure = 6
+	neutral = 7
+	self_strike = 8
+	special_payload = 9
+	retaliation = 10
+	cleanup = 11
+}
+
+missiles_attribution = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	confirmed = 1
+	highly_likely = 2
+	disputed = 3
+	unknown = 4
+	forged = 5
+	false_warning = 6
+	accidental = 7
+}
+
+missiles_interception_result = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	partial = 1
+	complete = 2
+	saturation_penetration = 3
+}
+
+missiles_resolution = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	minimum_pool_size = 1
+	maximum_drift_states = 12
+	maximum_neutral_states = 6
+	maximum_self_states = 4
+	maximum_guidance_rolls = 4
+	maximum_building_damage = 20
+	maximum_civilian_deaths = 10000
+	interception_base = 0
+	interception_antiair_step = 2
+	interception_radar_step = 1
+	interception_warning_step = 5
+	interception_saturation_step = 3
+	interception_partial_threshold = 3
+	interception_complete_threshold = 8
+	interception_saturation_maximum_fraction = 0.50
+	interception_minimum_saturation_hits = 1
+	guidance_on_target_floor = 45
+	guidance_degraded_floor = 20
+	guidance_failure_floor = 1
+	guidance_failure_penalty = 25
+	guidance_neutral_penalty = 15
+	guidance_self_penalty = 20
+	guidance_site_penalty = 18
+	guidance_special_penalty = 10
+	drift_neighbor_limit = 8
+	drift_neutral_weight = 3
+	drift_self_weight = 2
+	drift_wrong_state_weight = 7
+	drift_breakup_weight = 4
+	drift_dud_weight = 3
+	precision_hit_weight = 60
+	strategic_hit_weight = 54
+	saturation_hit_weight = 42
+	retaliation_hit_weight = 50
+	degraded_hit_weight = 22
+	wrong_object_weight = 8
+	near_miss_weight = 6
+	minimum_conventional_damage = 1
+	precision_damage_points = 3
+	strategic_damage_points = 8
+	saturation_damage_points = 20
+	counterforce_damage_points = 8
+	retaliation_damage_points = 6
+	precision_civilian_deaths = 120
+	strategic_civilian_deaths = 350
+	saturation_civilian_deaths = 700
+	counterforce_civilian_deaths = 260
+	retaliation_civilian_deaths = 220
+	precision_military_deaths = 20
+	strategic_military_deaths = 75
+	saturation_military_deaths = 180
+	counterforce_military_deaths = 120
+	retaliation_military_deaths = 90
+	maximum_military_deaths = 1000
+	precision_unit_org_damage = 0.06
+	precision_unit_strength_damage = 0.02
+	strategic_unit_org_damage = 0.12
+	strategic_unit_strength_damage = 0.04
+	saturation_unit_org_damage = 0.22
+	saturation_unit_strength_damage = 0.08
+	counterforce_unit_org_damage = 0.18
+	counterforce_unit_strength_damage = 0.06
+	retaliation_unit_org_damage = 0.15
+	retaliation_unit_strength_damage = 0.05
+	near_miss_civilian_mult = 0.25
+	degraded_civilian_mult = 0.65
+	wrong_object_civilian_mult = 0.45
+	wrong_state_civilian_mult = 0.50
+	neutral_civilian_mult = 0.35
+	self_civilian_mult = 0.40
+	site_accident_civilian_mult = 0.50
+	capital_damage_mult = 1.20
+	industrial_damage_mult = 1.15
+	command_damage_mult = 1.10
+	logistics_damage_mult = 1.10
+	air_coastal_damage_mult = 1.05
+	counterforce_damage_mult = 1.20
+	defended_damage_reduction = 0.35
+	hardened_damage_reduction = 0.35
+	damaged_site_reduction = 0.20
+	launch_site_damage_precision = 10
+	launch_site_damage_strategic = 24
+	launch_site_damage_saturation = 40
+	launch_site_damage_counterforce = 30
+	launch_site_damage_retaliation = 24
+	readiness_failure_cost = 8
+	control_failure_cost = 10
+	control_special_cost = 8
+	control_retaliation_cost = 10
+	control_neutral_cost = 6
+	control_self_cost = 12
+	control_success_receipt = 2
+	readiness_success_receipt = 3
+	incident_memory_days = 180
+	recovery_days = 30
+	warning_delay_days = 3
+	warning_supervised_days = 7
+	warning_delegated_days = 5
+	warning_automatic_days = 3
+	warning_confidence_confirmed = 90
+	warning_confidence_probable = 70
+	warning_confidence_uncertain = 45
+	maximum_thermonuclear_automatic = 1
+	maximum_automatic_missiles = 4
+	damage_point_scale = 0.10
+	population_people_per_thousand = 1000
+	secondary_building_damage_mult = 0.60
+	tertiary_building_damage_mult = 0.30
+	chemical_release_on_target_mult = 1.00
+	chemical_release_degraded_mult = 0.65
+	chemical_release_accident_mult = 0.50
+	biological_payload_units = 1
+	biological_payload_units_negative = -1
+	nuclear_payload_units = 1
+	nuclear_payload_units_negative = -1
+}
+
+missiles_modifier = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	program_experimental_research = 0.02
+	program_experimental_rocket_attack = 0.03
+	program_operational_research = 0.04
+	program_operational_rocket_attack = 0.08
+	program_operational_war_support = 0.02
+	program_compromised_stability = -0.04
+	program_compromised_war_support = -0.05
+	program_compromised_rocket_attack = -0.10
+	site_active_supplies = 0.03
+	site_active_build_speed = 0.03
+	site_hardened_supplies = 0.06
+	site_hardened_org_regain = 0.04
+	site_hardened_build_speed = 0.06
+	site_damaged_supplies = -0.08
+	site_damaged_org_regain = -0.05
+	site_damaged_build_speed = -0.15
+	site_compromised_supplies = -0.05
+	site_compromised_org_regain = -0.04
+	site_compromised_build_speed = -0.10
+	site_rogue_supplies = -0.12
+	site_rogue_org_regain = -0.08
+	site_rogue_build_speed = -0.20
+}

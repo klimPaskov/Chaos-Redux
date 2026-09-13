@@ -1,34 +1,82 @@
 # ============================================================================
-# CHAOS REDUX - ACID RAIN ON ACTIONS
+# CHAOS REDUX - EVENT 033 ACID RAIN NARROW ON ACTIONS
+# ============================================================================
+# Event 033 has one host country event scheduler. This file contains only the
+# bounded CXT registration hooks required by the shared test-country bus; it
+# does not run a recurring world or state scan.
 # ============================================================================
 
 on_actions = {
-	# Acid rain
-	on_daily = {
+	on_startup = {
 		effect = {
-			if = { limit = { any_owned_state = { has_dynamic_modifier = { modifier = acid_rain_state } } }
-				every_owned_state = {
-					limit = { has_dynamic_modifier = { modifier = acid_rain_state } }
-					damage_building = {
-						type = infrastructure
-						damage = 0.15
-					}damage_building = {
-						type = industrial_complex
-						damage = 0.15
-					}damage_building = {
-						type = arms_factory
-						damage = 0.15
+			random_country = {
+				limit = { exists = yes }
+				acid_rain_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				acid_rain_register_cxt_test_content = yes
+			}
+		}
+	}
+
+	# ROOT is the new controller, FROM the former controller, and FROM.FROM the
+	# changed state. Only the changed frozen state and its two countries are read.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					OR = {
+						has_global_flag = acid_rain_runtime_active
+						has_global_flag = acid_rain_aftermath_retained
 					}
-					damage_units = {
-						state = THIS
-						limit = { always = no }
-						org_damage = 0.15
-						str_damage = 0.15
-						ratio = yes
-						army = yes
-						navy = no
-					}
+					ROOT = { exists = yes }
+					FROM.FROM = { acid_rain_state_is_frozen_valid = yes }
 				}
+				ROOT = { save_event_target_as = acid_rain_transfer_new_controller }
+				FROM = { save_event_target_as = acid_rain_transfer_old_controller }
+				FROM.FROM = { acid_rain_handle_state_control_change = yes }
+			}
+		}
+	}
+
+	# If the scheduler host is annexed, ROOT inherits only host authority. The
+	# annexed country's unfinished transactions are settled normally.
+	on_annex = {
+		effect = {
+			if = {
+				limit = {
+					OR = {
+						has_global_flag = acid_rain_runtime_active
+						has_global_flag = acid_rain_aftermath_retained
+					}
+					FROM = { has_country_flag = acid_rain_country_registered }
+				}
+				FROM = { acid_rain_cleanup_country_runtime = yes }
+				ROOT = {
+					acid_rain_register_country_on_control_transfer = yes
+					acid_rain_rebuild_country_responsibility = yes
+				}
+			}
+			if = {
+				limit = {
+					has_global_flag = acid_rain_runtime_active
+					FROM = { has_country_flag = acid_rain_runtime_host }
+				}
+				FROM = { clr_country_flag = acid_rain_runtime_host }
+				clear_global_event_target = acid_rain_runtime_host
+				ROOT = {
+					save_global_event_target_as = acid_rain_runtime_host
+					set_country_flag = acid_rain_runtime_host
+				}
+				set_global_flag = acid_rain_host_bound
+				clr_global_flag = acid_rain_host_worker_scheduled
+				ROOT = { acid_rain_bind_host_and_schedule_worker = yes }
 			}
 		}
 	}

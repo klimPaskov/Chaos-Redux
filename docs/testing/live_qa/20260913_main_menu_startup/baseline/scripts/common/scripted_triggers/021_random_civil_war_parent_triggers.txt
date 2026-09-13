@@ -1,0 +1,844 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 RANDOM CIVIL WAR PARENT TRIGGERS
+# ============================================================================
+# Parent-side execution predicates. These triggers prove an actor route before
+# the opening transaction, distinguish same-tag loyalty contests from
+# territorial wars, and keep the bounded scheduler fail-closed.
+# ============================================================================
+
+event021_parent_country_is_opening_candidate = {
+	# All normal and cross-event adapters share the release gate and the
+	# individual-crisis capacity contract. Manual/debug force paths remain
+	# explicitly disqualified by the dispatcher.
+	has_global_flag = random_civil_war_rework_ready
+	random_civil_war_is_normal_human_country = yes
+	individual_crisis_load_is_below_cap = yes
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+	random_civil_war_generation_allowed = yes
+	random_civil_war_has_valid_opposition_route = yes
+}
+
+event021_parent_same_tag_candidate = {
+	event021_parent_country_is_opening_candidate = yes
+	random_civil_war_same_tag_route_valid = yes
+	OR = {
+		has_country_flag = random_civil_war_same_tag_loyalty_contest_ready
+		has_country_flag = random_civil_war_pressure_exposed
+		has_country_flag = random_civil_war_authority_contested
+		has_country_flag = random_civil_war_authority_failing
+		has_war = yes
+	}
+}
+
+event021_parent_same_tag_active = {
+	random_civil_war_is_normal_human_country = yes
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_same_tag_route_active
+	NOT = { has_country_flag = random_civil_war_settlement_recorded }
+}
+
+event021_parent_event6_dormant_candidate = {
+	has_global_flag = random_civil_war_rework_ready
+	# This predicate must not call the general opening-candidate wrapper: that
+	# wrapper asks for a valid route, while the dormant Event 006 route is what
+	# this block proves. Keep the immutable host/anchor and collision checks
+	# here, then let the adapter perform package admission at commit time.
+	random_civil_war_is_normal_human_country = yes
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+	random_civil_war_generation_allowed = yes
+	num_of_controlled_states > constant:random_civil_war_value.one
+	independence_wave_event021_dormant_package_available = yes
+}
+
+# COUNTRY scope on the released carrier. This is a package-content proof
+# rather than Event 006's full-origin completion trigger. The package-specific
+# prepared predicate is selected dynamically, while Event 006 live arrays,
+# origin history, evolution, and league membership remain explicitly absent.
+event021_parent_event6_package_setup_proven = {
+	has_country_flag = independence_wave_origin_prepared
+	has_country_flag = independence_wave_package_setup_complete
+	has_country_flag = independence_wave_command_roster_ready
+	has_country_flag = independence_wave_force_mapping_loaded
+	has_country_flag = independence_wave_force_package_applied
+	has_country_flag = independence_wave_full_focus_framework
+	check_variable = { independence_wave_focus_assignment = constant:independence_wave_focus_assignment.full_framework }
+	has_independence_wave_generic_focus_contract = yes
+	has_country_flag = independence_wave_generic_ai_profile
+	has_event_target = independence_wave_setup_anchor_state
+	has_event_target = independence_wave_setup_former_host
+	has_variable = independence_wave_anchor_state
+	has_variable = independence_wave_former_host
+	var:independence_wave_anchor_state = {
+		is_owned_and_controlled_by = PREV
+		state_population_k > constant:event021_parent_tuning.minimum_state_population_k
+		check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+	}
+	var:independence_wave_former_host = { exists = yes NOT = { tag = PREV } }
+	has_independence_wave_force_package_for_current_generation = yes
+	NOT = { has_country_flag = independence_wave_active_origin }
+	NOT = { has_country_flag = independence_wave_network_member }
+	NOT = { has_country_flag = independence_wave_league_member }
+	if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_package_id
+				value = constant:independence_wave_scenario_registry.two_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_trigger = {
+			text = { has_prepared_independence_wave_iw_00[PACKAGE_ID]_package_setup = yes }
+			PACKAGE_ID = "[?independence_wave_package_id|.0]"
+		}
+	}
+	else_if = {
+		limit = {
+			check_variable = {
+				var = independence_wave_package_id
+				value = constant:independence_wave_scenario_registry.three_digit_threshold
+				compare = less_than
+			}
+		}
+		meta_trigger = {
+			text = { has_prepared_independence_wave_iw_0[PACKAGE_ID]_package_setup = yes }
+			PACKAGE_ID = "[?independence_wave_package_id|.0]"
+		}
+	}
+	else = {
+		meta_trigger = {
+			text = { has_prepared_independence_wave_iw_[PACKAGE_ID]_package_setup = yes }
+			PACKAGE_ID = "[?independence_wave_package_id|.0]"
+		}
+	}
+}
+
+event021_parent_event6_package_complete = {
+	has_country_flag = random_civil_war_event6_adapter_preparing
+	event021_parent_event6_package_setup_proven = yes
+}
+
+event021_parent_event6_existing_actor = {
+	random_civil_war_is_normal_human_country = yes
+	OR = {
+		is_independence_wave_active_country = yes
+		event021_parent_event6_package_complete = yes
+	}
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+}
+
+# STATE scope. A viable opening state has population and infrastructure and is
+# not the protected remnant capital. Ownership and control are checked again
+# by random_civil_war_state_can_be_reserved at commit time.
+event021_parent_viable_anchor_state = {
+	state_population_k > 0
+	check_variable = { infrastructure_level > 0 }
+	OR = {
+		NOT = { is_capital = yes }
+		event_target:random_civil_war_host_country = {
+			check_variable = {
+				var = random_civil_war_archetype
+				value = constant:random_civil_war_archetype.same_tag
+				compare = equals
+			}
+		}
+	}
+	is_owned_by = event_target:random_civil_war_host_country
+	is_controlled_by = event_target:random_civil_war_host_country
+}
+
+event021_parent_sponsor_candidate = {
+	exists = yes
+	random_civil_war_is_normal_human_country = yes
+	individual_crisis_load_is_below_cap = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+	OR = {
+		is_subject = no
+		has_country_flag = random_civil_war_sponsor_side
+	}
+	num_of_factories > constant:random_civil_war_value.zero
+}
+
+event021_parent_active_front_side = {
+	random_civil_war_is_normal_human_country = yes
+	has_country_flag = random_civil_war_active
+	OR = {
+		has_country_flag = random_civil_war_government_side
+		has_country_flag = random_civil_war_opposition_side
+		has_country_flag = random_civil_war_sponsor_side
+	}
+}
+
+event021_parent_scheduler_country_due = {
+	random_civil_war_is_normal_human_country = yes
+	has_global_flag = random_civil_war_evolution_iii_active
+	OR = {
+		AND = {
+			has_variable = random_civil_war_next_review_date
+			check_variable = { var = global.date value = random_civil_war_next_review_date compare = greater_than_or_equals }
+		}
+		AND = {
+			event021_parent_internal_war_ended = yes
+		}
+		has_country_flag = random_civil_war_reconstruction_active
+	}
+}
+
+event021_parent_internal_war_ended = {
+	has_country_flag = random_civil_war_active
+	has_variable = random_civil_war_crisis_id
+	OR = {
+		has_country_flag = random_civil_war_internal_fronts_resolved
+		AND = {
+			NOT = { has_country_flag = random_civil_war_secondary_front_active }
+			NOT = { has_country_flag = random_civil_war_event6_secondary_front_active }
+			OR = {
+				has_country_flag = random_civil_war_same_tag_route_active
+				AND = {
+					has_variable = random_civil_war_opposition_actor_scope
+					var:random_civil_war_opposition_actor_scope = {
+						exists = yes
+						NOT = { tag = PREV }
+						has_variable = random_civil_war_crisis_id
+						check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+					}
+					NOT = { has_war_with = var:random_civil_war_opposition_actor_scope }
+				}
+				AND = {
+					has_variable = random_civil_war_host_country_scope
+					var:random_civil_war_host_country_scope = {
+						exists = yes
+						NOT = { tag = PREV }
+						has_variable = random_civil_war_crisis_id
+						check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+					}
+					NOT = { has_war_with = var:random_civil_war_host_country_scope }
+				}
+				AND = {
+					has_event_target = random_civil_war_global_opposition_actor
+					event_target:random_civil_war_global_opposition_actor = {
+						exists = yes
+						NOT = { tag = PREV }
+						has_variable = random_civil_war_crisis_id
+						check_variable = { var = random_civil_war_crisis_id value = PREV.random_civil_war_crisis_id compare = equals }
+					}
+					NOT = { has_war_with = event_target:random_civil_war_global_opposition_actor }
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on the original crisis host. Normal campaigns require active
+# Evolution I. A High or Maximum manual scenario may use the same bounded
+# multi-front transaction only while its setup bypass is live.
+event021_parent_multifront_setup_available = {
+	OR = {
+		AND = {
+			has_global_flag = random_civil_war_evolution_i_active
+			NOT = { has_global_flag = events_log_disabled_evolution_21_21_1 }
+		}
+		AND = {
+			has_global_flag = random_civil_war_manual_scenario_launch_in_progress
+			has_country_flag = random_civil_war_scenario_bypass_active
+			has_variable = random_civil_war_scenario_intensity
+			check_variable = {
+				var = random_civil_war_scenario_intensity
+				value = constant:random_civil_war_scenario_intensity.high
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a source claimant. Evolution I may repeatedly detach one
+# additional viable actor while the source, host-specific belligerent cap, and
+# global front cap all remain safe. Every successful child receives its own
+# aligned front row and the source is rechecked before another attempt.
+event021_parent_secondary_front_candidate = {
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_opposition_actor
+	num_of_controlled_states > constant:random_civil_war_value.one
+	num_divisions > constant:random_civil_war_value.one
+	NOT = { has_country_flag = random_civil_war_event6_front_active }
+	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
+	random_civil_war_front_capacity_available = yes
+	has_variable = random_civil_war_crisis_host_scope
+	var:random_civil_war_crisis_host_scope = {
+		exists = yes
+		event021_parent_multifront_setup_available = yes
+		has_variable = random_civil_war_total_belligerent_count
+		has_variable = random_civil_war_belligerent_cap
+		has_variable = random_civil_war_route_evidence_count
+		check_variable = {
+			var = random_civil_war_total_belligerent_count
+			value = random_civil_war_belligerent_cap
+			compare = less_than
+		}
+		check_variable = {
+			var = random_civil_war_route_evidence_count
+			value = random_civil_war_total_belligerent_count
+			compare = greater_than_or_equals
+		}
+		event021_parent_has_unreserved_secondary_route = yes
+	}
+}
+
+# COUNTRY scope on the original crisis host. A package-owned Event 006 actor
+# may occupy one additional Evolution I front after an ordinary opening, but
+# only while the host can preserve a remnant and every host/global cap remains
+# open. The package loader performs the exact tag, character, and anchor proof.
+event021_parent_event6_secondary_front_candidate = {
+	event021_parent_multifront_setup_available = yes
+	has_country_flag = random_civil_war_active
+	has_country_flag = random_civil_war_government_side
+	NOT = { has_country_flag = random_civil_war_event6_host_side }
+	NOT = { has_country_flag = random_civil_war_event6_secondary_host_side }
+	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
+	num_of_controlled_states > constant:random_civil_war_value.one
+	random_civil_war_front_capacity_available = yes
+	has_variable = random_civil_war_total_belligerent_count
+	has_variable = random_civil_war_belligerent_cap
+	check_variable = {
+		var = random_civil_war_total_belligerent_count
+		value = random_civil_war_belligerent_cap
+		compare = less_than
+	}
+	independence_wave_event021_dormant_package_available = yes
+}
+
+# COUNTRY scope on the original crisis host. An ordinary Evolution I child may
+# consume only a distinct, live route receipt that has not already produced a
+# belligerent. Event 006 and same-tag receipts have dedicated actor adapters and
+# are deliberately excluded from the ordinary civil-war split.
+event021_parent_has_unreserved_secondary_route = {
+	OR = {
+		AND = {
+			random_civil_war_regional_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_regional_route_reserved }
+		}
+		AND = {
+			random_civil_war_command_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_command_route_reserved }
+		}
+		AND = {
+			random_civil_war_legal_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_legal_route_reserved }
+		}
+		AND = {
+			random_civil_war_ideological_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_ideological_route_reserved }
+		}
+	}
+}
+
+event021_parent_secondary_state_candidate = {
+	state_population_k > constant:event021_parent_tuning.minimum_state_population_k
+	check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+	NOT = { is_capital = yes }
+	NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+}
+
+event021_parent_territorial_war_ended = {
+	event021_parent_internal_war_ended = yes
+	NOT = { has_country_flag = random_civil_war_same_tag_route_active }
+}
+
+event021_parent_scenario_country_eligible = {
+	has_global_flag = random_civil_war_rework_ready
+	random_civil_war_is_normal_human_country = yes
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_target_reserved }
+	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+	individual_crisis_load_is_below_cap = yes
+	num_of_controlled_states > constant:random_civil_war_value.zero
+	event021_parent_scenario_type_preflight_valid = yes
+}
+
+# COUNTRY scope of the shared scenario window. The selected type is copied into
+# the global manual-scenario receipt only after the player confirms the launch;
+# this gate therefore proves the shared, type-neutral pool before dispatch. The
+# parent repeats the type-specific proof for every frozen row at commit time.
+random_civil_war_triggerable_scenario_can_launch = {
+	has_global_flag = random_civil_war_rework_ready
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = random_civil_war_manual_scenario_launch_in_progress }
+	NOT = { has_global_flag = random_civil_war_launch_in_progress }
+	NOT = { has_global_flag = random_civil_war_global_fracture_terminal }
+	any_country = {
+		event021_parent_scenario_country_eligible = yes
+	}
+}
+
+event021_parent_scenario_requires_same_tag = {
+	OR = {
+		num_of_controlled_states < constant:random_civil_war_value.two
+		NOT = { any_owned_state = { is_island_state = no } }
+	}
+}
+
+# COUNTRY scope. Manual Fracture Cascade selection is allowed to enter the
+# parent transaction before a live route receipt exists. The parent then
+# materialises the selected type's receipt and fails closed if actor, capital,
+# state, or package proof cannot be completed. Automatic selection continues
+# to use the stricter live route predicates in `021_random_civil_war_triggers`.
+event021_parent_scenario_type_preflight_valid = {
+	OR = {
+		NOT = { has_variable = global.random_civil_war_manual_scenario_type }
+		AND = {
+			event021_parent_scenario_requires_same_tag = yes
+			OR = {
+				has_country_leader = { ruling_only = yes }
+				num_divisions > constant:random_civil_war_value.zero
+			}
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.political_fracture
+				compare = equals
+			}
+			OR = {
+				has_country_leader = { ruling_only = yes }
+				num_divisions > constant:random_civil_war_value.zero
+			}
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.independence_cascade
+				compare = equals
+			}
+			event021_parent_event6_dormant_candidate = yes
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.command_collapse
+				compare = equals
+			}
+			num_divisions > constant:random_civil_war_value.one
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.universal_fragmentation
+				compare = equals
+			}
+			OR = {
+				num_divisions > constant:random_civil_war_value.zero
+				has_country_leader = { ruling_only = yes }
+			}
+		}
+	}
+}
+
+event021_parent_scenario_type_route_valid = {
+	OR = {
+		NOT = { has_variable = global.random_civil_war_manual_scenario_type }
+		AND = {
+			event021_parent_scenario_requires_same_tag = yes
+			random_civil_war_same_tag_route_valid = yes
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.political_fracture
+				compare = equals
+			}
+			OR = {
+				random_civil_war_ideological_route_valid = yes
+				random_civil_war_legal_route_valid = yes
+				random_civil_war_same_tag_route_valid = yes
+			}
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.independence_cascade
+				compare = equals
+			}
+			event021_parent_event6_dormant_candidate = yes
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.command_collapse
+				compare = equals
+			}
+			random_civil_war_command_route_valid = yes
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			check_variable = {
+				var = global.random_civil_war_manual_scenario_type
+				value = constant:random_civil_war_scenario_type.universal_fragmentation
+				compare = equals
+			}
+			random_civil_war_has_valid_opposition_route = yes
+		}
+	}
+}
+
+event021_parent_reconstruction_due = {
+	OR = {
+		AND = {
+			has_country_flag = random_civil_war_reconstruction_active
+			has_variable = random_civil_war_reconstruction_until
+			check_variable = { var = global.date value = random_civil_war_reconstruction_until compare = greater_than_or_equals }
+		}
+		AND = {
+			has_country_flag = random_civil_war_settlement_obligation_active
+			has_variable = random_civil_war_settlement_terms_hold_until
+			check_variable = { var = global.date value = random_civil_war_settlement_terms_hold_until compare = greater_than_or_equals }
+		}
+	}
+}
+
+event021_parent_same_tag_deadline_reached = {
+	has_country_flag = random_civil_war_same_tag_route_active
+	has_variable = random_civil_war_same_tag_deadline
+	check_variable = { var = global.date value = random_civil_war_same_tag_deadline compare = greater_than_or_equals }
+}
+
+event021_parent_opening_force_valid = {
+	has_country_flag = random_civil_war_force_package_ready
+	has_variable = random_civil_war_requested_force_divisions
+	check_variable = {
+		var = random_civil_war_requested_force_divisions
+		value = constant:random_civil_war_value.zero
+		compare = greater_than
+	}
+}
+
+event021_parent_global_capacity_ready = {
+	OR = {
+		random_civil_war_theater_capacity_available = yes
+		has_global_flag = random_civil_war_scenario_maximum_mode
+	}
+	NOT = { has_global_flag = random_civil_war_launch_in_progress }
+}
+
+event021_parent_achievement_disqualified = {
+	has_country_flag = random_civil_war_achievement_disqualified
+}
+
+event021_parent_opening_external_war_valid = {
+	has_country_flag = random_civil_war_external_war_at_opening
+	NOT = { has_country_flag = random_civil_war_external_war_capitulated }
+}
+
+event021_parent_settlement_terms_valid = {
+	has_country_flag = random_civil_war_settlement_recorded
+	OR = {
+		has_country_flag = random_civil_war_settlement_government_victory
+		has_country_flag = random_civil_war_settlement_opposition_victory
+		has_country_flag = random_civil_war_settlement_coalition
+		has_country_flag = random_civil_war_settlement_autonomy
+		has_country_flag = random_civil_war_settlement_independence
+		has_country_flag = random_civil_war_settlement_partition
+		has_country_flag = random_civil_war_settlement_merger
+		has_country_flag = random_civil_war_settlement_evolution
+	}
+}
+
+event021_parent_negotiated_settlement = {
+	has_country_flag = random_civil_war_settlement_recorded
+	OR = {
+		has_country_flag = random_civil_war_settlement_coalition
+		has_country_flag = random_civil_war_settlement_autonomy
+		has_country_flag = random_civil_war_settlement_independence
+	}
+}
+
+event021_parent_reconstruction_complete = {
+	has_country_flag = random_civil_war_reconstruction_complete
+	NOT = { has_country_flag = random_civil_war_reconstruction_active }
+}
+
+event021_parent_recurrence_window_open = {
+	has_variable = random_civil_war_recurrence_earliest_date
+	has_variable = random_civil_war_recurrence_latest_date
+	check_variable = {
+		var = global.date
+		value = random_civil_war_recurrence_earliest_date
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = global.date
+		value = random_civil_war_recurrence_latest_date
+		compare = less_than_or_equals
+	}
+	NOT = { has_country_flag = random_civil_war_successor_grace }
+	NOT = { has_country_flag = random_civil_war_recurrence_window_expired }
+}
+
+event021_parent_settlement_obligation_objective_valid = {
+	OR = {
+		AND = {
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.recognition compare = equals }
+			has_country_flag = random_civil_war_event6_recognized_independence
+		}
+		AND = {
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.disarmament compare = equals }
+			has_country_flag = random_civil_war_disarmament_complete
+		}
+		AND = {
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.rail_security compare = equals }
+			has_country_flag = event021_rail_spine_secured
+		}
+		AND = {
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.sponsor_repayment compare = equals }
+			has_country_flag = random_civil_war_sponsor_repaid
+		}
+		AND = {
+			check_variable = { var = random_civil_war_settlement_obligation value = constant:event021_settlement_obligation.coalition_governance compare = equals }
+			has_country_flag = random_civil_war_coalition_governance_complete
+		}
+	}
+}
+
+event021_country_can_manage_exposure = {
+	random_civil_war_is_normal_human_country = yes
+	has_country_flag = random_civil_war_neighbor_exposure
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	has_variable = random_civil_war_exposure_source_country_scope
+	var:random_civil_war_exposure_source_country_scope = {
+		exists = yes
+		has_country_flag = random_civil_war_active
+		OR = {
+			has_country_flag = random_civil_war_theater_registered
+			has_country_flag = random_civil_war_front_registered
+			has_country_flag = random_civil_war_same_tag_contest_active
+		}
+		NOT = { has_country_flag = random_civil_war_settlement_resolved }
+		NOT = { has_country_flag = random_civil_war_settlement_phase }
+		NOT = { has_country_flag = random_civil_war_reconstruction_phase }
+		NOT = { has_country_flag = random_civil_war_cleanup_complete }
+	}
+}
+
+event021_exposure_government_target_valid = {
+	has_variable = random_civil_war_exposure_source_country_scope
+	var:random_civil_war_exposure_source_country_scope = {
+		exists = yes
+		OR = {
+			has_country_flag = random_civil_war_government_side
+			AND = {
+				has_country_flag = random_civil_war_opposition_side
+				has_variable = random_civil_war_host_country_scope
+				var:random_civil_war_host_country_scope = { exists = yes random_civil_war_is_normal_human_country = yes }
+			}
+		}
+	}
+}
+
+event021_exposure_opposition_target_valid = {
+	has_variable = random_civil_war_exposure_source_country_scope
+	var:random_civil_war_exposure_source_country_scope = {
+		exists = yes
+		OR = {
+			has_country_flag = random_civil_war_opposition_side
+			AND = {
+				has_country_flag = random_civil_war_government_side
+				has_variable = random_civil_war_opposition_actor_scope
+				var:random_civil_war_opposition_actor_scope = { exists = yes random_civil_war_is_normal_human_country = yes }
+			}
+		}
+	}
+}
+
+event021_exposure_government_target_viable = {
+	OR = {
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_government_side }
+			var:random_civil_war_exposure_source_country_scope = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				num_of_controlled_states > constant:random_civil_war_value.zero
+				OR = {
+					num_of_factories > constant:random_civil_war_value.zero
+					has_country_leader = { ruling_only = yes }
+				}
+			}
+		}
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_opposition_side }
+			var:random_civil_war_exposure_source_country_scope = {
+				has_variable = random_civil_war_host_country_scope
+				var:random_civil_war_host_country_scope = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					num_of_controlled_states > constant:random_civil_war_value.zero
+					OR = {
+						num_of_factories > constant:random_civil_war_value.zero
+						has_country_leader = { ruling_only = yes }
+					}
+				}
+			}
+		}
+	}
+}
+
+event021_exposure_opposition_target_viable = {
+	OR = {
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_opposition_side }
+			var:random_civil_war_exposure_source_country_scope = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				num_of_controlled_states > constant:random_civil_war_value.zero
+				OR = {
+					num_of_factories > constant:random_civil_war_value.zero
+					has_country_leader = { ruling_only = yes }
+				}
+			}
+		}
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_government_side }
+			var:random_civil_war_exposure_source_country_scope = {
+				has_variable = random_civil_war_opposition_actor_scope
+				var:random_civil_war_opposition_actor_scope = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					num_of_controlled_states > constant:random_civil_war_value.zero
+					OR = {
+						num_of_factories > constant:random_civil_war_value.zero
+						has_country_leader = { ruling_only = yes }
+					}
+				}
+			}
+		}
+	}
+}
+
+event021_exposure_government_target_aligned = {
+	OR = {
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_government_side }
+			var:random_civil_war_exposure_source_country_scope = { has_same_ideology = yes }
+		}
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_opposition_side }
+			var:random_civil_war_exposure_source_country_scope = {
+				has_variable = random_civil_war_host_country_scope
+				var:random_civil_war_host_country_scope = { has_same_ideology = yes }
+			}
+		}
+	}
+}
+
+event021_exposure_opposition_target_aligned = {
+	OR = {
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_opposition_side }
+			var:random_civil_war_exposure_source_country_scope = { has_same_ideology = yes }
+		}
+		AND = {
+			var:random_civil_war_exposure_source_country_scope = { has_country_flag = random_civil_war_government_side }
+			var:random_civil_war_exposure_source_country_scope = {
+				has_variable = random_civil_war_opposition_actor_scope
+				var:random_civil_war_opposition_actor_scope = { has_same_ideology = yes }
+			}
+		}
+	}
+}
+
+event021_priority_front_depot_target_valid = {
+	has_variable = random_civil_war_priority_front_state
+	var:random_civil_war_priority_front_state = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
+		OR = {
+			supply_node > constant:random_civil_war_value.zero
+			check_variable = { building_level@arms_factory > constant:random_civil_war_value.zero }
+		}
+	}
+}
+
+event021_country_can_manage_opening = {
+	event021_country_can_manage_crisis = yes
+	NOT = { has_country_flag = random_civil_war_multifront_active }
+	NOT = { has_country_flag = random_civil_war_neighbor_exposure }
+	NOT = { has_country_flag = random_civil_war_settlement_phase }
+	NOT = { has_country_flag = event021_settlement_pending }
+	NOT = { has_country_flag = event021_settlement_talks_open }
+	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
+}
+
+event021_country_can_manage_fronts = {
+	event021_country_can_manage_crisis = yes
+	has_country_flag = random_civil_war_multifront_active
+	NOT = { has_country_flag = random_civil_war_settlement_phase }
+	NOT = { has_country_flag = random_civil_war_reconstruction_phase }
+}
+
+event021_country_can_manage_reconstruction = {
+	event021_country_can_manage_crisis = yes
+	has_country_flag = random_civil_war_reconstruction_phase
+	NOT = { has_country_flag = random_civil_war_cleanup_complete }
+}
+
+event021_country_can_prevent_fracture = {
+	random_civil_war_is_normal_human_country = yes
+	has_global_flag = random_civil_war_evolution_iii_active
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	has_country_flag = random_civil_war_global_registered
+	OR = {
+		random_civil_war_pressure_is_exposed = yes
+		has_country_flag = random_civil_war_external_war_evidence_active
+		has_country_flag = random_civil_war_fury_evidence_active
+		has_country_flag = random_civil_war_neighbor_exposure
+		has_country_flag = random_civil_war_military_loyalty_low
+		has_country_flag = random_civil_war_regional_grievance_active
+		has_country_flag = random_civil_war_recent_civil_war_memory
+	}
+}
+
+event021_country_can_manage_multifront = {
+	event021_country_can_manage_crisis = yes
+	has_country_flag = random_civil_war_multifront_active
+	NOT = { has_country_flag = random_civil_war_settlement_phase }
+}
+
+event021_country_can_manage_settlement = {
+	random_civil_war_is_normal_human_country = yes
+	NOT = { random_civil_war_has_terminal_lock = yes }
+	OR = {
+		has_country_flag = random_civil_war_settlement_phase
+		has_country_flag = event021_settlement_pending
+		has_country_flag = event021_settlement_talks_open
+	}
+}
+
+event021_country_can_offer_settlement = {
+	event021_country_can_manage_crisis = yes
+	has_country_flag = random_civil_war_government_side
+	NOT = { has_country_flag = event021_settlement_resolved }
+	NOT = { has_country_flag = event021_settlement_talks_open }
+}

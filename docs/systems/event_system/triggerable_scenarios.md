@@ -26,10 +26,14 @@ The scenario descriptions retain package-owned source reports, workbook labels, 
 - `common/script_constants/chaosx_triggerable_scenarios_constants.txt`: scenario IDs, sort modes, intensity levels, type IDs, and scale values.
 - `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`: window initialization, registry rebuild, sorting, type/intensity controls, and launch behavior.
 - `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`: launch eligibility.
+- `common/script_constants/032_missiles_scenario_constants.txt`: Event 032 profile IDs and bounded Missile Age package scale.
+- `common/scripted_triggers/032_missiles_scenario_triggers.txt`: Event 032 profile preflight, recipient, war, payload-owner, and terminal-conflict gates.
+- `common/scripted_effects/032_missiles_scenario_effects.txt`: Event 032 runtime scale loading, idempotent country package adapter, profile markers, and bypass cleanup.
 - `common/scripted_guis/chaosx_scripted_gui_settings.txt`: scripted GUI clicks, dynamic list, slider stops, and visibility triggers.
 - `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`: names, sort labels, dynamic detail text, type labels, and intensity impact text.
 - `interface/chaosx.gui`: separate movable scenario window, log-style list entries, detail panel, type controls, and intensity slider.
 - `localisation/english/chaosx_gui_l_english.yml`: player-facing labels, tooltips, scenario event text.
+- `localisation/english/032_missile_crisis_l_english.yml`: Event 032 Missile Age name, profile text, intensity impact text, status text, and setup tooltip.
 
 ## Window Behavior
 
@@ -62,6 +66,7 @@ Type controls cycle scenario-specific type variables:
 - The Hunger Lines: Discipline Collapse, Ritual Cells, Silent Islands, Warlord States, or Convergence.
 - The Unbidden Muster: The Barracks Overflow, The Arsenal Draw, The Generals' Muster, or The Impossible Host.
 - Africa Is One: Africa Is One or World Is One.
+- Missile Age: Global Proliferation, Saturation War, Command Breakdown, Special Payload Crisis, or Retaliation Network.
 
 The trigger button opens a separate confirmation window. Confirming reads the stored selected scenario, type, and intensity at launch time. Scenario launches intentionally bypass the normal automatic firing prerequisites for their source events, including chaos thresholds, prior event-state gates, route prerequisites, and super-event history flags. The launch gate only keeps impossible or conflicting launches out, such as requiring the Soviet Union to exist for Soviet Collapse and preventing most second world-end branches while `world_end` is already active. The launch button uses the same gate for click enablement and buttonstate rendering, so impossible selections are disabled and visually greyed out before the confirmation window can open.
 
@@ -195,3 +200,69 @@ The runtime flag directories exist, but their contents and asset acceptance were
 The Fallout-owned manual sandbox uses raw id `14`, one above the previous live maximum. Its active source path expands 10,154 valid assigned land provinces across 1,081 states into 41 native thermonuclear batches, verifies issued and observed callbacks, reconciles Fallout Deaths, and starts the exact seven-day handoff before requesting the standard Fallout consequence coordinator. Runtime observation remains user-owned and is not a source launch gate.
 
 This row is a triggerable-scenario sandbox surface only. Fallout remains absent from the world-end selector, ordinary Event Log, evolution, Event Details, and ordinary super-event registries. Retired Final Silence compatibility does not own this launch.
+
+### SCN-015: Missile Age
+
+Missile Age owns raw ID `15`, immediately after Fallout's shared raw ID `14`. The existing Global Jihad row occupies raw ID `16` in this worktree, and Event 031's current triggerable selector is aligned to that row. Event 031's separate world-end registry reservation remains outside this shared namespace.
+
+The shared window stores the Event 032 profile in `triggerable_scenarios_missiles_type` and reuses the four common intensity stops. Global Proliferation creates or advances ordinary programs. Saturation War requires an existing meaningful war between valid missile recipients and marks only belligerents for saturation setup. Command Breakdown requires a valid vulnerable candidate and marks the bounded command-and-guidance crisis package. Special Payload Crisis requires an existing supported payload owner and marks delivery integration only for that owner.
+It never grants a payload. Retaliation Network requires two valid recipients, establishes warning-ready postures, and marks High and Maximum as the only levels that may enter bounded warning pressure.
+
+The one-shot adapter freezes the selected profile and intensity into global runtime package values, performs the shared Event 032 recipient and profile preflight, assigns the scenario receipt, calls the core program and technology adapters once per eligible country, records persistent scenario-origin markers, and clears country and global bypass flags before returning. `missiles_scenario_country_setup_complete` prevents a duplicate package, while `missiles_scenario_launched` blocks a second launch. The adapter does not set `world_end`, add a recurring world scan, or open a dedicated GUI.
+
+The registry dispatch is `missiles_scenario_launch_unregistered`. Its core dependencies are the Event 032 APIs `missiles_is_valid_recipient`, `missiles_initialize_or_advance_program`, `missiles_normalize_technology_stage`, and `missiles_apply_mature_program_package`. Those core runtime files are outside this bounded registry change and are not present in the current checkout.
+The scenario adapter therefore records their exact input-variable and flag contract without claiming a live Event 032 launch until the parent core implementation supplies them.
+
+The public name, five profile labels and descriptions, four intensity impact strings, `#015` row label, launch status text, and setup tooltip are owned by `localisation/english/032_missile_crisis_l_english.yml`. The scenario acceptance cases remain in `docs/specs/032_missiles_specs/032_missiles_test_matrix.md` under `SCN-015 tests`.
+
+### SCN-016: Global Jihad
+
+Global Jihad owns raw triggerable-scenario ID `16`. The accepted Event 31 proposal could not use `SCN-014` because that raw slot belongs to Fallout and the authoritative workbook assigns the public row to Assassin Network.
+`SCN-015` belongs to Missile Age. Event 31 therefore uses the next verified free shared slot without changing its independently registered False Revelation world-end identity.
+
+The shared window stores one of five wholly fictional deployment types in `triggerable_scenarios_global_jihad_type`: Dispersed Networks, Border Corridors, Capital Uprisings, Territorial Fronts, or Random Pattern. It reuses the four common intensity stops: Low, Medium, High, and Maximum. Each type has its own description, and each intensity has a distinct impact warning.
+
+Confirmation copies the selected type and intensity into Event 31's request variables and calls `random_terror_launch_global_jihad`. The Event 31 preflight validates eligible countries, exact states, geographic diversity, active-cell capacity, and all eight territorial carriers before any state transfer or country creation. A failed preflight commits no partial setup.
+
+Low through High scale the initial countries, states, territorial actors, pressure, activity, network reach, unity, readiness, legitimacy, response capacity, and civil-war demand. Maximum also activates The Final Jihad, but it cannot begin The False Revelation directly. The ordinary terminal trigger still requires `1000+` Chaos, enabled world-end state, Evolution V, Apocalyptic Readiness, International Unity, territorial control, crisis-state spread, strategic victories, and a viable fictional jihadist actor.
+
+The fictional jihadist branch exists only through Event 31's Evolution IV and later content. Muslim governments, communities, clerics, soldiers, civic organizations, and fictional religious authorities appear as opponents rather than assumed supporters. The scenario uses no real extremist names, symbols, propaganda, sacred hostile branding, Quran recitation, call to prayer, Islamic sacred chant, or identity-based target weighting.
+
+The public scenario and status text is owned by `localisation/english/031_terrorist_attack_l_english.yml`. The shared registry, sort orders, type controls, launch gate, and dispatcher are in `common/script_constants/chaosx_triggerable_scenarios_constants.txt`, `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`, `common/scripted_triggers/chaosx_triggerable_scenarios_triggers.txt`, and `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`.
+
+### SCN-018: The Fracture Cascade
+
+The Fracture Cascade owns raw scenario id `18`, the verified free public catalog row `SCN-018`, and the Event 021 manual scenario adapter.
+
+The scenario exposes four types: Political Fracture, Independence Cascade, Command Collapse, and Universal Fragmentation.
+
+Each type exposes Low, Medium, High, and Maximum intensity.
+
+Political Fracture prioritizes ideological uprisings, rival legal governments, coalition breakdowns, constitutional disputes, and seizures of central authority.
+
+Independence Cascade prioritizes established independence movements, regional secessions, recognition disputes, and wars of separation.
+
+Command Collapse prioritizes command schisms, military districts, arsenal seizures, officer disloyalty, and military seizures of central authority.
+
+Universal Fragmentation combines the supported political, legal, military, regional, independence, and successor-state routes wherever each target can sustain a conflict.
+
+Low, Medium, and High commit bounded shares of eligible normal human countries with intensity-specific severity, front, force, and exposure limits.
+
+Maximum commits every eligible normal human country through the explicit scenario-owned all-country pass required by the Event 021 specification.
+
+Actual nonhuman countries remain outside every intensity.
+
+The scenario setup is immediate and reuses Event 021’s target reservation, connected-state plan, viable capital or remnant, dynamic force allocation, actor adapter, front registry, settlement, reconstruction, and cleanup contracts.
+
+The scenario does not set `world_end`, alter Event 006 fired or league state, advance Event 006 evolutions, or enroll a generated package in Event 006 league systems.
+
+Scenario setup records a scenario origin and disqualifies normal-campaign achievement receipts.
+
+The launch adapter has no delayed fallback because no measured one-frame performance failure justified a seven-day setup window.
+
+The public name, four type labels, four type descriptions, four intensity impact strings, `SCN-018` label, confirmation text, unavailable text, and setup status text are in `localisation/english/021_random_civil_war_l_english.yml`.
+
+The source implementation is in `common/script_constants/chaosx_triggerable_scenarios_constants.txt` and `common/scripted_effects/chaosx_triggerable_scenarios_effects.txt`, with the Event 021 commit path in `common/scripted_effects/021_random_civil_war_parent_effects.txt`.
+
+The implementation is source- and MCP-inspection-backed.
+No live HOI4 launch or save-state acceptance is claimed by the agent.

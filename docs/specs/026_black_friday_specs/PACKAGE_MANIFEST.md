@@ -9,7 +9,7 @@
 | Package date | `2026-08-18` |
 | Manifest scope | Every Markdown file except this self-referential manifest |
 | Files hashed | `19` |
-| Total hashed bytes | `121687` |
+| Total hashed bytes | `121874` |
 
 ## File hashes
 
@@ -22,7 +22,7 @@
 | `026_black_friday_cost_surface_registry_template.md` | 3743 | `4f8bff6c3dd5ee71d8d3f29412afb070287f4a4e1d92ffc298683d3c4de5bd3f` |
 | `026_black_friday_goal_prompt.md` | 3939 | `61e335b3bdc812423a4b62e166e89c6078384e5e16f03c1d30a9106618d681b6` |
 | `026_black_friday_improvement_loop_closure.md` | 2141 | `eb717bd93bd93bca65116ec5a362fb9af971cc13027cddcab3a7dbb3d0647f57` |
-| `026_black_friday_source_reading_record.md` | 9962 | `acbb49bf6c8ef5fda315f4394e67a48acf08228a3512bb0264e7e0ae20fb0e5a` |
+| `026_black_friday_source_reading_record.md` | 10019 | `91a12a445d6d5eedf0931c68c1a1653c56606c107b4c5120884be7f22e459787` |
 | `026_black_friday_spec_part_1_event_identity_and_player_experience.md` | 5825 | `68b575c8c263bd3c1c3f955c8065c9b75e5bfdd14c97720eb286e89c50ea20a8` |
 | `026_black_friday_spec_part_2_friday_reservation_and_lifecycle.md` | 9607 | `488c46eca1c51142a17d06e365d4b2b922c38e2bd053d9d77a7d444e5ebec69e` |
 | `026_black_friday_spec_part_3_reusable_cost_modifier_architecture.md` | 10643 | `a852ddae45a49c835b98d0a34998e098f816089bf87fdf64cd5c2f53e94eeb58` |
@@ -31,7 +31,7 @@
 | `026_black_friday_spec_part_6_event_logs_evolution_and_presentation.md` | 6116 | `85fb2ffa5a68cb1c832c121d6f1b78220fc5c5d5b4605ea0263fc3843d620ffe` |
 | `026_black_friday_spec_part_7_assets_and_achievement.md` | 5860 | `b8d00ad22b945a472349180c0e58fe0a5fed2689a659c74c305df88c73993a47` |
 | `026_black_friday_spec_part_8_acceptance_scenarios.md` | 11782 | `6d96d39bca2ba747e968c6c8df83fde03b10c2e34d592b35b5c6af5200e3706b` |
-| `026_black_friday_spec_part_9_implementation_crosswalk.md` | 9860 | `14e90cfe9c8611756ceb558f4780a53f16f874219a95a8cc45271a69e09f767a` |
+| `026_black_friday_spec_part_9_implementation_crosswalk.md` | 9990 | `f0862ff7c0e62ffb2d2a27bbbfc2f7bb8f6cecc98efe6f4b124caaebd24c5ec5` |
 | `026_black_friday_subagent_review_record.md` | 3668 | `0b5bdddc7487dc4c9ba8a5229b2791324201a2ceb7154005816219d9938a2739` |
 | `README.md` | 4237 | `4b5631fbeb696ed2b44dd0d6762a719fb52cf8d44577a6e7b7b31358a3790671` |
 

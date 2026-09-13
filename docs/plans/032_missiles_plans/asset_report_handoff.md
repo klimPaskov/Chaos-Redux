@@ -1,6 +1,8 @@
 # Event 32 — Missiles static event-art handoff
 
-The bounded asset sidecar is complete through source generation, local processing, DDS conversion, and evidence capture. The parent agent must approve/copy the assets into runtime folders and register the sprites; this handoff does not claim final runtime wiring.
+Parent integration status: the runtime DDS package is installed under the Event 032 `gfx/` directories, all icon and full-canvas aliases are registered, and the replacement global-news image is the current final. The implementation-level per-file visual audit is maintained at `docs/events/032_missiles/asset_audit.md`.
+
+The bounded asset sidecar is complete through source generation, local processing, DDS conversion, and evidence capture. The parent has completed runtime copying, sprite registration, and consumer wiring; this handoff retains the original provenance and scope record.
 
 ## Deliverables
 

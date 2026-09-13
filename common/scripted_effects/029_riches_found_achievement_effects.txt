@@ -1,0 +1,296 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND ACHIEVEMENT EFFECTS
+# ============================================================================
+# State- and controller-scoped achievement verification. These helpers start,
+# maintain, and invalidate bounded continuity windows only from the Event 029
+# registry or the current controller's controlled mine states. They do not
+# unlock achievements directly and never perform a whole-world scan.
+# ============================================================================
+
+# STATE scope. Refreshes the continuous verification windows for the two
+# controller-specific mine routes. A zero deadline means that the qualifying
+# state has not yet held continuously; any loss of a required value resets the
+# window, while explicit route disqualifiers remain permanent.
+riches_found_refresh_state_achievement_timers = {
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = riches_found_exclusive_concession_history
+				has_state_flag = riches_found_achievement_resource_curse_history
+				has_state_flag = riches_found_evolution_i_recorded
+				has_state_flag = riches_found_patronage_tolerated
+				has_state_flag = riches_found_achievement_mass_death_recorded
+				has_state_flag = riches_found_mine_permanent_seal
+				has_state_flag = riches_found_mine_collapsed
+				has_state_flag = riches_found_mine_exhausted
+			}
+		}
+		set_state_flag = riches_found_achievement_public_fortune_invalidated
+	}
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_achievement_public_fortune_invalidated }
+			has_state_flag = riches_found_achievement_mature_development_reached
+			riches_found_achievement_public_settlement_complete = yes
+			has_state_flag = riches_found_achievement_public_project_recorded
+			riches_found_achievement_original_discoverer_is_controller = yes
+			riches_found_mine_is_open_or_regulated = yes
+			check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_high compare = greater_than_or_equals }
+			check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_high compare = greater_than_or_equals }
+			check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_severe compare = less_than }
+		}
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_achievement_public_fortune_ready } }
+			if = {
+				limit = { check_variable = { var = riches_found_achievement_public_fortune_deadline_date value = constant:riches_found_value.zero compare = equals } }
+				set_variable = { riches_found_achievement_public_fortune_deadline_date = global.date }
+				add_to_variable = { riches_found_achievement_public_fortune_deadline_date = constant:riches_found_achievement_duration.public_fortune_hold_days }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = riches_found_achievement_public_fortune_deadline_date compare = greater_than_or_equals } }
+				set_state_flag = riches_found_achievement_public_fortune_ready
+			}
+		}
+	}
+	else = {
+		clr_state_flag = riches_found_achievement_public_fortune_ready
+		if = { limit = { NOT = { has_state_flag = riches_found_achievement_public_fortune_invalidated } } set_variable = { riches_found_achievement_public_fortune_deadline_date = constant:riches_found_value.zero } }
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = riches_found_mine_permanent_seal
+				has_state_flag = riches_found_mine_collapsed
+				has_state_flag = riches_found_mine_exhausted
+				has_state_flag = riches_found_achievement_transfer_invalidated
+			}
+		}
+		set_state_flag = riches_found_achievement_claim_jumper_invalidated
+	}
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_achievement_claim_jumper_invalidated }
+			has_state_flag = riches_found_achievement_transfer_valid
+			riches_found_mine_is_open_or_regulated = yes
+			check_variable = { var = riches_found_mine_contribution_score value = constant:riches_found_value.zero compare = greater_than }
+			check_variable = { var = riches_found_discoverer value = CONTROLLER compare = not_equals }
+			OR = {
+				has_state_flag = riches_found_achievement_transfer_settlement_recorded
+				has_state_flag = riches_found_achievement_contract_renegotiated
+				has_state_flag = riches_found_achievement_administration_replaced
+				has_state_flag = riches_found_achievement_repair_completed
+			}
+		}
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_achievement_claim_jumper_ready } }
+			if = {
+				limit = { check_variable = { var = riches_found_achievement_claim_jumper_deadline_date value = constant:riches_found_value.zero compare = equals } }
+				set_variable = { riches_found_achievement_claim_jumper_deadline_date = global.date }
+				add_to_variable = { riches_found_achievement_claim_jumper_deadline_date = constant:riches_found_achievement_duration.claim_jumper_hold_days }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = riches_found_achievement_claim_jumper_deadline_date compare = greater_than_or_equals } }
+				set_state_flag = riches_found_achievement_claim_jumper_ready
+			}
+		}
+	}
+	else = {
+		clr_state_flag = riches_found_achievement_claim_jumper_ready
+		if = { limit = { NOT = { has_state_flag = riches_found_achievement_claim_jumper_invalidated } } set_variable = { riches_found_achievement_claim_jumper_deadline_date = constant:riches_found_value.zero } }
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = riches_found_gilded_governing_enclave
+				has_state_flag = riches_found_gilded_violently_nationalized
+				has_state_flag = riches_found_achievement_foreign_intervention_recorded
+				has_state_flag = riches_found_achievement_mass_death_recorded
+				has_state_flag = riches_found_mine_collapsed
+				has_state_flag = riches_found_mine_permanent_seal
+			}
+		}
+		set_state_flag = riches_found_achievement_gilded_reform_invalidated
+	}
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_achievement_gilded_reform_invalidated }
+			has_state_flag = riches_found_achievement_gilded_history
+			has_state_flag = riches_found_achievement_gilded_reform_complete
+			riches_found_mine_is_open_or_regulated = yes
+			OR = {
+				has_state_flag = riches_found_gilded_charter_revoked
+				has_state_flag = riches_found_gilded_district_bought
+				has_state_flag = riches_found_gilded_sovereignty_shared
+				has_state_flag = riches_found_gilded_board_recognized
+			}
+			OR = {
+				has_state_flag = riches_found_camp_administration
+				has_state_flag = riches_found_administration_replaced
+			}
+			check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_high compare = greater_than_or_equals }
+			check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_stable compare = greater_than_or_equals }
+		}
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_achievement_gilded_ready } }
+			if = {
+				limit = { check_variable = { var = riches_found_achievement_gilded_deadline_date value = constant:riches_found_value.zero compare = equals } }
+				set_variable = { riches_found_achievement_gilded_deadline_date = global.date }
+				add_to_variable = { riches_found_achievement_gilded_deadline_date = constant:riches_found_achievement_duration.gilded_reform_hold_days }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = riches_found_achievement_gilded_deadline_date compare = greater_than_or_equals } }
+				set_state_flag = riches_found_achievement_gilded_ready
+			}
+		}
+	}
+	else = {
+		clr_state_flag = riches_found_achievement_gilded_ready
+		if = { limit = { NOT = { has_state_flag = riches_found_achievement_gilded_reform_invalidated } } set_variable = { riches_found_achievement_gilded_deadline_date = constant:riches_found_value.zero } }
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = riches_found_account_predatory_prosperity
+				has_state_flag = riches_found_account_breach_imminent
+				has_state_flag = riches_found_mine_collapsed
+				has_state_flag = riches_found_achievement_mass_death_recorded
+			}
+		}
+		set_state_flag = riches_found_achievement_account_closure_invalidated
+	}
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_achievement_account_closure_invalidated }
+			has_state_flag = riches_found_achievement_account_history
+			has_state_flag = riches_found_account_closure_finalized
+			OR = {
+				AND = {
+					has_state_flag = riches_found_mine_permanent_seal
+					has_state_flag = riches_found_achievement_permanent_seal_recorded
+				}
+				has_state_flag = riches_found_account_bound_terms_closure
+			}
+			check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_value.zero compare = equals }
+			OR = {
+				has_state_flag = riches_found_achievement_evacuation_recorded
+				check_variable = { var = riches_found_harm_total_deaths value = constant:riches_found_achievement_limit.account_containment_death_ceiling compare = less_than_or_equals }
+			}
+			CONTROLLER = {
+				exists = yes
+				check_variable = { var = PREV.riches_found_account_closure_controller value = THIS compare = equals }
+				has_stability > constant:riches_found_achievement_threshold.account_stability_floor
+			}
+		}
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_achievement_account_ready } }
+			if = {
+				limit = { check_variable = { var = riches_found_achievement_account_deadline_date value = constant:riches_found_value.zero compare = equals } }
+				set_variable = { riches_found_achievement_account_deadline_date = global.date }
+				add_to_variable = { riches_found_achievement_account_deadline_date = constant:riches_found_achievement_duration.account_closure_verify_days }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = riches_found_achievement_account_deadline_date compare = greater_than_or_equals } }
+				set_state_flag = riches_found_achievement_account_ready
+			}
+		}
+	}
+	else = {
+		clr_state_flag = riches_found_achievement_account_ready
+		if = { limit = { NOT = { has_state_flag = riches_found_achievement_account_closure_invalidated } } set_variable = { riches_found_achievement_account_deadline_date = constant:riches_found_value.zero } }
+	}
+
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = riches_found_achievement_mass_death_recorded
+				has_state_flag = riches_found_demons_military_purge
+				has_state_flag = riches_found_achievement_account_history
+				has_state_flag = riches_found_demons_make_agreement
+				has_state_flag = riches_found_demons_controlled_exploitation
+				has_state_flag = riches_found_demons_reopened_after_seal
+				has_state_flag = riches_found_mine_collapsed
+			}
+		}
+		set_state_flag = riches_found_achievement_last_shift_invalidated
+	}
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_achievement_last_shift_invalidated }
+			has_state_flag = riches_found_achievement_demons_history
+			has_state_flag = riches_found_achievement_evacuation_recorded
+			has_state_flag = riches_found_achievement_evacuation_route_valid
+			has_state_flag = riches_found_achievement_assistance_recorded
+			has_state_flag = riches_found_mine_permanent_seal
+			has_state_flag = riches_found_achievement_permanent_seal_recorded
+			has_state_flag = riches_found_mine_state
+			check_variable = { var = riches_found_supernatural_pressure value = constant:riches_found_value.zero compare = equals }
+			CONTROLLER = {
+				exists = yes
+				check_variable = { var = PREV.riches_found_last_shift_controller value = THIS compare = equals }
+			}
+		}
+		if = {
+			limit = { NOT = { has_state_flag = riches_found_achievement_last_shift_ready } }
+			if = {
+				limit = { check_variable = { var = riches_found_achievement_last_shift_deadline_date value = constant:riches_found_value.zero compare = equals } }
+				set_variable = { riches_found_achievement_last_shift_deadline_date = global.date }
+				add_to_variable = { riches_found_achievement_last_shift_deadline_date = constant:riches_found_achievement_duration.last_shift_verify_days }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = riches_found_achievement_last_shift_deadline_date compare = greater_than_or_equals } }
+				set_state_flag = riches_found_achievement_last_shift_ready
+			}
+		}
+	}
+	else = {
+		clr_state_flag = riches_found_achievement_last_shift_ready
+		if = { limit = { NOT = { has_state_flag = riches_found_achievement_last_shift_invalidated } } set_variable = { riches_found_achievement_last_shift_deadline_date = constant:riches_found_value.zero } }
+	}
+}
+
+# COUNTRY scope. Rebuilds the bounded three-mine verification window from the
+# same registry pass that calculates controller diminishing returns. The window
+# becomes permanently invalid only after a started verification is broken.
+riches_found_refresh_controller_achievement_window = {
+	if = {
+		limit = {
+			has_variable = riches_found_achievement_multi_mine_safe_count
+			check_variable = { var = riches_found_achievement_multi_mine_safe_count value = constant:riches_found_threshold.aggregate_third_mine compare = greater_than_or_equals }
+			has_country_flag = riches_found_controller_aggregate_duplicate_safe
+			NOT = { has_country_flag = riches_found_achievement_all_glitters_invalidated }
+			NOT = { has_country_flag = riches_found_achievement_all_glitters_forbidden_evolution }
+			NOT = { has_country_flag = riches_found_achievement_all_glitters_permanent_loss }
+			NOT = { check_variable = { var = riches_found_controller_pp_gain value = constant:riches_found_scaling.controller_pp_cap compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = riches_found_controller_construction value = constant:riches_found_scaling.controller_construction_cap compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = riches_found_controller_efficiency value = constant:riches_found_scaling.controller_efficiency_cap compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = riches_found_controller_factory_output value = constant:riches_found_scaling.controller_factory_output_cap compare = greater_than_or_equals } }
+			NOT = { check_variable = { var = riches_found_controller_consumer_goods_relief value = constant:riches_found_scaling.controller_consumer_goods_relief_cap compare = greater_than_or_equals } }
+		}
+		if = {
+			limit = { NOT = { has_country_flag = riches_found_achievement_all_glitters_ready } }
+			if = {
+				limit = { check_variable = { var = riches_found_achievement_all_glitters_deadline_date value = constant:riches_found_value.zero compare = equals } }
+				set_variable = { riches_found_achievement_all_glitters_deadline_date = global.date }
+				add_to_variable = { riches_found_achievement_all_glitters_deadline_date = constant:riches_found_achievement_duration.all_that_glitters_hold_days }
+			}
+			if = {
+				limit = { check_variable = { var = global.date value = riches_found_achievement_all_glitters_deadline_date compare = greater_than_or_equals } }
+				set_country_flag = riches_found_achievement_all_glitters_ready
+			}
+		}
+	}
+	else = {
+		if = {
+			limit = {
+				check_variable = { var = riches_found_achievement_all_glitters_deadline_date value = constant:riches_found_value.zero compare = greater_than }
+				NOT = { has_country_flag = riches_found_achievement_all_glitters_ready }
+			}
+			set_country_flag = riches_found_achievement_all_glitters_permanent_loss
+		}
+		clr_country_flag = riches_found_achievement_all_glitters_ready
+		clear_variable = riches_found_achievement_all_glitters_deadline_date
+	}
+}

@@ -1,5 +1,7 @@
 # Event 021 scripted-system architect handoff
 
+> **Historical handoff notice.** This records the architect's bounded scripted-system changes and parent integration boundary. Its evidence snapshot predates the current Event 021 lint, weighted-surface, map, and focus artifacts; use `docs/events/021_random_civil_war/acceptance_evidence.md` for current certification status.
+
 Status: complete within the exclusive scripted-system scope. The parent can wire the event, decisions, shared cluster/scenario registry, event log, AI, localization, and CXT files against the contracts below.
 
 ## Changed files

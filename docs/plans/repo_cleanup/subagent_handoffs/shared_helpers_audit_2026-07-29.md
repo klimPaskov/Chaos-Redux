@@ -20,8 +20,9 @@ Scope: shared scripted systems and helper registries, with Event 001-020-specifi
 
 The complete repository search for `is_desert_state` recorded the following gameplay call sites in the inspected tree:
 
-- `events/026_industry_to_desert.txt:31,35,56,77,90` for Event 026 owned-state selection and factory relocation.
 - `common/scripted_effects/cbrn_doctrine_effects.txt:247` for the state-scope low-water cleanup multiplier.
+
+The retired Event 026 consumer is no longer part of the repository runtime or documentation surface.
 
 The definition and documentation references in the inspected tree were:
 
@@ -48,4 +49,4 @@ The repository's GUI event-target convention remains untouched. No `event_target
 
 ## Risks and follow-up
 
-The cleanup is behavior-preserving because duplicate alternatives in a boolean `OR` block cannot change the result. Future desert-state additions should update the shared trigger and its documentation together. Any future attempt to retire compatibility helpers must audit direct calls, meta effects, scripted localisation, scripted GUI bindings, GFX-linked text, docs, workbook references, and save compatibility before deletion.
+The cleanup is behavior-preserving because duplicate alternatives in a boolean `OR` block cannot change the result. Future state-class additions should update the shared trigger and its documentation together. Any future attempt to retire compatibility helpers must audit direct calls, meta effects, scripted localisation, scripted GUI bindings, GFX-linked text, docs, workbook references, and save compatibility before deletion.

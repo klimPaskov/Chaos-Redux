@@ -1,0 +1,40 @@
+# Camp administration: current authority, finite cohorts, and independent slots.
+camp_admin_site_is_operational = {
+	has_state_flag = camp_admin_initialized
+	has_state_flag = camp_rework_site_active
+	NOT = { has_state_flag = camp_admin_closed }
+	has_variable = camp_admin_responsible_country
+	camp_admin_site_authority_is_valid = yes
+	var:camp_admin_responsible_country = {
+		exists = yes
+		camp_rework_country_is_eligible = yes
+		NOT = { has_country_flag = camp_admin_reforming }
+	}
+}
+camp_admin_can_use_radical_mandate = {
+	camp_rework_country_is_eligible = yes
+	OR = { camp_rework_country_can_use_radicalized_route = yes camp_admin_country_can_radicalize = yes }
+	NOT = { has_country_flag = camp_admin_reforming }
+	NOT = { has_government = democratic }
+}
+camp_admin_has_supported_workforce = {
+	camp_admin_site_is_operational = yes
+	check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero }
+	check_variable = { camp_admin_support_ratio > constant:camp_admin_value.zero }
+}
+camp_admin_economy_slot_is_free = {
+	NOT = { has_country_flag = camp_admin_economy_slot_active }
+}
+camp_admin_institution_slot_is_free = {
+	NOT = { has_country_flag = camp_admin_institution_slot_active }
+}
+camp_admin_site_authority_is_valid = {
+	has_variable = camp_admin_responsible_country
+	OR = {
+		is_controlled_by = var:camp_admin_responsible_country
+		AND = {
+			has_state_flag = camp_admin_subject_authority
+			CONTROLLER = { is_subject_of = var:PREV.camp_admin_responsible_country }
+		}
+	}
+}

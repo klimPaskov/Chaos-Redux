@@ -1,0 +1,282 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 027 ACHIEVEMENT TRACKING
+# ============================================================================
+# Durable achievement evidence is derived only from choice_consumed receipts.
+# Native doctrine state, queued batches, adoption, and AI transactions cannot
+# satisfy an Event 027 achievement unless the receipt ledger proves the event
+# choice itself performed the required work.
+# ============================================================================
+
+doctrine_research_achievement_first_lesson_check = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = doctrine_research_achievement_first_lesson }
+			has_variable = doctrine_research_batch_ids
+		}
+		set_temp_variable = { doctrine_research_first_lesson_found = 0 }
+		for_loop_effect = {
+			start = constant:doctrine_research_event.first_index
+			end = doctrine_research_batch_ids^num
+			value = doctrine_research_achievement_batch_index
+			if = {
+				limit = {
+					check_variable = { doctrine_research_first_lesson_found < 1 }
+					check_variable = { var = doctrine_research_batch_human_started^doctrine_research_achievement_batch_index value = 0 compare = greater_than }
+					check_variable = { var = doctrine_research_batch_sizes^doctrine_research_achievement_batch_index value = 1 compare = greater_than }
+					has_variable = doctrine_research_receipt_ids
+				}
+				set_temp_variable = { doctrine_research_first_lesson_batch_id = doctrine_research_batch_ids^doctrine_research_achievement_batch_index }
+				for_loop_effect = {
+					start = constant:doctrine_research_event.first_index
+					end = doctrine_research_receipt_ids^num
+					value = doctrine_research_first_lesson_adoption_index
+					if = {
+						limit = {
+							check_variable = { doctrine_research_first_lesson_found < 1 }
+							check_variable = { var = doctrine_research_receipt_batch_ids^doctrine_research_first_lesson_adoption_index value = doctrine_research_first_lesson_batch_id compare = equals }
+							check_variable = { var = doctrine_research_receipt_states^doctrine_research_first_lesson_adoption_index value = constant:doctrine_research_receipt_state.choice_consumed compare = equals }
+							check_variable = { var = doctrine_research_receipt_actions^doctrine_research_first_lesson_adoption_index value = constant:doctrine_research_action.adopt compare = equals }
+						}
+						set_temp_variable = { doctrine_research_first_lesson_adoption_domain = doctrine_research_receipt_domains^doctrine_research_first_lesson_adoption_index }
+						set_temp_variable = { doctrine_research_first_lesson_adoption_choice = doctrine_research_receipt_choice_numbers^doctrine_research_first_lesson_adoption_index }
+						set_temp_variable = { doctrine_research_first_lesson_domain_was_empty = 0 }
+						if = { limit = { check_variable = { var = doctrine_research_first_lesson_adoption_domain value = constant:doctrine_research_domain.army compare = equals } } set_temp_variable = { doctrine_research_first_lesson_domain_was_empty = doctrine_research_batch_start_empty_army^doctrine_research_achievement_batch_index } }
+						if = { limit = { check_variable = { var = doctrine_research_first_lesson_adoption_domain value = constant:doctrine_research_domain.navy compare = equals } } set_temp_variable = { doctrine_research_first_lesson_domain_was_empty = doctrine_research_batch_start_empty_navy^doctrine_research_achievement_batch_index } }
+						if = { limit = { check_variable = { var = doctrine_research_first_lesson_adoption_domain value = constant:doctrine_research_domain.air compare = equals } } set_temp_variable = { doctrine_research_first_lesson_domain_was_empty = doctrine_research_batch_start_empty_air^doctrine_research_achievement_batch_index } }
+						if = { limit = { check_variable = { var = doctrine_research_first_lesson_adoption_domain value = constant:doctrine_research_domain.special_forces compare = equals } } set_temp_variable = { doctrine_research_first_lesson_domain_was_empty = doctrine_research_batch_start_empty_special_forces^doctrine_research_achievement_batch_index } }
+						if = { limit = { check_variable = { var = doctrine_research_first_lesson_adoption_domain value = constant:doctrine_research_domain.chaos_warfare compare = equals } } set_temp_variable = { doctrine_research_first_lesson_domain_was_empty = doctrine_research_batch_start_empty_chaos_warfare^doctrine_research_achievement_batch_index } }
+						if = {
+							limit = { check_variable = { doctrine_research_first_lesson_domain_was_empty > 0 } }
+							for_loop_effect = {
+								start = constant:doctrine_research_event.first_index
+								end = doctrine_research_receipt_ids^num
+								value = doctrine_research_first_lesson_mastery_index
+								if = {
+									limit = {
+										check_variable = { doctrine_research_first_lesson_found < 1 }
+										check_variable = { var = doctrine_research_receipt_batch_ids^doctrine_research_first_lesson_mastery_index value = doctrine_research_first_lesson_batch_id compare = equals }
+										check_variable = { var = doctrine_research_receipt_states^doctrine_research_first_lesson_mastery_index value = constant:doctrine_research_receipt_state.choice_consumed compare = equals }
+										check_variable = { var = doctrine_research_receipt_actions^doctrine_research_first_lesson_mastery_index value = constant:doctrine_research_action.mastery compare = equals }
+										check_variable = { var = doctrine_research_receipt_domains^doctrine_research_first_lesson_mastery_index value = doctrine_research_first_lesson_adoption_domain compare = equals }
+										check_variable = { var = doctrine_research_receipt_choice_numbers^doctrine_research_first_lesson_mastery_index value = doctrine_research_first_lesson_adoption_choice compare = greater_than }
+										check_variable = { var = doctrine_research_receipt_post_levels^doctrine_research_first_lesson_mastery_index value = 0 compare = greater_than }
+									}
+									set_temp_variable = { doctrine_research_first_lesson_found = 1 }
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { doctrine_research_first_lesson_found > 0 } }
+			set_country_flag = doctrine_research_achievement_first_lesson
+		}
+	}
+}
+
+doctrine_research_achievement_single_school_check = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = doctrine_research_achievement_single_school }
+			has_variable = doctrine_research_batch_ids
+			has_variable = doctrine_research_receipt_ids
+		}
+		set_temp_variable = { doctrine_research_single_school_found = 0 }
+		for_loop_effect = {
+			start = constant:doctrine_research_event.first_index
+			end = doctrine_research_batch_ids^num
+			value = doctrine_research_achievement_batch_index
+			if = {
+				limit = {
+					check_variable = { doctrine_research_single_school_found < 1 }
+					check_variable = { var = doctrine_research_batch_human_started^doctrine_research_achievement_batch_index value = 0 compare = greater_than }
+					check_variable = { var = doctrine_research_batch_stages^doctrine_research_achievement_batch_index value = constant:doctrine_research_stage.totalen_chaos compare = equals }
+					check_variable = { var = doctrine_research_batch_sizes^doctrine_research_achievement_batch_index value = constant:doctrine_research_event.evolution_iv_batch_size compare = equals }
+					OR = {
+						check_variable = { var = doctrine_research_batch_remaining_choices^doctrine_research_achievement_batch_index value = 0 compare = equals }
+						check_variable = { var = doctrine_research_batch_statuses^doctrine_research_achievement_batch_index value = constant:doctrine_research_batch_status.completed compare = equals }
+					}
+				}
+				set_temp_variable = { doctrine_research_single_school_batch_id = doctrine_research_batch_ids^doctrine_research_achievement_batch_index }
+				for_loop_effect = {
+					start = constant:doctrine_research_event.first_index
+					end = doctrine_research_receipt_ids^num
+					value = doctrine_research_single_school_anchor_index
+					if = {
+						limit = {
+							check_variable = { doctrine_research_single_school_found < 1 }
+							check_variable = { var = doctrine_research_receipt_batch_ids^doctrine_research_single_school_anchor_index value = doctrine_research_single_school_batch_id compare = equals }
+							check_variable = { var = doctrine_research_receipt_states^doctrine_research_single_school_anchor_index value = constant:doctrine_research_receipt_state.choice_consumed compare = equals }
+							check_variable = { var = doctrine_research_receipt_actions^doctrine_research_single_school_anchor_index value = constant:doctrine_research_action.mastery compare = equals }
+						}
+						set_temp_variable = { doctrine_research_single_school_target_domain = doctrine_research_receipt_domains^doctrine_research_single_school_anchor_index }
+						set_temp_variable = { doctrine_research_single_school_target_grand = doctrine_research_receipt_grands^doctrine_research_single_school_anchor_index }
+						set_temp_variable = { doctrine_research_single_school_target_track = doctrine_research_receipt_tracks^doctrine_research_single_school_anchor_index }
+						set_temp_variable = { doctrine_research_single_school_target_subdoctrine = doctrine_research_receipt_subdoctrines^doctrine_research_single_school_anchor_index }
+						set_temp_variable = { doctrine_research_single_school_count = 0 }
+						set_temp_variable = { doctrine_research_single_school_max_post = 0 }
+						for_loop_effect = {
+							start = constant:doctrine_research_event.first_index
+							end = doctrine_research_receipt_ids^num
+							value = doctrine_research_single_school_receipt_index
+							if = {
+								limit = {
+									check_variable = { var = doctrine_research_receipt_batch_ids^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_batch_id compare = equals }
+									check_variable = { var = doctrine_research_receipt_states^doctrine_research_single_school_receipt_index value = constant:doctrine_research_receipt_state.choice_consumed compare = equals }
+									check_variable = { var = doctrine_research_receipt_actions^doctrine_research_single_school_receipt_index value = constant:doctrine_research_action.mastery compare = equals }
+									check_variable = { var = doctrine_research_receipt_domains^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_target_domain compare = equals }
+									check_variable = { var = doctrine_research_receipt_grands^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_target_grand compare = equals }
+									check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_target_track compare = equals }
+									check_variable = { var = doctrine_research_receipt_subdoctrines^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_target_subdoctrine compare = equals }
+								}
+								set_temp_variable = { doctrine_research_single_school_expected_post = doctrine_research_receipt_pre_levels^doctrine_research_single_school_receipt_index }
+								add_to_temp_variable = { doctrine_research_single_school_expected_post = 1 }
+								if = {
+									limit = {
+										check_variable = { var = doctrine_research_receipt_post_levels^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_expected_post compare = equals }
+									}
+									add_to_temp_variable = { doctrine_research_single_school_count = 1 }
+									if = {
+										limit = { check_variable = { var = doctrine_research_receipt_post_levels^doctrine_research_single_school_receipt_index value = doctrine_research_single_school_max_post compare = greater_than } }
+										set_temp_variable = { doctrine_research_single_school_max_post = doctrine_research_receipt_post_levels^doctrine_research_single_school_receipt_index }
+									}
+								}
+						}
+					}
+					if = {
+						limit = {
+								check_variable = { var = doctrine_research_single_school_count value = constant:doctrine_research_event.evolution_iv_batch_size compare = equals }
+								check_variable = { var = doctrine_research_single_school_max_post value = constant:doctrine_research_event.max_mastery_level compare = greater_than_or_equals }
+							}
+							set_temp_variable = { doctrine_research_single_school_found = 1 }
+						}
+					}
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { doctrine_research_single_school_found > 0 } }
+			set_country_flag = doctrine_research_achievement_single_school
+		}
+	}
+}
+
+
+doctrine_research_achievement_joint_curriculum_check = {
+	if = {
+		limit = {
+			NOT = { has_country_flag = doctrine_research_achievement_joint_curriculum }
+			has_variable = doctrine_research_batch_ids
+			has_variable = doctrine_research_receipt_ids
+		}
+		set_temp_variable = { doctrine_research_joint_curriculum_found = 0 }
+		for_loop_effect = {
+			start = constant:doctrine_research_event.first_index
+			end = doctrine_research_batch_ids^num
+			value = doctrine_research_achievement_batch_index
+			if = {
+				limit = {
+					check_variable = { doctrine_research_joint_curriculum_found < 1 }
+					check_variable = { var = doctrine_research_batch_human_started^doctrine_research_achievement_batch_index value = 0 compare = greater_than }
+					check_variable = { var = doctrine_research_batch_sizes^doctrine_research_achievement_batch_index value = constant:doctrine_research_event.evolution_iii_batch_size compare = greater_than_or_equals }
+				}
+				set_temp_variable = { doctrine_research_joint_curriculum_batch_id = doctrine_research_batch_ids^doctrine_research_achievement_batch_index }
+				set_temp_variable = { doctrine_research_joint_curriculum_count = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_infantry_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_combat_support_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_armor_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_operations_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_submarines_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_screens_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_carriers_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_capital_ships_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_fighter_aircraft_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_strike_aircraft_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_medium_aircraft_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_heavy_aircraft_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_first_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_second_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_infantry_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_combat_support_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_armor_seen = 0 }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_operations_seen = 0 }
+				for_loop_effect = {
+					start = constant:doctrine_research_event.first_index
+					end = doctrine_research_receipt_ids^num
+					value = doctrine_research_joint_curriculum_receipt_index
+					if = {
+						limit = {
+							check_variable = { var = doctrine_research_receipt_batch_ids^doctrine_research_joint_curriculum_receipt_index value = doctrine_research_joint_curriculum_batch_id compare = equals }
+							check_variable = { var = doctrine_research_receipt_states^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_receipt_state.choice_consumed compare = equals }
+							check_variable = { var = doctrine_research_receipt_actions^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_action.mastery compare = equals }
+						}
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.infantry compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_army_infantry_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.combat_support compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_army_combat_support_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.armor compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_army_armor_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.army compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.operations compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_army_operations_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.submarines compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_navy_submarines_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.screens compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_navy_screens_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.carriers compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_navy_carriers_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.navy compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.capital_ships compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_navy_capital_ships_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.fighter_aircraft compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_air_fighter_aircraft_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.strike_aircraft compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_air_strike_aircraft_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.medium_aircraft compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_air_medium_aircraft_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.air compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.heavy_aircraft compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_air_heavy_aircraft_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.special_forces_first compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_first_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.special_forces compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.special_forces_second compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_second_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.infantry compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_infantry_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.combat_support compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_combat_support_seen = 1 } }
+								if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.armor compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_armor_seen = 1 } }
+						if = { limit = { check_variable = { var = doctrine_research_receipt_domains^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_domain.chaos_warfare compare = equals } check_variable = { var = doctrine_research_receipt_tracks^doctrine_research_joint_curriculum_receipt_index value = constant:doctrine_research_track.operations compare = equals } } set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_operations_seen = 1 } }
+						}
+					}
+				set_temp_variable = { doctrine_research_joint_curriculum_army_infantry_add = doctrine_research_joint_curriculum_army_infantry_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_army_infantry_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_combat_support_add = doctrine_research_joint_curriculum_army_combat_support_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_army_combat_support_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_armor_add = doctrine_research_joint_curriculum_army_armor_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_army_armor_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_army_operations_add = doctrine_research_joint_curriculum_army_operations_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_army_operations_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_submarines_add = doctrine_research_joint_curriculum_navy_submarines_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_navy_submarines_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_screens_add = doctrine_research_joint_curriculum_navy_screens_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_navy_screens_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_carriers_add = doctrine_research_joint_curriculum_navy_carriers_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_navy_carriers_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_navy_capital_ships_add = doctrine_research_joint_curriculum_navy_capital_ships_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_navy_capital_ships_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_fighter_aircraft_add = doctrine_research_joint_curriculum_air_fighter_aircraft_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_air_fighter_aircraft_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_strike_aircraft_add = doctrine_research_joint_curriculum_air_strike_aircraft_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_air_strike_aircraft_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_medium_aircraft_add = doctrine_research_joint_curriculum_air_medium_aircraft_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_air_medium_aircraft_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_air_heavy_aircraft_add = doctrine_research_joint_curriculum_air_heavy_aircraft_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_air_heavy_aircraft_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_first_add = doctrine_research_joint_curriculum_special_forces_special_forces_first_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_first_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_second_add = doctrine_research_joint_curriculum_special_forces_special_forces_second_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_special_forces_special_forces_second_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_infantry_add = doctrine_research_joint_curriculum_chaos_warfare_infantry_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_chaos_warfare_infantry_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_combat_support_add = doctrine_research_joint_curriculum_chaos_warfare_combat_support_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_chaos_warfare_combat_support_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_armor_add = doctrine_research_joint_curriculum_chaos_warfare_armor_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_chaos_warfare_armor_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				set_temp_variable = { doctrine_research_joint_curriculum_chaos_warfare_operations_add = doctrine_research_joint_curriculum_chaos_warfare_operations_seen }
+				if = { limit = { check_variable = { doctrine_research_joint_curriculum_chaos_warfare_operations_add > 0 } } add_to_temp_variable = { doctrine_research_joint_curriculum_count = 1 } }
+				if = {
+									limit = { check_variable = { var = doctrine_research_joint_curriculum_count value = constant:doctrine_research_event.evolution_ii_batch_size compare = greater_than } }
+					set_temp_variable = { doctrine_research_joint_curriculum_found = 1 }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { doctrine_research_joint_curriculum_found > 0 } }
+		set_country_flag = doctrine_research_achievement_joint_curriculum
+		}
+	}
+}

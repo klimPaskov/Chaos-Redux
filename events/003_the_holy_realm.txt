@@ -35,32 +35,25 @@ country_event = {
 	}
 
 	immediate = {
-        if = {
-            limit = {
-                TIB = { can_host_holy_realm_refuge = yes }
-            }
-            TIB = {
-                country_event = { id = chaosx.nr3.2 days = 1 }
-            }
-        }
-        else_if = {
-            limit = {
-                any_country = { can_host_holy_realm_refuge = yes }
-            }
-            random_country = {
-                limit = { can_host_holy_realm_refuge = yes }
-                if = {
-                    limit = { is_ai = no }
-                    country_event = { id = chaosx.nr3.2 days = 1 }
-                }
-                else = {
-                    set_country_flag = holy_realm_memory_invited_figure
-                    holy_realm_form_country = yes
-                    news_event = { id = chaosx.news.9 days = 2 }
-                    country_event = { id = chaosx.nr3.4 days = 20 }
-                }
-            }
-        }
+		holy_realm_select_weighted_refuge_host = yes
+		if = {
+			limit = {
+				has_event_target = holy_realm_prefire_refuge_host
+				event_target:holy_realm_prefire_refuge_host = { can_host_holy_realm_refuge = yes }
+			}
+			event_target:holy_realm_prefire_refuge_host = {
+				if = {
+					limit = { is_ai = no }
+					country_event = { id = chaosx.nr3.2 days = 1 }
+				}
+				else = {
+					set_country_flag = holy_realm_memory_invited_figure
+					holy_realm_form_country = yes
+					news_event = { id = chaosx.news.9 days = 2 }
+					country_event = { id = chaosx.nr3.4 days = 20 }
+				}
+			}
+		}
     }
 }
 

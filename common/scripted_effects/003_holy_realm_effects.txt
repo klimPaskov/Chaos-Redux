@@ -2511,3 +2511,18 @@ holy_realm_apply_final_silence_wave = {
 		}
 	}
 }
+
+# Country scope; publishes a regular refuge-host pointer using the canonical
+# Tibet-first route and equal native selection among admitted alternate hosts.
+holy_realm_select_weighted_refuge_host = {
+	if = {
+		limit = { TIB = { can_host_holy_realm_refuge = yes } }
+		TIB = { save_event_target_as = holy_realm_prefire_refuge_host }
+	}
+	else = {
+		random_country = {
+			limit = { can_host_holy_realm_refuge = yes }
+			save_event_target_as = holy_realm_prefire_refuge_host
+		}
+	}
+}

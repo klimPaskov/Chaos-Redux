@@ -1,6 +1,8 @@
 # Event 012 Gods of Africa icon asset handoff
 
-Status: source art, target-size PNGs, and final DDS files are complete for the accepted 27-icon inventory, with parent-owned GFX and consumer wiring still pending.
+Status: source art, target-size PNGs, and final DDS files are complete for the accepted 27-icon inventory, and current working-tree GFX and consumer wiring is evidenced; live visual review and promotion remain pending.
+
+Reconciliation note, 2026-09-05: the asset package itself changed no GFX, gameplay, localisation, or spreadsheet files, but the current parent working tree now contains the proposed aliases and the Event 012 decision, idea, focus, and category consumers described below. This source evidence supersedes the narrower pending-wiring wording without constituting parent or user approval.
 
 ## Scope and references
 
@@ -51,12 +53,12 @@ The mechanic and idea targets are 64x64, decision targets are 32x32, and focus t
 
 | Accepted asset | Final DDS | Proposed sprite | Consumer state |
 | --- | --- | --- | --- |
-| priority | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_set_priority.dds` | `GFX_decision_012_africa_gods_set_priority` | Accepted concept; no current decision id in `012_africa_gods_decisions.txt` |
+| priority | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_set_priority.dds` | `GFX_decision_012_africa_gods_set_priority` | `gods_of_africa_prioritize_land`, `gods_of_africa_prioritize_fuel`, `gods_of_africa_prioritize_manpower`, `gods_of_africa_prioritize_industry` |
 | leniency | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_grant_leniency.dds` | `GFX_decision_012_africa_gods_grant_leniency` | `gods_of_africa_grant_leniency` |
-| offender | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_mark_offender.dds` | `GFX_decision_012_africa_gods_mark_offender` | Accepted concept; no current decision id in `012_africa_gods_decisions.txt` |
+| offender | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_mark_offender.dds` | `GFX_decision_012_africa_gods_mark_offender` | `gods_of_africa_mark_offender` |
 | protection | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_protect_partner.dds` | `GFX_decision_012_africa_gods_protect_partner` | `gods_of_africa_protect_partner` |
-| pardon | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_public_pardon.dds` | `GFX_decision_012_africa_gods_public_pardon` | Accepted concept; no current decision id in `012_africa_gods_decisions.txt` |
-| escalation | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_escalate_offense.dds` | `GFX_decision_012_africa_gods_escalate_offense` | Accepted concept; no current decision id in `012_africa_gods_decisions.txt` |
+| pardon | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_public_pardon.dds` | `GFX_decision_012_africa_gods_public_pardon` | `gods_of_africa_seek_reconciliation` and settlement/reconciliation consumers |
+| escalation | `gfx/interface/decisions/012_africa/gods_of_africa/decision_012_africa_gods_escalate_offense.dds` | `GFX_decision_012_africa_gods_escalate_offense` | `gods_of_africa_prepare_defensive_defiance`, `gods_of_africa_harden_stockpiles`, `gods_of_africa_secure_transport`, and `gods_of_africa_prepare_countermeasures` |
 
 ### Doctrine idea icons
 
@@ -86,13 +88,13 @@ The mechanic and idea targets are 64x64, decision targets are 32x32, and focus t
 
 No GFX, gameplay, GUI, focus, decision, idea, localisation, or spreadsheet files were edited by this package.
 
-The parent should add the proposed sprite aliases to the appropriate interface GFX file and replace the generic picture references only after reviewing the contact sheet and native-size PNGs.
+The current working tree contains the proposed sprite aliases in `interface/012_africa.gfx`, and the listed decision, idea, and focus consumers now reference the generated aliases; the parent should still review the contact sheet and native-size PNGs before accepting the wiring.
 
-The existing `gods_of_africa` idea pictures do not yet have matching GFX aliases, so the six idea aliases above are pending parent wiring.
+The six existing `gods_of_africa` idea pictures now have matching aliases in `interface/012_africa.gfx`, with consumers in `common/ideas/012_africa_gods_ideas.txt`; live visual review remains open.
 
-The current participant decision file still uses `GFX_decision_012_africa_charter_ledger` or generic sprites for the demand mission, reconciliation, and defensive preparation paths, and the current host decision file still uses the generic ledger, political-address, protection, or break-treaty sprites for doctrine selection and final settlement; those paths were not part of the accepted five-response/six-action icon inventory and remain explicitly unchanged.
+The current participant decision file retains generic or Charter-family sprites for demand-mission, reconciliation, and defensive paths that were outside the accepted five-response/six-action inventory; those paths remain explicitly unchanged, while the listed generated consumers use their corresponding aliases.
 
-The current focus overlay still points at the pre-existing broad Event 012 family aliases, so the eight new Gods-specific family aliases are ready for parent-owned mapping but are not silently wired here.
+The current focus overlay now references the eight Gods-specific family aliases in `common/national_focus/012_africa_continental_focus_tree.txt`; the asset package did not edit that gameplay file, and the latest focus MCP inspect/render reports no blocking diagnostics while layout warnings and live review remain open.
 
 Strength and Wrath have no current GFX or scripted-GUI consumer in the inspected source; their proposed aliases and DDS files are ready for the parent-owned consumer decision.
 

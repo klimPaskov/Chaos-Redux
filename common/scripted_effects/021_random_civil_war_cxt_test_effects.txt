@@ -1,0 +1,23 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 CXT TEST REGISTRATION
+# ============================================================================
+# Registers the reusable Event 021 crisis framework with the CXT extension bus.
+# The setup is idempotent and records no active crisis; it only makes the
+# framework available to the test harness.
+# ============================================================================
+
+random_civil_war_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event021_random_civil_war
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event021_random_civil_war_apply = {
+	if = {
+		limit = { NOT = { has_global_flag = random_civil_war_cxt_content_registered } }
+		set_global_flag = random_civil_war_cxt_content_registered
+	}
+	set_country_flag = random_civil_war_cxt_extension_seen
+}

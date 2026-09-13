@@ -64,7 +64,7 @@ Current concurrent-boundary files were rechecked without editing:
 - `gfx/flags/AXX.tga` and its four aliases: `55b1dbc417cf1a5d14f45a6f1537c56baa3e6c192ce586e6c9b392db2b4e02cb` at normal size, `58ea23655f8d5a14ebe85d700aab3d7e1a02658ab2b09282eb14e9f41ded2c1a` at medium size, and `aaf2541128fe25dce539875795100a4384d5c805562332f02df4be5891fffde8` at small size.
 - `gfx/flags/BLX.tga` and its four aliases: `002f71a61a30cfcff839c22e8fb19c8691c153c5fe7d0461952d0e8e765e7678` at normal size, `8fcf5c38394e3dc2134c89f64445c892e392d794b44791b39100118b69a70ec7` at medium size, and `8079d1e3bd470b81d0ed0112aedc69995325954ea44cbc5d2763c749bce29110` at small size.
 
-The BLX package checksum ledger still records older hashes, so this is an owner/package reconciliation item rather than a safe mechanical replacement. AXX also has a documented prior concurrent hash change. Neither family was changed by this audit.
+The BLX package checksum ledger was reconciled after this audit to the verified normal, medium, and small runtime hashes in `form09_balkan_federation_flag_2026_08_09/checksums.json`; no TGA bytes changed. AXX also has a documented prior concurrent hash change and remains untouched.
 
 ## Visual evidence
 
@@ -119,4 +119,4 @@ No file under `gfx/flags/`, `gfx/flags/medium/`, or `gfx/flags/small/` was chang
 
 ## Parent follow-up
 
-Keep all unresolved identities fail-closed until the provenance handoff is resolved, reconcile the stale BLX package checksum ledger in the owning package, decide whether and when YAK route cosmetics receive accepted definitions, and preserve the AXX concurrent-boundary hash unless the owning package explicitly reconciles it. The current technical flag audit does not authorize any of those identity or wiring changes.
+Keep all unresolved identities fail-closed until the provenance handoff is resolved, decide whether and when YAK route cosmetics receive accepted definitions, and preserve the AXX concurrent-boundary hash unless the owning package explicitly reconciles it. The current technical flag audit does not authorize any identity or route-admission change.

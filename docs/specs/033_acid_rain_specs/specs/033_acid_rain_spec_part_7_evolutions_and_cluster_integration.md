@@ -191,20 +191,13 @@ Do not create ordinary event-history rows for each severe cell, front split, or 
 
 ## Natural Disasters cluster role
 
-The accepted cluster currently has five logical Event 13 season slots. Event 33 becomes a sixth member. It does not replace an Event 13 slot.
+The accepted cluster has five logical Event 13 season slots. Event 33 follows as the sixth optional member and Event 51 follows as the seventh optional member. Neither replaces an Event 13 slot.
 
 ### Member ordering
 
-Accepted order:
+Accepted Event 13 severity order is Low, Low, Low, Low, and Medium.
 
-1. Event 13 opening local season, Low
-2. Event 13 additional early season, Low
-3. Event 13 Wider Disaster Seasons slot, Medium
-4. Event 13 Regional Cascades slot, High
-5. Event 13 Abnormal Paths slot, Severe
-6. Event 33 Acid Rain, Severe with later-order bias
-
-The later-order bias ensures Acid Rain resolves after every queued Event 13 season, including the other Severe slot.
+Event 33 Acid Rain follows at Severe severity and Event 51 Heat Wave follows at High severity. Runtime firing order still uses the dynamic severity-biased shuffle after the synchronous trigger and required rows, so declaration order does not force either event to dispatch last.
 
 ### Event 33 cluster validity
 

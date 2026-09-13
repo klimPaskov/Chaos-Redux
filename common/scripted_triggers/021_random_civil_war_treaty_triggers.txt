@@ -1,0 +1,168 @@
+# CHAOS REDUX - EVENT 021 SETTLEMENT SIGNATORY TRIGGERS
+# ============================================================================
+# Consumer/readiness triggers for the persistent treaty helper tranche.
+# Terms Hold is authoritative only after event021_treaty_review_agreement has
+# scanned every aligned signatory row and propagated the aggregate receipts.
+# These triggers do not award achievements or search the world.
+# ============================================================================
+
+# COUNTRY scope. The settlement owner has a real negotiated settlement and a
+# live, front-bound obligation. This base gate is separate from the prepared
+# signatory flag so the binding effect cannot satisfy its own capture proof.
+event021_treaty_binding_owner_ready = {
+	random_civil_war_is_normal_human_country = yes
+	has_variable = random_civil_war_crisis_id
+	has_variable = random_civil_war_front_id
+	has_variable = random_civil_war_settlement_type
+	has_country_flag = event021_settlement_talks_open
+	NOT = { has_country_flag = random_civil_war_harsh_settlement }
+	NOT = { has_country_flag = random_civil_war_sponsor_side }
+	has_variable = random_civil_war_settlement_obligation
+	has_country_flag = random_civil_war_settlement_obligation_active
+	check_variable = {
+		var = random_civil_war_settlement_obligation
+		value = constant:event021_settlement_obligation.none
+		compare = not_equals
+	}
+	has_variable = random_civil_war_settlement_obligation_front_id
+	check_variable = {
+		var = random_civil_war_settlement_obligation_front_id
+		value = random_civil_war_front_id
+		compare = equals
+	}
+	OR = {
+		check_variable = {
+			var = random_civil_war_settlement_type
+			value = constant:random_civil_war_settlement.independence
+			compare = equals
+		}
+		check_variable = {
+			var = random_civil_war_settlement_type
+			value = constant:random_civil_war_settlement.autonomy
+			compare = equals
+		}
+		check_variable = {
+			var = random_civil_war_settlement_type
+			value = constant:random_civil_war_settlement.coalition
+			compare = equals
+		}
+		has_country_flag = event021_treaty_armistice_contract
+	}
+}
+
+# COUNTRY scope. The settlement owner is ready for the capture effect only
+# after every intended human opposition actor has received its own real front
+# and public settlement obligation. The armistice branch is explicit because
+# the current Event 021 settlement enum has no armistice value; a caller must
+# provide event021_treaty_armistice_contract.
+event021_treaty_capture_ready = {
+	event021_treaty_binding_owner_ready = yes
+	has_country_flag = event021_treaty_bindings_prepared
+	NOT = { has_country_flag = event021_treaty_bindings_rejected }
+}
+
+# COUNTRY scope. A durable agreement row exists for this country.
+event021_treaty_current_agreement_known = {
+	has_variable = event021_treaty_agreement_id
+	is_in_array = {
+		array = global.event021_treaty_agreement_ids
+		value = event021_treaty_agreement_id
+	}
+}
+
+# COUNTRY scope. The local receipt contains at least one exact signatory and
+# one exact participating front. This is deliberately separate from proof.
+event021_treaty_nonempty_agreement = {
+	event021_treaty_current_agreement_known = yes
+	has_variable = event021_treaty_member_count
+	has_variable = event021_treaty_front_count
+	check_variable = {
+		var = event021_treaty_member_count
+		value = constant:random_civil_war_value.zero
+		compare = greater_than
+	}
+	check_variable = {
+		var = event021_treaty_front_count
+		value = constant:random_civil_war_value.zero
+		compare = greater_than
+	}
+}
+
+# COUNTRY scope. One signatory has a real, front-bound obligation and frozen
+# proof. AI countries use this same trigger; there is no player-only branch.
+event021_treaty_signatory_contract_valid = {
+	has_country_flag = event021_treaty_signatory
+	event021_treaty_current_agreement_known = yes
+	has_variable = event021_treaty_obligation_id
+	check_variable = {
+		var = event021_treaty_obligation_id
+		value = constant:event021_settlement_obligation.none
+		compare = not_equals
+	}
+	has_country_flag = event021_treaty_proof_frozen
+	has_country_flag = event021_treaty_proof_valid
+	NOT = { has_country_flag = event021_treaty_contract_invalid }
+	NOT = { has_country_flag = event021_treaty_breach_latched }
+	NOT = { has_country_flag = event021_treaty_recurrence_during_hold }
+}
+
+# COUNTRY scope. The shared hold date has elapsed for this durable agreement.
+event021_treaty_shared_hold_period_complete = {
+	event021_treaty_current_agreement_known = yes
+	has_variable = event021_treaty_hold_until
+	check_variable = {
+		var = global.date
+		value = event021_treaty_hold_until
+		compare = greater_than_or_equals
+	}
+}
+
+# COUNTRY scope. The agreement-level Terms Hold receipt. This is usable by AI
+# and human country rows alike and deliberately contains no achievement
+# eligibility test.
+event021_treaty_agreement_terms_hold_valid = {
+	has_country_flag = event021_treaty_signatory
+	has_country_flag = event021_treaty_terms_held
+	has_country_flag = event021_treaty_all_signatories_reviewed
+	has_country_flag = event021_treaty_all_obligations_fulfilled
+	has_country_flag = event021_treaty_no_breach
+	has_country_flag = event021_treaty_no_recurrence_during_hold
+	event021_treaty_nonempty_agreement = yes
+	event021_treaty_shared_hold_period_complete = yes
+}
+
+# COUNTRY scope. The authoritative Terms Hold achievement receipt. This never
+# reads the old single-caller settlement flags as proof and cannot pass on an
+# empty row.
+event021_treaty_terms_hold_valid = {
+	random_civil_war_achievement_eligible = yes
+	NOT = { has_country_flag = random_civil_war_achievement_disqualified }
+	event021_treaty_agreement_terms_hold_valid = yes
+}
+
+# COUNTRY scope. Useful for parent review gates and diagnostics before the
+# achievement consumer asks for the final receipt.
+event021_treaty_review_due = {
+	event021_treaty_current_agreement_known = yes
+	has_variable = event021_treaty_hold_until
+	check_variable = {
+		var = global.date
+		value = event021_treaty_hold_until
+		compare = greater_than_or_equals
+	}
+	NOT = { has_country_flag = event021_treaty_terms_held }
+}
+
+# COUNTRY scope. A durable agreement has latched a breach or in-period
+# recurrence. This remains true after transient parent cleanup.
+event021_treaty_agreement_breached = {
+	event021_treaty_current_agreement_known = yes
+	has_country_flag = event021_treaty_breach_latched
+}
+
+# COUNTRY scope. The local row has recorded recurrence after the shared hold
+# period. This is historical memory and is not itself an in-period breach.
+event021_treaty_recurrence_after_hold_recorded = {
+	event021_treaty_current_agreement_known = yes
+	has_country_flag = event021_treaty_recurrence_after_hold
+}

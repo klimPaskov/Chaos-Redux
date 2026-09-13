@@ -1,0 +1,912 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA SCRIPTED TRIGGERS
+# ============================================================================
+# These triggers are intentionally owner-local. Event 012 supplies the
+# authoritative global event target `africa_host`; this file only validates the
+# Gods-of-Africa generation, bounded participant registry, frozen demand
+# contracts, and punishment safety gates used by the owner and its decisions.
+# ============================================================================
+
+# COUNTRY scope on any country. The active host pointer is shared with the
+# existing Event 012 Charter layer and is never replaced by this subsystem.
+gods_of_africa_has_current_host = {
+	has_event_target = africa_host
+	event_target:africa_host = {
+		exists = yes
+		has_country_flag = africa_unifier_host
+		has_country_flag = africa_host_commit_completed
+		has_variable = africa_host_generation
+	}
+}
+
+# COUNTRY scope on a participant. Unlike the host-only active-host trigger,
+# this predicate validates the authoritative host through its event target and
+# is therefore safe to reuse in participant decisions and missions.
+gods_of_africa_participant_host_is_active = {
+	gods_of_africa_has_current_host = yes
+	has_global_flag = africa_event_active
+	has_global_flag = africa_is_one
+	has_global_flag = africa_evolution_i_logged
+	event_target:africa_host = {
+		has_country_flag = gods_of_africa_active
+		has_country_flag = gods_of_africa_activation_committed
+		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+		NOT = { has_capitulated = yes }
+	}
+}
+
+# COUNTRY scope on the committed Event 012 host.
+gods_of_africa_active_host_is_valid = {
+	africa_is_current_host = yes
+	NOT = { has_capitulated = yes }
+	has_global_flag = africa_event_active
+	has_global_flag = africa_is_one
+	has_global_flag = africa_evolution_i_logged
+	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+	has_country_flag = gods_of_africa_active
+	has_country_flag = gods_of_africa_activation_committed
+	has_variable = gods_of_africa_restoration_generation
+	check_variable = {
+		var = gods_of_africa_restoration_generation
+		value = africa_host_generation
+		compare = equals
+	}
+}
+
+# COUNTRY scope on the host. The one-time consolidation clock must be started
+# by the Event 012 evolution-I owner path; no generic world tick owns it.
+gods_of_africa_system_can_activate = {
+	africa_is_current_host = yes
+	NOT = { has_capitulated = yes }
+	has_global_flag = africa_event_active
+	has_global_flag = africa_is_one
+	has_global_flag = africa_evolution_i_logged
+	NOT = { has_country_flag = gods_of_africa_active }
+	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+	NOT = { has_country_flag = gods_of_africa_activation_committed }
+	# A defeated unifier's delayed activation must remain terminal for this
+	# generation.  A successor host receives a new generation and the
+	# initializer explicitly clears the old loss receipt before restarting.
+	NOT = { has_country_flag = gods_of_africa_cancelled_on_unifier_loss }
+	has_variable = gods_of_africa_restoration_generation
+	check_variable = {
+		var = gods_of_africa_restoration_generation
+		value = africa_host_generation
+		compare = equals
+	}
+}
+
+gods_of_africa_consolidation_ready = {
+	gods_of_africa_system_can_activate = yes
+	has_country_flag = gods_of_africa_consolidation_pending
+	has_variable = gods_of_africa_consolidation_due_day
+	check_variable = {
+		var = global.num_days
+		value = gods_of_africa_consolidation_due_day
+		compare = greater_than_or_equals
+	}
+}
+
+gods_of_africa_registry_review_due = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_registry_review_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_registry_review_day
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+gods_of_africa_owner_tick_due = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_owner_tick_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_owner_tick_day
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# COUNTRY scope on a possible participant. Only majors and the player can
+# enter the registry; the host and special/non-human actors remain excluded.
+# Geography is deliberately not part of enrollment: Event 012's participant
+# pool is global, so a valid major/player outside Africa can still receive a
+# tribute contract and carry the relationship into final settlement.
+gods_of_africa_participant_is_valid = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = africa_unifier_host }
+	OR = {
+		is_major = yes
+		is_ai = no
+	}
+}
+
+# Once enrolled, a country remains in the relationship ledger after losing
+# major status. Only capitulation, deletion, special/non-human conversion, or
+# replacement by the unifier invalidates the live entry.
+gods_of_africa_participant_is_live = {
+	exists = yes
+	NOT = { has_capitulated = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { is_special_chaos_country = yes }
+	NOT = { has_country_flag = africa_unifier_host }
+}
+
+gods_of_africa_participant_generation_is_current = {
+	gods_of_africa_participant_is_live = yes
+	has_country_flag = gods_of_africa_participant
+	has_variable = gods_of_africa_participant_generation
+	has_event_target = africa_host
+	event_target:africa_host = {
+		has_variable = africa_host_generation
+	}
+	check_variable = {
+		var = gods_of_africa_participant_generation
+		value = event_target:africa_host.africa_host_generation
+		compare = equals
+	}
+}
+
+gods_of_africa_participant_can_register = {
+	gods_of_africa_participant_is_valid = yes
+	gods_of_africa_has_current_host = yes
+	event_target:africa_host = {
+		has_country_flag = gods_of_africa_active
+		NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+		# The host scope is nested here, so PREV remains the country being tested.
+		NOT = { is_in_array = { array = gods_of_africa_participants value = PREV } }
+		OR = {
+			NOT = { has_variable = gods_of_africa_participant_count }
+			check_variable = { gods_of_africa_participant_count < constant:gods_of_africa_timing.max_participants }
+		}
+	}
+}
+
+gods_of_africa_participant_is_registered = {
+	gods_of_africa_participant_generation_is_current = yes
+	event_target:africa_host = {
+		is_in_array = { array = gods_of_africa_participants value = PREV }
+	}
+}
+
+gods_of_africa_participant_has_active_demand = {
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_demand_active
+	has_variable = gods_of_africa_demand_id
+	has_variable = gods_of_africa_demand_generation
+	check_variable = {
+		var = gods_of_africa_demand_generation
+		value = event_target:africa_host.africa_host_generation
+		compare = equals
+	}
+	OR = {
+		check_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.open }
+		check_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.extended }
+		check_variable = { gods_of_africa_demand_status = constant:gods_of_africa_demand_status.partial }
+	}
+}
+
+gods_of_africa_demand_contract_is_current = {
+	# A participant may still retain the old generation pointer for the short
+	# interval before the capitulation/settlement cleanup runs.  Validate the
+	# host through its event target rather than the host-only
+	# `gods_of_africa_active_host_is_valid` trigger, whose ROOT comparison would
+	# (correctly) reject a participant scope.
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_has_active_demand = yes
+	# A demand response is not legal once the participant is at war with
+	# Africa. The owner tick still records the treaty break and cancels the
+	# contract, but this gate closes the response surface immediately.
+	NOT = { has_war_with = event_target:africa_host }
+	has_variable = gods_of_africa_demand_family
+	has_variable = gods_of_africa_demand_amount
+	has_variable = gods_of_africa_demand_deadline
+	check_variable = {
+		var = gods_of_africa_demand_deadline
+		value = global.num_days
+		compare = greater_than
+	}
+}
+
+# Same immutable contract check without a future-deadline requirement. The
+# owner-local expiry pass and mission timeout use this resolver so an expired
+# demand can still record its failure and punishment exactly once.
+gods_of_africa_demand_contract_can_resolve = {
+	gods_of_africa_participant_has_active_demand = yes
+	has_variable = gods_of_africa_demand_family
+	has_variable = gods_of_africa_demand_amount
+	has_variable = gods_of_africa_demand_deadline
+}
+
+gods_of_africa_participant_can_receive_demand = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	# Tribute is a political compact, not a wartime tax. A country at war must
+	# finish its current conflict before a fresh ordinary demand is issued.
+	NOT = { has_war = yes }
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+	NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+	NOT = { has_country_flag = gods_of_africa_demand_active }
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_demand_date }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_demand_date
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+gods_of_africa_demand_family_is_valid = {
+	OR = {
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.land_equipment }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.aircraft }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.transport }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.resources }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.manpower }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.recognition }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.alliance_access }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.emergency_relief }
+		check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.support_equipment }
+	}
+}
+
+gods_of_africa_participant_holds_host_core_state = {
+	has_event_target = africa_host
+	any_controlled_state = {
+		is_on_continent = africa
+		is_core_of = event_target:africa_host
+	}
+}
+
+gods_of_africa_participant_has_capacity_for_family = {
+	gods_of_africa_participant_generation_is_current = yes
+	has_variable = gods_of_africa_payment_family
+	has_variable = gods_of_africa_payment_amount
+	has_variable = gods_of_africa_capacity_requirement
+	check_variable = { gods_of_africa_payment_amount > constant:gods_of_africa_value.zero }
+	OR = {
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.land_equipment }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_capacity_requirement } }
+		}
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
+				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor }
+			}
+			NOT = { has_equipment = { motorized_equipment < gods_of_africa_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.aircraft }
+			NOT = { has_equipment = { fighter_equipment_1 < gods_of_africa_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.fuel }
+			NOT = { has_fuel < gods_of_africa_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport }
+			OR = {
+				NOT = { has_equipment = { convoy_1 < gods_of_africa_capacity_requirement } }
+				NOT = { has_equipment = { train_equipment < gods_of_africa_capacity_requirement } }
+			}
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
+			NOT = { has_equipment = { motorized_equipment < gods_of_africa_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor }
+			NOT = { has_equipment = { motorized_equipment < gods_of_africa_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment }
+			NOT = { has_equipment = { support_equipment < gods_of_africa_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.manpower }
+			NOT = { has_manpower < gods_of_africa_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.resources }
+			any_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				has_resources_amount = {
+					resource = steel
+					amount > gods_of_africa_capacity_requirement
+				}
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.industry_repair }
+				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.recognition }
+				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.alliance_access }
+				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.emergency_relief }
+			}
+			NOT = { has_political_power < gods_of_africa_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
+			gods_of_africa_participant_holds_host_core_state = yes
+			NOT = { has_political_power < gods_of_africa_capacity_requirement }
+		}
+	}
+}
+
+gods_of_africa_participant_can_offer_substitute = {
+	gods_of_africa_demand_contract_is_current = yes
+	has_country_flag = gods_of_africa_substitute_set_ready
+	NOT = { has_country_flag = gods_of_africa_substitute_offered }
+	has_variable = gods_of_africa_substitute_slot_count
+	check_variable = { gods_of_africa_substitute_slot_count > constant:gods_of_africa_value.zero }
+}
+
+gods_of_africa_substitute_offer_is_pending = {
+	gods_of_africa_demand_contract_is_current = yes
+	has_country_flag = gods_of_africa_negotiation_open
+	has_country_flag = gods_of_africa_substitute_offered
+	has_variable = gods_of_africa_substitute_family
+	has_variable = gods_of_africa_substitute_amount
+}
+
+# Frozen negotiation slots. Validity is recorded when the negotiation window
+# opens; the shared submit helper performs a second live-capacity check before
+# any debit, so a changed stockpile can only fail closed.
+gods_of_africa_substitute_slot_1_is_valid = {
+	gods_of_africa_demand_contract_is_current = yes
+	has_country_flag = gods_of_africa_negotiation_open
+	has_country_flag = gods_of_africa_substitute_slot_1_valid
+	has_variable = gods_of_africa_substitute_slot_1_family
+	has_variable = gods_of_africa_substitute_slot_1_amount
+	has_variable = gods_of_africa_substitute_slot_1_capacity_requirement
+	NOT = { has_country_flag = gods_of_africa_substitute_offered }
+}
+
+gods_of_africa_substitute_slot_2_is_valid = {
+	gods_of_africa_demand_contract_is_current = yes
+	has_country_flag = gods_of_africa_negotiation_open
+	has_country_flag = gods_of_africa_substitute_slot_2_valid
+	has_variable = gods_of_africa_substitute_slot_2_family
+	has_variable = gods_of_africa_substitute_slot_2_amount
+	has_variable = gods_of_africa_substitute_slot_2_capacity_requirement
+	NOT = { has_country_flag = gods_of_africa_substitute_offered }
+}
+
+gods_of_africa_substitute_slot_3_is_valid = {
+	gods_of_africa_demand_contract_is_current = yes
+	has_country_flag = gods_of_africa_negotiation_open
+	has_country_flag = gods_of_africa_substitute_slot_3_valid
+	has_variable = gods_of_africa_substitute_slot_3_family
+	has_variable = gods_of_africa_substitute_slot_3_amount
+	has_variable = gods_of_africa_substitute_slot_3_capacity_requirement
+	NOT = { has_country_flag = gods_of_africa_substitute_offered }
+}
+
+gods_of_africa_substitute_offer_is_affordable = {
+	gods_of_africa_participant_generation_is_current = yes
+	has_variable = gods_of_africa_substitute_family
+	has_variable = gods_of_africa_substitute_amount
+	has_variable = gods_of_africa_substitute_capacity_requirement
+	check_variable = { gods_of_africa_substitute_amount > constant:gods_of_africa_value.zero }
+	OR = {
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.land_equipment }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_substitute_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.support_equipment }
+			NOT = { has_equipment = { support_equipment < gods_of_africa_substitute_capacity_requirement } }
+		}
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.mobile_artillery }
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.armor }
+			}
+			NOT = { has_equipment = { motorized_equipment < gods_of_africa_substitute_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.aircraft }
+			NOT = { has_equipment = { fighter_equipment_1 < gods_of_africa_substitute_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.fuel }
+			NOT = { has_fuel < gods_of_africa_substitute_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.transport }
+			OR = {
+				NOT = { has_equipment = { convoy_1 < gods_of_africa_substitute_capacity_requirement } }
+				NOT = { has_equipment = { train_equipment < gods_of_africa_substitute_capacity_requirement } }
+			}
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.manpower }
+			NOT = { has_manpower < gods_of_africa_substitute_capacity_requirement }
+		}
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.industry_repair }
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.recognition }
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.territory }
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.alliance_access }
+				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.emergency_relief }
+			}
+			NOT = { has_political_power < gods_of_africa_substitute_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.resources }
+			any_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				has_resources_amount = {
+					resource = steel
+					amount > gods_of_africa_substitute_capacity_requirement
+				}
+			}
+		}
+	}
+}
+
+gods_of_africa_participant_can_request_extension = {
+	gods_of_africa_demand_contract_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_extension_used }
+}
+
+gods_of_africa_participant_can_defy = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+	NOT = { has_country_flag = gods_of_africa_negotiation_open }
+	OR = {
+		gods_of_africa_demand_contract_is_current = yes
+		NOT = { has_country_flag = gods_of_africa_demand_active }
+	}
+}
+
+gods_of_africa_can_prepare_defensive_defiance = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_defiant
+	NOT = { has_country_flag = gods_of_africa_defensive_preparation_committed }
+	NOT = { has_political_power < constant:gods_of_africa_transaction.defensive_preparation_pp_cost }
+}
+
+gods_of_africa_can_harden_stockpiles = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_defiant
+	NOT = { has_country_flag = gods_of_africa_stockpiles_hardened }
+	NOT = { has_political_power < constant:gods_of_africa_transaction.defensive_stockpile_pp_cost }
+}
+
+gods_of_africa_can_secure_transport = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_defiant
+	NOT = { has_country_flag = gods_of_africa_transport_secured }
+	NOT = { has_political_power < constant:gods_of_africa_transaction.defensive_transport_pp_cost }
+}
+
+gods_of_africa_can_prepare_countermeasures = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_defiant
+	NOT = { has_country_flag = gods_of_africa_countermeasures_prepared }
+	NOT = { has_political_power < constant:gods_of_africa_transaction.defensive_countermeasure_pp_cost }
+}
+
+gods_of_africa_participant_can_reconcile = {
+	gods_of_africa_participant_host_is_active = yes
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_defiant
+	has_country_flag = gods_of_africa_reconciliation_pending
+	NOT = { has_war = yes }
+	OR = {
+		NOT = { has_variable = gods_of_africa_reconciliation_due_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_reconciliation_due_day
+			compare = less_than
+		}
+	}
+}
+
+# COUNTRY scope on the host. Family is supplied in the host variable
+# `gods_of_africa_payment_family`; this trigger is used for late payment and
+# punishment dispatch validation.
+gods_of_africa_payment_family_is_valid = {
+	OR = {
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.land_equipment }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.mobile_artillery }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.armor }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.aircraft }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.fuel }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.transport }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.industry_repair }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.resources }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.manpower }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.recognition }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.alliance_access }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.emergency_relief }
+		check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.support_equipment }
+	}
+}
+
+gods_of_africa_punishment_tier_is_valid = {
+	OR = {
+		check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.none }
+		check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.pressure }
+		check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.disruption }
+		check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.crisis }
+		check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.ultimatum }
+		check_variable = { gods_of_africa_pending_punishment_tier = constant:gods_of_africa_punishment.catastrophe }
+	}
+}
+
+gods_of_africa_first_failure_is_safe = {
+	OR = {
+		NOT = { has_variable = gods_of_africa_refusal_count }
+		check_variable = { gods_of_africa_refusal_count < constant:gods_of_africa_value.one }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_demand_failures }
+		check_variable = { gods_of_africa_demand_failures < constant:gods_of_africa_value.one }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_offense_count }
+		check_variable = { gods_of_africa_offense_count < constant:gods_of_africa_value.one }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_punishment_count }
+		check_variable = { gods_of_africa_punishment_count < constant:gods_of_africa_value.one }
+	}
+	NOT = { has_country_flag = gods_of_africa_recent_extreme_punishment }
+}
+
+gods_of_africa_extreme_gate_is_open = {
+	gods_of_africa_has_current_host = yes
+	gods_of_africa_participant_generation_is_current = yes
+	has_global_flag = africa_is_one
+	has_global_flag = africa_evolution_iii_logged
+	NOT = { has_country_flag = gods_of_africa_recent_extreme_punishment }
+	event_target:africa_host = {
+		has_variable = gods_of_africa_strength
+		has_country_flag = gods_of_africa_focus_last_sentence_unlocked
+		check_variable = { var = gods_of_africa_strength value = constant:gods_of_africa_value.catastrophe_strength_gate compare = greater_than_or_equals }
+		NOT = {
+			check_variable = {
+				var = surrender_progress
+				value = constant:africa_action_threshold.near_capitulation
+				compare = greater_than_or_equals
+			}
+		}
+	}
+	has_variable = gods_of_africa_wrath
+	check_variable = { var = gods_of_africa_wrath value = constant:gods_of_africa_value.catastrophe_wrath_gate compare = greater_than_or_equals }
+	check_variable = { var = global.chaos_meter_value value = constant:gods_of_africa_value.catastrophe_chaos_gate compare = greater_than_or_equals }
+	has_variable = gods_of_africa_demand_failures
+	check_variable = { var = gods_of_africa_demand_failures value = constant:gods_of_africa_value.catastrophe_failure_gate compare = greater_than_or_equals }
+	has_variable = gods_of_africa_offense_count
+	check_variable = { var = gods_of_africa_offense_count value = constant:gods_of_africa_value.catastrophe_offense_gate compare = greater_than_or_equals }
+}
+
+# COUNTRY scope on a participant. Protection is a real transaction owned by
+# the Event 012 host, not a free flag: the host must have the common defence
+# reserve, infantry equipment, and fuel, and cannot repeat it during cooldown.
+gods_of_africa_protection_package_is_affordable = {
+	gods_of_africa_participant_generation_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	has_country_flag = gods_of_africa_reliable_memory_applied
+	has_event_target = africa_host
+	OR = {
+		NOT = { has_variable = gods_of_africa_protection_due_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_protection_due_day
+			compare = greater_than_or_equals
+		}
+	}
+	event_target:africa_host = {
+		NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.protection_infantry_equipment } }
+		NOT = { has_fuel < constant:gods_of_africa_transaction.protection_fuel }
+		NOT = { has_political_power < constant:gods_of_africa_transaction.protection_pp_cost }
+		has_variable = africa_common_defence_stockpile
+		check_variable = {
+			var = africa_common_defence_stockpile
+			value = constant:gods_of_africa_transaction.protection_infantry_equipment
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# COUNTRY scope on a participant. A voluntary offer is available only outside
+# an active demand, when the owner has a current material need and the sender
+# can make the fixed shipment while keeping its protected operating reserve.
+# The two branches mirror the deterministic choice in the submit effect so a
+# stale UI quote can only fail closed.
+gods_of_africa_participant_can_offer_aid = {
+	gods_of_africa_participant_generation_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_demand_active }
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+	NOT = { has_country_flag = gods_of_africa_final_outcome_committed }
+	NOT = { has_war_with = event_target:africa_host }
+	has_event_target = africa_host
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_aid_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_aid_day
+			compare = greater_than_or_equals
+		}
+	}
+	event_target:africa_host = {
+		gods_of_africa_active_host_is_valid = yes
+		OR = {
+			check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+			check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+		}
+	}
+	OR = {
+		AND = {
+			event_target:africa_host = {
+				check_variable = { gods_of_africa_need_land_equipment > constant:gods_of_africa_value.zero }
+			}
+			NOT = { has_equipment = { infantry_equipment < constant:gods_of_africa_transaction.voluntary_aid_equipment_capacity } }
+		}
+		AND = {
+			event_target:africa_host = {
+				check_variable = { gods_of_africa_need_fuel > constant:gods_of_africa_value.zero }
+			}
+			NOT = { has_fuel < constant:gods_of_africa_transaction.voluntary_aid_fuel_capacity }
+		}
+	}
+}
+
+# COUNTRY scope on the host. Priority-offender marks are intentionally capped
+# so the manual target action cannot become unlimited harassment.
+gods_of_africa_proven_offender = {
+	OR = {
+		has_country_flag = gods_of_africa_broken_treaty
+		has_country_flag = gods_of_africa_defiant
+		AND = {
+			has_variable = gods_of_africa_demand_failures
+			check_variable = { gods_of_africa_demand_failures > constant:gods_of_africa_value.zero }
+		}
+		AND = {
+			has_variable = gods_of_africa_refusal_count
+			check_variable = { gods_of_africa_refusal_count > constant:gods_of_africa_value.zero }
+		}
+		AND = {
+			has_variable = gods_of_africa_offense_count
+			check_variable = { gods_of_africa_offense_count > constant:gods_of_africa_value.zero }
+		}
+	}
+}
+
+gods_of_africa_can_public_pardon = {
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_offender
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_leniency_used }
+}
+
+gods_of_africa_can_escalate_offense = {
+	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_proven_offender = yes
+	has_event_target = africa_host
+	event_target:africa_host = {
+		OR = {
+			has_country_flag = gods_of_africa_focus_offense_memory_unlocked
+			has_country_flag = gods_of_africa_focus_judgment_unlocked
+			has_country_flag = gods_of_africa_focus_judgment_reach_unlocked
+		}
+	}
+	NOT = { has_country_flag = gods_of_africa_escalation_used }
+}
+
+gods_of_africa_priority_offender_capacity_available = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		NOT = { has_variable = gods_of_africa_priority_offender_count }
+		check_variable = {
+			var = gods_of_africa_priority_offender_count
+			value = constant:gods_of_africa_timing.priority_offender_cap
+			compare = less_than
+		}
+	}
+}
+
+# COUNTRY scope on the host. Priority is an institutional policy choice and
+# cannot be flipped every day; the bounded cooldown keeps the demand selector
+# legible while still allowing the player to react to a new African crisis.
+gods_of_africa_can_change_priority = {
+	gods_of_africa_active_host_is_valid = yes
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_priority_change_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_priority_change_day
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+# Final settlement outcome checks are intentionally separate so a decision can
+# present exactly one legal outcome while the effect remains authoritative.
+gods_of_africa_final_favored_is_valid = {
+	gods_of_africa_participant_generation_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_offender }
+	NOT = { has_country_flag = gods_of_africa_enemy_marked }
+	NOT = { has_country_flag = gods_of_africa_broken_treaty }
+	OR = {
+		NOT = { has_variable = gods_of_africa_demand_failures }
+		check_variable = { gods_of_africa_demand_failures < constant:gods_of_africa_value.one }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_wrath }
+		check_variable = { gods_of_africa_wrath < constant:gods_of_africa_value.regional_strength }
+	}
+	OR = {
+		check_variable = {
+			var = gods_of_africa_compliance_count
+			value = constant:gods_of_africa_value.favored_minimum_compliance
+			compare = greater_than_or_equals
+		}
+		check_variable = { gods_of_africa_aid_count > constant:gods_of_africa_value.zero }
+	}
+}
+
+gods_of_africa_final_respected_is_valid = {
+	gods_of_africa_participant_generation_is_current = yes
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_enemy_marked }
+	NOT = { has_country_flag = gods_of_africa_offender }
+	NOT = { has_country_flag = gods_of_africa_broken_treaty }
+	OR = {
+		NOT = { has_variable = gods_of_africa_demand_failures }
+		check_variable = { gods_of_africa_demand_failures < constant:gods_of_africa_value.respected_failure_ceiling }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_refusal_count }
+		check_variable = { gods_of_africa_refusal_count < constant:gods_of_africa_value.respected_refusal_ceiling }
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_wrath }
+		check_variable = { gods_of_africa_wrath < constant:gods_of_africa_value.respected_wrath_ceiling }
+	}
+}
+
+gods_of_africa_final_enemy_is_valid = {
+	gods_of_africa_participant_generation_is_current = yes
+	OR = {
+		has_country_flag = gods_of_africa_defiant
+		has_country_flag = gods_of_africa_enemy_marked
+		has_country_flag = gods_of_africa_offender
+		has_country_flag = gods_of_africa_broken_treaty
+		AND = {
+			has_variable = gods_of_africa_wrath
+			check_variable = { gods_of_africa_wrath > constant:gods_of_africa_value.global_strength }
+		}
+	}
+}
+
+# Event 012 scaffold aliases. They deliberately delegate to the canonical
+# owner/participant checks so the event file does not gain a second lifecycle.
+africa_gods_of_africa_host_is_active = {
+	gods_of_africa_active_host_is_valid = yes
+}
+
+africa_gods_of_africa_participant_is_current = {
+	gods_of_africa_participant_generation_is_current = yes
+}
+
+gods_of_africa_current_demand_can_be_paid = {
+	gods_of_africa_demand_contract_is_current = yes
+	gods_of_africa_participant_has_capacity_for_family = yes
+}
+
+# COUNTRY scope on a participant. Partial payment is a measured half-shipment
+# of the frozen contract and is legal only while a positive balance remains.
+# The amount is precomputed when the contract is created, so the decision
+# surface never mutates state merely to evaluate affordability.
+gods_of_africa_partial_payment_is_affordable = {
+	gods_of_africa_demand_contract_is_current = yes
+	has_variable = gods_of_africa_partial_payment_amount
+	has_variable = gods_of_africa_partial_capacity_requirement
+	check_variable = { gods_of_africa_partial_payment_amount > constant:gods_of_africa_value.zero }
+	check_variable = {
+		var = gods_of_africa_partial_payment_amount
+		value = gods_of_africa_demand_remaining
+		compare = less_than
+	}
+	OR = {
+		NOT = { has_variable = gods_of_africa_next_partial_payment_day }
+		check_variable = {
+			var = global.num_days
+			value = gods_of_africa_next_partial_payment_day
+			compare = greater_than_or_equals
+		}
+	}
+	OR = {
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.land_equipment }
+			NOT = { has_equipment = { infantry_equipment < gods_of_africa_partial_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.support_equipment }
+			NOT = { has_equipment = { support_equipment < gods_of_africa_partial_capacity_requirement } }
+		}
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.mobile_artillery }
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.armor }
+			}
+			NOT = { has_equipment = { motorized_equipment < gods_of_africa_partial_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.aircraft }
+			NOT = { has_equipment = { fighter_equipment_1 < gods_of_africa_partial_capacity_requirement } }
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.fuel }
+			NOT = { has_fuel < gods_of_africa_partial_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.transport }
+			OR = {
+				NOT = { has_equipment = { convoy_1 < gods_of_africa_partial_capacity_requirement } }
+				NOT = { has_equipment = { train_equipment < gods_of_africa_partial_capacity_requirement } }
+			}
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.manpower }
+			NOT = { has_manpower < gods_of_africa_partial_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.resources }
+			any_owned_state = {
+				limit = { is_controlled_by = ROOT }
+				has_resources_amount = {
+					resource = steel
+					amount > gods_of_africa_partial_capacity_requirement
+				}
+			}
+		}
+		AND = {
+			OR = {
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.recognition }
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory }
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.alliance_access }
+				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.emergency_relief }
+			}
+			NOT = { has_political_power < gods_of_africa_partial_capacity_requirement }
+		}
+	}
+}
+
+gods_of_africa_reconciliation_can_be_paid = {
+	gods_of_africa_participant_can_reconcile = yes
+	NOT = { has_country_flag = gods_of_africa_reparations_paid }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_offer_pending }
+	NOT = { has_political_power < constant:gods_of_africa_transaction.reconciliation_pp_amount }
+}

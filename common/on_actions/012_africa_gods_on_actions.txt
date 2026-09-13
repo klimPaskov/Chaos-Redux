@@ -1,0 +1,79 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 012 GODS OF AFRICA TRANSACTION-BOUNDARY CALLBACKS
+# ============================================================================
+# These callbacks touch only the countries named by the engine transaction.
+# ROOT is the capitulated country in on_capitulation and the new subject in
+# on_puppet/release callbacks; FROM is the winner/overlord or annexed country
+# according to the documented callback contract. No recurring world scan is
+# attached to this file.
+# ============================================================================
+
+on_actions = {
+	on_capitulation = {
+		effect = {
+			# The unifier's defeat cancels the complete relationship layer before
+			# the normal host-validity predicates can reject the capitulated scope.
+			if = {
+				limit = {
+					ROOT = {
+						OR = {
+							has_country_flag = gods_of_africa_active
+							has_country_flag = gods_of_africa_consolidation_pending
+							has_country_flag = gods_of_africa_activation_clock_scheduled
+						}
+					}
+				}
+				ROOT = { gods_of_africa_cancel_on_unifier_loss = yes }
+			}
+			# A participant's capitulation removes only that participant's active
+			# contract and registry identity; hidden history is not rewritten.
+			if = {
+				limit = { ROOT = { has_country_flag = gods_of_africa_participant } }
+				ROOT = { gods_of_africa_clean_participant = yes }
+			}
+		}
+	}
+
+	on_annex = {
+		effect = {
+			# FROM is the annexed country. Cleanup remains bounded to that one
+			# participant and its authoritative africa_host event target.
+			if = {
+				limit = { FROM = { has_country_flag = gods_of_africa_participant } }
+				FROM = { gods_of_africa_clean_participant = yes }
+			}
+		}
+	}
+
+	# These are onboarding witnesses, not census replacements. A released,
+	# puppeted, or peace-conference country is tested individually against the
+	# existing major/player predicate and can never expand the registry past its
+	# configured cap.
+	on_puppet = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+
+	on_peaceconference_ended = {
+		effect = {
+			ROOT = { gods_of_africa_try_register_participant = yes }
+			FROM = { gods_of_africa_try_register_participant = yes }
+		}
+	}
+}

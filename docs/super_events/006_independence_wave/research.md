@@ -194,6 +194,10 @@ The accepted London Brass Players recording remains blocked because its exact 19
 
 The same pass records *The Enola Foam March* and *Toujours en Tête* / *Defileermars van het Regiment Infanterie Johan Willem Friso* as research candidates only. Neither candidate is selected, promoted, copied to the runtime sound folder, or wired to the super-event; parent/user selection, human audition, attribution/ShareAlike treatment, and the Dutch official-source URL caveat remain open. Current evidence is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_rights_reverification_2026-08-27.md`.
 
+### 2026-09-02 conditional replacement candidate
+
+The bounded audio research pass adds *Alte Kameraden* by Carl Teike, recorded by the Anker-Orchester, as the strongest current replacement candidate. The exact Public Domain Project item record carries an explicit `PD-INT 2023` determination, and the preserved source mirrors, 110-second PCM WAV, Ogg audition derivative, technical measurements, and jurisdiction caveat are recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_super_event_23_audio_research_2026-09-02.md`. Suitability is medium pending human audition because the German military-march association may read as more national or martial than a pluralistic league. No selection, promotion, runtime copy, sound definition, wrapper, catalogue row, or firing assignment was made; slot 23 remains fail-closed.
+
 ## Primary implementation surfaces
 
 - `common/script_constants/006_independence_wave_super_event_constants.txt`

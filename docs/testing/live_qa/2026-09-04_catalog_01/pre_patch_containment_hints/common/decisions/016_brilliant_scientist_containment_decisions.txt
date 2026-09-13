@@ -1,0 +1,595 @@
+# Some fields in this file reject script-constant tokens.
+# These file-scoped values mirror the authoritative shared constants.
+@CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_HEAVY_CONSUMER_GOODS = 0.10
+@CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_LIGHT_CONSUMER_GOODS = 0.03
+@CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_MEDIUM_CONSUMER_GOODS = 0.06
+# ============================================================================
+# CHAOS REDUX - EVENT 016 CONTAINMENT AND SOVEREIGNTY DECISIONS
+# ============================================================================
+# Eight timed responses to the hosted sovereignty crisis. Each action consumes
+# Political Power, Stability, one optional material/command payment, and a
+# consumer-goods commitment. Final effects revalidate the live causal state.
+# ============================================================================
+
+brilliant_scientist_directorate_category = {
+	brilliant_scientist_release_kruger = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.release }
+			}
+			NOT = { has_country_flag = brilliant_scientist_sovereignty_response_military_seizure }
+			NOT = { has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment }
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_release = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_release_kruger_available_tt
+				brilliant_scientist_can_release_kruger_safely = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_release = yes
+		}
+		custom_cost_text = brilliant_scientist_release_kruger_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.release_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.release_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_LIGHT_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.release_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.release_stability }
+				brilliant_scientist_begin_containment_action = yes
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.release }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_release_kruger_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.release }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.medium
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor brilliant_scientist_containment_has_low_coercive_risk = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_exile_kruger = {
+		icon = GFX_decision_generic_operation
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.exile }
+			}
+			has_event_target = brilliant_scientist_containment_exile_recipient
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_exile = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_exile_kruger_available_tt
+				brilliant_scientist_can_exile_kruger = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_exile = yes
+		}
+		custom_cost_text = brilliant_scientist_exile_kruger_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.exile_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.exile_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_LIGHT_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.exile_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.exile_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_equipment_to_stockpile = { type = convoy_1 amount = constant:brilliant_scientist_containment_cost.exile_convoy_spend }
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.exile }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_exile_kruger_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.exile }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.medium
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor brilliant_scientist_containment_has_moderate_coercive_risk = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.cautious_factor has_war = yes }
+		}
+	}
+
+	brilliant_scientist_arrest_kruger = {
+		icon = GFX_decision_oppression
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.arrest }
+			}
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_arrest = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_arrest_kruger_available_tt
+				brilliant_scientist_can_arrest_kruger = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_arrest = yes
+		}
+		custom_cost_text = brilliant_scientist_arrest_kruger_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.arrest_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.arrest_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_MEDIUM_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.arrest_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.arrest_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_containment_cost.arrest_support_spend }
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.arrest }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_arrest_kruger_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.arrest }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.medium
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor has_country_flag = brilliant_scientist_state_security_oversight }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor brilliant_scientist_containment_has_low_coercive_risk = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.desperate_factor brilliant_scientist_has_extreme_independent_capacity = yes }
+		}
+	}
+
+	brilliant_scientist_shutdown_directorate = {
+		icon = GFX_decision_generic_industry
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+			}
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_shutdown = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_shutdown_directorate_available_tt
+				brilliant_scientist_can_shutdown_directorate = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_shutdown = yes
+		}
+		custom_cost_text = brilliant_scientist_shutdown_directorate_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.shutdown_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.shutdown_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_MEDIUM_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.shutdown_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.shutdown_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_containment_cost.shutdown_truck_spend }
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_shutdown_directorate_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.low
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor brilliant_scientist_containment_has_low_coercive_risk = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor has_country_flag = brilliant_scientist_sovereignty_response_refusal }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.desperate_factor brilliant_scientist_has_extreme_dependence = yes }
+		}
+	}
+
+	brilliant_scientist_ratify_sovereign_charter = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.charter }
+			}
+			has_country_flag = brilliant_scientist_sovereignty_response_charter
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_charter = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_ratify_sovereign_charter_available_tt
+				brilliant_scientist_can_ratify_sovereign_charter = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_charter = yes
+		}
+		custom_cost_text = brilliant_scientist_ratify_sovereign_charter_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.charter_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.charter_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_HEAVY_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.charter_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.charter_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_containment_cost.charter_support_spend }
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.charter }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_ratify_sovereign_charter_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.charter }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.high
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor has_country_flag = brilliant_scientist_sovereignty_response_charter }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor has_government = democratic }
+		}
+	}
+
+	brilliant_scientist_launch_military_seizure = {
+		icon = GFX_decision_generic_prepare_civil_war
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+			}
+			has_country_flag = brilliant_scientist_sovereignty_response_military_seizure
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_military_seizure = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_launch_military_seizure_available_tt
+				brilliant_scientist_can_launch_military_seizure = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_military_seizure = yes
+		}
+		custom_cost_text = brilliant_scientist_launch_military_seizure_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.military_seizure_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.military_seizure_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_HEAVY_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.military_seizure_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.military_seizure_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:brilliant_scientist_containment_cost.seizure_infantry_spend }
+			}
+			add_war_support = constant:brilliant_scientist_containment_modifier.seizure_war_support
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_launch_military_seizure_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.high
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor has_war = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor has_country_flag = brilliant_scientist_military_guard_assigned }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.desperate_factor brilliant_scientist_has_extreme_independent_capacity = yes }
+		}
+	}
+
+	brilliant_scientist_request_foreign_containment = {
+		icon = GFX_decision_generic_operation
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+			}
+			has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_foreign_containment = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_request_foreign_containment_available_tt
+				brilliant_scientist_can_launch_foreign_containment = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_foreign_containment = yes
+		}
+		custom_cost_text = brilliant_scientist_request_foreign_containment_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.foreign_containment_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.foreign_containment_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_MEDIUM_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.foreign_containment_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.foreign_containment_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_command_power = constant:brilliant_scientist_containment_cost.foreign_command_power_spend
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_request_foreign_containment_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.high
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor is_in_faction = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor has_government = democratic }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.cautious_factor has_country_flag = brilliant_scientist_foreign_agents_recruited }
+		}
+	}
+
+	brilliant_scientist_concede_institutional_authority = {
+		icon = GFX_decision_generic_political_discourse
+		visible = {
+			brilliant_scientist_containment_action_is_visible = yes
+			OR = {
+				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.concession }
+			}
+			has_country_flag = brilliant_scientist_sovereignty_response_concession
+		}
+		available = {
+			hidden_trigger = { brilliant_scientist_can_pay_containment_concession = yes }
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_concede_institutional_authority_available_tt
+				brilliant_scientist_can_concede_institutional_authority = yes
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_can_pay_containment_concession = yes
+		}
+		custom_cost_text = brilliant_scientist_concede_institutional_authority_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_containment_cost.concession_political_power
+		days_remove = constant:brilliant_scientist_containment_duration.concession_days
+		modifier = {
+			consumer_goods_factor = @CR_SC_BRILLIANT_SCIENTIST_CONTAINMENT_MODIFIER_HEAVY_CONSUMER_GOODS
+		}
+		complete_effect = {
+			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+			hidden_effect = {
+				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession }
+				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.concession_political_power }
+				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.concession_stability }
+				brilliant_scientist_begin_containment_action = yes
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_containment_cost.concession_support_spend }
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_containment_interrupted_tt
+				NOT = {
+					AND = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.concession }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession }
+			brilliant_scientist_cancel_containment_action = yes
+		}
+		remove_effect = {
+			custom_effect_tooltip = brilliant_scientist_concede_institutional_authority_effect_tt
+			hidden_effect = {
+				if = {
+					limit = {
+						brilliant_scientist_containment_action_is_live = yes
+						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.concession }
+					}
+					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession }
+					brilliant_scientist_resolve_containment_action = yes
+				}
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_containment_ai.high
+			modifier = { factor = constant:brilliant_scientist_containment_ai.strong_factor brilliant_scientist_institutional_capture_is_proven = yes }
+			modifier = { factor = constant:brilliant_scientist_containment_ai.preferred_factor brilliant_scientist_has_extreme_dependence = yes }
+		}
+	}
+}

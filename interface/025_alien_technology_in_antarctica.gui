@@ -1,0 +1,759 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 EXPEDITION BOARD
+# ============================================================================
+# Reference canvas: 1024x640. The board is centered with a 24px downward
+# offset so the 1280x720 low target keeps the top bar clear while retaining a
+# deliberate 24px outer margin on the reference canvas.
+#
+# Layout zones:
+#   header              x=24..1000, y=12..76
+#   status column       x=24..260,  y=92..486
+#   Antarctic map       x=278..722, y=92..490
+#   rival cards         x=742..1000,y=92..490
+#   phase action tray   x=24..1000, y=510..616
+#
+# All panel art and decorative overlays are click-through. Interactive bounds
+# are supplied only by the sector, rival, board-control, and action buttons.
+# ============================================================================
+
+@NR25_BOARD_WIDTH = 1024
+@NR25_BOARD_HEIGHT = 640
+@NR25_STATUS_X = 24
+@NR25_STATUS_WIDTH = 236
+@NR25_MAP_X = 278
+@NR25_MAP_WIDTH = 444
+@NR25_RIVALS_X = 742
+@NR25_RIVALS_WIDTH = 258
+@NR25_ACTION_X = 24
+@NR25_ACTION_WIDTH = 976
+@NR25_CONFIRM_X = 272
+@NR25_CONFIRM_Y = 180
+@NR25_CONFIRM_WIDTH = 480
+@NR25_CONFIRM_HEIGHT = 250
+
+guiTypes = {
+	containerWindowType = {
+		name = "nr25_expedition_board_window"
+		position = { x = 0 y = 24 }
+		orientation = center
+		origo = center
+		size = { width = @NR25_BOARD_WIDTH height = @NR25_BOARD_HEIGHT }
+		moveable = no
+		clipping = yes
+
+		# One complete board canvas. The asset owns only safe background regions;
+		# all functional elements are placed in the zones documented above.
+		iconType = {
+			name = "nr25_board_background"
+			spriteType = "GFX_025_expedition_board_background"
+			position = { x = 0 y = 0 }
+			alwaystransparent = yes
+		}
+
+		# Header: identity, phase, broad race state, and deadline remain concise.
+		iconType = {
+			name = "nr25_board_phase_banner_animated"
+			spriteType = "GFX_025_expedition_phase_banner_animated"
+			position = { x = 352 y = 11 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_phase_banner_static"
+			spriteType = "GFX_025_expedition_phase_banner_static"
+			position = { x = 352 y = 11 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_title"
+			position = { x = 36 y = 14 }
+			font = "hoi_20b"
+			text = "chaosx_nr25_board_title"
+			format = left
+			vertical_alignment = center
+			maxWidth = 300
+			maxHeight = 26
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_phase"
+			position = { x = 374 y = 14 }
+			font = "hoi_16mbs"
+			text = "[GetChaosxNr25BoardPhaseText]"
+			format = center
+			vertical_alignment = center
+			maxWidth = 270
+			maxHeight = 26
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_phase_tt"
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_deadline_icon"
+			spriteType = "GFX_025_expedition_deadline_icon"
+			position = { x = 660 y = 16 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_deadline"
+			position = { x = 682 y = 14 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardDeadlineText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 160
+			maxHeight = 26
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_deadline_tt"
+			alwaystransparent = yes
+		}
+		buttonType = {
+			name = "nr25_board_refresh"
+			position = { x = 850 y = 14 }
+			quadTextureSprite = "GFX_025_expedition_control_refresh"
+			clicksound = decisions_ui_button
+			oversound = ui_menu_over
+			pdx_tooltip = "chaosx_nr25_board_refresh_tt"
+		}
+		buttonType = {
+			name = "nr25_board_history"
+			position = { x = 886 y = 14 }
+			quadTextureSprite = "GFX_025_expedition_control_history"
+			clicksound = decisions_ui_button
+			oversound = ui_menu_over
+			pdx_tooltip = "chaosx_nr25_board_history_tt"
+		}
+		buttonType = {
+			name = "nr25_board_details"
+			position = { x = 922 y = 14 }
+			quadTextureSprite = "GFX_025_expedition_control_details"
+			clicksound = decisions_ui_button
+			oversound = ui_menu_over
+			pdx_tooltip = "chaosx_nr25_board_details_tt"
+		}
+		buttonType = {
+			name = "nr25_board_close"
+			position = { x = 958 y = 14 }
+			quadTextureSprite = "GFX_025_expedition_control_close"
+			shortcut = "ESCAPE"
+			clicksound = menu_close_window
+			oversound = ui_menu_over
+			pdx_tooltip = "chaosx_nr25_board_close_tt"
+		}
+
+		# Left column: exactly three main values. Route, outpost, and target are
+		# compact supporting states and never receive a fourth meter.
+		iconType = {
+			name = "nr25_progress_card"
+			spriteType = "GFX_025_expedition_status_panel"
+			position = { x = @NR25_STATUS_X y = 92 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_logistics_card"
+			spriteType = "GFX_025_expedition_status_panel"
+			position = { x = @NR25_STATUS_X y = 192 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_exposure_card"
+			spriteType = "GFX_025_expedition_status_panel"
+			position = { x = @NR25_STATUS_X y = 292 }
+			alwaystransparent = yes
+		}
+
+		iconType = {
+			name = "nr25_board_progress_icon"
+			spriteType = "GFX_025_expedition_value_icon_progress"
+			position = { x = 40 y = 110 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_progress_meter"
+			spriteType = "GFX_025_expedition_meter_progress_organizing"
+			position = { x = 84 y = 108 }
+			pdx_tooltip = "chaosx_nr25_board_progress_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_progress"
+			position = { x = 84 y = 101 }
+			font = "hoi_16mbs"
+			text = "[GetChaosxNr25BoardProgressText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 164
+			maxHeight = 23
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_progress_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_progress_threshold"
+			position = { x = 84 y = 136 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardProgressThreshold]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 164
+			maxHeight = 20
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		iconType = {
+			name = "nr25_board_logistics_icon"
+			spriteType = "GFX_025_expedition_value_icon_readiness"
+			position = { x = 40 y = 210 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_logistics_meter"
+			spriteType = "GFX_025_expedition_meter_logistics_prepared"
+			position = { x = 84 y = 208 }
+			pdx_tooltip = "chaosx_nr25_board_logistics_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_logistics"
+			position = { x = 84 y = 201 }
+			font = "hoi_16mbs"
+			text = "[GetChaosxNr25BoardLogisticsText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 164
+			maxHeight = 23
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_logistics_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_logistics_threshold"
+			position = { x = 84 y = 236 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardLogisticsThreshold]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 164
+			maxHeight = 20
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		iconType = {
+			name = "nr25_board_exposure_icon"
+			spriteType = "GFX_025_expedition_value_icon_exposure"
+			position = { x = 40 y = 310 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_exposure_meter"
+			spriteType = "GFX_025_expedition_meter_exposure_calm"
+			position = { x = 84 y = 308 }
+			pdx_tooltip = "chaosx_nr25_board_exposure_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_exposure"
+			position = { x = 84 y = 301 }
+			font = "hoi_16mbs"
+			text = "[GetChaosxNr25BoardThirdValueText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 164
+			maxHeight = 23
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_exposure_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_exposure_threshold"
+			position = { x = 84 y = 336 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardThirdValueThreshold]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 164
+			maxHeight = 20
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		instantTextBoxType = {
+			name = "nr25_board_support_heading"
+			position = { x = 36 y = 389 }
+			font = "hoi_14mbs"
+			text = "chaosx_nr25_board_support_heading"
+			format = left
+			maxWidth = 210
+			maxHeight = 18
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_route_icon"
+			spriteType = "GFX_025_expedition_route_icon"
+			position = { x = 40 y = 412 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_route_status"
+			position = { x = 68 y = 407 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardRouteText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 88
+			maxHeight = 30
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_route_tt"
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_outpost_icon"
+			spriteType = "GFX_025_expedition_outpost_icon"
+			position = { x = 158 y = 412 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_outpost_status"
+			position = { x = 186 y = 407 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardOutpostText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 68
+			maxHeight = 30
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_board_outpost_tt"
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_race_state"
+			position = { x = 36 y = 448 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardRaceStateText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 212
+			maxHeight = 22
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_target_icon"
+			spriteType = "GFX_025_expedition_target_icon"
+			position = { x = 40 y = 472 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_selected_target"
+			position = { x = 68 y = 469 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25SelectedRivalText]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 180
+			maxHeight = 26
+			fixedsize = yes
+			pdx_tooltip = "chaosx_nr25_selected_rival_tt"
+			alwaystransparent = yes
+		}
+
+		# Center operations panel. Sector node buttons are 96x58 hit regions and
+		# state overlays/text are click-through, keeping selection geometry exact.
+		iconType = {
+			name = "nr25_operations_panel"
+			spriteType = "GFX_025_expedition_operations_panel"
+			position = { x = @NR25_MAP_X y = 92 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_sector_map_header"
+			position = { x = 298 y = 103 }
+			font = "hoi_16mbs"
+			text = "chaosx_nr25_sector_map_header"
+			format = center
+			maxWidth = 404
+			maxHeight = 22
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_sector_map"
+			spriteType = "GFX_025_expedition_sector_map"
+			position = { x = 294 y = 132 }
+			alwaystransparent = yes
+		}
+		iconType = { name = "nr25_signal_static" spriteType = "GFX_025_expedition_signal_static" position = { x = 294 y = 132 } alwaystransparent = yes }
+		iconType = { name = "nr25_survivor_static" spriteType = "GFX_025_expedition_survivor_static" position = { x = 294 y = 132 } alwaystransparent = yes }
+		iconType = { name = "nr25_fragment_static" spriteType = "GFX_025_expedition_fragment_static" position = { x = 294 y = 132 } alwaystransparent = yes }
+		iconType = { name = "nr25_dependence_static" spriteType = "GFX_025_expedition_dependence_static" position = { x = 294 y = 132 } alwaystransparent = yes }
+
+		buttonType = { name = "nr25_sector_1_select" position = { x = 316 y = 168 } quadTextureSprite = "GFX_025_expedition_sector_hitbox" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_sector_1_tt" }
+		iconType = { name = "nr25_sector_1_state_icon" spriteType = "GFX_025_expedition_sector_state" position = { x = 316 y = 168 } alwaystransparent = yes }
+		iconType = { name = "nr25_sector_1_selected" spriteType = "GFX_025_expedition_sector_selected" position = { x = 316 y = 168 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_sector_1" position = { x = 304 y = 229 } font = "hoi_14mbs" text = "[GetChaosxNr25Sector1StateText]" format = center vertical_alignment = center maxWidth = 120 maxHeight = 34 fixedsize = yes pdx_tooltip = "chaosx_nr25_sector_1_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_sector_2_select" position = { x = 438 y = 152 } quadTextureSprite = "GFX_025_expedition_sector_hitbox" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_sector_2_tt" }
+		iconType = { name = "nr25_sector_2_state_icon" spriteType = "GFX_025_expedition_sector_state" position = { x = 438 y = 152 } alwaystransparent = yes }
+		iconType = { name = "nr25_sector_2_selected" spriteType = "GFX_025_expedition_sector_selected" position = { x = 438 y = 152 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_sector_2" position = { x = 426 y = 213 } font = "hoi_14mbs" text = "[GetChaosxNr25Sector2StateText]" format = center vertical_alignment = center maxWidth = 120 maxHeight = 34 fixedsize = yes pdx_tooltip = "chaosx_nr25_sector_2_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_sector_3_select" position = { x = 570 y = 178 } quadTextureSprite = "GFX_025_expedition_sector_hitbox" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_sector_3_tt" }
+		iconType = { name = "nr25_sector_3_state_icon" spriteType = "GFX_025_expedition_sector_state" position = { x = 570 y = 178 } alwaystransparent = yes }
+		iconType = { name = "nr25_sector_3_selected" spriteType = "GFX_025_expedition_sector_selected" position = { x = 570 y = 178 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_sector_3" position = { x = 558 y = 239 } font = "hoi_14mbs" text = "[GetChaosxNr25Sector3StateText]" format = center vertical_alignment = center maxWidth = 120 maxHeight = 34 fixedsize = yes pdx_tooltip = "chaosx_nr25_sector_3_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_sector_4_select" position = { x = 324 y = 296 } quadTextureSprite = "GFX_025_expedition_sector_hitbox" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_sector_4_tt" }
+		iconType = { name = "nr25_sector_4_state_icon" spriteType = "GFX_025_expedition_sector_state" position = { x = 324 y = 296 } alwaystransparent = yes }
+		iconType = { name = "nr25_sector_4_selected" spriteType = "GFX_025_expedition_sector_selected" position = { x = 324 y = 296 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_sector_4" position = { x = 312 y = 357 } font = "hoi_14mbs" text = "[GetChaosxNr25Sector4StateText]" format = center vertical_alignment = center maxWidth = 120 maxHeight = 34 fixedsize = yes pdx_tooltip = "chaosx_nr25_sector_4_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_sector_5_select" position = { x = 450 y = 314 } quadTextureSprite = "GFX_025_expedition_sector_hitbox" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_sector_5_tt" }
+		iconType = { name = "nr25_sector_5_state_icon" spriteType = "GFX_025_expedition_sector_state" position = { x = 450 y = 314 } alwaystransparent = yes }
+		iconType = { name = "nr25_sector_5_selected" spriteType = "GFX_025_expedition_sector_selected" position = { x = 450 y = 314 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_sector_5" position = { x = 438 y = 375 } font = "hoi_14mbs" text = "[GetChaosxNr25Sector5StateText]" format = center vertical_alignment = center maxWidth = 120 maxHeight = 34 fixedsize = yes pdx_tooltip = "chaosx_nr25_sector_5_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_sector_6_select" position = { x = 574 y = 328 } quadTextureSprite = "GFX_025_expedition_sector_hitbox" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_sector_6_tt" }
+		iconType = { name = "nr25_sector_6_state_icon" spriteType = "GFX_025_expedition_sector_state" position = { x = 574 y = 328 } alwaystransparent = yes }
+		iconType = { name = "nr25_sector_6_selected" spriteType = "GFX_025_expedition_sector_selected" position = { x = 574 y = 328 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_sector_6" position = { x = 562 y = 389 } font = "hoi_14mbs" text = "[GetChaosxNr25Sector6StateText]" format = center vertical_alignment = center maxWidth = 120 maxHeight = 34 fixedsize = yes pdx_tooltip = "chaosx_nr25_sector_6_tt" alwaystransparent = yes }
+
+		instantTextBoxType = {
+			name = "nr25_sector_map_hint"
+			position = { x = 298 y = 455 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25SectorMapHint]"
+			format = center
+			vertical_alignment = center
+			maxWidth = 404
+			maxHeight = 24
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		# Right column: three bounded cards. Card text is a parent-supplied public
+		# or intelligence-derived band and never a rival's hidden exact value.
+		iconType = {
+			name = "nr25_rivals_panel"
+			spriteType = "GFX_025_expedition_rivals_panel"
+			position = { x = @NR25_RIVALS_X y = 92 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_rivals_header"
+			position = { x = 758 y = 103 }
+			font = "hoi_16mbs"
+			text = "chaosx_nr25_rivals_header"
+			format = center
+			maxWidth = 226
+			maxHeight = 22
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_rivals_privacy_note"
+			position = { x = 758 y = 126 }
+			font = "hoi_14mbs"
+			text = "chaosx_nr25_rivals_privacy_note"
+			format = center
+			maxWidth = 226
+			maxHeight = 24
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		buttonType = { name = "nr25_rival_1_select" position = { x = 752 y = 158 } quadTextureSprite = "GFX_025_expedition_rival_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_rival_1_tt" }
+		iconType = { name = "nr25_rival_1_selected" spriteType = "GFX_025_expedition_rival_selected" position = { x = 752 y = 158 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_1_flag" spriteType = "GFX_025_expedition_rival_flag_unknown" position = { x = 762 y = 174 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_1_state_marker" spriteType = "GFX_025_expedition_rival_state" position = { x = 962 y = 174 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_1_incident" spriteType = "GFX_025_expedition_rival_incident" position = { x = 962 y = 214 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_rival_1" position = { x = 796 y = 166 } font = "hoi_14mbs" text = "[GetChaosxNr25Rival1CardText]" format = left vertical_alignment = center maxWidth = 154 maxHeight = 72 fixedsize = yes pdx_tooltip = "chaosx_nr25_rival_1_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_rival_2_select" position = { x = 752 y = 260 } quadTextureSprite = "GFX_025_expedition_rival_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_rival_2_tt" }
+		iconType = { name = "nr25_rival_2_selected" spriteType = "GFX_025_expedition_rival_selected" position = { x = 752 y = 260 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_2_flag" spriteType = "GFX_025_expedition_rival_flag_unknown" position = { x = 762 y = 276 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_2_state_marker" spriteType = "GFX_025_expedition_rival_state" position = { x = 962 y = 276 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_2_incident" spriteType = "GFX_025_expedition_rival_incident" position = { x = 962 y = 316 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_rival_2" position = { x = 796 y = 268 } font = "hoi_14mbs" text = "[GetChaosxNr25Rival2CardText]" format = left vertical_alignment = center maxWidth = 154 maxHeight = 72 fixedsize = yes pdx_tooltip = "chaosx_nr25_rival_2_tt" alwaystransparent = yes }
+
+		buttonType = { name = "nr25_rival_3_select" position = { x = 752 y = 362 } quadTextureSprite = "GFX_025_expedition_rival_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_rival_3_tt" }
+		iconType = { name = "nr25_rival_3_selected" spriteType = "GFX_025_expedition_rival_selected" position = { x = 752 y = 362 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_3_flag" spriteType = "GFX_025_expedition_rival_flag_unknown" position = { x = 762 y = 378 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_3_state_marker" spriteType = "GFX_025_expedition_rival_state" position = { x = 962 y = 378 } alwaystransparent = yes }
+		iconType = { name = "nr25_rival_3_incident" spriteType = "GFX_025_expedition_rival_incident" position = { x = 962 y = 418 } alwaystransparent = yes }
+		instantTextBoxType = { name = "nr25_rival_3" position = { x = 796 y = 370 } font = "hoi_14mbs" text = "[GetChaosxNr25Rival3CardText]" format = left vertical_alignment = center maxWidth = 154 maxHeight = 72 fixedsize = yes pdx_tooltip = "chaosx_nr25_rival_3_tt" alwaystransparent = yes }
+
+		instantTextBoxType = {
+			name = "nr25_rivals_empty"
+			position = { x = 760 y = 216 }
+			font = "hoi_14mbs"
+			text = "chaosx_nr25_rivals_empty"
+			format = center
+			vertical_alignment = center
+			maxWidth = 222
+			maxHeight = 42
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		# The tray is capped at five simultaneous primary actions. Each card is a
+		# real click region with a parent-wired helper; costs are a separate text
+		# line so spendable types and non-consumed requirements stay distinct.
+		containerWindowType = {
+			name = "nr25_action_tray"
+			position = { x = @NR25_ACTION_X y = 510 }
+			size = { width = @NR25_ACTION_WIDTH height = 106 }
+			clipping = yes
+
+			iconType = {
+				name = "nr25_action_tray_background"
+				spriteType = "GFX_025_expedition_action_tray"
+				position = { x = 0 y = 0 }
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_action_tray_title"
+				position = { x = 14 y = 6 }
+				font = "hoi_14mbs"
+				text = "chaosx_nr25_action_tray_title"
+				format = left
+				maxWidth = 150
+				maxHeight = 18
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+
+			buttonType = { name = "nr25_action_1" position = { x = 12 y = 28 } quadTextureSprite = "GFX_025_expedition_action_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_board_action_1_tt" }
+			iconType = { name = "nr25_action_1_icon" spriteType = "GFX_025_expedition_action_icon_default" position = { x = 22 y = 47 } alwaystransparent = yes }
+			iconType = { name = "nr25_action_1_state" spriteType = "GFX_025_expedition_action_state" position = { x = 164 y = 36 } alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_1_name" position = { x = 60 y = 26 } font = "hoi_14mbs" text = "[GetChaosxNr25Action1Name]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 20 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_1_cost" position = { x = 60 y = 48 } font = "hoi_12mbs" text = "[GetChaosxNr25Action1Cost]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_1_status" position = { x = 60 y = 67 } font = "hoi_12mbs" text = "[GetChaosxNr25Action1Status]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes pdx_tooltip = "chaosx_nr25_board_action_1_tt" alwaystransparent = yes }
+
+			buttonType = { name = "nr25_action_2" position = { x = 202 y = 28 } quadTextureSprite = "GFX_025_expedition_action_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_board_action_2_tt" }
+			iconType = { name = "nr25_action_2_icon" spriteType = "GFX_025_expedition_action_icon_default" position = { x = 212 y = 47 } alwaystransparent = yes }
+			iconType = { name = "nr25_action_2_state" spriteType = "GFX_025_expedition_action_state" position = { x = 354 y = 36 } alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_2_name" position = { x = 250 y = 26 } font = "hoi_14mbs" text = "[GetChaosxNr25Action2Name]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 20 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_2_cost" position = { x = 250 y = 48 } font = "hoi_12mbs" text = "[GetChaosxNr25Action2Cost]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_2_status" position = { x = 250 y = 67 } font = "hoi_12mbs" text = "[GetChaosxNr25Action2Status]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes pdx_tooltip = "chaosx_nr25_board_action_2_tt" alwaystransparent = yes }
+
+			buttonType = { name = "nr25_action_3" position = { x = 392 y = 28 } quadTextureSprite = "GFX_025_expedition_action_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_board_action_3_tt" }
+			iconType = { name = "nr25_action_3_icon" spriteType = "GFX_025_expedition_action_icon_default" position = { x = 402 y = 47 } alwaystransparent = yes }
+			iconType = { name = "nr25_action_3_state" spriteType = "GFX_025_expedition_action_state" position = { x = 544 y = 36 } alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_3_name" position = { x = 440 y = 26 } font = "hoi_14mbs" text = "[GetChaosxNr25Action3Name]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 20 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_3_cost" position = { x = 440 y = 48 } font = "hoi_12mbs" text = "[GetChaosxNr25Action3Cost]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_3_status" position = { x = 440 y = 67 } font = "hoi_12mbs" text = "[GetChaosxNr25Action3Status]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes pdx_tooltip = "chaosx_nr25_board_action_3_tt" alwaystransparent = yes }
+
+			buttonType = { name = "nr25_action_4" position = { x = 582 y = 28 } quadTextureSprite = "GFX_025_expedition_action_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_board_action_4_tt" }
+			iconType = { name = "nr25_action_4_icon" spriteType = "GFX_025_expedition_action_icon_default" position = { x = 592 y = 47 } alwaystransparent = yes }
+			iconType = { name = "nr25_action_4_state" spriteType = "GFX_025_expedition_action_state" position = { x = 734 y = 36 } alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_4_name" position = { x = 630 y = 26 } font = "hoi_14mbs" text = "[GetChaosxNr25Action4Name]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 20 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_4_cost" position = { x = 630 y = 48 } font = "hoi_12mbs" text = "[GetChaosxNr25Action4Cost]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_4_status" position = { x = 630 y = 67 } font = "hoi_12mbs" text = "[GetChaosxNr25Action4Status]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes pdx_tooltip = "chaosx_nr25_board_action_4_tt" alwaystransparent = yes }
+
+			buttonType = { name = "nr25_action_5" position = { x = 772 y = 28 } quadTextureSprite = "GFX_025_expedition_action_card" clicksound = decisions_ui_button oversound = ui_menu_over pdx_tooltip = "chaosx_nr25_board_action_5_tt" }
+			iconType = { name = "nr25_action_5_icon" spriteType = "GFX_025_expedition_action_icon_default" position = { x = 782 y = 47 } alwaystransparent = yes }
+			iconType = { name = "nr25_action_5_state" spriteType = "GFX_025_expedition_action_state" position = { x = 924 y = 36 } alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_5_name" position = { x = 820 y = 26 } font = "hoi_14mbs" text = "[GetChaosxNr25Action5Name]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 20 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_5_cost" position = { x = 820 y = 48 } font = "hoi_12mbs" text = "[GetChaosxNr25Action5Cost]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes alwaystransparent = yes }
+			instantTextBoxType = { name = "nr25_action_5_status" position = { x = 820 y = 67 } font = "hoi_12mbs" text = "[GetChaosxNr25Action5Status]" format = left vertical_alignment = center maxWidth = 122 maxHeight = 17 fixedsize = yes pdx_tooltip = "chaosx_nr25_board_action_5_tt" alwaystransparent = yes }
+		}
+
+		# Terminal board state replaces the race tray with one short result line.
+		iconType = {
+			name = "nr25_board_winner_badge"
+			spriteType = "GFX_025_expedition_resolved_winner"
+			position = { x = 300 y = 443 }
+			alwaystransparent = yes
+		}
+		iconType = {
+			name = "nr25_board_loser_badge"
+			spriteType = "GFX_025_expedition_resolved_loser"
+			position = { x = 300 y = 443 }
+			alwaystransparent = yes
+		}
+		instantTextBoxType = {
+			name = "nr25_board_resolved_summary"
+			position = { x = 404 y = 444 }
+			font = "hoi_14mbs"
+			text = "[GetChaosxNr25BoardResolvedSummary]"
+			format = left
+			vertical_alignment = center
+			maxWidth = 300
+			maxHeight = 34
+			fixedsize = yes
+			alwaystransparent = yes
+		}
+
+		# Small modal review surface. It reuses the vanilla tiled popup treatment;
+		# the board remains visible around it while every other selection/action
+		# region is disabled until the player confirms or cancels.
+		containerWindowType = {
+			name = "nr25_board_confirmation_window"
+			position = { x = @NR25_CONFIRM_X y = @NR25_CONFIRM_Y }
+			size = { width = @NR25_CONFIRM_WIDTH height = @NR25_CONFIRM_HEIGHT }
+			clipping = yes
+
+			background = {
+				name = "nr25_board_confirmation_background"
+				quadTextureSprite = "GFX_tiled_bg"
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_title"
+				position = { x = 24 y = 16 }
+				font = "hoi_18mbs"
+				text = "chaosx_nr25_board_confirmation_title"
+				format = center
+				vertical_alignment = center
+				maxWidth = 432
+				maxHeight = 24
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_action_label"
+				position = { x = 24 y = 52 }
+				font = "hoi_12mbs"
+				text = "chaosx_nr25_board_confirmation_action_label"
+				format = left
+				vertical_alignment = center
+				maxWidth = 72
+				maxHeight = 20
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_action"
+				position = { x = 104 y = 50 }
+				font = "hoi_14mbs"
+				text = "[GetChaosxNr25PendingActionName]"
+				format = left
+				vertical_alignment = center
+				maxWidth = 348
+				maxHeight = 22
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_target_label"
+				position = { x = 24 y = 78 }
+				font = "hoi_12mbs"
+				text = "chaosx_nr25_board_confirmation_target_label"
+				format = left
+				vertical_alignment = center
+				maxWidth = 72
+				maxHeight = 20
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_target"
+				position = { x = 104 y = 76 }
+				font = "hoi_14mbs"
+				text = "[GetChaosxNr25PendingTargetText]"
+				format = left
+				vertical_alignment = center
+				maxWidth = 348
+				maxHeight = 22
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_cost_label"
+				position = { x = 24 y = 104 }
+				font = "hoi_12mbs"
+				text = "chaosx_nr25_board_confirmation_cost_label"
+				format = left
+				vertical_alignment = center
+				maxWidth = 72
+				maxHeight = 20
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_cost"
+				position = { x = 104 y = 102 }
+				font = "hoi_12mbs"
+				text = "[GetChaosxNr25PendingActionCost]"
+				format = left
+				vertical_alignment = center
+				maxWidth = 348
+				maxHeight = 20
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_consequence_label"
+				position = { x = 24 y = 130 }
+				font = "hoi_12mbs"
+				text = "chaosx_nr25_board_confirmation_consequence_label"
+				format = left
+				vertical_alignment = top
+				maxWidth = 72
+				maxHeight = 38
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_consequence"
+				position = { x = 104 y = 128 }
+				font = "hoi_12mbs"
+				text = "[GetChaosxNr25PendingActionEffect]"
+				format = left
+				vertical_alignment = top
+				maxWidth = 348
+				maxHeight = 40
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_status_label"
+				position = { x = 24 y = 174 }
+				font = "hoi_12mbs"
+				text = "chaosx_nr25_board_confirmation_status_label"
+				format = left
+				vertical_alignment = center
+				maxWidth = 72
+				maxHeight = 20
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			instantTextBoxType = {
+				name = "nr25_board_confirmation_status"
+				position = { x = 104 y = 172 }
+				font = "hoi_12mbs"
+				text = "[GetChaosxNr25PendingActionStatus]"
+				format = left
+				vertical_alignment = center
+				maxWidth = 348
+				maxHeight = 20
+				fixedsize = yes
+				alwaystransparent = yes
+			}
+			buttonType = {
+				name = "nr25_board_confirmation_cancel"
+				position = { x = 90 y = 204 }
+				quadTextureSprite = "GFX_button_123x34"
+				buttonText = "chaosx_nr25_board_confirmation_cancel"
+				buttonFont = "hoi_16mbs"
+				shortcut = "ESCAPE"
+				clicksound = click_close
+				oversound = ui_menu_over
+				pdx_tooltip = "chaosx_nr25_board_confirmation_cancel_tt"
+			}
+			buttonType = {
+				name = "nr25_board_confirmation_confirm"
+				position = { x = 267 y = 204 }
+				quadTextureSprite = "GFX_button_123x34"
+				buttonText = "chaosx_nr25_board_confirmation_confirm"
+				buttonFont = "hoi_16mbs"
+				shortcut = "RETURN"
+				clicksound = click_ok
+				oversound = ui_menu_over
+				pdx_tooltip = "chaosx_nr25_board_confirmation_confirm_tt"
+			}
+		}
+	}
+}

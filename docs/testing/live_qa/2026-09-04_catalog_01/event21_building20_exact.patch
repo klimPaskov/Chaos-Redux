@@ -1,0 +1,46 @@
+diff --git "a/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\docs\\testing\\live_qa\\2026-09-04_catalog_01\\pre_patch_event21_building20\\021_random_civil_war_parent_triggers.txt" "b/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_triggers\\021_random_civil_war_parent_triggers.txt"
+index d1d0237750..2b7dbc30aa 100644
+--- "a/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\docs\\testing\\live_qa\\2026-09-04_catalog_01\\pre_patch_event21_building20\\021_random_civil_war_parent_triggers.txt"	
++++ "b/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_triggers\\021_random_civil_war_parent_triggers.txt"	
+@@ -775,7 +775,7 @@ event021_priority_front_depot_target_valid = {
+ 		is_in_array = { array = ROOT.random_civil_war_opening_core_states value = THIS }
+ 		OR = {
+ 			supply_node > constant:random_civil_war_value.zero
+-			building_level@arms_factory > constant:random_civil_war_value.zero
++			check_variable = { building_level@arms_factory > constant:random_civil_war_value.zero }
+ 		}
+ 	}
+ }
+diff --git "a/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\docs\\testing\\live_qa\\2026-09-04_catalog_01\\pre_patch_event21_building20\\021_random_civil_war_parent_effects.txt" "b/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_effects\\021_random_civil_war_parent_effects.txt"
+index ed63984bd5..b511ce3939 100644
+--- "a/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\docs\\testing\\live_qa\\2026-09-04_catalog_01\\pre_patch_event21_building20\\021_random_civil_war_parent_effects.txt"	
++++ "b/C:\\Users\\klimp\\OneDrive\\Documents\\Paradox Interactive\\Hearts of Iron IV\\mod\\chaos_redux\\common\\scripted_effects\\021_random_civil_war_parent_effects.txt"	
+@@ -1160,8 +1160,8 @@ event021_parent_score_anchor_state = {
+ 	set_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.base }
+ 	if = { limit = { state_population_k > constant:event021_anchor_weight.population_dense_k } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.population_dense } }
+ 	else_if = { limit = { state_population_k > constant:event021_anchor_weight.population_medium_k } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.population_medium } }
+-	if = { limit = { building_level@civilian_factory > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.civilian_factory } }
+-	if = { limit = { building_level@military_factory > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.military_factory } }
++	if = { limit = { check_variable = { building_level@industrial_complex > constant:random_civil_war_value.zero } } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.civilian_factory } }
++	if = { limit = { check_variable = { building_level@arms_factory > constant:random_civil_war_value.zero } } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.military_factory } }
+ 	if = { limit = { infrastructure > constant:event021_anchor_weight.infrastructure_good } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.infrastructure } }
+ 	if = { limit = { supply_node > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.supply_node } }
+ 	if = { limit = { naval_base > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_anchor_state_score = constant:event021_anchor_weight.naval_base } }
+@@ -3333,7 +3333,7 @@ event021_parent_score_same_tag_node = {
+ 	if = { limit = { supply_node > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_same_tag_node_score = constant:event021_same_tag_tuning.supply_node } }
+ 	if = { limit = { infrastructure > constant:random_civil_war_value.one } add_to_temp_variable = { event021_same_tag_node_score = constant:event021_same_tag_tuning.rail_node } }
+ 	if = { limit = { naval_base > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_same_tag_node_score = constant:event021_same_tag_tuning.naval_node } }
+-	if = { limit = { building_level@arms_factory > constant:random_civil_war_value.zero } add_to_temp_variable = { event021_same_tag_node_score = constant:event021_same_tag_tuning.depot_node } }
++	if = { limit = { check_variable = { building_level@arms_factory > constant:random_civil_war_value.zero } } add_to_temp_variable = { event021_same_tag_node_score = constant:event021_same_tag_tuning.depot_node } }
+ }
+ 
+ event021_parent_initialize_same_tag_contest = {
+@@ -3373,7 +3373,7 @@ event021_parent_initialize_same_tag_contest = {
+ 				supply_node > constant:random_civil_war_value.zero
+ 				naval_base > constant:random_civil_war_value.zero
+ 				infrastructure > constant:random_civil_war_value.one
+-				building_level@arms_factory > constant:random_civil_war_value.zero
++				check_variable = { building_level@arms_factory > constant:random_civil_war_value.zero }
+ 			}
+ 		}
+ 		event021_parent_score_same_tag_node = yes

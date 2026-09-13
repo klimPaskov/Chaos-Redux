@@ -7,17 +7,18 @@ Status: art package complete and ready for parent integration review; parent vis
 - Achievement id: `chaos_redux_034_the_long_fall`.
 - Consumer: inherited Event 34 Evolution III crash into Event 35 Great Depression recovery.
 - Runtime root: `gfx/achievements/`.
-- Existing sprite names observed without editing the GFX file: `GFX_achievement_034_the_long_fall`, `GFX_achievement_034_the_long_fall_grey`, and `GFX_achievement_034_the_long_fall_not_eligible` in `interface/035_great_depression.gfx`.
-- Suggested target GFX file: `interface/035_great_depression.gfx`.
+- The original unprefixed sprite names were observed during the asset handoff and were later removed from `interface/035_great_depression.gfx` during parent integration.
+- Final ID-aligned sprite aliases: `GFX_achievement_chaos_redux_034_the_long_fall`, `GFX_achievement_chaos_redux_034_the_long_fall_grey`, and `GFX_achievement_chaos_redux_034_the_long_fall_not_eligible` in `interface/035_great_depression_achievement_aliases.gfx`.
+- Suggested target GFX file: `interface/035_great_depression_achievement_aliases.gfx`.
 - The parent owns final sprite/achievement definition review and live consumer validation.
 
 ## Runtime files and state semantics
 
 | State | Runtime DDS | Source layer | Processed review PNG | Sprite name |
 | --- | --- | --- | --- | --- |
-| Completed | `gfx/achievements/chaos_redux_034_the_long_fall.dds` | `docs/assets/035_great_depression/source/achievements/eligible/chaos_redux_034_the_long_fall.png` | `docs/assets/035_great_depression/processed/achievements/chaos_redux_034_the_long_fall_eligible.png` | `GFX_achievement_034_the_long_fall` |
-| Grey | `gfx/achievements/chaos_redux_034_the_long_fall_grey.dds` | `docs/assets/035_great_depression/source/achievements/grey/chaos_redux_034_the_long_fall.png` | `docs/assets/035_great_depression/processed/achievements/chaos_redux_034_the_long_fall_grey.png` | `GFX_achievement_034_the_long_fall_grey` |
-| Not eligible | `gfx/achievements/chaos_redux_034_the_long_fall_not_eligible.dds` | `docs/assets/035_great_depression/source/achievements/not_eligible/chaos_redux_034_the_long_fall.png` | `docs/assets/035_great_depression/processed/achievements/chaos_redux_034_the_long_fall_not_eligible.png` | `GFX_achievement_034_the_long_fall_not_eligible` |
+| Completed | `gfx/achievements/chaos_redux_034_the_long_fall.dds` | `docs/assets/035_great_depression/source/achievements/eligible/chaos_redux_034_the_long_fall.png` | `docs/assets/035_great_depression/processed/achievements/chaos_redux_034_the_long_fall_eligible.png` | `GFX_achievement_chaos_redux_034_the_long_fall` |
+| Grey | `gfx/achievements/chaos_redux_034_the_long_fall_grey.dds` | `docs/assets/035_great_depression/source/achievements/grey/chaos_redux_034_the_long_fall.png` | `docs/assets/035_great_depression/processed/achievements/chaos_redux_034_the_long_fall_grey.png` | `GFX_achievement_chaos_redux_034_the_long_fall_grey` |
+| Not eligible | `gfx/achievements/chaos_redux_034_the_long_fall_not_eligible.dds` | `docs/assets/035_great_depression/source/achievements/not_eligible/chaos_redux_034_the_long_fall.png` | `docs/assets/035_great_depression/processed/achievements/chaos_redux_034_the_long_fall_not_eligible.png` | `GFX_achievement_chaos_redux_034_the_long_fall_not_eligible` |
 
 All runtime files are exact 64x64 root-only achievement DDS files.
 

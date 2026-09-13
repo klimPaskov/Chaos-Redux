@@ -376,9 +376,18 @@ events_log_set_default_actor_for_current_event = {
 		DTH = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
 		set_temp_variable = { events_log_default_has_actor = 1 }
 	}
-	else_if = {
+    else_if = {
         limit = { check_variable = { event_id = 23 } }
         SOV = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
+        set_temp_variable = { events_log_default_has_actor = 1 }
+    }
+    else_if = {
+        limit = {
+            check_variable = { event_id = constant:video_game_in_sweden_event.id }
+            has_event_target = video_game_in_sweden_host
+            event_target:video_game_in_sweden_host = { exists = yes }
+        }
+        event_target:video_game_in_sweden_host = { ROOT = { set_temp_variable = { events_log_default_actor = PREV } } }
         set_temp_variable = { events_log_default_has_actor = 1 }
     }
     else_if = {
@@ -1255,6 +1264,19 @@ initialize_world_end_scenario_registry = {
 	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
 	world_end_scenario_registry_add_entry = yes
 
+	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.global_jihad }
+	set_temp_variable = { world_end_registry_owner_event_id = constant:world_end_scenario_owner_event.random_terror }
+	set_temp_variable = { world_end_registry_sort_order = constant:world_end_scenario_sort_order.primary }
+	set_temp_variable = { world_end_registry_visibility = constant:world_end_scenario_visibility.public }
+	set_temp_variable = { world_end_registry_public_details_ready = constant:world_end_scenario_public_details.ready }
+	set_temp_variable = { world_end_registry_default_enabled = constant:world_end_scenario_default_enabled.enabled }
+	set_temp_variable = { world_end_registry_scenario_flag = constant:world_end_scenario_id.global_jihad }
+	set_temp_variable = { world_end_registry_super_event_id = constant:world_end_scenario_super_event.global_jihad }
+	set_temp_variable = { world_end_registry_title_key = constant:world_end_scenario_id.global_jihad }
+	set_temp_variable = { world_end_registry_details_key = constant:world_end_scenario_id.global_jihad }
+	set_temp_variable = { world_end_registry_availability_helper = constant:world_end_scenario_availability_helper.standard_world_end_rules }
+	world_end_scenario_registry_add_entry = yes
+
 	# Registered hidden identity. Hidden visibility remains metadata for future
 	# presentation policy, while the stable row and details contract stay usable.
 	set_temp_variable = { world_end_registry_id = constant:world_end_scenario_id.weaponized_wendigo_ascendancy }
@@ -1351,6 +1373,10 @@ events_log_evaluate_world_end_scenario_active = {
 	}
 	else_if = {
 		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.africa_the_world } has_global_flag = world_end_africa_the_world }
+		set_temp_variable = { events_log_world_end_scenario_active = 1 }
+	}
+	else_if = {
+		limit = { check_variable = { events_log_world_end_scenario_flag = constant:world_end_scenario_id.global_jihad } has_global_flag = world_end_random_terror_false_revelation }
 		set_temp_variable = { events_log_world_end_scenario_active = 1 }
 	}
 }
@@ -2357,6 +2383,28 @@ events_log_rebuild_open_event_details_view = {
 			limit = {
 				check_variable = {
 					var = event_id
+					value = constant:video_game_in_sweden_event.id
+					compare = equals
+				}
+			}
+			set_temp_variable = { events_log_event_detail_preview_type = constant:video_game_in_sweden_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:video_game_in_sweden_event.evolution_i_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:video_game_in_sweden_event.evolution_i_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:video_game_in_sweden_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:video_game_in_sweden_event.evolution_ii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:video_game_in_sweden_event.evolution_ii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:video_game_in_sweden_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:video_game_in_sweden_event.evolution_iii_tier }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:video_game_in_sweden_event.evolution_iii_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = event_id
 					value = constant:infantry_spawn_event.id
 					compare = equals
 				}
@@ -2697,6 +2745,34 @@ events_log_rebuild_open_event_details_view = {
 			set_temp_variable = { events_log_event_detail_preview_type = constant:black_plague_identity.evolution_type }
 			set_temp_variable = { events_log_event_detail_preview_tier = constant:black_plague_evolution_runtime.evolution_v_tier }
 			set_temp_variable = { events_log_event_detail_preview_stage = constant:black_plague_evolution_runtime.evolution_v_stage }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:black_friday_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:black_friday_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:black_friday_event.evolution_tier_i }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:black_friday_event.evolution_stage_i }
+			events_log_add_event_detail_evolution_preview = yes
+		}
+
+		if = {
+			limit = { check_variable = { var = event_id value = constant:sov_nuclear_bombs_event.id compare = equals } }
+			set_temp_variable = { events_log_event_detail_preview_type = constant:sov_nuclear_bombs_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_2 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:sov_nuclear_bombs_evolution.stage_i }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:sov_nuclear_bombs_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_3 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:sov_nuclear_bombs_evolution.stage_ii }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:sov_nuclear_bombs_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_4 }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:sov_nuclear_bombs_evolution.stage_iii }
+			events_log_add_event_detail_evolution_preview = yes
+			set_temp_variable = { events_log_event_detail_preview_type = constant:sov_nuclear_bombs_event.evolution_type }
+			set_temp_variable = { events_log_event_detail_preview_tier = constant:chaos_meter_tier_id.tier_final }
+			set_temp_variable = { events_log_event_detail_preview_stage = constant:sov_nuclear_bombs_evolution.stage_iv }
 			events_log_add_event_detail_evolution_preview = yes
 		}
 
@@ -4188,6 +4264,16 @@ events_log_toggle_event_disabled_by_row = {
         }
         else = {
             add_to_array = { global.disabled_events = events_log_selected_event_id }
+        }
+        if = {
+            limit = { check_variable = { events_log_selected_event_id = constant:black_friday_event.id } }
+            if = {
+                limit = { is_in_array = { global.disabled_events = events_log_selected_event_id } }
+                black_friday_on_event_disabled = yes
+            }
+            else = {
+                black_friday_on_event_system_resumed = yes
+            }
         }
         calculate_dynamic_major_weight_gain = yes
     }

@@ -1,5 +1,18 @@
 # Event 006 league expulsion evidence helpers
 
+## `independence_wave_allocate_automatic_packages`
+
+Country-scope allocator called by `independence_wave_prepare_and_execute_standalone_incident` and `liberations_joint_prepare_and_execute_incident` after the shared coordinator enters allocation.
+It captures the current chaos-band tuning through `independence_wave_begin_plan_contribution`, then reserves admitted package anchors until the exact target is selected, the pool is exhausted, or the attempt limit is reached.
+The shared `independence_wave_count` constants define 3, 4, 5, 7, 10, and 10 countries across the six chaos bands.
+It publishes `independence_wave_plan_contribution_ready` only when the selected count equals the frozen target and the metadata arrays align.
+An incomplete selection sets `independence_wave_plan_exact_count_failed` and `liberation_plan_reject_reason.insufficient_pool` without rewriting either the Event 006 target or the shared expected country count.
+The caller retains ownership of cancellation, reservation cleanup, execution, and the terminal receipt.
+This helper changes reservation metadata and frozen evolution state but performs no country release, ownership transfer, or public presentation.
+It adds no event targets or cleanup lifecycle beyond the existing plan contribution.
+
+Usage: `independence_wave_allocate_automatic_packages = yes` inside an allocating plan that includes Event 006.
+
 ## `independence_wave_apply_generic_government_route_politics`
 
 Country-scope helper called by `independence_wave_select_government_route` after

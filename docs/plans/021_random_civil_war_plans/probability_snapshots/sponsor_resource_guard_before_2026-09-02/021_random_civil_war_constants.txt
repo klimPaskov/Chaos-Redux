@@ -1,0 +1,800 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 RANDOM CIVIL WAR CONSTANTS
+# ============================================================================
+# Central tuning for Event 021. The scripted effects and triggers in the
+# matching files treat these values as the contract between target selection,
+# the bounded review queue, front planning, settlement, and recurrence.
+#
+# Event 006 package IDs are deliberately not duplicated here. Event 021 passes
+# its temporary package id to the existing Event 006 admission predicates, then
+# records an Event 021 origin receipt. The parent-owned package executor remains
+# responsible for the package-specific identity, focus, and force application.
+# ============================================================================
+
+random_civil_war_event = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	id = 21
+	evolution_type = 21
+	baseline_stage = 0
+	evolution_i_stage = 1
+	evolution_ii_stage = 2
+	evolution_iii_stage = 3
+	maximum_stage = 5
+}
+
+random_civil_war_value = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	zero = 0
+	one = 1
+	two = 2
+	three = 3
+	four = 4
+	five = 5
+	six = 6
+	hundred = 100
+}
+
+random_civil_war_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	baseline = 0
+	gathering_storm = 1
+	rising_chaos = 2
+	chaos_tier = 3
+	totalen_chaos = 4
+	world_collapse = 5
+}
+
+random_civil_war_severity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	limited = 1
+	serious = 2
+	severe = 3
+	critical = 4
+}
+
+random_civil_war_archetype = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	ideological = 1
+	legal = 2
+	regional = 3
+	event006 = 4
+	command = 5
+	same_tag = 6
+}
+
+random_civil_war_authority_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	collapse = 0
+	failing = 1
+	contested = 2
+	cohesive = 3
+}
+
+random_civil_war_pressure_band = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	stable = 0
+	exposed = 1
+	fractured = 2
+	critical = 3
+}
+
+random_civil_war_exposure_stage = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	observed = 1
+	pressured = 2
+	penetrated = 3
+	mobilizing = 4
+}
+
+random_civil_war_settlement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	government_victory = 1
+	opposition_victory = 2
+	independence = 3
+	autonomy = 4
+	coalition = 5
+	partition = 6
+	merger = 7
+	evolution = 8
+}
+
+random_civil_war_origin = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	ordinary = 1
+	event006 = 2
+	same_tag = 3
+	scenario = 4
+}
+
+random_civil_war_scenario_type = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	political_fracture = 1
+	independence_cascade = 2
+	command_collapse = 3
+	universal_fragmentation = 4
+}
+
+random_civil_war_scenario_intensity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	low = 1
+	medium = 2
+	high = 3
+	maximum = 4
+}
+
+random_civil_war_achievement = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	survive_first_crisis = 1
+	settle_three_fronts = 2
+	preserve_remnant = 3
+	event006_origin = 4
+	global_stabilizer = 5
+	nested_recovery = 6
+}
+
+random_civil_war_pressure = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	minimum = 0
+	maximum = 100
+	base = 15
+	stability_low = 0.35
+	stability_high = 0.70
+	war_support_low = 0.35
+	war_support_high = 0.70
+	political_grievance = 8
+	military_disloyalty = 10
+	territorial_loss = 6
+	state_capacity_loss = 5
+	regional_identity = 5
+	nearby_conflict = 4
+	event_memory = 6
+	active_war = 5
+	chaos_tier = 4
+	authority_failing = 5
+	authority_collapse = 10
+	cohesive_relief = -5
+	settlement_relief = -12
+	reconstruction_relief = -4
+	contested_pressure = 3
+	critical_threshold = 75
+	fractured_threshold = 50
+	exposed_threshold = 25
+}
+
+random_civil_war_authority = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	minimum = 0
+	maximum = 100
+	default = 70
+	collapse_maximum = 14
+	failing_maximum = 39
+	contested_maximum = 69
+	capital_lost = -12
+	capital_secured = 8
+	supply_lost = -7
+	supply_secured = 5
+	rail_or_depot_lost = -5
+	admin_restored = 6
+	negotiation = 4
+	repression = -4
+	foreign_intervention = -6
+	settlement = 10
+	reconstruction = 5
+	victory = 15
+	defeat = -15
+}
+
+random_civil_war_target_weight = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	minimum = 0
+	maximum = 1000
+	base = 10
+	pressure_per_point = 4
+	authority_failing = 90
+	authority_collapse = 160
+	nearby_exposure = 60
+	valid_actor_route = 80
+	major_stage = 50
+	major_target_factor = 0.35
+	recent_memory = -120
+	reserved = -1000
+	subject = 20
+	player = 25
+}
+
+random_civil_war_timing = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	initial_review_days = 30
+	stable_review_days = 120
+	exposed_review_days = 90
+	fractured_review_days = 60
+	critical_review_days = 15
+	evolution_minimum_days = 60
+	evolution_maximum_days = 180
+	recurrence_minimum_days = 60
+	recurrence_maximum_days = 180
+	successor_grace_days = 45
+	target_cooldown_days = 365
+	event_memory_days = 180
+	reconstruction_days = 120
+	exposure_cooldown_days = 30
+	scenario_batch_maximum_days = 7
+	active_launch_lock_days = 7
+}
+
+random_civil_war_evolution_mtth = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	evolution_i_base_days = 90
+	evolution_ii_base_days = 135
+	evolution_iii_base_days = 120
+	large_country_state_threshold = 8
+	near_defeat_threshold = 0.70
+	strong_neighbor_stability_threshold = 0.65
+	authority_failure_factor = 0.75
+	large_country_factor = 0.85
+	extra_actor_factor = 0.75
+	multifront_factor = 0.85
+	border_route_factor = 0.75
+	sponsor_route_factor = 0.75
+	independence_front_factor = 0.80
+	severe_war_factor = 0.80
+	near_defeat_factor = 1.50
+	settlement_progress_factor = 1.40
+	no_extra_actor_factor = 1.35
+	strong_neighbor_factor = 1.25
+	no_exposure_route_factor = 1.25
+}
+
+random_civil_war_capacity = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	active_theaters_baseline = 2
+	active_theaters_evolution_i = 3
+	active_theaters_evolution_ii = 4
+	active_theaters_evolution_iii = 5
+	active_theaters_totalen = 6
+	active_theaters_world_collapse = 8
+	active_fronts_baseline = 4
+	active_fronts_evolution_i = 6
+	active_fronts_evolution_ii = 8
+	active_fronts_evolution_iii = 10
+	active_fronts_totalen = 12
+	active_fronts_world_collapse = 16
+	global_review_batch = 6
+	critical_queue_batch = 3
+	scenario_review_batch = 4
+	maximum_generation = 2
+	minimum_remnant_states = 1
+	minimum_multifront_states = 2
+	maximum_multifront_states = 5
+	maximum_one_state_route_states = 1
+	minimum_force_divisions = 1
+	maximum_force_divisions = 12
+}
+
+random_civil_war_force = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	actor_division_ratio = 0.25
+	actor_manpower_ratio = 0.30
+	actor_equipment_ratio = 0.20
+	minimum_manpower = 1000
+	minimum_infantry_equipment = 100
+	minimum_support_equipment = 25
+	minimum_artillery_equipment = 10
+	infantry_equipment_per_division = 100
+	support_equipment_per_division = 25
+	artillery_equipment_per_division = 10
+	serious_division_count = 2
+	severe_division_count = 3
+	critical_division_count = 4
+	one_state_division_count = 1
+	air_share = 0.15
+	navy_share = 0.15
+}
+
+random_civil_war_scenario = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	low_share = 0.10
+	medium_share = 0.25
+	high_share = 0.50
+	maximum_share = 1
+}
+
+random_civil_war_settlement_tuning = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	recurrence_threshold = 45
+	strong_settlement_threshold = 75
+	settlement_recurrence_relief = -20
+	failed_settlement_pressure = 20
+	postwar_memory_pressure = 10
+	front_resolution_progress = 1
+	minimum_reconstruction_authority = 40
+	achievement_front_count = 3
+}
+
+# Decision and mission consumers use these four namespaces directly. They are
+# kept beside the system constants so the parent-owned decision surface and the
+# scripted helpers cannot drift into separate tuning tables.
+event021_action_cost = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	secure_arsenals_command_power_gate = 10
+	secure_arsenals_command_power_spend = -10
+	secure_arsenals_infantry_gate = 100
+	secure_arsenals_infantry_spend = -100
+	secure_arsenals_trains_gate = 1
+	secure_arsenals_trains_spend = -1
+	capital_command_power_gate = 15
+	capital_command_power_spend = -15
+	capital_infantry_gate = 150
+	capital_infantry_spend = -150
+	capital_manpower_gate = 1000
+	capital_manpower_spend = -1000
+	loyalty_command_power_gate = 10
+	loyalty_command_power_spend = -10
+	loyalty_army_xp_gate = 10
+	loyalty_army_xp_spend = -10
+	loyalty_political_power_gate = 25
+	loyalty_political_power_spend = -25
+	depot_command_power_gate = 10
+	depot_command_power_spend = -10
+	depot_infantry_gate = 100
+	depot_infantry_spend = -100
+	depot_trucks_gate = 10
+	depot_trucks_spend = -10
+	relief_political_power_gate = 15
+	relief_political_power_spend = -15
+	relief_trucks_gate = 10
+	relief_trucks_spend = -10
+	relief_convoys_gate = 5
+	relief_convoys_spend = -5
+	settlement_political_power_gate = 25
+	settlement_political_power_spend = -25
+	settlement_command_power_gate = 15
+	settlement_command_power_spend = -15
+	settlement_infantry_gate = 150
+	settlement_infantry_spend = -150
+	settlement_manpower_gate = 1000
+	settlement_manpower_spend = -1000
+	reconstruction_political_power_gate = 20
+	reconstruction_political_power_spend = -20
+	reconstruction_manpower_gate = 500
+	reconstruction_manpower_spend = -500
+	reconstruction_trains_gate = 1
+	reconstruction_trains_spend = -1
+	border_command_power_gate = 10
+	border_command_power_spend = -10
+	border_trucks_gate = 10
+	border_trucks_spend = -10
+	border_convoys_gate = 5
+	border_convoys_spend = -5
+	integration_army_xp_gate = 10
+	integration_army_xp_spend = -10
+	integration_infantry_gate = 150
+	integration_infantry_spend = -150
+	integration_manpower_gate = 1000
+	integration_manpower_spend = -1000
+	government_support_political_power_gate = 20
+	government_support_political_power_spend = -20
+	government_support_infantry_gate = 150
+	government_support_infantry_spend = -150
+	government_support_infantry_transfer = 100
+	government_support_convoys_gate = 5
+	government_support_convoys_spend = -5
+	opposition_support_political_power_gate = 20
+	opposition_support_political_power_spend = -20
+	opposition_support_infantry_gate = 150
+	opposition_support_infantry_spend = -150
+	opposition_support_infantry_transfer = 100
+	opposition_support_convoys_gate = 5
+	opposition_support_convoys_spend = -5
+	mediation_political_power_gate = 20
+	mediation_political_power_spend = -20
+	mediation_command_power_gate = 10
+	mediation_command_power_spend = -10
+	mediation_convoys_gate = 5
+	mediation_convoys_spend = -5
+	disengage_political_power_gate = 15
+	disengage_political_power_spend = -15
+	disengage_command_power_gate = 10
+	disengage_command_power_spend = -10
+	disarmament_army_xp_gate = 10
+	disarmament_army_xp_spend = -10
+	disarmament_infantry_gate = 100
+	disarmament_infantry_spend = -100
+	disarmament_manpower_gate = 500
+	disarmament_manpower_spend = -500
+	prevention_political_power_gate = 15
+	prevention_political_power_spend = -15
+	prevention_manpower_gate = 500
+	prevention_manpower_spend = -500
+	prevention_command_power_gate = 10
+	prevention_command_power_spend = -10
+	prevention_trains_gate = 1
+	prevention_trains_spend = -1
+	priority_command_power_gate = 10
+	priority_command_power_spend = -10
+}
+
+event021_action_tuning = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	action_cooldown_days = 30
+	relief_cooldown_days = 30
+	settlement_cooldown_days = 45
+	reconstruction_cooldown_days = 30
+	arsenal_idea_days = 45
+	capital_idea_days = 30
+	loyalty_idea_days = 45
+	relief_idea_days = 60
+	border_monitoring_days = 60
+	settlement_obligation_days = 180
+	capital_authority_gain = 8
+	depot_authority_gain = 4
+	depot_pressure_cost = -8
+	hardliner_pressure_cost = 6
+	integration_authority_gain = 6
+	integration_pressure_cost = -6
+	reconstruction_authority_gain = 8
+	reconstruction_stability_gain = 0.02
+	government_support_authority_gain = 5
+	government_support_pressure_cost = -5
+	opposition_support_pressure_gain = 5
+	mission_authority_gain = 5
+	mission_failure_authority_loss = -8
+	mission_failure_pressure_gain = 8
+	rail_authority_gain = 5
+	settlement_authority_cost = -4
+	relief_stability_gain = 0.01
+	arsenal_authority_gain = 5
+	arsenal_pressure_relief = -8
+	border_authority_gain = 4
+	border_pressure_relief = -6
+	depot_army_organization = 0.10
+	depot_effect_days = 45
+	depot_supply_consumption = -0.10
+	disarmament_authority_gain = 6
+	disarmament_pressure_relief = -10
+	disengage_authority_gain = 3
+	disengage_pressure_relief = -6
+	hardliner_authority_cost = -4
+	loyalty_authority_gain = 5
+	loyalty_pressure_relief = -6
+	maximum_infrastructure = 5
+	mediation_authority_gain = 5
+	mediation_days = 90
+	mediation_pressure_relief = -8
+	opposition_support_authority_cost = -4
+	prevention_authority_gain = 4
+	prevention_pressure_relief = -5
+	priority_authority_gain = 3
+	priority_pressure_relief = -4
+	rail_train_recovery = 1
+	relief_authority_gain = 5
+	relief_pressure_relief = -8
+	sponsor_commitment_days = 90
+	sponsor_support_amount = 100
+}
+
+event021_mission_tuning = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	hold_capital_days = 30
+	secure_rail_days = 30
+	settlement_terms_days = 180
+	rail_infrastructure_gate = 2
+}
+
+event021_ai = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	base_action = 1
+	base_mission = 1
+	priority_major = 1.5
+	discourage_concession = 0.75
+	discourage_repression = 0.75
+	exposure_mediator_stability = 0.65
+}
+
+event021_anchor_weight = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	base = 10
+	population_medium_k = 1000
+	population_medium = 8
+	population_dense_k = 10000
+	population_dense = 12
+	civilian_factory = 8
+	military_factory = 10
+	infrastructure_good = 3
+	infrastructure = 6
+	supply_node = 12
+	naval_base = 8
+	coastal = 4
+	core = 8
+	capital = 20
+	maximum = 100
+}
+
+event021_evidence_tuning = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	route_receipt_days = 180
+	external_war_receipt_days = 180
+	fury_receipt_days = 180
+	neighbor_receipt_days = 90
+	sponsor_receipt_days = 90
+	minimum_live_strength = 1
+	receipt_cleanup_owner = 21
+}
+
+event021_parent_tuning = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	front_id_seed = 1
+	event6_generation_seed = 0
+	minimum_state_population_k = 5
+	minimum_context_population_k = 500
+	minimum_political_authority = 25
+	weak_manpower_gate = 5000
+	minimum_administration_factories = 2
+	nested_generation_minimum = 1
+	minimum_belligerents = 2
+	maximum_major_belligerents = 5
+	maximum_minor_belligerents = 3
+	minimum_actor_size = 0.05
+	maximum_actor_size = 0.45
+	minimum_air_navy_share = 0.05
+	limited_army_share = 0.15
+	limited_stockpile_share = 0.10
+	limited_navy_share = 0.05
+	limited_air_share = 0.05
+	serious_army_share = 0.25
+	serious_stockpile_share = 0.20
+	serious_navy_share = 0.10
+	serious_air_share = 0.10
+	severe_army_share = 0.35
+	severe_stockpile_share = 0.30
+	severe_navy_share = 0.15
+	severe_air_share = 0.15
+	critical_army_share = 0.45
+	critical_stockpile_share = 0.45
+	critical_navy_share = 0.25
+	critical_air_share = 0.25
+	local_units_army_bonus = 0.10
+	command_army_bonus = 0.10
+	command_navy_bonus = 0.05
+	command_air_bonus = 0.05
+	ideological_affinity_army_bonus = 0.05
+	regional_support_army_bonus = 0.05
+	depot_army_bonus = 0.05
+	depot_stockpile_bonus = 0.10
+	arsenal_stockpile_bonus = 0.10
+	local_support_stockpile_bonus = 0.05
+	external_war_army_penalty = -0.05
+	external_war_stockpile_penalty = -0.10
+	poor_equipment_army_penalty = -0.10
+	secondary_front_size = 1
+	secondary_front_minimum_states = 1
+	secondary_front_army_share = 0.15
+	secondary_front_navy_share = 0.05
+	secondary_front_air_share = 0.05
+	settlement_terms_hold_days = 180
+	same_tag_deadline_days = 30
+	cluster_reservation_valid_days = 7
+	scheduler_registration_samples = 4
+	target_pool_weight_scale = 100
+	target_pool_weight_cap = 10
+	strange_incident_probability = 0.08
+	strange_incident_no_probability = 0.92
+	strange_incident_authority_loss = -3
+	strange_incident_pressure_gain = 4
+}
+
+event021_same_tag_tuning = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+	minimum = 0
+	maximum = 100
+	government_base = 50
+	claimant_base = 50
+	authority_share = 0.50
+	pressure_share = 0.50
+	arsenal_gain = 5
+	capital_gain = 10
+	loyalty_gain = 5
+	integration_gain = 8
+	priority_gain = 3
+	settlement_claimant_gain = 10
+	mission_government_gain = 8
+	mission_claimant_gain = 8
+	capital_node = 20
+	supply_node = 12
+	rail_node = 10
+	naval_node = 8
+	depot_node = 8
+}
+
+event021_scheduler = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	first_array_index = 0
+	initial_review_cursor = 0
+	initial_critical_cursor = 0
+	maximum_review_scan = 6
+	maximum_critical_scan = 3
+}
+
+event021_settlement_obligation = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	none = 0
+	recognition = 1
+	disarmament = 2
+	rail_security = 3
+	sponsor_repayment = 4
+	coalition_governance = 5
+}
+
+random_civil_war_cluster_skip_reason = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	none = 0
+	no_eligible_actor = 1
+	no_eligible_target = 2
+	role_collision = 3
+	tag_occupied = 4
+	state_reservation_failed = 5
+	cap_reached = 6
+	generation_blocked = 7
+	stale_delayed_reservation = 8
+	package_incomplete = 9
+}
+
+random_civil_war_evidence_source = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	political = 1
+	legal = 2
+	regional = 3
+	command = 4
+	event006 = 5
+	same_tag = 6
+	external_war = 7
+	fury = 8
+	neighbor = 9
+	sponsor = 10
+	settlement = 11
+}
+
+random_civil_war_evidence_strength = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	credible = 1
+	acute = 2
+}
+
+random_civil_war_front_goal = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	ideological_change = 1
+	constitutional_restoration = 2
+	regional_recognition = 3
+	command_seizure = 4
+	independence = 5
+}
+
+random_civil_war_front_status = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	active = 1
+}
+
+random_civil_war_log = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+	opening = 1
+	multi_front = 2
+	exposure = 3
+	settlement = 4
+	reconstruction = 5
+	evolution_iii = 6
+	failed_opening = 7
+}

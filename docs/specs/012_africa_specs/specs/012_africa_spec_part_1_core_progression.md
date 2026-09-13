@@ -468,9 +468,9 @@ Grounded routes gain relief and reconstruction missions. High-chaos nature route
 
 The League gains quarantine, medical corridor, and mutual aid responses. High-chaos routes can weaponise fictional or supernatural disease effects through the existing biological warfare framework. No event text or design note should provide real-world disease creation instructions.
 
-### Event 46 Gods of Africa or equivalent future event
+### Historical Event 46 Gods of Africa planning note (superseded 2026-09-05)
 
-The event matrix lists Gods of Africa as a separate reserved event. Event 12 should not absorb its full fantasy. It can receive rare blessings, rival cults, or shared high-chaos actors once that event has a source spec. Until then, the connection remains a gated interface, not invented implementation.
+The event matrix listed Gods of Africa as a separate reserved event during the original planning pass. That planning boundary is superseded by the accepted Event 012-owned Gods of Africa subsystem documented in `docs/events/012_africa/gods_of_africa.md`; Event 012 now owns the fictional institution, its bounded relationship mechanics, and its Event 012 report and decision surfaces, while Event 070 remains reserved for another idea.
 
 ### Event 98 New Ore
 

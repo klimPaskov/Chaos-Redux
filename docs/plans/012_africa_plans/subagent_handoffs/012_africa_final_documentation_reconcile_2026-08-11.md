@@ -4,6 +4,8 @@
 
 > 2026-08-26 status note: this final documentation baseline is superseded for Africa model/audio promotion by the current per-package manifests and `012_africa_models_documentation_reconciliation_2026-08-26.md`. Its dated certification counts do not claim nine runtime-ready models or a complete eight-unit sound set.
 
+> 2026-09-05 status note: this dated baseline is superseded for current Event 012 scenario, Gods of Africa, MCP, elephant, and Event 070 status by `docs/plans/012_africa_plans/documentation_cleanup_handoff_2026-09-05.md`. Its former fake-`SCN-011` and pre-reconciliation MCP wording remains historical provenance.
+
 This handoff records the final documentation-only reconciliation for Event 012 Africa. It does not modify gameplay, localisation, spreadsheet workbooks or exports, asset binaries, staging, or commits, and it does not replace parent-owned live validation.
 
 The accepted design source remains `docs/specs/012_africa_specs/`. The current release overview is `docs/events/012_africa/overview.md`. The machine-readable acceptance source is `docs/plans/012_africa_plans/012_africa_acceptance_ledger.csv`. Current implementation evidence is carried by the dated owner handoffs under `docs/plans/012_africa_plans/subagent_handoffs/`.
@@ -28,9 +30,9 @@ The permanent Charter presentation contract is now normative in `docs/specs/012_
 | `012_africa_achievements_handoff.md` | Superseded provenance | The former all-blocked/open-owner wording is historical; exact Rows 10, 16, 29, 30, and 40 semantics remain documented. |
 | `012_africa_ai_probability_final_audit_2026-08-10.md` | Current evidence with dated follow-up | The 2026-08-11 appendix records no new concrete defect and preserves incomplete-pool and adapter limitations. |
 | `012_africa_final_current_decision_audit_2026-08-11.md` | Current owner evidence | Exact 102/102 source census and six intentional gates are accepted; fresh MCP routes remain artifact-manifest blocked. |
-| `012_africa_final_current_source_certification_2026-08-11.md` | Current certification handoff | Independent source-completion summary for achievements, actions, AI, priority packages, assets, event evidence, and limitations. |
+| `012_africa_final_current_source_certification_2026-08-11.md` | Superseded dated certification handoff | Its independent source-completion summary remains provenance; the 2026-09-05 cleanup handoff governs current Event 012 ownership, Gods, scenario, MCP, and evidence boundaries. |
 | `012_africa_implementation_source_map.md` | Current source map with historical sections | Current release-candidate counts and carrier/queue boundaries are explicit; its opening and historical baseline sections remain provenance. |
-| `docs/systems/event_system/triggerable_scenarios.md` | Current system documentation | The retired fake Event012 `SCN-011`/Africa scenario reservation was removed; no Event012 scenario reservation remains. |
+| `docs/systems/event_system/triggerable_scenarios.md` | Superseded statement retained as historical provenance | Its former retired-fake `SCN-011`/Africa reservation wording is superseded by the current live Event 012 `SCN-011` row documented in the current system file and release overview. |
 
 The 199 controlled-pool polity candidates and six intentional action gates remain queued or gated by design. They were not silently promoted, flattened, or treated as gameplay omissions.
 
@@ -40,7 +42,7 @@ The 199 controlled-pool polity candidates and six intentional action gates remai
 - The 102-action count is reconciled as 96 ordinary implementations plus six deliberate runtime-gated concepts, not 96 implemented concepts plus six omissions.
 - Historical portrait-placeholder wording now identifies the 16 source-cropped male portraits as accepted non-blocking placeholders rather than missing package owners.
 - W0–W5 readiness and terminal presentation are separated in normative part 5, and late Charter families are permanently list-only in normative part 2.
-- The fake Event012 scenario reservation is removed from the triggerable-scenario system documentation and the Event012 source map.
+- The former fake Event012 scenario reservation wording is retained as historical provenance, while the current live `SCN-011` row is documented by the triggerable-scenario system file and Event012 source map.
 
 ## Contradictions intentionally left open
 

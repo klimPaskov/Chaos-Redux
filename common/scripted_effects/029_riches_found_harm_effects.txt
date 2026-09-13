@@ -1,0 +1,225 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 HARM AND ACCOUNTABILITY EFFECTS
+# ============================================================================
+# STATE-scope wrappers for the finite civilian harm attached to Event 029
+# choices and mine collapse. Each wrapper has its own receipt flag, applies
+# the requested loss through the shared exact state-population transaction,
+# records the loss under the resource-field incident taxonomy, and adds a
+# public atrocity condemnation entry for the current controller. The helper
+# never creates contamination, outbreak state, ordinary map resources, or
+# Event 018 cave state.
+# ============================================================================
+
+# STATE scope. Inputs: temporary riches_found_harm_deaths,
+# riches_found_harm_condemnation, and optional riches_found_harm_context.
+# Outputs: normal state variable riches_found_harm_applied and accumulated
+# riches_found_harm_total_deaths. A bounded owner target is retained only for
+# the current effect chain so the controller's condemnation names the victim.
+riches_found_apply_harm_record = {
+	if = {
+		limit = {
+			has_variable = riches_found_harm_deaths
+			check_variable = { var = riches_found_harm_deaths value = constant:riches_found_value.zero compare = greater_than }
+		}
+		if = {
+			limit = { NOT = { has_variable = riches_found_harm_condemnation } }
+			set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_value.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = riches_found_harm_context } }
+			set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		}
+		if = {
+			limit = { OWNER = { exists = yes } }
+			OWNER = { save_event_target_as = riches_found_harm_victim }
+		}
+		set_temp_variable = { state_civilian_population_loss_requested = riches_found_harm_deaths }
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:riches_found_value.zero }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:riches_found_value.one }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.resource_field_incident }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:riches_found_value.one }
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:riches_found_value.one }
+		apply_exact_state_civilian_population_loss = yes
+		set_variable = { riches_found_harm_applied = state_civilian_population_loss_applied }
+		if = {
+			limit = { NOT = { has_variable = riches_found_harm_total_deaths } }
+			set_variable = { riches_found_harm_total_deaths = constant:riches_found_value.zero }
+		}
+		add_to_variable = { riches_found_harm_total_deaths = riches_found_harm_applied }
+		set_state_flag = riches_found_harm_occurred
+		if = {
+			limit = {
+				check_variable = {
+					var = riches_found_harm_applied
+					value = constant:riches_found_harm.mass_death_gate
+					compare = greater_than_or_equals
+				}
+			}
+			set_state_flag = riches_found_mass_death_occurred
+			if = {
+				limit = { CONTROLLER = { exists = yes } }
+				CONTROLLER = { set_country_flag = riches_found_mass_death_occurred }
+			}
+		}
+		set_temp_variable = { riches_found_harm_severity = constant:condemnation_severity.major }
+		if = {
+			limit = {
+				check_variable = {
+					var = riches_found_harm_applied
+					value = constant:riches_found_harm.mass_death_gate
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { riches_found_harm_severity = constant:condemnation_severity.mass_death }
+		}
+		if = {
+			limit = {
+				check_variable = { var = riches_found_harm_applied value = constant:riches_found_value.zero compare = greater_than }
+				CONTROLLER = { exists = yes }
+			}
+			CONTROLLER = {
+				set_temp_variable = { condemnation_source_type = constant:condemnation_source.atrocity }
+				set_temp_variable = { condemnation_base_gain = riches_found_harm_condemnation }
+				set_temp_variable = { condemnation_visibility_type = constant:condemnation_visibility.public }
+				set_temp_variable = { condemnation_severity_type = riches_found_harm_severity }
+				set_temp_variable = { condemnation_civilian_deaths = riches_found_harm_applied }
+				set_temp_variable = { condemnation_contamination_value = constant:riches_found_value.zero }
+				set_temp_variable = { condemnation_context_type = riches_found_harm_context }
+				if = {
+					limit = { has_event_target = riches_found_harm_victim }
+					set_temp_variable = { condemnation_victim_country = event_target:riches_found_harm_victim }
+				}
+				condemnation_add_source = yes
+			}
+		}
+	}
+}
+
+# STATE scope. One-time receipt for the finite harm caused by a barricade
+# clearance operation.
+riches_found_record_barricade_harm = {
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_barricade_harm_recorded } }
+		set_state_flag = riches_found_barricade_harm_recorded
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.barricade_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.barricade_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. One-time receipt for forced workforce replacement.
+riches_found_record_workforce_replacement_harm = {
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_workforce_replacement_harm_recorded } }
+		set_state_flag = riches_found_workforce_replacement_harm_recorded
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.workforce_replacement_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.workforce_replacement_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. One-time receipt for the Demons Beneath the Mine military
+# purge route.
+riches_found_record_military_purge_harm = {
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_military_purge_harm_recorded } }
+		set_state_flag = riches_found_military_purge_harm_recorded
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.military_purge_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.military_purge_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. One-time receipt for Gilded Sovereignty violent
+# nationalization.
+riches_found_record_violent_nationalization_harm = {
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_violent_nationalization_harm_recorded } }
+		set_state_flag = riches_found_violent_nationalization_harm_recorded
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.violent_nationalization_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.violent_nationalization_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. One-time receipt for The Bottomless Account predatory
+# prosperity route.
+riches_found_record_predatory_prosperity_harm = {
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_predatory_prosperity_harm_recorded } }
+		set_state_flag = riches_found_predatory_prosperity_harm_recorded
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.predatory_prosperity_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.predatory_prosperity_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.camp_operation }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. One-time receipt for structural collapse.
+riches_found_record_collapse_harm = {
+	if = {
+		limit = { NOT = { has_state_flag = riches_found_collapse_harm_recorded } }
+		set_state_flag = riches_found_collapse_harm_recorded
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.collapse_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.collapse_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. A lethal raid can recur, so its receipt is keyed to the bounded
+# raid sequence instead of a permanent boolean. The same raid instance cannot
+# apply deaths twice through report delivery, transfer, or pulse reconciliation.
+riches_found_record_raid_harm = {
+	if = { limit = { NOT = { has_variable = riches_found_raid_harm_recorded_sequence } } set_variable = { riches_found_raid_harm_recorded_sequence = constant:riches_found_value.zero } }
+	if = {
+		limit = {
+			has_variable = riches_found_raid_instance_sequence
+			check_variable = { var = riches_found_raid_harm_recorded_sequence value = riches_found_raid_instance_sequence compare = not_equals }
+		}
+		set_variable = { riches_found_raid_harm_recorded_sequence = riches_found_raid_instance_sequence }
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.raid_lethal_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.raid_lethal_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. Gold Disease mass violence uses its own incident sequence and
+# remains completely separate from the biological outbreak system.
+riches_found_record_gold_incident_harm = {
+	if = { limit = { NOT = { has_variable = riches_found_gold_harm_recorded_sequence } } set_variable = { riches_found_gold_harm_recorded_sequence = constant:riches_found_value.zero } }
+	if = {
+		limit = {
+			has_variable = riches_found_incident_sequence
+			check_variable = { var = riches_found_gold_harm_recorded_sequence value = riches_found_incident_sequence compare = not_equals }
+		}
+		set_variable = { riches_found_gold_harm_recorded_sequence = riches_found_incident_sequence }
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.gold_violence_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.gold_violence_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
+		riches_found_apply_harm_record = yes
+	}
+}
+
+# STATE scope. Revealed supernatural violence is keyed to the incident
+# sequence and the Event 029 force only; it never writes Event 018 cave actors.
+riches_found_record_supernatural_incident_harm = {
+	if = { limit = { NOT = { has_variable = riches_found_supernatural_harm_recorded_sequence } } set_variable = { riches_found_supernatural_harm_recorded_sequence = constant:riches_found_value.zero } }
+	if = {
+		limit = {
+			has_variable = riches_found_incident_sequence
+			check_variable = { var = riches_found_supernatural_harm_recorded_sequence value = riches_found_incident_sequence compare = not_equals }
+		}
+		set_variable = { riches_found_supernatural_harm_recorded_sequence = riches_found_incident_sequence }
+		set_temp_variable = { riches_found_harm_deaths = constant:riches_found_harm.supernatural_incident_civilian_deaths }
+		set_temp_variable = { riches_found_harm_condemnation = constant:riches_found_harm.supernatural_incident_condemnation }
+		set_temp_variable = { riches_found_harm_context = constant:condemnation_context.observer_report }
+		riches_found_apply_harm_record = yes
+	}
+}

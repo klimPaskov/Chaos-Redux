@@ -2,7 +2,7 @@
 
 > Superseded parent decision (2026-08-27): the custom 3D entity and animation package described below is retired. The active unit uses vanilla `elephantry` through its sub-unit sprite, and host/member templates no longer set the custom `override_model`.
 
-The parent runtime tranche consumes the approved shared model package as one custom `chaosx_elephant` subunit. No country tag, cosmetic tag, second body, or transform-only substitute was added.
+The historical parent runtime tranche described below consumed the approved shared model package as one custom `chaosx_elephant` subunit. No country tag, cosmetic tag, second body, or transform-only substitute was added.
 
 ## Runtime consumers
 

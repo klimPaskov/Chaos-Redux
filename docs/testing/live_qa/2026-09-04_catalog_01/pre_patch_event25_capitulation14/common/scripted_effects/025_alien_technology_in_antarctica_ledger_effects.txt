@@ -1,0 +1,1211 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 / EVENT 036 SHARED ALIEN RECOVERY LEDGER
+# ============================================================================
+# Overview:
+# - This file owns the narrow, reusable country-scoped ledger bridge shared by
+#   the Antarctic Event 025 expedition and the legacy Event 036 spacecraft.
+# - Public effects are resolve_event025, resolve_event036, grant_loser_result,
+#   and assign_fragment. Internal helpers are documented beside their effect.
+# - Event 025 has one persistent global owner target. Fragment slots one
+#   through six have one persistent global country target each, plus role data.
+# - Arrays global.chaosx_nr25_fragment_owners and
+#   global.chaosx_nr25_fragment_status are projections of those six slots and
+#   are rebuilt only when this ledger is touched; no world scan is performed.
+# - Event 025 and Event 036 result calls are idempotent country claims. Every
+#   external reward request carries a source, result, overlap, and duplicate
+#   guard before calling the parent-owned Event 016 API by its exact name.
+# - This file deliberately creates no technology, equipment, Event 016 history,
+#   Kruger or Directorate state, facility, unit, or recurring on-action scan.
+#
+# Public input contract:
+# - Before assign_fragment, the caller supplies temporary
+#   chaosx_alien_recovery_fragment_id and chaosx_alien_recovery_fragment_role.
+#   IDs and roles are bounded to the six configured slots.
+# - Before resolve_event025, the caller may supply temporary
+#   chaosx_alien_recovery_overlap: zero means no exact collision, one means an
+#   exact aircraft-family collision, and two means an exact propulsion collision.
+#
+# Parent Event 016 API contract:
+# - The parent integration must define
+#   chaosx_grant_external_alien_recovery_reward = yes.
+# - This bridge supplies temporary chaosx_external_alien_recovery_result,
+#   overlap, source_event, field, tier, allow_base, duplicate_guard, and the
+#   exclude-overlap country flag. The API returns temporary result, overlap,
+#   field, tier, upgraded, and reward_applied values.
+# - The bridge records those outputs in country variables and flags. It never
+#   substitutes another Event 016 API when the named API is absent.
+#
+# Exact public effects:
+# - chaosx_alien_recovery_ledger_resolve_event025
+# - chaosx_alien_recovery_ledger_resolve_event036
+# - chaosx_alien_recovery_ledger_grant_loser_result
+# - chaosx_alien_recovery_ledger_assign_fragment
+# Internal helpers include cleanup_invalid_targets, project_fragment_arrays,
+# record_api_result, and the six explicit assign_fragment_slot effects.
+# ============================================================================
+
+# COUNTRY scope. Initializes the temporary outputs exposed by each public
+# effect. Persistent result values are written only by the matching resolver.
+chaosx_alien_recovery_ledger_initialize_public_outputs = {
+	set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.none }
+	set_temp_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
+}
+
+# COUNTRY scope. Sets the external API request defaults. The API may refine the
+# result, field, tier, overlap, and applied marker, but it receives a complete
+# request even when the optional field and tier are unknown.
+chaosx_alien_recovery_ledger_prepare_api_request = {
+	# The current Event 016 owner API stores its result as a normal variable;
+	# keep the request there so the same bridge works before and after API wiring.
+	set_variable = { chaosx_external_alien_recovery_result = chaosx_external_alien_recovery_requested_result }
+	set_temp_variable = { chaosx_external_alien_recovery_overlap = chaosx_external_alien_recovery_requested_overlap }
+	set_variable = { chaosx_external_alien_recovery_source_event = chaosx_external_alien_recovery_requested_source_event }
+	# Reset the normal-variable bridge on every request so a later Event 036
+	# overlap cannot inherit Event 025's previous field or tier.
+	set_variable = { chaosx_external_alien_recovery_field = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_external_alien_recovery_tier = constant:chaosx_nr25_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_external_alien_recovery_requested_field
+				value = constant:chaosx_nr25_alien_field.none
+				compare = greater_than
+			}
+		}
+		set_variable = { chaosx_external_alien_recovery_field = chaosx_external_alien_recovery_requested_field }
+	}
+	set_temp_variable = { chaosx_external_alien_recovery_upgraded = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_external_alien_recovery_upgrade_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_external_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_external_alien_recovery_duplicate_guard = constant:chaosx_nr25_value.one }
+	set_variable = { chaosx_external_alien_recovery_allow_base = chaosx_external_alien_recovery_requested_allow_base }
+	set_variable = { chaosx_external_alien_recovery_duplicate_guard = constant:chaosx_nr25_value.one }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_external_alien_recovery_requested_overlap
+				value = constant:chaosx_nr25_value.zero
+				compare = greater_than
+			}
+		}
+		set_country_flag = chaosx_external_alien_recovery_exclude_overlap
+	}
+	else = {
+		clr_country_flag = chaosx_external_alien_recovery_exclude_overlap
+	}
+}
+
+# COUNTRY scope. Validates the API's bounded overlap output and copies its
+# result into the shared public variables. A missing result is represented by
+# the requested result, while reward_applied remains zero and pending remains
+# visible so a parent integration failure cannot look like a grant.
+chaosx_alien_recovery_ledger_record_api_result = {
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_external_alien_recovery_result
+				value = constant:chaosx_nr25_result.none
+				compare = equals
+			}
+		}
+		set_variable = { chaosx_external_alien_recovery_result = chaosx_external_alien_recovery_requested_result }
+	}
+
+	if = {
+		limit = {
+			OR = {
+				check_variable = {
+					var = chaosx_external_alien_recovery_overlap
+					value = constant:chaosx_nr25_value.zero
+					compare = less_than
+				}
+				check_variable = {
+					var = chaosx_external_alien_recovery_overlap
+					value = constant:chaosx_nr25_value.two
+					compare = greater_than
+				}
+			}
+		}
+		set_temp_variable = { chaosx_external_alien_recovery_overlap = constant:chaosx_nr25_value.zero }
+	}
+
+	set_variable = { chaosx_alien_recovery_result = chaosx_external_alien_recovery_result }
+	set_variable = { chaosx_alien_recovery_result_field = chaosx_external_alien_recovery_field }
+	set_variable = { chaosx_alien_recovery_result_tier = chaosx_external_alien_recovery_tier }
+	set_variable = { chaosx_alien_recovery_result_overlap = chaosx_external_alien_recovery_overlap }
+	set_variable = { chaosx_alien_recovery_result_source_event = chaosx_external_alien_recovery_source_event }
+	set_variable = { chaosx_alien_recovery_reward_applied = chaosx_external_alien_recovery_reward_applied }
+
+	set_temp_variable = { chaosx_alien_recovery_reward_applied = chaosx_external_alien_recovery_reward_applied }
+	set_temp_variable = { chaosx_alien_recovery_result = chaosx_external_alien_recovery_result }
+	set_temp_variable = { chaosx_alien_recovery_result_field = chaosx_external_alien_recovery_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier = chaosx_external_alien_recovery_tier }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap = chaosx_external_alien_recovery_overlap }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event = chaosx_external_alien_recovery_source_event }
+
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_external_alien_recovery_upgrade_applied
+				value = constant:chaosx_nr25_value.one
+				compare = greater_than_or_equals
+			}
+		}
+		set_temp_variable = { chaosx_external_alien_recovery_upgraded = constant:chaosx_nr25_value.one }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_external_alien_recovery_reward_applied
+				value = constant:chaosx_nr25_value.one
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = chaosx_alien_recovery_reward_applied_flag
+		clr_country_flag = chaosx_alien_recovery_reward_pending
+		set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.zero }
+	}
+	else = {
+		clr_country_flag = chaosx_alien_recovery_reward_applied_flag
+		set_country_flag = chaosx_alien_recovery_reward_pending
+		set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.one }
+	}
+
+	if = {
+		limit = {
+			check_variable = {
+				var = chaosx_external_alien_recovery_upgraded
+				value = constant:chaosx_nr25_value.one
+				compare = greater_than_or_equals
+			}
+		}
+		set_country_flag = chaosx_alien_recovery_overlap_conversion_used
+	}
+}
+
+# COUNTRY scope. Re-exposes an already-recorded Event 025 result without
+# calling the parent API a second time.
+chaosx_alien_recovery_ledger_expose_event025_result = {
+	clr_country_flag = chaosx_alien_recovery_reward_applied_flag
+	clr_country_flag = chaosx_alien_recovery_reward_pending
+	set_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_event025_result }
+	set_variable = { chaosx_alien_recovery_result_field = chaosx_alien_recovery_event025_field }
+	set_variable = { chaosx_alien_recovery_result_tier = chaosx_alien_recovery_event025_tier }
+	set_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event025_overlap }
+	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_identity.event_id }
+	set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_event025_result }
+	set_temp_variable = { chaosx_alien_recovery_result_field = chaosx_alien_recovery_event025_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier = chaosx_alien_recovery_event025_tier }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event025_overlap }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_identity.event_id }
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event025_reward_applied }
+		set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
+		set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
+	}
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event025_reward_pending }
+		set_country_flag = chaosx_alien_recovery_reward_pending
+		set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.one }
+	}
+}
+
+# COUNTRY scope. Re-exposes an already-recorded Event 036 result without
+# issuing a legacy reward or an overlap conversion a second time.
+chaosx_alien_recovery_ledger_expose_event036_result = {
+	clr_country_flag = chaosx_alien_recovery_reward_applied_flag
+	clr_country_flag = chaosx_alien_recovery_reward_pending
+	set_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_event036_result }
+	set_variable = { chaosx_alien_recovery_result_field = chaosx_alien_recovery_event036_field }
+	set_variable = { chaosx_alien_recovery_result_tier = chaosx_alien_recovery_event036_tier }
+	set_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event036_overlap }
+	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
+	set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_event036_result }
+	set_temp_variable = { chaosx_alien_recovery_result_field = chaosx_alien_recovery_event036_field }
+	set_temp_variable = { chaosx_alien_recovery_result_tier = chaosx_alien_recovery_event036_tier }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap = chaosx_alien_recovery_event036_overlap }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event036_reward_applied }
+		set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
+		set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.one }
+	}
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event036_reward_pending }
+		set_country_flag = chaosx_alien_recovery_reward_pending
+		set_temp_variable = { chaosx_alien_recovery_pending_output = constant:chaosx_nr25_value.one }
+	}
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event036_legacy_reward_allowed }
+		set_country_flag = chaosx_alien_recovery_legacy_reward_allowed
+	}
+}
+
+# COUNTRY scope. Records the standalone Event 036 base result for the legacy
+# caller. This helper does not reproduce Event 036's existing technology or
+# aircraft effects; it only exposes the allowed path and its result metadata.
+chaosx_alien_recovery_ledger_record_event036_legacy_result = {
+	set_variable = { chaosx_alien_recovery_event036_result = constant:chaosx_nr25_result.base_operational }
+	set_variable = { chaosx_alien_recovery_event036_field = constant:chaosx_nr25_alien_field.aircraft }
+	set_variable = { chaosx_alien_recovery_event036_tier = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_event036_overlap = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.base_operational }
+	set_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_alien_field.aircraft }
+	set_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
+	set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
+	set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+	clr_country_flag = chaosx_alien_recovery_event036_reward_applied
+	clr_country_flag = chaosx_alien_recovery_event036_reward_pending
+	set_country_flag = chaosx_alien_recovery_event036_legacy_reward_allowed
+	set_country_flag = chaosx_alien_recovery_legacy_reward_allowed
+	clr_country_flag = chaosx_alien_recovery_reward_applied_flag
+	clr_country_flag = chaosx_alien_recovery_reward_pending
+	set_temp_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.base_operational }
+	set_temp_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_alien_field.aircraft }
+	set_temp_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
+	set_temp_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_value.thirty_six }
+	set_temp_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+}
+
+# COUNTRY scope. Public Event 025 owner resolver. The current country becomes
+# the only persistent Event 025 owner before the API call, making a duplicate
+# callback safe even if the parent API returns no applied marker.
+chaosx_alien_recovery_ledger_resolve_event025 = {
+	chaosx_alien_recovery_ledger_initialize_public_outputs = yes
+	chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event025_recorded }
+		chaosx_alien_recovery_ledger_expose_event025_result = yes
+	}
+	else_if = {
+		limit = { chaosx_alien_recovery_ledger_event025_can_resolve = yes }
+		set_temp_variable = { chaosx_alien_recovery_ledger_overlap = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = {
+				has_variable = chaosx_alien_recovery_overlap
+				check_variable = {
+					var = chaosx_alien_recovery_overlap
+					value = constant:chaosx_nr25_value.one
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = chaosx_alien_recovery_overlap
+					value = constant:chaosx_nr25_value.two
+					compare = less_than_or_equals
+				}
+			}
+			set_temp_variable = { chaosx_alien_recovery_ledger_overlap = chaosx_alien_recovery_overlap }
+		}
+
+		save_global_event_target_as = chaosx_alien_recovery_event025_owner
+		set_global_flag = chaosx_alien_recovery_event025_owner_recorded
+		set_global_flag = chaosx_alien_recovery_event025_claimed
+		set_country_flag = chaosx_alien_recovery_event025_recorded
+		set_country_flag = chaosx_alien_recovery_event025_reward_pending
+		set_variable = { chaosx_alien_recovery_event025_overlap = chaosx_alien_recovery_ledger_overlap }
+		# The current Event 016 API reads this scoped normal-variable bridge;
+		# the public temporary input remains untouched for the caller.
+		set_variable = { chaosx_alien_recovery_overlap = chaosx_alien_recovery_ledger_overlap }
+
+		if = {
+			limit = { NOT = { has_global_flag = chaosx_alien_recovery_world_event025_count_initialized } }
+			set_variable = { global.chaosx_alien_recovery_world_event025_count = constant:chaosx_nr25_value.zero }
+			set_global_flag = chaosx_alien_recovery_world_event025_count_initialized
+		}
+		add_to_variable = { global.chaosx_alien_recovery_world_event025_count = constant:chaosx_nr25_value.one }
+
+		set_temp_variable = { chaosx_external_alien_recovery_requested_overlap = chaosx_alien_recovery_ledger_overlap }
+		set_temp_variable = { chaosx_external_alien_recovery_requested_source_event = constant:chaosx_nr25_identity.event_id }
+		set_temp_variable = { chaosx_external_alien_recovery_requested_allow_base = constant:chaosx_nr25_value.one }
+		set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.none }
+		set_temp_variable = { chaosx_external_alien_recovery_field = constant:chaosx_nr25_value.zero }
+		set_temp_variable = { chaosx_external_alien_recovery_tier = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_ledger_overlap
+					value = constant:chaosx_nr25_value.zero
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.compatible_upgrade }
+			set_temp_variable = { chaosx_external_alien_recovery_requested_allow_base = constant:chaosx_nr25_value.zero }
+			if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_ledger_overlap value = constant:chaosx_nr25_value.one compare = equals } }
+				set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.aircraft }
+			}
+			else_if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_ledger_overlap value = constant:chaosx_nr25_value.two compare = equals } }
+				set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.propulsion }
+			}
+		}
+		else = {
+			set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.base_operational }
+		}
+		chaosx_alien_recovery_ledger_prepare_api_request = yes
+		chaosx_grant_external_alien_recovery_reward = yes
+		chaosx_alien_recovery_ledger_record_api_result = yes
+		clear_variable = chaosx_alien_recovery_overlap
+
+		set_variable = { chaosx_alien_recovery_event025_result = chaosx_alien_recovery_result }
+		set_variable = { chaosx_alien_recovery_event025_field = chaosx_alien_recovery_result_field }
+		set_variable = { chaosx_alien_recovery_event025_tier = chaosx_alien_recovery_result_tier }
+		set_variable = { chaosx_alien_recovery_event025_overlap = chaosx_alien_recovery_result_overlap }
+		if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_reward_applied
+					value = constant:chaosx_nr25_value.one
+					compare = greater_than_or_equals
+				}
+			}
+			set_country_flag = chaosx_alien_recovery_event025_reward_applied
+			clr_country_flag = chaosx_alien_recovery_event025_reward_pending
+		}
+		else = {
+			clr_country_flag = chaosx_alien_recovery_event025_reward_applied
+			set_country_flag = chaosx_alien_recovery_event025_reward_pending
+		}
+		clr_country_flag = chaosx_alien_recovery_event025_overlap_aircraft
+		clr_country_flag = chaosx_alien_recovery_event025_overlap_propulsion
+		if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_event025_overlap
+					value = constant:chaosx_nr25_value.one
+					compare = equals
+				}
+			}
+			set_country_flag = chaosx_alien_recovery_event025_overlap_aircraft
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_event025_overlap
+					value = constant:chaosx_nr25_value.two
+					compare = equals
+				}
+			}
+			set_country_flag = chaosx_alien_recovery_event025_overlap_propulsion
+		}
+	}
+}
+
+# COUNTRY scope. Public Event 036 resolver. It preserves the legacy caller
+# when there is no exact Event 025 overlap and requests the parent API only for
+# a later exact aircraft or propulsion conversion.
+chaosx_alien_recovery_ledger_resolve_event036 = {
+	chaosx_alien_recovery_ledger_initialize_public_outputs = yes
+	chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_event036_recorded }
+		chaosx_alien_recovery_ledger_expose_event036_result = yes
+	}
+	else_if = {
+		limit = { chaosx_alien_recovery_ledger_event036_can_resolve = yes }
+		set_country_flag = chaosx_alien_recovery_event036_recorded
+		# Event 036's current legacy result is an aircraft-family recovery, but
+		# the bridge accepts an explicit field for future propulsion-family
+		# callers. Exact overlap is resolved only when both sides name the same
+		# broad field.
+		set_variable = { chaosx_alien_recovery_event036_field = constant:chaosx_nr25_alien_field.aircraft }
+		if = {
+			limit = {
+				has_variable = chaosx_alien_recovery_event036_requested_field
+				check_variable = { var = chaosx_alien_recovery_event036_requested_field value = constant:chaosx_nr25_alien_field.none compare = greater_than }
+			}
+			set_variable = { chaosx_alien_recovery_event036_field = chaosx_alien_recovery_event036_requested_field }
+		}
+		clr_country_flag = chaosx_alien_recovery_036_aircraft_family
+		clr_country_flag = chaosx_alien_recovery_036_propulsion_family
+		if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals } }
+			set_country_flag = chaosx_alien_recovery_036_aircraft_family
+		}
+		else_if = {
+			limit = { check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals } }
+			set_country_flag = chaosx_alien_recovery_036_propulsion_family
+		}
+		set_global_flag = chaosx_alien_recovery_036_recorded
+		if = {
+			limit = { NOT = { has_global_flag = chaosx_alien_recovery_world_event036_count_initialized } }
+			set_variable = { global.chaosx_alien_recovery_world_event036_count = constant:chaosx_nr25_value.zero }
+			set_global_flag = chaosx_alien_recovery_world_event036_count_initialized
+		}
+		add_to_variable = { global.chaosx_alien_recovery_world_event036_count = constant:chaosx_nr25_value.one }
+
+		set_temp_variable = { chaosx_alien_recovery_ledger_overlap = constant:chaosx_nr25_value.zero }
+		if = {
+			limit = {
+				has_variable = chaosx_alien_recovery_overlap
+				check_variable = {
+					var = chaosx_alien_recovery_overlap
+					value = constant:chaosx_nr25_value.one
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = chaosx_alien_recovery_overlap
+					value = constant:chaosx_nr25_value.two
+					compare = less_than_or_equals
+				}
+			}
+			set_temp_variable = { chaosx_alien_recovery_ledger_overlap = chaosx_alien_recovery_overlap }
+		}
+		else_if = {
+			limit = {
+				chaosx_alien_recovery_ledger_event025_has_exact_field_overlap = yes
+				OR = {
+					AND = {
+						check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals }
+						check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals }
+					}
+					AND = {
+						check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals }
+						check_variable = { var = chaosx_alien_recovery_event025_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals }
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.aircraft compare = equals } }
+				set_temp_variable = { chaosx_alien_recovery_ledger_overlap = constant:chaosx_nr25_value.one }
+			}
+			else_if = {
+				limit = { check_variable = { var = chaosx_alien_recovery_event036_field value = constant:chaosx_nr25_alien_field.propulsion compare = equals } }
+				set_temp_variable = { chaosx_alien_recovery_ledger_overlap = constant:chaosx_nr25_value.two }
+			}
+		}
+
+		if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_ledger_overlap
+					value = constant:chaosx_nr25_value.zero
+					compare = equals
+				}
+			}
+			set_country_flag = chaosx_alien_recovery_event036_legacy_reward_allowed
+			set_country_flag = chaosx_alien_recovery_legacy_reward_allowed
+			chaosx_alien_recovery_ledger_record_event036_legacy_result = yes
+		}
+		else = {
+			clr_country_flag = chaosx_alien_recovery_event036_legacy_reward_allowed
+			clr_country_flag = chaosx_alien_recovery_legacy_reward_allowed
+			set_country_flag = chaosx_alien_recovery_event036_reward_pending
+			set_variable = { chaosx_alien_recovery_event036_overlap = chaosx_alien_recovery_ledger_overlap }
+			# Bridge the exact temporary overlap to the current Event 016 API's
+			# normal-variable input without persisting it after resolution.
+			set_variable = { chaosx_alien_recovery_overlap = chaosx_alien_recovery_ledger_overlap }
+			set_temp_variable = { chaosx_external_alien_recovery_requested_overlap = chaosx_alien_recovery_ledger_overlap }
+			set_temp_variable = { chaosx_external_alien_recovery_requested_source_event = constant:chaosx_nr25_value.thirty_six }
+			set_temp_variable = { chaosx_external_alien_recovery_requested_result = constant:chaosx_nr25_result.overlap_conversion }
+			set_temp_variable = { chaosx_external_alien_recovery_requested_allow_base = constant:chaosx_nr25_value.zero }
+			set_temp_variable = { chaosx_external_alien_recovery_requested_field = constant:chaosx_nr25_alien_field.none }
+			set_temp_variable = { chaosx_external_alien_recovery_field = constant:chaosx_nr25_alien_field.none }
+			set_temp_variable = { chaosx_external_alien_recovery_tier = constant:chaosx_nr25_value.zero }
+			if = {
+				limit = { has_variable = chaosx_alien_recovery_event025_field }
+				set_temp_variable = { chaosx_external_alien_recovery_requested_field = chaosx_alien_recovery_event025_field }
+			}
+			if = {
+				limit = { has_variable = chaosx_alien_recovery_event025_tier }
+				set_temp_variable = { chaosx_external_alien_recovery_tier = chaosx_alien_recovery_event025_tier }
+			}
+			chaosx_alien_recovery_ledger_prepare_api_request = yes
+			chaosx_grant_external_alien_recovery_reward = yes
+			chaosx_alien_recovery_ledger_record_api_result = yes
+			clear_variable = chaosx_alien_recovery_overlap
+			set_variable = { chaosx_alien_recovery_event036_result = chaosx_alien_recovery_result }
+			set_variable = { chaosx_alien_recovery_event036_field = chaosx_alien_recovery_result_field }
+			set_variable = { chaosx_alien_recovery_event036_tier = chaosx_alien_recovery_result_tier }
+			set_variable = { chaosx_alien_recovery_event036_overlap = chaosx_alien_recovery_result_overlap }
+			if = {
+				limit = { has_country_flag = chaosx_alien_recovery_reward_applied_flag }
+				set_country_flag = chaosx_alien_recovery_event036_reward_applied
+				clr_country_flag = chaosx_alien_recovery_event036_reward_pending
+			}
+			else = {
+				clr_country_flag = chaosx_alien_recovery_event036_reward_applied
+				set_country_flag = chaosx_alien_recovery_event036_reward_pending
+			}
+			clr_country_flag = chaosx_alien_recovery_event036_overlap_aircraft
+			clr_country_flag = chaosx_alien_recovery_event036_overlap_propulsion
+			if = {
+				limit = {
+					check_variable = {
+						var = chaosx_alien_recovery_event036_overlap
+						value = constant:chaosx_nr25_value.one
+						compare = equals
+					}
+				}
+				set_country_flag = chaosx_alien_recovery_event036_overlap_aircraft
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = chaosx_alien_recovery_event036_overlap
+						value = constant:chaosx_nr25_value.two
+						compare = equals
+					}
+				}
+				set_country_flag = chaosx_alien_recovery_event036_overlap_propulsion
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Public loser result resolver. Only verified survey evidence or
+# a fragment count produces a nonzero loser result; no external reward API is
+# called. Fragment is preferred when both evidence types are present.
+chaosx_alien_recovery_ledger_grant_loser_result = {
+	chaosx_alien_recovery_ledger_initialize_public_outputs = yes
+	chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+	if = {
+		limit = { has_country_flag = chaosx_alien_recovery_loser_result_recorded }
+		set_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_loser_result }
+		set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_loser_result }
+	}
+	else = {
+		set_country_flag = chaosx_alien_recovery_loser_result_recorded
+		set_variable = { chaosx_alien_recovery_loser_result = constant:chaosx_nr25_result.none }
+		set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.none }
+		set_variable = { chaosx_alien_recovery_result_field = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_alien_recovery_result_tier = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_alien_recovery_result_overlap = constant:chaosx_nr25_value.zero }
+		set_variable = { chaosx_alien_recovery_result_source_event = constant:chaosx_nr25_identity.event_id }
+		set_variable = { chaosx_alien_recovery_reward_applied = constant:chaosx_nr25_value.zero }
+		clr_country_flag = chaosx_alien_recovery_reward_applied_flag
+		clr_country_flag = chaosx_alien_recovery_reward_pending
+		clr_country_flag = chaosx_alien_recovery_legacy_reward_allowed
+
+		if = {
+			limit = {
+				chaosx_alien_recovery_ledger_has_loser_evidence = yes
+				OR = {
+					AND = {
+						has_variable = chaosx_nr25_fragment_count
+						check_variable = {
+							var = chaosx_nr25_fragment_count
+							value = constant:chaosx_nr25_value.zero
+							compare = greater_than
+						}
+					}
+					AND = {
+						has_variable = chaosx_alien_recovery_ledger_fragment_count
+						check_variable = {
+							var = chaosx_alien_recovery_ledger_fragment_count
+							value = constant:chaosx_nr25_value.zero
+							compare = greater_than
+						}
+					}
+				}
+			}
+			set_variable = { chaosx_alien_recovery_loser_result = constant:chaosx_nr25_result.fragment }
+			set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.fragment }
+			set_country_flag = chaosx_alien_recovery_loser_fragment
+		}
+		else_if = {
+			limit = {
+				OR = {
+					AND = {
+						has_variable = chaosx_nr25_survey_evidence
+						check_variable = {
+							var = chaosx_nr25_survey_evidence
+							value = constant:chaosx_nr25_value.zero
+							compare = greater_than
+						}
+					}
+					has_country_flag = chaosx_alien_recovery_verified_survey
+				}
+			}
+			set_variable = { chaosx_alien_recovery_loser_result = constant:chaosx_nr25_result.verified_survey }
+			set_variable = { chaosx_alien_recovery_result = constant:chaosx_nr25_result.verified_survey }
+			set_country_flag = chaosx_alien_recovery_loser_verified_survey
+		}
+		set_temp_variable = { chaosx_alien_recovery_result = chaosx_alien_recovery_loser_result }
+	}
+}
+
+# Any scope. Clears only invalid persistent owner or fragment targets. A target
+# is invalid when its country no longer exists, is capitulated, or is a
+# subject. The helper is called by the bounded public effects and never scans
+# countries or reconstructs ownership from a world iteration.
+chaosx_alien_recovery_ledger_cleanup_invalid_targets = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_event025_owner
+			NOT = {
+				event_target:chaosx_alien_recovery_event025_owner = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_event025_owner
+		clr_global_flag = chaosx_alien_recovery_event025_owner_recorded
+		clr_global_flag = chaosx_alien_recovery_event025_claimed
+	}
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_event025_owner
+			event_target:chaosx_alien_recovery_event025_owner = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+			NOT = { has_global_flag = chaosx_alien_recovery_event025_owner_recorded }
+		}
+		set_global_flag = chaosx_alien_recovery_event025_owner_recorded
+	}
+
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_1
+			NOT = {
+				event_target:chaosx_alien_recovery_fragment_owner_1 = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_1
+		clr_global_flag = chaosx_alien_recovery_fragment_1_assigned
+		set_variable = { global.chaosx_alien_recovery_fragment_1_role = constant:chaosx_nr25_value.zero }
+	}
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_2
+			NOT = {
+				event_target:chaosx_alien_recovery_fragment_owner_2 = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_2
+		clr_global_flag = chaosx_alien_recovery_fragment_2_assigned
+		set_variable = { global.chaosx_alien_recovery_fragment_2_role = constant:chaosx_nr25_value.zero }
+	}
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_3
+			NOT = {
+				event_target:chaosx_alien_recovery_fragment_owner_3 = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_3
+		clr_global_flag = chaosx_alien_recovery_fragment_3_assigned
+		set_variable = { global.chaosx_alien_recovery_fragment_3_role = constant:chaosx_nr25_value.zero }
+	}
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_4
+			NOT = {
+				event_target:chaosx_alien_recovery_fragment_owner_4 = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_4
+		clr_global_flag = chaosx_alien_recovery_fragment_4_assigned
+		set_variable = { global.chaosx_alien_recovery_fragment_4_role = constant:chaosx_nr25_value.zero }
+	}
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_5
+			NOT = {
+				event_target:chaosx_alien_recovery_fragment_owner_5 = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_5
+		clr_global_flag = chaosx_alien_recovery_fragment_5_assigned
+		set_variable = { global.chaosx_alien_recovery_fragment_5_role = constant:chaosx_nr25_value.zero }
+	}
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_6
+			NOT = {
+				event_target:chaosx_alien_recovery_fragment_owner_6 = {
+					exists = yes
+					NOT = { is_capitulated = yes }
+					NOT = { is_subject = yes }
+				}
+			}
+		}
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_6
+		clr_global_flag = chaosx_alien_recovery_fragment_6_assigned
+		set_variable = { global.chaosx_alien_recovery_fragment_6_role = constant:chaosx_nr25_value.zero }
+	}
+
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+# Any scope. Rebuilds the two six-entry parent arrays from the persistent slot
+# targets. The owner array stores country scopes; the status array stores the
+# configured fragment role code at the aligned index. Empty slots store zero.
+chaosx_alien_recovery_ledger_project_fragment_arrays = {
+	clear_array = global.chaosx_nr25_fragment_owners
+	clear_array = global.chaosx_nr25_fragment_status
+
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_1 }
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = event_target:chaosx_alien_recovery_fragment_owner_1 }
+		if = {
+			limit = { has_global_flag = chaosx_alien_recovery_fragment_1_assigned }
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = global.chaosx_alien_recovery_fragment_1_role }
+		}
+		else = {
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+		}
+	}
+	else = {
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = constant:chaosx_nr25_value.zero }
+		add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+	}
+
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_2 }
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = event_target:chaosx_alien_recovery_fragment_owner_2 }
+		if = {
+			limit = { has_global_flag = chaosx_alien_recovery_fragment_2_assigned }
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = global.chaosx_alien_recovery_fragment_2_role }
+		}
+		else = {
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+		}
+	}
+	else = {
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = constant:chaosx_nr25_value.zero }
+		add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+	}
+
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_3 }
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = event_target:chaosx_alien_recovery_fragment_owner_3 }
+		if = {
+			limit = { has_global_flag = chaosx_alien_recovery_fragment_3_assigned }
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = global.chaosx_alien_recovery_fragment_3_role }
+		}
+		else = {
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+		}
+	}
+	else = {
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = constant:chaosx_nr25_value.zero }
+		add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+	}
+
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_4 }
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = event_target:chaosx_alien_recovery_fragment_owner_4 }
+		if = {
+			limit = { has_global_flag = chaosx_alien_recovery_fragment_4_assigned }
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = global.chaosx_alien_recovery_fragment_4_role }
+		}
+		else = {
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+		}
+	}
+	else = {
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = constant:chaosx_nr25_value.zero }
+		add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+	}
+
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_5 }
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = event_target:chaosx_alien_recovery_fragment_owner_5 }
+		if = {
+			limit = { has_global_flag = chaosx_alien_recovery_fragment_5_assigned }
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = global.chaosx_alien_recovery_fragment_5_role }
+		}
+		else = {
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+		}
+	}
+	else = {
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = constant:chaosx_nr25_value.zero }
+		add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+	}
+
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_6 }
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = event_target:chaosx_alien_recovery_fragment_owner_6 }
+		if = {
+			limit = { has_global_flag = chaosx_alien_recovery_fragment_6_assigned }
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = global.chaosx_alien_recovery_fragment_6_role }
+		}
+		else = {
+			add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+		}
+	}
+	else = {
+		add_to_array = { array = global.chaosx_nr25_fragment_owners value = constant:chaosx_nr25_value.zero }
+		add_to_array = { array = global.chaosx_nr25_fragment_status value = constant:chaosx_nr25_value.zero }
+	}
+}
+
+# COUNTRY scope. Public fragment assignment. The six fixed slot effects below
+# make ownership replacement explicit so one fragment can never have two
+# persistent owners. Reassignment removes the old owner's slot marker first.
+chaosx_alien_recovery_ledger_assign_fragment = {
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.zero }
+	chaosx_alien_recovery_ledger_cleanup_invalid_targets = yes
+	if = {
+		limit = { chaosx_alien_recovery_ledger_fragment_input_is_valid = yes }
+		if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_fragment_id
+					value = constant:chaosx_nr25_value.one
+					compare = equals
+				}
+			}
+			chaosx_alien_recovery_ledger_assign_fragment_slot_1 = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_fragment_id
+					value = constant:chaosx_nr25_value.two
+					compare = equals
+				}
+			}
+			chaosx_alien_recovery_ledger_assign_fragment_slot_2 = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_fragment_id
+					value = constant:chaosx_nr25_value.three
+					compare = equals
+				}
+			}
+			chaosx_alien_recovery_ledger_assign_fragment_slot_3 = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_fragment_id
+					value = constant:chaosx_nr25_value.four
+					compare = equals
+				}
+			}
+			chaosx_alien_recovery_ledger_assign_fragment_slot_4 = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_fragment_id
+					value = constant:chaosx_nr25_value.five
+					compare = equals
+				}
+			}
+			chaosx_alien_recovery_ledger_assign_fragment_slot_5 = yes
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = chaosx_alien_recovery_fragment_id
+					value = constant:chaosx_nr25_value.six
+					compare = equals
+				}
+			}
+			chaosx_alien_recovery_ledger_assign_fragment_slot_6 = yes
+		}
+	}
+}
+
+# COUNTRY scope. Assigns fragment slot one after clearing its previous owner.
+chaosx_alien_recovery_ledger_assign_fragment_slot_1 = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_1
+			event_target:chaosx_alien_recovery_fragment_owner_1 = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+		}
+		event_target:chaosx_alien_recovery_fragment_owner_1 = {
+			clr_country_flag = chaosx_alien_recovery_fragment_1_owner
+			clear_variable = chaosx_alien_recovery_fragment_1_role
+			if = {
+				limit = {
+					has_variable = chaosx_alien_recovery_ledger_fragment_count
+					check_variable = {
+						var = chaosx_alien_recovery_ledger_fragment_count
+						value = constant:chaosx_nr25_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_1 }
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_1
+	}
+	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_1
+	set_country_flag = chaosx_alien_recovery_fragment_1_owner
+	set_variable = { chaosx_alien_recovery_fragment_1_role = chaosx_alien_recovery_fragment_role }
+	if = {
+		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
+		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+	set_variable = { global.chaosx_alien_recovery_fragment_1_role = chaosx_alien_recovery_fragment_role }
+	set_global_flag = chaosx_alien_recovery_fragment_1_assigned
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+# COUNTRY scope. Assigns fragment slot two after clearing its previous owner.
+chaosx_alien_recovery_ledger_assign_fragment_slot_2 = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_2
+			event_target:chaosx_alien_recovery_fragment_owner_2 = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+		}
+		event_target:chaosx_alien_recovery_fragment_owner_2 = {
+			clr_country_flag = chaosx_alien_recovery_fragment_2_owner
+			clear_variable = chaosx_alien_recovery_fragment_2_role
+			if = {
+				limit = {
+					has_variable = chaosx_alien_recovery_ledger_fragment_count
+					check_variable = {
+						var = chaosx_alien_recovery_ledger_fragment_count
+						value = constant:chaosx_nr25_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_2 }
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_2
+	}
+	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_2
+	set_country_flag = chaosx_alien_recovery_fragment_2_owner
+	set_variable = { chaosx_alien_recovery_fragment_2_role = chaosx_alien_recovery_fragment_role }
+	if = {
+		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
+		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+	set_variable = { global.chaosx_alien_recovery_fragment_2_role = chaosx_alien_recovery_fragment_role }
+	set_global_flag = chaosx_alien_recovery_fragment_2_assigned
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+# COUNTRY scope. Assigns fragment slot three after clearing its previous owner.
+chaosx_alien_recovery_ledger_assign_fragment_slot_3 = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_3
+			event_target:chaosx_alien_recovery_fragment_owner_3 = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+		}
+		event_target:chaosx_alien_recovery_fragment_owner_3 = {
+			clr_country_flag = chaosx_alien_recovery_fragment_3_owner
+			clear_variable = chaosx_alien_recovery_fragment_3_role
+			if = {
+				limit = {
+					has_variable = chaosx_alien_recovery_ledger_fragment_count
+					check_variable = {
+						var = chaosx_alien_recovery_ledger_fragment_count
+						value = constant:chaosx_nr25_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_3 }
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_3
+	}
+	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_3
+	set_country_flag = chaosx_alien_recovery_fragment_3_owner
+	set_variable = { chaosx_alien_recovery_fragment_3_role = chaosx_alien_recovery_fragment_role }
+	if = {
+		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
+		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+	set_variable = { global.chaosx_alien_recovery_fragment_3_role = chaosx_alien_recovery_fragment_role }
+	set_global_flag = chaosx_alien_recovery_fragment_3_assigned
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+# COUNTRY scope. Assigns fragment slot four after clearing its previous owner.
+chaosx_alien_recovery_ledger_assign_fragment_slot_4 = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_4
+			event_target:chaosx_alien_recovery_fragment_owner_4 = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+		}
+		event_target:chaosx_alien_recovery_fragment_owner_4 = {
+			clr_country_flag = chaosx_alien_recovery_fragment_4_owner
+			clear_variable = chaosx_alien_recovery_fragment_4_role
+			if = {
+				limit = {
+					has_variable = chaosx_alien_recovery_ledger_fragment_count
+					check_variable = {
+						var = chaosx_alien_recovery_ledger_fragment_count
+						value = constant:chaosx_nr25_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_4 }
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_4
+	}
+	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_4
+	set_country_flag = chaosx_alien_recovery_fragment_4_owner
+	set_variable = { chaosx_alien_recovery_fragment_4_role = chaosx_alien_recovery_fragment_role }
+	if = {
+		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
+		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+	set_variable = { global.chaosx_alien_recovery_fragment_4_role = chaosx_alien_recovery_fragment_role }
+	set_global_flag = chaosx_alien_recovery_fragment_4_assigned
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+# COUNTRY scope. Assigns fragment slot five after clearing its previous owner.
+chaosx_alien_recovery_ledger_assign_fragment_slot_5 = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_5
+			event_target:chaosx_alien_recovery_fragment_owner_5 = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+		}
+		event_target:chaosx_alien_recovery_fragment_owner_5 = {
+			clr_country_flag = chaosx_alien_recovery_fragment_5_owner
+			clear_variable = chaosx_alien_recovery_fragment_5_role
+			if = {
+				limit = {
+					has_variable = chaosx_alien_recovery_ledger_fragment_count
+					check_variable = {
+						var = chaosx_alien_recovery_ledger_fragment_count
+						value = constant:chaosx_nr25_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_5 }
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_5
+	}
+	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_5
+	set_country_flag = chaosx_alien_recovery_fragment_5_owner
+	set_variable = { chaosx_alien_recovery_fragment_5_role = chaosx_alien_recovery_fragment_role }
+	if = {
+		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
+		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+	set_variable = { global.chaosx_alien_recovery_fragment_5_role = chaosx_alien_recovery_fragment_role }
+	set_global_flag = chaosx_alien_recovery_fragment_5_assigned
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}
+
+# COUNTRY scope. Assigns fragment slot six after clearing its previous owner.
+chaosx_alien_recovery_ledger_assign_fragment_slot_6 = {
+	if = {
+		limit = {
+			has_event_target = chaosx_alien_recovery_fragment_owner_6
+			event_target:chaosx_alien_recovery_fragment_owner_6 = {
+				exists = yes
+				NOT = { is_capitulated = yes }
+				NOT = { is_subject = yes }
+			}
+		}
+		event_target:chaosx_alien_recovery_fragment_owner_6 = {
+			clr_country_flag = chaosx_alien_recovery_fragment_6_owner
+			clear_variable = chaosx_alien_recovery_fragment_6_role
+			if = {
+				limit = {
+					has_variable = chaosx_alien_recovery_ledger_fragment_count
+					check_variable = {
+						var = chaosx_alien_recovery_ledger_fragment_count
+						value = constant:chaosx_nr25_value.zero
+						compare = greater_than
+					}
+				}
+				subtract_from_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+			}
+		}
+	}
+	if = {
+		limit = { has_event_target = chaosx_alien_recovery_fragment_owner_6 }
+		clear_global_event_target = chaosx_alien_recovery_fragment_owner_6
+	}
+	save_global_event_target_as = chaosx_alien_recovery_fragment_owner_6
+	set_country_flag = chaosx_alien_recovery_fragment_6_owner
+	set_variable = { chaosx_alien_recovery_fragment_6_role = chaosx_alien_recovery_fragment_role }
+	if = {
+		limit = { NOT = { has_variable = chaosx_alien_recovery_ledger_fragment_count } }
+		set_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.zero }
+	}
+	add_to_variable = { chaosx_alien_recovery_ledger_fragment_count = constant:chaosx_nr25_value.one }
+	set_variable = { global.chaosx_alien_recovery_fragment_6_role = chaosx_alien_recovery_fragment_role }
+	set_global_flag = chaosx_alien_recovery_fragment_6_assigned
+	set_temp_variable = { chaosx_alien_recovery_fragment_assigned = constant:chaosx_nr25_value.one }
+	chaosx_alien_recovery_ledger_project_fragment_arrays = yes
+}

@@ -1,0 +1,587 @@
+# Event 016 private conventional incidents and exact recovery transactions.
+# Country scope throughout. Fixed family APIs never write the parent selectors.
+# Callers authenticate one real output before invoking the weighted dispatcher.
+# Each native decision owns its civilian-factory reservation and timer.
+# All history, learned technologies and provider-stage receipts survive cleanup.
+
+# Guidance Phantom: Recalibrate the guidance network and replace unreliable instruments so aircraft and anti-aircraft crews can trust their targets again.
+brilliant_scientist_mengele_record_electronics_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_conventional_incident_stage_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_electronics_incident_active }
+			NOT = { has_country_flag = mengele_event016_electronics_incident_recovery_active }
+		}
+		set_country_flag = mengele_event016_electronics_incident_active
+		set_country_flag = mengele_event016_electronics_incident_history
+		add_to_variable = { mengele_event016_electronics_incident_history_count = constant:brilliant_scientist_value.one }
+		add_dynamic_modifier = { modifier = brilliant_scientist_mengele_electronics_incident }
+		set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.one }
+	}
+}
+
+brilliant_scientist_mengele_clear_electronics_incident = {
+	clr_country_flag = mengele_event016_electronics_incident_active
+	if = {
+		limit = { has_dynamic_modifier = { modifier = brilliant_scientist_mengele_electronics_incident } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_mengele_electronics_incident }
+	}
+}
+
+# Called only by the native recovery decision after its affordability gate.
+# Native admission owns CIC. Recheck direct costs without double-counting its reservation.
+brilliant_scientist_mengele_begin_electronics_incident_recovery = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_electronics_incident_recovery_requirements_met = yes
+			brilliant_scientist_mengele_incident_technical_can_pay_direct = yes
+		}
+		set_variable = { mengele_event016_electronics_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_technical_political_power }
+		set_variable = { mengele_event016_electronics_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_technical_support_equipment }
+		set_variable = { mengele_event016_electronics_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_technical_fuel }
+		set_temp_variable = { mengele_event016_incident_payment_pp = mengele_event016_electronics_incident_recovery_cost_political_power }
+		multiply_temp_variable = { mengele_event016_incident_payment_pp = constant:brilliant_scientist_directorate_value.negative_one }
+		add_political_power = mengele_event016_incident_payment_pp
+		set_temp_variable = { equipment_stockpile_removal_amount = mengele_event016_electronics_incident_recovery_cost_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = mengele_event016_electronics_incident_recovery_cost_fuel }
+		remove_fuel_from_stockpile = yes
+		set_country_flag = mengele_event016_electronics_incident_recovery_active
+	}
+}
+
+# Refund only the complete private receipt, with no inferred missing payment.
+# Snapshot then consume the authority and values before issuing any refund.
+brilliant_scientist_mengele_cancel_electronics_incident_recovery = {
+	if = {
+		limit = { brilliant_scientist_mengele_electronics_incident_recovery_receipt_is_current = yes }
+		set_temp_variable = { mengele_event016_incident_refund_pp = mengele_event016_electronics_incident_recovery_cost_political_power }
+		set_temp_variable = { mengele_event016_incident_refund_support = mengele_event016_electronics_incident_recovery_cost_support_equipment }
+		set_temp_variable = { mengele_event016_incident_refund_fuel = mengele_event016_electronics_incident_recovery_cost_fuel }
+		clr_country_flag = mengele_event016_electronics_incident_recovery_active
+		clear_variable = mengele_event016_electronics_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_electronics_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_electronics_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_incident_refund_pp
+		add_equipment_to_stockpile = { type = support_equipment amount = mengele_event016_incident_refund_support }
+		add_fuel = mengele_event016_incident_refund_fuel
+	}
+	# Also retire incomplete receipts without inferring a refund or resolving the incident.
+	clr_country_flag = mengele_event016_electronics_incident_recovery_active
+	clear_variable = mengele_event016_electronics_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_electronics_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_electronics_incident_recovery_cost_fuel
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes } }
+		brilliant_scientist_mengele_clear_electronics_incident = yes
+	}
+}
+
+brilliant_scientist_mengele_finish_electronics_incident_recovery = {
+	set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_electronics_incident_recovery_receipt_is_current = yes
+			has_country_flag = mengele_event016_electronics_incident_active
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_electronics_incident_recovery_active
+		clear_variable = mengele_event016_electronics_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_electronics_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_electronics_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_electronics_incident = yes
+		set_country_flag = mengele_event016_electronics_recovery_history
+		add_to_variable = { mengele_event016_electronics_recovery_history_count = constant:brilliant_scientist_value.one }
+		set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.one }
+	}
+	else = { brilliant_scientist_mengele_cancel_electronics_incident_recovery = yes }
+}
+
+# Parent cleanup refunds before removing the native decision and its CIC use.
+brilliant_scientist_mengele_cleanup_electronics_incident = {
+	brilliant_scientist_mengele_cancel_electronics_incident_recovery = yes
+	remove_decision = mengele_event016_electronics_incident_recovery
+	clr_country_flag = mengele_event016_electronics_incident_recovery_active
+	clear_variable = mengele_event016_electronics_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_electronics_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_electronics_incident_recovery_cost_fuel
+	brilliant_scientist_mengele_clear_electronics_incident = yes
+}
+
+# Catalytic Spill: Withdraw the defective batch and restore workshop standards so production lines can regain their output and efficiency.
+brilliant_scientist_mengele_record_materials_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_conventional_incident_stage_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_materials_incident_active }
+			NOT = { has_country_flag = mengele_event016_materials_incident_recovery_active }
+		}
+		set_country_flag = mengele_event016_materials_incident_active
+		set_country_flag = mengele_event016_materials_incident_history
+		add_to_variable = { mengele_event016_materials_incident_history_count = constant:brilliant_scientist_value.one }
+		add_dynamic_modifier = { modifier = brilliant_scientist_mengele_materials_incident }
+		set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.one }
+	}
+}
+
+brilliant_scientist_mengele_clear_materials_incident = {
+	clr_country_flag = mengele_event016_materials_incident_active
+	if = {
+		limit = { has_dynamic_modifier = { modifier = brilliant_scientist_mengele_materials_incident } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_mengele_materials_incident }
+	}
+}
+
+# Called only by the native recovery decision after its affordability gate.
+# Native admission owns CIC. Recheck direct costs without double-counting its reservation.
+brilliant_scientist_mengele_begin_materials_incident_recovery = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_materials_incident_recovery_requirements_met = yes
+			brilliant_scientist_mengele_incident_industrial_can_pay_direct = yes
+		}
+		set_variable = { mengele_event016_materials_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_industrial_political_power }
+		set_variable = { mengele_event016_materials_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_industrial_support_equipment }
+		set_variable = { mengele_event016_materials_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_industrial_fuel }
+		set_temp_variable = { mengele_event016_incident_payment_pp = mengele_event016_materials_incident_recovery_cost_political_power }
+		multiply_temp_variable = { mengele_event016_incident_payment_pp = constant:brilliant_scientist_directorate_value.negative_one }
+		add_political_power = mengele_event016_incident_payment_pp
+		set_temp_variable = { equipment_stockpile_removal_amount = mengele_event016_materials_incident_recovery_cost_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = mengele_event016_materials_incident_recovery_cost_fuel }
+		remove_fuel_from_stockpile = yes
+		set_country_flag = mengele_event016_materials_incident_recovery_active
+	}
+}
+
+# Refund only the complete private receipt, with no inferred missing payment.
+# Snapshot then consume the authority and values before issuing any refund.
+brilliant_scientist_mengele_cancel_materials_incident_recovery = {
+	if = {
+		limit = { brilliant_scientist_mengele_materials_incident_recovery_receipt_is_current = yes }
+		set_temp_variable = { mengele_event016_incident_refund_pp = mengele_event016_materials_incident_recovery_cost_political_power }
+		set_temp_variable = { mengele_event016_incident_refund_support = mengele_event016_materials_incident_recovery_cost_support_equipment }
+		set_temp_variable = { mengele_event016_incident_refund_fuel = mengele_event016_materials_incident_recovery_cost_fuel }
+		clr_country_flag = mengele_event016_materials_incident_recovery_active
+		clear_variable = mengele_event016_materials_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_materials_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_materials_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_incident_refund_pp
+		add_equipment_to_stockpile = { type = support_equipment amount = mengele_event016_incident_refund_support }
+		add_fuel = mengele_event016_incident_refund_fuel
+	}
+	# Also retire incomplete receipts without inferring a refund or resolving the incident.
+	clr_country_flag = mengele_event016_materials_incident_recovery_active
+	clear_variable = mengele_event016_materials_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_materials_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_materials_incident_recovery_cost_fuel
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes } }
+		brilliant_scientist_mengele_clear_materials_incident = yes
+	}
+}
+
+brilliant_scientist_mengele_finish_materials_incident_recovery = {
+	set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_materials_incident_recovery_receipt_is_current = yes
+			has_country_flag = mengele_event016_materials_incident_active
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_materials_incident_recovery_active
+		clear_variable = mengele_event016_materials_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_materials_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_materials_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_materials_incident = yes
+		set_country_flag = mengele_event016_materials_recovery_history
+		add_to_variable = { mengele_event016_materials_recovery_history_count = constant:brilliant_scientist_value.one }
+		set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.one }
+	}
+	else = { brilliant_scientist_mengele_cancel_materials_incident_recovery = yes }
+}
+
+# Parent cleanup refunds before removing the native decision and its CIC use.
+brilliant_scientist_mengele_cleanup_materials_incident = {
+	brilliant_scientist_mengele_cancel_materials_incident_recovery = yes
+	remove_decision = mengele_event016_materials_incident_recovery
+	clr_country_flag = mengele_event016_materials_incident_recovery_active
+	clear_variable = mengele_event016_materials_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_materials_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_materials_incident_recovery_cost_fuel
+	brilliant_scientist_mengele_clear_materials_incident = yes
+}
+
+# Test Stand Explosion: Rebuild the damaged test stand and replace its instruments so propulsion work and fuel deliveries can resume.
+brilliant_scientist_mengele_record_rocketry_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_conventional_incident_stage_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_rocketry_incident_active }
+			NOT = { has_country_flag = mengele_event016_rocketry_incident_recovery_active }
+		}
+		set_country_flag = mengele_event016_rocketry_incident_active
+		set_country_flag = mengele_event016_rocketry_incident_history
+		add_to_variable = { mengele_event016_rocketry_incident_history_count = constant:brilliant_scientist_value.one }
+		add_dynamic_modifier = { modifier = brilliant_scientist_mengele_rocketry_incident }
+		set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.one }
+	}
+}
+
+brilliant_scientist_mengele_clear_rocketry_incident = {
+	clr_country_flag = mengele_event016_rocketry_incident_active
+	if = {
+		limit = { has_dynamic_modifier = { modifier = brilliant_scientist_mengele_rocketry_incident } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_mengele_rocketry_incident }
+	}
+}
+
+# Called only by the native recovery decision after its affordability gate.
+# Native admission owns CIC. Recheck direct costs without double-counting its reservation.
+brilliant_scientist_mengele_begin_rocketry_incident_recovery = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_rocketry_incident_recovery_requirements_met = yes
+			brilliant_scientist_mengele_incident_industrial_can_pay_direct = yes
+		}
+		set_variable = { mengele_event016_rocketry_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_industrial_political_power }
+		set_variable = { mengele_event016_rocketry_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_industrial_support_equipment }
+		set_variable = { mengele_event016_rocketry_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_industrial_fuel }
+		set_temp_variable = { mengele_event016_incident_payment_pp = mengele_event016_rocketry_incident_recovery_cost_political_power }
+		multiply_temp_variable = { mengele_event016_incident_payment_pp = constant:brilliant_scientist_directorate_value.negative_one }
+		add_political_power = mengele_event016_incident_payment_pp
+		set_temp_variable = { equipment_stockpile_removal_amount = mengele_event016_rocketry_incident_recovery_cost_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = mengele_event016_rocketry_incident_recovery_cost_fuel }
+		remove_fuel_from_stockpile = yes
+		set_country_flag = mengele_event016_rocketry_incident_recovery_active
+	}
+}
+
+# Refund only the complete private receipt, with no inferred missing payment.
+# Snapshot then consume the authority and values before issuing any refund.
+brilliant_scientist_mengele_cancel_rocketry_incident_recovery = {
+	if = {
+		limit = { brilliant_scientist_mengele_rocketry_incident_recovery_receipt_is_current = yes }
+		set_temp_variable = { mengele_event016_incident_refund_pp = mengele_event016_rocketry_incident_recovery_cost_political_power }
+		set_temp_variable = { mengele_event016_incident_refund_support = mengele_event016_rocketry_incident_recovery_cost_support_equipment }
+		set_temp_variable = { mengele_event016_incident_refund_fuel = mengele_event016_rocketry_incident_recovery_cost_fuel }
+		clr_country_flag = mengele_event016_rocketry_incident_recovery_active
+		clear_variable = mengele_event016_rocketry_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_rocketry_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_rocketry_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_incident_refund_pp
+		add_equipment_to_stockpile = { type = support_equipment amount = mengele_event016_incident_refund_support }
+		add_fuel = mengele_event016_incident_refund_fuel
+	}
+	# Also retire incomplete receipts without inferring a refund or resolving the incident.
+	clr_country_flag = mengele_event016_rocketry_incident_recovery_active
+	clear_variable = mengele_event016_rocketry_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_rocketry_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_rocketry_incident_recovery_cost_fuel
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes } }
+		brilliant_scientist_mengele_clear_rocketry_incident = yes
+	}
+}
+
+brilliant_scientist_mengele_finish_rocketry_incident_recovery = {
+	set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_rocketry_incident_recovery_receipt_is_current = yes
+			has_country_flag = mengele_event016_rocketry_incident_active
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_rocketry_incident_recovery_active
+		clear_variable = mengele_event016_rocketry_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_rocketry_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_rocketry_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_rocketry_incident = yes
+		set_country_flag = mengele_event016_rocketry_recovery_history
+		add_to_variable = { mengele_event016_rocketry_recovery_history_count = constant:brilliant_scientist_value.one }
+		set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.one }
+	}
+	else = { brilliant_scientist_mengele_cancel_rocketry_incident_recovery = yes }
+}
+
+# Parent cleanup refunds before removing the native decision and its CIC use.
+brilliant_scientist_mengele_cleanup_rocketry_incident = {
+	brilliant_scientist_mengele_cancel_rocketry_incident_recovery = yes
+	remove_decision = mengele_event016_rocketry_incident_recovery
+	clr_country_flag = mengele_event016_rocketry_incident_recovery_active
+	clear_variable = mengele_event016_rocketry_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_rocketry_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_rocketry_incident_recovery_cost_fuel
+	brilliant_scientist_mengele_clear_rocketry_incident = yes
+}
+
+# Reactor Containment Crisis: Commit engineering crews to secure the damaged laboratory and restore safe working conditions for research teams.
+brilliant_scientist_mengele_record_high_energy_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_conventional_incident_stage_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_high_energy_incident_active }
+			NOT = { has_country_flag = mengele_event016_high_energy_incident_recovery_active }
+		}
+		set_country_flag = mengele_event016_high_energy_incident_active
+		set_country_flag = mengele_event016_high_energy_incident_history
+		add_to_variable = { mengele_event016_high_energy_incident_history_count = constant:brilliant_scientist_value.one }
+		add_dynamic_modifier = { modifier = brilliant_scientist_mengele_high_energy_incident }
+		set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.one }
+	}
+}
+
+brilliant_scientist_mengele_clear_high_energy_incident = {
+	clr_country_flag = mengele_event016_high_energy_incident_active
+	if = {
+		limit = { has_dynamic_modifier = { modifier = brilliant_scientist_mengele_high_energy_incident } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_mengele_high_energy_incident }
+	}
+}
+
+# Called only by the native recovery decision after its affordability gate.
+# Native admission owns CIC. Recheck direct costs without double-counting its reservation.
+brilliant_scientist_mengele_begin_high_energy_incident_recovery = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_high_energy_incident_recovery_requirements_met = yes
+			brilliant_scientist_mengele_incident_exotic_can_pay_direct = yes
+		}
+		set_variable = { mengele_event016_high_energy_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_exotic_political_power }
+		set_variable = { mengele_event016_high_energy_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_exotic_support_equipment }
+		set_variable = { mengele_event016_high_energy_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_exotic_fuel }
+		set_temp_variable = { mengele_event016_incident_payment_pp = mengele_event016_high_energy_incident_recovery_cost_political_power }
+		multiply_temp_variable = { mengele_event016_incident_payment_pp = constant:brilliant_scientist_directorate_value.negative_one }
+		add_political_power = mengele_event016_incident_payment_pp
+		set_temp_variable = { equipment_stockpile_removal_amount = mengele_event016_high_energy_incident_recovery_cost_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = mengele_event016_high_energy_incident_recovery_cost_fuel }
+		remove_fuel_from_stockpile = yes
+		set_country_flag = mengele_event016_high_energy_incident_recovery_active
+	}
+}
+
+# Refund only the complete private receipt, with no inferred missing payment.
+# Snapshot then consume the authority and values before issuing any refund.
+brilliant_scientist_mengele_cancel_high_energy_incident_recovery = {
+	if = {
+		limit = { brilliant_scientist_mengele_high_energy_incident_recovery_receipt_is_current = yes }
+		set_temp_variable = { mengele_event016_incident_refund_pp = mengele_event016_high_energy_incident_recovery_cost_political_power }
+		set_temp_variable = { mengele_event016_incident_refund_support = mengele_event016_high_energy_incident_recovery_cost_support_equipment }
+		set_temp_variable = { mengele_event016_incident_refund_fuel = mengele_event016_high_energy_incident_recovery_cost_fuel }
+		clr_country_flag = mengele_event016_high_energy_incident_recovery_active
+		clear_variable = mengele_event016_high_energy_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_high_energy_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_high_energy_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_incident_refund_pp
+		add_equipment_to_stockpile = { type = support_equipment amount = mengele_event016_incident_refund_support }
+		add_fuel = mengele_event016_incident_refund_fuel
+	}
+	# Also retire incomplete receipts without inferring a refund or resolving the incident.
+	clr_country_flag = mengele_event016_high_energy_incident_recovery_active
+	clear_variable = mengele_event016_high_energy_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_high_energy_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_high_energy_incident_recovery_cost_fuel
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes } }
+		brilliant_scientist_mengele_clear_high_energy_incident = yes
+	}
+}
+
+brilliant_scientist_mengele_finish_high_energy_incident_recovery = {
+	set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_high_energy_incident_recovery_receipt_is_current = yes
+			has_country_flag = mengele_event016_high_energy_incident_active
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_high_energy_incident_recovery_active
+		clear_variable = mengele_event016_high_energy_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_high_energy_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_high_energy_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_high_energy_incident = yes
+		set_country_flag = mengele_event016_high_energy_recovery_history
+		add_to_variable = { mengele_event016_high_energy_recovery_history_count = constant:brilliant_scientist_value.one }
+		set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.one }
+	}
+	else = { brilliant_scientist_mengele_cancel_high_energy_incident_recovery = yes }
+}
+
+# Parent cleanup refunds before removing the native decision and its CIC use.
+brilliant_scientist_mengele_cleanup_high_energy_incident = {
+	brilliant_scientist_mengele_cancel_high_energy_incident_recovery = yes
+	remove_decision = mengele_event016_high_energy_incident_recovery
+	clr_country_flag = mengele_event016_high_energy_incident_recovery_active
+	clear_variable = mengele_event016_high_energy_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_high_energy_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_high_energy_incident_recovery_cost_fuel
+	brilliant_scientist_mengele_clear_high_energy_incident = yes
+}
+
+# Clinical Contamination: Suspend the affected trial, replace compromised medical supplies, and support the injured staff and patients so military medical services can recover.
+brilliant_scientist_mengele_record_biomedical_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+			brilliant_scientist_mengele_conventional_incident_stage_is_valid = yes
+			NOT = { has_country_flag = mengele_event016_biomedical_incident_active }
+			NOT = { has_country_flag = mengele_event016_biomedical_incident_recovery_active }
+		}
+		set_country_flag = mengele_event016_biomedical_incident_active
+		set_country_flag = mengele_event016_biomedical_incident_history
+		add_to_variable = { mengele_event016_biomedical_incident_history_count = constant:brilliant_scientist_value.one }
+		add_dynamic_modifier = { modifier = brilliant_scientist_mengele_biomedical_incident }
+		set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.one }
+	}
+}
+
+brilliant_scientist_mengele_clear_biomedical_incident = {
+	clr_country_flag = mengele_event016_biomedical_incident_active
+	if = {
+		limit = { has_dynamic_modifier = { modifier = brilliant_scientist_mengele_biomedical_incident } }
+		remove_dynamic_modifier = { modifier = brilliant_scientist_mengele_biomedical_incident }
+	}
+}
+
+# Called only by the native recovery decision after its affordability gate.
+# Native admission owns CIC. Recheck direct costs without double-counting its reservation.
+brilliant_scientist_mengele_begin_biomedical_incident_recovery = {
+	if = {
+		limit = {
+			brilliant_scientist_mengele_biomedical_incident_recovery_requirements_met = yes
+			brilliant_scientist_mengele_incident_biological_can_pay_direct = yes
+		}
+		set_variable = { mengele_event016_biomedical_incident_recovery_cost_political_power = constant:brilliant_scientist_project_board.response_biological_political_power }
+		set_variable = { mengele_event016_biomedical_incident_recovery_cost_support_equipment = constant:brilliant_scientist_project_board.response_biological_support_equipment }
+		set_variable = { mengele_event016_biomedical_incident_recovery_cost_fuel = constant:brilliant_scientist_project_board.response_biological_fuel }
+		set_temp_variable = { mengele_event016_incident_payment_pp = mengele_event016_biomedical_incident_recovery_cost_political_power }
+		multiply_temp_variable = { mengele_event016_incident_payment_pp = constant:brilliant_scientist_directorate_value.negative_one }
+		add_political_power = mengele_event016_incident_payment_pp
+		set_temp_variable = { equipment_stockpile_removal_amount = mengele_event016_biomedical_incident_recovery_cost_support_equipment }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = mengele_event016_biomedical_incident_recovery_cost_fuel }
+		remove_fuel_from_stockpile = yes
+		set_country_flag = mengele_event016_biomedical_incident_recovery_active
+	}
+}
+
+# Refund only the complete private receipt, with no inferred missing payment.
+# Snapshot then consume the authority and values before issuing any refund.
+brilliant_scientist_mengele_cancel_biomedical_incident_recovery = {
+	if = {
+		limit = { brilliant_scientist_mengele_biomedical_incident_recovery_receipt_is_current = yes }
+		set_temp_variable = { mengele_event016_incident_refund_pp = mengele_event016_biomedical_incident_recovery_cost_political_power }
+		set_temp_variable = { mengele_event016_incident_refund_support = mengele_event016_biomedical_incident_recovery_cost_support_equipment }
+		set_temp_variable = { mengele_event016_incident_refund_fuel = mengele_event016_biomedical_incident_recovery_cost_fuel }
+		clr_country_flag = mengele_event016_biomedical_incident_recovery_active
+		clear_variable = mengele_event016_biomedical_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_biomedical_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_biomedical_incident_recovery_cost_fuel
+		add_political_power = mengele_event016_incident_refund_pp
+		add_equipment_to_stockpile = { type = support_equipment amount = mengele_event016_incident_refund_support }
+		add_fuel = mengele_event016_incident_refund_fuel
+	}
+	# Also retire incomplete receipts without inferring a refund or resolving the incident.
+	clr_country_flag = mengele_event016_biomedical_incident_recovery_active
+	clear_variable = mengele_event016_biomedical_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_biomedical_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_biomedical_incident_recovery_cost_fuel
+	if = {
+		limit = { NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes } }
+		brilliant_scientist_mengele_clear_biomedical_incident = yes
+	}
+}
+
+brilliant_scientist_mengele_finish_biomedical_incident_recovery = {
+	set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = {
+			brilliant_scientist_mengele_biomedical_incident_recovery_receipt_is_current = yes
+			has_country_flag = mengele_event016_biomedical_incident_active
+			brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes
+		}
+		clr_country_flag = mengele_event016_biomedical_incident_recovery_active
+		clear_variable = mengele_event016_biomedical_incident_recovery_cost_political_power
+		clear_variable = mengele_event016_biomedical_incident_recovery_cost_support_equipment
+		clear_variable = mengele_event016_biomedical_incident_recovery_cost_fuel
+		brilliant_scientist_mengele_clear_biomedical_incident = yes
+		set_country_flag = mengele_event016_biomedical_recovery_history
+		add_to_variable = { mengele_event016_biomedical_recovery_history_count = constant:brilliant_scientist_value.one }
+		set_temp_variable = { mengele_event016_conventional_recovery_finished = constant:brilliant_scientist_value.one }
+	}
+	else = { brilliant_scientist_mengele_cancel_biomedical_incident_recovery = yes }
+}
+
+# Parent cleanup refunds before removing the native decision and its CIC use.
+brilliant_scientist_mengele_cleanup_biomedical_incident = {
+	brilliant_scientist_mengele_cancel_biomedical_incident_recovery = yes
+	remove_decision = mengele_event016_biomedical_incident_recovery
+	clr_country_flag = mengele_event016_biomedical_incident_recovery_active
+	clear_variable = mengele_event016_biomedical_incident_recovery_cost_political_power
+	clear_variable = mengele_event016_biomedical_incident_recovery_cost_support_equipment
+	clear_variable = mengele_event016_biomedical_incident_recovery_cost_fuel
+	brilliant_scientist_mengele_clear_biomedical_incident = yes
+}
+
+# Deterministic family/stage dispatcher. Parent calls only after its approved
+# roll and a real output. Invalid family/stage does nothing. Inputs are read-only.
+brilliant_scientist_mengele_record_requested_conventional_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals } }
+		brilliant_scientist_mengele_record_electronics_incident = yes
+	}
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals } }
+		brilliant_scientist_mengele_record_materials_incident = yes
+	}
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals } }
+		brilliant_scientist_mengele_record_rocketry_incident = yes
+	}
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals } }
+		brilliant_scientist_mengele_record_high_energy_incident = yes
+	}
+	if = {
+		limit = { check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals } }
+		brilliant_scientist_mengele_record_biomedical_incident = yes
+	}
+}
+
+# Country scope. Native risky options and settled paid stages are the only
+# authorized callers. Reconciliation/adoption must never replay this roll.
+# Reuses the existing pure stage-pressure calculator; its Computation-named
+# temporary values are scratch only, not Computation history or receipts.
+brilliant_scientist_mengele_dispatch_conventional_incident = {
+	set_temp_variable = { mengele_event016_conventional_incident_recorded = constant:brilliant_scientist_value.zero }
+	if = {
+		limit = { brilliant_scientist_mengele_can_dispatch_conventional_incident = yes }
+		brilliant_scientist_mengele_load_computation_incident_pressure = yes
+		random_list = {
+			var:mengele_event016_computation_incident_pressure = {
+				brilliant_scientist_mengele_record_requested_conventional_incident = yes
+			}
+			var:mengele_event016_computation_incident_complement = { }
+		}
+	}
+}
+
+brilliant_scientist_mengele_cleanup_conventional_incidents = {
+	brilliant_scientist_mengele_cleanup_electronics_incident = yes
+	brilliant_scientist_mengele_cleanup_materials_incident = yes
+	brilliant_scientist_mengele_cleanup_rocketry_incident = yes
+	brilliant_scientist_mengele_cleanup_high_energy_incident = yes
+	brilliant_scientist_mengele_cleanup_biomedical_incident = yes
+}

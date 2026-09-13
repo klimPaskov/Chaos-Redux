@@ -1,0 +1,646 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 033 ACID RAIN TRIGGERS
+# ============================================================================
+# State, country, front, action, migration, and presentation gates for the
+# one-shot Event 033 runtime. These predicates never build or repair the
+# registry; formation and bounded reconciliation effects own those writes.
+# ============================================================================
+
+# ---------------------------------------------------------------------------
+# Frozen state registry
+# ---------------------------------------------------------------------------
+
+acid_rain_state_is_excluded = {
+	OR = {
+		has_state_category = wasteland
+		has_state_category = enclave
+		has_state_flag = acid_rain_shared_civilian_loss_excluded
+		has_state_flag = fallout_shared_civilian_loss_excluded
+		has_state_flag = air_winter_excluded
+	}
+}
+
+acid_rain_state_has_supported_region = {
+	OR = {
+		is_on_continent = europe
+		is_on_continent = middle_east
+		is_on_continent = asia
+		is_on_continent = africa
+		is_on_continent = australia
+		is_on_continent = north_america
+		is_on_continent = south_america
+	}
+}
+
+acid_rain_state_is_valid_target = {
+	scope_exists = yes
+	impassable = no
+	NOT = { acid_rain_state_is_excluded = yes }
+	acid_rain_state_has_supported_region = yes
+	check_variable = { state_population_k > constant:acid_rain_mortality.minimum_population_k }
+	OWNER = {
+		exists = yes
+		is_actual_nonhuman_country = no
+	}
+	CONTROLLER = {
+		exists = yes
+		is_actual_nonhuman_country = no
+	}
+}
+
+acid_rain_state_is_frozen_valid = {
+	scope_exists = yes
+	has_state_flag = acid_rain_frozen_valid
+	has_variable = acid_rain_registry_generation
+	check_variable = {
+		var = acid_rain_registry_generation
+		value = global.acid_rain_generation_id
+		compare = equals
+	}
+}
+
+acid_rain_state_is_untouched = {
+	acid_rain_state_is_frozen_valid = yes
+	NOT = { has_state_flag = acid_rain_touched }
+}
+
+acid_rain_state_is_touched = {
+	acid_rain_state_is_frozen_valid = yes
+	has_state_flag = acid_rain_touched
+}
+
+acid_rain_state_has_current_owner = {
+	OWNER = {
+		exists = yes
+		is_actual_nonhuman_country = no
+	}
+}
+
+acid_rain_state_has_region = {
+	has_variable = acid_rain_region_id
+	check_variable = {
+		var = acid_rain_region_id
+		value = constant:acid_rain_region.first
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = acid_rain_region_id
+		value = constant:acid_rain_region.last
+		compare = less_than_or_equals
+	}
+}
+
+acid_rain_state_is_in_region = {
+	acid_rain_state_has_region = yes
+	check_variable = {
+		var = acid_rain_region_id
+		value = acid_rain_selected_region_id
+		compare = equals
+	}
+}
+
+acid_rain_state_is_ordinary_pulse_target = {
+	acid_rain_state_is_frozen_valid = yes
+	acid_rain_state_is_in_region = yes
+	has_state_flag = acid_rain_front_target
+	NOT = { has_state_flag = acid_rain_global_pulse_receipt }
+}
+
+acid_rain_state_is_global_pulse_target = {
+	acid_rain_state_is_frozen_valid = yes
+	NOT = { has_state_flag = acid_rain_global_pulse_receipt }
+}
+
+acid_rain_state_target_proof_is_current = {
+	acid_rain_state_is_frozen_valid = yes
+	has_state_flag = acid_rain_front_target
+	has_variable = acid_rain_target_generation
+	check_variable = {
+		var = acid_rain_target_generation
+		value = global.acid_rain_generation_id
+		compare = equals
+	}
+}
+
+acid_rain_state_is_island_capable = {
+	acid_rain_state_is_frozen_valid = yes
+	OR = {
+		has_state_category = tiny_island
+		is_coastal = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Region, front, and runtime gates
+# ---------------------------------------------------------------------------
+
+acid_rain_cluster_reservation_allows_current_context = {
+	OR = {
+		NOT = { has_global_flag = acid_rain_cluster_reserved }
+		AND = {
+			has_variable = event_cluster_member_event_system_only
+			has_variable = event_cluster_id
+			has_variable = event_cluster_member_event_id
+			check_variable = { event_cluster_member_event_system_only > constant:acid_rain_runtime.zero }
+			check_variable = { event_cluster_id = constant:event_cluster_id.natural_disasters }
+			check_variable = { event_cluster_member_event_id = constant:acid_rain_event.id }
+		}
+		AND = {
+			has_country_flag = event_cluster_member_fire_context
+			has_variable = event_id
+			check_variable = { event_id = constant:acid_rain_event.id }
+		}
+	}
+}
+
+# A later generation may begin only after every paid commitment and state-level
+# recovery obligation from the resolved generation has settled. This keeps the
+# reset path idempotent without cancelling factories, manpower, or target proofs.
+acid_rain_previous_generation_is_settled = {
+	OR = {
+		NOT = { has_global_flag = acid_rain_runtime_resolved }
+		AND = {
+			has_global_flag = acid_rain_runtime_resolved
+			all_of_scopes = {
+				array = global.acid_rain_participant_countries
+				NOT = { check_variable = { acid_rain_active_projects > constant:acid_rain_runtime.zero } }
+				NOT = { has_country_flag = acid_rain_national_action_active }
+				NOT = { has_country_flag = acid_rain_recovery_tail_active }
+			}
+			all_of_scopes = {
+				array = global.acid_rain_frozen_states
+				NOT = { has_state_flag = acid_rain_aftercare_unresolved }
+				NOT = { has_state_flag = acid_rain_action_lock }
+			}
+		}
+	}
+}
+
+acid_rain_launch_preflight_is_valid = {
+	NOT = { has_global_flag = acid_rain_runtime_active }
+	NOT = { has_global_flag = acid_rain_migration_failed_closed }
+	NOT = { has_global_flag = world_end }
+	acid_rain_previous_generation_is_settled = yes
+	acid_rain_cluster_reservation_allows_current_context = yes
+	any_state = { acid_rain_state_is_valid_target = yes }
+}
+
+acid_rain_runtime_is_active = {
+	has_global_flag = acid_rain_runtime_active
+	NOT = { has_global_flag = acid_rain_dissipation_pending }
+	NOT = { has_global_flag = acid_rain_runtime_resolved }
+	has_variable = global.acid_rain_generation_id
+}
+
+acid_rain_runtime_has_frozen_registry = {
+	acid_rain_runtime_is_active = yes
+	has_global_flag = acid_rain_registry_frozen
+	check_variable = { global.acid_rain_frozen_states^num > 0 }
+	check_variable = { global.acid_rain_frozen_state_ids^num = global.acid_rain_frozen_states^num }
+}
+
+acid_rain_runtime_has_open_front = {
+	acid_rain_runtime_is_active = yes
+	check_variable = { global.acid_rain_active_front_count > 0 }
+}
+
+acid_rain_runtime_can_open_front = {
+	acid_rain_runtime_has_frozen_registry = yes
+	NOT = { has_global_flag = acid_rain_global_transition_active }
+	NOT = { has_global_flag = acid_rain_dissipation_pending }
+	check_variable = {
+		var = global.acid_rain_front_count
+		value = constant:acid_rain_event.max_fronts
+		compare = less_than
+	}
+}
+
+acid_rain_front_id_is_valid = {
+	check_variable = { acid_rain_front_id > 0 }
+	check_variable = {
+		var = acid_rain_front_id
+		value = constant:acid_rain_event.max_fronts
+		compare = less_than_or_equals
+	}
+}
+
+acid_rain_front_is_open = {
+	acid_rain_front_id_is_valid = yes
+	OR = {
+		check_variable = {
+			var = global.acid_rain_front_state_entries^acid_rain_front_id
+			value = constant:acid_rain_front_state.active
+			compare = equals
+		}
+		check_variable = {
+			var = global.acid_rain_front_state_entries^acid_rain_front_id
+			value = constant:acid_rain_front_state.retiring
+			compare = equals
+		}
+	}
+}
+
+acid_rain_front_is_warning = {
+	acid_rain_front_id_is_valid = yes
+	check_variable = {
+		var = global.acid_rain_front_state_entries^acid_rain_front_id
+		value = constant:acid_rain_front_state.warning
+		compare = equals
+	}
+}
+
+acid_rain_region_is_complete = {
+	check_variable = {
+		var = global.acid_rain_region_state_entries^acid_rain_region_id
+		value = constant:acid_rain_region_state.complete
+		compare = equals
+	}
+}
+
+acid_rain_all_regions_are_complete = {
+	check_variable = { global.acid_rain_completed_region_count = constant:acid_rain_region.count }
+	check_variable = { global.acid_rain_total_touched_states = global.acid_rain_total_valid_states }
+}
+
+acid_rain_ordinary_dissipation_is_ready = {
+	acid_rain_all_regions_are_complete = yes
+	check_variable = {
+		var = global.date
+		value = global.acid_rain_coverage_complete_day
+		compare = greater_than_or_equals
+	}
+}
+
+acid_rain_global_dissipation_is_ready = {
+	has_global_flag = acid_rain_global_layer_active
+	check_variable = {
+		var = global.date
+		value = global.acid_rain_global_minimum_dissipation_day
+		compare = greater_than_or_equals
+	}
+	check_variable = { global.acid_rain_total_touched_states = global.acid_rain_total_valid_states }
+}
+
+# ---------------------------------------------------------------------------
+# Countries and preparedness
+# ---------------------------------------------------------------------------
+
+acid_rain_country_is_valid_participant = {
+	exists = yes
+	is_actual_nonhuman_country = no
+	has_capitulated = no
+	any_owned_state = { acid_rain_state_is_frozen_valid = yes }
+}
+
+acid_rain_country_has_runtime_record = {
+	acid_rain_country_is_valid_participant = yes
+	has_variable = acid_rain_preparedness
+	has_variable = acid_rain_shelter_tier
+	has_variable = acid_rain_water_tier
+	has_variable = acid_rain_medical_tier
+	has_variable = acid_rain_transport_tier
+}
+
+acid_rain_country_is_fragile = {
+	check_variable = { acid_rain_country_band = constant:acid_rain_country_band.fragile }
+}
+
+acid_rain_country_is_limited = {
+	check_variable = { acid_rain_country_band = constant:acid_rain_country_band.limited }
+}
+
+acid_rain_country_is_established = {
+	check_variable = { acid_rain_country_band = constant:acid_rain_country_band.established }
+}
+
+acid_rain_country_is_great_power = {
+	check_variable = { acid_rain_country_band = constant:acid_rain_country_band.great_power }
+}
+
+acid_rain_country_has_free_action_slot = {
+	NOT = { has_country_flag = acid_rain_national_action_active }
+	check_variable = { acid_rain_active_action_families < constant:acid_rain_urgent_cost.maximum_resource_families }
+}
+
+acid_rain_country_has_free_project_slot = {
+	check_variable = {
+		var = acid_rain_active_projects
+		value = acid_rain_country_project_capacity
+		compare = less_than
+	}
+}
+
+acid_rain_country_target_is_owned_and_controlled = {
+	FROM = {
+		OWNER = { tag = PREV }
+		CONTROLLER = { tag = PREV }
+	}
+}
+
+acid_rain_country_target_is_current = {
+	FROM = {
+		acid_rain_state_is_frozen_valid = yes
+		acid_rain_state_target_proof_is_current = yes
+	}
+}
+
+# Threat 3 is the only state allowed to use the emergency reserve floors.
+# Severe-cell and superstorm forecasts share the country forecast flag; the
+# global atmospheric layer remains an independent live escalation proof.
+acid_rain_country_has_threat_three = {
+	OR = {
+		has_country_flag = acid_rain_country_severe_forecast_active
+		has_global_flag = acid_rain_global_layer_active
+	}
+}
+
+# COUNTRY SCOPE. The caller computes these exact pre-spend requirements from
+# the currently loaded quote. Meta trigger injection is needed because stockpile
+# triggers do not accept variable right-hand values directly.
+acid_rain_country_ai_reserves_allow_loaded_quote = {
+	meta_trigger = {
+		text = {
+			NOT = { has_equipment = { support_equipment < [SUPPORT_REQUIRED] } }
+			NOT = { has_equipment = { train_equipment < [TRAIN_REQUIRED] } }
+			NOT = { has_equipment = { convoy_1 < [CONVOY_REQUIRED] } }
+			NOT = { has_equipment = { motorized_equipment < [MOTORIZED_REQUIRED] } }
+			NOT = { has_manpower < [MANPOWER_REQUIRED] }
+			NOT = { has_fuel < [FUEL_REQUIRED] }
+			num_of_civilian_factories_available_for_projects > [CIV_TRIGGER_FLOOR]
+		}
+		SUPPORT_REQUIRED = "[?acid_rain_ai_required_support|.0]"
+		TRAIN_REQUIRED = "[?acid_rain_ai_required_train|.0]"
+		CONVOY_REQUIRED = "[?acid_rain_ai_required_convoy|.0]"
+		MOTORIZED_REQUIRED = "[?acid_rain_ai_required_motorized|.0]"
+		MANPOWER_REQUIRED = "[?acid_rain_ai_required_manpower|.0]"
+		FUEL_REQUIRED = "[?acid_rain_ai_required_fuel|.0]"
+		CIV_TRIGGER_FLOOR = "[?acid_rain_ai_required_civ_trigger_floor|.0]"
+	}
+}
+
+acid_rain_country_can_pay_quote = {
+	NOT = { check_variable = { political_power < acid_rain_quote_political_power } }
+	NOT = { has_manpower < acid_rain_quote_manpower }
+	NOT = { has_equipment = { support_equipment < acid_rain_quote_support } }
+	NOT = { has_equipment = { train_equipment < acid_rain_quote_train } }
+	NOT = { has_equipment = { convoy_1 < acid_rain_quote_convoy } }
+	NOT = { has_equipment = { motorized_equipment < acid_rain_quote_motorized } }
+	NOT = { has_fuel < acid_rain_quote_fuel }
+	OR = {
+		check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.zero compare = equals }
+		AND = { check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.one compare = equals } num_of_civilian_factories_available_for_projects > 0 }
+		AND = { check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.two compare = equals } num_of_civilian_factories_available_for_projects > 1 }
+		AND = { check_variable = { var = acid_rain_quote_civ value = constant:acid_rain_runtime.three compare = equals } num_of_civilian_factories_available_for_projects > 2 }
+	}
+}
+
+acid_rain_country_action_target_is_fresh = {
+	FROM = {
+		acid_rain_state_is_frozen_valid = yes
+		NOT = { has_state_flag = acid_rain_action_lock }
+		has_variable = acid_rain_target_generation
+		check_variable = {
+			var = acid_rain_target_generation
+			value = global.acid_rain_generation_id
+			compare = equals
+		}
+	}
+}
+
+acid_rain_country_action_is_not_stale = {
+	acid_rain_runtime_is_active = yes
+	NOT = { has_global_flag = acid_rain_global_transition_active }
+	NOT = { has_global_flag = acid_rain_dissipation_pending }
+}
+
+# ---------------------------------------------------------------------------
+# Persistent quote affordability. Decision cost triggers cannot safely mutate
+# the country ledger to load a quote, so each visible entry reads the quote
+# array written by the bounded refresh effect. Equality is sufficient stock;
+# a zero field always passes, keeping land and island routes mutually
+# exclusive and every action within the authored family limit.
+# ---------------------------------------------------------------------------
+
+acid_rain_country_can_pay_project_shelter = {
+	has_variable = acid_rain_shelter_next_days
+	check_variable = { acid_rain_shelter_next_days > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { support_equipment < acid_rain_shelter_next_support } }
+	NOT = { has_manpower < acid_rain_shelter_next_manpower }
+	OR = {
+		check_variable = { acid_rain_shelter_next_civ = constant:acid_rain_runtime.zero }
+		AND = { check_variable = { acid_rain_shelter_next_civ = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 }
+		AND = { check_variable = { acid_rain_shelter_next_civ = constant:acid_rain_runtime.two } num_of_civilian_factories_available_for_projects > 1 }
+		AND = { check_variable = { acid_rain_shelter_next_civ = constant:acid_rain_runtime.three } num_of_civilian_factories_available_for_projects > 2 }
+	}
+	OR = { is_ai = no check_variable = { acid_rain_project_ai_reserve_pass_entries^1 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_project_water = {
+	has_variable = acid_rain_water_next_days
+	check_variable = { acid_rain_water_next_days > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { support_equipment < acid_rain_water_next_support } }
+	NOT = { has_equipment = { train_equipment < acid_rain_water_next_train } }
+	NOT = { has_equipment = { convoy_1 < acid_rain_water_next_convoy } }
+	NOT = { has_manpower < acid_rain_water_next_manpower }
+	OR = {
+		check_variable = { acid_rain_water_next_civ = constant:acid_rain_runtime.zero }
+		AND = { check_variable = { acid_rain_water_next_civ = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 }
+		AND = { check_variable = { acid_rain_water_next_civ = constant:acid_rain_runtime.two } num_of_civilian_factories_available_for_projects > 1 }
+		AND = { check_variable = { acid_rain_water_next_civ = constant:acid_rain_runtime.three } num_of_civilian_factories_available_for_projects > 2 }
+	}
+	OR = { is_ai = no check_variable = { acid_rain_project_ai_reserve_pass_entries^2 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_project_medical = {
+	has_variable = acid_rain_medical_next_days
+	check_variable = { acid_rain_medical_next_days > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { support_equipment < acid_rain_medical_next_support } }
+	NOT = { has_manpower < acid_rain_medical_next_manpower }
+	NOT = { has_fuel < acid_rain_medical_next_fuel }
+	OR = {
+		check_variable = { acid_rain_medical_next_civ = constant:acid_rain_runtime.zero }
+		AND = { check_variable = { acid_rain_medical_next_civ = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 }
+		AND = { check_variable = { acid_rain_medical_next_civ = constant:acid_rain_runtime.two } num_of_civilian_factories_available_for_projects > 1 }
+		AND = { check_variable = { acid_rain_medical_next_civ = constant:acid_rain_runtime.three } num_of_civilian_factories_available_for_projects > 2 }
+	}
+	OR = { is_ai = no check_variable = { acid_rain_project_ai_reserve_pass_entries^3 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_project_transport = {
+	has_variable = acid_rain_transport_next_days
+	check_variable = { acid_rain_transport_next_days > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { train_equipment < acid_rain_transport_next_train } }
+	NOT = { has_equipment = { motorized_equipment_1 < acid_rain_transport_next_motorized } }
+	NOT = { has_fuel < acid_rain_transport_next_fuel }
+	OR = {
+		check_variable = { acid_rain_transport_next_civ = constant:acid_rain_runtime.zero }
+		AND = { check_variable = { acid_rain_transport_next_civ = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 }
+		AND = { check_variable = { acid_rain_transport_next_civ = constant:acid_rain_runtime.two } num_of_civilian_factories_available_for_projects > 1 }
+		AND = { check_variable = { acid_rain_transport_next_civ = constant:acid_rain_runtime.three } num_of_civilian_factories_available_for_projects > 2 }
+	}
+	OR = { is_ai = no check_variable = { acid_rain_project_ai_reserve_pass_entries^4 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_action_shelter = {
+	check_variable = { acid_rain_action_days_entries^1 > constant:acid_rain_runtime.zero }
+	NOT = { has_political_power < acid_rain_action_political_power_entries^1 }
+	NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^1 } }
+	NOT = { has_manpower < acid_rain_action_manpower_entries^1 }
+	OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^1 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_action_water = {
+	OR = {
+		AND = {
+			check_variable = { acid_rain_action_days_entries^2 > constant:acid_rain_runtime.zero }
+			NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^2 } }
+			NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^2 } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_action_convoy_entries^2 } }
+			NOT = { has_manpower < acid_rain_action_manpower_entries^2 }
+			OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^2 = constant:acid_rain_runtime.one } }
+		}
+		AND = {
+			check_variable = { acid_rain_action_days_entries^3 > constant:acid_rain_runtime.zero }
+			NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^3 } }
+			NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^3 } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_action_convoy_entries^3 } }
+			NOT = { has_manpower < acid_rain_action_manpower_entries^3 }
+			OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^3 = constant:acid_rain_runtime.one } }
+		}
+	}
+}
+
+acid_rain_country_can_pay_action_medical = {
+	check_variable = { acid_rain_action_days_entries^4 > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^4 } }
+	NOT = { has_manpower < acid_rain_action_manpower_entries^4 }
+	NOT = { has_fuel < acid_rain_action_fuel_entries^4 }
+	OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^4 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_action_transport = {
+	check_variable = { acid_rain_action_days_entries^5 > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^5 } }
+	NOT = { has_equipment = { motorized_equipment_1 < acid_rain_action_motorized_entries^5 } }
+	NOT = { has_fuel < acid_rain_action_fuel_entries^5 }
+	OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^5 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_action_evacuate = {
+	OR = {
+		AND = {
+			check_variable = { acid_rain_action_days_entries^6 > constant:acid_rain_runtime.zero }
+			NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^6 } }
+			NOT = { has_equipment = { motorized_equipment_1 < acid_rain_action_motorized_entries^6 } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_action_convoy_entries^6 } }
+			NOT = { has_manpower < acid_rain_action_manpower_entries^6 }
+			NOT = { has_fuel < acid_rain_action_fuel_entries^6 }
+			OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^6 = constant:acid_rain_runtime.one } }
+		}
+		AND = {
+			check_variable = { acid_rain_action_days_entries^7 > constant:acid_rain_runtime.zero }
+			NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^7 } }
+			NOT = { has_equipment = { motorized_equipment_1 < acid_rain_action_motorized_entries^7 } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_action_convoy_entries^7 } }
+			NOT = { has_manpower < acid_rain_action_manpower_entries^7 }
+			NOT = { has_fuel < acid_rain_action_fuel_entries^7 }
+			OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^7 = constant:acid_rain_runtime.one } }
+		}
+	}
+}
+
+acid_rain_country_can_pay_recovery_transport = {
+	check_variable = { acid_rain_action_days_entries^11 > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^11 } }
+	NOT = { has_equipment = { motorized_equipment_1 < acid_rain_action_motorized_entries^11 } }
+	NOT = { has_fuel < acid_rain_action_fuel_entries^11 }
+	OR = {
+		check_variable = { acid_rain_action_civ_entries^11 = constant:acid_rain_runtime.zero }
+		AND = { check_variable = { acid_rain_action_civ_entries^11 = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 }
+	}
+	OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^11 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_recovery_decontaminate = {
+	OR = {
+		AND = {
+			check_variable = { acid_rain_action_days_entries^12 > constant:acid_rain_runtime.zero }
+			NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^12 } }
+			NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^12 } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_action_convoy_entries^12 } }
+			NOT = { has_manpower < acid_rain_action_manpower_entries^12 }
+			OR = { check_variable = { acid_rain_action_civ_entries^12 = constant:acid_rain_runtime.zero } AND = { check_variable = { acid_rain_action_civ_entries^12 = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 } }
+			OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^12 = constant:acid_rain_runtime.one } }
+		}
+		AND = {
+			check_variable = { acid_rain_action_days_entries^13 > constant:acid_rain_runtime.zero }
+			NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^13 } }
+			NOT = { has_equipment = { train_equipment < acid_rain_action_train_entries^13 } }
+			NOT = { has_equipment = { convoy_1 < acid_rain_action_convoy_entries^13 } }
+			NOT = { has_manpower < acid_rain_action_manpower_entries^13 }
+			OR = { check_variable = { acid_rain_action_civ_entries^13 = constant:acid_rain_runtime.zero } AND = { check_variable = { acid_rain_action_civ_entries^13 = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 } }
+			OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^13 = constant:acid_rain_runtime.one } }
+		}
+	}
+}
+
+acid_rain_country_can_pay_recovery_industry = {
+	check_variable = { acid_rain_action_days_entries^14 > constant:acid_rain_runtime.zero }
+	NOT = { has_equipment = { support_equipment < acid_rain_action_support_entries^14 } }
+	NOT = { has_manpower < acid_rain_action_manpower_entries^14 }
+	OR = {
+		check_variable = { acid_rain_action_civ_entries^14 = constant:acid_rain_runtime.zero }
+		AND = { check_variable = { acid_rain_action_civ_entries^14 = constant:acid_rain_runtime.one } num_of_civilian_factories_available_for_projects > 0 }
+	}
+	OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^14 = constant:acid_rain_runtime.one } }
+}
+
+acid_rain_country_can_pay_recovery_demobilize = {
+	check_variable = { acid_rain_action_days_entries^15 > constant:acid_rain_runtime.zero }
+	NOT = { has_political_power < acid_rain_action_political_power_entries^15 }
+	OR = { is_ai = no check_variable = { acid_rain_action_ai_reserve_pass_entries^15 = constant:acid_rain_runtime.one } }
+}
+
+# ---------------------------------------------------------------------------
+# Air ceiling, duplicate receipts, and achievement gates
+# ---------------------------------------------------------------------------
+
+acid_rain_air_can_receive_request = {
+	NOT = { has_global_flag = settings_air_cleanliness_disabled }
+	NOT = { has_global_flag = fallout_air_cleanliness_disabled }
+	NOT = { has_global_flag = air_contamination_irreversible }
+	NOT = { has_global_flag = fallout_air_contamination_permanent_99 }
+	check_variable = {
+		var = global.air_contamination_bp
+		value = constant:acid_rain_air.global_ceiling_bp
+		compare = less_than
+	}
+	check_variable = {
+		var = global.air_contamination_source_lifetime_added_bp_entries^constant:acid_rain_air.source_id
+		value = constant:acid_rain_air.lifetime_allowance_bp
+		compare = less_than
+	}
+}
+
+acid_rain_pulse_key_is_new = {
+	OR = {
+		NOT = { has_variable = acid_rain_last_pulse_key }
+		check_variable = {
+			var = acid_rain_pulse_key
+			value = acid_rain_last_pulse_key
+			compare = greater_than
+		}
+	}
+}
+
+acid_rain_achievement_before_first_drop = {
+	has_global_flag = acid_rain_runtime_active
+	check_variable = { global.acid_rain_start_chaos < constant:acid_rain_achievement.first_drop_chaos }
+	check_variable = { global.acid_rain_total_deaths = 0 }
+}
+
+acid_rain_achievement_no_severe_ruins = {
+	has_global_flag = acid_rain_runtime_resolved
+	check_variable = { global.acid_rain_total_damage < constant:acid_rain_achievement.no_severe_ruins_damage_cap }
+	NOT = { has_global_flag = acid_rain_severe_damage_recorded }
+}

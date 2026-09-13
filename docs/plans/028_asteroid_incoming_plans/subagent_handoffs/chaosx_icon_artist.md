@@ -1,5 +1,7 @@
 # `chaosx_icon_artist` handoff: Event 028 Asteroid Incoming
 
+> Asset-production handoff. Parent-owned runtime wiring is now complete; use `docs/assets/028_asteroid_incoming/asset_audit.md` and `gfx_handoff.md` for the current consumer trace and final status.
+
 ## Scope completed
 
 Generated independent native-ImageGen candidates for the seven state modifiers, eight 64x64 idea/dynamic modifiers, fourteen 32x32 decision/mission icons, and the parent-spec decision-category picture. Each generated source has a retained prompt, source PNG, target-size processed PNG, repository-converter DDS candidate, decoded DDS round-trip PNG, and family contact-sheet evidence.

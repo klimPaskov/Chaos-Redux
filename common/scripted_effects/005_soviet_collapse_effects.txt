@@ -4271,8 +4271,10 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
 			NOT = { has_country_flag = independence_wave_active_origin }
 			NOT = { is_liberation_release_current_reserved_country = yes }
 		}
-    save_event_target_as = soviet_collapse_dynamic_release_target
-    if = {
+		save_event_target_as = soviet_collapse_dynamic_release_target
+		# Event 023 snapshots inside each existing release host immediately before
+		# release; its neutral on-actions reconcile the exact resulting states.
+		if = {
         limit = {
             exists = no
             any_state = {
@@ -4283,8 +4285,9 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
                     is_controlled_by = SOV
                 }
             }
-        }
+		}
 		SOV = {
+			sov_nuclear_bombs_snapshot_event5_release_tranche = yes
 			release = event_target:soviet_collapse_dynamic_release_target
 			if = {
 				limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = SOV } }
@@ -4308,6 +4311,7 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
             }
 			owner = {
 				save_event_target_as = soviet_collapse_dynamic_release_host
+				sov_nuclear_bombs_snapshot_event5_release_tranche = yes
 				release = event_target:soviet_collapse_dynamic_release_target
 				if = {
 					limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = event_target:soviet_collapse_dynamic_release_host } }
@@ -4342,6 +4346,7 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
             }
 			owner = {
 				save_event_target_as = soviet_collapse_dynamic_release_host
+				sov_nuclear_bombs_snapshot_event5_release_tranche = yes
 				release = event_target:soviet_collapse_dynamic_release_target
 				if = {
 					limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = event_target:soviet_collapse_dynamic_release_host } }
@@ -4376,6 +4381,7 @@ soviet_collapse_release_scope_from_soviet_collapse_owner = {
             }
 			controller = {
 				save_event_target_as = soviet_collapse_dynamic_release_host
+				sov_nuclear_bombs_snapshot_event5_release_tranche = yes
 				release = event_target:soviet_collapse_dynamic_release_target
 				if = {
 					limit = { event_target:soviet_collapse_dynamic_release_target = { is_subject_of = event_target:soviet_collapse_dynamic_release_host } }

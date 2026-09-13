@@ -31,7 +31,21 @@ The cluster layer may narrow ordinary event eligibility, but it never replaces t
 
 This contract covers automatic selection, normal manual firing, manual cluster forcing, member eligibility, severity, activation and participation chance, queue state, history, pacing, Event Logs, Settings, catalog presentation, and acceptance evidence.
 
-The event catalog workbook schema and its formula prose remain unchanged.
+The Events sheet records every distinct cluster ID for an event and does not store a scalar member severity.
+
+The current fixed catalogue and 75-row membership matrix are reproduced in [event_clusters.md](event_clusters.md).
+
+They retain the supplied v2 catalogue and memberships except where explicit later direction revised the repeated Wars and Natural Disasters slots.
+
+The fixed catalogue uses cluster IDs 1 through 18.
+
+The memberless Random Stuff runtime cluster is retained at ID 19 outside the fixed catalogue rows.
+
+Catalogue Chaos levels map to zero-based internal unlock tiers, with level 1 to tier 0, level 2 to tier 1, level 3 to tier 2, and level 4 to tier 3.
+
+Catalogue types map `Minor Fire-Once` to runtime `one_time` and `Minor Repeatable` to runtime `repeatable`.
+
+Required status and declared minimum-tier values remain runtime architecture metadata, while the supplied membership matrix is authoritative only for event slot and member severity.
 
 ## 1. Ordinary event-system authority
 
@@ -104,8 +118,8 @@ The severity corrections are:
 
 | Event | Cluster role | Correct member severity |
 | --- | --- | --- |
-| Fury | Trigger-capable optional member | Medium |
-| Tensions Rising | Trigger or required member in Diplomatic Panic | Low |
+| Fury | Two logical members in Wars | Medium and High |
+| Tensions Rising | Member in Diplomacy | Medium |
 | Black Plague | Required member in Diseases | Severe |
 
 ## 3. Activation chance
@@ -200,7 +214,7 @@ A valid failed roll proceeds through ordinary standalone handling for the select
 
 ## 3.1. Random Stuff special activation contract
 
-Random Stuff is cluster ID 12, type Minor Repeatable, unlock tier 3, and has no configured member rows.
+Random Stuff is the retained memberless runtime cluster at ID 19, with runtime type `repeatable`, unlock tier 3, and no configured fixed-member rows.
 
 Each successfully dispatched ordinary automatic minor event creates exactly one Random Stuff attempt after ordinary minor pacing has been applied.
 
@@ -299,7 +313,7 @@ Required and trigger rows do not consume optional participation decay.
 
 Every configured fixed member row has a stable logical row identity that remains distinct even when several rows use the same event ID.
 
-Opening duplicate rows for Events 6, 9, and 13 have explicit primary trigger rows.
+Opening duplicate rows for Events 4, 6, 7, 9, and 13 have explicit primary trigger rows.
 
 The primary trigger row is the first synchronous row for that activation, while later duplicate staged rows retain their own role, severity, declared minimum, chance, and status.
 
@@ -318,6 +332,20 @@ Overlapping batches remain isolated by batch identity and aligned row context.
 One batch cannot borrow a target, actor, event-specific context, history sequence, or staged payload from another batch.
 
 Runtime state is versioned and non-destructive.
+
+Runtime version 2 preserves stable semantic row IDs for pre-existing logical rows and assigns globally unique row IDs to every new logical row.
+
+Cluster ID 3 retains the Diplomacy semantic identity formerly named Diplomatic Panic.
+
+IDs 8 through 12 are semantically reassigned to Intelligence, Scientific Research, Negative Economy, Various Anomalies, and Pacts.
+
+Diseases uses ID 13, and the memberless Random Stuff runtime cluster uses ID 19.
+
+Legacy numeric IDs are migration inputs only and are not additional registered clusters.
+
+The migration remaps persisted cluster-ID fields only when the complete legacy 1–12 registry sequence proves their old semantic meanings. It does not recompute historical member snapshots or replace queued row, batch, target, or event-specific context.
+
+Settings navigation walks the current registry order and wraps between IDs 1 and 19 without visiting unregistered values.
 
 Random Stuff has no fixed row registry.
 Its history-only row identity combines the dynamic cluster row namespace with the selected event ID, while the batch and history sequence distinguish repeated selections across activations.
@@ -440,20 +468,36 @@ Existing Event Logs and Settings sprites, buttons, checkboxes, fonts, and flag s
 
 ## 9. Registered cluster families
 
-The current registry artifacts define these cluster families and preserve stable cluster IDs.
+The v2 catalogue preserves cluster IDs as semantic IDs and defines these fixed cluster rows.
 
-| Cluster | Confirmed ID | Current member pattern |
-| --- | --- | --- |
-| Wars | event_cluster_id.wars | Event 4 Random War with optional Fury support |
-| Liberations | event_cluster_id.liberations | Event 6 opening, escalation, and crisis rows with optional Event 5 Soviet Union Collapse |
-| Diplomatic Panic | event_cluster_id.diplomatic_panic | Event 8 Tensions Rising with optional Event 17 Random Faction |
-| Peace | event_cluster_id.peace | Event 9 opening and follow-up rows |
-| Natural Disasters | event_cluster_id.natural_disasters | Event 13 opening and staged seasonal rows |
-| Formables | event_cluster_id.formables | Event 12 Africa Is One |
-| Positive Economy | event_cluster_id.economy_positive | Event 18 Resources Found |
-| Diseases | event_cluster_id.diseases | Event 20 Black Plague with optional Event 2 Zombie Outbreak |
+| Cluster ID | Canonical name | Catalogue type | Catalogue Chaos level |
+| --- | --- | --- | ---: |
+| 1 | Wars | Minor Repeatable | 1 |
+| 2 | Liberations | Minor Repeatable | 1 |
+| 3 | Diplomacy | Minor Repeatable | 1 |
+| 4 | Peace | Minor Repeatable | 1 |
+| 5 | Natural Disasters | Minor Repeatable | 1 |
+| 6 | Formables | Minor Repeatable | 3 |
+| 7 | Positive Economy | Minor Repeatable | 1 |
+| 8 | Intelligence | Minor Fire-Once | 1 |
+| 9 | Scientific Research | Minor Fire-Once | 2 |
+| 10 | Negative Economy | Minor Fire-Once | 2 |
+| 11 | Various Anomalies | Minor Fire-Once | 4 |
+| 12 | Pacts | Minor Fire-Once | 3 |
+| 13 | Diseases | Minor Repeatable | 1 |
+| 14 | Randomizations | Minor Repeatable | 1 |
+| 15 | Sudden Abundance | Minor Repeatable | 1 |
+| 16 | Domestic Unrest | Minor Repeatable | 1 |
+| 17 | Alien Invasions | Minor Fire-Once | 1 |
+| 18 | Military Preparation | Minor Repeatable | 1 |
 
-The first logical rows for Events 6, 9, and 13 are the explicit primary trigger rows for their respective duplicate staged groups.
+The exact catalogue details, member ID lists, member severities, statuses, and all 75 logical membership rows are maintained in [event_clusters.md](event_clusters.md).
+
+The memberless Random Stuff runtime cluster remains at ID 19 and is not part of the 18 fixed catalogue rows.
+
+Cluster IDs 8 through 12 therefore refer to their v2 semantic assignments, Diseases refers to ID 13, and Random Stuff refers to ID 19.
+
+The first logical rows for Events 4, 6, 7, 9, and 13 are the explicit primary trigger rows for their respective duplicate groups.
 
 The member registry remains the authority for each row's declared minimum, role, and current event mapping.
 
@@ -503,7 +547,7 @@ The trigger is still eligible and may continue through an ordinary standalone ev
 2. A trigger rejected by the event system does not roll its cluster and continues through ordinary standalone handling.
 3. A required row receives 100 percent and Guaranteed only after ordinary eligibility succeeds.
 4. A High or Severe non-trigger row requires another pass-one base-eligible row, while the trigger and a sole configured member remain exempt.
-5. A duplicate Event 6, 9, or 13 group identifies one stable primary trigger row and preserves separate logical rows for later stages.
+5. A duplicate Event 4, 6, 7, 9, or 13 group identifies one stable primary trigger row and preserves every additional logical row with its own severity and participation roll.
 6. Optional rows use the tier and severity table, apply the eligible-count factor, and increment decay only after accepted optional dispatch.
    Their evaluation order preserves severity bands at the tier's 80 through 90 percent bias and otherwise permits cross-severity inversions.
 7. A valid failed automatic roll decreases fatigue by one, while a gated attempt, failed preflight, or manual force leaves fatigue unchanged.
@@ -515,10 +559,10 @@ The trigger is still eligible and may continue through an ordinary standalone ev
 13. The catalog and Settings activation copy use Varies by member, duplicate staged event details use Varies by row, and unique event details show the current trigger-specific chance.
 14. By Roll uses the live automatic-pool-weighted mean of distinct eligible trigger events and returns N/A for unavailable or zero-weight rows.
 15. By Unlock Tier and By Member Count sort the registered cluster catalogue with stable tie handling.
-16. Fury is Medium, Tensions Rising is Low, and Black Plague is Severe in every cluster-facing presentation.
-17. Event Chaos Level assignments and workbook schema or formula prose remain unchanged.
+16. Fury has Medium and High logical rows, Tensions Rising is Medium, and Black Plague is Severe in every cluster-facing presentation.
+17. Event Chaos Level assignments remain unchanged, the Events sheet lists all distinct cluster IDs, and member severity remains row-specific on cluster sheets.
 18. The event-log and Settings surfaces reuse existing assets without a new visual asset requirement.
-19. Two or more eligible rows carrying the selected event in one cluster increase that cluster's final trigger-specific chance through the bounded multiplicity factor without dispatching the trigger twice.
+19. Two or more eligible rows carrying the selected event in one cluster increase that cluster's final trigger-specific chance through the multiplicity factor and shared activation ceiling without dispatching the primary trigger twice.
 20. An event mapped to several clusters rolls every eligible cluster independently, activates no more than one, and selects uniformly among simultaneous successes.
 
 ## 12. Artifact ownership and external validation
@@ -529,7 +573,7 @@ This document and event_clusters.md define the documentation contract for those 
 
 events_log_window.md, events_log_evolutions_and_clusters.md, event_chaos_levels.md, and dynamic_major_event_weights.md define the linked Event Logs, Chaos Level, selection, and pacing surfaces.
 
-No new visual asset or catalog workbook schema is part of this overhaul.
+No new visual asset is part of this overhaul.
 
 The 2026-09-05 shared-event curator's read-only `hoi4.probability_inspect` call exposed the `custom_weighted_pool` adapter name and returned `PROBABILITY_SOURCE_INSPECTED` for `common/scripted_effects/chaosx_event_cluster_effects.txt` with `poolComplete=false`, zero candidates, zero unresolved inputs, and `availableAdapters=[]`.
 
@@ -555,8 +599,8 @@ Source review, static checks, MCP artifacts, and user-owned live-game validation
 - [x] Successful cluster pacing and cooldown update exactly once, and manual memory remains isolated.
 - [x] Successful history snapshots include activation and member fields without recomputation, and delayed invalidation settles chance and roll to N/A sentinels.
 - [x] Event Logs and Settings expose the required chance, availability, role, severity, effective minimum, sort, and N/A behavior in source.
-- [x] Fury, Tensions Rising, and Black Plague use the corrected severities.
-- [x] Workbook schema and formula prose remain unchanged.
+- [x] Fury, Tensions Rising, and Black Plague use the corrected cluster-row severities.
+- [x] The Events sheet lists every distinct cluster ID and leaves severity to the Clusters and Cluster Memberships sheets.
 - [x] No new visual assets are requested or required.
 - [x] MCP evidence limits and the absence of accepted engine evidence are recorded.
 - [ ] Probability inspect, evaluate, sweeps, seeded simulation, sequence analysis, and before/after comparison produce accepted MCP artifacts.

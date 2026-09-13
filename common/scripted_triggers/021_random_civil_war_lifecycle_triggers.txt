@@ -1,0 +1,26 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 021 RANDOM CIVIL WAR LIFECYCLE TRIGGERS
+# ============================================================================
+# Narrow lifecycle predicates for the bounded Event 021 registries. These
+# predicates read existing counters and capacity variables; they do not scan
+# countries, mutate state, or choose a balance value.
+# ============================================================================
+
+# COUNTRY scope at a secondary-front candidate. An Evolution I secondary
+# front consumes one slot from the global front registry while remaining in an
+# existing theater, so theater capacity is deliberately not checked here.
+# Before capacity initialization the gate is open, matching the existing
+# theater-capacity contract; the parent initializer publishes the counters
+# before any commit can register a row.
+random_civil_war_front_capacity_available = {
+	OR = {
+		NOT = { has_global_flag = random_civil_war_capacity_initialized }
+		NOT = {
+			check_variable = {
+				var = global.random_civil_war_active_front_count
+				value = global.random_civil_war_max_active_fronts
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}

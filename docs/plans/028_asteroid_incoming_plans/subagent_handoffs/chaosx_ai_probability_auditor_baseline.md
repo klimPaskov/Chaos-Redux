@@ -1,5 +1,7 @@
 # Event 028 Asteroid Incoming: Baseline AI and Probability Audit
 
+> Historical baseline only. The implementation has since replaced the legacy Event 028 source and added the Event 028 AI and recovery weights. The current disposition and authoritative blockers are in `../final_audit.md`; this file is retained to preserve the preimplementation evidence.
+
 Audit date: 2026-08-29.
 
 Audit mode: read-only baseline review for the Event 028 package.

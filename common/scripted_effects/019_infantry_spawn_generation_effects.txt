@@ -2294,6 +2294,19 @@ infantry_spawn_spawn_current_template_unit = {
 		chaos_unit_family_provider_508_event19_materialize_landing = yes
 	}
 	else = {
+		# Unlock support equipment before the engine fills an ordinary formation.
+		# Use raw template needs; scaled debt can round a small equipment fill to zero.
+		if = {
+			limit = {
+				check_variable = { infantry_spawn_current_family_id = constant:infantry_spawn_lot_family.none }
+				NOT = { has_tech = tech_support }
+			}
+			infantry_spawn_accumulate_current_template_needs = yes
+			if = {
+				limit = { check_variable = { infantry_spawn_need_support_equipment > 0 } }
+				set_technology = { tech_support = 1 popup = no }
+			}
+		}
 		event_target:infantry_spawn_current_origin_state = {
 			meta_effect = {
 				text = {

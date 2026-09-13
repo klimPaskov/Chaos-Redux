@@ -2,7 +2,7 @@
 
 ## Current repository replacement
 
-The current repository still uses Event 26 for the desert-industry event through `events/026_industry_to_desert.txt` and `localisation/english/026_industry_to_desert_l_english.yml`. The fire-once registry comment also identifies Event 26 as moving industry to the desert.
+The pre-implementation repository snapshot used Event 26 for a desert-industry event through `events/026_industry_to_desert.txt` and `localisation/english/026_industry_to_desert_l_english.yml`. The snapshot's fire-once registry comment also identified Event 26 as moving industry to the desert; those surfaces are replacement targets, not current runtime content.
 
 Implementation must replace that identity completely while keeping the stable namespace and entry ID.
 
@@ -10,9 +10,9 @@ Recommended file changes include:
 
 | Current surface | Required Event 26 result |
 | --- | --- |
-| `events/026_industry_to_desert.txt` | Rename or replace with `events/026_black_friday.txt`, preserving `chaosx.nr26.1` as the entry |
-| `localisation/english/026_industry_to_desert_l_english.yml` | Replace with Event 26 Black Friday localisation in a matching event-owned file |
-| Existing Event 26 news call and desert news localisation | Remove stale Event 26 ownership and verify that no unrelated news ID is damaged |
+| Pre-implementation `events/026_industry_to_desert.txt` | Replace with `events/026_black_friday.txt`, preserving `chaosx.nr26.1` as the entry |
+| Pre-implementation `localisation/english/026_industry_to_desert_l_english.yml` | Replace with Event 26 Black Friday localisation in a matching event-owned file |
+| Pre-implementation Event 26 news call and desert news localisation | Remove stale Event 26 ownership and verify that no unrelated news ID is damaged |
 | Event registry comment | Change to Black Friday while keeping ID 26 in the fire-once array |
 | Default disabled rework list | Keep disabled during implementation, then remove ID 26 from the rework-disabled allowlist in the completion change |
 | Manual trigger routing | Route ID 26 to the new entry and preserve normal versus force behavior |

@@ -1,5 +1,7 @@
 # Event 012 manual scenario documentation handoff — 2026-08-26
 
+> Reconciliation update, 2026-09-05: this handoff remains the scenario-contract record for `SCN-011`, its two types, four intensities, host paths, and World Is One limitation. Its older MCP artifact references are superseded by the current Event 012 event, focus, probability, technology, and GUI evidence recorded in `docs/events/012_africa/overview.md` and `docs/plans/012_africa_plans/documentation_cleanup_handoff_2026-09-05.md`; no live launch or gameplay completion is implied.
+
 ## Scope and status
 
 This documentation-only handoff reconciles the newly implemented Event 012 Africa Is One triggerable scenario across the named overview, shared triggerable-scenario system document, core architecture handoff, source-of-truth reading record, and achievement-matrix notes. No gameplay, localisation, GUI, asset, workbook, or generated export file was edited by this pass.
@@ -52,7 +54,7 @@ Africa Is One opens the continental systems and queues the existing Scramble res
 | `docs/systems/event_system/triggerable_scenarios.md` | Current system document reconciled | The shared controls and current scenario list now describe `SCN-011`. |
 | `012_africa_manual_scenario_implementation_2026-08-26.md` | Current handoff | This handoff is the dated documentation disposition for the implementation tranche. |
 
-The older `docs/plans/012_africa_plans/012_africa_achievements_handoff.md`, `docs/plans/012_africa_plans/subagent_handoffs/012_africa_achievement_rows_1_6_patch_2026-08-10.md`, `docs/plans/012_africa_plans/subagent_handoffs/012_africa_achievement_rows_1_17_closure_2026-08-10.md`, `docs/plans/012_africa_plans/subagent_handoffs/012_africa_final_documentation_reconcile_2026-08-11.md`, and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_final_current_source_certification_2026-08-11.md` still contain retirement or no-route statements. They were outside the parent-named patch scope and remain unchanged as historical provenance rather than current authority.
+The older `docs/plans/012_africa_plans/012_africa_achievements_handoff.md`, `docs/plans/012_africa_plans/subagent_handoffs/012_africa_achievement_rows_1_6_patch_2026-08-10.md`, and `docs/plans/012_africa_plans/subagent_handoffs/012_africa_achievement_rows_1_17_closure_2026-08-10.md` still contain retirement or no-route statements as historical provenance. The dated final documentation and source-certification handoffs now carry explicit 2026-09-05 superseded notices, and the current scenario authority remains the live system document, Event 012 overview, and current cleanup handoff.
 
 No documents were merged, promoted, queued, or rejected in this pass. Superseded statements were labeled in place, while the accepted source specification, root mechanics ledger, and out-of-scope historical handoffs were left unchanged for parent disposition.
 

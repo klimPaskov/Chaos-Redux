@@ -122,27 +122,31 @@ africa_elephant_begin_logistics_contract = {
 	set_variable = { africa_elephant_logistics_train_commitment = constant:africa_elephant_operation.logistics_train_commitment }
 	set_variable = { africa_elephant_logistics_fuel_commitment = constant:africa_elephant_operation.logistics_fuel_commitment }
 	set_variable = { africa_elephant_logistics_timeout_days = constant:africa_elephant_operation.logistics_timeout_days }
-	set_temp_variable = { africa_elephant_operation_equipment_payment = constant:africa_elephant_operation.logistics_elephant_equipment_commitment }
-	multiply_temp_variable = { africa_elephant_operation_equipment_payment = -1 }
-	set_temp_variable = { africa_elephant_operation_truck_payment = constant:africa_elephant_operation.logistics_truck_commitment }
-	multiply_temp_variable = { africa_elephant_operation_truck_payment = -1 }
-	set_temp_variable = { africa_elephant_operation_train_payment = constant:africa_elephant_operation.logistics_train_commitment }
-	multiply_temp_variable = { africa_elephant_operation_train_payment = -1 }
-	set_temp_variable = { africa_elephant_operation_fuel_payment = constant:africa_elephant_operation.logistics_fuel_commitment }
-	multiply_temp_variable = { africa_elephant_operation_fuel_payment = -1 }
-	add_equipment_to_stockpile = {
-		type = chaosx_elephant_equipment_1
-		amount = var:africa_elephant_operation_equipment_payment
+	if = {
+		limit = { NOT = { has_variable = africa_elephant_logistics_materials_already_paid } }
+		set_temp_variable = { africa_elephant_operation_equipment_payment = constant:africa_elephant_operation.logistics_elephant_equipment_commitment }
+		multiply_temp_variable = { africa_elephant_operation_equipment_payment = constant:universal_cost_framework.negative_one }
+		set_temp_variable = { africa_elephant_operation_truck_payment = constant:africa_elephant_operation.logistics_truck_commitment }
+		multiply_temp_variable = { africa_elephant_operation_truck_payment = constant:universal_cost_framework.negative_one }
+		set_temp_variable = { africa_elephant_operation_train_payment = constant:africa_elephant_operation.logistics_train_commitment }
+		multiply_temp_variable = { africa_elephant_operation_train_payment = constant:universal_cost_framework.negative_one }
+		set_temp_variable = { africa_elephant_operation_fuel_payment = constant:africa_elephant_operation.logistics_fuel_commitment }
+		multiply_temp_variable = { africa_elephant_operation_fuel_payment = constant:universal_cost_framework.negative_one }
+		add_equipment_to_stockpile = {
+			type = chaosx_elephant_equipment_1
+			amount = var:africa_elephant_operation_equipment_payment
+		}
+		add_equipment_to_stockpile = {
+			type = motorized_equipment
+			amount = var:africa_elephant_operation_truck_payment
+		}
+		add_equipment_to_stockpile = {
+			type = train_equipment
+			amount = var:africa_elephant_operation_train_payment
+		}
+		add_fuel = var:africa_elephant_operation_fuel_payment
 	}
-	add_equipment_to_stockpile = {
-		type = motorized_equipment
-		amount = var:africa_elephant_operation_truck_payment
-	}
-	add_equipment_to_stockpile = {
-		type = train_equipment
-		amount = var:africa_elephant_operation_train_payment
-	}
-	add_fuel = var:africa_elephant_operation_fuel_payment
+	clear_variable = africa_elephant_logistics_materials_already_paid
 	set_country_flag = africa_elephant_logistics_active
 	activate_mission = africa_elephant_logistics_mission
 }

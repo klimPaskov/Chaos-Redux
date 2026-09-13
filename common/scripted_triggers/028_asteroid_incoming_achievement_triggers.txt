@@ -1,0 +1,21 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ACHIEVEMENT TRIGGERS
+# ============================================================================
+# Campaign and runtime eligibility shared by all five Event 028 achievements.
+# Runtime awards additionally reject force/manual/debug activation even when
+# the achievement engine cached a valid campaign-start possible result.
+# ============================================================================
+
+asteroid_incoming_achievement_possible_campaign_is_valid = {
+	exists = yes
+	is_ai = no
+	is_special_chaos_country = no
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = chaosx_test_country_initialized }
+}
+
+asteroid_incoming_achievement_player_valid = {
+	asteroid_incoming_achievement_possible_campaign_is_valid = yes
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+	NOT = { has_global_flag = asteroid_incoming_achievement_manual_disqualified }
+}

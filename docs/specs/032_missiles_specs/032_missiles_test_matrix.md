@@ -482,6 +482,14 @@ Verify program and scenario state persists.
 
 Verify launch block where required.
 
+### `SCN-11`: Registry collision and source contract
+
+Verify the live shared registry contains Fallout at raw ID `14`, Missile Age at raw ID `15`, and the existing Global Jihad row at raw ID `16`, with one matching entry in each of the four sort views. Verify Event 031's current triggerable selector is aligned to Global Jihad at raw ID `16`; its separate world-end registry reservation remains raw ID `15` and is not the shared triggerable-scenario namespace.
+
+Verify the shared selector, name, `#015` entry label, five profile labels and descriptions, four intensity impacts, eligibility bridge, dispatcher, setup receipt, duplicate guard, and bypass cleanup all reference the same SCN-015 identity.
+
+This static case does not substitute for the parent-owned Event 032 core launch, save/reload, or live setup evidence.
+
 ## UI and text tests
 
 - open and close category repeatedly

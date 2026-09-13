@@ -1,0 +1,657 @@
+--- pre_patch/common/decisions/016_brilliant_scientist_containment_decisions.txt
++++ common/decisions/016_brilliant_scientist_containment_decisions.txt
+@@ -15,7 +15,11 @@
+ 	brilliant_scientist_release_kruger = {
+ 		icon = GFX_decision_generic_political_discourse
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.release }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.release }
++			}
+ 			NOT = { has_country_flag = brilliant_scientist_sovereignty_response_military_seizure }
+ 			NOT = { has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment }
+ 		}
+@@ -38,26 +42,36 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.release
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.release_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.release_stability
+-				}
+-			}
+-		}
+-		cancel_if_not_visible = no
+-		cancel_trigger = {
+-			custom_trigger_tooltip = {
+-				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.release } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.release } }
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.release_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.release_stability }
++				brilliant_scientist_begin_containment_action = yes
++			}
++		}
++		cancel_if_not_visible = no
++		cancel_trigger = {
++			custom_trigger_tooltip = {
++				tooltip = brilliant_scientist_containment_interrupted_tt
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.release }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_release_kruger_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.release } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.release }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.release }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -74,7 +88,11 @@
+ 	brilliant_scientist_exile_kruger = {
+ 		icon = GFX_decision_generic_operation
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.exile }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.exile }
++			}
+ 			has_event_target = brilliant_scientist_containment_exile_recipient
+ 		}
+ 		available = {
+@@ -96,11 +114,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.exile
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.exile_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.exile_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.exile_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.exile_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_equipment_to_stockpile = { type = convoy_1 amount = constant:brilliant_scientist_containment_cost.exile_convoy_spend }
+ 			}
+ 		}
+@@ -108,15 +125,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.exile } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.exile } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.exile }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_exile_kruger_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.exile } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.exile }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.exile }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -133,7 +161,11 @@
+ 	brilliant_scientist_arrest_kruger = {
+ 		icon = GFX_decision_oppression
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.arrest }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.arrest }
++			}
+ 		}
+ 		available = {
+ 			hidden_trigger = { brilliant_scientist_can_pay_containment_arrest = yes }
+@@ -154,11 +186,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.arrest
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.arrest_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.arrest_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.arrest_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.arrest_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_containment_cost.arrest_support_spend }
+ 			}
+ 		}
+@@ -166,15 +197,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.arrest } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.arrest } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.arrest }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_arrest_kruger_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.arrest } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.arrest }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.arrest }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -191,7 +233,11 @@
+ 	brilliant_scientist_shutdown_directorate = {
+ 		icon = GFX_decision_generic_industry
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.shutdown }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.shutdown }
++			}
+ 		}
+ 		available = {
+ 			hidden_trigger = { brilliant_scientist_can_pay_containment_shutdown = yes }
+@@ -212,11 +258,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.shutdown
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.shutdown_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.shutdown_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.shutdown_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.shutdown_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_equipment_to_stockpile = { type = motorized_equipment amount = constant:brilliant_scientist_containment_cost.shutdown_truck_spend }
+ 			}
+ 		}
+@@ -224,15 +269,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.shutdown } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.shutdown } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.shutdown }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_shutdown_directorate_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.shutdown } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.shutdown }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.shutdown }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -249,7 +305,11 @@
+ 	brilliant_scientist_ratify_sovereign_charter = {
+ 		icon = GFX_decision_generic_political_discourse
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.charter }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.charter }
++			}
+ 			has_country_flag = brilliant_scientist_sovereignty_response_charter
+ 		}
+ 		available = {
+@@ -271,11 +331,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.charter
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.charter_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.charter_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.charter_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.charter_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_containment_cost.charter_support_spend }
+ 			}
+ 		}
+@@ -283,15 +342,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.charter } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.charter } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.charter }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_ratify_sovereign_charter_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.charter } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.charter }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.charter }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -307,7 +377,11 @@
+ 	brilliant_scientist_launch_military_seizure = {
+ 		icon = GFX_decision_generic_prepare_civil_war
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.military_seizure }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
++			}
+ 			has_country_flag = brilliant_scientist_sovereignty_response_military_seizure
+ 		}
+ 		available = {
+@@ -329,11 +403,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.military_seizure
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.military_seizure_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.military_seizure_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.military_seizure_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.military_seizure_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:brilliant_scientist_containment_cost.seizure_infantry_spend }
+ 			}
+ 			add_war_support = constant:brilliant_scientist_containment_modifier.seizure_war_support
+@@ -342,15 +415,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.military_seizure } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.military_seizure } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_launch_military_seizure_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.military_seizure } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.military_seizure }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -367,7 +451,11 @@
+ 	brilliant_scientist_request_foreign_containment = {
+ 		icon = GFX_decision_generic_operation
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.foreign_containment }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
++			}
+ 			has_country_flag = brilliant_scientist_sovereignty_response_foreign_containment
+ 		}
+ 		available = {
+@@ -389,11 +477,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.foreign_containment
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.foreign_containment_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.foreign_containment_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.foreign_containment_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.foreign_containment_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_command_power = constant:brilliant_scientist_containment_cost.foreign_command_power_spend
+ 			}
+ 		}
+@@ -401,15 +488,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.foreign_containment } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.foreign_containment } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_request_foreign_containment_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.foreign_containment } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.foreign_containment }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+@@ -426,7 +524,11 @@
+ 	brilliant_scientist_concede_institutional_authority = {
+ 		icon = GFX_decision_generic_political_discourse
+ 		visible = {
+-			brilliant_scientist_containment_action_is_visible = { ACTION = constant:brilliant_scientist_containment_action.concession }
++			brilliant_scientist_containment_action_is_visible = yes
++			OR = {
++				NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
++				check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.concession }
++			}
+ 			has_country_flag = brilliant_scientist_sovereignty_response_concession
+ 		}
+ 		available = {
+@@ -448,11 +550,10 @@
+ 		complete_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_containment_preparation_spent_tt
+ 			hidden_effect = {
+-				brilliant_scientist_begin_containment_action = {
+-					ACTION = constant:brilliant_scientist_containment_action.concession
+-					POLITICAL_POWER = constant:brilliant_scientist_containment_cost.concession_political_power
+-					STABILITY = constant:brilliant_scientist_containment_cost.concession_stability
+-				}
++				set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession }
++				set_temp_variable = { brilliant_scientist_containment_political_power_cost = constant:brilliant_scientist_containment_cost.concession_political_power }
++				set_temp_variable = { brilliant_scientist_containment_stability_cost = constant:brilliant_scientist_containment_cost.concession_stability }
++				brilliant_scientist_begin_containment_action = yes
+ 				add_equipment_to_stockpile = { type = support_equipment amount = constant:brilliant_scientist_containment_cost.concession_support_spend }
+ 			}
+ 		}
+@@ -460,15 +561,26 @@
+ 		cancel_trigger = {
+ 			custom_trigger_tooltip = {
+ 				tooltip = brilliant_scientist_containment_interrupted_tt
+-				NOT = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.concession } }
+-			}
+-		}
+-		cancel_effect = { brilliant_scientist_cancel_containment_action = { ACTION = constant:brilliant_scientist_containment_action.concession } }
++				NOT = {
++					AND = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.concession }
++					}
++				}
++			}
++		}
++		cancel_effect = {
++			set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession }
++			brilliant_scientist_cancel_containment_action = yes
++		}
+ 		remove_effect = {
+ 			custom_effect_tooltip = brilliant_scientist_concede_institutional_authority_effect_tt
+ 			hidden_effect = {
+ 				if = {
+-					limit = { brilliant_scientist_containment_action_is_live = { ACTION = constant:brilliant_scientist_containment_action.concession } }
++					limit = {
++						brilliant_scientist_containment_action_is_live = yes
++						check_variable = { brilliant_scientist_active_containment_action = constant:brilliant_scientist_containment_action.concession }
++					}
+ 					set_temp_variable = { brilliant_scientist_containment_action = constant:brilliant_scientist_containment_action.concession }
+ 					brilliant_scientist_resolve_containment_action = yes
+ 				}
+--- pre_patch/common/scripted_triggers/016_brilliant_scientist_containment_triggers.txt
++++ common/scripted_triggers/016_brilliant_scientist_containment_triggers.txt
+@@ -5,8 +5,8 @@
+ # hosted sovereignty board. Exact hidden values never appear in localisation.
+ # ============================================================================
+ 
+-# COUNTRY scope. ACTION is one containment action constant. The selected row
+-# stays visible while the other responses are hidden.
++# COUNTRY scope. Common visibility only; callers also check their action receipt.
++# No inputs or side effects. The selected row remains visible via caller checks.
+ brilliant_scientist_containment_action_is_visible = {
+ 	brilliant_scientist_is_current_host = yes
+ 	NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+@@ -15,89 +15,63 @@
+ 		has_country_flag = brilliant_scientist_sovereignty_deadline_active
+ 		has_country_flag = brilliant_scientist_containment_resolution_requested
+ 	}
+-	OR = {
+-		NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
+-		check_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
+-	}
+-}
+-
+-# COUNTRY scope. POLITICAL_POWER and STABILITY are positive payment values.
+-brilliant_scientist_can_pay_containment_base = {
+-	check_variable = { var = political_power value = $POLITICAL_POWER$ compare = greater_than_or_equals }
+-	check_variable = { var = stability value = $STABILITY$ compare = greater_than_or_equals }
+ }
+ 
+ # COUNTRY scope. These same payment predicates gate selection and cost display.
+ brilliant_scientist_can_pay_containment_release = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.release_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.release_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.release_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.release_stability compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_exile = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.exile_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.exile_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.exile_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.exile_stability compare = greater_than_or_equals }
+ 	check_variable = { var = num_equipment@convoy_1 value = constant:brilliant_scientist_containment_cost.exile_convoy_gate compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_arrest = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.arrest_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.arrest_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.arrest_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.arrest_stability compare = greater_than_or_equals }
+ 	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_containment_cost.arrest_support_gate compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_shutdown = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.shutdown_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.shutdown_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.shutdown_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.shutdown_stability compare = greater_than_or_equals }
+ 	check_variable = { var = num_equipment@motorized_equipment value = constant:brilliant_scientist_containment_cost.shutdown_truck_gate compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_charter = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.charter_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.charter_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.charter_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.charter_stability compare = greater_than_or_equals }
+ 	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_containment_cost.charter_support_gate compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_military_seizure = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.military_seizure_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.military_seizure_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.military_seizure_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.military_seizure_stability compare = greater_than_or_equals }
+ 	check_variable = { var = num_equipment@infantry_equipment value = constant:brilliant_scientist_containment_cost.seizure_infantry_gate compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_foreign_containment = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.foreign_containment_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.foreign_containment_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.foreign_containment_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.foreign_containment_stability compare = greater_than_or_equals }
+ 	check_variable = { var = command_power value = constant:brilliant_scientist_containment_cost.foreign_command_power_gate compare = greater_than_or_equals }
+ }
+ 
+ brilliant_scientist_can_pay_containment_concession = {
+-	brilliant_scientist_can_pay_containment_base = {
+-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.concession_political_power
+-		STABILITY = constant:brilliant_scientist_containment_cost.concession_stability
+-	}
++	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.concession_political_power compare = greater_than_or_equals }
++	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.concession_stability compare = greater_than_or_equals }
+ 	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_containment_cost.concession_support_gate compare = greater_than_or_equals }
+ }
+ 
+-# COUNTRY scope. A stale native timer cannot settle another action's receipt.
++# COUNTRY scope. Common live-action checks; callers must also match their receipt.
++# No inputs or side effects. A stale timer must not settle a different action.
+ brilliant_scientist_containment_action_is_live = {
+ 	brilliant_scientist_is_current_host = yes
+ 	NOT = { has_global_flag = world_end }
+ 	NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
+ 	has_country_flag = brilliant_scientist_containment_action_in_progress
+-	check_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
+ }
+ 
+ brilliant_scientist_sovereignty_board_is_open = {
+--- pre_patch/common/scripted_effects/016_brilliant_scientist_containment_effects.txt
++++ common/scripted_effects/016_brilliant_scientist_containment_effects.txt
+@@ -528,25 +528,30 @@
+ 	else = { brilliant_scientist_resolve_noncountry_laboratory_crisis = yes }
+ }
+ 
+-# COUNTRY scope. ACTION identifies the receipt; POLITICAL_POWER and STABILITY
+-# are positive payments. Native decision modifiers own the timed commitment.
++# COUNTRY scope. Required temporary inputs, initialized immediately by callers:
++# brilliant_scientist_containment_action identifies the receipt;
++# brilliant_scientist_containment_political_power_cost and
++# brilliant_scientist_containment_stability_cost are positive payments, no defaults.
++# Sets the receipt, lock and start date; debits PP/stability via payment scratch.
++# Native decision modifiers own the timed commitment.
+ brilliant_scientist_begin_containment_action = {
+ 	set_country_flag = brilliant_scientist_containment_action_in_progress
+-	set_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
++	set_variable = { brilliant_scientist_active_containment_action = brilliant_scientist_containment_action }
+ 	set_variable = { brilliant_scientist_containment_action_started_date = global.date }
+-	set_temp_variable = { brilliant_scientist_containment_payment = $POLITICAL_POWER$ }
++	set_temp_variable = { brilliant_scientist_containment_payment = brilliant_scientist_containment_political_power_cost }
+ 	multiply_temp_variable = { brilliant_scientist_containment_payment = constant:brilliant_scientist_directorate_value.negative_one }
+ 	add_political_power = brilliant_scientist_containment_payment
+-	set_temp_variable = { brilliant_scientist_containment_payment = $STABILITY$ }
++	set_temp_variable = { brilliant_scientist_containment_payment = brilliant_scientist_containment_stability_cost }
+ 	multiply_temp_variable = { brilliant_scientist_containment_payment = constant:brilliant_scientist_directorate_value.negative_one }
+ 	add_stability = brilliant_scientist_containment_payment
+ }
+ 
+-# COUNTRY scope. ACTION is the cancelling timer's receipt. Preparation is sunk;
+-# cancelling an older timer must not release the newer action's lock.
++# COUNTRY scope. Required temporary brilliant_scientist_containment_action,
++# initialized immediately by the cancelling timer; no default or refund.
++# Clears only the matching receipt and lock; newer action receipts are preserved.
+ brilliant_scientist_cancel_containment_action = {
+ 	if = {
+-		limit = { check_variable = { brilliant_scientist_active_containment_action = $ACTION$ } }
++		limit = { check_variable = { brilliant_scientist_active_containment_action = brilliant_scientist_containment_action } }
+ 		clr_country_flag = brilliant_scientist_containment_action_in_progress
+ 		clear_variable = brilliant_scientist_active_containment_action
+ 	}

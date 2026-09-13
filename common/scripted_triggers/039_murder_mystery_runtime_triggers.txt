@@ -1,0 +1,762 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MURDER MYSTERY RUNTIME TRIGGERS
+# ============================================================================
+# Overview:
+# - These predicates are the fail-closed validation boundary for Event 039.
+# - They validate the bounded country values, aligned registries, six action
+#   phases, evolution gates, transactional setup proofs, and terminal sectors.
+# - Character removal, country creation, state selection, and final owner
+#   callbacks remain explicit contracts supplied by the owning Event 039 files.
+# - No trigger iterates the world. Registry predicates inspect only stored rows.
+# ============================================================================
+
+murder_mystery_runtime_is_initialized = {
+	has_global_flag = murder_mystery_runtime_initialized
+}
+
+murder_mystery_runtime_is_active = {
+	murder_mystery_runtime_is_initialized = yes
+	has_global_flag = murder_mystery_runtime_active
+	NOT = { has_global_flag = murder_mystery_runtime_resolved }
+	NOT = { has_global_flag = murder_mystery_cleanup_in_progress }
+	NOT = { has_global_flag = murder_mystery_assassin_state_transaction_active }
+	NOT = { has_global_flag = murder_mystery_derivative_transaction_active }
+	NOT = { has_global_flag = murder_mystery_terminal_activation_in_progress }
+}
+
+murder_mystery_runtime_is_dormant = {
+	murder_mystery_runtime_is_initialized = yes
+	NOT = { has_global_flag = murder_mystery_runtime_active }
+	NOT = { has_global_flag = murder_mystery_runtime_resolved }
+	NOT = { has_global_flag = murder_mystery_cleanup_in_progress }
+}
+
+murder_mystery_country_runtime_is_initialized = {
+	has_country_flag = murder_mystery_country_runtime_initialized
+	has_variable = murder_mystery_case_progress
+	has_variable = murder_mystery_network_reach
+	has_variable = murder_mystery_brotherhood_cohesion
+}
+
+murder_mystery_hidden_support_is_initialized = {
+	murder_mystery_country_runtime_is_initialized = yes
+	has_variable = murder_mystery_evidence_integrity
+	has_variable = murder_mystery_witness_safety
+	has_variable = murder_mystery_investigator_exposure
+	has_variable = murder_mystery_killer_adaptation
+	has_variable = murder_mystery_cell_maturity
+	has_variable = murder_mystery_route_security
+	has_variable = murder_mystery_counterfeit_evidence
+	has_variable = murder_mystery_succession_strain
+	has_variable = murder_mystery_local_government_weakness
+	has_variable = murder_mystery_target_vulnerability
+}
+
+murder_mystery_public_values_are_valid = {
+	murder_mystery_country_runtime_is_initialized = yes
+	check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+}
+
+murder_mystery_hidden_support_values_are_valid = {
+	murder_mystery_hidden_support_is_initialized = yes
+	check_variable = { var = murder_mystery_evidence_integrity value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_evidence_integrity value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_witness_safety value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_witness_safety value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_investigator_exposure value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_investigator_exposure value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_killer_adaptation value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_killer_adaptation value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_cell_maturity value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_cell_maturity value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_route_security value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_route_security value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_counterfeit_evidence value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_counterfeit_evidence value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_succession_strain value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_succession_strain value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_local_government_weakness value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_local_government_weakness value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_target_vulnerability value = constant:murder_mystery_value.minimum compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_target_vulnerability value = constant:murder_mystery_value.maximum compare = less_than_or_equals }
+}
+
+murder_mystery_host_has_live_state = {
+	exists = yes
+	num_of_controlled_states > constant:murder_mystery_value.zero
+	any_owned_state = {
+		is_owned_and_controlled_by = ROOT
+	}
+}
+
+murder_mystery_host_prerequisites_are_ready = {
+	has_country_flag = murder_mystery_opening_leader_registered
+	has_country_flag = murder_mystery_host_category_ready
+	has_country_flag = murder_mystery_host_state_viable
+	NOT = { has_country_flag = murder_mystery_terminal_conflict_active }
+}
+
+murder_mystery_host_is_valid = {
+	exists = yes
+	OR = {
+		is_major = yes
+		is_ai = no
+	}
+	uses_normal_civilian_systems = yes
+	NOT = { is_special_chaos_country = yes }
+	NOT = { is_actual_nonhuman_country = yes }
+	NOT = { has_global_flag = murder_mystery_runtime_active }
+	NOT = { has_global_flag = murder_mystery_runtime_resolved }
+	NOT = { has_global_flag = murder_mystery_terminal_war_active }
+	murder_mystery_host_has_live_state = yes
+	murder_mystery_host_prerequisites_are_ready = yes
+}
+
+murder_mystery_host_registration_is_valid = {
+	murder_mystery_host_is_valid = yes
+	murder_mystery_runtime_is_dormant = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_disabled }
+}
+
+murder_mystery_host_is_registered = {
+	murder_mystery_runtime_is_initialized = yes
+	has_global_flag = murder_mystery_host_registered
+	has_event_target = murder_mystery_original_host
+	event_target:murder_mystery_original_host = {
+		exists = yes
+		has_country_flag = murder_mystery_original_host
+	}
+}
+
+murder_mystery_original_host_is_still_viable = {
+	murder_mystery_host_is_registered = yes
+	event_target:murder_mystery_original_host = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		murder_mystery_host_has_live_state = yes
+	}
+}
+
+murder_mystery_case_progress_is_capture_ready = {
+	murder_mystery_country_runtime_is_initialized = yes
+	check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_value.hundred compare = equals }
+}
+
+murder_mystery_case_progress_is_trap_ready = {
+	murder_mystery_country_runtime_is_initialized = yes
+	check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_evolution.minimum_case_progress_stage_v compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_value.hundred compare = less_than }
+}
+
+murder_mystery_investigation_phase_is_valid = {
+	has_variable = murder_mystery_investigation_phase
+	check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.secure_succession compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_investigation_phase value = constant:murder_mystery_phase.final_operation compare = less_than_or_equals }
+}
+
+murder_mystery_pending_action_matches_phase = {
+	OR = {
+		AND = {
+			check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.secure_succession compare = equals }
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.establish_case_command compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.protect_succession compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.preserve_scene compare = equals }
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.preserve_evidence compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.commit_intelligence compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.map_network compare = equals }
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.audit_comms compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.trace_logistics compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_evidence_exchange compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.protect_likely_targets compare = equals }
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.protect_witnesses compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.protect_named_target compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.replace_office compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.break_cell compare = equals }
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.raid_cell compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_counterintelligence compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_route_disruption compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_cell_raid compare = equals }
+			}
+		}
+		AND = {
+			check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.final_operation compare = equals }
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.prepare_final_operation compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.assassin_state_preparation compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.assassin_state_commit compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.world_sector_preparation compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.world_sector_operation compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.silent_arrest compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.coordinated_raids compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.baited_target compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_interception compare = equals }
+			}
+		}
+	}
+}
+
+murder_mystery_action_input_is_valid = {
+	has_variable = murder_mystery_pending_action
+	check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.establish_case_command compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_value.maximum_action compare = less_than_or_equals }
+	has_variable = murder_mystery_pending_phase
+	check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.secure_succession compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_pending_phase value = constant:murder_mystery_phase.final_operation compare = less_than_or_equals }
+	murder_mystery_pending_action_matches_phase = yes
+}
+
+murder_mystery_action_transaction_is_open = {
+	murder_mystery_runtime_is_active = yes
+	has_country_flag = murder_mystery_action_transaction_active
+	has_variable = murder_mystery_action_nonce
+	check_variable = { var = murder_mystery_action_nonce value = constant:murder_mystery_value.zero compare = greater_than }
+	has_variable = murder_mystery_action_phase
+	check_variable = { var = murder_mystery_action_phase value = constant:murder_mystery_phase.secure_succession compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_action_phase value = constant:murder_mystery_phase.final_operation compare = less_than_or_equals }
+}
+
+murder_mystery_action_can_begin = {
+	murder_mystery_runtime_is_active = yes
+	murder_mystery_country_runtime_is_initialized = yes
+	NOT = { has_country_flag = murder_mystery_action_transaction_active }
+	NOT = { has_country_flag = murder_mystery_action_cooldown_active }
+	murder_mystery_investigation_phase_is_valid = yes
+	murder_mystery_action_input_is_valid = yes
+	murder_mystery_action_cost_is_available = yes
+	check_variable = { var = murder_mystery_pending_phase value = murder_mystery_investigation_phase compare = equals }
+}
+
+murder_mystery_action_cost_is_available = {
+	OR = {
+		AND = {
+			NOT = { has_country_flag = murder_mystery_response_integrated_security }
+			NOT = { has_country_flag = murder_mystery_response_emergency_repression }
+			has_political_power > constant:murder_mystery_action_cost.political_power_gate
+		}
+		AND = {
+			has_country_flag = murder_mystery_response_integrated_security
+			has_political_power > constant:murder_mystery_response_profile.political_power_gate_integrated_security
+		}
+		AND = {
+			has_country_flag = murder_mystery_response_emergency_repression
+			has_political_power > constant:murder_mystery_response_profile.political_power_gate_emergency_repression
+		}
+	}
+	OR = {
+		NOT = {
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.commit_intelligence compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.audit_comms compare = equals }
+			}
+		}
+		command_power > constant:murder_mystery_action_cost.command_power_gate
+	}
+	OR = {
+		NOT = {
+			OR = {
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.raid_cell compare = equals }
+				check_variable = { var = murder_mystery_pending_action value = constant:murder_mystery_action.foreign_cell_raid compare = equals }
+			}
+		}
+		has_equipment = { assassin_operations_kit_1 > constant:murder_mystery_action_cost.operations_kit_gate }
+	}
+}
+
+murder_mystery_action_result_is_valid = {
+	has_variable = murder_mystery_action_result_input
+	OR = {
+		check_variable = { var = murder_mystery_action_result_input value = constant:murder_mystery_action_result.success compare = equals }
+		check_variable = { var = murder_mystery_action_result_input value = constant:murder_mystery_action_result.partial compare = equals }
+		check_variable = { var = murder_mystery_action_result_input value = constant:murder_mystery_action_result.failure compare = equals }
+	}
+}
+
+murder_mystery_action_deltas_are_available = {
+	has_variable = murder_mystery_action_case_progress_delta
+	has_variable = murder_mystery_action_network_reach_delta
+	has_variable = murder_mystery_action_brotherhood_cohesion_delta
+	has_variable = murder_mystery_action_evidence_integrity_delta
+	has_variable = murder_mystery_action_witness_safety_delta
+	has_variable = murder_mystery_action_investigator_exposure_delta
+	has_variable = murder_mystery_action_killer_adaptation_delta
+	has_variable = murder_mystery_action_cell_maturity_delta
+	has_variable = murder_mystery_action_route_security_delta
+	has_variable = murder_mystery_action_counterfeit_evidence_delta
+	has_variable = murder_mystery_action_succession_strain_delta
+	has_variable = murder_mystery_action_local_government_weakness_delta
+	has_variable = murder_mystery_action_target_vulnerability_delta
+}
+
+murder_mystery_selected_target_is_registered = {
+	murder_mystery_runtime_is_active = yes
+	has_country_flag = murder_mystery_selected_target_validated
+	has_variable = murder_mystery_selected_target_id
+	has_variable = murder_mystery_selected_target_disposition
+	has_variable = murder_mystery_selected_target_role
+	NOT = { has_country_flag = murder_mystery_selected_target_invalid }
+	NOT = { has_country_flag = murder_mystery_selected_target_retired }
+	check_variable = { var = murder_mystery_selected_target_id value = constant:murder_mystery_value.zero compare = greater_than }
+	check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.unknown compare = greater_than }
+	check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_value.maximum_target_disposition compare = less_than_or_equals }
+	check_variable = { var = murder_mystery_selected_target_role value = constant:murder_mystery_target_role.none compare = greater_than }
+	check_variable = { var = murder_mystery_selected_target_role value = constant:murder_mystery_value.maximum_target_role compare = less_than_or_equals }
+	has_country_flag = murder_mystery_selected_target_owner_validated
+}
+
+murder_mystery_selected_target_allows_named_action = {
+	murder_mystery_selected_target_is_registered = yes
+	has_country_flag = murder_mystery_selected_target_owner_approved
+	NOT = { has_country_flag = murder_mystery_selected_target_protected }
+	NOT = { has_country_flag = murder_mystery_selected_target_owner_managed }
+	OR = {
+		check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.eligible_named_target compare = equals }
+		check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.eligible_opening_leader compare = equals }
+	}
+}
+
+murder_mystery_selected_target_allows_opening_action = {
+	murder_mystery_selected_target_is_registered = yes
+	has_country_flag = murder_mystery_selected_target_owner_approved
+	check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.eligible_opening_leader compare = equals }
+	NOT = { has_country_flag = murder_mystery_selected_target_protected }
+	NOT = { has_country_flag = murder_mystery_selected_target_owner_managed }
+}
+
+murder_mystery_selected_target_allows_generic_office = {
+	murder_mystery_runtime_is_active = yes
+	has_country_flag = murder_mystery_selected_target_validated
+	has_country_flag = murder_mystery_selected_target_owner_validated
+	has_country_flag = murder_mystery_selected_target_owner_approved
+	NOT = { has_country_flag = murder_mystery_selected_target_invalid }
+	NOT = { has_country_flag = murder_mystery_selected_target_retired }
+	NOT = { has_country_flag = murder_mystery_selected_target_protected }
+	OR = {
+		check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.generic_office_only compare = equals }
+		check_variable = { var = murder_mystery_selected_target_disposition value = constant:murder_mystery_target_disposition.owner_managed compare = equals }
+	}
+}
+
+murder_mystery_selected_target_is_fail_closed = {
+	NOT = { murder_mystery_selected_target_allows_named_action = yes }
+	NOT = { murder_mystery_selected_target_allows_opening_action = yes }
+	NOT = { murder_mystery_selected_target_allows_generic_office = yes }
+}
+
+murder_mystery_target_registry_is_aligned = {
+	murder_mystery_runtime_is_initialized = yes
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_disposition_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_role_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_owner_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_subject_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_protection_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_used_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = global.murder_mystery_target_generation_entries^num compare = equals }
+}
+
+murder_mystery_target_registry_has_capacity = {
+	murder_mystery_target_registry_is_aligned = yes
+	check_variable = { var = global.murder_mystery_target_id_entries^num value = constant:murder_mystery_registry.maximum_target_rows compare = less_than }
+}
+
+murder_mystery_cell_registry_is_aligned = {
+	murder_mystery_runtime_is_initialized = yes
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_stage_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_maturity_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_local_case_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_exposure_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_role_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_inherited_evidence_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_revolt_readiness_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_immunity_until_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_parent_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_cell_generation_entries^num compare = equals }
+}
+
+murder_mystery_cell_registry_has_capacity = {
+	murder_mystery_cell_registry_is_aligned = yes
+	has_variable = global.murder_mystery_active_cell_cap
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = global.murder_mystery_active_cell_cap compare = less_than }
+	check_variable = { var = global.murder_mystery_cell_country_entries^num value = constant:murder_mystery_registry.maximum_cell_rows compare = less_than_or_equals }
+}
+
+murder_mystery_selected_cell_is_immune = {
+	has_event_target = murder_mystery_selected_cell
+	event_target:murder_mystery_selected_cell = {
+		has_country_flag = murder_mystery_cell_immunity_active
+	}
+}
+
+murder_mystery_selected_cell_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	has_event_target = murder_mystery_selected_cell
+	event_target:murder_mystery_selected_cell = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		has_country_flag = murder_mystery_cell_candidate_validated
+		has_country_flag = murder_mystery_cell_route_validated
+		NOT = { has_country_flag = murder_mystery_cell_retired }
+	}
+}
+
+murder_mystery_selected_cell_is_mature = {
+	murder_mystery_selected_cell_is_valid = yes
+	event_target:murder_mystery_selected_cell = {
+		has_country_flag = murder_mystery_cell_mature
+	}
+}
+
+murder_mystery_cell_can_register = {
+	murder_mystery_runtime_is_active = yes
+	murder_mystery_cell_registry_has_capacity = yes
+	murder_mystery_selected_cell_is_valid = yes
+	NOT = { murder_mystery_selected_cell_is_immune = yes }
+	NOT = { is_in_array = { array = global.murder_mystery_cell_country_entries value = event_target:murder_mystery_selected_cell } }
+}
+
+murder_mystery_immunity_registry_is_aligned = {
+	murder_mystery_runtime_is_initialized = yes
+	check_variable = { var = global.murder_mystery_immunity_country_entries^num value = global.murder_mystery_immunity_until_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_immunity_country_entries^num value = global.murder_mystery_immunity_generation_entries^num compare = equals }
+}
+
+murder_mystery_immunity_registry_has_capacity = {
+	murder_mystery_immunity_registry_is_aligned = yes
+	check_variable = { var = global.murder_mystery_immunity_country_entries^num value = constant:murder_mystery_registry.maximum_immunity_rows compare = less_than }
+}
+
+murder_mystery_split_state_registry_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	check_variable = { var = global.murder_mystery_split_state_entries^num value = constant:murder_mystery_split.minimum_cluster_states compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_split_state_entries^num value = constant:murder_mystery_registry.maximum_split_state_rows compare = less_than_or_equals }
+	has_global_flag = murder_mystery_split_connectivity_proven
+	has_country_flag = murder_mystery_split_cluster_validated
+	has_country_flag = murder_mystery_split_anchor_validated
+	has_country_flag = murder_mystery_host_remnant_validated
+	has_country_flag = murder_mystery_split_share_validated
+}
+
+murder_mystery_assassin_state_preflight_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	murder_mystery_host_is_registered = yes
+	NOT = { has_global_flag = murder_mystery_assassin_state_exists }
+	NOT = { has_global_flag = murder_mystery_assassin_state_transaction_active }
+	has_country_flag = murder_mystery_assassin_carrier_reserved
+	has_variable = murder_mystery_requested_split_share
+	check_variable = { var = murder_mystery_requested_split_share value = constant:murder_mystery_split.minimum_share compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_requested_split_share value = constant:murder_mystery_split.maximum_share compare = less_than_or_equals }
+	murder_mystery_split_state_registry_is_valid = yes
+	event_target:murder_mystery_original_host = {
+		murder_mystery_host_has_live_state = yes
+		check_variable = { var = murder_mystery_host_remnant_state_count value = constant:murder_mystery_split.minimum_remnant_states compare = greater_than_or_equals }
+	}
+}
+
+murder_mystery_assassin_state_transaction_is_open = {
+	has_global_flag = murder_mystery_assassin_state_transaction_active
+	has_global_flag = murder_mystery_assassin_state_prepared
+	has_event_target = murder_mystery_assassin_state_candidate
+	has_event_target = murder_mystery_original_host
+	NOT = { has_global_flag = murder_mystery_assassin_state_exists }
+}
+
+murder_mystery_assassin_state_postconditions_are_valid = {
+	murder_mystery_assassin_state_transaction_is_open = yes
+	has_global_flag = murder_mystery_assassin_state_postcondition_passed
+	has_global_flag = murder_mystery_host_remnant_postcondition_passed
+	event_target:murder_mystery_assassin_state_candidate = {
+		exists = yes
+		murder_mystery_host_has_live_state = yes
+		has_country_flag = murder_mystery_assassin_state_carrier_validated
+	}
+	event_target:murder_mystery_original_host = {
+		exists = yes
+		murder_mystery_host_has_live_state = yes
+	}
+}
+
+murder_mystery_derivative_registry_is_aligned = {
+	murder_mystery_runtime_is_initialized = yes
+	check_variable = { var = global.murder_mystery_derivative_country_entries^num value = global.murder_mystery_derivative_parent_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_derivative_country_entries^num value = global.murder_mystery_derivative_stage_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_derivative_country_entries^num value = global.murder_mystery_derivative_status_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_derivative_country_entries^num value = global.murder_mystery_derivative_generation_entries^num compare = equals }
+}
+
+murder_mystery_derivative_can_register = {
+	murder_mystery_runtime_is_active = yes
+	murder_mystery_derivative_registry_is_aligned = yes
+	check_variable = { var = global.murder_mystery_derivative_country_entries^num value = constant:murder_mystery_derivative.maximum_active compare = less_than }
+	has_event_target = murder_mystery_derivative_country_candidate
+	event_target:murder_mystery_derivative_country_candidate = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		has_country_flag = murder_mystery_derivative_carrier_validated
+	}
+	NOT = { is_in_array = { array = global.murder_mystery_derivative_country_entries value = event_target:murder_mystery_derivative_country_candidate } }
+}
+
+murder_mystery_derivative_registry_has_capacity = {
+	murder_mystery_runtime_is_initialized = yes
+	murder_mystery_derivative_registry_is_aligned = yes
+	check_variable = { var = global.murder_mystery_derivative_country_entries^num value = constant:murder_mystery_derivative.maximum_active compare = less_than }
+}
+
+murder_mystery_assassin_state_has_derivative_anchor = {
+	has_event_target = murder_mystery_assassin_state
+	event_target:murder_mystery_assassin_state = {
+		exists = yes
+		num_of_controlled_states > constant:murder_mystery_derivative.minimum_parent_states
+	}
+}
+
+murder_mystery_derivative_transaction_is_open = {
+	has_global_flag = murder_mystery_derivative_transaction_active
+	has_global_flag = murder_mystery_derivative_prepared
+	has_event_target = murder_mystery_derivative_country_candidate
+	has_event_target = murder_mystery_assassin_state_candidate
+}
+
+murder_mystery_derivative_postconditions_are_valid = {
+	murder_mystery_derivative_transaction_is_open = yes
+	has_global_flag = murder_mystery_derivative_postcondition_passed
+	event_target:murder_mystery_derivative_country_candidate = {
+		exists = yes
+		murder_mystery_host_has_live_state = yes
+		has_country_flag = murder_mystery_derivative_subject_bound
+	}
+	has_global_flag = murder_mystery_derivative_subject_postcondition_passed
+}
+
+murder_mystery_evolution_i_is_ready = {
+	murder_mystery_runtime_is_active = yes
+	is_current_evolution_enabled = yes
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_i compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.baseline compare = equals }
+	event_target:murder_mystery_original_host = {
+		OR = {
+			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_i compare = greater_than_or_equals }
+			check_variable = { var = murder_mystery_incident_history_count value = constant:murder_mystery_value.one compare = greater_than_or_equals }
+		}
+	}
+	NOT = { has_global_flag = murder_mystery_evolution_i_committed }
+}
+
+murder_mystery_evolution_ii_is_ready = {
+	murder_mystery_runtime_is_active = yes
+	is_current_evolution_enabled = yes
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_ii compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_i compare = equals }
+	event_target:murder_mystery_original_host = {
+		has_variable = murder_mystery_case_progress
+		check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_evolution.minimum_case_progress_stage_ii compare = greater_than_or_equals }
+		OR = {
+			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_ii compare = greater_than_or_equals }
+			has_country_flag = murder_mystery_foreign_route_incident_recorded
+		}
+	}
+	NOT = { has_global_flag = murder_mystery_evolution_ii_committed }
+}
+
+murder_mystery_evolution_iii_is_ready = {
+	murder_mystery_runtime_is_active = yes
+	is_current_evolution_enabled = yes
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_iii compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_ii compare = equals }
+	event_target:murder_mystery_original_host = {
+		OR = {
+			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_iii compare = greater_than_or_equals }
+			has_country_flag = murder_mystery_evolution_iii_incident_sequence_validated
+		}
+	}
+	has_global_flag = murder_mystery_split_preflight_passed
+	NOT = { has_global_flag = murder_mystery_evolution_iii_committed }
+}
+
+murder_mystery_evolution_iv_is_ready = {
+	murder_mystery_runtime_is_active = yes
+	is_current_evolution_enabled = yes
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_iv compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iii compare = equals }
+	has_global_flag = murder_mystery_assassin_state_exists
+	event_target:murder_mystery_assassin_state = {
+		OR = {
+			check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_evolution.reach_stage_iv compare = greater_than_or_equals }
+			has_country_flag = murder_mystery_foreign_network_milestone_validated
+		}
+	}
+	NOT = { has_global_flag = murder_mystery_evolution_iv_committed }
+}
+
+murder_mystery_evolution_v_is_ready = {
+	murder_mystery_runtime_is_active = yes
+	is_current_evolution_enabled = yes
+	has_variable = global.chaos_meter_value
+	check_variable = { var = global.chaos_meter_value value = constant:murder_mystery_evolution.chaos_stage_v compare = greater_than_or_equals }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_iv compare = equals }
+	has_global_flag = murder_mystery_assassin_state_exists
+	has_global_flag = murder_mystery_central_or_heir_validated
+	has_global_flag = murder_mystery_world_branch_enabled
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = murder_mystery_evolution_v_committed }
+}
+
+murder_mystery_any_evolution_is_ready = {
+	OR = {
+		murder_mystery_evolution_i_is_ready = yes
+		murder_mystery_evolution_ii_is_ready = yes
+		murder_mystery_evolution_iii_is_ready = yes
+		murder_mystery_evolution_iv_is_ready = yes
+		murder_mystery_evolution_v_is_ready = yes
+	}
+}
+
+murder_mystery_evolution_pacing_inputs_are_available = {
+	murder_mystery_runtime_is_active = yes
+	event_target:murder_mystery_original_host = {
+		murder_mystery_country_runtime_is_initialized = yes
+		has_variable = murder_mystery_case_progress
+		has_variable = murder_mystery_network_reach
+		has_variable = murder_mystery_brotherhood_cohesion
+		has_variable = murder_mystery_evolution_milestone_count
+		has_variable = murder_mystery_protected_target_count
+		has_variable = murder_mystery_captured_cell_count
+	}
+}
+
+murder_mystery_terminal_registry_is_aligned = {
+	murder_mystery_runtime_is_initialized = yes
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_sector_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_status_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_war_state_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_cell_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_protection_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_administration_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_victory_entries^num compare = equals }
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = global.murder_mystery_terminal_generation_entries^num compare = equals }
+}
+
+murder_mystery_terminal_registry_has_capacity = {
+	murder_mystery_terminal_registry_is_aligned = yes
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = constant:murder_mystery_terminal.maximum_registry_rows compare = less_than }
+}
+
+murder_mystery_terminal_target_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	has_event_target = murder_mystery_terminal_target
+	event_target:murder_mystery_terminal_target = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		NOT = { is_special_chaos_country = yes }
+		NOT = { is_actual_nonhuman_country = yes }
+		has_country_flag = murder_mystery_terminal_target_classified
+		NOT = { has_country_flag = murder_mystery_terminal_target_exempt }
+	}
+	has_country_flag = murder_mystery_terminal_target_safe_callback
+}
+
+murder_mystery_terminal_sector_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	has_variable = murder_mystery_selected_terminal_sector
+	check_variable = { var = murder_mystery_selected_terminal_sector value = constant:murder_mystery_terminal.minimum_sector compare = greater_than_or_equals }
+	check_variable = { var = murder_mystery_selected_terminal_sector value = constant:murder_mystery_terminal.maximum_sector compare = less_than_or_equals }
+	has_variable = global.murder_mystery_active_terminal_sector_count
+	check_variable = { var = global.murder_mystery_active_terminal_sector_count value = constant:murder_mystery_terminal.maximum_active_sectors compare = less_than }
+	NOT = { is_in_array = { array = global.murder_mystery_terminal_active_sector_entries value = murder_mystery_selected_terminal_sector } }
+}
+
+murder_mystery_world_end_activation_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = murder_mystery_terminal_activation_in_progress }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_v compare = equals }
+	has_global_flag = murder_mystery_assassin_state_exists
+	has_global_flag = murder_mystery_central_or_heir_validated
+	has_global_flag = murder_mystery_world_branch_enabled
+	has_global_flag = murder_mystery_terminal_settlement_validated
+	has_global_flag = murder_mystery_terminal_capital_validated
+	event_target:murder_mystery_assassin_state = {
+		murder_mystery_country_runtime_is_initialized = yes
+		check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_world_end.minimum_case_progress compare = greater_than_or_equals }
+		check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_world_end.minimum_reach compare = greater_than_or_equals }
+		check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = greater_than_or_equals }
+	}
+}
+
+murder_mystery_limited_inheritance_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	has_global_flag = murder_mystery_evolution_ii_committed
+	has_global_flag = murder_mystery_assassin_state_exists
+	NOT = { has_global_flag = murder_mystery_inheritance_transaction_active }
+	NOT = { has_global_flag = murder_mystery_inherited_central_movement }
+	has_event_target = murder_mystery_assassin_state
+	NOT = { is_in_array = { array = global.murder_mystery_target_id_entries value = constant:murder_mystery_value.inherited_leader_target_id } }
+	event_target:murder_mystery_assassin_state = {
+		exists = yes
+		uses_normal_civilian_systems = yes
+		has_country_flag = murder_mystery_assassin_state_active
+		has_country_leader = { name = MURDER_MYSTERY_FIRST_KNIFE_NAME }
+	}
+}
+
+murder_mystery_world_end_preparation_is_valid = {
+	murder_mystery_runtime_is_active = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = murder_mystery_terminal_activation_in_progress }
+	check_variable = { var = global.murder_mystery_evolution_stage value = constant:murder_mystery_evolution.stage_v compare = equals }
+	has_global_flag = murder_mystery_assassin_state_exists
+	has_global_flag = murder_mystery_central_or_heir_validated
+	has_global_flag = murder_mystery_world_branch_enabled
+	event_target:murder_mystery_assassin_state = {
+		murder_mystery_country_runtime_is_initialized = yes
+		check_variable = { var = murder_mystery_case_progress value = constant:murder_mystery_world_end.minimum_case_progress compare = greater_than_or_equals }
+		check_variable = { var = murder_mystery_network_reach value = constant:murder_mystery_world_end.minimum_reach compare = greater_than_or_equals }
+		check_variable = { var = murder_mystery_brotherhood_cohesion value = constant:murder_mystery_world_end.minimum_cohesion compare = greater_than_or_equals }
+	}
+}
+
+murder_mystery_terminal_sector_can_activate = {
+	has_global_flag = murder_mystery_terminal_war_active
+	NOT = { has_global_flag = murder_mystery_terminal_activation_in_progress }
+	murder_mystery_terminal_sector_is_valid = yes
+	murder_mystery_terminal_registry_is_aligned = yes
+	check_variable = { var = global.murder_mystery_terminal_country_entries^num value = constant:murder_mystery_world_end.minimum_terminal_registry_rows compare = greater_than_or_equals }
+}
+
+murder_mystery_terminal_victory_is_ready = {
+	has_global_flag = murder_mystery_terminal_war_active
+	has_global_flag = murder_mystery_terminal_registry_victory_ready
+	NOT = { has_global_flag = murder_mystery_terminal_defeat_recorded }
+}

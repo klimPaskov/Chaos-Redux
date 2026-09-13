@@ -201,6 +201,10 @@ gods_of_africa_demand_contract_is_current = {
 	# (correctly) reject a participant scope.
 	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_has_active_demand = yes
+	# A demand response is not legal once the participant is at war with
+	# Africa. The owner tick still records the treaty break and cancels the
+	# contract, but this gate closes the response surface immediately.
+	NOT = { has_war_with = event_target:africa_host }
 	has_variable = gods_of_africa_demand_family
 	has_variable = gods_of_africa_demand_amount
 	has_variable = gods_of_africa_demand_deadline
@@ -260,6 +264,14 @@ gods_of_africa_demand_family_is_valid = {
 	}
 }
 
+gods_of_africa_participant_holds_host_core_state = {
+	has_event_target = africa_host
+	any_controlled_state = {
+		is_on_continent = africa
+		is_core_of = event_target:africa_host
+	}
+}
+
 gods_of_africa_participant_has_capacity_for_family = {
 	gods_of_africa_participant_generation_is_current = yes
 	has_variable = gods_of_africa_payment_family
@@ -310,14 +322,24 @@ gods_of_africa_participant_has_capacity_for_family = {
 			NOT = { has_manpower < gods_of_africa_capacity_requirement }
 		}
 		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.resources }
+			meta_trigger = {
+				text = { any_owned_state = { is_controlled_by = ROOT has_resources_amount = { resource = steel amount > [CAPACITY] } } }
+				CAPACITY = "[?gods_of_africa_capacity_requirement|.0]"
+			}
+		}
+		AND = {
 			OR = {
 				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.industry_repair }
-				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.resources }
 				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.recognition }
-				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
 				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.alliance_access }
 				check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.emergency_relief }
 			}
+			NOT = { has_political_power < gods_of_africa_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_payment_family = constant:gods_of_africa_demand_family.territory }
+			gods_of_africa_participant_holds_host_core_state = yes
 			NOT = { has_political_power < gods_of_africa_capacity_requirement }
 		}
 	}
@@ -327,14 +349,8 @@ gods_of_africa_participant_can_offer_substitute = {
 	gods_of_africa_demand_contract_is_current = yes
 	has_country_flag = gods_of_africa_substitute_set_ready
 	NOT = { has_country_flag = gods_of_africa_substitute_offered }
-	has_variable = gods_of_africa_substitute_family
-	has_variable = gods_of_africa_substitute_amount
-	check_variable = {
-		var = gods_of_africa_substitute_family
-		value = gods_of_africa_demand_family
-		compare = not_equals
-	}
-	gods_of_africa_substitute_offer_is_affordable = yes
+	has_variable = gods_of_africa_substitute_slot_count
+	check_variable = { gods_of_africa_substitute_slot_count > constant:gods_of_africa_value.zero }
 }
 
 gods_of_africa_substitute_offer_is_pending = {
@@ -422,13 +438,19 @@ gods_of_africa_substitute_offer_is_affordable = {
 		AND = {
 			OR = {
 				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.industry_repair }
-				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.resources }
 				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.recognition }
 				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.territory }
 				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.alliance_access }
 				check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.emergency_relief }
 			}
 			NOT = { has_political_power < gods_of_africa_substitute_capacity_requirement }
+		}
+		AND = {
+			check_variable = { gods_of_africa_substitute_family = constant:gods_of_africa_demand_family.resources }
+			meta_trigger = {
+				text = { any_owned_state = { is_controlled_by = ROOT has_resources_amount = { resource = steel amount > [CAPACITY] } } }
+				CAPACITY = "[?gods_of_africa_substitute_capacity_requirement|.0]"
+			}
 		}
 	}
 }
@@ -441,9 +463,14 @@ gods_of_africa_participant_can_request_extension = {
 gods_of_africa_participant_can_defy = {
 	gods_of_africa_participant_host_is_active = yes
 	gods_of_africa_participant_generation_is_current = yes
-	gods_of_africa_demand_contract_is_current = yes
 	NOT = { has_country_flag = gods_of_africa_defiant }
 	NOT = { has_country_flag = gods_of_africa_final_settlement_committed }
+	NOT = { has_country_flag = gods_of_africa_reconciliation_pending }
+	NOT = { has_country_flag = gods_of_africa_negotiation_open }
+	OR = {
+		gods_of_africa_demand_contract_is_current = yes
+		NOT = { has_country_flag = gods_of_africa_demand_active }
+	}
 }
 
 gods_of_africa_can_prepare_defensive_defiance = {
@@ -668,6 +695,27 @@ gods_of_africa_proven_offender = {
 	}
 }
 
+gods_of_africa_can_public_pardon = {
+	gods_of_africa_participant_generation_is_current = yes
+	has_country_flag = gods_of_africa_offender
+	NOT = { has_country_flag = gods_of_africa_defiant }
+	NOT = { has_country_flag = gods_of_africa_leniency_used }
+}
+
+gods_of_africa_can_escalate_offense = {
+	gods_of_africa_participant_generation_is_current = yes
+	gods_of_africa_proven_offender = yes
+	has_event_target = africa_host
+	event_target:africa_host = {
+		OR = {
+			has_country_flag = gods_of_africa_focus_offense_memory_unlocked
+			has_country_flag = gods_of_africa_focus_judgment_unlocked
+			has_country_flag = gods_of_africa_focus_judgment_reach_unlocked
+		}
+	}
+	NOT = { has_country_flag = gods_of_africa_escalation_used }
+}
+
 gods_of_africa_priority_offender_capacity_available = {
 	gods_of_africa_active_host_is_valid = yes
 	OR = {
@@ -828,9 +876,15 @@ gods_of_africa_partial_payment_is_affordable = {
 			NOT = { has_manpower < gods_of_africa_partial_capacity_requirement }
 		}
 		AND = {
+			check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.resources }
+			meta_trigger = {
+				text = { any_owned_state = { is_controlled_by = ROOT has_resources_amount = { resource = steel amount > [CAPACITY] } } }
+				CAPACITY = "[?gods_of_africa_partial_capacity_requirement|.0]"
+			}
+		}
+		AND = {
 			OR = {
 				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.industry_repair }
-				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.resources }
 				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.recognition }
 				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.territory }
 				check_variable = { gods_of_africa_demand_family = constant:gods_of_africa_demand_family.alliance_access }

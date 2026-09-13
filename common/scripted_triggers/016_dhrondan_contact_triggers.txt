@@ -176,10 +176,17 @@ dhrondan_rebellion_high_tier_is_active = {
 
 dhrondan_rebellion_medium_tier_is_active = {
 	OR = {
-		check_variable = {
-			var = dhrondan_arrival_count
-			value = constant:dhrondan_contact.rebellion_arrival_medium_minimum
-			compare = greater_than_or_equals
+		AND = {
+			check_variable = {
+				var = dhrondan_arrival_count
+				value = constant:dhrondan_contact.rebellion_arrival_medium_minimum
+				compare = greater_than_or_equals
+			}
+			check_variable = {
+				var = dhrondan_arrival_count
+				value = constant:dhrondan_contact.rebellion_arrival_medium_maximum
+				compare = less_than_or_equals
+			}
 		}
 		check_variable = {
 			var = dhrondan_pact_strain

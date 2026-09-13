@@ -402,6 +402,9 @@ africa_world_constituent_invitation_is_available = {
 	NOT = { has_country_flag = africa_world_constituent_refused }
 	NOT = { has_country_flag = africa_world_constituent_withdrawn }
 	NOT = { has_country_flag = africa_world_constituent_coerced }
+	# Enemies are excluded from an ordinary founding invitation; favored,
+	# respected, and distrusted records remain eligible for World counterterms.
+	NOT = { has_country_flag = gods_of_africa_world_history_enemy }
 	is_subject = no
 	has_capitulated = no
 }
@@ -985,6 +988,9 @@ africa_world_union_target_is_compatible = {
 	africa_world_package_is_installed = yes
 	has_country_flag = africa_world_package_sovereign_complete
 	NOT = { has_country_flag = africa_world_package_rival }
+	# A proven Event 012 Gods enemy must resolve its separate disposition
+	# before it can enter a founding World union.
+	NOT = { has_country_flag = gods_of_africa_world_history_enemy }
 	NOT = { has_country_flag = africa_world_submission_settlement }
 	NOT = { has_war_with = ROOT }
 	has_country_flag = africa_world_union_consent
@@ -1003,6 +1009,9 @@ africa_world_continental_war_target_is_eligible = {
 	OR = {
 		has_country_flag = africa_world_package_rival
 		has_country_flag = africa_world_order_rivalry_intensified
+		# World Is One owns the war, while Gods supplies this bounded enemy
+		# relationship evidence as an additional holdout signal.
+		has_country_flag = gods_of_africa_world_history_enemy
 		AND = {
 			ROOT = { africa_world_order_route_is_terminal = yes }
 			NOT = { has_country_flag = africa_world_union_consent }

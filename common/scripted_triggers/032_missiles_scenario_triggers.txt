@@ -1,0 +1,126 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 TRIGGERABLE SCENARIO TRIGGERS
+# ============================================================================
+# Pure eligibility and profile preflight for SCN-015 Missile Age. Event 032's
+# core recipient and payload predicates remain owned by the missile runtime;
+# this file only composes them for the shared Triggerable Scenarios window.
+# ============================================================================
+
+missiles_scenario_selected_profile_is_valid = {
+	OR = {
+		check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.global_proliferation }
+		check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.saturation_war }
+		check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.command_breakdown }
+		check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.special_payload_crisis }
+		check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.retaliation_network }
+	}
+}
+
+missiles_scenario_selected_intensity_is_valid = {
+	OR = {
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.low }
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.medium }
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.high }
+		check_variable = { triggerable_scenarios_intensity = constant:triggerable_scenario_intensity.maximum }
+	}
+}
+
+missiles_scenario_country_is_payload_owner = {
+	exists = yes
+	OR = {
+		missiles_country_has_chemical_payload_candidate = yes
+		missiles_country_has_biological_payload_candidate = yes
+		missiles_country_has_nuclear_payload_candidate = yes
+		missiles_country_has_thermonuclear_payload_candidate = yes
+	}
+}
+
+missiles_scenario_country_is_breakdown_candidate = {
+	exists = yes
+	missiles_is_valid_recipient = yes
+	OR = {
+		has_country_flag = missiles_command_breakdown_candidate
+		NOT = { has_country_flag = missiles_program_initialized }
+		AND = {
+			has_variable = missiles_command_control
+			check_variable = { var = missiles_command_control value = constant:missiles_evolution_pressure.minimum_vulnerable_control compare = less_than }
+		}
+		AND = {
+			has_variable = missiles_launch_readiness
+			check_variable = { var = missiles_launch_readiness value = constant:missiles_program_value.baseline_launch_readiness_gate compare = less_than }
+		}
+	}
+}
+
+missiles_scenario_country_has_site_plan = {
+	exists = yes
+	missiles_is_valid_recipient = yes
+	any_owned_state = {
+		missiles_state_is_valid_site_target = yes
+	}
+}
+
+missiles_scenario_has_valid_recipient = {
+	any_of_scopes = {
+		array = global.missiles_scenario_candidate_recipients
+		missiles_is_valid_recipient = yes
+	}
+}
+
+missiles_scenario_has_valid_war = {
+	has_global_flag = missiles_scenario_war_pair_found
+}
+
+missiles_scenario_has_two_valid_recipients = {
+	check_variable = {
+		var = global.missiles_scenario_candidate_recipients^num
+		value = constant:missiles_scenario_scale.minimum_retaliation_participants
+		compare = greater_than_or_equals
+	}
+}
+
+missiles_scenario_has_payload_owner = {
+	any_of_scopes = {
+		array = global.missiles_scenario_priority_recipients
+		missiles_scenario_country_is_payload_owner = yes
+	}
+}
+
+missiles_scenario_profile_preflight_is_valid = {
+	OR = {
+		AND = {
+			check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.global_proliferation }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.saturation_war }
+			NOT = { has_global_flag = event_evolution_disabled_32_1 }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.command_breakdown }
+			NOT = { has_global_flag = event_evolution_disabled_32_2 }
+			NOT = { has_global_flag = event_evolution_disabled_32_4 }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.special_payload_crisis }
+			NOT = { has_global_flag = event_evolution_disabled_32_3 }
+		}
+		AND = {
+			check_variable = { triggerable_scenarios_missiles_type = constant:missiles_scenario_profile.retaliation_network }
+			NOT = { has_global_flag = event_evolution_disabled_32_5 }
+		}
+	}
+}
+
+missiles_scenario_setup_has_package_failure = {
+	has_global_flag = missiles_scenario_package_failure_found
+}
+
+missiles_scenario_can_launch_from_triggerable_scenarios = {
+	missiles_scenario_selected_profile_is_valid = yes
+	missiles_scenario_selected_intensity_is_valid = yes
+	NOT = { has_global_flag = world_end }
+	NOT = { has_global_flag = world_end_scenario_active }
+	NOT = { has_global_flag = missiles_scenario_setup_in_progress }
+	NOT = { has_global_flag = missiles_scenario_launched }
+	missiles_scenario_profile_preflight_is_valid = yes
+}

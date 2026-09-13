@@ -133,7 +133,7 @@ Manual Random Stuff activation bypasses its cluster gates but retains strict eve
 
 ## Stable state and history
 
-Events 6, 9, and 13 have explicit stable primary trigger rows for their opening duplicate groups.
+Events 4, 6, 7, 9, and 13 have explicit stable primary trigger rows for their opening duplicate groups.
 
 Every activation receives a stable batch identity.
 

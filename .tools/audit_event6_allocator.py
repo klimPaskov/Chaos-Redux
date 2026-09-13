@@ -539,6 +539,22 @@ def main() -> int:
 		errors,
 	)
 	dispatch_effects = read("common/scripted_effects/006_independence_wave_effects.txt")
+	try:
+		automatic_allocator = strip_comments(extract_script_block(dispatch_effects, "independence_wave_allocate_automatic_packages"))
+	except ValueError as exc:
+		errors.append(str(exc))
+		automatic_allocator = ""
+	for frozen_count in ("independence_wave_plan_target_count", "liberation_plan_expected_country_count"):
+		require(
+			not re.search(rf"set_variable\s*=\s*\{{\s*global\.{frozen_count}\s*=", automatic_allocator),
+			f"automatic allocator must not rewrite frozen {frozen_count} after candidate selection",
+			errors,
+		)
+	require(
+		"constant:liberation_plan_reject_reason.insufficient_pool" in automatic_allocator,
+		"automatic allocator must retain the insufficient-pool failure path",
+		errors,
+	)
 	phase_families: dict[str, set[str]] = {}
 	for call, phase in re.findall(
 		r"(?m)^\t(independence_wave_dispatch_.+_package_(setup|final_validation|cleanup))\s*=\s*yes$",

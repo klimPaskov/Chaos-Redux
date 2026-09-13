@@ -1,5 +1,7 @@
 # Event 32 AI probability audit handoff
 
+Disposition: superseded by the current `chaosx_ai_probability_auditor` handoffs. This file is retained as the historical pre-repair baseline and exact adapter-availability record; it must not be read as the final weighted-logic verdict. The current source state and same-scenario comparison evidence are recorded in the newer handoff paths and the Event 32 test ledger.
+
 Date: 2026-09-01
 
 Audit owner: `chaosx_ai_probability_auditor`
@@ -414,4 +416,3 @@ MCP evidence status: no artifacts, revisions, scenario hashes, comparison ids, o
 Result sufficiency: not sufficient for balance sign-off or a claim that the Event 32 weighted surfaces are correct.
 
 Simplifications or omissions by this auditor: none; the requested MCP analyses could not be substituted with source-only claims.
-

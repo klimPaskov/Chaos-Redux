@@ -1,0 +1,99 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 031 RANDOM TERROR DECISION CATEGORIES
+# ============================================================================
+# Ordinary decision categories only.  The static pictures carry the event
+# identity; current pressure, legitimacy, actor values, and next thresholds
+# belong in the category localisation supplied by the parent integration.
+# State-targeted decisions use map_and_decisions_view and these highlights so
+# the map and the decision list point at the same crisis states.  No scripted
+# GUI is used here.
+# ============================================================================
+
+random_terror_government_response_category = {
+	visible = {
+		NOT = { has_country_flag = random_terror_actor }
+		NOT = { has_global_flag = world_end }
+		OR = {
+			random_terror_can_government_response = yes
+			has_country_flag = random_terror_reconstruction_available
+		}
+	}
+	visible_when_empty = yes
+	picture = GFX_decision_cat_picture_031_random_terror_government_response
+	icon = GFX_decision_category_031_random_terror_government_response
+	priority = 83
+	highlight_states = {
+		highlight_states_trigger = {
+			OR = {
+				is_owned_by = ROOT
+				is_claimed_by = ROOT
+				is_core_of = ROOT
+			}
+			OR = {
+				has_state_flag = random_terror_state_dormant
+				has_state_flag = random_terror_state_active
+				has_state_flag = random_terror_state_entrenched
+				has_state_flag = random_terror_state_armed_insurgency
+				has_state_flag = random_terror_state_lost_local_control
+				has_state_flag = random_terror_state_recovery
+			}
+		}
+		highlight_color_before_active = 2
+		highlight_color_while_active = 3
+	}
+}
+
+random_terror_actor_command_category = {
+	visible = {
+		NOT = { has_global_flag = world_end }
+		random_terror_is_actor = yes
+	}
+	visible_when_empty = yes
+	picture = GFX_decision_cat_picture_031_random_terror_actor_command
+	icon = GFX_decision_category_031_random_terror_actor_command
+	priority = 84
+	highlight_states = {
+		highlight_states_trigger = {
+			is_owned_by = ROOT
+			OR = {
+				has_state_flag = random_terror_state_dormant
+				has_state_flag = random_terror_state_active
+				has_state_flag = random_terror_state_entrenched
+				has_state_flag = random_terror_state_armed_insurgency
+				has_state_flag = random_terror_state_lost_local_control
+				has_state_flag = random_terror_state_recovery
+			}
+		}
+		highlight_color_before_active = 1
+		highlight_color_while_active = 3
+	}
+}
+
+random_terror_false_revelation_category = {
+	visible = {
+		random_terror_is_final_actor = yes
+		OR = {
+			has_global_flag = random_terror_terminal_active
+			has_global_flag = random_terror_false_revelation_enabled
+		}
+	}
+	visible_when_empty = yes
+	picture = GFX_decision_cat_picture_031_random_terror_false_revelation
+	icon = GFX_decision_category_031_random_terror_false_revelation
+	priority = 85
+	highlight_states = {
+		highlight_states_trigger = {
+			is_owned_by = ROOT
+			OR = {
+				has_state_flag = random_terror_state_dormant
+				has_state_flag = random_terror_state_active
+				has_state_flag = random_terror_state_entrenched
+				has_state_flag = random_terror_state_armed_insurgency
+				has_state_flag = random_terror_state_lost_local_control
+				has_state_flag = random_terror_state_recovery
+			}
+		}
+		highlight_color_before_active = 1
+		highlight_color_while_active = 3
+	}
+}

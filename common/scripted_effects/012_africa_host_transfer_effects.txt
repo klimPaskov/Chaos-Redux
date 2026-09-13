@@ -112,6 +112,14 @@ africa_host_transfer_stage_scalar_ledger = {
 	set_variable = { global.africa_host_transfer_regional_equality = africa_regional_equality }
 	set_variable = { global.africa_host_transfer_emergency_rule_debt = africa_emergency_rule_debt }
 	if = {
+		limit = { has_variable = gods_of_africa_candidate_count }
+		set_variable = { global.africa_host_transfer_gods_of_africa_candidate_count = gods_of_africa_candidate_count }
+	}
+	if = {
+		limit = { has_country_flag = gods_of_africa_candidate_census_complete }
+		set_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
+	}
+	if = {
 		limit = { has_variable = africa_constitutional_representation }
 		set_variable = { global.africa_host_transfer_constitutional_representation = africa_constitutional_representation }
 		set_variable = { global.africa_host_transfer_constitutional_executive_power = africa_constitutional_executive_power }
@@ -456,6 +464,19 @@ africa_host_transfer_restore_world_order_state = {
 		set_variable = { africa_world_package_resolved_count = global.africa_host_transfer_world_package_resolved_count }
 		set_variable = { africa_world_sponsorship_overextension = global.africa_host_transfer_world_sponsorship_overextension }
 		set_variable = { africa_world_order_route = global.africa_host_transfer_world_order_route }
+		clear_array = gods_of_africa_candidate_registry
+		if = {
+			limit = { has_variable = global.africa_host_transfer_gods_of_africa_candidate_count }
+			set_variable = { gods_of_africa_candidate_count = global.africa_host_transfer_gods_of_africa_candidate_count }
+		}
+		if = {
+			limit = { has_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete }
+			set_country_flag = gods_of_africa_candidate_census_complete
+		}
+		for_each_scope_loop = {
+			array = global.africa_host_transfer_gods_of_africa_candidate_registry
+			event_target:africa_host_transfer_new_host = { add_to_array = { array = gods_of_africa_candidate_registry value = PREV } }
+		}
 		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_documented } set_country_flag = africa_world_package_roster_documented }
 		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_partial } set_country_flag = africa_world_package_roster_partial }
 		if = { limit = { has_global_flag = africa_host_transfer_world_package_roster_absence_documented } set_country_flag = africa_world_package_roster_absence_documented }
@@ -481,6 +502,7 @@ africa_host_transfer_restore_world_order_state = {
 # Any scope. Clear only the transfer staging receipts; the successor has already copied them.
 africa_host_transfer_clear_route_staging = {
 	clr_global_flag = africa_host_transfer_scramble_state_machine_initialised
+	clr_global_flag = africa_host_transfer_gods_of_africa_candidate_census_complete
 	clr_global_flag = africa_host_transfer_world_package_roster_documented
 	clr_global_flag = africa_host_transfer_world_package_roster_partial
 	clr_global_flag = africa_host_transfer_world_package_roster_absence_documented
@@ -646,12 +668,14 @@ africa_host_transfer_clear_route_staging = {
 	clear_variable = global.africa_host_transfer_world_package_resolved_count
 	clear_variable = global.africa_host_transfer_world_sponsorship_overextension
 	clear_variable = global.africa_host_transfer_world_order_route
+	clear_variable = global.africa_host_transfer_gods_of_africa_candidate_count
 }
 
 # COUNTRY scope on the old host. Every copied array is a bounded ledger owned by
 # the host; no all-country iteration is used.
 africa_host_transfer_stage_arrays = {
 	clear_array = global.africa_host_transfer_relationship_countries
+	clear_array = global.africa_host_transfer_gods_of_africa_candidate_registry
 	clear_array = global.africa_host_transfer_protected_countries
 	clear_array = global.africa_host_transfer_associate_countries
 	clear_array = global.africa_host_transfer_chartered_countries
@@ -707,6 +731,10 @@ africa_host_transfer_stage_arrays = {
 	for_each_scope_loop = {
 		array = africa_relationship_countries
 		ROOT = { add_to_array = { array = global.africa_host_transfer_relationship_countries value = PREV } }
+	}
+	for_each_scope_loop = {
+		array = gods_of_africa_candidate_registry
+		ROOT = { add_to_array = { array = global.africa_host_transfer_gods_of_africa_candidate_registry value = PREV } }
 	}
 	for_each_scope_loop = {
 		array = africa_protected_countries
@@ -940,6 +968,19 @@ africa_begin_host_transfer = {
 		save_global_event_target_as = africa_previous_host
 		set_global_flag = africa_host_transfer_pending
 		set_global_flag = africa_host_transfer_resolution_open
+		# Event 012 host transfer ends the Gods relationship generation owned by
+		# the departing unifier. Cancel it before the shared host pointer is
+		# cleared so every participant and scheduled clock is cleaned exactly once.
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_active
+					has_country_flag = gods_of_africa_consolidation_pending
+					has_country_flag = gods_of_africa_activation_clock_scheduled
+				}
+			}
+			gods_of_africa_cancel_on_unifier_loss = yes
+		}
 		africa_host_transfer_cancel_active_actions = yes
 		for_each_scope_loop = {
 			array = africa_relationship_countries
@@ -995,6 +1036,16 @@ africa_host_transfer_record_terminal_loss = {
 		clr_global_flag = africa_host_transfer_pending
 		clr_global_flag = africa_host_transfer_resolution_open
 		clr_global_flag = africa_host_transfer_suspended
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = gods_of_africa_active
+					has_country_flag = gods_of_africa_consolidation_pending
+					has_country_flag = gods_of_africa_activation_clock_scheduled
+				}
+			}
+			gods_of_africa_cancel_on_unifier_loss = yes
+		}
 		if = {
 			limit = { has_event_target = africa_host }
 			clear_global_event_target = africa_host
@@ -1076,6 +1127,7 @@ africa_host_transfer_complete_successor = {
 		save_global_event_target_as = africa_host
 		set_country_flag = africa_unifier_host
 		set_country_flag = africa_host_commit_completed
+		set_variable = { africa_host_established_day = global.num_days }
 		set_country_flag = africa_original_host_preserved
 		clr_country_flag = africa_host_transfer_resolver
 		clr_country_flag = africa_host_transfer_congress_open
@@ -1353,6 +1405,7 @@ africa_host_transfer_clear_staging = {
 	clear_global_event_target = africa_host_transfer_resolver
 	clear_array = global.africa_host_transfer_candidates
 	clear_array = global.africa_host_transfer_relationship_countries
+	clear_array = global.africa_host_transfer_gods_of_africa_candidate_registry
 	clear_array = global.africa_host_transfer_protected_countries
 	clear_array = global.africa_host_transfer_associate_countries
 	clear_array = global.africa_host_transfer_chartered_countries

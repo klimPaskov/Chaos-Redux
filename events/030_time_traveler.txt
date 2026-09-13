@@ -26,11 +26,31 @@ country_event = {
     hidden = yes
     is_triggered_only = yes
 
-    immediate = {
-        random_country = {
-            country_event = { id = chaosx.nr30.2 days = 1 }
-        }
-    }
+	immediate = {
+		set_temp_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.zero }
+		if = {
+			limit = {
+				has_event_target = time_traveler_prefire_host
+				event_target:time_traveler_prefire_host = {
+					exists = yes
+					individual_crisis_load_is_below_cap = yes
+				}
+			}
+			set_temp_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.one }
+		}
+		else = { time_traveler_select_weighted_prefire_host = yes }
+		if = {
+			limit = {
+				check_variable = { time_traveler_prefire_ready = constant:individual_crisis_targeting.one }
+				has_event_target = time_traveler_prefire_host
+			}
+			event_target:time_traveler_prefire_host = {
+				set_temp_variable = { time_traveler_prefire_reservation_days = constant:time_traveler_event.prefire_reservation_days }
+				set_country_flag = { flag = time_traveler_prefire_pending days = time_traveler_prefire_reservation_days }
+				country_event = { id = chaosx.nr30.2 days = 1 }
+			}
+		}
+	}
 }
 
 ##############################################################################################################
@@ -43,10 +63,18 @@ country_event = {
 
     is_triggered_only = yes
 
+	trigger = {
+		OR = {
+			has_country_flag = time_traveler_prefire_pending
+			individual_crisis_load_is_below_cap = yes
+		}
+	}
+
     option = {
         ai_chance = { base = 100 }
         name = chaosx.nr30.2.a
         news_event = { id = chaosx.news.33 days = 2 }
+		clr_country_flag = time_traveler_prefire_pending
         add_timed_idea = {
             idea = time_traveler
             days = 365

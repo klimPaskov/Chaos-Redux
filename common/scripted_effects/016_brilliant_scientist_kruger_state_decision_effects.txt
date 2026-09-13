@@ -160,31 +160,10 @@ brilliant_scientist_krg_record_confirmed_offensive_biological_use = {
 	}
 }
 
-# COUNTRY scope. These bounded fabrication cycles create only physical stockpile
-# equipment. The player must still train the canonical locked templates, pay
-# their manpower/equipment bill, and remain inside canonical division caps.
+# COUNTRY scope. Compatibility callback for the single paid maturation timer.
+# Receipt settlement owns physical clone output, reserve refresh and history.
 brilliant_scientist_krg_complete_clone_growth_cycle = {
-	add_equipment_to_stockpile = { type = infantry_equipment_0 amount = constant:brilliant_scientist_krg_output.clone_infantry_batch }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:brilliant_scientist_krg_output.clone_support_batch }
-	add_to_variable = { brilliant_scientist_krg_clone_growth_cycles = constant:brilliant_scientist_krg_value.one }
-	set_country_flag = brilliant_scientist_krg_clone_growth_burden_active
-	if = {
-		limit = {
-			check_variable = {
-				var = brilliant_scientist_krg_clone_growth_cycles
-				value = constant:brilliant_scientist_krg_capacity.clone_identity_pressure_cycle
-				compare = greater_than_or_equals
-			}
-			NOT = { brilliant_scientist_krg_clone_identity_revolt_is_prevented = yes }
-			has_country_flag = brilliant_scientist_focus_unlock_clone_identity_pressure_crises
-			NOT = { has_country_flag = brilliant_scientist_krg_clone_identity_pressure_active }
-			NOT = { has_country_flag = brilliant_scientist_krg_clone_identity_pressure_resolved }
-			NOT = { has_country_flag = brilliant_scientist_clone_revolt_ever }
-		}
-		set_country_flag = brilliant_scientist_krg_clone_identity_pressure_active
-		set_country_flag = brilliant_scientist_krg_clone_identity_pressure_occurred
-		activate_mission = brilliant_scientist_krg_clone_identity_pressure_mission
-	}
+	brilliant_scientist_krg_finish_clone_maturation = yes
 }
 
 brilliant_scientist_krg_complete_robot_assembly_cycle = {

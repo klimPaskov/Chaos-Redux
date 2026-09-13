@@ -1,0 +1,304 @@
+# Administration commands and records. All helpers are country-scoped unless marked.
+# No GUI-only payment path, population debit, periodic hook, or shared-core mutation.
+camp_admin_close_pickers = {
+	clr_country_flag = camp_admin_picker_priority
+	clr_country_flag = camp_admin_picker_budget
+	clr_country_flag = camp_admin_picker_mandate
+	clr_country_flag = camp_admin_picker_role
+	clr_country_flag = camp_admin_picker_filter
+}
+
+camp_admin_refresh_command_quotes = {
+	set_variable = { camp_admin_policy_quote_pp = camp_active_site_count }
+	multiply_variable = { camp_admin_policy_quote_pp = constant:camp_admin_command.policy_pp_per_site }
+	add_to_variable = { camp_admin_policy_quote_pp = constant:camp_admin_command.policy_pp }
+	clamp_variable = { var = camp_admin_policy_quote_pp min = constant:camp_admin_command.policy_pp max = constant:camp_admin_command.policy_pp_max }
+	set_variable = { camp_admin_mandate_quote_pp = camp_admin_policy_quote_pp }
+	multiply_variable = { camp_admin_mandate_quote_pp = constant:camp_admin_command.mandate_pp_multiplier }
+	set_variable = { camp_admin_role_quote_pp = camp_admin_policy_quote_pp }
+	multiply_variable = { camp_admin_role_quote_pp = constant:camp_admin_command.role_pp_multiplier }
+	# Trigger shorthand > compares against the previous representable fixed-point value.
+	set_variable = { camp_admin_policy_quote_floor = camp_admin_policy_quote_pp }
+	subtract_from_variable = { camp_admin_policy_quote_floor = constant:camp_admin_command.fixed_point_unit }
+	set_variable = { camp_admin_mandate_quote_floor = camp_admin_mandate_quote_pp }
+	subtract_from_variable = { camp_admin_mandate_quote_floor = constant:camp_admin_command.fixed_point_unit }
+	set_variable = { camp_admin_role_quote_floor = camp_admin_role_quote_pp }
+	subtract_from_variable = { camp_admin_role_quote_floor = constant:camp_admin_command.fixed_point_unit }
+}
+
+# Appends one material history entry, not a notification. Population reports are separate.
+# Inputs: temp camp_admin_record_kind and optional camp_admin_record_state_id (zero = national).
+camp_admin_record_history = {
+	if = {
+		limit = { check_variable = { camp_admin_record_kind > constant:camp_admin_value.zero } }
+		camp_admin_prepare_month_key = yes
+		add_to_variable = { camp_admin_history_next_id = constant:camp_admin_value.one }
+		add_to_array = { array = camp_admin_history_ids value = camp_admin_history_next_id }
+		add_to_array = { array = camp_admin_history_kinds value = camp_admin_record_kind }
+		add_to_array = { array = camp_admin_history_states value = camp_admin_record_state_id }
+		add_to_array = { array = camp_admin_history_years value = global.year }
+		add_to_array = { array = camp_admin_history_months value = camp_admin_month_number }
+		if = {
+			limit = { check_variable = { camp_admin_history_ids^num > constant:camp_admin_command.history_limit } }
+			remove_from_array = { array = camp_admin_history_ids index = 0 }
+			remove_from_array = { array = camp_admin_history_kinds index = 0 }
+			remove_from_array = { array = camp_admin_history_states index = 0 }
+			remove_from_array = { array = camp_admin_history_years index = 0 }
+			remove_from_array = { array = camp_admin_history_months index = 0 }
+			add_to_variable = { camp_admin_history_archived = constant:camp_admin_value.one }
+		}
+	}
+	set_temp_variable = { camp_admin_record_kind = constant:camp_admin_value.zero }
+	set_temp_variable = { camp_admin_record_state_id = constant:camp_admin_value.zero }
+}
+
+# Commands validate the quote immediately before paying. They never tick production or awards.
+camp_admin_set_priority = {
+	camp_admin_refresh_command_quotes = yes
+	if = {
+		limit = { camp_admin_can_set_priority = yes }
+		set_temp_variable = { camp_admin_command_debit = camp_admin_policy_quote_pp }
+		multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
+		add_political_power = camp_admin_command_debit
+		set_variable = { camp_admin_priority = camp_admin_control_requested }
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.priority }
+		camp_admin_record_history = yes
+	}
+	set_temp_variable = { camp_admin_control_requested = constant:camp_admin_value.zero }
+	camp_admin_refresh_interface = yes
+}
+camp_admin_set_budget = {
+	camp_admin_refresh_command_quotes = yes
+	if = {
+		limit = { camp_admin_can_set_budget = yes }
+		if = {
+			limit = { NOT = { check_variable = { camp_admin_budget = camp_admin_control_requested } } }
+			set_temp_variable = { camp_admin_command_debit = camp_admin_policy_quote_pp }
+			multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
+			add_political_power = camp_admin_command_debit
+			set_variable = { camp_admin_budget = camp_admin_control_requested }
+			set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.budget }
+		}
+		else = { set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.resumed } }
+		clr_country_flag = camp_admin_development_paused
+		camp_admin_record_history = yes
+	}
+	set_temp_variable = { camp_admin_control_requested = constant:camp_admin_value.zero }
+	camp_admin_refresh_interface = yes
+}
+camp_admin_set_mandate = {
+	camp_admin_refresh_command_quotes = yes
+	if = {
+		limit = { camp_admin_can_set_mandate = yes }
+		set_temp_variable = { camp_admin_command_debit = camp_admin_mandate_quote_pp }
+		multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
+		add_political_power = camp_admin_command_debit
+		set_variable = { camp_admin_mandate = camp_admin_control_requested }
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.mandate }
+		camp_admin_record_history = yes
+		camp_admin_refresh_country_economy = yes
+	}
+	set_temp_variable = { camp_admin_control_requested = constant:camp_admin_value.zero }
+	camp_admin_refresh_interface = yes
+}
+camp_admin_set_selected_role = {
+	camp_admin_refresh_command_quotes = yes
+	if = {
+		limit = { camp_admin_can_change_selected_role = yes }
+		set_temp_variable = { camp_admin_command_debit = camp_admin_role_quote_pp }
+		multiply_temp_variable = { camp_admin_command_debit = constant:camp_admin_value.negative_one }
+		add_political_power = camp_admin_command_debit
+		var:camp_selected_state_id = {
+			set_variable = { camp_admin_role = camp_admin_control_requested }
+			camp_admin_refresh_state_economy = yes
+		}
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.role }
+		set_temp_variable = { camp_admin_record_state_id = camp_selected_state_id }
+		camp_admin_record_history = yes
+		camp_admin_refresh_country_economy = yes
+	}
+	set_temp_variable = { camp_admin_control_requested = constant:camp_admin_value.zero }
+	camp_admin_refresh_interface = yes
+}
+camp_admin_toggle_selected_work = {
+	if = {
+		limit = { camp_admin_has_selected_operating_site = yes }
+		var:camp_selected_state_id = {
+			if = {
+				limit = { has_state_flag = camp_admin_site_suspended }
+				clr_state_flag = camp_admin_site_suspended
+				set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.resumed }
+			}
+			else = {
+				set_state_flag = camp_admin_site_suspended
+				set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.suspended }
+			}
+			camp_admin_refresh_state_economy = yes
+		}
+		set_temp_variable = { camp_admin_record_state_id = camp_selected_state_id }
+		camp_admin_record_history = yes
+		camp_admin_refresh_country_economy = yes
+	}
+	camp_admin_refresh_interface = yes
+}
+camp_admin_release_selected = {
+	if = {
+		limit = { camp_admin_can_release_selected_site = yes }
+		var:camp_selected_state_id = {
+			camp_admin_release_survivors = yes
+			set_state_flag = camp_admin_site_suspended
+		}
+		set_temp_variable = { camp_admin_record_kind = constant:camp_admin_history_kind.release }
+		set_temp_variable = { camp_admin_record_state_id = camp_selected_state_id }
+		camp_admin_record_history = yes
+		camp_admin_refresh_country_economy = yes
+	}
+	camp_admin_refresh_interface = yes
+}
+
+# Country-specific commitments take precedence. Other institutions retain national reform.
+camp_admin_ui_action_two = {
+	if = {
+		limit = { camp_admin_country_action_2_visible = yes }
+		camp_admin_country_action_2 = yes
+	}
+	else_if = {
+		limit = { camp_admin_generic_reform_available = yes }
+		camp_admin_generic_reform = yes
+	}
+	camp_admin_refresh_interface = yes
+}
+
+# Append a state once to the display-source union without modifying either owner registry.
+camp_admin_append_display_source = {
+	event_target:camp_admin_ui_actor = {
+		if = {
+			limit = { NOT = { is_in_array = { array = camp_admin_gui_source_states value = PREV } } }
+			add_to_array = { array = camp_admin_gui_source_states value = PREV }
+		}
+	}
+}
+
+# Rebuild only the display list from the package's bounded active and civilian registries.
+camp_admin_refresh_interface = {
+	camp_admin_refresh_command_quotes = yes
+	camp_admin_generic_reform_refresh_quote = yes
+	if = { limit = { NOT = { has_variable = camp_admin_view } } set_variable = { camp_admin_view = constant:camp_admin_view.administration } }
+	if = { limit = { NOT = { has_variable = camp_admin_location_filter } } set_variable = { camp_admin_location_filter = constant:camp_admin_filter.all } }
+	clear_array = camp_admin_gui_states
+	set_variable = { camp_admin_gui_works_sites = constant:camp_admin_value.zero }
+	set_variable = { camp_admin_gui_extraction_sites = constant:camp_admin_value.zero }
+	set_variable = { camp_admin_gui_works_factor = constant:camp_admin_value.zero }
+	set_variable = { camp_admin_gui_extraction_factor = constant:camp_admin_value.zero }
+	save_event_target_as = camp_admin_ui_actor
+	clear_array = camp_admin_gui_source_states
+	for_each_scope_loop = { array = camp_active_site_states camp_admin_append_display_source = yes }
+	for_each_scope_loop = { array = camp_admin_civilian_states camp_admin_append_display_source = yes }
+	for_each_scope_loop = {
+		array = camp_admin_gui_source_states
+		if = {
+			limit = { camp_admin_site_authority_is_valid = yes check_variable = { camp_admin_construction_factor > constant:camp_admin_value.zero } }
+			set_temp_variable = { camp_admin_display_factor = camp_admin_construction_factor }
+			event_target:camp_admin_ui_actor = {
+				add_to_variable = { camp_admin_gui_works_sites = constant:camp_admin_value.one }
+				add_to_variable = { camp_admin_gui_works_factor = camp_admin_display_factor }
+			}
+		}
+		if = {
+			limit = { camp_admin_site_authority_is_valid = yes check_variable = { camp_admin_extraction_factor > constant:camp_admin_value.zero } }
+			set_temp_variable = { camp_admin_display_factor = camp_admin_extraction_factor }
+			event_target:camp_admin_ui_actor = {
+				add_to_variable = { camp_admin_gui_extraction_sites = constant:camp_admin_value.one }
+				add_to_variable = { camp_admin_gui_extraction_factor = camp_admin_display_factor }
+			}
+		}
+		if = {
+			limit = {
+				camp_admin_site_authority_is_valid = yes
+				OR = {
+					event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.all } }
+					AND = {
+						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.labor } }
+						OR = { check_variable = { camp_admin_role = constant:camp_admin_role.labor } check_variable = { camp_admin_role = constant:camp_admin_role.penal } }
+					}
+					AND = {
+						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.custody } }
+						check_variable = { camp_admin_role = constant:camp_admin_role.custody }
+					}
+					AND = {
+						event_target:camp_admin_ui_actor = { check_variable = { camp_admin_location_filter = constant:camp_admin_filter.attention } }
+						OR = { has_state_flag = camp_admin_site_suspended check_variable = { camp_admin_support_ratio < constant:camp_admin_value.one } }
+					}
+				}
+			}
+			set_temp_variable = { camp_admin_display_state = THIS.id }
+			event_target:camp_admin_ui_actor = { add_to_array = { array = camp_admin_gui_states value = camp_admin_display_state } }
+		}
+	}
+	clear_array = camp_admin_gui_source_states
+	if = {
+		limit = { check_variable = { camp_admin_gui_works_sites > constant:camp_admin_value.zero } }
+		divide_variable = { camp_admin_gui_works_factor = camp_admin_gui_works_sites }
+	}
+	if = {
+		limit = { check_variable = { camp_admin_gui_extraction_sites > constant:camp_admin_value.zero } }
+		divide_variable = { camp_admin_gui_extraction_factor = camp_admin_gui_extraction_sites }
+	}
+	if = {
+		limit = {
+			has_variable = camp_selected_state_id
+			NOT = { is_in_array = { array = camp_admin_gui_states value = camp_selected_state_id } }
+		}
+		clear_variable = camp_selected_state_id
+	}
+	if = {
+		limit = { NOT = { has_variable = camp_selected_state_id } check_variable = { camp_admin_gui_states^num > constant:camp_admin_value.zero } }
+		set_variable = { camp_selected_state_id = camp_admin_gui_states^0 }
+	}
+	set_variable = { camp_admin_gui_economy_progress = camp_admin_economy_progress }
+	if = { limit = { check_variable = { camp_admin_economy_target > 0 } } divide_variable = { camp_admin_gui_economy_progress = camp_admin_economy_target } }
+	else = { set_variable = { camp_admin_gui_economy_progress = 0 } }
+	clamp_variable = { var = camp_admin_gui_economy_progress min = 0 max = 1 }
+	set_variable = { camp_admin_gui_institution_progress = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_institution_target > 0 } }
+		set_variable = { camp_admin_gui_institution_progress = camp_admin_institution_progress }
+		divide_variable = { camp_admin_gui_institution_progress = camp_admin_institution_target }
+		clamp_variable = { var = camp_admin_gui_institution_progress min = 0 max = 1 }
+	}
+	set_variable = { camp_admin_gui_month_deaths_k = camp_admin_month_deaths_k }
+	add_to_variable = { camp_admin_gui_month_deaths_k = camp_occ_month_deaths_k }
+	camp_admin_prepare_project_quote = yes
+	set_variable = { camp_admin_gui_project_support = camp_admin_quote_support }
+	set_variable = { camp_admin_gui_project_pp = camp_admin_quote_pp }
+	set_temp_variable = { camp_admin_quote_support = 0 }
+	set_temp_variable = { camp_admin_quote_pp = 0 }
+	if = {
+		limit = { has_variable = camp_selected_state_id }
+		var:camp_selected_state_id = { camp_admin_cache_selected_site = yes }
+	}
+}
+
+# State scope, invoked only after a validated selection with camp_admin_ui_actor bound.
+camp_admin_cache_selected_site = {
+	set_temp_variable = { camp_admin_display_detainees = camp_admin_detainees_k }
+	set_temp_variable = { camp_admin_display_workers = camp_admin_industry_k }
+	add_to_temp_variable = { camp_admin_display_workers = camp_admin_works_k }
+	add_to_temp_variable = { camp_admin_display_workers = camp_admin_extraction_k }
+	set_temp_variable = { camp_admin_display_month_deaths = camp_admin_month_deaths_k }
+	set_temp_variable = { camp_admin_display_total_deaths = camp_admin_total_deaths_k }
+	set_temp_variable = { camp_admin_display_support = camp_admin_support_ratio }
+	set_temp_variable = { camp_admin_display_industry = camp_admin_industrial_equivalent }
+	set_temp_variable = { camp_admin_display_construction = camp_admin_construction_factor }
+	set_temp_variable = { camp_admin_display_extraction = camp_admin_extraction_factor }
+	event_target:camp_admin_ui_actor = {
+		set_variable = { camp_admin_gui_site_detainees_k = camp_admin_display_detainees }
+		set_variable = { camp_admin_gui_site_workforce_k = camp_admin_display_workers }
+		set_variable = { camp_admin_gui_site_month_deaths_k = camp_admin_display_month_deaths }
+		set_variable = { camp_admin_gui_site_total_deaths_k = camp_admin_display_total_deaths }
+		set_variable = { camp_admin_gui_site_support = camp_admin_display_support }
+		set_variable = { camp_admin_gui_site_industry = camp_admin_display_industry }
+		set_variable = { camp_admin_gui_site_construction = camp_admin_display_construction }
+		set_variable = { camp_admin_gui_site_extraction = camp_admin_display_extraction }
+	}
+}

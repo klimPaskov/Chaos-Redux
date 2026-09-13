@@ -234,7 +234,7 @@ The locked `normalization_convergence.py` LF hash is unchanged and must not be r
 
 ## Simplifications, compatibility limits, and remaining gates
 
-No geometry, action, source, or runtime fallback was introduced.
+No simplifications were made within this bounded metadata-only adapter capability, and no geometry, action, source, or runtime fallback was introduced.
 Promotion remains deliberately limited to animated `reimport_export` proof scenes with one rig and one to sixteen named mesh consumers.
 It rejects shape keys, extra/non-armature modifiers on target meshes, object or pose constraints, driver/NLA animation, modified action curves, linked/overridden data, grouped material node trees, unsupported mesh-attribute types, non-node materials, and missing or external unpacked texture files.
 Those features are not silently ignored, flattened, baked, or repaired.

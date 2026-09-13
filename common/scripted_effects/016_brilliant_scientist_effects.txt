@@ -1257,6 +1257,8 @@ brilliant_scientist_dismantle_project = {
 # Capacity and charged for every retained institutional stage. Publication,
 # theft, dismantling, and other durable history remains with the institution.
 brilliant_scientist_reconcile_old_host_after_transfer = {
+	clr_country_flag = brilliant_scientist_singularity_component_fallback_in_progress
+	clear_variable = brilliant_scientist_singularity_fallback_active_component
 	clr_country_flag = brilliant_scientist_project_stage_in_progress
 	brilliant_scientist_clear_context_pending_state = yes
 	brilliant_scientist_clear_project_incident_report_pending = yes
@@ -2643,6 +2645,147 @@ brilliant_scientist_load_project_cost_and_duration = {
 	}
 }
 
+# COUNTRY scope. Replaces the generic Prototype burden only for the no-DLC
+# board adapter. The decision has already paid political power and reserved
+# civilian factories; the stage effect consumes support equipment and fuel.
+# Resource units remain prerequisite gates and are never deducted here.
+brilliant_scientist_load_no_dlc_prototype_cost = {
+	set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_military_factories = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_trucks = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_trains = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_manpower = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_army_xp = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_air_xp = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_navy_xp = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_value.zero }
+	set_temp_variable = { brilliant_scientist_cost_capacity = constant:brilliant_scientist_project_board.capacity_prototype }
+	if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.computation } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.computation_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.computation_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.computation_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.computation_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.computation_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.electronics } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.electronics_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.electronics_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.electronics_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.electronics_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.electronics_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.materials_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.materials_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.materials_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.materials_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.materials_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.rocketry } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.rocketry_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.rocketry_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.rocketry_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.rocketry_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.rocketry_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.high_energy } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.high_energy_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.high_energy_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.high_energy_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.high_energy_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.high_energy_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.biomedical_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.biomedical_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.biomedical_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.biomedical_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.biomedical_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.teleportation } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.teleportation_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.teleportation_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.teleportation_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.teleportation_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.teleportation_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.cloning_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.cloning_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.cloning_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.cloning_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.cloning_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.robotics } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.robotics_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.robotics_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.robotics_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.robotics_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.robotics_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.paleogenetics_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.paleogenetics_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.paleogenetics_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.paleogenetics_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.paleogenetics_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biological_weapons } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.alien_arms } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.alien_arms_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.alien_arms_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.alien_arms_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.alien_arms_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.alien_arms_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.temporal } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.temporal_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.temporal_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.temporal_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.temporal_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.temporal_resource_units }
+	}
+	else_if = {
+		limit = { check_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.singularity } }
+		set_temp_variable = { brilliant_scientist_cost_civilian_factories = constant:brilliant_scientist_project_fallback_prototype.singularity_civilian_factories }
+		set_temp_variable = { brilliant_scientist_cost_support_equipment = constant:brilliant_scientist_project_fallback_prototype.singularity_support_equipment }
+		set_temp_variable = { brilliant_scientist_cost_fuel = constant:brilliant_scientist_project_fallback_prototype.singularity_fuel }
+		set_temp_variable = { brilliant_scientist_cost_political_power = constant:brilliant_scientist_project_fallback_prototype.singularity_political_power }
+		set_temp_variable = { brilliant_scientist_cost_resource_units = constant:brilliant_scientist_project_fallback_prototype.singularity_resource_units }
+	}
+	set_temp_variable = { brilliant_scientist_project_cost_ready = constant:brilliant_scientist_value.one }
+}
+
 # ---------------------------------------------------------------------------
 # Fixed-character role and atomic transfer contracts
 # ---------------------------------------------------------------------------
@@ -3552,6 +3695,13 @@ brilliant_scientist_load_capped_force_count = {
 brilliant_scientist_refresh_project_accident_pressure = {
 	brilliant_scientist_load_project_index = yes
 	brilliant_scientist_load_project_cost_and_duration = yes
+	if = {
+		limit = {
+			NOT = { has_dlc = "Gotterdammerung" }
+			check_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+		}
+		brilliant_scientist_load_no_dlc_prototype_cost = yes
+	}
 	set_variable = { brilliant_scientist_accident_pressure = brilliant_scientist_exposure }
 	set_temp_variable = { brilliant_scientist_accident_stage_pressure = brilliant_scientist_cost_capacity }
 	if = {
@@ -3886,6 +4036,7 @@ brilliant_scientist_mark_lab_world_terminal_fired = {
 # COUNTRY scope, the terminal's KRG/host caller. Clears transient Event 016 pointers. Persistent project,
 # origin, transfer, chronology, terminal, and achievement evidence remains.
 brilliant_scientist_cleanup_transient_targets_after_world_end = {
+	brilliant_scientist_krg_cleanup_clone_maturation = yes
 	brilliant_scientist_singularity_construction_cleanup = yes
 	brilliant_scientist_singularity_site_retire_all = yes
 	brilliant_scientist_close_active_project_stage_on_terminal = yes

@@ -1,0 +1,185 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 ACHIEVEMENT TRIGGERS
+# ============================================================================
+# These predicates describe durable achievement evidence for the Soviet
+# nuclear ledger. They never grant an achievement and never treat the opening
+# event alone as sufficient proof.
+# ============================================================================
+
+sov_nuclear_bombs_achievement_campaign_is_valid = {
+	tag = SOV
+	exists = yes
+	is_ai = no
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	has_country_flag = sov_nuclear_bombs_achievement_tracking_initialized
+	NOT = { is_debug = yes }
+	NOT = { has_country_flag = force_trigger_mode_enabled }
+	NOT = { has_country_flag = chaosx_test_country_initialized }
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_debug_disqualified }
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_force_disqualified }
+	NOT = { has_global_flag = sov_nuclear_bombs_achievement_manual_disqualified }
+	NOT = { has_global_flag = fallout_active }
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = world_end_final_silence }
+	NOT = { has_global_flag = world_end_final_silence_completed }
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse_in_progress }
+}
+
+sov_nuclear_bombs_achievement_complete_accounting = {
+	has_variable = global.sov_nuclear_bombs_ledger_reconciliation
+	check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals }
+	has_variable = global.sov_nuclear_bombs_ledger_missing
+	check_variable = { var = global.sov_nuclear_bombs_ledger_missing value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+}
+
+sov_nuclear_bombs_achievement_a_hundred_suns_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	has_variable = global.sov_nuclear_bombs_soviet_usable_devices
+	check_variable = { var = global.sov_nuclear_bombs_soviet_usable_devices value = constant:sov_nuclear_bombs_achievement.min_usable_devices compare = greater_than_or_equals }
+	check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_achievement.min_readiness compare = greater_than_or_equals }
+	sov_nuclear_bombs_achievement_complete_accounting = yes
+}
+
+sov_nuclear_bombs_achievement_a_hundred_suns_is_complete = {
+	sov_nuclear_bombs_achievement_a_hundred_suns_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_a_hundred_suns_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_a_hundred_suns_granted }
+}
+
+sov_nuclear_bombs_achievement_the_bomb_never_fell_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	sov_nuclear_bombs_event_has_evolution_ii = yes
+	has_country_flag = sov_nuclear_bombs_public_demonstration_completed
+	sov_nuclear_bombs_event_has_serious_crisis = yes
+	has_country_flag = sov_nuclear_bombs_atomic_moratorium
+	has_country_flag = sov_nuclear_bombs_moratorium_verified
+	check_variable = { var = sov_nuclear_bombs_combat_uses value = constant:sov_nuclear_bombs_achievement.zero_combat_use compare = equals }
+	NOT = { has_country_flag = sov_nuclear_bombs_moratorium_violation }
+	sov_nuclear_bombs_achievement_complete_accounting = yes
+}
+
+sov_nuclear_bombs_achievement_the_bomb_never_fell_is_complete = {
+	sov_nuclear_bombs_achievement_the_bomb_never_fell_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_the_bomb_never_fell_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_the_bomb_never_fell_granted }
+}
+
+sov_nuclear_bombs_achievement_ultimatum_without_ash_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	has_country_flag = sov_nuclear_bombs_ultimatum_target_was_independent
+	has_variable = sov_nuclear_bombs_ultimatum_target_country_id
+	has_variable = sov_nuclear_bombs_target_demand
+	check_variable = { var = sov_nuclear_bombs_target_demand value = constant:sov_nuclear_bombs_target_demand.minimum compare = greater_than_or_equals }
+	has_country_flag = sov_nuclear_bombs_ultimatum_response_recorded
+	OR = {
+		has_country_flag = sov_nuclear_bombs_ultimatum_complied
+		has_country_flag = sov_nuclear_bombs_partial_settlement_accepted
+	}
+	has_country_flag = sov_nuclear_bombs_settlement_verified
+	NOT = { has_country_flag = sov_nuclear_bombs_ultimatum_target_struck }
+	NOT = { has_country_flag = sov_nuclear_bombs_settlement_violated }
+}
+
+sov_nuclear_bombs_achievement_ultimatum_without_ash_is_complete = {
+	sov_nuclear_bombs_achievement_ultimatum_without_ash_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_ultimatum_without_ash_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_ultimatum_without_ash_granted }
+}
+
+sov_nuclear_bombs_achievement_scattered_arsenal_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	has_global_flag = sov_nuclear_bombs_event5_custody_episode_recorded
+	has_variable = global.sov_nuclear_bombs_breakaway_actor_count
+	check_variable = { var = global.sov_nuclear_bombs_breakaway_actor_count value = constant:sov_nuclear_bombs_achievement.min_breakaway_actors compare = greater_than_or_equals }
+	has_country_flag = sov_nuclear_bombs_collapse_reconciled
+	has_country_flag = sov_nuclear_bombs_custody_resolution_recorded
+	check_variable = { var = global.sov_nuclear_bombs_ledger_transferred value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_missing value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = global.sov_nuclear_bombs_breakaway_operational_actor_count value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_achievement.min_integrity_scattered compare = greater_than_or_equals }
+	sov_nuclear_bombs_achievement_complete_accounting = yes
+}
+
+sov_nuclear_bombs_achievement_scattered_arsenal_is_complete = {
+	sov_nuclear_bombs_achievement_scattered_arsenal_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_scattered_arsenal_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_scattered_arsenal_granted }
+}
+
+sov_nuclear_bombs_achievement_firebreak_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	has_global_flag = sov_nuclear_bombs_major_detonation_confirmed
+	has_global_flag = sov_nuclear_bombs_major_exchange_super_event_fired
+	has_variable = global.sov_nuclear_bombs_exchange_major_count
+	check_variable = { var = global.sov_nuclear_bombs_exchange_major_count value = constant:sov_nuclear_bombs_achievement.min_nuclear_majors compare = greater_than_or_equals }
+	has_country_flag = sov_nuclear_bombs_reciprocal_restraint_recorded
+	has_country_flag = sov_nuclear_bombs_hotline_standdown_verified
+	has_country_flag = sov_nuclear_bombs_major_exchange_stood_down
+	NOT = { has_country_flag = sov_nuclear_bombs_standdown_verification_failed }
+	NOT = { has_country_flag = sov_nuclear_bombs_standdown_violated }
+	NOT = { has_global_flag = sov_nuclear_bombs_general_exchange_reached }
+	NOT = { has_global_flag = fallout_active }
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	NOT = { has_global_flag = world_end_final_silence }
+}
+
+sov_nuclear_bombs_achievement_firebreak_is_complete = {
+	sov_nuclear_bombs_achievement_firebreak_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_firebreak_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_firebreak_granted }
+}
+
+sov_nuclear_bombs_achievement_first_and_last_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	check_variable = { var = sov_nuclear_bombs_combat_uses value = constant:sov_nuclear_bombs_achievement.exactly_one_combat_use compare = equals }
+	has_country_flag = sov_nuclear_bombs_confirmed_use_recorded
+	NOT = { has_country_flag = sov_nuclear_bombs_second_combat_use_recorded }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_assigned value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_reserved value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_transferred value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_missing value = constant:sov_nuclear_bombs_achievement.zero_remaining_devices compare = equals }
+	has_country_flag = sov_nuclear_bombs_atomic_moratorium
+	has_country_flag = sov_nuclear_bombs_moratorium_verified
+	NOT = { has_country_flag = sov_nuclear_bombs_moratorium_violation }
+	sov_nuclear_bombs_achievement_complete_accounting = yes
+}
+
+sov_nuclear_bombs_achievement_first_and_last_is_complete = {
+	sov_nuclear_bombs_achievement_first_and_last_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_first_and_last_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_first_and_last_granted }
+}
+
+sov_nuclear_bombs_achievement_the_last_telephone_criteria_met = {
+	sov_nuclear_bombs_achievement_campaign_is_valid = yes
+	sov_nuclear_bombs_event_has_evolution_iv = yes
+	check_variable = { var = global.chaos_meter_value value = constant:sov_nuclear_bombs_achievement.minimum_chaos_last_telephone compare = greater_than_or_equals }
+	has_country_flag = sov_nuclear_bombs_severe_first_use_gate_reached
+	has_country_flag = sov_nuclear_bombs_final_authorization_reached
+	has_event_target = sov_nuclear_bombs_severe_first_use_target
+	event_target:sov_nuclear_bombs_severe_first_use_target = {
+		exists = yes
+		NOT = { tag = SOV }
+		is_major = yes
+		has_tech = nukes
+		num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
+		has_war_with = SOV
+	}
+	has_country_flag = sov_nuclear_bombs_reciprocal_restraint_recorded
+	has_country_flag = sov_nuclear_bombs_hotline_standdown_verified
+	NOT = { has_country_flag = sov_nuclear_bombs_soviet_first_use_recorded }
+	NOT = { has_country_flag = sov_nuclear_bombs_standdown_violated }
+	NOT = { has_global_flag = fallout_active }
+	NOT = { has_global_flag = fallout_transition_active }
+	NOT = { has_global_flag = soviet_collapse_terminal_collapse }
+	NOT = { has_global_flag = world_end_final_silence }
+}
+
+sov_nuclear_bombs_achievement_the_last_telephone_is_complete = {
+	sov_nuclear_bombs_achievement_the_last_telephone_criteria_met = yes
+	has_country_flag = sov_nuclear_bombs_achievement_the_last_telephone_receipt
+	NOT = { has_country_flag = sov_nuclear_bombs_achievement_the_last_telephone_granted }
+}

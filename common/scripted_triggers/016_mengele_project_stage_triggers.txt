@@ -1,20 +1,18 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION STAGE TRIGGERS
+# CHAOS REDUX - EVENT 016 MENGELE PROJECT STAGE TRIGGERS
 # ============================================================================
-# Private country-scope gates for the bounded Mengele Computation stage core.
-# The public selectors are temporary variables:
-#   mengele_event016_project_family
-#   mengele_event016_requested_stage
+# Private country-scope gates for the fifteen-family Mengele Event 016 stage
+# receipt API. The selectors are temporary variables named
+# mengele_event016_project_family and mengele_event016_requested_stage.
 #
-# Event 016 family IDs are stable and one-based. The aligned receipt arrays
-# use family_id - 1, so Computation (family 1) is array index 0. These gates
-# deliberately do not read or write the Kruger project board.
+# Family IDs are one-based and the aligned receipt arrays use family ID minus
+# one. These gates never read or write the Kruger project board, Capacity, or
+# project-history variables.
 # ============================================================================
 
-# COUNTRY scope. The bridge file already owns the shorter
-# brilliant_scientist_mengele_project_provider_is_valid name. Keep this
-# stricter lifecycle gate private and unique; the parent bridge must route its
-# provider alias here when it integrates the Computation stage core.
+# COUNTRY scope. The bridge file owns the shorter provider alias. This strict
+# lifecycle gate is the single authorization source for paid stages and native
+# provider callbacks.
 brilliant_scientist_mengele_project_stage_provider_is_valid = {
 	exists = yes
 	is_mengele_clone_directorate_country = yes
@@ -57,96 +55,407 @@ brilliant_scientist_mengele_project_stage_provider_is_valid = {
 	}
 }
 
-# COUNTRY scope. Only family 1 and the four persistent stage IDs are accepted.
-# Unsupported families, stage zero, and malformed/missing selectors fail
-# closed before the receipt arrays can be initialized.
-brilliant_scientist_mengele_computation_stage_request_is_valid = {
-	check_variable = {
-		var = mengele_event016_project_family
-		value = constant:brilliant_scientist_project_family.computation
-		compare = equals
+# COUNTRY scope. True for one of the fifteen existing families and one of the
+# four persistent stage IDs. Stage zero and malformed selectors fail closed.
+brilliant_scientist_mengele_project_stage_request_is_valid = {
+	OR = {
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+		check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
 	}
 	OR = {
-		check_variable = {
-			var = mengele_event016_requested_stage
-			value = constant:brilliant_scientist_project_stage.theory
-			compare = equals
-		}
-		check_variable = {
-			var = mengele_event016_requested_stage
-			value = constant:brilliant_scientist_project_stage.prototype
-			compare = equals
-		}
-		check_variable = {
-			var = mengele_event016_requested_stage
-			value = constant:brilliant_scientist_project_stage.deployment
-			compare = equals
-		}
-		check_variable = {
-			var = mengele_event016_requested_stage
-			value = constant:brilliant_scientist_project_stage.weaponization
-			compare = equals
-		}
+		check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+		check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+		check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+		check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
 	}
 }
 
-# COUNTRY scope. A stage can be opened only once and only in order. The
-# current stage's completion receipt is tested as well as its predecessor so
-# repeated starts cannot re-charge a completed stage.
-brilliant_scientist_mengele_computation_stage_predecessor_is_valid = {
+# COUNTRY scope. Authenticate the entire private component chain, not only its count.
+brilliant_scientist_mengele_singularity_components_are_complete = {
+	check_variable = { var = mengele_event016_singularity_component_count value = constant:brilliant_scientist_singularity.component_count compare = equals }
+	has_country_flag = mengele_event016_singularity_command_core_completed
+	has_country_flag = mengele_event016_singularity_power_link_completed
+	has_country_flag = mengele_event016_singularity_containment_lattice_completed
+	has_country_flag = mengele_event016_singularity_temporal_authenticator_completed
+	has_country_flag = mengele_event016_singularity_delivery_architecture_completed
+	has_country_flag = mengele_event016_singularity_fail_deadly_governor_completed
+}
+
+# COUNTRY scope. A stage is accepted only in strict family order. Each branch
+# tests the predecessor completion flag and rejects a repeated current flag.
+brilliant_scientist_mengele_project_stage_predecessor_is_valid = {
+	brilliant_scientist_mengele_project_stage_request_is_valid = yes
 	OR = {
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.theory
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
 			NOT = { has_country_flag = mengele_event016_computation_theory_completed }
 		}
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.prototype
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
 			has_country_flag = mengele_event016_computation_theory_completed
 			NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
 		}
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.deployment
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
 			has_country_flag = mengele_event016_computation_prototype_completed
 			NOT = { has_country_flag = mengele_event016_computation_deployment_completed }
 		}
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.weaponization
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
 			has_country_flag = mengele_event016_computation_deployment_completed
 			NOT = { has_country_flag = mengele_event016_computation_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_electronics_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_electronics_theory_completed
+			NOT = { has_country_flag = mengele_event016_electronics_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_electronics_prototype_completed
+			NOT = { has_country_flag = mengele_event016_electronics_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_electronics_deployment_completed
+			NOT = { has_country_flag = mengele_event016_electronics_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_materials_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_materials_theory_completed
+			NOT = { has_country_flag = mengele_event016_materials_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_materials_prototype_completed
+			NOT = { has_country_flag = mengele_event016_materials_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_materials_deployment_completed
+			NOT = { has_country_flag = mengele_event016_materials_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_rocketry_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_rocketry_theory_completed
+			NOT = { has_country_flag = mengele_event016_rocketry_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_rocketry_prototype_completed
+			NOT = { has_country_flag = mengele_event016_rocketry_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_rocketry_deployment_completed
+			NOT = { has_country_flag = mengele_event016_rocketry_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_high_energy_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_high_energy_theory_completed
+			NOT = { has_country_flag = mengele_event016_high_energy_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_high_energy_prototype_completed
+			NOT = { has_country_flag = mengele_event016_high_energy_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_high_energy_deployment_completed
+			NOT = { has_country_flag = mengele_event016_high_energy_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_biomedical_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_biomedical_theory_completed
+			NOT = { has_country_flag = mengele_event016_biomedical_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_biomedical_prototype_completed
+			NOT = { has_country_flag = mengele_event016_biomedical_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_biomedical_deployment_completed
+			NOT = { has_country_flag = mengele_event016_biomedical_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_teleportation_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_teleportation_theory_completed
+			NOT = { has_country_flag = mengele_event016_teleportation_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_teleportation_prototype_completed
+			NOT = { has_country_flag = mengele_event016_teleportation_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_teleportation_deployment_completed
+			NOT = { has_country_flag = mengele_event016_teleportation_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_cloning_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_cloning_theory_completed
+			NOT = { has_country_flag = mengele_event016_cloning_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_cloning_prototype_completed
+			NOT = { has_country_flag = mengele_event016_cloning_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_cloning_deployment_completed
+			NOT = { has_country_flag = mengele_event016_cloning_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_robotics_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_robotics_theory_completed
+			NOT = { has_country_flag = mengele_event016_robotics_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_robotics_prototype_completed
+			NOT = { has_country_flag = mengele_event016_robotics_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_robotics_deployment_completed
+			NOT = { has_country_flag = mengele_event016_robotics_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_paleogenetics_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_paleogenetics_theory_completed
+			NOT = { has_country_flag = mengele_event016_paleogenetics_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_paleogenetics_prototype_completed
+			NOT = { has_country_flag = mengele_event016_paleogenetics_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_paleogenetics_deployment_completed
+			NOT = { has_country_flag = mengele_event016_paleogenetics_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_xenobiological_synthesis_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_xenobiological_synthesis_theory_completed
+			NOT = { has_country_flag = mengele_event016_xenobiological_synthesis_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_xenobiological_synthesis_prototype_completed
+			NOT = { has_country_flag = mengele_event016_xenobiological_synthesis_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_xenobiological_synthesis_deployment_completed
+			NOT = { has_country_flag = mengele_event016_xenobiological_synthesis_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_biological_weapons_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_biological_weapons_theory_completed
+			NOT = { has_country_flag = mengele_event016_biological_weapons_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_biological_weapons_prototype_completed
+			NOT = { has_country_flag = mengele_event016_biological_weapons_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_biological_weapons_deployment_completed
+			NOT = { has_country_flag = mengele_event016_biological_weapons_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_alien_arms_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_alien_arms_theory_completed
+			NOT = { has_country_flag = mengele_event016_alien_arms_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_alien_arms_prototype_completed
+			NOT = { has_country_flag = mengele_event016_alien_arms_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_alien_arms_deployment_completed
+			NOT = { has_country_flag = mengele_event016_alien_arms_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_temporal_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_temporal_theory_completed
+			NOT = { has_country_flag = mengele_event016_temporal_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_temporal_prototype_completed
+			NOT = { has_country_flag = mengele_event016_temporal_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_temporal_deployment_completed
+			NOT = { has_country_flag = mengele_event016_temporal_weaponization_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = { has_country_flag = mengele_event016_singularity_theory_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			has_country_flag = mengele_event016_singularity_theory_completed
+			brilliant_scientist_mengele_singularity_components_are_complete = yes
+			NOT = { has_country_flag = mengele_event016_singularity_prototype_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			has_country_flag = mengele_event016_singularity_prototype_completed
+			NOT = { has_country_flag = mengele_event016_singularity_deployment_completed }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			has_country_flag = mengele_event016_singularity_deployment_completed
+			NOT = { has_country_flag = mengele_event016_singularity_weaponization_completed }
 		}
 	}
 }
 
-# COUNTRY scope. The stage may be started only if the direct resources are
-# affordable. Civilian factories are a native decision modifier reservation,
-# not a stockpile debit, so they are deliberately absent from this gate. The
-# provider route uses inclusive affordability: NOT-less-than accepts an exact
-# equipment/fuel balance, while Political Power uses the documented inclusive
-# comparison operator. Existing Kruger board gates remain unchanged.
-brilliant_scientist_mengele_computation_stage_can_pay = {
+# COUNTRY scope. Inclusive direct affordability for every sourced stage quote.
+# Prototype uses the same shared paid decision constants as the quote loader.
+# Native decision reservations own the available-factory requirement.
+brilliant_scientist_mengele_project_stage_can_pay = {
 	OR = {
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.theory
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
 			NOT = {
 				has_equipment = {
 					support_equipment < constant:brilliant_scientist_project_stage_cost.computation_theory_support_equipment
@@ -159,29 +468,8 @@ brilliant_scientist_mengele_computation_stage_can_pay = {
 			}
 		}
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.prototype
-				compare = equals
-			}
-			NOT = {
-				has_equipment = {
-					support_equipment < constant:mengele_event016_project_stage.computation_prototype_support_equipment
-				}
-			}
-			NOT = { has_fuel < constant:mengele_event016_project_stage.computation_prototype_fuel }
-			check_variable = {
-				var = political_power
-				value = constant:mengele_event016_project_stage.computation_prototype_political_power
-				compare = greater_than_or_equals
-			}
-		}
-		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.deployment
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
 			NOT = {
 				has_equipment = {
 					support_equipment < constant:brilliant_scientist_project_stage_cost.computation_deployment_support_equipment
@@ -195,11 +483,8 @@ brilliant_scientist_mengele_computation_stage_can_pay = {
 			}
 		}
 		AND = {
-			check_variable = {
-				var = mengele_event016_requested_stage
-				value = constant:brilliant_scientist_project_stage.weaponization
-				compare = equals
-			}
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
 			NOT = {
 				has_equipment = {
 					support_equipment < constant:brilliant_scientist_project_stage_cost.computation_weaponization_support_equipment
@@ -212,56 +497,1090 @@ brilliant_scientist_mengele_computation_stage_can_pay = {
 				compare = greater_than_or_equals
 			}
 		}
-	}
-}
-
-# COUNTRY scope. Receipt emptiness is intentionally independent of provider
-# validity so an accessible owner can clean an abandoned receipt later. The
-# initializer writes a full aligned array, therefore the marker is required
-# before a dynamic array read.
-brilliant_scientist_mengele_computation_stage_receipt_is_empty = {
-	brilliant_scientist_mengele_computation_stage_request_is_valid = yes
-	OR = {
-		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
 		AND = {
-			has_country_flag = mengele_event016_provider_receipts_initialized
-			check_variable = {
-				var = mengele_event016_active_project_stage_entries^0
-				value = constant:brilliant_scientist_project_stage.none
-				compare = equals
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.electronics_theory_support_equipment
+				}
 			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.electronics_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.electronics_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.electronics_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.electronics_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.electronics_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.electronics_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.materials_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.materials_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.materials_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.materials_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.materials_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.materials_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.materials_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.materials_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.rocketry_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.rocketry_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.rocketry_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.rocketry_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.rocketry_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.high_energy_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.high_energy_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.high_energy_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.high_energy_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.high_energy_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.biomedical_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.biomedical_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biomedical_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.biomedical_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.biomedical_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.teleportation_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.teleportation_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.teleportation_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.teleportation_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.teleportation_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.teleportation_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.cloning_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.cloning_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.cloning_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.cloning_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.cloning_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.cloning_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.cloning_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.cloning_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.robotics_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.robotics_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.robotics_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.robotics_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.robotics_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.robotics_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.paleogenetics_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.paleogenetics_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.paleogenetics_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.xenobiological_synthesis_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.biological_weapons_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.biological_weapons_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.biological_weapons_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.alien_arms_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.alien_arms_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.alien_arms_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.alien_arms_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.temporal_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.temporal_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.temporal_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.temporal_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.temporal_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.temporal_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.temporal_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.theory compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.singularity_theory_support_equipment
+				}
+			}
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.singularity_theory_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.singularity_deployment_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.singularity_deployment_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.singularity_deployment_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+			NOT = {
+				has_equipment = {
+					support_equipment < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_support_equipment
+				}
+			}
+			NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.singularity_weaponization_fuel }
+			check_variable = {
+				var = political_power
+				value = constant:brilliant_scientist_project_stage_cost.singularity_weaponization_political_power
+				compare = greater_than_or_equals
+			}
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.computation_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.computation_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.computation_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.electronics_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.electronics_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.electronics_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.materials_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.materials_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.materials_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.rocketry_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.rocketry_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.rocketry_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.high_energy_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.high_energy_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.high_energy_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.biomedical_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.biomedical_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.biomedical_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.teleportation_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.teleportation_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.teleportation_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.cloning_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.cloning_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.cloning_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.robotics_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.robotics_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.robotics_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.paleogenetics_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.paleogenetics_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.paleogenetics_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.xenobiological_synthesis_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.biological_weapons_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.biological_weapons_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.biological_weapons_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.alien_arms_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.alien_arms_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.alien_arms_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.temporal_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.temporal_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.temporal_political_power compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_requested_stage value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+			NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.singularity_support_equipment } }
+			NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.singularity_fuel }
+			check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.singularity_political_power compare = greater_than_or_equals }
 		}
 	}
 }
 
-# COUNTRY scope. Completion/cancellation callbacks must carry the exact
-# family/stage receipt they started; a wrong family or stage cannot clear or
-# refund a different active slot.
-brilliant_scientist_mengele_computation_stage_receipt_matches = {
-	brilliant_scientist_mengele_computation_stage_request_is_valid = yes
-	has_country_flag = mengele_event016_provider_receipts_initialized
-	check_variable = {
-		var = mengele_event016_active_project_stage_entries^0
-		value = mengele_event016_requested_stage
-		compare = equals
+# COUNTRY scope. Receipt emptiness is independently queryable so lifecycle
+# cleanup can operate after provider validity is lost.
+brilliant_scientist_mengele_project_stage_receipt_is_empty = {
+	brilliant_scientist_mengele_project_stage_request_is_valid = yes
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^0 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^1 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^2 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^3 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^4 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^6 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^7 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^8 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^9 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^10 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^11 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^12 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^13 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^14 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
 	}
 }
 
-# COUNTRY scope. Native output is authenticated only for a currently valid
-# provider with the provider Theory receipt and the exact native special-project
-# completion. The parent must call the adapter only from that project's exact
-# `project_output` branch; no project-start callback is assumed. An optional
-# pending marker may describe the exposed native presentation, but it is not a
-# second clock or a prerequisite for this exact output callback. The adapter
-# never treats a stale legacy flag as proof of a native callback.
+# COUNTRY scope. Only the exact family/stage receipt can be settled.
+brilliant_scientist_mengele_project_stage_receipt_matches = {
+	brilliant_scientist_mengele_project_stage_request_is_valid = yes
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	OR = {
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^0 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^1 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^2 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^3 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^4 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^5 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^6 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^7 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^8 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^9 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^10 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^11 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^12 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^13 value = mengele_event016_requested_stage compare = equals }
+		}
+		AND = {
+			check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+			check_variable = { var = mengele_event016_active_project_stage_entries^14 value = mengele_event016_requested_stage compare = equals }
+		}
+	}
+}
+
+# Compatibility aliases retained for existing Computation decision wrappers.
+brilliant_scientist_mengele_computation_stage_request_is_valid = {
+	brilliant_scientist_mengele_project_stage_request_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
+}
+
+brilliant_scientist_mengele_computation_stage_predecessor_is_valid = {
+	brilliant_scientist_mengele_project_stage_predecessor_is_valid = yes
+}
+
+brilliant_scientist_mengele_computation_stage_can_pay = {
+	brilliant_scientist_mengele_project_stage_can_pay = yes
+}
+
+brilliant_scientist_mengele_computation_stage_receipt_is_empty = {
+	brilliant_scientist_mengele_project_stage_receipt_is_empty = yes
+}
+
+brilliant_scientist_mengele_computation_stage_receipt_matches = {
+	brilliant_scientist_mengele_project_stage_receipt_matches = yes
+}
+
+# COUNTRY scope. Strict provider callback authentication for computation.
 brilliant_scientist_mengele_computation_native_output_is_authentic = {
 	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
-	check_variable = {
-		var = mengele_event016_project_family
-		value = constant:brilliant_scientist_project_family.computation
-		compare = equals
-	}
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.computation compare = equals }
 	has_country_flag = mengele_event016_computation_theory_completed
-	NOT = { has_country_flag = mengele_event016_computation_prototype_completed }
-	is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_computational_engine
+	}
 }
+
+# COUNTRY scope. Strict provider callback authentication for electronics.
+brilliant_scientist_mengele_electronics_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.electronics compare = equals }
+	has_country_flag = mengele_event016_electronics_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_air_radar
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for materials.
+brilliant_scientist_mengele_materials_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.materials compare = equals }
+	has_country_flag = mengele_event016_materials_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_advanced_materials
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for rocketry.
+brilliant_scientist_mengele_rocketry_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.rocketry compare = equals }
+	has_country_flag = mengele_event016_rocketry_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_rockets_flying_bomb
+		is_special_project_completed = sp:sp_air_jet_engine
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for high_energy.
+brilliant_scientist_mengele_high_energy_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.high_energy compare = equals }
+	has_country_flag = mengele_event016_high_energy_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_nuclear_reactor
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for biomedical.
+brilliant_scientist_mengele_biomedical_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biomedical compare = equals }
+	has_country_flag = mengele_event016_biomedical_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for teleportation.
+brilliant_scientist_mengele_teleportation_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.teleportation compare = equals }
+	has_country_flag = mengele_event016_teleportation_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_quantum_transit
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for cloning.
+brilliant_scientist_mengele_cloning_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.cloning compare = equals }
+	has_country_flag = mengele_event016_cloning_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_cloning
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for robotics.
+brilliant_scientist_mengele_robotics_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.robotics compare = equals }
+	has_country_flag = mengele_event016_robotics_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_autonomous_cognition
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for paleogenetics.
+brilliant_scientist_mengele_paleogenetics_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.paleogenetics compare = equals }
+	has_country_flag = mengele_event016_paleogenetics_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_paleogenetics
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for xenobiological_synthesis.
+brilliant_scientist_mengele_xenobiological_synthesis_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.xenobiological_synthesis compare = equals }
+	has_country_flag = mengele_event016_xenobiological_synthesis_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_xenobiological_synthesis
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for biological_weapons.
+brilliant_scientist_mengele_biological_weapons_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.biological_weapons compare = equals }
+	has_country_flag = mengele_event016_biological_weapons_theory_completed
+	OR = {
+		is_special_project_completed = sp:anthrax_bomb
+		is_special_project_completed = sp:plague_bomb
+		is_special_project_completed = sp:tularemia_bomb
+		is_special_project_completed = sp:smallpox_bomb
+		is_special_project_completed = sp:weaponize_the_zombies
+		is_special_project_completed = sp:black_plague_weaponization_program
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for alien_arms.
+brilliant_scientist_mengele_alien_arms_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.alien_arms compare = equals }
+	has_country_flag = mengele_event016_alien_arms_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_alien_arms
+	}
+}
+
+# COUNTRY scope. Strict provider callback authentication for temporal.
+brilliant_scientist_mengele_temporal_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.temporal compare = equals }
+	has_country_flag = mengele_event016_temporal_theory_completed
+	OR = {
+		is_special_project_completed = sp:sp_brilliant_scientist_temporal_mechanics
+	}
+}
+
+# COUNTRY scope. Exact Singularity component callbacks are authenticated by
+# their selector and the matching existing native special project.
+brilliant_scientist_mengele_singularity_component_native_output_is_authentic = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	check_variable = { var = mengele_event016_project_family value = constant:brilliant_scientist_project_family.singularity compare = equals }
+	has_country_flag = mengele_event016_singularity_theory_completed
+	OR = {
+		AND = {
+			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.command_core compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_singularity_command_core
+		}
+		AND = {
+			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.power_link compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_singularity_power_link
+		}
+		AND = {
+			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.containment_lattice compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_singularity_containment_lattice
+		}
+		AND = {
+			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.temporal_authenticator compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_singularity_temporal_authenticator
+		}
+		AND = {
+			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.delivery_architecture compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_singularity_delivery_architecture
+		}
+		AND = {
+			check_variable = { var = brilliant_scientist_singularity_component value = constant:brilliant_scientist_singularity_component.fail_deadly_governor compare = equals }
+			is_special_project_completed = sp:sp_brilliant_scientist_singularity_fail_deadly_governor
+		}
+	}
+}
+
+# COUNTRY scope. Generic native callback authentication for all source-proven
+# families. Singularity uses the component adapter because its native output
+# carries a component selector instead of a single family project.
+brilliant_scientist_mengele_project_native_output_is_authentic = {
+	OR = {
+		brilliant_scientist_mengele_computation_native_output_is_authentic = yes
+		brilliant_scientist_mengele_electronics_native_output_is_authentic = yes
+		brilliant_scientist_mengele_materials_native_output_is_authentic = yes
+		brilliant_scientist_mengele_rocketry_native_output_is_authentic = yes
+		brilliant_scientist_mengele_high_energy_native_output_is_authentic = yes
+		brilliant_scientist_mengele_biomedical_native_output_is_authentic = yes
+		brilliant_scientist_mengele_teleportation_native_output_is_authentic = yes
+		brilliant_scientist_mengele_cloning_native_output_is_authentic = yes
+		brilliant_scientist_mengele_robotics_native_output_is_authentic = yes
+		brilliant_scientist_mengele_paleogenetics_native_output_is_authentic = yes
+		brilliant_scientist_mengele_xenobiological_synthesis_native_output_is_authentic = yes
+		brilliant_scientist_mengele_biological_weapons_native_output_is_authentic = yes
+		brilliant_scientist_mengele_alien_arms_native_output_is_authentic = yes
+		brilliant_scientist_mengele_temporal_native_output_is_authentic = yes
+	}
+}
+
+# The Computation-specific native trigger above retains its established public
+# name and is the compatibility entry point for existing callers.

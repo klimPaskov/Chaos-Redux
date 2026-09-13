@@ -5,8 +5,8 @@
 # hosted sovereignty board. Exact hidden values never appear in localisation.
 # ============================================================================
 
-# COUNTRY scope. ACTION is one containment action constant. The selected row
-# stays visible while the other responses are hidden.
+# COUNTRY scope. Common visibility only; callers also check their action receipt.
+# No inputs or side effects. The selected row remains visible via caller checks.
 brilliant_scientist_containment_action_is_visible = {
 	brilliant_scientist_is_current_host = yes
 	NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
@@ -15,89 +15,63 @@ brilliant_scientist_containment_action_is_visible = {
 		has_country_flag = brilliant_scientist_sovereignty_deadline_active
 		has_country_flag = brilliant_scientist_containment_resolution_requested
 	}
-	OR = {
-		NOT = { has_country_flag = brilliant_scientist_containment_action_in_progress }
-		check_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
-	}
-}
-
-# COUNTRY scope. POLITICAL_POWER and STABILITY are positive payment values.
-brilliant_scientist_can_pay_containment_base = {
-	check_variable = { var = political_power value = $POLITICAL_POWER$ compare = greater_than_or_equals }
-	check_variable = { var = stability value = $STABILITY$ compare = greater_than_or_equals }
 }
 
 # COUNTRY scope. These same payment predicates gate selection and cost display.
 brilliant_scientist_can_pay_containment_release = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.release_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.release_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.release_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.release_stability compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_exile = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.exile_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.exile_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.exile_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.exile_stability compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@convoy value = constant:brilliant_scientist_containment_cost.exile_convoy_gate compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_arrest = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.arrest_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.arrest_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.arrest_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.arrest_stability compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_containment_cost.arrest_support_gate compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_shutdown = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.shutdown_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.shutdown_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.shutdown_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.shutdown_stability compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@motorized_equipment value = constant:brilliant_scientist_containment_cost.shutdown_truck_gate compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_charter = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.charter_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.charter_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.charter_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.charter_stability compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_containment_cost.charter_support_gate compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_military_seizure = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.military_seizure_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.military_seizure_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.military_seizure_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.military_seizure_stability compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@infantry_equipment value = constant:brilliant_scientist_containment_cost.seizure_infantry_gate compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_foreign_containment = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.foreign_containment_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.foreign_containment_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.foreign_containment_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.foreign_containment_stability compare = greater_than_or_equals }
 	check_variable = { var = command_power value = constant:brilliant_scientist_containment_cost.foreign_command_power_gate compare = greater_than_or_equals }
 }
 
 brilliant_scientist_can_pay_containment_concession = {
-	brilliant_scientist_can_pay_containment_base = {
-		POLITICAL_POWER = constant:brilliant_scientist_containment_cost.concession_political_power
-		STABILITY = constant:brilliant_scientist_containment_cost.concession_stability
-	}
+	check_variable = { var = political_power value = constant:brilliant_scientist_containment_cost.concession_political_power compare = greater_than_or_equals }
+	check_variable = { var = stability value = constant:brilliant_scientist_containment_cost.concession_stability compare = greater_than_or_equals }
 	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_containment_cost.concession_support_gate compare = greater_than_or_equals }
 }
 
-# COUNTRY scope. A stale native timer cannot settle another action's receipt.
+# COUNTRY scope. Common live-action checks; callers must also match their receipt.
+# No inputs or side effects. A stale timer must not settle a different action.
 brilliant_scientist_containment_action_is_live = {
 	brilliant_scientist_is_current_host = yes
 	NOT = { has_global_flag = world_end }
 	NOT = { has_country_flag = brilliant_scientist_containment_resolution_completed }
 	has_country_flag = brilliant_scientist_containment_action_in_progress
-	check_variable = { brilliant_scientist_active_containment_action = $ACTION$ }
 }
 
 brilliant_scientist_sovereignty_board_is_open = {

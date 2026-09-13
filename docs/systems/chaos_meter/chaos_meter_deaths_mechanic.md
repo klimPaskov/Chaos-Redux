@@ -28,6 +28,7 @@ Deaths are currently registered from:
 7. Event 20 Black Plague state mortality through the exact state-population transaction.
 8. Fallout's one-time grade-based state loss through an observed post-mutation Deaths transaction.
 9. Event 19 ghost-derivative decline through its long-cadence exact state-population transaction.
+10. Event 33 Acid Rain regional, severe-cell, global-layer, and superstorm pulses through one generation-bound exact state-population gateway.
 
 Nuclear and thermonuclear strikes also add direct chaos through the shared nuclear-use ladder documented in [nuclear_chaos_ladder.md](nuclear_chaos_ladder.md).
 That direct gain is separate from any later deaths-to-chaos contribution.
@@ -40,6 +41,8 @@ The official effect surface exposes no population-only replacement. If an engine
 This residual engine behavior remains a validation risk rather than a hidden compensation assumption.
 
 Fallout uses a stricter order because its world rewrite must be idempotent across phase-event retries. It calculates intent from frozen population and grade, clamps the commit against live population, writes a mutation-issued flag, and calls the population-only helper once. It then reads the live population difference. Only an exact observed result is registered through `chaos_meter_register_deaths`, with `chaos_deaths_apply_state_pop` set to zero. The optional `chaos_deaths_record_state_ledger` input records that observed amount in the state Deaths map ledger without mutating population again. A mismatch leaves the Fallout blackout active and never receives a Deaths entry.
+
+Event 33 writes its pulse receipt key before calling `apply_exact_state_civilian_population_loss`. A repeated key therefore cannot remove population twice. The gateway compares the live state-population change with `state_civilian_population_loss_applied`; only a positive applied value is added once to the state Acid Rain ledger, the global Event 33 total, the responsible country's Event 33 total, reports, and achievement inputs. A zero result creates no Deaths record or Event 33 death total. Manpower debits, recruitable-population modifiers, attrition, building damage, and counters never stand in for this value. Deaths-to-Chaos synchronization remains owned by the shared Deaths system, while Event 33 adds direct Chaos only at separately mapped non-mortality edges.
 
 ## UI Integration (Chaos Meter)
 
@@ -98,6 +101,8 @@ Fallout uses Deaths reason `19`, `fallout_aftermath`. Its recorded losses use th
 
 Event 19 ghost decline uses Deaths reason `20`, `infantry_spawn_ghost_decline`, and a `0.10` deaths-to-chaos weight.
 It records the real population loss once through the shared pipeline while keeping the cause separate from Event 10's `death_consumption` attribution and progression.
+
+Event 33 uses Deaths reason `34`, `acid_rain`. Its pulse gateway supplies the exact state-population contract once and consumes the helper's applied result for all downstream accounting.
 
 ## Icons and GFX Wiring
 

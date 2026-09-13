@@ -1,0 +1,60 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 ACHIEVEMENT TRACKING EFFECTS
+# ============================================================================
+# Event 23 writes durable receipts only after the corresponding historical
+# contract is true. These effects never grant an achievement directly and do
+# not clear receipts on reload, custody transfer, or Soviet disappearance.
+# ============================================================================
+
+sov_nuclear_bombs_initialize_achievement_state = {
+	if = {
+		limit = { NOT = { has_country_flag = sov_nuclear_bombs_achievement_tracking_initialized } }
+		set_country_flag = sov_nuclear_bombs_achievement_tracking_initialized
+	}
+}
+
+sov_nuclear_bombs_achievement_mark_debug_disqualifier = {
+	set_country_flag = sov_nuclear_bombs_achievement_debug_disqualified
+}
+
+sov_nuclear_bombs_achievement_mark_force_disqualifier = {
+	set_country_flag = sov_nuclear_bombs_achievement_force_disqualified
+}
+
+sov_nuclear_bombs_achievement_mark_manual_disqualifier = {
+	set_global_flag = sov_nuclear_bombs_achievement_manual_disqualified
+}
+
+sov_nuclear_bombs_achievement_refresh_receipts = {
+	if = {
+		limit = { sov_nuclear_bombs_achievement_campaign_is_valid = yes }
+		if = {
+			limit = { sov_nuclear_bombs_achievement_a_hundred_suns_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_a_hundred_suns_receipt
+		}
+		if = {
+			limit = { sov_nuclear_bombs_achievement_the_bomb_never_fell_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_the_bomb_never_fell_receipt
+		}
+		if = {
+			limit = { sov_nuclear_bombs_achievement_ultimatum_without_ash_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_ultimatum_without_ash_receipt
+		}
+		if = {
+			limit = { sov_nuclear_bombs_achievement_scattered_arsenal_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_scattered_arsenal_receipt
+		}
+		if = {
+			limit = { sov_nuclear_bombs_achievement_firebreak_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_firebreak_receipt
+		}
+		if = {
+			limit = { sov_nuclear_bombs_achievement_first_and_last_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_first_and_last_receipt
+		}
+		if = {
+			limit = { sov_nuclear_bombs_achievement_the_last_telephone_criteria_met = yes }
+			set_country_flag = sov_nuclear_bombs_achievement_the_last_telephone_receipt
+		}
+	}
+}

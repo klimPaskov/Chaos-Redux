@@ -1,6 +1,8 @@
 # Event 012 elephant animation recovery handoff — 2026-08-22
 
-Status: `blocked` before provider spend.
+> Superseded by the explicit vanilla-elephantry reuse decision dated 2026-08-27: the blocked custom animation recovery below is historical evidence only. `chaosx_elephant` uses vanilla `elephantry`, and retention or deletion of the approximately 340 MB evidence package is an owner decision outside this documentation-only pass.
+
+Status: `superseded_by_vanilla_elephantry_reuse` (historical blocker record; originally blocked before provider spend).
 
 ## Outcome
 

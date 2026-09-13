@@ -1,0 +1,36 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING ON ACTIONS
+# ============================================================================
+# Event 028 reacts only to control changes on its registered crater and
+# fragment states. No world-state scan is introduced here.
+#
+# on_state_control_changed uses ROOT as the new controller, FROM as the former
+# controller, and FROM.FROM as the changed state.
+# ============================================================================
+
+on_actions = {
+	on_annex = {
+		effect = {
+			if = {
+				limit = { FROM = { has_country_flag = asteroid_incoming_original_target_country } }
+				set_global_flag = asteroid_incoming_original_target_annexed
+			}
+		}
+	}
+
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = {
+					FROM.FROM = {
+						OR = {
+							has_state_flag = asteroid_incoming_main_crater
+							has_state_flag = asteroid_incoming_fragment_site
+						}
+					}
+				}
+				FROM.FROM = { asteroid_incoming_on_state_control_changed = yes }
+			}
+		}
+	}
+}

@@ -1512,80 +1512,128 @@ fury_seed_world_end_continental_fronts = {
 }
 
 fury_decision_pay_reinforcement_cost = {
-	add_command_power = constant:fury_decision_cost.reinforcement_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.reinforcement_equipment }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_reinforcement_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.reinforcement_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.reinforcement_equipment }
+	}
 }
 
 fury_decision_pay_settlement_cost = {
-	add_command_power = constant:fury_decision_cost.settlement_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.settlement_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.settlement_support }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_settlement_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.settlement_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.settlement_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.settlement_support }
+	}
 }
 
 fury_decision_pay_core_cost = {
-	add_command_power = constant:fury_decision_cost.core_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.core_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.core_support }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_core_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.core_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.core_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.core_support }
+	}
 }
 
 fury_decision_pay_registers_cost = {
-	add_command_power = constant:fury_decision_cost.registers_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.registers_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.registers_support }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_registers_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.registers_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.registers_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.registers_support }
+	}
 }
 
 fury_decision_pay_rail_registry_cost = {
-	add_command_power = constant:fury_decision_cost.rail_registry_cp_spend
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_decision_cost.rail_registry_trains }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.rail_registry_support }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_rail_registry_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.rail_registry_cp_spend
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_decision_cost.rail_registry_trains }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.rail_registry_support }
+	}
 }
 
 fury_decision_pay_admin_core_cost = {
-	add_command_power = constant:fury_decision_cost.admin_core_cp_spend
-	add_manpower = constant:fury_decision_cost.admin_core_manpower
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.admin_core_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.admin_core_support }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_admin_core_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.admin_core_cp_spend
+		add_manpower = constant:fury_decision_cost.admin_core_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.admin_core_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.admin_core_support }
+	}
 }
 
 fury_decision_pay_march_core_cost = {
-	add_command_power = constant:fury_decision_cost.march_core_cp_spend
-	add_manpower = constant:fury_decision_cost.march_core_manpower
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.march_core_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.march_core_support }
-	add_stability = constant:fury_decision_cost.march_core_stability
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_march_core_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.march_core_cp_spend
+		add_manpower = constant:fury_decision_cost.march_core_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.march_core_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.march_core_support }
+		add_stability = constant:fury_decision_cost.march_core_stability
+	}
 }
 
 fury_count_captured_registers_effect = {
 	fury_decision_pay_registers_cost = yes
-	add_to_variable = { fury_compliance_drive = 1 }
-	random_controlled_state = {
-		limit = {
-			is_owned_by = ROOT
-			is_controlled_by = ROOT
-			NOT = { is_core_of = ROOT }
-			NOT = { has_state_flag = fury_settlement_registered }
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
+		add_to_variable = { fury_compliance_drive = 1 }
+		random_controlled_state = {
+			limit = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				NOT = { is_core_of = ROOT }
+				NOT = { has_state_flag = fury_settlement_registered }
+			}
+			set_state_flag = fury_settlement_registered
+			set_state_flag = fury_settlement_admin_path
+			add_compliance = constant:fury_occupation.register_compliance_gain
 		}
-		set_state_flag = fury_settlement_registered
-		set_state_flag = fury_settlement_admin_path
-		add_compliance = constant:fury_occupation.register_compliance_gain
+		fury_update_occupation_pressure = yes
 	}
-	fury_update_occupation_pressure = yes
 }
 
 fury_rail_registry_survey_effect = {
 	fury_decision_pay_rail_registry_cost = yes
-	random_controlled_state = {
-		limit = {
-			is_owned_by = ROOT
-			is_controlled_by = ROOT
-			has_state_flag = fury_settlement_registered
-			NOT = { has_state_flag = fury_rail_registry_complete }
-			NOT = { is_core_of = ROOT }
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
+		random_controlled_state = {
+			limit = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = fury_settlement_registered
+				NOT = { has_state_flag = fury_rail_registry_complete }
+				NOT = { is_core_of = ROOT }
+			}
+			set_state_flag = fury_rail_registry_complete
+			add_compliance = constant:fury_occupation.rail_registry_compliance_gain
 		}
-		set_state_flag = fury_rail_registry_complete
-		add_compliance = constant:fury_occupation.rail_registry_compliance_gain
+		fury_update_occupation_pressure = yes
 	}
-	fury_update_occupation_pressure = yes
 }
 
 fury_garrison_the_names_success = {
@@ -1655,130 +1703,184 @@ fury_restore_the_registers_failure = {
 
 fury_complete_admin_core = {
 	fury_decision_pay_admin_core_cost = yes
-	random_controlled_state = {
-		limit = {
-			is_owned_by = ROOT
-			is_controlled_by = ROOT
-			has_state_flag = fury_settlement_registered
-			NOT = { has_state_flag = fury_integration_failed_recently }
-			NOT = { is_core_of = ROOT }
-			compliance > constant:fury_occupation.compliance_admin_gate
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
+		random_controlled_state = {
+			limit = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = fury_settlement_registered
+				NOT = { has_state_flag = fury_integration_failed_recently }
+				NOT = { is_core_of = ROOT }
+				compliance > constant:fury_occupation.compliance_admin_gate
+			}
+			add_core_of = ROOT
+			clr_state_flag = fury_settlement_registered
+			clr_state_flag = fury_settlement_admin_path
+			clr_state_flag = fury_settlement_march_path
+			clr_state_flag = fury_integration_failed_recently
+			clr_state_flag = fury_rail_registry_complete
 		}
-		add_core_of = ROOT
-		clr_state_flag = fury_settlement_registered
-		clr_state_flag = fury_settlement_admin_path
-		clr_state_flag = fury_settlement_march_path
-		clr_state_flag = fury_integration_failed_recently
-		clr_state_flag = fury_rail_registry_complete
+		set_global_flag = fury_coring_completed
+		set_country_flag = fury_cored_settlement_state
+		add_to_variable = { fury_compliance_drive = 1 }
+		subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
+		subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.admin_core_pressure_reduction }
+		clamp_variable = { var = fury_overextension min = 0 }
+		clamp_variable = { var = fury_occupation_pressure min = 0 }
+		fury_update_occupation_pressure = yes
 	}
-	set_global_flag = fury_coring_completed
-	set_country_flag = fury_cored_settlement_state
-	add_to_variable = { fury_compliance_drive = 1 }
-	subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
-	subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.admin_core_pressure_reduction }
-	clamp_variable = { var = fury_overextension min = 0 }
-	clamp_variable = { var = fury_occupation_pressure min = 0 }
-	fury_update_occupation_pressure = yes
 }
 
 fury_complete_march_core = {
 	fury_decision_pay_march_core_cost = yes
-	random_controlled_state = {
-		limit = {
-			is_owned_by = ROOT
-			is_controlled_by = ROOT
-			has_state_flag = fury_settlement_registered
-			NOT = { is_core_of = ROOT }
-			compliance > constant:fury_occupation.compliance_march_gate
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
+		random_controlled_state = {
+			limit = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+				has_state_flag = fury_settlement_registered
+				NOT = { is_core_of = ROOT }
+				compliance > constant:fury_occupation.compliance_march_gate
+			}
+			add_core_of = ROOT
+			clr_state_flag = fury_settlement_registered
+			clr_state_flag = fury_settlement_admin_path
+			clr_state_flag = fury_settlement_march_path
+			clr_state_flag = fury_integration_failed_recently
+			clr_state_flag = fury_rail_registry_complete
 		}
-		add_core_of = ROOT
-		clr_state_flag = fury_settlement_registered
-		clr_state_flag = fury_settlement_admin_path
-		clr_state_flag = fury_settlement_march_path
-		clr_state_flag = fury_integration_failed_recently
-		clr_state_flag = fury_rail_registry_complete
+		set_global_flag = fury_coring_completed
+		set_country_flag = fury_cored_settlement_state
+		add_to_variable = { fury_momentum = 1 }
+		subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
+		subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.march_core_pressure_reduction }
+		clamp_variable = { var = fury_overextension min = 0 }
+		clamp_variable = { var = fury_occupation_pressure min = 0 }
+		fury_update_occupation_pressure = yes
 	}
-	set_global_flag = fury_coring_completed
-	set_country_flag = fury_cored_settlement_state
-	add_to_variable = { fury_momentum = 1 }
-	subtract_from_variable = { fury_overextension = constant:fury_occupation.core_overextension_reduction }
-	subtract_from_variable = { fury_occupation_pressure = constant:fury_occupation.march_core_pressure_reduction }
-	clamp_variable = { var = fury_overextension min = 0 }
-	clamp_variable = { var = fury_occupation_pressure min = 0 }
-	fury_update_occupation_pressure = yes
 }
 
 fury_pay_terminal_reserves_cost = {
-	add_command_power = constant:fury_decision_cost.terminal_reserves_cp_spend
-	add_manpower = constant:fury_decision_cost.terminal_reserves_manpower
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.terminal_reserves_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.terminal_reserves_support }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_terminal_reserves_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.terminal_reserves_cp_spend
+		add_manpower = constant:fury_decision_cost.terminal_reserves_manpower
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.terminal_reserves_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.terminal_reserves_support }
+	}
 }
 
 fury_pay_terminal_fronts_cost = {
-	add_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend
-	army_experience = constant:fury_decision_cost.terminal_fronts_army_xp
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_terminal_fronts_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.terminal_fronts_cp_spend
+		army_experience = constant:fury_decision_cost.terminal_fronts_army_xp
+	}
 }
 
 fury_share_terminal_reserves_effect = {
 	fury_pay_terminal_reserves_cost = yes
-	add_to_variable = { fury_pact_cohesion = constant:fury_terminal.reserve_cohesion_gain }
-	subtract_from_variable = { fury_overextension = constant:fury_terminal.reserve_overextension_relief }
-	clamp_variable = { var = fury_overextension min = 0 }
-	random_country = {
-		limit = {
-			is_fury_actor = yes
-			has_country_flag = fury_world_end_actor
-			NOT = { tag = ROOT }
-		}
-		add_manpower = constant:fury_terminal.reserve_target_manpower
-		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_terminal.reserve_target_infantry }
-		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_terminal.reserve_target_support }
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
 		add_to_variable = { fury_pact_cohesion = constant:fury_terminal.reserve_cohesion_gain }
 		subtract_from_variable = { fury_overextension = constant:fury_terminal.reserve_overextension_relief }
 		clamp_variable = { var = fury_overextension min = 0 }
+		random_country = {
+			limit = {
+				is_fury_actor = yes
+				has_country_flag = fury_world_end_actor
+				NOT = { tag = ROOT }
+			}
+			add_manpower = constant:fury_terminal.reserve_target_manpower
+			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_terminal.reserve_target_infantry }
+			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_terminal.reserve_target_support }
+			add_to_variable = { fury_pact_cohesion = constant:fury_terminal.reserve_cohesion_gain }
+			subtract_from_variable = { fury_overextension = constant:fury_terminal.reserve_overextension_relief }
+			clamp_variable = { var = fury_overextension min = 0 }
+		}
 	}
 }
 
 fury_assign_terminal_fronts_effect = {
 	fury_pay_terminal_fronts_cost = yes
-	add_to_variable = { fury_pact_cohesion = constant:fury_terminal.fronts_cohesion_gain }
-	every_country = {
-		limit = {
-			is_fury_actor = yes
-			has_country_flag = fury_world_end_actor
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
+		add_to_variable = { fury_pact_cohesion = constant:fury_terminal.fronts_cohesion_gain }
+		every_country = {
+			limit = {
+				is_fury_actor = yes
+				has_country_flag = fury_world_end_actor
+			}
+			add_to_variable = { fury_target_preparation = constant:fury_terminal.fronts_target_preparation }
+			add_to_variable = { fury_momentum = constant:fury_terminal.fronts_momentum_gain }
+			subtract_from_variable = { fury_overextension = constant:fury_terminal.fronts_overextension_relief }
+			clamp_variable = { var = fury_overextension min = 0 }
 		}
-		add_to_variable = { fury_target_preparation = constant:fury_terminal.fronts_target_preparation }
-		add_to_variable = { fury_momentum = constant:fury_terminal.fronts_momentum_gain }
-		subtract_from_variable = { fury_overextension = constant:fury_terminal.fronts_overextension_relief }
-		clamp_variable = { var = fury_overextension min = 0 }
 	}
 }
 
 anti_fury_pay_border_watch_cost = {
-	add_command_power = constant:fury_decision_cost.anti_fury_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_equipment }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_anti_border_watch_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.anti_fury_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_equipment }
+	}
 }
 
 anti_fury_pay_emergency_aid_cost = {
-	add_command_power = constant:fury_decision_cost.anti_fury_aid_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_aid_equipment }
-	add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.anti_fury_aid_support }
-	add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_decision_cost.anti_fury_aid_trains }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_anti_emergency_aid_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.anti_fury_aid_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_aid_equipment }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_decision_cost.anti_fury_aid_support }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = constant:fury_decision_cost.anti_fury_aid_trains }
+	}
 }
 
 anti_fury_pay_staff_talks_cost = {
-	add_command_power = constant:fury_decision_cost.anti_fury_staff_cp_spend
-	army_experience = constant:fury_decision_cost.anti_fury_staff_army_xp
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_anti_staff_talks_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.anti_fury_staff_cp_spend
+		army_experience = constant:fury_decision_cost.anti_fury_staff_army_xp
+	}
 }
 
 anti_fury_pay_supply_denial_cost = {
-	add_command_power = constant:fury_decision_cost.anti_fury_denial_cp_spend
-	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_denial_equipment }
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_anti_supply_denial_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.anti_fury_denial_cp_spend
+		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.anti_fury_denial_equipment }
+	}
 }
 
 anti_fury_pay_recognition_denial_cost = {
-	add_command_power = constant:fury_decision_cost.anti_fury_recognition_cp_spend
+	if = {
+		limit = { black_friday_is_active = yes }
+		black_friday_fury_pay_anti_recognition_denial_cost = yes
+	}
+	else = {
+		add_command_power = constant:fury_decision_cost.anti_fury_recognition_cp_spend
+	}
 }
 
 anti_fury_border_watch_success = {
@@ -1803,10 +1905,10 @@ anti_fury_border_watch_failure = {
 }
 
 anti_fury_send_emergency_aid_effect = {
-	anti_fury_pay_emergency_aid_cost = yes
-	set_country_flag = anti_fury_aid_route_active
-	add_ideas = anti_fury_emergency_aid
-	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.emergency_aid_response_pressure }
+	clear_variable = anti_fury_aid_target
+	clear_variable = anti_fury_aid_source_actor
+	# Lock both the Fury actor and the actor's current target before the debit.
+	# The numeric country ids survive the mission and save/reload boundary.
 	random_country = {
 		limit = {
 			is_fury_actor = yes
@@ -1817,35 +1919,67 @@ anti_fury_send_emergency_aid_effect = {
 				NOT = { fury_is_player_linked_country = yes }
 			}
 		}
-		var:fury_current_target = {
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_anti_response.emergency_aid_target_equipment }
-			add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_anti_response.emergency_aid_target_support }
+		ROOT = {
+			set_variable = { anti_fury_aid_source_actor = PREV.id }
+			set_variable = { anti_fury_aid_target = PREV.fury_current_target }
 		}
-		subtract_from_variable = { fury_momentum = constant:fury_anti_response.emergency_aid_fury_momentum_penalty }
-		clamp_variable = { var = fury_momentum min = 0 }
+	}
+	if = {
+		limit = { has_variable = anti_fury_aid_target }
+		anti_fury_pay_emergency_aid_cost = yes
+		if = {
+			limit = {
+				black_friday_fury_payment_succeeded = yes
+				var:anti_fury_aid_target = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					NOT = { fury_is_player_linked_country = yes }
+				}
+			}
+			set_country_flag = anti_fury_aid_route_active
+			add_ideas = anti_fury_emergency_aid
+			add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.emergency_aid_response_pressure }
+			var:anti_fury_aid_target = {
+				add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_anti_response.emergency_aid_target_equipment }
+				add_equipment_to_stockpile = { type = support_equipment_1 amount = constant:fury_anti_response.emergency_aid_target_support }
+			}
+			var:anti_fury_aid_source_actor = {
+				subtract_from_variable = { fury_momentum = constant:fury_anti_response.emergency_aid_fury_momentum_penalty }
+				clamp_variable = { var = fury_momentum min = 0 }
+			}
+		}
 	}
 }
 
 anti_fury_aid_route_success = {
 	clr_country_flag = anti_fury_aid_route_active
+	clear_variable = anti_fury_aid_target
+	clear_variable = anti_fury_aid_source_actor
 	set_country_flag = anti_fury_aid_route_success
 	set_country_flag = achievement_fury_containment_contributor
 }
 
 anti_fury_aid_route_failure = {
 	clr_country_flag = anti_fury_aid_route_active
-	random_country = {
-		limit = { is_fury_actor = yes }
-		add_to_variable = { fury_momentum = constant:fury_anti_response.border_watch_failure_momentum }
+	if = {
+		limit = { has_variable = anti_fury_aid_source_actor }
+		var:anti_fury_aid_source_actor = {
+			add_to_variable = { fury_momentum = constant:fury_anti_response.border_watch_failure_momentum }
+		}
 	}
+	clear_variable = anti_fury_aid_target
+	clear_variable = anti_fury_aid_source_actor
 }
 
 anti_fury_staff_talks_effect = {
 	anti_fury_pay_staff_talks_cost = yes
-	set_country_flag = anti_fury_staff_talks_active
-	set_country_flag = achievement_fury_containment_contributor
-	add_ideas = anti_fury_staff_talks
-	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.staff_talks_response_pressure }
+	if = {
+		limit = { black_friday_fury_payment_succeeded = yes }
+		set_country_flag = anti_fury_staff_talks_active
+		set_country_flag = achievement_fury_containment_contributor
+		add_ideas = anti_fury_staff_talks
+		add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.staff_talks_response_pressure }
+	}
 }
 
 anti_fury_supply_denial_success = {
@@ -1872,13 +2006,22 @@ anti_fury_supply_denial_failure = {
 }
 
 anti_fury_recognition_denial_effect = {
-	anti_fury_pay_recognition_denial_cost = yes
-	set_country_flag = achievement_fury_containment_contributor
-	add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.recognition_denial_pressure }
-	random_country = {
-		limit = { is_fury_actor = yes }
-		subtract_from_variable = { fury_pact_cohesion = constant:fury_anti_response.recognition_denial_pact_penalty }
-		clamp_variable = { var = fury_pact_cohesion min = 0 }
+	if = {
+		limit = { anti_fury_has_recognition_target = yes }
+		anti_fury_pay_recognition_denial_cost = yes
+	}
+	if = {
+		limit = {
+			black_friday_fury_payment_succeeded = yes
+			anti_fury_has_recognition_target = yes
+		}
+		set_country_flag = achievement_fury_containment_contributor
+		add_to_variable = { global.anti_fury_response_pressure = constant:fury_anti_response.recognition_denial_pressure }
+		random_country = {
+			limit = { is_fury_actor = yes }
+			subtract_from_variable = { fury_pact_cohesion = constant:fury_anti_response.recognition_denial_pact_penalty }
+			clamp_variable = { var = fury_pact_cohesion min = 0 }
+		}
 	}
 }
 

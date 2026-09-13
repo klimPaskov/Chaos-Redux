@@ -1,0 +1,32 @@
+# Event 043 decision and mission map
+
+| Category | Action | Actor | Target | Requirements | Costs | Main result | AI rule | Cleanup |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Monster Dominion | Devour a Conquered Shore | Full monster | Controlled populated coastal or near-coastal state | Hunger threshold, legal depth, remaining feeding capacity | Civilian deaths, local damage, cooldown | Exact Deaths transaction, Hunger relief, possible receipt | AI feeds before Frenzied and preserves the original lair where possible | Target loss, state cooldown, apex death, terminal transfer |
+| Monster Dominion | Raise a Brood from a Port | Full monster or Cthulhu | Registered lair or port | Receipt, support cap, family unlock, Sea Bond | Receipt, Hunger increase, cooldown | Create one support division and register it | AI chooses family for current front | Unit death, cap refresh, tag retirement |
+| Monster Dominion | Reinforce the Apex Lair | Full monster | Registered lair | Control, route permission, free stage | Hunger, tied support, construction capacity or local sacrifice | Lair stage and Sea Bond contribution | AI prioritizes original or threatened lair | Control loss, purification, apex death |
+| Monster Dominion | Mark a Coastal Capital | Full monster | Reachable coastal capital | No active mark, valid war route, legal depth | Hunger growth, commitment, cooldown | Timed conquest objective and major receipt on success | AI chooses high-value reachable target | Success, timeout, invalid target, pact conflict |
+| Monster Dominion | Extend the Saltwater Reach | Full monster | Country or named region | Focus, lairs, Sea Bond, legal next band | Sustained Hunger, recovery pressure, time | Operational tier and target refresh | AI waits until coast is stable | Route loss, crisis, terminal transfer |
+| Monster Dominion | Contract the Realm | Full monster or remnant | Disconnected or illegal pocket | Low Sea Bond or over-cap proof | Territory and route prestige | Sea Bond recovery and lower overextension | AI uses to save apex or last lair | State transfer completion |
+| Monster Dominion | Sacrifice a Support Formation | Full monster or Cthulhu | Eligible support unit | Frenzied or over-cap crisis | Permanent unit loss | Hunger relief and cap relief | AI chooses lowest strategic-value unit | Unit removal and ledger cleanup |
+| Monster Pact | Sound the Deep | Pact-route full monster | Compatible full monster | Living apexes, no betrayal block, shared basis | Cooldown and proposal risk | Proposal event | AI uses complete affinity and situation score | Accept, reject, target death |
+| Monster Pact | Hold the Truce | Two or more full monsters | Shared objective | Proposal accepted | Time and bounded contributions | Compact on success | AI contributes only within safe budget | Success, failure, betrayal, invalid war |
+| Monster Pact | Bind the Compact | Pact-route members | Compact group | Truce success and stable members | Pact obligations | Nonaggression, shared objectives, support access | AI joins when survival or leadership case is strong | Betrayal, member death, terminal |
+| Monster Pact | Form the Abyssal Faction | Compact members | Group | Three living apexes and shared objective | Leadership and contribution commitments | Event-owned faction | AI checks leadership and overlap | Faction failure, terminal union |
+| Monster Pact | Betray the Compact | Eligible full monster | One pact partner | Strategic target and no cooldown | Hunger, Sea Bond, permanent betrayal memory | Rivalry war and pact cleanup | AI needs clear gain and sufficient apex health | War start or transaction rollback |
+| Defend the Littoral | Evacuate a Threatened Littoral State | Ordinary country | Owned threatened state | Migration proof, destination, route | Convoys or trains, fuel, construction burden | Survivor movement and lower feeding capacity | AI prioritizes dense states likely to fall | Success, trapped cohort, target loss |
+| Defend the Littoral | Fortify a Named Port | Ordinary country | Owned threatened port | Supplied divisions and time | Support equipment, construction burden, command power | Timed port defense and observation | AI selects high-value port with achievable deadline | Success, fall, cancellation |
+| Defend the Littoral | Establish Monster-Hunter Command | Ordinary country | Country | Direct war or sustained threat | Army XP, command power, support equipment, officer commitment | Staged hunter command and new missions | AI uses when threat is credible and affordable | Threat end or aftermath conversion |
+| Defend the Littoral | Lure an Apex into a Kill Zone | Ordinary country | Selected apex and named state | Observed apex, hunter command, supplied positions | Equipment, fuel, command power | Temporary vulnerability on success | AI refuses suicidal bait plans | Success, timeout, apex death, target leaves |
+| Defend the Littoral | Sever the Sea Bond | Ordinary country | Selected lair or port network | War, observed target, valid land, sea, or air variant | Variant-specific equipment, fuel, ships or aircraft, time | Sea Bond disruption and spawn block | AI chooses only a supported variant | Success, failure, lair loss, pact transfer |
+| Defend the Littoral | Coordinate Ocean Watch | Ordinary country | Country or valid partner group | Active Event 043 threat | Convoys or aircraft, construction burden, intelligence exposure | Observation and allied threat selection | AI joins when it has capacity | Threat end or aftermath handoff |
+| Defend the Littoral | Send Specialist Support | Ordinary country | Threatened partner | Route, relation, stockpile | Equipment, convoys, fuel, readiness | Recipient mission progress and cooperation | AI protects allies without emptying itself | Receipt, target death, route closure |
+| Defend the Littoral | Purify a Retaken Lair | Ordinary country | Retaken lair state | Control, confirmation, supplied forces | Support equipment, fuel, construction burden, time | Clear lair and open reconstruction | AI prioritizes lairs that still support a living apex | Success, recapture, invalid state |
+
+## Active mission cap
+
+The human category normally shows one to three missions. The monster category normally shows one current objective and one crisis mission at most.
+
+## Player-facing value budget
+
+Monster Dominion shows Hunger and Sea Bond. Defend the Littoral shows selected threat, mission, and qualitative apex observation. It does not introduce a third persistent custom value.

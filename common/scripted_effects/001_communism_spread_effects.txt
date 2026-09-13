@@ -522,15 +522,24 @@ apply_communism_local_intervention_payment = {
 complete_communism_local_intervention = {
 	# COUNTRY SCOPE, with FROM as the targeted state.
 	hidden_effect = {
-		apply_communism_local_intervention_payment = yes
 		if = {
-			limit = { FROM = { has_state_flag = communist_worker_ritual_state } }
-			add_command_power = -10
-			add_stability = -0.005
+			limit = { black_friday_is_active = yes }
+			black_friday_pay_communism_local_intervention = yes
+		}
+		else = {
+			apply_communism_local_intervention_payment = yes
 		}
 		if = {
-			limit = { FROM = { has_state_flag = communist_world_revolution_whisper_state } }
-			add_war_support = -0.005
+			limit = { black_friday_owner_payment_succeeded = yes }
+			if = {
+				limit = { FROM = { has_state_flag = communist_worker_ritual_state } }
+				add_command_power = -10
+				add_stability = -0.005
+			}
+			if = {
+				limit = { FROM = { has_state_flag = communist_world_revolution_whisper_state } }
+				add_war_support = -0.005
+			}
 		}
 	}
 

@@ -300,7 +300,7 @@ Repeat firing should remember previous Fury countries. A country that recently f
 
 ## Cluster role
 
-Fury belongs in the Wars cluster as a medium danger member.
+Fury belongs in the Wars cluster through two logical membership rows at Medium and High severity.
 
 ## Player interaction
 

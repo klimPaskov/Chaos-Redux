@@ -1,9 +1,9 @@
 # Documentation cleanup state and resume record
 
-Date: 2026-09-05.
+Date: 2026-09-06.
 Overall status: incomplete beyond the reviewed coverage below.
 The completed documentation repairs are parent-reviewed, across the navigation, instruction, and historical-documentation batches.
-Their commits are recorded in Git history, with the first three identified below.
+Their commits and supporting handoffs are identified below.
 This file owns current cleanup routing and status, while dated source maps and reports retain their distinct evidence.
 
 ## Authorization and authority
@@ -12,6 +12,10 @@ The attached user request authorizes documentation and instruction cleanup, excl
 The parent asked, “May I apply the full-reading requirement separately to each bounded cleanup batch?”
 The user answered, “okay, i approve, continue.”
 That answer changes the reading workflow only and does not approve an embedded design, deletion, fallback, or protected policy change.
+The user-supplied AGENTS.md on 2026-09-06 explicitly makes `gui_rewrite` optional and permits direct application of authorized reviewed GUI edits.
+A rewrite failure or rollback alone is no longer a current completion gate or a reason for further fallback approval.
+Mandatory inspect, render, and matching before-and-after evidence remain required, and visible defects must be resolved.
+This documentation task does not authorize implementing the pending Death dashboard extension.
 
 | Source | What it establishes |
 | --- | --- |
@@ -37,7 +41,11 @@ That answer changes the reading workflow only and does not approve an embedded d
 | Settings and Chaos Meter | Commit `729100275be89cf813bc93ed5d38fbacd285c0f0` fully read thirteen documents, repaired seven, and retained an unresolved Deaths overlay contradiction. | [Settings and Chaos review](subagent_handoffs/2026-09-05_settings_chaos_documentation.md). |
 | Shared plans | Commit `284f1f77c3ef6c17b16efff6553ee0754ce1f158` fully read twelve historical records and added individual current dispositions without changing their original bodies. Recorded schema, hidden-world-end visibility, and source-gap versus later-runtime claims. | [Shared-plan handoff](subagent_handoffs/2026-09-05_shared_plan_dispositions.md). No design promotion or current engine validation. |
 | Shared event-system docs | Commit `86fb03440fea45cec2471e2513fa2476ec1f1182` includes the reviewed eleven-file documentation batch. Full curator and parent reads. Corrected the 82-row claim to the retained 75-row matrix, separated historical MCP results, and exposed specific contract conflicts. | [Shared-event review](subagent_handoffs/2026-09-05_shared_events_documentation.md). No formula, gameplay value, or scenario identity was changed. |
-| Events 001 to 005 | Fully read eight documents and repaired seven, preserving historical timing, licensing, animation, and release-cause evidence. Marked the Soviet focus-rewrite recommendation and Holy Realm terminal-audio proposal unresolved. | [Early-event review](subagent_handoffs/2026-09-05_events_001_005_documentation.md). Event 004 is unchanged by this task. |
+| Events 001 to 005 | Commit `f1e06718ff9268b2fb577ea3525725177bb7815b` contains repairs to seven of eight fully read documents, preserving historical timing, licensing, animation, and release-cause evidence. Marked the Soviet focus-rewrite recommendation and Holy Realm terminal-audio proposal unresolved. | [Early-event review](subagent_handoffs/2026-09-05_events_001_005_documentation.md). Event 004 is unchanged by this task. |
+| Events 007 to 010 | Review-branch commit `f38c2e99d68861669965f8e60fc188f7ce0bc73d`. Four full curator and parent reads. Corrected White Peace option-settlement ownership, distinguished existing Atlas source from the historically blocked shared extension, recorded missing archives, and removed exact duplicate Fury asset entries. | [Four-event review](subagent_handoffs/2026-09-05_events_007_010_documentation.md). Current Atlas inspection is source evidence with visible and dynamic-value findings, not visual acceptance. |
+| Events 011, 013, and 014 | Review-branch commit `f38c2e99d68861669965f8e60fc188f7ce0bc73d`. Three full curator and parent reads. Attributed frozen completion claims, exposed missing source archives, corrected the March Predation modifier wording, and preserved historical GUI recovery evidence. | [Three-event review](subagent_handoffs/2026-09-05_events_011_013_014_documentation.md). No gameplay value, workbook, or asset changed. |
+| Events 015 through 018 | Four full curator and parent overview reads. Parent corrected the Event 015 display range cited by Event 016, annotated three absent source workspaces, attributed frozen completion claims, and preserved mandatory GUI evidence requirements. | [Four-event continuation04 review](subagent_handoffs/2026-09-06_events_015_018_documentation.md). All four current root traces are partial, and package-interior reading limits remain explicit. |
+| Inherited asset reference rule | Review-branch commit `4d069dfb3db3e54f5f9b749f694e564e85e25da5`. Added one reusable paragraph to the existing asset skill after matching vanilla GFX and shader evidence. Parent proved every baseline byte outside the 563-byte insertion is preserved. | [Asset-reference skill handoff](subagent_handoffs/2026-09-05_asset_reference_skill_check.md). Literal Lua paths and inherited DDS files require owner lookup before a missing-resource claim. |
 | GUI prose and workflow | Parent-reviewed installed-contract audit and punctuation repairs in the GUI skill and event UI worker instruction body. | [GUI workflow handoff](subagent_handoffs/2026-09-05_gui_workflow_review.md). No instruction behavior or protected TOML field changed. |
 | Nested Event 046/047 tree | Fully read 51 nested Markdown files and 51 counterparts. Every pair was text and SHA-256 identical, with no nested-only requirements or evidence. | The navigation handoff records all 51 pair hashes. Added a retained-mirror notice, canonical links, six plan dispositions, and supported Codex transport and explorer routing. All 51 mirror sources remain unchanged. No design approval was inferred. |
 
@@ -68,6 +76,8 @@ Overlapping files between batches are not additive unique-file counts.
 | Settings and Chaos continuation | All six settings and seven Chaos Meter documents were fully read directly by the parent. Seven received prose, navigation, or evidence-boundary repairs. |
 | GUI workflow continuation | Fully read the sixteenth GUI skill, event-UI worker, shared subagents, decisions and events skills, and the GUI visual-review reference. Inspected package contracts are separately identified as full or partial reads in the GUI handoff. |
 | Early-event continuation | All eight original documents were fully read by the curator. Parent reviewed and corrected the source deltas. Together with the settings, shared-plan, and shared-event sets, continuation02 covers 44 source documents. This does not count package interiors as read. |
+| Event-entry continuation03 | All seven original overviews were fully read by curator and parent, bringing the two continuation source sets to 51 documents. Curator-reported authority-tree reads are listed in their handoffs and are not blanket reconciliation of those interiors. Parent fully read the existing Atlas GUI, scripted GUI, and historical shared-dashboard blocker. |
+| Event-entry continuation04 | All four original overviews were fully read by curator and parent, bringing continuation02 through continuation04 to 55 source documents. Curator fully read the named Event 015 authority documents and recorded Event 016 through 018 dependency excerpts and inventories. Parent fully read two super-event constant files and identified all other source checks as narrow excerpts. |
 | Runtime configuration continuation | Fully read `.codex/config.toml`, `.qoder/mcp.json`, `.cursor/mcp.json`, and `.cursor/rules/chaos-redux-cursor-runtime.mdc` without edits. The instruction handoff records their hashes, 20 resolved role paths, and protected stale instructions. |
 | Event 031 audio continuation | Fully read the audio note and owning super-event skill. Verified two derivative hashes and WAV headers. Original recording files were absent and could not be read. |
 | Catalog | All populated cells in Events, Clusters, Cluster Memberships, Scenarios, and Legend were fully read in the reviewed workbook revision. No workbook edit or export was performed. |
@@ -87,6 +97,8 @@ The [navigation handoff](subagent_handoffs/2026-09-05_navigation_review.md) reco
 The shared-event commit isolates task edits from inherited uncommitted cluster and scenario changes.
 A few count and punctuation corrections inside those inherited sections remain in the working tree, as recorded in the shared-event handoff.
 The early-event commit likewise excludes the inherited Event 023 custody-bridge section in the Event 005 overview, including one punctuation repair that remains with its owning work.
+The continuation03 review commit also excludes inherited Fury, Diplomacy, and Natural Disasters cluster-contract changes. A punctuation repair in the inherited Diplomacy paragraph remains with that work.
+Continuation04 likewise excludes the inherited Event 017 cluster-contract replacement. Its older tracked wording is not promoted as current accepted design by this isolation.
 Their presence does not mean those larger sections were committed or accepted by this cleanup.
 
 ## Root-plan dispositions
@@ -130,19 +142,49 @@ No document or asset was deleted, and no distinct source requirement was discard
 | GUI workflow review | The owner skill, event-UI role, required cross-skill inputs, and visual-review reference were fully read and parent-reviewed. No behavior repair was justified. The [GUI workflow handoff](subagent_handoffs/2026-09-05_gui_workflow_review.md) records installed-contract evidence and a separately parent-reviewed punctuation cleanup with preserved literals and protected TOML fields. This closes the named excluded-read boundary without accepting GUI layout or live behavior. |
 | Runtime configuration wording | The Cursor runtime rule names the missing old generator path. The Codex UI-worker registration describes the older decision-layout owner, and its 3D registration/approval language differs from AGENTS.md. Exact protected follow-ups are in the instruction handoff. No configuration or paid-work policy was changed. |
 | Audio archive recovery | Two Event 031 original OGGs are absent. Recover the exact bytes matching the recorded source hashes, or review a replacement source and conversion lineage. Existing derivative identity does not supply missing source provenance. |
+| Newly reviewed archive and presentation gaps | Events 007, 008, 009, 010, and 011 have missing named source archives. Event 013's restored-source claim conflicts with current absence. The two continuation03 handoffs preserve deletion history and current source limits. Atlas inspection reports footer overflow, unresolved text and fallback linkage, and other findings. Its source-graph success does not close these issues or the historical shared-dashboard extension. |
+| Continuation04 source and evidence gaps | The Event 015 manifest, Event 017 archive, and Event 018 temporary workspace are absent. Missing source workspaces do not prove runtime asset loss or completed source promotion. Four new event-root traces returned partial evidence at revision `d845f43c97099a029173014ead16d7eef197a0351971daad8dc5c946aec7fb38`, with deferred workspace-wide helper and lifecycle analysis. No current event-wide, GUI, technology, focus, probability, or asset acceptance follows. |
 | Broader coverage | Unreviewed event/system packages, active addenda, manifests, asset archives, skill-local references, and configuration still need bounded full reads and evidence-backed dispositions. The whole documentation cleanup remains incomplete. |
 
 ## Resume without repeating completed work
 
 1. Preserve the completed instruction, navigation, historical, catalog-read, and nested-comparison batches recorded above. Keep all retained mirror files intact.
 2. The eight Events 001 to 005 entries and companions are reviewed at the documentation boundary in their handoff. All four continuation02 curators have closed. Their exact read ledgers and available diagnostic evidence are retained in the owning handoffs. Do not repeat their repairs or interpret retained package completion claims as fresh validation.
-3. The next untouched event-entry batch is `docs/events/007_fury/overview.md`, `docs/events/008_tensions_rising/overview.md`, `docs/events/009_white_peace/overview.md`, and `docs/events/010_death/overview.md`, with each package's authority dependencies. These four paths are inventory-only at this checkpoint. Event 006's larger package remains outside this batch and has concurrent implementation work. Read selected files and their authority dependencies fully before editing. The main indexes and specific entries listed in earlier handoffs are already read.
+3. Events 007 to 018 are reviewed at the specific overview boundaries in the continuation03 and continuation04 handoffs, excluding Event 012. Their curators have closed. The next overview entries are `docs/events/019_infantry_spawn/overview.md`, `docs/events/020_black_plague/overview.md`, and `docs/events/021_random_civil_war/overview.md`. These three paths are inventory-only. Event 016 companions `evolutions.md` and the systems named in the continuation04 handoff, Event 017 authority interiors, and Event 018 `assets.md`, `cave_country.md`, `helper_contracts.md`, super-event overview, and achievement guide still require their recorded full reads. Event 006 and Africa retain concurrent implementation work and remain outside these entry batches.
 4. Resolve the Event 031 missing-original archive gap through the audio owner. The note and derivative file evidence are already reviewed, so do not repeat those reads as an unexplored navigation task.
 5. Use `docs/specs/046_the_great_shuffle_specs/matrices/046_source_conflict_ledger.md`, `docs/specs/047_boom_specs/047_boom_source_reading_ledger.md`, and the catalog review for the unresolved identity/schema decisions. Their recorded snapshot counts are not current workbook facts.
 6. Resolve protected role/skill and cross-runtime conflicts through explicit decisions recorded in the existing handoffs. Do not change settings or source restrictions to unblock cleanup.
 
 Skills used across the cleanup: chaos-redux-subagents, skill-creator through the skill maintainers, and xlsx for the read-only catalog review.
 This continuation also used chaos-redux-super-events for the audio note, plus the GUI, events, and decisions skills through their documentation reviewers.
+The asset-reference follow-up used the existing event-assets skill and official skill-creator guidance through the skill maintainer.
 Fifteen existing skills were updated across the cleanup, MTTH was reviewed unchanged, and this cleanup created no new skill.
 No design or production simplification was introduced within the completed edits.
 The unread coverage, unperformed current engine checks, unresolved acceptance, protected-policy decisions, and blocked synchronization above are material omissions from any repository-wide completion claim.
+
+## Pending Git integration at this checkpoint
+
+The continuation03 seven-overview batch and inherited-asset skill paragraph are parent-reviewed and preserved as separate commits on `codex/documentation-cleanup-review-20260906`.
+The review branch was created through private-index commit trees and a new branch reference, without writing the shared Git index or moving the working branch.
+Their selective candidates are prepared separately from unrelated staged work and inherited cluster-contract changes.
+The shared `.git/index.lock` appeared outside this task with modification time `2026-09-05 07:56:30 UTC` and prevented the commit transaction.
+A read-only Windows Restart Manager query returned no open owner handles, but that does not establish whether another task still owns the coordination lock.
+This task did not remove or overwrite it.
+A 2026-09-06 recheck observed a zero-byte lock with creation and modification time `2026-09-05 09:55:11 UTC`, differing from the earlier recorded timestamp.
+Two `git.exe` processes running `add --sparse --pathspec-from-file=- --pathspec-file-nul` were also present, without proof that either owned this lock.
+HEAD was `302e73478b6ca51b425360267329099248072196`, with no committed changes to the pending batches' owned paths since their recorded baseline.
+The authority annotations for Events 010 and 011 and both related handoffs were refreshed under the current user instruction.
+
+Prepared manifests are `C:/Users/klimp/.codex/visualizations/2026/09/04/01a06e33-dc56-78e3-a787-850360234143/documentation_review/continuation03/event_entries_commit/manifest.json` and the sibling `skill_commit/manifest.json`.
+The review branch records event-entry commit `f38c2e99d68861669965f8e60fc188f7ce0bc73d` first and asset-skill commit `4d069dfb3db3e54f5f9b749f694e564e85e25da5` second.
+Before integration into the shared working branch, compare current HEAD and staged entries with the recorded baselines and preserve every unrelated change.
+Re-review overlapping changes if the owned source blobs advanced.
+The review commits do not establish integration into the working branch.
+Post-commit review found concurrent asset-skill changes to animated-unit and armed-unit motion-source policy and completion item 31.
+They remain outside this cleanup and outside its asset-reference commit.
+The asset-reference handoff records this additional selective-integration boundary.
+Continue documentation review from the next-file list while shared integration remains pending.
+
+The continuation04 overview repairs use the same review branch and preserve their original snapshot at `documentation_review/continuation04/baseline/manifest.json` in the external review workspace.
+A later 2026-09-06 check found the shared index lock absent.
+Shared integration still requires a current-HEAD merge and preservation of unrelated staged entries before it can be claimed.

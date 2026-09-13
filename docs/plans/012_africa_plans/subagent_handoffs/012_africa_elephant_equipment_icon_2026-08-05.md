@@ -1,5 +1,7 @@
 # Event 012 elephant equipment/technology icon handoff — 2026-08-05
 
+> Current boundary note dated 2026-09-05: this static equipment/technology icon remains separate from the unit's 3D visual. Its shared-elephant render references are historical source provenance only; `chaosx_elephant` must continue to use vanilla `elephantry`, and the approximately 340 MB custom evidence package is archival/non-promoted with retention or deletion left to the owner outside this documentation-only pass.
+
 Status: `parent_reviewed_and_wired` after contact-sheet inspection and parent-owned `.gfx`/subunit wiring.
 
 ## Deliverable

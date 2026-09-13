@@ -64,7 +64,7 @@ sov_nuclear_bombs_command_category = {
 		custom_cost_text = sov_nuclear_bombs_cost_command
 		cost = 0
 		days_remove = 0
-		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.dispersed } sov_nuclear_bombs_set_custody_doctrine = yes }
+		complete_effect = { sov_nuclear_bombs_pay_command_cost = yes set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.dispersed_commands } sov_nuclear_bombs_set_custody_doctrine = yes }
 		ai_will_do = { base = constant:sov_nuclear_bombs_ai.doctrine modifier = { factor = 1.20 has_war = yes } modifier = { factor = 1.20 has_country_flag = sov_nuclear_bombs_capital_threat_active } }
 	}
 
@@ -331,7 +331,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_prepare_concealed_field_test_desc
 		icon = GFX_decision_sov_nuclear_decision_concealed_test
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_selected_test_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
-		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes sov_nuclear_bombs_event_has_delivery_route = yes }
+		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes sov_nuclear_bombs_event_has_selected_test_delivery_route = yes }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_logistics_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_logistics
 		cost = 0
@@ -345,7 +345,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_prepare_public_test_desc
 		icon = GFX_decision_sov_nuclear_decision_public_test
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_phase_test = yes sov_nuclear_bombs_event_selected_test_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
-		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes sov_nuclear_bombs_event_has_delivery_route = yes }
+		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes sov_nuclear_bombs_event_has_selected_test_delivery_route = yes }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_diplomatic_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_diplomatic
 		cost = 0
@@ -478,7 +478,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_stage_wartime_demonstration_desc
 		icon = GFX_decision_sov_nuclear_decision_wartime_demonstration
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_coercion_open sov_nuclear_bombs_event_no_active_project = yes }
-		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_valid_coercion_target = yes event_target:sov_nuclear_bombs_selected_state = { NOT = { controller = { is_major = yes } } } sov_nuclear_bombs_event_has_delivery_route = yes sov_nuclear_bombs_event_selected_test_site_is_valid = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes }
+		available = { sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_valid_coercion_target = yes event_target:sov_nuclear_bombs_selected_state = { NOT = { controller = { is_major = yes } } } sov_nuclear_bombs_event_has_selected_test_delivery_route = yes sov_nuclear_bombs_event_selected_test_site_is_valid = yes sov_nuclear_bombs_event_selected_test_site_has_assigned_device = yes }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_strategic_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_strategic
 		cost = 0
@@ -866,7 +866,7 @@ sov_nuclear_bombs_command_category = {
 	sov_nuclear_bombs_disable_devices = {
 		name = sov_nuclear_bombs_disable_devices
 		desc = sov_nuclear_bombs_disable_devices_desc
-		icon = GFX_decision_sov_nuclear_decision_authentication
+		icon = GFX_decision_sov_nuclear_decision_device_disablement
 		visible = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_collapse_active sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes NOT = { event_target:sov_nuclear_bombs_selected_state = { has_state_flag = sov_nuclear_bombs_return_requested } } event_target:sov_nuclear_bombs_selected_state = { NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial } } }
 		available = { sov_nuclear_bombs_event_selected_breakaway_site_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_security_cost = yes }
@@ -1085,7 +1085,7 @@ sov_nuclear_bombs_command_category = {
 		desc = sov_nuclear_bombs_breakaway_integrate_delivery_desc
 		icon = GFX_decision_sov_nuclear_decision_delivery_preparation
 		visible = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed NOT = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } NOT = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } }
-		available = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes NOT = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } NOT = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } sov_nuclear_bombs_event_has_local_delivery_capability = yes }
+		available = { sov_nuclear_bombs_event_has_breakaway_custody_crisis = yes has_country_flag = sov_nuclear_bombs_breakaway_command_formed sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = yes NOT = { has_country_flag = sov_nuclear_bombs_breakaway_delivery_integrated } NOT = { has_country_flag = sov_nuclear_bombs_breakaway_operationalization_mission_active } sov_nuclear_bombs_event_selected_breakaway_site_has_delivery_capability = yes }
 		custom_cost_trigger = { sov_nuclear_bombs_can_pay_logistics_cost = yes }
 		custom_cost_text = sov_nuclear_bombs_cost_logistics
 		cost = 0
@@ -1193,7 +1193,7 @@ sov_nuclear_bombs_command_category = {
 		available = { always = no }
 		days_mission_timeout = constant:sov_nuclear_bombs_duration.ultimatum_response
 		complete_effect = { sov_nuclear_bombs_resolve_coercion_response = yes }
-		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_target_response_is_valid = yes } } }
+		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { has_event_target = sov_nuclear_bombs_coercion_target } NOT = { event_target:sov_nuclear_bombs_coercion_target = { sov_nuclear_bombs_event_target_response_is_valid = yes } } } }
 		cancel_effect = { sov_nuclear_bombs_cancel_ultimatum_response = yes }
 		timeout_effect = { sov_nuclear_bombs_resolve_coercion_response = yes }
 		ai_will_do = { base = 1.00 }
@@ -1227,7 +1227,19 @@ sov_nuclear_bombs_command_category = {
 		available = { always = no }
 		days_mission_timeout = constant:sov_nuclear_bombs_duration.hotline_mission
 		complete_effect = { sov_nuclear_bombs_complete_retaliation_window = yes }
-		cancel_trigger = { OR = { NOT = { sov_nuclear_bombs_event_actor_is_valid = yes } NOT = { sov_nuclear_bombs_event_major_exchange_world_gate = yes } NOT = { sov_nuclear_bombs_event_has_valid_major_strike_target = yes } } }
+		cancel_trigger = {
+			OR = {
+				NOT = { sov_nuclear_bombs_event_actor_is_valid = yes }
+				AND = {
+					NOT = { OR = { has_country_flag = sov_nuclear_bombs_atomic_moratorium has_country_flag = sov_nuclear_bombs_standdown_offer_sent } }
+					NOT = { sov_nuclear_bombs_event_major_exchange_world_gate = yes }
+				}
+				AND = {
+					NOT = { OR = { has_country_flag = sov_nuclear_bombs_atomic_moratorium has_country_flag = sov_nuclear_bombs_standdown_offer_sent } }
+					NOT = { sov_nuclear_bombs_event_has_valid_major_strike_target = yes }
+				}
+			}
+		}
 		cancel_effect = { sov_nuclear_bombs_cancel_retaliation_window = yes }
 		timeout_effect = { sov_nuclear_bombs_complete_retaliation_window = yes }
 		ai_will_do = { base = 0.60 }

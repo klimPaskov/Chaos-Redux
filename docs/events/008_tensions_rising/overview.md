@@ -1,6 +1,8 @@
 # Event 008: Tensions Rising
 
-Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In calm campaigns it is a straightforward world-tension incident; once the Chaos Meter reaches evolved tiers, the same report becomes a staged diplomatic-pressure system with direct chaos gain, relation damage, timer pressure, follow-up incidents, AI posture pressure, rare high-stage border wars, achievements, and event-log evolution rows.
+This overview records package implementation claims. The [documentation review](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_events_007_010_documentation.md) distinguishes source checks, historical records, and unresolved acceptance or validation.
+
+Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In calm campaigns it is a straightforward world-tension incident. Once the Chaos Meter reaches evolved tiers, the same report becomes a staged diplomatic-pressure system with direct chaos gain, relation damage, timer pressure, follow-up incidents, AI posture pressure, rare high-stage border wars, achievements, and event-log evolution rows.
 
 ## Runtime Flow
 
@@ -21,7 +23,7 @@ Event 008 Tensions Rising is a minor repeatable diplomatic-pressure event. In ca
 | Stage III | Chaos Tier | `+500` | `+25` | heavy relation pressure, Thin Wire tracking, and rare border clashes |
 | Stage IV | Totalen Chaos+ | `+1000` | `+50` | strongest pressure and best border-clash odds |
 
-The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`. World-tension packets are distributed through `apply_tensions_rising_distributed_world_tension`; each selected existing non-placeholder country receives an equal named-threat slice. The recipient count is capped only when an all-country split would fall below `0.1` world-tension percentage points.
+The world tension trigger uses HOI4's documented `0-1` `threat` scale. The full-tension gate is centralized as `constant:tensions_rising_gate.full_world_tension`. World-tension packets are distributed through `apply_tensions_rising_distributed_world_tension`. Each selected existing non-placeholder country receives an equal named-threat slice. The recipient count is capped only when an all-country split would fall below `0.1` world-tension percentage points.
 
 ## Timer Pulse
 
@@ -66,7 +68,7 @@ These ideas nudge diplomacy, readiness, and defensive behavior without creating 
 
 The event-log detail body is `chaosx.events_log.window.event_details.tensions_rising`. The Diplomatic Fever evolution type uses `constant:tensions_rising_event_log.evolution_type`, records one milestone for each reached stage, and exposes stage title/body text through the history, evolution view, event-detail preview, and selected-evolution panes.
 
-`Diplomatic Panic` is registered as repeatable event cluster `constant:event_cluster_id.diplomatic_panic`. Its current member list is intentionally small: Event 8 is the required member with low danger and a Calm World minimum. Cluster history and settings surfaces use `chaosx.event_cluster.diplomatic_panic.name` and `chaosx.events_log.window.cluster_details.description.diplomatic_panic`.
+`Diplomacy` is repeatable cluster ID 3. Event 8 is its required Medium member, alongside Event 17 at Medium and Events 36 and 59 at High severity. The canonical runtime and presentation identifiers are `constant:event_cluster_id.diplomacy`, `chaosx.event_cluster.diplomacy.name`, and `chaosx.events_log.window.cluster_details.description.diplomacy`. The former Diplomatic Panic identifiers remain compatibility aliases for existing script and save references.
 
 ## Terminal scope
 
@@ -87,8 +89,8 @@ Achievement icons are generated final DDS triplets under `gfx/achievements/` and
 ## Assets
 
 - Report image: `GFX_report_event_tensions_rising`, backed by `gfx/event_pictures/008_tensions_rising/report_event_tensions_rising.dds`
-- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/008_tensions_rising/news_event_tensions_red_line.dds`, remains registered as an available news asset; follow-up incidents use the report image instead of a news image.
-- Achievement source, processed PNGs, contact sheet, and DDS manifest: `docs/assets/008_tensions_rising/`
+- News image: `GFX_news_event_tensions_red_line`, backed by `gfx/event_pictures/008_tensions_rising/news_event_tensions_red_line.dds`, remains registered as an available news asset. Follow-up incidents use the report image instead of a news image.
+- Historical achievement source, processed PNG, contact-sheet, and DDS-manifest archive: `docs/assets/008_tensions_rising/`. This package is absent and Git records deletion in `87d441ac758d515e1abca34167fcd45b51acf028`. No replacement source archive was established by this review.
 
 ## System boundary
 
@@ -96,6 +98,8 @@ Event 008 owns diplomatic pressure: international tension, chaos, temporary cris
 
 ## Future Plans
 
+These retained proposals have unresolved current acceptance and do not authorize implementation through this documentation cleanup.
+
 - Add pair-specific named follow-up incidents only if the event-log UI later supports short-lived relation-pair references cleanly.
 - Consider adding a generic relation-pair helper if other event families need the same timed diplomatic-shock pattern.
-- Expand Diplomatic Panic with additional fully implemented diplomatic incidents only after they have their own localisation, event-log detail, and cooldown behavior.
+- Add further Diplomacy members only through the authoritative cluster membership catalogue after their event-system eligibility, localisation, Event Log detail, and cooldown behavior are complete.

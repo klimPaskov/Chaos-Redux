@@ -1,8 +1,8 @@
 # Event 021 Overlap and Catalog Reconciliation
 
-## Current catalog snapshot
+## Historical planning snapshot
 
-The supplied event CSV lists Event 021 as:
+The supplied pre-implementation event CSV listed Event 021 as:
 
 - `Random civil war`
 - `A random country fractures into rival governments and armed camps.`
@@ -11,7 +11,7 @@ The supplied event CSV lists Event 021 as:
 - no member severity
 - `Unavailable`
 
-The supplied cluster CSV lists Wars as:
+The supplied pre-implementation cluster CSV listed Wars as:
 
 - Cluster ID `1`
 - members `4, 7`
@@ -19,7 +19,13 @@ The supplied cluster CSV lists Wars as:
 - chaos level `1`
 - `Partially Available`
 
-This specification assigns Event 021 to Cluster `1` with `Medium` severity. The authoritative workbook should be updated only after implementation and final player-facing wording.
+This was the planning snapshot, not the current catalog source of truth.
+
+## Current source-of-truth status
+
+The authoritative workbook now records Event 021 as `Needs Testing`, in Cluster `1` (`Wars`) with `Medium` member severity. The Fracture Cascade scenario is also recorded as `Needs Testing`.
+
+The rework implementation phase is marked complete for test entry, and the automatic/default runtime test-release gate is open. The catalog remains `Needs Testing` until acceptance evidence is complete. The workbook export was regenerated from the authoritative XLSX after the status update.
 
 ## Event ownership matrix
 

@@ -1,0 +1,116 @@
+# ============================================================================
+# EVENT 016 - KRG CLONE MATURATION TRANSACTION CORE
+# ============================================================================
+# Country scope. Single paid KRG growth-cycle decision and terminal cleanup.
+# One persistent paid receipt snapshots PP, support, fuel and clone quantity.
+# Cancel consumes before refund; finish consumes before equipment and history.
+# Native decision alone owns CIC reservation, duration, cooldown and release.
+# Contract: 016_clone_maturation_effects.md.
+# ============================================================================
+
+# Internal: clear all receipt authority before any refund or physical output.
+brilliant_scientist_krg_clear_clone_maturation_receipt = {
+	clr_country_flag = brilliant_scientist_krg_clone_maturation_paid
+	clear_variable = brilliant_scientist_krg_clone_maturation_paid_pp
+	clear_variable = brilliant_scientist_krg_clone_maturation_paid_support
+	clear_variable = brilliant_scientist_krg_clone_maturation_paid_fuel
+	clear_variable = brilliant_scientist_krg_clone_maturation_paid_output
+}
+
+# Called after native admission; reservation may precede or follow callback.
+# No CIC recheck here: admission, not undocumented callback ordering, owns it.
+brilliant_scientist_krg_begin_clone_maturation = {
+	set_temp_variable = { brilliant_scientist_krg_clone_maturation_started = constant:clone_maturation.zero }
+	if = {
+		limit = {
+			brilliant_scientist_krg_clone_maturation_requirements_met = yes
+			brilliant_scientist_krg_clone_maturation_can_pay_direct = yes
+		}
+		set_variable = { brilliant_scientist_krg_clone_maturation_paid_pp = constant:clone_maturation.political_power }
+		set_variable = { brilliant_scientist_krg_clone_maturation_paid_support = constant:clone_maturation.support_equipment }
+		set_variable = { brilliant_scientist_krg_clone_maturation_paid_fuel = constant:clone_maturation.fuel }
+		set_variable = { brilliant_scientist_krg_clone_maturation_paid_output = constant:clone_maturation.clone_equipment }
+		set_country_flag = brilliant_scientist_krg_clone_maturation_paid
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_payment_pp = brilliant_scientist_krg_clone_maturation_paid_pp }
+		multiply_temp_variable = { brilliant_scientist_krg_clone_maturation_payment_pp = constant:clone_maturation.negative_one }
+		add_political_power = brilliant_scientist_krg_clone_maturation_payment_pp
+		set_temp_variable = { equipment_stockpile_removal_amount = brilliant_scientist_krg_clone_maturation_paid_support }
+		remove_support_equipment_from_stockpile = yes
+		set_temp_variable = { fuel_stockpile_removal_amount = brilliant_scientist_krg_clone_maturation_paid_fuel }
+		remove_fuel_from_stockpile = yes
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_started = constant:clone_maturation.one }
+	}
+}
+
+# Refund only a complete receipt; retire malformed fragments without inventing
+# payment. Operational validity is deliberately not required for cancellation.
+brilliant_scientist_krg_cancel_clone_maturation = {
+	set_temp_variable = { brilliant_scientist_krg_clone_maturation_cancelled = constant:clone_maturation.zero }
+	if = {
+		limit = { brilliant_scientist_krg_clone_maturation_receipt_is_current = yes }
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_refund_pp = brilliant_scientist_krg_clone_maturation_paid_pp }
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_refund_support = brilliant_scientist_krg_clone_maturation_paid_support }
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_refund_fuel = brilliant_scientist_krg_clone_maturation_paid_fuel }
+		brilliant_scientist_krg_clear_clone_maturation_receipt = yes
+		add_political_power = brilliant_scientist_krg_clone_maturation_refund_pp
+		add_equipment_to_stockpile = { type = support_equipment amount = brilliant_scientist_krg_clone_maturation_refund_support }
+		add_fuel = brilliant_scientist_krg_clone_maturation_refund_fuel
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_cancelled = constant:clone_maturation.one }
+	}
+	brilliant_scientist_krg_clear_clone_maturation_receipt = yes
+}
+
+# Internal history-only extraction from the old growth-cycle helper. Its old
+# rifle/support output is deliberately excluded. The one-shot authority is
+# consumed before touching unchanged cycle, burden and identity-crisis history.
+brilliant_scientist_krg_record_clone_maturation_history = {
+	if = {
+		limit = { check_variable = { var = brilliant_scientist_krg_clone_maturation_history_authorized value = constant:clone_maturation.one compare = equals } }
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_history_authorized = constant:clone_maturation.zero }
+		add_to_variable = { brilliant_scientist_krg_clone_growth_cycles = constant:brilliant_scientist_krg_value.one }
+		set_country_flag = brilliant_scientist_krg_clone_growth_burden_active
+		if = {
+			limit = {
+				check_variable = {
+					var = brilliant_scientist_krg_clone_growth_cycles
+					value = constant:brilliant_scientist_krg_capacity.clone_identity_pressure_cycle
+					compare = greater_than_or_equals
+				}
+				NOT = { brilliant_scientist_krg_clone_identity_revolt_is_prevented = yes }
+				has_country_flag = brilliant_scientist_focus_unlock_clone_identity_pressure_crises
+				NOT = { has_country_flag = brilliant_scientist_krg_clone_identity_pressure_active }
+				NOT = { has_country_flag = brilliant_scientist_krg_clone_identity_pressure_resolved }
+				NOT = { has_country_flag = brilliant_scientist_clone_revolt_ever }
+			}
+			set_country_flag = brilliant_scientist_krg_clone_identity_pressure_active
+			set_country_flag = brilliant_scientist_krg_clone_identity_pressure_occurred
+			activate_mission = brilliant_scientist_krg_clone_identity_pressure_mission
+		}
+	}
+}
+
+# Country-scoped terminal cleanup. Refund authority is consumed before removing
+# the native decision so even an engine removal callback cannot produce clones.
+brilliant_scientist_krg_cleanup_clone_maturation = {
+	brilliant_scientist_krg_cancel_clone_maturation = yes
+	remove_decision = brilliant_scientist_krg_run_bounded_clone_growth_cycle
+}
+
+brilliant_scientist_krg_finish_clone_maturation = {
+	set_temp_variable = { brilliant_scientist_krg_clone_maturation_finished = constant:clone_maturation.zero }
+	set_temp_variable = { brilliant_scientist_krg_clone_maturation_history_authorized = constant:clone_maturation.zero }
+	if = {
+		limit = {
+			brilliant_scientist_krg_clone_maturation_receipt_is_current = yes
+			brilliant_scientist_krg_clone_maturation_is_operational = yes
+		}
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_output = brilliant_scientist_krg_clone_maturation_paid_output }
+		brilliant_scientist_krg_clear_clone_maturation_receipt = yes
+		add_equipment_to_stockpile = { type = clone_equipment_1 amount = brilliant_scientist_krg_clone_maturation_output }
+		clone_refresh_reserve_manpower = yes
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_history_authorized = constant:clone_maturation.one }
+		brilliant_scientist_krg_record_clone_maturation_history = yes
+		set_temp_variable = { brilliant_scientist_krg_clone_maturation_finished = constant:clone_maturation.one }
+	}
+	else = { brilliant_scientist_krg_cancel_clone_maturation = yes }
+}

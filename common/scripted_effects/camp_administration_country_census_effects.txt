@@ -1,0 +1,577 @@
+# Historically anchored national/institution custody and forced-labor envelopes.
+# Existing sites receive finite membership apportioned across eligible geography.
+# Physical population does not change during enrollment. Separate noncustodial occupation membership is excluded.
+# Each national and state cumulative receipt survives release/death; no automatic replenishment to a death target.
+# GER camp stock/lifetime distinction: administration_redesign_2026-09-06/occupation/historical_acceptance.md.
+
+camp_admin_country_prepare_census = {
+	set_temp_variable = { camp_admin_census_uses_stock = 0 }
+	set_temp_variable = { camp_admin_census_lifetime_k = 0 }
+	if = {
+		limit = { camp_admin_country_regime_valid = yes }
+		if = {
+			limit = { original_tag = GER }
+			set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_early_k }
+			if = { limit = { date > 1939.8.31 } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_prewar_k } }
+			if = { limit = { date > 1942.8.31 has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1942_k } }
+			if = { limit = { date > 1943.8.31 has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1943_k } }
+			if = { limit = { date > 1944.12.31 has_war = yes } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_1945_k } }
+			set_temp_variable = { camp_admin_census_uses_stock = 1 }
+			set_temp_variable = { camp_admin_census_lifetime_k = constant:camp_admin_country_census.ger_registered_lifetime_k }
+			camp_admin_country_apportion_census_ger_camps = yes
+			set_temp_variable = { camp_admin_census_uses_stock = 0 }
+			set_temp_variable = { camp_admin_census_lifetime_k = 0 }
+			if = {
+				limit = { date > 1944.7.31 has_war = yes }
+				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.ger_civilian_labor_1944_k }
+				camp_admin_country_apportion_census_ger_labor = yes
+			}
+		}
+		else_if = {
+			limit = { original_tag = SOV }
+			set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.sov_prewar_k }
+			if = { limit = { date > 1940.12.31 } set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.sov_1941_k } }
+			camp_admin_country_apportion_census_sov_camps = yes
+		}
+		else_if = {
+			limit = { original_tag = JAP }
+			328 = {
+				if = {
+					limit = {
+						has_state_flag = camp_rework_pingfang_anchor
+						has_variable = camp_admin_responsible_country
+						var:camp_admin_responsible_country = { original_tag = JAP }
+						CONTROLLER = { original_tag = MAN is_subject_of = var:PREV.camp_admin_responsible_country }
+					}
+					set_state_flag = camp_admin_subject_authority
+				}
+			}
+			if = {
+				limit = { date > 1937.7.6 }
+				# Gameplay project capacity, not a historical prisoner census.
+				# Subsequent growth follows completed paid development at actual eligible hosts.
+				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.jap_industrial_project_initial_k }
+				for_each_scope_loop = {
+					array = camp_active_site_states
+					if = {
+						limit = { camp_admin_country_census_jap_industry_host = yes }
+						set_temp_variable = { camp_admin_census_project_growth_k = camp_admin_development_level }
+						multiply_temp_variable = { camp_admin_census_project_growth_k = constant:camp_admin_country_census.jap_industrial_project_development_k }
+						add_to_temp_variable = { camp_admin_census_ceiling_k = camp_admin_census_project_growth_k }
+					}
+				}
+				camp_admin_country_apportion_census_jap_industry = yes
+			}
+			if = {
+				limit = { date > 1938.12.31 NOT = { has_country_flag = japan_prisoner_experiments_shutdown } }
+				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.jap_pingfang_k }
+				camp_admin_country_apportion_census_jap_pingfang = yes
+			}
+			if = {
+				limit = { date > 1942.12.31 has_war = yes }
+				set_temp_variable = { camp_admin_census_ceiling_k = constant:camp_admin_country_census.jap_burma_thai_labor_k }
+				camp_admin_country_apportion_census_jap_railway = yes
+			}
+		}
+	}
+}
+
+# Country scope; literal GROUP selects a documented host predicate and cumulative receipts.
+camp_admin_country_apportion_census_ger_camps = {
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_ger_camps_k } } set_variable = { camp_admin_country_cumulative_ger_camps_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
+	set_variable = { camp_admin_country_ceiling_ger_camps_k = camp_admin_census_ceiling_k }
+	set_temp_variable = { camp_admin_census_host_count = 0 }
+	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_admin_country_census_ger_camps_host = yes }
+			add_to_temp_variable = { camp_admin_census_host_count = 1 }
+			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
+		}
+	}
+	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_census_host_count > 0 } }
+		set_temp_variable = { camp_admin_census_share_k = camp_admin_census_ceiling_k }
+		divide_temp_variable = { camp_admin_census_share_k = camp_admin_census_host_count }
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			if = { limit = { camp_admin_country_census_ger_camps_host = yes } camp_admin_country_admit_census_host_ger_camps = yes }
+		}
+	}
+}
+
+camp_admin_country_apportion_census_ger_labor = {
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_ger_labor_k } } set_variable = { camp_admin_country_cumulative_ger_labor_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
+	set_variable = { camp_admin_country_ceiling_ger_labor_k = camp_admin_census_ceiling_k }
+	set_temp_variable = { camp_admin_census_host_count = 0 }
+	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_admin_country_census_ger_labor_host = yes }
+			add_to_temp_variable = { camp_admin_census_host_count = 1 }
+			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
+		}
+	}
+	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_census_host_count > 0 } }
+		set_temp_variable = { camp_admin_census_share_k = camp_admin_census_ceiling_k }
+		divide_temp_variable = { camp_admin_census_share_k = camp_admin_census_host_count }
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			if = { limit = { camp_admin_country_census_ger_labor_host = yes } camp_admin_country_admit_census_host_ger_labor = yes }
+		}
+	}
+}
+
+camp_admin_country_apportion_census_sov_camps = {
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_sov_camps_k } } set_variable = { camp_admin_country_cumulative_sov_camps_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
+	set_variable = { camp_admin_country_ceiling_sov_camps_k = camp_admin_census_ceiling_k }
+	set_temp_variable = { camp_admin_census_host_count = 0 }
+	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_admin_country_census_sov_camps_host = yes }
+			add_to_temp_variable = { camp_admin_census_host_count = 1 }
+			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
+		}
+	}
+	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_census_host_count > 0 } }
+		set_temp_variable = { camp_admin_census_share_k = camp_admin_census_ceiling_k }
+		divide_temp_variable = { camp_admin_census_share_k = camp_admin_census_host_count }
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			if = { limit = { camp_admin_country_census_sov_camps_host = yes } camp_admin_country_admit_census_host_sov_camps = yes }
+		}
+	}
+}
+
+camp_admin_country_apportion_census_jap_industry = {
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_jap_industry_k } } set_variable = { camp_admin_country_cumulative_jap_industry_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
+	set_variable = { camp_admin_country_ceiling_jap_industry_k = camp_admin_census_ceiling_k }
+	set_temp_variable = { camp_admin_census_host_count = 0 }
+	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_admin_country_census_jap_industry_host = yes }
+			add_to_temp_variable = { camp_admin_census_host_count = 1 }
+			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
+		}
+	}
+	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_census_host_count > 0 } }
+		set_temp_variable = { camp_admin_census_share_k = camp_admin_census_ceiling_k }
+		divide_temp_variable = { camp_admin_census_share_k = camp_admin_census_host_count }
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			if = { limit = { camp_admin_country_census_jap_industry_host = yes } camp_admin_country_admit_census_host_jap_industry = yes }
+		}
+	}
+}
+
+camp_admin_country_apportion_census_jap_pingfang = {
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_jap_pingfang_k } } set_variable = { camp_admin_country_cumulative_jap_pingfang_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
+	set_variable = { camp_admin_country_ceiling_jap_pingfang_k = camp_admin_census_ceiling_k }
+	set_temp_variable = { camp_admin_census_host_count = 0 }
+	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_admin_country_census_jap_pingfang_host = yes }
+			add_to_temp_variable = { camp_admin_census_host_count = 1 }
+			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
+		}
+	}
+	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_census_host_count > 0 } }
+		set_temp_variable = { camp_admin_census_share_k = camp_admin_census_ceiling_k }
+		divide_temp_variable = { camp_admin_census_share_k = camp_admin_census_host_count }
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			if = { limit = { camp_admin_country_census_jap_pingfang_host = yes } camp_admin_country_admit_census_host_jap_pingfang = yes }
+		}
+	}
+}
+
+camp_admin_country_apportion_census_jap_railway = {
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_jap_railway_k } } set_variable = { camp_admin_country_cumulative_jap_railway_k = 0 } }
+	if = { limit = { NOT = { has_variable = camp_admin_country_cumulative_intake_k } } set_variable = { camp_admin_country_cumulative_intake_k = 0 } }
+	set_variable = { camp_admin_country_ceiling_jap_railway_k = camp_admin_census_ceiling_k }
+	set_temp_variable = { camp_admin_census_host_count = 0 }
+	set_temp_variable = { camp_admin_census_live_stock_k = 0 }
+	for_each_scope_loop = {
+		array = camp_active_site_states
+		if = {
+			limit = { camp_admin_country_census_jap_railway_host = yes }
+			add_to_temp_variable = { camp_admin_census_host_count = 1 }
+			add_to_temp_variable = { camp_admin_census_live_stock_k = camp_admin_detainees_k }
+		}
+	}
+	set_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_ceiling_k }
+	subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_census_live_stock_k }
+	clamp_temp_variable = { var = camp_admin_census_stock_remaining_k min = 0 }
+	if = {
+		limit = { check_variable = { camp_admin_census_host_count > 0 } }
+		set_temp_variable = { camp_admin_census_share_k = camp_admin_census_ceiling_k }
+		divide_temp_variable = { camp_admin_census_share_k = camp_admin_census_host_count }
+		for_each_scope_loop = {
+			array = camp_active_site_states
+			if = { limit = { camp_admin_country_census_jap_railway_host = yes } camp_admin_country_admit_census_host_jap_railway = yes }
+		}
+	}
+}
+
+# State under the country registry loop. PREV is the actual responsible actor, never the global monthly host.
+camp_admin_country_admit_census_host_ger_camps = {
+	# Camp labor, railway labor and penal imprisonment remain distinct from a killing-site role.
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_country_census_role_initialized }
+			OR = {
+				AND = { PREV = { original_tag = GER } camp_admin_country_census_ger_camps_host = yes }
+				AND = { PREV = { original_tag = JAP } camp_admin_country_census_jap_railway_host = yes }
+			}
+			NOT = { extermination_camp > 0 }
+			NOT = { has_state_flag = camp_rework_experiment_site }
+		}
+		set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+		set_state_flag = camp_admin_country_census_role_initialized
+	}
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_ger_camps_enrolled_k } } set_variable = { camp_admin_country_census_ger_camps_enrolled_k = 0 } }
+	set_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_ceiling_ger_camps_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		set_temp_variable = { camp_admin_census_national_remaining_k = camp_admin_census_lifetime_k }
+	}
+	subtract_from_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_cumulative_ger_camps_k }
+	clamp_temp_variable = { var = camp_admin_census_national_remaining_k min = 0 }
+	set_temp_variable = { camp_admin_admission_requested_k = camp_admin_census_share_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		# Current custody constrains simultaneous stock; lifetime receipts never decrease.
+		subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_detainees_k }
+	}
+	else = { subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_country_census_ger_camps_enrolled_k } }
+	clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_national_remaining_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_stock_remaining_k }
+	}
+	set_temp_variable = { camp_admin_admission_source_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_occ_remaining_k } }
+	if = { limit = { has_variable = camp_admin_civilian_workforce_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_civilian_workforce_k } }
+	clamp_temp_variable = { var = camp_admin_admission_source_k min = 0 max = camp_admin_admission_requested_k }
+	set_temp_variable = { camp_admin_admission_proven = constant:camp_admin_country_census.one }
+	camp_admin_admit_detainees = yes
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_admission_accepted_k }
+	}
+	add_to_variable = { camp_admin_country_census_ger_camps_enrolled_k = camp_admin_admission_accepted_k }
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_enrolled_k } } set_variable = { camp_admin_country_census_enrolled_k = 0 } }
+	add_to_variable = { camp_admin_country_census_enrolled_k = camp_admin_admission_accepted_k }
+	PREV = {
+		add_to_variable = { camp_admin_country_cumulative_ger_camps_k = camp_admin_admission_accepted_k }
+		add_to_variable = { camp_admin_country_cumulative_intake_k = camp_admin_admission_accepted_k }
+	}
+}
+
+camp_admin_country_admit_census_host_ger_labor = {
+	# Camp labor, railway labor and penal imprisonment remain distinct from a killing-site role.
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_country_census_role_initialized }
+			OR = {
+				AND = { PREV = { original_tag = GER } camp_admin_country_census_ger_camps_host = yes }
+				AND = { PREV = { original_tag = JAP } camp_admin_country_census_jap_railway_host = yes }
+			}
+			NOT = { extermination_camp > 0 }
+			NOT = { has_state_flag = camp_rework_experiment_site }
+		}
+		set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+		set_state_flag = camp_admin_country_census_role_initialized
+	}
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_ger_labor_enrolled_k } } set_variable = { camp_admin_country_census_ger_labor_enrolled_k = 0 } }
+	set_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_ceiling_ger_labor_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		set_temp_variable = { camp_admin_census_national_remaining_k = camp_admin_census_lifetime_k }
+	}
+	subtract_from_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_cumulative_ger_labor_k }
+	clamp_temp_variable = { var = camp_admin_census_national_remaining_k min = 0 }
+	set_temp_variable = { camp_admin_admission_requested_k = camp_admin_census_share_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		# Current custody constrains simultaneous stock; lifetime receipts never decrease.
+		subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_detainees_k }
+	}
+	else = { subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_country_census_ger_labor_enrolled_k } }
+	clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_national_remaining_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_stock_remaining_k }
+	}
+	set_temp_variable = { camp_admin_admission_source_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_occ_remaining_k } }
+	if = { limit = { has_variable = camp_admin_civilian_workforce_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_civilian_workforce_k } }
+	clamp_temp_variable = { var = camp_admin_admission_source_k min = 0 max = camp_admin_admission_requested_k }
+	set_temp_variable = { camp_admin_admission_proven = constant:camp_admin_country_census.one }
+	camp_admin_admit_detainees = yes
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_admission_accepted_k }
+	}
+	add_to_variable = { camp_admin_country_census_ger_labor_enrolled_k = camp_admin_admission_accepted_k }
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_enrolled_k } } set_variable = { camp_admin_country_census_enrolled_k = 0 } }
+	add_to_variable = { camp_admin_country_census_enrolled_k = camp_admin_admission_accepted_k }
+	PREV = {
+		add_to_variable = { camp_admin_country_cumulative_ger_labor_k = camp_admin_admission_accepted_k }
+		add_to_variable = { camp_admin_country_cumulative_intake_k = camp_admin_admission_accepted_k }
+	}
+}
+
+camp_admin_country_admit_census_host_sov_camps = {
+	# Camp labor, railway labor and penal imprisonment remain distinct from a killing-site role.
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_country_census_role_initialized }
+			OR = {
+				AND = { PREV = { original_tag = GER } camp_admin_country_census_ger_camps_host = yes }
+				AND = { PREV = { original_tag = JAP } camp_admin_country_census_jap_railway_host = yes }
+			}
+			NOT = { extermination_camp > 0 }
+			NOT = { has_state_flag = camp_rework_experiment_site }
+		}
+		set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+		set_state_flag = camp_admin_country_census_role_initialized
+	}
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_sov_camps_enrolled_k } } set_variable = { camp_admin_country_census_sov_camps_enrolled_k = 0 } }
+	set_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_ceiling_sov_camps_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		set_temp_variable = { camp_admin_census_national_remaining_k = camp_admin_census_lifetime_k }
+	}
+	subtract_from_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_cumulative_sov_camps_k }
+	clamp_temp_variable = { var = camp_admin_census_national_remaining_k min = 0 }
+	set_temp_variable = { camp_admin_admission_requested_k = camp_admin_census_share_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		# Current custody constrains simultaneous stock; lifetime receipts never decrease.
+		subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_detainees_k }
+	}
+	else = { subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_country_census_sov_camps_enrolled_k } }
+	clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_national_remaining_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_stock_remaining_k }
+	}
+	set_temp_variable = { camp_admin_admission_source_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_occ_remaining_k } }
+	if = { limit = { has_variable = camp_admin_civilian_workforce_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_civilian_workforce_k } }
+	clamp_temp_variable = { var = camp_admin_admission_source_k min = 0 max = camp_admin_admission_requested_k }
+	set_temp_variable = { camp_admin_admission_proven = constant:camp_admin_country_census.one }
+	camp_admin_admit_detainees = yes
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_admission_accepted_k }
+	}
+	add_to_variable = { camp_admin_country_census_sov_camps_enrolled_k = camp_admin_admission_accepted_k }
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_enrolled_k } } set_variable = { camp_admin_country_census_enrolled_k = 0 } }
+	add_to_variable = { camp_admin_country_census_enrolled_k = camp_admin_admission_accepted_k }
+	PREV = {
+		add_to_variable = { camp_admin_country_cumulative_sov_camps_k = camp_admin_admission_accepted_k }
+		add_to_variable = { camp_admin_country_cumulative_intake_k = camp_admin_admission_accepted_k }
+	}
+}
+
+camp_admin_country_admit_census_host_jap_industry = {
+	# Camp labor, railway labor and penal imprisonment remain distinct from a killing-site role.
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_country_census_role_initialized }
+			OR = {
+				AND = { PREV = { original_tag = GER } camp_admin_country_census_ger_camps_host = yes }
+				AND = { PREV = { original_tag = JAP } camp_admin_country_census_jap_railway_host = yes }
+			}
+			NOT = { extermination_camp > 0 }
+			NOT = { has_state_flag = camp_rework_experiment_site }
+		}
+		set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+		set_state_flag = camp_admin_country_census_role_initialized
+	}
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_jap_industry_enrolled_k } } set_variable = { camp_admin_country_census_jap_industry_enrolled_k = 0 } }
+	set_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_ceiling_jap_industry_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		set_temp_variable = { camp_admin_census_national_remaining_k = camp_admin_census_lifetime_k }
+	}
+	subtract_from_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_cumulative_jap_industry_k }
+	clamp_temp_variable = { var = camp_admin_census_national_remaining_k min = 0 }
+	set_temp_variable = { camp_admin_admission_requested_k = camp_admin_census_share_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		# Current custody constrains simultaneous stock; lifetime receipts never decrease.
+		subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_detainees_k }
+	}
+	else = { subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_country_census_jap_industry_enrolled_k } }
+	clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_national_remaining_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_stock_remaining_k }
+	}
+	set_temp_variable = { camp_admin_admission_source_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_occ_remaining_k } }
+	if = { limit = { has_variable = camp_admin_civilian_workforce_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_civilian_workforce_k } }
+	clamp_temp_variable = { var = camp_admin_admission_source_k min = 0 max = camp_admin_admission_requested_k }
+	set_temp_variable = { camp_admin_admission_proven = constant:camp_admin_country_census.one }
+	camp_admin_admit_detainees = yes
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_admission_accepted_k }
+	}
+	add_to_variable = { camp_admin_country_census_jap_industry_enrolled_k = camp_admin_admission_accepted_k }
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_enrolled_k } } set_variable = { camp_admin_country_census_enrolled_k = 0 } }
+	add_to_variable = { camp_admin_country_census_enrolled_k = camp_admin_admission_accepted_k }
+	PREV = {
+		add_to_variable = { camp_admin_country_cumulative_jap_industry_k = camp_admin_admission_accepted_k }
+		add_to_variable = { camp_admin_country_cumulative_intake_k = camp_admin_admission_accepted_k }
+	}
+}
+
+camp_admin_country_admit_census_host_jap_pingfang = {
+	# Camp labor, railway labor and penal imprisonment remain distinct from a killing-site role.
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_country_census_role_initialized }
+			OR = {
+				AND = { PREV = { original_tag = GER } camp_admin_country_census_ger_camps_host = yes }
+				AND = { PREV = { original_tag = JAP } camp_admin_country_census_jap_railway_host = yes }
+			}
+			NOT = { extermination_camp > 0 }
+			NOT = { has_state_flag = camp_rework_experiment_site }
+		}
+		set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+		set_state_flag = camp_admin_country_census_role_initialized
+	}
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_jap_pingfang_enrolled_k } } set_variable = { camp_admin_country_census_jap_pingfang_enrolled_k = 0 } }
+	set_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_ceiling_jap_pingfang_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		set_temp_variable = { camp_admin_census_national_remaining_k = camp_admin_census_lifetime_k }
+	}
+	subtract_from_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_cumulative_jap_pingfang_k }
+	clamp_temp_variable = { var = camp_admin_census_national_remaining_k min = 0 }
+	set_temp_variable = { camp_admin_admission_requested_k = camp_admin_census_share_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		# Current custody constrains simultaneous stock; lifetime receipts never decrease.
+		subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_detainees_k }
+	}
+	else = { subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_country_census_jap_pingfang_enrolled_k } }
+	clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_national_remaining_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_stock_remaining_k }
+	}
+	set_temp_variable = { camp_admin_admission_source_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_occ_remaining_k } }
+	if = { limit = { has_variable = camp_admin_civilian_workforce_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_civilian_workforce_k } }
+	clamp_temp_variable = { var = camp_admin_admission_source_k min = 0 max = camp_admin_admission_requested_k }
+	set_temp_variable = { camp_admin_admission_proven = constant:camp_admin_country_census.one }
+	camp_admin_admit_detainees = yes
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_admission_accepted_k }
+	}
+	add_to_variable = { camp_admin_country_census_jap_pingfang_enrolled_k = camp_admin_admission_accepted_k }
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_enrolled_k } } set_variable = { camp_admin_country_census_enrolled_k = 0 } }
+	add_to_variable = { camp_admin_country_census_enrolled_k = camp_admin_admission_accepted_k }
+	PREV = {
+		add_to_variable = { camp_admin_country_cumulative_jap_pingfang_k = camp_admin_admission_accepted_k }
+		add_to_variable = { camp_admin_country_cumulative_intake_k = camp_admin_admission_accepted_k }
+	}
+}
+
+camp_admin_country_admit_census_host_jap_railway = {
+	# Camp labor, railway labor and penal imprisonment remain distinct from a killing-site role.
+	if = {
+		limit = {
+			NOT = { has_state_flag = camp_admin_country_census_role_initialized }
+			OR = {
+				AND = { PREV = { original_tag = GER } camp_admin_country_census_ger_camps_host = yes }
+				AND = { PREV = { original_tag = JAP } camp_admin_country_census_jap_railway_host = yes }
+			}
+			NOT = { extermination_camp > 0 }
+			NOT = { has_state_flag = camp_rework_experiment_site }
+		}
+		set_variable = { camp_admin_role = constant:camp_admin_role.labor }
+		set_state_flag = camp_admin_country_census_role_initialized
+	}
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_jap_railway_enrolled_k } } set_variable = { camp_admin_country_census_jap_railway_enrolled_k = 0 } }
+	set_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_ceiling_jap_railway_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		set_temp_variable = { camp_admin_census_national_remaining_k = camp_admin_census_lifetime_k }
+	}
+	subtract_from_temp_variable = { camp_admin_census_national_remaining_k = PREV.camp_admin_country_cumulative_jap_railway_k }
+	clamp_temp_variable = { var = camp_admin_census_national_remaining_k min = 0 }
+	set_temp_variable = { camp_admin_admission_requested_k = camp_admin_census_share_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		# Current custody constrains simultaneous stock; lifetime receipts never decrease.
+		subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_detainees_k }
+	}
+	else = { subtract_from_temp_variable = { camp_admin_admission_requested_k = camp_admin_country_census_jap_railway_enrolled_k } }
+	clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_national_remaining_k }
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		clamp_temp_variable = { var = camp_admin_admission_requested_k min = 0 max = camp_admin_census_stock_remaining_k }
+	}
+	set_temp_variable = { camp_admin_admission_source_k = state_population_k }
+	subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_detainees_k }
+	if = { limit = { has_variable = camp_occ_remaining_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_occ_remaining_k } }
+	if = { limit = { has_variable = camp_admin_civilian_workforce_k } subtract_from_temp_variable = { camp_admin_admission_source_k = camp_admin_civilian_workforce_k } }
+	clamp_temp_variable = { var = camp_admin_admission_source_k min = 0 max = camp_admin_admission_requested_k }
+	set_temp_variable = { camp_admin_admission_proven = constant:camp_admin_country_census.one }
+	camp_admin_admit_detainees = yes
+	if = {
+		limit = { check_variable = { camp_admin_census_uses_stock = 1 } }
+		subtract_from_temp_variable = { camp_admin_census_stock_remaining_k = camp_admin_admission_accepted_k }
+	}
+	add_to_variable = { camp_admin_country_census_jap_railway_enrolled_k = camp_admin_admission_accepted_k }
+	if = { limit = { NOT = { has_variable = camp_admin_country_census_enrolled_k } } set_variable = { camp_admin_country_census_enrolled_k = 0 } }
+	add_to_variable = { camp_admin_country_census_enrolled_k = camp_admin_admission_accepted_k }
+	PREV = {
+		add_to_variable = { camp_admin_country_cumulative_jap_railway_k = camp_admin_admission_accepted_k }
+		add_to_variable = { camp_admin_country_cumulative_intake_k = camp_admin_admission_accepted_k }
+	}
+}

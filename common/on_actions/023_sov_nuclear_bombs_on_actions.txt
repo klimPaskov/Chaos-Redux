@@ -1,0 +1,169 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 023 NEUTRAL NUCLEAR THREAT HOOK
+# ============================================================================
+# This hook observes the documented on_nuke_drop scope only. ROOT is the
+# launcher and FROM is the exact struck state. It records Soviet threat state
+# and may open the Event 23 nonterminal exchange presentation; it never calls
+# Fallout, detonation consequences, or a second nuclear action.
+# ============================================================================
+
+on_actions = {
+	on_daily_SOV = {
+			effect = {
+				if = {
+					limit = { has_country_flag = sov_nuclear_bombs_event_active }
+					sov_nuclear_bombs_refresh_native_stockpile_snapshot = yes
+					sov_nuclear_bombs_achievement_refresh_receipts = yes
+				}
+				if = {
+					limit = {
+						has_country_flag = sov_nuclear_bombs_atomic_delivery_context
+						NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
+					}
+					clr_country_flag = sov_nuclear_bombs_atomic_delivery_context
+				}
+			}
+	}
+
+	# Event 023 observes the exact state-control transaction used by Event 005.
+	# ROOT is the new controller, FROM is the previous controller, and FROM.FROM
+	# is the state whose custody or reactor build changed.
+	on_state_control_changed = {
+		effect = {
+			if = {
+				limit = { FROM.FROM = { sov_nuclear_bombs_state_has_pending_event5_snapshot = yes } }
+				FROM.FROM = { sov_nuclear_bombs_reconcile_event5_state = yes }
+			}
+			if = {
+				limit = { FROM.FROM = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } }
+				FROM.FROM = { sov_nuclear_bombs_reactor_control_changed = yes }
+			}
+		}
+	}
+
+	on_release_as_free = {
+		effect = {
+			ROOT = { sov_nuclear_bombs_reconcile_event5_release_country = yes }
+		}
+	}
+
+	on_release_as_puppet = {
+		effect = {
+			ROOT = { sov_nuclear_bombs_reconcile_event5_release_country = yes }
+		}
+	}
+
+	on_annex = {
+		effect = {
+			FROM = {
+				if = {
+					limit = {
+						OR = {
+							has_country_flag = sov_nuclear_bombs_actor_registered
+							has_country_flag = sov_nuclear_bombs_breakaway_nuclear_operational
+							has_variable = sov_nuclear_bombs_actor_transferred
+						}
+					}
+					sov_nuclear_bombs_cleanup_annexed_actor = yes
+				}
+			}
+		}
+	}
+
+	on_nuke_drop = {
+		effect = {
+			if = {
+				limit = { NOT = { has_global_flag = asteroid_incoming_visual_strike_active } }
+				# Native launch_nuke exposes ROOT as the launcher and FROM as the
+				# struck state. Event 023 accepts only its one pending request, the
+				# exact state id, and the selected controller/owner. This callback is
+				# the detonation confirmation and never applies consequences itself.
+				if = {
+					limit = {
+						ROOT = {
+							tag = SOV
+							sov_nuclear_bombs_native_delivery_country_is_valid = yes
+						}
+					FROM = {
+						check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_action_state_id compare = equals }
+						OR = {
+							is_owned_by = var:ROOT.sov_nuclear_bombs_action_target
+							is_controlled_by = var:ROOT.sov_nuclear_bombs_action_target
+						}
+					}
+					}
+					ROOT = {
+						sov_nuclear_bombs_confirm_native_delivery = yes
+						sov_nuclear_bombs_finalize_confirmed_native_delivery = yes
+					}
+				}
+				FROM = {
+					if = {
+						limit = { ROOT = { NOT = { tag = SOV } } owner = { tag = SOV } }
+						owner = {
+							if = {
+								limit = { sov_nuclear_bombs_event_actor_is_valid = yes }
+								if = {
+									limit = {
+										has_country_flag = sov_nuclear_bombs_standdown_verification_pending
+										has_event_target = sov_nuclear_bombs_standdown_partner
+										event_target:sov_nuclear_bombs_standdown_partner = {
+											tag = ROOT
+										has_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+										has_country_flag = sov_nuclear_bombs_release_orders_suspended
+									}
+									ROOT = { is_major = yes has_tech = nukes }
+								}
+								set_country_flag = sov_nuclear_bombs_standdown_violated
+								}
+								set_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+								set_country_flag = sov_nuclear_bombs_enemy_launch_verified
+								set_country_flag = sov_nuclear_bombs_serious_crisis
+								set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
+								if = {
+									limit = { ROOT = { is_major = yes has_tech = nukes } }
+									set_variable = { sov_nuclear_bombs_major_receipt_candidate_actor_id = ROOT.id }
+									set_variable = { sov_nuclear_bombs_major_receipt_candidate_target_id = id }
+									sov_nuclear_bombs_record_major_exchange_receipt = yes
+								}
+								set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
+							}
+						}
+					}
+					else_if = {
+						limit = { ROOT = { NOT = { tag = SOV } } controller = { tag = SOV } }
+						controller = {
+							if = {
+								limit = { sov_nuclear_bombs_event_actor_is_valid = yes }
+								if = {
+									limit = {
+										has_country_flag = sov_nuclear_bombs_standdown_verification_pending
+										has_event_target = sov_nuclear_bombs_standdown_partner
+										event_target:sov_nuclear_bombs_standdown_partner = {
+											tag = ROOT
+											has_country_flag = sov_nuclear_bombs_standdown_offer_accepted
+											has_country_flag = sov_nuclear_bombs_release_orders_suspended
+									}
+									ROOT = { is_major = yes has_tech = nukes }
+								}
+								set_country_flag = sov_nuclear_bombs_standdown_violated
+								}
+								set_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+								set_country_flag = sov_nuclear_bombs_enemy_launch_verified
+								set_country_flag = sov_nuclear_bombs_serious_crisis
+								set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
+								if = {
+									limit = { ROOT = { is_major = yes has_tech = nukes } }
+									set_variable = { sov_nuclear_bombs_major_receipt_candidate_actor_id = ROOT.id }
+									set_variable = { sov_nuclear_bombs_major_receipt_candidate_target_id = id }
+									sov_nuclear_bombs_record_major_exchange_receipt = yes
+								}
+								set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

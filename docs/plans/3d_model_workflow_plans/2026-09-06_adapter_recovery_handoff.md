@@ -244,3 +244,72 @@ Final actual-byte death contact receipt `7581691597944fb2899998596fcccc12` confi
 All Donkey native calls drained; its final copy manifest remains package-owned.
 The shared release remains stable at1.10.40 with19 passing live tests and canonical LF hashes; parent owns the coherent tooling commit after the existing Git index lock clears.
 No index lock was deleted, process killed, alternate index used, or module behavior changed during final packaging.
+
+### Coherent release committed
+
+Parent committed the complete release 1.10.40 dependency closure, live regression tests, this handoff, and the reviewed skill update as `898b3ea86` after the existing Git index lock released naturally.
+All 19 live regression tests passed again after the commit.
+All five corrected Donkey actual-byte reimport receipts above are included in the committed proof; the earlier pending-commit statement is superseded.
+No shared adapter source changes remain pending, and no additional paid operations were used.
+Package production and runtime integration remain separate parent-owned acceptance tasks.
+
+### Text-to-Motion retarget release 1.10.41
+
+The September 9 user request explicitly authorized use of the new Meshy Text-to-Motion endpoint.
+The separate endpoint owner produced the sole 10-credit prime pilot and committed its Meshy route fields as `63cc686`; this Blender publication preserves those fields.
+Blender release 1.10.41 has 48 operations and dependency-lock SHA `727BFCFCE03F409A086B5FD8CA9518FE151FE148EF4D4E5571E7F0990406F535`.
+The additive `inspect_animation_source` operation reads a checksum-bound job-local FBX skeleton and action inventory in a disposable scene, with no target checkpoint mutation.
+The import/export provenance allowlists accept the accurate `meshy_text_to_motion` source kind.
+Transfer requires explicit source and target rest-joint head pairs for anatomical root displacement scaling, retaining calibrated target geometry.
+The source root is measured through its evaluated hierarchy in world coordinates; scaled world X/Y displacement is removed and world Z is converted through the inverse target armature/rest-root basis.
+Rotation deltas are conjugated through both armature object orientations.
+Every authored frame verifies target world root displacement against the scaled source vertical displacement within 0.00002 source units.
+The route requires a new target action and checkpoint, checks retained action curve hashes, and avoids modifying retained scale channels.
+Four live coordinate regressions and all 19 prior release regressions pass; native source inspection and candidate transfer remain pending at publication and must be recorded separately.
+Owned changed files are `adapter/blender_worker.py`, `adapter/chaosx_blender_hoi4_mcp.py`, new `adapter/retarget_root_motion.py`, new `tests/test_animation_retarget.py`, `config/blender_hoi4_adapter.json`, and only the Blender branch of `config/dependencies.lock.json`, all under `.tools/3d_pipeline/`.
+No paid provider operation was performed by the adapter owner.
+
+### Native source inspection and release 1.10.42
+
+Native read-only Text-to-Motion source inspection `8814ce9906054ec7a751c4a27fc2c3c1` passed on the downloaded pilot: armature `Reference`, action `Reference|SMPLH_Animation|Base Layer`, 52 bones, 30 FPS, frames 1–90, object scale 0.01 and +90-degree X orientation.
+The zombie owner measured source Pelvis-to-L_Ankle world rest-head span 0.873956497489 and target Hips-to-LeftFoot span 3.5871728982, producing anatomical displacement ratio 4.10452111576.
+Release 1.10.42 adds a fail-closed per-frame static source/target object-matrix guard so cached object orientations cannot conceal animated object transforms.
+The coherent lock SHA is `D024EF6888904F38BE315D2617D1361B9FE7723A2E35C05892B33B75257ECC03`, with 48 operations and preserved Meshy fields.
+All 24 tests pass: four coordinate regressions, 19 release regressions, and the existing native Blender scale-aware integration.
+The native integration fixture previously keyed pose-local Z on a root whose local Z points world-horizontal, and incorrectly called local-Z times object scale a world-vertical peak.
+Its fixture now keys a genuinely world-vertical displacement through the source rest basis, and asserts horizontal suppression, evaluated vertical retention, inverse-scale behavior, accessory binding and export preservation.
+This fixture correction is in `.tools/3d_pipeline/tests/blender_scale_aware_retarget_integration.py`.
+The actual pilot transfer remains a separate candidate proof owned by the zombie worker; inspection and passing synthetic tests do not establish its semantic/contact acceptance.
+
+### Actual pilot static-motion guard correction, release 1.10.43
+
+Actual pilot transfer request `2f8e84d30d3e44cebf12a5e4432cf8cf` stopped before save because the legacy static-motion guard added raw source pose-basis translation units to angular radians and compared that total against target units.
+Its source peak 313.181 versus target peak 17.5146 was dimensionally inconsistent despite the independently passing world-root displacement proof and closely matching joint rotations.
+Release 1.10.43 compares per-joint angular motion in radians only and retains the unchanged static-motion threshold; root translation retains its separate exact per-frame world-space proof.
+Five pure coordinate/angular tests, 19 release tests, and the native scale-aware integration pass, including explicit rejection of missing target angular motion.
+The coherent 48-operation lock SHA is `1DC3CD7CC323A26B79323DDE61A699E7BB595702E65E4C00130D7CEC6D3C546B`.
+The failed request produced no accepted checkpoint; the zombie owner owns the new local candidate retry and visual acceptance.
+
+### Native transfer proof and bounded follow-up inspection, release 1.10.44
+
+The actual 1.10.43 pilot transfer passed with source angular peak 15.9248325434 radians, target peak 15.9248421979, and maximum per-frame world-root displacement error 0.00000029839552.
+Its receipt is `docs/assets/002_zombie_outbreak/models_3d/zombies/evidence/repair_2026-09-09/text_to_motion_transfer_receipt_v1.json`.
+The generated clip rises again by frame 90 and is not accepted as a complete death action.
+Parent authorized retaining its usable fall and manually deriving a terminal settle in a new sibling, preserving the original provider clip and accepted assets.
+Live wrapper schemas are archived as `live_tools_1_10_41.json` and `live_tools_1_10_43.json` in that same zombie evidence directory.
+
+Release 1.10.44 retains 48 operations and lock SHA `ABEBC252014EF5C9D7F6F3F45F1760B8192DE7E7A2A81D7D26E7EEB18B3601A2`.
+The existing `inspect_scene` now honors its explicitly selected action regardless of action-name prefix, with optional 1–241 distinct integer `evaluated_frames` constrained to that action range.
+It records evaluated whole-working-assembly and individual working-mesh world bounds and restores action, slot, and frame.
+The existing hash-bound action-channel inventory exposes exact key coordinates, interpolation and handles, plus current named pose-local values, bounded to 500000 keys.
+The existing explicit phase patch accepts death phases `standing`, `falling`, `impact`, `rebound`, `settling`, `terminal_hold`, requiring distinguishable non-root articulation through settling while allowing a still terminal hold.
+Future source transfers explicitly neutralize unmapped local controls and record their names; this does not alter the accepted 1.10.43 candidate or its provider-prefix evidence.
+The actual pilot's unmapped `head_end` and `headfront` are unweighted children of Head and are intended to inherit its motion at identity local transforms.
+Six pure tests, 19 release tests and the existing native scale-aware integration pass.
+Robot all-frame floor evidence and Zombie exact-key/native ending proof remain package-owned follow-up checks against the original constant calibrated ground, not each preview's recentered plane.
+
+The final live pure suite also tests death-phase articulation versus a still terminal hold, bringing the verified total to 27 tests (seven pure, 19 release, one native scale integration).
+Native 1.10.44 exact-key inventory succeeded for the pilot candidate.
+Fixed-ground weighted-surface analysis found absolute body minima of 0.881 at frame 1, 0.379 at frame 36, 0.780 at frame 46 and 0.981 at frame 90.
+These gaps are not accepted as ground contact; recentered preview floors cannot substitute for the original constant ground plane.
+The zombie owner is preserving the usable provider fall rotations and solving a derived articulated terminal settle with explicit per-frame contact correction before its next native candidate.

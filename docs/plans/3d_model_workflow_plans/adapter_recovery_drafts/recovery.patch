@@ -1,0 +1,501 @@
+--- a/.tools/3d_pipeline/adapter/blender_worker.py
++++ b/.tools/3d_pipeline/adapter/blender_worker.py
+@@ -4601,8 +4601,8 @@
+         raise ValueError("Promotion report already exists; overwrite is forbidden.")
+     rig_name = _locator_exact_name(payload["target_armature_name"], "target_armature_name")
+     mesh_names = payload["target_mesh_names"]
+-    if not isinstance(mesh_names, (list, tuple)) or not 1 <= len(mesh_names) <= 16:
+-        raise ValueError("Promotion requires one to sixteen exact mesh names.")
++    if not isinstance(mesh_names, (list, tuple)) or not 1 <= len(mesh_names) <= 512:
++        raise ValueError("Promotion requires one to 512 exact mesh names from the complete same-rig receipt.")
+     mesh_names = [_locator_exact_name(name, "target_mesh_names") for name in mesh_names]
+     if len(set(mesh_names)) != len(mesh_names) or rig_name in mesh_names:
+         raise ValueError("Promotion object identities must be unique.")
+@@ -5181,8 +5181,12 @@
+     payload = req["payload"]
+     blend = within(job, payload["blend_rel"])
+     output = within(job, payload["output_rel"], allow_missing=True)
++    explicit_checkpoint = payload.get("checkpoint_rel")
++    exported_checkpoint = within(job, explicit_checkpoint, allow_missing=True) if explicit_checkpoint else job / "blender" / "checkpoints" / "06_exported.blend"
++    if explicit_checkpoint and (exported_checkpoint.suffix != ".blend" or exported_checkpoint.parent != blend.parent or exported_checkpoint == blend or exported_checkpoint.exists()):
++        raise ValueError("Explicit export checkpoint must be a new sibling .blend; overwrite is forbidden.")
+     output.parent.mkdir(parents=True, exist_ok=True)
+-    bpy.ops.wm.open_mainfile(filepath=str(blend))
++    bpy.ops.wm.open_mainfile(filepath=str(blend), use_scripts=False)
+     pdx = load_pdx(req["io_pdx_root"])
+     working = [
+         obj for obj in bpy.context.scene.objects
+@@ -5246,7 +5250,6 @@
+     streams = exported_mesh_streams(text_output)
+     from skeletal_export_partition import require_bounded_export_streams
+     require_bounded_export_streams(streams)
+-    exported_checkpoint = job / "blender" / "checkpoints" / "06_exported.blend"
+     save_blend(exported_checkpoint)
+     result = {
+         "blend": str(blend.relative_to(job)).replace("\\", "/"),
+@@ -5893,6 +5896,13 @@
+         "provenance_rel": str(action.get("chaosx_animation_provenance_rel", "")),
+         "processing_policy": str(action.get("chaosx_animation_processing_policy", "")),
+     }
++    if fields["source_kind"] == "manual_blender_gpt6_astra":
++        spec_hash = str(action.get("chaosx_manual_action_spec_sha256", "")).upper()
++        if not re.fullmatch(r"[0-9A-F]{64}", spec_hash) or not re.fullmatch(r"[0-9A-F]{64}", fields["source_sha256"]):
++            raise RuntimeError("Manual action requires retained source checkpoint and declarative spec SHA-256.")
++        fields.update(source_reference_id=spec_hash, source_action_name=action.name, manual_spec_sha256=spec_hash,
++                      processing_policy="manual_blender_gpt6_astra_hash_bound_declarative_action")
++        return fields
+     if fields["source_kind"] not in {"meshy_animate", "professional_source"}:
+         raise RuntimeError(f"Action {action.name} is not marked as a verified provider/professional source action.")
+     if not re.fullmatch(r"[0-9A-F]{64}", fields["source_sha256"]):
+@@ -6526,7 +6536,7 @@
+         "scale_normalization": scale_normalization,
+         "warnings": [],
+     }
+-    report = job / "blender" / "reports" / f"export_anim_{safe_name(action.name)}.json"
++    report = job / "blender" / "reports" / f"export_anim_{safe_name(action.name)[:32]}_{hashlib.sha256(action.name.encode()).hexdigest()[:10]}.json"
+     report.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+     return result
+ 
+@@ -9135,6 +9145,17 @@
+     mesh = within(job, payload["mesh_rel"])
+     anim = within(job, payload["anim_rel"]) if payload.get("anim_rel") else None
+     texture_staging = []
++    stage_defaults = payload.get("stage_default_textures", True)
++    if type(stage_defaults) is not bool:
++        raise ValueError("stage_default_textures must be an explicit boolean.")
++    if not stage_defaults:
++        adjacent = sorted(mesh.parent.glob("*.dds"))
++        if not 1 <= len(adjacent) <= 128:
++            raise ValueError("Preserved candidate textures require 1-128 adjacent DDS files.")
++        for path in adjacent:
++            if path.stat().st_size < 128 or path.read_bytes()[:4] != b"DDS ":
++                raise ValueError("Invalid prestaged candidate DDS.")
++            texture_staging.append({"source":path.relative_to(job).as_posix(), "staged":path.relative_to(job).as_posix(), "bytes":path.stat().st_size, "sha256":file_sha256(path), "copied":False, "policy":"preserve_prestaged_candidate"})
+     requested_texture_names = tuple(
+         str(name)
+         for name in (payload.get("texture_names") or [])
+@@ -9153,7 +9174,7 @@
+         "Image_3.dds",
+         "normal.dds",
+     )
+-    for texture_name in tuple(dict.fromkeys(requested_texture_names + default_texture_names)):
++    for texture_name in (tuple(dict.fromkeys(requested_texture_names + default_texture_names)) if stage_defaults else ()):
+         source = job / "textures" / "dds" / texture_name
+         if not source.is_file():
+             continue
+@@ -9389,7 +9410,7 @@
+     if operation == "partition_skeletal_mesh_export_batches":
+         from skeletal_export_partition import partition_skeletal_mesh_export_batches
+         return partition_skeletal_mesh_export_batches(req, sys.modules[__name__])
+-    if operation in {"inspect_mesh_landmarks", "author_measured_creature_rig", "attach_rigid_component", "author_measured_creature_action"}:
++    if operation in {"inspect_mesh_landmarks", "author_measured_creature_rig", "attach_rigid_component", "author_measured_creature_action", "repair_explicit_mesh_winding", "ground_existing_action"}:
+         import manual_creature_rig
+         return getattr(manual_creature_rig, operation)(req, globals())
+     pdx = None
+--- a/.tools/3d_pipeline/adapter/chaosx_blender_hoi4_mcp.py
++++ b/.tools/3d_pipeline/adapter/chaosx_blender_hoi4_mcp.py
+@@ -606,7 +606,7 @@
+     """Copy one hash-bound animated reimport proof with metadata-only working approval.
+ 
+     Require its complete receipt and immutable source .blend/.mesh/.anim hashes,
+-    one exact rig and 1-16 exact meshes, and a new sibling checkpoint. Preserve
++    one exact rig and 1-512 exact meshes, and a new sibling checkpoint. Preserve
+     geometry, materials, weights, bones, actions and scale through save/reopen.
+     This does not import actions, author geometry, convert or approve exports.
+     """
+@@ -660,13 +660,14 @@
+     blend_rel: str,
+     output_rel: str,
+     split_verts: bool = False,
++    checkpoint_rel: str | None = None,
+ ) -> Dict[str, Any]:
+     """Export the approved collection through io_pdx_mesh."""
+ 
+     return _run(
+         job_id,
+         "export_mesh",
+-        {"blend_rel": blend_rel, "output_rel": output_rel, "split_verts": split_verts},
++        {"blend_rel": blend_rel, "output_rel": output_rel, "split_verts": split_verts, "checkpoint_rel": checkpoint_rel},
+     )
+ 
+ 
+@@ -1162,13 +1163,14 @@
+     mesh_rel: str,
+     anim_rel: str = "",
+     proof_name: str = "",
++    stage_default_textures: bool = True,
+ ) -> Dict[str, Any]:
+     """Reimport exported PDX assets and save proof into the job."""
+ 
+     return _run(
+         job_id,
+         "reimport_export",
+-        {"mesh_rel": mesh_rel, "anim_rel": anim_rel, "proof_name": proof_name},
++        {"mesh_rel": mesh_rel, "anim_rel": anim_rel, "proof_name": proof_name, "stage_default_textures": stage_default_textures},
+     )
+ 
+ 
+@@ -1187,6 +1189,18 @@
+     )
+ 
+ 
++
++@mcp.tool()
++def chaosx_blender_hoi4_repair_explicit_mesh_winding(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, mesh_name: str, face_indices: list[int]) -> Dict[str, Any]:
++    """Flip an exact reviewed face list in a new hash-bound sibling; preserve corners, weights, rig and actions."""
++    return _run(job_id, "repair_explicit_mesh_winding", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"mesh_name":mesh_name,"face_indices":face_indices})
++
++@mcp.tool()
++def chaosx_blender_hoi4_ground_existing_action(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, source_action_name: str, expected_action_sha256: str, target_action_name: str, root_bone: str, excluded_contact_bones: list[str] | None = None) -> Dict[str, Any]:
++    """Copy one reviewed skeletal action and correct true-root location in pure world Z."""
++    return _run(job_id, "ground_existing_action", {"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"target_armature_name":target_armature_name,"source_action_name":source_action_name,"expected_action_sha256":expected_action_sha256,"target_action_name":target_action_name,"root_bone":root_bone,"excluded_contact_bones":excluded_contact_bones or []})
++
++
+ def main() -> None:
+     mcp.run(transport="stdio")
+ 
+--- a/.tools/3d_pipeline/adapter/manual_creature_rig.py
++++ b/.tools/3d_pipeline/adapter/manual_creature_rig.py
+@@ -56,9 +56,14 @@
+     if not isinstance(rows, list) or not 1 <= len(rows) <= 256:
+         raise ValueError("Require 1-256 ordered weight regions.")
+     for row in rows:
+-        if not isinstance(row, dict) or set(row) != {"name", "min", "max", "bones", "rigid"}:
++        if not isinstance(row, dict) or set(row) - {"name", "min", "max", "bones", "rigid", "mesh_names"} or not {"name", "min", "max", "bones", "rigid"} <= set(row):
+             raise ValueError("Weight regions require name/min/max/bones/rigid.")
+         name(row["name"])
++        if "mesh_names" in row:
++            names=row["mesh_names"]
++            if not isinstance(names,list) or not 1<=len(names)<=512 or len(set(names))!=len(names):
++                raise ValueError("Region mesh_names requires 1-512 exact unique object names.")
++            for n in names: name(n)
+         lo, hi = vector(row["min"]), vector(row["max"])
+         if any(a > b for a, b in zip(lo, hi)):
+             raise ValueError("Region bounds must be ordered.")
+@@ -70,7 +75,7 @@
+ 
+ 
+ def validate_component(spec):
+-    if not isinstance(spec, dict) or set(spec) != {"name", "bone", "material", "vertices", "triangles", "loop_uvs"}:
++    if not isinstance(spec, dict) or set(spec) - {"name", "bone", "material", "vertices", "triangles", "loop_uvs", "material_spec"} or not {"name", "bone", "material", "vertices", "triangles", "loop_uvs"} <= set(spec):
+         raise ValueError("Component requires name/bone/material/vertices/triangles/loop_uvs.")
+     for key in ("name", "bone", "material"):
+         name(spec[key])
+@@ -164,6 +169,22 @@
+     return job, source, output
+ 
+ 
++def _repair_collection(h):
++    bpy = h["bpy"]
++    objects = h["mesh_objects"]() + h["armatures"]()
++    if not objects or any(not obj.get("chaosx_working") or obj.library or obj.data.library or obj.get("chaosx_source_protected") or obj.get("chaosx_reference_read_only") for obj in objects):
++        raise ValueError("Require explicitly approved local working objects.")
++    collection = bpy.data.collections.get("WORKING")
++    if collection is None:
++        collection = bpy.data.collections.new("WORKING")
++        bpy.context.scene.collection.children.link(collection)
++    elif collection.library or collection.get("chaosx_source_protected") or collection.get("chaosx_reference_read_only"):
++        raise ValueError("Working collection is protected or linked.")
++    if collection.name not in {c.name for c in bpy.context.scene.collection.children_recursive}:
++        raise ValueError("Working collection does not belong to the active scene.")
++    return collection
++
++
+ def _mesh_signature(objects):
+     return digest({obj.name: {"vertices": [list(v.co) for v in obj.data.vertices], "faces": [list(f.vertices) for f in obj.data.polygons], "uvs": {u.name: [list(v.uv) for v in u.data] for u in obj.data.uv_layers}, "materials": [m.name if m else None for m in obj.data.materials]} for obj in objects})
+ 
+@@ -194,6 +215,8 @@
+     meshes = h["mesh_objects"]()
+     if not meshes or any(obj.data.shape_keys or obj.library or obj.data.library or not obj.get("chaosx_working") for obj in meshes):
+         raise ValueError("Require local approved working meshes without shape keys.")
++    if any(set(r.get("mesh_names",[]))-{obj.name for obj in meshes} for r in spec["weight_regions"]):
++        raise ValueError("Weight region targets an unknown working mesh.")
+     before_geometry = h["geometry_metrics"]()
+     before_sig = _mesh_signature(meshes)
+     worlds = {obj.name: obj.matrix_world.copy() for obj in meshes}
+@@ -212,7 +235,7 @@
+         raise ValueError("Body reduction below 90% requires a separate reviewed geometry operation.")
+     reduction = h["controlled_decimate"](target) if target else None
+     data = bpy.data.armatures.new(rig_name); rig = bpy.data.objects.new(rig_name,data)
+-    h["_working_collection"]().objects.link(rig)
++    _repair_collection(h).objects.link(rig)
+     rig["chaosx_working"] = True; rig["chaosx_custom_creature_rig"] = True
+     rig["chaosx_manual_rig_spec_sha256"] = digest(spec)
+     bpy.ops.object.select_all(action="DESELECT"); rig.select_set(True); bpy.context.view_layer.objects.active=rig
+@@ -229,7 +252,7 @@
+         groups={n:obj.vertex_groups.new(name=n) for n in bones}; counts[obj.name]={n:0 for n in bones}
+         for vertex in obj.data.vertices:
+             point=obj.matrix_world@vertex.co
+-            region=next((r for r in spec["weight_regions"] if all(r["min"][i]<=point[i]<=r["max"][i] for i in range(3))),None)
++            region=next((r for r in spec["weight_regions"] if ("mesh_names" not in r or obj.name in r["mesh_names"]) and all(r["min"][i]<=point[i]<=r["max"][i] for i in range(3))),None)
+             if region is None: raise ValueError(f"No declared weight region covers {obj.name} vertex {vertex.index}.")
+             region_counts[region["name"]]+=1
+             if region["rigid"]: pairs=[(1.0,region["bones"][0])]
+@@ -258,12 +281,16 @@
+     if len(rigs)!=1 or rigs[0]!=rig or spec["bone"] not in rig.data.bones or bpy.data.objects.get(spec["name"]):
+         raise ValueError("Require the exact unique working rig, existing bone, and new component name.")
+     material=bpy.data.materials.get(spec["material"])
+-    if material is None or material not in [mat for obj in meshes for mat in obj.data.materials]:
+-        raise ValueError("Component must use an inspected existing working material.")
++    if "material_spec" in spec:
++        if material is not None:
++            raise ValueError("Explicit component material must have a new unique name.")
++        material = _component_material(req, h, job, spec["material"], spec["material_spec"])
++    elif material is None or material not in [mat for obj in meshes for mat in obj.data.materials]:
++        raise ValueError("Component requires an existing working material or explicit new job-owned PDX DDS maps.")
+     if h["geometry_metrics"]()["triangles"]+len(spec["triangles"])>ceiling:
+         raise ValueError("Component exceeds total approved triangle ceiling.")
+     mesh=bpy.data.meshes.new(spec["name"]); mesh.from_pydata(spec["vertices"],[],spec["triangles"]); mesh.update()
+-    obj=bpy.data.objects.new(spec["name"],mesh); h["_working_collection"]().objects.link(obj)
++    obj=bpy.data.objects.new(spec["name"],mesh); _repair_collection(h).objects.link(obj)
+     obj["chaosx_working"]=True; obj["chaosx_rigid_component_spec_sha256"]=digest(spec)
+     mesh.materials.append(material); uv=mesh.uv_layers.new(name="UVMap")
+     for i,value in enumerate(spec["loop_uvs"]): uv.data[i].uv=value
+@@ -308,12 +335,16 @@
+     for curve,_ in h["action_fcurves"](action):
+         for key in curve.keyframe_points: key.interpolation="LINEAR"
+     base=rig.location.copy(); ground=[]; samples=[]
++    root=rig.pose.bones[spec["root_bone"]]
++    root_locations={}
++    for frame in range(spec["frame_start"],spec["frame_end"]+1):
++        scene.frame_set(frame); root_locations[frame]=root.location.copy()
+     for frame in range(spec["frame_start"],spec["frame_end"]+1):
+         scene.frame_set(frame); rig.location=base; bpy.context.view_layer.update()
+         before,maximum=h["evaluated_world_bounds"](meshes)
+         if spec["ground_contact"]=="per_frame_lowest_point_1mm":
+-            rig.location=base+Vector((0,0,.001-before.z))
+-            rig.keyframe_insert(data_path="location",frame=frame,group="object_contact_correction")
++            root.location=root_locations[frame]; root.keyframe_insert(data_path="location",frame=frame,group=root.name)
++            _root_vertical_contact(h,rig,root,meshes,frame,.001)
+             bpy.context.view_layer.update()
+         after,maximum=h["evaluated_world_bounds"](meshes); ground.append({"frame":frame,"before":before.z,"after":after.z,"rig_location":list(rig.location)})
+         if frame in {v["frame"] for v in spec["phases"]}:
+@@ -349,3 +380,228 @@
+     output.parent.mkdir(parents=True,exist_ok=True); output.write_text(json.dumps(data,separators=(",",":"))+"\n",encoding="utf-8")
+     if h["file_sha256"](source)!=expected: raise RuntimeError("Inspection altered source.")
+     return {"operation":"inspect_mesh_landmarks","report":output.relative_to(job).as_posix(),"report_sha256":h["file_sha256"](output),"counts":{obj.name:len(obj.data.vertices) for obj in meshes},"source_immutable":True,"data_semantics":"rest mesh coordinates under current object transforms; no evaluated pose or semantic inference"}
++
++
++def validate_component_dds(header, file_size):
++    import struct
++    if len(header)<128 or header[:4]!=b'DDS ' or struct.unpack_from('<I',header,4)[0]!=124 or struct.unpack_from('<I',header,76)[0]!=32:
++        raise ValueError('Invalid DDS header.')
++    height,width=struct.unpack_from('<II',header,12)
++    if width!=height or width not in {128,256,512,1024}: raise ValueError('Unit component maps must be matching square power-of-two DDS at most1024.')
++    depth,mips=struct.unpack_from('<II',header,24); mips=max(1,mips)
++    if depth not in {0,1} or not 1<=mips<=width.bit_length() or struct.unpack_from('<I',header,112)[0]!=0:
++        raise ValueError('Only bounded 2D DDS maps without arrays/cubemaps are supported.')
++    flags,fourcc,bits,r,g,b,a=struct.unpack_from('<I4sIIIII',header,80)
++    offset=128
++    if flags==0x41 and fourcc==b'\0'*4 and (bits,r,g,b,a)==(32,0x00ff0000,0x0000ff00,0x000000ff,0xff000000):
++        size=sum(max(1,width>>level)*max(1,height>>level)*4 for level in range(mips))
++        if struct.unpack_from('<I',header,20)[0] not in {0,width*4}: raise ValueError('Unsupported BGRA row pitch.')
++    elif flags&4 and fourcc in {b'DXT5',b'DX10'}:
++        if fourcc==b'DX10':
++            if len(header)<148: raise ValueError('Missing DX10 DDS extension.')
++            fmt,dim,misc,array,misc2=struct.unpack_from('<IIIII',header,128)
++            if fmt not in {77,78,98,99} or dim!=3 or misc!=0 or array!=1: raise ValueError('Require one alpha-capable BC3/BC7 2D DDS.')
++            offset=148
++        size=sum(max(1,(max(1,width>>level)+3)//4)*max(1,(max(1,height>>level)+3)//4)*16 for level in range(mips))
++    else: raise ValueError('Require verified uncompressed A8R8G8B8/BGRA or alpha-capable BC3/BC7 DDS.')
++    if file_size!=offset+size: raise ValueError('DDS payload size does not match declared dimensions/mips/encoding.')
++    return width,height
++
++
++def _component_material(req, h, job, material_name, spec):
++    bpy = h['bpy']
++    if not isinstance(spec, dict) or set(spec) != {'shader', 'normal_packing', 'specular_packing', 'maps'} or spec['shader'] != 'PdxMeshAdvanced' or spec['normal_packing'] != 'RRxG' or spec['specular_packing'] != 'rgb_specular_alpha_glossiness':
++        raise ValueError('Require explicit PdxMeshAdvanced RRxG normal and RGB specular/alpha glossiness maps.')
++    if not isinstance(spec['maps'], dict) or set(spec['maps']) != {'diffuse', 'normal', 'specular'}:
++        raise ValueError('Require all three exact DDS maps.')
++    paths, sizes = {}, set()
++    for role, row in spec['maps'].items():
++        if not isinstance(row, dict) or set(row) != {'path_rel', 'sha256'}:
++            raise ValueError('Map requires exact job path and SHA256.')
++        path = h['within'](job, row['path_rel'])
++        if path.suffix.lower() != '.dds' or not re.fullmatch(r'[A-Fa-f0-9]{64}', row['sha256']) or h['file_sha256'](path) != row['sha256'].upper():
++            raise ValueError('DDS path or checksum mismatch.')
++        with path.open('rb') as handle: header=handle.read(148)
++        width,height=validate_component_dds(header,path.stat().st_size)
++        sizes.add((width,height)); paths[role]=path
++    if len(sizes)!=1: raise ValueError('Component map dimensions must match.')
++    image_names = {role: material_name+'_'+role for role in paths}
++    if any(bpy.data.images.get(n) for n in image_names.values()):
++        raise ValueError('Component image names must be new; existing maps cannot be replaced.')
++    material=bpy.data.materials.new(material_name)
++    h['ensure_material_nodes'](material)
++    shader=h['_principled_shader'](material)
++    shader.inputs['Metallic'].default_value=0
++    shader.inputs['Alpha'].default_value=1
++    for role,path in paths.items():
++        image=h['_load_texture_image'](path,image_names[role],non_color=role!='diffuse')
++        if tuple(image.size) != next(iter(sizes)): raise ValueError('DDS decoder dimensions mismatch.')
++        node=material.node_tree.nodes.new('ShaderNodeTexImage'); node.name='CHAOSX_'+role.upper()+'_TEXTURE'; node.image=image
++        if role=='normal':
++            separate=material.node_tree.nodes.new('ShaderNodeSeparateColor'); separate.mode='RGB'
++            combine=material.node_tree.nodes.new('ShaderNodeCombineColor'); combine.mode='RGB'
++            links=material.node_tree.links
++            links.new(node.outputs['Color'],separate.inputs['Color'])
++            links.new(separate.outputs['Green'],combine.inputs['Red'])
++            links.new(node.outputs['Alpha'],combine.inputs['Green'])
++            def math_node(op,a=None,b=None,a_value=0,b_value=0):
++                n=material.node_tree.nodes.new('ShaderNodeMath'); n.operation=op
++                n.inputs[0].default_value=a_value; n.inputs[1].default_value=b_value
++                if a is not None: links.new(a,n.inputs[0])
++                if b is not None: links.new(b,n.inputs[1])
++                return n.outputs[0]
++            x=math_node('SUBTRACT',math_node('MULTIPLY',separate.outputs['Green'],b_value=2),b_value=1)
++            y=math_node('SUBTRACT',math_node('MULTIPLY',node.outputs['Alpha'],b_value=2),b_value=1)
++            squared=math_node('ADD',math_node('MULTIPLY',x,x),math_node('MULTIPLY',y,y))
++            z=math_node('SQRT',math_node('MAXIMUM',math_node('SUBTRACT',b=squared,a_value=1),b_value=0))
++            encoded_z=math_node('MULTIPLY',math_node('ADD',z,b_value=1),b_value=.5)
++            links.new(encoded_z,combine.inputs['Blue'])
++            normal=material.node_tree.nodes.new('ShaderNodeNormalMap'); normal.name='CHAOSX_NORMAL_MAP'
++            material.node_tree.links.new(combine.outputs['Color'],normal.inputs['Color'])
++            material.node_tree.links.new(normal.outputs['Normal'],shader.inputs['Normal'])
++        elif role=='specular':
++            separate=material.node_tree.nodes.new('ShaderNodeSeparateColor'); separate.mode='RGB'
++            material.node_tree.links.new(node.outputs['Color'],separate.inputs['Color'])
++            material.node_tree.links.new(separate.outputs['Green'],shader.inputs['Specular IOR Level'])
++            material.node_tree.links.new(separate.outputs['Blue'],shader.inputs['Metallic'])
++            inverse=material.node_tree.nodes.new('ShaderNodeMath'); inverse.operation='SUBTRACT'; inverse.inputs[0].default_value=1
++            material.node_tree.links.new(node.outputs['Alpha'],inverse.inputs[1])
++            material.node_tree.links.new(inverse.outputs[0],shader.inputs['Roughness'])
++        else:
++            material.node_tree.links.new(node.outputs['Color'],shader.inputs['Base Color'])
++    pdx=h['load_pdx'](req['io_pdx_root'])
++    material[pdx['PDX_SHADER']]='PdxMeshAdvanced'; material['chaosx_pdx_shader']='PdxMeshAdvanced'
++    material['chaosx_component_material_spec_sha256']=digest(spec)
++    material['chaosx_component_material_maps']=json.dumps(spec,sort_keys=True)
++    return material
++
++
++def winding_inventory(mesh):
++    edges={}
++    for face in mesh.polygons:
++        ids=list(face.vertices)
++        for a,b in zip(ids,ids[1:]+ids[:1]):
++            edges.setdefault(tuple(sorted((a,b))),[]).append((face.index,1 if a<b else -1))
++    return {'boundary_edges':sum(len(v)==1 for v in edges.values()),'nonmanifold_edges':sum(len(v)>2 for v in edges.values()),'inconsistent_shared_edges':sum(len(v)==2 and v[0][1]==v[1][1] for v in edges.values())}
++
++
++def repair_explicit_mesh_winding(req,h):
++    p=req['payload']; job,source,output=_open(req,h); bpy=h['bpy']
++    obj=bpy.data.objects.get(p['mesh_name'])
++    if obj not in h['mesh_objects']() or obj.library or obj.data.library or obj.data.shape_keys or obj.data.users!=1 or obj.get('chaosx_source_protected') or obj.get('chaosx_reference_read_only'):
++        raise ValueError('Winding repair requires one exact unshared approved local working mesh.')
++    mesh=obj.data; ids=p['face_indices']
++    if not isinstance(ids,list) or not 1<=len(ids)<=100000 or len(set(ids))!=len(ids) or any(type(i) is not int or not 0<=i<len(mesh.polygons) for i in ids):
++        raise ValueError('Require bounded exact unique existing face indices.')
++    if any(len(f.vertices)!=3 for f in mesh.polygons): raise ValueError('Winding repair requires existing triangular topology.')
++    # Reject non-UV corner data that requires a separate conversion contract.
++    uv_names={u.name for u in mesh.uv_layers}
++    if any(a.domain=='CORNER' and a.name not in uv_names and not a.name.startswith('.') and a.name!='custom_normal' for a in mesh.attributes):
++        raise ValueError('Unsupported non-UV corner attributes require explicit preservation review.')
++    before=h['_promotion_fingerprint'](job,[],include_sections=True)
++    positions=digest([list(v.co) for v in mesh.vertices])
++    faces={f.index:list(f.vertices) for f in mesh.polygons}
++    corners={u.name:{f.index:{mesh.loops[i].vertex_index:list(u.data[i].uv) for i in f.loop_indices} for f in mesh.polygons} for u in mesh.uv_layers}
++    topology_before=winding_inventory(mesh)
++    for i in ids: mesh.polygons[i].flip()
++    for u in mesh.uv_layers:
++        for f in mesh.polygons:
++            for i in f.loop_indices: u.data[i].uv=corners[u.name][f.index][mesh.loops[i].vertex_index]
++    if mesh.has_custom_normals: mesh.normals_split_custom_set([(0,0,0)]*len(mesh.loops))
++    mesh.update()
++    if digest([list(v.co) for v in mesh.vertices])!=positions: raise RuntimeError('Winding repair moved vertices.')
++    for f in mesh.polygons:
++        old=faces[f.index]; new=list(f.vertices)
++        expected=list(reversed(old)) if f.index in set(ids) else old
++        if not any(new==expected[n:]+expected[:n] for n in range(3)): raise RuntimeError('Unexpected face connectivity change.')
++        for u in mesh.uv_layers:
++            if any(list(u.data[i].uv)!=corners[u.name][f.index][mesh.loops[i].vertex_index] for i in f.loop_indices): raise RuntimeError('Corner UV association changed.')
++    after=h['_promotion_fingerprint'](job,[],include_sections=True)
++    for section in ('objects','rigs','materials','images','actions','scene'):
++        if before['sha256'][section]!=after['sha256'][section]: raise RuntimeError('Winding repair changed '+section)
++    for n,row in before['sections']['geometry'].items():
++        compare=after['sections']['geometry'][n]
++        keys=('vertices','polygons','loops','weights','groups','materials','uv_settings','uv_active_index','properties') if n==obj.name else row.keys()
++        if any(row[k]!=compare[k] for k in keys): raise RuntimeError('Winding repair changed preserved mesh data.')
++    topology_after=winding_inventory(mesh)
++    if any(topology_after[k]!=topology_before[k] for k in ('boundary_edges','nonmanifold_edges')) or topology_after['inconsistent_shared_edges']>topology_before['inconsistent_shared_edges']:
++        raise RuntimeError('Winding repair changed topology or increased inconsistent edges.')
++    return _finish(req,h,job,source,output,{'operation':'repair_explicit_mesh_winding','mesh':obj.name,'face_indices':ids,'face_indices_sha256':digest(ids),'topology_before':topology_before,'topology_after':topology_after,'positions_preserved':True,'corner_uvs_preserved':True,'rig_weights_actions_materials_preserved':True,'normal_policy':'recompute geometric normals after exact reviewed face flips','status':'repaired_requires_culling_on_visual_and_export_reimport_review'})
++
++
++def _root_vertical_contact(h,rig,root,meshes,frame,clearance,excluded=()):
++    from mathutils import Matrix,Vector
++    bpy=h['bpy']; bpy.context.scene.frame_set(frame); bpy.context.view_layer.update()
++    if root.parent is not None or rig.constraints or root.constraints:
++        raise ValueError('Pure vertical contact requires an unconstrained true skeleton root.')
++    original=root.location.copy(); head=rig.matrix_world@root.head
++    basis=[]
++    for axis in range(3):
++        root.location=original; root.location[axis]+=1; bpy.context.view_layer.update()
++        basis.append((rig.matrix_world@root.head)-head)
++    root.location=original; bpy.context.view_layer.update()
++    matrix=Matrix(basis).transposed()
++    if abs(matrix.determinant())<1e-10: raise ValueError('Root location world basis is singular.')
++    before,maximum=h['evaluated_contact_bounds'](meshes,list(excluded))
++    delta=matrix.inverted()@Vector((0,0,clearance-before.z))
++    root.location=original+delta
++    root.keyframe_insert(data_path='location',frame=frame,group=root.name)
++    bpy.context.view_layer.update()
++    after,after_max=h['evaluated_contact_bounds'](meshes,list(excluded))
++    displacement=(rig.matrix_world@root.head)-head
++    if max(abs(displacement.x),abs(displacement.y))>1e-5 or abs(after.z-clearance)>1e-4:
++        raise RuntimeError('Root-local correction failed pure world-Z/contact tolerance.')
++    return {'frame':frame,'before':before.z,'after':after.z,'root_location_delta':list(delta),'world_displacement':list(displacement),'root_location_world_basis':[list(row) for row in matrix]}
++
++
++def ground_existing_action(req,h):
++    p=req['payload']; job,source,output=_open(req,h); bpy=h['bpy']
++    rig=bpy.data.objects.get(p['target_armature_name']); meshes=h['mesh_objects']()
++    if h['armatures']()!=[rig] or not meshes: raise ValueError('Require the exact unique working rig and meshes.')
++    action=bpy.data.actions.get(p['source_action_name'])
++    if action is None or h['_mesh_region_action_hash'](action)!=p['expected_action_sha256'].upper(): raise ValueError('Reviewed source action hash mismatch.')
++    name(p['target_action_name'])
++    if bpy.data.actions.get(p['target_action_name']): raise ValueError('Grounded action requires a new name.')
++    root=rig.pose.bones.get(p['root_bone'])
++    if root is None or root.parent is not None: raise ValueError('Require exact true skeleton root.')
++    excluded=p.get('excluded_contact_bones',[])
++    if not isinstance(excluded,list) or len(excluded)>128 or not set(excluded)<=set(rig.pose.bones.keys()): raise ValueError('Invalid exact contact bone exclusions.')
++    kind=action.get('chaosx_animation_source_kind','')
++    if kind=='manual_blender_gpt6_astra' and re.fullmatch('[A-Fa-f0-9]{64}',str(action.get('chaosx_manual_action_spec_sha256',''))):
++        provenance={'source_kind':kind,'manual_spec_sha256':action['chaosx_manual_action_spec_sha256']}
++    elif kind in {'meshy_animate','professional_source'}:
++        provenance=h['action_provenance'](action)
++    elif rig.get('chaosx_promotion_operation')=='promote_accepted_reimport' and all(obj.get('chaosx_promotion_source_sha256')==rig.get('chaosx_promotion_source_sha256') for obj in meshes):
++        provenance={'source_kind':'accepted_recovered_checkpoint','source_sha256':rig['chaosx_promotion_source_sha256'],'validation_sha256':rig['chaosx_promotion_validation_sha256']}
++        for relkey,hashkey in [('chaosx_promotion_source','chaosx_promotion_source_sha256'),('chaosx_promotion_validation','chaosx_promotion_validation_sha256')]:
++            if h['file_sha256'](h['within'](job,rig[relkey]))!=rig[hashkey]: raise ValueError('Recovered lineage checksum mismatch.')
++    else: raise ValueError('No retained reviewed manual/provider/recovered source lineage.')
++    if rig.constraints or any(b.constraints for b in rig.pose.bones) or (rig.animation_data and any(not t.mute for t in rig.animation_data.nla_tracks)):
++        raise ValueError('Grounding requires unconstrained explicit bone motion without active NLA.')
++    before_actions={a.name:h['_mesh_region_action_hash'](a) for a in bpy.data.actions}
++    signature=_mesh_signature(meshes)
++    corrected=action.copy(); corrected.name=p['target_action_name']; corrected.use_fake_user=True
++    rig.animation_data_create(); rig.animation_data.action=corrected
++    start,end=map(int,action.frame_range)
++    if not 0<=start<end<=start+1200: raise ValueError('Grounding requires a bounded integer action range.')
++    path='pose.bones["'+root.name+'"].location'
++    def body_keys(a):
++        return digest([(c.data_path,c.array_index,[(list(k.co),list(k.handle_left),list(k.handle_right),k.interpolation) for k in c.keyframe_points]) for c,_ in h['action_fcurves'](a) if c.data_path!=path])
++    original_body=body_keys(corrected)
++    # Densify all root-location channels before changing any value so each
++    # sampled original frame retains its own baseline, without accumulated edits.
++    samples=[]
++    for frame in range(start,end+1):
++        bpy.context.scene.frame_set(frame); samples.append((frame,list(root.location)))
++    for frame,location in samples:
++        root.location=location; root.keyframe_insert(data_path='location',frame=frame,group=root.name)
++    frames=[_root_vertical_contact(h,rig,root,meshes,frame,0,excluded) for frame in range(start,end+1)]
++    for curve,_ in h['action_fcurves'](corrected):
++        if curve.data_path==path:
++            for key in curve.keyframe_points: key.interpolation='LINEAR'
++    if body_keys(corrected)!=original_body or any(h['_mesh_region_action_hash'](bpy.data.actions[n])!=v for n,v in before_actions.items()) or _mesh_signature(meshes)!=signature:
++        raise RuntimeError('Grounding altered original action/body data.')
++    corrected['chaosx_grounding_source_action_sha256']=p['expected_action_sha256'].upper()
++    corrected['chaosx_grounding_policy']='root_local_pure_world_z'
++    bpy.context.scene.frame_set(start)
++    return _finish(req,h,job,source,output,{'operation':'ground_existing_action','source_action':action.name,'action':corrected.name,'source_provenance':provenance,'frames':frames,'body_keys_and_original_actions_preserved':True,'native_action_sha256':h['_mesh_region_action_hash'](corrected),'status':'corrected_requires_export_reimport_review'})

@@ -1,73 +1,215 @@
 add_namespace = chaosx.nr21
+add_namespace = chaosx.news
 
-##############################################################################################################
-#    ##    ## ########      #######     ##
-#    ###   ## ##     ##    ##     ##  ####
-#    ####  ## ##     ##           ##    ##
-#    ## ## ## ########      #######     ##
-#    ##  #### ##   ##      ##           ##
-#    ##   ### ##    ##     ##           ##
-#    ##    ## ##     ##    #########  ######
-##############################################################################################################
-#   ######
-#   #     #   ##   #    # #####   ####  #    #     ####  # #    # # #         #    #   ##   #####
-#   #     #  #  #  ##   # #    # #    # ##  ##    #    # # #    # # #         #    #  #  #  #    #
-#   ######  #    # # #  # #    # #    # # ## #    #      # #    # # #         #    # #    # #    #
-#   #   #   ###### #  # # #    # #    # #    #    #      # #    # # #         # ## # ###### #####
-#   #    #  #    # #   ## #    # #    # #    #    #    # #  #  #  # #         ##  ## #    # #   #
-#   #     # #    # #    # #####   ####  #    #     ####  #   ##   # ######    #    # #    # #    #
-
-##############################################################################################################
+###############################################################################################################
+# CHAOS REDUX - EVENT 021 RANDOM CIVIL WAR
+#
+# The event file is intentionally a thin presentation and callback layer. The
+# reusable planner, actor adapters, front registry, bounded review queue, and
+# cleanup contract live in common/scripted_effects/021_random_civil_war_parent_effects.txt.
+###############################################################################################################
 
 country_event = {
-    id = chaosx.nr21.1
-    title = chaosx.nr21.1.t
+	id = chaosx.nr21.1
+	title = chaosx.nr21.1.t
+	hidden = yes
+	is_triggered_only = yes
 
-    hidden = yes
-    is_triggered_only = yes
+	immediate = {
+		event021_parent_dispatch_opening = yes
+	}
+}
 
-    immediate = {
-        random_country = {
-            random_list = {
-                25 = {
-                    modifier = {
-                        factor = 0
-                        has_government = fascism
-                    }
-                    start_civil_war = {
-                        ideology = fascism
-                        size = 0.5
-                    }
-                } 25 = {
-                    modifier = {
-                        factor = 0
-                        has_government = democratic
-                    }
-                    start_civil_war = {
-                        ideology = democratic
-                        size = 0.5
-                    }
-                } 25 = {
-                    modifier = {
-                        factor = 0
-                        has_global_flag = communism_spread
-                        has_government = communism
-                    }
-                    start_civil_war = {
-                        ideology = communism
-                        size = 0.5
-                    }
-                } 25 = {
-                    modifier = {
-                        factor = 0
-                        has_government = neutrality
-                    }
-                    start_civil_war = {
-                        ideology = neutrality
-                        size = 0.5
-                    }
-                }
-            }
-        }
-    }
+country_event = {
+	id = chaosx.nr21.2
+	title = chaosx.nr21.2.t
+	desc = chaosx.nr21.2.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_active }
+
+	option = {
+		name = chaosx.nr21.2.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.3
+	title = chaosx.nr21.3.t
+	desc = chaosx.nr21.3.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_active }
+
+	option = {
+		name = chaosx.nr21.3.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.4
+	title = chaosx.nr21.4.t
+	desc = chaosx.nr21.4.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_exposure_active }
+
+	option = {
+		name = chaosx.nr21.4.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.5
+	title = chaosx.nr21.5.t
+	desc = chaosx.nr21.5.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = event021_settlement_pending }
+
+	option = {
+		name = chaosx.nr21.5.a
+		set_country_flag = random_civil_war_settlement_signed
+		clr_country_flag = event021_settlement_pending
+		event021_parent_apply_settlement = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.6
+	title = chaosx.nr21.6.t
+	desc = chaosx.nr21.6.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = {
+		has_global_flag = random_civil_war_evolution_iii_active
+		NOT = { has_global_flag = events_log_disabled_evolution_21_21_3 }
+	}
+
+	option = {
+		name = chaosx.nr21.6.a
+		ai_chance = { base = 100 }
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.7
+	title = chaosx.nr21.7.t
+	desc = chaosx.nr21.7.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_active }
+	option = { name = chaosx.nr21.7.a ai_chance = { base = 100 } }
+}
+
+country_event = {
+	id = chaosx.nr21.8
+	title = chaosx.nr21.8.t
+	desc = chaosx.nr21.8.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_event6_front_active }
+	option = { name = chaosx.nr21.8.a ai_chance = { base = 100 } }
+}
+
+country_event = {
+	id = chaosx.nr21.9
+	title = chaosx.nr21.9.t
+	desc = chaosx.nr21.9.d
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_settlement_recorded }
+	option = {
+		name = chaosx.nr21.9.a
+		set_country_flag = random_civil_war_reconstruction_phase
+		clr_country_flag = random_civil_war_settlement_phase
+		event021_parent_reconstruction_tick = yes
+	}
+}
+
+country_event = {
+	id = chaosx.nr21.10
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_parent_cleanup_crisis = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.11
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_parent_apply_evolution_i = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.12
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_parent_apply_evolution_ii = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.13
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_parent_apply_evolution_iii = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.14
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_global_review_current_country = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.15
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_commit_scenario_country = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.16
+	hidden = yes
+	is_triggered_only = yes
+	immediate = { event021_commit_same_tag_takeover = yes }
+}
+
+country_event = {
+	id = chaosx.nr21.17
+	title = chaosx.nr21.17.t
+	desc = chaosx.nr21.1.no_target
+	picture = GFX_report_event_021_random_civil_war_opening
+	is_triggered_only = yes
+	trigger = { has_country_flag = random_civil_war_no_target_report_pending }
+
+	option = {
+		name = chaosx.nr21.1.skip
+		ai_chance = { base = 100 }
+		clr_country_flag = random_civil_war_no_target_report_pending
+	}
+}
+
+news_event = {
+	id = chaosx.news.211
+	title = news_event_021_multi_front_war.t
+	desc = news_event_021_multi_front_war.d
+	picture = GFX_news_event_021_multi_front_war
+	major = no
+	is_triggered_only = yes
+	option = { name = news_event_021_multi_front_war.a }
+}
+
+news_event = {
+	id = chaosx.news.212
+	title = news_event_021_global_fracture.t
+	desc = news_event_021_global_fracture.d
+	picture = GFX_news_event_021_global_fracture
+	major = no
+	is_triggered_only = yes
+	option = { name = news_event_021_global_fracture.a }
 }

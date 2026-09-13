@@ -76,7 +76,7 @@ Two-pass base eligibility avoids circular support between high-severity rows.
 
 The cluster member floor does not alter the event's registered Event Chaos Level or its existing automatic selection assignment.
 
-The cluster-facing severity corrections are Fury as Medium, Tensions Rising as Low, and Black Plague as Severe.
+The current catalogue assigns Fury separate Medium and High rows, Tensions Rising Medium severity, and Black Plague Severe severity.
 
 Event 9, White Peace, requires Gathering Storm even though the Peace cluster unlocks at Calm World.
 
@@ -162,7 +162,9 @@ No new sprite registration or GFX entry is required.
 
 The Event Chaos Level implementation is documented through the shared selection, settings, Event Logs, and cluster artifacts listed in event_clusters.md.
 
-The event catalog workbook schema and formula prose remain unchanged.
+The event catalog keeps cluster membership severity on the Clusters and Cluster Memberships sheets.
+
+The Events sheet stores every distinct cluster ID for each event as a comma-separated list and does not carry a scalar member-severity column because severity belongs to logical membership rows rather than events.
 
 The 2026-09-05 curator's read-only MCP evidence and its limits are recorded in [event_clusters_spec.md](event_clusters_spec.md#12-artifact-ownership-and-external-validation). The required narrow event and GUI inspections stalled before returning a result in that probe, so this document does not claim current engine or branch-specific visual acceptance.
 

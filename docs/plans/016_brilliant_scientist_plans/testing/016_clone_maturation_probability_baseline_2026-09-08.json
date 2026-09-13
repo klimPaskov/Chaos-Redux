@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "1.0",
+  "id": "E016_CLONE_MATURATION_2026_09_08",
+  "purpose": "Read-only before-source fixture for the current live clone growth decision. This fixture freezes the source boundary and named score scenarios for the owner-applied maturation correction and later same-scenario comparison.",
+  "status": "baseline_frozen_reviewable",
+  "sourceSnapshots": {
+    "mcpCanonical": {
+      "path": "common/decisions/016_brilliant_scientist_kruger_state_clone_machine_decisions.txt",
+      "sourceHash": "a0ced8e1012917d90d1273cf075d52b4794322822af038517eb5365532a1240f",
+      "sourceRevisionAtEvaluate": "7bab0d710f6c472f95622e01a5756d595643bd23cf922aa1b7b3d724d97801bf",
+      "sourceRevisionAtInspect": "d620ffcfde4ad71d6633f5315a2c40c8c4afc9944a73570e8efcdfd2dc1a2b5c",
+      "note": "The MCP source hash stayed stable while the service returned different source revisions between read-only calls."
+    },
+    "localBeforeSource": [
+      {
+        "path": "common/decisions/016_brilliant_scientist_kruger_state_clone_machine_decisions.txt",
+        "sha256": "FEA4A7E178D945E15991B93543AF728B5F75FA84404B82664BFB6E4B4D488F7D",
+        "scope": "live decision containing brilliant_scientist_krg_run_bounded_clone_growth_cycle"
+      },
+      {
+        "path": "common/scripted_triggers/016_brilliant_scientist_kruger_state_decision_triggers.txt",
+        "sha256": "66BA1B86D6D39C5961E766624F1021E1262D677A5A6893490CE3991618576387",
+        "scope": "payment and clone decision helper triggers"
+      },
+      {
+        "path": "common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt",
+        "sha256": "EF9DE1E07F710E284A6A1B7C2CBD1202F535C2B46B137F07E5FB947714D802E8",
+        "scope": "payment and clone completion effects"
+      },
+      {
+        "path": "common/script_constants/016_brilliant_scientist_kruger_state_decision_constants.txt",
+        "sha256": "D849A2C345E90D652A951109A8A3BF01E72AC4BA005F706796A4119A8E85C46D",
+        "scope": "current cost, output, capacity, timing, and AI constants"
+      }
+    ],
+    "architectFilesExcludedFromBaseline": [
+      {
+        "path": "common/script_constants/016_clone_maturation_constants.txt",
+        "sha256": "767DAAD3CF47E1E8D7C0B0041874BD6489E52F80F3B675E2A50B6ED9C3D44B8E"
+      },
+      {
+        "path": "common/scripted_effects/016_clone_maturation_effects.txt",
+        "sha256": "A7C596B3283039C03A8F292092D0043929F3F768299E8488BC64E5C6A5A609C5"
+      },
+      {
+        "path": "common/scripted_triggers/016_clone_maturation_triggers.txt",
+        "sha256": "7A3E9065529B3B2B06FDA9522351C2657DDA310C726EC00837C7C52DB99D91B0"
+      }
+    ]
+  },
+  "auditedSurface": {
+    "adapter": "mission_ai_will_do",
+    "candidatePool": [
+      "brilliant_scientist_krg_run_bounded_clone_growth_cycle"
+    ],
+    "poolCompleteAtSourceBoundary": true,
+    "selectionRule": "score_only",
+    "normalizedSelectionProbability": false,
+    "timingDistribution": false,
+    "baseExpression": "constant:brilliant_scientist_krg_ai.medium",
+    "currentBaseScore": 1,
+    "currentDecisionLines": "63-97",
+    "currentHelperFiles": [
+      "common/scripted_triggers/016_brilliant_scientist_kruger_state_decision_triggers.txt",
+      "common/scripted_effects/016_brilliant_scientist_kruger_state_decision_effects.txt",
+      "common/script_constants/016_brilliant_scientist_kruger_state_decision_constants.txt"
+    ]
+  },
+  "scenarioSet": {
+    "id": "E016_CLONE_MATURATION_2026_09_08",
+    "horizonDays": 1,
+    "metrics": [
+      "raw_value"
+    ],
+    "scenarioSemantics": [
+      "owner/noowner",
+      "tech/no",
+      "valid/lost_site",
+      "exact_affordability/short_support/short_motorized/short_fuel/short_manpower/short_civilian/short_military",
+      "cycles 0/7/8/9",
+      "active_pending",
+      "peace/war"
+    ],
+    "scenarios": [
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_C0_PEACE",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 0, "active_pending": false, "has_war": false },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "cycle_0", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": true },
+        "expectedScoreFixture": { "eligibility": true, "rawValue": 1, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": true },
+        "expectedScoreFixture": { "eligibility": true, "rawValue": 1, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_C7_PEACE",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 7, "active_pending": false, "has_war": false },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "cycle_7", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": true },
+        "expectedScoreFixture": { "eligibility": true, "rawValue": 1, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_C7_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 7, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "cycle_7", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": true },
+        "expectedScoreFixture": { "eligibility": true, "rawValue": 1, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_C8_PEACE",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 8, "active_pending": false, "has_war": false },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "cycle_8", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_C9_PEACE",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 9, "active_pending": false, "has_war": false },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "cycle_9", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_LOST_SITE_C0_PEACE",
+        "state": { "owner": true, "tech": true, "site": "lost_site", "affordability": "exact", "cycles": 0, "active_pending": false, "has_war": false },
+        "flags": ["owner", "tech", "lost_site", "exact_affordability", "cycle_0", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_NO_TECH_VALID_EXACT_C0_PEACE",
+        "state": { "owner": true, "tech": false, "site": "valid", "affordability": "exact", "cycles": 0, "active_pending": false, "has_war": false },
+        "flags": ["owner", "no_tech", "valid_site", "exact_affordability", "cycle_0", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_NOOWNER_TECH_VALID_EXACT_C0_PEACE",
+        "state": { "owner": false, "tech": true, "site": "valid", "affordability": "exact", "cycles": 0, "active_pending": false, "has_war": false },
+        "flags": ["noowner", "tech", "valid_site", "exact_affordability", "cycle_0", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_CURRENT_RAID_BYPASS_NO_SITE_C0_PEACE",
+        "state": { "owner": true, "tech": true, "site": "no_site_raid_bypass", "affordability": "exact", "cycles": 0, "active_pending": false, "has_war": false, "raid_ai_active": true },
+        "flags": ["owner", "tech", "raid_ai_active", "no_site", "exact_affordability", "cycle_0", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": true },
+        "expectedScoreFixture": { "eligibility": true, "rawValue": 1, "classification": "score_only", "risk": "current_raid_bypass_path" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_SHORT_SUPPORT_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "short_support", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "short_support", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_SHORT_MOTORIZED_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "short_motorized", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "short_motorized", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_SHORT_FUEL_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "short_fuel", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "short_fuel", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_SHORT_MANPOWER_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "short_manpower", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "short_manpower", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_SHORT_CIVILIAN_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "short_civilian", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "short_civilian", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_SHORT_MILITARY_C0_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "short_military", "cycles": 0, "active_pending": false, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "short_military", "cycle_0", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_ACTIVE_PENDING_C0_PEACE",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 0, "active_pending": true, "has_war": false },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "active_pending", "cycle_0", "peace"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      },
+      {
+        "id": "E016_CLONE_MATURATION_OWNER_TECH_VALID_EXACT_ACTIVE_PENDING_C7_WAR",
+        "state": { "owner": true, "tech": true, "site": "valid", "affordability": "exact", "cycles": 7, "active_pending": true, "has_war": true },
+        "flags": ["owner", "tech", "valid_site", "exact_affordability", "active_pending", "cycle_7", "war"],
+        "candidateOverrides": { "brilliant_scientist_krg_run_bounded_clone_growth_cycle": false },
+        "expectedScoreFixture": { "eligibility": false, "rawValue": 0, "classification": "score_only" }
+      }
+    ]
+  },
+  "mcpEvidence": {
+    "sourceDiscovery": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/e5ce95eefa1400e2f61a13c4f47cfbd021984002fd4cf84e5e7f69b7a22c8299/eb9f37e870548290e15ad999ad6aba8aff271ba51ea7e30f5af000a90dfca4a5/probability-inspect-a0ced8e10129.json",
+    "wrongAdapterProbe": {
+      "requestedAdapter": "decision_ai_will_do",
+      "suggestedAdapter": "mission_ai_will_do",
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/c67fa64b885583ef1a1aeb0840611eb8f8b03eec95b02b2ba541b8ce83d5e09b/94f2bcbf3e3b2a3acc7798d0457175349d99e3d2a2f4466ec6140f778151d55e/probability-inspect-a0ced8e10129.json"
+    },
+    "inspect": {
+      "adapter": "mission_ai_will_do",
+      "code": "PROBABILITY_SOURCE_INSPECTED",
+      "poolComplete": true,
+      "candidates": 1,
+      "availableCandidates": 0,
+      "requiredInputs": 9,
+      "unresolved": 0,
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/be678c8cfb700339399f07d8637c629cfee6e2faca7b2e689f2d292f0794b834/3c9674502d99a6680b2dd916beedf5b34d319f2bd7d96bed3343f1087e598ca9/probability-inspect-a0ced8e10129.json"
+    },
+    "evaluate": {
+      "code": "PROBABILITY_ANALYZED",
+      "analysisId": "probability-314acd3fccffec94341672b0",
+      "sourceRevision": "7bab0d710f6c472f95622e01a5756d595643bd23cf922aa1b7b3d724d97801bf",
+      "sourceHash": "a0ced8e1012917d90d1273cf075d52b4794322822af038517eb5365532a1240f",
+      "scenarioHash": "51307c304c7f2224d2cedee2be8d2faa4de4987b12144e5f4c3a0e458e97db86",
+      "scenarios": 18,
+      "candidates": 18,
+      "unresolved": 0,
+      "diagnostics": 0,
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a526490f413b2472f91e855432b4d19653beb2e5f35296e6e32abdb65b40de0b/d44f1b8642e938de47984bf470c0c65fefc17dbfc08c2b7b65e5217430db8d5e/probability-314acd3fccffec94341672b0.json",
+      "renderedArtifactsEmittedByEvaluate": [
+        "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b67cc3a192bb6e534e6a86ba0f1d5468dffe2e1eb011bb69b1018e69111d850f/8393c361ab70c6452dbcb43978d68bd3952fb316f572142f6d64c31a41cfb3c9/probability-probability-314acd3fccffec94341672b0-ranking.svg",
+        "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/580a51657414ad0ece89e8019d9176e74aa8cde18ea6358eef2619396753e3ab/983dad58da49f7cdb4a189b085c9c058fe9e85f40bce26309751c5b87738e2d6/probability-probability-314acd3fccffec94341672b0-matrix.svg",
+        "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/349ea525085f5dc12403ae49ee42f45cd8dcad63bc8a89efd7b28281120b6f15/75c724a09f1ec10a0441027288284e78ee97ac72cd3f0a8d8285cd7dbf223de3/probability-probability-314acd3fccffec94341672b0-waterfall.svg",
+        "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d6cc34de4a6f32afd16a90b09c5631e732e81cfd45199abec74fe2209cf8029b/f0bc87b1e4f1602e79fcf83c3955a96697d42d6c3bc0123a819aa05d9b1646c6/probability-probability-314acd3fccffec94341672b0-unresolved.svg"
+      ]
+    },
+    "sweep": {
+      "scenarioSetId": "E016_CLONE_MATURATION_2026_09_08_SWEEP",
+      "path": "cycles",
+      "declaredValues": [0, 7, 8, 9],
+      "steps": 4,
+      "pairwise": true,
+      "findRankReversals": true,
+      "code": "PROBABILITY_ANALYZED",
+      "analysisId": "probability-19e1742f80c333f13cabf1d8",
+      "sourceRevision": "f1aa1a7889b0a6a0dc75a2b329a049d9a8538fe6e0e29a34d8b3fd36eca956df",
+      "sourceHash": "a0ced8e1012917d90d1273cf075d52b4794322822af038517eb5365532a1240f",
+      "scenarioHash": "5e65ac59308d9226e13d3a7f1effc25d219cc99f68d507e8030500b16b4275da",
+      "sweepPoints": 18,
+      "unresolved": 0,
+      "diagnostics": 0,
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/fc37697659b7a88f83d97217c6a47ab160682305cc90ed9729d34bb7fc6a9ad4/14fa5636b4e819ec4f611726a34b5884c03ecf8def89f0a3c1686d1df354cc18/probability-19e1742f80c333f13cabf1d8.json",
+      "sensitivityArtifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/51f7f515f314cd449504645d76f87652c25f5267c444cfaa587e16304d847bd5/e254b7de5bb205db6e42922018873a47d1b22a55b6b9e5db1793d57e288261aa/probability-probability-19e1742f80c333f13cabf1d8-sensitivity.svg",
+      "thresholdArtifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a6d32ffc270e06218fbe6e53b5f3d111d3f383d152a2e17fa057722f7cf35cc8/6239cd2900d432c65ea5f9035c69c801d2bc6b8a720baf53667ea6bc809e3594/probability-probability-19e1742f80c333f13cabf1d8-threshold.svg"
+    },
+    "unoverriddenEligibilityProbe": {
+      "code": "PROBABILITY_ANALYZED_PARTIAL",
+      "diagnostic": "PROBABILITY_OUTCOME_NEVER_ELIGIBLE",
+      "unresolved": 14,
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/520fdf9807d7f5023b636fdfd02a52744481071d0ac03eb315e3d883034e0a57/0c8276edd1edcb519021fadf5f22cb2acd41b4f3b38031db60111287771fe4c3/probability-411d1b001dffd0fa3cbd26b2.json",
+      "interpretation": "The flat scenario did not type the helper-heavy live state, so this is actual eligibility uncertainty rather than proof that the decision is unavailable in-game."
+    },
+    "typedEligibilityProbe": {
+      "code": "PROBABILITY_ANALYZED_PARTIAL",
+      "diagnostic": "PROBABILITY_OUTCOME_NEVER_ELIGIBLE",
+      "unresolved": 14,
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ae5fc641ec52b8c9620eb51ce0cdf825c66185618a54aa8650a16a2c8decadf6/2070bee673763f231e6ab41e41f9218ae9ba2ef137d306ca289a35a3fc464f45/probability-8453a198d20bce244e033221.json",
+      "interpretation": "Adding flat typed character, stockpile, factory, cycle, and array fields did not satisfy the nested helper predicates; the same uncertainty remains."
+    },
+    "singlePositiveOverrideProbe": {
+      "code": "PROBABILITY_ANALYZED",
+      "scenarioHash": "4476227fc9ce52385cc0553e0c3e7d87ecfe5858174a9070aedcb61ced225338",
+      "artifact": "hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7d6393ea80942881f9b36869f764de842505724132837919177daefc9e523691/a406ae8cef73556fc884dff39e601752006762d4a3b435d3e88f5a76125db6af/probability-7f3aed875c59021807ec3e83.json",
+      "interpretation": "The exact one-candidate positive fixture returned raw score 1; it is score evidence only."
+    },
+    "renderAttempt": {
+      "tool": "hoi4.probability_render",
+      "attemptedAnalysisIds": [
+        "probability-314acd3fccffec94341672b0",
+        "probability-19e1742f80c333f13cabf1d8"
+      ],
+      "status": "blocked",
+      "code": "PROBABILITY_ANALYSIS_NOT_CACHED",
+      "message": "Render requires an analysis ID produced by this server process.",
+      "note": "Evaluate and sweep emitted ranking/matrix/waterfall/sensitivity/threshold/unresolved resources directly; no separate render artifact is claimed."
+    }
+  },
+  "postPatchCompareContract": {
+    "required": true,
+    "adapter": "mission_ai_will_do",
+    "sameScenarioSetId": "E016_CLONE_MATURATION_2026_09_08",
+    "sameCandidatePool": [
+      "brilliant_scientist_krg_run_bounded_clone_growth_cycle"
+    ],
+    "beforeSourceHash": "FEA4A7E178D945E15991B93543AF728B5F75FA84404B82664BFB6E4B4D488F7D",
+    "compareOnlyAfterOwnerPatch": true
+  },
+  "acceptedCorrectionReference": {
+    "spec": "docs/specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md",
+    "section": "Clone maturation production correction",
+    "targetReceipt": { "clone_equipment_1": 100, "political_power": 65, "support_equipment": 150, "fuel": 1000, "native_civilian_factories": 4, "durationDays": 90, "cooldownDays": 30 },
+    "gates": ["one exact receipt", "owned and controlled growth site", "no lifetime paid cycle cap", "retain history threshold 8", "ordinary production and training unchanged"]
+  }
+}

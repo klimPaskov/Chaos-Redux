@@ -1,0 +1,41 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 GREAT DEPRESSION ON ACTIONS
+# ============================================================================
+# Event-driven war and state-control callbacks record bounded vulnerability
+# history for independent target weighting. They do not iterate the world and
+# do not fire or deepen Event 35.
+#
+# on_state_control_changed: ROOT is the new controller, FROM is the former
+# controller, and FROM.FROM is the changed state.
+# ============================================================================
+
+on_actions = {
+	on_war = {
+		effect = {
+			if = {
+				limit = { NOT = { has_variable = great_depression_war_start_day } }
+				set_variable = { great_depression_war_start_day = global.num_days }
+			}
+		}
+	}
+
+	on_peace = {
+		effect = { clear_variable = great_depression_war_start_day }
+	}
+
+	on_release_as_free = {
+		effect = { ROOT = { great_depression_register_late_worldwide_country = yes } }
+	}
+
+	on_release_as_puppet = {
+		effect = { ROOT = { great_depression_register_late_worldwide_country = yes } }
+	}
+
+	on_state_control_changed = {
+		effect = {
+			ROOT = { save_event_target_as = great_depression_state_loss_new_controller }
+			FROM = { save_event_target_as = great_depression_state_loss_old_controller }
+			FROM.FROM = { great_depression_record_major_industrial_state_loss = yes }
+		}
+	}
+}

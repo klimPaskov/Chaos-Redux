@@ -1,5 +1,7 @@
 # Event 032 achievement surface handoff
 
+Disposition: implemented and superseded by the parent integration pass. The original body below records the bounded worker snapshot; current wiring, icon evidence, and runtime-gate behavior are authoritative in `docs/events/032_missiles/asset_audit.md`, `docs/plans/032_missiles_plans/032_missiles_test_results.md`, and the current source files.
+
 ## Scope
 
 This handoff covers only the eight Event 032 achievement definitions, their persistent evidence triggers and effects, and their English localisation.
@@ -41,7 +43,7 @@ The `still_on_the_line` repair recorder requires the repair site ID to match the
 
 The `long_reach` caller must refresh `chaosx_032_achievement_record_long_reach_snapshot` while the qualifying line is active so the 180-day clock can be completed without a world-wide polling hook.
 
-The caller must set `chaosx_032_achievement_required_evolution_enabled` to one immediately before invoking an evolution-gated recorder and use the matching gate wrapper.
+The parent now uses runtime gate adapters that derive the relevant evolution flag and fail closed when that track is disabled before invoking the matching recorder.
 
 The gate wrappers are `chaosx_032_achievement_latch_retaliation_evolution`, `chaosx_032_achievement_latch_rogue_evolution`, `chaosx_032_achievement_latch_special_warhead_evolution`, and `chaosx_032_achievement_latch_saturation_evolution`.
 
@@ -83,9 +85,7 @@ The localisation file is UTF-8 with BOM.
 
 The standard runtime triplets would be `gfx/achievements/<achievement_id>.dds`, `gfx/achievements/<achievement_id>_grey.dds`, and `gfx/achievements/<achievement_id>_not_eligible.dds`, with matching `GFX_achievement_<achievement_id>` aliases in `interface/chaosx_achievements.gfx`.
 
-No Event 032 achievement-specific source icon art exists in the inspected asset report, and no genuine package could be produced within this bounded ownership surface.
-
-All eight icon triplets and their shared GFX aliases remain blocked and intentionally unwired.
+The parent integration pass installed all eight achievement icon triplets and their shared GFX aliases. The final DDS count, hashes, decoded reopen evidence, and family audit are recorded in `docs/events/032_missiles/asset_audit.md`.
 
 ## Validation and remaining work
 
@@ -97,4 +97,4 @@ The new scripted files were checked for balanced Clausewitz block braces, unsupp
 
 Live HOI4 launch and in-game validation were not performed, as required by the repository instructions.
 
-The parent Event 032 implementation still needs to invoke these recorders at real runtime boundaries and needs to provide the missing achievement icon package and shared GFX aliases before the achievement surface can be considered fully integrated.
+The parent Event 032 implementation invokes the recorders at real operation, incident, capture/control, repair, war-start, war-resolution, and delayed-timer boundaries. The only remaining visual limitation is the separately recorded exact native-raid consumer blocker; no substitute CBRN or nuclear raid family was introduced.

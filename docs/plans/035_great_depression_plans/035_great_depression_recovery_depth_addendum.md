@@ -2,7 +2,9 @@
 
 ## Disposition
 
-This is one implementation-depth addendum for the current Event 35 tranche.
+This is the accepted implementation-depth addendum for the current Event 35 tranche.
+
+The gameplay design delta is implemented in the Event 35 source, localisation, asset, documentation, and workbook surfaces.
 
 No earlier improvement-loop addendum exists under `docs/plans/035_great_depression_plans/`.
 
@@ -10,17 +12,17 @@ The files in `subagent_handoffs/` are implementation and asset handoffs, not unr
 
 The accepted specification is already broad enough.
 
-The remaining design problem is that the source exposes most of the promised choices but often resolves them as immediate flags, immediate Severity changes, or single-country variables without the delayed projects, aligned evidence, sparse relationships, outcome history, and bounded repeat behavior promised by the specification.
+The design problem identified by this addendum was the missing delayed projects, aligned evidence, sparse relationships, outcome history, and bounded repeat behavior behind the accepted choices.
 
-This addendum therefore deepens the existing mechanic instead of adding a route, meter, country package, focus tree, map rewrite, dedicated scripted GUI, technology surface, or additional super-event.
+The implementation deepens the existing mechanic without adding a route, meter, country package, focus tree, map rewrite, dedicated scripted GUI, technology surface, or additional super-event.
 
-The parent should not request another Event 35 improvement-loop pass until this addendum is implemented, promoted into the specification, explicitly queued with a reason, or rejected with a reason.
+Do not request another Event 35 improvement-loop pass for this design delta unless a new audit identifies a separate unresolved requirement.
 
 ## Ownership and implementation boundary
 
-This document is a plan only.
+This document records the accepted design delta and its implementation handoff.
 
-It does not claim implementation completion and does not authorize this planner to edit gameplay, localisation, workbooks, or assets.
+It does not authorize this planner to edit gameplay, localisation, workbooks, or assets.
 
 The parent owns implementation, wiring, balance targets, localisation, achievement registration, asset wiring, final audits, and user-run live validation.
 
@@ -37,6 +39,10 @@ It has five linked parts:
 ## Evidence from the current implementation
 
 ### Source evidence
+
+The table below is the pre-implementation review snapshot that motivated this addendum.
+
+Its gap descriptions are historical rationale, not a statement that the current source still has each gap.
 
 | Current surface | Concrete current behavior | Gap that this addendum closes |
 | --- | --- | --- |
@@ -70,19 +76,11 @@ The scheduler is source-reachable now, but downstream weekly lifecycle behavior 
 
 ### Read-only MCP evidence and limitations
 
-The Event Chain Viewer was run against `chaosx.nr35.1`.
+The Event Chain Viewer was rerun against the exact selector `{ kind = event, eventId = chaosx.nr35.1 }` after implementation.
 
-`hoi4.event_inspect` returned `EVENT_INSPECTED_PARTIAL` and `hoi4.event_render` returned `EVENT_RENDERED_PARTIAL` with three selected nodes.
+The bounded neighborhood render returned `EVENT_RENDERED_PARTIAL` with four selected nodes and no explicit blocker. Its manifest SHA-256 begins `77c8c00e`, its JSON SHA-256 begins `bb0cc4e`, its SVG SHA-256 begins `b9472e`, and its PNG SHA-256 begins `18b260`.
 
-The render confirms the event entry and its two scripted-effect calls, but it reports both `great_depression_allocate_receipt` and `great_depression_start_or_deepen` as unresolved helpers because the active Event Viewer catalog did not project the Event 35 scripted-effect files.
-
-The authoritative trace artifact is `event-trace-6e948fab0880.json` with SHA-256 `c3d5558e31c8a4595068716f43bbc2088de306e5a2e13864082bda9a27102fc9`.
-
-The authoritative neighborhood render data is `event-neighborhood-6e948fab0880.json` with SHA-256 `d639419735b3856e19aa88d371d4fe35ff5ea81ef0489a708bf19a6473ff8e4b`.
-
-The rendered event conclusion is therefore limited to the entry contract and call sites.
-
-Downstream API lifecycle behavior remains source-reviewed rather than Event Viewer-proven and must stay unresolved until a later Event Viewer run resolves scripted-effect helpers.
+The render verifies the entry event and bounded neighborhood, but reports `validation = false` because large-workspace helper and lifecycle expansion remained deferred. A full event lint request timed out after 180 seconds. Downstream API lifecycle behavior therefore remains source-reviewed rather than fully Event Viewer-proven.
 
 `hoi4.map_inspect` returned `MAP_INSPECTED` for a world catalog containing 1,081 states and produced an overview artifact.
 
@@ -100,33 +98,13 @@ The visual map-facing conclusion for center target selection is therefore unreso
 
 The parent must rerun the state plus state-buildings render before accepting map-target click coverage or claiming the center selector is visually proven.
 
-`hoi4.probability_inspect` was started on `common/decisions/035_great_depression_decisions.txt` as required, then the analysis was routed through the read-only `chaosx_ai_probability_auditor`.
+`hoi4.probability_inspect` now discovers 75 `decision_ai_will_do` candidates from `common/decisions/035_great_depression_decisions.txt`, with 19 required trigger families and no unresolved source identifiers. The source hash is `b43d26f1260255587cd3c4bc5c286f0fdd2c87929e6304fd38551af4f0905635`.
 
-The auditor confirmed that decision and mission inspection both returned `PROBABILITY_SOURCE_DISCOVERED` with `discoveryReason = no_weighted_surfaces`, zero candidates, and zero available adapters.
+The bounded selector combining that path with `identifier = great_depression_category` returns a complete six-candidate doctrine pool with eleven required inputs and zero unresolved source identifiers. Its inspection artifact SHA-256 is `292ec9c28b1e17eb55b2e5d090b1212b47efb060eaa193c8271ae1ca21bc8a8f`.
 
-A six-doctrine candidate retry returned the same result.
+The Event 35 option surface contains five weighted candidates across three option pools. Complete pair evaluations prove the coup response at `75%` execute and `25%` stand down, and regional autonomy at `60%` recognize and `40%` integrate. The corresponding analysis IDs are `probability-692a1a7bfc5ae12b70bc1223` and `probability-71187a323866dbc4a89aaa5d`.
 
-Decision and mission evaluation and sweep calls returned `PROBABILITY_SURFACE_EMPTY` with the exact blocker `No weighted blocks matched this request`.
-
-No probability render was possible because no analysis ID was created.
-
-No probability comparison was run because this planner did not propose or apply gameplay source.
-
-The failed baseline request used the exact named rows `ACT-04`, `ACT-05`, `DOC-01` through `DOC-07`, `CTG-01`, `CTG-03`, `CTG-04`, `CTG-07` through `CTG-10`, `SOC-01` through `SOC-05`, `GLB-01`, `GLB-03`, `GLB-05` through `GLB-09`, and `EVO-01` through `EVO-08` without remapping.
-
-The decision inspection artifact is `probability-inspect-641550748a01.json` at source hash `641550748a011b7af04d80362387fa5bf1aa5e8974294a5db5e235c2b49c1e41`.
-
-Artifact URIs are:
-
-- Decision inspection: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/6fcbc454cf1c3084f2e04b611a59ded435c18dabb0cbb734d7c885fc6961f13a/79c55fd3f41ce88f18e678bfb646bbc7ecf45c6f7e63b9244e7a416c4acf2f0f/probability-inspect-641550748a01.json`.
-- Mission inspection: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8f166342ae5d0467fc52c2decd600d536dcf7bd88bfbefab5cad27bdb17a505e/f2b58c06bf7309953be332a41a06a3606cada3ffb12e3d69309c5f83b35af026/probability-inspect-641550748a01.json`.
-- Doctrine candidate retry: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/2a7099df1e186b1389cb7517c4012df7e62d894847241745102a8daedae1c205/dd280c08e40d1724b7559de5793ca44144a3797f3d0819da72b5304bbd6116c9/probability-inspect-641550748a01.json`.
-
-The decision file is untracked, its local SHA-256 reported by the auditor is `303E6D3563FC799B2D49172FF836E6E2515DE50BB8F93EA2DDC27CD01DFC23EB`, and MCP source revisions changed across consecutive inspection calls while the MCP source hash stayed fixed.
-
-The parent must freeze the shared source snapshot before rerunning the adapter.
-
-No scenario eligibility, ranking, probability, timing, dominance, or starvation conclusion is MCP-proven.
+The full named doctrine/action/contagion/social/global/evolution scenario audit and same-scenario comparison remain assigned to the read-only `chaosx_ai_probability_auditor`. Its final disposition belongs in the completion report rather than being inferred from the source inspection alone.
 
 No focus-tree surface is included in this addendum.
 
@@ -658,16 +636,13 @@ The parent must preserve the accepted scenario names and evaluate at least:
 - Global episode: `GLB-01` through `GLB-10`.
 - Evolution timing: `EVO-01` through `EVO-08`.
 
-The auditor's bounded source-only findings identify these concrete patch targets, but none is a quantitative MCP scenario result:
+The bounded source audit produced and closed these implementation findings:
 
-- `great_depression_ai_action_is_affordable` uses an OR across individual resources while `custom_cost_trigger` generally requires every resource in the selected cost family, so an unaffordable action can receive affordability score.
-- `ACT-04` has no losing-front or low-holding-chance factor for a center project unless the center is already Abandoned or Liquidated.
-- Austerity and Market Clear lack explicit wartime suppression in `DOC-02`, and the doctrine score surface does not fully represent demand, fiscal pressure, or obsolete-center evidence in `DOC-01`, `DOC-04`, and `DOC-06`.
-- `CTG-07`, `CTG-08`, and `CTG-09` have no source-visible score gates for merged relationship deduplication, already-converted suppression, or propagation depth.
-- The always-true broad and narrow movement helpers zero negotiation in `SOC-01` and zero force, occupation-breaking, council, and property-credit responses in other Social Collapse scenarios.
-- Global stage gates exist, but the decision weights do not prove one-episode uniqueness, proof reset, or duplicate super-event suppression for `GLB-01`, `GLB-06`, `GLB-08`, and `GLB-09`.
-- `EVO-01` through `EVO-08` remain fully unresolved because no event MTTH or other timing surface was inspected from the decision source.
-- The 15 missions have no mission-local AI weights, so their AI behavior is activation-only in this source and cannot be ranked through the mission adapter as currently written.
+- `great_depression_ai_action_is_affordable` now requires every nonzero resource component to be payable, matching the custom cost trigger instead of accepting any one affordable component.
+- Broad and narrow Social Collapse movement predicates are mutually exclusive and evidence-based; unresolved evidence may make both false but can never make both true.
+- Relationship cooldowns, source-episode receipts, conversion attribution, and propagation depth prevent merged-row, repeated-aid, and recursive-conversion farming.
+- Global recovery uses classified constructive and fragmenting transactions, industrial weighting, final-period supplier proof, and episode-scoped receipts; supplier collapse resets proof without replaying the super-event.
+- Missions have explicit `ai_will_do` blocks and use activation plus mission-state gates without paying their mapped cost twice.
 
 Required behavioral checks are:
 
@@ -680,9 +655,7 @@ Required behavioral checks are:
 7. AI can finish one structural project before opening another center project unless emergency conditions justify a switch.
 8. A relapse does not cause repeated doctrine switching solely to reset action returns.
 
-The current `hoi4.probability_inspect` adapter-discovery failure and source-hash mismatch are exact blockers to quantitative conclusions.
-
-All score, probability, rank, timing, dominance, and starvation acceptance remains unresolved until the parent freezes the source snapshot, exposes an MCP-compatible decision or mission surface, supplies complete typed scenario fixtures, and reruns evaluation and numeric-range sweeps.
+The adapter-discovery blocker is closed: the MCP now exposes 75 decision-weight candidates and a complete bounded six-doctrine pool. Full named-scenario ranking and the same-scenario comparison remain pending the final read-only auditor report.
 
 ## Acceptance scenarios
 
@@ -796,7 +769,7 @@ These additions would broaden the event without fixing the current depth and evi
 
 ## Promotion and parent handoff
 
-This file should remain under `docs/plans/035_great_depression_plans/` until the parent accepts the design and identifies an implementation tranche.
+This file remains under `docs/plans/035_great_depression_plans/` as the accepted implementation handoff and evidence record.
 
 If accepted, promote the relevant rules rather than copying the entire addendum into one file:
 
@@ -808,7 +781,7 @@ If accepted, promote the relevant rules rather than copying the entire addendum 
 - Merge frozen summary and achievement evidence into part 11.
 - Update the package manifest and full specification after those source-of-truth parts are reconciled.
 
-The design problem is shallow transaction depth and missing durable evidence behind an already broad accepted surface.
+The implemented design delta addressed shallow transaction depth and missing durable evidence behind an already broad accepted surface.
 
 The proposed expansion is one Recovery Administration and Episode Evidence layer, not a new content route.
 
@@ -816,6 +789,6 @@ The research basis is staged bank reopening, administrated public works, prematu
 
 Implementation surfaces are listed above.
 
-Open questions are limited to parent-owned balance values after probability evidence, the MCP helper-catalog resolution, the timed-out map render, and scheduler single-execution proof across host transitions.
+The remaining validation questions are external to the source implementation: completion of the named probability comparison, full MCP helper and lifecycle expansion after the 180-second lint timeout, map-facing visual review after the state render timeouts, live visual review of the generated assets, and scheduler single-execution proof across host transitions.
 
-No prior improvement addendum remains unresolved.
+No gameplay requirement from this improvement addendum remains queued.

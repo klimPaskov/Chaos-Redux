@@ -1,0 +1,27 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 027 CXT REGISTRATION AND FIXTURE
+# ============================================================================
+# Registers the Event 027 adapter registry and country ledger with the shared
+# CXT extension bus. The effect is deliberately idempotent and does not create
+# a doctrine batch or alter ordinary country progression.
+# ============================================================================
+
+doctrine_research_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event027_doctrine_research
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event027_doctrine_research_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = doctrine_research_cxt_fixture_initialized }
+		}
+		doctrine_research_initialize_adapter_registry = yes
+		doctrine_research_initialize_country_state = yes
+		set_country_flag = doctrine_research_cxt_fixture_initialized
+	}
+}

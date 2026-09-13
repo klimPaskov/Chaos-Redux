@@ -1,0 +1,90 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND COUNTRY IDEAS
+# ============================================================================
+# Mutually exclusive controller-stage ideas for the mine system. The live
+# economic aggregate remains the single dynamic modifier
+# `riches_found_controller_aggregate`; exactly one idea below gives that
+# aggregate its visible governance/crisis identity. Separate mines therefore
+# cannot multiply either the aggregate or its stage idea.
+# Static idea fields use local mirrors because the engine's idea database fields
+# do not accept script-constant tokens.
+# ============================================================================
+
+@RICHES_FOUND_IDEA_MINOR_PENALTY = -0.02
+@RICHES_FOUND_IDEA_STANDARD_PENALTY = -0.04
+@RICHES_FOUND_IDEA_LARGE_PENALTY = -0.08
+@RICHES_FOUND_IDEA_SMALL_BENEFIT = 0.02
+@RICHES_FOUND_IDEA_STANDARD_BENEFIT = 0.04
+
+ideas = {
+	country = {
+		riches_found_idea_windfall_receipts = {
+			picture = GFX_idea_riches_found_windfall_receipts
+			allowed = { always = yes }
+			removal_cost = -1
+		}
+
+		riches_found_idea_managed_revenue = {
+			picture = GFX_idea_riches_found_managed_revenue
+			allowed = { always = yes }
+			removal_cost = -1
+			modifier = {
+				consumer_goods_factor = @RICHES_FOUND_IDEA_MINOR_PENALTY
+				stability_factor = @RICHES_FOUND_IDEA_SMALL_BENEFIT
+			}
+		}
+
+		riches_found_idea_resource_dependence = {
+			picture = GFX_idea_riches_found_resource_dependence
+			allowed = { always = yes }
+			removal_cost = -1
+			modifier = {
+				consumer_goods_factor = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+				stability_factor = @RICHES_FOUND_IDEA_MINOR_PENALTY
+			}
+		}
+
+		riches_found_idea_captured_revenue_state = {
+			picture = GFX_idea_riches_found_captured_revenue_state
+			allowed = { always = yes }
+			removal_cost = -1
+			modifier = {
+				consumer_goods_factor = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+				stability_factor = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+				political_power_gain = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+			}
+		}
+
+		riches_found_idea_gold_sick_administration = {
+			picture = GFX_idea_riches_found_gold_sick_administration
+			allowed = { always = yes }
+			removal_cost = -1
+			modifier = {
+				consumer_goods_factor = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+				stability_factor = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+				production_factory_efficiency_gain_factor = @RICHES_FOUND_IDEA_MINOR_PENALTY
+			}
+		}
+
+		riches_found_idea_infernal_accounts = {
+			picture = GFX_idea_riches_found_infernal_accounts
+			allowed = { always = yes }
+			removal_cost = -1
+			modifier = {
+				consumer_goods_factor = @RICHES_FOUND_IDEA_LARGE_PENALTY
+				stability_factor = @RICHES_FOUND_IDEA_LARGE_PENALTY
+				political_power_gain = @RICHES_FOUND_IDEA_STANDARD_PENALTY
+			}
+		}
+
+		riches_found_idea_reformed_settlement = {
+			picture = GFX_idea_riches_found_reformed_settlement
+			allowed = { always = yes }
+			removal_cost = -1
+			modifier = {
+				political_power_gain = @RICHES_FOUND_IDEA_SMALL_BENEFIT
+				stability_factor = @RICHES_FOUND_IDEA_SMALL_BENEFIT
+			}
+		}
+	}
+}

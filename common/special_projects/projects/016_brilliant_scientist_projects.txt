@@ -203,10 +203,21 @@ sp_brilliant_scientist_advanced_materials = {
 				iteration_output = {
 					country_effects = {
 						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
-						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
-						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-						brilliant_scientist_refresh_project_accident_pressure = yes
-						brilliant_scientist_dispatch_project_accident = yes
+						if = {
+							limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+							set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.materials }
+							set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_mengele_dispatch_conventional_incident = yes
+							set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+							set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+						}
+						else_if = {
+							limit = { brilliant_scientist_is_current_host = yes }
+							set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.materials }
+							set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_refresh_project_accident_pressure = yes
+							brilliant_scientist_dispatch_project_accident = yes
+						}
 					}
 				}
 			}
@@ -273,10 +284,21 @@ sp_brilliant_scientist_biomedical_acceleration = {
 				iteration_output = {
 					country_effects = {
 						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
-						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
-						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-						brilliant_scientist_refresh_project_accident_pressure = yes
-						brilliant_scientist_dispatch_project_accident = yes
+						if = {
+							limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+							set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.biomedical }
+							set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_mengele_dispatch_conventional_incident = yes
+							set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+							set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+						}
+						else_if = {
+							limit = { brilliant_scientist_is_current_host = yes }
+							set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
+							set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_refresh_project_accident_pressure = yes
+							brilliant_scientist_dispatch_project_accident = yes
+						}
 					}
 				}
 			}
@@ -363,8 +385,8 @@ sp_brilliant_scientist_quantum_transit = {
 sp_brilliant_scientist_cloning = {
 	specialization = specialization_biowarfare
 	allowed = { }
-	visible = { FROM = { brilliant_scientist_can_research_cloning_prototype = yes } }
-	available = { FROM = { brilliant_scientist_can_research_cloning_prototype = yes } }
+	visible = { FROM = { OR = { brilliant_scientist_can_research_cloning_prototype = yes brilliant_scientist_can_research_mengele_cloning_prototype = yes } } }
+	available = { FROM = { OR = { brilliant_scientist_can_research_cloning_prototype = yes brilliant_scientist_can_research_mengele_cloning_prototype = yes } } }
 	icon = GFX_sp_brilliant_scientist_cloning
 	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.cloning_breakthrough }
 	prototype_time = sp_time.prototype.medium

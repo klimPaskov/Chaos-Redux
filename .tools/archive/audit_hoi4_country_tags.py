@@ -66,7 +66,28 @@ EVENT6_FORMABLE_COSMETIC_IDENTITIES = {
 	"MIX": ("FORM-05", "Mediterranean Island League"),
 	"PFX": ("FORM-48", "Pacific Regional Federation"),
 	"MFX": ("FORM-39", "Melanesian Federation"),
+	"BLX": ("FORM-09", "Balkan Federation"),
 }
+EVENT6_FORMABLE_COSMETIC_SOURCE_MARKER = "# Event 006 researched formable and route cosmetic identities."
+EVENT6_CUSTOM_COSMETIC_IDENTIFIERS = (
+	"KCX",
+	"NUX",
+	"LCX",
+	"RLX",
+	"MIX",
+	"PFX",
+	"MFX",
+	"CHU_independence_wave_middle_volga_congressX",
+	"CHU_independence_wave_volga_bulgariaX",
+	"CHU_independence_wave_volga_federationX",
+	"VOLGA_URAL_FEDERATIONX",
+	"IDEL_URAL_COMPACTX",
+	"ASY_independence_wave_national_councilX",
+	"ASY_independence_wave_church_compactX",
+	"ASY_independence_wave_civic_federationX",
+	"ASY_independence_wave_security_guardianshipX",
+	"MESOPOTAMIAN_FEDERATIONX",
+)
 REQUIRED_MANUAL_IDENTITY_PACKAGES = {
 	"IW-011",
 	"IW-018",
@@ -704,6 +725,8 @@ def scan_current_repo_non_event6_extended(
 ) -> list[TagDefinition]:
 	"""Return extended Chaos Redux surfaces that do not belong to Event 006."""
 	definitions: list[TagDefinition] = []
+	consolidated_cosmetic_file = (repo_root / "common" / "countries" / "cosmetic.txt").resolve()
+	consolidated_color_file = (repo_root / "common" / "countries" / "colors.txt").resolve()
 	for definition in scan_extended_tag_surfaces(repo_root, "chaos_redux_non_event6", "chaos_redux"):
 		path = Path(definition.file)
 		try:
@@ -716,6 +739,16 @@ def scan_current_repo_non_event6_extended(
 			# remains collision evidence, including files under an Event 006-looking path.
 			if relative in event6_history_paths:
 				continue
+		elif (
+			definition.use_kind == "cosmetic_country_definition"
+			and definition.tag in event6_tags
+			and path.resolve() in {consolidated_cosmetic_file, consolidated_color_file}
+		):
+			# Event 006 formable identities live in the shared cosmetic registry,
+			# while country color overrides live in the consolidated colors file.
+			# Exclude only those exact definitions; another same-tag file remains
+			# collision evidence.
+			continue
 		elif "006_independence_wave" in relative or "event 006 country shell" in relative:
 			continue
 		if definition.use_kind == "flag_asset" and definition.tag in event6_tags:
@@ -731,6 +764,7 @@ def scan_current_repo_non_event6_custom_cosmetic_surfaces(
 ) -> list[TagDefinition]:
 	"""Return exact custom cosmetic surfaces outside Event 006-owned files."""
 	definitions: list[TagDefinition] = []
+	consolidated_cosmetic_file = (repo_root / "common" / "countries" / "cosmetic.txt").resolve()
 	owned_flag_paths: set[str] = set()
 	flag_dir = repo_root / "gfx" / "flags"
 	if flag_dir.is_dir():
@@ -753,6 +787,15 @@ def scan_current_repo_non_event6_custom_cosmetic_surfaces(
 		if definition.use_kind == "country_history_filename":
 			if relative in event6_history_paths:
 				continue
+		elif (
+			definition.use_kind == "cosmetic_country_definition"
+			and definition.tag in identifiers
+			and path.resolve() == consolidated_cosmetic_file
+		):
+			# The all-length Event 006 identities are consolidated into this
+			# shared file. Keep exact duplicate definitions in another file as
+			# collision evidence rather than hiding them by filename alone.
+			continue
 		elif definition.use_kind == "flag_asset" and relative in owned_flag_paths:
 			continue
 		elif "006_independence_wave" in relative or "event 006 country shell" in relative:
@@ -768,23 +811,44 @@ def parse_event6_tags(path: Path) -> list[dict[str, str]]:
 	return rows
 
 
+def parse_event6_formable_cosmetic_registry_text(path: Path) -> str:
+	"""Read the Event 006 block from the consolidated cosmetic registry."""
+	text = decode_text(path)
+	if EVENT6_FORMABLE_COSMETIC_SOURCE_MARKER in text:
+		return text.split(EVENT6_FORMABLE_COSMETIC_SOURCE_MARKER, 1)[1]
+	return text
+
+
 def parse_event6_formable_cosmetics(path: Path) -> list[dict[str, str]]:
 	rows: list[dict[str, str]] = []
-	for tag in EVENT6_FORMABLE_COSMETIC_RE.findall(decode_text(path)):
+	text = decode_text(path)
+	consolidated_text = parse_event6_formable_cosmetic_registry_text(path)
+	for tag in EVENT6_FORMABLE_COSMETIC_RE.findall(consolidated_text):
 		if tag not in EVENT6_FORMABLE_COSMETIC_IDENTITIES:
 			raise RuntimeError(f"Unreviewed Event 006 formable or cosmetic identity in {path}: {tag}")
 		package_id, identity = EVENT6_FORMABLE_COSMETIC_IDENTITIES[tag]
 		rows.append({"tag": tag, "package_id": package_id, "identity": identity})
+	for tag in EVENT6_FORMABLE_COSMETIC_RE.findall(text):
+		if tag in EVENT6_FORMABLE_COSMETIC_IDENTITIES and tag not in {row["tag"] for row in rows}:
+			package_id, identity = EVENT6_FORMABLE_COSMETIC_IDENTITIES[tag]
+			rows.append({"tag": tag, "package_id": package_id, "identity": identity})
 	return rows
 
 
 def parse_event6_custom_cosmetic_identifiers(path: Path) -> list[str]:
 	"""Parse every all-length custom cosmetic identifier owned by Event 006."""
-	identifiers = COSMETIC_DEFINITION_RE.findall(decode_text(path))
+	identifiers = COSMETIC_DEFINITION_RE.findall(parse_event6_formable_cosmetic_registry_text(path))
 	if not identifiers:
 		raise RuntimeError(f"Event 006 custom cosmetic registry is empty: {path}")
 	if len(identifiers) != len(set(identifiers)):
 		raise RuntimeError(f"Event 006 custom cosmetic registry contains duplicate identifiers: {path}")
+	expected = set(EVENT6_CUSTOM_COSMETIC_IDENTIFIERS)
+	missing = sorted(expected - set(identifiers))
+	extra = sorted(set(identifiers) - expected)
+	if missing or extra:
+		raise RuntimeError(
+			f"Event 006 custom cosmetic registry mismatch in {path}: missing={missing} extra={extra}"
+		)
 	return identifiers
 
 
@@ -821,6 +885,16 @@ def parse_event6_owned_history_filenames(
 			continue
 		identity = path.stem[3:].lstrip(" -_")
 		if normalize_name(identity) != expected_identity[tag]:
+			reserved_header = re.search(
+				r"EVENT 006 UNRESEARCHED DORMANT COUNTRY HISTORY:\s*([A-Z0-9]{3})",
+				decode_text(path),
+				re.IGNORECASE,
+			)
+			if reserved_header and reserved_header.group(1).upper() == tag:
+				relative = path.resolve().relative_to(repo_root.resolve()).as_posix().lower()
+				owned_paths.add(relative)
+				owned_rows.append({"tag": tag, "identity": identity, "file": relative})
+				continue
 			# A same-tag history file with another identity is not owned by Event 006
 			# and must remain collision evidence in the non-Event6 scan.
 			continue
@@ -1109,7 +1183,7 @@ def markdown_report(data: dict[str, object]) -> str:
 	reserved_count = data["event6_reserved_tag_count"]
 	lines.extend(("", f"All {formable_count} tags are X-ending, unique against the {reserved_count} country reservations, present in the reviewed cosmetic registry, and used by an exact Event 006 `set_cosmetic_tag` adapter.", ""))
 
-	lines.extend(("## All-length custom cosmetic coverage", "", f"Event 006 defines {data['event6_custom_cosmetic_identifier_count']} custom cosmetic identifiers, including the six three-character family colors and route identifiers longer than three characters.", "", "`" + " ".join(data["event6_custom_cosmetic_identifiers"]) + "`", "", f"Exact custom cosmetic surfaces parsed from vanilla, Workshop, archives, sibling mods, and non-Event 006 Chaos Redux: **{data['event6_custom_cosmetic_external_surface_count'] + data['event6_custom_cosmetic_non_event6_surface_count']}**.", ""))
+	lines.extend(("## All-length custom cosmetic coverage", "", f"Event 006 defines {data['event6_custom_cosmetic_identifier_count']} custom cosmetic identifiers, including the three-character family colors and route identifiers longer than three characters.", "", "`" + " ".join(data["event6_custom_cosmetic_identifiers"]) + "`", "", f"Exact custom cosmetic surfaces parsed from vanilla, Workshop, archives, sibling mods, and non-Event 006 Chaos Redux: **{data['event6_custom_cosmetic_external_surface_count'] + data['event6_custom_cosmetic_non_event6_surface_count']}**.", ""))
 	if data["event6_custom_cosmetic_collisions"]:
 		lines.extend(("Custom cosmetic identifier collisions", "", "| Identifier | Conflicting registry | Definition |", "| --- | --- | --- |"))
 		for collision in data["event6_custom_cosmetic_collisions"]:
@@ -1251,7 +1325,7 @@ def main() -> None:
 	repo_root = args.repo_root.resolve()
 	local_mod_root = (args.local_mod_root or repo_root.parent).resolve()
 	event6_tag_file = repo_root / "common" / "country_tags" / "006_independence_wave_countries.txt"
-	formable_cosmetic_file = repo_root / "common" / "countries" / "006_independence_wave_formable_cosmetics.txt"
+	formable_cosmetic_file = repo_root / "common" / "countries" / "cosmetic.txt"
 	registry_file = repo_root / "docs" / "specs" / "006_independence_wave_specs" / "matrices" / "006_candidate_country_registry.csv"
 	formable_family_registry_file = repo_root / "docs" / "specs" / "006_independence_wave_specs" / "matrices" / "006_formable_family_registry.csv"
 	formable_localisation_files = [

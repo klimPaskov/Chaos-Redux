@@ -1,0 +1,1740 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 033 ACID RAIN ACHIEVEMENT TRACKING EFFECTS
+# ============================================================================
+# This file is the Event 033 achievement ledger. It is deliberately separate
+# from the weather runtime: the runtime owns weather state, while these
+# effects retain the exact historical receipts used by the ten achievements.
+#
+# Contract rules
+# - Every public recorder is generation-gated. The caller supplies a temporary
+#   `acid_rain_033_input_generation` equal to global.acid_rain_generation_id.
+# - Positive deaths are accepted only through the caller's exact population
+#   gateway result in `acid_rain_033_input_applied_deaths`. No modifier or
+#   current-state estimate is used here.
+# - State and country arrays are append-only evidence ledgers for the current
+#   generation. Duplicate receipt keys are no-ops, so save/load retries cannot
+#   double-count an edge.
+# - The transfer effect consumes the runtime's old/new controller event
+#   targets in the same control-change chain and moves only current
+#   responsibility. Historical deaths and completed receipts remain attached
+#   to their original credited country.
+# - No effect in this file runs a world or country scan. Parent callers invoke
+#   recorders at formation, warning, arrival, pulse, action, closure, phase,
+#   dissipation, recovery, transfer, and bounded deadline edges.
+#
+# Public hook order
+# 1. Country formation: begin_generation, then register_state once per frozen
+#    eligible state.
+# 2. Warning/arrival: record_warning_visit and record_arrival.
+# 3. Preparedness: record_preparedness_snapshot and
+#    record_preparedness_component at paid tier completion.
+# 4. Exposure: record_state_exposure once per exact pulse/coverage receipt;
+#    use record_opening_shock for an opening pulse and pass the exact applied
+#    loss. Severe forecast/cell helpers add the episode evidence.
+# 5. Actions: record_transport_reroute, record_evacuation_start,
+#    record_evacuation_complete, and record_urgent_action_completion.
+# 6. Severe closure: record_severe_cell_closure.
+# 7. Global layer: record_global_transition and
+#    record_global_preparedness_check on each required continuity check.
+# 8. Dissipation/recovery: record_dissipation_state_snapshot at the frozen
+#    snapshot edge, record_recovery_completion at each accepted recovery, and
+#    refresh_recovery_deadlines at the bounded deadline edge.
+# 9. Aftermath: record_aftermath_tier whenever the stored tier changes and
+#    refresh_no_severe_ruins_deadlines at each bounded ruin deadline edge.
+# 10. State control change: transfer_state_responsibility while the runtime
+#     owns acid_rain_transfer_old_controller and
+#     acid_rain_transfer_new_controller.
+#
+# Inputs named `acid_rain_033_input_*` are caller-owned temporary variables.
+# A missing or malformed required input fails closed by marking the relevant
+# migration/baseline disqualifier. The parent must not substitute current
+# modifiers for a missing receipt.
+# ============================================================================
+
+@acid_rain_033_achievement_schema_version = 1
+@acid_rain_033_achievement_zero = 0
+@acid_rain_033_achievement_one = 1
+@acid_rain_033_achievement_two = 2
+@acid_rain_033_achievement_three = 3
+@acid_rain_033_achievement_four = 4
+@acid_rain_033_achievement_five = 5
+@acid_rain_033_achievement_ten = 10
+@acid_rain_033_achievement_max_state_rows = 4096
+@acid_rain_033_achievement_max_episode_rows = 256
+@acid_rain_033_achievement_max_visit_rows = 256
+@acid_rain_033_achievement_max_route_rows = 512
+@acid_rain_033_achievement_max_recovery_rows = 4096
+@acid_rain_033_achievement_max_ruin_rows = 4096
+@acid_rain_033_achievement_max_receipt_rows = 8192
+@acid_rain_033_achievement_preparedness_complete = 100
+@acid_rain_033_achievement_preparedness_target = 60
+@acid_rain_033_achievement_global_floor = 75
+@acid_rain_033_achievement_global_days = 60
+@acid_rain_033_achievement_exposure_days = 120
+@acid_rain_033_achievement_shelter_states = 3
+@acid_rain_033_achievement_shelter_pulses = 2
+@acid_rain_033_achievement_shelter_death_numerator = 5
+@acid_rain_033_achievement_shelter_death_denominator = 10000
+@acid_rain_033_achievement_five_state_death_numerator = 10
+@acid_rain_033_achievement_five_state_death_denominator = 10000
+@acid_rain_033_achievement_three_evacuations = 3
+@acid_rain_033_achievement_rail_states = 5
+@acid_rain_033_achievement_five_states = 5
+@acid_rain_033_achievement_small_factory_limit = 10
+@acid_rain_033_achievement_recovery_states = 3
+@acid_rain_033_achievement_max_check_interval = 3
+@acid_rain_033_achievement_tier3 = 3
+
+# ---------------------------------------------------------------------------
+# Shared lifecycle and disqualifiers
+# ---------------------------------------------------------------------------
+
+# COUNTRY SCOPE. Clears only this file's current-generation facts. Completion
+# receipts and permanent debug/force/migration/scenario disqualifiers are kept
+# so a later Event 033 generation cannot reactivate an already settled award.
+acid_rain_033_achievement_clear_generation_records = {
+	clear_array = acid_rain_033_achievement_formation_states
+	clear_array = acid_rain_033_achievement_formation_state_ids
+	clear_array = acid_rain_033_achievement_responsible_states
+	clear_array = acid_rain_033_achievement_responsible_state_ids
+	clear_array = acid_rain_033_achievement_touched_states
+	clear_array = acid_rain_033_achievement_touched_state_ids
+	clear_array = acid_rain_033_achievement_state_receipt_keys
+	clear_array = acid_rain_033_achievement_state_severe_pulse_receipt_keys
+			clear_array = acid_rain_033_achievement_state_protection_receipt_keys
+			clear_array = acid_rain_033_achievement_state_evacuation_start_receipt_keys
+			clear_array = acid_rain_033_achievement_state_evacuation_completion_receipt_keys
+	clear_array = acid_rain_033_achievement_component_tier_entries
+	clear_array = acid_rain_033_achievement_component_completion_day_entries
+	clear_array = acid_rain_033_achievement_component_generation_entries
+	clear_array = acid_rain_033_achievement_component_receipt_keys
+	clear_array = acid_rain_033_achievement_preparedness_receipt_keys
+	clear_array = acid_rain_033_achievement_severe_target_receipt_keys
+	clear_array = acid_rain_033_achievement_severe_target_state_ids
+	clear_array = acid_rain_033_achievement_severe_target_state_scopes
+	clear_array = acid_rain_033_achievement_severe_target_episode_ids
+	clear_array = acid_rain_033_achievement_severe_target_forecast_ids
+	clear_array = acid_rain_033_achievement_severe_target_population_entries
+	clear_array = acid_rain_033_achievement_severe_target_death_entries
+	clear_array = acid_rain_033_achievement_severe_target_pulse_entries
+	clear_array = acid_rain_033_achievement_severe_target_shelter_entries
+	clear_array = acid_rain_033_achievement_severe_target_evacuation_entries
+	clear_array = acid_rain_033_achievement_severe_target_first_pulse_entries
+	clear_array = acid_rain_033_achievement_severe_target_evacuation_completion_entries
+	clear_array = acid_rain_033_achievement_severe_target_evacuation_threshold_entries
+	clear_array = acid_rain_033_achievement_severe_target_generation_entries
+	clear_array = acid_rain_033_achievement_severe_episode_receipt_keys
+	clear_array = acid_rain_033_achievement_severe_episode_ids
+	clear_array = acid_rain_033_achievement_severe_episode_state_counts
+	clear_array = acid_rain_033_achievement_severe_episode_population_entries
+	clear_array = acid_rain_033_achievement_severe_episode_death_entries
+	clear_array = acid_rain_033_achievement_severe_episode_pulse_entries
+	clear_array = acid_rain_033_achievement_severe_episode_protection_entries
+	clear_array = acid_rain_033_achievement_severe_episode_generation_entries
+	clear_array = acid_rain_033_achievement_severe_episode_complete_entries
+	clear_array = acid_rain_033_achievement_evacuation_receipt_keys
+	clear_array = acid_rain_033_achievement_evacuation_state_ids
+	clear_array = acid_rain_033_achievement_valid_evacuation_state_ids
+	clear_array = acid_rain_033_achievement_evacuation_state_scopes
+	clear_array = acid_rain_033_achievement_evacuation_forecast_ids
+	clear_array = acid_rain_033_achievement_evacuation_episode_ids
+	clear_array = acid_rain_033_achievement_evacuation_completion_days
+	clear_array = acid_rain_033_achievement_evacuation_first_pulse_days
+	clear_array = acid_rain_033_achievement_evacuation_baselines
+	clear_array = acid_rain_033_achievement_evacuation_deaths
+	clear_array = acid_rain_033_achievement_evacuation_thresholds
+	clear_array = acid_rain_033_achievement_evacuation_generation_entries
+	clear_array = acid_rain_033_achievement_exposure_day_receipt_keys
+	clear_array = acid_rain_033_achievement_reroute_receipt_keys
+	clear_array = acid_rain_033_achievement_reroute_ids
+	clear_array = acid_rain_033_achievement_reroute_days
+	clear_array = acid_rain_033_achievement_reroute_generation_entries
+	clear_array = acid_rain_033_achievement_route_check_receipt_keys
+	clear_array = acid_rain_033_achievement_route_check_days
+	clear_array = acid_rain_033_achievement_route_check_capital_ids
+	clear_array = acid_rain_033_achievement_route_check_broken_entries
+	clear_array = acid_rain_033_achievement_route_check_isolation_entries
+	clear_array = acid_rain_033_achievement_route_check_generation_entries
+	clear_array = acid_rain_033_achievement_warning_visit_receipt_keys
+	clear_array = acid_rain_033_achievement_warning_visit_ids
+	clear_array = acid_rain_033_achievement_warning_visit_regions
+	clear_array = acid_rain_033_achievement_warning_visit_fronts
+	clear_array = acid_rain_033_achievement_warning_visit_days
+	clear_array = acid_rain_033_achievement_warning_visit_arrival_days
+	clear_array = acid_rain_033_achievement_warning_visit_generation_entries
+	clear_array = acid_rain_033_achievement_arrival_receipt_keys
+	clear_array = acid_rain_033_achievement_action_receipt_keys
+	clear_array = acid_rain_033_achievement_action_regions
+	clear_array = acid_rain_033_achievement_action_fronts
+	clear_array = acid_rain_033_achievement_action_visit_ids
+	clear_array = acid_rain_033_achievement_action_state_ids
+	clear_array = acid_rain_033_achievement_action_types
+	clear_array = acid_rain_033_achievement_action_start_days
+	clear_array = acid_rain_033_achievement_action_completion_days
+	clear_array = acid_rain_033_achievement_action_warning_days
+	clear_array = acid_rain_033_achievement_action_arrival_days
+	clear_array = acid_rain_033_achievement_action_generation_entries
+	clear_array = acid_rain_033_achievement_global_check_receipt_keys
+	clear_array = acid_rain_033_achievement_global_transition_receipt_keys
+	clear_array = acid_rain_033_achievement_global_check_days
+	clear_array = acid_rain_033_achievement_global_check_values
+	clear_array = acid_rain_033_achievement_global_check_capital_ids
+	clear_array = acid_rain_033_achievement_global_check_capital_tiers
+	clear_array = acid_rain_033_achievement_global_check_generation_entries
+	clear_array = acid_rain_033_achievement_recovery_receipt_keys
+	clear_array = acid_rain_033_achievement_recovery_state_ids
+	clear_array = acid_rain_033_achievement_recovery_state_scopes
+	clear_array = acid_rain_033_achievement_recovery_snapshot_days
+	clear_array = acid_rain_033_achievement_recovery_deadlines
+	clear_array = acid_rain_033_achievement_recovery_owner_ids
+	clear_array = acid_rain_033_achievement_recovery_core_entries
+	clear_array = acid_rain_033_achievement_recovery_tier_entries
+	clear_array = acid_rain_033_achievement_recovery_resolved_entries
+	clear_array = acid_rain_033_achievement_recovery_completion_days
+	clear_array = acid_rain_033_achievement_recovery_generation_entries
+	clear_array = acid_rain_033_achievement_recovery_deadline_missed_entries
+	clear_array = acid_rain_033_achievement_tier3_receipt_keys
+	clear_array = acid_rain_033_achievement_tier3_state_ids
+	clear_array = acid_rain_033_achievement_tier3_state_scopes
+	clear_array = acid_rain_033_achievement_tier3_entry_days
+	clear_array = acid_rain_033_achievement_tier3_deadlines
+	clear_array = acid_rain_033_achievement_tier3_downgrade_days
+	clear_array = acid_rain_033_achievement_tier3_generation_entries
+	clear_array = acid_rain_033_achievement_tier3_deadline_missed_entries
+	clear_array = acid_rain_033_achievement_ready_regions
+	clear_array = acid_rain_033_achievement_ready_visits
+	clear_array = acid_rain_033_achievement_capital_history_ids
+	clear_array = acid_rain_033_achievement_controller_history_ids
+	clear_array = acid_rain_033_achievement_controller_history_days
+	clear_array = acid_rain_033_achievement_controller_history_old_ids
+	clear_array = acid_rain_033_achievement_controller_history_new_ids
+	clear_array = acid_rain_033_achievement_controller_history_generation_entries
+
+	clear_variable = acid_rain_033_achievement_formation_day
+	clear_variable = acid_rain_033_achievement_formation_state_count
+	clear_variable = acid_rain_033_achievement_formation_population_people
+	clear_variable = acid_rain_033_achievement_start_civilian_factories
+	clear_variable = acid_rain_033_achievement_formation_capital_id
+	clear_variable = acid_rain_033_achievement_current_capital_id
+	clear_variable = acid_rain_033_achievement_baseline_valid
+	clear_variable = acid_rain_033_achievement_touched_state_count
+	clear_variable = acid_rain_033_achievement_event_deaths
+	clear_variable = acid_rain_033_achievement_exposure_days
+	clear_variable = acid_rain_033_achievement_preparedness_peak
+	clear_variable = acid_rain_033_achievement_first_opening_shock_day
+	clear_variable = acid_rain_033_achievement_first_opening_shock_state_id
+	clear_variable = acid_rain_033_achievement_first_exposure_day
+	clear_variable = acid_rain_033_achievement_severe_target_row_count
+	clear_variable = acid_rain_033_achievement_severe_episode_row_count
+	clear_variable = acid_rain_033_achievement_shelter_qualifying_episode_count
+	clear_variable = acid_rain_033_achievement_evacuation_row_count
+	clear_variable = acid_rain_033_achievement_valid_evacuation_count
+	clear_variable = acid_rain_033_achievement_valid_evacuation_state_count
+	clear_variable = acid_rain_033_achievement_reroute_count
+	clear_variable = acid_rain_033_achievement_exposure_day_receipt_count
+	clear_variable = acid_rain_033_achievement_route_check_count
+	clear_variable = acid_rain_033_achievement_warning_visit_row_count
+	clear_variable = acid_rain_033_achievement_action_row_count
+	clear_variable = acid_rain_033_achievement_ready_region_count
+	clear_variable = acid_rain_033_achievement_ready_visit_count
+	clear_variable = acid_rain_033_achievement_global_check_row_count
+	clear_variable = acid_rain_033_achievement_global_transition_day
+	clear_variable = acid_rain_033_achievement_global_prepared_days
+	clear_variable = acid_rain_033_achievement_global_max_capital_tier
+	clear_variable = acid_rain_033_achievement_recovery_row_count
+	clear_variable = acid_rain_033_achievement_recovery_required_count
+	clear_variable = acid_rain_033_achievement_recovery_resolved_count
+	clear_variable = acid_rain_033_achievement_recovery_deadline_missed
+	clear_variable = acid_rain_033_achievement_tier3_row_count
+	clear_variable = acid_rain_033_achievement_tier3_resolved_count
+	clear_variable = acid_rain_033_achievement_tier3_deadline_missed
+	clear_variable = acid_rain_033_achievement_max_aftermath_tier
+	clear_variable = acid_rain_033_achievement_acute_closure_day
+	clear_variable = acid_rain_033_achievement_acute_closure_kind
+	clear_variable = acid_rain_033_achievement_acute_closure_generation
+	clear_variable = acid_rain_033_achievement_transfer_count
+	clear_variable = acid_rain_033_achievement_global_phase_receipt
+	clear_variable = acid_rain_033_achievement_first_drop_receipt
+	clear_variable = acid_rain_033_achievement_global_floor_receipt
+	clear_variable = acid_rain_033_achievement_acute_closure_receipt
+	clear_variable = acid_rain_033_achievement_aftercare_snapshot_receipt
+	clear_variable = acid_rain_033_achievement_event_start_population_valid
+	clear_variable = acid_rain_033_achievement_closure_deaths
+	clear_variable = acid_rain_033_achievement_last_global_check_day
+	clear_variable = acid_rain_033_achievement_component_receipt_sequence
+	clear_variable = acid_rain_033_achievement_action_receipt_sequence
+	clear_variable = acid_rain_033_achievement_route_check_sequence
+	clear_variable = acid_rain_033_achievement_recovery_deadline_check_day
+	clear_variable = acid_rain_033_achievement_tier3_deadline_check_day
+	clear_variable = acid_rain_033_achievement_closure_evaluated
+	clear_variable = acid_rain_033_achievement_closure_baseline_valid
+
+	clr_country_flag = acid_rain_033_achievement_baseline_invalid
+	clr_country_flag = acid_rain_033_achievement_admin_disqualified
+	clr_country_flag = acid_rain_033_achievement_country_ceased
+	clr_country_flag = acid_rain_033_achievement_before_the_first_drop_disqualified
+	clr_country_flag = acid_rain_033_achievement_shelters_held_disqualified
+	clr_country_flag = acid_rain_033_achievement_three_evacuations_disqualified
+	clr_country_flag = acid_rain_033_achievement_railways_still_run_disqualified
+	clr_country_flag = acid_rain_033_achievement_under_one_sky_disqualified
+	clr_country_flag = acid_rain_033_achievement_after_the_clouds_disqualified
+	clr_country_flag = acid_rain_033_achievement_five_states_few_dead_disqualified
+	clr_country_flag = acid_rain_033_achievement_small_state_civil_defense_disqualified
+	clr_country_flag = acid_rain_033_achievement_two_regions_ready_disqualified
+	clr_country_flag = acid_rain_033_achievement_no_severe_ruins_disqualified
+}
+
+# COUNTRY SCOPE. Initializes a country only when the parent has established a
+# global Event 033 generation. Re-entry in the same generation is idempotent;
+# a newer generation receives a fresh ledger while old receipts remain.
+acid_rain_033_achievement_initialize_country = {
+	if = {
+		limit = {
+			has_variable = global.acid_rain_generation_id
+			OR = {
+				NOT = { has_country_flag = acid_rain_033_achievement_tracking_initialized }
+				NOT = { check_variable = { var = acid_rain_033_achievement_generation_id value = global.acid_rain_generation_id compare = equals } }
+			}
+		}
+		acid_rain_033_achievement_clear_generation_records = yes
+		set_country_flag = acid_rain_033_achievement_tracking_initialized
+		set_variable = { acid_rain_033_achievement_generation_id = global.acid_rain_generation_id }
+		set_variable = { acid_rain_033_achievement_schema_version = @acid_rain_033_achievement_schema_version }
+		set_variable = { acid_rain_033_achievement_touched_state_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_event_deaths = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_closure_deaths = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_exposure_days = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_preparedness_peak = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_severe_target_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_severe_episode_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_shelter_qualifying_episode_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_evacuation_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_valid_evacuation_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_valid_evacuation_state_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_reroute_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_exposure_day_receipt_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_route_check_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_warning_visit_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_action_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_ready_region_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_ready_visit_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_global_check_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_global_prepared_days = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_global_max_capital_tier = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_recovery_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_recovery_required_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_recovery_resolved_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_recovery_deadline_missed = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_tier3_row_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_tier3_resolved_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_tier3_deadline_missed = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_max_aftermath_tier = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_global_phase_receipt = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_first_drop_receipt = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_global_floor_receipt = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_acute_closure_receipt = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_aftercare_snapshot_receipt = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_event_start_population_valid = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_component_receipt_sequence = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_action_receipt_sequence = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_route_check_sequence = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_recovery_deadline_check_day = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_tier3_deadline_check_day = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_closure_evaluated = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_closure_baseline_valid = @acid_rain_033_achievement_zero }
+	}
+}
+
+# COUNTRY SCOPE. Starts a generation and freezes the immutable national facts.
+# Required inputs: generation, formation_state_count, formation_population_people,
+# start_civilian_factories, capital_id, and has_capital. Missing population,
+# factory, or capital proof marks the baseline invalid; no current value is
+# substituted later.
+acid_rain_033_achievement_begin_generation = {
+	if = {
+		limit = { acid_rain_033_achievement_input_generation_is_current = yes }
+		acid_rain_033_achievement_initialize_country = yes
+		if = {
+			limit = {
+				has_variable = acid_rain_033_input_formation_state_count
+				has_variable = acid_rain_033_input_formation_population_people
+				has_variable = acid_rain_033_input_start_civilian_factories
+				has_variable = acid_rain_033_input_capital_id
+				has_variable = acid_rain_033_input_has_capital
+			}
+			set_variable = { acid_rain_033_achievement_formation_day = global.date }
+			set_variable = { acid_rain_033_achievement_formation_state_count = acid_rain_033_input_formation_state_count }
+			set_variable = { acid_rain_033_achievement_formation_population_people = acid_rain_033_input_formation_population_people }
+			set_variable = { acid_rain_033_achievement_start_civilian_factories = acid_rain_033_input_start_civilian_factories }
+			set_variable = { acid_rain_033_achievement_formation_capital_id = acid_rain_033_input_capital_id }
+			set_variable = { acid_rain_033_achievement_current_capital_id = acid_rain_033_input_capital_id }
+			set_variable = { acid_rain_033_achievement_baseline_valid = @acid_rain_033_achievement_one }
+			set_variable = { acid_rain_033_achievement_event_start_population_valid = @acid_rain_033_achievement_zero }
+			if = {
+				limit = { check_variable = { var = acid_rain_033_input_formation_population_people value = @acid_rain_033_achievement_zero compare = greater_than } }
+				set_variable = { acid_rain_033_achievement_event_start_population_valid = @acid_rain_033_achievement_one }
+			}
+			else = {
+				set_country_flag = acid_rain_033_achievement_baseline_invalid
+			}
+			if = {
+				limit = {
+					check_variable = { var = acid_rain_033_input_formation_state_count value = @acid_rain_033_achievement_zero compare = greater_than }
+				}
+				set_country_flag = acid_rain_033_achievement_formation_eligible
+			}
+			if = {
+				limit = {
+					check_variable = { var = acid_rain_033_input_start_civilian_factories value = @acid_rain_033_achievement_small_factory_limit compare = less_than }
+				}
+				set_country_flag = acid_rain_033_achievement_small_state_eligible
+			}
+			add_to_array = { array = acid_rain_033_achievement_capital_history_ids value = acid_rain_033_input_capital_id }
+		}
+		else = {
+			set_country_flag = acid_rain_033_achievement_baseline_invalid
+			set_country_flag = acid_rain_033_achievement_baseline_missing_receipt
+		}
+	}
+	else = {
+		set_country_flag = acid_rain_033_achievement_migration_disqualified
+	}
+}
+
+# The following marker effects are intentionally tiny public hooks. Call them
+# from debug, forced setup, migration, scenario, tag-cease, and administrative
+# cleanup paths; criteria triggers reject the shared stored flags.
+acid_rain_033_achievement_mark_debug_disqualified = {
+	set_country_flag = acid_rain_033_achievement_debug_disqualified
+}
+
+acid_rain_033_achievement_mark_force_disqualified = {
+	set_country_flag = acid_rain_033_achievement_force_disqualified
+}
+
+acid_rain_033_achievement_mark_scenario_disqualified = {
+	set_country_flag = acid_rain_033_achievement_scenario_disqualified
+}
+
+acid_rain_033_achievement_mark_migration_disqualified = {
+	set_country_flag = acid_rain_033_achievement_migration_disqualified
+	set_country_flag = acid_rain_033_achievement_baseline_invalid
+}
+
+acid_rain_033_achievement_mark_admin_disqualified = {
+	set_country_flag = acid_rain_033_achievement_admin_disqualified
+	set_country_flag = acid_rain_033_achievement_five_states_few_dead_disqualified
+	set_country_flag = acid_rain_033_achievement_after_the_clouds_disqualified
+	set_country_flag = acid_rain_033_achievement_no_severe_ruins_disqualified
+}
+
+acid_rain_033_achievement_mark_country_ceased = {
+	set_country_flag = acid_rain_033_achievement_country_ceased
+	set_country_flag = acid_rain_033_achievement_admin_disqualified
+}
+
+acid_rain_033_achievement_mark_invalid_baseline = {
+	set_country_flag = acid_rain_033_achievement_baseline_invalid
+	set_country_flag = acid_rain_033_achievement_migration_disqualified
+}
+
+# ---------------------------------------------------------------------------
+# Frozen-state registration, exact exposure receipts, and transfer
+# ---------------------------------------------------------------------------
+
+# STATE SCOPE. Registers one frozen eligible state for the current generation.
+# Required inputs: generation, state_id, and exact state_population_people at
+# formation. The current CONTROLLER is captured as responsibility; no later
+# modifier or current owner lookup can recreate the formation fact.
+acid_rain_033_achievement_register_state = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_state_population_people
+			OR = {
+				NOT = { has_state_flag = acid_rain_033_achievement_state_registered }
+				NOT = { check_variable = { var = acid_rain_033_achievement_state_generation_id value = acid_rain_033_input_generation compare = equals } }
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = acid_rain_033_achievement_state_generation_id }
+					NOT = { check_variable = { var = acid_rain_033_achievement_state_generation_id value = acid_rain_033_input_generation compare = equals } }
+				}
+			}
+			clear_array = acid_rain_033_achievement_state_exposure_receipt_keys
+			clear_array = acid_rain_033_achievement_state_severe_pulse_receipt_keys
+			clear_array = acid_rain_033_achievement_state_protection_receipt_keys
+			clear_array = acid_rain_033_achievement_state_evacuation_start_receipt_keys
+			clear_array = acid_rain_033_achievement_state_evacuation_completion_receipt_keys
+			clear_array = acid_rain_033_achievement_state_controller_history_ids
+			clear_variable = acid_rain_033_achievement_state_id
+			clear_variable = acid_rain_033_achievement_state_generation_id
+			clear_variable = acid_rain_033_achievement_state_responsible_country_id
+			clear_variable = acid_rain_033_achievement_state_responsibility_transfer_count
+			clear_variable = acid_rain_033_achievement_state_population_people
+			clear_variable = acid_rain_033_achievement_state_deaths
+			clear_variable = acid_rain_033_achievement_state_baseline_valid
+			clear_variable = acid_rain_033_achievement_state_exposure_count
+			clear_variable = acid_rain_033_achievement_state_first_exposure_day
+			clear_variable = acid_rain_033_achievement_state_first_opening_shock_day
+			clear_variable = acid_rain_033_achievement_state_first_severe_pulse_day
+			clear_variable = acid_rain_033_achievement_state_last_pulse_day
+			clear_variable = acid_rain_033_achievement_state_last_pulse_receipt
+			clear_variable = acid_rain_033_achievement_state_last_exposure_class
+			clear_variable = acid_rain_033_achievement_state_severe_episode_id
+			clear_variable = acid_rain_033_achievement_state_severe_forecast_id
+			clear_variable = acid_rain_033_achievement_state_severe_population_people
+			clear_variable = acid_rain_033_achievement_state_severe_deaths
+			clear_variable = acid_rain_033_achievement_state_severe_pulse_count
+			clear_variable = acid_rain_033_achievement_state_arrival_day
+			clear_variable = acid_rain_033_achievement_state_evacuation_action_type
+			clear_variable = acid_rain_033_achievement_state_max_aftermath_tier
+			clear_variable = acid_rain_033_achievement_state_current_aftermath_tier
+			clear_variable = acid_rain_033_achievement_state_evacuation_start_day
+			clear_variable = acid_rain_033_achievement_state_evacuation_completion_day
+			clear_variable = acid_rain_033_achievement_state_evacuation_first_pulse_day
+			clear_variable = acid_rain_033_achievement_state_evacuation_threshold_people
+			clear_variable = acid_rain_033_achievement_state_evacuation_deaths
+			clear_variable = acid_rain_033_achievement_state_recovery_deadline_day
+			clear_variable = acid_rain_033_achievement_state_recovery_owner_id
+			clear_variable = acid_rain_033_achievement_state_tier3_entry_day
+			clear_variable = acid_rain_033_achievement_state_tier3_deadline_day
+			clear_variable = acid_rain_033_achievement_state_tier3_downgrade_day
+			clear_variable = acid_rain_033_achievement_state_tier3_owner_id
+			clr_state_flag = acid_rain_033_achievement_state_registered
+			clr_state_flag = acid_rain_033_achievement_state_touched
+			clr_state_flag = acid_rain_033_achievement_state_opening_shock
+			clr_state_flag = acid_rain_033_achievement_state_severe_pulse
+			clr_state_flag = acid_rain_033_achievement_state_evacuation_active
+			clr_state_flag = acid_rain_033_achievement_state_evacuation_complete
+			clr_state_flag = acid_rain_033_achievement_state_recovery_snapshot
+			clr_state_flag = acid_rain_033_achievement_state_recovery_resolved
+			clr_state_flag = acid_rain_033_achievement_state_tier3_active
+			clr_state_flag = acid_rain_033_achievement_state_transfer_fault
+		}
+		set_variable = { acid_rain_033_achievement_state_generation_id = acid_rain_033_input_generation }
+		set_variable = { acid_rain_033_achievement_state_id = acid_rain_033_input_state_id }
+		set_variable = { acid_rain_033_achievement_state_population_people = acid_rain_033_input_state_population_people }
+		set_variable = { acid_rain_033_achievement_state_deaths = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_baseline_valid = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_exposure_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_responsibility_transfer_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_max_aftermath_tier = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_current_aftermath_tier = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_severe_deaths = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_severe_pulse_count = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_arrival_day = @acid_rain_033_achievement_zero }
+		set_variable = { acid_rain_033_achievement_state_responsible_country_id = CONTROLLER.id }
+		set_variable = { acid_rain_033_achievement_state_responsible_country = CONTROLLER }
+		set_state_flag = acid_rain_033_achievement_state_registered
+		save_event_target_as = acid_rain_033_achievement_registration_state
+		CONTROLLER = {
+			acid_rain_033_achievement_initialize_country = yes
+			add_to_array = { array = acid_rain_033_achievement_formation_states value = event_target:acid_rain_033_achievement_registration_state }
+			add_to_array = { array = acid_rain_033_achievement_formation_state_ids value = event_target:acid_rain_033_achievement_registration_state.id }
+			add_to_array = { array = acid_rain_033_achievement_responsible_states value = event_target:acid_rain_033_achievement_registration_state }
+			add_to_array = { array = acid_rain_033_achievement_responsible_state_ids value = event_target:acid_rain_033_achievement_registration_state.id }
+		}
+		add_to_array = { array = acid_rain_033_achievement_state_controller_history_ids value = CONTROLLER.id }
+		if = {
+			limit = { check_variable = { var = acid_rain_033_input_state_population_people value = @acid_rain_033_achievement_zero compare = greater_than } }
+			set_variable = { acid_rain_033_achievement_state_baseline_valid = @acid_rain_033_achievement_one }
+		}
+		else = {
+			CONTROLLER = { acid_rain_033_achievement_mark_invalid_baseline = yes }
+		}
+		clear_event_target = acid_rain_033_achievement_registration_state
+	}
+	else = {
+		if = { limit = { exists = yes } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
+	}
+}
+
+# STATE SCOPE. Moves current responsibility exactly once for one runtime
+# control-change transaction. Required event targets are the runtime's
+# `acid_rain_transfer_old_controller` and `acid_rain_transfer_new_controller`;
+# the parent must call this effect before those chain-scoped targets disappear.
+# Historical state deaths, action receipts, and recovery credit do not move.
+acid_rain_033_achievement_transfer_state_responsibility = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_event_target = acid_rain_transfer_old_controller
+			has_event_target = acid_rain_transfer_new_controller
+			has_variable = acid_rain_033_achievement_state_responsible_country_id
+		}
+		save_event_target_as = acid_rain_033_achievement_transfer_state
+		set_temp_variable = { acid_rain_033_achievement_old_controller_id = acid_rain_033_achievement_state_responsible_country_id }
+		set_temp_variable = { acid_rain_033_achievement_new_controller_id = event_target:acid_rain_transfer_new_controller.id }
+		if = {
+			limit = {
+				NOT = { check_variable = { var = acid_rain_033_achievement_old_controller_id value = acid_rain_033_achievement_new_controller_id compare = equals } }
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_033_achievement_old_controller_id value = event_target:acid_rain_transfer_old_controller.id compare = equals } }
+				event_target:acid_rain_transfer_old_controller = {
+					remove_from_array = { array = acid_rain_033_achievement_responsible_states value = event_target:acid_rain_033_achievement_transfer_state }
+					remove_from_array = { array = acid_rain_033_achievement_responsible_state_ids value = event_target:acid_rain_033_achievement_transfer_state.id }
+				}
+			}
+			else = {
+				set_state_flag = acid_rain_033_achievement_state_transfer_fault
+				event_target:acid_rain_transfer_new_controller = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+			}
+			event_target:acid_rain_transfer_new_controller = {
+				acid_rain_033_achievement_initialize_country = yes
+				if = {
+					limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_responsible_states value = event_target:acid_rain_033_achievement_transfer_state } } }
+					add_to_array = { array = acid_rain_033_achievement_responsible_states value = event_target:acid_rain_033_achievement_transfer_state }
+				}
+				if = {
+					limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_responsible_state_ids value = event_target:acid_rain_033_achievement_transfer_state.id } } }
+					add_to_array = { array = acid_rain_033_achievement_responsible_state_ids value = event_target:acid_rain_033_achievement_transfer_state.id }
+				}
+			}
+			set_variable = { acid_rain_033_achievement_state_responsible_country_id = acid_rain_033_achievement_new_controller_id }
+			set_variable = { acid_rain_033_achievement_state_responsible_country = event_target:acid_rain_transfer_new_controller }
+			add_to_variable = { acid_rain_033_achievement_state_responsibility_transfer_count = @acid_rain_033_achievement_one }
+			set_variable = { acid_rain_033_achievement_state_last_transfer_day = global.date }
+			set_variable = { acid_rain_033_achievement_state_last_transfer_old_id = acid_rain_033_achievement_old_controller_id }
+			set_variable = { acid_rain_033_achievement_state_last_transfer_new_id = acid_rain_033_achievement_new_controller_id }
+			add_to_array = { array = acid_rain_033_achievement_state_controller_history_ids value = acid_rain_033_achievement_new_controller_id }
+			add_to_array = { array = acid_rain_033_achievement_controller_history_ids value = acid_rain_033_achievement_state_id }
+			add_to_array = { array = acid_rain_033_achievement_controller_history_days value = global.date }
+			add_to_array = { array = acid_rain_033_achievement_controller_history_old_ids value = acid_rain_033_achievement_old_controller_id }
+			add_to_array = { array = acid_rain_033_achievement_controller_history_new_ids value = acid_rain_033_achievement_new_controller_id }
+			add_to_array = { array = acid_rain_033_achievement_controller_history_generation_entries value = acid_rain_033_input_generation }
+		}
+		clear_event_target = acid_rain_033_achievement_transfer_state
+	}
+	else = {
+		if = { limit = { exists = yes } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
+		set_state_flag = acid_rain_033_achievement_state_transfer_fault
+	}
+}
+
+# STATE SCOPE. Records one exact coverage or pulse receipt. Required inputs:
+# generation, state_id, unique state/pulse receipt, exposure_class,
+# episode_id (zero when not an episode), is_opening, and the exact applied
+# population loss. Optional exposure_day_delta is deliberately not consumed;
+# national exposure days have their own country receipt API.
+acid_rain_033_achievement_record_state_exposure = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_exposure_receipt
+			has_variable = acid_rain_033_input_exposure_class
+			has_variable = acid_rain_033_input_episode_id
+			has_variable = acid_rain_033_input_is_opening
+			has_variable = acid_rain_033_input_applied_deaths
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_applied_deaths value = @acid_rain_033_achievement_zero compare = greater_than_or_equals }
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_state_exposure_receipt_keys value = acid_rain_033_input_exposure_receipt } } }
+			add_to_array = { array = acid_rain_033_achievement_state_exposure_receipt_keys value = acid_rain_033_input_exposure_receipt }
+			add_to_variable = { acid_rain_033_achievement_state_exposure_count = @acid_rain_033_achievement_one }
+			set_variable = { acid_rain_033_achievement_state_last_pulse_day = global.date }
+			set_variable = { acid_rain_033_achievement_state_last_pulse_receipt = acid_rain_033_input_exposure_receipt }
+			set_variable = { acid_rain_033_achievement_state_last_exposure_class = acid_rain_033_input_exposure_class }
+			save_event_target_as = acid_rain_033_achievement_exposure_state
+			if = {
+				limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_touched } }
+				set_state_flag = acid_rain_033_achievement_state_touched
+				set_variable = { acid_rain_033_achievement_state_first_exposure_day = global.date }
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_033_input_is_opening value = @acid_rain_033_achievement_one compare = equals } }
+				if = {
+					limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_opening_shock } }
+					set_state_flag = acid_rain_033_achievement_state_opening_shock
+					set_variable = { acid_rain_033_achievement_state_first_opening_shock_day = global.date }
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = acid_rain_033_input_exposure_class value = @acid_rain_033_achievement_two compare = equals }
+						check_variable = { var = acid_rain_033_input_exposure_class value = @acid_rain_033_achievement_four compare = equals }
+					}
+				}
+				if = {
+					limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_severe_pulse } }
+					set_state_flag = acid_rain_033_achievement_state_severe_pulse
+					set_variable = { acid_rain_033_achievement_state_first_severe_pulse_day = global.date }
+				}
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_033_input_episode_id value = @acid_rain_033_achievement_zero compare = greater_than } }
+				set_variable = { acid_rain_033_achievement_state_severe_episode_id = acid_rain_033_input_episode_id }
+			}
+			set_variable = { acid_rain_033_achievement_state_last_applied_deaths = acid_rain_033_input_applied_deaths }
+			add_to_variable = { acid_rain_033_achievement_state_deaths = acid_rain_033_input_applied_deaths }
+			if = {
+				limit = { check_variable = { var = acid_rain_033_input_applied_deaths value = @acid_rain_033_achievement_zero compare = greater_than } }
+				CONTROLLER = {
+					acid_rain_033_achievement_initialize_country = yes
+					add_to_variable = { acid_rain_033_achievement_event_deaths = acid_rain_033_input_applied_deaths }
+				}
+			}
+			CONTROLLER = {
+				acid_rain_033_achievement_initialize_country = yes
+				if = {
+					limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_touched_states value = event_target:acid_rain_033_achievement_exposure_state } } }
+					add_to_array = { array = acid_rain_033_achievement_touched_states value = event_target:acid_rain_033_achievement_exposure_state }
+					add_to_array = { array = acid_rain_033_achievement_touched_state_ids value = event_target:acid_rain_033_achievement_exposure_state.id }
+					add_to_variable = { acid_rain_033_achievement_touched_state_count = @acid_rain_033_achievement_one }
+				}
+				if = {
+					limit = { NOT = { has_variable = acid_rain_033_achievement_first_exposure_day } }
+					set_variable = { acid_rain_033_achievement_first_exposure_day = global.date }
+				}
+				if = {
+					limit = { check_variable = { var = acid_rain_033_input_is_opening value = @acid_rain_033_achievement_one compare = equals } }
+					if = {
+						limit = { NOT = { has_variable = acid_rain_033_achievement_first_opening_shock_day } }
+						set_variable = { acid_rain_033_achievement_first_opening_shock_day = global.date }
+						set_variable = { acid_rain_033_achievement_first_opening_shock_state_id = event_target:acid_rain_033_achievement_exposure_state.id }
+						if = {
+							limit = {
+								OR = {
+									NOT = { check_variable = { var = acid_rain_033_achievement_component_tier_entries^1 value = @acid_rain_033_achievement_four compare = greater_than_or_equals } }
+									NOT = { check_variable = { var = acid_rain_033_achievement_component_tier_entries^2 value = @acid_rain_033_achievement_four compare = greater_than_or_equals } }
+									NOT = { check_variable = { var = acid_rain_033_achievement_component_tier_entries^3 value = @acid_rain_033_achievement_four compare = greater_than_or_equals } }
+									NOT = { check_variable = { var = acid_rain_033_achievement_component_tier_entries^4 value = @acid_rain_033_achievement_four compare = greater_than_or_equals } }
+								}
+							}
+							set_country_flag = acid_rain_033_achievement_before_the_first_drop_disqualified
+						}
+					}
+				}
+			}
+			if = {
+				limit = {
+					OR = {
+						check_variable = { var = acid_rain_033_input_exposure_class value = @acid_rain_033_achievement_two compare = equals }
+						check_variable = { var = acid_rain_033_input_exposure_class value = @acid_rain_033_achievement_four compare = equals }
+					}
+					check_variable = { var = acid_rain_033_input_episode_id value = @acid_rain_033_achievement_zero compare = greater_than }
+				}
+				set_temp_variable = { acid_rain_033_input_severe_pulse_day = global.date }
+				acid_rain_033_achievement_record_severe_pulse = yes
+			}
+			clear_event_target = acid_rain_033_achievement_exposure_state
+		}
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# STATE SCOPE. Convenience wrapper for an opening shock. The caller still
+# supplies the unique pulse receipt, exact applied deaths, exposure class, and
+# episode ID before invoking this wrapper.
+acid_rain_033_achievement_record_opening_shock = {
+	set_temp_variable = { acid_rain_033_input_is_opening = @acid_rain_033_achievement_one }
+	acid_rain_033_achievement_record_state_exposure = yes
+}
+
+# ---------------------------------------------------------------------------
+# Preparedness, exposure duration, transport, and route evidence
+# ---------------------------------------------------------------------------
+
+# COUNTRY SCOPE. Stores an exact preparedness observation. Required inputs:
+# generation, preparedness, and a receipt key for the authored edge. The
+# highest observation is retained, but no daily scan is performed.
+acid_rain_033_achievement_record_preparedness_snapshot = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_preparedness_receipt
+			has_variable = acid_rain_033_input_preparedness
+			check_variable = { var = acid_rain_033_input_preparedness value = @acid_rain_033_achievement_zero compare = greater_than_or_equals }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_preparedness_receipt_keys value = acid_rain_033_input_preparedness_receipt } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_preparedness_receipt_keys value = acid_rain_033_input_preparedness_receipt }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = acid_rain_033_achievement_preparedness_peak }
+					check_variable = { var = acid_rain_033_input_preparedness value = acid_rain_033_achievement_preparedness_peak compare = greater_than }
+				}
+			}
+			set_variable = { acid_rain_033_achievement_preparedness_peak = acid_rain_033_input_preparedness }
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Dissipation snapshots and recovery deadlines
+# ---------------------------------------------------------------------------
+
+# STATE SCOPE. Freezes one owned core state at global dissipation. Required
+# inputs: generation, state_id, snapshot_receipt_key, snapshot_day,
+# owned_core_valid, and aftermath_tier. The parent calls this once per
+# qualifying state at the dissipation edge; this helper never scans ownership.
+# The state retains its original credit country even if control later changes.
+acid_rain_033_achievement_record_dissipation_state_snapshot = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_snapshot_receipt_key
+			has_variable = acid_rain_033_input_snapshot_day
+			has_variable = acid_rain_033_input_owned_core_valid
+			has_variable = acid_rain_033_input_snapshot_aftermath_tier
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_snapshot_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_owned_core_valid value = @acid_rain_033_achievement_one compare = equals }
+			check_variable = { var = acid_rain_033_input_snapshot_aftermath_tier value = @acid_rain_033_achievement_zero compare = greater_than }
+			NOT = { has_state_flag = acid_rain_033_achievement_state_recovery_snapshot }
+		}
+		set_state_flag = acid_rain_033_achievement_state_recovery_snapshot
+		set_variable = { acid_rain_033_achievement_state_recovery_deadline_day = acid_rain_033_input_snapshot_day }
+		add_to_variable = { acid_rain_033_achievement_state_recovery_deadline_day = constant:acid_rain_response.aftercare_recovery_window_days }
+		set_variable = { acid_rain_033_achievement_state_recovery_owner_id = CONTROLLER.id }
+		set_variable = { acid_rain_033_achievement_state_recovery_owner = CONTROLLER }
+		set_variable = { acid_rain_033_achievement_state_current_aftermath_tier = acid_rain_033_input_snapshot_aftermath_tier }
+		save_event_target_as = acid_rain_033_achievement_recovery_snapshot_state
+		CONTROLLER = {
+			acid_rain_033_achievement_initialize_country = yes
+			if = {
+				limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_recovery_receipt_keys value = acid_rain_033_input_snapshot_receipt_key } } }
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = acid_rain_033_achievement_recovery_row_count }
+							check_variable = { var = acid_rain_033_achievement_recovery_row_count value = @acid_rain_033_achievement_max_recovery_rows compare = less_than }
+						}
+					}
+					add_to_array = { array = acid_rain_033_achievement_recovery_receipt_keys value = acid_rain_033_input_snapshot_receipt_key }
+					add_to_array = { array = acid_rain_033_achievement_recovery_state_ids value = acid_rain_033_input_state_id }
+					add_to_array = { array = acid_rain_033_achievement_recovery_state_scopes value = event_target:acid_rain_033_achievement_recovery_snapshot_state }
+					add_to_array = { array = acid_rain_033_achievement_recovery_snapshot_days value = acid_rain_033_input_snapshot_day }
+					add_to_array = { array = acid_rain_033_achievement_recovery_deadlines value = event_target:acid_rain_033_achievement_recovery_snapshot_state.acid_rain_033_achievement_state_recovery_deadline_day }
+					add_to_array = { array = acid_rain_033_achievement_recovery_owner_ids value = event_target:acid_rain_033_achievement_recovery_snapshot_state.acid_rain_033_achievement_state_recovery_owner_id }
+					add_to_array = { array = acid_rain_033_achievement_recovery_core_entries value = acid_rain_033_input_owned_core_valid }
+					add_to_array = { array = acid_rain_033_achievement_recovery_tier_entries value = acid_rain_033_input_snapshot_aftermath_tier }
+					add_to_array = { array = acid_rain_033_achievement_recovery_resolved_entries value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_recovery_completion_days value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_recovery_generation_entries value = acid_rain_033_input_generation }
+					add_to_variable = { acid_rain_033_achievement_recovery_row_count = @acid_rain_033_achievement_one }
+					add_to_variable = { acid_rain_033_achievement_recovery_required_count = @acid_rain_033_achievement_one }
+					set_variable = { acid_rain_033_achievement_aftercare_snapshot_receipt = @acid_rain_033_achievement_one }
+				}
+				else = {
+					acid_rain_033_achievement_mark_migration_disqualified = yes
+				}
+			}
+		}
+		clear_event_target = acid_rain_033_achievement_recovery_snapshot_state
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# COUNTRY SCOPE. Records a paid tier-4 completion date for one of the four
+# response components. Required inputs: generation, component_id from one to
+# four, component_tier, completion_day, and a unique completion receipt. The
+# aligned entries are the proof used by before_the_first_drop.
+acid_rain_033_achievement_record_preparedness_component = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_component_id
+			has_variable = acid_rain_033_input_component_tier
+			has_variable = acid_rain_033_input_component_completion_day
+			has_variable = acid_rain_033_input_component_receipt
+			check_variable = { var = acid_rain_033_input_component_id value = @acid_rain_033_achievement_one compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_033_input_component_id value = @acid_rain_033_achievement_four compare = less_than_or_equals }
+			check_variable = { var = acid_rain_033_input_component_tier value = @acid_rain_033_achievement_four compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_033_input_component_completion_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_component_receipt_keys value = acid_rain_033_input_component_receipt } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_component_receipt_keys value = acid_rain_033_input_component_receipt }
+		if = {
+			limit = { check_variable = { var = acid_rain_033_achievement_component_tier_entries^acid_rain_033_input_component_id value = acid_rain_033_input_component_tier compare = less_than } }
+			set_variable = { acid_rain_033_achievement_component_tier_entries^acid_rain_033_input_component_id = acid_rain_033_input_component_tier }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { check_variable = { var = acid_rain_033_achievement_component_completion_day_entries^acid_rain_033_input_component_id value = @acid_rain_033_achievement_one compare = greater_than_or_equals } }
+					check_variable = { var = acid_rain_033_input_component_completion_day value = acid_rain_033_achievement_component_completion_day_entries^acid_rain_033_input_component_id compare = less_than }
+				}
+			}
+			set_variable = { acid_rain_033_achievement_component_completion_day_entries^acid_rain_033_input_component_id = acid_rain_033_input_component_completion_day }
+			set_variable = { acid_rain_033_achievement_component_generation_entries^acid_rain_033_input_component_id = acid_rain_033_input_generation }
+		}
+	}
+	else = {
+		set_country_flag = acid_rain_033_achievement_before_the_first_drop_disqualified
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# COUNTRY SCOPE. Adds one scheduled national exposure-day receipt. Required
+# inputs: generation, receipt_key, and positive delta_days. The parent owns
+# the cadence; this helper only consumes a bounded receipt and never scans
+# states or countries.
+acid_rain_033_achievement_record_exposure_days = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_exposure_day_receipt
+			has_variable = acid_rain_033_input_exposure_day_delta
+			check_variable = { var = acid_rain_033_input_exposure_day_delta value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_exposure_day_delta value = @acid_rain_033_achievement_max_check_interval compare = less_than_or_equals }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_exposure_day_receipt_keys value = acid_rain_033_input_exposure_day_receipt } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_exposure_day_receipt_keys value = acid_rain_033_input_exposure_day_receipt }
+		add_to_variable = { acid_rain_033_achievement_exposure_day_receipt_count = @acid_rain_033_achievement_one }
+		add_to_variable = { acid_rain_033_achievement_exposure_days = acid_rain_033_input_exposure_day_delta }
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# COUNTRY SCOPE. Retains one completed transport reroute receipt. Required
+# inputs: generation, reroute_receipt_key, reroute_id, and reroute_valid.
+# A start or a quoted action is not enough; only a completed caller receipt
+# increments the achievement counter.
+acid_rain_033_achievement_record_transport_reroute = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_reroute_receipt_key
+			has_variable = acid_rain_033_input_reroute_id
+			has_variable = acid_rain_033_input_reroute_valid
+			check_variable = { var = acid_rain_033_input_reroute_valid value = @acid_rain_033_achievement_one compare = equals }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_reroute_receipt_keys value = acid_rain_033_input_reroute_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_reroute_receipt_keys value = acid_rain_033_input_reroute_receipt_key }
+		add_to_array = { array = acid_rain_033_achievement_reroute_ids value = acid_rain_033_input_reroute_id }
+		add_to_array = { array = acid_rain_033_achievement_reroute_days value = global.date }
+		add_to_array = { array = acid_rain_033_achievement_reroute_generation_entries value = acid_rain_033_input_generation }
+		add_to_variable = { acid_rain_033_achievement_reroute_count = @acid_rain_033_achievement_one }
+	}
+	else = {
+		if = {
+			limit = { NOT = { acid_rain_033_achievement_input_generation_is_current = yes } }
+			acid_rain_033_achievement_mark_migration_disqualified = yes
+		}
+	}
+}
+
+# COUNTRY SCOPE. Records the result of one required capital-route check.
+# Required inputs: generation, check_receipt_key, check_day, capital_id,
+# all_routes_broken, and supply_isolation. The caller supplies the scheduled
+# route result; this API never derives it from a current railway modifier.
+acid_rain_033_achievement_record_capital_route_check = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_route_check_receipt_key
+			has_variable = acid_rain_033_input_route_check_day
+			has_variable = acid_rain_033_input_route_check_capital_id
+			has_variable = acid_rain_033_input_route_check_all_broken
+			has_variable = acid_rain_033_input_route_check_supply_isolation
+			NOT = { is_in_array = { array = acid_rain_033_achievement_route_check_receipt_keys value = acid_rain_033_input_route_check_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_route_check_receipt_keys value = acid_rain_033_input_route_check_receipt_key }
+		add_to_array = { array = acid_rain_033_achievement_route_check_days value = acid_rain_033_input_route_check_day }
+		add_to_array = { array = acid_rain_033_achievement_route_check_capital_ids value = acid_rain_033_input_route_check_capital_id }
+		add_to_array = { array = acid_rain_033_achievement_route_check_broken_entries value = acid_rain_033_input_route_check_all_broken }
+		add_to_array = { array = acid_rain_033_achievement_route_check_isolation_entries value = acid_rain_033_input_route_check_supply_isolation }
+		add_to_array = { array = acid_rain_033_achievement_route_check_generation_entries value = acid_rain_033_input_generation }
+		add_to_variable = { acid_rain_033_achievement_route_check_count = @acid_rain_033_achievement_one }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = acid_rain_033_achievement_current_capital_id }
+					NOT = { check_variable = { var = acid_rain_033_achievement_current_capital_id value = acid_rain_033_input_route_check_capital_id compare = equals } }
+				}
+			}
+			set_variable = { acid_rain_033_achievement_current_capital_id = acid_rain_033_input_route_check_capital_id }
+			if = { limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_capital_history_ids value = acid_rain_033_input_route_check_capital_id } } } add_to_array = { array = acid_rain_033_achievement_capital_history_ids value = acid_rain_033_input_route_check_capital_id } }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = acid_rain_033_input_route_check_all_broken value = @acid_rain_033_achievement_one compare = equals }
+					check_variable = { var = acid_rain_033_input_route_check_supply_isolation value = @acid_rain_033_achievement_one compare = equals }
+				}
+			}
+			set_country_flag = acid_rain_033_achievement_railways_still_run_disqualified
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Warning visits and action receipts
+# ---------------------------------------------------------------------------
+
+# COUNTRY SCOPE. Freezes one warning visit row. Required inputs: generation,
+# warning_receipt_key, visit_id, region_id, front_id, warning_day, and
+# has_controlled_state. A visit is distinct from a front and is the unit used
+# to prevent one arrival from satisfying both regional requirements.
+acid_rain_033_achievement_record_warning_visit = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_warning_receipt_key
+			has_variable = acid_rain_033_input_warning_visit_id
+			has_variable = acid_rain_033_input_warning_region_id
+			has_variable = acid_rain_033_input_warning_front_id
+			has_variable = acid_rain_033_input_warning_day
+			has_variable = acid_rain_033_input_warning_has_controlled_state
+			check_variable = { var = acid_rain_033_input_warning_has_controlled_state value = @acid_rain_033_achievement_one compare = equals }
+			check_variable = { var = acid_rain_033_input_warning_day value = @acid_rain_033_achievement_zero compare = greater_than }
+		}
+		if = {
+			limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_warning_visit_receipt_keys value = acid_rain_033_input_warning_receipt_key } } }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = acid_rain_033_achievement_warning_visit_row_count }
+						check_variable = { var = acid_rain_033_achievement_warning_visit_row_count value = @acid_rain_033_achievement_max_visit_rows compare = less_than }
+					}
+				}
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_receipt_keys value = acid_rain_033_input_warning_receipt_key }
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_ids value = acid_rain_033_input_warning_visit_id }
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_regions value = acid_rain_033_input_warning_region_id }
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_fronts value = acid_rain_033_input_warning_front_id }
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_days value = acid_rain_033_input_warning_day }
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_arrival_days value = @acid_rain_033_achievement_zero }
+				add_to_array = { array = acid_rain_033_achievement_warning_visit_generation_entries value = acid_rain_033_input_generation }
+				add_to_variable = { acid_rain_033_achievement_warning_visit_row_count = @acid_rain_033_achievement_one }
+			}
+			else = {
+				set_country_flag = acid_rain_033_achievement_two_regions_ready_disqualified
+				acid_rain_033_achievement_mark_migration_disqualified = yes
+			}
+		}
+		set_variable = { acid_rain_033_achievement_current_warning_visit_id = acid_rain_033_input_warning_visit_id }
+		set_variable = { acid_rain_033_achievement_current_warning_region_id = acid_rain_033_input_warning_region_id }
+		set_variable = { acid_rain_033_achievement_current_warning_front_id = acid_rain_033_input_warning_front_id }
+		set_variable = { acid_rain_033_achievement_current_warning_day = acid_rain_033_input_warning_day }
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# COUNTRY SCOPE. Adds the arrival date to a previously frozen warning visit.
+# Required inputs: generation, arrival_receipt_key, visit_id, region_id,
+# front_id, and arrival_day. The key is unique for this arrival edge.
+acid_rain_033_achievement_record_arrival = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_arrival_receipt_key
+			has_variable = acid_rain_033_input_arrival_visit_id
+			has_variable = acid_rain_033_input_arrival_region_id
+			has_variable = acid_rain_033_input_arrival_front_id
+			has_variable = acid_rain_033_input_arrival_day
+			check_variable = { var = acid_rain_033_input_arrival_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_arrival_receipt_keys value = acid_rain_033_input_arrival_receipt_key } }
+		}
+		set_temp_variable = { acid_rain_033_achievement_warning_match = @acid_rain_033_achievement_zero }
+		if = {
+			limit = { has_variable = acid_rain_033_achievement_warning_visit_row_count }
+			for_loop_effect = {
+				start = @acid_rain_033_achievement_one
+				end = acid_rain_033_achievement_warning_visit_row_count
+				value = acid_rain_033_achievement_warning_index
+				if = {
+					limit = {
+						check_variable = { var = acid_rain_033_achievement_warning_visit_ids^acid_rain_033_achievement_warning_index value = acid_rain_033_input_arrival_visit_id compare = equals }
+						check_variable = { var = acid_rain_033_achievement_warning_visit_regions^acid_rain_033_achievement_warning_index value = acid_rain_033_input_arrival_region_id compare = equals }
+						check_variable = { var = acid_rain_033_achievement_warning_visit_fronts^acid_rain_033_achievement_warning_index value = acid_rain_033_input_arrival_front_id compare = equals }
+					}
+					set_temp_variable = { acid_rain_033_achievement_warning_match = acid_rain_033_achievement_warning_index }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = acid_rain_033_achievement_warning_match value = @acid_rain_033_achievement_zero compare = greater_than } }
+			if = { limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_arrival_receipt_keys value = acid_rain_033_input_arrival_receipt_key } } } add_to_array = { array = acid_rain_033_achievement_arrival_receipt_keys value = acid_rain_033_input_arrival_receipt_key } }
+			set_variable = { acid_rain_033_achievement_warning_visit_arrival_days^acid_rain_033_achievement_warning_match = acid_rain_033_input_arrival_day }
+		}
+		else = {
+			acid_rain_033_achievement_mark_migration_disqualified = yes
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# COUNTRY SCOPE. Records one completed urgent action against one warning
+# visit. Required inputs: generation, action_receipt_key, region_id, front_id,
+# visit_id, state_id, action_type, start_day, completion_day, warning_day,
+# arrival_day, action_candidate, action_valid, started_before_arrival, and
+# completed_before_arrival. The caller owns the timing proof; this effect does
+# not infer arrival from a live front modifier.
+acid_rain_033_achievement_record_urgent_action_completion = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_action_receipt_key
+			has_variable = acid_rain_033_input_action_region_id
+			has_variable = acid_rain_033_input_action_front_id
+			has_variable = acid_rain_033_input_action_visit_id
+			has_variable = acid_rain_033_input_action_state_id
+			has_variable = acid_rain_033_input_action_type
+			has_variable = acid_rain_033_input_action_start_day
+			has_variable = acid_rain_033_input_action_completion_day
+			has_variable = acid_rain_033_input_action_warning_day
+			has_variable = acid_rain_033_input_action_arrival_day
+			has_variable = acid_rain_033_input_action_candidate
+			has_variable = acid_rain_033_input_action_valid
+			has_variable = acid_rain_033_input_action_started_before_arrival
+			has_variable = acid_rain_033_input_action_completed_before_arrival
+			NOT = { is_in_array = { array = acid_rain_033_achievement_action_receipt_keys value = acid_rain_033_input_action_receipt_key } }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = acid_rain_033_achievement_action_row_count }
+					check_variable = { var = acid_rain_033_achievement_action_row_count value = @acid_rain_033_achievement_max_visit_rows compare = less_than }
+				}
+			}
+			add_to_array = { array = acid_rain_033_achievement_action_receipt_keys value = acid_rain_033_input_action_receipt_key }
+			add_to_array = { array = acid_rain_033_achievement_action_regions value = acid_rain_033_input_action_region_id }
+			add_to_array = { array = acid_rain_033_achievement_action_fronts value = acid_rain_033_input_action_front_id }
+			add_to_array = { array = acid_rain_033_achievement_action_visit_ids value = acid_rain_033_input_action_visit_id }
+			add_to_array = { array = acid_rain_033_achievement_action_state_ids value = acid_rain_033_input_action_state_id }
+			add_to_array = { array = acid_rain_033_achievement_action_types value = acid_rain_033_input_action_type }
+			add_to_array = { array = acid_rain_033_achievement_action_start_days value = acid_rain_033_input_action_start_day }
+			add_to_array = { array = acid_rain_033_achievement_action_completion_days value = acid_rain_033_input_action_completion_day }
+			add_to_array = { array = acid_rain_033_achievement_action_warning_days value = acid_rain_033_input_action_warning_day }
+			add_to_array = { array = acid_rain_033_achievement_action_arrival_days value = acid_rain_033_input_action_arrival_day }
+			add_to_array = { array = acid_rain_033_achievement_action_generation_entries value = acid_rain_033_input_generation }
+			add_to_variable = { acid_rain_033_achievement_action_row_count = @acid_rain_033_achievement_one }
+			if = {
+				limit = {
+					check_variable = { var = acid_rain_033_input_action_candidate value = @acid_rain_033_achievement_one compare = equals }
+					OR = {
+						NOT = { check_variable = { var = acid_rain_033_input_action_started_before_arrival value = @acid_rain_033_achievement_one compare = equals } }
+						NOT = { check_variable = { var = acid_rain_033_input_action_completed_before_arrival value = @acid_rain_033_achievement_one compare = equals } }
+					}
+				}
+				set_country_flag = acid_rain_033_achievement_two_regions_ready_disqualified
+			}
+			if = {
+				limit = {
+					check_variable = { var = acid_rain_033_input_action_valid value = @acid_rain_033_achievement_one compare = equals }
+					check_variable = { var = acid_rain_033_input_action_started_before_arrival value = @acid_rain_033_achievement_one compare = equals }
+					check_variable = { var = acid_rain_033_input_action_completed_before_arrival value = @acid_rain_033_achievement_one compare = equals }
+					check_variable = { var = acid_rain_033_input_action_warning_day value = @acid_rain_033_achievement_zero compare = greater_than }
+					check_variable = { var = acid_rain_033_input_action_arrival_day value = @acid_rain_033_achievement_zero compare = greater_than }
+					check_variable = { var = acid_rain_033_input_action_completion_day value = acid_rain_033_input_action_arrival_day compare = less_than }
+				}
+				if = { limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_ready_regions value = acid_rain_033_input_action_region_id } } } add_to_array = { array = acid_rain_033_achievement_ready_regions value = acid_rain_033_input_action_region_id } add_to_variable = { acid_rain_033_achievement_ready_region_count = @acid_rain_033_achievement_one } }
+				if = { limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_ready_visits value = acid_rain_033_input_action_visit_id } } } add_to_array = { array = acid_rain_033_achievement_ready_visits value = acid_rain_033_input_action_visit_id } add_to_variable = { acid_rain_033_achievement_ready_visit_count = @acid_rain_033_achievement_one } }
+			}
+		}
+		else = {
+			set_country_flag = acid_rain_033_achievement_two_regions_ready_disqualified
+			acid_rain_033_achievement_mark_migration_disqualified = yes
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Severe forecast/cell evidence
+# ---------------------------------------------------------------------------
+
+# STATE SCOPE. Appends one frozen severe-forecast target row to the current
+# controller's country ledger. Required inputs: generation, state_id,
+# episode_id, forecast_id, forecast_receipt_key, forecast_day,
+# forecast_population_people, shelter_protocol_valid, and evacuation_valid.
+# The two protection values are receipts supplied by the caller, not live
+# action modifiers.
+acid_rain_033_achievement_record_severe_forecast = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_severe_episode_id
+			has_variable = acid_rain_033_input_severe_forecast_id
+			has_variable = acid_rain_033_input_severe_forecast_receipt_key
+			has_variable = acid_rain_033_input_severe_forecast_day
+			has_variable = acid_rain_033_input_severe_population_people
+			has_variable = acid_rain_033_input_severe_shelter_protocol_valid
+			has_variable = acid_rain_033_input_severe_evacuation_valid
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_severe_episode_id value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_severe_forecast_id value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_severe_population_people value = @acid_rain_033_achievement_zero compare = greater_than }
+		}
+		if = {
+			limit = {
+				has_variable = acid_rain_033_achievement_state_severe_episode_id
+				check_variable = { var = acid_rain_033_achievement_state_severe_episode_id value = acid_rain_033_input_severe_episode_id compare = not_equals }
+			}
+			set_variable = { acid_rain_033_achievement_state_severe_deaths = @acid_rain_033_achievement_zero }
+			set_variable = { acid_rain_033_achievement_state_severe_pulse_count = @acid_rain_033_achievement_zero }
+			clear_variable = acid_rain_033_achievement_state_first_severe_pulse_day
+			clr_state_flag = acid_rain_033_achievement_state_severe_pulse
+			clr_state_flag = acid_rain_033_achievement_state_evacuation_active
+			clr_state_flag = acid_rain_033_achievement_state_evacuation_complete
+		}
+		set_variable = { acid_rain_033_achievement_state_severe_episode_id = acid_rain_033_input_severe_episode_id }
+		set_variable = { acid_rain_033_achievement_state_severe_forecast_id = acid_rain_033_input_severe_forecast_id }
+		set_variable = { acid_rain_033_achievement_state_severe_population_people = acid_rain_033_input_severe_population_people }
+		save_event_target_as = acid_rain_033_achievement_severe_target_state
+		CONTROLLER = {
+			acid_rain_033_achievement_initialize_country = yes
+			if = {
+				limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_severe_target_receipt_keys value = acid_rain_033_input_severe_forecast_receipt_key } } }
+				if = {
+					limit = {
+						OR = {
+							NOT = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+							check_variable = { var = acid_rain_033_achievement_severe_target_row_count value = @acid_rain_033_achievement_max_state_rows compare = less_than }
+						}
+					}
+					add_to_array = { array = acid_rain_033_achievement_severe_target_receipt_keys value = acid_rain_033_input_severe_forecast_receipt_key }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_state_ids value = acid_rain_033_input_state_id }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_state_scopes value = event_target:acid_rain_033_achievement_severe_target_state }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_episode_ids value = acid_rain_033_input_severe_episode_id }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_forecast_ids value = acid_rain_033_input_severe_forecast_id }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_population_entries value = acid_rain_033_input_severe_population_people }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_death_entries value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_pulse_entries value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_shelter_entries value = acid_rain_033_input_severe_shelter_protocol_valid }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_evacuation_entries value = acid_rain_033_input_severe_evacuation_valid }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_first_pulse_entries value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_evacuation_completion_entries value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_evacuation_threshold_entries value = @acid_rain_033_achievement_zero }
+					add_to_array = { array = acid_rain_033_achievement_severe_target_generation_entries value = acid_rain_033_input_generation }
+					add_to_variable = { acid_rain_033_achievement_severe_target_row_count = @acid_rain_033_achievement_one }
+				}
+				else = {
+					acid_rain_033_achievement_mark_migration_disqualified = yes
+				}
+			}
+		}
+		clear_event_target = acid_rain_033_achievement_severe_target_state
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# STATE SCOPE. Records one severe pulse against a previously frozen target
+# row. Required inputs: generation, state_id, episode_id, exposure_receipt_key,
+# severe_pulse_day, and exact applied deaths. The same exposure receipt used by
+# record_state_exposure is the idempotence key; it is never counted twice.
+acid_rain_033_achievement_record_severe_pulse = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_severe_episode_id
+			has_variable = acid_rain_033_input_exposure_receipt
+			has_variable = acid_rain_033_input_severe_pulse_day
+			has_variable = acid_rain_033_input_applied_deaths
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_severe_episode_id value = acid_rain_033_achievement_state_severe_episode_id compare = equals }
+			check_variable = { var = acid_rain_033_input_severe_pulse_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_applied_deaths value = @acid_rain_033_achievement_zero compare = greater_than_or_equals }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_state_severe_pulse_receipt_keys value = acid_rain_033_input_exposure_receipt } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_state_severe_pulse_receipt_keys value = acid_rain_033_input_exposure_receipt }
+		add_to_variable = { acid_rain_033_achievement_state_severe_pulse_count = @acid_rain_033_achievement_one }
+		if = {
+			limit = { check_variable = { var = acid_rain_033_input_applied_deaths value = @acid_rain_033_achievement_zero compare = greater_than } }
+			add_to_variable = { acid_rain_033_achievement_state_severe_deaths = acid_rain_033_input_applied_deaths }
+		}
+		save_event_target_as = acid_rain_033_achievement_severe_pulse_state
+		if = {
+			limit = { NOT = { has_state_flag = acid_rain_033_achievement_state_severe_pulse } }
+			set_state_flag = acid_rain_033_achievement_state_severe_pulse
+			set_variable = { acid_rain_033_achievement_state_first_severe_pulse_day = acid_rain_033_input_severe_pulse_day }
+		}
+		CONTROLLER = {
+			set_temp_variable = { acid_rain_033_achievement_severe_pulse_row = @acid_rain_033_achievement_zero }
+			if = {
+				limit = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+				for_loop_effect = {
+					start = @acid_rain_033_achievement_one
+					end = acid_rain_033_achievement_severe_target_row_count
+					value = acid_rain_033_achievement_severe_index
+					if = {
+						limit = {
+							check_variable = { var = acid_rain_033_achievement_severe_target_state_ids^acid_rain_033_achievement_severe_index value = acid_rain_033_input_state_id compare = equals }
+							check_variable = { var = acid_rain_033_achievement_severe_target_episode_ids^acid_rain_033_achievement_severe_index value = acid_rain_033_input_severe_episode_id compare = equals }
+							check_variable = { var = acid_rain_033_achievement_severe_target_generation_entries^acid_rain_033_achievement_severe_index value = acid_rain_033_input_generation compare = equals }
+						}
+						set_temp_variable = { acid_rain_033_achievement_severe_pulse_row = acid_rain_033_achievement_severe_index }
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_033_achievement_severe_pulse_row value = @acid_rain_033_achievement_zero compare = greater_than } }
+				set_temp_variable = { acid_rain_033_achievement_severe_previous_deaths = acid_rain_033_achievement_severe_target_death_entries^acid_rain_033_achievement_severe_pulse_row }
+				add_to_temp_variable = { acid_rain_033_achievement_severe_previous_deaths = acid_rain_033_input_applied_deaths }
+				set_variable = { acid_rain_033_achievement_severe_target_death_entries^acid_rain_033_achievement_severe_pulse_row = acid_rain_033_achievement_severe_previous_deaths }
+				set_temp_variable = { acid_rain_033_achievement_severe_previous_pulses = acid_rain_033_achievement_severe_target_pulse_entries^acid_rain_033_achievement_severe_pulse_row }
+				add_to_temp_variable = { acid_rain_033_achievement_severe_previous_pulses = @acid_rain_033_achievement_one }
+				set_variable = { acid_rain_033_achievement_severe_target_pulse_entries^acid_rain_033_achievement_severe_pulse_row = acid_rain_033_achievement_severe_previous_pulses }
+				set_variable = { acid_rain_033_achievement_severe_target_first_pulse_entries^acid_rain_033_achievement_severe_pulse_row = acid_rain_033_input_severe_pulse_day }
+			}
+			else = {
+				acid_rain_033_achievement_mark_migration_disqualified = yes
+			}
+		}
+		clear_event_target = acid_rain_033_achievement_severe_pulse_state
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# STATE SCOPE. Marks a valid shelter or evacuation receipt on one severe
+# target row. Required inputs: generation, state_id, episode_id,
+# protection_receipt_key, protection_kind (one shelter, two evacuation), and
+# protection_valid. A valid receipt is enough for the severe-cell protection
+# requirement, but it is kept in separate state facts for auditability.
+acid_rain_033_achievement_record_severe_protection = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_severe_episode_id
+			has_variable = acid_rain_033_input_protection_receipt_key
+			has_variable = acid_rain_033_input_protection_kind
+			has_variable = acid_rain_033_input_protection_valid
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_protection_valid value = @acid_rain_033_achievement_one compare = equals }
+			OR = {
+				check_variable = { var = acid_rain_033_input_protection_kind value = @acid_rain_033_achievement_one compare = equals }
+				check_variable = { var = acid_rain_033_input_protection_kind value = @acid_rain_033_achievement_two compare = equals }
+			}
+			NOT = { is_in_array = { array = acid_rain_033_achievement_state_protection_receipt_keys value = acid_rain_033_input_protection_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_state_protection_receipt_keys value = acid_rain_033_input_protection_receipt_key }
+		if = { limit = { check_variable = { var = acid_rain_033_input_protection_kind value = @acid_rain_033_achievement_one compare = equals } } set_state_flag = acid_rain_033_achievement_state_shelter_receipt }
+		if = { limit = { check_variable = { var = acid_rain_033_input_protection_kind value = @acid_rain_033_achievement_two compare = equals } } set_state_flag = acid_rain_033_achievement_state_evacuation_receipt }
+		save_event_target_as = acid_rain_033_achievement_protection_state
+		CONTROLLER = {
+			set_temp_variable = { acid_rain_033_achievement_protection_row = @acid_rain_033_achievement_zero }
+			if = {
+				limit = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+				for_loop_effect = {
+					start = @acid_rain_033_achievement_one
+					end = acid_rain_033_achievement_severe_target_row_count
+					value = acid_rain_033_achievement_protection_index
+					if = {
+						limit = {
+							check_variable = { var = acid_rain_033_achievement_severe_target_state_ids^acid_rain_033_achievement_protection_index value = acid_rain_033_input_state_id compare = equals }
+							check_variable = { var = acid_rain_033_achievement_severe_target_episode_ids^acid_rain_033_achievement_protection_index value = acid_rain_033_input_severe_episode_id compare = equals }
+							check_variable = { var = acid_rain_033_achievement_severe_target_generation_entries^acid_rain_033_achievement_protection_index value = acid_rain_033_input_generation compare = equals }
+						}
+						set_temp_variable = { acid_rain_033_achievement_protection_row = acid_rain_033_achievement_protection_index }
+					}
+				}
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_033_achievement_protection_row value = @acid_rain_033_achievement_zero compare = greater_than } }
+				if = { limit = { check_variable = { var = acid_rain_033_input_protection_kind value = @acid_rain_033_achievement_one compare = equals } } set_variable = { acid_rain_033_achievement_severe_target_shelter_entries^acid_rain_033_achievement_protection_row = @acid_rain_033_achievement_one } }
+				if = { limit = { check_variable = { var = acid_rain_033_input_protection_kind value = @acid_rain_033_achievement_two compare = equals } } set_variable = { acid_rain_033_achievement_severe_target_evacuation_entries^acid_rain_033_achievement_protection_row = @acid_rain_033_achievement_one } }
+			}
+			else = {
+				acid_rain_033_achievement_mark_migration_disqualified = yes
+			}
+			clear_event_target = acid_rain_033_achievement_protection_state
+		}
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# COUNTRY SCOPE. Closes one severe episode and snapshots the aggregate built
+# from target rows. Required inputs: generation, episode_id, closure_receipt_key,
+# episode_pulse_count, and episode_closed_valid. Population and deaths are
+# recomputed from the stored per-state rows, so callers cannot award the cell
+# with a requested or modifier-only estimate.
+acid_rain_033_achievement_record_severe_cell_closure = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_severe_episode_id
+			has_variable = acid_rain_033_input_severe_closure_receipt_key
+			has_variable = acid_rain_033_input_severe_episode_pulse_count
+			has_variable = acid_rain_033_input_severe_episode_closed_valid
+			check_variable = { var = acid_rain_033_input_severe_episode_id value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_severe_episode_pulse_count value = @acid_rain_033_achievement_zero compare = greater_than_or_equals }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_severe_episode_receipt_keys value = acid_rain_033_input_severe_closure_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_severe_episode_receipt_keys value = acid_rain_033_input_severe_closure_receipt_key }
+		set_temp_variable = { acid_rain_033_achievement_episode_state_count = @acid_rain_033_achievement_zero }
+		set_temp_variable = { acid_rain_033_achievement_episode_population = @acid_rain_033_achievement_zero }
+		set_temp_variable = { acid_rain_033_achievement_episode_deaths = @acid_rain_033_achievement_zero }
+		set_temp_variable = { acid_rain_033_achievement_episode_pulses = @acid_rain_033_achievement_zero }
+		set_temp_variable = { acid_rain_033_achievement_episode_protection = @acid_rain_033_achievement_zero }
+		if = {
+			limit = { has_variable = acid_rain_033_achievement_severe_target_row_count }
+			for_loop_effect = {
+				start = @acid_rain_033_achievement_one
+				end = acid_rain_033_achievement_severe_target_row_count
+				value = acid_rain_033_achievement_episode_index
+				if = {
+					limit = {
+						check_variable = { var = acid_rain_033_achievement_severe_target_episode_ids^acid_rain_033_achievement_episode_index value = acid_rain_033_input_severe_episode_id compare = equals }
+						check_variable = { var = acid_rain_033_achievement_severe_target_generation_entries^acid_rain_033_achievement_episode_index value = acid_rain_033_input_generation compare = equals }
+					}
+					add_to_temp_variable = { acid_rain_033_achievement_episode_state_count = @acid_rain_033_achievement_one }
+					add_to_temp_variable = { acid_rain_033_achievement_episode_population = acid_rain_033_achievement_severe_target_population_entries^acid_rain_033_achievement_episode_index }
+					add_to_temp_variable = { acid_rain_033_achievement_episode_deaths = acid_rain_033_achievement_severe_target_death_entries^acid_rain_033_achievement_episode_index }
+					add_to_temp_variable = { acid_rain_033_achievement_episode_pulses = acid_rain_033_achievement_severe_target_pulse_entries^acid_rain_033_achievement_episode_index }
+					if = {
+						limit = {
+							OR = {
+								check_variable = { var = acid_rain_033_achievement_severe_target_shelter_entries^acid_rain_033_achievement_episode_index value = @acid_rain_033_achievement_one compare = equals }
+								check_variable = { var = acid_rain_033_achievement_severe_target_evacuation_entries^acid_rain_033_achievement_episode_index value = @acid_rain_033_achievement_one compare = equals }
+							}
+						}
+						add_to_temp_variable = { acid_rain_033_achievement_episode_protection = @acid_rain_033_achievement_one }
+					}
+				}
+			}
+		}
+		set_temp_variable = { acid_rain_033_achievement_episode_row = @acid_rain_033_achievement_zero }
+		if = {
+			limit = { has_variable = acid_rain_033_achievement_severe_episode_row_count }
+			for_loop_effect = {
+				start = @acid_rain_033_achievement_one
+				end = acid_rain_033_achievement_severe_episode_row_count
+				value = acid_rain_033_achievement_episode_summary_index
+				if = { limit = { check_variable = { var = acid_rain_033_achievement_severe_episode_ids^acid_rain_033_achievement_episode_summary_index value = acid_rain_033_input_severe_episode_id compare = equals } } set_temp_variable = { acid_rain_033_achievement_episode_row = acid_rain_033_achievement_episode_summary_index } }
+			}
+		}
+		if = {
+			limit = { check_variable = { var = acid_rain_033_achievement_episode_row value = @acid_rain_033_achievement_zero compare = equals } }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = acid_rain_033_achievement_severe_episode_row_count }
+						check_variable = { var = acid_rain_033_achievement_severe_episode_row_count value = @acid_rain_033_achievement_max_episode_rows compare = less_than }
+					}
+				}
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_ids value = acid_rain_033_input_severe_episode_id }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_state_counts value = acid_rain_033_achievement_episode_state_count }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_population_entries value = acid_rain_033_achievement_episode_population }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_death_entries value = acid_rain_033_achievement_episode_deaths }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_pulse_entries value = acid_rain_033_achievement_episode_pulses }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_protection_entries value = acid_rain_033_achievement_episode_protection }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_generation_entries value = acid_rain_033_input_generation }
+				add_to_array = { array = acid_rain_033_achievement_severe_episode_complete_entries value = @acid_rain_033_achievement_zero }
+				add_to_variable = { acid_rain_033_achievement_severe_episode_row_count = @acid_rain_033_achievement_one }
+				set_variable = { acid_rain_033_achievement_episode_row = acid_rain_033_achievement_severe_episode_row_count }
+			}
+			else = {
+				acid_rain_033_achievement_mark_migration_disqualified = yes
+			}
+		}
+		else = {
+			set_variable = { acid_rain_033_achievement_severe_episode_state_counts^acid_rain_033_achievement_episode_row = acid_rain_033_achievement_episode_state_count }
+			set_variable = { acid_rain_033_achievement_severe_episode_population_entries^acid_rain_033_achievement_episode_row = acid_rain_033_achievement_episode_population }
+			set_variable = { acid_rain_033_achievement_severe_episode_death_entries^acid_rain_033_achievement_episode_row = acid_rain_033_achievement_episode_deaths }
+			set_variable = { acid_rain_033_achievement_severe_episode_pulse_entries^acid_rain_033_achievement_episode_row = acid_rain_033_achievement_episode_pulses }
+			set_variable = { acid_rain_033_achievement_severe_episode_protection_entries^acid_rain_033_achievement_episode_row = acid_rain_033_achievement_episode_protection }
+		}
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_033_input_severe_episode_closed_valid value = @acid_rain_033_achievement_one compare = equals }
+				check_variable = { var = acid_rain_033_achievement_episode_state_count value = @acid_rain_033_achievement_shelter_states compare = greater_than_or_equals }
+				check_variable = { var = acid_rain_033_achievement_episode_pulses value = @acid_rain_033_achievement_shelter_pulses compare = greater_than_or_equals }
+				check_variable = { var = acid_rain_033_achievement_episode_population value = @acid_rain_033_achievement_zero compare = greater_than }
+			}
+			if = {
+				limit = { check_variable = { var = acid_rain_033_achievement_episode_protection value = @acid_rain_033_achievement_zero compare = equals } }
+				set_country_flag = acid_rain_033_achievement_shelters_held_disqualified
+			}
+			else = {
+				set_temp_variable = { acid_rain_033_achievement_episode_deaths_scaled = acid_rain_033_achievement_episode_deaths }
+				multiply_temp_variable = { acid_rain_033_achievement_episode_deaths_scaled = @acid_rain_033_achievement_shelter_death_denominator }
+				set_temp_variable = { acid_rain_033_achievement_episode_population_scaled = acid_rain_033_achievement_episode_population }
+				multiply_temp_variable = { acid_rain_033_achievement_episode_population_scaled = @acid_rain_033_achievement_shelter_death_numerator }
+				if = {
+					limit = { check_variable = { var = acid_rain_033_achievement_episode_deaths_scaled value = acid_rain_033_achievement_episode_population_scaled compare = less_than } }
+					if = {
+						limit = { NOT = { check_variable = { var = acid_rain_033_achievement_severe_episode_complete_entries^acid_rain_033_achievement_episode_row value = @acid_rain_033_achievement_one compare = equals } } }
+						set_variable = { acid_rain_033_achievement_severe_episode_complete_entries^acid_rain_033_achievement_episode_row = @acid_rain_033_achievement_one }
+						add_to_variable = { acid_rain_033_achievement_shelter_qualifying_episode_count = @acid_rain_033_achievement_one }
+					}
+				}
+			}
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Evacuation receipts
+# ---------------------------------------------------------------------------
+
+# STATE SCOPE. Starts one evacuation ledger entry. Required inputs:
+# generation, state_id, forecast_id, episode_id, start_receipt_key,
+# start_day, and action_type. Starting an action is never itself a valid
+# evacuation; completion below supplies the timing and casualty proof.
+acid_rain_033_achievement_record_evacuation_start = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_evacuation_forecast_id
+			has_variable = acid_rain_033_input_evacuation_episode_id
+			has_variable = acid_rain_033_input_evacuation_start_receipt_key
+			has_variable = acid_rain_033_input_evacuation_start_day
+			has_variable = acid_rain_033_input_evacuation_action_type
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_evacuation_start_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_state_evacuation_start_receipt_keys value = acid_rain_033_input_evacuation_start_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_state_evacuation_start_receipt_keys value = acid_rain_033_input_evacuation_start_receipt_key }
+		set_state_flag = acid_rain_033_achievement_state_evacuation_active
+		set_variable = { acid_rain_033_achievement_state_evacuation_start_day = acid_rain_033_input_evacuation_start_day }
+		set_variable = { acid_rain_033_achievement_state_severe_forecast_id = acid_rain_033_input_evacuation_forecast_id }
+		set_variable = { acid_rain_033_achievement_state_severe_episode_id = acid_rain_033_input_evacuation_episode_id }
+		set_variable = { acid_rain_033_achievement_state_evacuation_action_type = acid_rain_033_input_evacuation_action_type }
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# STATE SCOPE. Completes one evacuation and records its exact casualty
+# threshold. Required inputs: generation, state_id, forecast_id, episode_id,
+# completion_receipt_key, completion_day, baseline_people, applied_deaths,
+# accepted_threshold_people, first_severe_pulse_day (zero means no pulse yet),
+# and completion_valid. A completion after the stored first severe pulse is
+# permanently invalid for the three-evacuation contract.
+acid_rain_033_achievement_record_evacuation_completion = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_input_generation_is_current = yes
+			has_state_flag = acid_rain_033_achievement_state_registered
+			has_variable = acid_rain_033_input_state_id
+			has_variable = acid_rain_033_input_evacuation_forecast_id
+			has_variable = acid_rain_033_input_evacuation_episode_id
+			has_variable = acid_rain_033_input_evacuation_completion_receipt_key
+			has_variable = acid_rain_033_input_evacuation_completion_day
+			has_variable = acid_rain_033_input_evacuation_baseline_people
+			has_variable = acid_rain_033_input_evacuation_applied_deaths
+			has_variable = acid_rain_033_input_evacuation_threshold_people
+			has_variable = acid_rain_033_input_evacuation_first_severe_pulse_day
+			has_variable = acid_rain_033_input_evacuation_completion_valid
+			check_variable = { var = acid_rain_033_input_state_id value = acid_rain_033_achievement_state_id compare = equals }
+			check_variable = { var = acid_rain_033_input_evacuation_completion_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_evacuation_baseline_people value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_evacuation_applied_deaths value = @acid_rain_033_achievement_zero compare = greater_than_or_equals }
+			check_variable = { var = acid_rain_033_input_evacuation_threshold_people value = @acid_rain_033_achievement_zero compare = greater_than }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_state_evacuation_completion_receipt_keys value = acid_rain_033_input_evacuation_completion_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_state_evacuation_completion_receipt_keys value = acid_rain_033_input_evacuation_completion_receipt_key }
+		set_variable = { acid_rain_033_achievement_state_evacuation_completion_day = acid_rain_033_input_evacuation_completion_day }
+		set_variable = { acid_rain_033_achievement_state_evacuation_first_pulse_day = acid_rain_033_input_evacuation_first_severe_pulse_day }
+		set_variable = { acid_rain_033_achievement_state_evacuation_threshold_people = acid_rain_033_input_evacuation_threshold_people }
+		set_variable = { acid_rain_033_achievement_state_evacuation_deaths = acid_rain_033_input_evacuation_applied_deaths }
+		set_state_flag = acid_rain_033_achievement_state_evacuation_complete
+		clr_state_flag = acid_rain_033_achievement_state_evacuation_active
+		set_temp_variable = { acid_rain_033_achievement_evacuation_first_pulse = acid_rain_033_input_evacuation_first_severe_pulse_day }
+		if = {
+			limit = { check_variable = { var = acid_rain_033_achievement_state_first_severe_pulse_day value = @acid_rain_033_achievement_zero compare = greater_than } }
+			set_temp_variable = { acid_rain_033_achievement_evacuation_first_pulse = acid_rain_033_achievement_state_first_severe_pulse_day }
+		}
+		set_temp_variable = { acid_rain_033_achievement_evacuation_timing_valid = @acid_rain_033_achievement_one }
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_033_achievement_evacuation_first_pulse value = @acid_rain_033_achievement_zero compare = greater_than }
+				check_variable = { var = acid_rain_033_input_evacuation_completion_day value = acid_rain_033_achievement_evacuation_first_pulse compare = greater_than_or_equals }
+			}
+			set_temp_variable = { acid_rain_033_achievement_evacuation_timing_valid = @acid_rain_033_achievement_zero }
+			CONTROLLER = { set_country_flag = acid_rain_033_achievement_three_evacuations_disqualified }
+		}
+		if = {
+			limit = {
+				check_variable = { var = acid_rain_033_input_evacuation_completion_valid value = @acid_rain_033_achievement_one compare = equals }
+				check_variable = { var = acid_rain_033_achievement_evacuation_timing_valid value = @acid_rain_033_achievement_one compare = equals }
+				check_variable = { var = acid_rain_033_input_evacuation_applied_deaths value = acid_rain_033_input_evacuation_threshold_people compare = less_than }
+			}
+			save_event_target_as = acid_rain_033_achievement_evacuation_state
+			CONTROLLER = {
+				acid_rain_033_achievement_initialize_country = yes
+				add_to_array = { array = acid_rain_033_achievement_evacuation_receipt_keys value = acid_rain_033_input_evacuation_completion_receipt_key }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_state_ids value = acid_rain_033_input_state_id }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_state_scopes value = event_target:acid_rain_033_achievement_evacuation_state }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_forecast_ids value = acid_rain_033_input_evacuation_forecast_id }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_episode_ids value = acid_rain_033_input_evacuation_episode_id }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_completion_days value = acid_rain_033_input_evacuation_completion_day }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_first_pulse_days value = acid_rain_033_achievement_evacuation_first_pulse }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_baselines value = acid_rain_033_input_evacuation_baseline_people }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_deaths value = acid_rain_033_input_evacuation_applied_deaths }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_thresholds value = acid_rain_033_input_evacuation_threshold_people }
+				add_to_array = { array = acid_rain_033_achievement_evacuation_generation_entries value = acid_rain_033_input_generation }
+				add_to_variable = { acid_rain_033_achievement_valid_evacuation_count = @acid_rain_033_achievement_one }
+			}
+			clear_event_target = acid_rain_033_achievement_evacuation_state
+			set_temp_variable = { acid_rain_033_input_protection_receipt_key = acid_rain_033_input_evacuation_completion_receipt_key }
+			set_temp_variable = { acid_rain_033_input_protection_kind = @acid_rain_033_achievement_two }
+			set_temp_variable = { acid_rain_033_input_protection_valid = @acid_rain_033_achievement_one }
+			acid_rain_033_achievement_record_severe_protection = yes
+		}
+		else = {
+			CONTROLLER = { set_country_flag = acid_rain_033_achievement_three_evacuations_disqualified }
+		}
+	}
+	else = {
+		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Global-layer preparedness checks
+# ---------------------------------------------------------------------------
+
+# COUNTRY SCOPE. Latches the start of Global Acid Rain for one country.
+# Required inputs: generation, transition_receipt_key, transition_day,
+# global_phase_active, capital_id, capital_aftermath_tier, and preparedness.
+# This edge establishes the clock; later checks must carry an explicit
+# continuity proof and elapsed interval.
+acid_rain_033_achievement_record_global_transition = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_global_transition_receipt_key
+			has_variable = acid_rain_033_input_global_transition_day
+			has_variable = acid_rain_033_input_global_phase_active
+			has_variable = acid_rain_033_input_global_capital_id
+			has_variable = acid_rain_033_input_global_capital_aftermath_tier
+			has_variable = acid_rain_033_input_global_preparedness
+			check_variable = { var = acid_rain_033_input_global_phase_active value = @acid_rain_033_achievement_one compare = equals }
+			check_variable = { var = acid_rain_033_input_global_transition_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_global_transition_receipt_keys value = acid_rain_033_input_global_transition_receipt_key } }
+		}
+		add_to_array = { array = acid_rain_033_achievement_global_transition_receipt_keys value = acid_rain_033_input_global_transition_receipt_key }
+		set_variable = { acid_rain_033_achievement_global_transition_day = acid_rain_033_input_global_transition_day }
+		set_variable = { acid_rain_033_achievement_global_phase_receipt = @acid_rain_033_achievement_one }
+		set_variable = { acid_rain_033_achievement_current_capital_id = acid_rain_033_input_global_capital_id }
+		set_variable = { acid_rain_033_achievement_global_max_capital_tier = acid_rain_033_input_global_capital_aftermath_tier }
+		if = {
+			limit = { NOT = { is_in_array = { array = acid_rain_033_achievement_capital_history_ids value = acid_rain_033_input_global_capital_id } } }
+			add_to_array = { array = acid_rain_033_achievement_capital_history_ids value = acid_rain_033_input_global_capital_id }
+		}
+		if = {
+			limit = { check_variable = { var = acid_rain_033_input_global_capital_aftermath_tier value = @acid_rain_033_achievement_three compare = greater_than_or_equals } }
+			set_country_flag = acid_rain_033_achievement_under_one_sky_disqualified
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}
+
+# COUNTRY SCOPE. Records one scheduled Global Acid Rain preparedness check.
+# Required inputs: generation, check_receipt_key, check_day, preparedness,
+# capital_id, capital_aftermath_tier, phase_active, continuous, and
+# elapsed_days. continuous is an explicit parent-owned proof that no required
+# check was skipped; this bounded API does not run a daily scan.
+acid_rain_033_achievement_record_global_preparedness_check = {
+	if = {
+		limit = {
+			acid_rain_033_achievement_generation_is_current = yes
+			has_variable = acid_rain_033_input_global_check_receipt_key
+			has_variable = acid_rain_033_input_global_check_day
+			has_variable = acid_rain_033_input_global_preparedness
+			has_variable = acid_rain_033_input_global_capital_id
+			has_variable = acid_rain_033_input_global_capital_aftermath_tier
+			has_variable = acid_rain_033_input_global_phase_active
+			has_variable = acid_rain_033_input_global_check_continuous
+			has_variable = acid_rain_033_input_global_check_elapsed_days
+			check_variable = { var = acid_rain_033_input_global_phase_active value = @acid_rain_033_achievement_one compare = equals }
+			check_variable = { var = acid_rain_033_input_global_check_day value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_global_check_elapsed_days value = @acid_rain_033_achievement_zero compare = greater_than }
+			check_variable = { var = acid_rain_033_input_global_check_elapsed_days value = @acid_rain_033_achievement_max_check_interval compare = less_than_or_equals }
+			NOT = { is_in_array = { array = acid_rain_033_achievement_global_check_receipt_keys value = acid_rain_033_input_global_check_receipt_key } }
+		}
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = acid_rain_033_achievement_global_check_row_count }
+					check_variable = { var = acid_rain_033_achievement_global_check_row_count value = @acid_rain_033_achievement_max_receipt_rows compare = less_than }
+				}
+			}
+			add_to_array = { array = acid_rain_033_achievement_global_check_receipt_keys value = acid_rain_033_input_global_check_receipt_key }
+			add_to_array = { array = acid_rain_033_achievement_global_check_days value = acid_rain_033_input_global_check_day }
+			add_to_array = { array = acid_rain_033_achievement_global_check_values value = acid_rain_033_input_global_preparedness }
+			add_to_array = { array = acid_rain_033_achievement_global_check_capital_ids value = acid_rain_033_input_global_capital_id }
+			add_to_array = { array = acid_rain_033_achievement_global_check_capital_tiers value = acid_rain_033_input_global_capital_aftermath_tier }
+			add_to_array = { array = acid_rain_033_achievement_global_check_generation_entries value = acid_rain_033_input_generation }
+			add_to_variable = { acid_rain_033_achievement_global_check_row_count = @acid_rain_033_achievement_one }
+			if = {
+				limit = {
+					OR = {
+						NOT = { has_variable = acid_rain_033_achievement_global_phase_receipt }
+						check_variable = { var = acid_rain_033_achievement_global_phase_receipt value = @acid_rain_033_achievement_zero compare = equals }
+					}
+				}
+				set_country_flag = acid_rain_033_achievement_under_one_sky_disqualified
+			}
+			if = {
+				limit = {
+					OR = {
+						NOT = { check_variable = { var = acid_rain_033_input_global_check_continuous value = @acid_rain_033_achievement_one compare = equals } }
+						check_variable = { var = acid_rain_033_input_global_preparedness value = @acid_rain_033_achievement_global_floor compare = less_than }
+						check_variable = { var = acid_rain_033_input_global_capital_aftermath_tier value = @acid_rain_033_achievement_three compare = greater_than_or_equals }
+					}
+				}
+				set_country_flag = acid_rain_033_achievement_under_one_sky_disqualified
+				set_variable = { acid_rain_033_achievement_global_prepared_days = @acid_rain_033_achievement_zero }
+			}
+			else = {
+				add_to_variable = { acid_rain_033_achievement_global_prepared_days = acid_rain_033_input_global_check_elapsed_days }
+				if = {
+					limit = { check_variable = { var = acid_rain_033_input_global_capital_aftermath_tier value = acid_rain_033_achievement_global_max_capital_tier compare = greater_than } }
+					set_variable = { acid_rain_033_achievement_global_max_capital_tier = acid_rain_033_input_global_capital_aftermath_tier }
+				}
+				if = {
+					limit = { check_variable = { var = acid_rain_033_achievement_global_prepared_days value = @acid_rain_033_achievement_global_days compare = greater_than_or_equals } }
+					set_variable = { acid_rain_033_achievement_global_floor_receipt = @acid_rain_033_achievement_one }
+				}
+			}
+		}
+		else = {
+			acid_rain_033_achievement_mark_migration_disqualified = yes
+		}
+	}
+	else = {
+		acid_rain_033_achievement_mark_migration_disqualified = yes
+	}
+}

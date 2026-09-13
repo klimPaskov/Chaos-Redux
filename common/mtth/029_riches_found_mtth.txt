@@ -1,0 +1,105 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND MTTH
+# ============================================================================
+# State-scoped timing entries for the three Event 029 evolution tracks. The
+# controller schedules one delayed check for one registered mine at a time;
+# these entries only alter that mine's delay and never iterate the world.
+# ============================================================================
+
+riches_found_evolution_i_interval = {
+	base = constant:riches_found_mtth.evolution_i_days
+	modifier = { factor = constant:riches_found_mtth_factor.pressure_high riches_found_mine_is_high_pressure = yes }
+	modifier = { factor = constant:riches_found_mtth_factor.pressure_severe riches_found_mine_is_severe_pressure = yes }
+	modifier = {
+		factor = constant:riches_found_mtth_factor.low_order
+		riches_found_mine_is_local_order_crisis = yes
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.low_legitimacy
+		riches_found_mine_is_legitimacy_crisis = yes
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.war
+		CONTROLLER = { has_war = yes }
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.multiple_mines
+		CONTROLLER = { riches_found_country_has_multiple_mines = yes }
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.foreign_capture
+		OR = {
+			has_state_flag = riches_found_exclusive_concession
+			has_state_flag = riches_found_curse_private_dominance
+			has_state_flag = riches_found_private_enclave
+		}
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.failed_audit
+		has_state_flag = riches_found_failed_audit
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.managed_legitimacy
+		OR = {
+			has_state_flag = riches_found_dividend_paid
+			has_state_flag = riches_found_local_revenue_settled
+			has_state_flag = riches_found_stabilization_fund
+			has_state_flag = riches_found_audit_complete
+		}
+	}
+}
+
+riches_found_evolution_ii_interval = {
+	base = constant:riches_found_mtth.evolution_ii_days
+	modifier = {
+		factor = constant:riches_found_mtth_factor.gold_disease_pressure
+		check_variable = {
+			var = riches_found_gold_disease_pressure
+			value = constant:riches_found_threshold.gold_disease_gate
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = { factor = constant:riches_found_mtth_factor.pressure_severe riches_found_mine_is_severe_pressure = yes }
+	modifier = { factor = constant:riches_found_mtth_factor.low_order riches_found_mine_is_local_order_crisis = yes }
+	modifier = { factor = constant:riches_found_mtth_factor.war CONTROLLER = { has_war = yes } }
+	modifier = { factor = constant:riches_found_mtth_factor.multiple_mines CONTROLLER = { riches_found_country_has_multiple_mines = yes } }
+	modifier = {
+		factor = constant:riches_found_mtth_factor.controlled_closure
+		OR = {
+			has_state_flag = riches_found_gold_controlled_access
+			has_state_flag = riches_found_gold_quarantine
+			has_state_flag = riches_found_gold_closed
+		}
+	}
+}
+
+riches_found_evolution_iii_interval = {
+	base = constant:riches_found_mtth.evolution_iii_days
+	modifier = {
+		factor = constant:riches_found_mtth_factor.deep_excavation
+		check_variable = {
+			var = riches_found_deep_excavation
+			value = constant:riches_found_evolution.demons_beneath_mine_deep_excavation
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:riches_found_mtth_factor.sealed_integrity_low
+		check_variable = {
+			var = riches_found_sealed_depth_integrity
+			value = constant:riches_found_threshold.sealed_integrity_gate
+			compare = less_than
+		}
+	}
+	modifier = { factor = constant:riches_found_mtth_factor.pressure_severe riches_found_mine_is_severe_pressure = yes }
+	modifier = { factor = constant:riches_found_mtth_factor.war CONTROLLER = { has_war = yes } }
+	modifier = { factor = constant:riches_found_mtth_factor.multiple_mines CONTROLLER = { riches_found_country_has_multiple_mines = yes } }
+	modifier = {
+		factor = constant:riches_found_mtth_factor.foreign_capture
+		OR = {
+			has_state_flag = riches_found_gold_disease_active
+			has_state_flag = riches_found_private_guards
+			has_state_flag = riches_found_severe_collapse
+		}
+	}
+}

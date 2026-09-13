@@ -2,15 +2,15 @@
 
 Date: 2026-08-31
 
-Scope: Event 006 decision and mission visibility, pre-event exposure, player-facing cost localisation, and decision-owned GUI evidence. This audit did not launch Hearts of Iron IV and did not modify gameplay, localisation, interface, event, country, or scripted-effect source files.
+Scope: Event 006 decision and mission visibility, pre-event exposure, player-facing cost localisation, and decision-owned GUI evidence. This audit did not launch Hearts of Iron IV and made no gameplay or localisation source change. It re-verified the current checkout after the parent's bounded IW-095 cost-readability repair.
 
-Disposition: PARTIAL / HOLD for parent review. The pre-event surface is correctly fail-closed and the ordinary cost rows are compact and icon-first, but several accepted Event 006 surfaces still exceed the four-spendable-type contract or use a native flat political-power cost. The required probability worker route is unavailable in this runtime, and the current GUI render exposes defects that are outside this decision/localisation-only patch boundary.
+Disposition: NO-CHANGE / PARTIAL HOLD for parent review. The pre-event surface is correctly fail-closed and the active ordinary cost rows are compact and icon-first. Several accepted Event 006 surfaces still exceed the four-spendable-type contract or use a native flat political-power cost. The required probability worker route is unavailable in this runtime, and the current GUI render exposes defects that are outside this decision/localisation-only patch boundary.
 
-Follow-up (2026-08-31): the parent applied `006_event6_iw095_security_cost_readability_repair_2026-08-31.md`. The two IW-095 security decisions now use the four-resource security cost row and disclose their retained one-factory duration reservation in the decision descriptions. The first finding below is therefore an audit baseline for the pre-repair source; no gameplay payment or reservation was removed.
+Follow-up (2026-08-31): the parent-applied `006_event6_iw095_security_cost_readability_repair_2026-08-31.md` is present in the current checkout. The two IW-095 security decisions use the four-resource security cost row and disclose their retained one-factory duration reservation in the decision descriptions. This audit made no source change and found no residual hidden factory charge in those active cost rows.
 
 ## Severity-sorted findings
 
-1. High — `independence_wave_cost_security_standard_factory` displays and reserves five distinct spendable types for `iw095_organize_civic_guard` and `iw095_authorize_emergency_directorate` in `common/decisions/006_independence_wave_decisions.txt:4082` and `:4248`: manpower, army experience, infantry equipment, support equipment, and a civilian-factory commitment. The matching normal and blocked rows are icon-first at `localisation/english/006_independence_wave_decisions_l_english.yml:50` and `:104`, but localisation must not conceal the fifth charge; the gameplay owner must reduce the action to at most four spendable types or split the commitment into a clearly separate phase.
+1. Resolved / verified — `iw095_organize_civic_guard` and `iw095_authorize_emergency_directorate` in `common/decisions/006_independence_wave_decisions.txt:4082` and `:4248` currently select `independence_wave_cost_security_standard`, whose normal, blocked, and tooltip rows at `localisation/english/006_independence_wave_decisions_l_english.yml:49`, `:102`, and `:101` expose the four resources consumed by `independence_wave_decision_pay_security_standard`: manpower, army experience, infantry equipment, and support equipment. The existing `civilian_factory_use` modifier remains a project-duration reservation, and `iw095_organize_civic_guard_desc` / `iw095_authorize_emergency_directorate_desc` disclose it at `localisation/english/006_independence_wave_l_english.yml:211` and `:227`; the legacy five-type factory row has zero active callers. No further patch was warranted.
 
 2. High — `independence_wave_formable_commit_cost_revolutionary` and `independence_wave_formable_commit_cost_military` expose seven spendable resource families in `localisation/english/006_independence_wave_formable_registry_l_english.yml:29-30`: stability, command power, transport, manpower, army experience, infantry equipment, and support equipment. They are selected dynamically by `GetIndependenceWaveFormableCommitCostText` and consumed by `independence_wave_formable_pay_selected_commit_cost`; this requires a gameplay-owner balance decision, not a cosmetic shortening of the row.
 
@@ -52,10 +52,10 @@ Follow-up (2026-08-31): the parent applied `006_event6_iw095_security_cost_reada
 
 ## Cost and requirement clarity
 
-- A focused source scan found 699 `custom_cost_text` consumers across 26 Event 006 decision/category files and 192 unique custom-cost keys. The 37 Event 006 English localisation files contain a normal, `_blocked`, and `_tooltip` triplet for every discovered custom-cost key; no triplet was missing.
+- A focused source scan found 699 `custom_cost_text` consumers across 24 Event 006 decision files and 191 unique custom-cost keys. The 37 Event 006 English localisation files contain a normal, `_blocked`, and `_tooltip` triplet for every discovered custom-cost key; no triplet was missing.
 - Explicit central cost rows use the correct texticons for stability, command power, manpower, army experience, infantry equipment, support equipment, civilian factories, fuel, convoys, and trains. Dynamic transport selectors resolve to convoy/train icon rows through `common/scripted_localisation/006_independence_wave_scripted_localisation_registry.txt:165-194`.
 - Normal and blocked rows are compact icon-first sequences separated by `·`, `/`, or a necessary staged newline. No central row spells out a resource name in place of its texticon.
-- `independence_wave_cost_security_standard_factory` is the confirmed five-type exception and must not be “fixed” by deleting the factory token from localisation while its modifier remains in the decision.
+- `independence_wave_cost_security_standard_factory` remains a legacy five-type localisation triplet, but it has zero active Event 006 `custom_cost_text` callers after the parent repair. The active IW-095 decisions use the four-resource row and disclose the separate project-duration factory reservation in their descriptions, so the factory token is not being hidden from an active consumed-cost row.
 - The two revolutionary/military formable rows are confirmed seven-type exceptions and must be simplified in the formable payment owner, not hidden behind `GetIndependenceWaveFormableCommitCostText`.
 - `independence_wave_cost_selected_formable_commit_blocked` is a generic blocked explanation rather than the exact selected-family charge. A dynamic blocked selector would improve precision, but it belongs with the formable payment/localisation owner and was not changed here.
 - The three scenario-ledger `cost = 0` controls at `common/decisions/006_independence_wave_decisions.txt:953,990,1020` are navigation controls and intentionally do not consume a resource.
@@ -80,12 +80,12 @@ Follow-up (2026-08-31): the parent applied `006_event6_iw095_security_cost_reada
 
 - The central decisions use `fire_only_once`, cooldowns, active-mission caps, target clearing, route locks, and explicit cancel/timeout effects. The source comments and the specification prohibit world-iteration stores and repeatable recognition or equipment farming.
 - Formable and league actions retain generation, family, consent, target, and active-operation locks; stale target and active-operation cleanup is present in the reviewed decision/effect paths.
-- The main remaining exploit review is the five/seven-type cost mismatch: any attempt to remove a visible charge without removing its corresponding modifier or payment effect would create a hidden-cost or free-action exploit.
+- The parent repair preserves the IW-095 payment effect and factory reservation while changing only the active cost selector and descriptions; no hidden consumed charge or free-action path was introduced. The remaining exploit review concerns the seven-type formable payment palette and other broader bundles, where any simplification must update the matching payment effects together.
 - The GUI status window's animated fallback warnings are visual-state risks, not a reason to add a fallback pressure or pre-event surface.
 
 ## Required follow-up recommendations
 
-- Gameplay owner: redesign `iw095_organize_civic_guard` and `iw095_authorize_emergency_directorate` in `common/decisions/006_independence_wave_decisions.txt` and their payment helper so the displayed and consumed security-standard-factory charge contains no more than four spendable types.
+- Decision owner: preserve the verified IW-095 four-resource selector and description disclosure in `common/decisions/006_independence_wave_decisions.txt` and `localisation/english/006_independence_wave_l_english.yml`; do not reactivate the legacy factory-specific cost row unless its five-type contract is redesigned with the payment owner.
 - Formable owner: redesign `independence_wave_proclaim_military_union` and `independence_wave_formable_pay_selected_commit_cost` with at most four spendable types, then update `localisation/english/006_independence_wave_formable_registry_l_english.yml` and the dynamic blocked selector together.
 - Decision owner: decide whether the six IW-093/IW-098 conference decisions should remain native PP costs or become explicit compact custom-cost rows with matching effect payment; do not silently remove the native cost.
 - UI owner: route `independence_wave_status_window` and `chaosx_independence_wave_formable_state_puzzle_window` to the event UI worker for the required state/resolution/click-region repair. This audit did not edit `interface/006_independence_wave.gui` or any shared GUI.
@@ -101,9 +101,9 @@ Follow-up (2026-08-31): the parent applied `006_event6_iw095_security_cost_reada
 
 ## Changes, validation, and blockers
 
-- Changed files in this tranche: only this handoff document.
-- Changed decision, mission, scripted-GUI, or localisation IDs: none.
-- Before behavior and after behavior: unchanged, because no safe gameplay/localisation patch was applied.
+- Changed files in this tranche: only this handoff document; no Event 006 gameplay, decision, mission, scripted-GUI, or localisation source file was changed.
+- Changed decision, mission, scripted-GUI, or localisation IDs: none. Verified IDs: `iw095_organize_civic_guard`, `iw095_authorize_emergency_directorate`, `independence_wave_cost_security_standard`, and the legacy `independence_wave_cost_security_standard_factory` triplet.
+- Before behavior and after behavior: unchanged during this audit. The current baseline already shows the four consumed security resources in the active IW-095 cost row, retains the one-factory project reservation, and discloses that reservation in both descriptions.
 - Meaningful validation run: focused allocator validator, custom-cost triplet scan across all 37 Event 006 English files, direct-cost scan, category/mission source census, and mandatory read-only GUI inspect/render attempts.
 - Skipped meaningful validation: worker-mediated AI probability analysis was skipped because `chaosx_ai_probability_auditor` is absent from the callable tool inventory; the formable GUI pass was blocked by the exact `Transport closed` MCP failure; no live-game test was run per instruction.
-- Simplifications, omissions, and blockers: no fallback or hidden-cost simplification was introduced. The five- and seven-type cost designs, six native political-power costs, over-six source category declarations, GUI state conflict, and missing probability-worker route remain explicitly queued for their owning agents.
+- Simplifications, omissions, and blockers: no fallback or hidden-cost simplification was introduced. The seven-type formable cost designs, six native political-power costs, over-six source category declarations, GUI state conflict, and missing probability-worker route remain explicitly queued for their owning agents. No Event 006 gameplay or localisation patch was needed in this audit.

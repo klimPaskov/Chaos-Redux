@@ -1,5 +1,9 @@
 # Event 35 generated event-art subagent handoff
 
+## Disposition
+
+This is the original asset-worker handoff. Parent-owned sprite and gameplay wiring is complete; `docs/assets/035_great_depression/manifest.md` is the current runtime source of truth. Any `Proposed`, `needs_user_review`, or pending-wiring wording below records the worker handoff state rather than an unresolved runtime task.
+
 Production scope: non-portrait generated report, news, decision-category picture, and Evolution III super-event imagery for Event 35 Great Depression 2.0.
 
 Source mode: official built-in ImageGen for all eight assets. These are fictional country-neutral period scenes. No external source was used and no historical source attribution is claimed.

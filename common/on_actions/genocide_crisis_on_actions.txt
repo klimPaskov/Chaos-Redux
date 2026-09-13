@@ -30,6 +30,20 @@ on_actions = {
 			random_country = {
 				limit = { exists = yes }
 				camp_rework_run_versioned_migration = yes
+				camp_admin_register_cxt_content = yes
+				camp_occ_historical_setup = yes
+			}
+		}
+	}
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				camp_admin_register_cxt_content = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
 			}
 		}
 	}

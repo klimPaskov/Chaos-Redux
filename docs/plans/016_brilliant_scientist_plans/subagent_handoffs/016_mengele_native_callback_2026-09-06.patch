@@ -1,0 +1,43 @@
+*** Begin Patch
+*** Update File: common/scripted_effects/016_mengele_project_stage_effects.txt
+@@
+-brilliant_scientist_mengele_record_singularity_component = {
++# COUNTRY scope. Reconcile only the four reused native project families from the
++# existing completion hook. Each private API call independently authenticates
++# the owner, Theory receipt, native completion, and incomplete Prototype.
++# No Kruger selectors, Capacity, history, costs, or native outputs are touched.
++brilliant_scientist_mengele_reconcile_reused_native_project_prototypes = {
++	if = {
++		limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
++		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.electronics }
++		brilliant_scientist_mengele_record_native_project_prototype = yes
++		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.rocketry }
++		brilliant_scientist_mengele_record_native_project_prototype = yes
++		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.high_energy }
++		brilliant_scientist_mengele_record_native_project_prototype = yes
++		set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.biological_weapons }
++		brilliant_scientist_mengele_record_native_project_prototype = yes
++	}
++}
++
++brilliant_scientist_mengele_record_singularity_component = {
+*** Update File: common/on_actions/016_brilliant_scientist_project_on_actions.txt
+@@
+ 					brilliant_scientist_capture_biological_agent_history = yes
+ 				}
++				else_if = {
++					limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
++					brilliant_scientist_mengele_reconcile_reused_native_project_prototypes = yes
++				}
+*** Update File: common/scripted_effects/016_mengele_project_stage_effects.md
+@@
+ ## Native adapters
+ 
++`brilliant_scientist_mengele_reconcile_reused_native_project_prototypes` is a country-scope, no-argument completion adapter for Electronics, Rocketry, High Energy, and Biological Weapons.
++The separate strict-Mengele branch of `on_project_completion` calls it; the existing Kruger synchronization and historical capture remain host-only.
++It uses four private family selectors and the existing authentic recording API, which requires matching Theory and native completion and rejects an already-recorded Prototype.
++Each recording call clears its selectors; no event target, cost, Capacity access, native output replay, or Kruger history is introduced.
++It reconciles all four eligible families on one completion notification without a periodic scheduler or whole-world scan.
++Source inventory and scenario evidence are in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_mengele_native_callback_audit_2026-09-06.md` and the matching implementation handoff.
++
+*** End Patch

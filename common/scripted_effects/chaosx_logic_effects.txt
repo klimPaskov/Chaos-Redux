@@ -168,6 +168,14 @@ initialize_event_chaos_level_registry = {
 			limit = { check_variable = { event_chaos_level_registry_event_id = constant:white_peace_event_log.event_id } }
 			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
 		}
+		else_if = {
+			limit = { check_variable = { event_chaos_level_registry_event_id = constant:acid_rain_event.id } }
+			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
+		}
+		else_if = {
+			limit = { check_variable = { event_chaos_level_registry_event_id = constant:black_friday_event.id } }
+			set_temp_variable = { event_chaos_level_registry_required_tier = constant:chaos_meter_tier_id.tier_1 }
+		}
 		add_to_array = {
 			array = global.event_chaos_level_entries
 			value = event_chaos_level_registry_required_tier
@@ -226,11 +234,12 @@ initialize_event_categories = {
     add_to_array = { global.major_events = 2 }   # ZZZ
     add_to_array = { global.major_events = 25 }  # ALIENS ANTARCTICA UFO RACE
     add_to_array = { global.major_events = 30 }  # TIME TRAVELER
+	add_to_array = { global.major_events = constant:acid_rain_event.id }  # ACID RAIN
     add_to_array = { global.major_events = 44 }  # SPACE RACE
     add_to_array = { global.major_events = 49 }  # MASS PANIC
-    add_to_array = { global.major_events = 70 }  # AFRICA GODS
-    add_to_array = { global.major_events = 80 }  # AIRSHIP
-    add_to_array = { global.major_events = 91 }  # THE REVOLUTION
+	add_to_array = { global.major_events = 80 }  # AIRSHIP
+	add_to_array = { global.major_events = 91 }  # THE REVOLUTION
+	add_to_array = { global.major_events = constant:asteroid_incoming_event.id }  # ASTEROID INCOMING
 
     # Fire-once events (start at weight 1000, become 0 permanently when fired)
     add_to_array = { global.fire_once_events = 1 }   # COMMUNISM SPREAD
@@ -246,8 +255,7 @@ initialize_event_categories = {
     add_to_array = { global.fire_once_events = 22 }  # 1391 (JEWS MASSACRE)
     add_to_array = { global.fire_once_events = 23 }  # SOV NUKES
     add_to_array = { global.fire_once_events = 24 }  # HOI
-    add_to_array = { global.fire_once_events = 26 }  # MOVE INDUSTRY TO DESERT
-    add_to_array = { global.fire_once_events = 27 }  # DOCTRINE RESEARCH
+    add_to_array = { global.fire_once_events = 26 }
     add_to_array = { global.fire_once_events = 38 }  # MALTA CRUSADERS
     add_to_array = { global.fire_once_events = 45 }  # THIRD BALKAN WAR
     add_to_array = { global.fire_once_events = 48 }  # BUL AMBITIONS
@@ -282,11 +290,10 @@ initialize_event_categories = {
 	add_to_array = { global.repeatable_events = constant:resources_found_event.id }  # RESOURCES FOUND
 	add_to_array = { global.repeatable_events = constant:infantry_spawn_event.id }  # INF SPAWN
     add_to_array = { global.repeatable_events = 21 }  # RAND CW
-    add_to_array = { global.repeatable_events = 28 }  # ASTEROID
-    add_to_array = { global.repeatable_events = 29 }  # RICHES FOUND
+    add_to_array = { global.repeatable_events = 27 }  # DOCTRINE RESEARCH
+	add_to_array = { global.repeatable_events = constant:riches_found_event.id }  # RICHES FOUND
     add_to_array = { global.repeatable_events = 31 }  # TERRORISTS
     add_to_array = { global.repeatable_events = 32 }  # MISSILES
-    add_to_array = { global.repeatable_events = 33 }  # ACID RAIN
     add_to_array = { global.repeatable_events = 34 }  # INDUSTRY BOOM
     add_to_array = { global.repeatable_events = 35 }  # GREAT DEPRESSION
     add_to_array = { global.repeatable_events = 36 }  # ALIEN SPACECRAFT
@@ -760,6 +767,13 @@ evaluate_event_pool_candidate_unavailability = {
 	}
 	else_if = {
 		limit = {
+			check_variable = { event_id = constant:random_civil_war_event.id }
+			NOT = { random_civil_war_event_pool_available = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.zero_weight }
+	}
+	else_if = {
+		limit = {
 			check_variable = { event_id = constant:independence_wave_event.id }
 			NOT = { is_independence_wave_liberations_cluster_member_capacity_available = yes }
 		}
@@ -785,6 +799,13 @@ evaluate_event_pool_candidate_unavailability = {
 		}
 	}
 	else_if = {
+		limit = {
+			check_variable = { event_id = constant:video_game_in_sweden_event.id }
+			NOT = { video_game_in_sweden_has_any_valid_host = yes }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.video_game_in_sweden_host }
+	}
+	else_if = {
 		limit = { check_variable = { event_id = constant:black_plague_identity.event_id } }
 		if = {
 			limit = { has_global_flag = black_plague_system_started }
@@ -802,6 +823,13 @@ evaluate_event_pool_candidate_unavailability = {
 			limit = { NOT = { black_plague_has_valid_origin = yes } }
 			set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_plague_origin }
 		}
+	}
+	else_if = {
+		limit = {
+			check_variable = { event_id = constant:doctrine_research_event.id }
+			NOT = { any_country = { doctrine_research_country_has_valid_action = yes } }
+		}
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.doctrine_research_no_valid_participant }
 	}
 
 	if = {
@@ -854,6 +882,14 @@ evaluate_random_event_active_pool_candidate = {
 			}
 		}
 		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+	}
+	if = {
+		limit = {
+			check_variable = { var = event_id value = constant:black_friday_event.id compare = equals }
+			black_friday_is_reserved = yes
+		}
+		set_temp_variable = { event_active_pool_candidate_is_valid = 0 }
+		set_temp_variable = { event_pool_candidate_unavailability_reason = constant:event_system_event_unavailability_reason.black_friday_reserved }
 	}
 	if = {
 		limit = { is_in_array = { global.disabled_events = event_id } }
@@ -1065,20 +1101,27 @@ on_major_event_global_pacing_update = {
 }
 
 on_event_cluster_global_pacing_update = {
-	set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
-	get_event_cluster_type = yes
 	if = {
-		limit = {
-			check_variable = {
-				var = event_cluster_type_value
-				value = constant:event_cluster_type.major
-				compare = equals
-			}
-		}
+		limit = { has_global_flag = acid_rain_cluster_major_pacing_pending }
+		clr_global_flag = acid_rain_cluster_major_pacing_pending
 		on_major_event_global_pacing_update = yes
 	}
 	else = {
-		on_minor_event_global_pacing_update = yes
+		set_temp_variable = { event_cluster_type_value = constant:event_cluster_type.repeatable }
+		get_event_cluster_type = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = event_cluster_type_value
+					value = constant:event_cluster_type.major
+					compare = equals
+				}
+			}
+			on_major_event_global_pacing_update = yes
+		}
+		else = {
+			on_minor_event_global_pacing_update = yes
+		}
 	}
 }
 

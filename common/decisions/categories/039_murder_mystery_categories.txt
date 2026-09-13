@@ -1,0 +1,87 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 MURDER MYSTERY DECISION CATEGORIES
+# ============================================================================
+# Overview:
+# - These are the ordinary decision categories for the bounded Event 039
+#   investigation, foreign cells, Assassin Brotherhood, derivative cells, and
+#   World Without Leaders terminal campaign.
+# - Visibility is delegated to the existing integration triggers so categories
+#   disappear when their actor, lifecycle, or branch is no longer valid.
+# - Event-owned small icons and vanilla-sized category pictures identify each
+#   live category. The investigation and Brotherhood pictures use the
+#   installed vanilla conditional-picture contract so public progression is
+#   visible without a custom scripted GUI.
+# ============================================================================
+
+murder_mystery_investigation_category = {
+	icon = GFX_decision_category_039_murder_mystery_murder_mystery_investigation
+	picture = {
+		GFX_decision_cat_picture_039_murder_mystery_investigation_resolved = {
+			has_country_flag = murder_mystery_investigation_aftermath_visible
+		}
+		GFX_decision_cat_picture_039_murder_mystery_investigation_counterinsurgency = {
+			NOT = { has_country_flag = murder_mystery_investigation_aftermath_visible }
+			has_global_flag = murder_mystery_assassin_state_exists
+		}
+		GFX_decision_cat_picture_039_murder_mystery_investigation_international_network = {
+			NOT = { has_country_flag = murder_mystery_investigation_aftermath_visible }
+			NOT = { has_global_flag = murder_mystery_assassin_state_exists }
+			has_global_flag = murder_mystery_evolution_ii_committed
+		}
+		GFX_decision_cat_picture_039_murder_mystery_investigation_murder_cult = {
+			NOT = { has_country_flag = murder_mystery_investigation_aftermath_visible }
+			NOT = { has_global_flag = murder_mystery_evolution_ii_committed }
+			has_global_flag = murder_mystery_evolution_i_committed
+		}
+		GFX_decision_cat_picture_039_murder_mystery_investigation_baseline = {
+			NOT = { has_country_flag = murder_mystery_investigation_aftermath_visible }
+			NOT = { has_global_flag = murder_mystery_evolution_i_committed }
+		}
+	}
+	visible_when_empty = yes
+	visible = { murder_mystery_investigation_category_visible = yes }
+}
+
+murder_mystery_foreign_cell_investigation_category = {
+	icon = GFX_decision_category_039_murder_mystery_foreign_cell_investigation
+	picture = GFX_decision_cat_picture_039_murder_mystery_foreign_cell_investigation
+	visible_when_empty = yes
+	visible = { murder_mystery_foreign_category_visible = yes }
+}
+
+murder_mystery_brotherhood_operations_category = {
+	icon = GFX_decision_category_039_murder_mystery_brotherhood_operations
+	picture = {
+		GFX_decision_cat_picture_039_murder_mystery_brotherhood_evolution_v = {
+			has_global_flag = murder_mystery_evolution_v_committed
+		}
+		GFX_decision_cat_picture_039_murder_mystery_brotherhood_veiled_compact = {
+			NOT = { has_global_flag = murder_mystery_evolution_v_committed }
+			has_global_flag = murder_mystery_evolution_iv_committed
+		}
+		GFX_decision_cat_picture_039_murder_mystery_brotherhood_territorial_survival = {
+			NOT = { has_global_flag = murder_mystery_evolution_iv_committed }
+			has_global_flag = murder_mystery_assassin_state_war_active
+		}
+		GFX_decision_cat_picture_039_murder_mystery_brotherhood_foreign_network = {
+			NOT = { has_global_flag = murder_mystery_evolution_iv_committed }
+			NOT = { has_global_flag = murder_mystery_assassin_state_war_active }
+		}
+	}
+	visible_when_empty = yes
+	visible = { murder_mystery_brotherhood_category_visible = yes }
+}
+
+murder_mystery_cell_administration_category = {
+	icon = GFX_decision_category_039_murder_mystery_cell_administration
+	picture = GFX_decision_cat_picture_039_murder_mystery_cell_administration
+	visible_when_empty = yes
+	visible = { murder_mystery_cell_category_visible = yes }
+}
+
+murder_mystery_world_without_leaders_category = {
+	icon = GFX_decision_category_039_murder_mystery_world_without_leaders
+	picture = GFX_decision_cat_picture_039_murder_mystery_world_without_leaders
+	visible_when_empty = yes
+	visible = { murder_mystery_world_category_visible = yes }
+}

@@ -1,0 +1,161 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 039 ASSASSIN TECHNOLOGIES
+# ============================================================================
+# Overview:
+# - This compact technology line unlocks real operations-kit production and
+#   the five Event 039 profiles plus their Saboteur Cell support company.
+# - The line is owner-gated so ordinary countries do not receive an isolated
+#   military tree. Focuses and validated runtime transactions grant the same
+#   technologies to Assassin State and derivative countries.
+# - Values are deliberately conservative: the unit family has useful short
+#   attack and terrain bonuses, but no universal defence, armour, or air cover.
+# ============================================================================
+
+@MURDER_MYSTERY_TECH_START_YEAR = 1936
+@MURDER_MYSTERY_TECH_RESEARCH_COST = 1
+@MURDER_MYSTERY_TECH_AI = 0
+@MURDER_MYSTERY_TECH_ALLOW = yes
+
+technologies = {
+	murder_mystery_clandestine_combat_training = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		enable_equipments = { assassin_operations_kit_1 }
+		enable_subunits = { assassin_cadre }
+		assassin_cadre = {
+			max_organisation = 4
+			breakthrough = 3
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+
+	murder_mystery_compartmented_logistics = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		dependencies = { murder_mystery_clandestine_combat_training = 1 }
+		assassin_cadre = {
+			supply_consumption = -0.08
+			defense = 2
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+
+	murder_mystery_urban_rough_terrain_infiltration = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		dependencies = { murder_mystery_compartmented_logistics = 1 }
+		enable_subunits = { saboteur_cell }
+		assassin_cadre = {
+			breakthrough = 2
+			maximum_speed = 0.05
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+
+	murder_mystery_shadow_operations_doctrine = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		dependencies = { murder_mystery_urban_rough_terrain_infiltration = 1 }
+		enable_subunits = { shadow_company }
+		shadow_company = {
+			breakthrough = 5
+			soft_attack = 4
+			maximum_speed = 0.10
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+
+	murder_mystery_protected_command_doctrine = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		dependencies = { murder_mystery_urban_rough_terrain_infiltration = 1 }
+		enable_subunits = { silent_guard }
+		silent_guard = {
+			defense = 7
+			entrenchment = 2
+			max_organisation = 4
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+
+	murder_mystery_master_cadre_system = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		dependencies = {
+			murder_mystery_shadow_operations_doctrine = 1
+			murder_mystery_protected_command_doctrine = 1
+		}
+		enable_subunits = { master_assassin }
+		master_assassin = {
+			breakthrough = 8
+			soft_attack = 6
+			recon = 1
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+
+	murder_mystery_mechanized_infiltration = {
+		allow = {
+			OR = {
+				has_country_flag = murder_mystery_assassin_state
+				has_country_flag = murder_mystery_derivative_country
+			}
+		}
+		research_cost = @MURDER_MYSTERY_TECH_RESEARCH_COST
+		start_year = @MURDER_MYSTERY_TECH_START_YEAR
+		dependencies = {
+			murder_mystery_compartmented_logistics = 1
+			murder_mystery_shadow_operations_doctrine = 1
+		}
+		enable_subunits = { mechanized_assassin }
+		mechanized_assassin = {
+			breakthrough = 8
+			maximum_speed = 0.15
+			soft_attack = 4
+		}
+		ai_will_do = { factor = @MURDER_MYSTERY_TECH_AI }
+		special_project_specialization = { specialization_land }
+	}
+}

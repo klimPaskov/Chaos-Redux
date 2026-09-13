@@ -1,0 +1,99 @@
+{
+  "balance_probe": {
+    "content": [
+      {
+        "text": "# Meshy Credit Balance\n\n**Balance**: 382 credits",
+        "type": "text"
+      }
+    ],
+    "structuredContent": {
+      "balance": 382
+    }
+  },
+  "cleanup": {
+    "owned_process_ids_at_cleanup": [],
+    "ownership": "windows_job_object",
+    "root_pid": 1784,
+    "surviving_process_ids": []
+  },
+  "image_to_3d_any_of": null,
+  "image_to_3d_image_arguments": {
+    "ai_model": {
+      "default": "latest",
+      "description": "AI model: 'meshy-7' (default, currently resolves to Meshy 7). IMPORTANT: Before calling this tool, ask the user which model to use and explain the differences: meshy-7/latest = best quality (20 credits), meshy-7 = previous gen (5 credits)",
+      "enum": [
+        "meshy-7",
+        "latest"
+      ],
+      "type": "string"
+    },
+    "file_path": {
+      "description": "ABSOLUTE path to LOCAL image (.jpg/.png). PREFERRED for local files. Server auto-encodes. Example: /Users/me/photo.jpg. NEVER manually base64-encode.",
+      "type": "string"
+    },
+    "image_url": {
+      "description": "PUBLIC image URL (https://...). Use ONLY for remote images. For local files use file_path instead. NEVER manually base64-encode.",
+      "type": "string"
+    },
+    "input_task_id": {
+      "description": "Chain from a SUCCEEDED text-to-image or image-to-image task: use its generated image as the input instead of image_url/file_path. Provide only one image source.",
+      "type": "string"
+    },
+    "multi_view_thumbnails": {
+      "description": "Also return 4 cardinal-view thumbnails (front/back/left/right). Default false.",
+      "type": "boolean"
+    },
+    "pose_mode": {
+      "description": "Pose mode for character models: 'a-pose' or 't-pose'. IMPORTANT: When the user intends to rig or animate the model, default to 't-pose' for best rigging results",
+      "enum": [
+        "a-pose",
+        "t-pose"
+      ],
+      "type": "string"
+    },
+    "texture_image_url": {
+      "description": "Image URL to guide texturing",
+      "format": "uri",
+      "type": "string"
+    }
+  },
+  "image_to_3d_multi_image_arguments": [
+    "image_enhancement"
+  ],
+  "image_to_3d_present": true,
+  "image_to_3d_required": [],
+  "multi_image_tool_present": true,
+  "tool_count": 29,
+  "tool_names": [
+    "meshy_analyze_printability",
+    "meshy_animate",
+    "meshy_animation_library",
+    "meshy_cancel_task",
+    "meshy_check_balance",
+    "meshy_convert",
+    "meshy_creative_lab",
+    "meshy_download_model",
+    "meshy_download_motion",
+    "meshy_get_motion_status",
+    "meshy_get_task_status",
+    "meshy_image_to_3d",
+    "meshy_image_to_image",
+    "meshy_list_models",
+    "meshy_list_motion_tasks",
+    "meshy_list_tasks",
+    "meshy_multi_image_to_3d",
+    "meshy_process_multicolor",
+    "meshy_remesh",
+    "meshy_repair_printability",
+    "meshy_resize",
+    "meshy_retexture",
+    "meshy_rig",
+    "meshy_send_to_slicer",
+    "meshy_text_to_3d",
+    "meshy_text_to_3d_refine",
+    "meshy_text_to_image",
+    "meshy_text_to_motion",
+    "meshy_uv_unwrap"
+  ],
+  "wrapper": ".tools/3d_pipeline/wrappers/run_meshy_mcp.cmd"
+}

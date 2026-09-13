@@ -1,6 +1,6 @@
 # `chaosx_generated_event_art` Handoff: Event 028 Asteroid Incoming
 
-Status: complete for the seven requested generated scene assets. Runtime `.gfx` registration and gameplay-consumer wiring are parent-owned and remain pending by design. No gameplay, localisation, GFX, GUI, event, decision, achievement, workbook, or sound definition was edited by this package.
+Status: complete for the seven requested generated scene assets. Runtime `.gfx` registration and gameplay-consumer wiring were subsequently completed by the parent; the durable current wiring and visual audit are in `docs/assets/028_asteroid_incoming/asset_audit.md` and `gfx_handoff.md`. No gameplay, localisation, GFX, GUI, event, decision, achievement, workbook, or sound definition was edited by this asset package.
 
 All seven sources were generated independently through the official native `$imagegen` route. All source images are fictional, target-neutral 1936–1945 documentary imagery. No background-removal fallback, primitive art, unrelated asset, readable generated text, modern object, nuclear symbolism, mushroom-cloud imitation, map-as-main-subject, or identifiable real tragedy was used.
 

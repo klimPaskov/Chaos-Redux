@@ -1,0 +1,44 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILE PROGRAM IDEAS
+# ============================================================================
+# These mutually exclusive national spirits expose the current command state.
+# The runtime refresh helper removes the old spirit before applying one entry.
+# ============================================================================
+
+ideas = {
+	country = {
+		missiles_program_experimental = {
+			picture = GFX_idea_032_missiles_program_initial
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = constant:missiles_modifier.program_experimental_research
+				rocket_attack_factor = constant:missiles_modifier.program_experimental_rocket_attack
+			}
+		}
+
+		missiles_program_operational = {
+			picture = GFX_idea_032_missiles_program_mature
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = constant:missiles_modifier.program_operational_research
+				rocket_attack_factor = constant:missiles_modifier.program_operational_rocket_attack
+				war_support_factor = constant:missiles_modifier.program_operational_war_support
+			}
+		}
+
+		missiles_program_compromised = {
+			picture = GFX_idea_032_missiles_program_compromised
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = constant:missiles_modifier.program_compromised_stability
+				war_support_factor = constant:missiles_modifier.program_compromised_war_support
+				rocket_attack_factor = constant:missiles_modifier.program_compromised_rocket_attack
+			}
+		}
+	}
+
+	hidden_ideas = {
+		# Modifier-free carrier consumed by the bounded CXT Event 032 setup hook.
+		chaosx_cxt_extension_event032_missiles = { }
+	}
+}

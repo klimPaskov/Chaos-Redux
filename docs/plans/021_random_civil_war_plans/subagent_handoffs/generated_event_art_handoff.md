@@ -1,14 +1,16 @@
 # Event 021 generated event-art handoff
 
+> **Current status.** This original production handoff is retained for provenance. The current `interface/021_random_civil_war.gfx` contains the report, news, and category sprite registrations, and the referenced runtime files resolve. User live-session consumer validation remains pending.
+
 ## Handoff status
 
-All four requested static non-portrait assets are complete and ready for parent-owned `.gfx` registration.
+The original handoff recorded all four requested static non-portrait assets as complete and ready for parent-owned `.gfx` registration.
 
 The worker did not edit gameplay, localisation, decisions, events, AI, workbook, GUI, or interface GFX files.
 
-The parent should review the contact sheet and then add the sprite definitions in the suggested target GFX file.
+The original parent action was to review the contact sheet and add the sprite definitions in the suggested target GFX file; current source wiring has since been recorded in `interface/021_random_civil_war.gfx`.
 
-## Runtime assets
+## Runtime assets — original handoff snapshot
 
 | Asset ID | Final DDS path | Sprite name | Target `.gfx` | Target canvas | Use notes |
 | --- | --- | --- | --- | --- | --- |
@@ -17,7 +19,7 @@ The parent should review the contact sheet and then add the sprite definitions i
 | `news_event_021_global_fracture` | `gfx/event_pictures/021_random_civil_war/news_event_021_global_fracture.dds` | `GFX_news_event_021_global_fracture` | `interface/021_random_civil_war_event_pictures.gfx` | `397x153` | Global Fracture news strip; grayscale single international-station scene with displaced civilians, military columns, border inspection, and delegations. |
 | `decision_category_picture_021_civil_war` | `gfx/interface/decisions/021_random_civil_war/decision_category_picture_021_civil_war.dds` | `GFX_decision_cat_picture_021_civil_war` | `interface/021_random_civil_war_event_pictures.gfx` | `114x101` | Static category `picture` field art; opaque sepia rail-signal, torn-standard, barricade, and divided-command composition. |
 
-## Ready-to-copy sprite definitions
+## Ready-to-copy sprite definitions — historical proposal
 
 ```text
 spriteTypes = {
@@ -60,9 +62,9 @@ The review contact sheet is `docs/assets/021_random_civil_war/contact_sheets/021
 
 The validation facts and hashes are recorded in the manifest.
 
-## Parent-owned integration note
+## Historical parent-owned integration note — superseded
 
-The current checkout did not contain exact Event 021 runtime event or decision-category identifiers for these working asset IDs, so the parent must bind the four stable sprite names to the final implemented consumers.
+At the original handoff checkpoint, the checkout did not contain exact Event 021 runtime event or decision-category identifiers for these working asset IDs, so the parent was asked to bind the four stable sprite names to the final implemented consumers. The current GFX file uses `GFX_decision_category_picture_021_civil_war` for the category picture, while the ready-to-copy block above retains the original proposed `GFX_decision_cat_picture_021_civil_war` name for provenance.
 
 The proposed GFX target is `interface/021_random_civil_war_event_pictures.gfx`, following the event-specific pattern used by the existing Event 020 event-picture registry.
 

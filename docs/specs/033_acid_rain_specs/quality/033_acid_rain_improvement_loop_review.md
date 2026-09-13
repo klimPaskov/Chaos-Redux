@@ -86,11 +86,11 @@ Resolved in design. Shared ledger layout and source ID require implementation au
 
 Problem:
 
-The five repeated Event 13 entries looked like empty placeholders. Repository documentation shows they are five logical season slots with distinct danger and tier behavior.
+The repeated Event 13 entries looked like empty placeholders. The accepted Event 33 goal establishes five logical slots with distinct danger and tier behavior.
 
 Revision:
 
-Event 33 becomes a sixth Severe member after all five Event 13 slots. It does not replace a slot.
+Event 33 follows all five Event 13 rows as the sixth optional Severe member, and Event 51 follows as the seventh optional High member. Neither replaces an Event 13 slot.
 
 Status:
 

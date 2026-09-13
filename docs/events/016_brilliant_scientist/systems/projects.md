@@ -18,10 +18,10 @@ The effect and query contract is documented in `common/scripted_effects/016_conv
 
 1. Establish the Directorate and a valid primary facility.
 2. Authorize a family's Theory decision. The decision consumes equipment, personnel, fuel, relevant experience, Political Power, strategic-resource access, and factory time according to the common stage baseline multiplied by that family's profile.
-3. Complete the family's native Prototype:
-   - Ten families use new Event 016 native projects.
-   - Electronics, Rocketry, High Energy, and Biological Weapons reuse existing live projects.
-   - Strategic Singularity uses six exact component projects.
+3. Complete the family's Prototype through the authoritative route available in the installation:
+   - With `Gotterdammerung`, ten families use the Event 016 native projects, Electronics, Rocketry, High Energy, and Biological Weapons reuse their existing live projects, and Strategic Singularity uses six exact component projects.
+   - Without `Gotterdammerung`, the board exposes one paid, timed Prototype adapter for each family and records the same stage ledger, capacity burden, accident pressure, history, and reward callbacks without opening a native special-project card.
+   - The no-DLC Singularity route records six separate component receipts before its paid Prototype adapter becomes available; partial component progress never advances the family.
 4. Advance Deployment only after the native prototype and the mapped technology, project, site, or stockpile prerequisites are present.
 5. Advance Weaponization only after the mapped late prerequisites. The stage adds a family-specific military or institutional output and a persistent history record.
 6. Every completed stage recalculates accident pressure from Exposure, stage burden, project condition, and suspension state. A failed pressure roll activates the exact family's incident mission and recovery action.
@@ -51,14 +51,14 @@ Once Advanced Materials reaches Deployment, Rocketry reaches Prototype, the prim
 
 When `chaosx.nr16.195` opens, the host chooses between two ownership records. The national qualification board keeps the control tables with the institution, certifies the selected state, lowers Dependence by 15, raises Independent Capacity by 15, lowers Project Capacity by 5, reduces air accidents by 15 percent, and improves air mission efficiency by 5 percent while raising Mandate, Exposure, and Grievance by the documented amounts. The national receipt remains with the former host and is never reconstructed on an ordinary recipient or the Kruger State. Kruger's proprietary envelope raises air range by 10 percent and air mission efficiency by 5 percent, raises Rocketry accident pressure by 10, and follows his character history with the separate Dependence, Capacity, Exposure, and grievance vector. A recipient or fixed-tag Kruger State reconstructs only that proprietary receipt without replaying costs, ledger deltas, or the test-state selection. This is a project-ownership action, not a new stage, unit, CBRN reservation, 3D package, Event Log row, or catalog event.
 
-Prototype projects are not charged a second wrapper clock. Their native facility time, breakthrough points, resources, and prototype iterations are the prototype cost.
+Prototype projects are not charged a second wrapper clock. With `Gotterdammerung`, native facility time, breakthrough points, resources, and prototype iterations are the prototype cost; without it, the family adapter's centralized support-equipment, fuel, Political Power, civilian-factory, and timed burden is the prototype cost.
 
 ## Stage and capacity contract
 
 | Stage | Persistent ledger value | Additional occupied capacity | Baseline wrapper duration source |
 | --- | ---: | ---: | --- |
 | Theory | 1 | 10 | `constant:brilliant_scientist_project_duration.<family>_theory` |
-| Prototype | 2 | 10 | Native project clock |
+| Prototype | 2 | 10 | Native project clock with `Gotterdammerung`; `constant:brilliant_scientist_project_duration.<family>_prototype` through the board without it |
 | Deployment | 3 | 15 | `constant:brilliant_scientist_project_duration.<family>_deployment` |
 | Weaponization | 4 | 15 | `constant:brilliant_scientist_project_duration.<family>_weaponization` |
 
@@ -83,7 +83,7 @@ The country arrays reserve and queue reports while a host owns the Directorate. 
 
 ## Timed-stage ownership and settlement
 
-The 45 Theory, Deployment, and Weaponization wrappers and the 15 native Prototype integration wrappers carry an exact family-and-stage receipt in `brilliant_scientist_active_project_family` and `brilliant_scientist_active_project_stage`.
+The 45 Theory, Deployment, and Weaponization wrappers, the 15 native Prototype integration wrappers, and the 15 no-DLC Prototype adapters carry an exact family-and-stage receipt in `brilliant_scientist_active_project_family` and `brilliant_scientist_active_project_stage`.
 Each cancellation and removal callback supplies its own fixed identity.
 A delayed callback for another family or stage cannot clear the current order or alter its Capacity.
 The progress flag is not sufficient authority by itself.
@@ -102,6 +102,13 @@ The remaining integration callback closes only its own receipt and cannot charge
 Integration does not reserve Capacity while waiting.
 If another native transition consumes the available room first, integration closes without a reward and remains selectable once its requirements are met again.
 
+No-DLC Prototype adapters call the same `brilliant_scientist_begin_project_stage` and `brilliant_scientist_finish_project_stage` helpers as ordinary board stages.
+They reserve the Prototype capacity delta, consume their four displayed burdens, and use strategic resources only as non-consumed reserve gates.
+Their family-specific timed intervals call the same accident-pressure refresh, incident dispatch, breakthrough report, history, one-time reward, and cleanup callbacks as the other board stages.
+The six no-DLC Singularity component adapters instead record one existing component at a time through `brilliant_scientist_register_singularity_component`; they have their own paid factory interval and never reserve Prototype capacity or auto-advance the stage.
+That registry dispatches a valid Mengele provider first through the strict private native-output adapter; only the current Event 016 host writes the Kruger component array, count, and completion flags, so an unauthenticated callback cannot cross-write either program or recurse into the shared registry.
+Only the sixth distinct component receipt, with all six canonical completion flags present, unlocks the Singularity Prototype adapter; an inconsistent counter alone cannot open the route. The adapter remains blocked by the same nonterminal and Laboratory World exclusions as the native route.
+
 Finalization reconstructs available Capacity from gross Capacity, all cumulative stage burdens, suspended-family discounts, and any surviving paid reservation.
 It does not refund consumed equipment, fuel, manpower, experience, Political Power, or elapsed factory time.
 This prevents a clamped availability value from creating extra Capacity through blind incremental refunds.
@@ -117,6 +124,9 @@ The country-scoped helper contract is:
 | `brilliant_scientist_finish_project_stage` / `brilliant_scientist_cancel_project_stage` | Fixed normal-wrapper family and stage | Finish applies a changed stage only in valid context; cancellation awards nothing; both settle only their matching receipt. |
 | `brilliant_scientist_begin_native_prototype_integration` | Fixed family; caller is the decision exposed by verified native completion | Owns a Prototype receipt with no Capacity delta or wrapper payment. |
 | `brilliant_scientist_finish_native_prototype_integration` / `brilliant_scientist_cancel_native_prototype_integration` | Fixed family and Prototype stage | Require a matching delta-free receipt; finish attempts the exact native transition, then closes the owned receipt. |
+| `brilliant_scientist_load_no_dlc_prototype_cost` | Fixed family selected by a no-DLC Prototype adapter | Loads the centralized four-burden adapter profile for the canonical stage helper; reserve resources remain gates and are not consumed. |
+| `brilliant_scientist_begin_singularity_component_fallback` / `brilliant_scientist_finish_singularity_component_fallback` | One of the six fixed component decisions and its matching component enum | Owns and settles one timed component receipt, then calls the canonical component registration effect exactly once. |
+| `brilliant_scientist_register_singularity_component` | Temporary component from a native completion or a settled no-DLC receipt | Dispatches a strict valid Mengele provider callback first; otherwise the current host updates the idempotent Kruger component array, count, flags, and native arming gate. |
 | `brilliant_scientist_complete_native_prototype_stage` | Fixed family from a verified native completion or its integration wrapper | Exact Theory-to-Prototype transition, changed-only family output/history/incident, then Capacity reconstruction; leaves another active receipt intact. |
 | `brilliant_scientist_close_active_project_stage_on_terminal` | The terminal's current host/KRG caller | Reads and closes its identified active normal or native receipt without a live-context requirement. |
 | `brilliant_scientist_finalize_owned_project_stage` | Private implementation helper, only inside an already-matched ownership branch | Clears transient fields and reconstructs Capacity; no stage or material refund. |
@@ -125,9 +135,11 @@ For example, the computation Deployment cancellation sets temporary family to `c
 All other wrappers use the same pattern with their own fixed pair.
 These helpers are not public technology-grant APIs and do not authorize callers to fabricate project completion.
 
-The required no-DLC progression path remains a separate acceptance item.
-Native project completion evidence does not by itself prove the decision-led board can progress without the DLC presentation.
-Current source traces, unchanged cost/timer/AI comparisons, and MCP limitations are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_final_project_stage_owner_checkpoint_2026-09-02.md`.
+The no-DLC progression path is implemented in the existing Directorate category.
+Each of the fifteen families has a hidden-when-DLC-present, visible-when-DLC-absent Prototype adapter with a concrete four-burden payment, a timed factory interval, a custom requirement tooltip, and the canonical stage transition callbacks.
+The native integration decisions remain DLC-gated, so a present `Gotterdammerung` installation keeps native projects authoritative and never exposes a duplicate board adapter.
+The no-DLC Singularity chain has six distinct component decisions, keeps every component flag and array entry, requires all six before Prototype, and retains terminal and Laboratory World exclusions.
+The explicit DLC-present, DLC-absent, partial-Singularity, complete-Singularity, and terminal-lock fixtures and review notes are recorded in `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_no_dlc_project_progression_fallback_2026-09-05.md`.
 
 ## Family implementation map
 
@@ -236,6 +248,9 @@ The exact wrapper costs in `constant:brilliant_scientist_project_stage_cost.*` a
 - the family profiles in `constant:brilliant_scientist_project_profile.*`
 
 Each stage checks and then consumes the exact Support Equipment, trucks, trains, fuel, manpower, and relevant experience. Political Power is paid through the decision cost. Civilian factories remain occupied for the full decision clock. Military factories and relevant strategic resources are explicit start gates. Prototype projects drain their own steel, tungsten, chromium, and rubber through the native special-project system.
+
+When `Gotterdammerung` is absent, the Prototype adapter replaces only the unavailable native presentation: it consumes the centralized Political Power, Support Equipment, and fuel burdens, occupies its configured civilian factories for the family Prototype duration, and checks the mapped steel, tungsten, chromium, and rubber reserve gates without consuming those reserves.
+The adapter is not a free grant and does not bypass the family's Theory, facility, technology, site, scenario, or capacity prerequisites.
 
 ## Accidents and recovery
 

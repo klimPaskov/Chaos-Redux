@@ -1,0 +1,29 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 CXT EXTENSION EFFECTS
+# ============================================================================
+# The CXT fixture registers the Event 035 general-system package without
+# starting a live depression, altering a state, or consuming economy resources.
+# It exposes a stable readiness proof so the test country can exercise the
+# decision, API, and cleanup surfaces separately from normal event pacing.
+
+great_depression_register_cxt_test_content = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:chaosx_cxt_extension_event035_great_depression
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+chaosx_cxt_extension_event035_great_depression_apply = {
+	if = {
+		limit = {
+			has_country_flag = chaosx_test_country_initialized
+			NOT = { has_country_flag = great_depression_cxt_fixture_initialized }
+		}
+		set_country_flag = great_depression_cxt_fixture_initialized
+		set_country_flag = great_depression_cxt_fixture_ready
+		set_variable = { great_depression_cxt_fixture_schema = constant:great_depression_api.contract_version }
+		set_variable = { great_depression_cxt_fixture_public_minimum = constant:great_depression_event.public_value_minimum }
+		set_variable = { great_depression_cxt_fixture_public_maximum = constant:great_depression_event.public_value_maximum }
+	}
+}

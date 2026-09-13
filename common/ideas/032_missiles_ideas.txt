@@ -1,0 +1,55 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 MISSILE PROGRAM IDEAS
+# ============================================================================
+# These mutually exclusive national spirits expose the current command state.
+# The runtime refresh helper removes the old spirit before applying one entry.
+# ============================================================================
+
+# These file-local values mirror common/script_constants/032_missiles_constants.txt:missiles_modifier.
+# Idea modifier blocks do not accept constant: tokens, so the shared numeric tuning is repeated here.
+@MISSILES_PROGRAM_EXPERIMENTAL_RESEARCH = 0.02
+@MISSILES_PROGRAM_EXPERIMENTAL_ROCKET_ATTACK = 0.03
+@MISSILES_PROGRAM_OPERATIONAL_RESEARCH = 0.04
+@MISSILES_PROGRAM_OPERATIONAL_ROCKET_ATTACK = 0.08
+@MISSILES_PROGRAM_OPERATIONAL_WAR_SUPPORT = 0.02
+@MISSILES_PROGRAM_COMPROMISED_STABILITY = -0.04
+@MISSILES_PROGRAM_COMPROMISED_WAR_SUPPORT = -0.05
+@MISSILES_PROGRAM_COMPROMISED_ROCKET_ATTACK = -0.10
+
+ideas = {
+	country = {
+		missiles_program_experimental = {
+			picture = GFX_idea_032_missiles_program_initial
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = @MISSILES_PROGRAM_EXPERIMENTAL_RESEARCH
+				rocket_attack_factor = @MISSILES_PROGRAM_EXPERIMENTAL_ROCKET_ATTACK
+			}
+		}
+
+		missiles_program_operational = {
+			picture = GFX_idea_032_missiles_program_mature
+			allowed_civil_war = { always = yes }
+			modifier = {
+				research_speed_factor = @MISSILES_PROGRAM_OPERATIONAL_RESEARCH
+				rocket_attack_factor = @MISSILES_PROGRAM_OPERATIONAL_ROCKET_ATTACK
+				war_support_factor = @MISSILES_PROGRAM_OPERATIONAL_WAR_SUPPORT
+			}
+		}
+
+		missiles_program_compromised = {
+			picture = GFX_idea_032_missiles_program_compromised
+			allowed_civil_war = { always = yes }
+			modifier = {
+				stability_factor = @MISSILES_PROGRAM_COMPROMISED_STABILITY
+				war_support_factor = @MISSILES_PROGRAM_COMPROMISED_WAR_SUPPORT
+				rocket_attack_factor = @MISSILES_PROGRAM_COMPROMISED_ROCKET_ATTACK
+			}
+		}
+	}
+
+	hidden_ideas = {
+		# Modifier-free carrier consumed by the bounded CXT Event 032 setup hook.
+		chaosx_cxt_extension_event032_missiles = { }
+	}
+}

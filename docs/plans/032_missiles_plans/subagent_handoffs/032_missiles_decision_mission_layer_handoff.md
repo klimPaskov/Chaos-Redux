@@ -1,5 +1,7 @@
 # Event 32 decision and mission layer handoff
 
+Disposition: implemented and superseded by the parent integration pass. The original API-gap observations below describe the pre-core snapshot; current definitions and wiring are authoritative in the current `common/scripted_effects/032_missiles_*.txt`, `common/scripted_triggers/032_missiles_*.txt`, and `docs/plans/032_missiles_plans/032_missiles_test_results.md`.
+
 ## Scope
 
 This handoff covers only the ordinary Event 32 decision category, its decisions, its timed missions, and their English localization.
@@ -49,12 +51,12 @@ The layer also references `missiles_commit_operation` for launch and accepted re
 
 The core must set and clear the phase, operation, target, incident, warning, rogue-command, site, and mission-completion flags consumed by this layer, including `missiles_target_selected`, `missiles_operation_ready`, `missiles_command_control_secure`, `missiles_rogue_command_active`, `missiles_warning_active`, and `missiles_retaliation_network_severed`.
 
-## Known integration simplifications and blockers
+## Historical integration observations
 
 - Survey completion calls the supplied `missiles_establish_secondary_site` API because no dedicated primary-site or survey-resolution effect was exposed; the core owner should replace or parameterize this call if survey completion has a distinct receipt.
 - Site-repair completion calls `missiles_restore_readiness` because no dedicated site-repair completion API was exposed; the core owner should add or route a site-specific repair resolution if readiness and site condition are separate records.
 - The specification’s clear-target, inspect-operation, participating-site change, and warning target-change actions are not exposed as exact APIs in the requested contract, so no invented references were added.
-- The requested category GFX names are referenced exactly, but no matching definitions or Event 32 art were present in the inspected repository; this worker did not edit interface or asset files.
+- The requested category GFX names were initially unresolved in this worker snapshot; the parent subsequently installed the Event 32 category definitions and assets. The remaining exact native-raid consumer limitation is recorded separately in `docs/events/032_missiles/asset_audit.md`.
 - Cost values are file-local decision tuning because the core constants file was outside this worker’s ownership; every action remains at or below four spendable cost types and uses real game resources.
 - No GUI was created, by design.
 

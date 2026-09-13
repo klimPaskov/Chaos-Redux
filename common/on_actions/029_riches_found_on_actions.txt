@@ -1,0 +1,78 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND ON ACTIONS
+# ============================================================================
+# Event-driven lifecycle hooks for the bounded registered-mine array. Startup
+# only initializes the registry through one existing country; control, annex,
+# peace-conference, and capitulation hooks touch registered states only. No
+# daily, weekly, monthly, or whole-world recurring mine scan is introduced.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				riches_found_initialize_registry = yes
+			}
+		}
+	}
+
+	# ROOT is the new controller, FROM is the old controller, and FROM.FROM is
+	# the state, matching the narrow vanilla on_state_control_changed contract.
+	on_state_control_changed = {
+		effect = {
+			FROM.FROM = { save_event_target_as = riches_found_changed_state }
+			ROOT = { save_event_target_as = riches_found_new_controller }
+			FROM = { save_event_target_as = riches_found_old_controller }
+			if = {
+				limit = { FROM.FROM = { riches_found_mine_is_registered = yes } }
+				FROM.FROM = { riches_found_handle_state_control_change = yes }
+			}
+		}
+	}
+
+	# Removal can invalidate a contract or original owner. Registry traversal is
+	# bounded by the fixed Event 029 array rather than every state in the world.
+	on_annex = {
+		effect = {
+			FROM = { save_event_target_as = riches_found_removed_actor }
+			if = {
+				limit = { has_variable = global.riches_found_registered_mines^num }
+				for_each_scope_loop = {
+					array = global.riches_found_registered_mines
+					if = { limit = { riches_found_mine_is_registered = yes } riches_found_handle_removed_actor = yes }
+				}
+			}
+		}
+	}
+
+	# Peace conferences can update ownership without a controller transition.
+	# Each registered state reconciles itself and refreshes its current
+	# controller once when needed.
+	on_peaceconference_ended = {
+		effect = {
+			if = {
+				limit = { has_variable = global.riches_found_registered_mines^num }
+				for_each_scope_loop = {
+					array = global.riches_found_registered_mines
+					if = { limit = { riches_found_mine_is_registered = yes } riches_found_handle_owner_change = yes }
+				}
+			}
+		}
+	}
+
+	# Capitulation marks occupied registered states without introducing a
+	# recurring occupation scan.
+	on_capitulation = {
+		effect = {
+			FROM = { save_event_target_as = riches_found_capitulated_country }
+			if = {
+				limit = { has_variable = global.riches_found_registered_mines^num }
+				for_each_scope_loop = {
+					array = global.riches_found_registered_mines
+					if = { limit = { riches_found_mine_is_registered = yes } riches_found_handle_occupation_change = yes }
+				}
+			}
+		}
+	}
+}

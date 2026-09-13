@@ -1,0 +1,117 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 032 TRIGGERABLE SCENARIO CONSTANTS
+# ============================================================================
+# Stable profile IDs and bounded setup scale for SCN-015 Missile Age. The
+# shared triggerable-scenario registry owns the public raw ID and intensity
+# enum; this file owns only Event 032's profile contract and package targets.
+# ============================================================================
+
+missiles_scenario_profile = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	global_proliferation = 1
+	saturation_war = 2
+	command_breakdown = 3
+	special_payload_crisis = 4
+	retaliation_network = 5
+}
+
+missiles_scenario_failure = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	none = 0
+	invalid_selection = 1
+	no_profile_pool = 2
+	profile_gate_disabled = 3
+	missing_site_plan = 4
+	missing_existing_war = 5
+	missing_payload_owner = 6
+	missing_retaliation_participants = 7
+	package_failure = 8
+	duplicate_launch = 9
+	missing_breakdown_candidate = 10
+}
+
+missiles_scenario_scale = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	zero = 0
+	one = 1
+
+	# Country-share targets are bounded package selectors, not random-event
+	# weights. Maximum is the only profile that intentionally reaches 100%.
+	low_recipient_share = 0.10
+	medium_recipient_share = 0.35
+	high_recipient_share = 0.75
+	maximum_recipient_share = 1.00
+
+	low_target_stage = 1
+	medium_target_stage = 2
+	high_target_stage = 4
+	maximum_target_stage = 6
+
+	# These four reserve values mirror the Event 032 core scenario tuning
+	# contract so the shared scenario adapter has one explicit package input.
+	low_reserve = 6
+	medium_reserve = 10
+	high_reserve = 16
+	maximum_reserve = 24
+
+	# These values are site levels. The setup adapter derives the canonical
+	# physical capacities: initial 4, reinforced 6, expanded 8, strategic 10.
+	low_site_capacity = 1
+	medium_site_capacity = 2
+	high_site_capacity = 3
+	maximum_site_capacity = 4
+
+	low_readiness = 70
+	medium_readiness = 75
+	high_readiness = 82
+	maximum_readiness = 90
+
+	low_command_control = 90
+	medium_command_control = 80
+	high_command_control = 65
+	maximum_command_control = 50
+
+	low_incident_cap = 0
+	medium_incident_cap = 0
+	high_incident_cap = 1
+	maximum_incident_cap = 1
+
+	low_command_damage = 0
+	medium_command_damage = 12
+	high_command_damage = 28
+	maximum_command_damage = 40
+
+	low_warning_seed_count = 0
+	medium_warning_seed_count = 0
+	high_warning_seed_count = 1
+	maximum_warning_seed_count = 1
+
+	high_retaliation_control = 80
+	maximum_retaliation_control = 85
+	special_payload_control_floor = 65
+
+	high_special_warning_pressure = 6
+	maximum_special_warning_pressure = 10
+
+	low_retaliation_participants = 2
+	medium_retaliation_participants = 3
+	high_retaliation_participants = 4
+	maximum_retaliation_participants = 6
+
+	minimum_saturation_belligerents = 2
+	minimum_retaliation_participants = 2
+	minimum_payload_owners = 1
+	setup_version = 1
+}

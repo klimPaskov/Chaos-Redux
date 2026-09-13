@@ -38,8 +38,7 @@ The Event Details entry should describe what the player sees in play. It should 
 | `Evo III` | Describe abnormal high-chaos disasters such as meteor showers, rupture waves, massive eruptions, delayed tsunami chains, and moving storm corridors. |
 | `World-End Scenario` | Leave blank in the workbook unless final implementation creates a scenario, which this spec does not ask for. |
 | `Type` | Minor Repeatable. |
-| `Cluster ID` | Use final cluster id only after cluster registry is implemented. |
-| `Member Severity` | Low for baseline member entries, higher severity only through cluster member rows or final cluster detail if implementation supports it. |
+| `Cluster ID` | `5`. The Events sheet does not repeat the row-specific severity field. |
 | `Status` | Should move from To Be Reworked only after implementation and audit are complete. |
 
 ## Scenario details direction
@@ -63,8 +62,8 @@ The Natural Disasters cluster is unusual because the same repeatable event can o
 | --- | --- |
 | Cluster name | Natural Disasters. If there are several internal cluster entries, keep public naming clear and avoid numbered names unless the UI requires them. |
 | Details | Describe a period of repeated or stronger disasters rather than a collection of unrelated event ids. |
-| Members | Event 013 appears as multiple logical member entries by tier or evolution access. Do not add Event 046, 051, or 099 as normal cluster members. |
-| Severity | Baseline entries are Low. Evolution II and III logical entries can display higher danger if the cluster UI supports per-member danger. |
+| Members | Event 013 appears in eleven logical rows, followed by Event 033 Acid Rain and Event 051 Heat Wave. Event 046 and Event 099 remain outside this cluster. |
+| Severity | Event 013 uses Low, Low, Low, Low, Medium, Medium, Medium, High, High, Severe, and Severe. Acid Rain is Severe and Heat Wave is High. |
 | Cooldown | Bigger abnormal disasters should not repeat too frequently through clusters. |
 | News behavior | Cluster details should note that news is throttled for smaller hits in later stages. |
 

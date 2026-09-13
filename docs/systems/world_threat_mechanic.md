@@ -23,6 +23,7 @@ Current registered source flags:
 - `world_threat_source_black_plague`
 - `world_threat_source_resources_found_caves`
 - `world_threat_source_brilliant_scientist`
+- `world_threat_source_sov_nuclear_bombs`
 
 Shared aggregate flag:
 
@@ -86,6 +87,8 @@ The Resources Found source is owned by the Oth-Kesh cave-country lifecycle in `c
 
 The Brilliant Scientist source is owned by `brilliant_scientist_refresh_world_threat_source` in `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt`. It uses the project-state threat score and authored reach thresholds, then clears through the matching defeat and cleanup paths.
 
+The Event 023 source is owned by `sov_nuclear_bombs_refresh_world_threat_source` in `common/scripted_effects/023_sov_nuclear_bombs_event_effects.txt`. It activates after a public demonstration, public ultimatum, confirmed combat use, collapse crisis, or the first major exchange, unless the Soviet arsenal is in its private suppression posture. Fallout transition, active Fallout, and Final Silence are terminal boundaries for this source, and the shared aggregator excludes it there.
+
 The zombie refresh:
 
 1. recalculates total zombie strength
@@ -118,6 +121,7 @@ Shared triggers:
 - `has_world_threat_source_cannibalism`
 - `has_world_threat_source_resources_found_caves`
 - `has_world_threat_source_brilliant_scientist`
+- `has_world_threat_source_sov_nuclear_bombs` reads `world_threat_source_sov_nuclear_bombs` for Event 023 and other callers; no second Event 023 aggregate flag is created.
 
 The Black Plague source currently has no dedicated public wrapper trigger because no caller requires one; its owner and the aggregate refresh read the source flag directly.
 
@@ -141,7 +145,7 @@ Everything should fold back into the same source-counted system.
 ## Limitations
 
 - The current zombie source is refreshed from the existing zombie runtime rather than a dedicated global state-control hook. In practice that is good enough for the active zombie system, but it is still tied to zombie runtime execution rather than a universal threat bus.
-- Zombies, the Holy Realm, Fury, Death, Cannibalism at meaningful military scale, Black Plague, the Oth-Kesh cave-country threat route, Brilliant Scientist project-state escalation, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
+- Zombies, the Holy Realm, Fury, Death, Cannibalism at meaningful military scale, Black Plague, the Oth-Kesh cave-country threat route, Brilliant Scientist project-state escalation, Event 023's public nuclear crisis, the active Mengele laboratory-state civil war, and the Angelic Directorate clone world-end path are registered as source flags.
 - `world_in_threat` is intentionally just a state flag. It does not itself enforce diplomacy or AI behavior. Other systems must explicitly read it.
 
 ## Files
@@ -155,6 +159,7 @@ Everything should fold back into the same source-counted system.
 - `common/scripted_effects/016_brilliant_scientist_super_event_effects.txt`
 - `common/scripted_effects/018_resources_found_cave_effects.txt`
 - `common/scripted_effects/020_black_plague_scenario_effects.txt`
+- `common/scripted_effects/023_sov_nuclear_bombs_event_effects.txt`
 - `common/scripted_triggers/chaosx_world_threat_triggers.txt`
 - `common/on_actions/002_zombie_outbreak_on_actions.txt`
 - `common/decisions/002_zombie_outbreak_decisions.txt`

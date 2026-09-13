@@ -1,0 +1,45 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 034 INDUSTRIAL BOOM ADAPTER TRIGGERS
+# ============================================================================
+# Country-scope supplier validation is kept with the Event 034 owner so Event
+# 35 never reaches into boom internals or treats a state center as a supplier.
+# ============================================================================
+
+industrial_boom_supplier_market_demand_target_is_valid = {
+	exists = yes
+	is_subject = no
+	NOT = { tag = ROOT }
+	has_country_flag = industrial_boom_active
+	has_country_flag = industrial_boom_snapshot_frozen
+	NOT = { has_country_flag = great_depression_active }
+	NOT = { has_country_flag = great_depression_transition_pending }
+	NOT = { has_country_flag = great_depression_incompatible_economic_state }
+	NOT = { has_country_flag = industrial_boom_supplier_contract_active }
+	NOT = { has_country_flag = industrial_boom_supplier_contract_at_risk }
+	great_depression_has_viable_economy = yes
+}
+
+# Event 35 consumes these adapter predicates instead of reading the boom's
+# private overheating and contract variables. Event 34 remains the owner of
+# the supplier state and may change this contract without widening Event 35's
+# API.
+industrial_boom_supplier_adapter_target_is_valid = {
+	industrial_boom_supplier_market_demand_target_is_valid = yes
+}
+
+industrial_boom_supplier_adapter_is_overheated = {
+	industrial_boom_supplier_adapter_target_is_valid = yes
+	OR = {
+		has_country_flag = industrial_boom_supplier_contract_at_risk
+		check_variable = {
+			var = industrial_boom_overheating
+			value = constant:industrial_boom_event.supplier_contract_overheat_risk
+			compare = greater_than_or_equals
+		}
+	}
+}
+
+industrial_boom_supplier_adapter_is_safe = {
+	industrial_boom_supplier_adapter_target_is_valid = yes
+	NOT = { industrial_boom_supplier_adapter_is_overheated = yes }
+}

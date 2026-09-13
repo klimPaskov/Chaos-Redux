@@ -31,6 +31,8 @@ Regional or stronger wildfires contribute. Volcanic eruptions, ashfall, and mass
 
 The computed delta is applied through `air_contamination_apply_delta_bp`.
 
+Event 33 Acid Rain contributes outside the monthly world update through one event-owned gateway. Formation requests `75 bp`; later weekly requests are calculated from active fronts and intensity, then bounded to `8–45 bp`. Each request is clamped against the Event 33 request, its remaining `1500 bp` lifetime allowance, and the remaining distance below `5000 bp` global contamination. The shared Air mutation is called only for a positive remainder, and Event 33 records only the actual returned delta. Dissipation does not clear the accepted contamination.
+
 #### Natural-source helper ownership
 
 The natural-disaster contamination bridge is private to the Air Contamination and Event 013 integration and lives in `common/scripted_effects/fallout_consolidated_effects.txt`.
@@ -140,7 +142,7 @@ The contamination tab displays:
 - a scrollable source ledger ordered by the date each source first contributed,
 - a clickable detail overlay with current contribution, lifetime additions, direct clearing, net delta, observed pressure decay, latest applied change, latest pressure change, and first and latest observation dates.
 
-The source ledger never removes a source after its first contribution. Chemical contamination, biological outbreaks, fallout and nuclear effects, and smoke, ash, and aerosols each own a stable source id. The full accounting contract and GUI wiring are documented in `docs/systems/air_cleanliness/contamination_source_ledger.md`.
+The source ledger never removes a source after its first contribution. Chemical contamination, biological outbreaks, fallout and nuclear effects, smoke, ash, and aerosols, asteroid impacts, and Event 33 Acid Rain each own a stable source id. The full accounting contract and GUI wiring are documented in `docs/systems/air_cleanliness/contamination_source_ledger.md`.
 
 The compact summary and source read model are refreshed whenever the Chaos Meter popup is opened and whenever the `Air Cleanliness` tab is selected, so the UI does not depend on stale cached globals after loading a save.
 

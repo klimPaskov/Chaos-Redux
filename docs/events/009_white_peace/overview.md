@@ -1,6 +1,8 @@
 # Event 009: White Peace
 
-Event 009 White Peace is a repeatable Peace-cluster de-escalation event. It looks for wars that can be ended without conquest, indemnity, faction disruption, subject-state side effects, or scripted-story damage, then forces a status-quo settlement between the selected pair. The event is intentionally quiet: the popup has one acknowledgement option, and the settlement has already been signed.
+This overview records package implementation claims. The [documentation review](../../plans/repo_cleanup/subagent_handoffs/2026-09-05_events_007_010_documentation.md) distinguishes source checks, historical records, and unresolved acceptance or validation.
+
+Event 009 White Peace is a repeatable Peace-cluster de-escalation event. It looks for wars that can be ended without conquest, indemnity, faction disruption, subject-state side effects, or scripted-story damage, then forces a status-quo settlement between the selected pair. The popup has one acknowledgement option. In the inspected source, that option executes the settlement through `apply_white_peace_current_context`. The earlier description of an already signed settlement remains historical presentation intent in the documentation review.
 
 ## Runtime Flow
 
@@ -14,7 +16,7 @@ Event 009 White Peace is a repeatable Peace-cluster de-escalation event. It look
 
 Country eligibility is centralized in `can_country_be_white_peace_target`. The target must exist, use normal civilian systems, be at war, control at least one state, keep its capital, be below the near-capitulation threshold, and avoid civil war, subject, faction, special-country, nonhuman, protected-war, and recent-settlement states.
 
-Pair eligibility is centralized in `can_pair_receive_white_peace`. It requires a live war relation, two independently valid countries, no same-tag or faction relation, safe capitals, and either a minor-versus-minor pair or an evolved major-eligible pair. Base and stage I use only `can_minor_pair_receive_white_peace`; stage II and III can use `can_major_pair_receive_white_peace`.
+Pair eligibility is centralized in `can_pair_receive_white_peace`. It requires a live war relation, two independently valid countries, no same-tag or faction relation, safe capitals, and either a minor-versus-minor pair or an evolved major-eligible pair. Base and stage I use only `can_minor_pair_receive_white_peace`. Stage II and III can use `can_major_pair_receive_white_peace`.
 
 Other event systems can opt out by setting `white_peace_protected_country` or `white_peace_protected_war_actor` on any participant that should never be selected by this event.
 
@@ -35,7 +37,7 @@ The tuning values live in `common/script_constants/009_white_peace_constants.txt
 | `global.white_peace_broad_conflicts_settled` | Broad-branch safe conflict relations settled during the current firing. |
 | `global.white_peace_environment_cap` | War-pressure cap before stage and recent-broad penalties. |
 | `global.white_peace_repeatable_decay_multiplier` | Current Event 009 repeatable cap ratio applied to the live cap before evolution multipliers. |
-| `global.white_peace_effective_dynamic_cap` | Live cap after stage/recent penalties; never above `1500`. |
+| `global.white_peace_effective_dynamic_cap` | Live cap after stage/recent penalties. Never above `1500`. |
 
 One small valid war produces a low live cap below ordinary event prominence. Many active wars and safe minor pairs raise the cap, but `constant:white_peace_weight.max_environment_cap` clamps the environment at `1500`. Higher stages apply lower multipliers, so stronger branches become less likely even though they can settle more.
 
@@ -54,13 +56,13 @@ Stage pressure is derived from active-war and candidate-pair counts, plus persis
 
 ## Chaos and Memory
 
-White Peace suppresses the normal per-country `on_peace` Chaos Meter adjustment while its own settlement branch runs, then applies one capped branch-level reduction. Single minor settlements reduce Chaos by `-1`; major settlements reduce by `-2`; multi and broad branches accumulate pair reductions but clamp them through `constant:white_peace_chaos_delta.multi_minor_cap` and `constant:white_peace_chaos_delta.broad_cap`.
+White Peace suppresses the normal per-country `on_peace` Chaos Meter adjustment while its own settlement branch runs, then applies one capped branch-level reduction. Single minor settlements reduce Chaos by `-1`. Major settlements reduce by `-2`. Multi and broad branches accumulate pair reductions but clamp them through `constant:white_peace_chaos_delta.multi_minor_cap` and `constant:white_peace_chaos_delta.broad_cap`.
 
 Settlement memory uses:
 
-- `recent_white_peace_country` for affected countries;
-- `recent_white_peace_pair_<tag>` for exact pair-repeat prevention on each participant;
-- `recent_major_white_peace_country` for major participants;
+- `recent_white_peace_country` for affected countries.
+- `recent_white_peace_pair_<tag>` for exact pair-repeat prevention on each participant.
+- `recent_major_white_peace_country` for major participants.
 - `recent_broad_white_peace` for broad-settlement pacing.
 
 The timed flag durations are mirrored as file-scoped constants in `009_white_peace_effects.txt` because HOI4 timed-flag `days =` fields do not reliably accept script constants.
@@ -87,7 +89,7 @@ All unlock tracking is set only inside Event 009 settlement helpers or the delay
 
 - Report image: `GFX_report_event_009_white_peace`, backed by `gfx/event_pictures/009_white_peace/report_event_009_white_peace.dds`, registered in `interface/009_white_peace_event_images.gfx`.
 - Achievement icons: completed, grey, and not-eligible triplets for all five Event 009 achievements under `gfx/achievements/`, registered in `interface/chaosx_achievements.gfx`.
-- Asset source, processed PNGs, prompts, contact sheets, and handoff notes: `docs/assets/009_white_peace/`.
+- Historical asset source, processed PNG, prompt, contact-sheet, and handoff archive: `docs/assets/009_white_peace/`. This package is absent and Git records deletion in `87d441ac758d515e1abca34167fcd45b51acf028`. No replacement source archive was established by this review.
 
 No news image or animation is used. The broad branch uses the same restrained report presentation because the event remains administrative rather than spectacular.
 
@@ -100,10 +102,13 @@ No news image or animation is used. The broad branch uses the same restrained re
 - `select_weighted_white_peace_partner_for_current_primary`: builds a scored enemy-country pool for the chosen primary and randomly chooses a partner by score.
 - `score_white_peace_pair`: records the current selected pair score for diagnostics and log context.
 - `apply_white_peace_pair`: applies pair settlement, memory, opinion, achievements, and delayed survival tracking.
-- `apply_white_peace_current_context`: executes the selected branch and fires the correct report variant.
+- `apply_white_peace_current_context`: executes the selected settlement branch from the report option.
+- `fire_white_peace_report_event`: selects and fires the report variant before the option applies settlement.
 - `record_white_peace_evolution_if_needed`: records newly reached White Peace evolution rows through the shared evolution log.
 
 ## Future Plans
+
+These retained proposals have unresolved current acceptance and do not authorize implementation through this documentation cleanup.
 
 - Add a Stage III news popup only if repeatable event news presentation gains a stable pattern for quiet diplomatic circulars.
 - Consider a reusable peace-candidate helper only after another Peace-cluster event needs the same safety gates.

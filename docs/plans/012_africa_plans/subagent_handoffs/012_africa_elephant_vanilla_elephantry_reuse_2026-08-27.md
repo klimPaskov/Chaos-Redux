@@ -16,7 +16,7 @@ The user explicitly directed the Event 012 armoured elephant formation to reuse 
 
 The installed vanilla sources were checked directly and contain the `elephantry` sub-unit sprite plus its idle and move animation registrations. A repository-wide active-source scan finds no remaining `override_model = chaosx_elephant_shared_base_entity`, `sprite = chaosx_elephant_shared_base`, or active custom elephant entity reference outside historical documentation and retained evidence.
 
-The custom model workspace at `docs/assets/012_africa/models_3d/elephant_shared_base/` is marked `custom_model_not_required_existing_elephantry_reuse` and records zero new provider spend for this decision. Its source images, candidate mesh, actions, audio, and counter records are not promotion targets.
+The approximately 340 MB custom model workspace at `docs/assets/012_africa/models_3d/elephant_shared_base/` is marked `custom_model_not_required_existing_elephantry_reuse` and records zero new provider spend for this decision. It is archival/non-promoted provenance only; retention or deletion is an explicit owner decision outside this documentation-only pass, and its source images, candidate mesh, actions, audio, and counter records are not promotion targets.
 
 ## Remaining owner boundary
 

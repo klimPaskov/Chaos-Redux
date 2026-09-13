@@ -1,0 +1,71 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 027 COUNTRY LIFECYCLE HOOKS
+# ============================================================================
+# Annexation removes the victim's unused Event 027 ledger and receipts. No
+# batch, mastery, or achievement state transfers to the annexing controller.
+# ============================================================================
+
+on_actions = {
+	# ROOT is the new controller, FROM is the former controller, and FROM.FROM
+	# is the exact state whose controller changed. No batch is transferred by a
+	# state-control callback; both country ledgers are merely resumed in place.
+	on_state_control_changed = {
+		effect = {
+			ROOT = { doctrine_research_reconcile_country_lifecycle = yes }
+			FROM = { doctrine_research_reconcile_country_lifecycle = yes }
+		}
+	}
+
+	# These callbacks cover the documented country-lifecycle transitions that can
+	# change subject status or the active human/AI country without creating a new
+	# Event 027 batch. The affected country keeps its own queue and receipts.
+	on_puppet = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_release_as_free = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_release_as_puppet = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_subject_free = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_subject_autonomy_level_change = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_subject_annexed = {
+		effect = { ROOT = { doctrine_research_discard_annexed_country_state = yes } }
+	}
+
+	on_government_change = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_government_exiled = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_exile_government_reinstated = {
+		effect = { ROOT = { doctrine_research_reconcile_country_lifecycle = yes } }
+	}
+
+	on_civil_war_end = {
+		effect = {
+			ROOT = { doctrine_research_reconcile_country_lifecycle = yes }
+		}
+	}
+
+	on_annex = {
+		effect = {
+			FROM = {
+				doctrine_research_discard_annexed_country_state = yes
+			}
+		}
+	}
+}

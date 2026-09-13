@@ -1,0 +1,1531 @@
+# CHAOS REDUX - EVENT 021 SETTLEMENT SIGNATORY CONTRACTS
+# ============================================================================
+# Persistent agreement/signatory receipts for the Terms Hold achievement.
+# These effects operate only on the current settlement owner, the owner's
+# recorded opposition-actor array, and the bounded global agreement rows.
+# They do not iterate over every country and do not award achievements.
+#
+# Parent integration must call capture before settlement-side cleanup, freeze
+# before any cleanup that clears live obligation proof flags, review on the
+# bounded reconstruction/review path, recurrence before a new crisis resets
+# the old live contract, and rebind inside the exact on_annex successor proof.
+# ============================================================================
+
+# ANY scope. Internal lookup over the persistent agreement id registry.
+# Input: event021_treaty_lookup_id.
+# Output: event021_treaty_lookup_found and event021_treaty_lookup_index.
+event021_treaty_find_agreement_row = {
+	set_temp_variable = { event021_treaty_lookup_found = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_treaty_lookup_index = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_treaty_lookup_scan = constant:random_civil_war_value.zero }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_lookup_scan
+				value = global.event021_treaty_agreement_ids^num
+				compare = less_than
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_lookup_found
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+				check_variable = {
+					var = global.event021_treaty_agreement_ids^event021_treaty_lookup_scan
+					value = event021_treaty_lookup_id
+					compare = equals
+				}
+			}
+			set_temp_variable = { event021_treaty_lookup_found = constant:random_civil_war_value.one }
+			set_temp_variable = { event021_treaty_lookup_index = event021_treaty_lookup_scan }
+		}
+		add_to_temp_variable = { event021_treaty_lookup_scan = constant:random_civil_war_value.one }
+	}
+}
+
+# COUNTRY scope. Internal row snapshot used by capture and freeze.
+# Inputs: event021_treaty_agreement_index, event021_treaty_signatory_index,
+# event021_treaty_snapshot_agreement_id, and event021_treaty_snapshot_at_hold.
+# The obligation is read from the country that owns this row. No obligation is
+# copied from the host to another country. A missing or none obligation is a
+# structural contract failure.
+event021_treaty_snapshot_signatory_row = {
+	set_temp_variable = { event021_treaty_row_proof_observed = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			check_variable = {
+				var = global.event021_treaty_signatory_obligation_present_entries^event021_treaty_signatory_index
+				value = constant:random_civil_war_value.zero
+				compare = equals
+			}
+		}
+		set_variable = {
+			global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+		}
+		set_variable = {
+			global.event021_treaty_signatory_proof_valid_entries^event021_treaty_signatory_index = constant:random_civil_war_value.zero
+		}
+		set_variable = {
+			global.event021_treaty_signatory_proof_snapshot_dates^event021_treaty_signatory_index = global.date
+		}
+		set_variable = {
+			global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+		}
+		set_country_flag = event021_treaty_contract_invalid
+		set_country_flag = event021_treaty_proof_frozen
+		clr_country_flag = event021_treaty_proof_valid
+	}
+	else = {
+		if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_obligation_ids^event021_treaty_signatory_index
+					value = constant:event021_settlement_obligation.recognition
+					compare = equals
+				}
+				has_country_flag = random_civil_war_event6_recognized_independence
+			}
+			set_temp_variable = { event021_treaty_row_proof_observed = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_obligation_ids^event021_treaty_signatory_index
+					value = constant:event021_settlement_obligation.disarmament
+					compare = equals
+				}
+				has_country_flag = random_civil_war_disarmament_complete
+			}
+			set_temp_variable = { event021_treaty_row_proof_observed = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_obligation_ids^event021_treaty_signatory_index
+					value = constant:event021_settlement_obligation.rail_security
+					compare = equals
+				}
+				has_country_flag = event021_rail_spine_secured
+			}
+			set_temp_variable = { event021_treaty_row_proof_observed = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_obligation_ids^event021_treaty_signatory_index
+					value = constant:event021_settlement_obligation.sponsor_repayment
+					compare = equals
+				}
+				has_country_flag = random_civil_war_sponsor_repaid
+			}
+			set_temp_variable = { event021_treaty_row_proof_observed = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_obligation_ids^event021_treaty_signatory_index
+					value = constant:event021_settlement_obligation.coalition_governance
+					compare = equals
+				}
+				has_country_flag = random_civil_war_coalition_governance_complete
+			}
+			set_temp_variable = { event021_treaty_row_proof_observed = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_index
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+				check_variable = {
+					var = event021_treaty_row_proof_observed
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_observed_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_valid_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_snapshot_dates^event021_treaty_signatory_index = global.date
+			}
+			set_country_flag = event021_treaty_proof_frozen
+			set_country_flag = event021_treaty_proof_valid
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_index
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+				check_variable = {
+					var = event021_treaty_snapshot_at_hold
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_valid_entries^event021_treaty_signatory_index = constant:random_civil_war_value.zero
+			}
+			set_variable = {
+				global.event021_treaty_signatory_proof_snapshot_dates^event021_treaty_signatory_index = global.date
+			}
+			set_variable = {
+				global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+			set_country_flag = event021_treaty_proof_frozen
+			clr_country_flag = event021_treaty_proof_valid
+			set_country_flag = event021_treaty_contract_invalid
+		}
+	}
+
+	# These flags are the live breach inputs. They are latched into the
+	# agreement row before any parent cleanup can clear them.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_settlement_violation
+				has_country_flag = random_civil_war_settlement_obligation_breached
+				has_country_flag = random_civil_war_settlement_obligation_failed
+				has_country_flag = random_civil_war_settlement_obligation_objective_missed
+			}
+		}
+		set_variable = {
+			global.event021_treaty_signatory_breach_latched_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+		}
+		set_variable = {
+			global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+		}
+		set_country_flag = event021_treaty_breach_latched
+	}
+
+	# A recurrence callback is preferred, but the bounded review also protects
+	# against a missed callback when a signatory is visibly active in another
+	# Event 021 crisis while its old agreement id is still in this row.
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_recurrence_committed
+				has_country_flag = event021_treaty_recurrence_during_hold
+				AND = {
+					has_country_flag = random_civil_war_active
+					has_variable = random_civil_war_crisis_id
+					check_variable = {
+						var = random_civil_war_crisis_id
+						value = event021_treaty_snapshot_agreement_id
+						compare = not_equals
+					}
+				}
+			}
+		}
+		set_variable = {
+			global.event021_treaty_signatory_recurrence_seen_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+		}
+		if = {
+			limit = {
+				OR = {
+					has_country_flag = event021_treaty_recurrence_during_hold
+					has_country_flag = random_civil_war_recurrence_committed
+					AND = {
+						has_country_flag = random_civil_war_active
+						has_variable = random_civil_war_crisis_id
+						check_variable = {
+							var = random_civil_war_crisis_id
+							value = event021_treaty_snapshot_agreement_id
+							compare = not_equals
+						}
+					}
+				}
+				check_variable = {
+					var = global.date
+					value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+					compare = less_than_or_equals
+				}
+			}
+			set_variable = {
+				global.event021_treaty_signatory_recurrence_during_hold_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_agreement_recurrence_during_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+			set_country_flag = event021_treaty_recurrence_during_hold
+			set_country_flag = event021_treaty_breach_latched
+		}
+		else = {
+			set_variable = {
+				global.event021_treaty_signatory_recurrence_after_hold_entries^event021_treaty_signatory_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_agreement_recurrence_after_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+			set_country_flag = event021_treaty_recurrence_after_hold
+		}
+	}
+}
+
+# COUNTRY scope on the settlement owner. Binds the owner and every intended
+# human opposition actor to their own live front and public obligation before
+# any settlement closure can remove an actor. This is a bounded preflight over
+# the owner's recorded participant array; it never creates a country or scans
+# the world.
+event021_treaty_prepare_signatory_obligations = {
+	save_event_target_as = event021_treaty_binding_owner
+	clr_country_flag = event021_treaty_bindings_prepared
+	clr_country_flag = event021_treaty_bindings_rejected
+	set_temp_variable = { event021_treaty_binding_accepted = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_treaty_binding_crisis_id = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_variable = random_civil_war_crisis_id }
+		set_temp_variable = { event021_treaty_binding_crisis_id = random_civil_war_crisis_id }
+	}
+	if = {
+		limit = { event021_treaty_binding_owner_ready = yes }
+		set_temp_variable = { event021_treaty_binding_accepted = constant:random_civil_war_value.one }
+	}
+	for_each_scope_loop = {
+		array = random_civil_war_opposition_actors
+		if = {
+			limit = {
+				exists = yes
+				NOT = { is_actual_nonhuman_country = yes }
+				has_country_flag = random_civil_war_opposition_actor
+				NOT = { has_country_flag = random_civil_war_sponsor_side }
+				has_variable = random_civil_war_crisis_id
+				check_variable = {
+					var = random_civil_war_crisis_id
+					value = event021_treaty_binding_crisis_id
+					compare = equals
+				}
+			}
+			if = {
+				limit = {
+					has_variable = random_civil_war_front_id
+					has_country_flag = random_civil_war_front_registered
+					is_in_array = {
+						array = global.random_civil_war_front_ids
+						value = random_civil_war_front_id
+					}
+					OR = {
+						AND = {
+							has_variable = random_civil_war_crisis_host_scope
+							var:random_civil_war_crisis_host_scope = {
+								tag = event_target:event021_treaty_binding_owner
+							}
+						}
+						AND = {
+							has_variable = random_civil_war_host_country_scope
+							var:random_civil_war_host_country_scope = {
+								tag = event_target:event021_treaty_binding_owner
+							}
+						}
+					}
+				}
+				else = {
+					set_temp_variable = { event021_treaty_binding_accepted = constant:random_civil_war_value.zero }
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_binding_accepted
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		for_each_scope_loop = {
+			array = random_civil_war_opposition_actors
+			if = {
+				limit = {
+					exists = yes
+					NOT = { is_actual_nonhuman_country = yes }
+					has_country_flag = random_civil_war_opposition_actor
+					NOT = { has_country_flag = random_civil_war_sponsor_side }
+					has_variable = random_civil_war_crisis_id
+					check_variable = {
+						var = random_civil_war_crisis_id
+						value = event021_treaty_binding_crisis_id
+						compare = equals
+					}
+				}
+				if = {
+					limit = {
+						has_variable = event021_treaty_agreement_id
+						check_variable = {
+							var = event021_treaty_agreement_id
+							value = event021_treaty_binding_crisis_id
+							compare = not_equals
+						}
+					}
+					event021_treaty_mark_recurrence = yes
+				}
+				clear_variable = random_civil_war_settlement_obligation
+				clr_country_flag = random_civil_war_settlement_obligation_active
+				clr_country_flag = random_civil_war_settlement_obligation_fulfilled
+				clr_country_flag = random_civil_war_settlement_obligation_breached
+				clr_country_flag = random_civil_war_settlement_obligation_failed
+				clr_country_flag = random_civil_war_settlement_obligation_objective_met
+				clr_country_flag = random_civil_war_settlement_terms_held
+				clr_country_flag = random_civil_war_recurrence_committed
+				if = {
+					limit = { has_country_flag = random_civil_war_event6_front_active }
+					set_variable = { random_civil_war_settlement_obligation = constant:event021_settlement_obligation.recognition }
+				}
+				else = {
+					set_variable = { random_civil_war_settlement_obligation = constant:event021_settlement_obligation.disarmament }
+				}
+				set_country_flag = random_civil_war_settlement_obligation_active
+				set_variable = { random_civil_war_settlement_obligation_front_id = random_civil_war_front_id }
+				set_variable = { random_civil_war_settlement_obligation_start_date = global.date }
+				set_variable = { random_civil_war_settlement_terms_hold_until = event_target:event021_treaty_binding_owner.random_civil_war_settlement_terms_hold_until }
+			}
+		}
+		set_country_flag = event021_treaty_bindings_prepared
+	}
+	else = {
+		set_country_flag = event021_treaty_bindings_rejected
+	}
+}
+
+# COUNTRY scope on the settlement owner. Captures one negotiated agreement
+# using the owner's exact crisis id/front id and its current opposition-actor
+# array. The actor array is the bounded participating-front source; unrelated
+# crisis rows and sponsor-side countries are excluded.
+event021_treaty_capture_settlement = {
+	save_event_target_as = event021_treaty_capture_owner
+	clr_country_flag = event021_treaty_capture_committed
+	clr_country_flag = event021_treaty_capture_rejected
+	set_temp_variable = { event021_treaty_capture_accepted = constant:random_civil_war_value.zero }
+	if = {
+		limit = { event021_treaty_capture_ready = yes }
+		set_temp_variable = { event021_treaty_capture_accepted = constant:random_civil_war_value.one }
+	}
+	else = { set_country_flag = event021_treaty_capture_rejected }
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_capture_accepted
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		set_temp_variable = { event021_treaty_capture_agreement_id = random_civil_war_crisis_id }
+		if = {
+			limit = {
+				has_variable = event021_treaty_agreement_id
+				check_variable = {
+					var = event021_treaty_agreement_id
+					value = event021_treaty_capture_agreement_id
+					compare = not_equals
+				}
+			}
+			# Idempotent protection when a parent reaches capture after the new
+			# crisis id has been assigned. The parent still owns the required
+			# pre-reset recurrence call.
+			event021_treaty_mark_recurrence = yes
+		}
+		set_temp_variable = { event021_treaty_lookup_id = event021_treaty_capture_agreement_id }
+		event021_treaty_find_agreement_row = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_lookup_found
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+			}
+			set_temp_variable = { event021_treaty_agreement_index = global.event021_treaty_agreement_ids^num }
+			set_temp_variable = { event021_treaty_capture_hold_until = global.date }
+			if = {
+				limit = { has_variable = random_civil_war_settlement_terms_hold_until }
+				set_temp_variable = { event021_treaty_capture_hold_until = random_civil_war_settlement_terms_hold_until }
+			}
+			else = {
+				add_to_temp_variable = {
+					event021_treaty_capture_hold_until = constant:event021_parent_tuning.settlement_terms_hold_days
+				}
+			}
+			add_to_array = { array = global.event021_treaty_agreement_ids value = event021_treaty_capture_agreement_id }
+			add_to_array = { array = global.event021_treaty_agreement_settlement_types value = random_civil_war_settlement_type }
+			add_to_array = { array = global.event021_treaty_agreement_start_dates value = global.date }
+			add_to_array = { array = global.event021_treaty_agreement_hold_until_dates value = event021_treaty_capture_hold_until }
+			add_to_array = { array = global.event021_treaty_agreement_front_counts value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_signatory_counts value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_fulfilled_signatory_counts value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_breach_latched_entries value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_recurrence_seen_entries value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_recurrence_during_hold_entries value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_recurrence_after_hold_entries value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_terms_held_entries value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_contract_invalid_entries value = constant:random_civil_war_value.zero }
+			add_to_array = { array = global.event021_treaty_agreement_armistice_entries value = constant:random_civil_war_value.zero }
+			if = {
+				limit = { has_country_flag = event021_treaty_armistice_contract }
+				set_variable = {
+					global.event021_treaty_agreement_armistice_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+				}
+			}
+			clear_temp_array = event021_treaty_capture_signatory_pool
+			clear_temp_array = event021_treaty_capture_front_pool
+			add_to_temp_array = { array = event021_treaty_capture_signatory_pool value = THIS }
+			for_each_scope_loop = {
+				array = random_civil_war_opposition_actors
+				if = {
+					limit = {
+						exists = yes
+						NOT = { is_actual_nonhuman_country = yes }
+						has_country_flag = random_civil_war_opposition_actor
+						NOT = { has_country_flag = random_civil_war_sponsor_side }
+						has_variable = random_civil_war_crisis_id
+						check_variable = {
+							var = random_civil_war_crisis_id
+							value = event021_treaty_capture_agreement_id
+							compare = equals
+						}
+						NOT = {
+							is_in_array = {
+								array = event021_treaty_capture_signatory_pool
+								value = THIS
+							}
+						}
+					}
+					add_to_temp_array = { array = event021_treaty_capture_signatory_pool value = THIS }
+				}
+			}
+			set_temp_variable = { event021_treaty_capture_member_count = constant:random_civil_war_value.zero }
+			set_temp_variable = { event021_treaty_capture_front_count = constant:random_civil_war_value.zero }
+			for_each_scope_loop = {
+				array = event021_treaty_capture_signatory_pool
+				set_temp_variable = { event021_treaty_capture_member_front_present = constant:random_civil_war_value.zero }
+				set_temp_variable = { event021_treaty_capture_member_front_id = constant:random_civil_war_value.zero }
+				set_temp_variable = { event021_treaty_capture_member_obligation = constant:event021_settlement_obligation.none }
+				set_temp_variable = { event021_treaty_capture_member_obligation_present = constant:random_civil_war_value.zero }
+				if = {
+					limit = { has_variable = random_civil_war_front_id }
+					set_temp_variable = { event021_treaty_capture_member_front_present = constant:random_civil_war_value.one }
+					set_temp_variable = { event021_treaty_capture_member_front_id = random_civil_war_front_id }
+				}
+				if = {
+					limit = { has_variable = random_civil_war_settlement_obligation }
+					set_temp_variable = { event021_treaty_capture_member_obligation = random_civil_war_settlement_obligation }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_capture_member_obligation
+							value = constant:event021_settlement_obligation.none
+							compare = not_equals
+						}
+						has_country_flag = random_civil_war_settlement_obligation_active
+						check_variable = {
+							var = event021_treaty_capture_member_front_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+						has_variable = random_civil_war_settlement_obligation_front_id
+						check_variable = {
+							var = random_civil_war_settlement_obligation_front_id
+							value = event021_treaty_capture_member_front_id
+							compare = equals
+						}
+					}
+					set_temp_variable = { event021_treaty_capture_member_obligation_present = constant:random_civil_war_value.one }
+				}
+				set_temp_variable = { event021_treaty_signatory_index = global.event021_treaty_signatory_agreement_ids^num }
+				add_to_array = { array = global.event021_treaty_signatory_agreement_ids value = event021_treaty_capture_agreement_id }
+				add_to_array = { array = global.event021_treaty_signatory_country_scopes value = THIS }
+				add_to_array = { array = global.event021_treaty_signatory_front_ids value = event021_treaty_capture_member_front_id }
+				add_to_array = { array = global.event021_treaty_signatory_obligation_ids value = event021_treaty_capture_member_obligation }
+				add_to_array = { array = global.event021_treaty_signatory_obligation_present_entries value = event021_treaty_capture_member_obligation_present }
+				add_to_array = { array = global.event021_treaty_signatory_proof_observed_entries value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_proof_frozen_entries value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_proof_valid_entries value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_proof_snapshot_dates value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_breach_latched_entries value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_recurrence_seen_entries value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_recurrence_during_hold_entries value = constant:random_civil_war_value.zero }
+				add_to_array = { array = global.event021_treaty_signatory_recurrence_after_hold_entries value = constant:random_civil_war_value.zero }
+				add_to_temp_variable = { event021_treaty_capture_member_count = constant:random_civil_war_value.one }
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_capture_member_front_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+					if = {
+						limit = {
+							NOT = {
+								is_in_array = {
+									array = event021_treaty_capture_front_pool
+									value = event021_treaty_capture_member_front_id
+								}
+							}
+						}
+						add_to_temp_array = {
+							array = event021_treaty_capture_front_pool
+							value = event021_treaty_capture_member_front_id
+						}
+						add_to_temp_variable = { event021_treaty_capture_front_count = constant:random_civil_war_value.one }
+					}
+					add_to_array = { array = global.event021_treaty_front_agreement_ids value = event021_treaty_capture_agreement_id }
+					add_to_array = { array = global.event021_treaty_front_ids value = event021_treaty_capture_member_front_id }
+					add_to_array = { array = global.event021_treaty_front_signatory_countries value = THIS }
+					add_to_array = { array = global.event021_treaty_front_host_countries value = event_target:event021_treaty_capture_owner }
+				}
+				else = {
+					set_variable = {
+						global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_capture_member_obligation_present
+							value = constant:random_civil_war_value.zero
+							compare = equals
+						}
+					}
+					set_variable = {
+						global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+				}
+				set_variable = { event021_treaty_agreement_id = event021_treaty_capture_agreement_id }
+				set_variable = { event021_treaty_hold_until = event021_treaty_capture_hold_until }
+				set_variable = { event021_treaty_settlement_type = random_civil_war_settlement_type }
+				set_variable = { event021_treaty_obligation_id = event021_treaty_capture_member_obligation }
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_capture_member_front_present
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+					set_variable = { event021_treaty_signatory_front_id = event021_treaty_capture_member_front_id }
+				}
+				else = { clear_variable = event021_treaty_signatory_front_id }
+				set_country_flag = event021_treaty_signatory
+				clr_country_flag = event021_treaty_terms_held
+				clr_country_flag = event021_treaty_all_signatories_reviewed
+				clr_country_flag = event021_treaty_all_obligations_fulfilled
+				clr_country_flag = event021_treaty_no_breach
+				clr_country_flag = event021_treaty_no_recurrence_during_hold
+				clr_country_flag = event021_treaty_contract_invalid
+				clr_country_flag = event021_treaty_proof_frozen
+				clr_country_flag = event021_treaty_proof_valid
+				clr_country_flag = event021_treaty_breach_latched
+				clr_country_flag = event021_treaty_recurrence_seen
+				clr_country_flag = event021_treaty_recurrence_during_hold
+				clr_country_flag = event021_treaty_recurrence_after_hold
+				set_temp_variable = { event021_treaty_snapshot_agreement_id = event021_treaty_capture_agreement_id }
+				set_temp_variable = { event021_treaty_snapshot_at_hold = constant:random_civil_war_value.zero }
+				event021_treaty_snapshot_signatory_row = yes
+			}
+			set_variable = {
+				global.event021_treaty_agreement_signatory_counts^event021_treaty_agreement_index = event021_treaty_capture_member_count
+			}
+			set_variable = {
+				global.event021_treaty_agreement_front_counts^event021_treaty_agreement_index = event021_treaty_capture_front_count
+			}
+			event_target:event021_treaty_capture_owner = {
+				set_variable = { event021_treaty_agreement_id = event021_treaty_capture_agreement_id }
+				set_variable = { event021_treaty_hold_until = event021_treaty_capture_hold_until }
+				set_variable = { event021_treaty_settlement_type = random_civil_war_settlement_type }
+				set_variable = { event021_treaty_member_count = event021_treaty_capture_member_count }
+				set_variable = { event021_treaty_front_count = event021_treaty_capture_front_count }
+				set_country_flag = event021_treaty_capture_committed
+			}
+			for_each_scope_loop = {
+				array = event021_treaty_capture_signatory_pool
+				set_variable = { event021_treaty_member_count = event021_treaty_capture_member_count }
+				set_variable = { event021_treaty_front_count = event021_treaty_capture_front_count }
+				set_variable = { event021_treaty_hold_until = event021_treaty_capture_hold_until }
+				set_variable = { event021_treaty_settlement_type = random_civil_war_settlement_type }
+			}
+			clear_temp_array = event021_treaty_capture_signatory_pool
+			clear_temp_array = event021_treaty_capture_front_pool
+		}
+		else = {
+			set_temp_variable = { event021_treaty_agreement_index = event021_treaty_lookup_index }
+			set_temp_variable = { event021_treaty_capture_hold_until = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index }
+			set_variable = { event021_treaty_agreement_id = event021_treaty_capture_agreement_id }
+			set_variable = { event021_treaty_hold_until = event021_treaty_capture_hold_until }
+			set_country_flag = event021_treaty_capture_committed
+		}
+	}
+}
+
+# COUNTRY scope. Publishes the real public outcome for a signatory that is
+# about to be cleaned up, then freezes the bounded agreement rows. Ordinary
+# generated opposition actors fulfill disarmament through the parent's actual
+# surrender/annex path; Event 006 recognition is never fabricated here.
+event021_treaty_mark_settlement_outcome_proof = {
+	if = {
+		limit = {
+			has_variable = event021_treaty_agreement_id
+			has_country_flag = event021_treaty_signatory
+		}
+		if = {
+			limit = {
+				has_country_flag = random_civil_war_opposition_actor
+				NOT = { has_country_flag = random_civil_war_event6_front_active }
+				has_variable = random_civil_war_settlement_obligation
+				check_variable = {
+					var = random_civil_war_settlement_obligation
+					value = constant:event021_settlement_obligation.disarmament
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_disarmament_complete
+		}
+		event021_treaty_freeze_fulfilled_proof = yes
+	}
+}
+
+# ANY scope. Freezes all current signatory proofs and latches live breaches
+# before cleanup. Input is the current country's durable agreement id.
+# A country that has already moved to a different agreement is not re-read;
+# its old row must already have frozen proof or the old agreement is invalid.
+event021_treaty_freeze_fulfilled_proof = {
+	set_temp_variable = { event021_treaty_lookup_id = constant:random_civil_war_value.zero }
+	if = { limit = { has_variable = event021_treaty_agreement_id } set_temp_variable = { event021_treaty_lookup_id = event021_treaty_agreement_id } }
+	event021_treaty_find_agreement_row = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_lookup_found
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		set_temp_variable = { event021_treaty_agreement_index = event021_treaty_lookup_index }
+		set_temp_variable = { event021_treaty_snapshot_agreement_id = event021_treaty_lookup_id }
+		set_temp_variable = { event021_treaty_snapshot_at_hold = constant:random_civil_war_value.zero }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.date
+					value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { event021_treaty_snapshot_at_hold = constant:random_civil_war_value.one }
+		}
+		set_temp_variable = { event021_treaty_signatory_scan = constant:random_civil_war_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_signatory_scan
+					value = global.event021_treaty_signatory_agreement_ids^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.event021_treaty_signatory_agreement_ids^event021_treaty_signatory_scan
+						value = event021_treaty_snapshot_agreement_id
+						compare = equals
+					}
+				}
+				set_temp_variable = { event021_treaty_signatory_scope_exists = constant:random_civil_war_value.zero }
+				var:global.event021_treaty_signatory_country_scopes^event021_treaty_signatory_scan = {
+					if = {
+						limit = { exists = yes }
+						set_temp_variable = { event021_treaty_signatory_scope_exists = constant:random_civil_war_value.one }
+						if = {
+							limit = {
+								has_variable = event021_treaty_agreement_id
+								check_variable = {
+									var = event021_treaty_agreement_id
+									value = event021_treaty_snapshot_agreement_id
+									compare = equals
+								}
+							}
+							set_temp_variable = { event021_treaty_signatory_index = event021_treaty_signatory_scan }
+							event021_treaty_snapshot_signatory_row = yes
+						}
+						else = {
+							if = {
+								limit = {
+									check_variable = {
+										var = global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_scan
+										value = constant:random_civil_war_value.zero
+										compare = equals
+									}
+								}
+								set_variable = {
+									global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+								}
+							}
+						}
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_signatory_scope_exists
+							value = constant:random_civil_war_value.zero
+							compare = equals
+						}
+						check_variable = {
+							var = global.event021_treaty_signatory_proof_frozen_entries^event021_treaty_signatory_scan
+							value = constant:random_civil_war_value.zero
+							compare = equals
+						}
+					}
+					set_variable = {
+						global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+					set_variable = {
+						global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+				}
+			}
+			add_to_temp_variable = { event021_treaty_signatory_scan = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Reviews one persistent agreement and checks every signatory
+# row for the same agreement id. The aggregate receipt is written only after
+# the shared hold date, every signatory has frozen valid proof, at least one
+# member and front row exist, and no latched breach/hold recurrence exists.
+event021_treaty_review_agreement = {
+	set_temp_variable = { event021_treaty_lookup_id = constant:random_civil_war_value.zero }
+	if = { limit = { has_variable = event021_treaty_agreement_id } set_temp_variable = { event021_treaty_lookup_id = event021_treaty_agreement_id } }
+	event021_treaty_find_agreement_row = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_lookup_found
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		set_temp_variable = { event021_treaty_agreement_index = event021_treaty_lookup_index }
+		event021_treaty_freeze_fulfilled_proof = yes
+		set_temp_variable = { event021_treaty_review_member_count = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_treaty_review_fulfilled_count = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_treaty_review_missing_count = constant:random_civil_war_value.zero }
+		set_temp_variable = { event021_treaty_review_breach = global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index }
+		set_temp_variable = { event021_treaty_review_invalid = global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index }
+		set_temp_variable = { event021_treaty_review_front_count = global.event021_treaty_agreement_front_counts^event021_treaty_agreement_index }
+		set_temp_variable = { event021_treaty_review_scan = constant:random_civil_war_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_review_scan
+					value = global.event021_treaty_signatory_agreement_ids^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.event021_treaty_signatory_agreement_ids^event021_treaty_review_scan
+						value = event021_treaty_lookup_id
+						compare = equals
+					}
+				}
+				add_to_temp_variable = { event021_treaty_review_member_count = constant:random_civil_war_value.one }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.event021_treaty_signatory_proof_valid_entries^event021_treaty_review_scan
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+					add_to_temp_variable = { event021_treaty_review_fulfilled_count = constant:random_civil_war_value.one }
+				}
+				else = {
+					add_to_temp_variable = { event021_treaty_review_missing_count = constant:random_civil_war_value.one }
+				}
+				if = {
+					limit = {
+						OR = {
+							check_variable = {
+								var = global.event021_treaty_signatory_breach_latched_entries^event021_treaty_review_scan
+								value = constant:random_civil_war_value.one
+								compare = equals
+							}
+							check_variable = {
+								var = global.event021_treaty_signatory_recurrence_during_hold_entries^event021_treaty_review_scan
+								value = constant:random_civil_war_value.one
+								compare = equals
+							}
+						}
+					}
+					set_temp_variable = { event021_treaty_review_breach = constant:random_civil_war_value.one }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.event021_treaty_signatory_obligation_present_entries^event021_treaty_review_scan
+							value = constant:random_civil_war_value.zero
+							compare = equals
+						}
+					}
+					set_temp_variable = { event021_treaty_review_invalid = constant:random_civil_war_value.one }
+				}
+			}
+			add_to_temp_variable = { event021_treaty_review_scan = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_review_member_count
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+			}
+			set_temp_variable = { event021_treaty_review_invalid = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_review_front_count
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+			}
+			set_temp_variable = { event021_treaty_review_invalid = constant:random_civil_war_value.one }
+		}
+		set_variable = {
+			global.event021_treaty_agreement_fulfilled_signatory_counts^event021_treaty_agreement_index = event021_treaty_review_fulfilled_count
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.date
+					value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = event021_treaty_review_member_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = event021_treaty_review_front_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+				check_variable = {
+					var = event021_treaty_review_fulfilled_count
+					value = event021_treaty_review_member_count
+					compare = equals
+				}
+				check_variable = {
+					var = event021_treaty_review_breach
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+				check_variable = {
+					var = event021_treaty_review_invalid
+					value = constant:random_civil_war_value.zero
+					compare = equals
+				}
+			}
+			set_variable = {
+				global.event021_treaty_agreement_terms_held_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+		}
+		else = {
+			if = {
+				limit = {
+					check_variable = {
+						var = global.date
+						value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+						compare = greater_than_or_equals
+					}
+					OR = {
+						check_variable = {
+							var = event021_treaty_review_missing_count
+							value = constant:random_civil_war_value.zero
+							compare = greater_than
+						}
+						check_variable = {
+							var = event021_treaty_review_breach
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+						check_variable = {
+							var = event021_treaty_review_invalid
+							value = constant:random_civil_war_value.one
+							compare = equals
+						}
+					}
+				}
+				set_variable = {
+					global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+				}
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_review_breach
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			set_variable = {
+				global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+		}
+		set_temp_variable = { event021_treaty_review_propagate_scan = constant:random_civil_war_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_review_propagate_scan
+					value = global.event021_treaty_signatory_agreement_ids^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.event021_treaty_signatory_agreement_ids^event021_treaty_review_propagate_scan
+						value = event021_treaty_lookup_id
+						compare = equals
+					}
+				}
+				var:global.event021_treaty_signatory_country_scopes^event021_treaty_review_propagate_scan = {
+					if = {
+						limit = {
+							exists = yes
+							OR = {
+								NOT = { has_variable = event021_treaty_agreement_id }
+								check_variable = {
+									var = event021_treaty_agreement_id
+									value = event021_treaty_lookup_id
+									compare = equals
+								}
+							}
+						}
+						set_variable = { event021_treaty_member_count = event021_treaty_review_member_count }
+						set_variable = { event021_treaty_front_count = event021_treaty_review_front_count }
+						set_variable = { event021_treaty_hold_until = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.event021_treaty_agreement_terms_held_entries^event021_treaty_agreement_index
+									value = constant:random_civil_war_value.one
+									compare = equals
+								}
+							}
+							set_country_flag = event021_treaty_terms_held
+							set_country_flag = event021_treaty_all_signatories_reviewed
+							set_country_flag = event021_treaty_all_obligations_fulfilled
+						}
+						if = {
+							limit = {
+								check_variable = {
+									var = event021_treaty_review_breach
+									value = constant:random_civil_war_value.one
+									compare = equals
+								}
+							}
+							set_country_flag = event021_treaty_breach_latched
+							clr_country_flag = event021_treaty_no_breach
+						}
+						else = { set_country_flag = event021_treaty_no_breach }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.event021_treaty_agreement_recurrence_during_hold_entries^event021_treaty_agreement_index
+									value = constant:random_civil_war_value.one
+									compare = equals
+								}
+							}
+							set_country_flag = event021_treaty_recurrence_during_hold
+							set_country_flag = event021_treaty_breach_latched
+							clr_country_flag = event021_treaty_no_recurrence_during_hold
+						}
+						else = { set_country_flag = event021_treaty_no_recurrence_during_hold }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index
+									value = constant:random_civil_war_value.one
+									compare = equals
+								}
+							}
+							set_country_flag = event021_treaty_contract_invalid
+						}
+					}
+				}
+			}
+			add_to_temp_variable = { event021_treaty_review_propagate_scan = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope. Latches a recurrence for the current durable agreement before
+# a new crisis reset overwrites the live crisis identity.
+event021_treaty_mark_recurrence = {
+	save_event_target_as = event021_treaty_recurrence_country
+	set_temp_variable = { event021_treaty_lookup_id = constant:random_civil_war_value.zero }
+	if = { limit = { has_variable = event021_treaty_agreement_id } set_temp_variable = { event021_treaty_lookup_id = event021_treaty_agreement_id } }
+	event021_treaty_find_agreement_row = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_lookup_found
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		set_temp_variable = { event021_treaty_agreement_index = event021_treaty_lookup_index }
+		set_variable = { global.event021_treaty_agreement_recurrence_seen_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one }
+		set_country_flag = event021_treaty_recurrence_seen
+		if = {
+			limit = {
+				check_variable = {
+					var = global.date
+					value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+					compare = less_than_or_equals
+				}
+			}
+			set_variable = { global.event021_treaty_agreement_recurrence_during_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one }
+			set_variable = { global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one }
+			set_country_flag = event021_treaty_recurrence_during_hold
+			set_country_flag = event021_treaty_breach_latched
+		}
+		else = {
+			set_variable = { global.event021_treaty_agreement_recurrence_after_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one }
+			set_country_flag = event021_treaty_recurrence_after_hold
+		}
+		set_temp_variable = { event021_treaty_recurrence_scan = constant:random_civil_war_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_recurrence_scan
+					value = global.event021_treaty_signatory_agreement_ids^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.event021_treaty_signatory_agreement_ids^event021_treaty_recurrence_scan
+						value = event021_treaty_lookup_id
+						compare = equals
+					}
+				}
+				var:global.event021_treaty_signatory_country_scopes^event021_treaty_recurrence_scan = {
+					if = {
+						limit = { tag = event_target:event021_treaty_recurrence_country }
+						set_variable = { global.event021_treaty_signatory_recurrence_seen_entries^event021_treaty_recurrence_scan = constant:random_civil_war_value.one }
+						if = {
+							limit = {
+								check_variable = {
+									var = global.date
+									value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+									compare = less_than_or_equals
+								}
+							}
+							set_variable = { global.event021_treaty_signatory_recurrence_during_hold_entries^event021_treaty_recurrence_scan = constant:random_civil_war_value.one }
+						}
+						else = {
+							set_variable = { global.event021_treaty_signatory_recurrence_after_hold_entries^event021_treaty_recurrence_scan = constant:random_civil_war_value.one }
+						}
+					}
+				}
+			}
+			add_to_temp_variable = { event021_treaty_recurrence_scan = constant:random_civil_war_value.one }
+		}
+	}
+}
+
+# COUNTRY scope on the current Event 021 owner. Marks the complete durable
+# agreement, including every aligned signatory row, before a new crisis can
+# overwrite any live country identity. The scan is bounded by the persistent
+# agreement's signatory rows and therefore does not become a world iterator.
+event021_treaty_mark_agreement_recurrence = {
+	set_temp_variable = { event021_treaty_lookup_id = constant:random_civil_war_value.zero }
+	if = {
+		limit = { has_variable = event021_treaty_agreement_id }
+		set_temp_variable = { event021_treaty_lookup_id = event021_treaty_agreement_id }
+	}
+	event021_treaty_find_agreement_row = yes
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_lookup_found
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		set_temp_variable = { event021_treaty_agreement_index = event021_treaty_lookup_index }
+		set_variable = {
+			global.event021_treaty_agreement_recurrence_seen_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.date
+					value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+					compare = less_than_or_equals
+				}
+			}
+			set_variable = {
+				global.event021_treaty_agreement_recurrence_during_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+			set_variable = {
+				global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+		}
+		else = {
+			set_variable = {
+				global.event021_treaty_agreement_recurrence_after_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+			}
+		}
+		set_temp_variable = { event021_treaty_recurrence_scan = constant:random_civil_war_value.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_recurrence_scan
+					value = global.event021_treaty_signatory_agreement_ids^num
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.event021_treaty_signatory_agreement_ids^event021_treaty_recurrence_scan
+						value = event021_treaty_lookup_id
+						compare = equals
+					}
+				}
+				set_variable = {
+					global.event021_treaty_signatory_recurrence_seen_entries^event021_treaty_recurrence_scan = constant:random_civil_war_value.one
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.date
+							value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+							compare = less_than_or_equals
+						}
+					}
+					set_variable = {
+						global.event021_treaty_signatory_recurrence_during_hold_entries^event021_treaty_recurrence_scan = constant:random_civil_war_value.one
+					}
+					set_variable = {
+						global.event021_treaty_agreement_recurrence_during_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+					set_variable = {
+						global.event021_treaty_agreement_breach_latched_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+				}
+				else = {
+					set_variable = {
+						global.event021_treaty_signatory_recurrence_after_hold_entries^event021_treaty_recurrence_scan = constant:random_civil_war_value.one
+					}
+					set_variable = {
+						global.event021_treaty_agreement_recurrence_after_hold_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+				}
+				var:global.event021_treaty_signatory_country_scopes^event021_treaty_recurrence_scan = {
+					if = {
+						limit = {
+							exists = yes
+							has_variable = event021_treaty_agreement_id
+							check_variable = {
+								var = event021_treaty_agreement_id
+								value = event021_treaty_lookup_id
+								compare = equals
+							}
+						}
+						set_country_flag = event021_treaty_recurrence_seen
+						if = {
+							limit = {
+								check_variable = {
+									var = global.date
+									value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+									compare = less_than_or_equals
+								}
+							}
+							set_country_flag = event021_treaty_recurrence_during_hold
+							set_country_flag = event021_treaty_breach_latched
+						}
+						else = { set_country_flag = event021_treaty_recurrence_after_hold }
+					}
+				}
+			}
+			add_to_temp_variable = { event021_treaty_recurrence_scan = constant:random_civil_war_value.one }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.date
+					value = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index
+					compare = less_than_or_equals
+				}
+			}
+			set_country_flag = event021_treaty_recurrence_seen
+			set_country_flag = event021_treaty_recurrence_during_hold
+			set_country_flag = event021_treaty_breach_latched
+		}
+		else = { set_country_flag = event021_treaty_recurrence_after_hold }
+	}
+}
+
+# COUNTRY scope in the on_annex transaction. THIS is the disappearing
+# predecessor and ROOT is the annexing successor. Rebinding is accepted only
+# under the same proof used by event021_handle_annexed_country.
+event021_treaty_rebind_successor = {
+	save_event_target_as = event021_treaty_rebind_predecessor
+	ROOT = { save_event_target_as = event021_treaty_rebind_successor }
+	set_temp_variable = { event021_treaty_rebind_accepted = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_treaty_rebind_rows = constant:random_civil_war_value.zero }
+	set_temp_variable = { event021_treaty_rebind_conflict = constant:random_civil_war_value.zero }
+	if = {
+		limit = {
+			has_variable = event021_treaty_agreement_id
+			has_variable = random_civil_war_crisis_id
+		}
+		set_temp_variable = { event021_treaty_rebind_agreement_id = event021_treaty_agreement_id }
+		set_temp_variable = { event021_treaty_rebind_crisis_id = random_civil_war_crisis_id }
+		ROOT = {
+			if = {
+				limit = {
+					exists = yes
+					has_country_flag = random_civil_war_successor_claimed
+					has_variable = random_civil_war_host_country_scope
+					has_variable = random_civil_war_crisis_id
+					check_variable = {
+						var = random_civil_war_crisis_id
+						value = event021_treaty_rebind_crisis_id
+						compare = equals
+					}
+					var:random_civil_war_host_country_scope = {
+						tag = event_target:event021_treaty_rebind_predecessor
+					}
+				}
+				set_temp_variable = { event021_treaty_rebind_accepted = constant:random_civil_war_value.one }
+			}
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = event021_treaty_rebind_accepted
+				value = constant:random_civil_war_value.one
+				compare = equals
+			}
+		}
+		set_temp_variable = { event021_treaty_lookup_id = event021_treaty_rebind_agreement_id }
+		event021_treaty_find_agreement_row = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_treaty_lookup_found
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			set_temp_variable = { event021_treaty_agreement_index = event021_treaty_lookup_index }
+			set_temp_variable = { event021_treaty_rebind_duplicate = constant:random_civil_war_value.zero }
+			set_temp_variable = { event021_treaty_rebind_scan = constant:random_civil_war_value.zero }
+			while_loop_effect = {
+				limit = {
+					check_variable = {
+						var = event021_treaty_rebind_scan
+						value = global.event021_treaty_signatory_agreement_ids^num
+						compare = less_than
+					}
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = global.event021_treaty_signatory_agreement_ids^event021_treaty_rebind_scan
+							value = event021_treaty_rebind_agreement_id
+							compare = equals
+						}
+					}
+					var:global.event021_treaty_signatory_country_scopes^event021_treaty_rebind_scan = {
+						if = {
+							limit = {
+								exists = yes
+								tag = event_target:event021_treaty_rebind_successor
+							}
+							set_temp_variable = { event021_treaty_rebind_duplicate = constant:random_civil_war_value.one }
+						}
+					}
+				}
+				add_to_temp_variable = { event021_treaty_rebind_scan = constant:random_civil_war_value.one }
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = event021_treaty_rebind_duplicate
+						value = constant:random_civil_war_value.zero
+						compare = equals
+					}
+				}
+				set_temp_variable = { event021_treaty_rebind_scan = constant:random_civil_war_value.zero }
+				while_loop_effect = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_rebind_scan
+							value = global.event021_treaty_signatory_agreement_ids^num
+							compare = less_than
+						}
+					}
+					if = {
+						limit = {
+							check_variable = {
+								var = global.event021_treaty_signatory_agreement_ids^event021_treaty_rebind_scan
+								value = event021_treaty_rebind_agreement_id
+								compare = equals
+							}
+						}
+						var:global.event021_treaty_signatory_country_scopes^event021_treaty_rebind_scan = {
+							if = {
+								limit = {
+									exists = yes
+									tag = event_target:event021_treaty_rebind_predecessor
+								}
+								set_variable = {
+									global.event021_treaty_signatory_country_scopes^event021_treaty_rebind_scan = event_target:event021_treaty_rebind_successor
+								}
+								add_to_temp_variable = { event021_treaty_rebind_rows = constant:random_civil_war_value.one }
+							}
+						}
+					}
+					add_to_temp_variable = { event021_treaty_rebind_scan = constant:random_civil_war_value.one }
+				}
+				set_temp_variable = { event021_treaty_rebind_front_scan = constant:random_civil_war_value.zero }
+				while_loop_effect = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_rebind_front_scan
+							value = global.event021_treaty_front_agreement_ids^num
+							compare = less_than
+						}
+					}
+					if = {
+						limit = {
+							check_variable = {
+								var = global.event021_treaty_front_agreement_ids^event021_treaty_rebind_front_scan
+								value = event021_treaty_rebind_agreement_id
+								compare = equals
+							}
+						}
+						var:global.event021_treaty_front_signatory_countries^event021_treaty_rebind_front_scan = {
+							if = {
+								limit = {
+									exists = yes
+									tag = event_target:event021_treaty_rebind_predecessor
+								}
+								set_variable = {
+									global.event021_treaty_front_signatory_countries^event021_treaty_rebind_front_scan = event_target:event021_treaty_rebind_successor
+								}
+							}
+						}
+						var:global.event021_treaty_front_host_countries^event021_treaty_rebind_front_scan = {
+							if = {
+								limit = {
+									exists = yes
+									tag = event_target:event021_treaty_rebind_predecessor
+								}
+								set_variable = {
+									global.event021_treaty_front_host_countries^event021_treaty_rebind_front_scan = event_target:event021_treaty_rebind_successor
+								}
+							}
+						}
+					}
+					add_to_temp_variable = { event021_treaty_rebind_front_scan = constant:random_civil_war_value.one }
+				}
+				if = {
+					limit = {
+						check_variable = {
+							var = event021_treaty_rebind_rows
+							value = constant:random_civil_war_value.zero
+							compare = greater_than
+						}
+					}
+					ROOT = {
+						if = {
+							limit = {
+								has_variable = event021_treaty_agreement_id
+								check_variable = {
+									var = event021_treaty_agreement_id
+									value = event021_treaty_rebind_agreement_id
+									compare = not_equals
+								}
+							}
+							set_temp_variable = { event021_treaty_rebind_conflict = constant:random_civil_war_value.one }
+						}
+					}
+					if = {
+						limit = {
+							check_variable = {
+								var = event021_treaty_rebind_conflict
+								value = constant:random_civil_war_value.zero
+								compare = equals
+							}
+						}
+						ROOT = {
+							set_variable = { event021_treaty_agreement_id = event021_treaty_rebind_agreement_id }
+							set_variable = { event021_treaty_hold_until = global.event021_treaty_agreement_hold_until_dates^event021_treaty_agreement_index }
+							set_variable = { event021_treaty_settlement_type = global.event021_treaty_agreement_settlement_types^event021_treaty_agreement_index }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_signatory } } set_country_flag = event021_treaty_signatory }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_terms_held } } set_country_flag = event021_treaty_terms_held }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_all_signatories_reviewed } } set_country_flag = event021_treaty_all_signatories_reviewed }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_all_obligations_fulfilled } } set_country_flag = event021_treaty_all_obligations_fulfilled }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_no_breach } } set_country_flag = event021_treaty_no_breach }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_no_recurrence_during_hold } } set_country_flag = event021_treaty_no_recurrence_during_hold }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_proof_frozen } } set_country_flag = event021_treaty_proof_frozen }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_proof_valid } } set_country_flag = event021_treaty_proof_valid }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_breach_latched } } set_country_flag = event021_treaty_breach_latched }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_recurrence_seen } } set_country_flag = event021_treaty_recurrence_seen }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_recurrence_during_hold } } set_country_flag = event021_treaty_recurrence_during_hold }
+							if = { limit = { event_target:event021_treaty_rebind_predecessor = { has_country_flag = event021_treaty_recurrence_after_hold } } set_country_flag = event021_treaty_recurrence_after_hold }
+							set_country_flag = event021_treaty_successor_rebound
+						}
+					}
+					else = {
+						set_variable = {
+							global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+						}
+					}
+				}
+				else = {
+					set_variable = {
+						global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+					}
+				}
+			}
+			else = {
+				set_variable = {
+					global.event021_treaty_agreement_contract_invalid_entries^event021_treaty_agreement_index = constant:random_civil_war_value.one
+				}
+			}
+		}
+	}
+}

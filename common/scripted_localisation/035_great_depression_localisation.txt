@@ -1,0 +1,481 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 GREAT DEPRESSION PRESENTATION HELPERS
+# ============================================================================
+# The player sees one durable number: Depression Severity. All other runtime
+# state is presented as a qualitative band, phase, cause, or relapse status.
+
+defined_text = {
+	name = GetGreatDepressionCategoryDescription
+	text = {
+		trigger = { great_depression_exposure_response_surface_is_ready = yes }
+		localization_key = great_depression_category_desc_exposure
+	}
+	text = {
+		trigger = { great_depression_global_supplier_surface_is_ready = yes }
+		localization_key = great_depression_category_desc_supplier
+	}
+	text = { localization_key = great_depression_category_desc_national }
+}
+
+defined_text = {
+	name = GetGreatDepressionEventPicture
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.boom_collapse compare = equals } }
+		localization_key = GFX_report_event_great_depression_boom_collapse
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.financial_contagion compare = equals } }
+		localization_key = GFX_report_event_great_depression_contagion
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.social_collapse compare = equals } }
+		localization_key = GFX_report_event_great_depression_social_collapse
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.recovery compare = equals } }
+		localization_key = GFX_report_event_great_depression_recovery
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.worldwide_contraction compare = equals } }
+		localization_key = GFX_report_event_great_depression
+	}
+	text = { localization_key = GFX_report_event_great_depression }
+}
+
+defined_text = {
+	name = GetGreatDepressionOpeningDescription
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.boom_collapse compare = equals } }
+		localization_key = chaosx.nr35.2.d.inherited
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.financial_contagion compare = equals } }
+		localization_key = chaosx.nr35.2.d.contagion
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.social_collapse compare = equals } }
+		localization_key = chaosx.nr35.2.d.social
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.worldwide_contraction compare = equals } }
+		localization_key = chaosx.nr35.2.d.worldwide
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_report_variant value = constant:great_depression_report_variant.recovery compare = equals } }
+		localization_key = chaosx.nr35.2.d.relapse
+	}
+	text = { localization_key = chaosx.nr35.2.d.base }
+}
+
+defined_text = {
+	name = GetGreatDepressionSeverityBand
+	text = { trigger = { has_country_flag = great_depression_band_paralysis } localization_key = great_depression.severity.band.paralysis }
+	text = { trigger = { has_country_flag = great_depression_band_systemic } localization_key = great_depression.severity.band.systemic }
+	text = { trigger = { has_country_flag = great_depression_band_deep } localization_key = great_depression.severity.band.deep }
+	text = { trigger = { has_country_flag = great_depression_band_depression } localization_key = great_depression.severity.band.depression }
+	text = { trigger = { has_country_flag = great_depression_band_fragile } localization_key = great_depression.severity.band.fragile }
+	text = { trigger = { has_country_flag = great_depression_band_stabilization } localization_key = great_depression.severity.band.stabilization }
+	text = { trigger = { has_country_flag = great_depression_band_recovery } localization_key = great_depression.severity.band.recovery }
+	text = { localization_key = great_depression.severity.band.unknown }
+}
+
+defined_text = {
+	name = GetGreatDepressionSeverityTrend
+	text = {
+		trigger = { check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.rapid_improving_limit compare = less_than_or_equals } }
+		localization_key = great_depression.severity.trend.rapid_improving
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.improving_limit compare = less_than_or_equals }
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.rapid_improving_limit compare = greater_than }
+		}
+		localization_key = great_depression.severity.trend.improving
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = equals } }
+		localization_key = great_depression.severity.trend.stable
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.worsening_limit compare = less_than }
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+		}
+		localization_key = great_depression.severity.trend.worsening
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.accelerating_limit compare = greater_than_or_equals } }
+		localization_key = great_depression.severity.trend.accelerating
+	}
+	text = { localization_key = great_depression.severity.trend.stable }
+}
+
+defined_text = {
+	name = GetGreatDepressionNextThreshold
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_paralysis
+		}
+		localization_key = great_depression.severity.threshold.maximum_reached
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_systemic
+		}
+		localization_key = great_depression.severity.threshold.paralysis
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_deep
+		}
+		localization_key = great_depression.severity.threshold.systemic
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_depression
+		}
+		localization_key = great_depression.severity.threshold.deep_depression
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_fragile
+		}
+		localization_key = great_depression.severity.threshold.depression
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_stabilization
+		}
+		localization_key = great_depression.severity.threshold.fragile
+	}
+	text = {
+		trigger = {
+			check_variable = { var = great_depression_severity_trend value = constant:great_depression_trend.stable_limit compare = greater_than }
+			has_country_flag = great_depression_band_recovery
+		}
+		localization_key = great_depression.severity.threshold.stabilization
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_band_paralysis }
+		localization_key = great_depression.severity.threshold.systemic
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_band_systemic }
+		localization_key = great_depression.severity.threshold.deep_depression
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_band_deep }
+		localization_key = great_depression.severity.threshold.depression
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_band_depression }
+		localization_key = great_depression.severity.threshold.fragile
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_band_fragile }
+		localization_key = great_depression.severity.threshold.stabilization
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_band_stabilization }
+		localization_key = great_depression.severity.threshold.recovery_floor
+	}
+	text = { localization_key = great_depression.severity.threshold.recovery_floor }
+}
+
+defined_text = {
+	name = GetGreatDepressionPhase
+	text = { trigger = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.economic_paralysis compare = equals } } localization_key = great_depression.phase.economic_paralysis }
+	text = { trigger = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals } } localization_key = great_depression.phase.recovery }
+	text = { trigger = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals } } localization_key = great_depression.phase.stabilization }
+	text = { trigger = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.depression compare = equals } } localization_key = great_depression.phase.depression }
+	text = { trigger = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.panic_and_contraction compare = equals } } localization_key = great_depression.phase.panic_and_contraction }
+	text = { localization_key = great_depression.phase.unknown }
+}
+
+defined_text = {
+	name = GetGreatDepressionDoctrine
+	text = { trigger = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.emergency_public_works compare = equals } } localization_key = great_depression.doctrine.emergency_public_works }
+	text = { trigger = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.rescue_strategic_industry compare = equals } } localization_key = great_depression.doctrine.rescue_strategic_industry }
+	text = { trigger = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.stabilize_finance_and_trade compare = equals } } localization_key = great_depression.doctrine.stabilize_finance_and_trade }
+	text = { trigger = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.austerity_and_retrenchment compare = equals } } localization_key = great_depression.doctrine.austerity_and_retrenchment }
+	text = { trigger = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.direct_state_planning compare = equals } } localization_key = great_depression.doctrine.direct_state_planning }
+	text = { trigger = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.let_the_market_clear compare = equals } } localization_key = great_depression.doctrine.let_the_market_clear }
+	text = { localization_key = great_depression.doctrine.unassigned }
+}
+
+defined_text = {
+	name = GetGreatDepressionSelectedCenter
+	text = {
+		trigger = {
+			has_variable = great_depression_selected_center_state
+			great_depression_has_selected_center = yes
+		}
+		localization_key = "[?great_depression_selected_center_state.GetName]"
+	}
+	text = { localization_key = great_depression.selected_center.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionActiveObjective
+	text = { trigger = { has_active_mission = great_depression_maximum_severity_emergency } localization_key = great_depression_maximum_severity_emergency }
+	text = { trigger = { has_active_mission = great_depression_prevent_national_breakdown } localization_key = great_depression_prevent_national_breakdown }
+	text = { trigger = { has_active_mission = great_depression_emergency_government_mandate } localization_key = great_depression_emergency_government_mandate }
+	text = { trigger = { has_active_mission = great_depression_prevent_general_strike } localization_key = great_depression_prevent_general_strike }
+	text = { trigger = { has_active_mission = great_depression_contain_financial_contagion } localization_key = great_depression_contain_financial_contagion }
+	text = { trigger = { has_active_mission = great_depression_coordinate_international_rescue_mission } localization_key = great_depression_coordinate_international_rescue_mission }
+	text = { trigger = { has_active_mission = great_depression_international_reconstruction } localization_key = great_depression_international_reconstruction }
+	text = { trigger = { has_active_mission = great_depression_halt_the_panic } localization_key = great_depression_halt_the_panic }
+	text = { trigger = { has_active_mission = great_depression_reopen_depression_center } localization_key = great_depression_reopen_depression_center }
+	text = { trigger = { has_active_mission = great_depression_prevent_a_relapse } localization_key = great_depression_prevent_a_relapse }
+	text = { trigger = { has_active_mission = great_depression_restore_essential_production } localization_key = great_depression_restore_essential_production }
+	text = { trigger = { has_active_mission = great_depression_complete_national_recovery_plan } localization_key = great_depression_complete_national_recovery_plan }
+	text = { trigger = { has_active_mission = great_depression_certify_cleared_economy } localization_key = great_depression_certify_cleared_economy }
+	text = { trigger = { has_active_mission = great_depression_national_employment_guarantee } localization_key = great_depression_national_employment_guarantee }
+	text = { trigger = { has_active_mission = great_depression_keep_essential_freight_moving } localization_key = great_depression_keep_essential_freight_moving }
+	text = { localization_key = great_depression.objective.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionCauseOne
+	text = {
+		trigger = { has_country_flag = great_depression_evolution_second_great_depression }
+		localization_key = great_depression.causes.worldwide
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_social_incident_open }
+		localization_key = great_depression.causes.social_collapse
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_contagion_exposure_open }
+		localization_key = great_depression.causes.financial_contagion
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_event34_inherited }
+		localization_key = great_depression.causes.boom_collapse
+	}
+	text = {
+		trigger = { has_country_flag = great_depression_opening_shock_active }
+		localization_key = great_depression.causes.opening_shock
+	}
+	text = { localization_key = great_depression.causes.domestic_contraction }
+}
+
+defined_text = {
+	name = GetGreatDepressionCauseTwo
+	text = {
+		trigger = {
+			has_country_flag = great_depression_evolution_second_great_depression
+			has_country_flag = great_depression_social_incident_open
+		}
+		localization_key = great_depression.causes.social_collapse
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = great_depression_evolution_second_great_depression
+					NOT = { has_country_flag = great_depression_social_incident_open }
+					has_country_flag = great_depression_contagion_exposure_open
+				}
+				AND = {
+					NOT = { has_country_flag = great_depression_evolution_second_great_depression }
+					has_country_flag = great_depression_social_incident_open
+					has_country_flag = great_depression_contagion_exposure_open
+				}
+			}
+		}
+		localization_key = great_depression.causes.financial_contagion
+	}
+	text = {
+		trigger = {
+			OR = {
+				AND = {
+					has_country_flag = great_depression_evolution_second_great_depression
+					NOT = { has_country_flag = great_depression_social_incident_open }
+					NOT = { has_country_flag = great_depression_contagion_exposure_open }
+					has_country_flag = great_depression_event34_inherited
+				}
+				AND = {
+					NOT = { has_country_flag = great_depression_evolution_second_great_depression }
+					has_country_flag = great_depression_social_incident_open
+					NOT = { has_country_flag = great_depression_contagion_exposure_open }
+					has_country_flag = great_depression_event34_inherited
+				}
+				AND = {
+					NOT = { has_country_flag = great_depression_evolution_second_great_depression }
+					NOT = { has_country_flag = great_depression_social_incident_open }
+					has_country_flag = great_depression_contagion_exposure_open
+					has_country_flag = great_depression_event34_inherited
+				}
+			}
+		}
+		localization_key = great_depression.causes.boom_collapse
+	}
+	text = {
+		trigger = {
+			has_country_flag = great_depression_opening_shock_active
+			OR = {
+				has_country_flag = great_depression_evolution_second_great_depression
+				has_country_flag = great_depression_social_incident_open
+				has_country_flag = great_depression_contagion_exposure_open
+				has_country_flag = great_depression_event34_inherited
+			}
+		}
+		localization_key = great_depression.causes.opening_shock
+	}
+	text = { localization_key = great_depression.causes.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionCauseThree
+	text = {
+		trigger = {
+			has_country_flag = great_depression_evolution_second_great_depression
+			has_country_flag = great_depression_social_incident_open
+			has_country_flag = great_depression_contagion_exposure_open
+		}
+		localization_key = great_depression.causes.financial_contagion
+	}
+	text = {
+		trigger = {
+			has_country_flag = great_depression_evolution_second_great_depression
+			OR = {
+				AND = {
+					has_country_flag = great_depression_social_incident_open
+					NOT = { has_country_flag = great_depression_contagion_exposure_open }
+				}
+				AND = {
+					NOT = { has_country_flag = great_depression_social_incident_open }
+					has_country_flag = great_depression_contagion_exposure_open
+				}
+			}
+			has_country_flag = great_depression_event34_inherited
+		}
+		localization_key = great_depression.causes.boom_collapse
+	}
+	text = {
+		trigger = {
+			NOT = { has_country_flag = great_depression_evolution_second_great_depression }
+			has_country_flag = great_depression_social_incident_open
+			has_country_flag = great_depression_contagion_exposure_open
+			has_country_flag = great_depression_event34_inherited
+		}
+		localization_key = great_depression.causes.boom_collapse
+	}
+	text = {
+		trigger = {
+			has_country_flag = great_depression_opening_shock_active
+			OR = {
+				has_country_flag = great_depression_social_incident_open
+				has_country_flag = great_depression_contagion_exposure_open
+				has_country_flag = great_depression_event34_inherited
+			}
+		}
+		localization_key = great_depression.causes.opening_shock
+	}
+	text = { localization_key = great_depression.causes.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionIncident
+	text = {
+		trigger = { has_country_flag = great_depression_social_incident_open check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.none compare = equals } }
+		localization_key = great_depression.incident.organized_movement
+	}
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.factory_gate_closure compare = equals } } localization_key = great_depression.incident.factory_gate_closure }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.unpaid_wages compare = equals } } localization_key = great_depression.incident.unpaid_wages }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.freight_yards_idle compare = equals } } localization_key = great_depression.incident.freight_yards_idle }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.local_credit_cooperative compare = equals } } localization_key = great_depression.incident.local_credit_cooperative }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.municipal_relief_failure compare = equals } } localization_key = great_depression.incident.municipal_relief_failure }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.successful_reopening_shift compare = equals } } localization_key = great_depression.incident.successful_reopening_shift }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.skilled_workers_leave compare = equals } } localization_key = great_depression.incident.skilled_workers_leave }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.unfinished_works_abandoned compare = equals } } localization_key = great_depression.incident.unfinished_works_abandoned }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.regional_aid_request compare = equals } } localization_key = great_depression.incident.regional_aid_request }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.war_orders_revival compare = equals } } localization_key = great_depression.incident.war_orders_revival }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.correspondent_failure compare = equals } } localization_key = great_depression.incident.correspondent_failure }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.foreign_currency_obligation compare = equals } } localization_key = great_depression.incident.foreign_currency_obligation }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.trade_credit_withdrawn compare = equals } } localization_key = great_depression.incident.trade_credit_withdrawn }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.bank_holiday compare = equals } } localization_key = great_depression.incident.bank_holiday }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.debt_conference compare = equals } } localization_key = great_depression.incident.debt_conference }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.rescue_loan_failure compare = equals } } localization_key = great_depression.incident.rescue_loan_failure }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.supplier_concessions compare = equals } } localization_key = great_depression.incident.supplier_concessions }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.capital_flight compare = equals } } localization_key = great_depression.incident.capital_flight }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.clearing_bloc compare = equals } } localization_key = great_depression.incident.clearing_bloc }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.coordinated_rescue compare = equals } } localization_key = great_depression.incident.coordinated_rescue }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.partner_abandonment compare = equals } } localization_key = great_depression.incident.partner_abandonment }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.local_strike_committee compare = equals } } localization_key = great_depression.incident.local_strike_committee }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.unemployed_march compare = equals } } localization_key = great_depression.incident.unemployed_march }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.plant_closure_wage_dispute compare = equals } } localization_key = great_depression.incident.plant_closure_wage_dispute }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.relief_offices_overwhelmed compare = equals } } localization_key = great_depression.incident.relief_offices_overwhelmed }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.veterans_demand_employment compare = equals } } localization_key = great_depression.incident.veterans_demand_employment }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.regional_council_retrenchment_refusal compare = equals } } localization_key = great_depression.incident.regional_council_retrenchment_refusal }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.sector_strike compare = equals } } localization_key = great_depression.incident.sector_strike }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.factory_occupation compare = equals } } localization_key = great_depression.incident.factory_occupation }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.coordinated_layoff_refusal compare = equals } } localization_key = great_depression.incident.coordinated_layoff_refusal }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.business_lockout compare = equals } } localization_key = great_depression.incident.business_lockout }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.relief_demonstration compare = equals } } localization_key = great_depression.incident.relief_demonstration }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.security_force_refusal compare = equals } } localization_key = great_depression.incident.security_force_refusal }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.general_strike compare = equals } } localization_key = great_depression.incident.general_strike }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.nationwide_factory_occupation compare = equals } } localization_key = great_depression.incident.nationwide_factory_occupation }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.hunger_riots compare = equals } } localization_key = great_depression.incident.hunger_riots }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.mutiny_refusal compare = equals } } localization_key = great_depression.incident.mutiny_refusal }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.emergency_cabinet_collapse compare = equals } } localization_key = great_depression.incident.emergency_cabinet_collapse }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.rival_movements compare = equals } } localization_key = great_depression.incident.rival_movements }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.cabinet_authority_loss compare = equals } } localization_key = great_depression.incident.cabinet_authority_loss }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.recovery_program_failure compare = equals } } localization_key = great_depression.incident.recovery_program_failure }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.army_emergency_powers compare = equals } } localization_key = great_depression.incident.army_emergency_powers }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.parallel_administration compare = equals } } localization_key = great_depression.incident.parallel_administration }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.regional_secession_threat compare = equals } } localization_key = great_depression.incident.regional_secession_threat }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.foreign_patron_conditions_aid compare = equals } } localization_key = great_depression.incident.foreign_patron_conditions_aid }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.coup_attempt compare = equals } } localization_key = great_depression.incident.coup_attempt }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.regional_uprising compare = equals } } localization_key = great_depression.incident.regional_uprising }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.separatist_conflict compare = equals } } localization_key = great_depression.incident.separatist_conflict }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.full_civil_war compare = equals } } localization_key = great_depression.incident.full_civil_war }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.negotiated_power_transfer compare = equals } } localization_key = great_depression.incident.negotiated_power_transfer }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.emergency_dictatorship compare = equals } } localization_key = great_depression.incident.emergency_dictatorship }
+	text = { trigger = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.revolutionary_coalition compare = equals } } localization_key = great_depression.incident.revolutionary_coalition }
+	text = { localization_key = great_depression.incident.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionRelapseState
+	text = { trigger = { has_country_flag = great_depression_relapse_active } localization_key = great_depression.relapse.active }
+	text = { trigger = { has_country_flag = great_depression_relapse_prevented } localization_key = great_depression.relapse.prevented }
+	text = { trigger = { has_country_flag = great_depression_last_recovery_no_center_loss } localization_key = great_depression.relapse.guarded }
+	text = { trigger = { has_country_flag = great_depression_recovery_completed } localization_key = great_depression.relapse.recovered }
+	text = { localization_key = great_depression.relapse.none }
+}
+
+defined_text = {
+	name = GetGreatDepressionGlobalStage
+	text = { trigger = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.shock compare = equals } } localization_key = great_depression.global_stage.market_shock }
+	text = { trigger = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.contraction compare = equals } } localization_key = great_depression.global_stage.general_contraction }
+	text = { trigger = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.coordination compare = equals } } localization_key = great_depression.global_stage.worldwide_depression }
+	text = { trigger = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.recovery compare = equals } } localization_key = great_depression.global_stage.fragmented_recovery }
+	text = { trigger = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.international_reconstruction compare = equals } } localization_key = great_depression.global_stage.international_reconstruction }
+	text = { trigger = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.retired compare = equals } } localization_key = great_depression.global_stage.not_active }
+	text = { localization_key = great_depression.global_stage.not_active }
+}
+
+defined_text = {
+	name = GetGreatDepressionExposureStage
+	text = {
+		trigger = { check_variable = { var = great_depression_contagion_exposure_stage value = constant:great_depression_exposure_stage.conversion_ready compare = greater_than_or_equals } }
+		localization_key = great_depression.exposure.stage.near_depression
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_contagion_exposure_stage value = constant:great_depression_exposure_stage.dependent compare = greater_than_or_equals } }
+		localization_key = great_depression.exposure.stage.contracting
+	}
+	text = {
+		trigger = { check_variable = { var = great_depression_contagion_exposure_stage value = constant:great_depression_exposure_stage.pressured compare = greater_than_or_equals } }
+		localization_key = great_depression.exposure.stage.credit_strain
+	}
+	text = { localization_key = great_depression.exposure.stage.exposed }
+}

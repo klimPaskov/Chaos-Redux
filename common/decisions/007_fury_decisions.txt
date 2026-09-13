@@ -24,18 +24,23 @@ fury_war_office_category = {
 				NOT = { has_war = yes }
 				NOT = { fury_occupation_pressure_extreme = yes }
 				any_neighbor_country = { fury_is_valid_target = yes }
-				can_pay_fury_target_cost = yes
+				black_friday_can_pay_fury_target_cost = yes
 				check_variable = { var = fury_overextension value = 5 compare = less_than }
 			}
 		}
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_target_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_target_cost = yes } }
 		custom_cost_text = fury_target_cost_text
 		days_re_enable = 14
 		complete_effect = {
 			custom_effect_tooltip = fury_select_new_target_tt
-			add_command_power = constant:fury_decision_cost.target_cp_spend
-			fury_choose_next_target = yes
-			fury_declare_on_current_target = yes
+			hidden_effect = {
+				black_friday_fury_pay_target_cost = yes
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					fury_choose_next_target = yes
+					fury_declare_on_current_target = yes
+				}
+			}
 		}
 		ai_will_do = {
 			base = @fury_decision_ai_high
@@ -47,15 +52,20 @@ fury_war_office_category = {
 	fury_open_forward_depots = {
 		icon = GFX_decision_fury_depots
 		visible = { is_fury_actor = yes }
-		available = { hidden_trigger = { can_pay_fury_reinforcement_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_reinforcement_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_reinforcement_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_reinforcement_cost = yes } }
 		custom_cost_text = fury_reinforcement_cost_text
 		days_re_enable = constant:fury_decision_cost.reinforcement_cooldown_days
 		complete_effect = {
 			custom_effect_tooltip = fury_open_forward_depots_tt
-			hidden_effect = { fury_decision_pay_reinforcement_cost = yes }
-			fury_spawn_depot_decision_units = yes
-			add_to_variable = { fury_momentum = 1 }
+			hidden_effect = {
+				fury_decision_pay_reinforcement_cost = yes
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					fury_spawn_depot_decision_units = yes
+					add_to_variable = { fury_momentum = 1 }
+				}
+			}
 		}
 		ai_will_do = {
 			base = @fury_decision_ai_medium
@@ -74,26 +84,31 @@ fury_war_office_category = {
 				NOT = { has_state_flag = fury_settlement_registered }
 			}
 		}
-		available = { hidden_trigger = { can_pay_fury_settlement_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_settlement_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_settlement_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_settlement_cost = yes } }
 		custom_cost_text = fury_settlement_cost_text
 		days_re_enable = 35
 		complete_effect = {
 			custom_effect_tooltip = fury_register_occupation_settlement_tt
-			hidden_effect = { fury_decision_pay_settlement_cost = yes }
-			add_to_variable = { fury_compliance_drive = 1 }
-			add_ideas = fury_compliance_drive
-			random_controlled_state = {
-				limit = {
-					is_owned_by = ROOT
-					is_controlled_by = ROOT
-					NOT = { is_core_of = ROOT }
-					NOT = { has_state_flag = fury_settlement_registered }
+			hidden_effect = {
+			fury_decision_pay_settlement_cost = yes
+			if = {
+				limit = { black_friday_fury_payment_succeeded = yes }
+				add_to_variable = { fury_compliance_drive = 1 }
+				add_ideas = fury_compliance_drive
+				random_controlled_state = {
+					limit = {
+						is_owned_by = ROOT
+						is_controlled_by = ROOT
+						NOT = { is_core_of = ROOT }
+						NOT = { has_state_flag = fury_settlement_registered }
+					}
+					set_state_flag = fury_settlement_registered
+					add_compliance = constant:fury_balance.settlement_compliance_gain
 				}
-				set_state_flag = fury_settlement_registered
-				add_compliance = constant:fury_balance.settlement_compliance_gain
+				fury_update_occupation_pressure = yes
 			}
-			fury_update_occupation_pressure = yes
+		}
 		}
 		ai_will_do = {
 			base = @fury_decision_ai_medium
@@ -113,8 +128,8 @@ fury_war_office_category = {
 				NOT = { has_state_flag = fury_settlement_registered }
 			}
 		}
-		available = { hidden_trigger = { can_pay_fury_registers_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_registers_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_registers_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_registers_cost = yes } }
 		custom_cost_text = fury_registers_cost_text
 		days_re_enable = 28
 		complete_effect = {
@@ -141,8 +156,8 @@ fury_war_office_category = {
 				NOT = { is_core_of = ROOT }
 			}
 		}
-		available = { hidden_trigger = { can_pay_fury_rail_registry_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_rail_registry_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_rail_registry_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_rail_registry_cost = yes } }
 		custom_cost_text = fury_rail_registry_cost_text
 		days_re_enable = 42
 		complete_effect = {
@@ -194,11 +209,11 @@ fury_war_office_category = {
 		}
 		available = {
 			hidden_trigger = {
-				can_pay_fury_admin_core_cost = yes
+				black_friday_can_pay_fury_admin_core_cost = yes
 				NOT = { fury_occupation_pressure_extreme = yes }
 			}
 		}
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_admin_core_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_admin_core_cost = yes } }
 		custom_cost_text = fury_admin_core_cost_text
 		days_re_enable = 70
 		complete_effect = {
@@ -218,8 +233,8 @@ fury_war_office_category = {
 			is_fury_actor = yes
 			fury_has_march_core_candidate = yes
 		}
-		available = { hidden_trigger = { can_pay_fury_march_core_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_march_core_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_march_core_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_march_core_cost = yes } }
 		custom_cost_text = fury_march_core_cost_text
 		days_re_enable = 56
 		complete_effect = {
@@ -272,22 +287,26 @@ fury_war_office_category = {
 			NOT = { has_country_flag = fury_rival_route }
 			any_other_country = { is_fury_actor = yes }
 		}
-		available = { hidden_trigger = { can_pay_fury_cooperation_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_cooperation_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_cooperation_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_cooperation_cost = yes } }
 		custom_cost_text = fury_cooperation_cost_text
 		days_re_enable = 45
 		complete_effect = {
 			custom_effect_tooltip = fury_form_war_table_tt
-			add_command_power = constant:fury_decision_cost.cooperation_cp_spend
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:fury_decision_cost.cooperation_equipment }
-			set_global_flag = fury_pact_formed
-			set_country_flag = fury_cooperation_route
-			set_country_flag = fury_pact_member
-			add_ideas = fury_pact_command
-			add_to_variable = { fury_pact_cohesion = 2 }
-			every_other_country = {
-				limit = { is_fury_actor = yes }
-				set_country_flag = fury_pact_member
+			hidden_effect = {
+				black_friday_fury_pay_cooperation_cost = yes
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					set_global_flag = fury_pact_formed
+					set_country_flag = fury_cooperation_route
+					set_country_flag = fury_pact_member
+					add_ideas = fury_pact_command
+					add_to_variable = { fury_pact_cohesion = 2 }
+					every_other_country = {
+						limit = { is_fury_actor = yes }
+						set_country_flag = fury_pact_member
+					}
+				}
 			}
 		}
 		ai_will_do = { base = @fury_decision_ai_low }
@@ -301,19 +320,24 @@ fury_war_office_category = {
 			NOT = { has_country_flag = fury_cooperation_route }
 			any_other_country = { is_fury_actor = yes }
 		}
-		available = { hidden_trigger = { can_pay_fury_rivalry_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_rivalry_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_rivalry_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_rivalry_cost = yes } }
 		custom_cost_text = fury_rivalry_cost_text
 		days_re_enable = 45
 		complete_effect = {
 			custom_effect_tooltip = fury_mark_rival_column_tt
-			add_command_power = constant:fury_decision_cost.rivalry_cp_spend
-			set_country_flag = fury_rival_route
-			add_ideas = fury_rival_doctrine
-			add_to_variable = { fury_momentum = 1 }
-			every_other_country = {
-				limit = { is_fury_actor = yes }
-				add_opinion_modifier = { target = ROOT modifier = same_ruling_party }
+			hidden_effect = {
+				black_friday_fury_pay_rivalry_cost = yes
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					set_country_flag = fury_rival_route
+					add_ideas = fury_rival_doctrine
+					add_to_variable = { fury_momentum = 1 }
+					every_other_country = {
+						limit = { is_fury_actor = yes }
+						add_opinion_modifier = { target = ROOT modifier = same_ruling_party }
+					}
+				}
 			}
 		}
 		ai_will_do = { base = @fury_decision_ai_low }
@@ -325,17 +349,22 @@ fury_war_office_category = {
 			is_fury_actor = yes
 			has_country_flag = fury_no_valid_neighbors
 		}
-		available = { hidden_trigger = { can_pay_fury_survey_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_survey_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_survey_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_survey_cost = yes } }
 		custom_cost_text = fury_survey_cost_text
 		days_re_enable = 42
 		complete_effect = {
 			custom_effect_tooltip = fury_survey_beyond_the_border_tt
-			add_command_power = constant:fury_decision_cost.survey_cp_spend
-			add_to_variable = { fury_reach = 1 }
-			add_to_variable = { fury_failed_target_scans = 1 }
-			clr_country_flag = fury_no_valid_neighbors
-			country_event = { id = chaosx.nr7.10 days = 3 }
+			hidden_effect = {
+				black_friday_fury_pay_survey_cost = yes
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					add_to_variable = { fury_reach = 1 }
+					add_to_variable = { fury_failed_target_scans = 1 }
+					clr_country_flag = fury_no_valid_neighbors
+					country_event = { id = chaosx.nr7.10 days = 3 }
+				}
+			}
 		}
 		ai_will_do = { base = @fury_decision_ai_low }
 	}
@@ -351,8 +380,8 @@ fury_war_office_category = {
 				has_country_flag = fury_world_end_actor
 			}
 		}
-		available = { hidden_trigger = { can_pay_fury_terminal_reserves_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_terminal_reserves_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_terminal_reserves_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_terminal_reserves_cost = yes } }
 		custom_cost_text = fury_terminal_reserves_cost_text
 		days_re_enable = @fury_terminal_share_reserves_days
 		complete_effect = {
@@ -374,8 +403,8 @@ fury_war_office_category = {
 			has_country_flag = fury_world_end_actor
 			has_global_flag = fury_world_end_active
 		}
-		available = { hidden_trigger = { can_pay_fury_terminal_fronts_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_fury_terminal_fronts_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_fury_terminal_fronts_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_fury_terminal_fronts_cost = yes } }
 		custom_cost_text = fury_terminal_fronts_cost_text
 		days_re_enable = @fury_terminal_assign_fronts_days
 		complete_effect = {
@@ -399,16 +428,19 @@ anti_fury_response_category = {
 			any_neighbor_country = { is_fury_actor = yes }
 			NOT = { has_country_flag = anti_fury_border_watch_active }
 		}
-		available = { hidden_trigger = { can_pay_anti_fury_border_watch_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_border_watch_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_anti_fury_border_watch_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_anti_fury_border_watch_cost = yes } }
 		custom_cost_text = anti_fury_border_watch_cost_text
 		days_re_enable = 120
 		complete_effect = {
 			custom_effect_tooltip = anti_fury_border_watch_tt
 			hidden_effect = {
 				anti_fury_pay_border_watch_cost = yes
-				set_country_flag = anti_fury_border_watch_active
-				activate_mission = anti_fury_border_watch_mission
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					set_country_flag = anti_fury_border_watch_active
+					activate_mission = anti_fury_border_watch_mission
+				}
 			}
 			custom_effect_tooltip = anti_fury_border_watch_start_tt
 		}
@@ -456,15 +488,18 @@ anti_fury_response_category = {
 			anti_fury_has_active_target_to_aid = yes
 			NOT = { has_country_flag = anti_fury_aid_route_active }
 		}
-		available = { hidden_trigger = { can_pay_anti_fury_emergency_aid_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_emergency_aid_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_anti_fury_emergency_aid_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_anti_fury_emergency_aid_cost = yes } }
 		custom_cost_text = anti_fury_emergency_aid_cost_text
 		days_re_enable = 120
 		complete_effect = {
 			custom_effect_tooltip = anti_fury_send_emergency_aid_tt
 			hidden_effect = {
 				anti_fury_send_emergency_aid_effect = yes
-				activate_mission = anti_fury_aid_route_mission
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes has_variable = anti_fury_aid_target }
+					activate_mission = anti_fury_aid_route_mission
+				}
 			}
 			custom_effect_tooltip = anti_fury_send_emergency_aid_effect_tt
 		}
@@ -480,7 +515,15 @@ anti_fury_response_category = {
 		days_mission_timeout = @anti_fury_aid_route_days
 		is_good = no
 		fire_only_once = no
-		activation = { has_country_flag = anti_fury_aid_route_active }
+		activation = {
+			has_country_flag = anti_fury_aid_route_active
+			has_variable = anti_fury_aid_target
+			var:anti_fury_aid_target = {
+				exists = yes
+				NOT = { has_capitulated = yes }
+				NOT = { fury_is_player_linked_country = yes }
+			}
+		}
 		available = {
 			capital_scope = { NOT = { is_controlled_by = ROOT } }
 		}
@@ -488,10 +531,20 @@ anti_fury_response_category = {
 			OR = {
 				is_fury_actor = yes
 				NOT = { any_country = { is_fury_actor = yes } }
+				NOT = { has_variable = anti_fury_aid_target }
+				NOT = {
+					var:anti_fury_aid_target = {
+						exists = yes
+						NOT = { has_capitulated = yes }
+						NOT = { fury_is_player_linked_country = yes }
+					}
+				}
 			}
 		}
 		cancel_effect = {
 			clr_country_flag = anti_fury_aid_route_active
+			clear_variable = anti_fury_aid_target
+			clear_variable = anti_fury_aid_source_actor
 		}
 		complete_effect = { anti_fury_aid_route_failure = yes }
 		timeout_effect = { anti_fury_aid_route_success = yes }
@@ -503,8 +556,8 @@ anti_fury_response_category = {
 			anti_fury_response_visible = yes
 			NOT = { has_country_flag = anti_fury_staff_talks_active }
 		}
-		available = { hidden_trigger = { can_pay_anti_fury_staff_talks_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_staff_talks_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_anti_fury_staff_talks_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_anti_fury_staff_talks_cost = yes } }
 		custom_cost_text = anti_fury_staff_talks_cost_text
 		days_re_enable = 140
 		complete_effect = {
@@ -525,16 +578,19 @@ anti_fury_response_category = {
 			any_neighbor_country = { is_fury_actor = yes }
 			NOT = { has_country_flag = anti_fury_supply_denial_active }
 		}
-		available = { hidden_trigger = { can_pay_anti_fury_supply_denial_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_supply_denial_cost = yes } }
+		available = { hidden_trigger = { black_friday_can_pay_anti_fury_supply_denial_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_anti_fury_supply_denial_cost = yes } }
 		custom_cost_text = anti_fury_supply_denial_cost_text
 		days_re_enable = 120
 		complete_effect = {
 			custom_effect_tooltip = anti_fury_start_supply_denial_tt
 			hidden_effect = {
 				anti_fury_pay_supply_denial_cost = yes
-				set_country_flag = anti_fury_supply_denial_active
-				activate_mission = anti_fury_supply_denial_mission
+				if = {
+					limit = { black_friday_fury_payment_succeeded = yes }
+					set_country_flag = anti_fury_supply_denial_active
+					activate_mission = anti_fury_supply_denial_mission
+				}
 			}
 			custom_effect_tooltip = anti_fury_start_supply_denial_effect_tt
 		}
@@ -583,9 +639,10 @@ anti_fury_response_category = {
 				is_major = yes
 				any_neighbor_country = { is_fury_actor = yes }
 			}
+			anti_fury_has_recognition_target = yes
 		}
-		available = { hidden_trigger = { can_pay_anti_fury_recognition_denial_cost = yes } }
-		custom_cost_trigger = { hidden_trigger = { can_pay_anti_fury_recognition_denial_cost = yes } }
+		available = { hidden_trigger = { anti_fury_has_recognition_target = yes black_friday_can_pay_anti_fury_recognition_denial_cost = yes } }
+		custom_cost_trigger = { hidden_trigger = { black_friday_can_pay_anti_fury_recognition_denial_cost = yes } }
 		custom_cost_text = anti_fury_recognition_denial_cost_text
 		days_re_enable = 120
 		complete_effect = {

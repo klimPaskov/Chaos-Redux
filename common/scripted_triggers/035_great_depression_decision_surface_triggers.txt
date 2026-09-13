@@ -1,0 +1,2335 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 035 DECISION SURFACE TRIGGERS
+# ============================================================================
+# These predicates bind the ordinary decision category to the parent-owned
+# Severity lifecycle. State and partner targets are validated in their own
+# scopes, while the country surface remains bounded and fail-closed.
+# ============================================================================
+
+
+great_depression_decision_surface_is_ready = {
+	great_depression_active_crisis_is_coherent = yes
+	NOT = { has_country_flag = great_depression_transition_pending }
+}
+
+great_depression_action_slot_is_open = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_action_lock }
+}
+
+# Countries carrying only an exposure or worldwide-pressure row receive a
+# compact response surface without being given a national Depression Severity.
+great_depression_exposure_response_surface_is_ready = {
+	great_depression_has_viable_economy = yes
+	has_country_flag = great_depression_contagion_exposure_open
+	NOT = { has_country_flag = great_depression_active }
+	NOT = { has_country_flag = great_depression_contagion_converted }
+	has_variable = great_depression_contagion_source_countries^num
+	check_variable = { var = great_depression_contagion_source_countries^num value = constant:great_depression_api.zero compare = greater_than }
+}
+
+great_depression_global_supplier_surface_is_ready = {
+	great_depression_has_viable_economy = yes
+	has_global_flag = great_depression_worldwide_episode_active
+	has_country_flag = great_depression_worldwide_pressure_active
+	check_variable = { var = great_depression_worldwide_pressure_episode_id value = global.great_depression_global_episode_id compare = equals }
+	NOT = { check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.recovery compare = greater_than_or_equals } }
+	NOT = { has_country_flag = great_depression_active }
+	NOT = { has_country_flag = great_depression_transition_pending }
+	NOT = { has_country_flag = great_depression_incompatible_economic_state }
+	NOT = { has_country_flag = great_depression_contagion_converted }
+}
+
+great_depression_global_action_surface_is_ready = {
+	OR = {
+		great_depression_second_great_depression_surface_is_active = yes
+		great_depression_global_supplier_surface_is_ready = yes
+	}
+}
+
+great_depression_external_action_slot_is_open = {
+	OR = {
+		great_depression_action_slot_is_open = yes
+		AND = {
+			OR = {
+				great_depression_exposure_response_surface_is_ready = yes
+				great_depression_global_supplier_surface_is_ready = yes
+			}
+			NOT = { has_country_flag = great_depression_action_lock }
+		}
+	}
+}
+
+great_depression_is_active_decision_surface = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_doctrine_choice = {
+	great_depression_decision_surface_is_ready = yes
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.unassigned compare = equals }
+}
+
+great_depression_should_show_doctrine_choice_emergency_public_works = {
+	great_depression_should_show_doctrine_choice = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_emergency_public_works_complete }
+}
+
+great_depression_should_show_doctrine_choice_rescue_strategic_industry = {
+	great_depression_should_show_doctrine_choice = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_rescue_strategic_industry_complete }
+}
+
+great_depression_should_show_doctrine_choice_stabilize_finance_and_trade = {
+	great_depression_should_show_doctrine_choice = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_stabilize_finance_and_trade_complete }
+}
+
+great_depression_should_show_doctrine_choice_austerity_and_retrenchment = {
+	great_depression_should_show_doctrine_choice = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_austerity_and_retrenchment_complete }
+}
+
+great_depression_should_show_doctrine_choice_direct_state_planning = {
+	great_depression_should_show_doctrine_choice = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_direct_state_planning_complete }
+}
+
+great_depression_should_show_doctrine_choice_let_the_market_clear = {
+	great_depression_should_show_doctrine_choice = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_let_the_market_clear_complete }
+}
+
+great_depression_should_show_doctrine_primary_actions = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.unassigned compare = equals } }
+}
+
+great_depression_should_show_center_actions = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_has_selected_center = yes
+}
+
+great_depression_should_show_center_selection = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_foreign_support = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_foreign_support_cooldown }
+}
+
+great_depression_financial_contagion_surface_is_active = {
+	great_depression_decision_surface_is_ready = yes
+	has_country_flag = great_depression_evolution_financial_contagion
+	check_variable = { var = great_depression_evolution_floor value = constant:great_depression_evolution.financial_contagion compare = greater_than_or_equals }
+}
+
+great_depression_social_collapse_surface_is_active = {
+	great_depression_decision_surface_is_ready = yes
+	has_country_flag = great_depression_evolution_social_collapse
+	check_variable = { var = great_depression_evolution_floor value = constant:great_depression_evolution.social_collapse compare = greater_than_or_equals }
+}
+
+great_depression_second_great_depression_surface_is_active = {
+	great_depression_social_collapse_surface_is_active = yes
+	has_country_flag = great_depression_evolution_second_great_depression
+	check_variable = { var = great_depression_evolution_floor value = constant:great_depression_evolution.second_great_depression compare = equals }
+	has_global_flag = great_depression_worldwide_episode_active
+}
+
+great_depression_should_show_abandon_distressed_market = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_accept_external_supervision = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_acquire_distressed_assets = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_auction_or_reorganize_failed_assets = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_balance_emergency_budget = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_emergency_budget_balanced }
+}
+
+great_depression_should_show_break_the_occupations = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_certify_cleared_economy = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_cleared_economy_certified }
+}
+
+great_depression_should_show_competitive_devaluation_or_currency_break = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_complete_national_recovery_plan = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_recovery_plan_complete }
+}
+
+great_depression_should_show_consolidate_failing_industry = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_convert_works_into_lasting_capacity = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_coordinate_industrial_demand = {
+	great_depression_global_action_surface_is_ready = yes
+}
+
+great_depression_should_show_coordinate_international_rescue = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_coordinated_public_works_and_reconstruction = {
+	great_depression_global_action_surface_is_ready = yes
+}
+
+great_depression_should_show_declare_temporary_bank_holiday_and_audit = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_bank_audit_complete }
+}
+
+great_depression_should_show_deploy_security_forces = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_designate_strategic_plant_network = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_emergency_policy_review = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_emergency_relief = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_emergency_trade_clearing = {
+	great_depression_global_action_surface_is_ready = yes
+}
+
+great_depression_should_show_establish_clearing_bloc = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_establish_durable_credit_guarantee = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_durable_credit_guarantee }
+}
+
+great_depression_should_show_establish_emergency_production_board = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_emergency_production_board }
+}
+
+great_depression_should_show_exploit_supply_gap = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_extend_emergency_credit = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_form_an_emergency_government = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_global_recovery_conference = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_guarantee_essential_orders = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_essential_orders_guaranteed }
+}
+
+great_depression_should_show_guarantee_property_and_credit = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_international_debt_conference = {
+	great_depression_global_action_surface_is_ready = yes
+}
+
+great_depression_should_show_launch_regional_works_program = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_national_employment_compact = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_national_employment_guarantee = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_employment_guarantee_complete }
+	NOT = { has_country_flag = great_depression_employment_guarantee_partial }
+}
+
+great_depression_should_show_nationalize_failing_industry = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_nationalize_or_socialize_occupied_industry = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_negotiate_clearing_and_import_agreements = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_negotiate_with_strike_committees = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_offer_boom_supply_contract = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_offer_debt_standstill = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_prioritize_domestic_recovery = {
+	OR = {
+		great_depression_decision_surface_is_ready = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_should_show_protect_domestic_market = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_protectionist_bloc = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_ration_strategic_inputs = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_strategic_inputs_rationed }
+}
+
+great_depression_should_show_recapitalize_viable_institutions = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_viable_institutions_recapitalized }
+}
+
+great_depression_should_show_recognize_workplace_or_regional_councils = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_should_show_reconstruction_and_employment_fund = {
+	great_depression_global_action_surface_is_ready = yes
+}
+
+great_depression_should_show_reconstruction_supplier_compact = {
+	great_depression_global_action_surface_is_ready = yes
+}
+
+great_depression_should_show_regional_clearing_agreement = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_remove_emergency_controls = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_emergency_controls_removed }
+}
+
+great_depression_should_show_request_emergency_credit = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_restore_ordinary_budget_rules = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_ordinary_budget_restored }
+}
+
+great_depression_should_show_restrict_capital_outflows = {
+	OR = {
+		great_depression_decision_surface_is_ready = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_should_show_restructure_public_obligations = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_public_obligations_restructured }
+}
+
+great_depression_should_show_retrench_relief_administration = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_relief_retrenched }
+}
+
+great_depression_should_show_ring_fence_domestic_finance = {
+	OR = {
+		great_depression_financial_contagion_surface_is_active = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_should_show_sell_distressed_assets = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_shift_import_and_contract_dependence = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_should_show_support_contagion_source = {
+	OR = {
+		great_depression_financial_contagion_surface_is_active = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_should_show_withdraw_emergency_support = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { has_country_flag = great_depression_emergency_support_withdrawn }
+}
+
+great_depression_should_show_withdraw_from_distressed_market = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_should_show_withdraw_from_international_commitments = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_should_show_cabinet_review = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.unassigned compare = equals } }
+}
+
+
+# Doctrine selectors and persistent doctrine receipts.
+
+great_depression_can_choose_emergency_public_works = {
+	great_depression_can_choose_doctrine = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_emergency_public_works_complete }
+}
+
+great_depression_doctrine_is_emergency_public_works = {
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.emergency_public_works compare = equals }
+}
+
+great_depression_can_choose_rescue_strategic_industry = {
+	great_depression_can_choose_doctrine = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_rescue_strategic_industry_complete }
+}
+
+great_depression_doctrine_is_rescue_strategic_industry = {
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.rescue_strategic_industry compare = equals }
+}
+
+great_depression_can_choose_stabilize_finance_and_trade = {
+	great_depression_can_choose_doctrine = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_stabilize_finance_and_trade_complete }
+}
+
+great_depression_doctrine_is_stabilize_finance_and_trade = {
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.stabilize_finance_and_trade compare = equals }
+}
+
+great_depression_can_choose_austerity_and_retrenchment = {
+	great_depression_can_choose_doctrine = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_austerity_and_retrenchment_complete }
+}
+
+great_depression_doctrine_is_austerity_and_retrenchment = {
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.austerity_and_retrenchment compare = equals }
+}
+
+great_depression_can_choose_direct_state_planning = {
+	great_depression_can_choose_doctrine = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_direct_state_planning_complete }
+}
+
+great_depression_doctrine_is_direct_state_planning = {
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.direct_state_planning compare = equals }
+}
+
+great_depression_can_choose_let_the_market_clear = {
+	great_depression_can_choose_doctrine = yes
+	NOT = { has_country_flag = great_depression_doctrine_choice_let_the_market_clear_complete }
+}
+
+great_depression_doctrine_is_let_the_market_clear = {
+	check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.let_the_market_clear compare = equals }
+}
+
+
+# Cost families. Every family debits no more than four resource types in the
+# matching scripted effect. The visible cost values are refreshed centrally.
+great_depression_can_pay_four_type_cost = {
+	great_depression_external_action_slot_is_open = yes
+	great_depression_costs_are_ready = yes
+}
+
+great_depression_can_pay_austerity = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_stability < great_depression_cost_stability }
+
+	NOT = { has_war_support < great_depression_cost_war_support }
+
+}
+
+great_depression_can_pay_center_abandon = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_stability < great_depression_cost_stability }
+
+	NOT = { has_war_support < great_depression_cost_war_support }
+
+}
+
+great_depression_can_pay_center_protection = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_manpower < great_depression_cost_manpower }
+
+	NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+
+	NOT = { has_equipment = { support_equipment < great_depression_cost_support_equipment } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_center_reopen = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_manpower < great_depression_cost_manpower }
+
+	NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_center_restructure = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+
+	NOT = { has_equipment = { support_equipment < great_depression_cost_support_equipment } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_contagion = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { has_equipment = { convoy_1 < great_depression_cost_convoys } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_doctrine_choice = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+}
+
+great_depression_can_pay_emergency_relief = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_manpower < great_depression_cost_manpower }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_finance_trade = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_equipment = { convoy_1 < great_depression_cost_convoys } }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_foreign_support = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_equipment = { convoy_1 < great_depression_cost_convoys } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_global_reconstruction = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { has_equipment = { convoy_1 < great_depression_cost_convoys } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_market_clear = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_stability < great_depression_cost_stability }
+
+	NOT = { has_war_support < great_depression_cost_war_support }
+
+}
+
+great_depression_can_pay_policy_review = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_stability < great_depression_cost_stability }
+
+}
+
+great_depression_can_pay_public_works = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_manpower < great_depression_cost_manpower }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_social_response = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_manpower < great_depression_cost_manpower }
+
+	NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+
+	NOT = { has_stability < great_depression_cost_stability }
+
+}
+
+great_depression_can_pay_state_planning = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+great_depression_can_pay_strategic_rescue = {
+	great_depression_can_pay_four_type_cost = yes
+
+	NOT = { has_political_power < great_depression_cost_political_power }
+
+	NOT = { has_fuel < great_depression_cost_fuel }
+
+	NOT = { has_equipment = { support_equipment < great_depression_cost_support_equipment } }
+
+	NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+
+}
+
+
+# Target validation. These are evaluated in the state or partner scope.
+great_depression_center_is_valid_selector_target = {
+	exists = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	has_state_flag = great_depression_center
+	NOT = { has_state_flag = great_depression_center_liquidated }
+	state_population_k > constant:great_depression_api.minimum_viable_state_population_k
+	OR = {
+		industrial_complex > constant:great_depression_api.zero
+		arms_factory > constant:great_depression_api.zero
+		dockyard > constant:great_depression_api.zero
+	}
+}
+
+great_depression_selected_center_target_is_valid = {
+	exists = yes
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	has_state_flag = great_depression_center
+	NOT = { has_state_flag = great_depression_center_liquidated }
+	OR = {
+		ROOT = { is_ai = yes }
+		state = var:ROOT.great_depression_selected_center_state
+	}
+}
+
+great_depression_center_project_target_is_open = {
+	NOT = { has_state_flag = great_depression_center_project_authorized }
+	NOT = { has_state_flag = great_depression_center_project_active_work }
+	NOT = { has_state_flag = great_depression_center_project_paused }
+	NOT = { has_state_flag = great_depression_center_project_certification }
+	NOT = { has_state_flag = great_depression_center_project_completed_receipt }
+}
+
+great_depression_center_target_has_factory = {
+	OR = {
+		industrial_complex > constant:great_depression_api.zero
+		arms_factory > constant:great_depression_api.zero
+		dockyard > constant:great_depression_api.zero
+	}
+}
+
+great_depression_center_abandon_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = { has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_abandoned }
+	NOT = { has_state_flag = great_depression_center_reopened }
+	NOT = { has_state_flag = great_depression_center_liquidated }
+	NOT = { has_state_flag = great_depression_center_deliberate_liquidation_receipt }
+	industrial_complex > constant:great_depression_api.one
+	ROOT = {
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals }
+	}
+}
+
+great_depression_center_consolidation_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	NOT = { has_state_flag = great_depression_center_reopened }
+}
+
+great_depression_center_lasting_capacity_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	has_state_flag = great_depression_center_reopened
+	NOT = { has_state_flag = great_depression_center_lasting_capacity }
+}
+
+great_depression_center_protection_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = { has_state_flag = great_depression_center_distressed has_state_flag = great_depression_center_idled has_state_flag = great_depression_center_shuttered }
+	NOT = { has_state_flag = great_depression_center_protected }
+}
+
+great_depression_center_public_works_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	has_state_flag = great_depression_center_reopened
+	NOT = { has_state_flag = great_depression_center_public_works_receipt }
+}
+
+great_depression_center_rebuild_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = { has_state_flag = great_depression_center_idled has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_hollowed }
+}
+
+great_depression_center_reopen_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = { has_state_flag = great_depression_center_idled has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_hollowed }
+}
+
+great_depression_center_restructure_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	NOT = { has_state_flag = great_depression_center_reopened }
+}
+
+great_depression_clearing_bloc_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+}
+
+great_depression_clearing_partner_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_contagion_source_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	is_in_array = { array = ROOT.great_depression_contagion_source_countries value = THIS }
+	great_depression_partner_pair_cooldown_is_open = yes
+}
+
+great_depression_contagion_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+}
+
+great_depression_credit_provider_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_creditor_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_distressed_asset_state_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+}
+
+great_depression_distressed_asset_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	OR = { has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_abandoned }
+}
+
+great_depression_distressed_market_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+}
+
+great_depression_event34_supplier_target_is_valid = {
+	industrial_boom_supplier_adapter_target_is_valid = yes
+}
+
+great_depression_global_reconstruction_recipient_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	is_major = yes
+	great_depression_active_crisis_is_coherent = yes
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	ROOT = { great_depression_global_supplier_surface_is_ready = yes }
+}
+
+great_depression_failed_asset_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = { has_state_flag = great_depression_center_shuttered has_state_flag = great_depression_center_abandoned }
+	industrial_complex > constant:great_depression_api.one
+	ROOT = {
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals }
+	}
+}
+
+great_depression_partner_pair_cooldown_is_open = {
+	meta_trigger = {
+		text = {
+			NOT = { has_country_flag = great_depression_partner_pair_cooldown_[GREAT_DEPRESSION_PARTNER_TAG] }
+		}
+		GREAT_DEPRESSION_PARTNER_TAG = "[ROOT.GetTag]"
+	}
+}
+
+# Candidate partner scope with ROOT as the decision owner. A target must have
+# an exact diplomatic, geographic, subject, or registered contagion link and a
+# viable land/faction connection or convoy route. This keeps the public target
+# list sparse and prevents an unrelated major from becoming a universal bank.
+great_depression_has_proved_partner_relationship = {
+	exists = yes
+	NOT = { tag = ROOT }
+	NOT = { has_war_with = ROOT }
+	OR = {
+		is_in_faction_with = ROOT
+		is_ally_with = ROOT
+		is_neighbor_of = ROOT
+		is_subject_of = ROOT
+		ROOT = { is_subject_of = PREV }
+		is_in_array = { array = great_depression_contagion_source_countries value = ROOT }
+		ROOT = { is_in_array = { array = great_depression_contagion_exposure_targets value = PREV } }
+	}
+	OR = {
+		is_in_faction_with = ROOT
+		is_ally_with = ROOT
+		is_neighbor_of = ROOT
+		is_subject_of = ROOT
+		ROOT = { is_subject_of = PREV }
+		AND = {
+			has_equipment = { convoy_1 > constant:great_depression_api.zero }
+			ROOT = { has_equipment = { convoy_1 > constant:great_depression_api.zero } }
+		}
+	}
+}
+
+great_depression_foreign_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_global_clearing_partner_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_occupied_industry_state_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	has_state_flag = great_depression_center_factory_occupation_active
+	check_variable = {
+		var = great_depression_center_factory_occupation_episode_id
+		value = ROOT.great_depression_active_episode_id
+		compare = equals
+	}
+}
+
+great_depression_protectionist_partner_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_rescue_partner_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_strategic_center_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = {
+		has_state_flag = great_depression_center_distressed
+		has_state_flag = great_depression_center_idled
+		has_state_flag = great_depression_center_shuttered
+	}
+}
+
+great_depression_supervision_partner_target_is_valid = {
+	great_depression_has_proved_partner_relationship = yes
+	great_depression_partner_pair_cooldown_is_open = yes
+	OR = { is_major = yes is_ai = no is_subject_of = ROOT ROOT = { is_subject_of = PREV } }
+}
+
+great_depression_supply_gap_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+}
+
+great_depression_trusteeship_target_is_valid = {
+	great_depression_selected_center_target_is_valid = yes
+	great_depression_center_project_target_is_open = yes
+	OR = {
+		has_state_flag = great_depression_center_distressed
+		has_state_flag = great_depression_center_idled
+		has_state_flag = great_depression_center_shuttered
+	}
+}
+
+
+great_depression_can_use_foreign_partner = {
+	great_depression_action_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_foreign_support_cooldown }
+}
+
+# AI profiles and urgency predicates.
+
+great_depression_ai_profile_is_financial_stabilizer = {
+	check_variable = { var = great_depression_ai_profile value = constant:great_depression_ai_profile.financial_stabilizer compare = equals }
+}
+
+great_depression_ai_profile_is_fiscal_retrencher = {
+	check_variable = { var = great_depression_ai_profile value = constant:great_depression_ai_profile.fiscal_retrencher compare = equals }
+}
+
+great_depression_ai_profile_is_liquidation_gambler = {
+	check_variable = { var = great_depression_ai_profile value = constant:great_depression_ai_profile.liquidation_gambler compare = equals }
+}
+
+great_depression_ai_profile_is_relief_coalition = {
+	check_variable = { var = great_depression_ai_profile value = constant:great_depression_ai_profile.relief_coalition compare = equals }
+}
+
+great_depression_ai_profile_is_state_coordinator = {
+	check_variable = { var = great_depression_ai_profile value = constant:great_depression_ai_profile.state_coordinator compare = equals }
+}
+
+great_depression_ai_profile_is_strategic_mobilizer = {
+	check_variable = { var = great_depression_ai_profile value = constant:great_depression_ai_profile.strategic_mobilizer compare = equals }
+}
+
+great_depression_ai_action_is_affordable = {
+	great_depression_costs_are_ready = yes
+	# The AI score is evaluated before a decision's complete cost family is
+	# known. Require every non-zero refreshed cost to be payable, rather than
+	# granting an affordability bonus when only one unrelated resource exists.
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_political_power value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_political_power < great_depression_cost_political_power }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_manpower value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_manpower < great_depression_cost_manpower }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_fuel value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_fuel < great_depression_cost_fuel }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_trains value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_equipment = { train_equipment < great_depression_cost_trains } }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_convoys value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_equipment = { convoy_1 < great_depression_cost_convoys } }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_support_equipment value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_equipment = { support_equipment < great_depression_cost_support_equipment } }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_civilian value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { num_of_civilian_factories_available_for_projects < great_depression_cost_civilian }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_stability value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_stability < great_depression_cost_stability }
+	}
+	OR = {
+		NOT = { check_variable = { var = great_depression_cost_war_support value = constant:great_depression_api.zero compare = greater_than } }
+		NOT = { has_war_support < great_depression_cost_war_support }
+	}
+}
+
+great_depression_ai_action_is_urgent = {
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals }
+}
+
+great_depression_ai_action_is_stabilization = {
+	OR = {
+		check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals }
+		check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals }
+	}
+}
+
+great_depression_ai_action_is_too_early = {
+	check_variable = { var = great_depression_phase value = constant:great_depression_phase.panic_and_contraction compare = equals }
+}
+
+great_depression_ai_action_is_unnecessary = {
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.stabilization_floor compare = less_than }
+}
+
+great_depression_ai_doctrine_choice_is_locked = {
+	NOT = { check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.unassigned compare = equals } }
+}
+
+great_depression_ai_doctrine_is_invalid = {
+	OR = {
+		check_variable = { var = great_depression_doctrine value = constant:great_depression_doctrine.unassigned compare = equals }
+		has_country_flag = great_depression_social_incident_open
+	}
+}
+
+great_depression_ai_doctrine_switch_is_necessary = {
+	OR = {
+		great_depression_ai_doctrine_is_invalid = yes
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals }
+	}
+}
+
+great_depression_ai_doctrine_switch_is_unnecessary = {
+	NOT = { great_depression_ai_doctrine_switch_is_necessary = yes }
+}
+
+great_depression_ai_financial_pressure_is_high = {
+	OR = {
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals }
+		has_country_flag = great_depression_contagion_exposure_open
+	}
+}
+
+great_depression_ai_fiscal_pressure_is_high = {
+	OR = {
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.deep_depression_threshold compare = greater_than_or_equals }
+		has_stability < constant:great_depression_thresholds.social_peace_stability_floor
+	}
+}
+
+great_depression_ai_social_strain_is_high = {
+	OR = {
+		has_country_flag = great_depression_social_incident_open
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.systemic_breakdown_threshold compare = greater_than_or_equals }
+	}
+}
+
+great_depression_ai_social_strain_is_extreme = {
+	OR = {
+		has_country_flag = great_depression_organized_strike
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.breakdown_threshold compare = greater_than_or_equals }
+	}
+}
+
+great_depression_ai_wartime_industry_need = {
+	has_war = yes
+}
+
+great_depression_ai_blockade_or_trade_failure = {
+	OR = {
+		has_country_flag = great_depression_trade_failure
+		has_country_flag = great_depression_supplier_contract_at_risk
+		has_war = yes
+	}
+}
+
+great_depression_ai_private_capacity_is_high = {
+		num_of_civilian_factories_available_for_projects > constant:great_depression_scaling.medium_economy_civilian_limit
+}
+
+great_depression_ai_civilian_output_is_critical = {
+		num_of_civilian_factories_available_for_projects < constant:great_depression_scaling.small_economy_civilian_limit
+}
+
+great_depression_ai_administrative_capacity_is_low = {
+	has_stability < constant:great_depression_thresholds.social_peace_stability_floor
+}
+
+great_depression_ai_currency_break_is_unsafe = {
+	great_depression_ai_social_strain_is_extreme = yes
+}
+
+great_depression_ai_rescue_dependence_is_high = {
+	OR = {
+		has_country_flag = great_depression_supplier_contract_at_risk
+		has_country_flag = great_depression_contagion_exposure_open
+	}
+}
+
+great_depression_ai_recovery_prerequisites_are_missing = {
+	OR = {
+		check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.recovery_floor compare = greater_than }
+		check_variable = { var = great_depression_centers_reopened_count value = great_depression_center_count compare = less_than }
+	}
+}
+
+great_depression_ai_reserves_are_reserved = {
+	has_country_flag = great_depression_reserves_reserved
+}
+
+great_depression_ai_bank_audit_has_succeeded = {
+	has_country_flag = great_depression_bank_audit_complete
+}
+great_depression_ai_settlement_is_viable = {
+	NOT = { has_country_flag = great_depression_social_incident_open }
+	NOT = { has_war = yes }
+}
+
+great_depression_ai_global_stage_is_coordination = {
+	great_depression_decision_surface_is_ready = yes
+	check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.coordination compare = equals }
+}
+
+great_depression_ai_global_stage_is_not_ready = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { great_depression_ai_global_stage_is_recovery = yes }
+}
+
+great_depression_ai_global_stage_is_recovery = {
+	great_depression_decision_surface_is_ready = yes
+	OR = {
+		check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.recovery compare = equals }
+		check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.international_reconstruction compare = equals }
+	}
+}
+
+great_depression_ai_last_viable_center_is_at_risk = {
+	great_depression_decision_surface_is_ready = yes
+	check_variable = { var = great_depression_center_count value = constant:great_depression_event.minimum_center_cap compare = equals }
+	great_depression_ai_social_strain_is_high = yes
+}
+
+great_depression_ai_movement_is_broad = {
+	great_depression_decision_surface_is_ready = yes
+	OR = {
+		check_variable = {
+			var = great_depression_social_ladder_stage
+			value = constant:great_depression_social_ladder.national_unrest
+			compare = greater_than_or_equals
+		}
+		check_variable = {
+			var = great_depression_social_actor_family
+			value = constant:great_depression_social_actor.regional_autonomy
+			compare = equals
+		}
+		has_country_flag = great_depression_social_major_incident_proof
+	}
+}
+
+great_depression_ai_movement_is_narrow = {
+	great_depression_decision_surface_is_ready = yes
+	NOT = { great_depression_ai_movement_is_broad = yes }
+}
+
+great_depression_social_ladder_is_at_least_sector_conflict = {
+	has_variable = great_depression_social_ladder_stage
+	check_variable = {
+		var = great_depression_social_ladder_stage
+		value = constant:great_depression_social_ladder.sector_conflict
+		compare = greater_than_or_equals
+	}
+}
+
+great_depression_social_ladder_is_at_least_national_unrest = {
+	has_variable = great_depression_social_ladder_stage
+	check_variable = {
+		var = great_depression_social_ladder_stage
+		value = constant:great_depression_social_ladder.national_unrest
+		compare = greater_than_or_equals
+	}
+}
+
+great_depression_social_ladder_is_at_least_government_crisis = {
+	has_variable = great_depression_social_ladder_stage
+	check_variable = {
+		var = great_depression_social_ladder_stage
+		value = constant:great_depression_social_ladder.government_crisis
+		compare = greater_than_or_equals
+	}
+}
+
+great_depression_social_has_valid_organized_movement = {
+	has_country_flag = great_depression_social_incident_open
+	has_country_flag = great_depression_social_actor_proof
+	has_variable = great_depression_social_actor_family
+	check_variable = {
+		var = great_depression_social_actor_family
+		value = constant:great_depression_api.zero
+		compare = greater_than
+	}
+}
+
+great_depression_social_has_failed_response = {
+	OR = {
+		has_country_flag = great_depression_social_response_failed
+		has_country_flag = great_depression_emergency_government_mandate_failed
+		has_country_flag = great_depression_mission_prevent_general_strike_failed
+		has_country_flag = great_depression_mission_emergency_government_mandate_failed
+	}
+}
+
+great_depression_social_has_regional_base = {
+	has_country_flag = great_depression_social_regional_movement_proof
+}
+
+great_depression_social_has_coherent_force_package = {
+	num_of_controlled_states > constant:random_civil_war_value.one
+	num_divisions > constant:random_civil_war_value.one
+	has_manpower > constant:great_depression_api.zero
+	num_of_military_factories > constant:great_depression_api.zero
+	has_country_flag = great_depression_social_force_package_proof
+}
+
+great_depression_social_extreme_outcome_gate = {
+	great_depression_social_collapse_surface_is_active = yes
+	check_variable = {
+		var = great_depression_depression_severity
+		value = constant:great_depression_event.breakdown_threshold
+		compare = greater_than_or_equals
+	}
+	great_depression_social_ladder_is_at_least_government_crisis = yes
+	OR = {
+		has_stability < constant:great_depression_thresholds.social_peace_stability_floor
+		has_country_flag = great_depression_emergency_government_mandate_failed
+	}
+	great_depression_social_has_valid_organized_movement = yes
+	great_depression_social_has_failed_response = yes
+	NOT = { has_civil_war = yes }
+	NOT = { has_country_flag = random_civil_war_event6_front_active }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = great_depression_coup_crisis }
+	NOT = { has_country_flag = great_depression_separatist_crisis }
+	NOT = { has_country_flag = great_depression_civil_conflict_eligible }
+	great_depression_social_has_coherent_force_package = yes
+}
+
+great_depression_social_coup_gate = {
+	great_depression_social_extreme_outcome_gate = yes
+	OR = {
+		check_variable = {
+			var = great_depression_social_actor_family
+			value = constant:great_depression_social_actor.military_emergency
+			compare = equals
+		}
+		check_variable = {
+			var = great_depression_social_actor_family
+			value = constant:great_depression_social_actor.traditional_authority
+			compare = equals
+		}
+	}
+	NOT = { great_depression_social_has_regional_base = yes }
+}
+
+great_depression_social_separatist_gate = {
+	great_depression_social_extreme_outcome_gate = yes
+	check_variable = {
+		var = great_depression_social_actor_family
+		value = constant:great_depression_social_actor.regional_autonomy
+		compare = equals
+	}
+	great_depression_social_has_regional_base = yes
+}
+
+great_depression_social_civil_conflict_gate = {
+	great_depression_social_extreme_outcome_gate = yes
+	great_depression_social_has_regional_base = yes
+	NOT = { great_depression_social_coup_gate = yes }
+	NOT = { great_depression_social_separatist_gate = yes }
+	event021_parent_global_capacity_ready = yes
+}
+
+great_depression_baseline_breakdown_civil_conflict_gate = {
+	great_depression_decision_surface_is_ready = yes
+	has_country_flag = great_depression_national_breakdown_chain_open
+	NOT = { has_country_flag = great_depression_evolution_social_collapse }
+	NOT = { has_country_flag = great_depression_national_breakdown_resolved }
+	has_country_flag = great_depression_national_breakdown_prevention_failed
+	has_variable = great_depression_failed_response_count
+	check_variable = {
+		var = great_depression_failed_response_count
+		value = constant:great_depression_api.two
+		compare = greater_than_or_equals
+	}
+	check_variable = {
+		var = great_depression_depression_severity
+		value = constant:great_depression_event.breakdown_threshold
+	compare = greater_than_or_equals
+	}
+	has_stability < constant:great_depression_thresholds.social_peace_stability_floor
+	num_of_controlled_states > constant:random_civil_war_value.one
+	num_divisions > constant:random_civil_war_value.one
+	has_manpower > constant:great_depression_api.zero
+	num_of_military_factories > constant:great_depression_api.zero
+	NOT = { has_civil_war = yes }
+	NOT = { has_country_flag = random_civil_war_active }
+	NOT = { has_country_flag = random_civil_war_event6_front_active }
+	event021_parent_global_capacity_ready = yes
+	event021_parent_country_is_opening_candidate = yes
+}
+
+great_depression_ai_supplier_is_overheated = {
+	industrial_boom_supplier_adapter_is_overheated = yes
+}
+
+great_depression_ai_supplier_is_safe = {
+	industrial_boom_supplier_adapter_is_safe = yes
+}
+
+
+# AI target predicates are intentionally qualitative and state bounded.
+
+great_depression_ai_center_target_is_connected = {
+	any_neighbor_state = { is_owned_by = ROOT }
+}
+
+great_depression_ai_center_target_is_high_value = {
+	OR = { industrial_complex > constant:great_depression_api.one arms_factory > constant:great_depression_api.one }
+}
+
+great_depression_ai_center_target_is_last_viable = {
+	ROOT = { check_variable = { var = great_depression_center_count value = constant:great_depression_event.minimum_center_cap compare = equals } }
+}
+
+great_depression_ai_center_target_is_doomed = {
+	OR = { has_state_flag = great_depression_center_abandoned has_state_flag = great_depression_center_liquidated }
+}
+
+great_depression_ai_center_target_is_not_ready = {
+	has_state_flag = great_depression_center_reopened
+}
+
+great_depression_ai_center_target_is_not_strategic = {
+	NOT = { great_depression_ai_center_target_is_strategic = yes }
+}
+
+great_depression_ai_center_target_is_recoverable = {
+	NOT = { has_state_flag = great_depression_center_liquidated }
+}
+
+great_depression_ai_center_target_is_strategic = {
+	OR = { has_state_flag = great_depression_center_strategic has_state_flag = great_depression_center_trusteeship arms_factory > industrial_complex }
+}
+
+great_depression_ai_partner_is_blockaded = {
+	OR = { has_country_flag = great_depression_trade_failure has_country_flag = great_depression_supplier_contract_at_risk }
+}
+
+great_depression_ai_partner_is_stable = {
+	has_stability > 0.50
+}
+
+great_depression_ai_partner_is_strategic = {
+	is_major = yes
+}
+
+great_depression_ai_partner_is_unaffordable = {
+	num_of_civilian_factories_available_for_projects < constant:great_depression_scaling.small_economy_civilian_limit
+}
+
+great_depression_ai_partner_is_valuable = {
+	OR = { is_major = yes is_ai = no }
+}
+
+
+# Action-start aliases preserve the source matrix names and delegate the
+# actual debit and outcome to 035_great_depression_decision_effects.txt.
+
+great_depression_can_start_balance_emergency_budget = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_bank_holiday_and_audit = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_cabinet_review = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_cleared_economy_certification = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_competitive_devaluation_or_currency_break = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_coordinate_industrial_demand = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_coordinated_public_works_and_reconstruction = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_deploy_security_forces = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_durable_credit_guarantee = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_emergency_government = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_emergency_policy_review = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_emergency_production_board = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_emergency_relief = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_emergency_trade_clearing = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_global_recovery_conference = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_guarantee_essential_orders = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_guarantee_property_and_credit = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_international_debt_conference = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_national_employment_compact = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_national_employment_guarantee = {
+	great_depression_action_slot_is_open = yes
+	NOT = { has_active_mission = great_depression_national_employment_guarantee }
+	NOT = { has_country_flag = great_depression_employment_guarantee_active }
+	NOT = { has_country_flag = great_depression_employment_guarantee_complete }
+	NOT = { has_country_flag = great_depression_employment_guarantee_partial }
+}
+
+great_depression_can_start_national_recovery_plan = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_protect_domestic_market = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_protectionist_bloc = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_ration_strategic_inputs = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_recapitalization = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_recognize_workplace_or_regional_councils = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_reconstruction_and_employment_fund = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_reconstruction_supplier_compact = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_regional_clearing_agreement = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_remove_emergency_controls = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_restore_ordinary_budget_rules = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_restructure_public_obligations = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_retrench_relief_administration = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_ring_fence_domestic_finance = {
+	great_depression_external_action_slot_is_open = yes
+}
+
+great_depression_can_start_withdraw_emergency_support = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_withdraw_from_international_commitments = {
+	great_depression_action_slot_is_open = yes
+}
+
+great_depression_can_start_center_protection = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_protection_target_is_valid = yes
+}
+
+great_depression_can_start_center_reopen = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_reopen_target_is_valid = yes
+}
+
+great_depression_can_start_center_rebuild = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_rebuild_target_is_valid = yes
+}
+
+great_depression_can_start_center_restructure = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_restructure_target_is_valid = yes
+}
+
+great_depression_can_start_center_abandon = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_abandon_target_is_valid = yes
+}
+
+great_depression_can_start_lasting_capacity_conversion = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_lasting_capacity_target_is_valid = yes
+}
+
+great_depression_can_start_regional_works_program = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_public_works_target_is_valid = yes
+}
+
+great_depression_can_start_strategic_plant_network = {
+	great_depression_action_slot_is_open = yes
+	great_depression_strategic_center_target_is_valid = yes
+}
+
+great_depression_can_start_industry_consolidation = {
+	great_depression_action_slot_is_open = yes
+	great_depression_center_consolidation_target_is_valid = yes
+}
+
+great_depression_can_start_industry_trusteeship = {
+	great_depression_action_slot_is_open = yes
+	great_depression_trusteeship_target_is_valid = yes
+}
+
+great_depression_can_start_failed_asset_reorganization = {
+	great_depression_action_slot_is_open = yes
+	great_depression_failed_asset_target_is_valid = yes
+}
+
+great_depression_can_start_negotiate_with_strike_committees = {
+	great_depression_action_slot_is_open = yes
+	great_depression_selected_center_target_is_valid = yes
+}
+
+# Root-side aliases for the evolution action matrix. Target validity remains in
+# the decision target_trigger block, so these aliases only enforce the shared
+# action lock and evolution surface.
+
+great_depression_can_abandon_distressed_market = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_accept_external_supervision = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_acquire_distressed_assets = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_break_the_occupations = {
+	great_depression_action_slot_is_open = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_can_coordinate_international_rescue = {
+	great_depression_action_slot_is_open = yes
+	great_depression_second_great_depression_surface_is_active = yes
+}
+
+great_depression_can_establish_clearing_bloc = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_exploit_supply_gap = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_extend_emergency_credit = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_nationalize_or_socialize_occupied_industry = {
+	great_depression_action_slot_is_open = yes
+	great_depression_social_collapse_surface_is_active = yes
+}
+
+great_depression_can_negotiate_clearing_agreement = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_offer_boom_supply_contract = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_offer_debt_standstill = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_prioritize_domestic_recovery = {
+	great_depression_external_action_slot_is_open = yes
+	OR = {
+		great_depression_financial_contagion_surface_is_active = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_can_request_emergency_credit = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_restrict_capital_outflows = {
+	great_depression_external_action_slot_is_open = yes
+	OR = {
+		great_depression_financial_contagion_surface_is_active = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_can_sell_distressed_assets = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_shift_import_and_contract_dependence = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+great_depression_can_support_contagion_source = {
+	great_depression_external_action_slot_is_open = yes
+	OR = {
+		great_depression_financial_contagion_surface_is_active = yes
+		great_depression_exposure_response_surface_is_ready = yes
+	}
+}
+
+great_depression_can_withdraw_from_distressed_market = {
+	great_depression_action_slot_is_open = yes
+	great_depression_financial_contagion_surface_is_active = yes
+}
+
+
+# Mission activation, context, and objective contracts.
+
+# Mission slots are shared across all fifteen Event 35 missions. The main
+# lane is exclusive; the supporting lane has two places. Together they enforce
+# the package's three-objective ceiling without allowing a transient country
+# counter to drift when a mission completes or times out.
+great_depression_main_mission_slot_is_open = {
+	NOT = {
+		OR = {
+			has_active_mission = great_depression_halt_the_panic
+			has_active_mission = great_depression_reopen_depression_center
+			has_active_mission = great_depression_prevent_a_relapse
+			has_active_mission = great_depression_maximum_severity_emergency
+			has_active_mission = great_depression_prevent_national_breakdown
+			has_active_mission = great_depression_contain_financial_contagion
+			has_active_mission = great_depression_prevent_general_strike
+			has_active_mission = great_depression_international_reconstruction
+			has_active_mission = great_depression_coordinate_international_rescue_mission
+			has_active_mission = great_depression_emergency_government_mandate
+		}
+	}
+}
+
+great_depression_support_mission_slot_is_open = {
+	NOT = {
+		OR = {
+			AND = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_complete_national_recovery_plan
+			}
+			AND = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_certify_cleared_economy
+			}
+			AND = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_restore_essential_production
+			}
+			AND = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_complete_national_recovery_plan
+				has_active_mission = great_depression_certify_cleared_economy
+			}
+			AND = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_complete_national_recovery_plan
+				has_active_mission = great_depression_restore_essential_production
+			}
+			AND = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_certify_cleared_economy
+				has_active_mission = great_depression_restore_essential_production
+			}
+			AND = {
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_complete_national_recovery_plan
+				has_active_mission = great_depression_certify_cleared_economy
+			}
+			AND = {
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_complete_national_recovery_plan
+				has_active_mission = great_depression_restore_essential_production
+			}
+			AND = {
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_certify_cleared_economy
+				has_active_mission = great_depression_restore_essential_production
+			}
+			AND = {
+				has_active_mission = great_depression_complete_national_recovery_plan
+				has_active_mission = great_depression_certify_cleared_economy
+				has_active_mission = great_depression_restore_essential_production
+			}
+		}
+	}
+}
+
+great_depression_mission_capacity_is_open = {
+	great_depression_main_mission_slot_is_open = yes
+	OR = {
+		great_depression_support_mission_slot_is_open = yes
+		NOT = {
+			OR = {
+				has_active_mission = great_depression_keep_essential_freight_moving
+				has_active_mission = great_depression_national_employment_guarantee
+				has_active_mission = great_depression_complete_national_recovery_plan
+				has_active_mission = great_depression_certify_cleared_economy
+				has_active_mission = great_depression_restore_essential_production
+			}
+		}
+	}
+}
+
+great_depression_should_activate_halt_the_panic = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_halt_the_panic_complete }
+	NOT = { has_country_flag = great_depression_mission_halt_the_panic_failed }
+	check_variable = { var = great_depression_phase value = constant:great_depression_phase.panic_and_contraction compare = equals }
+}
+
+great_depression_halt_the_panic_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_halt_the_panic_objective_is_met = {
+	great_depression_halt_the_panic_context_is_valid = yes
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.paralysis_threshold compare = less_than }
+	NOT = { has_country_flag = great_depression_opening_shock_active }
+	OR = {
+		has_country_flag = great_depression_relief_allocation_receipt
+		has_country_flag = great_depression_bank_audit_complete
+		has_country_flag = great_depression_freight_secured
+	}
+	OR = {
+		has_country_flag = great_depression_protected_center_active
+		check_variable = { var = great_depression_centers_reopened_count value = constant:great_depression_api.zero compare = greater_than }
+		check_variable = { var = great_depression_centers_restructured_count value = constant:great_depression_api.zero compare = greater_than }
+	}
+}
+
+great_depression_should_activate_keep_essential_freight_moving = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_support_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_keep_essential_freight_moving_complete }
+	NOT = { has_country_flag = great_depression_mission_keep_essential_freight_moving_failed }
+	OR = {
+		check_variable = { var = great_depression_hidden_trade_stress value = constant:great_depression_api.zero compare = greater_than }
+		has_country_flag = great_depression_trade_failure
+		has_country_flag = great_depression_supplier_contract_at_risk
+		has_war = yes
+	}
+}
+
+great_depression_keep_essential_freight_moving_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_keep_essential_freight_moving_objective_is_met = {
+	great_depression_keep_essential_freight_moving_context_is_valid = yes
+	OR = {
+		has_country_flag = great_depression_freight_secured
+		has_country_flag = great_depression_essential_orders_guaranteed
+		has_country_flag = great_depression_clearing_agreement_active
+		has_country_flag = great_depression_boom_supply_contract_active
+	}
+	OR = {
+		has_country_flag = great_depression_protected_center_active
+		check_variable = { var = great_depression_centers_reopened_count value = constant:great_depression_api.zero compare = greater_than }
+	}
+}
+
+great_depression_should_activate_reopen_depression_center = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_reopen_depression_center_complete }
+	NOT = { has_country_flag = great_depression_mission_reopen_depression_center_failed }
+	great_depression_can_start_center_mission = yes
+}
+
+great_depression_reopen_depression_center_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+	has_variable = great_depression_mission_reopen_center_state_id
+	has_variable = great_depression_mission_reopen_center_episode_id
+	check_variable = {
+		var = great_depression_mission_reopen_center_episode_id
+		value = great_depression_active_episode_id
+		compare = equals
+	}
+}
+
+great_depression_reopen_depression_center_objective_is_met = {
+	great_depression_reopen_depression_center_context_is_valid = yes
+	var:great_depression_mission_reopen_center_state_id = {
+		has_state_flag = great_depression_center_reopened
+		has_state_flag = great_depression_center_project_completed_receipt
+		check_variable = {
+			var = great_depression_center_episode_id
+			value = ROOT.great_depression_mission_reopen_center_episode_id
+			compare = equals
+		}
+	}
+}
+
+great_depression_should_activate_prevent_a_relapse = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_prevent_a_relapse_complete }
+	NOT = { has_country_flag = great_depression_mission_prevent_a_relapse_failed }
+	check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals }
+}
+
+great_depression_prevent_a_relapse_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_prevent_a_relapse_objective_is_met = {
+	great_depression_prevent_a_relapse_context_is_valid = yes
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.relapse_threshold compare = less_than }
+	check_variable = { var = great_depression_centers_resolved_count value = great_depression_required_center_count compare = greater_than_or_equals }
+	NOT = { has_country_flag = great_depression_opening_shock_active }
+	OR = {
+		has_country_flag = great_depression_lasting_capacity_created
+		has_country_flag = great_depression_durable_credit_guarantee
+		has_country_flag = great_depression_ordinary_budget_restored
+		has_country_flag = great_depression_recovery_plan_active
+		has_country_flag = great_depression_cleared_economy_certification_active
+		has_country_flag = great_depression_emergency_controls_removed
+	}
+}
+
+great_depression_should_activate_maximum_severity_emergency = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_maximum_severity_emergency_complete }
+	NOT = { has_country_flag = great_depression_mission_maximum_severity_emergency_failed }
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.paralysis_threshold compare = greater_than_or_equals }
+}
+
+great_depression_maximum_severity_emergency_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_maximum_severity_emergency_objective_is_met = {
+	great_depression_maximum_severity_emergency_context_is_valid = yes
+	has_country_flag = great_depression_relief_allocation_receipt
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.paralysis_threshold compare = less_than }
+	OR = {
+		has_country_flag = great_depression_protected_center_active
+		has_country_flag = great_depression_center_project_completed
+		has_country_flag = great_depression_foreign_support_active
+	}
+}
+
+great_depression_should_activate_prevent_national_breakdown = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_evolution_social_collapse }
+	NOT = { has_country_flag = great_depression_mission_prevent_national_breakdown_complete }
+	NOT = { has_country_flag = great_depression_mission_prevent_national_breakdown_failed }
+	has_country_flag = great_depression_national_breakdown_warning
+}
+
+great_depression_prevent_national_breakdown_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_national_breakdown_prevention_response_proof = {
+	OR = {
+		has_country_flag = great_depression_protected_center_active
+		check_variable = { var = great_depression_centers_reopened_count value = constant:great_depression_api.zero compare = greater_than }
+		check_variable = { var = great_depression_centers_restructured_count value = constant:great_depression_api.zero compare = greater_than }
+		has_country_flag = great_depression_center_project_completed
+	}
+	check_variable = { var = great_depression_successful_action_count value = constant:great_depression_api.zero compare = greater_than }
+}
+
+great_depression_prevent_national_breakdown_objective_is_met = {
+	great_depression_prevent_national_breakdown_context_is_valid = yes
+	has_country_flag = great_depression_national_breakdown_warning
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.breakdown_threshold compare = less_than }
+	great_depression_national_breakdown_prevention_response_proof = yes
+}
+
+great_depression_should_activate_contain_financial_contagion = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_contain_financial_contagion_complete }
+	NOT = { has_country_flag = great_depression_mission_contain_financial_contagion_failed }
+	has_country_flag = great_depression_contagion_exposure_open
+}
+
+great_depression_contain_financial_contagion_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_contain_financial_contagion_objective_is_met = {
+	great_depression_contain_financial_contagion_context_is_valid = yes
+	has_country_flag = great_depression_contagion_contained
+}
+
+great_depression_should_activate_prevent_general_strike = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_prevent_general_strike_complete }
+	NOT = { has_country_flag = great_depression_mission_prevent_general_strike_failed }
+	has_country_flag = great_depression_social_incident_open
+}
+
+great_depression_prevent_general_strike_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_prevent_general_strike_objective_is_met = {
+	great_depression_prevent_general_strike_context_is_valid = yes
+	has_country_flag = great_depression_social_collapse_resolved
+}
+
+great_depression_should_activate_international_reconstruction = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_international_reconstruction_complete }
+	NOT = { has_country_flag = great_depression_mission_international_reconstruction_failed }
+	has_global_flag = great_depression_worldwide_episode_active
+}
+
+great_depression_international_reconstruction_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_international_reconstruction_objective_is_met = {
+	great_depression_international_reconstruction_context_is_valid = yes
+	has_country_flag = great_depression_global_contribution_made
+	check_variable = { var = global.great_depression_global_stage value = constant:great_depression_global_stage.recovery compare = greater_than_or_equals }
+}
+
+great_depression_should_activate_national_employment_guarantee = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_support_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_national_employment_guarantee_complete }
+	NOT = { has_country_flag = great_depression_mission_national_employment_guarantee_failed }
+	NOT = { has_country_flag = great_depression_employment_guarantee_partial }
+	great_depression_doctrine_is_emergency_public_works = yes
+}
+
+great_depression_national_employment_guarantee_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_national_employment_guarantee_objective_is_met = {
+	great_depression_national_employment_guarantee_context_is_valid = yes
+	has_country_flag = great_depression_employment_guarantee_active
+	has_variable = great_depression_employment_guarantee_due_day
+	check_variable = { var = global.num_days value = great_depression_employment_guarantee_due_day compare = greater_than_or_equals }
+	num_of_civilian_factories_available_for_projects > constant:great_depression_api.zero
+	check_variable = { var = great_depression_project_failure_count value = constant:great_depression_scaling.second_center_count compare = less_than }
+}
+
+great_depression_should_activate_complete_national_recovery_plan = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_support_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_complete_national_recovery_plan_complete }
+	NOT = { has_country_flag = great_depression_mission_complete_national_recovery_plan_failed }
+}
+
+great_depression_complete_national_recovery_plan_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_complete_national_recovery_plan_objective_is_met = {
+	great_depression_complete_national_recovery_plan_context_is_valid = yes
+	has_country_flag = great_depression_recovery_plan_active
+	check_variable = { var = great_depression_centers_resolved_count value = great_depression_required_center_count compare = greater_than_or_equals }
+	OR = {
+		check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals }
+		check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals }
+	}
+}
+
+great_depression_should_activate_certify_cleared_economy = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_support_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_certify_cleared_economy_complete }
+	NOT = { has_country_flag = great_depression_mission_certify_cleared_economy_failed }
+}
+
+great_depression_certify_cleared_economy_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_certify_cleared_economy_objective_is_met = {
+	great_depression_certify_cleared_economy_context_is_valid = yes
+	has_country_flag = great_depression_cleared_economy_certification_active
+	OR = {
+		check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals }
+		check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals }
+	}
+	NOT = { has_country_flag = great_depression_center_project_active }
+}
+
+great_depression_should_activate_coordinate_international_rescue = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_coordinate_international_rescue_complete }
+	NOT = { has_country_flag = great_depression_mission_coordinate_international_rescue_failed }
+	has_global_flag = great_depression_worldwide_episode_active
+}
+
+great_depression_coordinate_international_rescue_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_coordinate_international_rescue_objective_is_met = {
+	great_depression_coordinate_international_rescue_context_is_valid = yes
+	has_country_flag = great_depression_international_rescue_complete
+}
+
+great_depression_should_activate_restore_essential_production = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_support_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_restore_essential_production_complete }
+	NOT = { has_country_flag = great_depression_mission_restore_essential_production_failed }
+}
+
+great_depression_restore_essential_production_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_restore_essential_production_objective_is_met = {
+	great_depression_restore_essential_production_context_is_valid = yes
+	has_country_flag = great_depression_essential_orders_guaranteed
+	OR = {
+		has_country_flag = great_depression_freight_secured
+		has_country_flag = great_depression_protected_center_active
+		check_variable = { var = great_depression_centers_reopened_count value = constant:great_depression_api.zero compare = greater_than }
+	}
+}
+
+great_depression_should_activate_emergency_government_mandate = {
+	great_depression_decision_surface_is_ready = yes
+	great_depression_main_mission_slot_is_open = yes
+	NOT = { has_country_flag = great_depression_mission_emergency_government_mandate_complete }
+	NOT = { has_country_flag = great_depression_mission_emergency_government_mandate_failed }
+	has_country_flag = great_depression_organized_strike
+}
+
+great_depression_emergency_government_mandate_context_is_valid = {
+	great_depression_decision_surface_is_ready = yes
+}
+
+great_depression_emergency_government_mandate_objective_is_met = {
+	great_depression_emergency_government_mandate_context_is_valid = yes
+	has_country_flag = great_depression_emergency_government_formed
+	has_country_flag = great_depression_social_emergency_mandate_active
+	check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.systemic_breakdown_threshold compare = less_than }
+	OR = {
+		has_country_flag = great_depression_recovery_plan_active
+		has_country_flag = great_depression_center_project_completed
+		has_country_flag = great_depression_strike_negotiated
+		has_country_flag = great_depression_councils_recognized
+	}
+}
+
+# -----------------------------------------------------------------------------
+# Bounded Event 35 incident target predicates
+# -----------------------------------------------------------------------------
+
+# STATE scope. Incident state pointers are valid only while the state remains
+# usable, owned, controlled, and economically meaningful for the active
+# country. This prevents a stale center or transferred state from receiving a
+# later incident receipt.
+great_depression_incident_state_target_is_valid = {
+	exists = yes
+	impassable = no
+	is_owned_by = ROOT
+	is_controlled_by = ROOT
+	state_population_k > constant:great_depression_api.minimum_viable_state_population_k
+	OR = {
+		industrial_complex > constant:great_depression_api.zero
+		arms_factory > constant:great_depression_api.zero
+		dockyard > constant:great_depression_api.zero
+	}
+}
+
+great_depression_incident_center_target_is_valid = {
+	great_depression_incident_state_target_is_valid = yes
+	has_state_flag = great_depression_center
+	NOT = { has_state_flag = great_depression_center_liquidated }
+}
+
+great_depression_incident_distressed_center_target_is_valid = {
+	great_depression_incident_center_target_is_valid = yes
+	OR = {
+		has_state_flag = great_depression_center_distressed
+		has_state_flag = great_depression_center_idled
+		has_state_flag = great_depression_center_shuttered
+		has_state_flag = great_depression_center_hollowed
+	}
+}
+
+great_depression_incident_operating_center_target_is_valid = {
+	great_depression_incident_center_target_is_valid = yes
+	NOT = { has_state_flag = great_depression_center_abandoned }
+	NOT = { has_state_flag = great_depression_center_shuttered }
+}
+
+great_depression_incident_project_target_is_valid = {
+	great_depression_incident_center_target_is_valid = yes
+	OR = {
+		has_state_flag = great_depression_center_project_authorized
+		has_state_flag = great_depression_center_project_active_work
+		has_state_flag = great_depression_center_project_paused
+		has_state_flag = great_depression_center_project_certification
+	}
+}
+
+# COUNTRY scope. A country needs at least one usable state before the baseline
+# pool can be admitted. The effect-side selector still chooses the concrete
+# state and repeats the predicate, keeping the receipt fail-closed.
+great_depression_incident_has_valid_state = {
+	any_controlled_state = {
+		great_depression_incident_state_target_is_valid = yes
+	}
+}
+
+great_depression_incident_has_valid_center = {
+	any_controlled_state = {
+		great_depression_incident_center_target_is_valid = yes
+	}
+}
+
+great_depression_incident_current_state_target_is_valid = {
+	has_variable = great_depression_incident_state
+	var:great_depression_incident_state = {
+		great_depression_incident_state_target_is_valid = yes
+	}
+}
+
+great_depression_incident_current_center_target_is_valid = {
+	has_variable = great_depression_incident_state
+	var:great_depression_incident_state = {
+		great_depression_incident_center_target_is_valid = yes
+	}
+}
+
+great_depression_incident_current_distressed_center_target_is_valid = {
+	has_variable = great_depression_incident_state
+	var:great_depression_incident_state = {
+		great_depression_incident_distressed_center_target_is_valid = yes
+	}
+}
+
+great_depression_incident_current_operating_center_target_is_valid = {
+	has_variable = great_depression_incident_state
+	var:great_depression_incident_state = {
+		great_depression_incident_operating_center_target_is_valid = yes
+	}
+}
+
+great_depression_incident_current_project_target_is_valid = {
+	has_variable = great_depression_incident_state
+	var:great_depression_incident_state = {
+		great_depression_incident_project_target_is_valid = yes
+	}
+}
+
+# COUNTRY scope. Partner incidents can only use a proved contagion source that
+# is still an active, compatible country. Relationship rows are resolved in
+# the effect after this predicate passes.
+great_depression_incident_partner_target_is_valid = {
+	exists = yes
+	NOT = { tag = ROOT }
+	great_depression_active_crisis_is_coherent = yes
+	NOT = { has_country_flag = great_depression_evolution_second_great_depression }
+}
+
+# COUNTRY scope. Incident receipts are an episode-independent bounded history,
+# but a full ledger must fail closed rather than allocating an untracked row.
+great_depression_incident_receipt_capacity_is_available = {
+	OR = {
+		NOT = { has_variable = great_depression_committed_incident_receipt_ids^num }
+		check_variable = {
+			var = great_depression_committed_incident_receipt_ids^num
+			value = constant:great_depression_incident_timing.receipt_history_cap
+			compare = less_than
+		}
+	}
+}

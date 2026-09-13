@@ -4,8 +4,8 @@
 # Overview:
 # - Provides one duplicate-safe active-site and active-country registry.
 # - Recalculates the connected national pressure model from registered states.
-# - Applies one exclusive monthly Deaths pulse per active state, including
-#   abstract chemical/biological factors without operational instructions.
+# - Dispatches finite monthly administration once per registered country.
+#   Legacy political and evidence projections remain connected.
 # - Routes one-time restricted chemical escalation through the CBRN shared
 #   exposure dispatcher; recurring camp processing remains camp-owned.
 # - Owns cleanup, display caches, bounded GUI arrays, and shared reform hooks.
@@ -63,6 +63,7 @@ camp_rework_initialize_eligible_country_variables = {
 	if = { limit = { NOT = { has_variable = camp_biological_killing_efficiency } } set_variable = { camp_biological_killing_efficiency = constant:camp_rework_biological_tier.none } }
 
 	genocide_initialize_country_variables = yes
+	camp_admin_integration_initialize_country = yes
 	camp_rework_initialize_major_country_variables = yes
 	camp_rework_initialize_colonial_country_variables = yes
 	camp_rework_apply_ai_cap = yes
@@ -109,6 +110,7 @@ camp_rework_cancel_active_expansion_projects = {
 		clr_country_flag = generic_labor_project_active
 		clear_variable = generic_labor_project_state_id
 		clear_variable = generic_labor_project_type
+		camp_rework_clear_site_labor_reserve = yes
 		remove_mission = generic_labor_project_cycle
 	}
 
@@ -225,6 +227,7 @@ camp_rework_exclude_special_country = {
 			NOT = { has_country_flag = camp_rework_special_cleanup_in_progress }
 		}
 		set_country_flag = camp_rework_special_cleanup_in_progress
+		camp_admin_integration_close_country = yes
 
 		camp_rework_cancel_active_expansion_projects = yes
 		if = {
@@ -711,6 +714,8 @@ camp_rework_register_active_site = {
 		}
 
 		camp_rework_refresh_state_site_profile = yes
+		camp_admin_initialize_site = yes
+		camp_admin_reopen_site = yes
 		if = {
 			limit = {
 				OR = {
@@ -751,6 +756,11 @@ camp_rework_register_active_site = {
 }
 
 camp_rework_resolve_site_evidence = {
+	if = {
+		limit = { NOT = { has_state_flag = camp_rework_site_evidence_resolved } }
+		set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.evidence } camp_admin_integration_record_site_history = yes
+	}
+	camp_admin_integration_close_site = yes
 	migration_persecution_prepare_camp_terminal = yes
 	if = {
 		limit = {
@@ -791,6 +801,7 @@ camp_rework_resolve_site_evidence = {
 }
 
 camp_rework_unregister_inactive_site = {
+	camp_admin_integration_close_site = yes
 	migration_persecution_prepare_camp_terminal = yes
 	if = {
 		limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
@@ -1943,23 +1954,13 @@ camp_rework_prepare_monthly_state_death_profile = {
 }
 
 camp_rework_apply_monthly_state_effects = {
+	# Compatibility entry: country administration owns the only monthly debit.
+	# Calling a legacy state hook cannot bypass its once-per-month guard.
 	camp_rework_refresh_state_site_profile = yes
-	camp_rework_maintain_restricted_method = yes
-	camp_rework_refresh_state_site_profile = yes
-	camp_rework_prepare_monthly_state_death_profile = yes
-	set_temp_variable = { chaos_deaths_change = 0 }
-	set_variable = { camp_site_last_month_deaths = 0 }
-	set_variable = { genocide_last_state_deaths = 0 }
 	if = {
-		limit = { check_variable = { chaos_state_deaths_percent > 0 } }
-		chaos_meter_register_state_civilian_deaths_percent = yes
-		camp_rework_record_latest_state_deaths = yes
+		limit = { has_variable = genocide_responsible_country }
+		var:genocide_responsible_country = { camp_admin_integration_monthly_country = yes }
 	}
-	add_to_variable = { camp_state_evidence_depth = camp_monthly_evidence_gain }
-	add_to_variable = { camp_state_resistance_accumulation = camp_monthly_resistance_gain }
-	clamp_variable = { var = camp_state_evidence_depth min = 0 max = constant:camp_rework_threshold.max_value }
-	clamp_variable = { var = camp_state_resistance_accumulation min = 0 max = constant:camp_rework_threshold.max_value }
-	camp_rework_refresh_state_site_profile = yes
 }
 
 camp_rework_apply_state_death_burst = {
@@ -2139,6 +2140,7 @@ camp_rework_apply_country_monthly_pressure = {
 }
 
 camp_rework_on_country_annexed = {
+	camp_admin_integration_close_country = yes
 	if = {
 		limit = {
 			is_in_array = {
@@ -2160,6 +2162,7 @@ camp_rework_on_country_annexed = {
 	}
 	for_each_scope_loop = {
 		array = temp_camp_rework_annexed_states
+		camp_admin_integration_close_site = yes
 		camp_rework_refresh_state_site_profile = yes
 		if = {
 			limit = { check_variable = { camp_state_site_type > constant:camp_rework_site_type.none } }
@@ -2267,6 +2270,7 @@ camp_rework_clean_inactive_countries = {
 						NOT = { has_visible_camp_reform_work = yes }
 						NOT = { has_country_flag = camp_repression_ledger_open }
 						NOT = { camp_rework_country_has_focus_hook_watch = yes }
+						NOT = { camp_admin_integration_has_continuing_work = yes }
 					}
 				}
 			}
@@ -2297,20 +2301,13 @@ camp_rework_clean_inactive_countries = {
 camp_rework_monthly_global_pulse = {
 	camp_rework_clean_invalid_active_sites = yes
 	for_each_scope_loop = {
-		array = global.genocide_active_camp_states
-		if = {
-			limit = { is_valid_camp_active_site_state = yes }
-			camp_rework_apply_monthly_state_effects = yes
-		}
-	}
-	for_each_scope_loop = {
 		array = global.camp_repression_active_countries
 		if = {
 			limit = {
 				exists = yes
 				camp_rework_country_is_eligible = yes
 			}
-			camp_rework_apply_country_monthly_pressure = yes
+			camp_admin_integration_monthly_country = yes
 		}
 	}
 	camp_rework_clean_inactive_countries = yes
@@ -3490,6 +3487,7 @@ camp_rework_rebuild_display_values = {
 		camp_rework_rebuild_gui_arrays = yes
 		camp_rework_rebuild_country_gui_actions = yes
 		camp_rework_copy_display_values = yes
+		camp_admin_refresh_interface = yes
 		clr_country_flag = camp_rework_display_rebuild_in_progress
 	}
 }
@@ -3508,6 +3506,7 @@ camp_rework_open_ledger = {
 		clr_country_flag = camp_ledger_tab_discovery
 		set_country_flag = camp_ledger_tab_overview
 		camp_rework_rebuild_display_values = yes
+		camp_admin_refresh_interface = yes
 	}
 }
 
@@ -3909,19 +3908,19 @@ camp_rework_gui_expand_selected_pool = {
 camp_rework_gui_start_labor_project = {
 	if = {
 		limit = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			camp_rework_country_uses_generic_kit = yes
 			camp_rework_country_can_expand_generic_labor = yes
 			check_variable = { camp_labor_output > 0 }
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			NOT = { has_country_flag = generic_labor_project_active }
-			NOT = { has_political_power < constant:camp_rework_cost.labor_project_pp }
-			has_equipment = { motorized_equipment_1 > constant:camp_rework_equipment_start_requirement.motorized_equipment }
-			has_equipment = { train_equipment_1 > constant:camp_rework_equipment_start_requirement.trains }
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_start_requirement.support_equipment }
+			set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+			camp_rework_can_pay_site_labor = yes
 			num_of_civilian_factories_available_for_projects > constant:camp_rework_mission_capacity.civilian_factory_floor
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = {
 				is_valid_camp_active_site_state = yes
+				camp_rework_state_is_actor_responsible_controlled = yes
 				infrastructure < constant:camp_rework_state_threshold.project_infrastructure_ceiling
 				OR = {
 					is_controlled_by = ROOT
@@ -3929,11 +3928,11 @@ camp_rework_gui_start_labor_project = {
 				}
 			}
 		}
-		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.labor_project_pp }
-		camp_rework_gui_pay_political_cost = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+		camp_rework_pay_site_labor = yes
 		set_variable = { camp_rework_action_state_id = camp_selected_state_id }
 		set_temp_variable = { camp_requested_project_type = constant:camp_rework_project_type.construction }
-		camp_rework_start_generic_labor_project_in_action_state = yes
+		camp_rework_start_generic_labor_project_payload_in_action_state = yes
 		activate_mission = generic_labor_project_cycle
 		camp_rework_rebuild_display_values = yes
 	}
@@ -3942,6 +3941,7 @@ camp_rework_gui_start_labor_project = {
 camp_rework_gui_allocate_guards = {
 	if = {
 		limit = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			has_active_camp_network = yes
 			NOT = { has_country_flag = camp_rework_guards_allocated }
 			NOT = { has_political_power < constant:camp_rework_cost.guard_pp }
@@ -3973,6 +3973,7 @@ camp_rework_reduce_labor_quotas = {
 camp_rework_gui_reduce_quotas = {
 	if = {
 		limit = {
+			NOT = { has_country_flag = camp_admin_initialized }
 			has_active_camp_network = yes
 			check_variable = { camp_labor_output > constant:camp_rework_threshold.band_low }
 			NOT = { has_country_flag = camp_rework_quotas_reduced }
@@ -3990,12 +3991,13 @@ camp_rework_gui_inspect_selected_site = {
 		limit = {
 			camp_rework_country_uses_generic_kit = yes
 			camp_rework_country_can_open_site_inspection = yes
-			NOT = { has_political_power < constant:camp_rework_cost.review_pp }
+			set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+			camp_rework_can_pay_site_inspect = yes
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = { is_valid_camp_inspection_state = yes }
 		}
-		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.review_pp }
-		camp_rework_gui_pay_political_cost = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+		camp_rework_pay_site_inspect = yes
 		set_variable = { camp_rework_action_state_id = camp_selected_state_id }
 		camp_rework_apply_site_inspection_in_action_state = yes
 		camp_rework_rebuild_display_values = yes
@@ -4029,14 +4031,12 @@ camp_rework_gui_begin_selected_dismantlement = {
 			has_variable = camp_selected_state_id
 			camp_rework_country_can_reform = yes
 			NOT = { has_country_flag = camp_rework_gui_dismantlement_active }
-			NOT = { has_political_power < constant:camp_rework_cost.dismantle_pp }
-			check_variable = { var = manpower value = constant:camp_rework_cost.dismantle_manpower compare = greater_than }
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+			camp_rework_can_pay_site_dismantle = yes
 			var:camp_selected_state_id = { is_valid_camp_dismantlement_state = yes }
 		}
-		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.dismantle_pp }
-		camp_rework_gui_pay_political_cost = yes
-		camp_rework_consume_dismantlement_resources = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+		camp_rework_pay_site_dismantle = yes
 		set_variable = { camp_gui_dismantlement_state_id = camp_selected_state_id }
 		var:camp_gui_dismantlement_state_id = { camp_rework_start_dismantlement = yes }
 		set_country_flag = camp_rework_gui_dismantlement_active
@@ -4084,19 +4084,16 @@ camp_rework_gui_destroy_selected_evidence = {
 	if = {
 		limit = {
 			camp_rework_country_can_destroy_retreat_evidence = yes
-			NOT = { has_political_power < constant:camp_rework_cost.evidence_pp }
-			check_variable = { var = manpower value = constant:camp_rework_cost.activation_manpower compare = greater_than }
-			command_power > constant:camp_rework_cost.evidence_command
-			has_equipment = { support_equipment_1 > constant:camp_rework_equipment_cost.support_equipment }
+			set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+			camp_rework_can_pay_site_evidence = yes
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = {
 				camp_rework_state_is_actor_responsible_controlled = yes
 				is_valid_camp_enemy_proximity_state = yes
 			}
 		}
-		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.evidence_pp }
-		camp_rework_gui_pay_political_cost = yes
-		camp_rework_consume_evidence_resources = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+		camp_rework_pay_site_evidence = yes
 		set_variable = { camp_rework_action_state_id = camp_selected_state_id }
 		genocide_destroy_camp_evidence_in_action_state = yes
 		camp_rework_rebuild_display_values = yes
@@ -4109,12 +4106,13 @@ camp_rework_gui_apply_selected_chemical_method = {
 			camp_rework_country_can_apply_chemical_camp_method = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
-			NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
+			set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+			camp_rework_can_pay_site_restricted = yes
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = { camp_rework_state_is_available_chemical_method_target = yes }
 		}
-		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.restricted_method_pp }
-		camp_rework_gui_pay_political_cost = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+		camp_rework_pay_site_restricted = yes
 		set_variable = { camp_rework_action_state_id = camp_selected_state_id }
 		camp_rework_apply_chemical_escalation_in_action_state = yes
 		camp_rework_rebuild_display_values = yes
@@ -4127,13 +4125,14 @@ camp_rework_gui_apply_selected_biological_method = {
 			camp_rework_country_can_use_restricted_method_route = yes
 			NOT = { has_country_flag = camp_rework_expansion_frozen }
 			OR = { is_ai = no camp_rework_country_under_ai_restricted_method_cap = yes }
-			NOT = { has_political_power < constant:camp_rework_cost.restricted_method_pp }
+			set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+			camp_rework_can_pay_site_restricted = yes
 			camp_rework_country_has_biological_escalation_capacity = yes
 			has_variable = camp_selected_state_id
 			var:camp_selected_state_id = { camp_rework_state_is_biological_escalation_target = yes }
 		}
-		set_temp_variable = { camp_gui_political_cost = constant:camp_rework_cost.restricted_method_pp }
-		camp_rework_gui_pay_political_cost = yes
+		set_temp_variable = { camp_site_cost_state_id = camp_selected_state_id }
+		camp_rework_pay_site_restricted = yes
 		set_variable = { camp_rework_action_state_id = camp_selected_state_id }
 		camp_rework_apply_biological_escalation_in_action_state = yes
 		camp_rework_rebuild_display_values = yes
@@ -4208,6 +4207,7 @@ camp_rework_apply_core_fallback_penalties = {
 }
 
 camp_rework_start_dismantlement = {
+	camp_admin_integration_reform_site = yes
 	set_state_flag = camp_rework_site_reforming
 	set_temp_variable = { camp_dismantlement_days = constant:camp_rework_timing.dismantle_days }
 	set_state_flag = {
@@ -4274,6 +4274,11 @@ camp_rework_close_dormant_inherited_site = {
 }
 
 camp_rework_complete_dismantlement = {
+	if = {
+		limit = { check_variable = { camp_rework_enemy_liberation > 0 } }
+		camp_admin_integration_close_site = yes
+	}
+	else = { camp_admin_integration_reform_site = yes }
 	migration_persecution_prepare_camp_dismantlement = yes
 	camp_rework_refresh_state_site_profile = yes
 	if = {
@@ -4373,14 +4378,14 @@ camp_rework_complete_dismantlement = {
 }
 
 camp_rework_destroy_evidence = {
+	set_temp_variable = { camp_admin_history_kind_input = constant:camp_admin_history_kind.evidence } camp_admin_integration_record_site_history = yes
 	set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.evidence_destruction }
 	set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.evidence }
 	set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-	camp_rework_apply_state_death_burst = yes
+	# Finite administration owns mortality; policy and evidence actions do not debit civilians.
 	if = {
 		limit = {
 			check_variable = { camp_state_evidence_depth < constant:camp_rework_coverup.safe_evidence_ceiling }
-			NOT = { is_valid_camp_enemy_proximity_state = yes }
 		}
 		set_state_flag = genocide_evidence_destroyed
 		add_to_variable = { camp_state_evidence_depth = constant:camp_rework_coverup.success_evidence_relief }
@@ -4425,7 +4430,7 @@ camp_rework_apply_discovery = {
 	genocide_try_discover_state_atrocity = yes
 }
 
-# State scope. Resolve the evidence-depth and enemy-proximity contest, keeping
+# State scope. Resolve the evidence-depth contest after caller entry checks, keeping
 # the Deaths burst and failed-coverup discovery in one shared implementation.
 camp_rework_attempt_evidence_destruction = {
 	camp_rework_destroy_evidence = yes
@@ -5007,7 +5012,8 @@ camp_rework_apply_biological_escalation_in_action_state = {
 				limit = { ROOT = { original_tag = JAP } }
 				set_state_flag = genocide_japanese_biowarfare_atrocity_site
 			}
-			camp_rework_record_latest_state_deaths = yes
+			# Activation changes the ongoing site profile without a new death receipt.
+			# Monthly loss registration records its own receipt when actual losses occur.
 			set_temp_variable = { camp_register_site_type = constant:camp_rework_site_type.none }
 			camp_rework_register_active_site = yes
 			camp_rework_register_evidence_state = yes
@@ -5289,7 +5295,7 @@ camp_rework_expand_labor_in_action_state = {
 		set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
 		set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 		set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-		camp_rework_apply_state_death_burst = yes
+		# Finite administration owns mortality; policy and evidence actions do not debit civilians.
 		set_variable = {
 			migration_persecution_pending_owner = constant:migration_persecution_owner_class.expanded_labor
 		}
@@ -5308,6 +5314,12 @@ camp_rework_start_generic_labor_project_in_from = {
 
 camp_rework_start_generic_labor_project_in_action_state = {
 	camp_rework_consume_labor_project_resources = yes
+	camp_rework_clear_site_labor_reserve = yes
+	camp_rework_start_generic_labor_project_payload_in_action_state = yes
+}
+
+# Payload-only entry for selected-location transactions that have paid and saved their reserve.
+camp_rework_start_generic_labor_project_payload_in_action_state = {
 	set_country_flag = generic_labor_project_active
 	set_variable = { generic_labor_project_state_id = camp_rework_action_state_id }
 	set_variable = { generic_labor_project_type = camp_requested_project_type }
@@ -5350,7 +5362,7 @@ camp_rework_complete_generic_labor_project = {
 			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
 			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-			camp_rework_apply_state_death_burst = yes
+			# Finite administration owns mortality; policy and evidence actions do not debit civilians.
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_minor }
 			set_variable = {
 				migration_persecution_pending_owner = constant:migration_persecution_owner_class.labor_project
@@ -5372,7 +5384,7 @@ camp_rework_complete_generic_labor_project = {
 			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_minor }
 			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.camp_atrocity }
-			camp_rework_apply_state_death_burst = yes
+			# Finite administration owns mortality; policy and evidence actions do not debit civilians.
 			add_to_variable = { camp_state_evidence_depth = constant:camp_rework_country_value.evidence_major }
 			camp_rework_register_evidence_state = yes
 			set_variable = {
@@ -5398,6 +5410,7 @@ camp_rework_complete_generic_labor_project = {
 	}
 	clr_country_flag = generic_labor_project_active
 	clear_variable = generic_labor_project_state_id
+	camp_rework_clear_site_labor_reserve = yes
 	clear_variable = generic_labor_project_type
 	camp_rework_recalculate_country_values = yes
 }
@@ -5437,7 +5450,7 @@ camp_rework_radicalize_site_in_action_state = {
 			set_temp_variable = { camp_rework_death_burst_percent = constant:camp_rework_death_percent.decision_severe }
 			set_temp_variable = { camp_rework_death_burst_cap = constant:camp_rework_death_cap.decision }
 			set_temp_variable = { camp_rework_death_burst_reason = constant:chaos_meter_deaths_reason.extermination_camp }
-			camp_rework_apply_state_death_burst = yes
+			# Finite administration owns mortality; policy and evidence actions do not debit civilians.
 			set_variable = {
 				migration_persecution_pending_owner = constant:migration_persecution_owner_class.extermination
 			}

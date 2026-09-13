@@ -1,0 +1,319 @@
+# ============================================================================
+# CHAOS REDUX - UNIVERSAL DISCOUNTED-COST SCRIPTED TRIGGERS
+# ============================================================================
+# These predicates are intentionally small. Registry traversal, source
+# composition, and transaction mutation remain effects because arrays may be
+# changed only from effect blocks.
+# ============================================================================
+
+# Input: universal_cost_source_query_id.
+# Output: true when the source id is currently registered and therefore active.
+# Source expiry is represented by removing the id through the public clear
+# effect; this avoids a dynamic global-flag name that the engine cannot build.
+universal_cost_source_is_active = {
+	is_in_array = {
+		array = global.universal_cost_source_ids
+		value = universal_cost_source_query_id
+	}
+}
+
+# Input: universal_cost_affordability_resource_kind.
+# Output: true for kinds that the shared debit/credit helpers can execute.
+# custom_adapter remains deliberately false; its owner must perform payment
+# and refund before acknowledging the stored component.
+universal_cost_resource_kind_is_native = {
+	OR = {
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.political_power
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.command_power
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.army_experience
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.navy_experience
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.air_experience
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.stability
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.war_support
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.manpower
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.fuel
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.infantry_equipment
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.support_equipment
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.support_equipment_1
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.motorized_equipment
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.train_equipment
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.train_equipment_1
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.convoy
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.train_equipment_1
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.stability
+			compare = equals
+		}
+		check_variable = {
+			var = universal_cost_affordability_resource_kind
+			value = constant:universal_cost_resource_kind.war_support
+			compare = equals
+		}
+	}
+}
+
+# Input: universal_cost_affordability_resource_kind and
+# universal_cost_affordability_amount. Zero or negative amounts are no-ops and
+# are therefore affordable. Positive amounts use an inclusive comparison so
+# an exact balance can be spent.
+universal_cost_component_is_affordable = {
+	OR = {
+		check_variable = {
+			var = universal_cost_affordability_amount
+			value = constant:universal_cost_framework.zero
+			compare = less_than_or_equals
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.political_power
+				compare = equals
+			}
+			NOT = {
+				political_power < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.command_power
+				compare = equals
+			}
+			NOT = {
+				command_power < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.army_experience
+				compare = equals
+			}
+			NOT = {
+				has_army_experience < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.navy_experience
+				compare = equals
+			}
+			NOT = {
+				has_navy_experience < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.air_experience
+				compare = equals
+			}
+			NOT = {
+				has_air_experience < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.manpower
+				compare = equals
+			}
+			NOT = {
+				has_manpower < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.fuel
+				compare = equals
+			}
+			NOT = {
+				has_fuel < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.infantry_equipment
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					infantry_equipment < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.support_equipment
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.support_equipment_1
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					support_equipment_1 < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.motorized_equipment
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					motorized_equipment_1 < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.train_equipment
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					train_equipment < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.train_equipment_1
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					train_equipment_1 < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.convoy
+				compare = equals
+			}
+			NOT = {
+				has_equipment = {
+					convoy_1 < universal_cost_affordability_amount
+				}
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.stability
+				compare = equals
+			}
+			NOT = {
+				has_stability < universal_cost_affordability_amount
+			}
+		}
+		AND = {
+			check_variable = {
+				var = universal_cost_affordability_resource_kind
+				value = constant:universal_cost_resource_kind.war_support
+				compare = equals
+			}
+			NOT = {
+				has_war_support < universal_cost_affordability_amount
+			}
+		}
+	}
+}
+
+# Input: universal_cost_transaction_query_id. The transaction arrays are
+# regular arrays on the payer country and are intentionally not global.
+universal_cost_transaction_is_recorded = {
+	is_in_array = {
+		array = universal_cost_transaction_ids
+		value = universal_cost_transaction_query_id
+	}
+}

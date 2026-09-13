@@ -1,5 +1,7 @@
 # Event 027 native mastery audit
 
+> **Superseded status notice (2026-09-01):** This dated native mastery audit is preserved as historical evidence and is superseded as a current source-status authority by ../documentation_state.md. Its effect-applied receipt defect description is contradicted by the current recovery code, while its runtime limitations remain open.
+
 Date: 2026-08-31.
 
 Scope: read-only review of the Event 027 mastery effects, exact mastery effects, scripted triggers, event confirmation flow, relevant specifications, offline Paradox wiki pages, and installed vanilla documentation.

@@ -1,0 +1,574 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 025 EXPEDITION BOARD SCRIPTED LOCALISATION
+# ============================================================================
+# The board exposes only three main values. Supporting route, outpost, sector,
+# rival, and action-slot text is selected from the participant's own variables
+# and public evidence flags, preserving multiplayer privacy.
+# ============================================================================
+
+defined_text = {
+	name = GetChaosxNr25EntryEstimate
+	text = { trigger = { any_owned_state = { is_coastal = yes } } localization_key = chaosx_nr25_route_estimate_direct }
+	text = { localization_key = chaosx_nr25_route_estimate_chartered }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardPhaseText
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_board_phase_entry }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_board_phase_mobilization }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_board_phase_crossing }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_board_phase_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_board_phase_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_board_phase_final_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.analysis compare = equals } } localization_key = chaosx_nr25_board_phase_analysis }
+	text = { localization_key = chaosx_nr25_board_phase_closed }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardDeadlineText
+	text = { trigger = { has_global_flag = chaosx_nr25_final_recovery_resolved } localization_key = chaosx_nr25_board_deadline_resolved }
+	text = { localization_key = chaosx_nr25_board_deadline_active }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardProgressText
+	text = { localization_key = chaosx_nr25_board_progress_value }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardProgressThreshold
+	text = { localization_key = chaosx_nr25_board_progress_threshold }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardLogisticsText
+	text = { localization_key = chaosx_nr25_board_logistics_value }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardLogisticsThreshold
+	text = { localization_key = chaosx_nr25_board_logistics_threshold }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardThirdValueText
+	text = { trigger = { chaosx_nr25_board_shows_dependence = yes } localization_key = chaosx_nr25_board_dependence_value }
+	text = { localization_key = chaosx_nr25_board_exposure_value }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardThirdValueThreshold
+	text = { trigger = { chaosx_nr25_board_shows_dependence = yes } localization_key = chaosx_nr25_board_dependence_threshold }
+	text = { localization_key = chaosx_nr25_board_exposure_threshold }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardProgressMeter
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = GFX_025_expedition_meter_progress_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = GFX_025_expedition_meter_progress_surveying }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = GFX_025_expedition_meter_progress_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = GFX_025_expedition_meter_progress_southbound }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = GFX_025_expedition_meter_progress_primary }
+	text = { localization_key = GFX_025_expedition_meter_progress_organizing }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardLogisticsMeter
+	text = { trigger = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_value.eighty compare = greater_than_or_equals } } localization_key = GFX_025_expedition_meter_logistics_secure }
+	text = { trigger = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals } } localization_key = GFX_025_expedition_meter_logistics_prepared }
+	text = { trigger = { check_variable = { var = chaosx_nr25_logistics_readiness value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } } localization_key = GFX_025_expedition_meter_logistics_strained }
+	text = { localization_key = GFX_025_expedition_meter_logistics_low }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardThirdValueIcon
+	text = { trigger = { chaosx_nr25_board_shows_dependence = yes } localization_key = GFX_025_expedition_value_icon_dependence }
+	text = { localization_key = GFX_025_expedition_value_icon_exposure }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardThirdValueMeter
+	text = {
+		trigger = {
+			chaosx_nr25_board_shows_dependence = yes
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.eighty compare = greater_than_or_equals }
+		}
+		localization_key = GFX_025_expedition_meter_dependence_critical
+	}
+	text = {
+		trigger = {
+			chaosx_nr25_board_shows_dependence = yes
+			check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals }
+		}
+		localization_key = GFX_025_expedition_meter_dependence_integrated
+	}
+	text = {
+		trigger = { chaosx_nr25_board_shows_dependence = yes check_variable = { var = chaosx_nr25_dependence value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } }
+		localization_key = GFX_025_expedition_meter_dependence_bonded
+	}
+	text = { trigger = { chaosx_nr25_board_shows_dependence = yes } localization_key = GFX_025_expedition_meter_dependence_latent }
+	text = { trigger = { check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.eighty compare = greater_than_or_equals } } localization_key = GFX_025_expedition_meter_exposure_emergency }
+	text = { trigger = { check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.fifty compare = greater_than_or_equals } } localization_key = GFX_025_expedition_meter_exposure_danger }
+	text = { trigger = { check_variable = { var = chaosx_nr25_exposure_risk value = constant:chaosx_nr25_value.twenty compare = greater_than_or_equals } } localization_key = GFX_025_expedition_meter_exposure_alert }
+	text = { localization_key = GFX_025_expedition_meter_exposure_calm }
+}
+
+defined_text = {
+	name = GetChaosxNr25RouteText
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.south_america compare = equals } } localization_key = chaosx_nr25_board_route_south_america }
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.africa compare = equals } } localization_key = chaosx_nr25_board_route_africa }
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.tasmania compare = equals } } localization_key = chaosx_nr25_board_route_tasmania }
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.inland compare = equals } } localization_key = chaosx_nr25_board_route_inland }
+	text = { localization_key = chaosx_nr25_board_route_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25OutpostText
+	text = { trigger = { has_country_flag = chaosx_nr25_outpost_compromised } localization_key = chaosx_nr25_board_outpost_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_value.eighty compare = greater_than_or_equals } } localization_key = chaosx_nr25_board_outpost_secure }
+	text = { trigger = { check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } } localization_key = chaosx_nr25_board_outpost_established }
+	text = { localization_key = chaosx_nr25_board_outpost_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25OutpostEmphasisText
+	text = { trigger = { has_country_flag = chaosx_nr25_emphasis_logistics_depot } localization_key = chaosx_nr25_board_emphasis_logistics }
+	text = { trigger = { has_country_flag = chaosx_nr25_emphasis_survey_station } localization_key = chaosx_nr25_board_emphasis_survey }
+	text = { trigger = { has_country_flag = chaosx_nr25_emphasis_signals_station } localization_key = chaosx_nr25_board_emphasis_signals }
+	text = { trigger = { has_country_flag = chaosx_nr25_emphasis_fortified_camp } localization_key = chaosx_nr25_board_emphasis_fortified }
+	text = { trigger = { has_country_flag = chaosx_nr25_emphasis_mobile_traverse } localization_key = chaosx_nr25_board_emphasis_mobile }
+	text = { localization_key = chaosx_nr25_board_emphasis_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25RaceStateText
+	text = { trigger = { has_global_flag = chaosx_nr25_final_recovery_resolved has_country_flag = chaosx_nr25_recovery_winner } localization_key = chaosx_nr25_board_resolved_winner }
+	text = { trigger = { has_global_flag = chaosx_nr25_final_recovery_resolved } localization_key = chaosx_nr25_board_resolved_loser }
+	text = { trigger = { has_country_flag = chaosx_nr25_emergency_weather } localization_key = chaosx_nr25_board_action_blocked }
+	text = { localization_key = chaosx_nr25_board_deadline_active }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardRaceStateText
+	text = { trigger = { has_global_flag = chaosx_nr25_final_recovery_resolved has_country_flag = chaosx_nr25_recovery_winner } localization_key = chaosx_nr25_board_resolved_winner }
+	text = { trigger = { has_global_flag = chaosx_nr25_final_recovery_resolved } localization_key = chaosx_nr25_board_resolved_loser }
+	text = { localization_key = chaosx_nr25_board_deadline_active }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardRouteText
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.south_america compare = equals } } localization_key = chaosx_nr25_board_route_south_america }
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.africa compare = equals } } localization_key = chaosx_nr25_board_route_africa }
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.tasmania compare = equals } } localization_key = chaosx_nr25_board_route_tasmania }
+	text = { trigger = { check_variable = { var = chaosx_nr25_route value = constant:chaosx_nr25_route.inland compare = equals } } localization_key = chaosx_nr25_board_route_inland }
+	text = { localization_key = chaosx_nr25_board_route_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardOutpostText
+	text = { trigger = { has_country_flag = chaosx_nr25_outpost_compromised } localization_key = chaosx_nr25_board_outpost_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_value.eighty compare = greater_than_or_equals } } localization_key = chaosx_nr25_board_outpost_secure }
+	text = { trigger = { check_variable = { var = chaosx_nr25_outpost_security value = constant:chaosx_nr25_value.one compare = greater_than_or_equals } } localization_key = chaosx_nr25_board_outpost_established }
+	text = { localization_key = chaosx_nr25_board_outpost_none }
+}
+
+defined_text = {
+	name = GetChaosxNr25SelectedRivalText
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_target_selected } localization_key = chaosx_nr25_board_rival_observed }
+	text = { localization_key = chaosx_nr25_board_rival_unknown }
+}
+
+# Confirmation text follows the selected action slot without exposing private
+# rival values or moving any gameplay validation into the presentation layer.
+defined_text = {
+	name = GetChaosxNr25PendingActionName
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.one compare = equals } } localization_key = "[GetChaosxNr25Action1Name]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.two compare = equals } } localization_key = "[GetChaosxNr25Action2Name]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.three compare = equals } } localization_key = "[GetChaosxNr25Action3Name]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.four compare = equals } } localization_key = "[GetChaosxNr25Action4Name]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.five compare = equals } } localization_key = "[GetChaosxNr25Action5Name]" }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+
+defined_text = {
+	name = GetChaosxNr25PendingActionCost
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.one compare = equals } } localization_key = "[GetChaosxNr25Action1Cost]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.two compare = equals } } localization_key = "[GetChaosxNr25Action2Cost]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.three compare = equals } } localization_key = "[GetChaosxNr25Action3Cost]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.four compare = equals } } localization_key = "[GetChaosxNr25Action4Cost]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.five compare = equals } } localization_key = "[GetChaosxNr25Action5Cost]" }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+
+defined_text = {
+	name = GetChaosxNr25PendingActionStatus
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.one compare = equals } } localization_key = "[GetChaosxNr25Action1Status]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.two compare = equals } } localization_key = "[GetChaosxNr25Action2Status]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.three compare = equals } } localization_key = "[GetChaosxNr25Action3Status]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.four compare = equals } } localization_key = "[GetChaosxNr25Action4Status]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.five compare = equals } } localization_key = "[GetChaosxNr25Action5Status]" }
+	text = { localization_key = chaosx_nr25_board_action_blocked }
+}
+
+defined_text = {
+	name = GetChaosxNr25PendingTargetText
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_target_selected } localization_key = "[GetChaosxNr25SelectedRivalText]" }
+	text = { trigger = { has_country_flag = chaosx_nr25_sector_1_selected } localization_key = chaosx_nr25_board_sector_ice_shelf }
+	text = { trigger = { has_country_flag = chaosx_nr25_sector_2_selected } localization_key = chaosx_nr25_board_sector_mountain_shadow }
+	text = { trigger = { has_country_flag = chaosx_nr25_sector_3_selected } localization_key = chaosx_nr25_board_sector_signal_basin }
+	text = { trigger = { has_country_flag = chaosx_nr25_sector_4_selected } localization_key = chaosx_nr25_board_sector_coastal_fracture }
+	text = { trigger = { has_country_flag = chaosx_nr25_sector_5_selected } localization_key = chaosx_nr25_board_sector_magnetic_silence }
+	text = { trigger = { has_country_flag = chaosx_nr25_sector_6_selected } localization_key = chaosx_nr25_board_sector_false_map }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_target }
+}
+
+defined_text = {
+	name = GetChaosxNr25PendingActionEffect
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.one compare = equals } } localization_key = "[GetChaosxNr25Action1Effect]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.two compare = equals } } localization_key = "[GetChaosxNr25Action2Effect]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.three compare = equals } } localization_key = "[GetChaosxNr25Action3Effect]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.four compare = equals } } localization_key = "[GetChaosxNr25Action4Effect]" }
+	text = { trigger = { check_variable = { var = chaosx_nr25_pending_action_slot value = constant:chaosx_nr25_value.five compare = equals } } localization_key = "[GetChaosxNr25Action5Effect]" }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_effect }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action1Effect
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_authorize_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_depot_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_south_america_gateway_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_establish_outpost_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_aerial_grid_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_controlled_recovery_effect }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_effect }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action2Effect
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_charter_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_aerial_route_survey_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_southern_africa_gateway_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_reinforce_outpost_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_ground_transect_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_rapid_extraction_effect }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_effect }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action3Effect
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_secure_scientific_exchange_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_establish_radio_net_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_tasmania_gateway_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_rotate_polar_crew_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_signal_triangulation_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_remote_recovery_effect }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_effect }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action4Effect
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_conceal_departure_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_recruit_polar_crew_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_emergency_shelter_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_reconnoitre_rival_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_armed_retrieval_effect }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_effect }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action5Effect
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_country_flag = chaosx_nr25_convoy_incident } localization_key = chaosx_nr25_escort_supply_convoys_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_global_flag = chaosx_nr25_evolution_militarised_antarctica } localization_key = chaosx_nr25_escort_supply_convoys_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart } localization_key = chaosx_nr25_escort_supply_convoys_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_prepare_alternate_landing_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_analyze_recovered_fragment_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_recover_verified_fragment_effect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_distributed_salvage_effect }
+	text = { localization_key = chaosx_nr25_board_confirmation_no_effect }
+}
+
+defined_text = {
+	name = GetChaosxNr25SectorMapHint
+	text = { localization_key = chaosx_nr25_board_sector_map_hint }
+}
+
+# Sector text is intentionally based on each participant's private variable.
+defined_text = {
+	name = GetChaosxNr25Sector1StateText
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.lost compare = equals } } localization_key = chaosx_nr25_board_sector_lost }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.compromised compare = equals } } localization_key = chaosx_nr25_board_sector_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } localization_key = chaosx_nr25_board_sector_confirmed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_ice_shelf_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } localization_key = chaosx_nr25_board_sector_surveyed }
+	text = { localization_key = chaosx_nr25_board_sector_unresolved }
+}
+
+defined_text = {
+	name = GetChaosxNr25Sector2StateText
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.lost compare = equals } } localization_key = chaosx_nr25_board_sector_lost }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.compromised compare = equals } } localization_key = chaosx_nr25_board_sector_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } localization_key = chaosx_nr25_board_sector_confirmed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_mountain_shadow_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } localization_key = chaosx_nr25_board_sector_surveyed }
+	text = { localization_key = chaosx_nr25_board_sector_unresolved }
+}
+
+defined_text = {
+	name = GetChaosxNr25Sector3StateText
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } localization_key = chaosx_nr25_board_sector_confirmed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } localization_key = chaosx_nr25_board_sector_surveyed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.compromised compare = equals } } localization_key = chaosx_nr25_board_sector_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_signal_basin_state value = constant:chaosx_nr25_sector.lost compare = equals } } localization_key = chaosx_nr25_board_sector_lost }
+	text = { localization_key = chaosx_nr25_board_sector_unresolved }
+}
+
+defined_text = {
+	name = GetChaosxNr25Sector4StateText
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } localization_key = chaosx_nr25_board_sector_confirmed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } localization_key = chaosx_nr25_board_sector_surveyed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.compromised compare = equals } } localization_key = chaosx_nr25_board_sector_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_coastal_fracture_state value = constant:chaosx_nr25_sector.lost compare = equals } } localization_key = chaosx_nr25_board_sector_lost }
+	text = { localization_key = chaosx_nr25_board_sector_unresolved }
+}
+
+defined_text = {
+	name = GetChaosxNr25Sector5StateText
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } localization_key = chaosx_nr25_board_sector_confirmed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } localization_key = chaosx_nr25_board_sector_surveyed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.compromised compare = equals } } localization_key = chaosx_nr25_board_sector_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_magnetic_silence_state value = constant:chaosx_nr25_sector.lost compare = equals } } localization_key = chaosx_nr25_board_sector_lost }
+	text = { localization_key = chaosx_nr25_board_sector_unresolved }
+}
+
+defined_text = {
+	name = GetChaosxNr25Sector6StateText
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.confirmed compare = equals } } localization_key = chaosx_nr25_board_sector_confirmed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.surveyed compare = equals } } localization_key = chaosx_nr25_board_sector_surveyed }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.compromised compare = equals } } localization_key = chaosx_nr25_board_sector_compromised }
+	text = { trigger = { check_variable = { var = chaosx_nr25_sector_false_map_state value = constant:chaosx_nr25_sector.lost compare = equals } } localization_key = chaosx_nr25_board_sector_lost }
+	text = { localization_key = chaosx_nr25_board_sector_unresolved }
+}
+
+# Slot names, costs, and icons follow the phase/action table prepared by the
+# runtime. The slots are fixed so the window does not jump as actions unlock.
+defined_text = {
+	name = GetChaosxNr25Action1Name
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_authorize_expedition }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_stockpile_forward_depot }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_south_america_gateway }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_establish_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_aerial_grid }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_controlled_recovery }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action2Name
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_charter_neutral_shipping }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_aerial_route_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_southern_africa_gateway }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_reinforce_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_ground_transect }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_rapid_extraction }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action3Name
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_secure_scientific_exchange }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_establish_radio_net }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_tasmania_gateway }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_rotate_polar_crew }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_signal_triangulation }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_remote_recovery_rig }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action4Name
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_conceal_departure }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_recruit_polar_crew }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_emergency_shelter }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_reconnoitre_rival }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_armed_retrieval }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action5Name
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_country_flag = chaosx_nr25_convoy_incident } localization_key = chaosx_nr25_escort_supply_convoys }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_global_flag = chaosx_nr25_evolution_militarised_antarctica } localization_key = chaosx_nr25_escort_supply_convoys }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart } localization_key = chaosx_nr25_escort_supply_convoys }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_prepare_alternate_landing }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_analyze_recovered_fragment }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_recover_verified_fragment }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_distributed_salvage }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+
+# Costs are presented with the same phase table; the decision's custom cost
+# trigger remains authoritative for affordability.
+defined_text = {
+	name = GetChaosxNr25Action1Cost
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_authorize_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_depot_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_gateway_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_outpost_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_aerial_grid_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_controlled_recovery_cost }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action2Cost
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_charter_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_aerial_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_gateway_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_reinforce_outpost_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_ground_transect_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_rapid_extraction_cost }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action3Cost
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_science_exchange_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_radio_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = chaosx_nr25_gateway_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_rotate_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_signal_triangulation_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_remote_recovery_cost }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action4Cost
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.entry compare = equals } } localization_key = chaosx_nr25_conceal_departure_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.mobilization compare = equals } } localization_key = chaosx_nr25_crew_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_shelter_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_rival_recon_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_armed_retrieval_cost }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+defined_text = {
+	name = GetChaosxNr25Action5Cost
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_country_flag = chaosx_nr25_convoy_incident } localization_key = chaosx_nr25_escort_supply_convoys_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_global_flag = chaosx_nr25_evolution_militarised_antarctica } localization_key = chaosx_nr25_escort_supply_convoys_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } has_global_flag = chaosx_nr25_evolution_wreck_breaking_apart } localization_key = chaosx_nr25_escort_supply_convoys_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = chaosx_nr25_prepare_alternate_landing_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } check_variable = { var = chaosx_nr25_fragment_count value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_analyze_recovered_fragment_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = chaosx_nr25_fragment_cost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = chaosx_nr25_distributed_salvage_cost }
+	text = { localization_key = chaosx_nr25_board_action_hidden }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action1Status
+	text = { trigger = { has_country_flag = chaosx_nr25_final_mission_active } localization_key = chaosx_nr25_board_action_mission_active }
+	text = { trigger = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_board_action_cooldown }
+	text = { trigger = { NOT = { chaosx_nr25_base_action_available = yes } } localization_key = chaosx_nr25_board_action_blocked }
+	text = { localization_key = chaosx_nr25_board_action_ready }
+}
+defined_text = {
+	name = GetChaosxNr25Action2Status
+	text = { trigger = { has_country_flag = chaosx_nr25_final_mission_active } localization_key = chaosx_nr25_board_action_mission_active }
+	text = { trigger = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_board_action_cooldown }
+	text = { trigger = { NOT = { chaosx_nr25_base_action_available = yes } } localization_key = chaosx_nr25_board_action_blocked }
+	text = { localization_key = chaosx_nr25_board_action_ready }
+}
+defined_text = {
+	name = GetChaosxNr25Action3Status
+	text = { trigger = { has_country_flag = chaosx_nr25_final_mission_active } localization_key = chaosx_nr25_board_action_mission_active }
+	text = { trigger = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_board_action_cooldown }
+	text = { trigger = { NOT = { chaosx_nr25_base_action_available = yes } } localization_key = chaosx_nr25_board_action_blocked }
+	text = { localization_key = chaosx_nr25_board_action_ready }
+}
+defined_text = {
+	name = GetChaosxNr25Action4Status
+	text = { trigger = { has_country_flag = chaosx_nr25_final_mission_active } localization_key = chaosx_nr25_board_action_mission_active }
+	text = { trigger = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_board_action_cooldown }
+	text = { trigger = { NOT = { chaosx_nr25_base_action_available = yes } } localization_key = chaosx_nr25_board_action_blocked }
+	text = { localization_key = chaosx_nr25_board_action_ready }
+}
+defined_text = {
+	name = GetChaosxNr25Action5Status
+	text = { trigger = { has_country_flag = chaosx_nr25_final_mission_active } localization_key = chaosx_nr25_board_action_mission_active }
+	text = { trigger = { check_variable = { var = chaosx_nr25_action_cooldown value = constant:chaosx_nr25_value.zero compare = greater_than } } localization_key = chaosx_nr25_board_action_cooldown }
+	text = { trigger = { NOT = { chaosx_nr25_base_action_available = yes } } localization_key = chaosx_nr25_board_action_blocked }
+	text = { localization_key = chaosx_nr25_board_action_ready }
+}
+
+defined_text = {
+	name = GetChaosxNr25Action1IconSprite
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = GFX_025_expedition_action_icon_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = GFX_025_expedition_action_icon_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = GFX_025_expedition_action_icon_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = GFX_025_expedition_action_icon_route }
+	text = { localization_key = GFX_025_expedition_action_icon_default }
+}
+defined_text = {
+	name = GetChaosxNr25Action2IconSprite
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = GFX_025_expedition_action_icon_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = GFX_025_expedition_action_icon_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = GFX_025_expedition_action_icon_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = GFX_025_expedition_action_icon_route }
+	text = { localization_key = GFX_025_expedition_action_icon_default }
+}
+defined_text = {
+	name = GetChaosxNr25Action3IconSprite
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = GFX_025_expedition_action_icon_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = GFX_025_expedition_action_icon_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = GFX_025_expedition_action_icon_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = GFX_025_expedition_action_icon_route }
+	text = { localization_key = GFX_025_expedition_action_icon_default }
+}
+defined_text = {
+	name = GetChaosxNr25Action4IconSprite
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = GFX_025_expedition_action_icon_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = GFX_025_expedition_action_icon_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = GFX_025_expedition_action_icon_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = GFX_025_expedition_action_icon_route }
+	text = { localization_key = GFX_025_expedition_action_icon_default }
+}
+defined_text = {
+	name = GetChaosxNr25Action5IconSprite
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.final_recovery compare = equals } } localization_key = GFX_025_expedition_action_icon_recovery }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.survey compare = equals } } localization_key = GFX_025_expedition_action_icon_survey }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.outpost compare = equals } } localization_key = GFX_025_expedition_action_icon_outpost }
+	text = { trigger = { check_variable = { var = global.chaosx_nr25_phase value = constant:chaosx_nr25_phase.crossing compare = equals } } localization_key = GFX_025_expedition_action_icon_route }
+	text = { localization_key = GFX_025_expedition_action_icon_default }
+}
+
+# Rival cards only reveal the state explicitly granted by a public evidence
+# flag. Unknown cards remain anonymous to preserve multiplayer privacy.
+defined_text = {
+	name = GetChaosxNr25Rival1CardText
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_1_incident } localization_key = chaosx_nr25_board_rival_contested }
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_1_observed } localization_key = chaosx_nr25_board_rival_observed }
+	text = { localization_key = chaosx_nr25_board_rival_unknown }
+}
+defined_text = {
+	name = GetChaosxNr25Rival2CardText
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_2_incident } localization_key = chaosx_nr25_board_rival_contested }
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_2_observed } localization_key = chaosx_nr25_board_rival_observed }
+	text = { localization_key = chaosx_nr25_board_rival_unknown }
+}
+defined_text = {
+	name = GetChaosxNr25Rival3CardText
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_3_incident } localization_key = chaosx_nr25_board_rival_contested }
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_3_observed } localization_key = chaosx_nr25_board_rival_observed }
+	text = { localization_key = chaosx_nr25_board_rival_unknown }
+}
+
+defined_text = {
+	name = GetChaosxNr25Rival1FlagSprite
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_1_visible } localization_key = GFX_025_expedition_rival_flag_unknown }
+	text = { localization_key = GFX_025_expedition_rival_flag_unknown }
+}
+defined_text = {
+	name = GetChaosxNr25Rival2FlagSprite
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_2_visible } localization_key = GFX_025_expedition_rival_flag_unknown }
+	text = { localization_key = GFX_025_expedition_rival_flag_unknown }
+}
+defined_text = {
+	name = GetChaosxNr25Rival3FlagSprite
+	text = { trigger = { has_country_flag = chaosx_nr25_rival_slot_3_visible } localization_key = GFX_025_expedition_rival_flag_unknown }
+	text = { localization_key = GFX_025_expedition_rival_flag_unknown }
+}
+
+defined_text = {
+	name = GetChaosxNr25BoardResolvedSummary
+	text = { trigger = { has_country_flag = chaosx_nr25_recovery_winner } localization_key = chaosx_nr25_board_resolved_winner }
+	text = { localization_key = chaosx_nr25_board_resolved_loser }
+}
