@@ -15,7 +15,8 @@ A literal two-word engine command such as `chaosx test` cannot be registered thr
 ## Transition behavior
 
 The effect records the current country and its capital, then transfers ownership and control of that capital state to activate the dormant CXT tag.
-It resolves the CXT country scope through a runtime meta effect after this transfer, sets the recorded capital, switches the human player to CXT, and fires the hidden triggered-only receiver event `chaosx_test_country.1`.
+It resolves the CXT country scope through a runtime meta effect after this transfer, sets the recorded capital, queues the hidden triggered-only receiver event `chaosx_test_country.1`, and switches the human player to CXT as the final effect in that country block.
+The receiver is queued before the player switch with a one-hour delay, configured by the file-scoped `@CXT_SETUP_DELAY_HOURS`, so it is scheduled while the current scope is still a valid CXT country and runs after the player transfer.
 The receiver runs with `ROOT = CXT`, annexes any remaining states of the former country, restores the recorded capital, and invokes the ordinary initialization or refresh helpers only when CXT owns and controls a valid capital.
 This country ROOT also supplies the intended target for facility transfers, occupation fixtures, package extensions, and camp registration.
 For a one-state origin, the initial capital transfer supplies all of its land and the receiver skips an empty annex.

@@ -530,6 +530,8 @@ Cluster firing rules:
 Entering another country scope does not rebind ROOT.
 When setup helpers require the recipient country as ROOT, invoke them from a hidden triggered-only country event received by that country; regular event targets carry through events fired by the originating effect chain.
 Give a dormant tag owned land and a valid capital before entering capital-based setup or spawning units; use runtime meta construction when its TAG scope must be deferred until activation.
+For a player-transfer bootstrap, queue the delayed recipient event before `change_tag_from` and make player transfer the final effect in that country block, so receiver scheduling does not reuse an invalidated country scope.
+Inject file-scoped duration constants as meta arguments when generating a new script buffer, rather than leaving an unresolved `@` token inside generated text.
 State transfers preserve stored variables, so a dedicated sandbox fixture must assign its intended responsible-country pointer before registration when it replaces an inherited site; ordinary historical responsibility should remain intact.
 
 ### 7. Duration fields and constants

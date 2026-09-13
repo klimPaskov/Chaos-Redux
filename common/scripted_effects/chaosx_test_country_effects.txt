@@ -13,6 +13,7 @@
 # ============================================================================
 
 @CXT_DOCTRINE_MASTERY = 500.00
+@CXT_SETUP_DELAY_HOURS = 1
 
 chaosx_test_country_refill_resources = {
 	add_political_power = constant:chaosx_test_country.political_power_refill
@@ -303,10 +304,12 @@ chaosx_test = {
 							state = event_target:chaosx_test_origin_capital_state
 							remember_old_capital = no
 						}
+						# Queue from a valid CXT scope; player transfer must run last.
+						country_event = { id = chaosx_test_country.1 hours = [SETUP_DELAY] }
 						change_tag_from = event_target:chaosx_test_origin_country
-						country_event = { id = chaosx_test_country.1 }
 					}
 				}
+				SETUP_DELAY = @CXT_SETUP_DELAY_HOURS
 			}
 		}
 	}
