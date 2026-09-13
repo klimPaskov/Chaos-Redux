@@ -14,6 +14,7 @@
 
 @CXT_DOCTRINE_MASTERY = 500.00
 @CXT_SETUP_DELAY_HOURS = 1
+@CXT_SYNC_DELAY_HOURS = 1
 
 chaosx_test_country_refill_resources = {
 	add_political_power = constant:chaosx_test_country.political_power_refill
@@ -55,6 +56,10 @@ chaosx_test_country_ensure_occupation_fixture = {
 # Input: temporary building token chaosx_test_country_current_facility.
 # The meta template resolves its literal type; naval requires a coastal state.
 chaosx_test_country_provision_facility_type = {
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE facility_begin type=[?chaosx_test_country_current_facility.GetTokenKey] date=[?global.date|.3]"
+	}
 	meta_effect = {
 		text = {
 			if = {
@@ -143,6 +148,10 @@ chaosx_test_country_provision_facility_type = {
 			}
 		}
 		FACILITY = "[?chaosx_test_country_current_facility.GetTokenKey]"
+	}
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE facility_end type=[?chaosx_test_country_current_facility.GetTokenKey] date=[?global.date|.3]"
 	}
 }
 
@@ -263,52 +272,105 @@ chaosx_test_country_apply_registered_extension_effects = {
 	for_each_loop = {
 		array = global.chaosx_test_country_registered_extension_effects
 		value = chaosx_test_country_current_extension_effect
+		if = {
+			limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+			log = "CXT_SETUP_TRACE extension_begin carrier=[?chaosx_test_country_current_extension_effect.GetTokenKey] date=[?global.date|.3]"
+		}
 		meta_effect = {
 			text = { [EXTENSION_EFFECT]_apply = yes }
 			EXTENSION_EFFECT = "[?chaosx_test_country_current_extension_effect.GetTokenKey]"
+		}
+		if = {
+			limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+			log = "CXT_SETUP_TRACE extension_end carrier=[?chaosx_test_country_current_extension_effect.GetTokenKey] date=[?global.date|.3]"
 		}
 	}
 }
 
 chaosx_test_country_initial_setup = {
+	log = "CXT_SETUP_TRACE phase=condemnation country=[This.GetTag] date=[?global.date|.3]"
 	condemnation_flush_deferred_refresh = yes
 	set_country_flag = chaosx_test_country_initialized
 	set_research_slots = constant:chaosx_test_country_count.research_slots
+	log = "CXT_SETUP_TRACE phase=technology date=[?global.date|.3]"
 	# Technology unlocks precede every legal facility-placement attempt.
 	chaosx_test_country_complete_all_technologies = yes
 	if = {
 		limit = { NOT = { has_country_flag = chaosx_test_country_history_unlocks_completed } }
+		log = "CXT_SETUP_TRACE phase=history_projects date=[?global.date|.3]"
 		chaosx_test_country_complete_all_special_projects = yes
+		log = "CXT_SETUP_TRACE phase=technology_after_projects date=[?global.date|.3]"
 		chaosx_test_country_complete_all_technologies = yes
 		set_country_flag = chaosx_test_country_history_unlocks_completed
 	}
+	log = "CXT_SETUP_TRACE phase=facilities date=[?global.date|.3]"
 	chaosx_test_country_build_special_facilities = yes
+	log = "CXT_SETUP_TRACE phase=occupation date=[?global.date|.3]"
 	chaosx_test_country_ensure_occupation_fixture = yes
+	log = "CXT_SETUP_TRACE phase=warfare date=[?global.date|.3]"
 	chaosx_test_country_complete_chaos_warfare = yes
+	log = "CXT_SETUP_TRACE phase=camps date=[?global.date|.3]"
 	chaosx_test_country_activate_camp_systems = yes
+	log = "CXT_SETUP_TRACE phase=stockpile date=[?global.date|.3]"
 	chaosx_test_country_fill_stockpile = yes
+	log = "CXT_SETUP_TRACE phase=resources date=[?global.date|.3]"
 	chaosx_test_country_refill_resources = yes
+	log = "CXT_SETUP_TRACE phase=static_roster date=[?global.date|.3]"
 	chaosx_test_country_create_unit_roster = yes
-	chaosx_test_country_sync_registered_content = yes
+	chaosx_test_country_sync_registered_content_apply = yes
+	log = "CXT_SETUP_TRACE initial_setup_complete country=[This.GetTag] date=[?global.date|.3]"
 }
 
 chaosx_test_country_refresh = {
 	chaosx_test_country_complete_all_technologies = yes
-	chaosx_test_country_sync_registered_content = yes
+	clr_country_flag = chaosx_test_country_registered_sync_pending
+	chaosx_test_country_sync_registered_content_apply = yes
 	chaosx_test_country_fill_stockpile = yes
 	chaosx_test_country_refill_resources = yes
 }
 
-# Daily CXT consumes package setup effects registered through the documented
-# startup and tag-scoped repair hooks. Every package effect must be idempotent.
+# Coalesce additive daily registration hooks into one delayed country receiver.
+# Initial setup and explicit refresh invoke the apply body immediately.
 chaosx_test_country_sync_registered_content = {
+	set_country_flag = chaosx_test_country_registered_sync_pending
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_test_country_registered_sync_queued } }
+		set_country_flag = chaosx_test_country_registered_sync_queued
+		country_event = { id = chaosx_test_country.2 hours = @CXT_SYNC_DELAY_HOURS }
+	}
+}
+
+# Daily CXT consumes all registrations after additive package hooks converge.
+# Every package effect must remain idempotent. Trace output is temporary until
+# the reported first-day freeze has an identified blocking stage.
+chaosx_test_country_sync_registered_content_apply = {
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE sync_begin country=[This.GetTag] carriers=[?global.chaosx_test_country_registered_extension_effects^num|.0] date=[?global.date|.3]"
+	}
 	condemnation_flush_deferred_refresh = yes
 	set_country_flag = chaosx_test_country_silent_unlocks
 	chaosx_test_country_apply_registered_extension_effects = yes
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE sync_phase=projects date=[?global.date|.3]"
+	}
 	chaosx_test_country_complete_registered_special_projects = yes
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE sync_phase=equipment date=[?global.date|.3]"
+	}
 	chaosx_test_country_fill_registered_equipment = yes
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE sync_phase=roster date=[?global.date|.3]"
+	}
 	chaosx_test_country_create_registered_unit_roster = yes
 	clr_country_flag = chaosx_test_country_silent_unlocks
+	if = {
+		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+		log = "CXT_SETUP_TRACE sync_complete country=[This.GetTag] date=[?global.date|.3]"
+	}
 }
 
 # Weekly CXT performs the bounded runtime technology scan. Its on-action caller
@@ -318,6 +380,8 @@ chaosx_test_country_sync_dynamic_content = {
 }
 
 chaosx_test = {
+	# Temporary console-to-receiver trace for the unresolved activation freeze.
+	log = "CXT_SETUP_TRACE console_entry date=[?global.date|.3]"
 	if = {
 		limit = { tag = CXT }
 		country_event = { id = chaosx_test_country.1 }
@@ -341,6 +405,7 @@ chaosx_test = {
 							remember_old_capital = no
 						}
 						# Queue from a valid CXT scope; player transfer must run last.
+						log = "CXT_SETUP_TRACE scheduling_activation_receiver"
 						country_event = { id = chaosx_test_country.1 hours = [SETUP_DELAY] }
 						change_tag_from = event_target:chaosx_test_origin_country
 					}

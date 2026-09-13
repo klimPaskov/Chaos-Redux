@@ -8,6 +8,8 @@
 # registration helper from a bounded on_startup country scope such as
 # random_country = { limit = { exists = yes } ... }, but must retain the daily
 # block because on_startup does not run when a save is loaded.
+# Daily requests share one pending receiver; additive hooks finish registration
+# before that receiver consumes the bus. Console setup applies it immediately.
 # ============================================================================
 
 on_actions = {
@@ -15,8 +17,16 @@ on_actions = {
 		effect = {
 			if = {
 				limit = { has_country_flag = chaosx_test_country_initialized }
+				if = {
+					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+					log = "CXT_SETUP_TRACE daily_begin country=[This.GetTag] date=[?global.date|.3]"
+				}
 				chaosx_test_country_refill_resources = yes
 				chaosx_test_country_sync_registered_content = yes
+				if = {
+					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+					log = "CXT_SETUP_TRACE daily_sync_queued date=[?global.date|.3]"
+				}
 			}
 		}
 	}

@@ -543,6 +543,11 @@ Before excluding an entry, verify the array's registration order, the database's
 Exclude only the confirmed reserved slot; do not guess that a numeric value or token is invalid, and preserve dynamic coverage of every real entry.
 Keep read-only engine inspection distinct from executed runtime validation.
 
+When additive tag-specific hooks can each request a full registry synchronization, coalesce their requests behind one pending recipient event instead of repeating the full consumer pass inside each hook.
+Track scheduled delivery separately from pending work when an immediate refresh can consume that work before the queued event fires; this avoids scheduling duplicate receivers for a later request.
+Set the scheduling flag before enqueueing, clear scheduling and pending-work flags before dispatch, and retain an immediate apply path for explicit setup or refresh.
+Verify registration convergence, repeated requests, and refresh while a request is pending; preserve every registry consumer and package repair hook.
+
 ### 7. Duration fields and constants
 
 Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.

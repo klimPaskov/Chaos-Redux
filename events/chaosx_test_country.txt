@@ -18,6 +18,9 @@ country_event = {
 	immediate = {
 		if = {
 			limit = { tag = CXT }
+			# Temporary first-activation trace; removed once the freeze is resolved.
+			set_country_flag = chaosx_test_country_setup_trace_active
+			log = "CXT_SETUP_TRACE receiver_begin country=[This.GetTag] date=[?global.date|.3]"
 			if = {
 				limit = { has_event_target = chaosx_test_origin_country }
 				if = {
@@ -28,10 +31,12 @@ country_event = {
 							any_owned_state = { always = yes }
 						}
 					}
+					log = "CXT_SETUP_TRACE annex_begin origin=[chaosx_test_origin_country.GetTag] date=[?global.date|.3]"
 					annex_country = {
 						target = event_target:chaosx_test_origin_country
 						transfer_troops = no
 					}
+					log = "CXT_SETUP_TRACE annex_complete date=[?global.date|.3]"
 				}
 			}
 			if = {
@@ -48,6 +53,7 @@ country_event = {
 					}
 				}
 			}
+			log = "CXT_SETUP_TRACE capital_restored date=[?global.date|.3]"
 			if = {
 				limit = {
 					any_owned_state = { is_capital = yes is_controlled_by = PREV }
@@ -57,6 +63,33 @@ country_event = {
 					chaosx_test_country_initial_setup = yes
 				}
 				else = { chaosx_test_country_refresh = yes }
+			}
+			else = { log = "CXT_SETUP_TRACE capital_gate_failed country=[This.GetTag] date=[?global.date|.3]" }
+		}
+	}
+}
+
+# Coalesced tag-specific daily repair; startup and console setup stay immediate.
+country_event = {
+	id = chaosx_test_country.2
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = { tag = CXT }
+
+	immediate = {
+		if = {
+			limit = {
+				tag = CXT
+				has_country_flag = chaosx_test_country_registered_sync_queued
+			}
+			# Clear before dispatch so a later registration can queue another pass.
+			clr_country_flag = chaosx_test_country_registered_sync_queued
+			if = {
+				limit = { has_country_flag = chaosx_test_country_registered_sync_pending }
+				clr_country_flag = chaosx_test_country_registered_sync_pending
+				chaosx_test_country_sync_registered_content_apply = yes
+				clr_country_flag = chaosx_test_country_setup_trace_active
 			}
 		}
 	}
