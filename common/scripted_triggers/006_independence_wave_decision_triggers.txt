@@ -140,6 +140,93 @@ is_independence_wave_charter_compliant_member = {
 	NOT = { has_country_flag = independence_wave_client_route_locked }
 }
 
+# A route proposal is a country-scoped commitment made by the Event 006
+# focus tree.  Lifecycle decisions may consume it only after the League has
+# reached a phase where a charter route is meaningful.
+has_independence_wave_league_route_proposal = {
+	OR = {
+		has_country_flag = independence_wave_charter_proposal_defensive_congress
+		has_country_flag = independence_wave_charter_proposal_development_compact
+		has_country_flag = independence_wave_charter_proposal_sovereign_equality
+		has_country_flag = independence_wave_charter_proposal_armed_liberation
+		has_country_flag = independence_wave_charter_proposal_radical_revisionist
+	}
+}
+
+# The League state-machine effects are deliberately reached only through the
+# active Event 006 League category.  These predicates keep their callers
+# phase-safe and prevent a stale decision timer from mutating a later phase.
+can_independence_wave_proclaim_consultative_league = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_league_founder
+	NOT = { has_country_flag = independence_wave_client_route_locked }
+	has_global_flag = independence_wave_charter_vote_open
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.charter_vote }
+	independence_wave_league_founder_arrays_are_aligned = yes
+	check_variable = { var = global.independence_wave_league_founder_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+}
+
+can_independence_wave_upgrade_consultative_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	has_country_flag = independence_wave_league_route_available
+	has_independence_wave_league_route_proposal = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.consultative_league }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_begin_league_durability = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.formal_league }
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.durable_members compare = greater_than_or_equals }
+	check_variable = { var = global.independence_wave_league_cohesion value = constant:independence_wave_league.durable_cohesion compare = greater_than_or_equals }
+	NOT = { has_global_flag = independence_wave_league_durability_watch_active }
+	NOT = { has_global_flag = independence_wave_league_durability_mission_complete }
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_reform_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+	has_global_flag = independence_wave_league_crisis_active
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_normalize_reformed_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.reformed_league }
+	has_global_flag = independence_wave_league_reformed
+	check_variable = { var = global.independence_wave_league_member_count value = constant:independence_wave_league.formation_members compare = greater_than_or_equals }
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_reunify_rival_leagues = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.rival_leagues }
+	is_independence_wave_rival_bloc_active = yes
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_dissolve_league = {
+	is_independence_wave_active_country = yes
+	is_independence_wave_charter_compliant_member = yes
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.league_crisis }
+	has_global_flag = independence_wave_league_crisis_active
+	independence_wave_league_member_arrays_are_aligned = yes
+}
+
+can_independence_wave_restart_informal_network = {
+	is_independence_wave_active_country = yes
+	has_country_flag = independence_wave_network_member
+	check_variable = { global.independence_wave_league_phase = constant:independence_wave_league_phase.dissolved_network }
+	has_global_flag = independence_wave_league_dissolved
+}
+
 # Country scope. A member can refuse one pending binding-arbitration request
 # only when the requester is still a live, compliant Event 006 member. The
 # requester pointer is written by DM-43 and cleared by its resolution or

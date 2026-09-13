@@ -2580,6 +2580,35 @@ independence_wave_clear_league_phase_flags = {
 	clr_global_flag = independence_wave_formal_league_active
 	clr_global_flag = independence_wave_league_crisis_active
 	clr_global_flag = independence_wave_rival_leagues_active
+	clr_global_flag = independence_wave_league_durability_watch_active
+	clr_global_flag = independence_wave_league_durability_mission_complete
+}
+
+# Copies the selected focus-tree route into a country-scoped value so a
+# timed consultative upgrade cannot be redirected by a later global change.
+# The decision caller clears this value after the transition resolves or is
+# cancelled.
+independence_wave_capture_league_route_proposal = {
+	if = {
+		limit = { has_country_flag = independence_wave_charter_proposal_defensive_congress }
+		set_variable = { independence_wave_pending_league_route = constant:independence_wave_league_route.defensive_congress }
+	}
+	else_if = {
+		limit = { has_country_flag = independence_wave_charter_proposal_development_compact }
+		set_variable = { independence_wave_pending_league_route = constant:independence_wave_league_route.development_compact }
+	}
+	else_if = {
+		limit = { has_country_flag = independence_wave_charter_proposal_sovereign_equality }
+		set_variable = { independence_wave_pending_league_route = constant:independence_wave_league_route.sovereign_equality }
+	}
+	else_if = {
+		limit = { has_country_flag = independence_wave_charter_proposal_armed_liberation }
+		set_variable = { independence_wave_pending_league_route = constant:independence_wave_league_route.armed_liberation }
+	}
+	else_if = {
+		limit = { has_country_flag = independence_wave_charter_proposal_radical_revisionist }
+		set_variable = { independence_wave_pending_league_route = constant:independence_wave_league_route.radical_revisionist }
+	}
 }
 
 independence_wave_open_regional_conference = {
@@ -3304,7 +3333,7 @@ independence_wave_apply_roster_checkpoint = {
 			# keeps the supplied Event 006 portrait scoped to the active package
 			# without creating a duplicate real-person character.
 			set_country_leader_portrait = {
-				ideology = liberalism
+				ideology = democratic
 				portrait = "GFX_portrait_GLC_alfonso_daniel_castelao"
 			}
 			set_country_flag = independence_wave_glc_portrait_override
@@ -3322,9 +3351,8 @@ independence_wave_apply_roster_checkpoint = {
 # - Selects regions by their summed viable package weight, then selects one
 #   package inside that region, preserving a single global weighted draw.
 # - Keeps rerolling rejected candidates without reducing the accepted wave
-#   count. Joint plans fail closed if the exact count cannot be frozen; a
-#   standalone Event 006 plan may commit a non-empty aligned selection after
-#   the admitted pool is exhausted.
+#   count. Standalone and joint plans both fail closed if the exact frozen
+#   count cannot be reached; no partial-wave count rewrite is permitted.
 # - Assumes the shared release coordinator is in its allocation phase and the
 #   Event 006 participant flag is present.
 # ============================================================================
@@ -3635,35 +3663,9 @@ independence_wave_allocate_automatic_packages = {
 				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
 			}
 		}
-		else_if = {
-			limit = {
-				check_variable = {
-					var = global.liberation_plan_mode
-					value = constant:liberation_plan_mode.automatic
-				}
-				has_global_flag = independence_wave_plan_pool_exhausted
-				check_variable = {
-					var = global.independence_wave_plan_selected_count
-					value = constant:independence_wave_planner.no_candidates
-					compare = greater_than
-				}
-			}
-			# A standalone Event 006 invocation is allowed to resolve the admitted
-			# candidates that were frozen before the remaining pool ran dry. Joint
-			# plans retain exact-count fail-closed behavior. An empty pool still
-			# fails closed.
-			set_variable = { global.independence_wave_plan_target_count = global.independence_wave_plan_selected_count }
-			set_variable = { global.liberation_plan_expected_country_count = global.independence_wave_plan_selected_count }
-			if = {
-				limit = { independence_wave_plan_metadata_arrays_are_aligned = yes }
-				set_global_flag = independence_wave_plan_contribution_ready
-			}
-			else = {
-				set_global_flag = independence_wave_plan_exact_count_failed
-				set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.aligned_array_failure }
-			}
-		}
 		else = {
+			# An exhausted or attempt-limited pool cannot lower the frozen wave
+			# count. The caller cancels the incomplete reservation before execution.
 			set_global_flag = independence_wave_plan_exact_count_failed
 			set_variable = { global.liberation_plan_last_failure = constant:liberation_plan_reject_reason.insufficient_pool }
 		}
