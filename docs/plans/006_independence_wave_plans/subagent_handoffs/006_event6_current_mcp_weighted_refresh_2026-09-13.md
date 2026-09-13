@@ -1,0 +1,25 @@
+# Event 006 current MCP and weighted refresh — 2026-09-13
+
+## Disposition
+
+**Implemented evidence refresh; HOLD / PARTIAL remains.** This receipt records fresh read-only MCP evidence against the current shared worktree after the League lifecycle caller tranche. No gameplay, asset, localisation, tuning, admission, or workbook source was changed by this refresh, and no live launch or save/load result is claimed.
+
+## Weighted source inspections
+
+The required first weighted call used `hoi4.probability_inspect` with adapter `random_list`, `refresh = true`, and source `{ path: "common/scripted_effects/006_independence_wave_effects.txt" }`. It returned `PROBABILITY_SOURCE_INSPECTED` with `poolComplete = true`, fourteen discovered candidates, fourteen required inputs, zero unresolved inputs, source revision `1c79a2e116800113ec4a8c6e8663385df82c9cd7ec385b46fec09a777f13d7fc`, and source hash `81c56ee8edae354bdfd6e5368439d77c565a86cf631dc4d97e9917c1265a6d13`. The artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8ad0afea831c108d802a7c2dfd330cbaf631791d4dc2eb1c1f6eabeaf007b575/58bfb51a31f0bd5007a9260a997436968b4117c63933a4466f96693a11094ee1/probability-inspect-81c56ee8edae.json`. The adapter exposed no available candidates because this is source discovery, not a typed campaign fixture.
+
+The companion `hoi4.probability_inspect` call used adapter `decision_ai_will_do`, `refresh = true`, and source `{ path: "common/decisions/006_independence_wave_decisions.txt" }`. It returned `PROBABILITY_SOURCE_INSPECTED` with `poolComplete = false`, thirteen discovered candidates, eighty-nine required inputs, zero inspect-unresolved inputs, and zero available candidates. Its source revision is `db4f304bbe1a5c5424bbf7a91c17b5a0846c3fb88029b1f659f71e4e3bc1402b`, source hash `56ce1f4c932577f3413cdd7f71196f3a283ac2f194ce48f8b3d44224c24593d2`, and artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7f4ee7c75f80896ce91dbe908075eb34b519138ac88f393dc0d65d6badc3d45a/a5fc4f531a65f25316eec6e8825e309aee842eb040bc19d46bbc0f8d0e04f8bb/probability-inspect-56ce1f4c9325.json`. No decision willingness, dominance, starvation, balance, or AI timing conclusion follows from the incomplete pool.
+
+## Event MCP inspections
+
+The narrow `hoi4.event_inspect` lint used selector `{ kind: event, eventId: chaosx.nr6.1 }`, downstream direction, `maxDepth = 2`, `maxNodes = 60`, `maxEdges = 120`, helper expansion disabled, and `refresh = true`. It returned `EVENT_INSPECTED_PARTIAL` at revision `ece7356e35dcc9c2d4ab28eee66f573503821339c977879ef556cc72a00e18a8`, graph hash `0bc5a96999d9a001aa9eaacbd63c0144801360e4e1e97172121dfeeb399fb52f`, zero selector-specific blocking diagnostics, and the workspace-level deferred-helper diagnostic. The lint artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f08f9e0d94ffe5e4a6bab79b5291ca0d709d9bc7bd66e09d352d630c19176306/30a7e337bed2120e3a799a2e22ed5ad87273c2f58a35aeab4abe69849a781987/event-lint-ece7356e35dc.json`.
+
+The matching `hoi4.event_render` overview used the same selector, downstream direction, depth, node bound, helper setting, and refresh. It returned `EVENT_RENDERED_PARTIAL` with layout hash `3ba5f18a64912a9ece6fe76dde07333dd05321a92381135e629786aae491844d`. The source-linked manifest is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/29eaa92e7b4167a4a316472920277a883d67e306b6ef5faa76d9d9d637933101/a66b3d66ea7f43a0572e66287706db6ce4c1eda32a60ff28436a6f5d773dacc6/event-overview-ece7356e35dc-manifest.json`, with the rendered JSON, SVG, and PNG siblings in the same artifact family. The render is structural evidence only; helper expansion, lifecycle projection, release, transfer, report delivery, live execution, and save/load remain unproven.
+
+## Static validation after the refresh
+
+The current source passes `audit_event6_allocator.py --strict`, `audit_event6_country_api.py`, `audit_event6_form16.py`, `audit_event6_scenario_matrix.py`, `audit_event6_flags.py --strict`, and `audit_event6_gui_matrix.py`. These passes preserve the 32 attested packages, 29 compatible reservation groups, 40 runtime adapters, 161 unattested selectable rows, exact automatic ladder `3/4/5/7/10`, World Collapse count `10`, complete 102-tag flag ladders, the FORM-16 contract, all 32 SCN-008 cells, and the five-tab Statehood Ledger source matrix. They do not promote any package, asset, audio, rights, probability, GUI-runtime, or live-game gate.
+
+## Remaining boundary
+
+The weighted audit remains partial because nested package candidates, event options, decisions, missions, focus AI, and campaign state are not represented by complete typed fixtures, and the required named probability auditor route is not exposed in this runtime. The Event 006 visual receipts remain bounded by ASSET-005/006/039/044 review gates and ASSET-045/046 blockers. The accepted no-pre-event contract remains absolute; no crisis, pressure, queue, category, cost, or history surface is admitted by this refresh.
