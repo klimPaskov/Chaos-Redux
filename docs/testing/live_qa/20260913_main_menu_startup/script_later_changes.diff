@@ -1,0 +1,908 @@
+--- baseline/common/scripted_effects/027_doctrine_research_effects.txt
++++ common/scripted_effects/027_doctrine_research_effects.txt
+@@ -3697,7 +3697,7 @@
+ 	}
+ 	if = { limit = { doctrine_research_navy_has_valid_action = yes }
+ 		add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.base }
+-		if = { limit = { OR = { has_navy_size = { unit = submarine size > 0 } has_navy_size = { unit = destroyer size > 0 } has_navy_size = { unit = cruiser size > 0 } has_navy_size = { unit = battleship size > 0 } has_navy_size = { unit = carrier size > 0 } } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.forces } }
++		if = { limit = { OR = { has_navy_size = { unit = submarine size > 0 } has_navy_size = { unit = destroyer size > 0 } OR = { has_navy_size = { unit = light_cruiser size > 0 } has_navy_size = { unit = heavy_cruiser size > 0 } } has_navy_size = { unit = battleship size > 0 } has_navy_size = { unit = carrier size > 0 } } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.forces } }
+ 		if = { limit = { num_of_naval_factories > 0 } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.production } }
+ 		if = { limit = { has_war = yes } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.war } }
+ 		if = { limit = { any_controlled_state = { is_coastal = yes } } add_to_temp_variable = { doctrine_research_ai_score_navy = constant:doctrine_research_ai_weight.geography } }
+@@ -3747,15 +3747,15 @@
+ 	if = {
+ 		limit = { doctrine_research_selected_domain_adoption_available = yes }
+ 		doctrine_research_ai_choose_scored_grand = yes
+-		if = { limit = { doctrine_research_ai_grand_found > 0 } set_variable = { doctrine_research_selected_action = constant:doctrine_research_action.adopt } }
++		if = { limit = { check_variable = { doctrine_research_ai_grand_found > 0 } } set_variable = { doctrine_research_selected_action = constant:doctrine_research_action.adopt } }
+ 	}
+ 	else = {
+ 		doctrine_research_capture_selected_domain_grand_doctrine = yes
+ 		doctrine_research_ai_choose_scored_track = yes
+ 		if = {
+-			limit = { doctrine_research_ai_track_found > 0 }
++			limit = { check_variable = { doctrine_research_ai_track_found > 0 } }
+ 			doctrine_research_ai_choose_scored_subdoctrine = yes
+-			if = { limit = { doctrine_research_ai_subdoctrine_found > 0 } set_variable = { doctrine_research_selected_action = constant:doctrine_research_action.mastery } }
++			if = { limit = { check_variable = { doctrine_research_ai_subdoctrine_found > 0 } } set_variable = { doctrine_research_selected_action = constant:doctrine_research_action.mastery } }
+ 		}
+ 	}
+ }
+@@ -3769,7 +3769,7 @@
+ 		if = {
+ 			limit = { doctrine_research_selected_choice_is_valid = yes }
+ 			doctrine_research_confirm_selection = yes
+-			if = { limit = { doctrine_research_transaction_success > 0 } add_to_temp_variable = { doctrine_research_ai_choice_guard = 1 } }
++			if = { limit = { check_variable = { doctrine_research_transaction_success > 0 } } add_to_temp_variable = { doctrine_research_ai_choice_guard = 1 } }
+ 			else_if = {
+ 				limit = { check_variable = { var = doctrine_research_last_transaction_result value = constant:doctrine_research_transaction_result.adoption_only compare = equals } }
+ 				doctrine_research_clear_selection = yes
+--- baseline/common/scripted_triggers/027_doctrine_research_triggers.txt
++++ common/scripted_triggers/027_doctrine_research_triggers.txt
+@@ -55,10 +55,10 @@
+ 		has_doctrine = new_base_strike
+ 		has_navy_size = { unit = submarine size > 0 }
+ 		has_navy_size = { unit = destroyer size > 0 }
+-		has_navy_size = { unit = cruiser size > 0 }
++		OR = { has_navy_size = { unit = light_cruiser size > 0 } has_navy_size = { unit = heavy_cruiser size > 0 } }
+ 		has_navy_size = { unit = battleship size > 0 }
+ 		has_navy_size = { unit = carrier size > 0 }
+-		has_navy_size = { unit = convoy size > 0 }
++		has_navy_size = { type = convoy size > 0 }
+ 		num_of_naval_factories > 0
+ 	}
+ }
+@@ -101,7 +101,7 @@
+ 		num_of_naval_factories > 0
+ 		has_navy_size = { unit = submarine size > 0 }
+ 		has_navy_size = { unit = destroyer size > 0 }
+-		has_navy_size = { unit = cruiser size > 0 }
++		OR = { has_navy_size = { unit = light_cruiser size > 0 } has_navy_size = { unit = heavy_cruiser size > 0 } }
+ 		has_navy_size = { unit = battleship size > 0 }
+ 		has_navy_size = { unit = carrier size > 0 }
+ 		has_doctrine = new_fleet_in_being
+@@ -132,11 +132,11 @@
+ 		}
+ 		AND = {
+ 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.navy compare = equals }
+-			doctrine_research_navy_owner_system_ready = yes
+-		}
+-		AND = {
+-			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
+-			doctrine_research_air_owner_system_ready = yes
++			doctrine_research_ai_navy_owner_system_ready = yes
++		}
++		AND = {
++			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.air compare = equals }
++			doctrine_research_ai_air_owner_system_ready = yes
+ 		}
+ 		AND = {
+ 			check_variable = { var = doctrine_research_selected_domain value = constant:doctrine_research_domain.special_forces compare = equals }
+--- baseline/common/scripted_effects/031_random_terror_effects.txt
++++ common/scripted_effects/031_random_terror_effects.txt
+@@ -13,8 +13,9 @@
+ # types; the dynamic package setup is transactional and can be cleaned up.
+ # ============================================================================
+ 
+-# Clausewitz requires literal random-list weights.  Keep the weights in this
+-# file-scoped tuning table so the incident distribution remains centralized.
++# Legacy weight reference values; runtime pools load their matching shared
++# script constants into dedicated temporary variables before every draw.
++# random_list accepts variable-valued keys (vanilla effects documentation).
+ @rt_incident_weight_civilian_attack = 16
+ @rt_incident_weight_transport_disruption = 12
+ @rt_incident_weight_depot_sabotage = 10
+@@ -403,31 +404,55 @@
+ 	save_event_target_as = random_terror_current_state
+ 	random_terror_mark_state_cooldown = yes
+ 	set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.civilian_attack }
++	set_temp_variable = { random_terror_draw_incident_civilian_attack = constant:random_terror_incident_weight.civilian_attack }
++	set_temp_variable = { random_terror_draw_incident_transport_disruption = constant:random_terror_incident_weight.transport_disruption }
++	set_temp_variable = { random_terror_draw_incident_depot_sabotage = constant:random_terror_incident_weight.depot_sabotage }
++	set_temp_variable = { random_terror_draw_incident_port_convoy_attack = constant:random_terror_incident_weight.port_convoy_attack }
++	set_temp_variable = { random_terror_draw_incident_official_assassination_attempt = constant:random_terror_incident_weight.official_assassination_attempt }
++	set_temp_variable = { random_terror_draw_incident_hostage_crisis = constant:random_terror_incident_weight.hostage_crisis }
++	set_temp_variable = { random_terror_draw_incident_security_site_attack = constant:random_terror_incident_weight.security_site_attack }
++	set_temp_variable = { random_terror_draw_incident_propaganda_surge = constant:random_terror_incident_weight.propaganda_surge }
++	set_temp_variable = { random_terror_draw_incident_arms_theft = constant:random_terror_incident_weight.arms_theft }
++	set_temp_variable = { random_terror_draw_incident_sponsor_evidence = constant:random_terror_incident_weight.sponsor_evidence }
++	set_temp_variable = { random_terror_draw_incident_smuggling_corridor = constant:random_terror_incident_weight.smuggling_corridor }
++	set_temp_variable = { random_terror_draw_incident_training_area = constant:random_terror_incident_weight.training_area }
++	set_temp_variable = { random_terror_draw_incident_copycat = constant:random_terror_incident_weight.copycat }
++	set_temp_variable = { random_terror_draw_incident_failed_raid = constant:random_terror_incident_weight.failed_raid }
++	set_temp_variable = { random_terror_draw_incident_intelligence_breakthrough = constant:random_terror_incident_weight.intelligence_breakthrough }
++	set_temp_variable = { random_terror_draw_incident_defection = constant:random_terror_incident_weight.defection }
++	set_temp_variable = { random_terror_draw_incident_relief_strain = constant:random_terror_incident_weight.relief_strain }
++	set_temp_variable = { random_terror_draw_incident_military_defection = constant:random_terror_incident_weight.military_defection }
++	set_temp_variable = { random_terror_draw_incident_capital_infiltration = constant:random_terror_incident_weight.capital_infiltration }
++	set_temp_variable = { random_terror_draw_incident_rival_organization = constant:random_terror_incident_weight.rival_organization }
++	set_temp_variable = { random_terror_draw_incident_community_rejection = constant:random_terror_incident_weight.community_rejection }
++	set_temp_variable = { random_terror_draw_incident_joint_operation = constant:random_terror_incident_weight.joint_operation }
++	set_temp_variable = { random_terror_draw_incident_sponsor_exposure = constant:random_terror_incident_weight.sponsor_exposure }
++	set_temp_variable = { random_terror_draw_incident_cannibal_clash = constant:random_terror_incident_weight.cannibal_clash }
+ 	random_list = {
+-		@rt_incident_weight_civilian_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.civilian_attack } }
+-		@rt_incident_weight_transport_disruption = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.transport_disruption } }
+-		@rt_incident_weight_depot_sabotage = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.depot_sabotage } }
+-		@rt_incident_weight_port_convoy_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.port_convoy_attack } }
+-		@rt_incident_weight_official_assassination_attempt = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.official_assassination_attempt } }
+-		@rt_incident_weight_hostage_crisis = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.hostage_crisis } }
+-		@rt_incident_weight_security_site_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack } }
+-		@rt_incident_weight_propaganda_surge = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.propaganda_surge } }
+-		@rt_incident_weight_arms_theft = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.arms_theft } }
+-		@rt_incident_weight_sponsor_evidence = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.sponsor_evidence } }
+-		@rt_incident_weight_smuggling_corridor = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.smuggling_corridor } }
+-		@rt_incident_weight_training_area = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.training_area } }
+-		@rt_incident_weight_copycat = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.copycat } }
+-		@rt_incident_weight_failed_raid = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.failed_raid } }
+-		@rt_incident_weight_intelligence_breakthrough = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.intelligence_breakthrough } }
+-		@rt_incident_weight_defection = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.defection } }
+-		@rt_incident_weight_relief_strain = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.relief_strain } }
+-		@rt_incident_weight_military_defection = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.military_defection } }
+-		@rt_incident_weight_capital_infiltration = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.capital_infiltration } }
+-		@rt_incident_weight_rival_organization = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.rival_organization } }
+-		@rt_incident_weight_community_rejection = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.community_rejection } }
+-		@rt_incident_weight_joint_operation = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.joint_operation } }
+-		@rt_incident_weight_sponsor_exposure = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.sponsor_exposure } }
+-		@rt_incident_weight_cannibal_clash = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.cannibal_clash } }
++		random_terror_draw_incident_civilian_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.civilian_attack } }
++		random_terror_draw_incident_transport_disruption = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.transport_disruption } }
++		random_terror_draw_incident_depot_sabotage = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.depot_sabotage } }
++		random_terror_draw_incident_port_convoy_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.port_convoy_attack } }
++		random_terror_draw_incident_official_assassination_attempt = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.official_assassination_attempt } }
++		random_terror_draw_incident_hostage_crisis = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.hostage_crisis } }
++		random_terror_draw_incident_security_site_attack = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.security_site_attack } }
++		random_terror_draw_incident_propaganda_surge = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.propaganda_surge } }
++		random_terror_draw_incident_arms_theft = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.arms_theft } }
++		random_terror_draw_incident_sponsor_evidence = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.sponsor_evidence } }
++		random_terror_draw_incident_smuggling_corridor = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.smuggling_corridor } }
++		random_terror_draw_incident_training_area = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.training_area } }
++		random_terror_draw_incident_copycat = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.copycat } }
++		random_terror_draw_incident_failed_raid = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.failed_raid } }
++		random_terror_draw_incident_intelligence_breakthrough = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.intelligence_breakthrough } }
++		random_terror_draw_incident_defection = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.defection } }
++		random_terror_draw_incident_relief_strain = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.relief_strain } }
++		random_terror_draw_incident_military_defection = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.military_defection } }
++		random_terror_draw_incident_capital_infiltration = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.capital_infiltration } }
++		random_terror_draw_incident_rival_organization = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.rival_organization } }
++		random_terror_draw_incident_community_rejection = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.community_rejection } }
++		random_terror_draw_incident_joint_operation = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.joint_operation } }
++		random_terror_draw_incident_sponsor_exposure = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.sponsor_exposure } }
++		random_terror_draw_incident_cannibal_clash = { set_temp_variable = { random_terror_incident_type = constant:random_terror_incident.cannibal_clash } }
+ 	}
+ 	set_temp_variable = { random_terror_incident_pressure_delta = constant:random_terror_tuning.minor_pressure_gain }
+ 	set_temp_variable = { random_terror_civilian_death_request = constant:random_terror_tuning.civilian_deaths_minor }
+@@ -475,25 +500,33 @@
+ 	}
+ 	if = {
+ 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.transport_disruption } }
+-		damage_building = { type = infrastructure damage = constant:random_terror_tuning.minor_building_damage }
++		set_temp_variable = { dynamic_building_damage_type = token:infrastructure }
++		set_temp_variable = { dynamic_building_damage_amount = constant:random_terror_tuning.minor_building_damage }
++		damage_state_building_dynamic = yes
+ 		set_state_flag = random_terror_transport_disrupted
+ 	}
+ 	if = {
+ 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.depot_sabotage } }
+-		damage_building = { type = arms_factory damage = constant:random_terror_tuning.major_building_damage }
++		set_temp_variable = { dynamic_building_damage_type = token:arms_factory }
++		set_temp_variable = { dynamic_building_damage_amount = constant:random_terror_tuning.major_building_damage }
++		damage_state_building_dynamic = yes
+ 		set_state_flag = random_terror_depot_compromised
+ 	}
+ 	if = {
+ 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.port_convoy_attack } }
+ 		if = {
+ 			limit = { is_coastal = yes }
+-			damage_building = { type = naval_base damage = constant:random_terror_tuning.major_building_damage }
++			set_temp_variable = { dynamic_building_damage_type = token:naval_base }
++			set_temp_variable = { dynamic_building_damage_amount = constant:random_terror_tuning.major_building_damage }
++			damage_state_building_dynamic = yes
+ 			set_state_flag = random_terror_port_disrupted
+ 		}
+ 	}
+ 	if = {
+ 		limit = { check_variable = { random_terror_incident_type = constant:random_terror_incident.arms_theft } }
+-		damage_building = { type = arms_factory damage = constant:random_terror_tuning.minor_building_damage }
++		set_temp_variable = { dynamic_building_damage_type = token:arms_factory }
++		set_temp_variable = { dynamic_building_damage_amount = constant:random_terror_tuning.minor_building_damage }
++		damage_state_building_dynamic = yes
+ 		set_state_flag = random_terror_arms_theft_recorded
+ 	}
+ 	if = {
+@@ -1047,11 +1080,12 @@
+ 	set_variable = { global.random_terror_scenario_effective_type = random_terror_scenario_input_type }
+ 	if = {
+ 		limit = { check_variable = { random_terror_scenario_input_type = constant:random_terror_jihad_type.random_pattern } }
++		set_temp_variable = { random_terror_draw_runtime_scenario_pattern = constant:random_terror_runtime_weight.scenario_pattern }
+ 		random_list = {
+-			@rt_scenario_pattern_weight = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.dispersed_networks } }
+-			@rt_scenario_pattern_weight = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.border_corridors } }
+-			@rt_scenario_pattern_weight = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.capital_uprisings } }
+-			@rt_scenario_pattern_weight = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.territorial_fronts } }
++			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.dispersed_networks } }
++			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.border_corridors } }
++			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.capital_uprisings } }
++			random_terror_draw_runtime_scenario_pattern = { set_variable = { global.random_terror_scenario_effective_type = constant:random_terror_jihad_type.territorial_fronts } }
+ 		}
+ 	}
+ 	if = {
+@@ -2777,31 +2811,46 @@
+ 			set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success }
+ 			if = {
+ 				limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.high } }
++				set_temp_variable = { random_terror_draw_runtime_raid_clean = constant:random_terror_runtime_weight.raid_clean }
++				set_temp_variable = { random_terror_draw_runtime_raid_costly = constant:random_terror_runtime_weight.raid_costly }
++				set_temp_variable = { random_terror_draw_runtime_raid_partial = constant:random_terror_runtime_weight.raid_partial }
++				set_temp_variable = { random_terror_draw_runtime_raid_failure = constant:random_terror_runtime_weight.raid_failure }
++				set_temp_variable = { random_terror_draw_runtime_raid_abusive = constant:random_terror_runtime_weight.raid_abusive }
+ 				random_list = {
+-					@rt_raid_clean_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
+-					@rt_raid_costly_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success } }
+-					@rt_raid_partial_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success } }
+-					@rt_raid_failure_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.failure } }
+-					@rt_raid_abusive_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
++					random_terror_draw_runtime_raid_clean = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
++					random_terror_draw_runtime_raid_costly = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success } }
++					random_terror_draw_runtime_raid_partial = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success } }
++					random_terror_draw_runtime_raid_failure = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.failure } }
++					random_terror_draw_runtime_raid_abusive = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
+ 				}
+ 			}
+ 			else_if = {
+ 				limit = { check_variable = { random_terror_raid_band = constant:random_terror_intensity.low } }
++				set_temp_variable = { random_terror_draw_runtime_raid_low_clean = constant:random_terror_runtime_weight.raid_low_clean }
++				set_temp_variable = { random_terror_draw_runtime_raid_low_costly = constant:random_terror_runtime_weight.raid_low_costly }
++				set_temp_variable = { random_terror_draw_runtime_raid_low_partial = constant:random_terror_runtime_weight.raid_low_partial }
++				set_temp_variable = { random_terror_draw_runtime_raid_low_failure = constant:random_terror_runtime_weight.raid_low_failure }
++				set_temp_variable = { random_terror_draw_runtime_raid_low_abusive = constant:random_terror_runtime_weight.raid_low_abusive }
+ 				random_list = {
+-					@rt_raid_low_clean_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
+-					@rt_raid_low_costly_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success } }
+-					@rt_raid_low_partial_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success } }
+-					@rt_raid_low_failure_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.failure } }
+-					@rt_raid_low_abusive_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
++					random_terror_draw_runtime_raid_low_clean = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
++					random_terror_draw_runtime_raid_low_costly = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success } }
++					random_terror_draw_runtime_raid_low_partial = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success } }
++					random_terror_draw_runtime_raid_low_failure = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.failure } }
++					random_terror_draw_runtime_raid_low_abusive = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
+ 				}
+ 			}
+ 			else = {
++				set_temp_variable = { random_terror_draw_runtime_raid_mid_clean = constant:random_terror_runtime_weight.raid_mid_clean }
++				set_temp_variable = { random_terror_draw_runtime_raid_mid_costly = constant:random_terror_runtime_weight.raid_mid_costly }
++				set_temp_variable = { random_terror_draw_runtime_raid_mid_partial = constant:random_terror_runtime_weight.raid_mid_partial }
++				set_temp_variable = { random_terror_draw_runtime_raid_mid_failure = constant:random_terror_runtime_weight.raid_mid_failure }
++				set_temp_variable = { random_terror_draw_runtime_raid_mid_abusive = constant:random_terror_runtime_weight.raid_mid_abusive }
+ 				random_list = {
+-					@rt_raid_mid_clean_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
+-					@rt_raid_mid_costly_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success } }
+-					@rt_raid_mid_partial_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success } }
+-					@rt_raid_mid_failure_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.failure } }
+-					@rt_raid_mid_abusive_weight = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
++					random_terror_draw_runtime_raid_mid_clean = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.clean_success } }
++					random_terror_draw_runtime_raid_mid_costly = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.costly_success } }
++					random_terror_draw_runtime_raid_mid_partial = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.partial_success } }
++					random_terror_draw_runtime_raid_mid_failure = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.failure } }
++					random_terror_draw_runtime_raid_mid_abusive = { set_temp_variable = { random_terror_raid_outcome = constant:random_terror_operation_outcome.abusive_failure } }
+ 				}
+ 			}
+ 			if = {
+--- baseline/common/scripted_effects/033_acid_rain_achievement_effects.txt
++++ common/scripted_effects/033_acid_rain_achievement_effects.txt
+@@ -546,7 +546,7 @@
+ 		else = {
+ 			CONTROLLER = { acid_rain_033_achievement_mark_invalid_baseline = yes }
+ 		}
+-		clear_event_target = acid_rain_033_achievement_registration_state
++		# acid_rain_033_achievement_registration_state is chain-local and expires automatically.
+ 	}
+ 	else = {
+ 		if = { limit = { exists = yes } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
+@@ -609,7 +609,7 @@
+ 			add_to_array = { array = acid_rain_033_achievement_controller_history_new_ids value = acid_rain_033_achievement_new_controller_id }
+ 			add_to_array = { array = acid_rain_033_achievement_controller_history_generation_entries value = acid_rain_033_input_generation }
+ 		}
+-		clear_event_target = acid_rain_033_achievement_transfer_state
++		# acid_rain_033_achievement_transfer_state is chain-local and expires automatically.
+ 	}
+ 	else = {
+ 		if = { limit = { exists = yes } CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes } }
+@@ -726,7 +726,7 @@
+ 				set_temp_variable = { acid_rain_033_input_severe_pulse_day = global.date }
+ 				acid_rain_033_achievement_record_severe_pulse = yes
+ 			}
+-			clear_event_target = acid_rain_033_achievement_exposure_state
++			# acid_rain_033_achievement_exposure_state is chain-local and expires automatically.
+ 		}
+ 	}
+ 	else = {
+@@ -837,7 +837,7 @@
+ 				}
+ 			}
+ 		}
+-		clear_event_target = acid_rain_033_achievement_recovery_snapshot_state
++		# acid_rain_033_achievement_recovery_snapshot_state is chain-local and expires automatically.
+ 	}
+ 	else = {
+ 		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+@@ -1236,7 +1236,7 @@
+ 				}
+ 			}
+ 		}
+-		clear_event_target = acid_rain_033_achievement_severe_target_state
++		# acid_rain_033_achievement_severe_target_state is chain-local and expires automatically.
+ 	}
+ 	else = {
+ 		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+@@ -1307,7 +1307,7 @@
+ 				acid_rain_033_achievement_mark_migration_disqualified = yes
+ 			}
+ 		}
+-		clear_event_target = acid_rain_033_achievement_severe_pulse_state
++		# acid_rain_033_achievement_severe_pulse_state is chain-local and expires automatically.
+ 	}
+ 	else = {
+ 		CONTROLLER = { acid_rain_033_achievement_mark_migration_disqualified = yes }
+@@ -1367,7 +1367,7 @@
+ 			else = {
+ 				acid_rain_033_achievement_mark_migration_disqualified = yes
+ 			}
+-			clear_event_target = acid_rain_033_achievement_protection_state
++			# acid_rain_033_achievement_protection_state is chain-local and expires automatically.
+ 		}
+ 	}
+ 	else = {
+@@ -1604,7 +1604,7 @@
+ 				add_to_array = { array = acid_rain_033_achievement_evacuation_generation_entries value = acid_rain_033_input_generation }
+ 				add_to_variable = { acid_rain_033_achievement_valid_evacuation_count = @acid_rain_033_achievement_one }
+ 			}
+-			clear_event_target = acid_rain_033_achievement_evacuation_state
++			# acid_rain_033_achievement_evacuation_state is chain-local and expires automatically.
+ 			set_temp_variable = { acid_rain_033_input_protection_receipt_key = acid_rain_033_input_evacuation_completion_receipt_key }
+ 			set_temp_variable = { acid_rain_033_input_protection_kind = @acid_rain_033_achievement_two }
+ 			set_temp_variable = { acid_rain_033_input_protection_valid = @acid_rain_033_achievement_one }
+--- baseline/common/scripted_effects/033_acid_rain_effects.txt
++++ common/scripted_effects/033_acid_rain_effects.txt
+@@ -4542,7 +4542,7 @@
+ 			add_to_variable = { global.acid_rain_next_dissipation_check_day = constant:acid_rain_dissipation.ordinary_completion_wait_days }
+ 		}
+ 		if = {
+-			limit = { check_variable = { global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals } }
++			limit = { check_variable = { var = global.date value = global.acid_rain_next_dissipation_check_day compare = greater_than_or_equals } }
+ 			acid_rain_try_dissipation_check = yes
+ 		}
+ 	}
+--- baseline/common/scripted_effects/033_acid_rain_preparedness_effects.txt
++++ common/scripted_effects/033_acid_rain_preparedness_effects.txt
+@@ -494,24 +494,24 @@
+ 		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.transport_fuel }
+ 	}
+ 	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals } }
+-		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.evacuate_days }
++		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.evacuation_days }
+ 		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+ 		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+ 		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+-		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.evacuate_manpower }
+-		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.evacuate_motorized }
+-		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_urgent_cost.evacuate_train }
+-		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.evacuate_fuel }
++		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.evacuation_manpower }
++		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.evacuation_motorized }
++		set_temp_variable = { acid_rain_quote_train = constant:acid_rain_urgent_cost.evacuation_train }
++		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.evacuation_fuel }
+ 	}
+ 	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals } }
+-		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.evacuate_days }
++		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_urgent_cost.evacuation_days }
+ 		set_temp_variable = { acid_rain_quote_kind = constant:acid_rain_runtime.one }
+ 		set_temp_variable = { acid_rain_quote_target_required = constant:acid_rain_runtime.one }
+ 		set_temp_variable = { acid_rain_quote_family_count = constant:acid_rain_runtime.four }
+-		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.evacuate_manpower }
+-		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.evacuate_motorized }
+-		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_urgent_cost.evacuate_convoy }
+-		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.evacuate_fuel }
++		set_temp_variable = { acid_rain_quote_manpower = constant:acid_rain_urgent_cost.evacuation_manpower }
++		set_temp_variable = { acid_rain_quote_motorized = constant:acid_rain_urgent_cost.evacuation_motorized }
++		set_temp_variable = { acid_rain_quote_convoy = constant:acid_rain_urgent_cost.evacuation_convoy }
++		set_temp_variable = { acid_rain_quote_fuel = constant:acid_rain_urgent_cost.evacuation_fuel }
+ 	}
+ 	else_if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } }
+ 		set_temp_variable = { acid_rain_quote_days = constant:acid_rain_recovery_cost.transport_days }
+@@ -790,10 +790,11 @@
+ # ---------------------------------------------------------------------------
+ 
+ # COUNTRY SCOPE. Reconstructs the selected state from the frozen registry.
+-# The country variable is save-persistent; the event target is only a scoped
+-# convenience for the current transaction and is never the source of truth.
++# The saved state id is the source of truth; the resolved scope variable is
++# rebuilt before each transaction and cleared when commitments are released.
++# Using a regular scope variable permits explicit invalidation on failed lookup.
+ acid_rain_resolve_action_target_state = {
+-	clear_event_target = acid_rain_selected_action_state
++	clear_variable = acid_rain_selected_action_state
+ 	if = {
+ 		limit = { has_variable = acid_rain_action_target_state }
+ 		for_each_scope_loop = {
+@@ -803,7 +804,7 @@
+ 					check_variable = { var = THIS.id value = ROOT.acid_rain_action_target_state compare = equals }
+ 					acid_rain_state_is_frozen_valid = yes
+ 				}
+-				save_event_target_as = acid_rain_selected_action_state
++				set_variable = { ROOT.acid_rain_selected_action_state = THIS }
+ 			}
+ 		}
+ 	}
+@@ -822,7 +823,7 @@
+ 				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_island compare = equals }
+ 			}
+ 		}
+-		event_target:acid_rain_selected_action_state = {
++		var:acid_rain_selected_action_state = {
+ 			if = {
+ 				limit = { NOT = { has_state_flag = acid_rain_evacuated } }
+ 				set_state_flag = acid_rain_evacuated
+@@ -834,10 +835,10 @@
+ 			}
+ 		}
+ 	}
+-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } } event_target:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
+-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } event_target:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
+-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } event_target:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
+-	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } } event_target:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
++	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_transport compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
++	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
++	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_island compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
++	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_industry compare = equals } } var:acid_rain_selected_action_state = { acid_rain_apply_recovery_result = yes } }
+ 	if = { limit = { check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_demobilize compare = equals } } acid_rain_demobilize_emergency_apparatus = yes }
+ }
+ 
+@@ -859,9 +860,9 @@
+ 		if = {
+ 			limit = {
+ 				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.urgent_evacuate_land compare = equals }
+-				has_event_target = acid_rain_selected_action_state
+-			}
+-			event_target:acid_rain_selected_action_state = {
++				has_variable = acid_rain_selected_action_state
++			}
++			var:acid_rain_selected_action_state = {
+ 				if = {
+ 					limit = { is_island_state = yes }
+ 					set_variable = { ROOT.acid_rain_selected_action = constant:acid_rain_action.urgent_evacuate_island }
+@@ -872,9 +873,9 @@
+ 		if = {
+ 			limit = {
+ 				check_variable = { var = acid_rain_selected_action value = constant:acid_rain_action.recovery_decontaminate_land compare = equals }
+-				has_event_target = acid_rain_selected_action_state
+-			}
+-			event_target:acid_rain_selected_action_state = {
++				has_variable = acid_rain_selected_action_state
++			}
++			var:acid_rain_selected_action_state = {
+ 				if = {
+ 					limit = { is_island_state = yes }
+ 					set_variable = { ROOT.acid_rain_selected_action = constant:acid_rain_action.recovery_decontaminate_island }
+@@ -892,8 +893,8 @@
+ 					check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.zero compare = equals }
+ 					AND = {
+ 						check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals }
+-						has_event_target = acid_rain_selected_action_state
+-						event_target:acid_rain_selected_action_state = {
++						has_variable = acid_rain_selected_action_state
++						var:acid_rain_selected_action_state = {
+ 							acid_rain_state_is_frozen_valid = yes
+ 							is_controlled_by = ROOT
+ 							NOT = { has_state_flag = acid_rain_action_lock }
+@@ -933,9 +934,9 @@
+ 			if = {
+ 				limit = {
+ 					check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals }
+-					has_event_target = acid_rain_selected_action_state
++					has_variable = acid_rain_selected_action_state
+ 				}
+-				event_target:acid_rain_selected_action_state = {
++				var:acid_rain_selected_action_state = {
+ 					set_variable = { ROOT.acid_rain_action_target_state = THIS.id }
+ 					set_state_flag = acid_rain_action_lock
+ 					set_variable = { acid_rain_action_owner_generation = global.acid_rain_generation_id }
+@@ -1023,8 +1024,8 @@
+ 	multiply_temp_variable = { acid_rain_active_family_release = constant:acid_rain_runtime.negative_one }
+ 	add_to_variable = { acid_rain_active_action_families = acid_rain_active_family_release }
+ 	if = {
+-		limit = { has_event_target = acid_rain_selected_action_state }
+-		event_target:acid_rain_selected_action_state = {
++		limit = { has_variable = acid_rain_selected_action_state }
++		var:acid_rain_selected_action_state = {
+ 			clr_state_flag = acid_rain_action_lock
+ 			clear_variable = acid_rain_action_owner_generation
+ 			clear_variable = acid_rain_action_owner_country_id
+@@ -1032,7 +1033,7 @@
+ 			clear_variable = acid_rain_action_start_day
+ 			clear_variable = acid_rain_action_due_day
+ 		}
+-		clear_event_target = acid_rain_selected_action_state
++		clear_variable = acid_rain_selected_action_state
+ 	}
+ 	clr_country_flag = acid_rain_national_action_active
+ 	set_variable = { acid_rain_active_action = constant:acid_rain_runtime.zero }
+@@ -1058,8 +1059,8 @@
+ 			limit = { check_variable = { var = acid_rain_quote_target_required value = constant:acid_rain_runtime.one compare = equals } }
+ 			set_temp_variable = { acid_rain_action_target_valid = constant:acid_rain_runtime.zero }
+ 			if = {
+-				limit = { has_event_target = acid_rain_selected_action_state }
+-				event_target:acid_rain_selected_action_state = {
++				limit = { has_variable = acid_rain_selected_action_state }
++				var:acid_rain_selected_action_state = {
+ 					if = {
+ 						limit = {
+ 							acid_rain_state_is_frozen_valid = yes
+--- baseline/common/scripted_effects/035_great_depression_effects.txt
++++ common/scripted_effects/035_great_depression_effects.txt
+@@ -1,3 +1,5 @@
++# has_resources_in_country.amount requires a literal; mirrors great_depression_target_signal.imported_resource_floor.
++@great_depression_imported_resource_floor = 4
+ # ============================================================================
+ # CHAOS REDUX - EVENT 035 GREAT DEPRESSION 2.0 EFFECTS
+ # ============================================================================
+@@ -593,7 +595,7 @@
+ 		remove_dynamic_modifier = { modifier = great_depression_civilian_commitment }
+ 		remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
+ 		if = {
+-			limit = { great_depression_cost_civilian > constant:great_depression_cost.civilian_commitment_major_threshold }
++			limit = { check_variable = { great_depression_cost_civilian > constant:great_depression_cost.civilian_commitment_major_threshold } }
+ 			add_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
+ 		}
+ 		else = {
+@@ -1012,7 +1014,7 @@
+ 			set_temp_variable = { great_depression_project_work_elapsed = global.num_days }
+ 			subtract_from_temp_variable = { great_depression_project_work_elapsed = great_depression_center_project_last_process_day }
+ 			if = {
+-				limit = { great_depression_project_work_elapsed > constant:great_depression_api.zero }
++				limit = { check_variable = { great_depression_project_work_elapsed > constant:great_depression_api.zero } }
+ 				add_to_variable = { great_depression_center_project_work_days = great_depression_project_work_elapsed }
+ 			}
+ 			set_variable = { great_depression_center_project_last_process_day = global.num_days }
+@@ -1260,8 +1262,8 @@
+ great_depression_set_center_status = {
+ 	# Input: great_depression_center_status, great_depression_center_state_id
+ 	if = {
+-		limit = { has_event_target = great_depression_center_status_target }
+-		event_target:great_depression_center_status_target = {
++		limit = { has_variable = great_depression_center_status_target }
++		var:great_depression_center_status_target = {
+ 			great_depression_clear_center_physical_stage = yes
+ 			set_state_flag = great_depression_center
+ 			if = {
+@@ -1402,12 +1404,12 @@
+ 	if = {
+ 		limit = {
+ 			OR = {
+-				has_resources_in_country = { resource = oil amount > constant:great_depression_target_signal.imported_resource_floor only_imported = yes }
+-				has_resources_in_country = { resource = aluminium amount > constant:great_depression_target_signal.imported_resource_floor only_imported = yes }
+-				has_resources_in_country = { resource = rubber amount > constant:great_depression_target_signal.imported_resource_floor only_imported = yes }
+-				has_resources_in_country = { resource = tungsten amount > constant:great_depression_target_signal.imported_resource_floor only_imported = yes }
+-				has_resources_in_country = { resource = steel amount > constant:great_depression_target_signal.imported_resource_floor only_imported = yes }
+-				has_resources_in_country = { resource = chromium amount > constant:great_depression_target_signal.imported_resource_floor only_imported = yes }
++				has_resources_in_country = { resource = oil amount > @great_depression_imported_resource_floor only_imported = yes }
++				has_resources_in_country = { resource = aluminium amount > @great_depression_imported_resource_floor only_imported = yes }
++				has_resources_in_country = { resource = rubber amount > @great_depression_imported_resource_floor only_imported = yes }
++				has_resources_in_country = { resource = tungsten amount > @great_depression_imported_resource_floor only_imported = yes }
++				has_resources_in_country = { resource = steel amount > @great_depression_imported_resource_floor only_imported = yes }
++				has_resources_in_country = { resource = chromium amount > @great_depression_imported_resource_floor only_imported = yes }
+ 			}
+ 		}
+ 		add_to_temp_variable = { great_depression_independent_target_weight = constant:great_depression_independent_target_weight.high_trade_dependence }
+@@ -2935,7 +2937,7 @@
+ 			}
+ 		}
+ 	}
+-	clear_event_target = great_depression_achievement_center_freeze_state
++	# great_depression_achievement_center_freeze_state is chain-local and expires automatically.
+ 	if = {
+ 		limit = {
+ 			OR = {
+@@ -4096,6 +4098,33 @@
+ 	set_variable = { great_depression_hidden_net_pressure = great_depression_hidden_net_value }
+ }
+ 
++# COUNTRY scope. Resolve the current crisis phase to its existing pacing constant.
++# Input: great_depression_phase; output: great_depression_pulse_interval in days.
++# Default: the event pulse cadence for an unrecognized phase; no other side effects.
++great_depression_set_pulse_interval = {
++	set_variable = { great_depression_pulse_interval = constant:great_depression_event.pulse_days }
++	if = {
++		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.panic_and_contraction compare = equals } }
++		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.panic_interval_days }
++	}
++	if = {
++		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.depression compare = equals } }
++		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.depression_interval_days }
++	}
++	if = {
++		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.stabilization compare = equals } }
++		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.stabilization_interval_days }
++	}
++	if = {
++		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.recovery compare = equals } }
++		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.recovery_interval_days }
++	}
++	if = {
++		limit = { check_variable = { var = great_depression_phase value = constant:great_depression_phase.economic_paralysis compare = equals } }
++		set_variable = { great_depression_pulse_interval = constant:great_depression_pacing.paralysis_interval_days }
++	}
++}
++
+ great_depression_weekly_pulse = {
+ 	if = {
+ 		limit = { great_depression_active_crisis_is_coherent = yes }
+@@ -4398,15 +4427,15 @@
+ great_depression_prune_recovery_watch = {
+ 	set_temp_variable = { great_depression_recovery_watch_prune_index = global.great_depression_recovery_watch_countries^num }
+ 	while_loop_effect = {
+-		limit = { great_depression_recovery_watch_prune_index > constant:great_depression_api.zero }
++		limit = { check_variable = { great_depression_recovery_watch_prune_index > constant:great_depression_api.zero } }
+ 		subtract_from_temp_variable = { great_depression_recovery_watch_prune_index = constant:great_depression_api.one }
+ 		var:global.great_depression_recovery_watch_countries^great_depression_recovery_watch_prune_index = {
+ 			if = {
+ 				limit = { NOT = { has_country_flag = great_depression_recovery_watch_active } }
+ 				ROOT = {
+-					remove_from_array = { array = global.great_depression_recovery_watch_countries index = ROOT.great_depression_recovery_watch_prune_index }
+-					remove_from_array = { array = global.great_depression_recovery_watch_episode_entries index = ROOT.great_depression_recovery_watch_prune_index }
+-					remove_from_array = { array = global.great_depression_recovery_watch_expiry_entries index = ROOT.great_depression_recovery_watch_prune_index }
++					remove_from_array = { array = global.great_depression_recovery_watch_countries index = great_depression_recovery_watch_prune_index }
++					remove_from_array = { array = global.great_depression_recovery_watch_episode_entries index = great_depression_recovery_watch_prune_index }
++					remove_from_array = { array = global.great_depression_recovery_watch_expiry_entries index = great_depression_recovery_watch_prune_index }
+ 				}
+ 			}
+ 		}
+@@ -4515,7 +4544,7 @@
+ 			}
+ 		}
+ 	}
+-	clear_event_target = great_depression_freeze_center_state
++	# great_depression_freeze_center_state is chain-local and expires automatically.
+ 	if = {
+ 		limit = { has_variable = great_depression_inherited_event34_episode_id }
+ 		set_variable = { great_depression_last_completed_event34_episode_id = great_depression_inherited_event34_episode_id }
+@@ -5214,7 +5243,7 @@
+ 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.one }
+ 	}
+ 	if = {
+-		limit = { any_faction_member = { has_country_flag = great_depression_active } }
++		limit = { any_other_country = { is_in_faction_with = PREV has_country_flag = great_depression_active } }
+ 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+ 	}
+ 	if = {
+--- baseline/common/scripted_effects/035_great_depression_decision_effects.txt
++++ common/scripted_effects/035_great_depression_decision_effects.txt
+@@ -1508,7 +1508,7 @@
+ 		remove_dynamic_modifier = { modifier = great_depression_financial_contagion }
+ 		set_variable = { great_depression_contagion_response_stage = constant:great_depression_exposure_stage.resolved }
+ 	}
+-	clear_event_target = great_depression_supported_source_country
++	# great_depression_supported_source_country is overwritten before every use and expires with the chain.
+ }
+ 
+ great_depression_withdraw_from_distressed_market = {
+--- baseline/common/scripted_effects/035_great_depression_incident_effects.txt
++++ common/scripted_effects/035_great_depression_incident_effects.txt
+@@ -102,9 +102,9 @@
+ 	clear_variable = great_depression_incident_family_cooldown_day
+ 	clear_variable = great_depression_incident_pressure_until
+ 	clear_variable = great_depression_social_extreme_outcome_review_day
+-	clear_event_target = great_depression_incident_state_target
+-	clear_event_target = great_depression_incident_partner_target
+-	clear_event_target = great_depression_center_status_target
++	clear_variable = great_depression_incident_state_target
++	clear_variable = great_depression_incident_partner_target
++	clear_variable = great_depression_center_status_target
+ }
+ 
+ great_depression_incident_reset_selection = {
+@@ -120,9 +120,9 @@
+ 	clear_variable = great_depression_incident_partner_relationship
+ 	set_variable = { great_depression_incident_target_valid = constant:great_depression_api.zero }
+ 	set_variable = { great_depression_incident_partner_valid = constant:great_depression_api.zero }
+-	clear_event_target = great_depression_incident_state_target
+-	clear_event_target = great_depression_incident_partner_target
+-	clear_event_target = great_depression_center_status_target
++	clear_variable = great_depression_incident_state_target
++	clear_variable = great_depression_incident_partner_target
++	clear_variable = great_depression_center_status_target
+ }
+ 
+ # COUNTRY scope. Prefer one of the already registered centers, then fall back
+@@ -132,7 +132,7 @@
+ 	clear_variable = great_depression_incident_state
+ 	clear_variable = great_depression_incident_state_id
+ 	set_variable = { great_depression_incident_target_valid = constant:great_depression_api.zero }
+-	clear_event_target = great_depression_incident_state_target
++	clear_variable = great_depression_incident_state_target
+ 	if = {
+ 		limit = {
+ 			has_variable = great_depression_center_state_ids^num
+@@ -141,7 +141,7 @@
+ 		random_scope_in_array = {
+ 			array = great_depression_center_state_ids
+ 			limit = { great_depression_incident_state_target_is_valid = yes }
+-			save_event_target_as = great_depression_incident_state_target
++			set_variable = { PREV.great_depression_incident_state_target = THIS }
+ 		}
+ 	}
+ 	if = {
+@@ -150,13 +150,13 @@
+ 		}
+ 		random_owned_controlled_state = {
+ 			limit = { great_depression_incident_state_target_is_valid = yes }
+-			save_event_target_as = great_depression_incident_state_target
+-		}
+-	}
+-	if = {
+-		limit = { has_event_target = great_depression_incident_state_target }
+-		set_variable = { great_depression_incident_state = event_target:great_depression_incident_state_target }
+-		event_target:great_depression_incident_state_target = {
++			set_variable = { PREV.great_depression_incident_state_target = THIS }
++		}
++	}
++	if = {
++		limit = { has_variable = great_depression_incident_state_target }
++		set_variable = { great_depression_incident_state = great_depression_incident_state_target }
++		var:great_depression_incident_state_target = {
+ 			set_temp_variable = { great_depression_incident_state_id_request = id }
+ 			ROOT = { set_variable = { great_depression_incident_state_id = great_depression_incident_state_id_request } }
+ 		}
+@@ -171,7 +171,7 @@
+ 	clear_variable = great_depression_incident_partner_country
+ 	clear_variable = great_depression_incident_partner_relationship
+ 	set_variable = { great_depression_incident_partner_valid = constant:great_depression_api.zero }
+-	clear_event_target = great_depression_incident_partner_target
++	clear_variable = great_depression_incident_partner_target
+ 	if = {
+ 		limit = {
+ 			has_variable = great_depression_contagion_source_countries^num
+@@ -180,12 +180,12 @@
+ 		random_scope_in_array = {
+ 			array = great_depression_contagion_source_countries
+ 			limit = { great_depression_incident_partner_target_is_valid = yes }
+-			save_event_target_as = great_depression_incident_partner_target
+-		}
+-	}
+-	if = {
+-		limit = { has_event_target = great_depression_incident_partner_target }
+-		set_variable = { great_depression_incident_partner_country = event_target:great_depression_incident_partner_target }
++			set_variable = { PREV.great_depression_incident_partner_target = THIS }
++		}
++	}
++	if = {
++		limit = { has_variable = great_depression_incident_partner_target }
++		set_variable = { great_depression_incident_partner_country = great_depression_incident_partner_target }
+ 		set_temp_variable = { great_depression_incident_partner_row_found = constant:great_depression_api.zero }
+ 		for_loop_effect = {
+ 			start = 0
+@@ -193,7 +193,7 @@
+ 			value = great_depression_incident_partner_row_index
+ 			var:great_depression_contagion_source_countries^great_depression_incident_partner_row_index = {
+ 				if = {
+-					limit = { tag = event_target:great_depression_incident_partner_target }
++					limit = { tag = var:PREV.great_depression_incident_partner_target }
+ 					PREV = {
+ 						set_variable = { great_depression_incident_partner_relationship = great_depression_contagion_source_relationship_entries^great_depression_incident_partner_row_index }
+ 						set_temp_variable = { great_depression_incident_partner_row_found = constant:great_depression_api.one }
+@@ -217,7 +217,7 @@
+ great_depression_incident_update_partner_row = {
+ 	if = {
+ 		limit = {
+-			has_event_target = great_depression_incident_partner_target
++			has_variable = great_depression_incident_partner_target
+ 			has_variable = great_depression_contagion_source_countries^num
+ 		}
+ 		for_loop_effect = {
+@@ -226,7 +226,7 @@
+ 			value = great_depression_incident_partner_update_index
+ 			var:great_depression_contagion_source_countries^great_depression_incident_partner_update_index = {
+ 				if = {
+-					limit = { tag = event_target:great_depression_incident_partner_target }
++					limit = { tag = var:PREV.great_depression_incident_partner_target }
+ 					PREV = {
+ 						if = {
+ 							limit = { has_variable = great_depression_incident_row_aid_state }
+@@ -353,14 +353,14 @@
+ 			if = {
+ 				limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.factory_gate_closure compare = equals } }
+ 				set_country_flag = great_depression_factory_gate_closure_observed
+-				event_target:great_depression_incident_state_target = { save_event_target_as = great_depression_center_status_target }
++				var:great_depression_incident_state_target = { set_variable = { PREV.great_depression_center_status_target = THIS } }
+ 				set_variable = { great_depression_center_status = constant:great_depression_center_stage.idled }
+ 				great_depression_set_center_status = yes
+ 			}
+ 			else_if = {
+ 				limit = { check_variable = { var = great_depression_incident_kind value = constant:great_depression_incident_kind.successful_reopening_shift compare = equals } }
+ 				set_country_flag = great_depression_successful_reopening_observed
+-				event_target:great_depression_incident_state_target = { save_event_target_as = great_depression_center_status_target }
++				var:great_depression_incident_state_target = { set_variable = { PREV.great_depression_center_status_target = THIS } }
+ 				set_variable = { great_depression_center_status = constant:great_depression_center_stage.reopened }
+ 				great_depression_set_center_status = yes
+ 				var:great_depression_incident_state = { great_depression_record_center_positive_resolution = yes }
+@@ -1026,34 +1026,34 @@
+ # it makes receipts auditable without adding another daily iteration.
+ great_depression_run_due_incident_pool = {
+ 	if = {
+-		limit = {
+-			great_depression_active_crisis_is_coherent = yes
+-			great_depression_incident_initialize_history = yes
+-			great_depression_incident_initialize_clock = yes
+-			great_depression_incident_expire_pressure = yes
+-			check_variable = { var = global.num_days value = great_depression_incident_next_day compare = greater_than_or_equals }
+-		}
+-		great_depression_incident_reset_selection = yes
+-		random_list = {
+-			constant:great_depression_incident_weight.baseline_pool = {
+-				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { great_depression_incident_has_valid_state = yes } }
+-				modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.baseline compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
+-				great_depression_incident_run_baseline_pool = yes
+-			}
+-			constant:great_depression_incident_weight.contagion_pool = {
+-				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_evolution_financial_contagion } }
+-				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_variable = great_depression_contagion_source_countries^num } }
+-				modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.financial_contagion compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
+-				great_depression_incident_run_contagion_pool = yes
+-			}
+-			constant:great_depression_incident_weight.social_pool = {
+-				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_evolution_social_collapse } }
+-				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_social_incident_open } }
+-				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { great_depression_social_has_valid_organized_movement = yes } }
+-				modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.social_collapse compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
+-				great_depression_incident_run_social_pool = yes
+-			}
+-			constant:great_depression_incident_weight.no_incident = { great_depression_incident_defer = yes }
++		limit = { great_depression_active_crisis_is_coherent = yes }
++		great_depression_incident_initialize_history = yes
++		great_depression_incident_initialize_clock = yes
++		great_depression_incident_expire_pressure = yes
++		if = {
++			limit = { check_variable = { var = global.num_days value = great_depression_incident_next_day compare = greater_than_or_equals } }
++			great_depression_incident_reset_selection = yes
++			random_list = {
++				constant:great_depression_incident_weight.baseline_pool = {
++					modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { great_depression_incident_has_valid_state = yes } }
++					modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.baseline compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
++					great_depression_incident_run_baseline_pool = yes
++				}
++				constant:great_depression_incident_weight.contagion_pool = {
++					modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_evolution_financial_contagion } }
++					modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_variable = great_depression_contagion_source_countries^num } }
++					modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.financial_contagion compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
++					great_depression_incident_run_contagion_pool = yes
++				}
++				constant:great_depression_incident_weight.social_pool = {
++					modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_evolution_social_collapse } }
++					modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_social_incident_open } }
++					modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { great_depression_social_has_valid_organized_movement = yes } }
++					modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.social_collapse compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
++					great_depression_incident_run_social_pool = yes
++				}
++				constant:great_depression_incident_weight.no_incident = { great_depression_incident_defer = yes }
++			}
+ 		}
+ 	}
+ }
+--- baseline/common/scripted_triggers/029_riches_found_triggers.txt
++++ common/scripted_triggers/029_riches_found_triggers.txt
+@@ -1,3 +1,5 @@
++# divisions_in_state.size requires a literal integer; mirrors riches_found_value.zero.
++@riches_found_division_floor = 0
+ # ============================================================================
+ # CHAOS REDUX - EVENT 029 RICHES FOUND SCRIPTED TRIGGERS
+ # ============================================================================
+@@ -372,7 +374,7 @@
+ 	CONTROLLER = {
+ 		divisions_in_state = {
+ 			state = PREV
+-			size > constant:riches_found_value.zero
++			size > @riches_found_division_floor
+ 		}
+ 	}
+ }

@@ -1,0 +1,99 @@
+# Administration command eligibility. Display, decisions and execution share these gates.
+camp_admin_ui_action_two_visible = {
+	OR = { camp_admin_country_action_2_visible = yes camp_admin_generic_reform_visible = yes }
+}
+camp_admin_ui_action_two_available = {
+	OR = {
+		AND = { camp_admin_country_action_2_visible = yes camp_admin_country_action_2_available = yes }
+		AND = { NOT = { camp_admin_country_action_2_visible = yes } camp_admin_generic_reform_available = yes }
+	}
+}
+camp_admin_has_open_picker = {
+	OR = {
+		has_country_flag = camp_admin_picker_priority
+		has_country_flag = camp_admin_picker_budget
+		has_country_flag = camp_admin_picker_mandate
+		has_country_flag = camp_admin_picker_role
+		has_country_flag = camp_admin_picker_filter
+	}
+}
+camp_admin_can_set_priority = {
+	camp_rework_country_is_eligible = yes
+	NOT = { has_country_flag = camp_admin_reforming }
+	OR = {
+		check_variable = { camp_admin_control_requested = constant:camp_admin_priority.industry }
+		check_variable = { camp_admin_control_requested = constant:camp_admin_priority.works }
+		check_variable = { camp_admin_control_requested = constant:camp_admin_priority.extraction }
+	}
+	NOT = { check_variable = { camp_admin_priority = camp_admin_control_requested } }
+	political_power > camp_admin_policy_quote_floor
+}
+camp_admin_can_set_budget = {
+	camp_rework_country_is_eligible = yes
+	OR = {
+		check_variable = { camp_admin_control_requested = constant:camp_admin_budget.maintenance }
+		check_variable = { camp_admin_control_requested = constant:camp_admin_budget.development }
+		check_variable = { camp_admin_control_requested = constant:camp_admin_budget.priority }
+	}
+	OR = {
+		AND = {
+			check_variable = { camp_admin_budget = camp_admin_control_requested }
+			has_country_flag = camp_admin_development_paused
+		}
+		AND = {
+			NOT = { check_variable = { camp_admin_budget = camp_admin_control_requested } }
+			political_power > camp_admin_policy_quote_floor
+		}
+	}
+}
+camp_admin_can_set_mandate = {
+	camp_rework_country_is_eligible = yes
+	NOT = { has_country_flag = camp_admin_reforming }
+	OR = {
+		check_variable = { camp_admin_control_requested = constant:camp_admin_mandate.custody }
+		check_variable = { camp_admin_control_requested = constant:camp_admin_mandate.coercive }
+		check_variable = { camp_admin_control_requested = constant:camp_admin_mandate.radical }
+	}
+	NOT = { check_variable = { camp_admin_mandate = camp_admin_control_requested } }
+	political_power > camp_admin_mandate_quote_floor
+	OR = {
+		NOT = { check_variable = { camp_admin_control_requested = constant:camp_admin_mandate.radical } }
+		camp_admin_can_use_radical_mandate = yes
+	}
+}
+camp_admin_has_selected_operating_site = {
+	has_variable = camp_selected_state_id
+	var:camp_selected_state_id = {
+		camp_admin_site_is_operational = yes
+		check_variable = { camp_admin_responsible_country = PREV.id }
+	}
+}
+camp_admin_can_change_selected_role = {
+	camp_admin_has_selected_operating_site = yes
+	political_power > camp_admin_role_quote_floor
+	check_variable = { var = camp_admin_control_requested value = constant:camp_admin_role.custody compare = greater_than_or_equals }
+	check_variable = { var = camp_admin_control_requested value = constant:camp_admin_role.killing compare = less_than_or_equals }
+	var:camp_selected_state_id = { NOT = { check_variable = { camp_admin_role = camp_admin_control_requested } } }
+	OR = {
+		check_variable = { camp_admin_control_requested = constant:camp_admin_role.custody }
+		AND = {
+			check_variable = { camp_admin_control_requested = constant:camp_admin_role.labor }
+			check_variable = { var = camp_admin_mandate value = constant:camp_admin_mandate.coercive compare = greater_than_or_equals }
+		}
+		AND = {
+			check_variable = { camp_admin_control_requested = constant:camp_admin_role.penal }
+			original_tag = SOV
+			has_government = communism
+		}
+		AND = {
+			check_variable = { camp_admin_control_requested = constant:camp_admin_role.killing }
+			camp_admin_can_use_radical_mandate = yes
+			check_variable = { camp_admin_mandate = constant:camp_admin_mandate.radical }
+		}
+	}
+}
+camp_admin_can_release_selected_site = {
+	camp_admin_has_selected_operating_site = yes
+	camp_rework_country_can_reform = yes
+	var:camp_selected_state_id = { check_variable = { camp_admin_detainees_k > constant:camp_admin_value.zero } }
+}

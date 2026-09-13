@@ -1,0 +1,767 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 029 RICHES FOUND INCIDENT EFFECTS
+# ============================================================================
+# State-scoped candidate pools for ordinary mine incidents, foreign pressure,
+# concrete raids, collapse severity, evolved crises, and contract outcomes.
+# The current controller's already-bounded pulse calls one registered mine at
+# a time. Recurring foreign interference is limited to a stored contract actor
+# or a directly neighbouring controller; no recurring whole-world scan occurs.
+# Every candidate records one incident id on the mine, applies centralized
+# value bands, and retains one-step memory so the same report cannot repeat
+# immediately.
+# ============================================================================
+
+# STATE scope. Clears the temporary delta contract before one candidate writes
+# its outcome. Temporary variables are deliberately unscoped.
+riches_found_reset_incident_deltas = {
+	set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_value.zero }
+	set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_value.zero }
+}
+
+# STATE scope. Commits one selected candidate and schedules the next bounded
+# review. Good management spaces incidents farther apart; a crisis shortens
+# the interval without making any single candidate certain.
+riches_found_finish_incident = {
+	add_to_variable = { riches_found_extraction_pressure = riches_found_incident_pressure_delta }
+	add_to_variable = { riches_found_mine_development = riches_found_incident_development_delta }
+	add_to_variable = { riches_found_local_order = riches_found_incident_order_delta }
+	add_to_variable = { riches_found_revenue_legitimacy = riches_found_incident_legitimacy_delta }
+	add_to_variable = { riches_found_illicit_capture = riches_found_incident_capture_delta }
+	add_to_variable = { riches_found_foreign_claim_pressure = riches_found_incident_foreign_delta }
+	add_to_variable = { riches_found_gold_disease_pressure = riches_found_incident_gold_delta }
+	add_to_variable = { riches_found_supernatural_pressure = riches_found_incident_supernatural_delta }
+	add_to_variable = { riches_found_collapse_pressure = riches_found_incident_collapse_delta }
+	set_variable = { riches_found_previous_incident_kind = riches_found_last_incident_kind }
+	set_variable = { riches_found_last_incident_kind = riches_found_incident_kind }
+	if = { limit = { NOT = { has_variable = riches_found_incident_sequence } } set_variable = { riches_found_incident_sequence = constant:riches_found_value.zero } }
+	add_to_variable = { riches_found_incident_sequence = constant:riches_found_value.one }
+	set_variable = { riches_found_last_incident_date = global.date }
+	set_variable = { riches_found_next_incident_date = global.date }
+	set_temp_variable = { riches_found_incident_interval = constant:riches_found_duration.incident_interval_days }
+	if = {
+		limit = {
+			check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_high compare = greater_than_or_equals }
+			check_variable = { var = riches_found_revenue_legitimacy value = constant:riches_found_threshold.legitimacy_high compare = greater_than_or_equals }
+			check_variable = { var = riches_found_extraction_pressure value = constant:riches_found_threshold.pressure_warning compare = less_than }
+		}
+		set_temp_variable = { riches_found_incident_interval = constant:riches_found_duration.incident_interval_managed_days }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				riches_found_mine_is_severe_pressure = yes
+				riches_found_mine_is_local_order_crisis = yes
+				riches_found_mine_is_legitimacy_crisis = yes
+			}
+		}
+		set_temp_variable = { riches_found_incident_interval = constant:riches_found_duration.incident_interval_crisis_days }
+	}
+	add_to_variable = { riches_found_next_incident_date = riches_found_incident_interval }
+	riches_found_clamp_mine_values = yes
+	riches_found_queue_report = yes
+}
+
+# STATE scope. Initializes the due date without immediately firing a passive
+# checklist event on discovery.
+riches_found_initialize_incident_clock = {
+	if = {
+		limit = { NOT = { has_variable = riches_found_next_incident_date } }
+		set_variable = { riches_found_next_incident_date = global.date }
+		add_to_variable = { riches_found_next_incident_date = constant:riches_found_duration.incident_interval_days }
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Claims pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_claims_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.claims }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.rush }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.common = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_rich_strike compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_rich_strike }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.standard }
+			set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.minor }
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_fraudulent_assay compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_fraudulent_assay }
+			set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard }
+			set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard }
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_duplicate_documents compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_duplicate_documents }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard }
+			set_state_flag = riches_found_claims_unresolved
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_jumpers compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_jumpers }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major }
+			set_state_flag = riches_found_armed_claimants
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_landowner_refusal compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_landowner_refusal }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard }
+			set_state_flag = riches_found_access_dispute
+		}
+		constant:riches_found_incident_weight.common = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_local_recognition compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_local_recognition }
+			set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard }
+			set_state_flag = riches_found_local_claims_present
+		}
+		constant:riches_found_incident_weight.rare = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_boundary_crossing compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_boundary_crossing }
+			set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard }
+		}
+		constant:riches_found_incident_weight.rare = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_soldier_stakes compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_soldier_stakes }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard }
+			set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard }
+		}
+		constant:riches_found_incident_weight.rare = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_old_foreign_rights compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_old_foreign_rights }
+			set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.major }
+			set_state_flag = riches_found_foreign_target_available
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_bribed_court compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_bribed_court }
+			set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard }
+			set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major }
+		}
+		constant:riches_found_incident_weight.common = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_miners_assembly compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_miners_assembly }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.standard }
+			set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard }
+		}
+		constant:riches_found_incident_weight.major = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_violent_eviction compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_violent_eviction }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_severe }
+			set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_major }
+			set_state_flag = riches_found_armed_claimants
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_easement_dispute compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_easement_dispute }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard }
+			set_state_flag = riches_found_route_dispute
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_false_discovery compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_false_discovery }
+			set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.standard }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard }
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.claims_missing_specimen compare = equals } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.claims_missing_specimen }
+			set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard }
+			set_state_flag = riches_found_survey_material_missing
+		}
+	}
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Rush pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_rush_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.rush }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.rush }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_housing_inflation compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_housing_inflation } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_minor } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.minor } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_food_shortage compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_food_shortage } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_sanitation_failure compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_sanitation_failure } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_sanitation_crisis }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_fire compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_fire } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_theft compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_theft } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_labor_exploitation compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_labor_exploitation } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_displacement compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_displacement } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_displacement_crisis }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_wage_dispute compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_wage_dispute } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_wage_dispute }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_gambling_debt compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_gambling_debt } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_gang_violence compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_gang_violence } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_crime_crisis }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_price_gouging compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_price_gouging } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_outsider_resentment compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_outsider_resentment } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_minor } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_police_corruption compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_police_corruption } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_value.zero check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.rush_smuggling compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.rush_smuggling } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard } }
+	}
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Development-setback pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_development_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.development }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.rush }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_route_washout compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_route_washout } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_route_damaged }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_pump_failure compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_pump_failure } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_mine_damaged }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_ventilation_failure compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_ventilation_failure } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_mine_damaged }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_magazine_fire compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_magazine_fire } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_mine_damaged }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_sabotage compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_sabotage } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_route_sabotaged }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_material_shortage compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_material_shortage } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_minor } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.minor } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_engineer_strike compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_engineer_strike } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_minor } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.development_false_invoice compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.development_false_invoice } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } }
+	}
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Revenue and corruption pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_corruption_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.corruption }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.concession }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_missing_shipments compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_missing_shipments } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_audit_irregularities }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_local_share_demand compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_local_share_demand } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_local_revenue_claim }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_royalty_change compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_royalty_change } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_minor } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_bonus_strike compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_bonus_strike } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_wage_dispute }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_false_dividend_names compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_false_dividend_names } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_visible_public_work compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_visible_public_work } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_public_project_complete }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_diverted_central_fund compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_diverted_central_fund } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_major } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_theft_accusation compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_theft_accusation } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_public_contract_dispute }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_missing_official compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_missing_official } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_assay_substitution compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_assay_substitution } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_audit_irregularities }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_party_machine compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_party_machine } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.severe } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_administration_compromised }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_payroll_dependence compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_payroll_dependence } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_budget_dependence }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.corruption_worker_drain compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.corruption_worker_drain } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_minor } }
+	}
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Foreign actor scoring and recurring narrow actor preparation
+# ---------------------------------------------------------------------------
+
+# COUNTRY scope. Inputs: regular event targets riches_found_interest_mine and
+# riches_found_interest_controller. Output: unscoped candidate score used by
+# the on-demand contract-target pass.
+riches_found_calculate_foreign_interest_score = {
+	set_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.base }
+	if = { limit = { is_major = yes } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.major } }
+	if = { limit = { num_of_factories > constant:riches_found_foreign_interest_threshold.medium_industry } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.medium_industry } }
+	if = { limit = { num_of_factories > constant:riches_found_foreign_interest_threshold.large_industry } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.large_industry } }
+	if = { limit = { is_neighbor_of = event_target:riches_found_interest_controller } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.neighbor } }
+	if = { limit = { is_in_faction_with = event_target:riches_found_interest_controller } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.same_faction } }
+	if = { limit = { has_opinion = { target = event_target:riches_found_interest_controller value > constant:riches_found_foreign_interest_threshold.positive_opinion } } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.positive_relations } }
+	if = { limit = { has_opinion = { target = event_target:riches_found_interest_controller value < constant:riches_found_foreign_interest_threshold.hostile_opinion } } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.hostile_relations } }
+	if = { limit = { event_target:riches_found_interest_controller = { has_war = yes } } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.wartime_need } }
+	if = { limit = { event_target:riches_found_interest_controller = { num_of_factories < constant:riches_found_foreign_interest_threshold.weak_factory_count } } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.controller_weakness } }
+	if = { limit = { has_country_flag = riches_found_foreign_contract_network } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.contract_network } }
+	if = { limit = { has_equipment = { convoy_1 > constant:riches_found_foreign_interest_threshold.minimum_convoys } } add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.overseas_access } }
+	if = {
+		limit = {
+			event_target:riches_found_interest_mine = {
+				OR = {
+					riches_found_mine_is_severe_pressure = yes
+					has_state_flag = riches_found_severe_collapse
+					has_state_flag = riches_found_supernatural_crisis
+				}
+			}
+		}
+		add_to_temp_variable = { riches_found_foreign_candidate_score = constant:riches_found_foreign_interest.severe_crisis }
+	}
+	clamp_temp_variable = { var = riches_found_foreign_candidate_score min = constant:riches_found_foreign_interest.minimum max = constant:riches_found_ai_weight.maximum }
+}
+
+# STATE scope. This is called by a deliberate contract action, not by the
+# recurring pulse. It scores every plausible ordinary actor once and stores
+# the highest-scoring valid partner. The persistent contract still records one
+# partner only.
+riches_found_prepare_scored_foreign_partner = {
+	clear_variable = riches_found_foreign_target
+	clr_state_flag = riches_found_foreign_target_available
+	save_event_target_as = riches_found_interest_mine
+	CONTROLLER = { save_event_target_as = riches_found_interest_controller }
+	set_temp_variable = { riches_found_best_foreign_score = constant:riches_found_value.zero }
+	every_country = {
+		limit = {
+			exists = yes
+			NOT = { tag = event_target:riches_found_interest_controller }
+			NOT = { is_special_chaos_country = yes }
+			NOT = { is_actual_nonhuman_country = yes }
+			has_capitulated = no
+			NOT = { has_war_with = event_target:riches_found_interest_controller }
+			OR = {
+				is_neighbor_of = event_target:riches_found_interest_controller
+				is_in_faction_with = event_target:riches_found_interest_controller
+				has_opinion = { target = event_target:riches_found_interest_controller value > constant:riches_found_foreign_interest_threshold.positive_opinion }
+				AND = {
+					is_major = yes
+					has_equipment = { convoy_1 > constant:riches_found_foreign_interest_threshold.minimum_convoys }
+					event_target:riches_found_interest_mine = {
+						OR = {
+							has_state_flag = riches_found_port_route_valid
+							has_state_flag = riches_found_port_route
+							has_state_flag = riches_found_island_mine
+						}
+					}
+				}
+			}
+		}
+		riches_found_calculate_foreign_interest_score = yes
+		if = {
+			limit = { check_variable = { var = riches_found_foreign_candidate_score value = riches_found_best_foreign_score compare = greater_than } }
+			set_temp_variable = { riches_found_best_foreign_score = riches_found_foreign_candidate_score }
+			save_event_target_as = riches_found_contract_partner_target
+		}
+	}
+	if = {
+		limit = { has_event_target = riches_found_contract_partner_target }
+		set_variable = { riches_found_foreign_target = event_target:riches_found_contract_partner_target }
+		set_variable = { riches_found_foreign_interest_score = riches_found_best_foreign_score }
+		set_state_flag = riches_found_foreign_target_available
+	}
+}
+
+# STATE scope. Recurring interference never invokes the global scored pass. A
+# durable contract partner is preferred; otherwise one directly neighbouring
+# controller is selected through the state adjacency scope.
+riches_found_prepare_narrow_interference_actor = {
+	clear_variable = riches_found_interference_actor
+	clr_state_flag = riches_found_interference_actor_friendly
+	clr_state_flag = riches_found_interference_actor_hostile
+	CONTROLLER = { save_event_target_as = riches_found_interference_controller }
+	if = {
+		limit = {
+			has_variable = riches_found_contract_partner
+			var:riches_found_contract_partner = { exists = yes }
+		}
+		set_variable = { riches_found_interference_actor = riches_found_contract_partner }
+	}
+	else_if = {
+		limit = {
+			any_neighbor_state = {
+				impassable = no
+				CONTROLLER = {
+					exists = yes
+					NOT = { tag = event_target:riches_found_interference_controller }
+					NOT = { is_special_chaos_country = yes }
+					NOT = { is_actual_nonhuman_country = yes }
+					has_capitulated = no
+				}
+			}
+		}
+		random_neighbor_state = {
+			limit = {
+				impassable = no
+				CONTROLLER = {
+					exists = yes
+					NOT = { tag = event_target:riches_found_interference_controller }
+					NOT = { is_special_chaos_country = yes }
+					NOT = { is_actual_nonhuman_country = yes }
+					has_capitulated = no
+				}
+			}
+			set_variable = { riches_found_interference_actor = CONTROLLER }
+		}
+	}
+	if = {
+		limit = { has_variable = riches_found_interference_actor }
+		if = {
+			limit = {
+				var:riches_found_interference_actor = {
+					OR = {
+						is_in_faction_with = event_target:riches_found_interference_controller
+						has_opinion = { target = event_target:riches_found_interference_controller value > constant:riches_found_foreign_interest_threshold.positive_opinion }
+					}
+				}
+			}
+			set_state_flag = riches_found_interference_actor_friendly
+		}
+		if = {
+			limit = {
+				var:riches_found_interference_actor = {
+					OR = {
+						has_war_with = event_target:riches_found_interference_controller
+						has_opinion = { target = event_target:riches_found_interference_controller value < constant:riches_found_foreign_interest_threshold.hostile_opinion }
+					}
+				}
+			}
+			set_state_flag = riches_found_interference_actor_hostile
+		}
+	}
+}
+
+# STATE scope. Preserves the concrete actor and bounded evidence count. Audits,
+# disclosure, civil policing, or a published contract reveal attribution;
+# otherwise the operation remains publicly unattributed.
+riches_found_record_foreign_interference_evidence = {
+	if = {
+		limit = { has_variable = riches_found_interference_actor }
+		set_variable = { riches_found_last_interference_actor = riches_found_interference_actor }
+		add_to_variable = { riches_found_foreign_evidence_count = constant:riches_found_value.one }
+		set_state_flag = riches_found_foreign_interference_evidence
+		if = {
+			limit = {
+				OR = {
+					has_state_flag = riches_found_audit_complete
+					has_state_flag = riches_found_beneficial_owners_disclosed
+					has_state_flag = riches_found_contract_published
+					has_state_flag = riches_found_mine_police
+				}
+			}
+			set_state_flag = riches_found_foreign_interference_attributed
+			clr_state_flag = riches_found_foreign_interference_unattributed
+			var:riches_found_interference_actor = { set_country_flag = riches_found_interference_exposed }
+		}
+		else = {
+			set_state_flag = riches_found_foreign_interference_unattributed
+		}
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Foreign-interference pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_foreign_interference_pool = {
+	riches_found_prepare_narrow_interference_actor = yes
+	if = {
+		limit = { has_variable = riches_found_interference_actor }
+		set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.foreign_interference }
+		set_variable = { riches_found_report_kind = constant:riches_found_report.concession }
+		riches_found_reset_incident_deltas = yes
+		random_list = {
+			constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_interference_actor_hostile } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_fund_claimant compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_fund_claimant } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_armed_claimants }
+			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_bribe_officials compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_bribe_officials } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } }
+			constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_steal_survey compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_steal_survey } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_survey_data_stolen }
+			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_recruit_engineers compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_recruit_engineers } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard } }
+			constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_rail_route has_state_flag = riches_found_port_route } } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_sabotage_transport compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_sabotage_transport } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_route_sabotaged }
+			constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_interference_actor_hostile } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_support_armed_group compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_support_armed_group } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_severe } set_state_flag = riches_found_armed_claimants }
+			constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_contract_active } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_expose_contract compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_expose_contract } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_contract_corruption_exposed }
+			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_contract_active } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_demand_inspection compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_demand_inspection } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_foreign_inspection_demand }
+			constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_nationalized_without_compensation } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_threaten_sanctions compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_threaten_sanctions } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.severe } set_state_flag = riches_found_sanctions_threat }
+			constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_interference_actor_hostile } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_prepare_seizure compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_prepare_seizure } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_foreign_seizure_preparation }
+			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_recognize_local_claim compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_recognize_local_claim } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_local_claims_present }
+			constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_interference_actor_friendly } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.foreign_offer_assistance compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.foreign_offer_assistance } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_foreign_assistance_offer }
+		}
+		riches_found_record_foreign_interference_evidence = yes
+		riches_found_finish_incident = yes
+	}
+}
+
+# ---------------------------------------------------------------------------
+# Concrete raid pool
+# ---------------------------------------------------------------------------
+
+riches_found_select_raid_actor = {
+	set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.criminal_group }
+	random_list = {
+		constant:riches_found_incident_weight.common = { set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.criminal_group } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_claims_unresolved has_state_flag = riches_found_armed_claimants } } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.rival_claimants } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_private_guards has_state_flag = riches_found_private_enclave } } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.private_guards } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_variable = riches_found_interference_actor } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.foreign_agents } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_interference_actor_hostile } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.hostile_neighbor } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled OWNER = { tag = CONTROLLER } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.resistance } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled CONTROLLER = { has_war = no } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.retreating_forces } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_army_cordon } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.corrupt_unit } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_smuggling_route has_state_flag = riches_found_foreign_interference_evidence } } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.smugglers } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_wage_dispute has_state_flag = riches_found_armed_workers } } } set_variable = { riches_found_raid_actor = constant:riches_found_raid_actor.worker_barricade } }
+	}
+}
+
+riches_found_select_raid_target = {
+	random_list = {
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_survey_complete has_state_flag = riches_found_processing_works } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_assay_office } set_state_flag = riches_found_raid_target_assay_office }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_phase_revenue has_state_flag = riches_found_dividend_paid has_state_flag = riches_found_local_revenue_settled } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_payroll } set_state_flag = riches_found_raid_target_payroll }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_rail_route } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_rail_route } set_state_flag = riches_found_raid_target_rail_route }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_port_route } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_port_route } set_state_flag = riches_found_raid_target_port_route }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_processing_works } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_processing_works } set_state_flag = riches_found_raid_target_processing_works }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_contract_active has_state_flag = riches_found_concession_active } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_storage_compound } set_state_flag = riches_found_raid_target_storage_compound }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_contract_active has_state_flag = riches_found_audit_started } } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_contract_records } set_state_flag = riches_found_raid_target_contract_records }
+		constant:riches_found_incident_weight.common = { set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.raid_shaft_entrance } set_state_flag = riches_found_raid_target_shaft_entrance }
+	}
+}
+
+riches_found_select_raid_severity = {
+	set_variable = { riches_found_raid_severity = constant:riches_found_raid_severity.contained }
+	random_list = {
+		constant:riches_found_incident_weight.common = {
+			modifier = { factor = constant:riches_found_incident_factor.high check_variable = { var = riches_found_local_order value = constant:riches_found_threshold.order_stable compare = greater_than_or_equals } }
+			set_variable = { riches_found_raid_severity = constant:riches_found_raid_severity.contained }
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			set_variable = { riches_found_raid_severity = constant:riches_found_raid_severity.disruptive }
+		}
+		constant:riches_found_incident_weight.major = {
+			modifier = { factor = constant:riches_found_incident_factor.high riches_found_mine_is_local_order_crisis = yes }
+			modifier = { factor = constant:riches_found_incident_factor.high riches_found_mine_is_high_pressure = yes }
+			set_variable = { riches_found_raid_severity = constant:riches_found_raid_severity.destructive }
+		}
+		constant:riches_found_incident_weight.catastrophic = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { AND = { riches_found_mine_is_severe_pressure = yes riches_found_mine_is_local_order_crisis = yes } } }
+			set_variable = { riches_found_raid_severity = constant:riches_found_raid_severity.lethal }
+		}
+	}
+}
+
+riches_found_apply_raid_consequence = {
+	if = { limit = { NOT = { has_variable = riches_found_raid_instance_sequence } } set_variable = { riches_found_raid_instance_sequence = constant:riches_found_value.zero } }
+	add_to_variable = { riches_found_raid_instance_sequence = constant:riches_found_value.one }
+	set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_minor }
+	if = {
+		limit = { check_variable = { var = riches_found_raid_severity value = constant:riches_found_raid_severity.disruptive compare = equals } }
+		set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard }
+		set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_minor }
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_raid_severity value = constant:riches_found_raid_severity.destructive compare = equals } }
+		set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major }
+		set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_major }
+		set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.standard }
+		set_state_flag = riches_found_mine_damaged
+	}
+	else_if = {
+		limit = { check_variable = { var = riches_found_raid_severity value = constant:riches_found_raid_severity.lethal compare = equals } }
+		set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_severe }
+		set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_major }
+		set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.major }
+		set_state_flag = riches_found_mine_damaged
+		riches_found_record_raid_harm = yes
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_rail_route compare = equals }
+				check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_port_route compare = equals }
+			}
+		}
+		set_state_flag = riches_found_route_damaged
+	}
+	if = { limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_contract_records compare = equals } } set_state_flag = riches_found_records_destroyed }
+	if = { limit = { check_variable = { var = riches_found_incident_kind value = constant:riches_found_incident_kind.raid_payroll compare = equals } } set_state_flag = riches_found_pay_robbery_succeeded }
+}
+
+riches_found_run_raid_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.raid }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.raid }
+	riches_found_reset_incident_deltas = yes
+	riches_found_prepare_narrow_interference_actor = yes
+	riches_found_select_raid_actor = yes
+	riches_found_select_raid_target = yes
+	riches_found_select_raid_severity = yes
+	riches_found_apply_raid_consequence = yes
+	set_state_flag = riches_found_raid_crisis
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Collapse-severity pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_collapse_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.collapse }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.collapse }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.common = {
+			modifier = { factor = constant:riches_found_incident_factor.high check_variable = { var = riches_found_collapse_pressure value = constant:riches_found_threshold.collapse_risk_gate compare = less_than } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_warning_shift }
+			set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.negative_minor }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_minor }
+			set_state_flag = riches_found_collapse_warning
+		}
+		constant:riches_found_incident_weight.uncommon = {
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_local_cave_in }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard }
+			set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.standard }
+			set_state_flag = riches_found_mine_damaged
+		}
+		constant:riches_found_incident_weight.major = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_collapse_pressure value = constant:riches_found_threshold.collapse_risk_gate compare = less_than } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_major_failure }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_severe }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major }
+			set_state_flag = riches_found_severe_collapse
+			set_state_flag = riches_found_mine_damaged
+		}
+		constant:riches_found_incident_weight.catastrophic = {
+			modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { AND = { riches_found_mine_is_severe_pressure = yes check_variable = { var = riches_found_collapse_pressure value = constant:riches_found_threshold.pressure_emergency compare = greater_than_or_equals } } } }
+			set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.collapse_catastrophic }
+			set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_catastrophic }
+			set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_severe }
+			set_state_flag = riches_found_mine_collapsed
+			set_state_flag = riches_found_severe_collapse
+			riches_found_record_collapse_harm = yes
+		}
+	}
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Gold Disease pool. This is a fictional compulsion crisis and never calls the
+# biological outbreak system.
+# ---------------------------------------------------------------------------
+
+riches_found_run_gold_disease_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.gold_disease }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.gold_incident }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_hidden_samples compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_hidden_samples } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_altered_records compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_altered_records } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_audit_irregularities }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_endless_shift compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_endless_shift } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.major } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_guard_theft compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_guard_theft } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_gold_sick_guards }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_gang_control compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_gang_control } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.severe } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_gold_sick_gang_control }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_false_permits compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_false_permits } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.major } }
+		constant:riches_found_incident_weight.major = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_gold_disease_pressure value = constant:riches_found_threshold.gold_disease_gate compare = less_than } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_shipment_fight compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_shipment_fight } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.severe } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_severe } set_state_flag = riches_found_gold_mass_violence }
+		constant:riches_found_incident_weight.major = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_gold_disease_pressure value = constant:riches_found_threshold.gold_disease_gate compare = less_than } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.gold_unsafe_digging compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.gold_unsafe_digging } set_temp_variable = { riches_found_incident_gold_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.severe } set_state_flag = riches_found_mine_damaged }
+	}
+	if = { limit = { has_state_flag = riches_found_gold_mass_violence } riches_found_record_gold_incident_harm = yes clr_state_flag = riches_found_gold_mass_violence }
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Event 029 supernatural pool. The force, variables, and memories below are
+# exclusive to this event and never reference Event 018 caves or actors.
+# ---------------------------------------------------------------------------
+
+riches_found_run_supernatural_incident_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.supernatural }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.supernatural_incident }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_answering_knocks compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_answering_knocks } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_counting_voices compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_counting_voices } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_minor } }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_returned_tools compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_returned_tools } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_patterned_lamps compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_patterned_lamps } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_balanced_payroll compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_balanced_payroll } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_ore_after_violence compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_ore_after_violence } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.severe } set_temp_variable = { riches_found_incident_pressure_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_supernatural_violence }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_accounting_marks compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_accounting_marks } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.supernatural_open_sealed_tunnel compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.supernatural_open_sealed_tunnel } set_temp_variable = { riches_found_incident_supernatural_delta = constant:riches_found_incident_delta.severe } set_temp_variable = { riches_found_incident_collapse_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_sealed_tunnel_reopened }
+	}
+	if = { limit = { has_state_flag = riches_found_supernatural_violence } riches_found_record_supernatural_incident_harm = yes clr_state_flag = riches_found_supernatural_violence }
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Contract-outcome pool
+# ---------------------------------------------------------------------------
+
+riches_found_run_contract_outcome_pool = {
+	set_variable = { riches_found_incident_pool = constant:riches_found_incident_pool.contract_outcome }
+	set_variable = { riches_found_report_kind = constant:riches_found_report.concession }
+	riches_found_reset_incident_deltas = yes
+	random_list = {
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_contract_published } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_clean_renewal compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_clean_renewal } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_contract_clean_review }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_larger_share compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_larger_share } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_contract_dispute }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_infrastructure_offer compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_infrastructure_offer } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.major } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_contract_infrastructure_offer }
+		constant:riches_found_incident_weight.uncommon = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_security_rights compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_security_rights } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.standard } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_foreign_security_rights }
+		constant:riches_found_incident_weight.common = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_local_intermediary compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_local_intermediary } set_temp_variable = { riches_found_incident_capture_delta = constant:riches_found_incident_delta.standard } set_state_flag = riches_found_contract_local_intermediary }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_withdrawal compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_withdrawal } set_temp_variable = { riches_found_incident_development_delta = constant:riches_found_incident_delta.negative_standard } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.negative_standard } set_state_flag = riches_found_contract_withdrawal_notice }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_rival_claimant compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_rival_claimant } set_temp_variable = { riches_found_incident_order_delta = constant:riches_found_incident_delta.negative_major } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.major } set_state_flag = riches_found_armed_claimants }
+		constant:riches_found_incident_weight.rare = { modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_contract_dispute } } modifier = { factor = constant:riches_found_incident_factor.disabled check_variable = { var = riches_found_last_incident_kind value = constant:riches_found_incident_kind.contract_breach_pressure compare = equals } } set_variable = { riches_found_incident_kind = constant:riches_found_incident_kind.contract_breach_pressure } set_temp_variable = { riches_found_incident_foreign_delta = constant:riches_found_incident_delta.severe } set_temp_variable = { riches_found_incident_legitimacy_delta = constant:riches_found_incident_delta.negative_major } set_state_flag = riches_found_sanctions_threat }
+	}
+	riches_found_finish_incident = yes
+}
+
+# ---------------------------------------------------------------------------
+# Master bounded incident review
+# ---------------------------------------------------------------------------
+
+riches_found_defer_incident = {
+	set_variable = { riches_found_next_incident_date = global.date }
+	add_to_variable = { riches_found_next_incident_date = constant:riches_found_duration.incident_interval_days }
+}
+
+# STATE scope. Called from the controller's registered-mine pulse. The outer
+# list selects one complete candidate pool; each pool owns its own weights and
+# invalid-target suppression. The no-incident branch preserves occasional
+# quiet periods even under otherwise valid conditions.
+riches_found_run_due_incident_review = {
+	riches_found_initialize_incident_clock = yes
+	if = {
+		limit = {
+			NOT = { has_state_flag = riches_found_report_pending }
+			check_variable = { var = global.date value = riches_found_next_incident_date compare = greater_than_or_equals }
+		}
+		random_list = {
+			constant:riches_found_incident_weight.ordinary_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.discovery_claims compare = equals } } }
+				riches_found_run_claims_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.ordinary_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.rush compare = equals } } }
+				riches_found_run_rush_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.ordinary_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.physical_development compare = equals } } }
+				riches_found_run_development_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.ordinary_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_evolution_resource_curse }
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { check_variable = { var = riches_found_phase value = constant:riches_found_phase.revenue_settlement compare = equals } has_state_flag = riches_found_evolution_resource_curse } } }
+				riches_found_run_corruption_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.foreign_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.high check_variable = { var = riches_found_foreign_claim_pressure value = constant:riches_found_threshold.concession_exposure_gate compare = greater_than_or_equals } }
+				modifier = {
+					factor = constant:riches_found_incident_factor.disabled
+					NOT = {
+						OR = {
+							has_variable = riches_found_contract_partner
+							any_neighbor_state = {
+								impassable = no
+								CONTROLLER = { exists = yes NOT = { tag = ROOT } NOT = { is_special_chaos_country = yes } NOT = { is_actual_nonhuman_country = yes } }
+							}
+						}
+					}
+				}
+				riches_found_run_foreign_interference_pool = yes
+			}
+			constant:riches_found_incident_weight.raid_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.high riches_found_mine_is_local_order_crisis = yes }
+				modifier = { factor = constant:riches_found_incident_factor.high has_state_flag = riches_found_raid_crisis }
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_phase_security has_state_flag = riches_found_crime_crisis has_state_flag = riches_found_armed_claimants has_state_flag = riches_found_wage_dispute riches_found_mine_is_local_order_crisis = yes } } }
+				riches_found_run_raid_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.collapse_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.severe riches_found_mine_is_severe_pressure = yes }
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_collapse_warning check_variable = { var = riches_found_collapse_pressure value = constant:riches_found_threshold.collapse_risk_gate compare = greater_than_or_equals } } } }
+				riches_found_run_collapse_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.evolution_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_evolution_gold_disease } }
+				riches_found_run_gold_disease_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.evolution_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { has_state_flag = riches_found_evolution_demons } }
+				riches_found_run_supernatural_incident_pool = yes
+			}
+			constant:riches_found_incident_weight.contract_pool = {
+				modifier = { factor = constant:riches_found_incident_factor.disabled NOT = { OR = { has_state_flag = riches_found_contract_active has_state_flag = riches_found_contract_renewal_due has_state_flag = riches_found_contract_dispute } } }
+				riches_found_run_contract_outcome_pool = yes
+			}
+			constant:riches_found_incident_weight.no_incident = {
+				riches_found_defer_incident = yes
+			}
+		}
+	}
+}

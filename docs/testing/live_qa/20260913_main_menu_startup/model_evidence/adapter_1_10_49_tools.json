@@ -1,0 +1,3568 @@
+{
+  "tools": [
+    {
+      "name": "chaosx_blender_hoi4_health",
+      "description": "Verify the locked Blender executable, addon, and job boundary.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "title": "chaosx_blender_hoi4_healthArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_healthOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_prepare_candidate",
+      "description": "Prepare a candidate; optional output_namespace_rel isolates all fixed outputs.\n\n    All sources must lie inside that existing child, with no previous checkpoints.\n    Pass input paths relative to the registered job; returned worker artifact paths\n    are relative to the explicitly returned output_namespace_rel.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "source_rel": {
+            "title": "Source Rel",
+            "type": "string"
+          },
+          "asset_kind": {
+            "title": "Asset Kind",
+            "type": "string"
+          },
+          "target_height_m": {
+            "title": "Target Height M",
+            "type": "number"
+          },
+          "runtime_stem": {
+            "title": "Runtime Stem",
+            "type": "string"
+          },
+          "runtime_entity_scale": {
+            "default": 1.0,
+            "title": "Runtime Entity Scale",
+            "type": "number"
+          },
+          "target_triangles": {
+            "default": 0,
+            "title": "Target Triangles",
+            "type": "integer"
+          },
+          "excluded_provider_objects": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Excluded Provider Objects"
+          },
+          "vanilla_reference": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Vanilla Reference"
+          },
+          "texture_source_rels": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Texture Source Rels"
+          },
+          "geometry_source_rel": {
+            "default": "",
+            "title": "Geometry Source Rel",
+            "type": "string"
+          },
+          "geometry_object_name": {
+            "default": "",
+            "title": "Geometry Object Name",
+            "type": "string"
+          },
+          "dual_source_base_rig": {
+            "default": false,
+            "title": "Dual Source Base Rig",
+            "type": "boolean"
+          },
+          "geometry_weight_mode": {
+            "default": "four_nearest",
+            "enum": [
+              "four_nearest",
+              "nearest_face_interpolated",
+              "automatic_bone_heat",
+              "bone_distance"
+            ],
+            "title": "Geometry Weight Mode",
+            "type": "string"
+          },
+          "source_armature_name": {
+            "default": "",
+            "title": "Source Armature Name",
+            "type": "string"
+          },
+          "source_mesh_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Mesh Names"
+          },
+          "preserve_geometry_topology": {
+            "default": false,
+            "title": "Preserve Geometry Topology",
+            "type": "boolean"
+          },
+          "repair_before_reduction": {
+            "default": false,
+            "title": "Repair Before Reduction",
+            "type": "boolean"
+          },
+          "topology_weld_distance": {
+            "default": 1e-05,
+            "title": "Topology Weld Distance",
+            "type": "number"
+          },
+          "max_runtime_footprint_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Max Runtime Footprint M"
+          },
+          "runtime_footprint_policy": {
+            "default": "reject",
+            "title": "Runtime Footprint Policy",
+            "type": "string"
+          },
+          "output_namespace_rel": {
+            "default": "",
+            "title": "Output Namespace Rel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "source_rel",
+          "asset_kind",
+          "target_height_m",
+          "runtime_stem"
+        ],
+        "title": "chaosx_blender_hoi4_prepare_candidateArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_prepare_candidateOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_inspect_scene",
+      "description": "Inspect a checkpoint; optional hash-bound mesh_region or action-channel inventory remains read-only.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "render_previews": {
+            "default": false,
+            "title": "Render Previews",
+            "type": "boolean"
+          },
+          "runtime_stem": {
+            "default": "",
+            "title": "Runtime Stem",
+            "type": "string"
+          },
+          "action_name": {
+            "default": "",
+            "title": "Action Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "default": "",
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "preview_frame": {
+            "default": -1,
+            "title": "Preview Frame",
+            "type": "integer"
+          },
+          "preview_view_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Preview View Names"
+          },
+          "mesh_region": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mesh Region"
+          },
+          "material_visibility": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Material Visibility"
+          },
+          "include_action_channels": {
+            "default": false,
+            "title": "Include Action Channels",
+            "type": "boolean"
+          },
+          "expected_source_sha256": {
+            "default": "",
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "preview_region": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Preview Region"
+          },
+          "preview_resolution": {
+            "default": 512,
+            "title": "Preview Resolution",
+            "type": "integer"
+          },
+          "evaluated_frames": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Evaluated Frames"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_sceneArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_sceneOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_review_humanoid_components",
+      "description": "Catalog loose source-index components and render bounded labelled group evidence without changing the Blend.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "mesh_name": {
+            "title": "Mesh Name",
+            "type": "string"
+          },
+          "render_group": {
+            "default": true,
+            "title": "Render Group",
+            "type": "boolean"
+          },
+          "component_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Component Ids"
+          },
+          "component_offset": {
+            "default": 0,
+            "title": "Component Offset",
+            "type": "integer"
+          },
+          "component_limit": {
+            "default": 16,
+            "title": "Component Limit",
+            "type": "integer"
+          },
+          "preview_view_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Preview View Names"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "mesh_name"
+        ],
+        "title": "chaosx_blender_hoi4_review_humanoid_componentsArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_review_humanoid_componentsOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_process_textures",
+      "description": "Extract textures, or relink approved DDS maps in a bounded saved scene.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "rewrite_to_dds": {
+            "default": false,
+            "title": "Rewrite To Dds",
+            "type": "boolean"
+          },
+          "dds_map": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dds Map"
+          },
+          "rename_images": {
+            "default": false,
+            "title": "Rename Images",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel"
+        ],
+        "title": "chaosx_blender_hoi4_process_texturesArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_process_texturesOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_bake_static_mesh_transforms",
+      "description": "Bake transforms for approved static-building working meshes only.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "output_blend_rel": {
+            "title": "Output Blend Rel",
+            "type": "string"
+          },
+          "asset_kind": {
+            "title": "Asset Kind",
+            "type": "string"
+          },
+          "bounds_tolerance": {
+            "default": 1e-05,
+            "title": "Bounds Tolerance",
+            "type": "number"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "output_blend_rel",
+          "asset_kind"
+        ],
+        "title": "chaosx_blender_hoi4_bake_static_mesh_transformsArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_bake_static_mesh_transformsOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_inspect_mesh_winding",
+      "description": "Read hashed source-index and exact-position winding diagnostics without mutation.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Mesh Names",
+            "type": "array"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "target_mesh_names"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_mesh_windingArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_mesh_windingOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_mesh_winding",
+      "description": "Preserve geometry/weights/actions and correct only proven coherent component orientation.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "target_mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Mesh Names",
+            "type": "array"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "checkpoint_rel",
+          "target_armature_name",
+          "target_mesh_names"
+        ],
+        "title": "chaosx_blender_hoi4_repair_mesh_windingArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_mesh_windingOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_inspect_fitted_humanoid_source",
+      "description": "Inspect exact world vertices/topology of one hashed existing humanoid source.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "mesh_name": {
+            "title": "Mesh Name",
+            "type": "string"
+          },
+          "report_rel": {
+            "title": "Report Rel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "mesh_name",
+          "report_rel"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_fitted_humanoid_sourceArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_fitted_humanoid_sourceOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_fitted_humanoid_rig",
+      "description": "Apply explicitly measured bones/weights from a SHA-bound declarative spec.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "spec_rel": {
+            "title": "Spec Rel",
+            "type": "string"
+          },
+          "expected_spec_sha256": {
+            "title": "Expected Spec Sha256",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "spec_rel",
+          "expected_spec_sha256",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_author_fitted_humanoid_rigArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_fitted_humanoid_rigOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_fitted_humanoid_action",
+      "description": "Author and bake explicit role keys on an existing fitted skeletal rig.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "spec_rel": {
+            "title": "Spec Rel",
+            "type": "string"
+          },
+          "expected_spec_sha256": {
+            "title": "Expected Spec Sha256",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "spec_rel",
+          "expected_spec_sha256",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_author_fitted_humanoid_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_fitted_humanoid_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_partition_skeletal_mesh_export_batches",
+      "description": "Partition a hashed existing skeletal source using identical material copies only. Reconcile image-user additions only from transaction-created equivalent clones on exact owned mesh slots; image content, original consumers, and retention remain exact.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "target_mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Mesh Names",
+            "type": "array"
+          },
+          "max_export_vertices_per_batch": {
+            "default": 24000,
+            "title": "Max Export Vertices Per Batch",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "checkpoint_rel",
+          "target_armature_name",
+          "target_mesh_names"
+        ],
+        "title": "chaosx_blender_hoi4_partition_skeletal_mesh_export_batchesArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_partition_skeletal_mesh_export_batchesOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_partition_static_mesh_export_batches",
+      "description": "Partition a static building into bounded material-backed PDX mesh streams.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "output_blend_rel": {
+            "title": "Output Blend Rel",
+            "type": "string"
+          },
+          "asset_kind": {
+            "title": "Asset Kind",
+            "type": "string"
+          },
+          "max_export_vertices_per_batch": {
+            "default": 60000,
+            "title": "Max Export Vertices Per Batch",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "output_blend_rel",
+          "asset_kind"
+        ],
+        "title": "chaosx_blender_hoi4_partition_static_mesh_export_batchesArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_partition_static_mesh_export_batchesOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_promote_accepted_reimport",
+      "description": "Copy one hash-bound animated reimport proof with metadata-only working approval.\n\n    Require its complete receipt and immutable source .blend/.mesh/.anim hashes,\n    one exact rig and 1-512 exact meshes, and a new sibling checkpoint. Preserve\n    geometry, materials, weights, bones, actions and scale through save/reopen.\n    This does not import actions, author geometry, convert or approve exports.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "validation_rel": {
+            "title": "Validation Rel",
+            "type": "string"
+          },
+          "expected_validation_sha256": {
+            "title": "Expected Validation Sha256",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "target_mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Mesh Names",
+            "type": "array"
+          },
+          "mesh_rel": {
+            "title": "Mesh Rel",
+            "type": "string"
+          },
+          "expected_mesh_sha256": {
+            "title": "Expected Mesh Sha256",
+            "type": "string"
+          },
+          "anim_rel": {
+            "title": "Anim Rel",
+            "type": "string"
+          },
+          "expected_anim_sha256": {
+            "title": "Expected Anim Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "validation_rel",
+          "expected_validation_sha256",
+          "checkpoint_rel",
+          "target_armature_name",
+          "target_mesh_names",
+          "mesh_rel",
+          "expected_mesh_sha256",
+          "anim_rel",
+          "expected_anim_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_promote_accepted_reimportArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_promote_accepted_reimportOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_locator",
+      "description": "Create/update one job-owned bone-parented Empty, never geometry or motion.\n\n    Supply a measured bone-head-local position in checkpoint units and a unit\n    quaternion in x,y,z,w order (Blender axes). The exact rig/bone must exist.\n    The output must be a new .blend beside the input checkpoint; existing or\n    foreign locator names, parents, and checkpoint outputs are rejected.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "parent_bone": {
+            "title": "Parent Bone",
+            "type": "string"
+          },
+          "locator_name": {
+            "title": "Locator Name",
+            "type": "string"
+          },
+          "bone_local_position": {
+            "maxItems": 3,
+            "minItems": 3,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Bone Local Position",
+            "type": "array"
+          },
+          "bone_local_rotation_xyzw": {
+            "maxItems": 4,
+            "minItems": 4,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Bone Local Rotation Xyzw",
+            "type": "array"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "target_armature_name",
+          "parent_bone",
+          "locator_name",
+          "bone_local_position",
+          "bone_local_rotation_xyzw"
+        ],
+        "title": "chaosx_blender_hoi4_author_locatorArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_locatorOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_export_mesh",
+      "description": "Export the approved collection through io_pdx_mesh.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "output_rel": {
+            "title": "Output Rel",
+            "type": "string"
+          },
+          "split_verts": {
+            "default": false,
+            "title": "Split Verts",
+            "type": "boolean"
+          },
+          "checkpoint_rel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Checkpoint Rel"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "output_rel"
+        ],
+        "title": "chaosx_blender_hoi4_export_meshArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_export_meshOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_export_animation",
+      "description": "Export one audited Blender action through io_pdx_mesh.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "action_name": {
+            "title": "Action Name",
+            "type": "string"
+          },
+          "output_rel": {
+            "title": "Output Rel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "action_name",
+          "output_rel"
+        ],
+        "title": "chaosx_blender_hoi4_export_animationArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_export_animationOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_import_animation_action",
+      "description": "Transfer one receipt-verified provider/professional skeletal action by its exact source id.\n\n    Source ids may include balanced parenthetical qualifiers used by ordinary FBX action names.\n    The destination action remains a separately validated safe runtime identifier.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "source_rel": {
+            "title": "Source Rel",
+            "type": "string"
+          },
+          "provenance_rel": {
+            "title": "Provenance Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "source_action_name": {
+            "title": "Source Action Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "target_action_name": {
+            "title": "Target Action Name",
+            "type": "string"
+          },
+          "source_kind": {
+            "enum": [
+              "meshy_animate",
+              "meshy_text_to_motion",
+              "professional_source"
+            ],
+            "title": "Source Kind",
+            "type": "string"
+          },
+          "source_reference_id": {
+            "title": "Source Reference Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "bone_chains": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Bone Chains"
+          },
+          "promote_audited_target": {
+            "default": false,
+            "title": "Promote Audited Target",
+            "type": "boolean"
+          },
+          "source_armature_name": {
+            "default": "",
+            "title": "Source Armature Name",
+            "type": "string"
+          },
+          "root_scale_reference": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Root Scale Reference"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "source_rel",
+          "provenance_rel",
+          "checkpoint_rel",
+          "source_action_name",
+          "target_armature_name",
+          "target_action_name",
+          "source_kind",
+          "source_reference_id",
+          "source_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_import_animation_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_import_animation_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_retime_animation_action",
+      "description": "Retime one verified-source action without changing or replacing its skeletal motion.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_name": {
+            "title": "Action Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "source_fps": {
+            "title": "Source Fps",
+            "type": "number"
+          },
+          "target_fps": {
+            "title": "Target Fps",
+            "type": "number"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "action_name",
+          "target_armature_name",
+          "source_fps",
+          "target_fps"
+        ],
+        "title": "chaosx_blender_hoi4_retime_animation_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_retime_animation_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_locomotion_action",
+      "description": "Author and checkpoint an in-place locomotion action on the approved rig.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_name": {
+            "default": "Armature|Move|baselayer_WORKING",
+            "title": "Action Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_author_locomotion_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_locomotion_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_humanoid_rig",
+      "description": "Create the bounded HOI4 24-bone humanoid rig on approved geometry.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "rig_name": {
+            "default": "",
+            "title": "Rig Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_author_humanoid_rigArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_humanoid_rigOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_patch_existing_humanoid_action_phases",
+      "description": "Clone an existing action and apply explicit authorized manual bone-phase keys in a new sibling; no geometry edits or semantic approval. Reopen receipts prove exact image content and consumers; all image datablocks and packed bytes remain exact, allowing only consumer release caused by accepted removed orphan materials.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "expected_action_sha256": {
+            "title": "Expected Action Sha256",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "source_action_name": {
+            "title": "Source Action Name",
+            "type": "string"
+          },
+          "target_action_name": {
+            "title": "Target Action Name",
+            "type": "string"
+          },
+          "semantic_role": {
+            "title": "Semantic Role",
+            "type": "string"
+          },
+          "source_fps": {
+            "title": "Source Fps",
+            "type": "integer"
+          },
+          "source_fps_base": {
+            "title": "Source Fps Base",
+            "type": "number"
+          },
+          "frame_start": {
+            "title": "Frame Start",
+            "type": "integer"
+          },
+          "frame_end": {
+            "title": "Frame End",
+            "type": "integer"
+          },
+          "phase_frames": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "title": "Phase Frames",
+            "type": "object"
+          },
+          "allowed_bones": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Allowed Bones",
+            "type": "array"
+          },
+          "motion_bone_chain": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Motion Bone Chain",
+            "type": "array"
+          },
+          "bone_patches": {
+            "additionalProperties": true,
+            "title": "Bone Patches",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "expected_action_sha256",
+          "target_armature_name",
+          "source_action_name",
+          "target_action_name",
+          "semantic_role",
+          "source_fps",
+          "source_fps_base",
+          "frame_start",
+          "frame_end",
+          "phase_frames",
+          "allowed_bones",
+          "motion_bone_chain",
+          "bone_patches"
+        ],
+        "title": "chaosx_blender_hoi4_patch_existing_humanoid_action_phasesArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_patch_existing_humanoid_action_phasesOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_humanoid_actions",
+      "description": "Author humanoid actions, optionally preserving a fused two-hand weapon grip.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_names": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Action Names"
+          },
+          "fps": {
+            "default": 24,
+            "title": "Fps",
+            "type": "integer"
+          },
+          "fused_weapon_grip": {
+            "default": false,
+            "title": "Fused Weapon Grip",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_author_humanoid_actionsArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_humanoid_actionsOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_segment_creature_components",
+      "description": "Split a nonhumanoid candidate into loose, rider-region, or semantic spatial components.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "region_mode": {
+            "default": "loose",
+            "title": "Region Mode",
+            "type": "string"
+          },
+          "rider_z_min_fraction": {
+            "default": 0.72,
+            "title": "Rider Z Min Fraction",
+            "type": "number"
+          },
+          "rider_z_max_fraction": {
+            "default": 1.0,
+            "title": "Rider Z Max Fraction",
+            "type": "number"
+          },
+          "rider_x_center_fraction": {
+            "default": 0.5,
+            "title": "Rider X Center Fraction",
+            "type": "number"
+          },
+          "rider_x_half_fraction": {
+            "default": 0.38,
+            "title": "Rider X Half Fraction",
+            "type": "number"
+          },
+          "rider_y_center_fraction": {
+            "default": 0.5,
+            "title": "Rider Y Center Fraction",
+            "type": "number"
+          },
+          "rider_y_half_fraction": {
+            "default": 0.42,
+            "title": "Rider Y Half Fraction",
+            "type": "number"
+          },
+          "rider_object_name": {
+            "default": "elephant_rider_region",
+            "title": "Rider Object Name",
+            "type": "string"
+          },
+          "body_object_name": {
+            "default": "elephant_body_region",
+            "title": "Body Object Name",
+            "type": "string"
+          },
+          "component_prefix": {
+            "default": "elephant_component",
+            "title": "Component Prefix",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_segment_creature_componentsArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_segment_creature_componentsOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_calibrate_creature_scale",
+      "description": "Scale a creature and rider together so the rider matches the measured infantry runtime height.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "rider_component_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Rider Component Names",
+            "type": "array"
+          },
+          "target_rider_runtime_height_m": {
+            "title": "Target Rider Runtime Height M",
+            "type": "number"
+          },
+          "runtime_entity_scale": {
+            "default": 0.8,
+            "title": "Runtime Entity Scale",
+            "type": "number"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "rider_component_names",
+          "target_rider_runtime_height_m"
+        ],
+        "title": "chaosx_blender_hoi4_calibrate_creature_scaleArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_calibrate_creature_scaleOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_inspect_mesh_landmarks",
+      "description": "Write a bounded hash-bound rest-vertex/bone inventory; return compact file evidence only.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "report_rel": {
+            "title": "Report Rel",
+            "type": "string"
+          },
+          "mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Mesh Names",
+            "type": "array"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "report_rel",
+          "mesh_names"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_mesh_landmarksArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_mesh_landmarksOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_explicit_skin",
+      "description": "Repair exact reviewed vertex weights; preserve all other fingerprints and reopen proof.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "skin_spec_rel": {
+            "title": "Skin Spec Rel",
+            "type": "string"
+          },
+          "expected_skin_spec_sha256": {
+            "title": "Expected Skin Spec Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "skin_spec_rel",
+          "expected_skin_spec_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_skinArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_skinOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_preview_explicit_skin_selection",
+      "description": "Read-only exact source-index rest-mesh highlight; red full faces, cyan mixed boundary.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "selection_spec_rel": {
+            "title": "Selection Spec Rel",
+            "type": "string"
+          },
+          "expected_selection_spec_sha256": {
+            "title": "Expected Selection Spec Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "expected_source_sha256",
+          "selection_spec_rel",
+          "expected_selection_spec_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_preview_explicit_skin_selectionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_preview_explicit_skin_selectionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_measured_creature_rig",
+      "description": "Author explicit measured bones and ordered spatial weights on a new sibling checkpoint.\n\n    rig_spec keys: name, bones [{name,parent,head,tail,roll_degrees?,deform?}],\n    weight_regions [{name,min,max,bones,rigid}], body_triangle_target (0 disables),\n    repair_boundaries (boolean). World-space coordinates; first matching region.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "rig_spec": {
+            "additionalProperties": true,
+            "title": "Rig Spec",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "rig_spec"
+        ],
+        "title": "chaosx_blender_hoi4_author_measured_creature_rigArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_measured_creature_rigOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_attach_rigid_component",
+      "description": "Add explicit closed triangular component geometry rigidly bound to one existing bone.\n\n    component_spec: name, bone, material (existing working material), vertices\n    (world coordinates), triangles (indices), loop_uvs (one UV per face corner).\n    All source meshes are preserved and total triangles may not exceed ceiling.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "triangle_ceiling": {
+            "title": "Triangle Ceiling",
+            "type": "integer"
+          },
+          "component_spec": {
+            "additionalProperties": true,
+            "title": "Component Spec",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "target_armature_name",
+          "triangle_ceiling",
+          "component_spec"
+        ],
+        "title": "chaosx_blender_hoi4_attach_rigid_componentArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_attach_rigid_componentOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_measured_creature_action",
+      "description": "Create a new explicit articulated action from caller-authored phases; no canned motion.\n\n    action_spec: name, role, fps, frame_start, frame_end, loop, root_bone,\n    ground_contact (per_frame_lowest_point_1mm or none), phases [{name,frame}],\n    keys {bone:[{frame,rotation_degrees:[x,y,z],location:[x,y,z]}]}.\n    Rotations are absolute local XYZ Euler degrees converted to quaternions.\n    Keys must include every phase; unlisted bones use identity. Source actions\n    are retained, new actions require semantic/deformation review and reimport.\n    ",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "action_spec": {
+            "additionalProperties": true,
+            "title": "Action Spec",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "target_armature_name",
+          "action_spec"
+        ],
+        "title": "chaosx_blender_hoi4_author_measured_creature_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_measured_creature_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_creature_rig",
+      "description": "Create and checkpoint a bounded custom rig for a nonhumanoid creature candidate.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "rider_component_names": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Rider Component Names"
+          },
+          "weight_mode": {
+            "default": "semantic",
+            "title": "Weight Mode",
+            "type": "string"
+          },
+          "rig_name": {
+            "default": "",
+            "title": "Rig Name",
+            "type": "string"
+          },
+          "creature_rig_family": {
+            "default": "elephant",
+            "title": "Creature Rig Family",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel"
+        ],
+        "title": "chaosx_blender_hoi4_author_creature_rigArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_creature_rigOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_author_creature_action",
+      "description": "Author one real skeletal creature action and checkpoint its contact-checked result.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_role": {
+            "title": "Action Role",
+            "type": "string"
+          },
+          "action_name": {
+            "title": "Action Name",
+            "type": "string"
+          },
+          "creature_rig_family": {
+            "default": "elephant",
+            "title": "Creature Rig Family",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "action_role",
+          "action_name"
+        ],
+        "title": "chaosx_blender_hoi4_author_creature_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_author_creature_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_correct_action_grounding",
+      "description": "Apply bounded root/contact correction to a verified-source action; never replace body motion.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_name": {
+            "title": "Action Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "grounding_policy": {
+            "const": "per_frame_root_contact_zero_clearance",
+            "title": "Grounding Policy",
+            "type": "string"
+          },
+          "root_bone": {
+            "default": "Hips",
+            "title": "Root Bone",
+            "type": "string"
+          },
+          "excluded_contact_bones": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Excluded Contact Bones"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "action_name",
+          "target_armature_name",
+          "grounding_policy"
+        ],
+        "title": "chaosx_blender_hoi4_correct_action_groundingArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_correct_action_groundingOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_import_bvh_animation_action",
+      "description": "Native-import and retarget one receipt-verified professional BVH action.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "source_rel": {
+            "title": "Source Rel",
+            "type": "string"
+          },
+          "provenance_rel": {
+            "title": "Provenance Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "source_action_name": {
+            "title": "Source Action Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "target_action_name": {
+            "title": "Target Action Name",
+            "type": "string"
+          },
+          "semantic_role": {
+            "title": "Semantic Role",
+            "type": "string"
+          },
+          "source_reference_id": {
+            "title": "Source Reference Id",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          },
+          "source_fps": {
+            "title": "Source Fps",
+            "type": "number"
+          },
+          "target_fps": {
+            "title": "Target Fps",
+            "type": "number"
+          },
+          "bone_chains": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Bone Chains",
+            "type": "object"
+          },
+          "root_motion_policy": {
+            "const": "in_place_xy_preserve_z",
+            "title": "Root Motion Policy",
+            "type": "string"
+          },
+          "global_scale": {
+            "default": 1.0,
+            "title": "Global Scale",
+            "type": "number"
+          },
+          "axis_forward": {
+            "default": "-Z",
+            "enum": [
+              "X",
+              "Y",
+              "Z",
+              "-X",
+              "-Y",
+              "-Z"
+            ],
+            "title": "Axis Forward",
+            "type": "string"
+          },
+          "axis_up": {
+            "default": "Y",
+            "enum": [
+              "X",
+              "Y",
+              "Z",
+              "-X",
+              "-Y",
+              "-Z"
+            ],
+            "title": "Axis Up",
+            "type": "string"
+          },
+          "promote_audited_target": {
+            "default": false,
+            "title": "Promote Audited Target",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "source_rel",
+          "provenance_rel",
+          "checkpoint_rel",
+          "source_action_name",
+          "target_armature_name",
+          "target_action_name",
+          "semantic_role",
+          "source_reference_id",
+          "source_sha256",
+          "source_fps",
+          "target_fps",
+          "bone_chains",
+          "root_motion_policy"
+        ],
+        "title": "chaosx_blender_hoi4_import_bvh_animation_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_import_bvh_animation_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint",
+      "description": "Checkpoint one accepted action in the existing PDX export coordinate system.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_name": {
+            "title": "Action Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "action_name",
+          "target_armature_name"
+        ],
+        "title": "chaosx_blender_hoi4_prepare_export_coordinate_checkpointArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_prepare_export_coordinate_checkpointOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_offset_action_root",
+      "description": "Apply one bounded root-location offset to an existing action frame range.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "action_name": {
+            "title": "Action Name",
+            "type": "string"
+          },
+          "frame_start": {
+            "title": "Frame Start",
+            "type": "integer"
+          },
+          "frame_end": {
+            "title": "Frame End",
+            "type": "integer"
+          },
+          "offset_source_units": {
+            "title": "Offset Source Units",
+            "type": "number"
+          },
+          "axis_index": {
+            "default": 1,
+            "title": "Axis Index",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "action_name",
+          "frame_start",
+          "frame_end",
+          "offset_source_units"
+        ],
+        "title": "chaosx_blender_hoi4_offset_action_rootArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_offset_action_rootOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_sanitize_runtime_candidate",
+      "description": "Create a runtime checkpoint; weight_only preserves geometry, rig, weapons, and materials.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "output_blend_rel": {
+            "default": "blender/checkpoints/07_runtime_candidate_sanitized.blend",
+            "title": "Output Blend Rel",
+            "type": "string"
+          },
+          "target_height_m": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Target Height M"
+          },
+          "weight_only": {
+            "default": false,
+            "title": "Weight Only",
+            "type": "boolean"
+          },
+          "max_influences_per_vertex": {
+            "default": 4,
+            "title": "Max Influences Per Vertex",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel"
+        ],
+        "title": "chaosx_blender_hoi4_sanitize_runtime_candidateArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_sanitize_runtime_candidateOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_reimport_export",
+      "description": "Reimport exported PDX assets and save proof into the job.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "mesh_rel": {
+            "title": "Mesh Rel",
+            "type": "string"
+          },
+          "anim_rel": {
+            "default": "",
+            "title": "Anim Rel",
+            "type": "string"
+          },
+          "proof_name": {
+            "default": "",
+            "title": "Proof Name",
+            "type": "string"
+          },
+          "stage_default_textures": {
+            "default": true,
+            "title": "Stage Default Textures",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "job_id",
+          "mesh_rel"
+        ],
+        "title": "chaosx_blender_hoi4_reimport_exportArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_reimport_exportOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_save_checkpoint",
+      "description": "Copy a verified checkpoint to a named stage without changing source data.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "stage": {
+            "title": "Stage",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "stage"
+        ],
+        "title": "chaosx_blender_hoi4_save_checkpointArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_save_checkpointOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_explicit_mesh_winding_batch",
+      "description": "Flip only hash-bound per-mesh face lists in one new sibling; exact preconditions, full scene proof and <=0.5 degree native/reopen normals.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "repair_spec_rel": {
+            "title": "Repair Spec Rel",
+            "type": "string"
+          },
+          "expected_repair_spec_sha256": {
+            "title": "Expected Repair Spec Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "repair_spec_rel",
+          "expected_repair_spec_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_mesh_winding_batchArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_mesh_winding_batchOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_explicit_skin_batch",
+      "description": "Replace only exact hash-bound per-mesh expected/replacement weight records; one immutable-source sibling transaction, positive normalized <=4 influences.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "repair_spec_rel": {
+            "title": "Repair Spec Rel",
+            "type": "string"
+          },
+          "expected_repair_spec_sha256": {
+            "title": "Expected Repair Spec Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "repair_spec_rel",
+          "expected_repair_spec_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_skin_batchArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_skin_batchOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_replace_explicit_corner_normals",
+      "description": "Replace explicit mesh/face/corner/vertex unit directions with expected-before proof; preserve every unselected raw/decoded corner exactly in one new sibling.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "repair_spec_rel": {
+            "title": "Repair Spec Rel",
+            "type": "string"
+          },
+          "expected_repair_spec_sha256": {
+            "title": "Expected Repair Spec Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "repair_spec_rel",
+          "expected_repair_spec_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_replace_explicit_corner_normalsArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_replace_explicit_corner_normalsOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_explicit_mesh_winding",
+      "description": "Flip an exact reviewed face list in a new hash-bound sibling; preserve corners, weights, rig and actions.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "mesh_name": {
+            "title": "Mesh Name",
+            "type": "string"
+          },
+          "face_indices": {
+            "items": {
+              "type": "integer"
+            },
+            "title": "Face Indices",
+            "type": "array"
+          },
+          "angular_tolerance_degrees": {
+            "default": 0.25,
+            "title": "Angular Tolerance Degrees",
+            "type": "number"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "mesh_name",
+          "face_indices"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_mesh_windingArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_mesh_windingOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_ground_existing_action",
+      "description": "Copy one reviewed skeletal action and correct true-root location in pure world Z.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "source_action_name": {
+            "title": "Source Action Name",
+            "type": "string"
+          },
+          "expected_action_sha256": {
+            "title": "Expected Action Sha256",
+            "type": "string"
+          },
+          "target_action_name": {
+            "title": "Target Action Name",
+            "type": "string"
+          },
+          "root_bone": {
+            "title": "Root Bone",
+            "type": "string"
+          },
+          "excluded_contact_bones": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Excluded Contact Bones"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "target_armature_name",
+          "source_action_name",
+          "expected_action_sha256",
+          "target_action_name",
+          "root_bone"
+        ],
+        "title": "chaosx_blender_hoi4_ground_existing_actionArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_ground_existing_actionOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_explicit_mesh_patch",
+      "description": "Apply an exact reviewed local face/vertex patch; no inferred fill, rig replacement or source overwrite.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "patch_spec": {
+            "additionalProperties": true,
+            "title": "Patch Spec",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "patch_spec"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_mesh_patchArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_mesh_patchOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_edit_explicit_mesh_vertices",
+      "description": "Apply exact world positions/normalized existing deform-bone weights; verify readback and save/reopen.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "mesh_name": {
+            "title": "Mesh Name",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "vertex_edits": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Vertex Edits",
+            "type": "array"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "mesh_name",
+          "target_armature_name",
+          "vertex_edits"
+        ],
+        "title": "chaosx_blender_hoi4_edit_explicit_mesh_verticesArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_edit_explicit_mesh_verticesOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_bind_existing_pdx_material",
+      "description": "Bind unique hash-bound PDX maps to exact existing slots; preserve source materials and mesh/rig/actions.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Mesh Names",
+            "type": "array"
+          },
+          "source_material_name": {
+            "title": "Source Material Name",
+            "type": "string"
+          },
+          "material_name": {
+            "title": "Material Name",
+            "type": "string"
+          },
+          "material_spec": {
+            "additionalProperties": true,
+            "title": "Material Spec",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "target_mesh_names",
+          "source_material_name",
+          "material_name",
+          "material_spec"
+        ],
+        "title": "chaosx_blender_hoi4_bind_existing_pdx_materialArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_bind_existing_pdx_materialOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_repair_explicit_vertex_remap",
+      "description": "Exact source-vertex fan copies/coincident aliases with explicit corner remaps; no inferred weld or weights.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "remap_spec": {
+            "additionalProperties": true,
+            "title": "Remap Spec",
+            "type": "object"
+          },
+          "angular_tolerance_degrees": {
+            "default": 0.25,
+            "title": "Angular Tolerance Degrees",
+            "type": "number"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "remap_spec"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_vertex_remapArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_repair_explicit_vertex_remapOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_rotate_existing_assembly_yaw",
+      "description": "Rigid cardinal working-assembly yaw with every requested action frame verified; protected source objects excluded.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "object_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Object Names",
+            "type": "array"
+          },
+          "action_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Action Names",
+            "type": "array"
+          },
+          "yaw_degrees": {
+            "title": "Yaw Degrees",
+            "type": "number"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "target_armature_name",
+          "object_names",
+          "action_names",
+          "yaw_degrees"
+        ],
+        "title": "chaosx_blender_hoi4_rotate_existing_assembly_yawArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_rotate_existing_assembly_yawOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_collapse_identity_leaf_joints",
+      "description": "Collapse only constant-identity leaves into direct parents, proving all-frame skin/action/locator preservation.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "blend_rel": {
+            "title": "Blend Rel",
+            "type": "string"
+          },
+          "checkpoint_rel": {
+            "title": "Checkpoint Rel",
+            "type": "string"
+          },
+          "expected_source_sha256": {
+            "title": "Expected Source Sha256",
+            "type": "string"
+          },
+          "target_armature_name": {
+            "title": "Target Armature Name",
+            "type": "string"
+          },
+          "target_mesh_names": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Target Mesh Names",
+            "type": "array"
+          },
+          "bone_aliases": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Bone Aliases",
+            "type": "object"
+          },
+          "action_hashes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Action Hashes",
+            "type": "object"
+          }
+        },
+        "required": [
+          "job_id",
+          "blend_rel",
+          "checkpoint_rel",
+          "expected_source_sha256",
+          "target_armature_name",
+          "target_mesh_names",
+          "bone_aliases",
+          "action_hashes"
+        ],
+        "title": "chaosx_blender_hoi4_collapse_identity_leaf_jointsArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_collapse_identity_leaf_jointsOutput",
+        "type": "object"
+      }
+    },
+    {
+      "name": "chaosx_blender_hoi4_inspect_animation_source",
+      "description": "Read standalone FBX skeleton/action identity in a disposable scene without a target checkpoint.",
+      "inputSchema": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          },
+          "source_rel": {
+            "title": "Source Rel",
+            "type": "string"
+          },
+          "source_sha256": {
+            "title": "Source Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id",
+          "source_rel",
+          "source_sha256"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_animation_sourceArguments",
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "result": {
+            "additionalProperties": true,
+            "title": "Result",
+            "type": "object"
+          }
+        },
+        "required": [
+          "result"
+        ],
+        "title": "chaosx_blender_hoi4_inspect_animation_sourceOutput",
+        "type": "object"
+      }
+    }
+  ]
+}

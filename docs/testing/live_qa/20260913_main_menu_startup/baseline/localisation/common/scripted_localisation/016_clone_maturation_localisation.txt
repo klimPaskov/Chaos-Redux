@@ -1,0 +1,43 @@
+# ============================================================================
+# EVENT 016 - KRG CLONE MATURATION COST PRESENTATION
+# ============================================================================
+# Four independent inclusive affordability colours. Constants and predicates
+# mirror the maturation admission profile; this file never charges payment.
+# Formatting and text icons belong only to the referenced localisation keys.
+# ============================================================================
+
+defined_text = {
+	name = GetCloneMaturationPoliticalPower
+	text = {
+		trigger = { check_variable = { var = political_power value = constant:clone_maturation.political_power compare = greater_than_or_equals } }
+		localisation_key = clone_maturation_political_power
+	}
+	text = { localisation_key = clone_maturation_political_power_blocked }
+}
+
+defined_text = {
+	name = GetCloneMaturationSupportEquipment
+	text = {
+		trigger = { NOT = { has_equipment = { support_equipment < constant:clone_maturation.support_equipment } } }
+		localisation_key = clone_maturation_support_equipment
+	}
+	text = { localisation_key = clone_maturation_support_equipment_blocked }
+}
+
+defined_text = {
+	name = GetCloneMaturationFuel
+	text = {
+		trigger = { NOT = { has_fuel < constant:clone_maturation.fuel } }
+		localisation_key = clone_maturation_fuel
+	}
+	text = { localisation_key = clone_maturation_fuel_blocked }
+}
+
+defined_text = {
+	name = GetCloneMaturationCivilianFactories
+	text = {
+		trigger = { NOT = { num_of_civilian_factories_available_for_projects < constant:clone_maturation.civilian_factories } }
+		localisation_key = clone_maturation_civilian_factories
+	}
+	text = { localisation_key = clone_maturation_civilian_factories_blocked }
+}

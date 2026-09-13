@@ -1,0 +1,17 @@
+{
+  "path": "common/scripted_effects/chaosx_test_country_effects.txt",
+  "baseline_sha256": "31dd25fa36635d3afb414cca32de588ee7db434772e44e0525cd9f03698fe9b8",
+  "after_sha256": "a23d8e36a8d1e71ae6fbfd87409f16e6d58ac4951cf59637341c9d6fce062726",
+  "exact_reversal": true,
+  "before": "chaosx_test = {\r\n\tif = {\r\n\t\tlimit = { tag = CXT }\r\n\t\tif = {\r\n\t\t\tlimit = { NOT = { has_country_flag = chaosx_test_country_initialized } }\r\n\t\t\tchaosx_test_country_initial_setup = yes\r\n\t\t}\r\n\t\telse = {\r\n\t\t\tchaosx_test_country_refresh = yes\r\n\t\t}\r\n\t}\r\n\telse = {\r\n\t\tsave_event_target_as = chaosx_test_origin_country\r\n\t\tcapital_scope = { save_event_target_as = chaosx_test_origin_capital_state }\r\n\t\tCXT = {\r\n\t\t\tchange_tag_from = event_target:chaosx_test_origin_country\r\n\t\t\tannex_country = {\r\n\t\t\t\ttarget = event_target:chaosx_test_origin_country\r\n\t\t\t\ttransfer_troops = no\r\n\t\t\t}\r\n\t\t\tset_capital = {\r\n\t\t\t\tstate = event_target:chaosx_test_origin_capital_state\r\n\t\t\t\tremember_old_capital = no\r\n\t\t\t}\r\n\t\t\tif = {\r\n\t\t\t\tlimit = { NOT = { has_country_flag = chaosx_test_country_initialized } }\r\n\t\t\t\tchaosx_test_country_initial_setup = yes\r\n\t\t\t}\r\n\t\t\telse = {\r\n\t\t\t\tchaosx_test_country_refresh = yes\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n",
+  "after": "chaosx_test = {\r\n\tif = {\r\n\t\tlimit = { tag = CXT }\r\n\t\tcountry_event = { id = chaosx_test_country.1 }\r\n\t}\r\n\telse = {\r\n\t\tif = {\r\n\t\t\tlimit = { any_owned_state = { is_capital = yes } }\r\n\t\t\tsave_event_target_as = chaosx_test_origin_country\r\n\t\t\tcapital_scope = {\r\n\t\t\t\tsave_event_target_as = chaosx_test_origin_capital_state\r\n\t\t\t\ttransfer_state_to = CXT\r\n\t\t\t\tset_state_controller_to = CXT\r\n\t\t\t}\r\n\t\t\t# Resolve the dormant tag only after its capital has activated it.\r\n\t\t\t# The receiver event gives every setup helper ROOT = CXT.\r\n\t\t\tmeta_effect = {\r\n\t\t\t\ttext = {\r\n\t\t\t\t\tCXT = {\r\n\t\t\t\t\t\tset_capital = {\r\n\t\t\t\t\t\t\tstate = event_target:chaosx_test_origin_capital_state\r\n\t\t\t\t\t\t\tremember_old_capital = no\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t\tchange_tag_from = event_target:chaosx_test_origin_country\r\n\t\t\t\t\t\tcountry_event = { id = chaosx_test_country.1 }\r\n\t\t\t\t\t}\r\n\t\t\t\t}\r\n\t\t\t}\r\n\t\t}\r\n\t}\r\n}\r\n",
+  "new_receiver_event": {
+    "path": "events/chaosx_test_country.txt",
+    "sha256": "eac04df731e00b2591eebd7b576c7438eb838574e254b6e28696961c6eea3dde"
+  },
+  "capital_camp_fixture": {
+    "before": "\tcapital_scope = {\r\n\t\tgenocide_register_concentration_site_for_root = yes\r\n",
+    "after": "\tcapital_scope = {\r\n\t\t# The capital hosts CXT's own camp fixture, including on inherited sites.\r\n\t\tset_variable = { genocide_responsible_country = PREV }\r\n\t\tgenocide_register_concentration_site_for_root = yes\r\n",
+    "reason": "Explicit CXT test-fixture responsibility before registration; inherited State variables otherwise retain the annexed origin pointer"
+  }
+}

@@ -1,0 +1,93 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 MENGELE COMPUTATION INCIDENT RECOVERY DECISION
+# ============================================================================
+# One private paid technical response for the Mengele Computation corrupted-
+# model incident. The decision is reopened under the existing
+# `mengele_clone_army_category` and remains visible while the private incident
+# is active, including the short invalid-provider window needed for its cancel
+# and refund path.
+#
+# The private effect owns Political Power, Support Equipment, and fuel through
+# one exact receipt. This decision owns the two-civilian-factory reservation
+# through its native modifier. No trucks, manpower, Kruger state, public meter,
+# native project, or learned knowledge is touched here.
+# ============================================================================
+
+# Native decision modifier fields reject `constant:` tokens in the current
+# engine surface, so this file-scoped value mirrors the existing technical
+# response constant without creating a second gameplay tuning source.
+@CR_SC_MENGELE_COMPUTATION_INCIDENT_RECOVERY_FACTORIES = 2
+
+mengele_clone_army_category = {
+	mengele_event016_computation_incident_recovery = {
+		icon = GFX_decision_brilliant_scientist_project_computational_mathematics_prototype
+		visible = {
+			hidden_trigger = {
+				brilliant_scientist_mengele_computation_incident_is_active = yes
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_incident_recovery_requirements_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_incident_recovery_can_start = yes
+				}
+			}
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_incident_recovery_cost_blocked_tt
+				hidden_trigger = {
+					brilliant_scientist_mengele_computation_incident_recovery_can_pay = yes
+				}
+			}
+		}
+		custom_cost_trigger = {
+			brilliant_scientist_mengele_computation_incident_recovery_can_pay = yes
+		}
+		custom_cost_text = mengele_event016_computation_incident_recovery_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_technical_political_power
+		modifier = {
+			civilian_factory_use = @CR_SC_MENGELE_COMPUTATION_INCIDENT_RECOVERY_FACTORIES
+		}
+		days_remove = constant:brilliant_scientist_project_board.response_technical_days
+		complete_effect = {
+			hidden_effect = {
+				brilliant_scientist_mengele_begin_computation_incident_recovery = yes
+			}
+			if = {
+				limit = { brilliant_scientist_mengele_computation_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_computation_incident_recovery_started_tt
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_computation_incident_recovery_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { brilliant_scientist_mengele_computation_incident_is_active = yes }
+						NOT = { brilliant_scientist_mengele_computation_incident_recovery_is_active = yes }
+						NOT = { brilliant_scientist_mengele_computation_incident_provider_is_valid = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_computation_incident_recovery_cancelled_tt
+			hidden_effect = {
+				brilliant_scientist_mengele_cancel_computation_incident_recovery = yes
+			}
+		}
+		remove_effect = {
+			hidden_effect = {
+				brilliant_scientist_mengele_finish_computation_incident_recovery = yes
+			}
+			if = {
+				limit = { check_variable = { var = mengele_event016_computation_incident_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_computation_incident_recovery_effect_tt
+			}
+		}
+		ai_will_do = {
+			base = constant:brilliant_scientist_project_board.ai_urgent
+		}
+	}
+}

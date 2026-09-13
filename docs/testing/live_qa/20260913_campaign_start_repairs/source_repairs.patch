@@ -1,0 +1,238 @@
+--- a/common/on_actions/genocide_crisis_on_actions.txt
++++ b/common/on_actions/genocide_crisis_on_actions.txt
+@@ -31,8 +31,8 @@
+ 				limit = { exists = yes }
+ 				camp_rework_run_versioned_migration = yes
+ 				camp_admin_register_cxt_content = yes
++				camp_occ_historical_setup = yes
+ 			}
+-			camp_occ_historical_setup = yes
+ 		}
+ 	}
+ 	on_daily_CXT = {
+--- a/common/scripted_effects/camp_administration_occupation_effects.md
++++ b/common/scripted_effects/camp_administration_occupation_effects.md
+@@ -27,7 +27,7 @@
+ 
+ | Helper | Scope and inputs | Outputs and side effects | Call sites |
+ |---|---|---|---|
+-| `camp_occ_historical_setup` | Existing startup chain, no ROOT dependency | Once-only explicit country origin snapshots and GER/JAP controlled-state registration | Existing package startup, integration owner |
++| `camp_occ_historical_setup` | Country invocation in existing startup chain; no ROOT dependency | Once-only explicit country origin snapshots and GER/JAP controlled-state registration | Existing package startup, integration owner |
+ | `camp_occ_seed_origin = yes` | Historical country; required temporary origin ceiling | Fixed European owned-state denominator, per-state source ceilings and source-country unassigned residual | Explicit country calls inside setup |
+ | `camp_occ_track_controlled_state` | Actual state | Adds state to current GER/JAP authority's eligible array and attempts enrollment | Initial controlled-state scan and control-change callback |
+ | `camp_occ_on_state_control_changed` | Actual changed state | Closes former authority row when appropriate, tracks current eligible controller, preserves ROOT and event targets | Existing `genocide_on_state_control_changed`, integration owner |
+--- a/common/scripted_triggers/032_missiles_triggers.txt
++++ b/common/scripted_triggers/032_missiles_triggers.txt
+@@ -141,7 +141,7 @@
+ # -----------------------------------------------------------------------------
+ 
+ missiles_state_is_valid_site_target = {
+-	exists = yes
++	scope_exists = yes
+ 	impassable = no
+ 	is_owned_by = ROOT
+ 	is_controlled_by = ROOT
+@@ -161,7 +161,7 @@
+ }
+ 
+ missiles_site_can_launch = {
+-	exists = yes
++	scope_exists = yes
+ 	impassable = no
+ 	OR = {
+ 		has_state_flag = missiles_site_active
+@@ -196,7 +196,7 @@
+ }
+ 
+ missiles_site_can_upgrade = {
+-	exists = yes
++	scope_exists = yes
+ 	NOT = { has_state_flag = missiles_site_scuttled }
+ 	NOT = { has_state_flag = missiles_site_captured }
+ 	NOT = { has_state_flag = missiles_site_rogue }
+@@ -216,7 +216,7 @@
+ }
+ 
+ missiles_site_can_repair = {
+-	exists = yes
++	scope_exists = yes
+ 	OR = {
+ 		has_state_flag = missiles_site_damaged
+ 		has_state_flag = missiles_site_compromised
+@@ -226,7 +226,7 @@
+ }
+ 
+ missiles_site_is_captured = {
+-	exists = yes
++	scope_exists = yes
+ 	has_state_flag = missiles_site_captured
+ 	NOT = { has_state_flag = missiles_site_scuttled }
+ }
+@@ -254,7 +254,7 @@
+ }
+ 
+ missiles_target_state_is_valid = {
+-	exists = yes
++	scope_exists = yes
+ 	impassable = no
+ 	NOT = { is_owned_by = ROOT }
+ 	OR = {
+@@ -525,7 +525,7 @@
+ }
+ 
+ missiles_site_can_host_rogue_incident = {
+-	exists = yes
++	scope_exists = yes
+ 	NOT = { has_state_flag = missiles_site_scuttled }
+ 	OR = {
+ 		has_state_flag = missiles_site_active
+@@ -541,7 +541,7 @@
+ }
+ 
+ missiles_state_has_registered_site = {
+-	exists = yes
++	scope_exists = yes
+ 	NOT = { has_state_flag = missiles_site_scuttled }
+ 	has_variable = missiles_site_capacity
+ 	OR = {
+--- a/common/decisions/039_murder_mystery_decisions.txt
++++ b/common/decisions/039_murder_mystery_decisions.txt
+@@ -1850,9 +1850,15 @@
+ 		}
+ 		available = {
+ 			murder_mystery_selected_cell_is_mature = yes
+-			event_target:murder_mystery_assassin_state = {
+-				murder_mystery_action_is_available = yes
+-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
++			if = {
++				limit = { has_event_target = murder_mystery_assassin_state }
++				event_target:murder_mystery_assassin_state = {
++					murder_mystery_action_is_available = yes
++					has_political_power > constant:murder_mystery_action_cost.political_power_gate
++				}
++				else = {
++					always = no
++				}
+ 			}
+ 		}
+ 		days_re_enable = constant:murder_mystery_cooldown.action_days
+@@ -2047,9 +2053,15 @@
+ 			NOT = { has_active_mission = murder_mystery_synchronize_uprisings }
+ 		}
+ 		available = {
+-			event_target:murder_mystery_assassin_state = {
+-				murder_mystery_action_is_available = yes
+-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
++			if = {
++				limit = { has_event_target = murder_mystery_assassin_state }
++				event_target:murder_mystery_assassin_state = {
++					murder_mystery_action_is_available = yes
++					has_political_power > constant:murder_mystery_action_cost.political_power_gate
++				}
++				else = {
++					always = no
++				}
+ 			}
+ 			murder_mystery_selected_cell_is_valid = yes
+ 		}
+@@ -2509,9 +2521,15 @@
+ 			NOT = { has_active_mission = murder_mystery_seize_depot_rail }
+ 		}
+ 		available = {
+-			event_target:murder_mystery_assassin_state = {
+-				murder_mystery_action_is_available = yes
+-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
++			if = {
++				limit = { has_event_target = murder_mystery_assassin_state }
++				event_target:murder_mystery_assassin_state = {
++					murder_mystery_action_is_available = yes
++					has_political_power > constant:murder_mystery_action_cost.political_power_gate
++				}
++				else = {
++					always = no
++				}
+ 			}
+ 		}
+ 		days_re_enable = constant:murder_mystery_cooldown.action_days
+@@ -2545,9 +2563,15 @@
+ 			NOT = { has_active_mission = murder_mystery_seize_depot_rail }
+ 		}
+ 		available = {
+-			event_target:murder_mystery_assassin_state = {
+-				murder_mystery_action_is_available = yes
+-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
++			if = {
++				limit = { has_event_target = murder_mystery_assassin_state }
++				event_target:murder_mystery_assassin_state = {
++					murder_mystery_action_is_available = yes
++					has_political_power > constant:murder_mystery_action_cost.political_power_gate
++				}
++				else = {
++					always = no
++				}
+ 			}
+ 		}
+ 		days_re_enable = constant:murder_mystery_cooldown.action_days
+@@ -2583,9 +2607,15 @@
+ 			NOT = { has_active_mission = murder_mystery_seize_depot_rail }
+ 		}
+ 		available = {
+-			event_target:murder_mystery_assassin_state = {
+-				murder_mystery_action_is_available = yes
+-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
++			if = {
++				limit = { has_event_target = murder_mystery_assassin_state }
++				event_target:murder_mystery_assassin_state = {
++					murder_mystery_action_is_available = yes
++					has_political_power > constant:murder_mystery_action_cost.political_power_gate
++				}
++				else = {
++					always = no
++				}
+ 			}
+ 		}
+ 		days_re_enable = constant:murder_mystery_cooldown.action_days
+@@ -2621,9 +2651,15 @@
+ 			NOT = { has_active_mission = murder_mystery_seize_depot_rail }
+ 		}
+ 		available = {
+-			event_target:murder_mystery_assassin_state = {
+-				murder_mystery_action_is_available = yes
+-				has_political_power > constant:murder_mystery_action_cost.political_power_gate
++			if = {
++				limit = { has_event_target = murder_mystery_assassin_state }
++				event_target:murder_mystery_assassin_state = {
++					murder_mystery_action_is_available = yes
++					has_political_power > constant:murder_mystery_action_cost.political_power_gate
++				}
++				else = {
++					always = no
++				}
+ 			}
+ 		}
+ 		days_re_enable = constant:murder_mystery_cooldown.action_days
+--- a/common/scripted_guis/reference_capture_fixtures.txt
++++ b/common/scripted_guis/reference_capture_fixtures.txt
+@@ -1,9 +1,9 @@
+-# Temporary MCP reference capture only; removed after rendering.
++# MCP reference-capture fixture; inactive during gameplay.
+ scripted_gui = {
+ 	capture_scientist_roster = {
+ 		context_type = player_context
+ 		window_name = capture_scientist_scientist_roster_window
+-		visible = { always = yes }
++		visible = { always = no }
+ 		dynamic_lists = {
+ 			capture_scientist_scientist_list = {
+ 				array = capture_scientists
+--- a/.agents/skills/chaos-redux-scripted-gui/SKILL.md
++++ b/.agents/skills/chaos-redux-scripted-gui/SKILL.md
+@@ -115,6 +115,8 @@
+ 
+ Check that the player can identify the current state, main objective or pressure, next meaningful action, and its consequences without cross-referencing documentation. Keep related status, thresholds, costs, blocked reasons, and actions together, with concise labels and precise tooltips. Label counters truthfully as cumulative, periodic, or latest-receipt values, and distinguish all-cause totals from contributions attributed to the owning system. Show retained reserves as non-consumed requirements, separate from consumed costs, and make the actual debit clear. Apply the skill's mechanic-value/action budgets without using extra tabs to evade them. For gameplay controls, obtain the decision owner's evidence that shown costs and requirements match selection checks, payment, effect, AI equivalent, and cleanup; a visual pass cannot establish gameplay balance. For information-only or navigation controls, verify their declared purpose and enabled/selected behavior instead of demanding a gameplay effect. Report any out-of-scope shared-interface problem to the parent without editing it.
+ 
++Reference-capture bindings must default to `visible = { always = no }` in engine-loaded files; preview scenarios may explicitly supply visibility for rendering. Keep capture-only fixtures inactive after reference work, and check their bindings when an unrequested window appears at campaign start.
++
+ ## Handoff and completion
+ 
+ Return exact changed files/identifiers, source precedents, reference images and acceptance basis, image-to-element/background mapping, justified native adaptations, asset/state coverage, and matched MCP before/after artifacts with scenario/source identities. Include the intermediate MCP preview evidence and corrections, completed visual-review findings, content/action budget assessment, and the decision owner's action-integrity evidence where gameplay controls exist. List blockers, unresolved diagnostics, missing assets, unavailable states, remaining parent integration, and every simplification explicitly. If none, say so with the evidence. Do not claim a complete GUI from source checks, a successful rewrite, or a single normal-state screenshot. The parent reviews final integration. Live-game validation belongs to the user under `AGENTS.md` and is not replaced by MCP evidence.

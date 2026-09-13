@@ -1,0 +1,905 @@
+{
+  "method": "Strict interpreter of the actual before and candidate quote/gate/payment ASTs, modeling intended pre-migration substitution, Decimal nearest rounding, and shared unscoped temporaries. Not a HOI4 engine run.",
+  "source_preservation": [
+    {
+      "file": "common/decisions/camp_repression_generic_decisions.txt",
+      "calls": 12,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_effects/camp_repression_action_dispatcher_effects.txt",
+      "calls": 14,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_effects/camp_repression_rework_effects.txt",
+      "calls": 12,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_effects/camp_repression_site_cost_effects.txt",
+      "calls": 5,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_triggers/camp_repression_site_cost_triggers.txt",
+      "calls": 5,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_guis/camp_repression_ledger_scripted_gui.txt",
+      "calls": 6,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_localisation/camp_repression_ledger_scripted_localisation.txt",
+      "calls": 6,
+      "unrelated_AST_unchanged": true
+    },
+    {
+      "file": "common/scripted_localisation/camp_repression_site_cost_scripted_localisation.txt",
+      "calls": 54,
+      "unrelated_AST_unchanged": true
+    }
+  ],
+  "scenarios": [
+    {
+      "levels": [
+        0,
+        0,
+        0
+      ],
+      "action": "labor",
+      "payments": [
+        [
+          "political_power",
+          "-12"
+        ],
+        [
+          "num_equipment@motorized_equipment_1",
+          "-8"
+        ],
+        [
+          "num_equipment@train_equipment_1",
+          "-1"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-12"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "num_equipment@motorized_equipment_1",
+        "num_equipment@train_equipment_1",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        0
+      ],
+      "action": "inspect",
+      "payments": [
+        [
+          "political_power",
+          "-13"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        0
+      ],
+      "action": "dismantle",
+      "payments": [
+        [
+          "political_power",
+          "-18"
+        ],
+        [
+          "manpower",
+          "-350"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-5"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        0
+      ],
+      "action": "evidence",
+      "payments": [
+        [
+          "political_power",
+          "-12"
+        ],
+        [
+          "manpower",
+          "-150"
+        ],
+        [
+          "command_power",
+          "-3"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-3"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "command_power",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        0
+      ],
+      "action": "restricted",
+      "payments": [
+        [
+          "political_power",
+          "-23"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        1,
+        0,
+        0
+      ],
+      "action": "labor",
+      "payments": [
+        [
+          "political_power",
+          "-12"
+        ],
+        [
+          "num_equipment@motorized_equipment_1",
+          "-8"
+        ],
+        [
+          "num_equipment@train_equipment_1",
+          "-1"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-12"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "num_equipment@motorized_equipment_1",
+        "num_equipment@train_equipment_1",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        1,
+        0,
+        0
+      ],
+      "action": "inspect",
+      "payments": [
+        [
+          "political_power",
+          "-13"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        1,
+        0,
+        0
+      ],
+      "action": "dismantle",
+      "payments": [
+        [
+          "political_power",
+          "-18"
+        ],
+        [
+          "manpower",
+          "-350"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-5"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        1,
+        0,
+        0
+      ],
+      "action": "evidence",
+      "payments": [
+        [
+          "political_power",
+          "-12"
+        ],
+        [
+          "manpower",
+          "-150"
+        ],
+        [
+          "command_power",
+          "-3"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-3"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "command_power",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        1,
+        0,
+        0
+      ],
+      "action": "restricted",
+      "payments": [
+        [
+          "political_power",
+          "-23"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        5,
+        0,
+        0
+      ],
+      "action": "labor",
+      "payments": [
+        [
+          "political_power",
+          "-20"
+        ],
+        [
+          "num_equipment@motorized_equipment_1",
+          "-40"
+        ],
+        [
+          "num_equipment@train_equipment_1",
+          "-5"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-60"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "num_equipment@motorized_equipment_1",
+        "num_equipment@train_equipment_1",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        5,
+        0,
+        0
+      ],
+      "action": "inspect",
+      "payments": [
+        [
+          "political_power",
+          "-25"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        5,
+        0,
+        0
+      ],
+      "action": "dismantle",
+      "payments": [
+        [
+          "political_power",
+          "-30"
+        ],
+        [
+          "manpower",
+          "-750"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-25"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        5,
+        0,
+        0
+      ],
+      "action": "evidence",
+      "payments": [
+        [
+          "political_power",
+          "-20"
+        ],
+        [
+          "manpower",
+          "-350"
+        ],
+        [
+          "command_power",
+          "-7"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-15"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "command_power",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        5,
+        0,
+        0
+      ],
+      "action": "restricted",
+      "payments": [
+        [
+          "political_power",
+          "-35"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        3
+      ],
+      "action": "labor",
+      "payments": [
+        [
+          "political_power",
+          "-16"
+        ],
+        [
+          "num_equipment@motorized_equipment_1",
+          "-24"
+        ],
+        [
+          "num_equipment@train_equipment_1",
+          "-3"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-36"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "num_equipment@motorized_equipment_1",
+        "num_equipment@train_equipment_1",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        3
+      ],
+      "action": "inspect",
+      "payments": [
+        [
+          "political_power",
+          "-19"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        3
+      ],
+      "action": "dismantle",
+      "payments": [
+        [
+          "political_power",
+          "-24"
+        ],
+        [
+          "manpower",
+          "-550"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-15"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        3
+      ],
+      "action": "evidence",
+      "payments": [
+        [
+          "political_power",
+          "-16"
+        ],
+        [
+          "manpower",
+          "-250"
+        ],
+        [
+          "command_power",
+          "-5"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-9"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "command_power",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        0,
+        3
+      ],
+      "action": "restricted",
+      "payments": [
+        [
+          "political_power",
+          "-29"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        2,
+        1,
+        2
+      ],
+      "action": "labor",
+      "payments": [
+        [
+          "political_power",
+          "-20"
+        ],
+        [
+          "num_equipment@motorized_equipment_1",
+          "-40"
+        ],
+        [
+          "num_equipment@train_equipment_1",
+          "-5"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-60"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "num_equipment@motorized_equipment_1",
+        "num_equipment@train_equipment_1",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        2,
+        1,
+        2
+      ],
+      "action": "inspect",
+      "payments": [
+        [
+          "political_power",
+          "-25"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        2,
+        1,
+        2
+      ],
+      "action": "dismantle",
+      "payments": [
+        [
+          "political_power",
+          "-30"
+        ],
+        [
+          "manpower",
+          "-750"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-25"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        2,
+        1,
+        2
+      ],
+      "action": "evidence",
+      "payments": [
+        [
+          "political_power",
+          "-20"
+        ],
+        [
+          "manpower",
+          "-350"
+        ],
+        [
+          "command_power",
+          "-7"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-15"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "command_power",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        2,
+        1,
+        2
+      ],
+      "action": "restricted",
+      "payments": [
+        [
+          "political_power",
+          "-35"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        1,
+        0
+      ],
+      "action": "labor",
+      "payments": [
+        [
+          "political_power",
+          "-12"
+        ],
+        [
+          "num_equipment@motorized_equipment_1",
+          "-8"
+        ],
+        [
+          "num_equipment@train_equipment_1",
+          "-1"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-12"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "num_equipment@motorized_equipment_1",
+        "num_equipment@train_equipment_1",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        1,
+        0
+      ],
+      "action": "inspect",
+      "payments": [
+        [
+          "political_power",
+          "-13"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        1,
+        0
+      ],
+      "action": "dismantle",
+      "payments": [
+        [
+          "political_power",
+          "-18"
+        ],
+        [
+          "manpower",
+          "-350"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-5"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        1,
+        0
+      ],
+      "action": "evidence",
+      "payments": [
+        [
+          "political_power",
+          "-12"
+        ],
+        [
+          "manpower",
+          "-150"
+        ],
+        [
+          "command_power",
+          "-3"
+        ],
+        [
+          "num_equipment@support_equipment_1",
+          "-3"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power",
+        "manpower",
+        "command_power",
+        "num_equipment@support_equipment_1"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    },
+    {
+      "levels": [
+        0,
+        1,
+        0
+      ],
+      "action": "restricted",
+      "payments": [
+        [
+          "political_power",
+          "-23"
+        ]
+      ],
+      "exact_gate": true,
+      "single_resource_shortages_rejected": [
+        "political_power"
+      ],
+      "single_debit_each": true,
+      "before_after_equal": true
+    }
+  ],
+  "repeated_state_ids": [
+    1,
+    2,
+    1,
+    2
+  ],
+  "repeated_inspection_pp": [
+    "13",
+    "25",
+    "13",
+    "25"
+  ],
+  "runtime_limits": [
+    "Engine parsing and temporary lifetime across helper/limit/localisation contexts remain parent-owned.",
+    "Missing or invalid dynamic state pointers have no invented model behavior or fallback.",
+    "MCP fixtures supply presentation values and do not execute quote or payment logic."
+  ],
+  "source": "live"
+}

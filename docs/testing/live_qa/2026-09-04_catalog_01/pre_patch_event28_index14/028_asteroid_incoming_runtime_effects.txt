@@ -1,0 +1,1939 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 028 ASTEROID INCOMING RUNTIME
+# ============================================================================
+# This file owns the global Event 028 transaction after the event dispatcher
+# has selected the event. The transaction is deliberately state-targeted and
+# event-driven: one locked coordinate, one breadth-first footprint, one receipt
+# per state, one report per affected country, and no periodic world scan.
+# ============================================================================
+
+# ============================================================================
+# TARGET POOL AND TWO-DAY LOCK
+# ============================================================================
+
+# STATE SCOPE. Counts unique states reached within three shortest land-state
+# adjacency steps without writing damage profiles or state flags. The result
+# supplies the largest target-suitability component and applies the accepted
+# isolation penalty when the surrounding graph is unusually small.
+asteroid_incoming_score_target_reach = {
+	clear_array = global.asteroid_incoming_target_score_seen_states
+	clear_array = global.asteroid_incoming_target_score_frontier_states
+	clear_array = global.asteroid_incoming_target_score_next_frontier_states
+	add_to_array = { array = global.asteroid_incoming_target_score_seen_states value = THIS }
+	add_to_array = { array = global.asteroid_incoming_target_score_frontier_states value = THIS }
+	set_temp_variable = { asteroid_incoming_target_score_ring_loop_end = constant:asteroid_incoming_runtime.maximum_footprint_ring }
+	add_to_temp_variable = { asteroid_incoming_target_score_ring_loop_end = constant:asteroid_incoming_runtime.loop_increment }
+	for_loop_effect = {
+		start = constant:asteroid_incoming_runtime.loop_increment
+		end = asteroid_incoming_target_score_ring_loop_end
+		value = asteroid_incoming_target_score_ring_loop_index
+		asteroid_incoming_score_next_reach_ring = yes
+	}
+	set_temp_variable = { asteroid_incoming_target_reach_count = global.asteroid_incoming_target_score_seen_states^num }
+	subtract_from_temp_variable = { asteroid_incoming_target_reach_count = constant:asteroid_incoming_runtime.loop_increment }
+	set_temp_variable = { asteroid_incoming_target_reach_points = asteroid_incoming_target_reach_count }
+	multiply_temp_variable = { asteroid_incoming_target_reach_points = constant:asteroid_incoming_runtime.target_score_reachable_state }
+	add_to_temp_variable = { asteroid_incoming_target_score = asteroid_incoming_target_reach_points }
+	if = {
+		limit = {
+			check_variable = {
+				var = asteroid_incoming_target_reach_count
+				value = constant:asteroid_incoming_runtime.target_score_isolation_threshold
+				compare = less_than
+			}
+		}
+		multiply_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_target.isolation_multiplier }
+	}
+	clear_array = global.asteroid_incoming_target_score_seen_states
+	clear_array = global.asteroid_incoming_target_score_frontier_states
+	clear_array = global.asteroid_incoming_target_score_next_frontier_states
+}
+
+# ANY SCOPE. Advances the bounded target-suitability breadth-first search by
+# one land-state ring. Empty and impassable states remain graph carriers.
+asteroid_incoming_score_next_reach_ring = {
+	clear_array = global.asteroid_incoming_target_score_next_frontier_states
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_target_score_frontier_states
+		every_neighbor_state = {
+			limit = {
+				scope_exists = yes
+				NOT = { is_in_array = { array = global.asteroid_incoming_target_score_seen_states value = THIS } }
+			}
+			add_to_array = { array = global.asteroid_incoming_target_score_seen_states value = THIS }
+			add_to_array = { array = global.asteroid_incoming_target_score_next_frontier_states value = THIS }
+		}
+	}
+	clear_array = global.asteroid_incoming_target_score_frontier_states
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_target_score_next_frontier_states
+		add_to_array = { array = global.asteroid_incoming_target_score_frontier_states value = THIS }
+	}
+}
+
+asteroid_incoming_select_best_target_state = {
+	clear_global_event_target = asteroid_incoming_candidate_state
+	set_temp_variable = { asteroid_incoming_best_target_score = constant:asteroid_incoming_runtime.zero }
+	every_owned_state = {
+		limit = {
+			asteroid_incoming_state_is_valid_target = yes
+			is_owned_and_controlled_by = PREV
+			OR = {
+				NOT = { has_global_flag = asteroid_incoming_prefer_different_continent }
+				NOT = { is_on_same_continent_as = event_target:asteroid_incoming_target_1_state }
+			}
+		}
+		set_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_base }
+		if = {
+			limit = { is_capital = yes }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_capital }
+		}
+		if = {
+			limit = { victory_points > constant:asteroid_incoming_target.minimum_victory_points }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_victory_point }
+		}
+		if = {
+			limit = { state_population_k > constant:asteroid_incoming_target.large_population_k }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_population_large }
+		}
+		else_if = {
+			limit = { state_population_k > constant:asteroid_incoming_target.medium_population_k }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_population_medium }
+		}
+		if = {
+			limit = { industrial_complex > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_industry }
+		}
+		if = {
+			limit = { arms_factory > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_industry }
+		}
+		if = {
+			limit = { supply_node > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_supply }
+		}
+		if = {
+			limit = { rail_way > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_rail }
+		}
+		if = {
+			limit = { infrastructure > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_infrastructure }
+		}
+		if = {
+			limit = { air_base > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_air_base }
+		}
+		if = {
+			limit = { naval_base > constant:asteroid_incoming_target.minimum_building_level }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_naval_base }
+		}
+		every_neighbor_state = {
+			limit = { impassable = no }
+			add_to_temp_variable = { asteroid_incoming_target_score = constant:asteroid_incoming_runtime.target_score_neighbor }
+		}
+		asteroid_incoming_score_target_reach = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = asteroid_incoming_target_score
+					value = asteroid_incoming_best_target_score
+					compare = greater_than
+				}
+			}
+			save_global_event_target_as = asteroid_incoming_candidate_state
+			set_temp_variable = { asteroid_incoming_best_target_score = asteroid_incoming_target_score }
+		}
+	}
+}
+
+# COUNTRY SCOPE. Records the already selected second-country pair. Keeping this
+# in one helper lets the diversity-preferred and valid fallback branches share
+# exactly the same identity and state-score contract.
+asteroid_incoming_store_target_two = {
+	save_global_event_target_as = asteroid_incoming_target_2_country
+	save_global_event_target_as = asteroid_incoming_candidate_country
+	add_to_array = { array = global.asteroid_incoming_target_countries value = THIS }
+	asteroid_incoming_select_best_target_state = yes
+	if = {
+		limit = { has_event_target = asteroid_incoming_candidate_state }
+		event_target:asteroid_incoming_candidate_state = {
+			save_global_event_target_as = asteroid_incoming_target_2_state
+			set_variable = { global.asteroid_incoming_target_2_state_id = THIS.id }
+		}
+	}
+	set_variable = { global.asteroid_incoming_target_2_country_id = THIS.id }
+}
+
+asteroid_incoming_clear_target_pool = {
+	clr_global_flag = asteroid_incoming_prefer_different_continent
+	clear_array = global.asteroid_incoming_target_countries
+	clear_global_event_target = asteroid_incoming_target_1_country
+	clear_global_event_target = asteroid_incoming_target_1_state
+	clear_global_event_target = asteroid_incoming_target_2_country
+	clear_global_event_target = asteroid_incoming_target_2_state
+	clear_global_event_target = asteroid_incoming_target_3_country
+	clear_global_event_target = asteroid_incoming_target_3_state
+	clear_global_event_target = asteroid_incoming_candidate_country
+	clear_global_event_target = asteroid_incoming_candidate_state
+	set_variable = { global.asteroid_incoming_target_pool_valid = 0 }
+	set_variable = { global.asteroid_incoming_target_pool_count = 0 }
+}
+
+asteroid_incoming_build_target_pool = {
+	asteroid_incoming_clear_target_pool = yes
+	random_country = {
+		limit = {
+			asteroid_incoming_country_is_valid_target = yes
+			NOT = { is_in_array = { array = global.asteroid_incoming_target_countries value = THIS } }
+		}
+		save_global_event_target_as = asteroid_incoming_target_1_country
+		save_global_event_target_as = asteroid_incoming_candidate_country
+		add_to_array = { array = global.asteroid_incoming_target_countries value = THIS }
+		asteroid_incoming_select_best_target_state = yes
+		if = {
+			limit = { has_event_target = asteroid_incoming_candidate_state }
+			event_target:asteroid_incoming_candidate_state = {
+				save_global_event_target_as = asteroid_incoming_target_1_state
+				set_variable = { global.asteroid_incoming_target_1_state_id = THIS.id }
+			}
+		}
+		set_variable = { global.asteroid_incoming_target_1_country_id = THIS.id }
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_target_1_state }
+		set_global_flag = asteroid_incoming_prefer_different_continent
+		random_country = {
+			limit = {
+				asteroid_incoming_country_is_valid_target = yes
+				NOT = { is_in_array = { array = global.asteroid_incoming_target_countries value = THIS } }
+				any_owned_state = {
+					asteroid_incoming_state_is_valid_target = yes
+					is_owned_and_controlled_by = PREV
+					NOT = { is_on_same_continent_as = event_target:asteroid_incoming_target_1_state }
+				}
+			}
+			asteroid_incoming_store_target_two = yes
+		}
+		clr_global_flag = asteroid_incoming_prefer_different_continent
+	}
+	if = {
+		limit = { NOT = { has_event_target = asteroid_incoming_target_2_country } }
+		random_country = {
+			limit = {
+				asteroid_incoming_country_is_valid_target = yes
+				NOT = { is_in_array = { array = global.asteroid_incoming_target_countries value = THIS } }
+			}
+			asteroid_incoming_store_target_two = yes
+		}
+	}
+	random_country = {
+		limit = {
+			asteroid_incoming_country_is_valid_target = yes
+			NOT = { is_in_array = { array = global.asteroid_incoming_target_countries value = THIS } }
+		}
+		save_global_event_target_as = asteroid_incoming_target_3_country
+		save_global_event_target_as = asteroid_incoming_candidate_country
+		add_to_array = { array = global.asteroid_incoming_target_countries value = THIS }
+		asteroid_incoming_select_best_target_state = yes
+		if = {
+			limit = { has_event_target = asteroid_incoming_candidate_state }
+			event_target:asteroid_incoming_candidate_state = {
+				save_global_event_target_as = asteroid_incoming_target_3_state
+				set_variable = { global.asteroid_incoming_target_3_state_id = THIS.id }
+			}
+		}
+		set_variable = { global.asteroid_incoming_target_3_country_id = THIS.id }
+	}
+	set_variable = { global.asteroid_incoming_target_pool_count = global.asteroid_incoming_target_countries^num }
+	if = {
+		limit = {
+			asteroid_incoming_has_three_valid_target_pairs = yes
+			has_event_target = asteroid_incoming_target_1_country
+			has_event_target = asteroid_incoming_target_1_state
+			has_event_target = asteroid_incoming_target_2_country
+			has_event_target = asteroid_incoming_target_2_state
+			has_event_target = asteroid_incoming_target_3_country
+			has_event_target = asteroid_incoming_target_3_state
+		}
+		set_variable = { global.asteroid_incoming_target_pool_valid = 1 }
+	}
+}
+
+asteroid_incoming_prepare_random_event_fire = {
+	set_temp_variable = { asteroid_incoming_prefire_ready = 0 }
+	if = {
+		limit = {
+			NOT = { has_global_flag = asteroid_incoming_transaction_active }
+			NOT = { has_global_flag = asteroid_incoming_transaction_resolved }
+		}
+		asteroid_incoming_initialize_transaction = yes
+		save_global_event_target_as = asteroid_incoming_chooser
+		asteroid_incoming_build_target_pool = yes
+		if = {
+			limit = { asteroid_incoming_has_three_valid_target_pairs = yes }
+			set_temp_variable = { asteroid_incoming_prefire_ready = 1 }
+			set_variable = { global.asteroid_incoming_target_pool_unavailable = 0 }
+			set_temp_variable = { events_log_history_payload_override = constant:asteroid_incoming_event.history_payload_opening }
+			set_temp_variable = { events_log_history_payload_override_active = 1 }
+		}
+		else = {
+			set_variable = { global.asteroid_incoming_target_pool_unavailable = 1 }
+			clr_global_flag = asteroid_incoming_transaction_active
+			clear_global_event_target = asteroid_incoming_chooser
+		}
+	}
+}
+
+# ANY SCOPE. A deliberate miss closes the pending target transaction without
+# touching a state, the atmosphere, the fragment registry, or any ledger.
+asteroid_incoming_resolve_miss = {
+	set_variable = { global.asteroid_incoming_outcome = constant:asteroid_incoming_event.history_payload_miss }
+	set_variable = { global.asteroid_incoming_close_passage_date = global.date }
+	set_variable = { global.asteroid_incoming_close_passage_day = global.num_days }
+	set_global_flag = asteroid_incoming_miss_recorded
+	if = {
+		limit = { NOT = { has_global_flag = asteroid_incoming_miss_news_sent } }
+		news_event = { id = chaosx.news.96 days = 1 }
+		set_global_flag = asteroid_incoming_miss_news_sent
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = global.chaos_meter_value
+				value = constant:asteroid_incoming_runtime.minerals_chaos_threshold
+				compare = greater_than_or_equals
+			}
+			has_global_flag = asteroid_incoming_evolution_i_eligible
+			has_global_flag = asteroid_incoming_evolution_ii_eligible
+			NOT = { has_global_flag = asteroid_incoming_impact_recorded }
+			NOT = { has_global_flag = asteroid_incoming_fragmentation_active }
+			NOT = { has_global_flag = asteroid_incoming_dust_stage_residual }
+			NOT = { has_global_flag = asteroid_incoming_dust_stage_veil }
+			NOT = { has_global_flag = asteroid_incoming_dust_stage_impact_winter }
+			NOT = { has_global_flag = asteroid_incoming_dust_stage_severe }
+			NOT = { has_global_flag = asteroid_incoming_main_crater_registered }
+			asteroid_incoming_achievement_player_valid = yes
+		}
+		set_country_flag = asteroid_incoming_achievement_near_miss
+	}
+	# A miss consumes the snapshot without applying either evolution. The
+	# persistent outcome remains available to Event History, but no future
+	# Event 028 path can mistake the preview flags for an applied evolution.
+	clr_global_flag = asteroid_incoming_evolution_i_eligible
+	clr_global_flag = asteroid_incoming_evolution_ii_eligible
+	clr_global_flag = asteroid_incoming_evolution_snapshot_recorded
+	set_temp_variable = { asteroid_incoming_history_payload = constant:asteroid_incoming_event.history_payload_miss }
+	asteroid_incoming_record_followup_history = yes
+	clr_global_flag = asteroid_incoming_transaction_active
+	clr_global_flag = asteroid_incoming_target_locked
+	clear_global_event_target = asteroid_incoming_candidate_country
+	clear_global_event_target = asteroid_incoming_candidate_state
+	clear_global_event_target = asteroid_incoming_locked_country
+	clear_global_event_target = asteroid_incoming_locked_state
+	clear_global_event_target = asteroid_incoming_backup_capital_state
+	clear_global_event_target = asteroid_incoming_chooser
+	set_global_flag = asteroid_incoming_transaction_resolved
+}
+
+# ANY SCOPE. Called by the shared history recorder immediately after the one
+# normal Major-event row is appended. The stable sequence id lets the delayed
+# outcome update that row without creating a duplicate history entry.
+asteroid_incoming_bind_opening_history_sequence = {
+	if = {
+		limit = {
+			has_variable = global.events_log_history_sequence
+			check_variable = {
+				var = global.last_fired_event_id
+				value = constant:asteroid_incoming_event.id
+				compare = equals
+			}
+		}
+		set_variable = { global.asteroid_incoming_history_sequence = global.events_log_history_sequence }
+		set_global_flag = asteroid_incoming_history_outcome_pending
+	}
+}
+
+# ANY SCOPE. Replaces the opening payload on the existing Event 028 Major row
+# and records the locked target country as its secondary actor when an impact
+# was chosen. The historical chooser actor, original fire date, and sequence
+# remain untouched. This is deliberately an in-place update: target emergency,
+# impact resolution, reports, dust milestones, and the super-event never append
+# additional normal Event History rows.
+asteroid_incoming_record_followup_history = {
+	set_temp_variable = { asteroid_incoming_history_row_updated = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_history_outcome_pending
+			has_variable = global.asteroid_incoming_history_sequence
+		}
+		sanitize_events_log_history_actor_entries = yes
+		set_temp_variable = { asteroid_incoming_history_row_index = constant:asteroid_incoming_runtime.zero }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = asteroid_incoming_history_row_index
+					value = global.events_log_history_sequence_entries^num
+					compare = less_than
+				}
+				check_variable = {
+					var = asteroid_incoming_history_row_updated
+					value = constant:asteroid_incoming_runtime.one
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.events_log_history_sequence_entries^asteroid_incoming_history_row_index
+						value = global.asteroid_incoming_history_sequence
+						compare = equals
+					}
+					check_variable = {
+						var = global.events_log_history_event_id_entries^asteroid_incoming_history_row_index
+						value = constant:asteroid_incoming_event.id
+						compare = equals
+					}
+				}
+				set_variable = { global.events_log_history_payload_entries^asteroid_incoming_history_row_index = asteroid_incoming_history_payload }
+				if = {
+					limit = {
+						check_variable = {
+							var = asteroid_incoming_history_payload
+							value = constant:asteroid_incoming_event.history_payload_impact
+							compare = equals
+						}
+						has_event_target = asteroid_incoming_locked_country
+						event_target:asteroid_incoming_locked_country = { exists = yes }
+					}
+					event_target:asteroid_incoming_locked_country = {
+						ROOT = { set_temp_variable = { asteroid_incoming_history_target_actor = PREV } }
+					}
+					set_variable = { global.events_log_history_secondary_actor_entries^asteroid_incoming_history_row_index = asteroid_incoming_history_target_actor }
+					set_variable = { global.events_log_history_has_secondary_actor_entries^asteroid_incoming_history_row_index = constant:asteroid_incoming_runtime.one }
+				}
+				set_temp_variable = { asteroid_incoming_history_row_updated = constant:asteroid_incoming_runtime.one }
+			}
+			add_to_temp_variable = { asteroid_incoming_history_row_index = constant:asteroid_incoming_runtime.loop_increment }
+		}
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = asteroid_incoming_history_row_updated
+				value = constant:asteroid_incoming_runtime.one
+				compare = equals
+			}
+		}
+		set_variable = { global.asteroid_incoming_history_outcome = asteroid_incoming_history_payload }
+		clr_global_flag = asteroid_incoming_history_outcome_pending
+		refresh_events_log_system_history_views = yes
+	}
+}
+
+# CHOOSER COUNTRY SCOPE. Stages one of the three already-persisted target
+# pairs for confirmation. This never rebuilds the pool, so the player cannot
+# obtain a fourth target or silently reroll the coordinates.
+asteroid_incoming_stage_selected_target = {
+	clear_global_event_target = asteroid_incoming_candidate_country
+	clear_global_event_target = asteroid_incoming_candidate_state
+	set_variable = { global.asteroid_incoming_target_confirmation_pending = 0 }
+	if = {
+		limit = { check_variable = { global.asteroid_incoming_selected_target = 1 } }
+		event_target:asteroid_incoming_target_1_country = { save_global_event_target_as = asteroid_incoming_candidate_country }
+		event_target:asteroid_incoming_target_1_state = { save_global_event_target_as = asteroid_incoming_candidate_state }
+	}
+	else_if = {
+		limit = { check_variable = { global.asteroid_incoming_selected_target = 2 } }
+		event_target:asteroid_incoming_target_2_country = { save_global_event_target_as = asteroid_incoming_candidate_country }
+		event_target:asteroid_incoming_target_2_state = { save_global_event_target_as = asteroid_incoming_candidate_state }
+	}
+	else_if = {
+		limit = { check_variable = { global.asteroid_incoming_selected_target = 3 } }
+		event_target:asteroid_incoming_target_3_country = { save_global_event_target_as = asteroid_incoming_candidate_country }
+		event_target:asteroid_incoming_target_3_state = { save_global_event_target_as = asteroid_incoming_candidate_state }
+	}
+	country_event = { id = chaosx.nr28.2 }
+}
+
+# CHOOSER COUNTRY SCOPE. Returns to the unchanged three-pair target board.
+asteroid_incoming_cancel_selected_target = {
+	clear_global_event_target = asteroid_incoming_candidate_country
+	clear_global_event_target = asteroid_incoming_candidate_state
+	set_variable = { global.asteroid_incoming_target_confirmation_pending = 0 }
+	country_event = { id = chaosx.nr28.1 }
+}
+
+asteroid_incoming_accept_selected_target = {
+	if = {
+		limit = { check_variable = { global.asteroid_incoming_selected_target = 1 } }
+		event_target:asteroid_incoming_target_1_country = { save_global_event_target_as = asteroid_incoming_candidate_country }
+		event_target:asteroid_incoming_target_1_state = { save_global_event_target_as = asteroid_incoming_candidate_state }
+	}
+	else_if = {
+		limit = { check_variable = { global.asteroid_incoming_selected_target = 2 } }
+		event_target:asteroid_incoming_target_2_country = { save_global_event_target_as = asteroid_incoming_candidate_country }
+		event_target:asteroid_incoming_target_2_state = { save_global_event_target_as = asteroid_incoming_candidate_state }
+	}
+	else_if = {
+		limit = { check_variable = { global.asteroid_incoming_selected_target = 3 } }
+		event_target:asteroid_incoming_target_3_country = { save_global_event_target_as = asteroid_incoming_candidate_country }
+		event_target:asteroid_incoming_target_3_state = { save_global_event_target_as = asteroid_incoming_candidate_state }
+	}
+	if = {
+		limit = { asteroid_incoming_target_pair_is_valid = yes }
+		event_target:asteroid_incoming_candidate_country = { save_global_event_target_as = asteroid_incoming_locked_country }
+			event_target:asteroid_incoming_candidate_state = {
+				save_global_event_target_as = asteroid_incoming_locked_state
+				save_global_event_target_as = asteroid_incoming_original_target_state
+				set_variable = { global.asteroid_incoming_target_state_id = THIS.id }
+				if = {
+					limit = { is_capital = yes }
+					set_variable = { global.asteroid_incoming_target_was_capital = constant:asteroid_incoming_runtime.one }
+				}
+				else = { set_variable = { global.asteroid_incoming_target_was_capital = constant:asteroid_incoming_runtime.zero } }
+			}
+		event_target:asteroid_incoming_candidate_country = {
+			set_variable = { global.asteroid_incoming_target_country_id = THIS.id }
+			set_country_flag = asteroid_incoming_original_target_country
+			save_global_event_target_as = asteroid_incoming_original_target_country
+		}
+		asteroid_incoming_lock_candidate_pair = yes
+		if = {
+			limit = {
+				check_variable = {
+					var = asteroid_incoming_lock_result
+					value = constant:asteroid_incoming_runtime.zero
+					compare = greater_than
+				}
+			}
+			set_variable = { global.asteroid_incoming_expected_impact_day = global.asteroid_incoming_lock_expires_day }
+			set_variable = { global.asteroid_incoming_lock_date = global.date }
+			set_global_flag = asteroid_incoming_target_locked
+			set_variable = { global.asteroid_incoming_preparedness = 0 }
+			if = {
+				limit = { NOT = { has_global_flag = asteroid_incoming_lock_news_sent } }
+				news_event = { id = chaosx.news.30 days = 1 }
+				set_global_flag = asteroid_incoming_lock_news_sent
+			}
+			event_target:asteroid_incoming_locked_country = { country_event = { id = chaosx.nr28.3 } }
+			event_target:asteroid_incoming_chooser = { country_event = { id = chaosx.nr28.4 days = 2 } }
+		}
+	}
+}
+
+asteroid_incoming_set_preparedness = {
+	set_variable = { global.asteroid_incoming_preparedness = asteroid_incoming_preparedness_choice }
+	set_country_flag = asteroid_incoming_preparedness_selected
+	remove_ideas = asteroid_incoming_command_continuity
+	remove_ideas = asteroid_incoming_transport_dispersion
+	remove_ideas = asteroid_incoming_medical_mobilization
+	if = {
+		limit = { check_variable = { asteroid_incoming_preparedness_choice = 1 } }
+		set_country_flag = asteroid_incoming_command_continuity_selected
+		add_timed_idea = {
+			idea = asteroid_incoming_command_continuity
+			days = constant:asteroid_incoming_runtime.preimpact_preparedness_days
+		}
+	}
+	else_if = {
+		limit = { check_variable = { asteroid_incoming_preparedness_choice = 2 } }
+		set_country_flag = asteroid_incoming_transport_dispersion_selected
+		add_timed_idea = {
+			idea = asteroid_incoming_transport_dispersion
+			days = constant:asteroid_incoming_runtime.preimpact_preparedness_days
+		}
+	}
+	else = {
+		set_country_flag = asteroid_incoming_medical_mobilization_selected
+		add_timed_idea = {
+			idea = asteroid_incoming_medical_mobilization
+			days = constant:asteroid_incoming_runtime.preimpact_preparedness_days
+		}
+	}
+}
+
+# ANY SCOPE. Applies the target country's selected post-impact preparation
+# exactly once. Command continuity changes both severity and duration of the
+# dislocation penalty; transport records bounded mobile reserves; medical
+# mobilization remains active through the opening rescue period.
+asteroid_incoming_apply_target_preparedness_aftermath = {
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_original_target_country
+			event_target:asteroid_incoming_original_target_country = { exists = yes }
+			NOT = { has_global_flag = asteroid_incoming_preparedness_aftermath_applied }
+		}
+		set_global_flag = asteroid_incoming_preparedness_aftermath_applied
+		event_target:asteroid_incoming_original_target_country = {
+			remove_ideas = asteroid_incoming_command_continuity
+			remove_ideas = asteroid_incoming_transport_dispersion
+			remove_ideas = asteroid_incoming_medical_mobilization
+			set_temp_variable = { asteroid_incoming_government_dislocation_days = constant:asteroid_incoming_runtime.government_dislocation_noncapital_days }
+			if = {
+				limit = {
+					check_variable = {
+						var = global.asteroid_incoming_target_was_capital
+						value = constant:asteroid_incoming_runtime.zero
+						compare = greater_than
+					}
+				}
+				set_temp_variable = { asteroid_incoming_government_dislocation_days = constant:asteroid_incoming_runtime.government_dislocation_capital_days }
+			}
+			if = {
+				limit = { has_country_flag = asteroid_incoming_command_continuity_selected }
+				set_temp_variable = { asteroid_incoming_government_dislocation_days = constant:asteroid_incoming_runtime.government_dislocation_prepared_noncapital_days }
+				if = {
+					limit = {
+						check_variable = {
+							var = global.asteroid_incoming_target_was_capital
+							value = constant:asteroid_incoming_runtime.zero
+							compare = greater_than
+						}
+					}
+					set_temp_variable = { asteroid_incoming_government_dislocation_days = constant:asteroid_incoming_runtime.government_dislocation_prepared_capital_days }
+				}
+				add_timed_idea = {
+					idea = asteroid_incoming_government_dislocation_prepared
+					days = asteroid_incoming_government_dislocation_days
+				}
+			}
+			else = {
+				add_timed_idea = {
+					idea = asteroid_incoming_government_dislocation
+					days = asteroid_incoming_government_dislocation_days
+				}
+			}
+			if = {
+				limit = { has_country_flag = asteroid_incoming_transport_dispersion_selected }
+				add_equipment_to_stockpile = { type = train_equipment amount = constant:asteroid_incoming_runtime.transport_preserved_train_equipment }
+				add_equipment_to_stockpile = { type = support_equipment amount = constant:asteroid_incoming_runtime.transport_preserved_support_equipment }
+				add_equipment_to_stockpile = { type = motorized_equipment_1 amount = constant:asteroid_incoming_runtime.transport_preserved_motorized_equipment }
+				add_fuel = constant:asteroid_incoming_runtime.transport_preserved_fuel
+				set_country_flag = asteroid_incoming_mobile_reserve_preserved
+			}
+			if = {
+				limit = { has_country_flag = asteroid_incoming_medical_mobilization_selected }
+				add_timed_idea = {
+					idea = asteroid_incoming_medical_mobilization
+					days = constant:asteroid_incoming_runtime.medical_mobilization_days
+				}
+			}
+		}
+	}
+}
+
+# ============================================================================
+# FOOTPRINT, CAPITAL RELOCATION, AND PHYSICAL RECEIPTS
+# ============================================================================
+
+asteroid_incoming_choose_fragment_sites = {
+	if = {
+		limit = {
+			asteroid_incoming_fragmentation_is_enabled = yes
+			has_global_flag = asteroid_incoming_evolution_i_eligible
+		}
+		set_global_flag = asteroid_incoming_fragmentation_active
+		set_temp_variable = { asteroid_incoming_fragment_site_goal = constant:asteroid_incoming_runtime.fragment_site_goal_at_600 }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_value
+					value = constant:asteroid_incoming_runtime.fragment_site_threshold_700
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { asteroid_incoming_fragment_site_goal = constant:asteroid_incoming_runtime.fragment_site_goal_at_700 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_value
+					value = constant:asteroid_incoming_runtime.fragment_site_threshold_800
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { asteroid_incoming_fragment_site_goal = constant:asteroid_incoming_runtime.fragment_site_goal_at_800 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.chaos_meter_value
+					value = constant:asteroid_incoming_runtime.fragment_site_threshold_900
+					compare = greater_than_or_equals
+				}
+			}
+			set_temp_variable = { asteroid_incoming_fragment_site_goal = constant:asteroid_incoming_runtime.fragment_site_goal_at_900 }
+		}
+		clear_array = global.asteroid_incoming_fragment_site_states
+		clear_array = global.asteroid_incoming_fragment_reserved_first_ring_states
+		clear_array = global.asteroid_incoming_fragment_site_countries
+		clr_global_flag = asteroid_incoming_fragment_neighbor_pool_available
+		set_variable = { global.asteroid_incoming_fragment_site_count = 0 }
+		set_temp_variable = { asteroid_incoming_fragment_site_attempts = 0 }
+		while_loop_effect = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_fragment_site_count
+					value = asteroid_incoming_fragment_site_goal
+					compare = less_than
+				}
+				check_variable = {
+					var = asteroid_incoming_fragment_site_attempts
+					value = constant:asteroid_incoming_runtime.maximum_fragment_selection_attempts
+					compare = less_than
+				}
+			}
+			if = {
+				limit = {
+					any_state = {
+						asteroid_incoming_state_is_valid_fragment_site = yes
+						asteroid_incoming_fragment_site_has_valid_land_neighbor = yes
+					}
+				}
+				set_global_flag = asteroid_incoming_fragment_neighbor_pool_available
+			}
+			else = {
+				clr_global_flag = asteroid_incoming_fragment_neighbor_pool_available
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = global.asteroid_incoming_fragment_site_count
+						value = constant:asteroid_incoming_runtime.fragment_slot_one
+						compare = equals
+					}
+					any_state = {
+						asteroid_incoming_state_is_valid_fragment_selection = yes
+						OWNER = {
+							NOT = {
+								is_in_array = {
+									array = global.asteroid_incoming_fragment_site_countries
+									value = THIS
+								}
+							}
+						}
+						NOT = { is_on_same_continent_as = event_target:asteroid_incoming_fragment_1_state }
+					}
+				}
+				random_state = {
+					limit = {
+						asteroid_incoming_state_is_valid_fragment_selection = yes
+						OWNER = {
+							NOT = {
+								is_in_array = {
+									array = global.asteroid_incoming_fragment_site_countries
+									value = THIS
+								}
+							}
+						}
+						NOT = { is_on_same_continent_as = event_target:asteroid_incoming_fragment_1_state }
+					}
+					asteroid_incoming_register_fragment_site = yes
+				}
+			}
+			else_if = {
+				limit = {
+				any_state = {
+						asteroid_incoming_state_is_valid_fragment_selection = yes
+						OWNER = {
+							NOT = {
+								is_in_array = {
+									array = global.asteroid_incoming_fragment_site_countries
+									value = THIS
+								}
+							}
+						}
+					}
+				}
+				random_state = {
+					limit = {
+						asteroid_incoming_state_is_valid_fragment_selection = yes
+						OWNER = {
+							NOT = {
+								is_in_array = {
+									array = global.asteroid_incoming_fragment_site_countries
+									value = THIS
+								}
+							}
+						}
+					}
+					asteroid_incoming_register_fragment_site = yes
+				}
+			}
+			else_if = {
+				limit = {
+					check_variable = {
+						var = global.asteroid_incoming_fragment_site_count
+						value = constant:asteroid_incoming_runtime.fragment_slot_one
+						compare = equals
+					}
+					any_state = {
+						asteroid_incoming_state_is_valid_fragment_selection = yes
+						NOT = { is_on_same_continent_as = event_target:asteroid_incoming_fragment_1_state }
+					}
+				}
+				random_state = {
+					limit = {
+						asteroid_incoming_state_is_valid_fragment_selection = yes
+						NOT = { is_on_same_continent_as = event_target:asteroid_incoming_fragment_1_state }
+					}
+					asteroid_incoming_register_fragment_site = yes
+				}
+			}
+			else = {
+					random_state = {
+					limit = { asteroid_incoming_state_is_valid_fragment_selection = yes }
+					asteroid_incoming_register_fragment_site = yes
+				}
+			}
+			add_to_temp_variable = { asteroid_incoming_fragment_site_attempts = 1 }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_fragment_site_count
+					value = constant:asteroid_incoming_runtime.minimum_fragment_centers_to_apply
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { global.asteroid_incoming_fragments_applied = 1 }
+			for_each_scope_loop = {
+				array = global.asteroid_incoming_fragment_site_states
+				set_state_flag = asteroid_incoming_fragment_site
+				set_state_flag = asteroid_incoming_mineral_site
+				set_variable = { asteroid_incoming_state_transaction_id = global.asteroid_incoming_transaction_id }
+				if = {
+					limit = {
+						NOT = {
+							is_in_array = {
+								array = global.asteroid_incoming_mineral_site_states
+								value = THIS
+							}
+						}
+					}
+					add_to_array = {
+						array = global.asteroid_incoming_mineral_site_states
+						value = THIS
+					}
+				}
+				asteroid_incoming_plan_fragment_footprint = yes
+				asteroid_incoming_refresh_site_mineral_control = yes
+			}
+			clear_array = global.asteroid_incoming_fragment_site_countries
+			clr_global_flag = asteroid_incoming_fragment_neighbor_pool_available
+		}
+		else = {
+			clr_global_flag = asteroid_incoming_fragmentation_active
+			clr_global_flag = asteroid_incoming_fragment_neighbor_pool_available
+			set_variable = { global.asteroid_incoming_fragments_applied = 0 }
+			set_variable = { global.asteroid_incoming_fragment_site_count = 0 }
+			clear_array = global.asteroid_incoming_fragment_site_states
+			clear_array = global.asteroid_incoming_fragment_reserved_first_ring_states
+			clear_array = global.asteroid_incoming_fragment_site_countries
+			clear_global_event_target = asteroid_incoming_fragment_1_state
+			clear_global_event_target = asteroid_incoming_fragment_2_state
+			clear_global_event_target = asteroid_incoming_fragment_3_state
+			clear_global_event_target = asteroid_incoming_fragment_4_state
+			clear_global_event_target = asteroid_incoming_fragment_5_state
+			clear_global_event_target = asteroid_incoming_fragment_6_state
+		}
+	}
+}
+
+# COUNTRY SCOPE. Selects the strongest surviving backup capital outside the
+# complete main footprint. Core status, population, established cities,
+# industry, infrastructure, rail, and supply all contribute to the score.
+asteroid_incoming_select_backup_capital = {
+	clear_global_event_target = asteroid_incoming_backup_capital_state
+	save_event_target_as = asteroid_incoming_backup_capital_country
+	set_temp_variable = { asteroid_incoming_backup_capital_best_score = constant:asteroid_incoming_runtime.zero }
+	every_owned_state = {
+		limit = {
+			asteroid_incoming_state_is_valid_target = yes
+			is_owned_and_controlled_by = PREV
+			NOT = { is_in_array = { array = global.asteroid_incoming_main_footprint_states value = THIS } }
+			NOT = { state = event_target:asteroid_incoming_locked_state }
+		}
+		set_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_base }
+		if = { limit = { is_core_of = PREV } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_capital } }
+		if = { limit = { state_population_k > constant:asteroid_incoming_target.large_population_k } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_population_large } }
+		else_if = { limit = { state_population_k > constant:asteroid_incoming_target.medium_population_k } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_population_medium } }
+		if = { limit = { victory_points > constant:asteroid_incoming_target.minimum_victory_points } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_victory_point } }
+		if = { limit = { industrial_complex > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_industry } }
+		if = { limit = { infrastructure > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_rail } }
+		if = { limit = { rail_way > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_rail } }
+		if = { limit = { supply_node > constant:asteroid_incoming_target.minimum_building_level } add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_supply } }
+		if = {
+			limit = {
+				any_neighbor_state = {
+					CONTROLLER = {
+						exists = yes
+						has_war_with = event_target:asteroid_incoming_backup_capital_country
+					}
+				}
+			}
+			add_to_temp_variable = { asteroid_incoming_backup_capital_score = constant:asteroid_incoming_runtime.target_score_frontline_penalty }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = asteroid_incoming_backup_capital_score
+					value = asteroid_incoming_backup_capital_best_score
+					compare = greater_than
+				}
+			}
+			save_global_event_target_as = asteroid_incoming_backup_capital_state
+			set_temp_variable = { asteroid_incoming_backup_capital_best_score = asteroid_incoming_backup_capital_score }
+		}
+	}
+}
+
+asteroid_incoming_relocate_destroyed_capital = {
+	if = {
+		limit = {
+			check_variable = {
+				var = global.asteroid_incoming_target_was_capital
+				value = constant:asteroid_incoming_runtime.zero
+				compare = greater_than
+			}
+			has_event_target = asteroid_incoming_original_target_country
+			event_target:asteroid_incoming_original_target_country = { exists = yes }
+		}
+			event_target:asteroid_incoming_original_target_country = {
+			save_global_event_target_as = asteroid_incoming_capital_country
+			asteroid_incoming_select_backup_capital = yes
+			if = {
+				limit = { has_event_target = asteroid_incoming_backup_capital_state }
+				set_capital = { state = event_target:asteroid_incoming_backup_capital_state remember_old_capital = no }
+				set_country_flag = asteroid_incoming_capital_relocated
+				event_target:asteroid_incoming_backup_capital_state = {
+					save_global_event_target_as = asteroid_incoming_replacement_capital_state
+				}
+			}
+		}
+		if = {
+			limit = { has_event_target = asteroid_incoming_backup_capital_state }
+			set_global_flag = asteroid_incoming_capital_relocation_complete
+		}
+		else = { set_global_flag = asteroid_incoming_capital_relocation_failed }
+	}
+}
+
+asteroid_incoming_maybe_call_secondary_disaster = {
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals }
+				check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals }
+			}
+			check_variable = {
+				var = global.asteroid_incoming_secondary_disaster_count
+				value = constant:asteroid_incoming_runtime.secondary_disaster_maximum
+				compare = less_than
+			}
+			CONTROLLER = { exists = yes }
+			OR = {
+				natural_disaster_state_is_wildfire_fuel_zone = yes
+				natural_disaster_state_is_dry_slope_zone = yes
+				natural_disaster_state_is_flood_exposed_zone = yes
+				natural_disaster_state_is_arid_zone = yes
+			}
+		}
+		CONTROLLER = { save_event_target_as = natural_disaster_call_target_country }
+		save_event_target_as = natural_disaster_call_target_state
+		set_temp_variable = { natural_disaster_call_target_state_supplied = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { natural_disaster_call_target_country_supplied = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { natural_disaster_call_target_mode = constant:natural_disaster_target_mode.caller_provided }
+		set_temp_variable = { natural_disaster_call_caller_type = constant:natural_disaster_caller.external_event }
+		set_temp_variable = { natural_disaster_call_caller_event_id = constant:asteroid_incoming_event.id }
+		set_temp_variable = { natural_disaster_call_origin_medium = constant:natural_disaster_origin_medium.land_impact }
+		if = {
+			limit = { natural_disaster_state_is_wildfire_fuel_zone = yes }
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.wildfire }
+			set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.fire_drought }
+		}
+		else_if = {
+			limit = { natural_disaster_state_is_dry_slope_zone = yes }
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.dry_mass_movement }
+			set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.mass_movement }
+		}
+		else_if = {
+			limit = { natural_disaster_state_is_flood_exposed_zone = yes }
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.flood }
+			set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.water_coastal }
+		}
+		else = {
+			set_temp_variable = { natural_disaster_call_family = constant:natural_disaster_family.dust_and_sandstorm }
+			set_temp_variable = { natural_disaster_call_family_group = constant:natural_disaster_family_group.dust_sand }
+			set_temp_variable = { natural_disaster_call_origin_medium = constant:natural_disaster_origin_medium.atmospheric_fragmentation }
+		}
+		set_temp_variable = { natural_disaster_call_severity = constant:natural_disaster_severity.local }
+		set_temp_variable = { natural_disaster_call_sequence_mode = constant:natural_disaster_sequence_mode.single }
+		set_temp_variable = { natural_disaster_call_sequence_count = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { natural_disaster_call_news_policy = constant:natural_disaster_news_policy.none }
+		set_temp_variable = { natural_disaster_call_report_policy = constant:natural_disaster_report_policy.affected_country }
+		set_temp_variable = { natural_disaster_call_aftermath_policy = constant:natural_disaster_aftermath_policy.normal }
+		set_temp_variable = { natural_disaster_call_chain_policy = constant:natural_disaster_chain_policy.none }
+		set_temp_variable = { natural_disaster_call_log_mode = constant:natural_disaster_log_mode.event_013_history }
+		set_temp_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.rejected }
+		CONTROLLER = {
+			call_natural_disaster = yes
+			if = {
+				limit = { check_variable = { natural_disaster_call_result = constant:natural_disaster_call_result.accepted } }
+				add_to_variable = { global.asteroid_incoming_secondary_disaster_count = constant:asteroid_incoming_runtime.one }
+				add_to_variable = { global.asteroid_incoming_dust_secondary_points = constant:asteroid_incoming_runtime.secondary_dust_per_event }
+			}
+		}
+	}
+}
+
+# STATE SCOPE. Medical preparation belongs only to the originally selected
+# country and cannot protect foreign ring states. The caller supplies the
+# ordinary duration in asteroid_incoming_local_burden_days.
+asteroid_incoming_adjust_local_burden_for_medical_preparation = {
+	if = {
+		limit = {
+			OR = {
+				OWNER = {
+					has_country_flag = asteroid_incoming_original_target_country
+					has_country_flag = asteroid_incoming_medical_mobilization_selected
+				}
+				CONTROLLER = {
+					has_country_flag = asteroid_incoming_original_target_country
+					has_country_flag = asteroid_incoming_medical_mobilization_selected
+				}
+			}
+		}
+		multiply_temp_variable = {
+			asteroid_incoming_local_burden_days = constant:asteroid_incoming_preparedness.local_burden_duration_multiplier
+		}
+		round_temp_variable = asteroid_incoming_local_burden_days
+	}
+}
+
+# STATE SCOPE. Establishes the bounded continuing-casualty ledger from the
+# strongest profile that actually resolved. Medical preparation is captured
+# on the state at impact so later ownership changes cannot erase or spread it.
+asteroid_incoming_initialize_state_rescue_burden = {
+	set_variable = { asteroid_incoming_rescue_death_fraction = constant:asteroid_incoming_runtime.zero }
+	set_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals } }
+		set_variable = { asteroid_incoming_rescue_death_fraction = constant:asteroid_incoming_population_loss.rescue_main_ring_one }
+		set_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_population_loss.rescue_main_ring_one_months }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals } }
+		set_variable = { asteroid_incoming_rescue_death_fraction = constant:asteroid_incoming_population_loss.rescue_main_ring_two }
+		set_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_population_loss.rescue_main_ring_two_months }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
+		set_variable = { asteroid_incoming_rescue_death_fraction = constant:asteroid_incoming_population_loss.rescue_fragment_center }
+		set_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_population_loss.rescue_fragment_center_months }
+	}
+	else_if = {
+		limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals } }
+		set_variable = { asteroid_incoming_rescue_death_fraction = constant:asteroid_incoming_population_loss.rescue_fragment_ring_one }
+		set_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_population_loss.rescue_fragment_ring_one_months }
+	}
+	if = {
+		limit = {
+			check_variable = {
+				var = asteroid_incoming_rescue_months_remaining
+				value = constant:asteroid_incoming_runtime.zero
+				compare = greater_than
+			}
+		}
+		set_state_flag = asteroid_incoming_rescue_burden_active
+		set_variable = { asteroid_incoming_state_rescue_burden = asteroid_incoming_rescue_months_remaining }
+		if = {
+			limit = {
+				NOT = {
+					is_in_array = {
+						array = global.asteroid_incoming_rescue_states
+						value = THIS
+					}
+				}
+			}
+			add_to_array = {
+				array = global.asteroid_incoming_rescue_states
+				value = THIS
+			}
+		}
+		if = {
+			limit = {
+				OR = {
+					OWNER = {
+						has_country_flag = asteroid_incoming_original_target_country
+						has_country_flag = asteroid_incoming_medical_mobilization_selected
+					}
+					CONTROLLER = {
+						has_country_flag = asteroid_incoming_original_target_country
+						has_country_flag = asteroid_incoming_medical_mobilization_selected
+					}
+				}
+			}
+			set_state_flag = asteroid_incoming_rescue_medically_prepared
+			multiply_variable = {
+				asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_population_loss.rescue_medical_preparation_multiplier
+			}
+			round_variable = asteroid_incoming_rescue_months_remaining
+			set_variable = { asteroid_incoming_state_rescue_burden = asteroid_incoming_rescue_months_remaining }
+		}
+	}
+}
+
+# STATE SCOPE. Applies one monthly rescue receipt through the shared protected
+# civilian-loss contract and records only the actually applied value in Deaths.
+asteroid_incoming_apply_monthly_rescue_deaths = {
+	if = {
+		limit = {
+			has_state_flag = asteroid_incoming_rescue_burden_active
+			NOT = { has_state_flag = asteroid_incoming_local_emergency_resolved }
+			check_variable = {
+				var = asteroid_incoming_rescue_months_remaining
+				value = constant:asteroid_incoming_runtime.zero
+				compare = greater_than
+			}
+		}
+		set_temp_variable = { asteroid_incoming_rescue_deaths_requested = state_population_k }
+		multiply_temp_variable = { asteroid_incoming_rescue_deaths_requested = constant:chaos_meter_deaths.people_per_k }
+		multiply_temp_variable = { asteroid_incoming_rescue_deaths_requested = asteroid_incoming_rescue_death_fraction }
+		if = {
+			limit = { has_state_flag = asteroid_incoming_rescue_medically_prepared }
+			multiply_temp_variable = { asteroid_incoming_rescue_deaths_requested = constant:asteroid_incoming_population_loss.rescue_medical_preparation_multiplier }
+		}
+		clamp_temp_variable = {
+			var = asteroid_incoming_rescue_deaths_requested
+			min = constant:asteroid_incoming_runtime.zero
+			max = constant:asteroid_incoming_population_loss.rescue_monthly_death_cap_people
+		}
+		round_temp_variable = asteroid_incoming_rescue_deaths_requested
+		set_temp_variable = { state_civilian_population_loss_contract_supplied = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { state_civilian_population_loss_requested = asteroid_incoming_rescue_deaths_requested }
+		set_temp_variable = { state_civilian_population_loss_minimum_remaining = constant:asteroid_incoming_population_loss.rescue_minimum_remaining_people }
+		set_temp_variable = { state_civilian_population_loss_reason = constant:chaos_meter_deaths_reason.asteroid_rescue_failure }
+		set_temp_variable = { state_civilian_population_loss_log_deaths = constant:asteroid_incoming_runtime.one }
+		set_temp_variable = { state_civilian_population_loss_target_country = OWNER }
+		set_temp_variable = { state_civilian_population_loss_has_target_country = constant:asteroid_incoming_runtime.one }
+		apply_exact_state_civilian_population_loss = yes
+		subtract_from_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_runtime.one }
+		set_variable = { asteroid_incoming_state_rescue_burden = asteroid_incoming_rescue_months_remaining }
+	}
+	if = {
+		limit = {
+			OR = {
+				has_state_flag = asteroid_incoming_local_emergency_resolved
+				check_variable = {
+					var = asteroid_incoming_rescue_months_remaining
+					value = constant:asteroid_incoming_runtime.zero
+					compare = less_than_or_equals
+				}
+			}
+		}
+		clr_state_flag = asteroid_incoming_rescue_burden_active
+		set_variable = { asteroid_incoming_rescue_months_remaining = constant:asteroid_incoming_runtime.zero }
+		set_variable = { asteroid_incoming_state_rescue_burden = constant:asteroid_incoming_runtime.zero }
+	}
+}
+
+# GLOBAL-HOST SCOPE. The transaction footprint is already deduplicated and
+# bounded, so rescue processing never needs a recurring world-state scan.
+asteroid_incoming_process_monthly_rescue_deaths = {
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_impact_recorded
+			NOT = { has_global_flag = asteroid_incoming_miss_recorded }
+		}
+		clear_array = global.asteroid_incoming_rescue_states_next
+		for_each_scope_loop = {
+			array = global.asteroid_incoming_rescue_states
+			asteroid_incoming_apply_monthly_rescue_deaths = yes
+			if = {
+				limit = { has_state_flag = asteroid_incoming_rescue_burden_active }
+				add_to_array = {
+					array = global.asteroid_incoming_rescue_states_next
+					value = THIS
+				}
+			}
+		}
+		clear_array = global.asteroid_incoming_rescue_states
+		for_each_scope_loop = {
+			array = global.asteroid_incoming_rescue_states_next
+			add_to_array = {
+				array = global.asteroid_incoming_rescue_states
+				value = THIS
+			}
+		}
+		clear_array = global.asteroid_incoming_rescue_states_next
+	}
+}
+
+asteroid_incoming_apply_state_profile = {
+	if = {
+		limit = { asteroid_incoming_state_is_resolvable_transaction = yes }
+		set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_main_ring_three }
+		if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_center compare = equals } }
+			set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_main_impact }
+		}
+		else_if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals } }
+			set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_main_ring_one }
+		}
+		else_if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals } }
+			set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_main_ring_two }
+		}
+		else_if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
+			set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_fragment_impact }
+		}
+		else_if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals } }
+			set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_fragment_ring_one }
+		}
+		else_if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_two compare = equals } }
+			set_temp_variable = { asteroid_incoming_death_reason_value = constant:chaos_meter_deaths_reason.asteroid_fragment_ring_two }
+		}
+		set_variable = { asteroid_incoming_death_reason = asteroid_incoming_death_reason_value }
+		asteroid_incoming_apply_state_transaction = yes
+		add_to_variable = { global.asteroid_incoming_total_deaths = asteroid_incoming_state_actual_deaths }
+		add_to_variable = { global.asteroid_incoming_destroyed_industry_levels = asteroid_incoming_state_industry_levels_lost }
+		add_to_variable = { global.asteroid_incoming_destroyed_logistics_levels = asteroid_incoming_state_logistics_levels_lost }
+		add_to_variable = { global.asteroid_incoming_destroyed_strategic_levels = asteroid_incoming_state_strategic_levels_lost }
+		add_to_variable = { global.asteroid_incoming_affected_state_count = 1 }
+		if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_center compare = equals } }
+			add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.main_center_state_weight }
+			set_state_flag = asteroid_incoming_main_crater
+			set_state_flag = asteroid_incoming_affected_state
+			set_state_flag = asteroid_incoming_state_transaction_applied
+			set_state_category = wasteland
+			save_global_event_target_as = asteroid_incoming_main_crater_state
+			remove_dynamic_modifier = { modifier = asteroid_incoming_catastrophic_impact_zone }
+			remove_dynamic_modifier = { modifier = asteroid_incoming_major_impact_zone }
+			remove_dynamic_modifier = { modifier = asteroid_incoming_outer_shock_zone }
+			add_dynamic_modifier = { modifier = asteroid_incoming_main_crater }
+			set_global_flag = asteroid_incoming_main_crater_registered
+			CONTROLLER = {
+				# Presentation-only thermonuclear-scale impact. Shared nuclear
+				# callbacks are guarded so this cannot create nuclear ledgers.
+				set_global_flag = asteroid_incoming_visual_strike_active
+				launch_nuke = {
+					state = PREV
+					controller = THIS
+					use_nuke = no
+					nuke_type = thermonuclear_bomb
+				}
+				clr_global_flag = asteroid_incoming_visual_strike_active
+			}
+		}
+		else = {
+			set_state_flag = asteroid_incoming_affected_state
+			set_state_flag = asteroid_incoming_state_transaction_applied
+			if = {
+				limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_one compare = equals } }
+				add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.main_ring_one_state_weight }
+				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.main_ring_one_modifier_days }
+				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
+				add_dynamic_modifier = {
+					modifier = asteroid_incoming_catastrophic_impact_zone
+					days = asteroid_incoming_local_burden_days
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_two compare = equals } }
+				add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.main_ring_two_state_weight }
+				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.main_ring_two_modifier_days }
+				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
+				add_dynamic_modifier = {
+					modifier = asteroid_incoming_major_impact_zone
+					days = asteroid_incoming_local_burden_days
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.main_ring_three compare = equals } }
+				add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.main_ring_three_state_weight }
+				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.main_ring_three_modifier_days }
+				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
+				add_dynamic_modifier = {
+					modifier = asteroid_incoming_outer_shock_zone
+					days = asteroid_incoming_local_burden_days
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
+				add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.fragment_center_state_weight }
+				add_dynamic_modifier = { modifier = asteroid_incoming_fragment_crater }
+				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.fragment_center_recovery_days }
+				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
+				add_dynamic_modifier = { modifier = asteroid_incoming_fragment_center_recovery days = asteroid_incoming_local_burden_days }
+				CONTROLLER = {
+					set_global_flag = asteroid_incoming_visual_strike_active
+					launch_nuke = {
+						state = PREV
+						controller = THIS
+						use_nuke = no
+						nuke_type = nuclear_bomb
+					}
+					clr_global_flag = asteroid_incoming_visual_strike_active
+				}
+			}
+			else_if = {
+				limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_ring_one compare = equals } }
+				add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.fragment_ring_one_state_weight }
+				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.fragment_ring_one_modifier_days }
+				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
+				add_dynamic_modifier = {
+					modifier = asteroid_incoming_heavy_fragment_damage
+					days = asteroid_incoming_local_burden_days
+				}
+			}
+			else = {
+				add_to_variable = { global.asteroid_incoming_dust_state_points = constant:asteroid_incoming_dust.fragment_ring_two_state_weight }
+				set_temp_variable = { asteroid_incoming_local_burden_days = constant:asteroid_incoming_runtime.fragment_ring_two_modifier_days }
+				asteroid_incoming_adjust_local_burden_for_medical_preparation = yes
+				add_dynamic_modifier = {
+					modifier = asteroid_incoming_light_fragment_damage
+					days = asteroid_incoming_local_burden_days
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { var = asteroid_incoming_state_profile value = constant:asteroid_incoming_profile.fragment_center compare = equals } }
+			add_to_variable = { global.asteroid_incoming_dust_fragment_points = constant:asteroid_incoming_dust.fragment_center_point }
+		}
+		asteroid_incoming_initialize_state_rescue_burden = yes
+		asteroid_incoming_aggregate_current_state = yes
+		asteroid_incoming_maybe_call_secondary_disaster = yes
+	}
+}
+
+asteroid_incoming_process_footprint = {
+	set_global_flag = asteroid_incoming_local_recovery_active
+	set_variable = { global.asteroid_incoming_total_deaths = 0 }
+	set_variable = { global.asteroid_incoming_destroyed_industry_levels = 0 }
+	set_variable = { global.asteroid_incoming_destroyed_logistics_levels = 0 }
+	set_variable = { global.asteroid_incoming_destroyed_strategic_levels = 0 }
+	set_variable = { global.asteroid_incoming_affected_state_count = 0 }
+	set_variable = { global.asteroid_incoming_dust_state_points = 0 }
+	set_variable = { global.asteroid_incoming_dust_fragment_points = 0 }
+	set_variable = { global.asteroid_incoming_secondary_disaster_count = 0 }
+	set_variable = { global.asteroid_incoming_dust_secondary_points = 0 }
+	every_country = {
+		limit = { has_country_flag = asteroid_incoming_report_pending }
+		clr_country_flag = asteroid_incoming_report_pending
+		clear_variable = asteroid_incoming_report_deaths
+		clear_variable = asteroid_incoming_report_states
+		clear_variable = asteroid_incoming_report_industry
+		clear_variable = asteroid_incoming_report_logistics
+		clear_variable = asteroid_incoming_report_strategic
+	}
+	asteroid_incoming_relocate_destroyed_capital = yes
+	asteroid_incoming_apply_target_preparedness_aftermath = yes
+	set_temp_variable = { asteroid_incoming_process_index = 0 }
+	while_loop_effect = {
+		limit = {
+			check_variable = {
+				var = asteroid_incoming_process_index
+				value = global.asteroid_incoming_footprint_states^num
+				compare = less_than
+			}
+		}
+		set_temp_variable = { asteroid_incoming_process_profile = global.asteroid_incoming_footprint_profiles^asteroid_incoming_process_index }
+		var:global.asteroid_incoming_footprint_states^asteroid_incoming_process_index = {
+			set_variable = { asteroid_incoming_state_profile = asteroid_incoming_process_profile }
+			asteroid_incoming_apply_state_profile = yes
+		}
+		add_to_temp_variable = { asteroid_incoming_process_index = 1 }
+	}
+}
+
+# STATE SCOPE, called after the physical receipt has been written.
+asteroid_incoming_record_country_receipt = {
+	if = {
+		limit = { NOT = { has_variable = asteroid_incoming_report_deaths } }
+		set_variable = { asteroid_incoming_report_deaths = 0 }
+		set_variable = { asteroid_incoming_report_states = 0 }
+		set_variable = { asteroid_incoming_report_industry = 0 }
+		set_variable = { asteroid_incoming_report_logistics = 0 }
+		set_variable = { asteroid_incoming_report_strategic = 0 }
+	}
+	add_to_variable = { asteroid_incoming_report_deaths = asteroid_incoming_state_actual_deaths }
+	add_to_variable = { asteroid_incoming_report_states = 1 }
+	add_to_variable = { asteroid_incoming_report_industry = asteroid_incoming_state_industry_levels_lost }
+	add_to_variable = { asteroid_incoming_report_logistics = asteroid_incoming_state_logistics_levels_lost }
+	add_to_variable = { asteroid_incoming_report_strategic = asteroid_incoming_state_strategic_levels_lost }
+	set_country_flag = asteroid_incoming_affected_country
+	set_country_flag = asteroid_incoming_report_pending
+	set_country_flag = asteroid_incoming_emergency_phase
+}
+
+# ============================================================================
+# DUST, AIR CLEANLINESS, AND NATIONAL STAGES
+# ============================================================================
+
+asteroid_incoming_recalculate_dust = {
+	set_variable = { global.asteroid_incoming_dust_deaths_points = global.asteroid_incoming_total_deaths }
+	divide_variable = { global.asteroid_incoming_dust_deaths_points = constant:asteroid_incoming_dust.deaths_per_point }
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_deaths_points
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.death_point_cap
+	}
+	set_variable = { global.asteroid_incoming_dust_industry_points = global.asteroid_incoming_destroyed_industry_levels }
+	divide_variable = { global.asteroid_incoming_dust_industry_points = constant:asteroid_incoming_dust.industry_levels_per_point }
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_industry_points
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.industry_point_cap
+	}
+	set_variable = { global.asteroid_incoming_dust_logistics_points = global.asteroid_incoming_destroyed_logistics_levels }
+	divide_variable = { global.asteroid_incoming_dust_logistics_points = constant:asteroid_incoming_dust.logistics_levels_per_point }
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_logistics_points
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.logistics_point_cap
+	}
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_state_points
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.main_state_point_cap
+	}
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_fragment_points
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.fragment_point_cap
+	}
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_secondary_points
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.secondary_disaster_point_cap
+	}
+	set_variable = { global.asteroid_incoming_dust_raw = constant:asteroid_incoming_dust.main_crater_base }
+	add_to_variable = { global.asteroid_incoming_dust_raw = global.asteroid_incoming_dust_deaths_points }
+	add_to_variable = { global.asteroid_incoming_dust_raw = global.asteroid_incoming_dust_industry_points }
+	add_to_variable = { global.asteroid_incoming_dust_raw = global.asteroid_incoming_dust_logistics_points }
+	add_to_variable = { global.asteroid_incoming_dust_raw = global.asteroid_incoming_dust_state_points }
+	add_to_variable = { global.asteroid_incoming_dust_raw = global.asteroid_incoming_dust_fragment_points }
+	add_to_variable = { global.asteroid_incoming_dust_raw = global.asteroid_incoming_dust_secondary_points }
+	clamp_variable = {
+		var = global.asteroid_incoming_dust_raw
+		min = constant:asteroid_incoming_dust.minimum
+		max = constant:asteroid_incoming_dust.maximum
+	}
+	round_variable = global.asteroid_incoming_dust_raw
+	set_variable = { global.asteroid_incoming_dust_score = global.asteroid_incoming_dust_raw }
+	asteroid_incoming_set_dust_stage = yes
+	asteroid_incoming_refresh_air_cleanliness_source = yes
+}
+
+asteroid_incoming_set_dust_stage = {
+	set_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_none }
+	if = {
+		limit = { check_variable = { global.asteroid_incoming_dust_score > constant:asteroid_incoming_dust.minimum } }
+		set_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_residual }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_dust_score
+					value = constant:asteroid_incoming_dust.veil_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_veil }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_dust_score
+					value = constant:asteroid_incoming_dust.impact_winter_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_impact_winter }
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_dust_score
+					value = constant:asteroid_incoming_dust.severe_threshold
+					compare = greater_than_or_equals
+				}
+			}
+			set_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_severe }
+		}
+	}
+	clr_global_flag = asteroid_incoming_dust_stage_residual
+	clr_global_flag = asteroid_incoming_dust_stage_veil
+	clr_global_flag = asteroid_incoming_dust_stage_impact_winter
+	clr_global_flag = asteroid_incoming_dust_stage_severe
+	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_residual } } set_global_flag = asteroid_incoming_dust_stage_residual }
+	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_veil } } set_global_flag = asteroid_incoming_dust_stage_veil }
+	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_impact_winter } } set_global_flag = asteroid_incoming_dust_stage_impact_winter }
+	if = { limit = { check_variable = { global.asteroid_incoming_dust_stage = constant:asteroid_incoming_dust.stage_severe } } set_global_flag = asteroid_incoming_dust_stage_severe }
+	asteroid_incoming_refresh_country_effects = yes
+}
+
+asteroid_incoming_refresh_country_effects = {
+	set_temp_variable = { asteroid_incoming_unresolved_country_count = constant:asteroid_incoming_runtime.zero }
+	every_country = {
+		remove_ideas = asteroid_incoming_residual_haze
+		remove_ideas = asteroid_incoming_global_dust_veil
+		remove_ideas = asteroid_incoming_impact_winter
+		remove_ideas = asteroid_incoming_severe_impact_winter
+		if = {
+			limit = { check_variable = { global.asteroid_incoming_dust_score > 0 } }
+			if = { limit = { has_global_flag = asteroid_incoming_dust_stage_residual } add_ideas = asteroid_incoming_residual_haze }
+			if = { limit = { has_global_flag = asteroid_incoming_dust_stage_veil } add_ideas = asteroid_incoming_global_dust_veil }
+			if = { limit = { has_global_flag = asteroid_incoming_dust_stage_impact_winter } add_ideas = asteroid_incoming_impact_winter }
+			if = { limit = { has_global_flag = asteroid_incoming_dust_stage_severe } add_ideas = asteroid_incoming_severe_impact_winter }
+		}
+		asteroid_incoming_refresh_national_recovery = yes
+		if = {
+			limit = { asteroid_incoming_country_has_unresolved_local_burden = yes }
+			add_to_temp_variable = { asteroid_incoming_unresolved_country_count = constant:asteroid_incoming_runtime.one }
+		}
+		if = {
+			limit = { check_variable = { global.asteroid_incoming_dust_score = constant:asteroid_incoming_dust.minimum } }
+			remove_ideas = asteroid_incoming_dust_protection_basic
+			remove_ideas = asteroid_incoming_dust_protection_organized
+			remove_ideas = asteroid_incoming_dust_protection_hardened
+			set_variable = { asteroid_incoming_dust_protection_level = constant:asteroid_incoming_recovery.protection_unprepared }
+		}
+	}
+	if = {
+		limit = {
+			has_global_flag = asteroid_incoming_local_recovery_active
+			check_variable = {
+				var = asteroid_incoming_unresolved_country_count
+				value = constant:asteroid_incoming_runtime.zero
+				compare = equals
+			}
+		}
+		clr_global_flag = asteroid_incoming_local_recovery_active
+	}
+}
+
+asteroid_incoming_monthly_dust_update = {
+	asteroid_incoming_process_monthly_rescue_deaths = yes
+	if = {
+		limit = { check_variable = { global.asteroid_incoming_dust_score > 0 } }
+		set_temp_variable = { asteroid_incoming_old_dust_score = global.asteroid_incoming_dust_score }
+		set_temp_variable = { asteroid_incoming_dust_decay = constant:asteroid_incoming_dust.monthly_decay_residual }
+		if = {
+			limit = { has_global_flag = asteroid_incoming_dust_stage_veil }
+			set_temp_variable = { asteroid_incoming_dust_decay = constant:asteroid_incoming_dust.monthly_decay_veil }
+		}
+		if = {
+			limit = { has_global_flag = asteroid_incoming_dust_stage_impact_winter }
+			set_temp_variable = { asteroid_incoming_dust_decay = constant:asteroid_incoming_dust.monthly_decay_impact_winter }
+		}
+		if = {
+			limit = { has_global_flag = asteroid_incoming_dust_stage_severe }
+			set_temp_variable = { asteroid_incoming_dust_decay = constant:asteroid_incoming_dust.monthly_decay_severe }
+		}
+		set_temp_variable = { asteroid_incoming_mitigation_decay = constant:asteroid_incoming_runtime.zero }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_mitigation_points
+					value = constant:asteroid_incoming_runtime.zero
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { asteroid_incoming_mitigation_decay = global.asteroid_incoming_mitigation_points }
+		}
+		else_if = {
+			limit = {
+				check_variable = {
+					var = global.asteroid_incoming_observation_networks
+					value = constant:asteroid_incoming_runtime.zero
+					compare = greater_than
+				}
+			}
+			set_temp_variable = { asteroid_incoming_mitigation_decay = global.asteroid_incoming_observation_networks }
+		}
+		clamp_temp_variable = {
+			var = asteroid_incoming_mitigation_decay
+			min = constant:asteroid_incoming_dust.minimum
+			max = constant:asteroid_incoming_dust.maximum_mitigation_decay
+		}
+		add_to_temp_variable = { asteroid_incoming_dust_decay = asteroid_incoming_mitigation_decay }
+		if = {
+			limit = {
+				OR = {
+					NOT = { has_variable = global.asteroid_incoming_dust_hold_until_day }
+					NOT = { has_variable = global.asteroid_incoming_impact_day }
+					check_variable = {
+						var = global.num_days
+						value = global.asteroid_incoming_dust_hold_until_day
+						compare = greater_than_or_equals
+					}
+				}
+			}
+			subtract_from_variable = { global.asteroid_incoming_dust_score = asteroid_incoming_dust_decay }
+		}
+		clamp_variable = { var = global.asteroid_incoming_dust_score min = constant:asteroid_incoming_dust.minimum max = constant:asteroid_incoming_dust.maximum }
+		set_temp_variable = { asteroid_incoming_old_dust_stage = global.asteroid_incoming_dust_stage }
+		asteroid_incoming_set_dust_stage = yes
+		if = {
+			limit = {
+				NOT = { has_global_flag = asteroid_incoming_dust_report_below_impact_sent }
+				check_variable = {
+					var = asteroid_incoming_old_dust_stage
+					value = constant:asteroid_incoming_dust.stage_impact_winter
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = global.asteroid_incoming_dust_stage
+					value = constant:asteroid_incoming_dust.stage_impact_winter
+					compare = less_than
+				}
+			}
+			news_event = { id = chaosx.news.92 days = 1 }
+			set_global_flag = asteroid_incoming_dust_report_below_impact_sent
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = asteroid_incoming_dust_report_residual_sent }
+				check_variable = {
+					var = asteroid_incoming_old_dust_stage
+					value = constant:asteroid_incoming_dust.stage_residual
+					compare = greater_than
+				}
+				check_variable = {
+					var = global.asteroid_incoming_dust_stage
+					value = constant:asteroid_incoming_dust.stage_residual
+				}
+			}
+			news_event = { id = chaosx.news.93 days = 1 }
+			set_global_flag = asteroid_incoming_dust_report_residual_sent
+		}
+		if = {
+			limit = {
+				NOT = { has_global_flag = asteroid_incoming_dust_report_clear_sent }
+				check_variable = {
+					var = asteroid_incoming_old_dust_stage
+					value = constant:asteroid_incoming_dust.stage_none
+					compare = greater_than
+				}
+				check_variable = {
+					var = global.asteroid_incoming_dust_stage
+					value = constant:asteroid_incoming_dust.stage_none
+				}
+			}
+			news_event = { id = chaosx.news.94 days = 1 }
+			set_global_flag = asteroid_incoming_dust_report_clear_sent
+		}
+		asteroid_incoming_refresh_air_cleanliness_source = yes
+	}
+	else = {
+		asteroid_incoming_refresh_country_effects = yes
+		asteroid_incoming_refresh_air_cleanliness_source = yes
+	}
+}
+
+# ANY SCOPE. Maps the visible dust stage to the shared asteroid Air Cleanliness
+# source. The opening injection and later monthly reservoir are separate ledger
+# activities, but both use source id 4 and never enter the Fallout evaluator.
+asteroid_incoming_refresh_air_cleanliness_source = {
+	if = { limit = { NOT = { has_variable = global.air_contamination_asteroid_bp } } set_variable = { global.air_contamination_asteroid_bp = constant:asteroid_incoming_runtime.zero } }
+	if = { limit = { NOT = { has_variable = global.asteroid_incoming_dust_air_pressure_bp } } set_variable = { global.asteroid_incoming_dust_air_pressure_bp = constant:asteroid_incoming_runtime.zero } }
+	set_temp_variable = { asteroid_incoming_air_source_target_bp = constant:asteroid_incoming_runtime.zero }
+	set_temp_variable = { asteroid_incoming_air_monthly_bp = constant:asteroid_incoming_runtime.zero }
+	if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_residual }
+		set_temp_variable = { asteroid_incoming_air_source_target_bp = constant:asteroid_incoming_runtime.opening_air_residual_bp }
+		set_temp_variable = { asteroid_incoming_air_monthly_bp = constant:asteroid_incoming_runtime.monthly_air_residual_bp }
+	}
+	else_if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_veil }
+		set_temp_variable = { asteroid_incoming_air_source_target_bp = constant:asteroid_incoming_runtime.opening_air_veil_bp }
+		set_temp_variable = { asteroid_incoming_air_monthly_bp = constant:asteroid_incoming_runtime.monthly_air_veil_bp }
+	}
+	else_if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_impact_winter }
+		set_temp_variable = { asteroid_incoming_air_source_target_bp = constant:asteroid_incoming_runtime.opening_air_impact_winter_bp }
+		set_temp_variable = { asteroid_incoming_air_monthly_bp = constant:asteroid_incoming_runtime.monthly_air_impact_winter_bp }
+	}
+	else_if = {
+		limit = { has_global_flag = asteroid_incoming_dust_stage_severe }
+		set_temp_variable = { asteroid_incoming_air_source_target_bp = constant:asteroid_incoming_runtime.opening_air_severe_bp }
+		set_temp_variable = { asteroid_incoming_air_monthly_bp = constant:asteroid_incoming_runtime.monthly_air_severe_bp }
+	}
+	set_temp_variable = { asteroid_incoming_air_source_delta_bp = asteroid_incoming_air_source_target_bp }
+	subtract_from_temp_variable = { asteroid_incoming_air_source_delta_bp = global.asteroid_incoming_dust_air_pressure_bp }
+	if = {
+		limit = { has_global_flag = asteroid_incoming_dust_air_injection_applied }
+		add_to_temp_variable = { asteroid_incoming_air_source_delta_bp = asteroid_incoming_air_monthly_bp }
+	}
+	set_temp_variable = { asteroid_incoming_air_source_new_bp = global.asteroid_incoming_dust_air_pressure_bp }
+	add_to_temp_variable = { asteroid_incoming_air_source_new_bp = asteroid_incoming_air_source_delta_bp }
+	clamp_temp_variable = {
+		var = asteroid_incoming_air_source_new_bp
+		min = constant:asteroid_incoming_runtime.zero
+		max = constant:asteroid_incoming_runtime.opening_air_severe_bp
+	}
+	set_variable = { global.air_contamination_asteroid_bp = asteroid_incoming_air_source_new_bp }
+	set_variable = { global.asteroid_incoming_dust_air_pressure_bp = asteroid_incoming_air_source_new_bp }
+	if = {
+		limit = {
+			OR = {
+				check_variable = { asteroid_incoming_air_source_delta_bp > constant:asteroid_incoming_runtime.zero }
+				check_variable = { asteroid_incoming_air_source_delta_bp < constant:asteroid_incoming_runtime.zero }
+			}
+			NOT = { has_global_flag = settings_air_cleanliness_disabled }
+		}
+		set_temp_variable = { air_contamination_source_id = constant:air_contamination_source.asteroid }
+		set_temp_variable = { air_contamination_source_current_bp = asteroid_incoming_air_source_new_bp }
+		set_temp_variable = { air_contamination_source_applied_delta_bp = asteroid_incoming_air_source_delta_bp }
+		set_temp_variable = { air_contamination_delta_bp = asteroid_incoming_air_source_delta_bp }
+		set_temp_variable = { air_contamination_skip_fallout_evaluation = constant:asteroid_incoming_runtime.one }
+		air_contamination_apply_delta_bp = yes
+	}
+	if = {
+		limit = { check_variable = { asteroid_incoming_air_source_target_bp > constant:asteroid_incoming_runtime.zero } }
+		set_global_flag = asteroid_incoming_dust_air_injection_applied
+	}
+	else = { clr_global_flag = asteroid_incoming_dust_air_injection_applied }
+}
+
+# ============================================================================
+# MINERAL CONTROL AND ACHIEVEMENT TRACKING
+# ============================================================================
+
+asteroid_incoming_refresh_mineral_control = {
+	clear_global_event_target = asteroid_incoming_main_crater_controller
+	clear_global_event_target = asteroid_incoming_fragment_1_controller
+	clear_global_event_target = asteroid_incoming_fragment_2_controller
+	clear_global_event_target = asteroid_incoming_fragment_3_controller
+	clear_global_event_target = asteroid_incoming_fragment_4_controller
+	clear_global_event_target = asteroid_incoming_fragment_5_controller
+	clear_global_event_target = asteroid_incoming_fragment_6_controller
+	every_country = {
+		remove_ideas = asteroid_incoming_main_crater_material
+		remove_ideas = asteroid_incoming_fragment_material_1
+		remove_ideas = asteroid_incoming_fragment_material_2
+		remove_ideas = asteroid_incoming_fragment_material_3
+		remove_ideas = asteroid_incoming_fragment_material_4
+		remove_ideas = asteroid_incoming_fragment_material_5
+		remove_ideas = asteroid_incoming_fragment_material_6
+		set_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.zero }
+	}
+	if = {
+		limit = { has_event_target = asteroid_incoming_main_crater_state }
+		event_target:asteroid_incoming_main_crater_state = {
+			if = {
+				limit = { has_state_flag = asteroid_incoming_main_crater CONTROLLER = { exists = yes } }
+				CONTROLLER = { save_global_event_target_as = asteroid_incoming_main_crater_controller }
+			}
+		}
+	}
+	set_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.zero }
+	for_each_scope_loop = {
+		array = global.asteroid_incoming_fragment_site_states
+		add_to_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.loop_increment }
+		if = {
+			limit = { CONTROLLER = { exists = yes } }
+			CONTROLLER = { add_to_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.loop_increment } }
+		}
+		if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_one CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_1_controller } }
+		if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_two CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_2_controller } }
+		if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_three CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_3_controller } }
+		if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_four CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_4_controller } }
+		if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_five CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_5_controller } }
+		if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_six CONTROLLER = { exists = yes } } CONTROLLER = { save_global_event_target_as = asteroid_incoming_fragment_6_controller } }
+	}
+	if = {
+		limit = { has_global_flag = asteroid_incoming_minerals_active }
+		if = {
+			limit = { has_event_target = asteroid_incoming_main_crater_state }
+			event_target:asteroid_incoming_main_crater_state = {
+				if = {
+					limit = { has_state_flag = asteroid_incoming_main_crater CONTROLLER = { exists = yes } }
+					CONTROLLER = { add_ideas = asteroid_incoming_main_crater_material }
+				}
+			}
+		}
+		set_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.zero }
+		for_each_scope_loop = {
+			array = global.asteroid_incoming_fragment_site_states
+			add_to_temp_variable = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.loop_increment }
+			if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_one CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_1 } }
+			if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_two CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_2 } }
+			if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_three CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_3 } }
+			if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_four CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_4 } }
+			if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_five CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_5 } }
+			if = { limit = { asteroid_incoming_mineral_site_index = constant:asteroid_incoming_runtime.fragment_slot_six CONTROLLER = { exists = yes } } CONTROLLER = { add_ideas = asteroid_incoming_fragment_material_6 } }
+		}
+	}
+}
+
+asteroid_incoming_update_achievements = {
+	# The host calls this once per month. All work below is country bounded, so
+	# achievement progress follows current control without retaining stale site
+	# ownership or requiring a new daily world iteration.
+	if = {
+		limit = {
+			has_event_target = asteroid_incoming_original_target_country
+			event_target:asteroid_incoming_original_target_country = { exists = no }
+		}
+		set_global_flag = asteroid_incoming_original_target_annexed
+	}
+	every_country = {
+		limit = { exists = yes }
+		if = {
+			limit = { NOT = { has_variable = asteroid_incoming_collector_hold_days } }
+			set_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.zero }
+		}
+		if = {
+			limit = { NOT = { has_variable = asteroid_incoming_main_capture_hold_days } }
+			set_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.zero }
+		}
+		set_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.zero }
+		every_controlled_state = {
+			limit = { has_state_flag = asteroid_incoming_fragment_site }
+			PREV = { add_to_variable = { asteroid_incoming_country_controlled_fragment_count = constant:asteroid_incoming_runtime.loop_increment } }
+		}
+		if = {
+			limit = {
+				asteroid_incoming_achievement_player_valid = yes
+				has_global_flag = asteroid_incoming_minerals_active
+				any_controlled_state = { has_state_flag = asteroid_incoming_main_crater }
+				NOT = { is_subject = yes }
+				check_variable = {
+					var = asteroid_incoming_country_controlled_fragment_count
+					value = constant:asteroid_incoming_runtime.collector_minimum_controlled_fragments
+					compare = greater_than_or_equals
+				}
+			}
+			add_to_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.recovery_month_days }
+			if = {
+				limit = {
+					check_variable = {
+						var = asteroid_incoming_collector_hold_days
+						value = constant:asteroid_incoming_runtime.collector_hold_days
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = asteroid_incoming_achievement_collector_complete
+			}
+		}
+		else = { set_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.zero } }
+		if = {
+			limit = {
+				asteroid_incoming_achievement_player_valid = yes
+				has_country_flag = asteroid_incoming_main_captured_in_war
+				any_controlled_state = { has_state_flag = asteroid_incoming_main_crater }
+			}
+			add_to_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.recovery_month_days }
+			if = {
+				limit = {
+					check_variable = {
+						var = asteroid_incoming_main_capture_hold_days
+						value = constant:asteroid_incoming_runtime.main_capture_hold_days
+						compare = greater_than_or_equals
+					}
+				}
+				set_country_flag = asteroid_incoming_achievement_piercing_complete
+			}
+		}
+		else = { set_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.zero } }
+		if = {
+			limit = {
+				asteroid_incoming_achievement_player_valid = yes
+				has_country_flag = asteroid_incoming_original_target_country
+				has_country_flag = asteroid_incoming_capital_relocated
+				has_country_flag = asteroid_incoming_network_reconnected
+				has_country_flag = asteroid_incoming_outer_ring_restored
+				asteroid_incoming_achievement_deadline_open = yes
+				NOT = { has_global_flag = asteroid_incoming_original_target_annexed }
+				has_event_target = asteroid_incoming_replacement_capital_state
+				event_target:asteroid_incoming_replacement_capital_state = {
+					is_capital = yes
+					is_controlled_by = PREV
+				}
+			}
+			set_country_flag = asteroid_incoming_achievement_government_complete
+		}
+		if = {
+			limit = {
+				asteroid_incoming_achievement_player_valid = yes
+				has_global_flag = asteroid_incoming_dust_history_recorded
+				NOT = { has_country_flag = asteroid_incoming_achievement_near_miss }
+				has_country_flag = asteroid_incoming_transport_protected
+				has_country_flag = asteroid_incoming_factories_hardened
+				has_country_flag = asteroid_incoming_observation_network
+				has_idea = asteroid_incoming_dust_protection_hardened
+				check_variable = {
+					var = global.asteroid_incoming_opening_dust_stage
+					value = constant:asteroid_incoming_dust.stage_impact_winter
+					compare = greater_than_or_equals
+				}
+				check_variable = {
+					var = global.asteroid_incoming_dust_score
+					value = constant:asteroid_incoming_dust.minimum
+					compare = equals
+				}
+				NOT = { has_country_flag = asteroid_incoming_original_target_country }
+			}
+			set_country_flag = asteroid_incoming_achievement_world_reconnected
+		}
+	}
+}
+
+asteroid_incoming_on_state_control_changed = {
+	ROOT = { set_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.zero } }
+	if = {
+		limit = { FROM = { exists = yes } }
+		FROM = { set_variable = { asteroid_incoming_collector_hold_days = constant:asteroid_incoming_runtime.zero } }
+	}
+	if = {
+		limit = { has_state_flag = asteroid_incoming_main_crater }
+		ROOT = {
+			clr_country_flag = asteroid_incoming_main_captured_in_war
+			set_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.zero }
+		}
+		if = {
+			limit = { FROM = { exists = yes } }
+			FROM = {
+				clr_country_flag = asteroid_incoming_main_captured_in_war
+				set_variable = { asteroid_incoming_main_capture_hold_days = constant:asteroid_incoming_runtime.zero }
+			}
+		}
+		if = {
+			limit = {
+				has_global_flag = asteroid_incoming_minerals_active
+				ROOT = { asteroid_incoming_achievement_player_valid = yes }
+				FROM = {
+					exists = yes
+					has_war_with = ROOT
+					has_idea = asteroid_incoming_main_crater_material
+				}
+			}
+			ROOT = { set_country_flag = asteroid_incoming_main_captured_in_war }
+		}
+	}
+	if = {
+		limit = { has_state_flag = asteroid_incoming_fragment_site }
+		CONTROLLER = { clr_country_flag = asteroid_incoming_fragment_capture_hold_active }
+	}
+	asteroid_incoming_refresh_mineral_control = yes
+}
+
+asteroid_incoming_cleanup_finished_transaction = {
+	clr_global_flag = asteroid_incoming_transaction_active
+	clr_global_flag = asteroid_incoming_target_locked
+	clear_global_event_target = asteroid_incoming_candidate_country
+	clear_global_event_target = asteroid_incoming_candidate_state
+	clear_global_event_target = asteroid_incoming_locked_country
+	clear_global_event_target = asteroid_incoming_locked_state
+	clear_global_event_target = asteroid_incoming_backup_capital_state
+	clear_global_event_target = asteroid_incoming_chooser
+	set_global_flag = asteroid_incoming_transaction_resolved
+}

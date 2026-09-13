@@ -1,0 +1,427 @@
+common/scripted_effects/035_great_depression_effects.txt
+454: great_depression_pay_action_cost = {
+455: 	# Each family deliberately spends at most four resource types. The
+456: 	# decision trigger is shared, while this branch is the authoritative debit.
+457: 	if = {
+458: 		limit = {
+459: 			OR = {
+460: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.doctrine_choice compare = equals }
+461: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.policy_review compare = equals }
+462: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.emergency_relief compare = equals }
+463: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.foreign_support compare = equals }
+464: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_restructure compare = equals }
+465: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_abandon compare = equals }
+466: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.strategic_rescue compare = equals }
+467: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.finance_trade compare = equals }
+468: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.austerity compare = equals }
+469: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.state_planning compare = equals }
+470: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.market_clear compare = equals }
+471: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.contagion compare = equals }
+472: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.social_response compare = equals }
+473: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.global_reconstruction compare = equals }
+474: 			}
+475: 		}
+476: 		set_temp_variable = { great_depression_payment = great_depression_cost_political_power }
+477: 		multiply_temp_variable = { great_depression_payment = -1 }
+478: 		add_political_power = great_depression_payment
+479: 	}
+480: 	if = {
+481: 		limit = {
+482: 			OR = {
+483: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.emergency_relief compare = equals }
+484: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_protection compare = equals }
+485: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_reopen compare = equals }
+486: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.public_works compare = equals }
+487: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.social_response compare = equals }
+488: 			}
+489: 		}
+490: 		set_temp_variable = { great_depression_payment = great_depression_cost_manpower }
+491: 		multiply_temp_variable = { great_depression_payment = -1 }
+492: 		add_manpower = great_depression_payment
+493: 	}
+494: 	if = {
+495: 		limit = {
+496: 			OR = {
+497: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.emergency_relief compare = equals }
+498: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_reopen compare = equals }
+499: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.strategic_rescue compare = equals }
+500: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.public_works compare = equals }
+501: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.finance_trade compare = equals }
+502: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.state_planning compare = equals }
+503: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.contagion compare = equals }
+504: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.global_reconstruction compare = equals }
+505: 			}
+506: 		}
+507: 		set_temp_variable = { great_depression_payment = great_depression_cost_fuel }
+508: 		multiply_temp_variable = { great_depression_payment = -1 }
+509: 		add_fuel = great_depression_payment
+510: 	}
+511: 	if = {
+512: 		limit = {
+513: 			OR = {
+514: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_protection compare = equals }
+515: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_reopen compare = equals }
+516: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_restructure compare = equals }
+517: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.public_works compare = equals }
+518: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.state_planning compare = equals }
+519: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.social_response compare = equals }
+520: 			}
+521: 		}
+522: 		set_temp_variable = { great_depression_payment = great_depression_cost_trains }
+523: 		multiply_temp_variable = { great_depression_payment = -1 }
+524: 		add_equipment_to_stockpile = { type = train_equipment amount = great_depression_payment }
+525: 	}
+526: 	if = {
+527: 		limit = {
+528: 			OR = {
+529: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.foreign_support compare = equals }
+530: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.finance_trade compare = equals }
+531: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.contagion compare = equals }
+532: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.global_reconstruction compare = equals }
+533: 			}
+534: 		}
+535: 		set_temp_variable = { great_depression_payment = great_depression_cost_convoys }
+536: 		multiply_temp_variable = { great_depression_payment = -1 }
+537: 		add_equipment_to_stockpile = { type = convoy_1 amount = great_depression_payment }
+538: 	}
+539: 	if = {
+540: 		limit = {
+541: 			OR = {
+542: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_protection compare = equals }
+543: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_restructure compare = equals }
+544: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.strategic_rescue compare = equals }
+545: 			}
+546: 		}
+547: 		set_temp_variable = { great_depression_payment = great_depression_cost_support_equipment }
+548: 		multiply_temp_variable = { great_depression_payment = -1 }
+549: 		add_equipment_to_stockpile = { type = support_equipment amount = great_depression_payment }
+550: 	}
+551: 	if = {
+552: 		limit = {
+553: 			OR = {
+554: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.policy_review compare = equals }
+555: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.austerity compare = equals }
+556: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_abandon compare = equals }
+557: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.market_clear compare = equals }
+558: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.social_response compare = equals }
+559: 			}
+560: 		}
+561: 		set_temp_variable = { great_depression_payment = great_depression_cost_stability }
+562: 		multiply_temp_variable = { great_depression_payment = -1 }
+563: 		add_stability = great_depression_payment
+564: 	}
+565: 	if = {
+566: 		limit = {
+567: 			OR = {
+568: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.austerity compare = equals }
+569: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_abandon compare = equals }
+570: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.market_clear compare = equals }
+571: 			}
+572: 		}
+573: 		set_temp_variable = { great_depression_payment = great_depression_cost_war_support }
+574: 		multiply_temp_variable = { great_depression_payment = -1 }
+575: 		add_war_support = great_depression_payment
+576: 	}
+577: 	if = {
+578: 		limit = {
+579: 			OR = {
+580: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.emergency_relief compare = equals }
+581: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.foreign_support compare = equals }
+582: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_protection compare = equals }
+583: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_reopen compare = equals }
+584: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.center_restructure compare = equals }
+585: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.strategic_rescue compare = equals }
+586: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.finance_trade compare = equals }
+587: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.state_planning compare = equals }
+588: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.contagion compare = equals }
+589: 				check_variable = { var = great_depression_cost_family value = constant:great_depression_cost_family.global_reconstruction compare = equals }
+590: 			}
+591: 		}
+592: 		set_temp_variable = { great_depression_payment = great_depression_cost_civilian }
+593: 		remove_dynamic_modifier = { modifier = great_depression_civilian_commitment }
+594: 		remove_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
+595: 		if = {
+596: 			limit = { great_depression_cost_civilian > constant:great_depression_cost.civilian_commitment_major_threshold }
+597: 			add_dynamic_modifier = { modifier = great_depression_civilian_commitment_major }
+598: 		}
+599: 		else = {
+600: 			add_dynamic_modifier = { modifier = great_depression_civilian_commitment }
+601: 		}
+602: 	}
+603: }
+common/scripted_effects/035_great_depression_effects.txt
+967: great_depression_process_center_project = {
+968: 	if = {
+969: 		limit = {
+970: 			has_state_flag = great_depression_center
+971: 			OR = {
+972: 				has_state_flag = great_depression_center_project_authorized
+973: 				has_state_flag = great_depression_center_project_active_work
+974: 				has_state_flag = great_depression_center_project_paused
+975: 				has_state_flag = great_depression_center_project_certification
+976: 			}
+977: 			ROOT = { has_country_flag = great_depression_center_project_active }
+978: 		}
+979: 		if = {
+980: 			limit = {
+981: 				OR = {
+982: 					NOT = { is_owned_by = ROOT }
+983: 					NOT = { is_controlled_by = ROOT }
+984: 					ROOT = { NOT = { uses_normal_civilian_systems = yes } }
+985: 				}
+986: 			}
+987: 			if = {
+988: 				limit = { NOT = { has_state_flag = great_depression_center_project_paused } }
+989: 				set_variable = { great_depression_center_project_pause_day = global.num_days }
+990: 				set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.paused }
+991: 				great_depression_set_center_project_stage = yes
+992: 			}
+993: 			else = {
+994: 				set_variable = { great_depression_center_project_pause_days = global.num_days }
+995: 				subtract_from_variable = { great_depression_center_project_pause_days = great_depression_center_project_pause_day }
+996: 				if = {
+997: 					limit = { check_variable = { var = great_depression_center_project_pause_days value = constant:great_depression_event.center_project_pause_fail_days compare = greater_than_or_equals } }
+998: 					great_depression_fail_center_project = yes
+999: 				}
+1000: 			}
+1001: 		}
+1002: 		else = {
+1003: 			if = {
+1004: 				limit = { has_state_flag = great_depression_center_project_paused }
+1005: 				set_temp_variable = { great_depression_project_pause_elapsed = global.num_days }
+1006: 				subtract_from_temp_variable = { great_depression_project_pause_elapsed = great_depression_center_project_pause_day }
+1007: 				add_to_variable = { great_depression_center_project_due_day = great_depression_project_pause_elapsed }
+1008: 				set_variable = { great_depression_center_project_last_process_day = global.num_days }
+1009: 				set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.active_work }
+1010: 				great_depression_set_center_project_stage = yes
+1011: 			}
+1012: 			set_temp_variable = { great_depression_project_work_elapsed = global.num_days }
+1013: 			subtract_from_temp_variable = { great_depression_project_work_elapsed = great_depression_center_project_last_process_day }
+1014: 			if = {
+1015: 				limit = { great_depression_project_work_elapsed > constant:great_depression_api.zero }
+1016: 				add_to_variable = { great_depression_center_project_work_days = great_depression_project_work_elapsed }
+1017: 			}
+1018: 			set_variable = { great_depression_center_project_last_process_day = global.num_days }
+1019: 			if = {
+1020: 				limit = { ROOT = { check_variable = { var = great_depression_depression_severity value = constant:great_depression_event.paralysis_threshold compare = greater_than_or_equals } } }
+1021: 				add_to_variable = { great_depression_center_project_paralysis_days = great_depression_project_work_elapsed }
+1022: 			}
+1023: 			else = { set_variable = { great_depression_center_project_paralysis_days = constant:great_depression_api.zero } }
+1024: 			if = {
+1025: 				limit = {
+1026: 					OR = {
+1027: 						check_variable = { var = great_depression_center_project_paralysis_days value = constant:great_depression_event.center_project_pause_fail_days compare = greater_than_or_equals }
+1028: 						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals }
+1029: 					}
+1030: 				}
+1031: 				if = { limit = { check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals } } great_depression_complete_center_project = yes }
+1032: 				else = { great_depression_fail_center_project = yes }
+1033: 			}
+1034: 			else = {
+1035: 				if = {
+1036: 					limit = {
+1037: 						check_variable = { var = great_depression_center_project_stage value = constant:great_depression_center_project_stage.authorized compare = equals }
+1038: 						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_api.zero compare = greater_than }
+1039: 					}
+1040: 					set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.active_work }
+1041: 					great_depression_set_center_project_stage = yes
+1042: 				}
+1043: 				if = {
+1044: 					limit = {
+1045: 						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_total_days compare = greater_than_or_equals }
+1046: 					}
+1047: 					great_depression_complete_center_project = yes
+1048: 				}
+1049: 				else_if = {
+1050: 					limit = {
+1051: 						check_variable = { var = great_depression_center_project_work_days value = constant:great_depression_event.center_project_certification_start_days compare = greater_than_or_equals }
+1052: 						NOT = { has_state_flag = great_depression_center_project_certification }
+1053: 					}
+1054: 					set_variable = { great_depression_next_center_project_stage = constant:great_depression_center_project_stage.certification }
+1055: 					great_depression_set_center_project_stage = yes
+1056: 				}
+1057: 			}
+1058: 		}
+1059: 	}
+1060: }
+common/scripted_effects/035_great_depression_effects.txt
+4398: great_depression_prune_recovery_watch = {
+4399: 	set_temp_variable = { great_depression_recovery_watch_prune_index = global.great_depression_recovery_watch_countries^num }
+4400: 	while_loop_effect = {
+4401: 		limit = { great_depression_recovery_watch_prune_index > constant:great_depression_api.zero }
+4402: 		subtract_from_temp_variable = { great_depression_recovery_watch_prune_index = constant:great_depression_api.one }
+4403: 		var:global.great_depression_recovery_watch_countries^great_depression_recovery_watch_prune_index = {
+4404: 			if = {
+4405: 				limit = { NOT = { has_country_flag = great_depression_recovery_watch_active } }
+4406: 				ROOT = {
+4407: 					remove_from_array = { array = global.great_depression_recovery_watch_countries index = ROOT.great_depression_recovery_watch_prune_index }
+4408: 					remove_from_array = { array = global.great_depression_recovery_watch_episode_entries index = ROOT.great_depression_recovery_watch_prune_index }
+4409: 					remove_from_array = { array = global.great_depression_recovery_watch_expiry_entries index = ROOT.great_depression_recovery_watch_prune_index }
+4410: 				}
+4411: 			}
+4412: 		}
+4413: 	}
+4414: }
+common/scripted_effects/035_great_depression_effects.txt
+5185: great_depression_classify_worldwide_pressure = {
+5186: 	set_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.zero }
+5187: 	if = {
+5188: 		limit = { has_stability < constant:great_depression_thresholds.social_peace_stability_floor }
+5189: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+5190: 	}
+5191: 	if = {
+5192: 		limit = { is_subject = yes }
+5193: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+5194: 	}
+5195: 	if = {
+5196: 		limit = { has_war = yes }
+5197: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.one }
+5198: 	}
+5199: 	if = {
+5200: 		limit = {
+5201: 			OR = {
+5202: 				has_idea = great_depression_scar_hollow_recovery
+5203: 				has_country_flag = great_depression_recovery_hollow
+5204: 			}
+5205: 		}
+5206: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+5207: 	}
+5208: 	if = {
+5209: 		limit = { has_country_flag = great_depression_supplier_contract_at_risk }
+5210: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+5211: 	}
+5212: 	if = {
+5213: 		limit = { num_of_civilian_factories_available_for_projects < constant:great_depression_scaling.large_economy_civilian_limit }
+5214: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.one }
+5215: 	}
+5216: 	if = {
+5217: 		limit = { any_faction_member = { has_country_flag = great_depression_active } }
+5218: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+5219: 	}
+5220: 	if = {
+5221: 		limit = { any_neighbor_country = { has_country_flag = great_depression_active } }
+5222: 		add_to_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.one }
+5223: 	}
+5224: 	if = {
+5225: 		limit = {
+5226: 			check_variable = {
+5227: 				var = great_depression_last_completed_episode_recovery_outcome
+5228: 				value = constant:great_depression_recovery_outcome.strong
+5229: 				compare = equals
+5230: 			}
+5231: 		}
+5232: 		subtract_from_temp_variable = { great_depression_worldwide_exposure_score = constant:great_depression_api.two }
+5233: 	}
+5234: 	clamp_temp_variable = {
+5235: 		var = great_depression_worldwide_exposure_score
+5236: 		min = constant:great_depression_api.zero
+5237: 		max = constant:great_depression_event.public_value_maximum
+5238: 	}
+5239: 	set_variable = { great_depression_worldwide_classification = constant:great_depression_worldwide_classification.protected }
+5240: 	set_variable = { great_depression_worldwide_pressure_stage = constant:great_depression_exposure_stage.observed }
+5241: 	if = {
+5242: 		limit = { check_variable = { var = great_depression_worldwide_exposure_score value = constant:great_depression_thresholds.global_severe_exposure_score compare = greater_than_or_equals } }
+5243: 		set_variable = { great_depression_worldwide_classification = constant:great_depression_worldwide_classification.severe }
+5244: 		set_variable = { great_depression_worldwide_pressure_stage = constant:great_depression_exposure_stage.dependent }
+5245: 		if = {
+5246: 			limit = {
+5247: 				OR = {
+5248: 					NOT = { has_variable = great_depression_worldwide_conversion_due_day }
+5249: 					NOT = { check_variable = { var = great_depression_worldwide_pressure_episode_id value = global.great_depression_global_episode_id compare = equals } }
+5250: 				}
+5251: 			}
+5252: 			set_variable = { great_depression_worldwide_conversion_due_day = global.num_days }
+5253: 			add_to_variable = { great_depression_worldwide_conversion_due_day = constant:great_depression_event.worldwide_conversion_delay_days }
+5254: 		}
+5255: 	}
+5256: 	else_if = {
+5257: 		limit = { check_variable = { var = great_depression_worldwide_exposure_score value = constant:great_depression_thresholds.global_light_exposure_score compare = greater_than_or_equals } }
+5258: 		set_variable = { great_depression_worldwide_classification = constant:great_depression_worldwide_classification.contraction }
+5259: 		set_variable = { great_depression_worldwide_pressure_stage = constant:great_depression_exposure_stage.pressured }
+5260: 		clear_variable = great_depression_worldwide_conversion_due_day
+5261: 	}
+5262: 	else = { clear_variable = great_depression_worldwide_conversion_due_day }
+5263: }
+common/scripted_effects/035_great_depression_incident_effects.txt
+20: great_depression_incident_initialize_history = {
+21: 	if = {
+22: 		limit = { NOT = { has_variable = great_depression_committed_incident_receipt_ids^num } }
+23: 		clear_array = great_depression_committed_incident_receipt_ids
+24: 		clear_array = great_depression_committed_incident_kind_entries
+25: 		clear_array = great_depression_committed_incident_pool_entries
+26: 		clear_array = great_depression_committed_incident_episode_entries
+27: 		clear_array = great_depression_committed_incident_state_id_entries
+28: 		clear_array = great_depression_committed_incident_relationship_entries
+29: 	}
+30: 	if = {
+31: 		limit = { NOT = { has_variable = great_depression_incident_last_kind } }
+32: 		set_variable = { great_depression_incident_last_kind = constant:great_depression_incident_kind.none }
+33: 	}
+34: 	if = {
+35: 		limit = { NOT = { has_variable = great_depression_incident_last_pool } }
+36: 		set_variable = { great_depression_incident_last_pool = constant:great_depression_incident_pool.no_incident }
+37: 	}
+38: 	if = {
+39: 		limit = { NOT = { has_variable = great_depression_incident_last_day } }
+40: 		set_variable = { great_depression_incident_last_day = constant:great_depression_api.zero }
+41: 	}
+42: }
+common/scripted_effects/035_great_depression_incident_effects.txt
+250: great_depression_incident_initialize_clock = {
+251: 	if = {
+252: 		limit = { NOT = { has_variable = great_depression_incident_next_day } }
+253: 		set_variable = { great_depression_incident_next_day = global.num_days }
+254: 		add_to_variable = { great_depression_incident_next_day = constant:great_depression_incident_timing.base_interval_days }
+255: 	}
+256: 	if = {
+257: 		limit = { NOT = { has_variable = great_depression_incident_family_cooldown_day } }
+258: 		set_variable = { great_depression_incident_family_cooldown_day = constant:great_depression_api.zero }
+259: 	}
+260: }
+common/scripted_effects/035_great_depression_incident_effects.txt
+268: great_depression_incident_expire_pressure = {
+269: 	if = {
+270: 		limit = {
+271: 			has_country_flag = great_depression_incident_open
+272: 			has_variable = great_depression_incident_pressure_until
+273: 			check_variable = { var = global.num_days value = great_depression_incident_pressure_until compare = greater_than_or_equals }
+274: 		}
+275: 		clr_country_flag = great_depression_incident_open
+276: 		clr_country_flag = great_depression_incident_pressure_active
+277: 		clear_variable = great_depression_incident_pressure_until
+278: 	}
+279: }
+common/scripted_effects/035_great_depression_incident_effects.txt
+1027: great_depression_run_due_incident_pool = {
+1028: 	if = {
+1029: 		limit = {
+1030: 			great_depression_active_crisis_is_coherent = yes
+1031: 			great_depression_incident_initialize_history = yes
+1032: 			great_depression_incident_initialize_clock = yes
+1033: 			great_depression_incident_expire_pressure = yes
+1034: 			check_variable = { var = global.num_days value = great_depression_incident_next_day compare = greater_than_or_equals }
+1035: 		}
+1036: 		great_depression_incident_reset_selection = yes
+1037: 		random_list = {
+1038: 			constant:great_depression_incident_weight.baseline_pool = {
+1039: 				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { great_depression_incident_has_valid_state = yes } }
+1040: 				modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.baseline compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
+1041: 				great_depression_incident_run_baseline_pool = yes
+1042: 			}
+1043: 			constant:great_depression_incident_weight.contagion_pool = {
+1044: 				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_evolution_financial_contagion } }
+1045: 				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_variable = great_depression_contagion_source_countries^num } }
+1046: 				modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.financial_contagion compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
+1047: 				great_depression_incident_run_contagion_pool = yes
+1048: 			}
+1049: 			constant:great_depression_incident_weight.social_pool = {
+1050: 				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_evolution_social_collapse } }
+1051: 				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { has_country_flag = great_depression_social_incident_open } }
+1052: 				modifier = { factor = constant:great_depression_incident_factor.disabled NOT = { great_depression_social_has_valid_organized_movement = yes } }
+1053: 				modifier = { factor = constant:great_depression_incident_factor.disabled AND = { check_variable = { var = great_depression_incident_last_pool value = constant:great_depression_incident_pool.social_collapse compare = equals } check_variable = { var = global.num_days value = great_depression_incident_family_cooldown_day compare = less_than } } }
+1054: 				great_depression_incident_run_social_pool = yes
+1055: 			}
+1056: 			constant:great_depression_incident_weight.no_incident = { great_depression_incident_defer = yes }
+1057: 		}
+1058: 	}
+1059: }

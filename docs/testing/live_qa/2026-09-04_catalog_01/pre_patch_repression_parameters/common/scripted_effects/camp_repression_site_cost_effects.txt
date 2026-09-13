@@ -1,0 +1,97 @@
+# Repression-owned selected-location payments and labor reserve lifecycle.
+# Country scope. Caller validates action/target and affordability before payment.
+# STATE is the explicit state used by the matching quote and gate; never inferred.
+
+camp_rework_pay_site_labor = {
+	set_temp_variable = { camp_site_quote_labor_pp = 0 }
+	set_temp_variable = { camp_site_quote_labor_motorized = 0 }
+	set_temp_variable = { camp_site_quote_labor_trains = 0 }
+	set_temp_variable = { camp_site_quote_labor_support = 0 }
+	set_temp_variable = { camp_site_quote_labor_motorized_reserve = 0 }
+	set_temp_variable = { camp_site_quote_labor_trains_reserve = 0 }
+	set_temp_variable = { camp_site_quote_labor_support_reserve = 0 }
+	if = {
+		limit = { camp_rework_prepare_site_cost_quote = { STATE = $STATE$ } }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_pp }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_political_power = camp_site_payment_remove
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_motorized }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_equipment_to_stockpile = { type = motorized_equipment_1 amount = camp_site_payment_remove }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_trains }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_equipment_to_stockpile = { type = train_equipment_1 amount = camp_site_payment_remove }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_labor_support }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_site_payment_remove }
+		set_variable = { generic_labor_project_motorized_reserve = camp_site_quote_labor_motorized_reserve }
+		set_variable = { generic_labor_project_trains_reserve = camp_site_quote_labor_trains_reserve }
+		set_variable = { generic_labor_project_support_reserve = camp_site_quote_labor_support_reserve }
+	}
+}
+
+camp_rework_pay_site_inspect = {
+	set_temp_variable = { camp_site_quote_inspect_pp = 0 }
+	if = {
+		limit = { camp_rework_prepare_site_cost_quote = { STATE = $STATE$ } }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_inspect_pp }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_political_power = camp_site_payment_remove
+	}
+}
+
+camp_rework_pay_site_dismantle = {
+	set_temp_variable = { camp_site_quote_dismantle_pp = 0 }
+	set_temp_variable = { camp_site_quote_dismantle_manpower = 0 }
+	set_temp_variable = { camp_site_quote_dismantle_support = 0 }
+	if = {
+		limit = { camp_rework_prepare_site_cost_quote = { STATE = $STATE$ } }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_dismantle_pp }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_political_power = camp_site_payment_remove
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_dismantle_manpower }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_manpower = camp_site_payment_remove
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_dismantle_support }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_site_payment_remove }
+	}
+}
+
+camp_rework_pay_site_evidence = {
+	set_temp_variable = { camp_site_quote_evidence_pp = 0 }
+	set_temp_variable = { camp_site_quote_evidence_manpower = 0 }
+	set_temp_variable = { camp_site_quote_evidence_command = 0 }
+	set_temp_variable = { camp_site_quote_evidence_support = 0 }
+	if = {
+		limit = { camp_rework_prepare_site_cost_quote = { STATE = $STATE$ } }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_evidence_pp }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_political_power = camp_site_payment_remove
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_evidence_manpower }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_manpower = camp_site_payment_remove
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_evidence_command }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_command_power = camp_site_payment_remove
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_evidence_support }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_equipment_to_stockpile = { type = support_equipment_1 amount = camp_site_payment_remove }
+	}
+}
+
+camp_rework_pay_site_restricted = {
+	set_temp_variable = { camp_site_quote_restricted_pp = 0 }
+	if = {
+		limit = { camp_rework_prepare_site_cost_quote = { STATE = $STATE$ } }
+		set_temp_variable = { camp_site_payment_remove = camp_site_quote_restricted_pp }
+		multiply_temp_variable = { camp_site_payment_remove = -1 }
+		add_political_power = camp_site_payment_remove
+	}
+}
+
+camp_rework_clear_site_labor_reserve = {
+	clear_variable = generic_labor_project_motorized_reserve
+	clear_variable = generic_labor_project_trains_reserve
+	clear_variable = generic_labor_project_support_reserve
+}

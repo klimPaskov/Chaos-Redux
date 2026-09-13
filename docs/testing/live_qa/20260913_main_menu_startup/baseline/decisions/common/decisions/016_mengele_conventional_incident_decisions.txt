@@ -1,0 +1,255 @@
+# Event 016 private conventional recovery decisions in the existing private category.
+# Native factory-use fields use file constants mirroring response profile tuning.
+# Recovery AI uses the existing Computation urgency profile; admission owns affordability.
+@MENGELE_INCIDENT_TECHNICAL_CIC = 2
+@MENGELE_INCIDENT_INDUSTRIAL_CIC = 3
+@MENGELE_INCIDENT_EXOTIC_CIC = 4
+@MENGELE_INCIDENT_BIOLOGICAL_CIC = 3
+
+mengele_clone_army_category = {
+	mengele_event016_electronics_incident_recovery = {
+		icon = GFX_decision_brilliant_scientist_project_electronics_guidance_prototype
+		visible = { has_country_flag = mengele_event016_electronics_incident_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_electronics_incident_recovery_requirements_tt
+				brilliant_scientist_mengele_electronics_incident_recovery_requirements_met = yes
+			}
+			hidden_trigger = { brilliant_scientist_mengele_incident_technical_can_pay = yes }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_incident_technical_can_pay = yes }
+		custom_cost_text = mengele_event016_incident_technical_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_technical_political_power
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_urgent }
+		modifier = { civilian_factory_use = @MENGELE_INCIDENT_TECHNICAL_CIC }
+		days_remove = constant:brilliant_scientist_project_board.response_technical_days
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_mengele_begin_electronics_incident_recovery = yes }
+			if = {
+				limit = { brilliant_scientist_mengele_electronics_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_electronics_incident_recovery_started_tt
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_conventional_incident_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { has_country_flag = mengele_event016_electronics_incident_active }
+						NOT = { brilliant_scientist_mengele_electronics_incident_recovery_receipt_is_current = yes }
+						NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_conventional_incident_cancelled_tt
+			hidden_effect = { brilliant_scientist_mengele_cancel_electronics_incident_recovery = yes }
+		}
+		remove_effect = {
+			hidden_effect = { brilliant_scientist_mengele_finish_electronics_incident_recovery = yes }
+			if = {
+				limit = { check_variable = { var = mengele_event016_conventional_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_electronics_incident_recovery_effect_tt
+			}
+		}
+	}
+
+	mengele_event016_materials_incident_recovery = {
+		icon = GFX_decision_brilliant_scientist_project_advanced_materials_prototype
+		visible = { has_country_flag = mengele_event016_materials_incident_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_materials_incident_recovery_requirements_tt
+				brilliant_scientist_mengele_materials_incident_recovery_requirements_met = yes
+			}
+			hidden_trigger = { brilliant_scientist_mengele_incident_industrial_can_pay = yes }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_incident_industrial_can_pay = yes }
+		custom_cost_text = mengele_event016_incident_industrial_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_industrial_political_power
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_urgent }
+		modifier = { civilian_factory_use = @MENGELE_INCIDENT_INDUSTRIAL_CIC }
+		days_remove = constant:brilliant_scientist_project_board.response_industrial_days
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_mengele_begin_materials_incident_recovery = yes }
+			if = {
+				limit = { brilliant_scientist_mengele_materials_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_materials_incident_recovery_started_tt
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_conventional_incident_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { has_country_flag = mengele_event016_materials_incident_active }
+						NOT = { brilliant_scientist_mengele_materials_incident_recovery_receipt_is_current = yes }
+						NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_conventional_incident_cancelled_tt
+			hidden_effect = { brilliant_scientist_mengele_cancel_materials_incident_recovery = yes }
+		}
+		remove_effect = {
+			hidden_effect = { brilliant_scientist_mengele_finish_materials_incident_recovery = yes }
+			if = {
+				limit = { check_variable = { var = mengele_event016_conventional_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_materials_incident_recovery_effect_tt
+			}
+		}
+	}
+
+	mengele_event016_rocketry_incident_recovery = {
+		icon = GFX_decision_brilliant_scientist_project_rocketry_propulsion_prototype
+		visible = { has_country_flag = mengele_event016_rocketry_incident_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_rocketry_incident_recovery_requirements_tt
+				brilliant_scientist_mengele_rocketry_incident_recovery_requirements_met = yes
+			}
+			hidden_trigger = { brilliant_scientist_mengele_incident_industrial_can_pay = yes }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_incident_industrial_can_pay = yes }
+		custom_cost_text = mengele_event016_incident_industrial_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_industrial_political_power
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_urgent }
+		modifier = { civilian_factory_use = @MENGELE_INCIDENT_INDUSTRIAL_CIC }
+		days_remove = constant:brilliant_scientist_project_board.response_industrial_days
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_mengele_begin_rocketry_incident_recovery = yes }
+			if = {
+				limit = { brilliant_scientist_mengele_rocketry_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_rocketry_incident_recovery_started_tt
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_conventional_incident_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { has_country_flag = mengele_event016_rocketry_incident_active }
+						NOT = { brilliant_scientist_mengele_rocketry_incident_recovery_receipt_is_current = yes }
+						NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_conventional_incident_cancelled_tt
+			hidden_effect = { brilliant_scientist_mengele_cancel_rocketry_incident_recovery = yes }
+		}
+		remove_effect = {
+			hidden_effect = { brilliant_scientist_mengele_finish_rocketry_incident_recovery = yes }
+			if = {
+				limit = { check_variable = { var = mengele_event016_conventional_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_rocketry_incident_recovery_effect_tt
+			}
+		}
+	}
+
+	mengele_event016_high_energy_incident_recovery = {
+		icon = GFX_decision_brilliant_scientist_project_high_energy_physics_prototype
+		visible = { has_country_flag = mengele_event016_high_energy_incident_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_high_energy_incident_recovery_requirements_tt
+				brilliant_scientist_mengele_high_energy_incident_recovery_requirements_met = yes
+			}
+			hidden_trigger = { brilliant_scientist_mengele_incident_exotic_can_pay = yes }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_incident_exotic_can_pay = yes }
+		custom_cost_text = mengele_event016_incident_exotic_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_exotic_political_power
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_urgent }
+		modifier = { civilian_factory_use = @MENGELE_INCIDENT_EXOTIC_CIC }
+		days_remove = constant:brilliant_scientist_project_board.response_exotic_days
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_mengele_begin_high_energy_incident_recovery = yes }
+			if = {
+				limit = { brilliant_scientist_mengele_high_energy_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_high_energy_incident_recovery_started_tt
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_conventional_incident_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { has_country_flag = mengele_event016_high_energy_incident_active }
+						NOT = { brilliant_scientist_mengele_high_energy_incident_recovery_receipt_is_current = yes }
+						NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_conventional_incident_cancelled_tt
+			hidden_effect = { brilliant_scientist_mengele_cancel_high_energy_incident_recovery = yes }
+		}
+		remove_effect = {
+			hidden_effect = { brilliant_scientist_mengele_finish_high_energy_incident_recovery = yes }
+			if = {
+				limit = { check_variable = { var = mengele_event016_conventional_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_high_energy_incident_recovery_effect_tt
+			}
+		}
+	}
+
+	mengele_event016_biomedical_incident_recovery = {
+		icon = GFX_decision_brilliant_scientist_project_biomedical_acceleration_prototype
+		visible = { has_country_flag = mengele_event016_biomedical_incident_active }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_biomedical_incident_recovery_requirements_tt
+				brilliant_scientist_mengele_biomedical_incident_recovery_requirements_met = yes
+			}
+			hidden_trigger = { brilliant_scientist_mengele_incident_biological_can_pay = yes }
+		}
+		custom_cost_trigger = { brilliant_scientist_mengele_incident_biological_can_pay = yes }
+		custom_cost_text = mengele_event016_incident_biological_cost
+		ai_hint_pp_cost = constant:brilliant_scientist_project_board.response_biological_political_power
+		ai_will_do = { base = constant:brilliant_scientist_project_board.ai_urgent }
+		modifier = { civilian_factory_use = @MENGELE_INCIDENT_BIOLOGICAL_CIC }
+		days_remove = constant:brilliant_scientist_project_board.response_biological_days
+		complete_effect = {
+			hidden_effect = { brilliant_scientist_mengele_begin_biomedical_incident_recovery = yes }
+			if = {
+				limit = { brilliant_scientist_mengele_biomedical_incident_recovery_receipt_is_current = yes }
+				custom_effect_tooltip = mengele_event016_biomedical_incident_recovery_started_tt
+			}
+		}
+		cancel_if_not_visible = no
+		cancel_trigger = {
+			custom_trigger_tooltip = {
+				tooltip = mengele_event016_conventional_incident_cancel_trigger_tt
+				hidden_trigger = {
+					OR = {
+						NOT = { has_country_flag = mengele_event016_biomedical_incident_active }
+						NOT = { brilliant_scientist_mengele_biomedical_incident_recovery_receipt_is_current = yes }
+						NOT = { brilliant_scientist_mengele_conventional_incident_provider_is_valid = yes }
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			custom_effect_tooltip = mengele_event016_conventional_incident_cancelled_tt
+			hidden_effect = { brilliant_scientist_mengele_cancel_biomedical_incident_recovery = yes }
+		}
+		remove_effect = {
+			hidden_effect = { brilliant_scientist_mengele_finish_biomedical_incident_recovery = yes }
+			if = {
+				limit = { check_variable = { var = mengele_event016_conventional_recovery_finished value = constant:brilliant_scientist_value.one compare = equals } }
+				custom_effect_tooltip = mengele_event016_biomedical_incident_recovery_effect_tt
+			}
+		}
+	}
+
+}

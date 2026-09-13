@@ -1,0 +1,43 @@
+--- backup/032_missiles_effects.txt
++++ common\scripted_effects\032_missiles_effects.txt
+@@ -402,7 +402,6 @@
+ 		}
+ 		set_variable = { missiles_program_stage = missiles_normalized_stage }
+ 	}
+-	clear_temp_variable = missiles_normalized_stage
+ }
+ 
+ missiles_apply_next_technology_step = {
+@@ -478,8 +477,6 @@
+ 	add_to_temp_variable = { missiles_package_base = missiles_package_states }
+ 	if = { limit = { has_war = yes } add_to_temp_variable = { missiles_package_base = constant:missiles_reserve.wartime_bonus } }
+ 	if = { limit = { has_country_flag = missiles_evolution_saturation_arsenals } multiply_temp_variable = { var = missiles_package_base value = constant:missiles_damage.saturation_multiplier } }
+-	clear_temp_variable = missiles_package_factories
+-	clear_temp_variable = missiles_package_states
+ }
+ 
+ missiles_add_reserve = {
+@@ -530,7 +527,6 @@
+ 		limit = { has_country_flag = missiles_evolution_saturation_arsenals }
+ 		set_variable = { missiles_reserve_cap = constant:missiles_reserve.saturation_cap }
+ 	}
+-	clear_temp_variable = missiles_package_base
+ }
+ 
+ missiles_add_repeat_reserve_package = {
+@@ -546,7 +542,6 @@
+ 	}
+ 	set_variable = { missiles_reserve_delta = missiles_package_base }
+ 	missiles_add_reserve = yes
+-	clear_temp_variable = missiles_package_base
+ }
+ 
+ missiles_reserve_for_operation = {
+@@ -639,7 +634,6 @@
+ 		set_variable = { ROOT.missiles_best_site_score = missiles_candidate_score }
+ 		save_event_target_as = missiles_selected_site
+ 	}
+-	clear_temp_variable = missiles_infrastructure_component
+ }
+ 
+ # STATE scope. The vanilla state scope does not expose its strategic-region ID
