@@ -47,9 +47,10 @@ Three fully equipped, fully manned, fully experienced divisions are spawned from
 
 CXT history grants the installed technology inventory, initializes a complete zombie research profile, and completes its licensed special projects before console activation.
 The history receipt prevents the activation receiver from repeating the core completion pass.
-The technology helper captures `global.technology^num`, reads every zero-based index below that count explicitly, and passes each database object to native `var:` technology fields with `popup = no`.
-An empty database produces no technology reads, and the numeric loop has its own initialized break variable.
-Temporary `CXT_TECH_DIAGNOSTIC` output records the count, index, numeric value, and token text; the supplied error report does not include those values, so runtime error elimination remains unverified.
+The technology helper captures `global.technology^num`, skips the reserved default database object at index zero, reads every real entry from index one below that count, and passes each database object to native `var:` technology fields with `popup = no`.
+The installed engine registers that default object in the global array but initializes its validity flag to false, which both technology consumers reject.
+An empty or default-only database produces no technology reads, and the numeric loop has its own initialized break variable.
+The repair preserves dynamic coverage of every real technology; the read-only engine contract and validation limits are recorded in `runtime_repairs/20260913_cxt_technology_validation/`.
 Technologies are synchronized again before runtime facility placement, so facility permissions exist before construction.
 
 The static special-project inventory retains all 83 definitions: 49 installed vanilla projects and 34 Chaos Redux projects.
@@ -95,7 +96,7 @@ Neither refill hook iterates over every country.
 
 ## Dynamic extension contract
 
-Technology is the only surface in this harness with a documented runtime database array. The technology helper uses `for_each_loop` over `global.technology` and guards each `set_technology` call with `has_tech`, so recurring weekly synchronization does not reapply already-completed technology effects.
+Technology is the only surface in this harness with a documented runtime database array. The technology helper uses an indexed loop over every real `global.technology` entry and guards each `set_technology` call with `has_tech`, so recurring weekly synchronization does not reapply already-completed technology effects.
 
 The installed HOI4 documentation and offline wiki do not expose global arrays for special projects, equipment types, sub-unit definitions, special facilities, doctrines, or general systems. Their static CXT inventories therefore remain honest baselines, and future content opts in through one package-owned setup effect. Event 016 is the first package-owned registration that deliberately keeps a registered combat sub-unit locked and non-recruitable.
 

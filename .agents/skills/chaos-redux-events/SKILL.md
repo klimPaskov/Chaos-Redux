@@ -538,6 +538,11 @@ History grants can run before the recipient has a capital or other countries are
 Keep their local grants and records, but queue capital-dependent scoring and diplomatic refreshes until country activation rather than dropping gameplay outputs.
 Guard capital entry with an owned-state capital check; entering `capital_scope` to test whether it exists can itself raise an invalid-target error.
 
+An exposed database array may include its reserved default object alongside real content.
+Before excluding an entry, verify the array's registration order, the database's default-object initialization, and the consuming effect or trigger's validity check against installed documentation or other direct engine evidence.
+Exclude only the confirmed reserved slot; do not guess that a numeric value or token is invalid, and preserve dynamic coverage of every real entry.
+Keep read-only engine inspection distinct from executed runtime validation.
+
 ### 7. Duration fields and constants
 
 Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.

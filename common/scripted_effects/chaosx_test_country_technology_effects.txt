@@ -4,28 +4,26 @@
 # Overview:
 # - Enumerates the runtime technology database exposed by global.technology.
 # - Grants every installed vanilla and Chaos Redux technology without popups.
-# - Reads zero-based array elements explicitly within the captured runtime count.
+# - Skips the database's default object at array index zero, which is not a tech.
+# - Reads every real database entry within the captured runtime count.
 # - Passes each database object directly to the native var: technology fields.
-# - Temporary CXT_TECH_DIAGNOSTIC output identifies the unresolved database
-#   element rejected by both consumers; remove it after the issue is resolved.
 # ============================================================================
+
+# The installed database reserves its first slot for the invalid default object.
+# global.technology includes that slot; native has_tech/set_technology reject it.
+@CXT_FIRST_TECHNOLOGY_INDEX = 1
 
 chaosx_test_country_complete_all_technologies = {
 	set_temp_variable = { chaosx_test_country_technology_grant_applied = 0 }
 	set_temp_variable = { chaosx_test_country_technology_count = global.technology^num }
 	set_temp_variable = { chaosx_test_country_technology_loop_break = 0 }
-	# Temporary diagnostic: distinguish database availability from object conversion.
-	log = "CXT_TECH_DIAGNOSTIC begin country=[THIS.GetTag] count=[?chaosx_test_country_technology_count|.0]"
 	for_loop_effect = {
-		start = 0
+		start = @CXT_FIRST_TECHNOLOGY_INDEX
 		end = chaosx_test_country_technology_count
 		compare = less_than
 		value = chaosx_test_country_current_technology_index
 		break = chaosx_test_country_technology_loop_break
-		log = "CXT_TECH_DIAGNOSTIC read count=[?chaosx_test_country_technology_count|.0] index=[?chaosx_test_country_current_technology_index|.0]"
 		set_temp_variable = { chaosx_test_country_current_technology = global.technology^chaosx_test_country_current_technology_index }
-		# Token text is diagnostic only and never interpolated into technology fields.
-		log = "CXT_TECH_DIAGNOSTIC element index=[?chaosx_test_country_current_technology_index|.0] raw=[?chaosx_test_country_current_technology|.0] token=[?chaosx_test_country_current_technology.GetTokenKey]"
 		if = {
 			limit = { NOT = { has_tech = var:chaosx_test_country_current_technology } }
 			set_technology = {
