@@ -59,6 +59,12 @@ The fresh Event MCP inspection of `chaosx.nr6.1` was `EVENT_INSPECTED_PARTIAL` (
 
 `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9a2f7d474fb2d41040392f4b88d663f220a5082183aa4e1f8c508eeea350283d/72efaf754e0403cde8400dbf9e1231dff90b04e998038adee85c6c66768717d1/event-lint-4bccb6ec7fe1.json`
 
+A fresh root lint on 2026-09-13 returned `EVENT_INSPECTED_PARTIAL` with revision `3ac0bcfca142cdb797cca8faf293cfa1085b9019421045d9f385374ad094fc2a`, graph hash `18501dff365ddaeb371f8e07696cd36dafd3f74a24012df8ba7714f6df9da62f`, zero blocking diagnostics, and artifact:
+
+`hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/a27f32b5a5c2af9caebdc33a0eb7e8968d6b568b33ff261e732140bc6cbedd15/15f72e295d86c5ff8e6f7ecdd33aa9730dd386310a4f17c5904c896680bc01f5/event-lint-3ac0bcfca142.json`
+
+A source-line `state_flow` query for `common/scripted_effects/006_independence_wave_effects.txt:2721` returned the exact MCP blocker `INTERNAL_ERROR` / `Unexpected internal error` with no artifact. This is recorded as a tooling limitation, not evidence of a caller or of live transition execution.
+
 The Event MCP result is partial/deferred engine evidence and is not a live lifecycle execution proof. The decision-specific MCP route is not exposed in this runtime. No HOI4 launch or save/load test was performed.
 
 ## Handoff boundary
