@@ -25,16 +25,13 @@ chaosx_test_country_state_can_host_special_facility = {
 
 # State scope, ROOT = CXT. Input: temporary building token
 # chaosx_test_country_current_facility, assigned before the helper call.
-# Native construction legality remains specific to that installed type.
-chaosx_test_country_state_can_host_facility_type = {
+# These are shared placement preconditions. Every caller must also check
+# native can_construct_building for its literal type in the outer template.
+chaosx_test_country_state_meets_facility_requirements = {
 	is_owned_by = ROOT
 	OR = {
 		NOT = { check_variable = { chaosx_test_country_current_facility = token:naval_facility } }
 		is_coastal = yes
 	}
 	chaosx_test_country_state_can_host_special_facility = yes
-	meta_trigger = {
-		text = { can_construct_building = [FACILITY] }
-		FACILITY = "[?chaosx_test_country_current_facility.GetTokenKey]"
-	}
 }

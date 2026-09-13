@@ -548,6 +548,10 @@ Track scheduled delivery separately from pending work when an immediate refresh 
 Set the scheduling flag before enqueueing, clear scheduling and pending-work flags before dispatch, and retain an immediate apply path for explicit setup or refresh.
 Verify registration convergence, repeated requests, and refresh while a request is pending; preserve every registry consumer and package repair hook.
 
+When inlining a multi-condition scripted trigger inside `NOT`, keep the conditions in an explicit `AND` block; sibling conditions in `NOT` use NOR semantics.
+Preserve the original rejection behavior when either a shared precondition or the native legality check fails.
+For temporary diagnostics inside a state-scoped effect, check country flags through the intended country scope, such as `ROOT`, rather than the state scope.
+
 ### 7. Duration fields and constants
 
 Use `script_constants` for shared tuning, but remember that some duration fields reject both `constant:` and variable tokens.

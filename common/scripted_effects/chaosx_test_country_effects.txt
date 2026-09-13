@@ -54,7 +54,8 @@ chaosx_test_country_ensure_occupation_fixture = {
 # Country scope. Preserve a legal installed campus or provision one exact
 # building type. Rejected temporary transfers restore owner and controller.
 # Input: temporary building token chaosx_test_country_current_facility.
-# The meta template resolves its literal type; naval requires a coastal state.
+# Resolve native construction checks in this template; do not nest a
+# meta-trigger expansion in its search. Naval requires a coastal state.
 chaosx_test_country_provision_facility_type = {
 	if = {
 		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
@@ -62,6 +63,10 @@ chaosx_test_country_provision_facility_type = {
 	}
 	meta_effect = {
 		text = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+				log = "CXT_SETUP_TRACE facility_body_begin type=[FACILITY] date=[?global.date|.3]"
+			}
 			if = {
 				limit = {
 					NOT = {
@@ -73,12 +78,17 @@ chaosx_test_country_provision_facility_type = {
 				}
 				clear_array = chaosx_test_facility_rejected_states
 				set_temp_variable = { chaosx_test_facility_type_candidate_failed = 0 }
+				if = {
+					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+					log = "CXT_SETUP_TRACE facility_search_begin type=[FACILITY] date=[?global.date|.3]"
+				}
 				while_loop_effect = {
 					break = chaosx_test_facility_type_candidate_failed
 					limit = {
 						NOT = {
 							any_owned_state = {
-								chaosx_test_country_state_can_host_facility_type = yes
+								chaosx_test_country_state_meets_facility_requirements = yes
+								can_construct_building = [FACILITY]
 							}
 						}
 					}
@@ -108,18 +118,41 @@ chaosx_test_country_provision_facility_type = {
 						set_temp_variable = { chaosx_test_facility_type_candidate_selected = 1 }
 						OWNER = { save_event_target_as = chaosx_test_facility_original_owner }
 						CONTROLLER = { save_event_target_as = chaosx_test_facility_original_controller }
+						if = {
+							limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+							log = "CXT_SETUP_TRACE facility_transfer_begin state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+						}
 						transfer_state_to = ROOT
 						set_state_controller_to = ROOT
 						if = {
-							limit = { NOT = { chaosx_test_country_state_can_host_facility_type = yes } }
+							limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+							log = "CXT_SETUP_TRACE facility_transfer_end state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+						}
+						if = {
+							limit = {
+								NOT = {
+									AND = {
+										chaosx_test_country_state_meets_facility_requirements = yes
+										can_construct_building = [FACILITY]
+									}
+								}
+							}
 							ROOT = {
 								add_to_array = {
 									array = chaosx_test_facility_rejected_states
 									value = PREV
 								}
 							}
+							if = {
+								limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+								log = "CXT_SETUP_TRACE facility_restore_begin state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+							}
 							transfer_state_to = event_target:chaosx_test_facility_original_owner
 							set_state_controller_to = event_target:chaosx_test_facility_original_controller
+							if = {
+								limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+								log = "CXT_SETUP_TRACE facility_restore_end state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+							}
 						}
 					}
 					if = {
@@ -127,9 +160,24 @@ chaosx_test_country_provision_facility_type = {
 						set_temp_variable = { chaosx_test_facility_type_candidate_failed = 1 }
 					}
 				}
+				if = {
+					limit = { has_country_flag = chaosx_test_country_setup_trace_active }
+					log = "CXT_SETUP_TRACE facility_search_end type=[FACILITY] date=[?global.date|.3]"
+				}
 				random_owned_controlled_state = {
-					limit = { chaosx_test_country_state_can_host_facility_type = yes }
+					limit = {
+						chaosx_test_country_state_meets_facility_requirements = yes
+						can_construct_building = [FACILITY]
+					}
+					if = {
+						limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+						log = "CXT_SETUP_TRACE facility_construction_begin state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+					}
 					construct_building_in_random_province = { [FACILITY] = 1 }
+					if = {
+						limit = { ROOT = { has_country_flag = chaosx_test_country_setup_trace_active } }
+						log = "CXT_SETUP_TRACE facility_construction_end state=[This.GetName] type=[FACILITY] date=[?global.date|.3]"
+					}
 				}
 				clear_array = chaosx_test_facility_rejected_states
 			}

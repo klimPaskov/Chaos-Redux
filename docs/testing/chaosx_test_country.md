@@ -69,7 +69,8 @@ That country-scoped helper skips completed projects and passes the object to nat
 The caller must assign a valid installed project scope before each core call; the registered-project loop supplies its current scope directly.
 
 Facility callers assign the temporary building token `chaosx_test_country_current_facility` before invoking `chaosx_test_country_provision_facility_type = yes`.
-The country-scoped helper resolves that explicit token inside a supported `meta_effect` template, while its state trigger resolves native `can_construct_building` inside `meta_trigger` with CXT as ROOT.
+The country-scoped helper resolves that explicit token inside one supported `meta_effect` template and places native `can_construct_building` checks directly at all three placement gates with CXT as ROOT.
+The shared state trigger checks ownership, control, coast, and separation from other facilities without another runtime expansion.
 Naval facilities require coast; the six types use distinct states, rejected foreign acquisitions restore their original owner and controller, and exhausted searches set the existing missing-facility flags.
 The temporary input is replaced by each subsequent type call; the rejection array is cleared before and after each search, and the helper grants no technology or project.
 
