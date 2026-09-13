@@ -1,0 +1,109 @@
+[
+  {
+    "path": "common/scripted_triggers/023_sov_nuclear_bombs_event_triggers.txt",
+    "baseline_sha256": "c8767429d307dc54b5593739a43128c2da3f3a181c22281afb84f49b428151c5",
+    "after_sha256": "81e4dc422c247184da67171c0a8c946fd971156cc2b86c1b71f099e1b9d4dd67",
+    "reversible_exact_bytes": true,
+    "changes": [
+      {
+        "helper": "sov_nuclear_bombs_event_state_has_delivery_access",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_state_is_valid_command_target",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_state_is_valid_test_site",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_state_is_valid_reactor_site",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_pending_reactor_site_is_valid",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_state_is_valid_collapse_site",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_state_is_valid_storage_site",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      },
+      {
+        "helper": "sov_nuclear_bombs_event_state_is_valid_reserve_destination",
+        "before": "exists = yes",
+        "after": "scope_exists = yes"
+      }
+    ]
+  },
+  {
+    "path": "common/scripted_triggers/016_brilliant_scientist_containment_triggers.txt",
+    "baseline_sha256": "f09f052c2ab6c12835c1ba8e843496e9974881ec37d24dcbf6f3f7a69ce8c1e4",
+    "after_sha256": "258e21f9082ee7261b1537bdc8066142e299bb581d031f3972c17db20be7cfd5",
+    "reversible_exact_bytes": true,
+    "changes": [
+      {
+        "before": "num_equipment@convoy_1",
+        "after": "num_equipment@convoy"
+      }
+    ]
+  },
+  {
+    "path": "common/scripted_localisation/016_brilliant_scientist_containment_scripted_localisation.txt",
+    "baseline_sha256": "0a67abd2627af9e8854c6caf5fdf861d9ac0e4f0b2d993e10741a9fd0e695f60",
+    "after_sha256": "343b3831a763c3af227f7f2031a3a591f2b2e76dc0fb2a923e878e8c527648d6",
+    "reversible_exact_bytes": true,
+    "changes": [
+      {
+        "before": "num_equipment@convoy_1",
+        "after": "num_equipment@convoy"
+      }
+    ]
+  },
+  {
+    "path": "common/scripted_effects/032_missiles_effects.txt",
+    "baseline_sha256": "35d8c85e0c6fd7b7e1826135968ad5b2a2e1982d41ce6fb1d8d7ca7b52650903",
+    "after_sha256": "457e2e8fb8aed64bafc585fa74b0b324ae8db226d89edd6b0615fbed85f51111",
+    "reversible_exact_bytes": true,
+    "changes": [
+      {
+        "before": "\tif = { limit = { num_of_factories > constant:missiles_program_value.zero } add_to_temp_variable = { missiles_candidate_score = constant:missiles_site_score.industrial_access } }",
+        "after": "\tif = {\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\tarms_factory > constant:missiles_program_value.zero\n\t\t\t\tindustrial_complex > constant:missiles_program_value.zero\n\t\t\t\tdockyard > constant:missiles_program_value.zero\n\t\t\t}\n\t\t}\n\t\tadd_to_temp_variable = { missiles_candidate_score = constant:missiles_site_score.industrial_access }\n\t}"
+      },
+      {
+        "before": "\t\t\t\t\t\t\t\t\tarray = missiles_region_probe_states\n\t\t\t\t\t\t\t\t\tstrategic_region = [REGION_ID]",
+        "after": "\t\t\t\t\t\t\t\t\tstrategic_region = [REGION_ID]\n\t\t\t\t\t\t\t\t\tis_in_array = { array = ROOT.missiles_region_probe_states value = THIS }"
+      },
+      {
+        "before": "# as a dynamic variable. This bounded, event-driven probe uses any_state_in with\n# a one-state array and a meta trigger, then stores the exact region on the\n# site's durable record. It runs only while a site candidate is scored or\n# registered; it is not a recurring world scan.",
+        "after": "# as a dynamic variable. This bounded, event-driven probe uses any_state_in with\n# a strategic-region selector and a one-state array membership filter, then\n# stores the exact region on the site's durable record. It runs only while a\n# site candidate is scored or registered; it is not a recurring world scan."
+      }
+    ]
+  },
+  {
+    "path": "common/scripted_effects/019_infantry_spawn_generation_effects.txt",
+    "baseline_sha256": "3b0336ffa0bacaeed24fae78302b037b28fb172e5e390791ce10382e0030ce7f",
+    "after_sha256": "f727af2b88c8e631fb54110e0061ceb509ed079163a8a48e9ac6517c26540402",
+    "reversible_exact_bytes": true,
+    "changes": [
+      {
+        "before": "\t\tchaos_unit_family_provider_508_event19_materialize_landing = yes\n\t}\n\telse = {\n\t\tevent_target:infantry_spawn_current_origin_state = {",
+        "after": "\t\tchaos_unit_family_provider_508_event19_materialize_landing = yes\n\t}\n\telse = {\n\t\t# Unlock support equipment before the engine fills an ordinary formation.\n\t\t# Use raw template needs; scaled debt can round a small equipment fill to zero.\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\tcheck_variable = { infantry_spawn_current_family_id = constant:infantry_spawn_lot_family.none }\n\t\t\t\tNOT = { has_tech = tech_support }\n\t\t\t}\n\t\t\tinfantry_spawn_accumulate_current_template_needs = yes\n\t\t\tif = {\n\t\t\t\tlimit = { check_variable = { infantry_spawn_need_support_equipment > 0 } }\n\t\t\t\tset_technology = { tech_support = 1 popup = no }\n\t\t\t}\n\t\t}\n\t\tevent_target:infantry_spawn_current_origin_state = {"
+      }
+    ],
+    "scope": "generation Country; ordinary family only",
+    "condition": "raw current-template support equipment need > 0 and tech_support absent",
+    "preserved": "create_unit parameters and post-create ledger/accounting byte-for-byte"
+  }
+]
