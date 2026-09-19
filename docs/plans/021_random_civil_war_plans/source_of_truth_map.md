@@ -251,3 +251,9 @@ The owner-applied exposure repair adds `event021_parent_review_exposure_lifecycl
 Current hashes are `common/scripted_effects/021_random_civil_war_effects.txt` `596e5f5f11682ff348c68243bcdbcd682c0d3d489ea33b4667629a1ff8be2d12` and `common/scripted_effects/021_random_civil_war_parent_effects.txt` `c1f38764b60fdbb1f46791db0e6f5c4b0e72551c67a654a758580ef81fb57145`.
 
 The refreshed focused root lint returned `EVENT_INSPECTED_PARTIAL` at revision `dec87bc5349e92d00e2affee2cb645e0aa4f9f91aad80ed2cf5a584674fef0f7`, with zero blocking diagnostics and zero skipped sources. The artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d9efd5e0461b81f9c34400c27fd66cf4f225f5a8335ac8c8e6d247b3159a71cf/854b4999ea10d00d16bdc6acb6128054189b07786641c8cd20f0bb4dd7dbb6f3/event-lint-dec87bc5349e.json`; validation remains partial because helper and lifecycle projections are deferred for the large workspace.
+
+## 2026-09-19 completion-audit exposure repair
+
+The fresh completion audit found that exposure creation did not guarantee membership in the bounded registered-country review, Evolution II disablement did not invalidate existing exposure presentation, and exposure cleanup left `event021_relief_action_used` behind. The owner repair calls `event021_register_global_country` from `event021_apply_regional_exposure`, makes `event021_country_can_manage_exposure` fail while `events_log_disabled_evolution_21_21_2` is set, and clears the relief-use flag in `event021_cleanup_regional_exposure`.
+
+This closes the three source defects without adding a world iteration or changing the shared scheduler contract. The current test-entry state remains `Needs Testing`; the live expiry and re-exposure sequence is still untested.
