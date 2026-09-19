@@ -6,7 +6,9 @@ Architecture aligned: 2026-07-15
 
 ## Current architecture
 
-## Current reconciliation (2026-09-12)
+## Current reconciliation (2026-09-19)
+
+The 2026-09-19 validation refresh at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md` is the newest bounded source/static, visual-wiring, and portrait-archive receipt. It preserves the 32/29/40/161 fail-closed boundary and the unresolved identity, rights, route-cost, probability, GUI, audio, and live-runtime gates; the dated receipts below remain detailed authorities for their individual tranches.
 
 Event 006 remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with the automatic ladder `3/4/5/7/10`, World Collapse at `10`, and nothing visible before Event 006 fires.
 

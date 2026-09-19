@@ -6,7 +6,9 @@ This package is the accepted source specification. Implementation status is reco
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
-## Current evidence reconciliation (2026-09-13)
+## Current evidence reconciliation (2026-09-19)
+
+The 2026-09-19 validation refresh at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md` is the newest bounded source/static, visual-wiring, and portrait-archive receipt. It preserves the 32/29/40/161 fail-closed boundary and the unresolved identity, rights, route-cost, probability, GUI, audio, and live-runtime gates; the dated 2026-09-13 receipts below remain detailed authorities for their individual tranches.
 
 The accepted fail-closed boundary remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with no-pre-event visibility still absolute.
 
