@@ -8,6 +8,8 @@ The accepted Event 006 visual registry contains 49 asset IDs. The current engine
 
 The durable portrait archive remains separate from runtime: original sources are flat in `docs/assets/portraits/006_independence_wave/`, `processed/` is its only child, and no 156x210 DDS is retained there. Runtime portraits remain under `gfx/leaders/006_independence_wave/`.
 
+The narrow IW-038 Ruthenia portrait-reference repair is recorded in [`006_iw038_portrait_wiring_repair_2026-09-19.md`](006_iw038_portrait_wiring_repair_2026-09-19.md). It replaces two unregistered Augustin Voloshyn portrait tokens with the already-registered dedicated large sprite and removes the unauthorized small/dossier token; the portrait DDS and source-placeholder boundary are unchanged.
+
 ## Visual review evidence
 
 The parent reopened the final decoded scene contact sheet, the icon DDS contact sheet, the flat historical-flag contact sheet, the repaired state-puzzle contact sheet, the status-panel processed PNG, the ASSET-004 decoded news DDS, and the recognition-seal animation contact sheet at review scale. The family-specific 2026-09-13 receipts remain the per-asset source/processed/final-DDS and enlarged-review authorities for all accepted rows; no new crop, clipping, overflow, bleed, alpha, aspect-ratio, alignment, or readability defect was found in the reviewed consumers.
