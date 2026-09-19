@@ -58,6 +58,12 @@ ASSET_SEARCH_DIRS = (
 	VANILLA_ROOT / "gfx",
 	VANILLA_ROOT / "sound",
 	VANILLA_ROOT / "music",
+	# DLC packages keep their engine-facing textures below their own package
+	# roots. Include those trees so a vanilla sprite declaration is not
+	# incorrectly reported as broken merely because its texture is supplied by
+	# an installed DLC rather than the base game root.
+	VANILLA_ROOT / "dlc",
+	VANILLA_ROOT / "integrated_dlc",
 )
 
 _ASSET_INDEX: Dict[str, int] = {}

@@ -6,11 +6,13 @@ Disposition: implemented audit-tooling improvement; no gameplay, GFX, portrait, 
 
 The existing `.tools/audit_asset_wiring_static.py` checked mod-owned `.gfx` texture paths and treated vanilla GFX registration as sufficient reach-through evidence. That left one important failure class invisible: a mod-referenced vanilla GFX name whose installed vanilla declaration points at a missing DLC texture.
 
-The checker now performs a narrow second pass over vanilla `.gfx` definitions whose `GFX_` names are referenced by the mod. It reports the declared texture path, vanilla `.gfx` file, and owning GFX name when the backing file is absent. The pass does not lint unrelated vanilla content and does not alter runtime wiring.
+The checker now performs a narrow second pass over vanilla `.gfx` definitions whose `GFX_` names are referenced by the mod. It reports the declared texture path, vanilla `.gfx` file, and owning GFX name when the backing file is absent. Its asset index includes the installed game's `dlc/` and `integrated_dlc/` trees, so valid DLC-backed textures are not falsely reported as missing. The pass does not lint unrelated vanilla content and does not alter runtime wiring.
 
 ## Evidence
 
-The new pass was exercised against the installed No Step Back directory with the two IW-040 Kuban Ivanis tokens. It reports the missing `gfx/leaders/KUB/portrait_KUB_ivanis_vasily_nikolaevich.dds` from `dlc/dlc034_no_step_back/interface/nsb_portraits.gfx` while resolving the existing 65x67 idea DDS. This independently reproduces the portrait gap documented by `006_iw040_kuban_portrait_gap_2026-09-19.md`.
+The new pass was exercised against the installed No Step Back directory with the two IW-040 Kuban Ivanis tokens. After DLC-tree resolution, it reports only the missing `gfx/leaders/KUB/portrait_KUB_ivanis_vasily_nikolaevich.dds` from `dlc/dlc034_no_step_back/interface/nsb_portraits.gfx` while resolving the existing 65x67 idea DDS. This independently reproduces the portrait gap documented by `006_iw040_kuban_portrait_gap_2026-09-19.md`.
+
+A full installed-tree run reports 11 missing vanilla backing references, of which only the Kuban Ivanis portrait is Event 006-relevant; the remaining ten are pre-existing base-interface references outside this event's scope. The mod-owned pass remains at 19 missing files, also outside Event 006.
 
 The modified script passes `python -B -m py_compile .tools/audit_asset_wiring_static.py`. No fallback artwork, source placeholder, runtime DDS, or portrait registry entry was created. The existing flat portrait archive contract remains unchanged.
 
