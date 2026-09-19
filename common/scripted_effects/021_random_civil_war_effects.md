@@ -69,9 +69,11 @@ Scope rebinding is not proof that the engine transferred actual wars.
 
 `event021_update_achievement_state` writes achievement receipts only when normal-campaign eligibility remains true.
 
-`event021_prepare_scenario_bypass` and `event021_clear_scenario_bypass` isolate manual scenario origin from ordinary automatic pacing.
+`event021_prepare_scenario_bypass` and `event021_clear_scenario_bypass` isolate manual scenario origin from ordinary automatic pacing. The parent controller keeps the bypass and confirmation reservation alive across the complete selected-set preparation and commit phases, then clears it after the final callback.
 
-`event021_cleanup_crisis`, `event021_cleanup_global_registry`, and `event021_clear_global_threat_source` remove temporary state after a completed or rejected transaction. Clearing the Evolution III threat also empties the Critical queue, removes its country receipts, and resets its cursor and count.
+`event021_queue_critical_country`, `event021_dequeue_critical_country`, `event021_launch_critical_country`, and `event021_finish_critical_launch` keep the Critical queue row aligned while a claimed target is dispatched through `chaosx.nr21.18`. Queue exits are centralized as launched, stabilized, or invalidated receipts; a still-valid Critical target is retained for a later bounded launch budget.
+
+`event021_cleanup_crisis`, `event021_cleanup_global_registry`, and `event021_clear_global_threat_source` remove temporary state after a completed or rejected transaction. Crisis cleanup also clears every transient Event 021 AI role profile so settled or rejected actors cannot retain crisis behavior. Clearing the Evolution III threat also empties the Critical queue, removes its country receipts, and resets its cursor and count.
 
 Ordinary crisis cleanup preserves the completion and identity receipts of a living, fully proven Event 021-origin Event 006 package, using `is_independence_wave_event021_package_country`.
 That predicate extracts the existing complete-adapter branch from `is_independence_wave_package_content_active` without widening the strict Event 006 active-origin classifier.
@@ -82,7 +84,7 @@ Example: a recognized Event 021-created package survives reconstruction with pac
 The shared Event 006 local-content and player-surface predicates now accept this complete Event 021-origin package, so its reused focus, category, decision, formable, and AI surfaces remain available after setup without changing Event 006 lifecycle state.
 That source bridge still requires live package/runtime validation for every admitted package and does not certify save/reload, settlement, or player-facing consumer behavior.
 
-`event021_review_current_country` removes a recovered queued country before re-evaluating Critical admission, routes an invalid registered country through `event021_dequeue_critical_country` before `event021_unregister_global_country`, and the parent queue pass repeats that validity check at launch time, keeping the Critical queue array, country receipt, and count aligned.
+`event021_review_current_country` removes a recovered queued country before re-evaluating Critical admission, routes an invalid registered country through `event021_dequeue_critical_country` before `event021_unregister_global_country`, and the parent queue pass repeats that validity check at launch time, keeping the Critical queue array, country receipt, and count aligned. A claimed row is not dequeued until the owner-aware callback resolves it.
 
 `event021_register_fracture_evidence` stores regional, command, and Event 006 actor/package/region identity in source-specific receipts. Callers may provide the normal scope input `event021_evidence_actor_scope`; refresh invalidates the source receipt if that referenced actor no longer exists. Settlement completion produces its own finite settlement receipt, and all receipt families expire through the shared refresh helper.
 
@@ -92,7 +94,7 @@ The effects do not create an actual nonhuman country, duplicate an Event 006 tag
 
 The global arrays are capacity bounded by `random_civil_war_capacity` and are cleared only when their registered scopes are no longer valid.
 
-The explicit manual scenario request may enumerate eligible countries once to build Low, Medium, and High target pools, while Maximum commits every eligible country directly. Ordinary and recurring review paths never use `every_country`.
+The explicit manual scenario request may enumerate eligible countries once to build Low, Medium, and High target pools, while Maximum selects every eligible country directly. Selection and host-bound plan preparation complete before the immediate commit pass; ordinary and recurring review paths never use `every_country`.
 
 ## Example
 

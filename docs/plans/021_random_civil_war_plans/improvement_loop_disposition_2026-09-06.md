@@ -18,4 +18,4 @@ The bounded improvement-loop planner was run after the late source tranche. Its 
 | B10 final audits and documentation | accepted and queued | Current docs and catalog now reflect `Needs Testing`; the post-repair probability and completion auditors are the final queued reviews. |
 | B11 broad expansion and legacy-art deletion | not required | The bounded framework is retained, and historical legacy assets remain recoverable rather than being destructively removed. |
 
-The result is sufficient to hand the package to testing, not sufficient to open the automatic runtime release gate or claim full acceptance.
+At the time of this 2026-09-06 disposition, the result was sufficient to hand the package to testing but not sufficient to open the automatic runtime release gate or claim full acceptance. `subagent_handoffs/test_release_gate_2026-09-13.md` supersedes the release-gate portion and records the later test-release opening; final acceptance remains closed.

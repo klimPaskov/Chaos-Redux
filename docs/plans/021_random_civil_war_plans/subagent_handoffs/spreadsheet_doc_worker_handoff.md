@@ -11,7 +11,7 @@ Date: 2026-08-30.
 ## Workbook changes
 
 - `Events` row 22, catalog ID 21, now uses the player-facing name `Random Civil War`, the current Event Details wording, the exact Settlement and Reconstruction detail text, and the exact Evolution I, II, and III body text.
-- `Events` row 22 retains `Minor Repeatable`, chaos level `1`, and status `To Be Reworked`, and now records Cluster ID `1` with Member Severity `Medium`.
+- At the 2026-08-30 handoff, `Events` row 22 retained `Minor Repeatable`, chaos level `1`, and the then-current status `To Be Reworked`, while recording Cluster ID `1` with Member Severity `Medium`. The later authoritative workbook update changed the status to `Needs Testing`; see `test_release_gate_2026-09-13.md` and the current source-of-truth map.
 - The source entry is confirmed as `chaosx.nr21.1` in `events/021_random_civil_war.txt`.
 - `Clusters` row 2 retains the current Wars cluster detail and now lists members `4, 7, 21`.
 - `Scenarios` row 15 adds `SCN-018`, `The Fracture Cascade`, the current confirmation and four type descriptions, the four current intensity descriptions, four current type labels, and status `Needs Testing`.
@@ -28,6 +28,6 @@ Date: 2026-08-30.
 
 ## Remaining risks
 
-- No live HOI4 launch or in-game rendering was performed, so SCN-018 remains `Needs Testing` and Event 021 remains `To Be Reworked`.
+- No live HOI4 launch or in-game rendering was performed, so SCN-018 and Event 021 remain `Needs Testing`; the implementation phase is complete for test entry, but final acceptance is not certified.
 - The workbook's pre-existing status dropdown list remains unchanged and still contains legacy status labels beyond the current Legend list; the Event 021 values used here are accepted by that existing validation.
 - The original workbook archive was truncated by an intermediate failed save during this task, so the final workbook was safely reconstructed from the last known-good committed workbook structure and the latest generated snapshots before applying these changes; snapshot values and the relevant current row presentation were retained, but unrelated uncommitted style metadata cannot be independently proven from the truncated archive.

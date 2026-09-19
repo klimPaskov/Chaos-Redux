@@ -502,6 +502,10 @@ event021_parent_global_scheduler_pulse = {
 							has_event_target = random_civil_war_launch_target
 						}
 						event_target:random_civil_war_launch_target = { country_event = { id = chaosx.nr21.18 } }
+						if = {
+							limit = { NOT = { has_country_flag = random_civil_war_critical_queued } }
+							set_temp_variable = { event021_parent_queue_row_removed = constant:random_civil_war_value.one }
+						}
 					}
 					else = {
 						set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.invalidated }
@@ -1341,7 +1345,7 @@ event021_parent_freeze_secondary_opening = {
 		var:random_civil_war_scenario_frozen_event6_secondary_anchor = { save_global_event_target_as = random_civil_war_event6_secondary_planned_anchor }
 		if = { limit = { has_variable = random_civil_war_scenario_frozen_event6_secondary_actor } var:random_civil_war_scenario_frozen_event6_secondary_actor = { save_global_event_target_as = random_civil_war_event6_secondary_planned_actor } }
 	}
-	else_if = {
+	if = {
 		limit = { has_country_flag = random_civil_war_scenario_secondary_plan_frozen }
 		set_global_flag = random_civil_war_secondary_front_preplanned
 		set_variable = { global.random_civil_war_pending_secondary_archetype = random_civil_war_scenario_frozen_secondary_archetype }
@@ -1349,6 +1353,8 @@ event021_parent_freeze_secondary_opening = {
 		var:random_civil_war_scenario_frozen_secondary_state = { save_global_event_target_as = random_civil_war_preplanned_secondary_anchor_state }
 	}
 	else = {
+		if = {
+			limit = { NOT = { has_country_flag = random_civil_war_scenario_event6_secondary_plan_frozen } }
 	# The package loader is run while the opening transaction still owns the
 	# original map. Its anchor is excluded from the primary reservation and is
 	# persisted as a receipt so the later callback never searches the mutated map.
@@ -1453,6 +1459,7 @@ event021_parent_freeze_secondary_opening = {
 		}
 	}
 	}
+}
 }
 
 # COUNTRY scope. Full connected-region planner used by the opening
@@ -2520,7 +2527,40 @@ event021_parent_initialize_secondary_opposition_actor = {
 		set_variable = { random_civil_war_anchor_state = event_target:random_civil_war_secondary_anchor_state }
 		event_target:random_civil_war_secondary_anchor_state = { save_event_target_as = random_civil_war_anchor_state }
 		set_country_flag = random_civil_war_opposition_leader_ready
-		set_country_flag = random_civil_war_revolutionary_profile
+		# Secondary ordinary fronts use the reserved route's role adapter. The
+		# pending archetype is already frozen before start_civil_war, so do not
+		# collapse legal, regional, and command fronts into the revolutionary AI.
+		clr_country_flag = random_civil_war_revolutionary_profile
+		clr_country_flag = random_civil_war_constitutional_profile
+		clr_country_flag = random_civil_war_command_claimant
+		if = {
+			limit = {
+				check_variable = {
+					var = random_civil_war_archetype
+					value = constant:random_civil_war_archetype.command
+					compare = equals
+				}
+			}
+			set_country_flag = random_civil_war_command_claimant
+		}
+		else_if = {
+			limit = {
+				OR = {
+					check_variable = {
+						var = random_civil_war_archetype
+						value = constant:random_civil_war_archetype.legal
+						compare = equals
+					}
+					check_variable = {
+						var = random_civil_war_archetype
+						value = constant:random_civil_war_archetype.regional
+						compare = equals
+					}
+				}
+			}
+			set_country_flag = random_civil_war_constitutional_profile
+		}
+		else = { set_country_flag = random_civil_war_revolutionary_profile }
 		missiles_split_program_after_civil_war = yes
 		add_ideas = event021_fractured_command
 		set_variable = { random_civil_war_opening_state_count = constant:random_civil_war_value.one }
@@ -5248,7 +5288,10 @@ event021_parent_freeze_scenario_plan = {
 								NOT = { has_state_flag = random_civil_war_scenario_primary_anchor_marked }
 							}
 							set_state_flag = random_civil_war_secondary_transfer_state
-							save_event_target_as = random_civil_war_scenario_frozen_secondary_state
+							# Persist the state scope on the host country. A regular event
+							# target would expire before the confirmation callback consumes
+							# this receipt.
+							set_variable = { ROOT.random_civil_war_scenario_frozen_secondary_state = THIS }
 							set_temp_variable = { event021_parent_scenario_secondary_found = constant:random_civil_war_value.one }
 						}
 					}
@@ -5279,7 +5322,6 @@ event021_parent_freeze_scenario_plan = {
 				NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.event006 compare = equals } }
 				NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.same_tag compare = equals } }
 				check_variable = { var = random_civil_war_scenario_frozen_state_count value = constant:random_civil_war_value.one compare = greater_than }
-				NOT = { has_country_flag = random_civil_war_scenario_secondary_plan_frozen }
 			}
 			set_global_flag = random_civil_war_event6_secondary_search_active
 			event021_parent_find_event6_package = yes
@@ -5608,6 +5650,7 @@ random_civil_war_trigger_manual_scenario = {
 		set_global_flag = random_civil_war_manual_scenario_launch_in_progress
 		clear_array = global.random_civil_war_scenario_reserved_states
 		clear_array = global.random_civil_war_scenario_reserved_event6_packages
+		clear_temp_array = event021_parent_scenario_selected_targets
 		if = {
 			limit = { check_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.maximum } }
 			set_global_flag = random_civil_war_scenario_maximum_mode
@@ -5621,14 +5664,7 @@ random_civil_war_trigger_manual_scenario = {
 			set_variable = { global.random_civil_war_scenario_requested_count = event021_parent_scenario_target_pool^num }
 			for_each_scope_loop = {
 				array = event021_parent_scenario_target_pool
-				set_variable = { random_civil_war_scenario_type = global.random_civil_war_manual_scenario_type }
-				set_variable = { random_civil_war_scenario_intensity = global.random_civil_war_manual_scenario_intensity }
-				set_country_flag = random_civil_war_scenario_target_confirmed
-				event021_parent_prepare_scenario_country = yes
-				event021_parent_freeze_scenario_plan = yes
-				country_event = { id = chaosx.nr21.15 }
-				event021_parent_record_scenario_result = yes
-				clr_country_flag = random_civil_war_scenario_target_confirmed
+				add_to_temp_array = { array = event021_parent_scenario_selected_targets value = THIS }
 			}
 			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
 			clear_temp_array = event021_parent_scenario_target_pool
@@ -5703,16 +5739,7 @@ random_civil_war_trigger_manual_scenario = {
 				}
 				if = {
 					limit = { has_country_flag = random_civil_war_scenario_target_draw_succeeded has_event_target = random_civil_war_scenario_selected_target }
-					event_target:random_civil_war_scenario_selected_target = {
-						set_variable = { random_civil_war_scenario_type = global.random_civil_war_manual_scenario_type }
-						set_variable = { random_civil_war_scenario_intensity = global.random_civil_war_manual_scenario_intensity }
-						set_country_flag = random_civil_war_scenario_target_confirmed
-						event021_parent_prepare_scenario_country = yes
-						event021_parent_freeze_scenario_plan = yes
-						country_event = { id = chaosx.nr21.15 }
-						event021_parent_record_scenario_result = yes
-						clr_country_flag = random_civil_war_scenario_target_confirmed
-					}
+					add_to_temp_array = { array = event021_parent_scenario_selected_targets value = event_target:random_civil_war_scenario_selected_target }
 					set_temp_variable = { event021_parent_scenario_remove_tickets = constant:individual_crisis_targeting.load_zero_tickets }
 					while_loop_effect = {
 						limit = {
@@ -5737,6 +5764,31 @@ random_civil_war_trigger_manual_scenario = {
 			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
 			clear_temp_array = event021_parent_scenario_target_pool
 		}
+		# Preparation is deliberately separate from commitment. Each hidden
+		# preparation callback executes in the selected country's event scope, so
+		# ROOT in the scenario freezer is the plan host rather than the scenario
+		# controller. No ownership, actor, or force mutation occurs in this phase.
+		for_each_scope_loop = {
+			array = event021_parent_scenario_selected_targets
+			set_variable = { random_civil_war_scenario_type = global.random_civil_war_manual_scenario_type }
+			set_variable = { random_civil_war_scenario_intensity = global.random_civil_war_manual_scenario_intensity }
+			set_country_flag = random_civil_war_scenario_target_confirmed
+			country_event = { id = chaosx.nr21.19 }
+		}
+		# Commit only immutable receipts produced by the preparation phase. A
+		# failed or invalidated receipt is recorded as skipped and cannot reroll
+		# its country, package, anchor, route, or territory here.
+		for_each_scope_loop = {
+			array = event021_parent_scenario_selected_targets
+			if = {
+				limit = { has_country_flag = random_civil_war_scenario_plan_frozen }
+				set_country_flag = random_civil_war_scenario_target_confirmed
+				country_event = { id = chaosx.nr21.15 }
+			}
+			event021_parent_record_scenario_result = yes
+			clr_country_flag = random_civil_war_scenario_target_confirmed
+		}
+		clear_temp_array = event021_parent_scenario_selected_targets
 		set_variable = { global.random_civil_war_scenario_skipped_count = global.random_civil_war_scenario_requested_count }
 		subtract_from_variable = { global.random_civil_war_scenario_skipped_count = global.random_civil_war_scenario_committed_count }
 		set_variable = { global.random_civil_war_scenario_last_run_date = global.date }
@@ -5752,6 +5804,60 @@ random_civil_war_trigger_manual_scenario = {
 		clear_array = global.random_civil_war_scenario_reserved_states
 		clear_array = global.random_civil_war_scenario_reserved_event6_packages
 	}
+}
+
+# COUNTRY scope. Records the terminal result of a Critical queue claim while
+# preserving the country-side receipt for Event Details and recurrence review.
+event021_parent_record_critical_exit = {
+	set_variable = { random_civil_war_critical_exit_reason = event021_critical_exit_reason }
+	set_variable = { random_civil_war_critical_exit_date = global.date }
+}
+
+# COUNTRY scope. The hidden Critical callback owns the launch lock, queue-row
+# exit, and retry decision. A failed opening remains queued when the target is
+# still valid and critical; it is only removed after launch, stabilization, or
+# invalidation is proven.
+event021_parent_commit_critical_country = {
+	set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.none }
+	if = {
+		limit = { event021_parent_reserved_critical_launch_valid = yes }
+		event021_parent_dispatch_opening = yes
+	}
+	if = {
+		limit = { has_country_flag = random_civil_war_active }
+		set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.launched }
+	}
+	else_if = {
+		limit = {
+			random_civil_war_country_can_be_target = yes
+			NOT = { random_civil_war_pressure_is_critical = yes }
+		}
+		set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.stabilized }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				NOT = { has_global_flag = random_civil_war_rework_ready }
+				NOT = { has_global_flag = random_civil_war_evolution_iii_active }
+				NOT = { random_civil_war_generation_allowed = yes }
+				NOT = { random_civil_war_country_can_be_target = yes }
+			}
+		}
+		set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.invalidated }
+	}
+	if = {
+		limit = {
+			OR = {
+				check_variable = { var = event021_critical_exit_reason value = constant:event021_critical_queue_exit.launched compare = equals }
+				check_variable = { var = event021_critical_exit_reason value = constant:event021_critical_queue_exit.stabilized compare = equals }
+				check_variable = { var = event021_critical_exit_reason value = constant:event021_critical_queue_exit.invalidated compare = equals }
+			}
+		}
+		event021_dequeue_critical_country = yes
+		event021_parent_record_critical_exit = yes
+	}
+	clr_country_flag = random_civil_war_critical_launch_pending
+	event021_finish_critical_launch = yes
 }
 
 # COUNTRY scope. Single public launch dispatcher used by the hidden entry,

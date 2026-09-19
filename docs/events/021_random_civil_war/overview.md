@@ -114,6 +114,8 @@ Evolution I enables viable secondary fronts, independence fronts, additional com
 
 Ordinary secondary fronts require a connected state candidate, active opposition, a distinct unreserved evidence-backed route, available capacity, and the explicit Evolution I gate. The package-owned additional front uses the Event 006 registry and adapter instead of manufacturing an ordinary archetype, and is registered only after its war with the host is proved.
 
+Each ordinary secondary actor receives the role-specific AI adapter for its reserved route: revolutionary for ideological, constitutional for legal or regional, and command claimant for command fronts.
+
 Front review closes resolved fronts, updates authority and pressure, and prevents a secondary front from settling the host before all required fronts are addressed.
 
 Protected remnants preserve the opening capital or a valid replacement and prevent cleanup from deleting the surviving national core.
@@ -351,3 +353,15 @@ The MCP event graph is selected-event evidence rather than a claim that every un
 The post-fix improvement loop is resolved in `docs/plans/021_random_civil_war_plans/post_fix_improvement_loop_closure_addendum_2026-08-31.md`: accepted P0/P1 design work is implemented, broad expansion is reject-ready, and only certification evidence remains queued. Current specialist outcomes and exact MCP blockers are reconciled in `acceptance_evidence.md`.
 
 No live HOI4 run, save-state test, or log inspection is claimed by this repository implementation.
+
+## Current test-entry repair record — 2026-09-19
+
+The bounded convergence repair is implemented in the current test-entry source: due reviews no longer force-open stable, exposed, or fractured countries; Critical claims retain their queue row until the recipient callback resolves them; `chaosx.nr21.18` owns the launch transaction; and queue exits record launched, stabilized, or invalidated outcomes.
+
+The same repair persists the frozen scenario secondary state on the host country and preserves the same-tag safety route for Independence Cascade and Command Collapse on unsafe one-state or all-island targets.
+
+SCN-018 now separates its unique selected set from its commit pass. The host-bound callback `chaosx.nr21.19` freezes every selected country's receipt before `chaosx.nr21.15` begins the first ownership mutation, preserving target-specific ROOT scope and exact plan reservations.
+
+The scenario freezer can retain both an ordinary secondary-front receipt and a complete Event 006 secondary package when the target has room for both. Event 006 and ordinary secondary fronts are then committed as separate planned openings after the primary transaction, with package and state reservations preventing overlap; a large target without a second viable route still remains two-sided rather than receiving a fabricated actor.
+
+The event inspector was refreshed for `chaosx.nr21.1` with zero blocking diagnostics and zero skipped sources. Its large-workspace validation remains partial because helper and lifecycle projections are deferred. Event 021 and SCN-018 remain `Needs Testing`, and live gameplay plus the named probability, lifecycle, inherited-package, and provider-contract gates remain open.
