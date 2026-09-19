@@ -22,6 +22,8 @@ The accepted repair set remains in force: ASSET-004 is strict grayscale after it
 
 The current Statehood Ledger MCP refresh is recorded in [`006_event6_gui_mcp_refresh_2026-09-19.md`](006_event6_gui_mcp_refresh_2026-09-19.md). Its inspect resolved 48 elements with no blocking diagnostics, and its render produced 27 artifacts across four requested states and two resolutions. The offline route still cannot execute blendframes or prove all generic dynamic states, so ASSET-039 remains open.
 
+The grouped formable-state-puzzle MCP refresh is recorded in [`006_event6_formable_gui_mcp_refresh_2026-09-19.md`](006_event6_formable_gui_mcp_refresh_2026-09-19.md). Its inspect resolved 93 elements and its render produced 27 artifacts, but dynamic image getters render as repeated 0x0/clipping warnings and an almost-empty raster, so the grouped GUI and ASSET-046 remain partial rather than accepted.
+
 ## Runtime registry and file checks
 
 The four Event 006 GFX registries contain 454 unique sprite definitions with zero duplicate identifiers and zero missing texture paths. Every file under the seven Event 006 runtime texture roots is consumed by one of those definitions; the scoped census found zero unreferenced Event 006 runtime files. The broader interface registry crosswalk resolves all 529 Event 006/formable/state-puzzle `GFX_` references with zero missing names. Exact texture-path casing matches the filesystem for all Event 006 registries, and no runtime file references `docs/assets/`.
