@@ -48,12 +48,18 @@ sov_nuclear_bombs_action_target_is_valid = {
 	var:sov_nuclear_bombs_action_target = {
 		exists = yes
 	}
+	has_variable = sov_nuclear_bombs_action_source_state
+	var:sov_nuclear_bombs_action_source_state = {
+		sov_nuclear_bombs_state_is_registered = yes
+		check_variable = { var = sov_nuclear_bombs_site_reserved value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+	}
 }
 
 # Country scope. Limited non-major combat use is an Evolution II action and
-# deliberately records generic Soviet first use. A major-target first use has
-# a stricter shared-release boundary so no caller can bypass Evolution IV and
-# the severe emergency gate by reaching the native adapter directly.
+# deliberately records generic Soviet first use. Human major use opens at
+# Evolution III when the explicit exchange world gate exists. AI first use
+# without a confirmed enemy detonation remains behind the Evolution IV
+# severe-loss gate.
 sov_nuclear_bombs_action_major_first_use_gate_is_valid = {
 	OR = {
 		NOT = {
@@ -63,11 +69,25 @@ sov_nuclear_bombs_action_major_first_use_gate_is_valid = {
 				var:sov_nuclear_bombs_action_state = {
 					sov_nuclear_bombs_event_target_is_nuclear_major = yes
 				}
-				NOT = { has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
 			}
 		}
-		has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
-		sov_nuclear_bombs_event_severe_first_use_gate = yes
+		AND = {
+			has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+			sov_nuclear_bombs_event_major_exchange_world_gate = yes
+		}
+		AND = {
+			is_ai = no
+			sov_nuclear_bombs_event_major_exchange_world_gate = yes
+		}
+		AND = {
+			is_ai = no
+			sov_nuclear_bombs_event_severe_first_use_gate = yes
+		}
+		AND = {
+			is_ai = yes
+			NOT = { has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use }
+			sov_nuclear_bombs_event_severe_first_use_gate = yes
+		}
 	}
 }
 
@@ -251,6 +271,20 @@ sov_nuclear_bombs_native_delivery_country_is_valid = {
 	}
 }
 
+# Country scope. The native route must spend exactly one atomic device between
+# the request snapshot and the on_nuke_drop receipt. A mismatched snapshot is a
+# disputed receipt, never a successful Event 023 expenditure.
+sov_nuclear_bombs_native_stockpile_delta_is_valid = {
+	has_variable = sov_nuclear_bombs_action_native_stockpile_before
+	has_variable = sov_nuclear_bombs_action_native_stockpile_after
+	has_variable = sov_nuclear_bombs_action_native_stockpile_expected_after
+	check_variable = {
+		var = sov_nuclear_bombs_action_native_stockpile_after
+		value = sov_nuclear_bombs_action_native_stockpile_expected_after
+		compare = equals
+	}
+}
+
 # Country scope. A synchronous demolition remains the only non-detonating
 # commit path; detonations use sov_nuclear_bombs_native_delivery_country_is_valid
 # plus the exact FROM-state checks in on_nuke_drop.
@@ -258,13 +292,23 @@ sov_nuclear_bombs_action_can_commit = {
 	sov_nuclear_bombs_action_context_is_valid = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
 	has_country_flag = sov_nuclear_bombs_action_reservation_active
-	check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
-	check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+	OR = {
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.demolition compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+		}
+		AND = {
+			check_variable = { var = sov_nuclear_bombs_action_type value = constant:sov_nuclear_bombs_action.test compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_outcome value = constant:sov_nuclear_bombs_tuning.test_result_failure compare = equals }
+			check_variable = { var = sov_nuclear_bombs_action_detonation value = constant:sov_nuclear_bombs_action.non_detonating compare = equals }
+		}
+	}
 }
 
 # A failed instrumented test is an accepted, non-detonating action. Its
-# reservation is released intact and it never reaches the native launch route.
-sov_nuclear_bombs_action_test_failure_can_return = {
+# reserved device is rendered unusable by the shared ledger commit and never
+# reaches the native launch route.
+sov_nuclear_bombs_action_test_failure_can_consume = {
 	sov_nuclear_bombs_action_context_is_valid = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_native_delivery_pending }
 	has_country_flag = sov_nuclear_bombs_action_reservation_active

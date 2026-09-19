@@ -1,5 +1,7 @@
 # Event 023 near-completion accepted-contract addendum and parent handoff
 
+Historical plan notice: The C4 doctrine reform, command-board phase choices, monotonic public-knowledge guards, one-device threshold changes, rail/security checks, and C5 reactor-scope repair now appear in the 2026-09-19 uncommitted source. `023_documentation_curator_final_2026-09-19.md` records their source disposition and remaining acceptance limits; the original C1–C6 design analysis below is preserved as historical planning evidence, not a current absence list.
+
 Review date: 2026-09-05.
 Disposition: **queued** for accepted-contract repairs; **blocked** for implementation clarifications awaiting parent decisions and incomplete validation; overall event closure **blocked**.
 This is a plan-only output, not an implementation or closure certificate.

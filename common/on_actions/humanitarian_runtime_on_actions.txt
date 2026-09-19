@@ -139,20 +139,36 @@ on_actions = {
 					CONTROLLER = { migration_show_report_nuclear_evacuation = yes }
 				}
 				set_temp_variable = { famine_pressure_request_amount = state_population_k }
+				set_temp_variable = { famine_pressure_request_fraction = constant:famine_adapter_pressure.nuclear_strike_population_fraction }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_test_context } } set_temp_variable = { famine_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.test } }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_partial_yield_context } } set_temp_variable = { famine_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.test_partial } }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_accident_context } } set_temp_variable = { famine_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.accident } }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_demonstration_context } } set_temp_variable = { famine_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.demonstration } }
 				multiply_temp_variable = { famine_pressure_request_amount = constant:humanitarian_population.people_per_k }
-				multiply_temp_variable = { famine_pressure_request_amount = constant:famine_adapter_pressure.nuclear_strike_population_fraction }
+				multiply_temp_variable = { famine_pressure_request_amount = famine_pressure_request_fraction }
 				round_temp_variable = famine_pressure_request_amount
 				set_temp_variable = { famine_pressure_request_proven = constant:humanitarian_runtime.one }
 				set_temp_variable = { famine_pressure_request_actor_proven = constant:humanitarian_runtime.one }
 				famine_request_nuclear_pressure = yes
 				set_temp_variable = { migration_pressure_request_amount = state_population_k }
+				set_temp_variable = { migration_pressure_request_fraction = constant:migration_adapter_pressure.nuclear_strike_population_fraction }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_test_context } } set_temp_variable = { migration_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.test } }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_partial_yield_context } } set_temp_variable = { migration_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.test_partial } }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_accident_context } } set_temp_variable = { migration_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.accident } }
+				if = { limit = { ROOT = { has_country_flag = sov_nuclear_bombs_shared_demonstration_context } } set_temp_variable = { migration_pressure_request_fraction = constant:humanitarian_nuclear_event23_profile.demonstration } }
 				multiply_temp_variable = { migration_pressure_request_amount = constant:humanitarian_population.people_per_k }
-				multiply_temp_variable = { migration_pressure_request_amount = constant:migration_adapter_pressure.nuclear_strike_population_fraction }
+				multiply_temp_variable = { migration_pressure_request_amount = migration_pressure_request_fraction }
 				round_temp_variable = migration_pressure_request_amount
 				set_temp_variable = { migration_pressure_request_proven = constant:humanitarian_runtime.one }
 				set_temp_variable = { migration_pressure_request_actor_proven = constant:humanitarian_runtime.one }
 				migration_request_nuclear_pressure = yes
 				humanitarian_handle_nuclear_state_change = yes
+			}
+			ROOT = {
+				clr_country_flag = sov_nuclear_bombs_shared_test_context
+				clr_country_flag = sov_nuclear_bombs_shared_partial_yield_context
+				clr_country_flag = sov_nuclear_bombs_shared_accident_context
+				clr_country_flag = sov_nuclear_bombs_shared_demonstration_context
 			}
 		}
 	}

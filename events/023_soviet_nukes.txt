@@ -106,11 +106,101 @@ country_event = {
 		ai_chance = { base = 100 }
 		set_country_flag = sov_nuclear_bombs_command_board_seen
 	}
+	option = {
+		name = chaosx.nr23.100.custody
+		trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes }
+		ai_chance = { base = 0 }
+		sov_nuclear_bombs_clear_selected_state = yes
+		sov_nuclear_bombs_clear_selected_test_state = yes
+		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.custody }
+	}
+	option = {
+		name = chaosx.nr23.100.production
+		trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_evolution_i = yes NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium } }
+		ai_chance = { base = 0 }
+		sov_nuclear_bombs_clear_selected_state = yes
+		sov_nuclear_bombs_clear_selected_test_state = yes
+		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.production }
+	}
+	option = {
+		name = chaosx.nr23.100.test
+		trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes has_tech = atomic_research has_tech = nukes NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium } }
+		ai_chance = { base = 0 }
+		sov_nuclear_bombs_clear_selected_state = yes
+		sov_nuclear_bombs_clear_selected_test_state = yes
+		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.test }
+	}
+	option = {
+		name = chaosx.nr23.100.coercion
+		trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes sov_nuclear_bombs_event_has_evolution_ii = yes NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium } }
+		ai_chance = { base = 0 }
+		sov_nuclear_bombs_clear_selected_state = yes
+		sov_nuclear_bombs_clear_selected_test_state = yes
+		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.coercion }
+	}
+	option = {
+		name = chaosx.nr23.100.retaliation
+		trigger = { sov_nuclear_bombs_event_actor_is_valid = yes sov_nuclear_bombs_event_no_active_project = yes OR = { sov_nuclear_bombs_event_has_evolution_iii = yes has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use } NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium } }
+		ai_chance = { base = 0 }
+		sov_nuclear_bombs_clear_selected_state = yes
+		sov_nuclear_bombs_clear_selected_test_state = yes
+		set_variable = { sov_nuclear_bombs_phase = constant:sov_nuclear_bombs_phase.retaliation }
+	}
+}
+
+country_event = {
+	id = chaosx.nr23.103
+	title = chaosx.nr23.103.t
+	desc = chaosx.nr23.103.d
+	picture = GFX_report_event_sov_nuclear_arsenal_opening
+	is_triggered_only = yes
+	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes has_country_flag = sov_nuclear_bombs_doctrine_reform_pending }
+
+	option = {
+		name = chaosx.nr23.103.party
+		trigger = { NOT = { check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.party compare = equals } } }
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine_reform_option }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.party }
+		sov_nuclear_bombs_apply_doctrine_reform = yes
+	}
+	option = {
+		name = chaosx.nr23.103.military
+		trigger = { NOT = { check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.military compare = equals } } }
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine_reform_option modifier = { factor = constant:sov_nuclear_bombs_ai.wartime_factor has_war = yes } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.military }
+		sov_nuclear_bombs_apply_doctrine_reform = yes
+	}
+	option = {
+		name = chaosx.nr23.103.scientific_safety
+		trigger = { NOT = { check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.scientific_safety compare = equals } } }
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine_reform_option modifier = { factor = constant:sov_nuclear_bombs_ai.severe_loss_factor has_country_flag = sov_nuclear_bombs_test_failure_investigated } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.scientific_safety }
+		sov_nuclear_bombs_apply_doctrine_reform = yes
+	}
+	option = {
+		name = chaosx.nr23.103.dispersed_commands
+		trigger = { NOT = { check_variable = { var = sov_nuclear_bombs_custody_doctrine value = constant:sov_nuclear_bombs_doctrine.dispersed_commands compare = equals } } }
+		ai_chance = { base = constant:sov_nuclear_bombs_ai.doctrine_reform_option modifier = { factor = constant:sov_nuclear_bombs_ai.capital_target_factor has_country_flag = sov_nuclear_bombs_capital_threat_active } }
+		set_variable = { sov_nuclear_bombs_pending_doctrine = constant:sov_nuclear_bombs_doctrine.dispersed_commands }
+		sov_nuclear_bombs_apply_doctrine_reform = yes
+	}
 }
 
 country_event = {
 	id = chaosx.nr23.101
 	title = chaosx.nr23.101.t
+	desc = {
+		text = chaosx.nr23.101.success.d
+		trigger = { has_country_flag = sov_nuclear_bombs_test_success }
+	}
+	desc = {
+		text = chaosx.nr23.101.partial.d
+		trigger = { has_country_flag = sov_nuclear_bombs_test_partial_yield }
+	}
+	desc = {
+		text = chaosx.nr23.101.failure.d
+		trigger = { has_country_flag = sov_nuclear_bombs_test_failure }
+	}
 	desc = chaosx.nr23.101.d
 	picture = GFX_report_event_sov_nuclear_test_report
 	is_triggered_only = yes
@@ -126,7 +216,7 @@ country_event = {
 country_event = {
 	id = chaosx.nr23.102
 	title = chaosx.nr23.102.t
-	desc = chaosx.nr23.102.d
+	desc = chaosx.nr23.102.accident.d
 	picture = GFX_report_event_sov_nuclear_accident_report
 	is_triggered_only = yes
 	trigger = { sov_nuclear_bombs_event_actor_is_valid = yes }
@@ -198,13 +288,10 @@ country_event = {
 	}
 	option = {
 		name = chaosx.nr23.120.c
-		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes NOT = { has_war = yes } }
+		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes NOT = { has_country_flag = sov_nuclear_bombs_response_delayed } }
 		ai_chance = { base = 20 }
 		set_country_flag = sov_nuclear_bombs_response_delayed
-		if = {
-			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
-			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
-		}
+		country_event = { id = chaosx.nr23.120 days = constant:sov_nuclear_bombs_duration.ultimatum_response }
 	}
 	option = {
 		name = chaosx.nr23.120.refuse
@@ -228,13 +315,54 @@ country_event = {
 	}
 	option = {
 		name = chaosx.nr23.120.f
-		trigger = { sov_nuclear_bombs_event_target_response_is_valid = yes is_in_faction = yes }
+		trigger = { sov_nuclear_bombs_event_target_has_valid_foreign_support = yes }
 		ai_chance = { base = 10 }
 		set_country_flag = sov_nuclear_bombs_response_foreign_support
+		faction_leader = { give_guarantee = ROOT }
 		if = {
 			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
 			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
 		}
+	}
+	option = {
+		name = chaosx.nr23.120.g
+		trigger = {
+			sov_nuclear_bombs_event_target_response_is_valid = yes
+			has_event_target = sov_nuclear_bombs_selected_state
+			event_target:sov_nuclear_bombs_selected_state = {
+				exists = yes
+				OR = { is_owned_by = ROOT is_controlled_by = ROOT }
+			}
+		}
+		ai_chance = { base = 12 }
+		set_country_flag = sov_nuclear_bombs_response_evacuation
+		event_target:sov_nuclear_bombs_selected_state = { set_state_flag = sov_nuclear_bombs_target_evacuation_ordered }
+		if = {
+			limit = { has_event_target = sov_nuclear_bombs_coercion_actor }
+			event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes }
+		}
+	}
+	option = {
+		name = chaosx.nr23.120.h
+		trigger = {
+			sov_nuclear_bombs_event_target_response_is_valid = yes
+			has_tech = atomic_research
+			has_tech = nukes
+		}
+		ai_chance = { base = 8 }
+		set_country_flag = sov_nuclear_bombs_response_retaliation
+		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_actor } event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes } }
+	}
+	option = {
+		name = chaosx.nr23.120.i
+		trigger = {
+			sov_nuclear_bombs_event_target_response_is_valid = yes
+			has_event_target = sov_nuclear_bombs_coercion_actor
+			has_war_with = event_target:sov_nuclear_bombs_coercion_actor
+		}
+		ai_chance = { base = 10 }
+		set_country_flag = sov_nuclear_bombs_response_sabotage
+		if = { limit = { has_event_target = sov_nuclear_bombs_coercion_actor } event_target:sov_nuclear_bombs_coercion_actor = { sov_nuclear_bombs_resolve_coercion_response = yes } }
 	}
 }
 

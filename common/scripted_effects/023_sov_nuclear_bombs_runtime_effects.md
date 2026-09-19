@@ -1,6 +1,6 @@
 # Event 023 Soviet Nuclear Bombs Runtime Effects
 
-This file is the reusable runtime boundary for Event 023's event-owned nuclear ledger and native delivery contract.
+This file describes the source-level runtime boundary for Event 023's event-owned nuclear ledger and native delivery contract. The current implementation and unresolved consumer limits are summarized in `docs/plans/023_sov_nuclear_bombs_plans/subagent_handoffs/023_documentation_curator_final_2026-09-19.md`; this document does not certify native delivery or save/reload conservation.
 
 Event 023 owns authorization, action context, target selection, evolution gates, and player-facing decisions.
 
@@ -18,7 +18,7 @@ Terminal buckets are `sov_nuclear_bombs_ledger_dismantled`, `sov_nuclear_bombs_l
 
 The conservation equation is `total_registered = operational + assigned + reserved + transferred + dismantled + missing + expended`.
 
-`sov_nuclear_bombs_refresh_ledger_reconciliation` recomputes physical custody and the accounted total after each transaction and stores `sov_nuclear_bombs_ledger_reconciliation` as clean or disputed.
+`sov_nuclear_bombs_refresh_ledger_reconciliation` recomputes physical custody and the accounted total after each transaction and stores `sov_nuclear_bombs_ledger_reconciliation` as clean or disputed. Negative buckets, a pending native callback, or a native stockpile mismatch force the disputed state instead of silently repairing a missing device.
 
 The event ledger never overwrites the vanilla country nuclear stockpile.
 
@@ -38,10 +38,16 @@ Native `num_of_nukes` is checked before delivery, while the event-owned counters
 | `sov_nuclear_bombs_reserve_device_for_action` | Country scope | Previously staged Event 023 action context | Moves exactly one device into reserved custody, preferring the action state's assigned bucket when available. |
 | `sov_nuclear_bombs_release_reserved_device` | Country scope | Active reservation | Returns exactly one reserved device to its original operational or assigned bucket. |
 | `sov_nuclear_bombs_commit_reserved_device` | Country scope | Active reservation after native launch or exact callback | Moves exactly one reserved device to expended or dismantled custody and stamps a transaction sequence. |
-| `sov_nuclear_bombs_execute_shared_action` | Country scope | Valid Event 023 action context and active reservation | Invokes native `launch_nuke` with the exact state id and holds a detonation reservation until the callback confirms it; demolition commits synchronously. |
-| `sov_nuclear_bombs_confirm_native_delivery` | Country scope | Event 023 pending native delivery after exact `on_nuke_drop` state checks | Records the native stockpile-after snapshot, commits exactly one reserved device, and marks the action accepted without applying detonation consequences. |
+| `sov_nuclear_bombs_select_disperse_source` | Country scope | Player-selected dispersal destination and a valid assigned depot pool | Locks one bounded source state before the dispersal mission starts without changing its ledger bucket. |
+| `sov_nuclear_bombs_clear_disperse_selection` | Country scope | Dispersal source and destination event targets | Clears the temporary endpoint flags and source pointer without changing custody. |
+| `sov_nuclear_bombs_finalize_one_device_dismantlement` | State scope | A registered site after one-device commit | Marks the site dismantled only when its intact operational, assigned, reserved, and transferred buckets are all zero; it does not spend a second device. |
+| `sov_nuclear_bombs_execute_shared_action` | Country scope | Valid Event 023 action context and active reservation | Invokes native `launch_nuke` with the exact state id, records the expected native stockpile-after value, and holds a detonation reservation until the callback confirms it; demolition commits synchronously. |
+| `sov_nuclear_bombs_confirm_native_delivery` | Country scope | Event 023 pending native delivery after exact `on_nuke_drop` state and nonce checks | Records the native stockpile-after snapshot, requires the exact one-device delta, commits exactly one reserved device, and marks the action accepted without applying detonation consequences. |
+| `sov_nuclear_bombs_commit_disputed_native_delivery` | Country scope | Pending native delivery whose stockpile delta or callback contract fails | Moves the single pending reservation to missing custody, marks the state and global native custody disputed, and clears the pending context without replaying shared consequences. |
+| `sov_nuclear_bombs_reconcile_unreturned_native_delivery` | Country scope | SOV-only daily maintenance while an Event 023 native delivery is pending | Increments the persisted callback-age counter and, after `constant:sov_nuclear_bombs_tuning.native_delivery_timeout_days`, commits the unresolved reservation once to disputed/missing custody. It never refunds or replays the action. |
 | `sov_nuclear_bombs_clear_action_context` | Country scope | Optional active reservation | Rolls back a live reservation and clears transient action context and target pointers. |
 | `sov_nuclear_bombs_mark_site_transferred` | State scope | Registered storage site | Moves current intact site buckets into transferred custody without granting operational access. |
+| `sov_nuclear_bombs_operationalize_breakaway_site` | State scope | Transferred site and completed actor delivery capability | Moves the exact held cohort into the breakaway operational bucket and conditionally grants that quantity to its native stockpile; it does not grant Soviet technology or a new cohort. |
 | `sov_nuclear_bombs_mark_site_dismantled` | State scope | Registered storage site | Moves all current intact site buckets into dismantled custody and marks the terminal state flag. |
 | `sov_nuclear_bombs_mark_site_missing` | State scope | Registered storage site | Moves all current intact site buckets into missing custody and marks the terminal state flag. |
 | `sov_nuclear_bombs_snapshot_event5_release_tranche` | Country scope | Existing `soviet_collapse_dynamic_release_target` event target | Takes one bounded pre-release snapshot across the candidate's owned/controlled registered storage states. |
@@ -76,9 +82,13 @@ The accepted path issues exactly this native route: `launch_nuke = { state = var
 
 The adapter marks the launcher with a short-lived Event 023 atomic-delivery context before calling `launch_nuke`. The neutral Chaos consequence hook consumes that context to prevent an independently researched thermonuclear technology from changing this explicitly atomic action's consequence profile.
 
-The native `on_nuke_drop` callback is the confirmation boundary. It must match the exclusive pending request's state id and selected owner/controller before calling `sov_nuclear_bombs_confirm_native_delivery`; the parent then calls `sov_nuclear_bombs_finalize_confirmed_native_delivery` to record the action and close its Event 023 flow.
+The native `on_nuke_drop` callback is the confirmation boundary. It must match the exclusive pending request's state id and action nonce before calling `sov_nuclear_bombs_confirm_native_delivery`; the parent then calls `sov_nuclear_bombs_finalize_confirmed_native_delivery` to record the action and close its Event 023 flow. The callback intentionally does not require the state to retain its pre-launch owner or controller, because the pending state and nonce are the Event 23 correlation contract while the native route resolves its own consequences.
 
-Vanilla does not echo the Event 023 nonce, request id, or action type through `on_nuke_drop`. The bounded correlation therefore uses one pending request, the exact state id, the selected owner/controller, and the native stockpile snapshot. A future engine/API surface that exposes a nonce should replace this correlation with an exact receipt.
+The SOV-only maintenance hook also tracks a persisted callback-age counter. If no exact callback arrives before `constant:sov_nuclear_bombs_tuning.native_delivery_timeout_days`, `sov_nuclear_bombs_reconcile_unreturned_native_delivery` moves the reservation into disputed/missing custody and closes the request. This is a fail-closed ledger result, not a second detonation or a refund.
+
+After that closeout the Event 023 state-pending flag, callback nonce, and action context are cleared. A late native callback therefore cannot satisfy the Event 023 correlation contract or commit a second device; the ordinary shared native consequence route remains the sole owner of any consequence the engine actually reports.
+
+Vanilla does not echo the Event 23 nonce, request id, or action type through `on_nuke_drop`. The bounded correlation therefore uses one pending request, the exact state id, the action nonce stored on that state, and the native stockpile snapshot. A future engine/API surface that exposes a nonce should replace this correlation with an exact receipt.
 
 The parent must not add a second Chaos, Fallout, death, contamination, or condemnation call around this contract.
 
@@ -86,17 +96,19 @@ The parent must not add a second Chaos, Fallout, death, contamination, or condem
 
 The bridge is activated only when Event 005 calls `sov_nuclear_bombs_snapshot_event5_release_tranche` immediately before its existing release operation.
 
-The snapshot is restricted to registered states that are cores of the existing `soviet_collapse_dynamic_release_target` and is deduplicated by `sov_nuclear_bombs_event5_snapshot_pending`.
+The snapshot is restricted to registered states that are cores of the existing `soviet_collapse_dynamic_release_target` and is deduplicated by `sov_nuclear_bombs_event5_snapshot_pending`. Each release tranche increments a generation receipt, so a later callback cannot reconcile an older snapshot as if it were the current transfer.
 
 `on_release_as_free` and `on_release_as_puppet` call `sov_nuclear_bombs_reconcile_event5_release_country` for the new country.
 
 `on_state_control_changed` calls `sov_nuclear_bombs_reconcile_event5_state` only for the exact changed state when its pending snapshot flag is present.
 
-The bridge never turns a breakaway's physical custody into immediate technical, command, or delivery access.
+The bridge never turns a breakaway's physical custody into immediate technical, command, or delivery access. A pending native reservation remains attached to its source state during transfer and cannot be operationalized until its callback is accepted; a native dispute blocks both breakaway operationalization and Soviet recovery.
 
 The bridge records central Soviet, Soviet siege, breakaway physical, foreign, technical denial, missing, and dismantled classifications from exact current owner/controller facts.
 
-If the engine does not expose a stable post-release callback for an ownership-only transfer, the pending snapshot remains available for the next exact state-control callback rather than being guessed from an unsupported scope.
+If the engine does not expose a stable post-release callback for an ownership-only transfer, the pending snapshot remains available for the next exact state-control callback rather than being guessed from an unsupported scope. If `SOV` is annexed or otherwise disappears while a native request is pending, the reservation is disposed into missing custody before transient context is cleared, preserving the ledger total without granting a callback a second commit.
+
+If `SOV` disappears before a registered breakaway site's native-custody-removed receipt exists, the site remains transferred physical custody and does not auto-operationalize or receive a native stockpile grant. This is the fail-closed local-custody disposition for an incomplete transfer order; recovery, dismantlement, or a later verified native-custody transfer must resolve it.
 
 ## Constants
 
@@ -130,7 +142,7 @@ Cancellation, target invalidation, annexation, or side-change cleanup should cal
 
 If a future engine/API surface exposes a reliable launch success receipt or nonce echo, replace the bounded one-pending-request correlation with that exact receipt without changing the ledger buckets.
 
-The parent can add an event-owned technical-access progression helper when the staged breakaway months and command thresholds are finalized in the Event 023 decision surface.
+The staged breakaway physical, technical, command, and delivery route already has source helpers and mission gates. Its timing, native delivery, one-device transaction, and save/reload behavior remain acceptance scenarios rather than a future helper request.
 
 No additional non-detonating action profile is accepted without a shared contract boundary; Event 023's instrument-failure return and synchronous demolition are the only explicit non-detonating paths.
 

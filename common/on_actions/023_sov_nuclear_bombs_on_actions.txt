@@ -9,12 +9,23 @@
 
 on_actions = {
 	on_daily_SOV = {
-			effect = {
-				if = {
-					limit = { has_country_flag = sov_nuclear_bombs_event_active }
-					sov_nuclear_bombs_refresh_native_stockpile_snapshot = yes
-					sov_nuclear_bombs_achievement_refresh_receipts = yes
-				}
+				effect = {
+					if = {
+						limit = { has_country_flag = sov_nuclear_bombs_event_active }
+						sov_nuclear_bombs_reconcile_unreturned_native_delivery = yes
+						sov_nuclear_bombs_refresh_native_stockpile_snapshot = yes
+						sov_nuclear_bombs_achievement_refresh_receipts = yes
+						if = {
+							limit = { NOT = { has_variable = sov_nuclear_bombs_maintenance_day_counter } }
+							set_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.zero }
+						}
+						add_to_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.one }
+						if = {
+							limit = { check_variable = { var = sov_nuclear_bombs_maintenance_day_counter value = constant:sov_nuclear_bombs_tuning.maintenance_interval_days compare = greater_than_or_equals } }
+							set_variable = { sov_nuclear_bombs_maintenance_day_counter = constant:sov_nuclear_bombs_ledger.zero }
+							sov_nuclear_bombs_apply_routine_maintenance = yes
+						}
+					}
 				if = {
 					limit = {
 						has_country_flag = sov_nuclear_bombs_atomic_delivery_context
@@ -37,6 +48,10 @@ on_actions = {
 			if = {
 				limit = { FROM.FROM = { has_state_flag = sov_nuclear_bombs_reactor_site_pending } }
 				FROM.FROM = { sov_nuclear_bombs_reactor_control_changed = yes }
+			}
+			if = {
+				limit = { FROM.FROM = { sov_nuclear_bombs_state_is_registered = yes } }
+				FROM.FROM = { sov_nuclear_bombs_reconcile_state_control_change = yes }
 			}
 		}
 	}
@@ -85,11 +100,9 @@ on_actions = {
 							sov_nuclear_bombs_native_delivery_country_is_valid = yes
 						}
 					FROM = {
+						has_state_flag = sov_nuclear_bombs_native_delivery_state_pending
 						check_variable = { var = THIS.id value = ROOT.sov_nuclear_bombs_action_state_id compare = equals }
-						OR = {
-							is_owned_by = var:ROOT.sov_nuclear_bombs_action_target
-							is_controlled_by = var:ROOT.sov_nuclear_bombs_action_target
-						}
+						check_variable = { var = sov_nuclear_bombs_native_delivery_nonce value = ROOT.sov_nuclear_bombs_action_nonce compare = equals }
 					}
 					}
 					ROOT = {
@@ -120,6 +133,13 @@ on_actions = {
 								set_country_flag = sov_nuclear_bombs_enemy_launch_verified
 								set_country_flag = sov_nuclear_bombs_serious_crisis
 								set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
+								if = {
+									limit = {
+										state_population_k > constant:sov_nuclear_bombs_tuning.first_use_populated_state_min_k
+										ROOT = { is_major = yes has_tech = atomic_research has_tech = nukes }
+									}
+									set_country_flag = sov_nuclear_bombs_confirmed_enemy_populated_nuclear_use
+								}
 								if = {
 									limit = { ROOT = { is_major = yes has_tech = nukes } }
 									set_variable = { sov_nuclear_bombs_major_receipt_candidate_actor_id = ROOT.id }
@@ -152,6 +172,13 @@ on_actions = {
 								set_country_flag = sov_nuclear_bombs_enemy_launch_verified
 								set_country_flag = sov_nuclear_bombs_serious_crisis
 								set_variable = { sov_nuclear_bombs_public_knowledge = constant:sov_nuclear_bombs_public_knowledge.used }
+								if = {
+									limit = {
+										state_population_k > constant:sov_nuclear_bombs_tuning.first_use_populated_state_min_k
+										ROOT = { is_major = yes has_tech = atomic_research has_tech = nukes }
+									}
+									set_country_flag = sov_nuclear_bombs_confirmed_enemy_populated_nuclear_use
+								}
 								if = {
 									limit = { ROOT = { is_major = yes has_tech = nukes } }
 									set_variable = { sov_nuclear_bombs_major_receipt_candidate_actor_id = ROOT.id }

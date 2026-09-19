@@ -1,6 +1,6 @@
 # Event 023 super-event audio research
 
-Status: audio candidate selected, downloaded, converted, and handed to the parent for registry and sound-definition wiring.
+Status: source, rights, final WAV, and source wiring are documented; live audio/image consumer acceptance remains unresolved.
 
 Research date: 2026-08-29.
 
@@ -15,6 +15,8 @@ Stable slug: `sov_nuclear_bombs`.
 Role: first confirmed nuclear exchange among major powers caused or observed through Event 23.
 
 Trigger boundary: a real exchange in which one nuclear major uses a weapon against another nuclear major and the exchange crisis includes a second major response or active reciprocal exchange state.
+
+Current source boundary: `sov_nuclear_bombs_record_major_exchange_receipt` in `common/scripted_effects/023_sov_nuclear_bombs_runtime_effects.txt` requires the second actor/target pair to reverse the first observed major-to-major pair. A second strike by the same actor, a test, a threat, a failed launch, or a strike against a nonmajor does not satisfy the exchange threshold. Live callback and super-event consumer acceptance remain separate validation work.
 
 Exclusions: testing, threats, failed launches, strikes against nonmajors, storage accidents, a single major striking a nonnuclear minor, the shared Fallout terminal route, and the manual Final Silence scenario.
 
@@ -179,6 +181,6 @@ The parent should register the base sound definition and settings-volume wrapper
 
 No audio-production blocker remains: the source is legitimate, the original is preserved, the final WAV exists in the requested event-scoped runtime folder, and the format and checksum are recorded.
 
-No super-event slot integration blocker remains. The visible slot `108`, playback audio ID `108`, sprite, sound wrappers, and Event 023 constants are aligned.
+The visible slot `108`, playback audio ID `108`, sprite, sound wrappers, and Event 023 constants were reported aligned by the source-wiring pass. The answered-exchange trigger and live sound, timing, and image consumer review remain open.
 
 The source records provide public-domain status rather than a jurisdiction-specific legal opinion, so the package retains the source pages, Public Domain Mark reference, attribution, and hashes as evidence.

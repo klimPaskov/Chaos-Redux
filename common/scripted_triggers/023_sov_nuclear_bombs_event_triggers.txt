@@ -5,6 +5,11 @@
 # action validator remains in 023_sov_nuclear_bombs_runtime_triggers.txt.
 # ============================================================================
 
+# `divisions_in_state.size` accepts only a file-local numeric token in the
+# installed engine, so this floor is kept beside the trigger rather than
+# injected through a script constant.
+@sov_nuclear_bombs_collapse_security_divisions_floor = 0
+
 sov_nuclear_bombs_event_actor_is_valid = {
 	tag = SOV
 	exists = yes
@@ -18,6 +23,26 @@ sov_nuclear_bombs_event_can_open_command = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	NOT = { has_country_flag = sov_nuclear_bombs_command_locked }
 	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+}
+
+sov_nuclear_bombs_event_can_reform_doctrine = {
+	sov_nuclear_bombs_event_actor_is_valid = yes
+	has_variable = sov_nuclear_bombs_custody_doctrine
+	NOT = { has_country_flag = sov_nuclear_bombs_custody_doctrine_unselected }
+	NOT = { has_country_flag = sov_nuclear_bombs_doctrine_reform_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_doctrine_reform_completed }
+	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
+	sov_nuclear_bombs_event_no_active_project = yes
+	OR = {
+		has_country_flag = sov_nuclear_bombs_test_failure_investigated
+		has_country_flag = sov_nuclear_bombs_test_accident
+		has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+		has_country_flag = sov_nuclear_bombs_capital_threat_active
+		AND = {
+			sov_nuclear_bombs_event_has_evolution_i = yes
+			has_war = yes
+		}
+	}
 }
 
 sov_nuclear_bombs_event_has_evolution_i = {
@@ -72,6 +97,11 @@ sov_nuclear_bombs_event_has_delivery_route = {
 	}
 }
 
+sov_nuclear_bombs_event_has_delivery_crew_certification = {
+	has_country_flag = sov_nuclear_bombs_delivery_crews_ready
+	has_country_flag = sov_nuclear_bombs_delivery_crews_certified
+}
+
 # State scope, PREV is the launcher country. Checks this exact endpoint.
 # No persistent outputs. Range is an event ceiling, not an air-wing range query.
 sov_nuclear_bombs_event_state_has_delivery_access = {
@@ -99,6 +129,7 @@ sov_nuclear_bombs_event_state_has_delivery_access = {
 # the route is revalidated against the exact launch endpoint at authorization.
 sov_nuclear_bombs_event_has_targeted_delivery_route = {
 	has_event_target = sov_nuclear_bombs_selected_state
+	sov_nuclear_bombs_event_has_delivery_crew_certification = yes
 	event_target:sov_nuclear_bombs_selected_state = {
 		sov_nuclear_bombs_event_state_has_delivery_access = yes
 	}
@@ -108,9 +139,15 @@ sov_nuclear_bombs_event_has_targeted_delivery_route = {
 # surveyed endpoint rather than merely proving that some Soviet airbase exists.
 sov_nuclear_bombs_event_has_selected_test_delivery_route = {
 	has_event_target = sov_nuclear_bombs_selected_test_state
+	sov_nuclear_bombs_event_has_delivery_crew_certification = yes
 	event_target:sov_nuclear_bombs_selected_test_state = {
 		sov_nuclear_bombs_event_state_has_delivery_access = yes
 	}
+}
+
+sov_nuclear_bombs_event_phase_opening = {
+	has_variable = sov_nuclear_bombs_phase
+	check_variable = { var = sov_nuclear_bombs_phase value = constant:sov_nuclear_bombs_phase.opening compare = equals }
 }
 
 sov_nuclear_bombs_event_state_is_valid_command_target = {
@@ -240,18 +277,49 @@ sov_nuclear_bombs_event_state_is_valid_collapse_site = {
 	}
 }
 
+sov_nuclear_bombs_event_state_is_valid_breakaway_custody_site = {
+	sov_nuclear_bombs_state_is_registered = yes
+	check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+	NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
+	NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
+	NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
+	NOT = { has_state_flag = sov_nuclear_bombs_breakaway_site_operationalized }
+	OR = {
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+	}
+}
+
 sov_nuclear_bombs_event_target_is_nuclear_major = {
 	OR = {
 		owner = {
 			is_major = yes
+			has_tech = atomic_research
 			has_tech = nukes
-			num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
 		}
 		controller = {
 			is_major = yes
+			has_tech = atomic_research
 			has_tech = nukes
-			num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
 		}
+	}
+}
+
+# State scope. Evolution IV first use may select a lower-consequence military
+# endpoint while the severe emergency gate is active. Capital and heavily
+# populated states remain excluded unless the enemy has already used a nuclear
+# weapon against a populated Soviet state, which is recorded by the neutral
+# on_nuke_drop hook.
+sov_nuclear_bombs_event_first_use_target_is_lower_consequence = {
+	NOT = { is_capital = yes }
+	state_population_k < constant:sov_nuclear_bombs_tuning.first_use_target_population_max_k
+	OR = {
+		air_base > 0
+		arms_factory > 0
+		dockyard > 0
+		naval_base > 0
+		radar_station > 0
+		rail_way > 0
 	}
 }
 
@@ -265,13 +333,32 @@ sov_nuclear_bombs_event_target_response_is_valid = {
 	event_target:sov_nuclear_bombs_coercion_actor = { exists = yes }
 }
 
+sov_nuclear_bombs_event_target_has_valid_foreign_support = {
+	sov_nuclear_bombs_event_target_response_is_valid = yes
+	is_in_faction = yes
+	faction_leader = {
+		exists = yes
+		is_major = yes
+		NOT = { tag = SOV }
+		NOT = { has_capitulated = yes }
+	}
+}
+
 sov_nuclear_bombs_event_has_other_nuclear_major = {
 	any_country = {
 		is_major = yes
+		has_tech = atomic_research
 		has_tech = nukes
 		num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
 		NOT = { tag = SOV }
 	}
+}
+
+sov_nuclear_bombs_event_has_two_operational_nuclear_majors = {
+	has_tech = atomic_research
+	has_tech = nukes
+	num_of_nukes > constant:sov_nuclear_bombs_ledger.zero
+	sov_nuclear_bombs_event_has_other_nuclear_major = yes
 }
 
 sov_nuclear_bombs_event_major_exchange_world_gate = {
@@ -280,6 +367,7 @@ sov_nuclear_bombs_event_major_exchange_world_gate = {
 	OR = {
 		has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
 		has_global_flag = sov_nuclear_bombs_major_detonation_confirmed
+		sov_nuclear_bombs_event_has_two_operational_nuclear_majors = yes
 	}
 	sov_nuclear_bombs_event_has_other_nuclear_major = yes
 }
@@ -295,7 +383,7 @@ sov_nuclear_bombs_event_major_exchange_receipt_gate = {
 	has_global_flag = sov_nuclear_bombs_major_exchange_active
 	has_variable = global.sov_nuclear_bombs_major_receipt_count
 	check_variable = { var = global.sov_nuclear_bombs_major_receipt_count value = constant:sov_nuclear_bombs_tuning.major_receipt_minimum compare = greater_than_or_equals }
-	sov_nuclear_bombs_event_has_other_nuclear_major = yes
+	has_global_flag = sov_nuclear_bombs_major_exchange_answered
 }
 
 sov_nuclear_bombs_event_evolution_iii_world_gate = {
@@ -304,6 +392,7 @@ sov_nuclear_bombs_event_evolution_iii_world_gate = {
 		has_global_flag = sov_nuclear_bombs_evolution_iii_world_gate_opened
 		has_global_flag = sov_nuclear_bombs_major_exchange_active
 		has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
+		sov_nuclear_bombs_event_has_two_operational_nuclear_majors = yes
 	}
 }
 
@@ -312,6 +401,7 @@ sov_nuclear_bombs_event_evolution_iv_world_gate = {
 	OR = {
 		has_global_flag = sov_nuclear_bombs_major_exchange_active
 		has_global_flag = sov_nuclear_bombs_evolution_iv_world_gate_opened
+		sov_nuclear_bombs_event_has_two_operational_nuclear_majors = yes
 		AND = {
 			has_war = yes
 			has_country_flag = sov_nuclear_bombs_confirmed_enemy_nuclear_use
@@ -334,11 +424,16 @@ sov_nuclear_bombs_event_severe_first_use_gate = {
 	NOT = { has_country_flag = sov_nuclear_bombs_atomic_moratorium }
 	NOT = { has_country_flag = sov_nuclear_bombs_soviet_major_first_use_recorded }
 	sov_nuclear_bombs_event_has_delivery_route = yes
+	sov_nuclear_bombs_event_has_delivery_crew_certification = yes
 	check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.first_use_profile_readiness compare = greater_than_or_equals }
 	check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.minimum_integrity_for_release compare = greater_than_or_equals }
 
 	var:sov_nuclear_bombs_action_state = {
 		sov_nuclear_bombs_event_target_is_nuclear_major = yes
+		OR = {
+			ROOT = { has_country_flag = sov_nuclear_bombs_confirmed_enemy_populated_nuclear_use }
+			sov_nuclear_bombs_event_first_use_target_is_lower_consequence = yes
+		}
 	}
 }
 
@@ -388,7 +483,7 @@ sov_nuclear_bombs_event_can_enable_evolution_iv = {
 sov_nuclear_bombs_event_has_ultimatum_device_backing = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	sov_nuclear_bombs_event_has_unreserved_device = yes
-	check_variable = { var = global.sov_nuclear_bombs_soviet_usable_devices value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+	check_variable = { var = global.sov_nuclear_bombs_soviet_usable_devices value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 	check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.minimum_strike_readiness compare = greater_than_or_equals }
 	check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.minimum_strike_integrity compare = greater_than_or_equals }
 }
@@ -501,6 +596,27 @@ sov_nuclear_bombs_event_selected_storage_site_is_valid = {
 	}
 }
 
+sov_nuclear_bombs_event_selected_disperse_source_is_valid = {
+	has_event_target = sov_nuclear_bombs_selected_state
+	has_event_target = sov_nuclear_bombs_disperse_source_state
+	event_target:sov_nuclear_bombs_selected_state = {
+		sov_nuclear_bombs_event_state_is_valid_storage_site = yes
+	}
+	event_target:sov_nuclear_bombs_disperse_source_state = {
+		scope_exists = yes
+		is_owned_by = ROOT
+		is_controlled_by = ROOT
+		sov_nuclear_bombs_state_is_registered = yes
+		NOT = { has_state_flag = sov_nuclear_bombs_disperse_destination }
+		NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
+		NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
+		NOT = { has_state_flag = sov_nuclear_bombs_event5_snapshot_pending }
+		NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
+		infrastructure > 0
+		check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
+	}
+}
+
 sov_nuclear_bombs_event_state_is_valid_storage_site = {
 	scope_exists = yes
 	impassable = no
@@ -517,6 +633,9 @@ sov_nuclear_bombs_event_state_is_valid_storage_site = {
 sov_nuclear_bombs_event_state_is_valid_hardening_site = {
 	sov_nuclear_bombs_event_state_is_valid_storage_site = yes
 	NOT = { has_state_flag = sov_nuclear_bombs_site_hardened }
+	NOT = { is_border_conflict = yes }
+	NOT = { has_active_resistance = yes }
+	NOT = { has_contested_owner = ROOT }
 }
 
 sov_nuclear_bombs_event_state_is_valid_dispersal_destination = {
@@ -539,14 +658,14 @@ sov_nuclear_bombs_event_state_is_valid_reserve_destination = {
 sov_nuclear_bombs_event_selected_site_has_assigned_device = {
 	sov_nuclear_bombs_event_selected_storage_site_is_valid = yes
 	event_target:sov_nuclear_bombs_selected_state = {
-		check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+		check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 	}
 }
 
 sov_nuclear_bombs_event_selected_test_site_has_assigned_device = {
 	sov_nuclear_bombs_event_selected_test_site_is_valid = yes
 	event_target:sov_nuclear_bombs_selected_test_state = {
-		check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+		check_variable = { var = sov_nuclear_bombs_site_assigned value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 	}
 }
 
@@ -554,7 +673,7 @@ sov_nuclear_bombs_event_selected_site_has_transferred_device = {
 	has_event_target = sov_nuclear_bombs_selected_state
 	event_target:sov_nuclear_bombs_selected_state = {
 		sov_nuclear_bombs_state_is_registered = yes
-		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 	}
 }
 
@@ -800,6 +919,7 @@ sov_nuclear_bombs_event_retaliation_authorization_is_valid = {
 	}
 	sov_nuclear_bombs_event_has_unreserved_device = yes
 	sov_nuclear_bombs_event_has_delivery_route = yes
+	sov_nuclear_bombs_event_has_delivery_crew_certification = yes
 	check_variable = { var = sov_nuclear_bombs_readiness value = constant:sov_nuclear_bombs_tuning.retaliation_profile_readiness compare = greater_than_or_equals }
 	check_variable = { var = sov_nuclear_bombs_integrity value = constant:sov_nuclear_bombs_tuning.minimum_strike_integrity compare = greater_than_or_equals }
 	sov_nuclear_bombs_event_has_valid_major_strike_target = yes
@@ -825,6 +945,7 @@ sov_nuclear_bombs_event_no_active_project = {
 	NOT = { has_country_flag = sov_nuclear_bombs_reserve_preservation_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_reserve_sealing_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_reciprocal_restraint_pending }
+	NOT = { has_country_flag = sov_nuclear_bombs_doctrine_reform_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_arsenal_reactivation_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_reactor_construction_pending }
 	NOT = { has_country_flag = sov_nuclear_bombs_production_mission_active }
@@ -870,7 +991,7 @@ sov_nuclear_bombs_event_has_breakaway_custody_crisis = {
 	exists = yes
 	has_country_flag = soviet_collapse_breakaway
 	has_variable = sov_nuclear_bombs_actor_transferred
-	check_variable = { var = sov_nuclear_bombs_actor_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+	check_variable = { var = sov_nuclear_bombs_actor_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 }
 
 sov_nuclear_bombs_event_selected_breakaway_site_is_valid = {
@@ -885,7 +1006,7 @@ sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = {
 	event_target:sov_nuclear_bombs_selected_state = {
 		exists = yes
 		sov_nuclear_bombs_state_is_registered = yes
-		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_missing }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_dismantled }
 		NOT = { has_state_flag = sov_nuclear_bombs_site_technical_denial }
@@ -894,6 +1015,26 @@ sov_nuclear_bombs_event_selected_breakaway_site_is_valid_for_actor = {
 			is_owned_by = ROOT
 			is_controlled_by = ROOT
 		}
+	}
+}
+
+sov_nuclear_bombs_event_selected_breakaway_site_has_recovery_route = {
+	has_event_target = sov_nuclear_bombs_selected_state
+	event_target:sov_nuclear_bombs_selected_state = {
+		sov_nuclear_bombs_event_state_is_valid_collapse_site = yes
+		infrastructure > 0
+		rail_way > 0
+	}
+}
+
+sov_nuclear_bombs_event_selected_breakaway_site_has_security_force = {
+	has_event_target = sov_nuclear_bombs_selected_state
+	event_target:sov_nuclear_bombs_selected_state = {
+		is_controlled_by = ROOT
+	}
+	divisions_in_state = {
+		state = event_target:sov_nuclear_bombs_selected_state
+		size > @sov_nuclear_bombs_collapse_security_divisions_floor
 	}
 }
 
@@ -925,7 +1066,7 @@ sov_nuclear_bombs_event_state_is_valid_breakaway_return_site = {
 		is_owned_by = ROOT
 		is_controlled_by = ROOT
 	}
-	check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+	check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 	NOT = { has_state_flag = sov_nuclear_bombs_return_requested }
 }
 
@@ -934,7 +1075,7 @@ sov_nuclear_bombs_event_selected_site_has_return_request = {
 	event_target:sov_nuclear_bombs_selected_state = {
 		sov_nuclear_bombs_state_is_registered = yes
 		has_state_flag = sov_nuclear_bombs_return_requested
-		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+		check_variable = { var = sov_nuclear_bombs_site_transferred value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 		OR = {
 			is_owned_by = SOV
 			is_controlled_by = SOV
@@ -969,7 +1110,7 @@ sov_nuclear_bombs_event_can_reactivate_moratorium = {
 	sov_nuclear_bombs_event_actor_is_valid = yes
 	has_country_flag = sov_nuclear_bombs_atomic_moratorium
 	sov_nuclear_bombs_event_has_serious_crisis = yes
-	check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than }
+	check_variable = { var = global.sov_nuclear_bombs_ledger_operational value = constant:sov_nuclear_bombs_ledger.one compare = greater_than_or_equals }
 	check_variable = { var = global.sov_nuclear_bombs_ledger_reconciliation value = constant:sov_nuclear_bombs_ledger.clean compare = equals }
 }
 
