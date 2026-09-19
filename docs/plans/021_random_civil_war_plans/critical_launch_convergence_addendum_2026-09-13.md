@@ -178,7 +178,7 @@ It is not an Event 021 acceptance dependency because this proposal adds no techn
 ## Source anchors, research, and promotion
 
 These SHA-256 anchors identify the reviewed source capture rather than the entire changing worktree.
-Parent repairs continued during review, so a changed anchor requires rechecking the finding before implementation.
+Parent repairs continued during review, so the source hashes in this historical addendum require comparison with the current checkout before relying on them.
 
 | Source | SHA-256 |
 | --- | --- |
@@ -199,14 +199,13 @@ No skill was created or updated.
 
 ## Parent disposition
 
-The parent accepts this bounded convergence as an explicit post-test implementation queue item, not as a release blocker for the playable test-entry tranche.
-The queue contract, callback integration, and GLB/REC fixtures remain in this plan until the repair is implemented and validated against the current source revision.
+The parent has promoted this bounded convergence into the test-entry implementation with the explicit limit that final acceptance remains unresolved.
+The queue contract and callback integration are implemented in the current source, and the GLB/REC fixtures remain evidence obligations because MCP lifecycle projection and live terminal behavior are not proven.
 No new gameplay surface is introduced by this disposition.
 
-If implemented, promote the queue contract into source-spec part 6, callback integration into part 8, and the unchanged GLB/REC acceptance matrix plus these fixtures into part 10 and the scenario matrix.
-Regenerate the master convenience copy from the accepted numbered parts without treating compilation as approval.
-The parent must also resolve the conflict with the older direct-due-dispatch review, linking this accepted decision rather than silently superseding its semantics.
-After implementation, link current source and matching MCP and auditor evidence here and change disposition to `implemented` only within the proven validation limits.
+The queue contract is promoted into source-spec part 6, callback integration is represented in part 8, and the unchanged GLB/REC acceptance matrix remains a part 10 and scenario-matrix test obligation.
+The older direct-due-dispatch review is superseded by this owner-aware queue decision, while its runtime risks remain listed below.
+Current source evidence is recorded in `docs/events/021_random_civil_war/acceptance_evidence.md`; the current Event MCP result is partial and does not establish live or helper-expanded acceptance.
 
 Remaining risk is recipient scope, lock and callback lifetime, budget reset timing, queue cursor mutation, rollback conservation, and below-Critical recurrence after convergence.
 Independent inherited risks remain the shared fixed-target contract, Event 006 package evidence, complete probability certification, lifecycle continuity, and final acceptance documentation.
@@ -214,6 +213,4 @@ The shared dependency remains owned by the other event owners described in `suba
 This proposal neither supplies a substitute helper nor declares those obligations complete.
 Parent handoff: accept, explicitly queue, or reject this one connection repair, finish the existing accepted obligations, and do not add broader event content solely to prolong the improvement loop.
 
-Delivery status: this single plan file was created and reviewed without gameplay or workbook changes and without spawning agents.
-The documentation-only commit was blocked by the pre-existing `.git\index.lock`.
-The planner did not remove that lock, alter other staged work, or claim a commit was created.
+Delivery status: the queue repair is implemented and the test-entry status is recorded as `Needs Testing`; the current source hashes and MCP evidence are maintained in the acceptance ledger. No live gameplay, save/reload, or performance claim is made.

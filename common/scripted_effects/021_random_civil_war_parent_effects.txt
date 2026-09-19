@@ -2762,45 +2762,24 @@ event021_parent_reserve_pending_secondary_route = {
 	}
 }
 
-# COUNTRY scope on a viable claimant source. Each pass first obtains one
-# distinct evidence-backed route from the original host, then detaches one
-# bounded state and rechecks the source and crisis caps after the child has
-# initialized. Failure leaves every committed front intact and creates no
-# placeholder actor or route reservation.
+# COUNTRY scope on a viable claimant source. Every additional ordinary front
+# must have a distinct route, anchor, objective, and reservation receipt from
+# the pre-commit plan. A missing receipt is a bounded skip; this helper never
+# searches the mutated post-opening map for a replacement front.
 event021_parent_try_secondary_front = {
 	if = {
-		limit = { event021_parent_secondary_front_candidate = yes }
+		limit = {
+			event021_parent_secondary_front_candidate = yes
+			has_global_flag = random_civil_war_secondary_front_preplanned
+		}
 		set_country_flag = random_civil_war_secondary_front_attempted
 		clear_global_event_target = random_civil_war_secondary_source_country
 		if = {
-			limit = { NOT = { has_global_flag = random_civil_war_secondary_front_preplanned } }
-			clear_global_event_target = random_civil_war_secondary_anchor_state
-			var:random_civil_war_crisis_host_scope = { event021_parent_prepare_secondary_route = yes }
-		}
-		else = {
-			if = {
-				limit = {
-					has_event_target = random_civil_war_preplanned_secondary_anchor_state
-					event_target:random_civil_war_preplanned_secondary_anchor_state = { event021_parent_preplanned_secondary_state_candidate = yes }
-				}
-				event_target:random_civil_war_preplanned_secondary_anchor_state = { save_global_event_target_as = random_civil_war_secondary_anchor_state }
-			}
-		}
-		if = {
 			limit = {
-				has_global_flag = random_civil_war_secondary_route_prepared
-				num_of_controlled_states > constant:random_civil_war_value.one
-				NOT = { has_capitulated = yes }
+				has_event_target = random_civil_war_preplanned_secondary_anchor_state
+				event_target:random_civil_war_preplanned_secondary_anchor_state = { event021_parent_preplanned_secondary_state_candidate = yes }
 			}
-			if = {
-				limit = { NOT = { has_global_flag = random_civil_war_secondary_front_preplanned } }
-				random_owned_state = {
-					limit = { event021_parent_secondary_state_candidate = yes }
-					set_state_flag = random_civil_war_secondary_transfer_state
-					save_global_event_target_as = random_civil_war_secondary_anchor_state
-					set_variable = { global.random_civil_war_pending_secondary_anchor_state_id = id }
-				}
-			}
+			event_target:random_civil_war_preplanned_secondary_anchor_state = { save_global_event_target_as = random_civil_war_secondary_anchor_state }
 		}
 		if = {
 			limit = {
@@ -3401,12 +3380,15 @@ event021_parent_abort_event6_secondary_front = {
 }
 
 # COUNTRY scope on the original crisis host after an ordinary opening. This
-# consumes one complete, still-unused Event 006 package as one additional
-# independence front. It reuses package-owned identity/content setup but owns
-# a separate rollback so failure cannot erase the primary crisis.
+# consumes one complete, still-unused Event 006 package whose anchor and
+# package receipt were frozen before the opening. A missing receipt is a
+# bounded skip; it never performs a second package search on the mutated map.
 event021_parent_try_event6_secondary_front = {
 	if = {
-		limit = { event021_parent_event6_secondary_front_candidate = yes }
+		limit = {
+			event021_parent_event6_secondary_front_candidate = yes
+			has_global_flag = random_civil_war_event6_secondary_front_preplanned
+		}
 		set_country_flag = random_civil_war_event6_secondary_front_attempted
 		if = {
 			limit = { has_global_flag = random_civil_war_event6_secondary_front_preplanned }
@@ -3426,11 +3408,6 @@ event021_parent_try_event6_secondary_front = {
 			set_variable = { random_civil_war_event6_candidate_depth = global.random_civil_war_event6_secondary_planned_depth }
 			set_variable = { random_civil_war_event6_candidate_archetype = global.random_civil_war_event6_secondary_planned_archetype }
 			set_country_flag = random_civil_war_event6_dormant_route_ready
-		}
-		else = {
-			set_global_flag = random_civil_war_event6_secondary_search_active
-			event021_parent_find_event6_package = yes
-			clr_global_flag = random_civil_war_event6_secondary_search_active
 		}
 		if = {
 			limit = {
