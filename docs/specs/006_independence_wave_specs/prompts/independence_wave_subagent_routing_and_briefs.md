@@ -72,25 +72,23 @@ Run after broad player-facing text exists and before catalog updates.
 
 Read `AGENTS.md`, the Event 6 specs, implemented events, decisions, focuses, ideas, scripted GUI, scripted localisation, event log, evolutions, cluster details, scenario UI, achievements, super-events, and docs. Audit missing and duplicate keys, UTF-8 BOM, namespaces, raw triggers, dynamic values, integer formatting, route tone, hidden spoilers, working labels, research gates, cost clarity, and cross-surface contradictions. Confirm Event Details describes the premise and does not list effects. Patch small local text and key defects. Write the handoff to `docs/plans/006_independence_wave_plans/subagent_handoffs/localisation_audit.md`.
 
+> Current-routing notice (2026-09-19): Sections 8 and 9 below are superseded for all character portraits by `AGENTS.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, and `.agents/skills/chaos-redux-comfyui/SKILL.md`. Route every grounded portrait to `chaosx_portrait_creator` for source research, exact crop, explicit source-placeholder wiring, and later user-supplied HOI4-style final validation. Do not assign grounded portrait sourcing or ImageGen repainting to the asset source researcher or generated-event-art worker. Non-portrait archival research and generated non-portrait art remain with their named specialists.
+
 ## 8. Asset source researcher
 
-Use for real leaders, historical flags, historically attested symbols, and any report or super-event scene that must depict real material.
+Use for historical flags, historically attested symbols, and non-portrait report or super-event scenes that must depict real material. Every character portrait belongs to `chaosx_portrait_creator`.
 
 ### Prompt
 
-Read only the Event 6 asset prompt, the relevant source-mode sections of the asset skill, the candidate package IDs named by the parent, matching reference folders, and source pages. Source and document male real-leader portraits, historical flags, and attested symbols. Verify date, author or archive, license, era fit, and identity fit. Crop real portraits to head and shoulders, preserve identity through the HOI4 treatment, preserve sources, process PNGs, create final DDS or TGA files, update the Event 6 asset manifest, and write `gfx_handoff.md`. Do not edit gameplay or GFX files. Do not create advisor portrait icons. Mark uncertain or blocked assets rather than substituting generated history.
+Read only the Event 6 asset prompt, the relevant source-mode sections of the asset skill, the candidate package IDs named by the parent, matching reference folders, and source pages. Research and document historical flags, attested symbols, and real non-portrait report or super-event images. Verify date, author or archive, license, era fit, and identity fit. Preserve sources, process approved non-portrait assets, update the Event 6 asset manifest, and write `gfx_handoff.md`. Do not edit gameplay or GFX files. Send every character portrait to `chaosx_portrait_creator`; do not create advisor portrait icons. Mark uncertain or blocked assets rather than substituting generated history.
 
 ## 9. Generated event art
 
-Use for fictional report and news scenes, super-event images, identity-preserving
-HOI4 refinishes of already sourced real portraits, truly fictional high-chaos
-portraits or institutions, alternate flags, faction emblems, and UI art. Every
-one of the current 206 country-registry rows is grounded; none authorizes a
-generated portrait identity.
+Use for fictional report and news scenes, super-event images, alternate flags, faction emblems, and UI art. Every current country-registry row is grounded; none authorizes a generated portrait identity. The former portrait-refinish brief is superseded by the current-routing notice above.
 
 ### Prompt
 
-Read only the Event 6 asset prompt, named asset package paths, relevant asset-skill sections, and matching visual reference folders. Use the official image generation workflow. Produce final-source art for the exact assets named by the parent. Event 6 leader, commander, and collective portrait subjects must all be male and must match the canonical vanilla HOI4 portrait family. For a grounded real person, accept only an unchanged attributed source and explicit head-and-shoulders crop from the source researcher; use ImageGen solely to repaint that exact person into the HOI4 finish, compare the result directly with the source, and fail closed on identity drift. Never generate, reconstruct, or substitute a real identity. Generate a one-person portrait or institution only when the parent identifies a truly fictional high-chaos country and leader; no current Event 6 registry row qualifies. Such an allowed fictional leader must use extraordinary, internally coherent invented regalia, dress, adornment, objects, or altered uniform rather than an ordinary or interchangeable design, without borrowing sacred traits from a real people. Follow 1936 to 1945 documentary direction for event scenes. Preserve source PNGs, process to exact dimensions, convert to DDS, update manifest and GFX handoff, and create contact sheets. Do not edit GFX or gameplay files. Do not create advisor portrait icons. Historical flags still require source research and ImageGen must reconstruct them as clean flat flag geometry rather than artwork.
+Read only the Event 6 asset prompt, named asset package paths, relevant asset-skill sections, and matching visual reference folders. Use the official image generation workflow for the exact authorized non-portrait assets named by the parent. Follow 1936 to 1945 documentary direction for event scenes. Preserve source PNGs, process to exact dimensions, convert to DDS, update the manifest and GFX handoff, and create contact sheets. Do not edit GFX or gameplay files. Do not create advisor portrait icons. Historical flags still require source research and ImageGen reconstruction as clean flat flag geometry rather than artwork. Every character portrait, including any later accepted truly fictional high-chaos subject, belongs to `chaosx_portrait_creator`.
 
 ## 10. Icon artist
 

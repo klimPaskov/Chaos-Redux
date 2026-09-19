@@ -1,5 +1,7 @@
 # Independence Wave asset production prompt
 
+> Current portrait-routing notice (2026-09-19): The portrait production and blanket regeneration instructions later in this historical prompt are superseded by `AGENTS.md`, `.agents/skills/chaos-redux-event-assets/SKILL.md`, and `.agents/skills/chaos-redux-comfyui/SKILL.md`. Every character portrait belongs to `chaosx_portrait_creator`. Grounded subjects use sourced, rights-reviewed placeholders and receive a HOI4-style final only when the user supplies one for validation; do not automatically regenerate existing portraits or use ImageGen to repaint a grounded person. The thirteen candidates in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_rights_closure_2026-09-19.md` remain held until their exact role, rights, and consumer gates close.
+
 Create the complete visual asset package for Chaos Redux Event 6, Independence Wave.
 
 Read and apply:
@@ -173,9 +175,7 @@ For every package selected for implementation:
 - match the canonical vanilla HOI4 painterly portrait treatment, framing, tonal
   range, period clothing, and background language rather than a generic modern
   portrait finish
-- keep the approved Rupprecht of Bavaria and Josef Friedrich Matthes DDS files
-  byte-identical and regenerate every other current Event 6 leader or commander
-  portrait
+- preserve approved existing portrait bytes and their exact consumers unless a later accepted portrait-specific handoff authorizes a replacement; do not run blanket regeneration
 - do not create or register custom Event 6 advisor portrait icons; advisor
   offices retain their gameplay roles without Event 6 portrait sprites
 
