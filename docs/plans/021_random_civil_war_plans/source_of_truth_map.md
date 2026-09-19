@@ -248,7 +248,7 @@ The owner-applied exposure repair adds `event021_parent_review_exposure_lifecycl
 
 `event021_cleanup_regional_exposure` now clears `random_civil_war_neighbor_exposure`, the three route-ready flags, exposure review/presentation receipts, containment/mediator/sponsor roles, separate relief/support flags, neighbor action state, mediation/relief/border-monitoring state, and the saved exposure source/channel variables before setting the centralized cooldown. This is a bounded source repair; the live expiry and post-settlement sequence remain a user testing gate.
 
-Current hashes are `common/scripted_effects/021_random_civil_war_effects.txt` `596e5f5f11682ff348c68243bcdbcd682c0d3d489ea33b4667629a1ff8be2d12` and `common/scripted_effects/021_random_civil_war_parent_effects.txt` `c1f38764b60fdbb1f46791db0e6f5c4b0e72551c67a654a758580ef81fb57145`.
+The hashes recorded here are the exposure-repair source revision; the later completion-audit repair is recorded below.
 
 The refreshed focused root lint returned `EVENT_INSPECTED_PARTIAL` at revision `dec87bc5349e92d00e2affee2cb645e0aa4f9f91aad80ed2cf5a584674fef0f7`, with zero blocking diagnostics and zero skipped sources. The artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d9efd5e0461b81f9c34400c27fd66cf4f225f5a8335ac8c8e6d247b3159a71cf/854b4999ea10d00d16bdc6acb6128054189b07786641c8cd20f0bb4dd7dbb6f3/event-lint-dec87bc5349e.json`; validation remains partial because helper and lifecycle projections are deferred for the large workspace.
 
@@ -257,3 +257,13 @@ The refreshed focused root lint returned `EVENT_INSPECTED_PARTIAL` at revision `
 The fresh completion audit found that exposure creation did not guarantee membership in the bounded registered-country review, Evolution II disablement did not invalidate existing exposure presentation, and exposure cleanup left `event021_relief_action_used` behind. The owner repair calls `event021_register_global_country` from `event021_apply_regional_exposure`, makes `event021_country_can_manage_exposure` fail while `events_log_disabled_evolution_21_21_2` is set, and clears the relief-use flag in `event021_cleanup_regional_exposure`.
 
 This closes the three source defects without adding a world iteration or changing the shared scheduler contract. The current test-entry state remains `Needs Testing`; the live expiry and re-exposure sequence is still untested.
+
+## 2026-09-19 workbook export reconfirmation
+
+The required exporter was rerun against `docs/spreadsheets/chaos_redux_events_catalog.xlsx` and completed successfully with 166 Event rows, 20 Cluster rows, and 16 Scenario rows including headers.
+Direct CSV inspection confirms Event 021 is `Random Civil War`, `Minor Repeatable`, chaos level 1, Cluster 1, and `Needs Testing`; Cluster 1 contains it once at Medium severity; and SCN-018 is The Fracture Cascade with four type options, four intensities, and `Needs Testing`.
+The current export hashes are `e2e457ba96ae89b316aa01248eebe41d9aacbafc590f4940b56a55133fcd35c6`, `689fe07883da14abe2ceb7c29c151db50808cf97a366e60808281b16e37c76a2`, and `8b944de19817b3887eac22e3d12437e62990273c8b0db1c6f27928f349d4b2e7` for Events, Clusters, and Scenarios.
+
+The current post-repair source hashes for the exposure and scheduler surfaces are `common/scripted_effects/021_random_civil_war_effects.txt` `8d3241af802ce4d2da5d90a56f2c5b0091a9e91a8fe2745fe525eac76e49e0b5`, `common/scripted_effects/021_random_civil_war_parent_effects.txt` `c1f38764b60fdbb1f46791db0e6f5c4b0e72551c67a654a758580ef81fb57145`, and `common/scripted_triggers/021_random_civil_war_parent_triggers.txt` `2657c3a0fbd317b158629af8df01fb05487c81bd3aa27d3f52eb8f4d96e32550`.
+
+The current decision AI probability inspection passed source discovery with 18 candidates and zero unresolved inputs but no runtime-available candidates; artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/41baac9a99ee2545e5ea16cd766fa07af843f9664b71c59b6d486a5993b9fbfb/5a2da45d36f3ab024805a429b348e2f139bd12b0eb47fad52ec13898808d4f8b/probability-inspect-d942638f25e4.json`. The matching mission adapter returned `INTERNAL_ERROR` without an artifact, so neither surface has a complete before/after probability certificate.
