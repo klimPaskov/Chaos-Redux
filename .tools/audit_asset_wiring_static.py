@@ -10,6 +10,9 @@ Answers three source-only questions:
    nowhere? Those are dead sprite definitions.
 3. Which sprite, entity, or texture definitions point at a file that does not
    exist on disk?
+4. Which mod-referenced vanilla GFX definitions point at a file that does not
+   exist in the installed vanilla tree? This catches broken DLC reach-through
+   such as a declared portrait sprite whose backing DDS is absent.
 
 Vanilla reach-through is expected in places, so question 1 consults the vanilla
 install before reporting a name as unresolved.
@@ -94,6 +97,7 @@ class Findings:
 		self.unresolved_refs: List[Dict[str, object]] = []
 		self.dead_definitions: List[Dict[str, object]] = []
 		self.missing_files: List[Dict[str, str]] = []
+		self.missing_vanilla_files: List[Dict[str, str]] = []
 		self.registered_count = 0
 		self.vanilla_registered = 0
 
@@ -197,6 +201,46 @@ def audit_entities(findings: Findings) -> None:
 			findings.missing_files.append({"file": rel, "reference": target})
 
 
+def audit_referenced_vanilla_definitions(
+	findings: Findings, referenced_names: Set[str]
+) -> None:
+	"""Check backing files for vanilla GFX definitions used by the mod.
+
+	The normal missing-file pass intentionally scans mod-owned `.gfx` files only.
+	Vanilla reach-through is usually safe, but a declared vanilla sprite can still
+	be unusable when its DLC declaration survives while the backing texture is
+	absent from the installed tree. Restrict this pass to GFX names referenced by
+	the mod so it does not turn the audit into a full vanilla-install linter.
+	"""
+	if not VANILLA_ROOT.is_dir() or not referenced_names:
+		return
+	for path in VANILLA_ROOT.rglob("*.gfx"):
+		try:
+			text = read_text(path)
+		except OSError:
+			continue
+		matches = list(NAME_DEF.finditer(text))
+		if not matches:
+			continue
+		for index, match in enumerate(matches):
+			name = match.group(1)
+			if name not in referenced_names:
+				continue
+			end = matches[index + 1].start() if index + 1 < len(matches) else len(text)
+			definition = text[match.end():end]
+			for texture in TEXTURE_REF.finditer(definition):
+				target = texture.group(1)
+				if resolve_asset(target):
+					continue
+				findings.missing_vanilla_files.append(
+					{
+						"file": str(path.relative_to(VANILLA_ROOT)),
+						"reference": target,
+						"name": name,
+					}
+				)
+
+
 def main() -> int:
 	parser = argparse.ArgumentParser(description=__doc__)
 	parser.add_argument("--json", type=Path, help="also write the findings as JSON")
@@ -241,6 +285,7 @@ def main() -> int:
 
 	audit_definitions(findings)
 	audit_entities(findings)
+	audit_referenced_vanilla_definitions(findings, set(references))
 
 	print()
 	print("=" * 78)
@@ -251,6 +296,7 @@ def main() -> int:
 	print(f"unresolved references    : {len(findings.unresolved_refs)}")
 	print(f"dead registrations       : {len(findings.dead_definitions)}")
 	print(f"missing files on disk    : {len(findings.missing_files)}")
+	print(f"missing vanilla files    : {len(findings.missing_vanilla_files)}")
 
 	def section(title: str, rows: List[str], limit: int = 40) -> None:
 		print()
@@ -269,6 +315,13 @@ def main() -> int:
 		[f"{m['reference']}  <- {m['file']}" for m in findings.missing_files],
 	)
 	section(
+		"missing files in referenced vanilla GFX",
+		[
+			f"{m['reference']}  <- {m['file']} ({m['name']})"
+			for m in findings.missing_vanilla_files
+		],
+	)
+	section(
 		"dead registrations",
 		[f"{d['name']}  <- {', '.join(d['definitions'][:1])}" for d in findings.dead_definitions],
 		limit=60,
@@ -282,6 +335,7 @@ def main() -> int:
 			"unresolved_refs": findings.unresolved_refs,
 			"dead_definitions": findings.dead_definitions,
 			"missing_files": findings.missing_files,
+			"missing_vanilla_files": findings.missing_vanilla_files,
 		}
 		arguments.json.write_text(
 			json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8"
