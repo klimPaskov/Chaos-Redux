@@ -287,3 +287,19 @@ The current IW-095 audit remains `NO-CHANGE / PACKAGE-LOCAL HOLD`; its identity,
 The shared Event 006 probability authority closes only declared outer allocator and formable fixtures. Its nested package pool still has 126 candidates with an incomplete typed manifest and one unresolved input, while root and support `event_option_ai_chance` calls return `INTERNAL_ERROR`; no nested campaign probability, sequence, or compare certificate is claimed. The current portrait-rights closure likewise leaves all 13 scoped supplied portrait rows as candidate holds with no runtime promotion or fallback.
 
 These are inherited Event 006 acceptance gates, not newly introduced Event 021 source defects. They remain required before Event 021 can claim full Event 006 package reachability, asset provenance, and probability certification.
+
+## 2026-09-19 decision and mission parent refresh
+
+The bounded decision and mission audit confirmed 18 action decisions, three selectable missions, the normal Event 021 category, role-aware AI, trigger/effect descriptions, and a maximum of four spendable resource types per action.
+
+It also found that the State Authority guidance strings referenced the wrong constant namespace.
+
+The owner repaired those references to `constant:random_civil_war_authority.*` in `localisation/english/021_random_civil_war_l_english.yml` and committed the source repair as `125b48227`.
+
+The repository-wide localisation audit after that repair reported zero parse errors, duplicate keys, missing BOMs, or encoding artifacts.
+
+The mission review confirms that the three `complete_effect` blocks establish active mission receipts, while their `timeout_effect` resolvers evaluate the capital, rail, and settlement objectives and dispatch distinct success or failure helpers.
+
+This is consistent with the installed vanilla mission contract, but live activation, expiry, cancellation, cleanup, and user-facing presentation remain testing gates.
+
+The specialist was interrupted before producing the requested current independent decision/mission probability artifact or before/after comparison, so the full weighted-surface certificate remains open.
