@@ -6,6 +6,7 @@
 #   and the support-only Saboteur Cell with the shared CXT extension bus.
 # - The carrier is modifier-free and the setup effect is idempotent, so a
 #   bounded startup scope and the tag-scoped daily repair can converge safely.
+# - Uses grouped, combat-ready assassin and mechanized formations.
 # ============================================================================
 
 murder_mystery_register_cxt_test_content = {
@@ -43,5 +44,93 @@ chaosx_cxt_extension_event039_assassin_forces_apply = {
 		set_temp_variable = { var = chaosx_test_country_registration_equipment value = token:mechanized_equipment_1 }
 		chaosx_test_country_register_equipment = yes
 		set_global_flag = chaosx_cxt_extension_event039_assassin_forces_registered
+	}
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_cxt_assassin_formations_ready } }
+		chaosx_cxt_event039_define_formations = yes
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:assassin_cadre }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:shadow_company }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:silent_guard }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:master_assassin }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:mechanized_assassin }
+		add_to_array = { array = chaosx_test_country_processed_support_subunits value = token:saboteur_cell }
+		chaosx_cxt_event039_spawn_formations = yes
+		set_country_flag = chaosx_cxt_assassin_formations_ready
+	}
+}
+
+chaosx_cxt_event039_define_formations = {
+	unlock_subunit = assassin_cadre
+	unlock_subunit = shadow_company
+	unlock_subunit = silent_guard
+	unlock_subunit = master_assassin
+	unlock_subunit = mechanized_assassin
+	unlock_subunit = saboteur_cell
+	if = {
+		limit = { NOT = { has_template = "CXT - Assassin Forces Muster" } }
+		division_template = {
+			name = "CXT - Assassin Forces Muster"
+			is_locked = no
+			force_allow_recruiting = yes
+			regiments = {
+				assassin_cadre = { x = 0 y = 0 }
+				assassin_cadre = { x = 0 y = 1 }
+				assassin_cadre = { x = 0 y = 2 }
+				shadow_company = { x = 1 y = 0 }
+				shadow_company = { x = 1 y = 1 }
+				silent_guard = { x = 2 y = 0 }
+				silent_guard = { x = 2 y = 1 }
+				master_assassin = { x = 3 y = 0 }
+				master_assassin = { x = 3 y = 1 }
+			}
+			support = { saboteur_cell = { x = 0 y = 0 } }
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "CXT - Mechanized Assassins" } }
+		division_template = {
+			name = "CXT - Mechanized Assassins"
+			is_locked = no
+			force_allow_recruiting = yes
+			regiments = {
+				mechanized_assassin = { x = 0 y = 0 }
+				mechanized_assassin = { x = 0 y = 1 }
+				mechanized_assassin = { x = 0 y = 2 }
+				mechanized_assassin = { x = 1 y = 0 }
+				mechanized_assassin = { x = 1 y = 1 }
+				mechanized_assassin = { x = 1 y = 2 }
+			}
+		}
+	}
+}
+
+chaosx_cxt_event039_spawn_formations = {
+	if = {
+		limit = { has_template = "CXT - Assassin Forces Muster" }
+		for_loop_effect = {
+			end = constant:chaosx_test_country_count.divisions_per_template
+			value = chaosx_test_country_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"CXT - Assassin Forces Muster\" division_template = \"CXT - Assassin Forces Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = constant:chaosx_test_country_count.divisions_per_state_pick
+				}
+			}
+		}
+	}
+	if = {
+		limit = { has_template = "CXT - Mechanized Assassins" }
+		for_loop_effect = {
+			end = constant:chaosx_test_country_count.divisions_per_template
+			value = chaosx_test_country_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"CXT - Mechanized Assassins\" division_template = \"CXT - Mechanized Assassins\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = constant:chaosx_test_country_count.divisions_per_state_pick
+				}
+			}
+		}
 	}
 }

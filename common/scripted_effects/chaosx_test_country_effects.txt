@@ -8,13 +8,11 @@
 # - Enumerates the runtime technology database, consumes registered projects,
 #   equipment, units, and package setup effects, activates Chaos Warfare, and
 #   turns on the shared CBRN and camp systems.
-# - Maintains tag-specific daily resources and weekly stockpile replenishment
-#   without a world iteration.
+# - Leaves all subsequent grants to CXT-only debug decisions.
 # ============================================================================
 
 @CXT_DOCTRINE_MASTERY = 500.00
 @CXT_SETUP_DELAY_HOURS = 1
-@CXT_SYNC_DELAY_HOURS = 1
 
 chaosx_test_country_refill_resources = {
 	add_political_power = constant:chaosx_test_country.political_power_refill
@@ -293,7 +291,7 @@ chaosx_test_country_activate_camp_systems = {
 # Input: temporary variable chaosx_test_country_registration_extension_effect
 # containing token:<hidden_idea_carrier>. The matching scripted effect must use
 # the carrier id plus an _apply suffix, be safe in country scope, and be
-# idempotent because CXT invokes it from its daily repair bus.
+# idempotent because initial setup and the manual package decision invoke it.
 chaosx_test_country_register_extension_effect = {
 	set_temp_variable = { chaosx_test_country_extension_registration_added = 0 }
 	if = {
@@ -366,32 +364,29 @@ chaosx_test_country_initial_setup = {
 	log = "CXT_SETUP_TRACE phase=static_roster date=[?global.date|.3]"
 	chaosx_test_country_create_unit_roster = yes
 	chaosx_test_country_sync_registered_content_apply = yes
+	chaosx_test_country_fill_registered_equipment = yes
 	log = "CXT_SETUP_TRACE initial_setup_complete country=[This.GetTag] date=[?global.date|.3]"
+	clr_country_flag = chaosx_test_country_setup_trace_active
 }
 
 chaosx_test_country_refresh = {
-	chaosx_test_country_complete_all_technologies = yes
-	clr_country_flag = chaosx_test_country_registered_sync_pending
-	chaosx_test_country_sync_registered_content_apply = yes
-	chaosx_test_country_fill_stockpile = yes
-	chaosx_test_country_refill_resources = yes
+	# Re-entering the console command does not silently grant anything.
+	clr_country_flag = chaosx_test_country_setup_trace_active
 }
 
-# Coalesce additive daily registration hooks into one delayed country receiver.
-# Initial setup and explicit refresh invoke the apply body immediately.
+# Package-owned CXT daily hooks may discover a new carrier, but registration
+# never grants resources, equipment, research, projects, or divisions. The
+# player applies pending content from the CXT debug decision category.
 chaosx_test_country_sync_registered_content = {
 	set_country_flag = chaosx_test_country_registered_sync_pending
-	if = {
-		limit = { NOT = { has_country_flag = chaosx_test_country_registered_sync_queued } }
-		set_country_flag = chaosx_test_country_registered_sync_queued
-		country_event = { id = chaosx_test_country.2 hours = @CXT_SYNC_DELAY_HOURS }
-	}
 }
 
-# Daily CXT consumes all registrations after additive package hooks converge.
+# Initial setup and the manual package decision consume registered content.
 # Every package effect must remain idempotent. Trace output is temporary until
 # the reported first-day freeze has an identified blocking stage.
 chaosx_test_country_sync_registered_content_apply = {
+	clr_country_flag = chaosx_test_country_registered_sync_pending
+	clr_country_flag = chaosx_test_country_registered_sync_queued
 	if = {
 		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 		log = "CXT_SETUP_TRACE sync_begin country=[This.GetTag] carriers=[?global.chaosx_test_country_registered_extension_effects^num|.0] date=[?global.date|.3]"
@@ -406,11 +401,6 @@ chaosx_test_country_sync_registered_content_apply = {
 	chaosx_test_country_complete_registered_special_projects = yes
 	if = {
 		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
-		log = "CXT_SETUP_TRACE sync_phase=equipment date=[?global.date|.3]"
-	}
-	chaosx_test_country_fill_registered_equipment = yes
-	if = {
-		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 		log = "CXT_SETUP_TRACE sync_phase=roster date=[?global.date|.3]"
 	}
 	chaosx_test_country_create_registered_unit_roster = yes
@@ -419,12 +409,6 @@ chaosx_test_country_sync_registered_content_apply = {
 		limit = { has_country_flag = chaosx_test_country_setup_trace_active }
 		log = "CXT_SETUP_TRACE sync_complete country=[This.GetTag] date=[?global.date|.3]"
 	}
-}
-
-# Weekly CXT performs the bounded runtime technology scan. Its on-action caller
-# invokes the full static and registered stockpile helper once afterward.
-chaosx_test_country_sync_dynamic_content = {
-	chaosx_test_country_complete_all_technologies = yes
 }
 
 chaosx_test = {

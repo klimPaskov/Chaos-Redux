@@ -4,10 +4,10 @@
 # Overview:
 # - Registers every reusable Event 016 project-force unit and concrete
 #   equipment type, plus the D'Rhondan envoy project, with the shared CXT bus.
-# - Keeps Alien Infantry out of the normal CXT designer roster while still
-#   giving the harness one locked, scripted landing cohort for validation.
-# - The carrier and setup effect are idempotent so startup and tag-scoped daily
-#   repair can safely converge on the same registration.
+# - Keeps ordinary Event 016 recruitment rules intact while giving CXT a
+#   recruitable ten-battalion landing cohort for designer and stat validation.
+# - The carrier and setup effect are idempotent; daily CXT work only registers
+#   pending content for a player-triggered package application.
 # ============================================================================
 
 alien_infantry_register_cxt_test_content = {
@@ -131,43 +131,9 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 	chaosx_test_country_register_frontline_subunit = yes
 	set_global_flag = alien_infantry_cxt_content_registered
 
-	# The current static CXT baseline already contains these seven ordinary
-	# templates. Record those exact installed templates before the shared
-	# dynamic pass, preventing duplicate formations while retaining registered
-	# fallback creation if a future baseline removes the legacy entries.
-	if = {
-		limit = { has_template = "CXT Test - Portal Raider" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:portal_raider } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:portal_raider }
-	}
-	if = {
-		limit = { has_template = "CXT Test - Clone Infantry" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:clone_infantry } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:clone_infantry }
-	}
-	if = {
-		limit = { has_template = "CXT Test - Aryan Clone Infantry" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:aryan_clone_infantry } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:aryan_clone_infantry }
-	}
-	if = {
-		limit = { has_template = "CXT Test - Autonomous Robot" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:autonomous_robot } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:autonomous_robot }
-	}
-	if = {
-		limit = { has_template = "CXT Test - Paleogenetic Creature" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:paleogenetic_creature } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:paleogenetic_creature }
-	}
-	if = {
-		limit = { has_template = "CXT Test - Xenobiological Assault Organism" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:xenobiological_assault_organism } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:xenobiological_assault_organism }
-	}
-	if = {
-		limit = { has_template = "CXT Test - Temporal Guard" NOT = { is_in_array = { array = chaosx_test_country_processed_frontline_subunits value = token:temporal_guard } } }
-		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:temporal_guard }
-	}
-
 	# The public API creates alien formations only from a valid landing source.
-	# CXT receives one locked scripted cohort solely to exercise the unit,
-	# equipment, counter, and Event 019 provider surfaces without exposing the
-	# battalion to normal training or the division designer.
+	# CXT's isolated test copy is recruitable so its unit, equipment, counter,
+	# designer, and Event 019 provider surfaces can all be inspected.
 	if = {
 		limit = {
 			NOT = {
@@ -180,25 +146,44 @@ chaosx_cxt_extension_event016_alien_infantry_apply = {
 		unlock_subunit = alien_infantry
 		division_template = {
 			name = "CXT Test - Alien Landing Cohort"
-			is_locked = yes
-			force_allow_recruiting = no
+			is_locked = no
+			force_allow_recruiting = yes
 			override_model = alien_infantry_entity
-			priority = 0
+			priority = 2
 			regiments = {
 				alien_infantry = { x = 0 y = 0 }
+				alien_infantry = { x = 0 y = 1 }
+				alien_infantry = { x = 1 y = 0 }
+				alien_infantry = { x = 1 y = 1 }
+				alien_infantry = { x = 2 y = 0 }
+				alien_infantry = { x = 2 y = 1 }
+				alien_infantry = { x = 3 y = 0 }
+				alien_infantry = { x = 3 y = 1 }
+				alien_infantry = { x = 4 y = 0 }
+				alien_infantry = { x = 4 y = 1 }
 			}
 		}
-		capital_scope = {
-			create_unit = {
-				division = "name = \"CXT Test - Alien Landing Cohort\" division_template = \"CXT Test - Alien Landing Cohort\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
-				owner = PREV
-				count = @CXT_TEST_UNIT_COUNT
-				allow_spawning_on_enemy_provs = yes
-			}
-		}
+		chaosx_cxt_event016_spawn_alien_cohort = yes
 		add_to_array = {
 			array = chaosx_test_country_processed_frontline_subunits
 			value = token:alien_infantry
+		}
+	}
+}
+
+chaosx_cxt_event016_spawn_alien_cohort = {
+	if = {
+		limit = { has_template = "CXT Test - Alien Landing Cohort" }
+		for_loop_effect = {
+			end = constant:chaosx_test_country_count.divisions_per_template
+			value = chaosx_test_country_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"CXT Test - Alien Landing Cohort\" division_template = \"CXT Test - Alien Landing Cohort\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = constant:chaosx_test_country_count.divisions_per_state_pick
+				}
+			}
 		}
 	}
 }

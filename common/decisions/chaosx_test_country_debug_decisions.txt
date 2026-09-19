@@ -1,0 +1,64 @@
+# CHAOS REDUX - TEST COUNTRY DEBUG DECISIONS
+# The harness grants its initial setup once; later refills are player-triggered.
+
+chaosx_test_country_debug_category = {
+	chaosx_test_country_refill_resources_decision = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { tag = CXT is_ai = no has_country_flag = chaosx_test_country_initialized }
+		complete_effect = {
+			custom_effect_tooltip = chaosx_test_country_refill_resources_tt
+			hidden_effect = { chaosx_test_country_refill_resources = yes }
+		}
+	}
+
+	chaosx_test_country_refill_equipment_decision = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { tag = CXT is_ai = no has_country_flag = chaosx_test_country_initialized }
+		complete_effect = {
+			custom_effect_tooltip = chaosx_test_country_refill_equipment_tt
+			hidden_effect = { chaosx_test_country_fill_stockpile = yes }
+		}
+	}
+
+	chaosx_test_country_complete_research_decision = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { tag = CXT is_ai = no has_country_flag = chaosx_test_country_initialized }
+		complete_effect = {
+			custom_effect_tooltip = chaosx_test_country_complete_research_tt
+			hidden_effect = {
+				chaosx_test_country_complete_all_technologies = yes
+				chaosx_test_country_complete_all_special_projects = yes
+				chaosx_test_country_complete_all_technologies = yes
+			}
+		}
+	}
+
+	chaosx_test_country_apply_packages_decision = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { tag = CXT is_ai = no has_country_flag = chaosx_test_country_initialized }
+		complete_effect = {
+			custom_effect_tooltip = chaosx_test_country_apply_packages_tt
+			hidden_effect = { chaosx_test_country_sync_registered_content_apply = yes }
+		}
+	}
+
+	chaosx_test_country_deploy_formations_decision = {
+		icon = GFX_decision_generic_research
+		cost = 0
+		visible = { tag = CXT is_ai = no has_country_flag = chaosx_test_country_initialized }
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = chaosx_test_country_deploy_requires_state_tt
+				any_owned_state = { is_controlled_by = ROOT }
+			}
+		}
+		complete_effect = {
+			custom_effect_tooltip = chaosx_test_country_deploy_formations_tt
+			hidden_effect = { chaosx_test_country_deploy_all_formations = yes }
+		}
+	}
+}

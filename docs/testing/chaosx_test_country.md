@@ -25,23 +25,17 @@ The annex deliberately uses `transfer_troops = no`, which prevents vanilla divis
 
 After the annex, the harness takes control of one populated non-capital foreign state without annexing it so occupation, coercive-security, protected-administration, and occupied-population test surfaces have a valid target.
 
-If CXT has already been initialized in the save, the same command refreshes technologies, registered projects, equipment, and capped resources without duplicating the 261 static test divisions, the locked Event 016 Alien Landing Cohort, or any previously processed registered units.
+If CXT is already initialized, the console effect does not grant additional content. The player uses the debug decision category for replenishment, research, registered packages, or another deployment.
 
 ## Unit inventory
 
-The static roster is generated from the 87 recruitable land sub-units present when the harness baseline was reviewed. Package-owned registrations extend that roster at runtime without regenerating the core helper. Event 016 registers `portal_raider`, `clone_infantry`, `aryan_clone_infantry`, `autonomous_robot`, `paleogenetic_creature`, `xenobiological_assault_organism`, and `temporal_guard` through the ordinary dynamic helper, while `alien_infantry` is handled separately because its battalion is a scripted landing-only unit and must remain locked and untrainable.
+The static baseline unlocks 87 Chaos Redux land sub-units: 40 combat battalions and 47 support companies. It installs 50 recruitable, multi-battalion templates covering every one of those units and spawns three fully equipped, fully manned, fully experienced divisions per template. The shared count is `chaosx_test_country_count.divisions_per_template` in `common/script_constants/chaosx_test_country_constants.txt`.
 
-Event 014 registers nine additional frontline tokens at runtime, including `cannibal_bone_riders`; its locked `Scavenged Elephant Column` uses the installed vanilla `elephantry` token and therefore does not add a second elephant sub-unit or model.
+The main family compositions follow installed Chaos country or runtime formations: Brainzz Horde, Mutated Zombie Muster, Cave Brood Muster, Rat Brood Muster, Africa Strange Formation, Africa Elephant Guard, Coal Golem Column, Death hosts, and the Event 016 project forces. The test copies omit vanilla support companies so that every unit in their line and support slots belongs to Chaos Redux. CBRN command/protection formations use six `chaos_battalion` combat battalions with compatible custom support companies; armored-delivery variants use `autonomous_robot` as an armor-group anchor. The 18 chemical-tank and seven Livens support variants have separate formations because their shared `cbrn_offensive_delivery` exclusion prevents them from coexisting in one support roster.
 
-The static baseline contains 40 frontline battalions and 47 support companies. Runtime registrations add their own frontline or support definitions to that baseline; Event 016 supplies the separate locked Alien Infantry battalion.
+Event 014 contributes two valid formations covering its nine irregular infantry sub-units, with the mobile Bone Riders on a separate line. Event 039 contributes two formations covering its five assassin combat units and Saboteur Cell support company, with mechanized assassins on a separate line. Their package-owned setup effects mark every covered token as processed, so the dynamic fallback does not create duplicate templates. Event 016's `alien_infantry` uses a recruitable CXT-only ten-battalion landing cohort matching its normal API formation; ordinary Event 016 recruitment rules remain unchanged.
 
-Every static sub-unit is explicitly unlocked and receives a dedicated recruitable template with `force_allow_recruiting = yes`. Registered packages may intentionally use a locked, non-recruitable template when their unit is scripted-only; Event 016 does this for Alien Infantry.
-
-Each frontline template contains one instance of its Chaos Redux battalion.
-
-Each support template contains the requested Chaos Redux support company plus a compatible Chaos Redux line anchor, using `autonomous_robot` where the support company excludes infantry groups and `chaos_battalion` otherwise.
-
-Three fully equipped, fully manned, fully experienced divisions are spawned from every static template, for 261 static divisions plus three for every registered unit definition. Event 014 contributes 27 runtime frontline divisions from its nine registered tokens, while Event 016 contributes three locked Alien Landing Cohorts for unit and provider validation.
+Each division independently selects a random owned, controlled CXT state, so the roster is dispersed across the Directorate's territory instead of concentrated in the capital. Random selections may coincide, and a country with only one owned, controlled state necessarily places every division there. The debug deployment decision can add another batch without creating duplicate template definitions.
 
 ## Technology, projects, and doctrine
 
@@ -90,24 +84,29 @@ The initial stockpile receives 1,000,000 units of every concrete Chaos Redux equ
 Dedicated light, medium, and heavy chemical-carrier variants use the concrete `light_tank_flame_chassis_3`, `medium_tank_flame_chassis_3`, and `heavy_tank_flame_chassis_3` types in the No Step Back designer system.
 Their named domestic variants are created before stockpile grants and unit creation, and stockpile calls identify both the concrete type and variant name.
 
-The tag-specific `on_weekly_CXT` hook replenishes that full stockpile throughout play, including equipment supplied through the opt-in registry.
+CXT has no periodic equipment, unit, research, resource, or package grants. Initial setup grants the baseline once. Tag-scoped package daily hooks only register an unseen carrier and mark pending work; they never apply it.
 
-The tag-specific `on_daily_CXT` hook restores political power, command power, army experience, navy experience, air experience, manpower, nuclear bombs, fuel, stability, and war support. It also queues the registered project, equipment, unit, and general-system synchronizers, so additive package registrations are consumed together without a global country iteration. Event 016 registers all eight project-force frontline tokens, seven concrete equipment types, and the D’Rhondan envoy craft through `chaosx_cxt_extension_event016_alien_infantry`; the same setup effect creates the one locked Alien Landing Cohort and lets the generic helper create ordinary test formations for the seven normally trainable families. Event 014 registers all nine custom frontline tokens through one idempotent extension effect on startup and repairs existing saves through the same tag-scoped daily path. Event 026 registers its global sale runtime through the same hidden-carrier contract so the test harness can initialize the cost-source lifecycle without a new recurring world scan. Event 028 registers `chaosx_cxt_extension_event028_asteroid_incoming` and exposes the inert `asteroid_incoming_cxt_fixture_ready` flag after CXT initialization; it never fires the global asteroid or applies impact state. Event 032 registers `chaosx_cxt_extension_event032_missiles` and exposes the inert `missiles_cxt_fixture_ready` flag after initializing only the launch-state ledgers; it never fires Event 032, grants missile technology, creates a launch site, or stocks a reserve. Event 039 registers `chaosx_cxt_extension_event039_assassin_forces`, all five Assassin Forces frontline tokens, the support-only Saboteur Cell, and `assassin_operations_kit_1` through the same hidden-carrier contract. The Event 039 setup is idempotent and only uses the tag-scoped daily fallback to repair an existing CXT save. The famine fixture registers `chaosx_cxt_extension_famine` and places the capital at the supply-strain threshold without severe famine or mortality. The separate migration fixture registers `chaosx_cxt_extension_migration` and gives CXT bounded reception capacity without creating a cohort, route, or population transfer.
+The player-only **Test Directorate** decision category provides repeatable, zero-cost controls:
 
-CXT receives 50 research slots even though all current technologies are completed immediately.
+- **Refill National Resources** adds the configured political power, command power, experience, manpower, fuel, nuclear bombs, stability, and war support.
+- **Refill Equipment Stockpile** runs the static and registered-equipment stockpile grants.
+- **Complete Research and Projects** reruns the dynamic technology scan and core and registered special-project completion helpers.
+- **Apply Registered Systems** consumes package carriers, registered projects, and newly registered unit formations only when selected. It registers new equipment tokens, but stockpile quantities are granted by **Refill Equipment Stockpile**.
+- **Deploy Test Formations** adds three more divisions of every installed static and package-owned template without redefining existing templates.
 
-Neither refill hook iterates over every country.
+These decisions use the installed vanilla `GFX_decision_category_generic_crisis` and `GFX_decision_generic_research` sprites; no new bitmap assets are required. The category is visible only to a human CXT with `chaosx_test_country_initialized`. The decision scripts are `common/decisions/categories/chaosx_test_country_debug_categories.txt` and `common/decisions/chaosx_test_country_debug_decisions.txt`, and their text is in `localisation/english/chaosx_test_country_l_english.yml`.
+
+CXT receives 50 research slots even though all current technologies are completed during setup.
 
 ## Dynamic extension contract
 
-Technology is the only surface in this harness with a documented runtime database array. The technology helper uses an indexed loop over every real `global.technology` entry and guards each `set_technology` call with `has_tech`, so recurring weekly synchronization does not reapply already-completed technology effects.
+Technology is the only surface here with a documented runtime database array. The technology helper scans every real `global.technology` entry only during initial setup or when **Complete Research and Projects** is selected. HOI4 does not expose equivalent global arrays for special projects, equipment, sub-unit definitions, facilities, doctrines, or general systems, so those remain additive package-owned registrations.
 
-The installed HOI4 documentation and offline wiki do not expose global arrays for special projects, equipment types, sub-unit definitions, special facilities, doctrines, or general systems. Their static CXT inventories therefore remain honest baselines, and future content opts in through one package-owned setup effect. Event 016 is the first package-owned registration that deliberately keeps a registered combat sub-unit locked and non-recruitable.
+A package that adds one of those surfaces must register an idempotent setup effect and a modifier-free hidden-idea carrier. The carrier id matches the setup effect name before its `_apply` suffix. The package registers the carrier from a bounded existing-country `on_startup` scope and can repeat registration from an additive `on_daily_CXT` fallback. Daily registration sets `chaosx_test_country_registered_sync_pending` when new content appears; it never applies grants. Initial setup consumes all available carriers, and later content waits for **Apply Registered Systems**.
 
-Registration values are temporary variables containing a special-project object scope or a documented tokenizable database value. The global registries persist for the save, duplicate entries are ignored, and the CXT daily/weekly hooks consume them. A package's idempotent setup effect uses the definition helpers it needs:
+The setup effect may publish a special-project object, equipment token, frontline token, or support token through these helpers:
 
 ```text
-# Inside the package-owned CXT setup effect:
 set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:my_project }
 chaosx_test_country_register_special_project = yes
 
@@ -118,40 +117,17 @@ set_temp_variable = { var = chaosx_test_country_registration_frontline_subunit v
 chaosx_test_country_register_frontline_subunit = yes
 
 set_temp_variable = { var = chaosx_test_country_registration_support_subunit value = token:my_support_company }
-set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:infantry }
+set_temp_variable = { var = chaosx_test_country_registration_support_anchor value = token:my_compatible_chaos_battalion }
 chaosx_test_country_register_support_subunit = yes
-
-# Register the package setup dispatcher through a modifier-free hidden idea.
-set_temp_variable = { var = chaosx_test_country_registration_extension_effect value = token:package_cxt_extension }
-chaosx_test_country_register_extension_effect = yes
 ```
 
-The `sp:<id>` form in the first example is intentional. The offline wiki defines `sp:<special_project>` as a dedicated special-project scope, and the official `complete_special_project` and `is_special_project_completed` documentation accepts `var:` targets. Arrays persist database-object values, so the registered value can be read as `var:chaosx_test_country_current_special_project` by the completion loop. The official token-valued-variable list covers equipment and script-enum sub-unit values but does not prescribe `token:<id>` for special projects; changing the first example to `token:<id>` would therefore be an unsupported inference.
+The `sp:<id>` value is an installed special-project scope, not a custom token. The hidden idea is never applied to a country and needs no modifiers, localisation, or icon. It exists because ideas are a documented tokenizable database type; the dispatcher uses its token key to call the matching package `_apply` effect.
 
-The special-project and equipment helpers are `chaosx_test_country_register_special_project` and `chaosx_test_country_register_equipment`. The unit helpers are `chaosx_test_country_register_frontline_subunit` and `chaosx_test_country_register_support_subunit`; support registrations must provide a compatible line anchor. The package wrapper registers a hidden-idea carrier such as `package_cxt_extension`, and the matching country-scoped setup effect must be named `package_cxt_extension_apply`.
+For future frontline registrations without a package-owned grouped builder, the generic fallback creates one six-battalion recruitable formation and three divisions with independent random owned, controlled state selections. For support registrations, it creates six battalions of the supplied combat anchor and one support company. The anchor must already be processed as a combat sub-unit; invalid or missing anchors are not consumed and cannot create a support-only division. Package authors must verify battalion-group compatibility and `same_support_type` exclusions, and should provide a grouped owner-authored formation when several related units arrive together. The processed arrays prevent duplicate templates and initial spawns. The manual deployment decision can reinforce both generic registered formations and the Event 014, 016, and 039 package-owned formations.
 
-Facilities, doctrine branches, and general systems use the same package setup-effect extension registry because they are not database-token arrays. A package wrapper sets `chaosx_test_country_registration_extension_effect` to its modifier-free hidden-idea carrier and calls `chaosx_test_country_register_extension_effect`; CXT resolves the documented idea token with `GetTokenKey`, appends `_apply`, and dispatches the matching setup effect through `meta_effect` before completing registered projects, refilling equipment, or creating registered unit templates. Each setup effect must apply its direct facility, doctrine, or system changes behind a stable flag or state check so the daily repair bus is idempotent.
+A new land sub-unit also needs an explicit Event 19 disposition in the same owner change. A combat unit extends an existing Chaos unit-family provider or receives a complete owner-side provider registration; a support unit is documented as an inseparable provider attachment, a parent-owned support consumer, or a rejected standalone lot with the engine reason. The owner updates `docs/events/019_infantry_spawn/systems/unit_family_coverage.md` and `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`.
 
-The hidden idea is never applied to a country and needs no modifiers, localisation, or icon. It exists solely because ideas are a documented tokenizable database type; the dispatcher does not rely on unsupported raw tokenization of custom scripted-effect names.
-
-Every package calls the same idempotent extension-registration wrapper from an additive `on_startup` block using a bounded existing-country scope, for example `random_country = { limit = { exists = yes } package_register_cxt_content = yes }`, and retains a guarded `on_daily_CXT` block that calls the wrapper. `chaosx_test_country_register_extension_effect` returns `chaosx_test_country_extension_registration_added = 1` only when it inserts a new carrier, so the package daily fallback calls `chaosx_test_country_sync_registered_content = yes` only behind that check; the core CXT daily hook owns ordinary recurring synchronization. The global registry does not require that the startup scope be CXT, which avoids assuming that a landless dormant tag is instantiated. Startup registration gives the first `e chaosx_test` invocation immediate coverage, while the tag-specific daily path repairs existing saves without a whole-world iteration. The built-in `on_weekly_CXT` block performs the technology scan and full stockpile replenishment.
-
-The core and package daily requests mark pending work and reuse one queued `chaosx_test_country.2` receiver.
-The receiver runs one hour after scheduling, after the additive daily hooks have finished registering their carriers, and consumes the complete extension, project, equipment, and unit registries.
-Separate queued and pending-work flags let an explicit refresh consume current work immediately while retaining the scheduled receipt for any later registration; that later registration does not schedule a duplicate receiver.
-Initial setup and explicit console refresh invoke the same apply body immediately.
-
-Temporary `CXT_SETUP_TRACE` markers cover console entry, the activation receiver, origin annexation, capital validation, every setup stage, facility types, extension carriers, and the first queued daily application.
-The trace flag clears after a queued application completes; an unfinished setup keeps it enabled.
-These diagnostics are intended to identify the blocking stage of the reported Germany-origin freeze before test units appeared; the freeze itself remains unresolved, as recorded in `runtime_repairs/20260913_cxt_technology_validation/freeze_repair.md`.
-
-Event 039's package-owned carrier is `chaosx_cxt_extension_event039_assassin_forces`, its setup effect is `chaosx_cxt_extension_event039_assassin_forces_apply`, and its provider registration is `murder_mystery_register_event19_assassin_provider`. The carrier is modifier-free in `common/ideas/039_murder_mystery_ideas.txt`; the startup and daily registration hooks live in `common/on_actions/039_murder_mystery_on_actions.txt`, and the idempotent CXT dispatcher lives in `common/scripted_effects/039_murder_mystery_cxt_test_effects.txt`.
-
-Event 012 registers `chaosx_cxt_extension_event012_africa_gods` through the modifier-free carrier in `common/ideas/012_africa_gods_cxt_extension_ideas.txt`, with startup and tag-scoped daily repair in `common/on_actions/012_africa_gods_cxt_on_actions.txt` and the idempotent setup effect in `common/scripted_effects/012_africa_gods_cxt_test_effects.txt`. The fixture registers the existing `chaosx_elephant` frontline token and `chaosx_elephant_equipment_1`, publishes `gods_of_africa_cxt_fixture_ready` after CXT initialization, and never fires Africa Is One, creates a host, or starts the Gods tribute loop; the unit continues to resolve its visual through vanilla `sprite = elephantry`.
-
-The dynamic unit helpers create one recruitable template and three fully equipped divisions for each newly registered token, then record the token in a CXT-local processed array to prevent duplicate spawns. Event 016 uses that helper for its seven normally trainable generic families and handles `alien_infantry` in its package `_apply` effect instead, creating one locked template with `force_allow_recruiting = no` before recording the token as processed. The helpers do not enumerate or infer sub-unit definitions on their own.
-
-Every new land sub-unit also requires an explicit Event 19 disposition in the same owner change. A combat unit either extends an existing Chaos unit-family provider or receives one new owner-side provider registration with the complete thirteen-callback Event 19 API. A support unit is recorded as an inseparable provider attachment, an explicitly parent-owned support consumer, or a rejected standalone lot with the engine reason documented. The owner must update `docs/events/019_infantry_spawn/systems/unit_family_coverage.md` and the authoritative registry contract in `docs/systems/cbrn_warfare/chaos_unit_family_registry.md`. A future family must not add an Event 19 family list, custom-equipment switch, localisation switch, or second Event 19 registry file.
+Temporary `CXT_SETUP_TRACE` markers remain around the console receiver and setup stages while the earlier activation freeze remains unresolved in `runtime_repairs/20260913_cxt_technology_validation/freeze_repair.md`.
 
 ## Special facilities
 
@@ -193,11 +169,11 @@ The original flag package is stored under `docs/assets/country_flags/cxt_test_co
 
 Runtime flags are installed as `gfx/flags/CXT.tga`, `gfx/flags/medium/CXT.tga`, and `gfx/flags/small/CXT.tga`.
 
-No additional player-facing idea, decision, focus, or UI icon is required for the harness. Modifier-free hidden ideas are used only as token carriers for registered package setup effects.
+The debug category uses the installed vanilla `GFX_decision_category_generic_crisis` sprite, and its five decisions use `GFX_decision_generic_research`. Both sprites are defined in the game's `interface/decisions.gfx`; CXT adds no bitmap or mod `.gfx` file. Modifier-free hidden ideas remain token carriers with no visible icon.
 
 ## Maintenance
 
-When Chaos Redux adds a technology definition, no CXT inventory edit is required because the runtime technology array is scanned. Every package that adds a special project, concrete equipment type, land sub-unit, special facility, doctrine, or general system must add its hidden-idea carrier, idempotent `_apply` setup effect, startup registration, and tag-specific daily repair call in the same change. A new land sub-unit must also complete the Event 19 disposition and provider obligations described above. The explicit 83-project, 71-equipment, and 87-static-sub-unit baselines remain reviewable snapshots; package registrations extend them additively at runtime. Event 014's nine-token extension and Event 016's eight-token project-force extension are documented in the unit inventory above and do not alter those static baselines.
+When Chaos Redux adds a technology definition, no CXT inventory edit is required because the runtime technology array is scanned during setup and the manual research decision. Every package that adds a special project, concrete equipment type, land sub-unit, special facility, doctrine, or general system must add its hidden-idea carrier, idempotent `_apply` setup effect, startup registration, and tag-specific registration-only daily fallback in the same change. A new land sub-unit must also complete the Event 19 disposition and provider obligations described above. The explicit 83-project, 71-equipment, and 87-static-sub-unit baselines are reviewable snapshots; package registrations extend them additively when the player applies pending systems. A package with several related units should author one or more valid grouped formations and mark those tokens processed before the generic fallback runs.
 
 The one-time initialization flag is `chaosx_test_country_initialized`.
 

@@ -68,29 +68,3 @@ country_event = {
 		}
 	}
 }
-
-# Coalesced tag-specific daily repair; startup and console setup stay immediate.
-country_event = {
-	id = chaosx_test_country.2
-	hidden = yes
-	is_triggered_only = yes
-
-	trigger = { tag = CXT }
-
-	immediate = {
-		if = {
-			limit = {
-				tag = CXT
-				has_country_flag = chaosx_test_country_registered_sync_queued
-			}
-			# Clear before dispatch so a later registration can queue another pass.
-			clr_country_flag = chaosx_test_country_registered_sync_queued
-			if = {
-				limit = { has_country_flag = chaosx_test_country_registered_sync_pending }
-				clr_country_flag = chaosx_test_country_registered_sync_pending
-				chaosx_test_country_sync_registered_content_apply = yes
-				clr_country_flag = chaosx_test_country_setup_trace_active
-			}
-		}
-	}
-}

@@ -6,6 +6,7 @@
 # - That setup effect registers all Event 014 irregular infantry.
 # - Registers their existing vanilla equipment dependencies for replenishment.
 # - Is idempotent so startup and tag-scoped daily hooks can share one effect.
+# - Builds one valid mixed infantry muster and one mobile rider formation.
 # ============================================================================
 
 cannibalism_register_cxt_test_content = {
@@ -51,5 +52,97 @@ chaosx_cxt_extension_event014_cannibalism_apply = {
 		chaosx_test_country_register_equipment = yes
 
 		set_global_flag = cannibalism_cxt_irregular_units_registered
+	}
+	if = {
+		limit = { NOT = { has_country_flag = chaosx_cxt_cannibal_formations_ready } }
+		chaosx_cxt_event014_define_formations = yes
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_scavenger_warband }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_guard }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_feast_cohort }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_guard }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_bone_riders }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_island_reavers }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_siege_eaters }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_march_predation_column }
+		add_to_array = { array = chaosx_test_country_processed_frontline_subunits value = token:cannibal_network_cadre }
+		chaosx_cxt_event014_spawn_formations = yes
+		set_country_flag = chaosx_cxt_cannibal_formations_ready
+	}
+}
+
+chaosx_cxt_event014_define_formations = {
+	unlock_subunit = cannibal_scavenger_warband
+	unlock_subunit = cannibal_feast_guard
+	unlock_subunit = cannibal_feast_cohort
+	unlock_subunit = cannibal_bone_guard
+	unlock_subunit = cannibal_bone_riders
+	unlock_subunit = cannibal_island_reavers
+	unlock_subunit = cannibal_siege_eaters
+	unlock_subunit = cannibal_march_predation_column
+	unlock_subunit = cannibal_network_cadre
+	if = {
+		limit = { NOT = { has_template = "CXT - Cannibal Irregular Muster" } }
+		division_template = {
+			name = "CXT - Cannibal Irregular Muster"
+			is_locked = no
+			force_allow_recruiting = yes
+			regiments = {
+				cannibal_scavenger_warband = { x = 0 y = 0 }
+				cannibal_feast_guard = { x = 0 y = 1 }
+				cannibal_feast_cohort = { x = 0 y = 2 }
+				cannibal_bone_guard = { x = 0 y = 3 }
+				cannibal_island_reavers = { x = 1 y = 0 }
+				cannibal_siege_eaters = { x = 1 y = 1 }
+				cannibal_march_predation_column = { x = 1 y = 2 }
+				cannibal_network_cadre = { x = 1 y = 3 }
+			}
+		}
+	}
+	if = {
+		limit = { NOT = { has_template = "CXT - Cannibal Bone Riders" } }
+		division_template = {
+			name = "CXT - Cannibal Bone Riders"
+			is_locked = no
+			force_allow_recruiting = yes
+			regiments = {
+				cannibal_bone_riders = { x = 0 y = 0 }
+				cannibal_bone_riders = { x = 0 y = 1 }
+				cannibal_bone_riders = { x = 0 y = 2 }
+				cannibal_bone_riders = { x = 1 y = 0 }
+				cannibal_bone_riders = { x = 1 y = 1 }
+				cannibal_bone_riders = { x = 1 y = 2 }
+			}
+		}
+	}
+}
+
+chaosx_cxt_event014_spawn_formations = {
+	if = {
+		limit = { has_template = "CXT - Cannibal Irregular Muster" }
+		for_loop_effect = {
+			end = constant:chaosx_test_country_count.divisions_per_template
+			value = chaosx_test_country_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"CXT - Cannibal Irregular Muster\" division_template = \"CXT - Cannibal Irregular Muster\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = constant:chaosx_test_country_count.divisions_per_state_pick
+				}
+			}
+		}
+	}
+	if = {
+		limit = { has_template = "CXT - Cannibal Bone Riders" }
+		for_loop_effect = {
+			end = constant:chaosx_test_country_count.divisions_per_template
+			value = chaosx_test_country_spawn_index
+			random_owned_controlled_state = {
+				create_unit = {
+					division = "name = \"CXT - Cannibal Bone Riders\" division_template = \"CXT - Cannibal Bone Riders\" start_experience_factor = 1 start_equipment_factor = 1 start_manpower_factor = 1"
+					owner = PREV
+					count = constant:chaosx_test_country_count.divisions_per_state_pick
+				}
+			}
+		}
 	}
 }

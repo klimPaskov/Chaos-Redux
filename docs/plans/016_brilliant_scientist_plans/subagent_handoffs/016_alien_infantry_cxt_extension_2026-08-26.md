@@ -1,5 +1,7 @@
 # Event 016 Alien Infantry CXT extension handoff
 
+Disposition: superseded for the CXT template and grant cadence by `docs/testing/chaosx_test_country.md`. Ordinary Event 016 recruitment remains scripted-only, but the user-authorized CXT test copy is recruitable and package application is manual after initial setup.
+
 ## Scope
 
 The CXT test-country contract requires every new special project, concrete equipment type, and land sub-unit to register through a package-owned hidden-idea carrier, idempotent `_apply` effect, bounded startup hook, and tag-scoped daily repair hook. Alien Infantry is scripted-only and must not become a normal recruitable unit.

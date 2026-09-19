@@ -1,5 +1,7 @@
 # CXT Dynamic Architecture Handoff
 
+Disposition: superseded by `docs/testing/chaosx_test_country.md` for current grant timing and debug controls. This handoff records the earlier automatic-sync architecture; CXT now applies content and refills only through initial setup or player decisions.
+
 ## Scope and outcome
 
 The CXT harness now has a true runtime technology scan and bounded opt-in registries for the surfaces for which HOI4 exposes no documented database enumeration. The change owns only CXT scripted effects, the CXT on-action file, and the CXT testing documentation. No technology, project, equipment, unit, or unrelated definition file was edited.

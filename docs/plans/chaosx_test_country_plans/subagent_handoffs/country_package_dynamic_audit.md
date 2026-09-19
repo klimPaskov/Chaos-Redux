@@ -1,5 +1,7 @@
 # CXT Country Package Dynamic Audit
 
+Disposition: superseded by `docs/testing/chaosx_test_country.md` for current grant timing and debug controls. This audit describes the earlier automatic-sync architecture; use the current CXT testing document for manual package and refill behavior.
+
 ## Verdict
 
 The current CXT dynamic-maintenance design is structurally in scope and preserves the static harness baseline, but completion remains conditional on the live-engine checks and cleanup items below.
