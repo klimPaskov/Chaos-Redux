@@ -212,13 +212,7 @@ The 35 focus, 16 decision, two category, and four idea icons are produced and
 reviewed under
 `docs/assets/006_independence_wave/iw093_iw098_icons_2026_07_18/`. Runtime DDS
 files live under the matching `gfx/interface/{goals,decisions,ideas}/006_independence_wave/iw093_iw098/`
-folders. The four
-`interface/006_independence_wave_iw093_iw098_*.gfx` files register all 57 base
-sprite IDs and 35 focus shine sprites. The gameplay-to-sprite comparison has
-no missing or unused base definition, and the package/runtime hash ledger has
-no mismatch. Real-country flags still require researched historical geometry
-and a clean flat ImageGen reconstruction; waving fabric, scenes, gradients,
-and painterly flag artwork are not accepted.
+folders. `interface/006_independence_wave_iw093_iw098_focus.gfx` registers the 35 focus base sprites and their 35 shine sprites, while `interface/006_independence_wave_small_assets.gfx` registers the 16 decision, two category, and four idea base sprites. The gameplay-to-sprite comparison has no missing or unused base definition, and the package/runtime hash ledger has no mismatch. Real-country flags still require researched historical geometry and a clean flat ImageGen reconstruction; waving fabric, scenes, gradients, and painterly flag artwork are not accepted.
 
 Four military-only commander roles use full 156x210 portrait surfaces in
 `interface/006_independence_wave_small_assets.gfx`. Muhammadu Dikko's

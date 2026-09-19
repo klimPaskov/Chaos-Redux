@@ -55,7 +55,7 @@ The 2026-09-05 SE23 audio revalidation confirms the same *Alte Kameraden* candid
 | ASSET-039 | `needs_user_review` | Dynamic GUI tab visibility, blendframe playback, and click-region proof remain unavailable. |
 | ASSET-044 | `needs_user_review` | Visual pass is complete, but BWX/chunk-3/NWE provenance and source/rights receipts remain open. |
 | ASSET-045 | `blocked` | Thirteen supplied portrait rows remain unmapped behind unresolved rights/source/package gates; no substitute is authorized. |
-| ASSET-046 | `blocked` | Formable identities and the league emblem remain absent; no generic emblem is authorized. |
+| ASSET-046 | `blocked` | FORM-05 and FORM-48 emblems are registered in `interface/006_independence_wave_small_assets.gfx`, but broader formable-identity and emblem coverage remains incomplete; FORM-48 live reachability is separately gated, and no generic emblem is authorized. |
 
 This checklist evaluates the planning package against the Event 6 request. `Complete in source design` means the requirement is fully specified but not implemented. `Implementation gate` means the final value depends on repository inspection, asset research, MCP inspection, or source audit.
 
