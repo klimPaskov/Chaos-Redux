@@ -155,3 +155,15 @@ No completion claim or release-gate opening follows from any individual handoff.
 The reused-package crosswalk worker and MCP-retrieval skill maintainer completed their bounded handoffs and were closed after parent review.
 
 The final completion-auditor workers were spawned with `fork_context=false`, but both remained in bounded scans and were shut down without a durable handoff. The parent-owned disposition is recorded in `subagent_handoffs/event_completion_parent_audit_2026-09-02.md`; it keeps the release gate closed and does not treat the worker shutdown as completion evidence.
+
+## 2026-09-19 pre-commit front-plan repair
+
+Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
+
+`event021_parent_build_front_plan` now creates aligned plan rows before any ownership mutation and validates row counts, state offsets, flattened connected-state membership, route/package provenance, objectives, relationships, and force envelopes against `maximum_planned_fronts = 4`.
+
+The normal bounded row order is host remnant, primary claimant, optional ordinary secondary, and optional Event 006 secondary. Same-tag contests use a separate one-row plan with a command-seizure objective. The host remnant's administrative-continuity objective prevents the legal primary route from sharing a terminal objective with the remnant.
+
+`event021_parent_load_planned_primary_front` and `event021_parent_load_planned_secondary_front` consume the row receipts by front id. `event021_register_front` and `event021_set_priority_front` bind live actors to those rows, optional rollback paths mark unmaterialised rows rejected, and resolution review remains open while any row is still planned.
+
+Focused MCP lint remains partial with zero blocking diagnostics and deferred helper/lifecycle projections. Live four-row sequencing, distinct settlement outcomes, save/reload persistence, and performance evidence remain open; this tranche does not change the test-entry status or authorize a final completion claim.

@@ -106,6 +106,10 @@ Each committed theater registers a stable Event 021 theater receipt, original ho
 
 Each front registers a stable front id, actor pair, state reference, front goal, priority, and resolution receipt in the shared arrays.
 
+Before the opening engine call, Event 021 also creates an aligned bounded front-plan receipt with row identity, actor role, anchor and capital, connected-state membership, relationship, route or package provenance, objective, force envelope, and settlement lifecycle status. The normal row order is host remnant, primary claimant, optional ordinary secondary, and optional Event 006 secondary, with a maximum of four rows.
+
+Registration and priority binding consume the matching plan row by front id. Optional starters mark their row rejected when a frozen receipt cannot materialise, and settlement review does not report all internal fronts resolved while a plan row remains pending. Rollback and final cleanup clear the complete plan ledger.
+
 The Event 006-owned `independence_wave_initialize_event021_adapter_registry` and `independence_wave_capture_event021_adapter_actor` effects publish the complete package allowlist and matching carrier identity consumed by Event 021.
 
 Event 021 reads the selected package's validated anchor and carrier from that contract and hands the complete package to the generic Event 006 setup dispatcher.

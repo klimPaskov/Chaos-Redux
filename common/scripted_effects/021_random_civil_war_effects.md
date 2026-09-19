@@ -47,6 +47,9 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 `event021_register_active_theater`, `event021_unregister_active_theater`, `event021_register_front`, `event021_unregister_front`, `event021_set_priority_front`, and `event021_clear_priority_front` maintain bounded global theater and front registries.
 `event021_register_front` appends the host, anchor/capital, generation, crisis, archetype, route source, Event 006 package, region count, goal, status, settlement, and registration date alongside every core front row.
 `event021_unregister_front` removes those aligned rows by front ID and falls back to actor/anchor removal when a legacy row is missing, so old saves cannot leave metadata attached to a different front.
+`event021_bind_front_plan_row` matches a live front id to the aligned pre-commit plan, copies its row metadata to the actor, and updates the row status.
+`event021_bind_current_front_plan_row` is the idempotent consumed-status wrapper used by registration, priority selection, and secondary closure.
+`event021_reject_pending_front_plan_row` marks a frozen optional row rejected when its bounded starter rolls back, preventing the resolution review from waiting on a front that never materialised.
 
 `event021_prepare_event6_admission`, `event021_confirm_event6_identity`, `event021_record_event6_origin`, and `event021_apply_event6_origin_adapter` carry the Event 006 admission and origin receipt without mutating Event 006 lifecycle state.
 

@@ -315,3 +315,13 @@ The mission review confirms that the three `complete_effect` blocks establish ac
 This is consistent with the installed vanilla mission contract, but live activation, expiry, cancellation, cleanup, and user-facing presentation remain testing gates.
 
 The specialist was interrupted before producing the requested current independent decision/mission probability artifact or before/after comparison, so the full weighted-surface certificate remains open.
+
+## 2026-09-19 bounded front-plan registry repair
+
+The parent source now builds an aligned pre-commit front-plan ledger before the opening mutation, with bounded rows for the host remnant, primary claimant, optional ordinary secondary, and optional Event 006 secondary. Each row carries its front id, route and package provenance, actor type, anchor and capital, connected-state offset and count, objective, relationship, generation, and force or stockpile envelope.
+
+The host remnant uses the distinct `administrative_continuity` objective, while the primary, nested, independence, and same-tag rows retain route-specific objectives. `event021_parent_validate_front_plan` rejects missing or misaligned rows, and the primary and secondary starters rehydrate their immutable receipts by planned front id.
+
+The durable registry and priority path now bind materialised actors back to the matching plan row. Optional ordinary and Event 006 failures mark their frozen rows rejected, and secondary settlement review keeps internal resolution open while a planned row remains unconsumed. Rollback and final cleanup clear the aligned plan arrays.
+
+The current focused `hoi4.event_inspect` retry remains `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics and the installed service's deferred large-workspace helper and lifecycle validation. Static source review found balanced touched script blocks and no unsupported comparison operators; live multi-front, settlement, save/reload, and performance evidence remain testing gates.

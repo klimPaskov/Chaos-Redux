@@ -802,6 +802,7 @@ event021_register_front = {
 			NOT = { random_civil_war_front_id_is_registered = yes }
 			has_event_target = random_civil_war_anchor_state
 		}
+		event021_bind_current_front_plan_row = yes
 		add_to_array = { array = global.random_civil_war_front_ids value = random_civil_war_front_id }
 		add_to_array = { array = global.random_civil_war_front_actors value = THIS }
 		event_target:random_civil_war_anchor_state = { add_to_array = { array = global.random_civil_war_front_states } }
@@ -964,6 +965,60 @@ event021_unregister_front = {
 	}
 }
 
+# ANY scope. Binds a materialised front to the immutable pre-commit row that
+# reserved its id. The status and receipt fields remain aligned by row index;
+# no post-mutation map search is used to infer a missing plan row.
+event021_bind_front_plan_row = {
+	clr_country_flag = random_civil_war_front_plan_row_bound
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_front_plan_ready
+		}
+		for_loop_effect = {
+			start = constant:random_civil_war_value.zero
+			end = global.random_civil_war_planned_front_ids^num
+			value = event021_front_plan_bind_index
+			if = {
+				limit = {
+					check_variable = {
+						var = global.random_civil_war_planned_front_ids^event021_front_plan_bind_index
+						value = event021_planned_front_id_to_mark
+						compare = equals
+					}
+				}
+				set_variable = { global.random_civil_war_planned_front_status_entries^event021_front_plan_bind_index = event021_planned_front_status_to_mark }
+				set_variable = { random_civil_war_front_plan_row_index = event021_front_plan_bind_index }
+				set_variable = { random_civil_war_front_plan_row_id = global.random_civil_war_planned_front_ids^event021_front_plan_bind_index }
+				set_variable = { random_civil_war_front_plan_row_archetype = global.random_civil_war_planned_front_archetype_entries^event021_front_plan_bind_index }
+				set_variable = { random_civil_war_front_plan_row_relationship = global.random_civil_war_planned_front_relationship_entries^event021_front_plan_bind_index }
+				set_variable = { random_civil_war_front_plan_row_route = global.random_civil_war_planned_front_route_entries^event021_front_plan_bind_index }
+				set_variable = { random_civil_war_front_plan_row_package = global.random_civil_war_planned_front_package_entries^event021_front_plan_bind_index }
+				set_variable = { random_civil_war_front_plan_row_state_count = global.random_civil_war_planned_front_state_counts^event021_front_plan_bind_index }
+				set_country_flag = random_civil_war_front_plan_row_bound
+			}
+		}
+	}
+}
+
+# COUNTRY scope. Registration and priority binding use the same immutable row
+# receipt; repeated calls are idempotent and only refresh the aligned status.
+event021_bind_current_front_plan_row = {
+	if = {
+		limit = { has_variable = random_civil_war_front_id }
+		set_temp_variable = { event021_planned_front_id_to_mark = random_civil_war_front_id }
+		set_temp_variable = { event021_planned_front_status_to_mark = constant:random_civil_war_planned_front_status.consumed }
+		event021_bind_front_plan_row = yes
+	}
+}
+
+# COUNTRY scope. Marks a frozen optional row as rejected when its bounded
+# starter cannot materialise it. This prevents settlement from waiting on a
+# row that was explicitly rolled back.
+event021_reject_pending_front_plan_row = {
+	set_temp_variable = { event021_planned_front_status_to_mark = constant:random_civil_war_planned_front_status.rejected }
+	event021_bind_front_plan_row = yes
+}
+
 # STATE or COUNTRY scope through the current anchor target. The priority state
 # is a global event target because selected-front decisions outlive one event
 # chain. Full cleanup must call `event021_clear_priority_front`.
@@ -972,6 +1027,7 @@ event021_set_priority_front = {
 		limit = { has_event_target = random_civil_war_anchor_state }
 		event_target:random_civil_war_anchor_state = { save_global_event_target_as = random_civil_war_priority_front_state }
 		set_global_flag = random_civil_war_priority_front_active
+		event021_bind_current_front_plan_row = yes
 	}
 }
 
@@ -1880,6 +1936,14 @@ event021_cleanup_crisis = {
 		set_variable = { random_civil_war_last_cleanup_date = global.date }
 		clear_variable = random_civil_war_front_id
 		clear_variable = random_civil_war_front_registered_date
+		clear_variable = random_civil_war_front_plan_row_index
+		clear_variable = random_civil_war_front_plan_row_id
+		clear_variable = random_civil_war_front_plan_row_archetype
+		clear_variable = random_civil_war_front_plan_row_relationship
+		clear_variable = random_civil_war_front_plan_row_route
+		clear_variable = random_civil_war_front_plan_row_package
+		clear_variable = random_civil_war_front_plan_row_state_count
+		clr_country_flag = random_civil_war_front_plan_row_bound
 		clear_variable = random_civil_war_crisis_start_date
 		clear_variable = random_civil_war_opening_severity
 		clear_variable = random_civil_war_critical_queue_date
@@ -1913,6 +1977,7 @@ event021_cleanup_global_registry = {
 		clear_array = global.random_civil_war_front_states
 		clear_array = global.random_civil_war_critical_queue
 		clear_array = global.random_civil_war_exposed_countries
+		event021_parent_clear_front_plan = yes
 		clear_global_event_target = random_civil_war_priority_front_state
 		clear_global_event_target = random_civil_war_launch_target
 		clear_global_event_target = random_civil_war_exposure_source_country

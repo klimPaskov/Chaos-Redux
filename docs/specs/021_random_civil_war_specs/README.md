@@ -55,3 +55,5 @@ The catalog is intentionally marked `Needs Testing`, and the test-release runtim
 The offline Paradox wiki snapshot, installed vanilla documentation, vanilla game files, Workshop references, HOI4 MCP, and project subagent evidence used for the implementation are recorded in the source-read ledger and current handoffs.
 
 The 2026-09-19 source tranche also closes the bounded Critical-launch convergence repair, the frozen secondary-state persistence defect, and the two same-tag scenario compatibility gaps for test entry. Those repairs do not change the catalog status: Event 021 and SCN-018 remain `Needs Testing` pending user-owned gameplay and the remaining certification gates.
+
+The same tranche adds the bounded pre-commit front-plan ledger required by the multi-front contract, including aligned actor, anchor, capital, objective, connected-state, force, route, package, relationship, and lifecycle-status receipts. The durable front registry and secondary settlement review consume those rows by front id, and absent optional receipts fail closed rather than selecting from the mutated map.
