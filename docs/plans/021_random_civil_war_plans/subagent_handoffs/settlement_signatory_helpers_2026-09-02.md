@@ -2,7 +2,9 @@
 
 Date: 2026-09-02.
 
-Status: bounded helper tranche delivered; parent integration remains incomplete and the Event 021 goal is not complete.
+Status: historical bounded helper tranche; the original parent-integration blocker is superseded by the current source integration.
+
+Disposition: superseded for integration status by `common/scripted_effects/021_random_civil_war_parent_effects.txt` call sites for treaty preparation/capture/freeze/review, `common/scripted_effects/021_random_civil_war_effects.txt` recurrence integration, `common/on_actions/021_random_civil_war_cxt_on_actions.txt` successor rebinding, and `common/achievements/chaos_redux_achievements.txt` Terms Hold consumption. The blocker and follow-up sections below preserve the 2026-09-02 pre-integration audit and must not be read as current source status. Current acceptance limits remain in `docs/events/021_random_civil_war/acceptance_evidence.md`.
 
 This handoff records the new persistent treaty contract, exact parent obligations, validation evidence, and unresolved blockers.
 
