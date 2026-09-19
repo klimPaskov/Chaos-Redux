@@ -1,0 +1,25 @@
+# 068 ZIN decision and mission prompt
+
+Work on Chaos Redux Event 068, ZIN. The source package is `docs/specs/068_zin_specs/`. Read its README, the applicable numbered specifications, registries and unchanged user brief before acting. Read current `AGENTS.md` and the owning skills completely, then inspect the relevant repository and installed game sources. Report unread dependencies, unavailable tools and unverified assumptions. This planning package was prepared against commit `d549536e869056a49890a08ff795fbc80659984e`, so inspect changes before relying on old paths or bindings.
+
+Preserve the user canon. The Golden King dies through Afrit and a real Rush succession war is mandatory. Einendil offers service, can be rejected, and becomes a non-royal chosen leader only through the good victory. Volgan already rules the Dead Lands and starts much stronger than Afrit. Afrit remains a distinct third power and can surpass Volgan through actual Rush acquisition. Normal Rush dominions are Selen, Hiloron, Kilinti, Huhun and the Rush Islands. Independent orcs, goblins, trolls and ogres are not ordinary Rush recruits or inherited subjects. Dragons have no country and are limited to eligible elven and Afrit military routes. Glo follows control of the state containing the one real Castle of Yeldenne. Edvoid belongs only to Event 010.
+
+Use the existing project subagent route only after discovering that it is actually callable. Spawn bounded workers with `fork_context=false` and a complete prompt containing owner, exact inputs, outputs, write boundaries, constraints and expected evidence. Reading a role description is not running that role. Never invent a successful audit or silently replace an unavailable engine workflow with a source-only completion claim.
+
+Implement the action and mission design in `068_zin_11_decisions_and_missions.md`, the 103-row action registry, the 34 secondary signature missions, the core mission table and the country route documents. Read current decision-mission, state-ledger, MTTH, event, focus and subagent skills and inspect the real shared owners before wiring effects.
+
+Keep the visible surface small. A normal phase shows at most six primary actions and one to three active missions, filtered by actual country, partner, state and incident. Rush uses only Rush Unity and Afrit's Influence as new persistent public meters. Other states use qualitative status and actual remaining time. Spend only PP, CP, equipment or real committed civilian factories, with CP costs no higher than 60. Convoys belong to equipment, not a fifth currency.
+
+Every action needs visible and available conditions, current target proof, exact cost, duration, cooldown or one-shot identity, success, failure, cancellation, refund, ownership-change and AI behavior. A request cannot give the requested army before the recipient agrees. Construction work must bind real capacity. Delivered equipment and completed buildings survive an interrupted contract, while unused reservations and future factory obligations are released correctly.
+
+Use one gameplay action path for the GUI button, ordinary decision and AI. Never provide a free hidden UI version. The optional Rush panel has two meters, five dominion cards, phase and deadline. The colony directory shows known public identities, treaties and alignment. Hidden agents and unproven assassination responsibility must not leak through tooltips or developer variables.
+
+Defensive peace demands the exact current aggressor-owned neighboring states. Empty adjacency means white peace, not a distant capital. Revalidate offers after border changes and leave unrelated wars intact. Offensive colony wars use their own declared goals.
+
+Population movement belongs to Migration's exact transfer owner. Real deaths belong to Deaths. External arrivals require their own one-time accounting. Creature recruitment uses typed existing bodies and real equipment. Glo follows the current controller of its fixed castle state. No action may create a second artifact, ruler, host or casualty receipt.
+
+Missions respond to actual construction, route, delivery, control, evidence or political proof. A repeated unchanged problem cannot farm Unity, Influence removal, cores, equipment, achievements or Chaos. Use sparse active registries and lifecycle callbacks, not whole-world daily scans.
+
+Route the accepted event-owned interface to `chaosx_event_ui_worker` with exact parent-owned shared surfaces excluded. Route decisions to the appropriate bounded decision worker or `chaosx_decision_mission_auditor`, and actual probabilities to `chaosx_ai_probability_auditor`. Discover real tool interfaces first. Render native categories, disabled states, long localization, hitboxes and resolution variants. A source-only mockup does not pass runtime UI acceptance.
+
+Return complete decision and mission records, implemented costs and lifecycle effects, ownership and cancellation tests, UI proofs, actual AI-pool evidence, localization and the exact remaining blockers. Preserve all unique country consequences rather than collapsing the registry into one generic repeatable aid button.

@@ -1,0 +1,19 @@
+Implement Chaos Redux Event 068, ZIN, from docs/specs/068_zin_specs/. Read the README, complete numbered specs, registries and unchanged user brief, then current AGENTS.md and all applicable skills. Inspect relevant repository and installed-game sources before coding. Refresh the inspected revision and report unread files or unavailable tools.
+
+Deliver the complete persistent colony system, all 44 arrival society packages, four additional Rush dominions, every accepted political route, the military roster, decisions, missions, narrative, five super-events, achievements and four manual scenarios. Use the registries to prove coverage and preserve each society's identity.
+
+Keep the first arrival neutral and randomly terrain-weighted. Transfer one valid state without a host veto and give the fixed society army. Defensive peace demands only aggressor-owned states neighboring current colony-owned territory. Empty adjacency means white peace, never a remote capital. Use one arrival coordinator and replay-safe reservations. Remove legacy daily free armies, blanket punishment and free nuclear strikes.
+
+The Golden King must die through Afrit, followed by a real territorial succession war. Build genuine dominion outposts, partition surviving forces once and support all four outcomes. Einendil offers service, can be permanently rejected and becomes a chosen non-royal leader only after the good victory. Preserve evidence and hidden knowledge. Afrit and Worshipdom share one ruler, including after Rush usurpation. Never displace another human player without consent.
+
+Volgan already rules the Dead Lands and begins far stronger than Afrit. Ashen Throne remains a separate third power and can surpass him through actual Rush and dominion consolidation. Ordinary Rush peoples are Selen, Hiloron, Kilinti, Huhun and the island houses. Independent orcs, goblins, trolls and ogres require separate exceptional agreements. Dragons have no country and only eligible elven or Afrit routes recruit them. Edvoid remains owned by Event 010.
+
+Create the one visible Castle of Yeldenne in its fixed province. Glo belongs to the controller of its containing state through occupation, annexation, liberation and capital changes. Never duplicate it. Typed creatures, human residents, external arrivals, Migration transfers and Deaths receipts remain separate and cannot manufacture people or endless grave hosts.
+
+Use only the two new Rush public meters, at most three event-created spirits, four cost families, CP costs at or below 60, six primary active actions and one to three missions per normal phase. Preserve shared system owners and sparse active processing. No whole-world daily scans or duplicated ordinary Chaos consequences.
+
+Resolve explicit policy and source questions without silent substitutes. The proposed below-1000 Reckoning terminal latch needs approval under the current world-end rule. Do not raise or freeze Chaos to hide the conflict. Worshipdom and Yeldenne need confirmed homeland-image assignments. Native ship capture, mixed-species selection voice, creature restrictions and castle placement require actual consumer proof.
+
+Use verified project subagents with fork_context=false, complete prompts and bounded writes. Run focus, decision, country, localization, probability and asset reviews, then the improvement-loop planner. Merge accepted findings. Follow current asset and 3D source, provider, animation, sound, counter, scale and export/reimport gates. The parent owns final runtime wiring.
+
+Test the acceptance matrix in the real game and supported inspectors. Keep source checks separate from runtime evidence. Update the authoritative workbook and export CSVs, never edit export-only snapshots. Maintain exact coverage and handoffs under docs/plans/068_zin_plans/. Finish only when accepted requirements and meaningful validation pass, or report concrete blockers and remaining work without claiming completion.
