@@ -9,9 +9,9 @@ They do not create a country, modify Event 006 accounting, choose weighted outco
 It requires the original-capital pointer captured by `event021_parent_prepare_crisis_identity` before the split.
 It records the actual decisive-war capital only if owned and controlled by the host, accepting the original capital or a populated, infrastructurally viable replacement using existing opening tuning.
 Missing or invalid capital evidence fails closed through `random_civil_war_decisive_capital_lost`.
-It resets the previous crisis's settlement-recorded, reconstruction-complete, internal-resolution, victory, and historical failure receipts, without clearing completed achievement flags or recurrence memory.
+It resets the previous crisis's settlement-recorded, reconstruction-complete, internal-resolution, victory, and generation-local settlement/reconstruction receipts, without clearing completed achievement flags or durable recurrence memory.
 It also releases old cleanup-complete/requested, settlement pending/signed/resolved/talks commands, and completed settlement/reconstruction UI phases so a recurrence exposes its own actions and cannot consume an earlier offer.
-This command reset does not erase persistent agreement obligations or violations; the treaty lifecycle must record those independently before any later reset or cleanup.
+The reset clears local front-bound obligation pointers, dates, counters, and transient obligation outcome flags after treaty recurrence has recorded the prior agreement. It does not erase the durable treaty registry, settlement violations, failed or harsh settlement history, or completed awards.
 It seeds the authority minimum by calling the shared authority-band updater.
 Example: `event021_begin_achievement_history = yes` is called by `event021_random_civil_war_commit_opening`, never by failed preflight.
 
@@ -58,4 +58,4 @@ Unresolved front registry transfer and signatory succession are separate lifecyc
 
 Source references: installed vanilla `common/on_actions/00_on_actions.txt`, `on_capitulation` and `on_state_control_changed`; installed `documentation/effects_documentation.md`, variable and array scope effects; offline `paradox_wiki/On actions - Hearts of Iron 4 Wiki.md`.
 These callbacks add no daily, weekly, or monthly whole-world iteration.
-Full successor lifecycle, full recurrence-generation reset, all-signatory settlement history, and event-chain lifecycle certification remain acceptance work; these narrow helpers alone do not certify all six achievements.
+Full successor lifecycle, all-signatory settlement history, and event-chain lifecycle certification remain acceptance work; source reset coverage is present, but runtime recurrence and save/reload evidence are still required and these helpers alone do not certify all six achievements.

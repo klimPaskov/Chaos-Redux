@@ -93,7 +93,7 @@ The proof is frozen into the aligned global row and local helper receipts before
 
 1. The parent binds the current crisis and front targets and selects the negotiated settlement type.
 
-2. The parent selects the owner obligation, then calls `event021_treaty_prepare_signatory_obligations = yes` to bind every intended human actor to its own real obligation, exact front, and shared hold date while each country still has its live settlement state.
+2. The parent selects the owner obligation, then calls `event021_treaty_prepare_signatory_obligations = yes` to clear any stale local signatory receipt and bind every intended human actor to its own real obligation, exact front, and shared hold date while each country still has its live settlement state.
 
 3. The parent calls `event021_treaty_capture_settlement = yes` immediately after obligation binding and while `event021_settlement_talks_open` remains set.
 

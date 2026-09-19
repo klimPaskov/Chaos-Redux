@@ -220,7 +220,7 @@ All six achievement IDs are registered in `common/achievements/chaos_redux_achie
 Scenario and debug/force launch receipts disqualify their countries, while an authority-collapse receipt prevents later recovery from erasing the history required by `Hold the Center`.
 These source contracts require lifecycle acceptance evidence before the event can be certified.
 
-Recurrence remembers recent crises, failed settlements, broken settlement obligations, unresolved sponsor dependence, and successor origins. Negotiated government or coalition settlements reduce the score, while successor grace, cooldown, normal-human validity, viability, and the bounded recurrence window remain exact launch gates.
+Recurrence remembers recent crises, failed settlements, broken settlement obligations, unresolved sponsor dependence, and successor origins. Negotiated government or coalition settlements reduce the score, while successor grace, cooldown, normal-human validity, viability, and the bounded recurrence window remain exact launch gates. A committed recurrence records treaty history before clearing generation-local settlement, reconstruction, and obligation receipts.
 
 Successor grace protects a newly recognized Event 006 or other successor package from an immediate recursive opening while retaining later vulnerability.
 

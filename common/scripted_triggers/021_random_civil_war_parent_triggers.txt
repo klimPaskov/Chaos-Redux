@@ -14,6 +14,7 @@ event021_parent_country_is_opening_candidate = {
 	random_civil_war_is_normal_human_country = yes
 	individual_crisis_load_is_below_cap = yes
 	NOT = { random_civil_war_has_terminal_lock = yes }
+	random_civil_war_successor_grace_clear = yes
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
@@ -49,6 +50,7 @@ event021_parent_event6_dormant_candidate = {
 	# here, then let the adapter perform package admission at commit time.
 	random_civil_war_is_normal_human_country = yes
 	NOT = { random_civil_war_has_terminal_lock = yes }
+	random_civil_war_successor_grace_clear = yes
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
@@ -415,6 +417,7 @@ event021_parent_scenario_country_eligible = {
 	has_global_flag = random_civil_war_rework_ready
 	random_civil_war_is_normal_human_country = yes
 	NOT = { random_civil_war_has_terminal_lock = yes }
+	random_civil_war_successor_grace_clear = yes
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
 	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
@@ -654,17 +657,7 @@ event021_parent_reserved_critical_launch_valid = {
 	NOT = { has_country_flag = random_civil_war_target_reserved }
 	NOT = { has_country_flag = random_civil_war_opening_transfer_pending }
 	NOT = { has_country_flag = random_civil_war_plan_owner }
-	OR = {
-		NOT = { has_country_flag = random_civil_war_successor_grace }
-		AND = {
-			has_variable = random_civil_war_successor_grace_until
-			check_variable = {
-				var = global.date
-				value = random_civil_war_successor_grace_until
-				compare = greater_than_or_equals
-			}
-		}
-	}
+	random_civil_war_successor_grace_clear = yes
 }
 
 event021_parent_achievement_disqualified = {
@@ -717,7 +710,7 @@ event021_parent_recurrence_window_open = {
 		value = random_civil_war_recurrence_latest_date
 		compare = less_than_or_equals
 	}
-	NOT = { has_country_flag = random_civil_war_successor_grace }
+	random_civil_war_successor_grace_clear = yes
 	NOT = { has_country_flag = random_civil_war_recurrence_window_expired }
 }
 

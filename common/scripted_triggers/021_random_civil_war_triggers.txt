@@ -48,6 +48,23 @@ random_civil_war_has_terminal_lock = {
 	}
 }
 
+# COUNTRY scope. A successor grace receipt blocks every automatic, queue, and
+# manual-scenario opening until its recorded date has passed. The expiry branch
+# keeps a bounded target review from depending on a separate maintenance tick.
+random_civil_war_successor_grace_clear = {
+	OR = {
+		NOT = { has_country_flag = random_civil_war_successor_grace }
+		AND = {
+			has_variable = random_civil_war_successor_grace_until
+			check_variable = {
+				var = global.date
+				value = random_civil_war_successor_grace_until
+				compare = greater_than_or_equals
+			}
+		}
+	}
+}
+
 random_civil_war_has_incompatible_bespoke_route = {
 	OR = {
 		has_country_flag = random_civil_war_incompatible_bespoke_route
@@ -156,6 +173,7 @@ random_civil_war_country_can_be_target = {
 	random_civil_war_major_targeting_allowed = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { random_civil_war_has_terminal_lock = yes }
+	random_civil_war_successor_grace_clear = yes
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
@@ -184,6 +202,7 @@ random_civil_war_country_can_be_scenario_target = {
 	individual_crisis_load_is_below_cap = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	NOT = { random_civil_war_has_terminal_lock = yes }
+	random_civil_war_successor_grace_clear = yes
 	NOT = { random_civil_war_has_incompatible_bespoke_route = yes }
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
@@ -536,7 +555,7 @@ random_civil_war_scenario_target_valid = {
 random_civil_war_recurrence_valid = {
 	random_civil_war_is_normal_human_country = yes
 	NOT = { random_civil_war_has_terminal_lock = yes }
-	NOT = { has_country_flag = random_civil_war_successor_grace }
+	random_civil_war_successor_grace_clear = yes
 	OR = {
 		NOT = { has_country_flag = random_civil_war_recent_target }
 		AND = {

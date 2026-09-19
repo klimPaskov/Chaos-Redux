@@ -39,9 +39,9 @@ Existing visual reviews remain useful for the exact files inspected, but do not 
 - Internal-war-ended pointer branches reject self, missing/dead, and different-crisis countries.
   A successor's rebound host pointer to itself can no longer count as a peacefully resolved opponent, and another theater's cached global actor cannot resolve this crisis.
   The surviving-front roster adoption helper and natural end hook are now wired, but actual war continuity, remaining-front rebinding in a live save, and terminal resolution remain separate unfinished requirements.
-- Committed-opening history clears prior cleanup-complete/requested and settlement pending/signed/resolved/talks UI commands, plus completed reconstruction phase receipts.
+- Committed-opening history clears prior cleanup-complete/requested and settlement pending/signed/resolved/talks UI commands, plus completed reconstruction phase receipts and generation-local settlement/reconstruction/obligation pointers.
   This prevents a previous crisis from hiding renewed settlement actions or supplying an old signed command to a recurrence.
-  Agreement history, violations, obligations, recurrence memory, and earned awards are deliberately not cleared by this narrow command-state repair.
+  The prior agreement is recorded by treaty recurrence before local obligation pointers and transient outcome flags are cleared; durable agreement rows, violations, failed/harsh settlement history, recurrence memory, and earned awards are deliberately preserved.
 - Ordinary core cleanup preserves completed Event 021-origin Event 006 package identity receipts while still clearing incomplete adapter receipts.
   `is_independence_wave_event021_package_country` extracts the existing proven-package branch from the package-content predicate; the strict Event 006 active-origin classifier remains unchanged.
   The focus tree, shared category registry, package-specific category gates, and the local sections of the aggregate Event 006 decision file now use the origin-neutral local-content predicate where appropriate; network/league, adapter-only, evolution, and other explicitly global gates remain strict. Reachability and engine acceptance for reused content are still unproven, and no reused content is certified.
@@ -108,7 +108,7 @@ The narrower helper-specific route therefore did not resolve the missing expande
   Remaining successor work includes actual war continuity and adoption of the predecessor's unresolved-front roster/host role, not just registry pointer rebinding.
   The installed `add_to_war` documentation offers `targeted_alliance`, `enemy`, and `single_target_only`, but the current source does not snapshot the complete predecessor enemy roster or verify surviving wars after annexation.
   Do not infer war transfer from `annex_country`, `transfer_troops`, an external-war history flag, or front registration.
-- Certify recurrence-generation lifecycle and finish the full per-crisis reset, including prior settlement type, signatory obligations, and successor state.
+- Test the recurrence-generation lifecycle and verify the source-side per-crisis reset, including prior settlement type, local signatory obligation receipts, and reconstruction deadlines.
   Original-host commitment clears terminal receipts, generation rollback has a provisional snapshot, and cleanup releases the generation seed; their complete multi-route runtime behavior remains unproven.
   Preserve recurrence memory and completed achievement awards while separating per-crisis state, and do not consume a generation on failed preflight.
 - Certify the continuous capital, authority-minimum, and external-capitulation hooks against loss/recapture and capitulation/recovery cases.
