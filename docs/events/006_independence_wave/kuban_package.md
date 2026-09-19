@@ -24,7 +24,7 @@ The IW-040 force contract is mounted-mobile with no navy or air inheritance, usi
 
 ## Assets and identity
 
-The package retains the installed vanilla KUB flag family and Ivanis portrait as its baseline. Four generated route-specific cosmetic ladders are installed at `gfx/flags/{,medium,small}/KUB_INDEPENDENCE_WAVE_{CIVICX,AGRARIANX,SOCIALISTX,EMERGENCYX}.tga`; their alternate-history provenance and raster QA are recorded in `docs/assets/006_independence_wave/iw040_kuban_flags_2026_08_12/`.
+The package retains the installed vanilla KUB flag family and Ivanis portrait contract as its baseline. The installed No Step Back interface declares the Ivanis large portrait, but its referenced 156x210 DDS is absent from the current vanilla tree; the small 65x67 idea DDS is present. No replacement, fallback, or package-specific portrait override is authorized without a separate identity and rights decision. Four generated route-specific cosmetic ladders are installed at `gfx/flags/{,medium,small}/KUB_INDEPENDENCE_WAVE_{CIVICX,AGRARIANX,SOCIALISTX,EMERGENCYX}.tga`; their alternate-history provenance and raster QA are recorded in `docs/assets/006_independence_wave/iw040_kuban_flags_2026_08_12/`.
 
 ## UI, formables, and cleanup
 
@@ -32,6 +32,7 @@ The package uses the ordinary decision category and shared focus surfaces, with 
 
 ## Admission blockers
 
+- The accepted vanilla Ivanis portrait contract is `needs_user_review` because the installed DLC's large portrait texture is missing; no grounded replacement or fallback may be wired without explicit identity and rights approval. Evidence: `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw040_kuban_portrait_gap_2026-09-19.md`.
 - Current MCP map, focus, event, and probability routes return `ARTIFACT_MANIFEST_INVALID` before scanning, so no current engine receipt or quantitative balance claim is available.
 - The package has not been live-launched or save/load validated.
 
