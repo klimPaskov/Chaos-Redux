@@ -2,7 +2,7 @@
 
 ## Current evidence reconciliation (2026-09-19)
 
-The 2026-09-19 IW-095 package completion audit is the current package-local evidence authority and leaves central admission fail-closed.
+The 2026-09-19 IW-095 package completion audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local evidence authority and leaves central admission fail-closed.
 
 Current bounded evidence routes remain fail-closed: portrait role/date/rights `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_rights_closure_2026-09-19.md`, ASSET-044 flag provenance `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_closure_2026-09-19.md`, IW-095 Dahomey `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw095_current_evidence_refresh_2026-09-13.md`, and scenario-specific probability `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_probability_audit_2026-09-19.md`. The 2026-09-19 IW-048, IW-050, and IW-057 package-local audits are `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_completion_tranche_2026-09-19.md`, `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_kom_completion_tranche_2026-09-19.md`, and `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw057_fer_completion_tranche_2026-09-19.md`; they do not change central admission, and exact declared probability fixtures do not establish campaign odds.
 

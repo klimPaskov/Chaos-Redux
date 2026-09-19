@@ -8,7 +8,7 @@ Architecture aligned: 2026-07-15
 
 ## Current reconciliation (2026-09-19)
 
-The 2026-09-19 IW-095 package completion audit is the current package-local authority and does not promote Dahomey into central admission.
+The 2026-09-19 IW-095 package completion audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local authority and does not promote Dahomey into central admission.
 
 The latest available bounded portrait-rights, flag-provenance, and IW-095 package handoffs are `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_portrait_rights_closure_2026-09-19.md`, `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_flag_provenance_closure_2026-09-19.md`, and `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw095_current_evidence_refresh_2026-09-13.md`. The scenario-specific probability handoff `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_probability_audit_2026-09-19.md` does not clear nested package selection or campaign-facing scores. The 2026-09-19 IW-048, IW-050, and IW-057 package-local audit handoffs are `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_completion_tranche_2026-09-19.md`, `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_kom_completion_tranche_2026-09-19.md`, and `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw057_fer_completion_tranche_2026-09-19.md`; none promotes a package centrally.
 
