@@ -12,6 +12,8 @@ The narrow IW-038 Ruthenia portrait-reference repair is recorded in [`006_iw038_
 
 The IW-040 Kuban vanilla Ivanis gap is recorded in [`006_iw040_kuban_portrait_gap_2026-09-19.md`](006_iw040_kuban_portrait_gap_2026-09-19.md). The installed No Step Back interface declares both vanilla Ivanis portrait tokens and supplies the 65x67 idea DDS, but its declared 156x210 large portrait DDS is absent. The accepted package contract intentionally reuses vanilla art and authorizes no replacement or fallback, so this remains `needs_user_review` rather than a speculative new portrait.
 
+The parent decoded and opened the available 65x67 Ivanis idea DDS at native size; its character-card crop, alpha, and edge treatment are readable and intact. There is no large portrait DDS to decode or visually inspect.
+
 ## Visual review evidence
 
 The parent reopened the final decoded scene contact sheet, the icon DDS contact sheet, the flat historical-flag contact sheet, the repaired state-puzzle contact sheet, the status-panel processed PNG, the ASSET-004 decoded news DDS, and the recognition-seal animation contact sheet at review scale. The family-specific 2026-09-13 receipts remain the per-asset source/processed/final-DDS and enlarged-review authorities for all accepted rows; no new crop, clipping, overflow, bleed, alpha, aspect-ratio, alignment, or readability defect was found in the reviewed consumers.

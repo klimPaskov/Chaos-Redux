@@ -47,7 +47,7 @@ Identity review: the installed character identity and package references agree o
 
 Framing review: not run because no source-placeholder candidate was authorized or produced.
 
-Asset review: `needs_user_review` / unresolved. The small vanilla idea texture is present, but the large vanilla portrait texture is missing from the installed tree.
+Asset review: `needs_user_review` / unresolved. The parent decoded and opened the small vanilla idea texture at native 65x67; it is a readable vanilla character-card treatment with intact transparency and no visible matte or crop defect. The large vanilla portrait texture is missing from the installed tree, so no 156x210 consumer can be reviewed.
 
 Replacement state: no replacement is installed. The package remains on its existing vanilla token references, with the large token pending an explicit scope and rights decision. This is not a live-completion claim.
 
