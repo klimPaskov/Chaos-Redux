@@ -137,6 +137,8 @@ The partitioned export checkpoint is `blender/checkpoints/31_export_partitioned_
 
 Reimport reports exist for every v2 action and death v5 under `docs/assets/002_zombie_outbreak/models_3d/zombies/validation/`. Raw imported geometry retains UV/normal seam vertices, so raw loose-edge counts are not treated as holes. The diagnostic position weld reports zero non-manifold and degenerate faces and three residual boundary edges; this is documented exporter seam evidence. The source checkpoint remains the closed-topology acceptance surface. Source textured renders and reimport action screenshots were reviewed for the formerly visible back deformation and the rejected death spikes.
 
+An independent read-only audit of the exported `chaosx_zombies.txt` streams welded positions at tolerances from `1e-7` through `1e-4` and found zero loose or non-manifold edges at every tested tolerance. This supports treating the three-edge reimport result as importer-side numeric seam residue rather than a source/export hole; no hole is visible in the textured source or reimport frames.
+
 Runtime files are promoted under `gfx/models/units/chaosx_zombies/`: one partitioned `.mesh`, three DDS maps, and eight distinct `.anim` files. `gfx/entities/chaosx_zombies.gfx` registers four mesh streams and eight animation types; `animation_chaosx_zombies.asset` registers the files; `gfx/entities/chaosx_zombies.asset` uses distinct attack, defend, support_attack, move, retreat, training, death, and idle states with the 0.8 scale. The bespoke green counter files remain installed at the large and small counter paths from the counter handoff.
 
 ## Remaining acceptance limits
