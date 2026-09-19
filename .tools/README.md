@@ -61,6 +61,20 @@ This is the sole supported formable-state tool in `.tools`. It rebuilds the shar
 
 The former geometry, registry, and consumer compilers are retained under `archive/` as reviewed-build provenance. They are not normal maintenance commands and must be restored and reviewed deliberately before a map revision or new consumer is compiled.
 
+### Offline Paradox wiki snapshot
+
+- `wiki/sync_wiki_snapshot.py` regenerates `paradox_wiki/` from the live Hearts of Iron IV wiki. It is the only supported way to refresh that reference; hand-editing a page is lost on the next refresh.
+- `wiki/verify_wiki_snapshot.py` is the read-only acceptance check for the result.
+
+`AGENTS.md` names `paradox_wiki/` as the required modding reference, so the two commands run as a pair whenever the wiki moves:
+
+```powershell
+python -B .tools/wiki/sync_wiki_snapshot.py
+python -B .tools/wiki/verify_wiki_snapshot.py
+```
+
+The sync never launches Hearts of Iron IV and never claims engine evidence. Its contract, options, page set, and downstream mirror step are in `wiki/README.md`. Commit the refreshed snapshot and any wiki-file references it changes together.
+
 ### Repository-wide static audits
 
 These audits answer source-only questions across the whole mod. They never launch Hearts of Iron IV and never claim live, engine, or render evidence. Each one is read-only; only `reindent_script_files.py` writes, and only with `--apply`.

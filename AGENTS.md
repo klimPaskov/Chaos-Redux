@@ -31,6 +31,11 @@ Always open at least these core pages from `paradox_wiki/`:
 
 If your task touches some other system, for example for gui, open Interface Modding and Scripted GUI Modding pages. For country creation, national focuses, equipment, divisions or technology, open the corresponding wiki snapshot page(s) from `paradox_wiki/` as well. Do not rely on memory when a page exists.
 
+Maintenance:
+
+- Refresh the snapshot with `python -B .tools/wiki/sync_wiki_snapshot.py` and accept it with `python -B .tools/wiki/verify_wiki_snapshot.py`. See `.tools/wiki/README.md`.
+- Refreshing the snapshot is its own task. Do not re-fetch wiki pages while implementing a mechanic; work from the committed snapshot.
+
 Web access:
 
 - For general web research, use your default web search tool.
