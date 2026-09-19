@@ -6,7 +6,7 @@ The bounded improvement-loop planner was run after the late source tranche. Its 
 
 | Planner item | Disposition | Evidence or next boundary |
 | --- | --- | --- |
-| B01 Event 006 local-content gate | implemented for test entry | The proven complete Event 021 package predicate now admits country-local Event 006 content and player surfaces while the Event 006 global lifecycle remains separate. Fresh package reachability, focus loading, and live matrix proof remain queued. |
+| B01 Event 006 local-content gate | implemented for test entry | The 2026-09-19 repair makes both Event 006 local-content and player-surface predicates admit the proven complete Event 021 package predicate while the Event 006 global lifecycle remains separate. Fresh package reachability, focus loading, and live matrix proof remain queued; see `subagent_handoffs/event006_player_surface_repair_2026-09-19.md`. |
 | B02 sponsor scope bridge | implemented | Recipient and front identifiers now cross the nested exposure scope through normal variables before the sponsor receipt is recorded. The independent probability audit must still inspect the current surface. |
 | B03 fixed-target helper | blocked | The shared helper and authoritative contract are absent. The architect audit is recorded in `subagent_handoffs/fixed_target_contract_audit_2026-09-12.md`. Event 021 does not invent or alias it. The dependency belongs to the other event owners. |
 | B04 Event 006 visual/provenance matrix | blocked | The inherited 32-package asset audit still has unresolved portrait, flag, formable, and package-reachability evidence. No substitute art or silent fallback was introduced. |

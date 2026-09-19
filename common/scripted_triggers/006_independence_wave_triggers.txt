@@ -14,12 +14,16 @@ is_independence_wave_active_country = {
 }
 
 # Country-local Event 006 decisions, categories, and focus content are
-# player-facing and require a real active Event 006 origin. Origin-neutral
-# adapters may consume the internal package-content setup predicate below,
-# but they never publish an Event 006 player surface.
+# player-facing for a real active Event 006 origin or a complete, human Event
+# 021 adapter package. The adapter receives the same package-owned content,
+# while its separate origin receipt keeps Event 006 firing, evolution, league,
+# and network lifecycle state untouched.
 is_independence_wave_event6_local_content_active = {
 	exists = yes
-	is_independence_wave_active_country = yes
+	OR = {
+		is_independence_wave_active_country = yes
+		is_independence_wave_event021_package_country = yes
+	}
 }
 
 is_independence_wave_package_content_active = {
@@ -70,16 +74,16 @@ is_independence_wave_package_origin_compatible = {
 	}
 }
 
-# Player-facing Event 006 categories and decisions stay closed while Event 021
-# is borrowing an Event 006 package as an origin-neutral adapter. The adapter
-# still needs the package-content predicate for leaders, forces, and setup,
-# but none of those transient receipts may publish an Event 006 surface.
+# Player-facing Event 006 categories and decisions stay closed during the
+# Event 021 adapter's transient setup window. Once the complete human package
+# proof is recorded, its package-owned categories and decisions become
+# available without setting Event 006's fired, evolution, league, or network
+# lifecycle state.
 is_independence_wave_event6_player_surface_allowed = {
-	is_independence_wave_active_country = yes
-	NOT = { has_country_flag = random_civil_war_event6_adapter_preparing }
-	NOT = { has_country_flag = random_civil_war_event6_adapter_complete }
-	NOT = { has_country_flag = random_civil_war_origin_adapter_complete }
-	NOT = { has_country_flag = independence_wave_event021_adapter_setup_proven }
+	OR = {
+		is_independence_wave_active_country = yes
+		is_independence_wave_event021_package_country = yes
+	}
 }
 
 # ============================================================================
