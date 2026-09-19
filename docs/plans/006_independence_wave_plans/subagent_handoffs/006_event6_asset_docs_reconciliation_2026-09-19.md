@@ -4,6 +4,8 @@ Disposition: documentation reconciliation implemented; whole Event 006 remains *
 
 ## Source-of-truth map
 
+The later `006_iw095_package_completion_2026-09-19.md` handoff supersedes the older IW-095 evidence-refresh link for current package-local status; it preserves the same fail-closed admission boundary.
+
 | Claim | Current authority and limit |
 | --- | --- |
 | Accepted design and status boundary | `docs/specs/006_independence_wave_specs/README.md`, its quality ledgers, and the accepted matrices remain design sources only to the extent their acceptance basis is recorded. The 2026-09-19 [completion-gap audit](006_event6_completion_gap_audit_2026-09-19.md) and [validation refresh](006_event6_current_validation_refresh_2026-09-19.md) preserve **HOLD / PARTIAL**, 32 content-attested packages, 29 compatible reservation groups, 40 runtime adapters, 161 unattested selectable rows, and the absolute no-pre-event contract. |

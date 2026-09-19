@@ -2,6 +2,8 @@
 
 ## Current authority override (2026-09-19 validation refresh)
 
+The 2026-09-19 IW-095 package completion audit is the current package-local authority and supersedes the earlier evidence-refresh receipt without widening central admission.
+
 The latest available bounded rights, provenance, and package receipts are `subagent_handoffs/006_event6_portrait_rights_closure_2026-09-19.md` for the thirteen held grounded portrait rows, `subagent_handoffs/006_event6_flag_provenance_closure_2026-09-19.md` for unresolved ASSET-044 families, and `subagent_handoffs/006_event6_iw095_current_evidence_refresh_2026-09-13.md` for fail-closed IW-095 Dahomey. The scenario-specific `chaosx_ai_probability_auditor` receipt is `subagent_handoffs/006_event6_probability_audit_2026-09-19.md`: it proves only declared outer-allocator and two-entry congress fixtures, while nested package and campaign-facing option, decision, mission, focus, MTTH, and strategy-factor conclusions remain unresolved. The 2026-09-19 IW-048, IW-050, and IW-057 package-local audit handoffs are `subagent_handoffs/006_iw048_udm_completion_tranche_2026-09-19.md`, `subagent_handoffs/006_iw050_kom_completion_tranche_2026-09-19.md`, and `subagent_handoffs/006_iw057_fer_completion_tranche_2026-09-19.md`; none changes central admission or the 32/29/40/161 boundary.
 
 The current validation receipt is `subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md`. It refreshes the bounded validator, visual-wiring, and archive evidence without changing the accepted source design, the 32/29/40/161 admission boundary, or the whole-event **HOLD / PARTIAL** disposition. The 2026-09-13 documentation and League implementation receipts remain the source authority for their respective changes.
