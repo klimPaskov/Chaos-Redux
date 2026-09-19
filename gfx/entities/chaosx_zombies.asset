@@ -11,22 +11,24 @@ entity = {
 		animation_blend_time = 0.0
 		animation_speed = 1.0
 		looping = no
-		next_state = "attack"
-		event = { sound = { soundeffect = "chaosx_zombie_attack" } }
+		next_state = "idle"
+		event = { time = 0.6667 sound = { soundeffect = "chaosx_zombie_attack" } }
 	}
 	state = {
 		name = "defend"
-		animation = "attack"
+		animation = "defend"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
-		event = { sound = { soundeffect = "chaosx_zombie_attack" } }
+		looping = yes
 	}
 	state = {
 		name = "support_attack"
-		animation = "attack"
+		animation = "support_attack"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
-		event = { sound = { soundeffect = "chaosx_zombie_attack" } }
+		looping = no
+		next_state = "idle"
+		event = { time = 0.6667 sound = { soundeffect = "chaosx_zombie_attack" } }
 	}
 	state = {
 		name = "move"
@@ -34,15 +36,17 @@ entity = {
 		animation_blend_time = 1.0
 		animation_speed = 1.0
 		looping = yes
-		event = { sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 0.3333 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 1.0000 sound = { soundeffect = "chaosx_zombie_move" } }
 	}
 	state = {
 		name = "retreat"
-		animation = "move"
+		animation = "retreat"
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		event = { sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 0.3333 sound = { soundeffect = "chaosx_zombie_move" } }
+		event = { time = 1.0000 sound = { soundeffect = "chaosx_zombie_move" } }
 	}
 	state = {
 		name = "death"
@@ -50,7 +54,7 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = no
-		event = { sound = { soundeffect = "chaosx_zombie_death" } }
+		event = { time = 1.5000 sound = { soundeffect = "chaosx_zombie_death" } }
 	}
 	state = {
 		name = "idle"
@@ -58,9 +62,9 @@ entity = {
 		animation_blend_time = 0.3
 		animation_speed = 1.0
 		looping = yes
-		event = { sound = { soundeffect = "chaosx_zombie_idle" } }
+		event = { trigger_once = yes sound = { soundeffect = "chaosx_zombie_idle" } }
 	}
-	state = { name = "training" animation = "idle" animation_blend_time = 0.3 animation_speed = 1.0 looping = yes }
+	state = { name = "training" animation = "training" animation_blend_time = 0.3 animation_speed = 1.0 looping = yes event = { trigger_once = yes sound = { soundeffect = "chaosx_zombie_idle" } } }
 
 	# Preserve the vanilla infantry source scale exactly once.
 	scale = 0.8
