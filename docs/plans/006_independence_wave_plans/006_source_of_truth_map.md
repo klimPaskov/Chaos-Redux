@@ -1,6 +1,8 @@
 # Event 006 source-of-truth map
 
-## Current authority override (2026-09-13 documentation reconciliation)
+## Current authority override (2026-09-19 validation refresh)
+
+The current validation receipt is `subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md`. It refreshes the bounded validator, visual-wiring, and archive evidence without changing the accepted source design, the 32/29/40/161 admission boundary, or the whole-event **HOLD / PARTIAL** disposition. The 2026-09-13 documentation and League implementation receipts remain the source authority for their respective changes.
 
 The current whole-event status receipt is `subagent_handoffs/006_event6_completion_audit_refresh_2026-09-13.md`, with the additive League caller implementation in `subagent_handoffs/006_event6_league_transition_callers_2026-09-13.md`.
 The League caller gap is implemented: the eight authored transitions now have normal-play callers in the gated League category, and the timed durability caller writes `independence_wave_league_durability_mission_complete` only after the existing formal/member/cohesion checks still hold.

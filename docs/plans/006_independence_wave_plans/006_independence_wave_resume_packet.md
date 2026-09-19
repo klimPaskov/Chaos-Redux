@@ -4,7 +4,9 @@ The long provenance list below preserves dated implementation history. Current r
 
 The 2026-09-02 country-shell consolidation is committed in `2617931b1b730f617ad99c3c363503b4465f38d6`: 85 researched Event 006 tags share seven exact graphical-culture shells, their former per-tag RGB values are preserved in the complete vanilla-compatible `common/countries/colors.txt` override, and the 17 inert reservation tags remain on the unchanged shared reservation shell. This removes 78 country-definition files and saves 44,482 shell bytes without changing country history, admission, allocation, Join, gameplay, localisation, assets, or the no-pre-event contract. Handoff: `subagent_handoffs/006_event6_country_shell_merge_audit_2026-09-02.md`.
 
-## Current authority override (2026-09-13 documentation reconciliation)
+## Current authority override (2026-09-19 validation refresh)
+
+Resume from `subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md` for the newest bounded validator and asset/archive evidence. It does not change the 32/29/40/161 boundary, the exact automatic ladder, the absolute no-pre-event contract, or the unresolved package, rights, route-cost, probability, GUI, audio, and runtime gates.
 
 Resume using the whole-event status receipt `subagent_handoffs/006_event6_completion_audit_refresh_2026-09-13.md` and the implemented League caller handoff `subagent_handoffs/006_event6_league_transition_callers_2026-09-13.md`.
 The League caller gap is implemented: consultative proclamation/upgrade, durability, reform, normalization, reunification, dissolution, and restart now have normal-play callers, and the durability gate receives its completion receipt only after the existing timed formal/member/cohesion checks.

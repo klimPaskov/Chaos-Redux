@@ -1,6 +1,8 @@
 # Source specification acceptance checklist
 
-## Current evidence reconciliation (2026-09-13)
+## Current evidence reconciliation (2026-09-19)
+
+The newest bounded source/static receipt is `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md`. It refreshes the validator, visual-wiring, archive, and no-pre-event evidence while preserving the current 32/29/40/161 boundary and all unresolved acceptance gates.
 
 The whole-event disposition remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows, with no-pre-event visibility still absolute.
 
