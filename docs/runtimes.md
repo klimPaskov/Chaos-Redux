@@ -31,23 +31,8 @@ The earlier rank wins when two roots provide the same skill name.
 | 400 | `user-dsh` | `$DSH_HOME/skills` |
 | 500 | `user-agents` | `$DSH_AGENTS_HOME` or `~/.agents/skills` |
 
-An earlier local policy here was to leave `.dsh/` absent so that `.agents/skills/` stays the single source for every runtime.
-The local project skill root now exists only as a withholding layer, described below.
-
-### Withheld global skills
-
-Skills installed outside the repository, such as the HyperFrames video suite in `~/.agents/skills/`, are user-level roots and would otherwise appear in every DSH session, including Chaos Redux sessions that have no video work surface.
-
-Because `project-dsh` ranks above both user roots and the registry resolves a duplicate name in favor of the higher rank, a stub at `.dsh/skills/<name>/SKILL.md` shadows the user-level skill of the same name for DSH in this repository.
-
-Each withholding stub carries the global skill's exact `name` plus:
-
-- `disable-model-invocation: true` removes the entry from the model-facing catalog, so the global skill no longer costs catalog space or reads as available work here.
-- `user-invocable: true` keeps the `/name` gesture working, so an explicitly invoked skill still renders its global instructions into the conversation.
-
-The global skill is never modified, so it still loads normally in every other project and in every other runtime.
-Two consequences are deliberate: `.dsh/` is gitignored, so the withholding lives only on this machine, and a newly installed global skill needs its own stub before it is withheld.
-Delete a stub to restore the global skill in this repository.
+This repository leaves `.dsh/` absent so that `.agents/skills/` stays the single source for every runtime.
+Create `.dsh/skills/<name>/SKILL.md` only for a skill that must exist for DSH and must not load in the other runtimes, and record why inside that skill.
 
 ### Subagents and model selection
 
