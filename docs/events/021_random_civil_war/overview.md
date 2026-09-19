@@ -246,7 +246,7 @@ The four types are Political Fracture, Independence Cascade, Command Collapse, a
 
 The four intensities are Low, Medium, High, and Maximum.
 
-Low, Medium, and High use bounded shares of eligible normal human countries with intensity-specific route and force limits.
+Low, Medium, and High use bounded shares of eligible normal human countries with intensity-specific target tickets, route, and force limits. Low favours minors, Medium is neutral, and High makes majors common; the ladder is centralized in `random_civil_war_scenario_target_weight` before shared crisis-load adjustment.
 
 Maximum freezes every eligible normal human country into one confirmation-time pool and visits every frozen row exactly once, while still excluding actual nonhuman countries. Countries created by an earlier launch cannot join that same scenario run.
 

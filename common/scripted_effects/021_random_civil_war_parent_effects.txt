@@ -4872,7 +4872,32 @@ event021_parent_add_target_to_selection_pool = {
 # count for their intensity budget while expanding each candidate into the
 # shared load-sensitive ticket pool used by the actual draw.
 event021_parent_add_scenario_target_to_weighted_pool = {
-	set_temp_variable = { individual_crisis_candidate_base_weight = constant:random_civil_war_value.one }
+	# Scenario shares determine how many countries are selected. This separate
+	# ladder determines which eligible countries fill that share: Low favours
+	# minors, High favours majors, and Medium stays neutral. Maximum bypasses
+	# this helper and commits the frozen eligible-country set directly.
+	set_temp_variable = { event021_parent_scenario_target_weight = constant:random_civil_war_scenario_target_weight.medium_minor }
+	if = {
+		limit = { is_major = yes }
+		set_temp_variable = { event021_parent_scenario_target_weight = constant:random_civil_war_scenario_target_weight.medium_major }
+	}
+	if = {
+		limit = { check_variable = { var = global.random_civil_war_manual_scenario_intensity value = constant:random_civil_war_scenario_intensity.low compare = equals } }
+		if = {
+			limit = { is_major = yes }
+			set_temp_variable = { event021_parent_scenario_target_weight = constant:random_civil_war_scenario_target_weight.low_major }
+		}
+		else = { set_temp_variable = { event021_parent_scenario_target_weight = constant:random_civil_war_scenario_target_weight.low_minor } }
+	}
+	if = {
+		limit = { check_variable = { var = global.random_civil_war_manual_scenario_intensity value = constant:random_civil_war_scenario_intensity.high compare = equals } }
+		if = {
+			limit = { is_major = yes }
+			set_temp_variable = { event021_parent_scenario_target_weight = constant:random_civil_war_scenario_target_weight.high_major }
+		}
+		else = { set_temp_variable = { event021_parent_scenario_target_weight = constant:random_civil_war_scenario_target_weight.high_minor } }
+	}
+	set_temp_variable = { individual_crisis_candidate_base_weight = event021_parent_scenario_target_weight }
 	adjust_individual_crisis_candidate_ticket_weight = yes
 	set_temp_variable = { event021_parent_scenario_pool_remaining = individual_crisis_candidate_adjusted_weight }
 	if = {
