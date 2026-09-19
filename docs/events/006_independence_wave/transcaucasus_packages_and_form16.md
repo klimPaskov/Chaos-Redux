@@ -26,6 +26,8 @@ Decision categories and decisions are defined in the shared `common/decisions/ca
 
 No new portraits, flags, advisor icons, or other art assets are required. ARM, GEO, and AZR reuse their vanilla historical identity and flag surfaces. Existing shared Event 006 decision icons are used for government, force integration, arbitration, and formable actions.
 
+The three four-resource security-project cost rows use a compact three-group inline display for command power, infantry equipment, and support equipment. Hover tooltips and blocked rows retain the complete manpower, infantry, support, and command-power payment, so this presentation repair does not hide or alter a requirement. The source receipt is `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_transcaucasus_cost_loc_compaction_2026-09-19.md`; native decision-row rendering remains an open evidence gate.
+
 ## Future extensions
 
 The three regional ledgers can later feed a dedicated Caucasus crisis incident or a researched patron network without changing the package contract. Any extension must preserve the exact anchor set, current-generation receipts, no-vanilla-overwrite rule, and FORM-16 rollback boundary.
