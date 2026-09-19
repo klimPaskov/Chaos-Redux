@@ -248,7 +248,7 @@ The four intensities are Low, Medium, High, and Maximum.
 
 Low, Medium, and High use bounded shares of eligible normal human countries with intensity-specific target tickets, route, and force limits. Low favours minors, Medium is neutral, and High makes majors common; the ladder is centralized in `random_civil_war_scenario_target_weight` before shared crisis-load adjustment.
 
-Maximum freezes every eligible normal human country into one confirmation-time pool and visits every frozen row exactly once, while still excluding actual nonhuman countries. Countries created by an earlier launch cannot join that same scenario run.
+Maximum freezes every country that passes the normal-human, topology, route-type, capacity, and opening-state preflight into one confirmation-time pool and visits every frozen row exactly once, while still excluding actual nonhuman countries. The run records preflight-selected, frozen commit-eligible, and preflight-skipped counts separately; it never replaces an unavailable plan after preparation. Countries created by an earlier launch cannot join that same scenario run.
 
 Scenario setup is immediate and uses the same reservation, connected-state, force, actor, front, settlement, and cleanup transaction as ordinary play.
 

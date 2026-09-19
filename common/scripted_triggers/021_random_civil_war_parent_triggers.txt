@@ -421,6 +421,7 @@ event021_parent_scenario_country_eligible = {
 	individual_crisis_load_is_below_cap = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	event021_parent_scenario_type_preflight_valid = yes
+	event021_parent_scenario_opening_state_preflight_valid = yes
 }
 
 # COUNTRY scope of the shared scenario window. The selected type is copied into
@@ -500,6 +501,40 @@ event021_parent_scenario_type_preflight_valid = {
 			OR = {
 				num_divisions > constant:random_civil_war_value.zero
 				any_character = { is_country_leader = yes }
+			}
+		}
+	}
+}
+
+# COUNTRY scope. The Maximum scenario enumerates this predicate before any
+# target is mutated. It therefore admits only countries that can publish the
+# kind of immutable anchor receipt their selected topology requires; the later
+# freeze still owns the final collision and package checks.
+event021_parent_scenario_opening_state_preflight_valid = {
+	OR = {
+		AND = {
+			NOT = { has_variable = global.random_civil_war_manual_scenario_type }
+			OR = {
+				capital_scope = { event021_parent_scenario_capital_state_candidate = yes }
+				any_owned_state = { event021_parent_scenario_anchor_state_candidate = yes }
+			}
+		}
+		AND = {
+			event021_parent_scenario_requires_same_tag = yes
+			capital_scope = { event021_parent_scenario_capital_state_candidate = yes }
+		}
+		AND = {
+			NOT = { event021_parent_scenario_requires_same_tag = yes }
+			OR = {
+				any_owned_state = { event021_parent_scenario_anchor_state_candidate = yes }
+				AND = {
+					check_variable = {
+						var = global.random_civil_war_manual_scenario_type
+						value = constant:random_civil_war_scenario_type.independence_cascade
+						compare = equals
+					}
+					event021_parent_event6_dormant_candidate = yes
+				}
 			}
 		}
 	}

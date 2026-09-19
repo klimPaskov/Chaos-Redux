@@ -5649,11 +5649,16 @@ random_civil_war_trigger_manual_scenario = {
 		set_variable = { global.random_civil_war_scenario_requested_count = constant:random_civil_war_value.zero }
 		set_variable = { global.random_civil_war_scenario_committed_count = constant:random_civil_war_value.zero }
 		set_variable = { global.random_civil_war_scenario_skipped_count = constant:random_civil_war_value.zero }
+		set_variable = { global.random_civil_war_scenario_preflight_count = constant:random_civil_war_value.zero }
+		set_variable = { global.random_civil_war_scenario_plan_eligible_count = constant:random_civil_war_value.zero }
+		set_variable = { global.random_civil_war_scenario_preflight_skipped_count = constant:random_civil_war_value.zero }
 		set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.none }
 		set_global_flag = random_civil_war_manual_scenario_launch_in_progress
 		clear_array = global.random_civil_war_scenario_reserved_states
 		clear_array = global.random_civil_war_scenario_reserved_event6_packages
 		clear_temp_array = event021_parent_scenario_selected_targets
+		clear_temp_array = event021_parent_scenario_commit_targets
+		clear_temp_array = event021_parent_scenario_unavailable_targets
 		if = {
 			limit = { check_variable = { triggerable_scenarios_intensity = constant:random_civil_war_scenario_intensity.maximum } }
 			set_global_flag = random_civil_war_scenario_maximum_mode
@@ -5767,6 +5772,11 @@ random_civil_war_trigger_manual_scenario = {
 			clr_country_flag = random_civil_war_scenario_target_draw_succeeded
 			clear_temp_array = event021_parent_scenario_target_pool
 		}
+		# This is the immutable snapshot of countries requested by the scenario
+		# controller. Maximum begins with every preflight-eligible country; lower
+		# intensities contain only their bounded weighted draw.
+		set_variable = { global.random_civil_war_scenario_preflight_count = event021_parent_scenario_selected_targets^num }
+		set_variable = { global.random_civil_war_scenario_requested_count = global.random_civil_war_scenario_preflight_count }
 		# Preparation is deliberately separate from commitment. Each hidden
 		# preparation callback executes in the selected country's event scope, so
 		# ROOT in the scenario freezer is the plan host rather than the scenario
@@ -5778,20 +5788,44 @@ random_civil_war_trigger_manual_scenario = {
 			set_country_flag = random_civil_war_scenario_target_confirmed
 			country_event = { id = chaosx.nr21.19 }
 		}
-		# Commit only immutable receipts produced by the preparation phase. A
-		# failed or invalidated receipt is recorded as skipped and cannot reroll
-		# its country, package, anchor, route, or territory here.
+		# Convert the prepared snapshot into a second, explicit commit set before
+		# any opening can mutate ownership, fronts, packages, or capacity. A plan
+		# that cannot freeze is not silently rerolled; it is retained only in the
+		# unavailable receipt for accounting and skip diagnostics.
 		for_each_scope_loop = {
 			array = event021_parent_scenario_selected_targets
 			if = {
 				limit = { has_country_flag = random_civil_war_scenario_plan_frozen }
-				set_country_flag = random_civil_war_scenario_target_confirmed
-				country_event = { id = chaosx.nr21.15 }
+				add_to_temp_array = { array = event021_parent_scenario_commit_targets value = THIS }
 			}
+			else = { add_to_temp_array = { array = event021_parent_scenario_unavailable_targets value = THIS } }
+		}
+		set_variable = { global.random_civil_war_scenario_plan_eligible_count = event021_parent_scenario_commit_targets^num }
+		set_variable = { global.random_civil_war_scenario_preflight_skipped_count = global.random_civil_war_scenario_preflight_count }
+		subtract_from_variable = { global.random_civil_war_scenario_preflight_skipped_count = global.random_civil_war_scenario_plan_eligible_count }
+		if = {
+			limit = {
+				check_variable = {
+					var = global.random_civil_war_scenario_preflight_skipped_count
+					value = constant:random_civil_war_value.zero
+					compare = greater_than
+				}
+			}
+			set_variable = { global.random_civil_war_scenario_last_skip_reason = constant:random_civil_war_cluster_skip_reason.no_eligible_target }
+		}
+		# Commit only immutable receipts produced by the preparation phase. A
+		# failed or invalidated receipt is recorded as skipped and cannot reroll
+		# its country, package, anchor, route, or territory here.
+		for_each_scope_loop = {
+			array = event021_parent_scenario_commit_targets
+			set_country_flag = random_civil_war_scenario_target_confirmed
+			country_event = { id = chaosx.nr21.15 }
 			event021_parent_record_scenario_result = yes
 			clr_country_flag = random_civil_war_scenario_target_confirmed
 		}
 		clear_temp_array = event021_parent_scenario_selected_targets
+		clear_temp_array = event021_parent_scenario_commit_targets
+		clear_temp_array = event021_parent_scenario_unavailable_targets
 		set_variable = { global.random_civil_war_scenario_skipped_count = global.random_civil_war_scenario_requested_count }
 		subtract_from_variable = { global.random_civil_war_scenario_skipped_count = global.random_civil_war_scenario_committed_count }
 		set_variable = { global.random_civil_war_scenario_last_run_date = global.date }

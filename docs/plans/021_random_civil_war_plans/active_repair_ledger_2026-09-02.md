@@ -131,6 +131,7 @@ The narrower helper-specific route therefore did not resolve the missing expande
 - The skill maintainer added generic bounded binary-MCP retrieval guidance to the subagent skill, reviewed by the parent; no event-specific instructions or runtime configuration were added.
 - Finish the mapped probability comparisons, acceptance and performance scenarios, user-owned live evidence, workbook alignment, resolved improvement-loop output, and fresh completion audit against the final source state.
   The Event021-owned visual audit is complete for its 40 references, while the reused Event006 32-package visual/provenance audit remains incomplete and the six reviewed RHI/BAY portraits remain provisional or blocked.
+- The SCN-018 Maximum path now separates the confirmation-time preflight-selected array from the frozen commit-eligible array, adds an opening-state preflight to the normal-human candidate predicate, and records preflight, plan-eligible, and preflight-skipped counts. MCP lint is clean at the focused structural boundary; live all-eligible commitment, performance, and final probability comparison remain open.
 
 ## Integrity and reporting
 
