@@ -274,3 +274,13 @@ Evolution I additional-front callers now require pre-commit route, anchor, objec
 The action-family mapping is maintained in `docs/events/021_random_civil_war/decision_action_family_crosswalk.md`; phase-specific category actions and missions cover the named families through direct decisions, settlement obligations, reconstruction, sponsor channels, and package-owned force preparation.
 The current source hash for `common/scripted_effects/021_random_civil_war_parent_effects.txt` after this repair is `789ef51a9ba2185afa0f96c44e2dd799f31e4d649680fadd96ca53c02c684035`.
 The current focused `hoi4.event_inspect` lint returned `EVENT_INSPECTED_PARTIAL` at revision `95a1779f47fa5ffb9e6a53617f6d50c8772bcafcfd208d63b9083c1df85e2023`, graph hash `a3d547bd1e8ba5bf678828b08775811a0cf220001dd9c871f46e605ae08a40fe`, with zero blocking diagnostics and zero skipped sources; artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/f51a2eacd3a5d31fd12b9dc46c23e38d97c3d5b2e1c06fd5de80d9bcfb367385/2fa99a1968ae229d2cbe0d7ddb684e992bacbbae3db0dd238f20a4018e8d2e1b/event-lint-95a1779f47fa.json`. Validation remains partial because helper and lifecycle projections are deferred for the large workspace.
+
+## 2026-09-19 inherited Event 006 authority refresh
+
+Event 021's Event 006 reuse boundary now follows the current Event 006 validation refresh and package-local audits rather than the older aggregate wording above. The shared allocator authority is HOLD / PARTIAL at 32 content-attested selectable packages, 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows; no pre-event visibility is admitted.
+
+IW-095 is explicitly `NO-CHANGE / PACKAGE-LOCAL HOLD`, so it is not an Event 021 candidate. Its unresolved identity, rights, roster, flag, FORM-24, protected-host, central-admission, and runtime receipts remain fail-closed. Event 021's package adapter must continue to require complete human package evidence and preserve Event 006's origin, league, weight, cap, evolution, and nonhuman-immunity boundaries.
+
+The Event 006 probability audit closes only the declared outer allocator and formable fixtures. The 126-candidate nested package pool lacks a complete typed manifest and retains one unresolved input; root and support event-option routes return `INTERNAL_ERROR`, so no nested campaign probability or sequence certificate exists. The portrait-rights audit leaves all 13 scoped supplied rows as source-placeholder candidate holds with no fallback or runtime promotion.
+
+Disposition: inherited Event 006 evidence is current and explicitly carried as an open Event 021 acceptance gate; no Event 006 gameplay or asset change is authorized by this refresh.

@@ -267,3 +267,13 @@ The Wars cluster contains Event 021 once at Medium severity, and SCN-018 remains
 The current export hashes remain `e2e457ba96ae89b316aa01248eebe41d9aacbafc590f4940b56a55133fcd35c6`, `689fe07883da14abe2ceb7c29c151db50808cf97a366e60808281b16e37c76a2`, and `8b944de19817b3887eac22e3d12437e62990273c8b0db1c6f27928f349d4b2e7` for Events, Clusters, and Scenarios.
 
 The current decision AI probability inspection passed structural discovery with 18 candidates and zero unresolved source inputs, but no candidates were available without explicit runtime inputs; artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/41baac9a99ee2545e5ea16cd766fa07af843f9664b71c59b6d486a5993b9fbfb/5a2da45d36f3ab024805a429b348e2f139bd12b0eb47fad52ec13898808d4f8b/probability-inspect-d942638f25e4.json`. The matching mission adapter request returned `INTERNAL_ERROR` without an artifact. This is an MCP adapter limitation and leaves the decision/mission probability comparison gate open.
+
+## 2026-09-19 Event 006 reuse authority refresh
+
+Event 021's Event 006 adapter remains fail-closed against the current shared authority in `docs/specs/006_independence_wave_specs/quality/simplifications_omissions_and_blockers.md` and `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.md`. The admitted boundary is 32 content-attested selectable packages across 29 compatible reservation groups with 40 runtime adapters; 161 of 193 non-overlay rows remain unattested, and no pre-Event 006 visibility is admitted.
+
+The current IW-095 audit remains `NO-CHANGE / PACKAGE-LOCAL HOLD`; its identity, rights, roster, flag, FORM-24, protected-host, central-admission, and runtime receipts are not cleared. Event 021 therefore may consume only the already-admitted complete package registry rows and must skip IW-095 and other incomplete packages without creating a partial or actual nonhuman country.
+
+The shared Event 006 probability authority closes only declared outer allocator and formable fixtures. Its nested package pool still has 126 candidates with an incomplete typed manifest and one unresolved input, while root and support `event_option_ai_chance` calls return `INTERNAL_ERROR`; no nested campaign probability, sequence, or compare certificate is claimed. The current portrait-rights closure likewise leaves all 13 scoped supplied portrait rows as candidate holds with no runtime promotion or fallback.
+
+These are inherited Event 006 acceptance gates, not newly introduced Event 021 source defects. They remain required before Event 021 can claim full Event 006 package reachability, asset provenance, and probability certification.
