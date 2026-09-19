@@ -284,3 +284,11 @@ IW-095 is explicitly `NO-CHANGE / PACKAGE-LOCAL HOLD`, so it is not an Event 021
 The Event 006 probability audit closes only the declared outer allocator and formable fixtures. The 126-candidate nested package pool lacks a complete typed manifest and retains one unresolved input; root and support event-option routes return `INTERNAL_ERROR`, so no nested campaign probability or sequence certificate exists. The portrait-rights audit leaves all 13 scoped supplied rows as source-placeholder candidate holds with no fallback or runtime promotion.
 
 Disposition: inherited Event 006 evidence is current and explicitly carried as an open Event 021 acceptance gate; no Event 006 gameplay or asset change is authorized by this refresh.
+
+## 2026-09-19 Maximum scenario preflight/commit repair
+
+Commit `5616c0fdc` adds `event021_parent_scenario_opening_state_preflight_valid` and separates the manual scenario's confirmation-time preflight-selected, unavailable, and frozen commit-target arrays. Maximum now enumerates only normal-human countries with a viable selected-topology opening state, freezes each row before ownership mutation, and consumes the frozen commit array exactly once. The controller records preflight, plan-eligible, preflight-skipped, requested, committed, and final skipped counts without replacement selection.
+
+The current source hashes are `common/scripted_effects/021_random_civil_war_parent_effects.txt` `DEE57540972EC329D61CB529476E40DB84EB9CA703136F92F36C9FB4A5C62E9A`, `common/scripted_triggers/021_random_civil_war_parent_triggers.txt` `9AFBE2B87B4B16E60CA03F7FBBA44F3DBE968C8F994707FCBA716CE5A868E3F6`, and `common/scripted_effects/021_random_civil_war_parent_effects.md` `64553E88D7DC7F378431D6BC8382958EB43173CB34DC9BD555A72EDBF8AAF7FF`.
+
+The focused Event 021 MCP lint remains `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics and zero skipped sources, but the service returned its cached revision and deferred helper/lifecycle validation. The custom-pool probability adapter discovery for the scenario target converter found no executable custom candidate and is not a numeric Maximum certificate. Live scenario counts, performance measurement, and the mandatory independent probability comparison remain open under `docs/plans/021_random_civil_war_plans/subagent_handoffs/scenario_maximum_preflight_commit_repair_2026-09-19.md`.

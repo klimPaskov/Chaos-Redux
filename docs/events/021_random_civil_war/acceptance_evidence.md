@@ -257,6 +257,8 @@ Focused callback lints for `chaosx.nr21.18` and `chaosx.nr21.19` returned `EVENT
 
 The latest root lint after the transient-role cleanup remains source-level evidence only; the new artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/db4933c7a2236fdaaea1c5787971ff1f3fa88e8917fa3fa09435723f273c2d86/8aa8cdfd08dc43d409c53c0b6c21a370cb99e47a518c2df4edc4d96ad157a1b5/event-lint-eaf3959901e4.json`.
 
+The 2026-09-19 Maximum repair is recorded in `docs/plans/021_random_civil_war_plans/subagent_handoffs/scenario_maximum_preflight_commit_repair_2026-09-19.md`. It adds opening-state preflight and separates the immutable selected, unavailable, and frozen commit arrays; this is implementation evidence for the test-entry state, not final live acceptance.
+
 The 2026-09-19 completion-auditor result supersedes the earlier pre-audit wording above: the disposition is partial and not finally accepted. The ordinary secondary role adapter now distinguishes command, legal/regional, and ideological routes, while shared cleanup removes transient Event 021 role profiles and preserves successor-side and durable Event 006/package receipts. Neither source repair supplies live multi-front, settlement, recurrence, or inherited-package consumer evidence.
 
 The current parent weighted-source inspection passed structurally with eight discovered candidates, one unresolved runtime input, and `poolComplete = false`; artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/68f6ab621a5c955ed9891f8ff2e36c94a7f1ff6794c9c6223c58ef2a9793965a/7d15aa2ded0bcf27102bd53b3430af7bc5ab1306fcd13f66b9c56c232533efe6/probability-inspect-fbb9dfe733f3.json`. This remains an open probability-certification gate.
