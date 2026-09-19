@@ -1,6 +1,6 @@
 ---
 name: chaosx-subagent-models
-description: Use when spawning a Chaos Redux subagent in DSH and the child model or reasoning effort matters, including choosing max reasoning for a premium or top-tier model, deciding whether a role should run on the default model, or checking why a subagent ignores a model named in its Codex TOML.
+description: Use when spawning a Chaos Redux subagent in DSH and the child model or reasoning effort matters, including applying the standing rule that every subagent runs on deepseek-flash, deciding whether a role should run on the default model, or checking why a subagent ignores a model named in its Codex TOML.
 ---
 
 # Chaos Redux Subagent Model Policy
@@ -22,12 +22,21 @@ DSH subagents default to **DeepSeek 4.1 Flash with high reasoning effort**.
 That default is configured outside this repository, in the active DSH profile's `cordis.patch.yml`, on the `tool-subagent` row's `agentOptions`.
 It applies to every role, so the ordinary case needs no model decision at all: spawn the subagent and say nothing about models.
 
-## Max reasoning for premium models
+## One route only
 
-When a role is deliberately routed to a premium or top-tier model rather than the default, raise the reasoning effort to **max**.
+Every Chaos Redux subagent on DSH runs on `deepseek-official/deepseek-flash`. That is a standing user instruction, not a fallback.
 
-Treat a model as premium when it is not the default Flash model, for example a Pro-class or a project-named top-tier model such as `sol` or `astra`.
-For those children, request `max` rather than accepting the inherited `high`.
+| Route | Status |
+| --- | --- |
+| `deepseek-official/deepseek-flash` | The only authorized route |
+| `deepseek-official/deepseek-v4-pro` | Forbidden. Never spawn a subagent on it |
+| any other provider or model | Forbidden without a fresh explicit user instruction |
+
+Never spawn `deepseek-v4-pro`, not even for a role that looks like it needs stronger reasoning. If a task seems to need a stronger model, split it into narrower bounded subagents on Flash instead of escalating the model.
+
+`gpt-6-astra` named in the 3D pipeline and improvement-loop skills is a Blender MCP authoring route, not a subagent model route. It is not a model decision and does not conflict with this rule.
+
+Naming `provider` and `model` on a `subagent` call is still allowed, but the only value pair that may be supplied is `deepseek-official` with `deepseek-flash`. The ordinary case is simpler: say nothing about the model and let the configured Flash default apply.
 
 ## Selecting a model or effort per call
 
@@ -36,9 +45,9 @@ Model selection is enabled in this deployment, so the `subagent` tool accepts `p
 Two engine rules govern those fields.
 
 - **Provider and model are one route and must be supplied together.** Supplying only one is rejected. Effort may be supplied alone, because the configured default already fixes the route.
-- **Changing the route without an explicit effort clears the configured effort**, so the newly selected model falls back to its own default. Always pass `reasoning_effort` explicitly when you switch models, or a premium model will silently run below `max`.
+- **Changing the route without an explicit effort clears the configured effort**, so the newly selected run falls back to its own default. This matters only if the route itself ever changes; under the one-route rule, leave the route alone and pass `reasoning_effort` explicitly whenever the effort needs to be stated.
 
-The authorized routes are `deepseek-official/deepseek-flash` and `deepseek-official/deepseek-v4-pro`. An unauthorized route is rejected before the child starts, so do not attempt an unlisted provider.
+The authorized route is `deepseek-official/deepseek-flash`. The adapter also advertises `deepseek-official/deepseek-v4-pro`, and an unauthorized route is rejected before the child starts; `deepseek-v4-pro` is forbidden by the standing user instruction regardless of whether the adapter would accept it.
 
 ### What takes effect when
 
