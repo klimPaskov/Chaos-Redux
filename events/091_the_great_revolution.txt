@@ -20,77 +20,77 @@ add_namespace = chaosx.nr91
 ##############################################################################################################
 
 country_event = {
-    id = chaosx.nr91.1
-    title = chaosx.nr91.1.t
+	id = chaosx.nr91.1
+	title = chaosx.nr91.1.t
 
-    hidden = yes
-    is_triggered_only = yes
+	hidden = yes
+	is_triggered_only = yes
 
-    immediate = {
-        random_state = {
-            set_temp_variable = { REV.temp_oob_container = owner.id }
-            transfer_state_to = REV
-        }
-        REV = {
+	immediate = {
+		random_state = {
+			set_temp_variable = { REV.temp_oob_container = owner.id }
+			transfer_state_to = REV
+		}
+		REV = {
 			load_oob = "REV_1936"
 			create_communist_rebel_templates = yes
 			create_faction = revolution_front
 		} # if country doesn't exist, does nothing
-        every_state = {
-            limit = { is_owned_by = REV }
-            transfer_state_to = REV.temp_oob_container
-        }
-        every_state = {
-            limit = { is_core_of = SOV }
-            add_claim_by = REV
-        }
+		every_state = {
+			limit = { is_owned_by = REV }
+			transfer_state_to = REV.temp_oob_container
+		}
+		every_state = {
+			limit = { is_core_of = SOV }
+			add_claim_by = REV
+		}
 
-        # Annex all communist rebel states
-        every_country = {
-            limit = {
-                has_country_flag = communist_rebel_state
-                exists = yes
-            }
+		# Annex all communist rebel states
+		every_country = {
+			limit = {
+				has_country_flag = communist_rebel_state
+				exists = yes
+			}
 
-            every_controlled_state = {
-                add_core_of = REV
-            }
+			every_controlled_state = {
+				add_core_of = REV
+			}
 
-            every_unit_leader = {
-                set_nationality = REV
-            }
+			every_unit_leader = {
+				set_nationality = REV
+			}
 
-            # The Revolution annexes the rebel country completely
-            REV = {
-                annex_country = {
-                    target = PREV
-                    transfer_troops = yes
-                }
-                add_war_support = 0.05
-                add_stability = 0.05
-            }
+			# The Revolution annexes the rebel country completely
+			REV = {
+				annex_country = {
+					target = PREV
+					transfer_troops = yes
+				}
+				add_war_support = 0.05
+				add_stability = 0.05
+			}
 
-        }
+		}
 
-        every_country = {
-            limit = {
+		every_country = {
+			limit = {
 				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
 				NOT = { has_government = communism }
 			}
-            country_event = { id = chaosx.nr91.2 }
-        }
-        every_country = {
-            limit = {
+			country_event = { id = chaosx.nr91.2 }
+		}
+		every_country = {
+			limit = {
 				hidden_trigger = { NOT = { is_special_chaos_country = yes } }
 				has_government = communism
 			}
-            country_event = { id = chaosx.nr91.3 }
-        }
+			country_event = { id = chaosx.nr91.3 }
+		}
 		clr_global_flag = communism_spread
 		every_country = {
 			clear_communism_spread_system = yes
 		}
-    }
+	}
 }
 
 ##############################################################################################################
@@ -147,33 +147,33 @@ country_event = {
 ##############################################################################################################
 
 country_event = { # for communists
-    id = chaosx.nr91.3
-    title = chaosx.nr91.3.t
-    desc = chaosx.nr91.3.d
-    picture = GFX_report_event_lenin
+	id = chaosx.nr91.3
+	title = chaosx.nr91.3.t
+	desc = chaosx.nr91.3.d
+	picture = GFX_report_event_lenin
 
-    is_triggered_only = yes
+	is_triggered_only = yes
 
-    option = {
-        add_war_support = -0.05
-        name = chaosx.nr91.3.a
-        ai_chance = { base = 50 }
-    }
-    option = {
-        add_war_support = 0.05
-        add_political_power = 50
-        REV = { add_to_faction = ROOT }
-        name = chaosx.nr91.3.b
-        ai_chance = {
-            factor = 50
-            modifier = {
-                factor = 0
-                OR = {
-                    tag = SOV
-                    is_in_faction_with = SOV
-                    is_subject_of = SOV
-                }
-            }
-        }
-    }
+	option = {
+		add_war_support = -0.05
+		name = chaosx.nr91.3.a
+		ai_chance = { base = 50 }
+	}
+	option = {
+		add_war_support = 0.05
+		add_political_power = 50
+		REV = { add_to_faction = ROOT }
+		name = chaosx.nr91.3.b
+		ai_chance = {
+			factor = 50
+			modifier = {
+				factor = 0
+				OR = {
+					tag = SOV
+					is_in_faction_with = SOV
+					is_subject_of = SOV
+				}
+			}
+		}
+	}
 }

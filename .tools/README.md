@@ -61,6 +61,26 @@ This is the sole supported formable-state tool in `.tools`. It rebuilds the shar
 
 The former geometry, registry, and consumer compilers are retained under `archive/` as reviewed-build provenance. They are not normal maintenance commands and must be restored and reviewed deliberately before a map revision or new consumer is compiled.
 
+### Repository-wide static audits
+
+These audits answer source-only questions across the whole mod. They never launch Hearts of Iron IV and never claim live, engine, or render evidence. Each one is read-only; only `reindent_script_files.py` writes, and only with `--apply`.
+
+- `audit_localisation_static.py` checks every English localisation file for parse errors, BOM and header damage, duplicate keys, keys that no script binds, and events whose title or description key is missing. It reads each event's actual `title =` / `desc =` binding, so it does not assume the `<id>.t` convention, and it exempts `hidden = yes` events. The event-key check has a positive control: deleting a known key must make it appear.
+- `audit_asset_wiring_static.py` checks sprite registration against use. It reports `GFX_` names referenced but registered nowhere here or in vanilla, sprite registrations with no reference outside their own definition file, and texture or mesh references with no backing file. Asset references are resolved by filename, because Clausewitz searches the model folders recursively.
+- `reindent_script_files.py` enforces the repository's tab-indentation rule ("Indent script blocks with tabs"). It converts only the leading whitespace run of a line, preserves line endings and the UTF-8 BOM, and leaves already-tabbed lines alone. Run it with `--check` before `--apply`.
+
+```powershell
+python .tools/audit_localisation_static.py --json .tmp/loc_audit.json
+python .tools/audit_asset_wiring_static.py --json .tmp/asset_audit.json
+python .tools/reindent_script_files.py --check
+```
+
+Interpretation limits, which matter when reading the output:
+
+- A localisation key reported as unbound is not dead when scripted localisation or a `meta_effect` assembles its name at runtime, or when the engine resolves it by naming convention (an idea `picture`, a decision `icon`, an advisor portrait).
+- A sprite reported as unreferenced is likewise a candidate, not proof.
+- A missing localisation key and a missing asset file are exact findings and can be acted on directly.
+
 ### Event 006 static validators
 
 The maintained Event 006 validators protect the current source contracts without launching Hearts of Iron IV or claiming live execution:

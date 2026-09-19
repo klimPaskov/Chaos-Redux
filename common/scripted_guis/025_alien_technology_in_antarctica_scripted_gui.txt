@@ -14,32 +14,32 @@ scripted_gui = {
 		context_type = decision_category
 		window_name = "nr25_expedition_board_window"
 
-                visible = {
-                        is_ai = no
-                        has_country_flag = chaosx_nr25_participant
-                        NOT = { has_country_flag = chaosx_nr25_board_closed }
-                        OR = {
+				visible = {
+						is_ai = no
+						has_country_flag = chaosx_nr25_participant
+						NOT = { has_country_flag = chaosx_nr25_board_closed }
+						OR = {
 				has_global_flag = chaosx_nr25_active
 				has_global_flag = chaosx_nr25_final_recovery_resolved
 				has_country_flag = chaosx_nr25_terminal
 			}
 		}
 
-                effects = {
-                # Board controls remain presentation-safe. History and details
-                # use the existing shared log views; refresh rebuilds only this
-                # participant's five local action slots.
+				effects = {
+				# Board controls remain presentation-safe. History and details
+				# use the existing shared log views; refresh rebuilds only this
+				# participant's five local action slots.
 				nr25_board_refresh_click = {
 					clr_country_flag = chaosx_nr25_board_confirmation_open
 					clear_variable = chaosx_nr25_pending_action_slot
 					clr_country_flag = chaosx_nr25_board_closed
 					chaosx_nr25_prepare_board_slots = yes
-                }
-                nr25_board_history_click = {
-                        set_country_flag = events_log_window_open
-                        set_country_flag = events_log_history_tab
-                        refresh_events_log_system_history_views = yes
-                }
+				}
+				nr25_board_history_click = {
+						set_country_flag = events_log_window_open
+						set_country_flag = events_log_history_tab
+						refresh_events_log_system_history_views = yes
+				}
 				nr25_board_details_click = {
 					set_country_flag = events_log_window_open
 					set_country_flag = events_log_event_details_open
@@ -54,15 +54,15 @@ scripted_gui = {
 		# Sector and rival selection hooks carry no gameplay effect in this
 		# worker patch. The parent can route them to the existing country-scoped
 		# action helpers without changing the board layout.
-                nr25_sector_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_sector = yes }
-                nr25_sector_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_sector = yes }
-                nr25_sector_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_sector = yes }
-                nr25_sector_4_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.four } chaosx_nr25_select_board_sector = yes }
-                nr25_sector_5_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.five } chaosx_nr25_select_board_sector = yes }
-                nr25_sector_6_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.six } chaosx_nr25_select_board_sector = yes }
-                nr25_rival_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_rival = yes }
-                nr25_rival_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_rival = yes }
-                nr25_rival_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_rival = yes }
+				nr25_sector_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_sector = yes }
+				nr25_sector_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_sector = yes }
+				nr25_sector_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_sector = yes }
+				nr25_sector_4_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.four } chaosx_nr25_select_board_sector = yes }
+				nr25_sector_5_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.five } chaosx_nr25_select_board_sector = yes }
+				nr25_sector_6_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.six } chaosx_nr25_select_board_sector = yes }
+				nr25_rival_1_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.one } chaosx_nr25_select_board_rival = yes }
+				nr25_rival_2_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.two } chaosx_nr25_select_board_rival = yes }
+				nr25_rival_3_select_click = { set_temp_variable = { chaosx_nr25_board_slot = constant:chaosx_nr25_value.three } chaosx_nr25_select_board_rival = yes }
 
 				# Action clicks only stage the slot. The parent-owned execution helper
 				# remains the sole authority for costs, requirements, and effects.

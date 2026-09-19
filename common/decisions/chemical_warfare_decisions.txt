@@ -3,16 +3,16 @@
 # - `common/script_constants/biological_doomsday_constants.txt` (bio_doomsday_ai)
 
 chaosx_cbw_doom_category = {
-    chem_unleash_stockpiled_cylinders = {
+	chem_unleash_stockpiled_cylinders = {
 		icon = GFX_decision_chaos_doom
-        cost = constant:cbw_doom_decision.defaults.pp_cost
-        days_re_enable = constant:cbw_doom_decision.defaults.cooldown_days
+		cost = constant:cbw_doom_decision.defaults.pp_cost
+		days_re_enable = constant:cbw_doom_decision.defaults.cooldown_days
 
-        available = {
-            has_government = fascism
-            has_war = yes
-            NOT = { has_capitulated = yes }
-            surrender_progress > constant:cbw_doom_decision.defaults.surrender_threshold
+		available = {
+			has_government = fascism
+			has_war = yes
+			NOT = { has_capitulated = yes }
+			surrender_progress > constant:cbw_doom_decision.defaults.surrender_threshold
 			custom_trigger_tooltip = {
 				tooltip = cbrn_chemical_doomsday_policy_tt
 				cbrn_policy_allows_extreme_use = yes
@@ -21,13 +21,13 @@ chaosx_cbw_doom_category = {
 				tooltip = cbrn_chemical_doomsday_target_tt
 				cbrn_chemical_doomsday_actor_has_target = yes
 			}
-            OR = {
-                has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
-                has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
-                has_equipment = { chemical_mustard_payload_cylinder_1 > 0 }
-                has_equipment = { chemical_lewisite_payload_cylinder_1 > 0 }
-            }
-        }
+			OR = {
+				has_equipment = { chemical_chlorine_payload_cylinder_1 > 0 }
+				has_equipment = { chemical_phosgene_payload_cylinder_1 > 0 }
+				has_equipment = { chemical_mustard_payload_cylinder_1 > 0 }
+				has_equipment = { chemical_lewisite_payload_cylinder_1 > 0 }
+			}
+		}
 
 	        ai_will_do = {
 	            base = constant:chem_doom_ai.defaults.base
@@ -35,11 +35,11 @@ chaosx_cbw_doom_category = {
 	                add = constant:chem_doom_ai.defaults.add_base
 	                is_ai = yes
 	            }
-            modifier = {
-                add = constant:chem_doom_ai.defaults.add_high_morale
-                check_variable = { stability > constant:chem_doom_ai.defaults.stability_threshold }
-                check_variable = { war_support > constant:chem_doom_ai.defaults.war_support_threshold }
-            }
+			modifier = {
+				add = constant:chem_doom_ai.defaults.add_high_morale
+				check_variable = { stability > constant:chem_doom_ai.defaults.stability_threshold }
+				check_variable = { war_support > constant:chem_doom_ai.defaults.war_support_threshold }
+			}
 	            modifier = {
 	                add = constant:chem_doom_ai.defaults.add_big_stockpile
 	                OR = {
@@ -55,23 +55,23 @@ chaosx_cbw_doom_category = {
 	            }
 	        }
 
-        complete_effect = {
-            custom_effect_tooltip = chem_unleash_stockpiled_cylinders_tt
-            hidden_effect = {
-                chem_unleash_stockpile_doomsday = yes
-            }
-            if = {
-                limit = {
-                    check_variable = {
-                        var = cbrn_doomsday_release_status
-                        value = constant:cbrn_proof.supplied
-                        compare = equals
-                    }
-                }
-                news_event = { id = chaosx_cbw_doom.1 }
-            }
-        }
-    }
+		complete_effect = {
+			custom_effect_tooltip = chem_unleash_stockpiled_cylinders_tt
+			hidden_effect = {
+				chem_unleash_stockpile_doomsday = yes
+			}
+			if = {
+				limit = {
+					check_variable = {
+						var = cbrn_doomsday_release_status
+						value = constant:cbrn_proof.supplied
+						compare = equals
+					}
+				}
+				news_event = { id = chaosx_cbw_doom.1 }
+			}
+		}
+	}
 
 	bio_unleash_stockpiled_pathogens = {
 		icon = GFX_decision_bio_unleash_stockpiled_pathogens

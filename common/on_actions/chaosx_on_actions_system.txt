@@ -1,186 +1,186 @@
 on_actions = {
 
-    # Initialization and activation of the event system
-    on_startup = {
-        effect = {
-            # Global initialization
-            random_country = {
-                initialize_event_system = yes
-                doctrine_research_initialize_adapter_registry = yes
-                initialize_chaos_meter_system = yes
-                initialize_global_settings_system = yes
-                initialize_welcome_screen_values = yes
-            }
+	# Initialization and activation of the event system
+	on_startup = {
+		effect = {
+			# Global initialization
+			random_country = {
+				initialize_event_system = yes
+				doctrine_research_initialize_adapter_registry = yes
+				initialize_chaos_meter_system = yes
+				initialize_global_settings_system = yes
+				initialize_welcome_screen_values = yes
+			}
 
-            # Player(s) initialization
-            every_country = {
-                limit = { is_ai = no }
+			# Player(s) initialization
+			every_country = {
+				limit = { is_ai = no }
 
-                set_country_flag = events_activated # Event system activation
+				set_country_flag = events_activated # Event system activation
 
-                # Initialize tag switch detection variable for current human players
-                set_country_flag = was_human_yesterday
-            }
+				# Initialize tag switch detection variable for current human players
+				set_country_flag = was_human_yesterday
+			}
 
-            # All countries initialization
-            every_possible_country = {
-                limit = { always = yes }
+			# All countries initialization
+			every_possible_country = {
+				limit = { always = yes }
 
-                set_variable_to_random = {
-                    var = event_timer_days
-                    min = constant:event_system_timer_random_start.min
-                    max = constant:event_system_timer_random_start.max
-                    integer = yes
-                }
-                if = {
-                    limit = { is_ai = no }
-                    log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?event_timer_days] days for [THIS.GetName]"
-                }
+				set_variable_to_random = {
+					var = event_timer_days
+					min = constant:event_system_timer_random_start.min
+					max = constant:event_system_timer_random_start.max
+					integer = yes
+				}
+				if = {
+					limit = { is_ai = no }
+					log = "CHAOS REDUX EVENT SYSTEM: First event timer set to [?event_timer_days] days for [THIS.GetName]"
+				}
 
-                initialize_dynamic_timer = yes
-                initialize_settings_system = yes
-                update_timer_window_dynamic_range = yes
-            }
+				initialize_dynamic_timer = yes
+				initialize_settings_system = yes
+				update_timer_window_dynamic_range = yes
+			}
 
-            random_country = {
-                limit = { is_ai = no }
-                set_country_flag = is_global_host
-            }
+			random_country = {
+				limit = { is_ai = no }
+				set_country_flag = is_global_host
+			}
 
-            every_country = {
-                limit = { is_ai = no }
-                set_country_flag = chaosx_welcome_flag # Welcome event
-            }
-        }
-    }
+			every_country = {
+				limit = { is_ai = no }
+				set_country_flag = chaosx_welcome_flag # Welcome event
+			}
+		}
+	}
 
-    # Daily check (for every country)
-    on_daily = {
-        effect = {
-            # Event 031 achievement tag-switch guard.  This runs only for a
-            # country that already owns an Event 031 achievement ledger.
-            if = {
-                limit = {
-                    is_ai = yes
-                    has_country_flag = was_human_yesterday
-                    has_country_flag = random_terror_achievement_ledger_initialized
-                }
-                random_terror_achievement_record_tag_switch = yes
-            }
+	# Daily check (for every country)
+	on_daily = {
+		effect = {
+			# Event 031 achievement tag-switch guard.  This runs only for a
+			# country that already owns an Event 031 achievement ledger.
+			if = {
+				limit = {
+					is_ai = yes
+					has_country_flag = was_human_yesterday
+					has_country_flag = random_terror_achievement_ledger_initialized
+				}
+				random_terror_achievement_record_tag_switch = yes
+			}
 
-            # Tag switch detection system
-            if = {
-                limit = {
-                    OR = {
-                        has_global_flag = settings_auto_enable_on_switch
-                        has_global_flag = settings_disable_previous_tag
-                    }
-                }
+			# Tag switch detection system
+			if = {
+				limit = {
+					OR = {
+						has_global_flag = settings_auto_enable_on_switch
+						has_global_flag = settings_disable_previous_tag
+					}
+				}
 
-                # Check for tag switch TO this country (now human, wasn't yesterday)
-                if = {
-                    limit = {
-                        is_ai = no
-                        NOT = { has_country_flag = was_human_yesterday }
-                        has_global_flag = settings_auto_enable_on_switch
-                    }
+				# Check for tag switch TO this country (now human, wasn't yesterday)
+				if = {
+					limit = {
+						is_ai = no
+						NOT = { has_country_flag = was_human_yesterday }
+						has_global_flag = settings_auto_enable_on_switch
+					}
 
-                    log = "CHAOS REDUX TAG MANAGEMENT: New human player detected for [This.GetTag] ([This.GetName])"
+					log = "CHAOS REDUX TAG MANAGEMENT: New human player detected for [This.GetTag] ([This.GetName])"
 
-                    # Auto-enable events for new human player
-                    if = {
-                        limit = { NOT = { has_country_flag = events_activated } }
+					# Auto-enable events for new human player
+					if = {
+						limit = { NOT = { has_country_flag = events_activated } }
 
-                        set_country_flag = events_activated
+						set_country_flag = events_activated
 
-                        # Add to enabled countries list
-                        if = {
-                            limit = { NOT = { is_in_array = { array = global.enabled_countries_list value = THIS } } }
-                            add_to_array = { array = global.enabled_countries_list value = THIS }
-                            add_to_variable = { global.enabled_countries_count = 1 }
-                        }
+						# Add to enabled countries list
+						if = {
+							limit = { NOT = { is_in_array = { array = global.enabled_countries_list value = THIS } } }
+							add_to_array = { array = global.enabled_countries_list value = THIS }
+							add_to_variable = { global.enabled_countries_count = 1 }
+						}
 
-                        log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for new human player [This.GetTag] ([This.GetName])"
-                        black_friday_on_event_system_resumed = yes
-                    }
-                    black_friday_refresh_active_cost_modifier = yes
-                }
+						log = "CHAOS REDUX TAG MANAGEMENT: Auto-enabled event system for new human player [This.GetTag] ([This.GetName])"
+						black_friday_on_event_system_resumed = yes
+					}
+					black_friday_refresh_active_cost_modifier = yes
+				}
 
-                # Check for tag switch FROM this country (now AI, was human yesterday)
-                if = {
-                    limit = {
-                        is_ai = yes
-                        has_country_flag = was_human_yesterday
-                        has_global_flag = settings_disable_previous_tag
-                    }
+				# Check for tag switch FROM this country (now AI, was human yesterday)
+				if = {
+					limit = {
+						is_ai = yes
+						has_country_flag = was_human_yesterday
+						has_global_flag = settings_disable_previous_tag
+					}
 
-                    log = "CHAOS REDUX TAG MANAGEMENT: Former human player detected for [This.GetTag] ([This.GetName])"
+					log = "CHAOS REDUX TAG MANAGEMENT: Former human player detected for [This.GetTag] ([This.GetName])"
 
-                    # Auto-disable events for former human player
-                    if = {
-                        limit = { has_country_flag = events_activated }
+					# Auto-disable events for former human player
+					if = {
+						limit = { has_country_flag = events_activated }
 
-                        clr_country_flag = events_activated
+						clr_country_flag = events_activated
 
-                        # Remove from enabled countries list
-                        if = {
-                            limit = { is_in_array = { array = global.enabled_countries_list value = THIS } }
-                            remove_from_array = { array = global.enabled_countries_list value = THIS }
-                            subtract_from_variable = { global.enabled_countries_count = 1 }
-                        }
+						# Remove from enabled countries list
+						if = {
+							limit = { is_in_array = { array = global.enabled_countries_list value = THIS } }
+							remove_from_array = { array = global.enabled_countries_list value = THIS }
+							subtract_from_variable = { global.enabled_countries_count = 1 }
+						}
 
-                        log = "CHAOS REDUX TAG MANAGEMENT: Auto-disabled event system for former human player [This.GetTag] ([This.GetName])"
-                    }
-                }
+						log = "CHAOS REDUX TAG MANAGEMENT: Auto-disabled event system for former human player [This.GetTag] ([This.GetName])"
+					}
+				}
 
-                # Update tracking flag for next day
-                if = {
-                    limit = { is_ai = no }
-                    set_country_flag = was_human_yesterday
-                }
-                else = {
-                    clr_country_flag = was_human_yesterday
-                }
-            }
+				# Update tracking flag for next day
+				if = {
+					limit = { is_ai = no }
+					set_country_flag = was_human_yesterday
+				}
+				else = {
+					clr_country_flag = was_human_yesterday
+				}
+			}
 
-            # Keep the historical human marker current even when the global
-            # tag-management settings are disabled.  Event 031 uses the
-            # marker above to reject switching away from a tracked country.
-            if = {
-                limit = { is_ai = no }
-                set_country_flag = was_human_yesterday
-            }
-            else = {
-                clr_country_flag = was_human_yesterday
-            }
+			# Keep the historical human marker current even when the global
+			# tag-management settings are disabled.  Event 031 uses the
+			# marker above to reject switching away from a tracked country.
+			if = {
+				limit = { is_ai = no }
+				set_country_flag = was_human_yesterday
+			}
+			else = {
+				clr_country_flag = was_human_yesterday
+			}
 
-            # Event 031 achievement proof is reconciled in this existing
-            # country pass; no additional world-iteration on_action is added.
-            if = {
-                limit = {
-                    OR = {
-                        has_country_flag = random_terror_affected_country
-                        has_country_flag = random_terror_actor
-                        has_country_flag = random_terror_achievement_ledger_initialized
-                    }
-                }
-                random_terror_achievement_daily_tick = yes
-            }
+			# Event 031 achievement proof is reconciled in this existing
+			# country pass; no additional world-iteration on_action is added.
+			if = {
+				limit = {
+					OR = {
+						has_country_flag = random_terror_affected_country
+						has_country_flag = random_terror_actor
+						has_country_flag = random_terror_achievement_ledger_initialized
+					}
+				}
+				random_terror_achievement_daily_tick = yes
+			}
 
-            # Handle event timers for countries with events activated
-            if = {
-                limit = {
-                    has_country_flag = events_activated
-                    NOT = { has_global_flag = world_end }
-                }
+			# Handle event timers for countries with events activated
+			if = {
+				limit = {
+					has_country_flag = events_activated
+					NOT = { has_global_flag = world_end }
+				}
 
-                # Handle dynamic event timer
-                check_event_timer = yes
-                update_timer_window_dynamic_range = yes
+				# Handle dynamic event timer
+				check_event_timer = yes
+				update_timer_window_dynamic_range = yes
 
-                # If timer reached 0, fire events
-                if = {
-                    limit = { check_variable = { event_timer_days = 0 } }
+				# If timer reached 0, fire events
+				if = {
+					limit = { check_variable = { event_timer_days = 0 } }
 
 					set_temp_variable = { random_event_selection_filter = constant:settings_event_filter.all }
 					select_weighted_random_event_id = yes
@@ -193,14 +193,14 @@ on_actions = {
 						clear_variable = automatic_event_firing_context
 					}
 
-                    # Log debug information after events are processed
-                    if = {
-                        limit = { has_global_flag = settings_logic_log_lines_enabled }
-                        log_event_system_debug = yes
-                    }
-                }
-            }
-        }
-    }
+					# Log debug information after events are processed
+					if = {
+						limit = { has_global_flag = settings_logic_log_lines_enabled }
+						log_event_system_debug = yes
+					}
+				}
+			}
+		}
+	}
 
 }

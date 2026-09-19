@@ -3,141 +3,141 @@
 # and define entry_name here
 
 zombie_outbreak_chance = {
-    # Base time until next outbreak (in days)
-    base = constant:zombie_outbreak.base_days
+	# Base time until next outbreak (in days)
+	base = constant:zombie_outbreak.base_days
 
-    # The opening phase should stay relatively contained.
-    modifier = {
-        factor = constant:zombie_outbreak.initial_outbreak_factor
-        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.low_chaos_factor
-        has_global_flag = { flag = chaos_tier value = 0 }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.rising_chaos_factor
-        has_global_flag = { flag = chaos_tier value = 1 }
-    }
+	# The opening phase should stay relatively contained.
+	modifier = {
+		factor = constant:zombie_outbreak.initial_outbreak_factor
+		ZZZ = { has_country_flag = { flag = zombie_current_tier value = 0 } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.low_chaos_factor
+		has_global_flag = { flag = chaos_tier value = 0 }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.rising_chaos_factor
+		has_global_flag = { flag = chaos_tier value = 1 }
+	}
 
-    # Zombie evolution increases outbreak chance
-    modifier = {
-        factor = constant:zombie_outbreak.tier_1_factor
-        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.tier_2_factor
-        ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.tier_3_factor
-        ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
-    }
+	# Zombie evolution increases outbreak chance
+	modifier = {
+		factor = constant:zombie_outbreak.tier_1_factor
+		ZZZ = { has_country_flag = { flag = zombie_current_tier value > 0 } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.tier_2_factor
+		ZZZ = { has_country_flag = { flag = zombie_current_tier value > 1 } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.tier_3_factor
+		ZZZ = { has_country_flag = { flag = zombie_current_tier value = 3 } }
+	}
 
-    # Prevention measures reduce chance
-    modifier = {
-        factor = constant:zombie_outbreak.hygiene_factor
-        has_country_flag = hygiene_measures_enforced
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.migration_factor
-        has_country_flag = migration_restricted
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.quarantine_factor
-        has_country_flag = quarantine_protocols_active
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.border_closure_factor
-        has_country_flag = borders_completely_closed
-    }
-    modifier = {
-        factor = constant:zombie_postwar.outbreak_prevention_factor
-        has_idea = zombie_postwar_global_vigilance
-    }
+	# Prevention measures reduce chance
+	modifier = {
+		factor = constant:zombie_outbreak.hygiene_factor
+		has_country_flag = hygiene_measures_enforced
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.migration_factor
+		has_country_flag = migration_restricted
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.quarantine_factor
+		has_country_flag = quarantine_protocols_active
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.border_closure_factor
+		has_country_flag = borders_completely_closed
+	}
+	modifier = {
+		factor = constant:zombie_postwar.outbreak_prevention_factor
+		has_idea = zombie_postwar_global_vigilance
+	}
 
-    # Outbreak-prevention tech chain
-    modifier = {
-        factor = constant:bio_outbreak_prevention.t1
-        has_bio_outbreak_prevention_tier_1_only = yes
-    }
-    modifier = {
-        factor = constant:bio_outbreak_prevention.t2
-        has_bio_outbreak_prevention_tier_2_only = yes
-    }
-    modifier = {
-        factor = constant:bio_outbreak_prevention.t3
-        has_bio_outbreak_prevention_tier_3 = yes
-    }
+	# Outbreak-prevention tech chain
+	modifier = {
+		factor = constant:bio_outbreak_prevention.t1
+		has_bio_outbreak_prevention_tier_1_only = yes
+	}
+	modifier = {
+		factor = constant:bio_outbreak_prevention.t2
+		has_bio_outbreak_prevention_tier_2_only = yes
+	}
+	modifier = {
+		factor = constant:bio_outbreak_prevention.t3
+		has_bio_outbreak_prevention_tier_3 = yes
+	}
 
-    # Population-based risk - higher population = higher risk
-    modifier = {
-        factor = constant:zombie_outbreak.population_very_high_factor
-        check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.population_high_factor
-        check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold }
-        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.population_medium_high_factor
-        check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold }
-        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.population_medium_factor
-        check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold }
-        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.population_low_factor
-        check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold }
-        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold } }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.population_very_low_factor
-        NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold } }
-    }
+	# Population-based risk - higher population = higher risk
+	modifier = {
+		factor = constant:zombie_outbreak.population_very_high_factor
+		check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.population_high_factor
+		check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold }
+		NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_very_high_threshold } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.population_medium_high_factor
+		check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold }
+		NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_high_threshold } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.population_medium_factor
+		check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold }
+		NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_high_threshold } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.population_low_factor
+		check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold }
+		NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_medium_threshold } }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.population_very_low_factor
+		NOT = { check_variable = { max_manpower_k > constant:zombie_outbreak.population_low_threshold } }
+	}
 
-    # Low-capacity countries are more exposed while advanced countries are safer.
-    modifier = {
-        factor = constant:zombie_outbreak.research_slots_very_low_factor
-        amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.research_slots_low_factor
-        amount_research_slots < constant:zombie_outbreak.research_slots_low_threshold
-        NOT = { amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.research_slots_high_factor
-        amount_research_slots > constant:zombie_outbreak.research_slots_high_threshold
-        NOT = { amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.research_slots_very_high_factor
-        amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold
-    }
+	# Low-capacity countries are more exposed while advanced countries are safer.
+	modifier = {
+		factor = constant:zombie_outbreak.research_slots_very_low_factor
+		amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.research_slots_low_factor
+		amount_research_slots < constant:zombie_outbreak.research_slots_low_threshold
+		NOT = { amount_research_slots < constant:zombie_outbreak.research_slots_very_low_threshold }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.research_slots_high_factor
+		amount_research_slots > constant:zombie_outbreak.research_slots_high_threshold
+		NOT = { amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.research_slots_very_high_factor
+		amount_research_slots > constant:zombie_outbreak.research_slots_very_high_threshold
+	}
 
-    modifier = {
-        factor = constant:zombie_outbreak.factories_very_low_factor
-        num_of_factories < constant:zombie_outbreak.factories_very_low_threshold
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.factories_low_factor
-        num_of_factories < constant:zombie_outbreak.factories_low_threshold
-        NOT = { num_of_factories < constant:zombie_outbreak.factories_very_low_threshold }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.factories_high_factor
-        num_of_factories > constant:zombie_outbreak.factories_high_threshold
-        NOT = { num_of_factories > constant:zombie_outbreak.factories_very_high_threshold }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.factories_very_high_factor
-        num_of_factories > constant:zombie_outbreak.factories_very_high_threshold
-    }
+	modifier = {
+		factor = constant:zombie_outbreak.factories_very_low_factor
+		num_of_factories < constant:zombie_outbreak.factories_very_low_threshold
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.factories_low_factor
+		num_of_factories < constant:zombie_outbreak.factories_low_threshold
+		NOT = { num_of_factories < constant:zombie_outbreak.factories_very_low_threshold }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.factories_high_factor
+		num_of_factories > constant:zombie_outbreak.factories_high_threshold
+		NOT = { num_of_factories > constant:zombie_outbreak.factories_very_high_threshold }
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.factories_very_high_factor
+		num_of_factories > constant:zombie_outbreak.factories_very_high_threshold
+	}
 
 	modifier = {
 		factor = constant:zombie_outbreak.rear_state_medium_risk_factor
@@ -154,19 +154,19 @@ zombie_outbreak_chance = {
 		factor = constant:zombie_outbreak.rear_state_extreme_risk_factor
 		any_controlled_state = {
 			is_extreme_risk_rear_zombie_outbreak_state = yes
-        }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.rear_state_high_risk_factor
-        any_controlled_state = {
-            is_high_risk_rear_zombie_outbreak_state = yes
-        }
-        NOT = {
-            any_controlled_state = {
-                is_extreme_risk_rear_zombie_outbreak_state = yes
-            }
-        }
-    }
+		}
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.rear_state_high_risk_factor
+		any_controlled_state = {
+			is_high_risk_rear_zombie_outbreak_state = yes
+		}
+		NOT = {
+			any_controlled_state = {
+				is_extreme_risk_rear_zombie_outbreak_state = yes
+			}
+		}
+	}
 
 	# Direct borders matter, but they no longer hard-gate the whole system.
 	modifier = {
@@ -190,83 +190,83 @@ zombie_outbreak_chance = {
 		NOT = { has_same_continent_zombie_presence = yes }
 	}
 
-    # Island nations are safer
-    modifier = {
-        factor = constant:zombie_outbreak.island_factor
-        capital_scope = { is_island_state = yes }
-    }
+	# Island nations are safer
+	modifier = {
+		factor = constant:zombie_outbreak.island_factor
+		capital_scope = { is_island_state = yes }
+	}
 
 	# Established major powers generally have more capacity to suppress outbreaks.
 	modifier = {
 		factor = constant:zombie_outbreak.major_factor
 		is_major = yes
-    }
+	}
 
-    # Reduce chance for countries with very few states
-    modifier = {
-        factor = constant:zombie_outbreak.low_state_count_factor
-        num_of_controlled_states < constant:zombie_outbreak.low_state_count_threshold
-    }
+	# Reduce chance for countries with very few states
+	modifier = {
+		factor = constant:zombie_outbreak.low_state_count_factor
+		num_of_controlled_states < constant:zombie_outbreak.low_state_count_threshold
+	}
 
-    # Each time the central zombie horde is crushed, new outbreaks become rarer.
-    modifier = {
-        factor = constant:zombie_outbreak.first_main_collapse_factor
-        check_variable = {
-            var = global.zombie_main_capitulation_count
-            value = 1
-            compare = greater_than_or_equals
-        }
-    }
-    modifier = {
-        factor = constant:zombie_outbreak.second_main_collapse_factor
-        check_variable = {
-            var = global.zombie_main_capitulation_count
-            value = 2
-            compare = greater_than_or_equals
-        }
-    }
+	# Each time the central zombie horde is crushed, new outbreaks become rarer.
+	modifier = {
+		factor = constant:zombie_outbreak.first_main_collapse_factor
+		check_variable = {
+			var = global.zombie_main_capitulation_count
+			value = 1
+			compare = greater_than_or_equals
+		}
+	}
+	modifier = {
+		factor = constant:zombie_outbreak.second_main_collapse_factor
+		check_variable = {
+			var = global.zombie_main_capitulation_count
+			value = 2
+			compare = greater_than_or_equals
+		}
+	}
 }
 
 # [source: common/mtth/006_independence_wave_evolution_mtth.txt]
 # Event 006 samples this interval only while an active incident is evolving;
 # it is not driven by a periodic world-iteration on action.
 independence_wave_evolution_interval = {
-    base = constant:independence_wave_evolution_mtth.base_days
+	base = constant:independence_wave_evolution_mtth.base_days
 
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.world_collapse_factor
-        has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final }
-    }
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.totalen_chaos_factor
-        has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_4 }
-    }
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.chaos_tier_factor
-        has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_3 }
-    }
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.rising_chaos_factor
-        has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_2 }
-    }
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.gathering_storm_factor
-        has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_1 }
-    }
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.thin_network_factor
-        check_variable = {
-            var = global.independence_wave_active_country_count
-            value = constant:independence_wave_league.minimum_living_origins
-            compare = less_than
-        }
-    }
-    modifier = {
-        factor = constant:independence_wave_evolution_mtth.dense_network_factor
-        check_variable = {
-            var = global.independence_wave_active_country_count
-            value = constant:independence_wave_evolution_mtth.dense_network_country_count
-            compare = greater_than_or_equals
-        }
-    }
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.world_collapse_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_final }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.totalen_chaos_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_4 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.chaos_tier_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_3 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.rising_chaos_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_2 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.gathering_storm_factor
+		has_global_flag = { flag = chaos_tier value = constant:chaos_meter_tier_id.tier_1 }
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.thin_network_factor
+		check_variable = {
+			var = global.independence_wave_active_country_count
+			value = constant:independence_wave_league.minimum_living_origins
+			compare = less_than
+		}
+	}
+	modifier = {
+		factor = constant:independence_wave_evolution_mtth.dense_network_factor
+		check_variable = {
+			var = global.independence_wave_active_country_count
+			value = constant:independence_wave_evolution_mtth.dense_network_country_count
+			compare = greater_than_or_equals
+		}
+	}
 }

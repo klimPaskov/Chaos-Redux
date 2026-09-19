@@ -1,40 +1,40 @@
 scripted_gui = {
-    chaosx_super_events = {
-        context_type = player_context
-        window_name = "chaosx_super_events"
+	chaosx_super_events = {
+		context_type = player_context
+		window_name = "chaosx_super_events"
 
-        visible = {
-            has_global_flag  = super_event_visible
-            # Fallout owns a separate blackout overlay. Do not expose the
-            # ordinary super-event surface during its consequence transition.
-            NOT = { has_global_flag = world_end_fallout }
-        }
+		visible = {
+			has_global_flag  = super_event_visible
+			# Fallout owns a separate blackout overlay. Do not expose the
+			# ordinary super-event surface during its consequence transition.
+			NOT = { has_global_flag = world_end_fallout }
+		}
 
-        effects = {
-            super_event_close_click = {
-                clr_global_flag = super_event_visible
-                clear_variable = global.current_super_event_audio_id
-                if = {
-                    limit = { has_event_target = natural_disaster_super_event_scope }
-                    clear_global_event_target = natural_disaster_super_event_scope
-                }
-                clr_global_flag = brilliant_scientist_super_event_actor_cleanup_pending
-                if = {
-                    limit = { has_event_target = brilliant_scientist_super_event_actor }
-                    clear_global_event_target = brilliant_scientist_super_event_actor
-                }
+		effects = {
+			super_event_close_click = {
+				clr_global_flag = super_event_visible
+				clear_variable = global.current_super_event_audio_id
+				if = {
+					limit = { has_event_target = natural_disaster_super_event_scope }
+					clear_global_event_target = natural_disaster_super_event_scope
+				}
+				clr_global_flag = brilliant_scientist_super_event_actor_cleanup_pending
+				if = {
+					limit = { has_event_target = brilliant_scientist_super_event_actor }
+					clear_global_event_target = brilliant_scientist_super_event_actor
+				}
 				natural_disaster_dispatch_queued_super_event = yes
-            }
-        }
+			}
+		}
 
-        properties = {
-            super_event_image = {
-                image = "[GetSuperEventImage]"
-            }
-        }
+		properties = {
+			super_event_image = {
+				image = "[GetSuperEventImage]"
+			}
+		}
 
-        ai_enabled = {
-            always = no
-        }
-    }
+		ai_enabled = {
+			always = no
+		}
+	}
 }
