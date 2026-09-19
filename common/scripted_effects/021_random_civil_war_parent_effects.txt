@@ -715,6 +715,7 @@ event021_parent_emit_multifront_news = {
 event021_global_review_current_country = {
 	event021_record_capital_continuity = yes
 	event021_review_current_country = yes
+	event021_parent_review_exposure_lifecycle = yes
 	event021_parent_review_evolution_ii_overlay = yes
 	event021_parent_emit_multifront_news = yes
 	event021_parent_prepare_route_evidence = yes
@@ -5982,6 +5983,23 @@ event021_parent_dispatch_opening = {
 		event021_dequeue_critical_country = yes
 	}
 	event021_refresh_target_pool_membership = yes
+}
+
+# COUNTRY scope. A neighboring exposure is valid only while its source crisis
+# remains live and administratively usable. This review runs only for the
+# already-selected bounded registry row and removes stale presentation,
+# decision, route, and source receipts without scanning the world.
+event021_parent_review_exposure_lifecycle = {
+	if = {
+		limit = {
+			OR = {
+				has_country_flag = random_civil_war_exposure_active
+				has_country_flag = random_civil_war_neighbor_exposure
+			}
+			NOT = { event021_country_can_manage_exposure = yes }
+		}
+		event021_cleanup_regional_exposure = yes
+	}
 }
 
 # COUNTRY scope on an exposed regional neighbour. This records the source and

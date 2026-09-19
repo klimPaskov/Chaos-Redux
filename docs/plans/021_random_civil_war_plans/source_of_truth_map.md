@@ -241,3 +241,13 @@ The matching read-only `hoi4_probability_inspect` request for `common/ai_strateg
 Shared `event021_cleanup_crisis` now clears all transient Event 021 AI role profiles (government, ordinary opposition, neighbor, and sponsor profiles) while preserving successor-side and durable Event 006/package receipts. This closes the stale-role cleanup defect; live settlement/recurrence cleanup remains untested.
 
 The post-repair root `hoi4.event_inspect` lint returned `EVENT_INSPECTED_PARTIAL` at revision `eaf3959901e4167e7bce1d305f697f92e8f94e7f336001e344b912ccf821f498`, with zero blocking diagnostics and zero skipped sources. The current parent `random_list` probability inspection returned `PROBABILITY_SOURCE_INSPECTED` with eight candidates, one unresolved runtime input, and `poolComplete = false`; both remain partial evidence rather than final certificates.
+
+## 2026-09-19 regional exposure lifecycle repair
+
+The owner-applied exposure repair adds `event021_parent_review_exposure_lifecycle` to `event021_global_review_current_country`. The helper is evaluated only on the current bounded registry row and calls `event021_cleanup_regional_exposure` when `event021_country_can_manage_exposure` is no longer true, so a neighbor whose source crisis has ended, settled, or become unusable cannot retain exposure UI, route, role, or aid receipts.
+
+`event021_cleanup_regional_exposure` now clears `random_civil_war_neighbor_exposure`, the three route-ready flags, exposure review/presentation receipts, containment/mediator/sponsor roles, separate relief/support flags, neighbor action state, mediation/relief/border-monitoring state, and the saved exposure source/channel variables before setting the centralized cooldown. This is a bounded source repair; the live expiry and post-settlement sequence remain a user testing gate.
+
+Current hashes are `common/scripted_effects/021_random_civil_war_effects.txt` `596e5f5f11682ff348c68243bcdbcd682c0d3d489ea33b4667629a1ff8be2d12` and `common/scripted_effects/021_random_civil_war_parent_effects.txt` `c1f38764b60fdbb1f46791db0e6f5c4b0e72551c67a654a758580ef81fb57145`.
+
+The refreshed focused root lint returned `EVENT_INSPECTED_PARTIAL` at revision `dec87bc5349e92d00e2affee2cb645e0aa4f9f91aad80ed2cf5a584674fef0f7`, with zero blocking diagnostics and zero skipped sources. The artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/d9efd5e0461b81f9c34400c27fd66cf4f225f5a8335ac8c8e6d247b3159a71cf/854b4999ea10d00d16bdc6acb6128054189b07786641c8cd20f0bb4dd7dbb6f3/event-lint-dec87bc5349e.json`; validation remains partial because helper and lifecycle projections are deferred for the large workspace.

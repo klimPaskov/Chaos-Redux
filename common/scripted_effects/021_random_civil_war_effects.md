@@ -51,7 +51,7 @@ All tuning values are read from `common/script_constants/021_random_civil_war_co
 `event021_prepare_event6_admission`, `event021_confirm_event6_identity`, `event021_record_event6_origin`, and `event021_apply_event6_origin_adapter` carry the Event 006 admission and origin receipt without mutating Event 006 lifecycle state.
 
 `event021_prepare_same_tag_route`, `event021_cleanup_same_tag_route`, `event021_apply_regional_exposure`, `event021_advance_regional_exposure`, and `event021_cleanup_regional_exposure` own same-tag and neighboring exposure state. Same-tag cleanup also removes the route and all-island receipts so a resolved contest cannot seed a later target review.
-`event021_apply_regional_exposure` publishes both the durable exposure marker and the `random_civil_war_neighbor_exposure` presentation marker, so the category, decision, and AI surfaces follow the same live state and cleanup removes both markers together.
+`event021_apply_regional_exposure` publishes both the durable exposure marker and the `random_civil_war_neighbor_exposure` presentation marker, so the category, decision, and AI surfaces follow the same live state. `event021_parent_review_exposure_lifecycle` runs from the bounded registered-country review and calls cleanup when the source crisis is no longer usable; cleanup removes both markers, route and role receipts, separate relief/support action state, and the saved source pointer before applying the centralized cooldown.
 
 `event021_sync_evolution_state` publishes the three evolution stages and invokes disabled-evolution safety.
 

@@ -16,7 +16,7 @@ Critical queue admission is independent from current theater capacity. A launch 
 
 The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`, while the bounded registered-country review and scenario loops use `.14`, `.15`, and the host-bound preparation callback `.19`. Same-tag dispatch uses `.16`, Critical launch dispatch uses `.18`, and reconstruction cleanup uses `.10`, so the event file remains the callback boundary for these scoped transactions.
 
-`event021_global_review_current_country` performs one country review, closes due same-tag contests, reviews fronts, and applies settlement or reconstruction when due. Critical queueing and bounded launch claims are additionally gated by active Evolution III; review itself never opens a due country outside the Critical queue.
+`event021_global_review_current_country` performs one country review, removes stale neighboring-exposure receipts when their source crisis is no longer usable, closes due same-tag contests, reviews fronts, and applies settlement or reconstruction when due. Critical queueing and bounded launch claims are additionally gated by active Evolution III; review itself never opens a due country outside the Critical queue.
 
 The same review gives a country opened after Evolution II the bounded neighboring-exposure and strange-incident pass, and emits the multi-front presentation once per crisis when its host is known. The Evolution III record emits the country report and the nonterminal Global Fracture news presentation once, subject to the shared Event Log setting.
 
