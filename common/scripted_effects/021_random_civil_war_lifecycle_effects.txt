@@ -312,6 +312,7 @@ event021_handle_annexed_country = {
 	}
 	set_variable = { global.random_civil_war_critical_queue_count = global.random_civil_war_critical_queue^num }
 	clr_country_flag = random_civil_war_critical_queued
+	clr_country_flag = random_civil_war_critical_launch_pending
 
 	# The prefire cursor was repaired alongside the review cursor during the
 	# reverse removal pass. Only its empty/end-of-array wrap remains here.
@@ -850,11 +851,15 @@ event021_handle_annexed_country = {
 	}
 	if = {
 		limit = { has_event_target = random_civil_war_launch_target }
-		event_target:random_civil_war_launch_target = {
-			if = {
-				limit = { tag = event_target:event021_lifecycle_annexed_country }
-				clear_global_event_target = random_civil_war_launch_target
-				clr_global_flag = random_civil_war_launch_in_progress
+			event_target:random_civil_war_launch_target = {
+				if = {
+					limit = { tag = event_target:event021_lifecycle_annexed_country }
+					set_temp_variable = { event021_critical_exit_reason = constant:event021_critical_queue_exit.invalidated }
+					event021_parent_record_critical_exit = yes
+					event021_dequeue_critical_country = yes
+					clr_country_flag = random_civil_war_critical_launch_pending
+					clear_global_event_target = random_civil_war_launch_target
+					clr_global_flag = random_civil_war_launch_in_progress
 			}
 		}
 	}
@@ -896,6 +901,7 @@ event021_handle_annexed_country = {
 	clr_country_flag = random_civil_war_same_tag_route_active
 	clr_country_flag = random_civil_war_same_tag_contest_active
 	clr_country_flag = random_civil_war_critical_queued
+	clr_country_flag = random_civil_war_critical_launch_pending
 	clr_country_flag = random_civil_war_cleanup_requested
 	clr_country_flag = random_civil_war_cleanup_lock
 	clr_country_flag = random_civil_war_opening_transfer_pending
@@ -947,6 +953,7 @@ event021_handle_annexed_country = {
 	clear_variable = random_civil_war_crisis_start_date
 	clear_variable = random_civil_war_opening_severity
 	clear_variable = random_civil_war_critical_queue_date
+	clear_variable = random_civil_war_critical_last_attempt_date
 	clear_variable = random_civil_war_scenario_start_date
 	clear_variable = random_civil_war_scenario_batch_deadline
 	clear_variable = random_civil_war_anchor_state

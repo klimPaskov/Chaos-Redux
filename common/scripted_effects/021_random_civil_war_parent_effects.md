@@ -10,13 +10,13 @@ The parent layer is the only owner of target-to-actor planning, route selection,
 
 `event021_parent_global_scheduler_pulse` runs only from the existing Chaos global host pulse. Evolution III gates its capped broad-country registration, due-country openings, and Critical queue launches; earlier stages use the same bounded review only for countries explicitly registered by live crisis paths.
 
-Critical queue admission is independent from current theater capacity. Capacity remains mandatory in `event021_launch_critical_country`, and launch-time validation requires the country to remain Critical, so a recovered or invalid country is dequeued instead of launching. Separate centralized admission and launch budgets bound both operations in one pulse.
+Critical queue admission is independent from current theater capacity. A launch claims the queue row with a global lock and `random_civil_war_critical_launch_pending`; hidden callback `chaosx.nr21.18` owns the immediate opening attempt and records `launched`, `stabilized`, or `invalidated` before dequeueing. A still-valid Critical target remains queued after a failed preflight, while stale or recovered rows are removed with an exit receipt. Separate centralized admission and launch budgets bound both operations in one pulse.
 
 `event021_parent_process_evolution_schedule` calls each evolution wrapper once when its shared unlock is present and its record is not yet written.
 
-The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`, while the bounded registered-country review and scenario loops use `.14` and `.15`. Same-tag dispatch uses `.16`, and reconstruction cleanup uses `.10`, so the event file remains the callback boundary for these scoped transactions.
+The schedule uses hidden callback events `chaosx.nr21.11`, `.12`, and `.13`, while the bounded registered-country review and scenario loops use `.14`, `.15`, and the host-bound preparation callback `.19`. Same-tag dispatch uses `.16`, Critical launch dispatch uses `.18`, and reconstruction cleanup uses `.10`, so the event file remains the callback boundary for these scoped transactions.
 
-`event021_global_review_current_country` performs one country review, closes due same-tag contests, reviews fronts, and applies settlement or reconstruction when due. Critical queueing and due-country openings are additionally gated by active Evolution III.
+`event021_global_review_current_country` performs one country review, closes due same-tag contests, reviews fronts, and applies settlement or reconstruction when due. Critical queueing and bounded launch claims are additionally gated by active Evolution III; review itself never opens a due country outside the Critical queue.
 
 The same review gives a country opened after Evolution II the bounded neighboring-exposure and strange-incident pass, and emits the multi-front presentation once per crisis when its host is known. The Evolution III record emits the country report and the nonterminal Global Fracture news presentation once, subject to the shared Event Log setting.
 
@@ -40,7 +40,7 @@ The presentation continuation `chaosx.nr21.8` does not consume either selection 
 
 `event021_parent_select_severity` calls the core severity helper and applies route-specific stress overrides.
 
-`event021_parent_prepare_target` selects the target or publishes the N/A and zero-weight fallback.
+`event021_parent_prepare_target` selects the target or publishes the N/A and zero-weight fallback. A reserved Critical callback may reuse its queued country without opening a second selection transaction.
 
 `event021_parent_report_no_target` presents a concise notification only for a direct human entry that finds no target. Automatic scheduler and Wars-cluster calls remain silent, and the notification cannot reserve a country or create an actor.
 
@@ -48,7 +48,7 @@ The presentation continuation `chaosx.nr21.8` does not consume either selection 
 
 `event021_parent_plan_connected_states` selects a viable capital or anchor and adds only connected controlled states below the centralized plan cap.
 
-`event021_parent_freeze_scenario_plan` records the selected scenario archetype, severity, anchor, bounded connected-state set, and high-intensity secondary receipts on the target country before the confirmation callback. `event021_parent_apply_frozen_scenario_plan` rehydrates that receipt into the single global transaction and rechecks each state through `event021_reserve_state`; it never searches for a replacement after the opening begins.
+`event021_parent_freeze_scenario_plan` records the selected scenario archetype, severity, anchor, bounded connected-state set, and high-intensity ordinary and Event 006 secondary receipts on the target country before the confirmation callback. The ordinary secondary state is stored as a country-scoped state pointer, not a chain-local target, so the receipt survives into the callback. `event021_parent_apply_frozen_scenario_plan` rehydrates both independent receipts into the single global transaction and rechecks each state through `event021_reserve_state`; it never searches for a replacement after the opening begins.
 
 The scenario confirmation reservation uses `global.random_civil_war_scenario_reserved_states` and `global.random_civil_war_scenario_reserved_event6_packages` to prevent overlapping state or package selections while the one-shot setup is running. `event021_parent_clear_scenario_plan_receipt` removes those reservations and state markers on rollback, successful dispatch cleanup, or crisis cleanup without touching durable crisis history.
 
@@ -72,7 +72,7 @@ Successor receipt transfer, complete generation reset, and runtime certification
 
 `event021_parent_validate_opening_plan` checks the actor, capital, state, front, package, and capacity requirements.
 
-`event021_parent_dispatch_opening` is the single public launch path for hidden entry, bounded queue, manual scenario, and Wars cluster launches. After any successful opening marks the target active, the dispatcher removes that country from the Critical queue through the aligned dequeue helper; failed openings retain later-review eligibility.
+`event021_parent_dispatch_opening` is the single public launch path for hidden entry, bounded queue, manual scenario, and Wars cluster launches. After any successful opening marks the target active, the dispatcher removes that country from the Critical queue through the aligned dequeue helper; the `.18` callback then records the terminal Critical exit and releases the launch lock. Failed openings retain later-review eligibility.
 
 `event021_parent_prepare_crisis_identity`, `event021_parent_assign_government_profile`, and the opposition initialization effects prepare the ordinary claimant without duplicating a persistent country identity.
 
@@ -105,9 +105,9 @@ Example: a failed generation-two attempt from generation one restores generation
 
 `event021_parent_reserve_current_archetype`, `event021_parent_prepare_secondary_route`, and `event021_parent_reserve_pending_secondary_route` give each ordinary belligerent one distinct live route receipt and reserve it only after actor initialization succeeds.
 
-`event021_parent_try_secondary_front`, `event021_parent_start_secondary_civil_war`, `event021_parent_review_secondary_front`, and `event021_parent_close_secondary_front` implement Evolution I multi-front expansion within the route, front, and theater caps. A large map without another proven route stops at two belligerents instead of manufacturing an archetype.
+`event021_parent_try_secondary_front`, `event021_parent_start_secondary_civil_war`, `event021_parent_review_secondary_front`, and `event021_parent_close_secondary_front` implement Evolution I multi-front expansion within the route, front, and theater caps. A large map without another proven route stops at two belligerents instead of manufacturing an archetype. Each ordinary secondary actor receives the AI role matching its reserved archetype: command claimants use the command profile, legal and regional fronts use the constitutional profile, and ideological fronts use the revolutionary profile.
 
-`event021_parent_try_event6_secondary_front` may consume one complete dormant Event 006 package as a distinct additional independence front after an ordinary opening. It requires a noncapital unreserved package anchor, an available front and theater slot, a preserved host remnant, the multi-front gate, and a proved war before registration. Its rollback returns only that anchor, releases only that partial package actor, and leaves the committed ordinary crisis intact.
+`event021_parent_try_event6_secondary_front` may consume one complete dormant Event 006 package as a distinct additional independence front after an ordinary opening. It requires a noncapital unreserved package anchor, an available front and theater slot, a preserved host remnant, the multi-front gate, and a proved war before registration. Its rollback returns only that anchor, releases only that partial package actor, and leaves the committed ordinary crisis intact. When a scenario freeze contains both secondary receipts, the Event 006 front and ordinary front are consumed as separate planned openings rather than competing through an if/else selection branch.
 
 `event021_parent_review_event6_secondary_front` and `event021_parent_finalize_event6_secondary_actor` close the additional package front through its own host pointer and preserve its durable Event 006 identity after recognition.
 
@@ -140,9 +140,9 @@ The subsequent lifecycle helper owns surviving-front pointer transfer; continuit
 
 `random_civil_war_trigger_manual_scenario` and `event021_parent_prepare_scenario_country` consume the selected SCN-018 type and intensity.
 
-`event021_parent_commit_scenario_country` reuses the immediate ordinary transaction for each selected eligible country and consumes the frozen country receipt. A failed confirmation plan clears the target-ready flag and records a scenario skip rather than falling back to a post-mutation selection.
+`random_civil_war_trigger_manual_scenario` first freezes the unique selected country set, then sends `chaosx.nr21.19` to each selected country for host-correct route, actor, capital, state, package, and force planning. Only after every selected country has completed that preparation pass does the controller send `chaosx.nr21.15` to consume each immutable receipt through `event021_parent_commit_scenario_country`. A failed confirmation plan clears the target-ready flag and records a scenario skip rather than falling back to a post-mutation selection. The preparation pass can retain both an ordinary secondary route and a complete Event 006 package route for one host; the commit pass consumes each receipt independently after the primary plan is frozen.
 
-The Maximum intensity caller owns the explicit all-eligible-country commit required by the scenario specification. It freezes each eligible country's plan before dispatch and retains the exact requested/committed/skipped counts.
+The Maximum intensity caller owns the explicit all-eligible-country selection required by the scenario specification. It freezes every eligible country's plan before the first ownership mutation and retains the exact requested/committed/skipped counts. Low, Medium, and High use the same two-phase contract after their weighted ticket draw.
 
 No delayed fallback is present because the implementation has no measured performance failure that would justify one.
 

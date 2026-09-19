@@ -53,3 +53,5 @@ The implementation and current evidence are recorded in `docs/events/021_random_
 The catalog is intentionally marked `Needs Testing`, and the test-release runtime surfaces are enabled by `random_civil_war_rework_ready`. The player owns live consumer validation; the repository evidence records source, static, MCP, probability, and asset limits separately. This test release is not an unconditional completion certificate.
 
 The offline Paradox wiki snapshot, installed vanilla documentation, vanilla game files, Workshop references, HOI4 MCP, and project subagent evidence used for the implementation are recorded in the source-read ledger and current handoffs.
+
+The 2026-09-19 source tranche also closes the bounded Critical-launch convergence repair, the frozen secondary-state persistence defect, and the two same-tag scenario compatibility gaps for test entry. Those repairs do not change the catalog status: Event 021 and SCN-018 remain `Needs Testing` pending user-owned gameplay and the remaining certification gates.

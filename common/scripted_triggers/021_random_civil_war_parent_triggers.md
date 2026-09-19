@@ -33,7 +33,7 @@ These pointer guards do not replace the separate requirement to adopt and resolv
 
 `event021_parent_scenario_anchor_state_candidate` and `event021_parent_scenario_capital_state_candidate` exclude ordinary Event 021 reservations, live front states, and confirmation-time scenario reservations. They are consumed by the per-country frozen-plan receipt before any ownership mutation.
 
-`event021_parent_opening_force_valid`, `event021_parent_global_capacity_ready`, and `event021_parent_opening_external_war_valid` protect the force, cap, and achievement-related opening checks.
+`event021_parent_opening_force_valid`, `event021_parent_global_capacity_ready`, and `event021_parent_opening_external_war_valid` protect the force, cap, and achievement-related opening checks. `event021_parent_reserved_critical_launch_valid` is the owner-aware exception that permits only the claimed Critical target to pass capacity validation while the launch lock is held; it requires the same target to remain in the queue, Critical, generation-eligible, and route-valid.
 
 `event021_parent_settlement_terms_valid`, `event021_parent_negotiated_settlement`, and `event021_parent_reconstruction_complete` gate finite postwar transitions.
 

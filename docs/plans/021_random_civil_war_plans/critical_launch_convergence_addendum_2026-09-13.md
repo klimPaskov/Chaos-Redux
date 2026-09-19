@@ -2,14 +2,14 @@
 
 ## Disposition and authority
 
-Disposition: `accepted and queued`, limited to convergence of the existing Evolution III Critical launch contract.
+Disposition: `implemented`, limited to convergence of the existing Evolution III Critical launch contract; final event acceptance remains unresolved.
 Broad mechanic expansion: `rejected` as unnecessary breadth.
-Implementation status: proposal only; the convergence repair is queued after the current test-entry tranche, with no gameplay, localisation, asset, workbook, or existing handoff edits by this planner.
-Acceptance basis: the parent accepts this bounded follow-up under the user's explicit request to mark the rework complete for testing; the current release record remains `Needs Testing`, and final acceptance is separate and unresolved.
+Implementation status: owner-applied in the current source. The review-to-Critical handoff no longer dispatches every due country, Critical claims retain their queue row until terminal outcome, `chaosx.nr21.18` dispatches on the claimed recipient, and the queue exit enum/receipts are wired through lifecycle cleanup.
+Acceptance basis: the parent applied this bounded follow-up under the user's explicit request to mark the rework complete for testing; the current release record remains `Needs Testing`, and final acceptance is separate and unresolved.
 Design basis: source-spec part 6 requires Critical-country launches to use normal target safety, the shared opening systems, bounded capacity, separate repeatable-event accounting, and a recorded queue exit reason.
 The existing probability matrix requires GLB-03 Stable countries to receive review without launch.
-The queued follow-up covers the proposed removal of unconditional due-review dispatch and its Critical queue handoff; it is not promoted into the current test-entry implementation.
-Do not treat this queued disposition as implementation evidence or final acceptance.
+The implemented follow-up covers removal of unconditional due-review dispatch and the owner-aware Critical queue handoff; it is promoted into the current test-entry implementation with source and MCP evidence below.
+Do not treat this bounded implementation evidence as final acceptance or live-game proof.
 
 The earlier improvement-loop pass is disposed in `improvement_loop_disposition_2026-09-06.md` as an implementation-and-testing queue.
 Its B05, B07, B08, and B10 evidence obligations remain accepted and queued because current-revision certification and lifecycle evidence are incomplete.
@@ -35,25 +35,15 @@ Reject additional decisions, meters, GUI windows, countries, formables, focus ro
 The remaining design problem is a connection between implemented systems, not absence of another system.
 This is not a clean closure certificate while accepted evidence obligations and dependencies remain open.
 
-## Concrete remaining connection
+## Source repair record
 
-In `common\scripted_effects\021_random_civil_war_parent_effects.txt`, `event021_global_review_current_country` records whether a country was due, refreshes its state and route evidence, and may enqueue a Critical country.
-Its final branch nevertheless calls `event021_parent_dispatch_opening` for a due inactive country without requiring Critical pressure or using `global.random_civil_war_critical_launch_budget`.
-Opening viability can still reject that call, so a launch for every due country is not claimed.
-The concrete source gap is that a viable non-Critical due country can reach a forced opening path, and due dispatch is not unified with the bounded Critical attempt budget.
+In the current source, `event021_global_review_current_country` records no due-opening dispatch. It refreshes state and route evidence, may enqueue a Critical country, reviews fronts, and applies settlement or reconstruction; only the bounded Critical queue path can claim an opening.
 
-The other route has the opposite admission problem.
-`event021_launch_critical_country` in `common\scripted_effects\021_random_civil_war_effects.txt` sets `random_civil_war_launch_in_progress`, saves `random_civil_war_launch_target`, dequeues the country, and conditionally debits the launch budget before opening dispatch.
-`event021_parent_global_capacity_ready` in `common\scripted_triggers\021_random_civil_war_parent_triggers.txt` rejects that global flag.
-Both `event021_parent_prepare_target` and `event021_parent_begin_target_transaction` require that predicate.
-Consequently the selected queue owner has no explicit owner-aware way through gates that intentionally exclude unrelated launchers.
-The scheduler also invokes opening dispatch inline under the global host call frame, whereas review uses the recipient event `chaosx.nr21.14`.
-Recipient `ROOT` continuity and successful queue commit remain unproven by the available MCP projection.
+`event021_launch_critical_country` now sets `random_civil_war_launch_in_progress`, saves `random_civil_war_launch_target`, marks only the selected country as pending, and retains its queue row and wait date while the callback runs. `event021_parent_reserved_critical_launch_valid` is the owner-aware capacity exception used by target preparation and transaction gates. The scheduler invokes `chaosx.nr21.18` on the saved recipient country, and that callback owns dispatch, terminal exit classification, dequeue, and lock release.
 
-These are source-backed contract inconsistencies, not a claimed reproduced engine failure.
-They can disconnect emergency resource spending from queue escape or make queued countries lose their place without a committed opening.
+The source repair addresses these contract inconsistencies without adding another registry, world-wide loop, timeout, or balance surface. The remaining uncertainty is runtime confirmation of recipient scope and terminal engine behavior.
 
-## Proposed owner-applied contract
+## Applied owner contract
 
 1. Make due review a review operation, not an unconditional opening command.
 Preserve `event021_review_current_country`, route and pool refresh, settlement, reconstruction, and recurrence-window maintenance.
@@ -64,18 +54,17 @@ Explicit normal event firing, Wars-cluster reservations, and SCN-018 retain thei
 
 2. Give one selected Critical country an explicit owned launch claim.
 Retain `random_civil_war_launch_in_progress` and `random_civil_war_launch_target` as the global exclusion pair.
-Add the proposed country flag `random_civil_war_critical_launch_pending` only to the selected target.
+Add the country flag `random_civil_war_critical_launch_pending` only to the selected target.
 Retain the queue row and its original `random_civil_war_critical_queue_date` during preflight rather than dequeueing on claim.
 Use actual membership of `global.random_civil_war_critical_queue` as admission truth, synchronizing the queued flag without adding duplicate rows or resetting wait age.
 Do not add a second registry, a world-wide pulse, or a fixed protected launch date.
 
-3. Add the proposed hidden recipient callback `chaosx.nr21.18` in `events\021_random_civil_war.txt`, calling proposed COUNTRY helper `event021_commit_critical_country`.
-The identifier was absent from current event and common sources at review.
+3. Add the hidden recipient callback `chaosx.nr21.18` in `events\021_random_civil_war.txt`, calling COUNTRY helper `event021_parent_commit_critical_country`.
 The scheduler calls it on the saved target, giving opening helpers recipient `ROOT` instead of relying on the global host's inline effect frame.
 This callback has no player option, picture, or independent event-weight consumption.
 It uses existing opening presentation and `event021_parent_record_system_log` after actual commit, recording the Evolution III launch origin rather than another random-event firing.
 
-4. Add proposed COUNTRY trigger `event021_parent_reserved_critical_launch_valid` beside the existing parent capacity predicate.
+4. Add COUNTRY trigger `event021_parent_reserved_critical_launch_valid` beside the existing parent capacity predicate.
 It requires the pending flag, a global launch target equal to `THIS`, the matching global launch lock, enabled event and Evolution III, fresh Critical pressure, normal human-country eligibility, valid route, expired grace and cooldown, generation allowance, current theater capacity, and no unrelated opening plan.
 Only this owner may use the reserved admission alternative in target preparation and transaction start.
 Keep `event021_parent_global_capacity_ready` closed for every unrelated country and ordinary, cluster, or scenario caller while the claim exists.
@@ -97,7 +86,7 @@ On committed host activation, dequeue once and record `launched` only after the 
 On stabilization below Critical, dequeue once and record `stabilized` without actors or transferred states.
 On lost human eligibility, route, enable state, or country existence, remove the row and record `invalidated` where its country scope survives.
 On valid but rejected precommit planning, keep the row and original wait date, roll back existing reservations, clear the claim, and advance the bounded cursor.
-Use proposed country receipt `random_civil_war_critical_exit_reason`, with centralized non-balance enum values `launched = 1`, `stabilized = 2`, and `invalidated = 3` under `event021_critical_queue_exit`.
+Use country receipt `random_civil_war_critical_exit_reason`, with centralized non-balance enum values `launched = 1`, `stabilized = 2`, and `invalidated = 3` under `event021_critical_queue_exit`.
 A retained row after a failed attempt has no exit reason.
 All terminal paths clear the pending flag and call `event021_finish_critical_launch` exactly once.
 Hook surviving-target cleanup and orphan-target cleanup through the existing bounded scheduler and country cleanup, without a new global iteration or an invented timeout.
