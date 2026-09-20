@@ -56,7 +56,7 @@ KOM remains package-local and unadmitted. This package documentation does not ad
 
 The installed map crosswalk binds state 397 to Syktyvkar and preserves optional extension states 262 and 581 as claims or later negotiation territory. Event 005 Soviet Collapse retains its own KOM release, origin, focus, and committee-character surfaces; the Event 006 package gate excludes those Soviet-origin flags and variables.
 
-The package-local completion authority is `subagent_handoffs/006_iw050_komi_package_completion_audit_current_2026_08_14.md`, with country-core, decisions, codify/corridor, lifecycle/cost/tooltip, focus-hooks, localisation, portrait-source, symbol, probability, and source-crosswalk evidence in the sibling IW-050 handoffs dated 2026-08-14.
+The current package-local completion authority is `subagent_handoffs/006_iw050_kom_completion_tranche_2026-09-19.md`. It re-audits the country core, lifecycle, decisions, focus hooks, localisation, identity, assets, map binding, typed mission evidence, and central-admission boundary. The earlier 2026-08-14 handoffs remain detailed implementation receipts, while the 2026-09-19 authority keeps IW-050 fail-closed because identity and portrait rights, neutral symbol provenance, map and host-retention evidence, typed probability, and central admission are unresolved.
 
 IW-050 is absent from the central adapter, content-attestation, normal and SCN-008 preflight, and deterministic Join surfaces; the region-05 loader and reservation rows remain candidate evidence only.
 
