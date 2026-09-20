@@ -33,6 +33,10 @@ Existing visual reviews remain useful for the exact files inspected, but do not 
 - Scripted ordinary successor promotion keeps predecessor/front records intact until `on_annex`, uses an explicit local annex target, saves both the history and treaty predecessor pointers, prepares successor roster adoption before white peace/annex, and requires matching nonmissing crisis IDs before accepting either a durable predecessor pointer or the global-pointer recovery path.
   The successor marker is set before white peace and annexation; the old pre-annex core cleanup and unguarded duplicate fallback branch are removed.
   Natural engine annexation, surviving-front settlement obligations, actual external-war continuity, and callback execution remain unproven.
+- Owner treaty rebinding now treats a matching front-host row as a bounded successor witness even when the predecessor is not a signatory, and copies predecessor-local obligation, front, and count receipts when they exist after conflict and duplicate checks.
+  The live settlement obligation remains separate, and actual external-war continuity remains unproven.
+- The parent improvement-loop resolution records the current source repair of the frozen secondary receipt, two-phase scenario confirmation, and same-tag type compatibility, plus the bounded four-row front-plan contract.
+  FRT fixture execution, surviving-front settlement, save and reload, probability, performance, and inherited-package evidence remain queued.
 - `on_annex` also recognizes natural ordinary-claimant victory before predecessor cleanup through an explicit host pointer, government role, and matching crisis IDs.
   It transfers history and marks legitimate succession without guessing from mere annexer status.
   The effect does not itself establish remaining wars; that continuity is still an open lifecycle check.
