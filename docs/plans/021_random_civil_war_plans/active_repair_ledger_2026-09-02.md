@@ -38,7 +38,7 @@ Existing visual reviews remain useful for the exact files inspected, but do not 
 - The Event 006 adapter boundary now has a dedicated package-only preparation entry, `independence_wave_prepare_event021_adapter_origin`, so Event 021 reuses the shared reversible package-state primitive without calling Event 006's normal origin initializer.
   The adapter window still rejects incomplete or actual non-human carriers, and Event 006 origin history, fired state, evolution delivery, active/network registration, and league membership remain outside this path.
   The current narrow dispatcher lint remains partial because the installed MCP defers workspace-wide helper and lifecycle projection; runtime package reachability is still a testing gate.
-- The parent improvement-loop resolution records the current source repair of the frozen secondary receipt, two-phase scenario confirmation, and same-tag type compatibility, plus the bounded four-row front-plan contract.
+- The parent improvement-loop resolution records the current source repair of the frozen secondary receipt, two-phase scenario confirmation, and same-tag type compatibility, plus the bounded five-row front-plan contract.
   FRT fixture execution, surviving-front settlement, save and reload, probability, performance, and inherited-package evidence remain queued.
 - `on_annex` also recognizes natural ordinary-claimant victory before predecessor cleanup through an explicit host pointer, government role, and matching crisis IDs.
   It transfers history and marks legitimate succession without guessing from mere annexer status.
@@ -174,3 +174,39 @@ The normal bounded row order is host remnant, primary claimant, optional ordinar
 `event021_parent_load_planned_primary_front` and `event021_parent_load_planned_secondary_front` consume the row receipts by front id. `event021_register_front` and `event021_set_priority_front` bind live actors to those rows, optional rollback paths mark unmaterialised rows rejected, and resolution review remains open while any row is still planned.
 
 Focused MCP lint remains partial with zero blocking diagnostics and deferred helper/lifecycle projections. Live four-row sequencing, distinct settlement outcomes, save/reload persistence, and performance evidence remain open; this tranche does not change the test-entry status or authorize a final completion claim.
+
+## 2026-09-20 bounded five-row front-plan extension
+
+Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
+
+The major severe or critical path can now freeze a second ordinary secondary receipt when the connected opening has at least three distinct viable states. It records a distinct anchor and route, allocates a separate front id, appends a smaller force envelope, promotes the receipt only after the first ordinary child initializes, and rejects or clears it on every bounded failure and cleanup path.
+
+The aligned plan cap is now `maximum_planned_fronts = 5`, covering the host remnant, primary claimant, two ordinary secondary claimants, and one complete Event 006 carrier. The source remains capped and does not create the second receipt for minor targets or without a distinct route and viable anchor.
+
+Focused MCP lint remains partial with zero blocking diagnostics and deferred helper/lifecycle projections. Live five-row sequencing, distinct settlement outcomes, save/reload persistence, probability comparison, and performance evidence remain open; this tranche does not authorize a final completion claim.
+
+## 2026-09-20 decision, mission, and receipt repair
+
+Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
+
+`event021_set_priority_front` now mirrors the selected state scope and id into the normal variables consumed by the depot trigger, decision effect, localisation, and event-log snapshot while retaining the global event target as the persistence carrier. Cleanup clears both carriers.
+
+`event021_clear_sponsor_commitment_receipt` centralizes temporary sponsor and recipient identity, amount, and date cleanup. The receiving-side adapter now records a scope pointer on the sponsor, allowing regional exposure expiry to clear a redirected host or claimant recipient as well as the source-side and exposed-neighbour receipts before dropping the source pointer. The disengagement action uses the same helper while preserving durable repayment evidence.
+
+The reconstruction action and secure-rail mission now share both order-specific state receipts: reconstruction-first sets the reconstruction receipt, while mission-first sets both the reconstruction and restored receipts. The action refuses either receipt, the mission hides and cancels against either receipt, and decision cleanup clears both rail state flags and stored target variables. This prevents two infrastructure awards from the same stored rail state while retaining the separate mission reward path.
+
+The repaired source passed the narrow Event 021 MCP lint with zero blocking diagnostics; helper-expanded lifecycle validation, typed probability evaluation/compare, live decision and mission behavior, save/reload cleanup, and performance evidence remain open. This tranche does not authorize a final completion claim.
+
+## 2026-09-20 redirected-recipient and rail-order repair
+
+Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
+
+`event021_record_received_sponsor_commitment` now records `random_civil_war_sponsor_recipient_scope` on the sponsor after support is redirected to the host or opposition actor. The paired cleanup helper clears that actual receiving scope through a recipient-only helper, avoiding recursive traversal of any separate sponsor pointer on the recipient.
+
+`event021_decision_reconstruct_administration` now refuses either `event021_reconstruction_rail_repaired` or `event021_rail_spine_restored`. Mission completion sets both state receipts, and activation, availability, and cancellation use the same OR gate. The source remains bounded and the result is still runtime-unverified.
+
+## 2026-09-20 manual-scenario cooldown repair
+
+Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
+
+`event021_parent_scenario_country_eligible` now treats the locked manual-scenario enumeration as sufficient to bypass Event 021 successor grace, including Maximum, while retaining `individual_crisis_load_is_below_cap` as the shared safety definition of an eligible country. This preserves every eligible normal human country in the frozen pool without bypassing cross-event crisis-load protection.

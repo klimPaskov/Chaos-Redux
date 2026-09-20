@@ -295,10 +295,12 @@ The focused Event 021 MCP lint remains `EVENT_INSPECTED_PARTIAL` with zero block
 
 ## 2026-09-19 aligned front-plan registry repair
 
-The parent source now writes and validates a bounded aligned plan ledger before the opening mutation. Its row arrays cover front id, archetype, anchor and capital, goal, status, source or carrier, actor type, generation, route, Event 006 package, flattened connected states, force and stockpile envelopes, and relationship, with a centralized four-row cap.
+The parent source now writes and validates a bounded aligned plan ledger before the opening mutation. Its row arrays cover front id, archetype, anchor and capital, goal, status, source or carrier, actor type, generation, route, Event 006 package, flattened connected states, force and stockpile envelopes, and relationship, with a centralized five-row cap.
 
 The normal row order is host remnant, primary claimant, optional ordinary secondary, and optional Event 006 secondary. Same-tag contests receive their own one-row ledger. The host remnant uses `administrative_continuity`, so the legal primary and remnant do not share a terminal objective.
 
 Registration, priority selection, secondary review, and secondary close now bind live actors to the matching planned front id. Frozen optional rows are marked rejected on bounded rollback, and the resolution receipt remains unresolved while any plan row is still `planned`. The ledger is cleared on transaction rollback and final crisis cleanup.
 
 This repair is implemented at source level and remains `Needs Testing`; live four-row sequencing, settlement outcomes, save/reload persistence, current-revision helper-expanded MCP evidence, and performance evidence are still open.
+
+The 2026-09-20 extension adds a second ordinary receipt only for severe or critical major targets with at least three viable opening states. It freezes a distinct state anchor and route, allocates a fifth plan id, uses a smaller force envelope, promotes the receipt through the existing secondary adapter after the first child initializes, and clears or rejects it on every bounded failure path. Live five-row sequencing remains open.

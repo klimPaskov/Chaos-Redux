@@ -818,9 +818,31 @@ event021_civil_war_crisis_category = {
 			event021_country_can_manage_reconstruction = yes
 			NOT = { has_country_flag = event021_rail_spine_secured }
 			NOT = { has_country_flag = event021_secure_rail_mission_active }
+			NOT = {
+				AND = {
+					has_variable = random_civil_war_rail_mission_state
+					var:random_civil_war_rail_mission_state = {
+						OR = {
+							has_state_flag = event021_reconstruction_rail_repaired
+							has_state_flag = event021_rail_spine_restored
+						}
+					}
+				}
+			}
 		}
 		available = {
 			has_variable = random_civil_war_rail_mission_state
+			NOT = {
+				AND = {
+					has_variable = random_civil_war_rail_mission_state
+					var:random_civil_war_rail_mission_state = {
+						OR = {
+							has_state_flag = event021_reconstruction_rail_repaired
+							has_state_flag = event021_rail_spine_restored
+						}
+					}
+				}
+			}
 			custom_trigger_tooltip = {
 				tooltip = event021_secure_rail_requirement_tt
 				var:random_civil_war_rail_mission_state = {
@@ -835,7 +857,18 @@ event021_civil_war_crisis_category = {
 			}
 		}
 		cancel_trigger = {
-			NOT = { event021_country_can_manage_reconstruction = yes }
+			OR = {
+				NOT = { event021_country_can_manage_reconstruction = yes }
+				AND = {
+					has_variable = random_civil_war_rail_mission_state
+					var:random_civil_war_rail_mission_state = {
+						OR = {
+							has_state_flag = event021_reconstruction_rail_repaired
+							has_state_flag = event021_rail_spine_restored
+						}
+					}
+				}
+			}
 		}
 		complete_effect = { set_country_flag = event021_secure_rail_mission_active }
 		timeout_effect = { event021_mission_secure_rail_resolve = yes }

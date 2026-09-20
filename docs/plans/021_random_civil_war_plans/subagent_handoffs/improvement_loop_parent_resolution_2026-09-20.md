@@ -16,9 +16,9 @@ F03, same-tag scenario compatibility, is resolved at the source-contract level. 
 
 ## Bounded front-plan disposition
 
-F04 is implemented as a bounded four-row plan rather than an unbounded actor quota. The current plan can contain the host remnant, primary claimant, one ordinary secondary claimant, and one complete Event 006 secondary carrier. Each row carries an aligned front id, actor type, anchor and capital scope, objective, route, package receipt, state receipt, force envelope, relationship, and lifecycle status. `event021_parent_validate_front_plan` checks the aligned arrays and the centralized planned-front cap before any opening mutation.
+F04 is implemented as a bounded five-row plan rather than an unbounded actor quota. The current plan can contain the host remnant, primary claimant, up to two ordinary secondary claimants, and one complete Event 006 secondary carrier. Each row carries an aligned front id, actor type, anchor and capital scope, objective, route, package receipt, state receipt, force envelope, relationship, and lifecycle status. `event021_parent_validate_front_plan` checks the aligned arrays and the centralized planned-front cap before any opening mutation.
 
-This source contract supports the requested three-belligerent and stronger four-belligerent forms without manufacturing actors. It does not prove every FRT-02, FRT-03, or FRT-05 fixture in the engine, does not prove a five-belligerent result, and does not prove surviving-war settlement or successor behavior. Those remain explicit testing and MCP evidence obligations.
+This source contract supports the requested three-belligerent and stronger four- or five-belligerent forms without manufacturing actors. It does not prove every FRT-02, FRT-03, or FRT-05 fixture in the engine, and does not prove surviving-war settlement or successor behavior. Those remain explicit testing and MCP evidence obligations.
 
 No new mechanic layer, world iterator, actor quota, fallback route, or Event 006 substitute was introduced by this resolution. The shared fixed-target helper remains an external dependency and is not invented here.
 

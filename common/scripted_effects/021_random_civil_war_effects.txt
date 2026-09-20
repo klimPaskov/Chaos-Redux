@@ -1026,7 +1026,14 @@ event021_reject_pending_front_plan_row = {
 event021_set_priority_front = {
 	if = {
 		limit = { has_event_target = random_civil_war_anchor_state }
-		event_target:random_civil_war_anchor_state = { save_global_event_target_as = random_civil_war_priority_front_state }
+		event_target:random_civil_war_anchor_state = {
+			# The decision, trigger, localisation, and log surfaces consume normal
+			# state variables. Keep the global target as the persistence carrier,
+			# but publish the same state and id into that single public contract.
+			set_variable = { ROOT.random_civil_war_priority_front_state = THIS }
+			set_variable = { ROOT.random_civil_war_priority_front_state_id = id }
+			save_global_event_target_as = random_civil_war_priority_front_state
+		}
 		set_global_flag = random_civil_war_priority_front_active
 		event021_bind_current_front_plan_row = yes
 	}
@@ -1035,6 +1042,8 @@ event021_set_priority_front = {
 event021_clear_priority_front = {
 	clr_global_flag = random_civil_war_priority_front_active
 	clear_global_event_target = random_civil_war_priority_front_state
+	clear_variable = random_civil_war_priority_front_state
+	clear_variable = random_civil_war_priority_front_state_id
 }
 
 # -----------------------------------------------------------------------------
@@ -1188,6 +1197,19 @@ event021_advance_regional_exposure = {
 # COUNTRY scope. Removes the current neighbor from the persistent exposure
 # registry while leaving the source war's civilian aftermath to settlement.
 event021_cleanup_regional_exposure = {
+	# A support receipt is a paired sponsor/recipient transaction. Clear the
+	# source-side receipt before dropping the pointer, then clear the current
+	# exposed neighbour's outbound receipt as well.
+	if = {
+		limit = { has_variable = random_civil_war_exposure_source_country_scope }
+		var:random_civil_war_exposure_source_country_scope = {
+			if = {
+				limit = { exists = yes }
+				event021_clear_sponsor_commitment_receipt = yes
+			}
+		}
+	}
+	event021_clear_sponsor_commitment_receipt = yes
 	remove_from_array = { array = global.random_civil_war_exposed_countries value = THIS }
 	clr_country_flag = random_civil_war_exposure_active
 	clr_country_flag = random_civil_war_neighbor_exposure
@@ -1217,6 +1239,40 @@ event021_cleanup_regional_exposure = {
 	set_variable = { random_civil_war_exposure_cooldown_until = global.date }
 	add_to_variable = { random_civil_war_exposure_cooldown_until = constant:random_civil_war_timing.exposure_cooldown_days }
 	clear_variable = random_civil_war_exposure_stage
+}
+
+# COUNTRY scope. Clears the receiving side of a temporary sponsor commitment
+# without traversing any second sponsor pointer on that country.
+event021_clear_received_sponsor_commitment_receipt = {
+	clr_country_flag = random_civil_war_sponsor_commitment_received
+	clr_country_flag = event021_sponsor_recorded
+	clear_variable = random_civil_war_sponsor_id
+	clear_variable = random_civil_war_sponsor_recipient_id
+	clear_variable = random_civil_war_sponsor_front_id
+	clear_variable = random_civil_war_sponsor_support_amount
+	clear_variable = random_civil_war_sponsor_commitment_start_date
+	clear_variable = random_civil_war_sponsor_commitment_until
+}
+
+# COUNTRY scope. Clears both ends of a temporary sponsor/recipient commitment
+# receipt. Durable settlement, recurrence, and achievement receipts remain.
+event021_clear_sponsor_commitment_receipt = {
+	if = {
+		limit = { has_variable = random_civil_war_sponsor_recipient_scope }
+		var:random_civil_war_sponsor_recipient_scope = {
+			event021_clear_received_sponsor_commitment_receipt = yes
+		}
+	}
+	clr_country_flag = random_civil_war_sponsor_commitment_active
+	clr_country_flag = random_civil_war_sponsor_commitment_received
+	clr_country_flag = event021_sponsor_recorded
+	clear_variable = random_civil_war_sponsor_id
+	clear_variable = random_civil_war_sponsor_recipient_id
+	clear_variable = random_civil_war_sponsor_front_id
+	clear_variable = random_civil_war_sponsor_support_amount
+	clear_variable = random_civil_war_sponsor_commitment_start_date
+	clear_variable = random_civil_war_sponsor_commitment_until
+	clear_variable = random_civil_war_sponsor_recipient_scope
 }
 
 # -----------------------------------------------------------------------------
@@ -1978,6 +2034,15 @@ event021_cleanup_global_registry = {
 		clear_array = global.random_civil_war_front_states
 		clear_array = global.random_civil_war_critical_queue
 		clear_array = global.random_civil_war_exposed_countries
+		if = {
+			limit = {
+				has_global_flag = random_civil_war_secondary_2_front_preplanned
+				has_variable = global.random_civil_war_pending_secondary_2_front_id
+			}
+			set_temp_variable = { event021_planned_front_id_to_mark = global.random_civil_war_pending_secondary_2_front_id }
+			event021_reject_pending_front_plan_row = yes
+		}
+		event021_parent_clear_preplanned_secondary_2_opening = yes
 		event021_parent_clear_front_plan = yes
 		clear_global_event_target = random_civil_war_priority_front_state
 		clear_global_event_target = random_civil_war_launch_target

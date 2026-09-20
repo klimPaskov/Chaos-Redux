@@ -106,7 +106,7 @@ Each committed theater registers a stable Event 021 theater receipt, original ho
 
 Each front registers a stable front id, actor pair, state reference, front goal, priority, and resolution receipt in the shared arrays.
 
-Before the opening engine call, Event 021 also creates an aligned bounded front-plan receipt with row identity, actor role, anchor and capital, connected-state membership, relationship, route or package provenance, objective, force envelope, and settlement lifecycle status. The normal row order is host remnant, primary claimant, optional ordinary secondary, and optional Event 006 secondary, with a maximum of four rows.
+Before the opening engine call, Event 021 also creates an aligned bounded front-plan receipt with row identity, actor role, anchor and capital, connected-state membership, relationship, route or package provenance, objective, force envelope, and settlement lifecycle status. The normal row order is host remnant, primary claimant, up to two optional ordinary secondaries, and one optional Event 006 secondary, with a maximum of five rows.
 
 Registration and priority binding consume the matching plan row by front id. Optional starters mark their row rejected when a frozen receipt cannot materialise, and settlement review does not report all internal fronts resolved while a plan row remains pending. Rollback and final cleanup clear the complete plan ledger.
 

@@ -1346,14 +1346,24 @@ event021_parent_expand_connected_region = {
 event021_parent_freeze_secondary_opening = {
 	clr_country_flag = random_civil_war_multifront_plan_frozen
 	clr_global_flag = random_civil_war_secondary_front_preplanned
+	clr_global_flag = random_civil_war_secondary_2_front_preplanned
+	clr_global_flag = random_civil_war_secondary_2_route_prepared
+	clr_global_flag = random_civil_war_secondary_2_front_activated
 	clr_country_flag = random_civil_war_event6_secondary_plan_frozen
 	clr_global_flag = random_civil_war_event6_secondary_front_preplanned
 	clear_global_event_target = random_civil_war_preplanned_secondary_anchor_state
+	clear_global_event_target = random_civil_war_preplanned_secondary_2_anchor_state
 	clear_global_event_target = random_civil_war_event6_secondary_planned_anchor
 	clear_global_event_target = random_civil_war_event6_secondary_planned_actor
 	clear_variable = global.random_civil_war_pending_secondary_anchor_state_id
+	clear_variable = global.random_civil_war_pending_secondary_2_anchor_state_id
 	clear_variable = global.random_civil_war_planned_secondary_archetype
 	clear_variable = global.random_civil_war_planned_secondary_front_goal
+	clear_variable = global.random_civil_war_planned_secondary_2_archetype
+	clear_variable = global.random_civil_war_planned_secondary_2_front_goal
+	clear_variable = global.random_civil_war_pending_secondary_2_front_id
+	clear_variable = global.random_civil_war_pending_secondary_2_archetype
+	clear_variable = global.random_civil_war_pending_secondary_2_front_goal
 	clear_variable = global.random_civil_war_event6_secondary_planned_package_id
 	clear_variable = global.random_civil_war_event6_secondary_planned_region
 	clear_variable = global.random_civil_war_event6_secondary_planned_depth
@@ -1481,9 +1491,93 @@ event021_parent_freeze_secondary_opening = {
 			clear_variable = global.random_civil_war_pending_secondary_archetype
 			clear_variable = global.random_civil_war_pending_secondary_front_goal
 		}
-	}
-	}
 }
+}
+}
+}
+
+# COUNTRY scope. Prepares a second ordinary Evolution I secondary receipt only
+# for a severe or critical major with three or more distinct opening states.
+# The second anchor and route are frozen before the primary ownership mutation;
+# the later child callback promotes this receipt into the same starter used by
+# the first secondary front. Its smaller force envelope keeps the remnant and
+# earlier claimants viable instead of dividing the country by count alone.
+event021_parent_prepare_second_secondary_opening = {
+	if = {
+		limit = {
+			event021_parent_multifront_setup_available = yes
+			is_major = yes
+			OR = {
+				check_variable = { var = random_civil_war_opening_severity value = constant:random_civil_war_severity.severe compare = equals }
+				check_variable = { var = random_civil_war_opening_severity value = constant:random_civil_war_severity.critical compare = equals }
+			}
+			has_global_flag = random_civil_war_secondary_front_preplanned
+			has_event_target = random_civil_war_preplanned_secondary_anchor_state
+			check_variable = {
+				var = global.random_civil_war_plan_state_count
+				value = constant:random_civil_war_value.two
+				compare = greater_than
+			}
+			NOT = { has_global_flag = random_civil_war_secondary_2_front_preplanned }
+		}
+		set_temp_variable = { event021_parent_second_secondary_found = constant:random_civil_war_value.zero }
+		for_each_scope_loop = {
+			array = global.random_civil_war_plan_states
+			if = {
+				limit = {
+					check_variable = {
+						var = event021_parent_second_secondary_found
+						value = constant:random_civil_war_value.zero
+						compare = equals
+					}
+					NOT = { state = event_target:random_civil_war_anchor_state }
+					NOT = { state = event_target:random_civil_war_preplanned_secondary_anchor_state }
+					state_population_k > constant:event021_parent_tuning.minimum_state_population_k
+					check_variable = { infrastructure_level > constant:random_civil_war_value.zero }
+					NOT = { has_state_flag = random_civil_war_secondary_transfer_state }
+				}
+				set_state_flag = random_civil_war_secondary_transfer_state
+				save_global_event_target_as = random_civil_war_preplanned_secondary_2_anchor_state
+				set_variable = { global.random_civil_war_pending_secondary_2_anchor_state_id = id }
+				set_temp_variable = { event021_parent_second_secondary_found = constant:random_civil_war_value.one }
+			}
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_parent_second_secondary_found
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+			}
+			event021_parent_prepare_tertiary_route = yes
+		}
+		if = {
+			limit = {
+				check_variable = {
+					var = event021_parent_second_secondary_found
+					value = constant:random_civil_war_value.one
+					compare = equals
+				}
+				has_global_flag = random_civil_war_secondary_2_route_prepared
+				has_event_target = random_civil_war_preplanned_secondary_2_anchor_state
+			}
+			set_variable = { global.random_civil_war_planned_secondary_2_archetype = global.random_civil_war_pending_secondary_2_archetype }
+			set_variable = { global.random_civil_war_planned_secondary_2_front_goal = global.random_civil_war_pending_secondary_2_front_goal }
+			set_global_flag = random_civil_war_secondary_2_front_preplanned
+		}
+		else = {
+			if = {
+				limit = { has_event_target = random_civil_war_preplanned_secondary_2_anchor_state }
+				event_target:random_civil_war_preplanned_secondary_2_anchor_state = { clr_state_flag = random_civil_war_secondary_transfer_state }
+			}
+			clear_global_event_target = random_civil_war_preplanned_secondary_2_anchor_state
+			clear_variable = global.random_civil_war_pending_secondary_2_anchor_state_id
+			clear_variable = global.random_civil_war_planned_secondary_2_archetype
+			clear_variable = global.random_civil_war_planned_secondary_2_front_goal
+			clr_global_flag = random_civil_war_secondary_2_route_prepared
+		}
+	}
 }
 
 # ANY scope. Clears the one-transaction front plan without touching the
@@ -1644,8 +1738,8 @@ event021_parent_validate_front_plan = {
 }
 
 # COUNTRY scope on the original host. Builds all front rows while the map is
-# still unchanged. The host remnant, primary claimant, one nested ordinary
-# claimant, and one complete Event 006 carrier are the only bounded rows this
+# still unchanged. The host remnant, primary claimant, up to two nested ordinary
+# claimants, and one complete Event 006 carrier are the only bounded rows this
 # release can materialise; each optional row is admitted only when its frozen
 # anchor/package receipt already exists.
 event021_parent_build_front_plan = {
@@ -1748,6 +1842,35 @@ event021_parent_build_front_plan = {
 			save_event_target_as = random_civil_war_planned_front_actor
 			clear_temp_array = event021_parent_planned_front_state_pool
 			add_to_temp_array = { array = event021_parent_planned_front_state_pool value = event_target:random_civil_war_preplanned_secondary_anchor_state }
+			event021_parent_append_front_plan_row = yes
+		}
+
+		if = {
+			limit = { has_global_flag = random_civil_war_secondary_2_front_preplanned has_event_target = random_civil_war_preplanned_secondary_2_anchor_state has_variable = global.random_civil_war_pending_secondary_2_front_id }
+			set_temp_variable = { event021_planned_front_id = global.random_civil_war_pending_secondary_2_front_id }
+			set_temp_variable = { event021_planned_front_archetype = global.random_civil_war_planned_secondary_2_archetype }
+			set_temp_variable = { event021_planned_front_goal = global.random_civil_war_planned_secondary_2_front_goal }
+			set_temp_variable = { event021_planned_route_archetype = global.random_civil_war_planned_secondary_2_archetype }
+			event021_parent_set_planned_route_source = yes
+			set_temp_variable = { event021_planned_front_actor_type = constant:random_civil_war_planned_actor_type.ordinary_claimant }
+			set_temp_variable = { event021_planned_front_relationship = constant:random_civil_war_planned_relationship.nested_war }
+			set_temp_variable = { event021_planned_front_package = constant:random_civil_war_value.zero }
+			set_temp_variable = { event021_planned_front_size = constant:event021_parent_tuning.tertiary_front_size }
+			set_temp_variable = { event021_planned_front_stockpile = constant:event021_parent_tuning.tertiary_front_stockpile_share }
+			set_temp_variable = { event021_planned_front_army_ratio = constant:event021_parent_tuning.tertiary_front_army_share }
+			set_temp_variable = { event021_planned_front_navy_ratio = constant:event021_parent_tuning.tertiary_front_navy_share }
+			set_temp_variable = { event021_planned_front_air_ratio = constant:event021_parent_tuning.tertiary_front_air_share }
+			set_temp_variable = { event021_planned_front_force_divisions = random_civil_war_requested_force_divisions }
+			multiply_temp_variable = { event021_planned_front_force_divisions = constant:event021_parent_tuning.tertiary_front_army_share }
+			round_temp_variable = event021_planned_front_force_divisions
+			if = { limit = { check_variable = { var = event021_planned_front_force_divisions value = constant:random_civil_war_value.one compare = less_than } } set_temp_variable = { event021_planned_front_force_divisions = constant:random_civil_war_value.one } }
+			set_temp_variable = { event021_planned_front_force_manpower = random_civil_war_requested_force_manpower_k }
+			multiply_temp_variable = { event021_planned_front_force_manpower = constant:event021_parent_tuning.tertiary_front_army_share }
+			round_temp_variable = event021_planned_front_force_manpower
+			event_target:random_civil_war_preplanned_secondary_2_anchor_state = { save_event_target_as = random_civil_war_planned_front_anchor }
+			save_event_target_as = random_civil_war_planned_front_actor
+			clear_temp_array = event021_parent_planned_front_state_pool
+			add_to_temp_array = { array = event021_parent_planned_front_state_pool value = event_target:random_civil_war_preplanned_secondary_2_anchor_state }
 			event021_parent_append_front_plan_row = yes
 		}
 
@@ -1935,6 +2058,7 @@ event021_parent_plan_connected_states = {
 		}
 		if = { limit = { has_variable = random_civil_war_anchor_state } event021_record_anchor_state = yes }
 		event021_parent_freeze_secondary_opening = yes
+		event021_parent_prepare_second_secondary_opening = yes
 	}
 }
 
@@ -2402,6 +2526,11 @@ event021_parent_prepare_crisis_identity = {
 		add_to_variable = { global.random_civil_war_next_front_id = constant:random_civil_war_value.one }
 	}
 	if = {
+		limit = { has_global_flag = random_civil_war_secondary_2_front_preplanned }
+		set_variable = { global.random_civil_war_pending_secondary_2_front_id = global.random_civil_war_next_front_id }
+		add_to_variable = { global.random_civil_war_next_front_id = constant:random_civil_war_value.one }
+	}
+	if = {
 		limit = { has_global_flag = random_civil_war_event6_secondary_front_preplanned }
 		set_variable = { global.random_civil_war_pending_event6_secondary_front_id = global.random_civil_war_next_front_id }
 		add_to_variable = { global.random_civil_war_next_front_id = constant:random_civil_war_value.one }
@@ -2539,6 +2668,26 @@ event021_parent_clear_preplanned_secondary_opening = {
 	clear_variable = global.random_civil_war_pending_secondary_archetype
 	clr_global_flag = random_civil_war_secondary_front_preplanned
 	clr_global_flag = random_civil_war_secondary_route_prepared
+}
+
+# ANY scope. Closes the second ordinary Evolution I precommit receipt on
+# success, rejection, rollback, or cleanup without touching the first receipt's
+# adapter state.
+event021_parent_clear_preplanned_secondary_2_opening = {
+	if = {
+		limit = { has_event_target = random_civil_war_preplanned_secondary_2_anchor_state }
+		event_target:random_civil_war_preplanned_secondary_2_anchor_state = { clr_state_flag = random_civil_war_secondary_transfer_state }
+	}
+	clear_global_event_target = random_civil_war_preplanned_secondary_2_anchor_state
+	clear_variable = global.random_civil_war_pending_secondary_2_anchor_state_id
+	clear_variable = global.random_civil_war_pending_secondary_2_front_id
+	clear_variable = global.random_civil_war_planned_secondary_2_archetype
+	clear_variable = global.random_civil_war_planned_secondary_2_front_goal
+	clear_variable = global.random_civil_war_pending_secondary_2_archetype
+	clear_variable = global.random_civil_war_pending_secondary_2_front_goal
+	clr_global_flag = random_civil_war_secondary_2_front_preplanned
+	clr_global_flag = random_civil_war_secondary_2_route_prepared
+	clr_global_flag = random_civil_war_secondary_2_front_activated
 }
 
 # COUNTRY scope. Copies the complete Event 021 payload prepared in temporary
@@ -2912,6 +3061,34 @@ event021_parent_initialize_primary_opposition_actor = {
 	}
 }
 
+# COUNTRY scope on the original crisis chain. Promotes the frozen second
+# ordinary receipt into the generic secondary adapter after the first ordinary
+# child has initialized successfully. Keeping the adapter generic means the
+# same start_civil_war path, actor setup, reservation, and cleanup apply to
+# both bounded secondary fronts.
+event021_parent_activate_second_secondary_opening = {
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_secondary_2_front_preplanned
+			NOT = { has_global_flag = random_civil_war_secondary_2_front_activated }
+			has_variable = global.random_civil_war_pending_secondary_2_front_id
+			has_event_target = random_civil_war_preplanned_secondary_2_anchor_state
+		}
+		event021_parent_clear_preplanned_secondary_opening = yes
+		event_target:random_civil_war_preplanned_secondary_2_anchor_state = { set_state_flag = random_civil_war_secondary_transfer_state }
+		set_variable = { global.random_civil_war_pending_secondary_front_id = global.random_civil_war_pending_secondary_2_front_id }
+		set_variable = { global.random_civil_war_pending_secondary_archetype = global.random_civil_war_pending_secondary_2_archetype }
+		set_variable = { global.random_civil_war_pending_secondary_front_goal = global.random_civil_war_pending_secondary_2_front_goal }
+		set_variable = { global.random_civil_war_planned_secondary_archetype = global.random_civil_war_planned_secondary_2_archetype }
+		set_variable = { global.random_civil_war_planned_secondary_front_goal = global.random_civil_war_planned_secondary_2_front_goal }
+		event_target:random_civil_war_preplanned_secondary_2_anchor_state = { save_global_event_target_as = random_civil_war_preplanned_secondary_anchor_state }
+		set_variable = { global.random_civil_war_pending_secondary_anchor_state_id = global.random_civil_war_pending_secondary_2_anchor_state_id }
+		set_global_flag = random_civil_war_secondary_route_prepared
+		set_global_flag = random_civil_war_secondary_front_preplanned
+		set_global_flag = random_civil_war_secondary_2_front_activated
+	}
+}
+
 # COUNTRY scope on a bounded third belligerent created by Evolution I. The
 # secondary war is started from the first claimant and therefore receives its
 # own viable capital, front row, actor record, and immediate opponent without
@@ -3020,6 +3197,7 @@ event021_parent_initialize_secondary_opposition_actor = {
 			set_country_flag = random_civil_war_multifront_active
 			save_event_target_as = random_civil_war_secondary_next_source
 		}
+		event021_parent_activate_second_secondary_opening = yes
 		clr_global_flag = random_civil_war_secondary_front_pending
 		clear_global_event_target = random_civil_war_secondary_anchor_state
 		clear_global_event_target = random_civil_war_secondary_source_country
@@ -3033,6 +3211,18 @@ event021_parent_initialize_secondary_opposition_actor = {
 				event_target:random_civil_war_secondary_next_source = { event021_parent_secondary_front_candidate = yes }
 			}
 			event_target:random_civil_war_secondary_next_source = { event021_parent_try_secondary_front = yes }
+		}
+		else = {
+			if = {
+				limit = { has_global_flag = random_civil_war_secondary_2_front_activated }
+				if = {
+					limit = { has_variable = global.random_civil_war_pending_secondary_2_front_id }
+					set_temp_variable = { event021_planned_front_id_to_mark = global.random_civil_war_pending_secondary_2_front_id }
+					event021_reject_pending_front_plan_row = yes
+				}
+				event021_parent_clear_preplanned_secondary_opening = yes
+				event021_parent_clear_preplanned_secondary_2_opening = yes
+			}
 		}
 		# random_civil_war_secondary_next_source is overwritten before use and expires with this event chain.
 		country_event = { id = chaosx.nr21.7 }
@@ -3168,6 +3358,60 @@ event021_parent_prepare_secondary_route = {
 	}
 }
 
+# COUNTRY scope on the original host. Chooses a second ordinary route only
+# after the first ordinary receipt exists, excluding both the primary route and
+# that first receipt. The second route is frozen before ownership changes and
+# is reserved only after its child actor initializes successfully.
+event021_parent_prepare_tertiary_route = {
+	clr_global_flag = random_civil_war_secondary_2_route_prepared
+	clear_variable = global.random_civil_war_pending_secondary_2_archetype
+	clear_variable = global.random_civil_war_pending_secondary_2_front_goal
+	if = {
+		limit = {
+			random_civil_war_regional_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_regional_route_reserved }
+			NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.regional compare = equals } }
+			NOT = { check_variable = { var = global.random_civil_war_planned_secondary_archetype value = constant:random_civil_war_archetype.regional compare = equals } }
+		}
+		set_variable = { global.random_civil_war_pending_secondary_2_archetype = constant:random_civil_war_archetype.regional }
+		set_variable = { global.random_civil_war_pending_secondary_2_front_goal = constant:random_civil_war_front_goal.regional_recognition }
+		set_global_flag = random_civil_war_secondary_2_route_prepared
+	}
+	else_if = {
+		limit = {
+			random_civil_war_command_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_command_route_reserved }
+			NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.command compare = equals } }
+			NOT = { check_variable = { var = global.random_civil_war_planned_secondary_archetype value = constant:random_civil_war_archetype.command compare = equals } }
+		}
+		set_variable = { global.random_civil_war_pending_secondary_2_archetype = constant:random_civil_war_archetype.command }
+		set_variable = { global.random_civil_war_pending_secondary_2_front_goal = constant:random_civil_war_front_goal.command_seizure }
+		set_global_flag = random_civil_war_secondary_2_route_prepared
+	}
+	else_if = {
+		limit = {
+			random_civil_war_legal_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_legal_route_reserved }
+			NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.legal compare = equals } }
+			NOT = { check_variable = { var = global.random_civil_war_planned_secondary_archetype value = constant:random_civil_war_archetype.legal compare = equals } }
+		}
+		set_variable = { global.random_civil_war_pending_secondary_2_archetype = constant:random_civil_war_archetype.legal }
+		set_variable = { global.random_civil_war_pending_secondary_2_front_goal = constant:random_civil_war_front_goal.constitutional_restoration }
+		set_global_flag = random_civil_war_secondary_2_route_prepared
+	}
+	else_if = {
+		limit = {
+			random_civil_war_ideological_route_valid = yes
+			NOT = { has_country_flag = random_civil_war_ideological_route_reserved }
+			NOT = { check_variable = { var = random_civil_war_archetype value = constant:random_civil_war_archetype.ideological compare = equals } }
+			NOT = { check_variable = { var = global.random_civil_war_planned_secondary_archetype value = constant:random_civil_war_archetype.ideological compare = equals } }
+		}
+		set_variable = { global.random_civil_war_pending_secondary_2_archetype = constant:random_civil_war_archetype.ideological }
+		set_variable = { global.random_civil_war_pending_secondary_2_front_goal = constant:random_civil_war_front_goal.ideological_change }
+		set_global_flag = random_civil_war_secondary_2_route_prepared
+	}
+}
+
 # COUNTRY scope on the original host after a secondary actor has initialized.
 event021_parent_reserve_pending_secondary_route = {
 	if = {
@@ -3220,7 +3464,17 @@ event021_parent_try_secondary_front = {
 			save_global_event_target_as = random_civil_war_secondary_source_country
 			set_global_flag = random_civil_war_secondary_front_pending
 			event021_parent_start_secondary_civil_war = yes
-			if = { limit = { has_global_flag = random_civil_war_secondary_front_preplanned } event021_parent_clear_preplanned_secondary_opening = yes }
+			if = {
+				limit = {
+					has_global_flag = random_civil_war_secondary_front_preplanned
+					NOT = { has_global_flag = random_civil_war_secondary_2_front_activated }
+				}
+				event021_parent_clear_preplanned_secondary_opening = yes
+			}
+			if = {
+				limit = { has_global_flag = random_civil_war_secondary_2_front_activated }
+				event021_parent_clear_preplanned_secondary_2_opening = yes
+			}
 		}
 		else = {
 			set_country_flag = random_civil_war_secondary_front_rejected
@@ -3238,6 +3492,15 @@ event021_parent_try_secondary_front = {
 				clear_variable = global.random_civil_war_pending_secondary_front_id
 				clear_variable = global.random_civil_war_pending_secondary_front_goal
 				clear_variable = global.random_civil_war_pending_secondary_archetype
+			}
+			if = {
+				limit = { has_global_flag = random_civil_war_secondary_2_front_preplanned }
+				if = {
+					limit = { has_variable = global.random_civil_war_pending_secondary_2_front_id }
+					set_temp_variable = { event021_planned_front_id_to_mark = global.random_civil_war_pending_secondary_2_front_id }
+					event021_reject_pending_front_plan_row = yes
+				}
+				event021_parent_clear_preplanned_secondary_2_opening = yes
 			}
 		}
 	}
@@ -5276,9 +5539,18 @@ event021_parent_resolve_same_tag_takeover = {
 # never touches another event's target/collision flags.
 event021_parent_rollback_transaction = {
 	event021_parent_clear_scenario_plan_receipt = yes
+	if = {
+		limit = {
+			has_global_flag = random_civil_war_secondary_2_front_preplanned
+			has_variable = global.random_civil_war_pending_secondary_2_front_id
+		}
+		set_temp_variable = { event021_planned_front_id_to_mark = global.random_civil_war_pending_secondary_2_front_id }
+		event021_reject_pending_front_plan_row = yes
+	}
 	event021_parent_clear_front_plan = yes
 	if = { limit = { has_global_flag = random_civil_war_event6_secondary_front_preplanned } event021_parent_clear_event6_package_transaction = yes }
 	if = { limit = { has_global_flag = random_civil_war_secondary_front_preplanned } event021_parent_clear_preplanned_secondary_opening = yes }
+	if = { limit = { has_global_flag = random_civil_war_secondary_2_front_preplanned } event021_parent_clear_preplanned_secondary_2_opening = yes }
 	event021_parent_clear_pending_force_transaction = yes
 	if = {
 		limit = { has_global_flag = random_civil_war_plan_active }
@@ -6965,6 +7237,15 @@ event021_parent_cleanup_crisis = {
 		clr_country_flag = random_civil_war_cleanup_requested
 		event021_cleanup_decision_state = yes
 		set_country_flag = random_civil_war_cleanup_complete
+		if = {
+			limit = {
+				has_global_flag = random_civil_war_secondary_2_front_preplanned
+				has_variable = global.random_civil_war_pending_secondary_2_front_id
+			}
+			set_temp_variable = { event021_planned_front_id_to_mark = global.random_civil_war_pending_secondary_2_front_id }
+			event021_reject_pending_front_plan_row = yes
+		}
+		if = { limit = { has_global_flag = random_civil_war_secondary_2_front_preplanned } event021_parent_clear_preplanned_secondary_2_opening = yes }
 		event021_cleanup_crisis = yes
 		event021_cleanup_same_tag_route = yes
 		event021_cleanup_global_registry = yes

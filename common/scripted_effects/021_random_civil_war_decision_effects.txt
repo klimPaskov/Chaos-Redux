@@ -205,9 +205,16 @@ event021_decision_reconstruct_administration = {
 				limit = {
 					is_owned_by = ROOT
 					is_controlled_by = ROOT
+					NOT = {
+						OR = {
+							has_state_flag = event021_reconstruction_rail_repaired
+							has_state_flag = event021_rail_spine_restored
+						}
+					}
 					infrastructure < constant:event021_action_tuning.maximum_infrastructure
 				}
 				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				set_state_flag = event021_rail_spine_restored
 				set_state_flag = event021_reconstruction_rail_repaired
 			}
 		}
@@ -241,6 +248,7 @@ event021_prepare_exposure_sponsor_commitment = {
 	# an earlier exposure action.
 	clear_variable = event021_recipient_id
 	clear_variable = event021_front_id
+	clear_variable = random_civil_war_sponsor_recipient_scope
 	set_temp_variable = { event021_sponsor_id = THIS.id }
 	set_temp_variable = { event021_support_amount = constant:event021_action_tuning.sponsor_support_amount }
 	set_temp_variable = { event021_sponsor_duration = constant:event021_action_tuning.sponsor_commitment_days }
@@ -266,6 +274,7 @@ event021_record_received_sponsor_commitment = {
 	set_variable = { random_civil_war_sponsor_id = ROOT.id }
 	set_variable = { random_civil_war_sponsor_recipient_id = THIS.id }
 	set_variable = { ROOT.random_civil_war_sponsor_recipient_id = THIS.id }
+	set_variable = { ROOT.random_civil_war_sponsor_recipient_scope = THIS }
 	set_variable = { random_civil_war_sponsor_commitment_start_date = global.date }
 	set_variable = { random_civil_war_sponsor_commitment_until = global.date }
 	add_to_variable = { random_civil_war_sponsor_commitment_until = constant:event021_action_tuning.sponsor_commitment_days }
@@ -384,11 +393,11 @@ event021_decision_offer_mediation = {
 }
 
 event021_decision_end_sponsor_commitment = {
-	clr_country_flag = random_civil_war_sponsor_commitment_active
 	set_country_flag = random_civil_war_sponsor_repaid
 	set_country_flag = event021_sponsor_disengagement_used
 	set_temp_variable = { event021_evidence_source = constant:random_civil_war_evidence_source.sponsor }
 	event021_clear_fracture_evidence = yes
+	event021_clear_sponsor_commitment_receipt = yes
 	set_variable = { random_civil_war_pending_pressure_delta = constant:event021_action_tuning.disengage_pressure_relief }
 	event021_reduce_pressure = yes
 	set_variable = { random_civil_war_pending_authority_delta = constant:event021_action_tuning.disengage_authority_gain }
@@ -487,6 +496,7 @@ event021_mission_secure_rail_complete = {
 					infrastructure < constant:event021_action_tuning.maximum_infrastructure
 				}
 				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+				set_state_flag = event021_reconstruction_rail_repaired
 				set_state_flag = event021_rail_spine_restored
 			}
 		}
@@ -571,6 +581,8 @@ event021_cleanup_decision_state = {
 	clr_country_flag = event021_reconstruction_action_used
 	clr_country_flag = event021_integration_action_used
 	clr_country_flag = event021_priority_front_action_used
+	clear_variable = random_civil_war_priority_front_state
+	clear_variable = random_civil_war_priority_front_state_id
 	clr_country_flag = event021_neighbor_action_used
 	clr_country_flag = event021_sponsor_disengagement_used
 	clr_country_flag = event021_disarmament_action_used
@@ -585,7 +597,17 @@ event021_cleanup_decision_state = {
 	clr_country_flag = event021_hold_capital_failed
 	clr_country_flag = event021_rail_spine_secured
 	clr_country_flag = event021_rail_spine_lost
+	if = {
+		limit = { has_variable = random_civil_war_rail_mission_state }
+		var:random_civil_war_rail_mission_state = {
+			clr_state_flag = event021_reconstruction_rail_repaired
+			clr_state_flag = event021_rail_spine_restored
+		}
+	}
 	clr_country_flag = random_civil_war_disarmament_complete
+	event021_clear_sponsor_commitment_receipt = yes
+	clear_variable = random_civil_war_rail_mission_state
+	clear_variable = random_civil_war_rail_mission_state_id
 	clr_country_flag = random_civil_war_sponsor_repaid
 	clr_country_flag = random_civil_war_coalition_governance_complete
 	clr_country_flag = random_civil_war_civilian_relief_active

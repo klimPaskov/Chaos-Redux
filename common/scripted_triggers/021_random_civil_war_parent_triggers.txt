@@ -417,10 +417,16 @@ event021_parent_scenario_country_eligible = {
 	has_global_flag = random_civil_war_rework_ready
 	random_civil_war_is_normal_human_country = yes
 	NOT = { random_civil_war_has_terminal_lock = yes }
-	random_civil_war_successor_grace_clear = yes
+	OR = {
+		has_global_flag = random_civil_war_manual_scenario_launch_in_progress
+		random_civil_war_successor_grace_clear = yes
+	}
 	NOT = { has_country_flag = random_civil_war_active }
 	NOT = { has_country_flag = random_civil_war_target_reserved }
 	NOT = { has_country_flag = random_civil_war_cluster_target_reserved }
+	# The manual scenario bypasses Event 021 cooldown during its locked
+	# enumeration, but the shared individual-crisis load cap remains part of
+	# the definition of an eligible country and protects other crisis systems.
 	individual_crisis_load_is_below_cap = yes
 	num_of_controlled_states > constant:random_civil_war_value.zero
 	event021_parent_scenario_type_preflight_valid = yes

@@ -334,7 +334,7 @@ Any high-chaos overlap must be an explicit named evolution gate and may never as
 
 The baseline ordinary opening creates one opposition.
 
-Evolution I can create one nested secondary front, so it does not yet implement the accepted two-to-four-belligerent theater with independently tracked goals and settlements.
+Evolution I can create one ordinary nested secondary front and, for severe or critical major targets with enough viable opening states, a second bounded ordinary nested front, so the accepted three-to-five-belligerent theater has an explicit source path with independently tracked goals and settlements.
 
 Before mutation, create a bounded front plan whose rows contain generation, archetype, route, actor type, package ID where relevant, anchor, capital, connected-state array, actor scope, goal, status, and settlement.
 
@@ -351,7 +351,7 @@ Baseline plans one opposition actor.
 
 Evolution I may add up to two more opposition actors only when each actor passes connected-region, tag/package, parent-remnant, front-cap, and generation checks.
 
-The fourth belligerent may be ordinary or an attested Event 006 package actor through the generic adapter.
+The fourth and fifth belligerents may be ordinary or an attested Event 006 package actor through the generic adapter, subject to the five-row cap and preserved remnant.
 
 Extend `event021_register_front`, `event021_set_priority_front`, `event021_parent_try_secondary_front`, `event021_parent_review_secondary_front`, and `event021_parent_close_secondary_front` to consume the plan rows rather than relying on one special secondary actor.
 
