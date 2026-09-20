@@ -1,0 +1,19 @@
+/goal Implement Event 071 Persia from docs/specs/071_persia_specs/.
+
+Start with 071_persia_index.md and read all eighteen 071_persia_spec_part_* files, in sequence. Follow 071_persia_coding_prompt.md, 071_persia_asset_prompt.md, 071_persia_super_event_prompt.md, 071_persia_achievement_prompt.md, and 071_persia_decision_mission_prompt.md there. Read the country matrix, research notes, source receipt, parent review, and subagent handoffs. Planning labels are not final localisation.
+
+Follow AGENTS.md, mechanics, dynamic-helper references, and the event, planning, focus-tree, decision/mission, GUI, asset, super-event, 3D, portrait/ComfyUI, debug, subagent, and improvement-loop skills. Read actual repository sources, mandatory offline wiki, installed vanilla/DLC, map data, unit/cost APIs, asset references, and workbook. Preserve unrelated changes.
+
+Keep chaosx.nr71.1 Minor Fire-Once, Chaos level 1, Formables Medium. Reuse Iran, preserve government and assets, block an equivalent completed restoration, and resolve meaningful tree carryover. Audit vanilla, Chaos Redux, Workshop, and local-mod tags before any new identity. Implement all country packages, registration, actor history, evolutions, event details, and workbook-led catalog updates.
+
+Deliver the strong actual opening army once, scaled by evolution and campaign, with deployed manpower/equipment separate from reserves, legal aircraft, officers, fuel, transport, and remnant logistics. Later evolutions never repeat it. Build the real custom Immortals family with manpower capacity, paid training/conversion, production, reinforcement, counters, models, and sounds. Preserve ordinary human civilian systems. No empty units, duplicate people, or unannounced delayed army.
+
+Implement three distinct non-linear routes, shared development, exact territorial settlements, satrapies, clients, capitals, the full Persepolis chain, Gulf navy, guarantees, collapse, and recovery. Produce the final focus layout, filters, icons, and wording. Claims are not free cores. Limit new spirits to three staged slots and public custom readings to legitimacy and guard capacity. Deliver all mapped actions, missions, achievements, static assets, and accepted animations with static fallbacks.
+
+Use visible costs, at most four spendable types per action, staged guard payments, single debits, valid refunds, automatic mission success, and persistent reservations. Build the accepted native event GUI with exact-state geometry and no flattened controls or decorative picture beside its rich panel. Require GUI inspection, comprehensive renders, and comparison.
+
+Implement every unique Chaos manifestation, institution, submission, guarantee, fragmentation, settlement, and recovery effect with scaling, reversals, and anti-farming guards. Evolution activation adds zero. Prove generic wars, annexations, subjects, factions, and buildup are not double counted. Use hoi4.tech_inspect, hoi4.tech_render, and hoi4.tech_compare. Spawn the AI probability auditor and run inspect, evaluate, sweep, compare, and appropriate renders for the named scenarios.
+
+Route 3D and skeletal work through chaosx_3d_model_pipeline using collaboration.spawn_agent with fork_turns="none" where supported. Follow the dedicated separate body/firearm pipeline and required authorization. Validate actual consumers. Research final super-event wording, quotes, cultural references, and licensed unique audio with the designated workers. No placeholders or unsupported rights claims.
+
+Spawn chaosx_improvement_loop_planner with fork_turns="none" near completion and resolve its actual addendum or closure. Put working reports in docs/plans/071_persia_plans/ and fold accepted changes into specs. Keep iterating until the goal is accomplished to its fullest extent. Do not claim completion until implemented files satisfy the full spec. Report files, tests, asset and runtime evidence, and exact blockers honestly.

@@ -1,5 +1,7 @@
 # Event 023 reactor entitlement and construction architecture handoff
 
+Historical status notice: The implementation status below predates the 2026-09-19 country-to-state scope repair in `sov_nuclear_bombs_verify_pending_reactor_construction`. The repair is present in current source, but native queue identity/cancellation and entitlement behavior remain unresolved as recorded in `023_documentation_curator_final_2026-09-19.md`.
+
 Status: implemented and reconciled by the parent. The parent added the dedicated event-driven completion entry point and integrated the bounded native reactor queue contract. Live construction completion and save/reload remain user-owned validation surfaces.
 
 ## Scope and decision

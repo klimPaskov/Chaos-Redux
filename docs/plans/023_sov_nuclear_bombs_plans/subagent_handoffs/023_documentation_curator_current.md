@@ -1,5 +1,7 @@
 # Event 023 documentation-curator current handoff
 
+Historical snapshot notice: This 2026-09-05 visual-wiring reconciliation is superseded for current documentation status by `023_documentation_curator_final_2026-09-19.md`. Its references to an Event 23 asset manifest and GFX handoff describe files that are absent from the current workspace; preserve the original source-wiring findings for parent review.
+
 Status: implemented for documentation reconciliation only; this handoff makes no gameplay completion claim.
 
 Date: 2026-09-05

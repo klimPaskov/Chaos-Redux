@@ -31,11 +31,6 @@ Always open at least these core pages from `paradox_wiki/`:
 
 If your task touches some other system, for example for gui, open Interface Modding and Scripted GUI Modding pages. For country creation, national focuses, equipment, divisions or technology, open the corresponding wiki snapshot page(s) from `paradox_wiki/` as well. Do not rely on memory when a page exists.
 
-Maintenance:
-
-- Refresh the snapshot with `python -B .tools/wiki/sync_wiki_snapshot.py` and accept it with `python -B .tools/wiki/verify_wiki_snapshot.py`. See `.tools/wiki/README.md`.
-- Refreshing the snapshot is its own task. Do not re-fetch wiki pages while implementing a mechanic; work from the committed snapshot.
-
 Web access:
 
 - For general web research, use your default web search tool.
@@ -56,7 +51,7 @@ Use HOI4 vanilla as the main example set.
 
 - When implementing a mechanic, event, decision or UI, find at least one vanilla precedent (if possible) and mirror its structure.
 
-If Chaos Redux already has a pattern for the same thing, follow that over vanilla for consistency, but still take a look at a vanilla implementation.
+If Chaos Redux already has a fully working pattern for the same thing, follow that over vanilla for consistency, but still take a look at a vanilla implementation.
 
 ### Mod References Beyond Vanilla
 
@@ -79,7 +74,7 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-focus-trees` before editing/viewing national focus trees.
 - Use `chaos-redux-decisions-missions` before editing decisions/missions
 - Use `chaos-redux-scripted-gui` for scripted GUI reference images before implementation, native layout, visual and usability review, and mandatory MCP before-and-after evidence.
-- Use `chaosx_event_ui_worker` when a named event specifically introduces a dedicated scripted GUI or mechanic window. It follows the reference-image and layout rules in `chaos-redux-scripted-gui`, and must use the HOI4 MCP GUI inspect, render, and post-change comparison workflow; `gui_rewrite` is an optional applying/validation route. Never route the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing UIs to this worker.
+- Use `chaosx_event_ui_worker` when a named event specifically introduces a dedicated scripted GUI or mechanic window. It follows the reference-image and layout rules in `chaos-redux-scripted-gui`, and must use the HOI4 MCP GUI inspect, render, and post-change comparison workflow. Never route the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing UIs to this worker.
 - Use `chaos-redux-mtth` when MTTH logic or weighted timing would reduce clutter or make AI and release logic clearer.
 - Use `chaos-redux-subagents` when coordinating project custom subagents, routing bounded work, or defining parent/subagent ownership boundaries.
 - Use `chaos-redux-improvement-loop` when an implemented or planned mechanic needs recursive depth expansion, spec addenda, improvement handoffs, or checks for shallow, duplicated, generic, disconnected, or low-impact content.
@@ -90,8 +85,7 @@ The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__ho
 Tool exposure does not prove service health or the availability of a standalone viewer.
 Use `hoi4.event_inspect` and `hoi4.tech_inspect` with `mode = helper_expansion` for large helper closures. Use `hoi4.job_inspect` and `hoi4.job_cancel` to follow or cancel persistent jobs, and request native MCP tasks when the client negotiates them. Inspect the final tool result and retain continuation URIs, source revisions, coverage, and unresolved findings. Keep domain-specific inspect, render, compare, and scenario evidence.
 Verify standalone Technology Tree Viewer availability separately from the exposed technology routes documented in the MCP evidence section of `chaos-redux-subagents`.
-Record an absent viewer as a package gap without inventing capabilities.
-Keep viewer and inspector use read-only.
+Record an absent viewer as a package gap without inventing capabilities. Keep viewer and inspector use read-only.
 
 - Focus work: inspect, render, lint, and use `hoi4.focus_rewrite` for cleanup or a complete new route plan; review the returned layout and diagnostics.
 - Event work: use narrow `hoi4.event_inspect` queries and the read-only render and compare tools, then edit source files through the normal workflow.
@@ -111,7 +105,6 @@ Use project custom subagents when a task needs bounded research, asset productio
 The main agent remains responsible for final implementation, final wiring, final review, required source and MCP validation, and completion claims. The user performs live-game validation. Subagents return evidence, files, manifests, spec addenda, patches, or handoff notes depending on the parent-granted mode. The main agent must review their outputs and carry blockers or uncertainty into the final report.
 
 All project custom subagents must be spawned with a fully explicit, self-contained prompt and no inherited parent-thread context, and the parent prompt must carry every path, constraint, and prior decision the role needs. Treat the canonical identifiers in `chaos-redux-subagents` as routing and ownership contracts, and write the role boundaries into the delegation prompt. Runtime-specific spawning, model selection, and generated-definition details belong to that skill.
-Do not substitute Cursor's built-in `explore`, `shell`, or `browser` subagents, or Claude Code's built-in `Explore`, `Plan`, or `general-purpose` agents, for a named Chaos Redux specialist. If a subagent needs a user correction, task constraint, current implementation status, or prior handoff detail, the parent must pass it explicitly in the subagent prompt or write it into the relevant spec, plan, handoff, or repo file before spawning.
 
 Use these high-level routing rules:
 
@@ -119,7 +112,7 @@ Use these high-level routing rules:
 - Use asset subagents for non-portrait visual production: `chaosx_asset_source_researcher`, `chaosx_generated_event_art`, and `chaosx_icon_artist`. All character portrait work belongs to `chaosx_portrait_creator`.
 - Use `chaosx_event_ui_worker` only for a dedicated scripted GUI introduced and owned by one named event or event-owned mechanic. The parent prompt must prove event ownership and name exact GUI identifiers, files, entry point, states, resolutions, assets, and handoff path. The worker owns bounded layout implementation and mandatory MCP visual evidence, while the parent and decision owner retain gameplay, costs, effects, AI, balance, and final integration. The parent reviews required MCP evidence and the user performs live-game validation. It must not audit the shared event log, event details, settings, super-events, shared registries, or unrelated existing UIs.
 - Use `chaosx_portrait_creator` for complete portrait production: grounded source research and placeholders, fictional native ImageGen portraits, user-supplied final validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs. It never operates RunPod.
-- For asset animation, route 2D frame sheets to `chaos-redux-frame-animation` and skeletal `.anim` actions to `chaos-redux-3d-model-pipeline`. 3D prompts require Meshy 7, one approved image, vanilla scale, packed materials, reimport proof, parent-owned wiring, sourced-audio provenance/checksums/sync, and bespoke green counters. Use the skill's Blender route for manual Blender rigging and animation after the first failed or unusable Meshy rig/action attempt or for unsupported stages. Existing faulty or missing rigs/actions may be repaired directly in Blender. Preserve genuine role-specific skeletal motion and export/reimport evidence; do not retry paid rigging or animation to avoid this route.
+- For asset animation, route 2D frame sheets to `chaos-redux-frame-animation` and skeletal `.anim` actions to `chaos-redux-3d-model-pipeline`. Each skill owns its own production route, asset requirements, and fallbacks, so do not repeat paid rig or animation attempts, and do not pass a static pose or transform-only mockup as a requested animation.
 - Use super-event subagents for specialised research: `chaosx_super_event_text_researcher` and `chaosx_super_event_audio_researcher`.
 - Use audit subagents before completion claims: `chaosx_focus_tree_auditor`, `chaosx_decision_mission_auditor`, `chaosx_country_package_auditor`, `chaosx_localisation_auditor`, `chaosx_event_completion_auditor`, and `chaosx_ai_probability_auditor` for every weighted AI or probability surface.
 - Use `chaosx_ai_probability_auditor` for read-only audits of AI weights, MTTH, event `ai_chance`, random lists, focus and research selection, decision and mission scores, AI strategy factors, and declared custom weighted pools; it must use the HOI4 MCP probability workflow and return scenario-specific evidence.
@@ -127,6 +120,8 @@ Use these high-level routing rules:
 - Use `chaosx_scripted_system_architect` for reusable scripted effects, triggers, script constants, event targets, meta effects, variable patterns, and dynamic helper design.
 - Use `chaosx_documentation_curator` during long implementation when specs, plans, docs, manifests, prompts, reports, or subagent handoffs may be stale, duplicated, contradictory, or too numerous. It patches documentation surfaces only, writes source-of-truth maps and resume packets, and does not edit gameplay files or spreadsheets.
 - Use `chaosx_spreadsheet_doc_worker` only after implementation facts are available. Spreadsheet event-detail, evolution-detail, and cluster-detail fields must match the in-game localisation wording.
+- Use `chaosx_skill_maintainer` for non-trivial skill creation, cleanup, routing updates, or multi-skill consistency work.
+- Use `chaosx_improvement_loop_planner` during large event implementation when a mechanic, focus tree, country package, decision system, super-event, visual progression, lore package, or audit finding needs deeper design. It creates concrete event expansion addenda with research, historical connections, playable mechanics, and implementation surfaces for the main agent. It does not patch gameplay files. Do not spawn it again for the same event until the previous addendum has been implemented, folded into specs, queued with a reason, or rejected.
 
 Spreadsheet source and export rule:
 
@@ -134,8 +129,6 @@ Spreadsheet source and export rule:
 - After every successful workbook update, run `python .tools/export_event_catalog_csv.py` from the mod root.
 - That tool overwrites the export-only `chaos_redux_events_catalog.csv`, `chaos_redux_clusters_catalog.csv`, and `chaos_redux_scenarios_catalog.csv` files in `docs/spreadsheets/`.
 - Never edit those CSV files directly or use a stale CSV as the source of truth.
-- Use `chaosx_skill_maintainer` for non-trivial skill creation, cleanup, routing updates, or multi-skill consistency work.
-- Use `chaosx_improvement_loop_planner` during large event implementation when a mechanic, focus tree, country package, decision system, super-event, visual progression, lore package, or audit finding needs deeper design. It creates concrete event expansion addenda with research, historical connections, playable mechanics, and implementation surfaces for the main agent. It does not patch gameplay files. Do not spawn it again for the same event until the previous addendum has been implemented, folded into specs, queued with a reason, or rejected.
 
 Patch-capable subagents are allowed to make small, local improvements by default when the change is inside the current task surface and directly improves the feature. They may vary costs, add clearer dynamic localisation, improve tooltips, adjust safe AI weights, add narrow helper calls, fix route locks, add cleanup hooks, or correct existing formable checks. For example, `chaosx_event_ui_worker` may implement the accepted bounded GUI introduced by a named event, but no subagent may invent an unplanned or shared scripted GUI system, expand a whole mechanic, redesign a route family, add a new country package, or change the requested design on its own. Broad gaps become a plan under `docs/plans/<event_id>_<event_slug>_plans/`. Every subagent edit needs a handoff that lists changed files, identifiers, meaningful validation when it affects confidence, and remaining risks. Documentation cleanup handoffs must record each affected document using the dispositions and evidence requirements in Specs and Plans below.
 
@@ -147,11 +140,10 @@ Event source specifications belong under `docs/specs/<event_id>_<event_slug>_spe
 
 Subagent plans, improvement addenda, audit follow-up notes, and implementation handoffs belong under `docs/plans/<event_id>_<event_slug>_plans/`.
 
-The plans folder is a working area.
-The specs folder holds source design, with acceptance recorded for each relevant claim.
+The plans folder is a working area. The specs folder holds source design, with acceptance recorded for each relevant claim.
 Distinguish explicit user decisions, accepted design with its acceptance basis, implementation evidence, and proposals.
-A spec location, date, status label, or old handoff does not prove approval.
-Record the user decision or parent acceptance within the user-authorized scope that supports accepted design.
+A spec location, date, status label, or old handoff does not prove approval. 
+Record the user decision or parent acceptance within the user-authorized scope that supports accepted design. 
 If that basis is missing or conflicting, keep the claim unresolved rather than promoting it through documentation cleanup.
 
 Use these dispositions for plans, addenda, and reconciled documents:

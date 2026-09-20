@@ -1,5 +1,7 @@
 # Event 023 current completion audit
 
+Historical snapshot notice: The 2026-09-05 source and asset findings are superseded for current status by `023_event_completion_auditor_final_2026-09-19.md` and `023_documentation_curator_final_2026-09-19.md`. Retain this file for its original diagnostics and artifact references.
+
 Disposition: `unresolved`
 
 Audit date: 2026-09-05
