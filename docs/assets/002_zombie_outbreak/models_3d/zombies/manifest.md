@@ -1,6 +1,22 @@
 # Base zombie 3D package
 
-Status: final offline model package assembled; audio listening and live HOI4 validation pending.
+## Current source of truth: clean final v3, 2026-09-20
+
+Status: **offline runtime candidate promoted** for the base zombie mesh, materials, and eight skeletal actions; death-pose culling has a measured residual, while audio listening and live HOI4 validation remain user-owned and unverified. The earlier dependency stops, v2/v4 exports, `77_final_zombie_actions_v1.blend`, and the action-deformation blocker in the linked pipeline handoff are historical stages and do not identify the current runtime bytes. This section supersedes their model, material, action, cost, and acceptance status claims; it does not erase their repair evidence.
+
+The final pre-export checkpoint is `blender/checkpoints/93_clean_uv_final_v3.blend`, derived through `87_selective_backface_repair_v3` → `89_nonoverlap_uv_v1` → `91_death_backface_repair_v2` → `93_clean_uv_final_v3`. Checkpoint 91 adds 37 death-pose face flips while leaving already-correct faces `10418` and `10911` unflipped. The final source has one UV layer, 30,436 triangles, and 15,021 vertices; `validation/clean_final_v3_summary.json` records zero boundary edges, non-manifold edges, and degenerate faces.
+
+The locked export is `export/mesh/chaosx_zombies_clean_final_v3.mesh` with eight role files at `export/anim/clean_final_v3/{attack,defend,idle,move,retreat,support_attack,training,death}.anim`. Those exports are promoted to the canonical `gfx/models/units/chaosx_zombies/chaosx_zombies.mesh` and `chaosx_zombies_{attack,defend,idle,move,retreat,support_attack,training,death}.anim` runtime names. `validation/clean_final_v3_summary.json` records byte equality, SHA-256 values, and a proof checkpoint for each role. The runtime mesh SHA-256 is `342FF7A8F28AD07D04C70A4686A064602DB03E9C65E6893E1032F6E901F2D698`.
+
+The `export/runtime_materials_v6/` package contains `base_color.png`, `normal.png`, `roughness.png`, and corresponding runtime DDS maps. Its smart-project/packed UV arrangement reduced measured cross-category raster edge-sample overlap from the earlier 91.58% to 3,263 of 334,514 covered texels (0.975%); no four-way overlap was measured. The promoted runtime diffuse, normal, and specular SHA-256 values are `EFFE1B8D9D2013E6DBF680AC344F0943EDACF45B3AAA3D457856D77A763D7DA3`, `143BCFEB0C4827CE25CAAEA9E2558B12C15C7446656A5EACD8CEF1C01ABD44D0`, and `1BA6E652A9ED2F3E375BE6FA09585C65D65B6183D89B79ACFC6D8B62FE0A5267D0`. The overlap report is `export/runtime_materials_v6/uv_overlap_report.json`; final material renders are `blender/previews/runtime_materials_v6_*`, and source culling comparisons are `blender/previews/orientation_audit_v5_*`.
+
+Actual-byte proofs are `validation/reimport_clean_final_v3_{attack,defend,idle,move,retreat,support_attack,training,death}.json` and `blender/checkpoints/reimport_clean_final_v3_*.blend`. The culling-on/off comparisons count pixels with difference greater than 40 as attack `0`, move `7`, retreat `0`, and death frame 37 `612`. The death residual is concentrated on two folded inner faces already correct in rest and locomotion; it remains a documented offline visual limit rather than a zero-defect claim. The locked adapter export report is `logs/adapter/add82a35f9af4f2586d92f07a7fce1ee.result.json`; `validation/clean_final_v3_summary.json` is the concise final validation index.
+
+Meshy lineage spend is **40 credits**: 30 body, 5 remesh, and 5 for the one rejected rig attempt. No paid Meshy animation attempt was made; the Blender recovery supplies the canonical rig and actions. Audio listening, contact timing, and live HOI4 behavior have no acceptance evidence in this documentation pass. The older audio provenance and wrapper limits below remain open until their owners reconcile them.
+
+## Historical lineage and superseded status claims
+
+The sections below preserve dated production and repair evidence. Read any statement that calls an older checkpoint, export, texture, action, or runtime hash “final,” “accepted,” “blocked,” or “current” as a statement about that historical stage only; the clean final v3 section above and `validation/clean_final_v3_summary.json` identify the present offline runtime candidate.
 
 The user selected the exact image in `refs/source/user_selected_original.png` for the base zombie. `refs/original/meshy_input.png` is byte-identical (SHA-256 `7e702c098884d221b000bb6e8764677489e7a4c22d26f6637d8a2e002ab60a43`). Prior arm-proportion iterations are rejected. The screenshot of the defective old model is defect evidence only.
 
