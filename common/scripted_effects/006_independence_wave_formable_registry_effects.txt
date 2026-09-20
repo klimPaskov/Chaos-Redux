@@ -746,6 +746,19 @@ independence_wave_formable_clear_founding_invitation_from_root = {
 			check_variable = { var = independence_wave_formable_invitation_family value = ROOT.independence_wave_formable_proposal_family compare = equals }
 			check_variable = { var = independence_wave_formable_invitation_sequence value = ROOT.independence_wave_formable_proposal_sequence compare = equals }
 		}
+		if = {
+			limit = {
+				check_variable = {
+					var = independence_wave_formable_invitation_family
+					value = constant:independence_wave_formable_family.pacific_regional_federation
+					compare = equals
+				}
+			}
+			# FORM-48 human replies are invitation receipts. Clear them only
+			# while this exact Pacific proposal still owns the invitation.
+			clr_country_flag = independence_wave_form48_autonomous_invitation_authorized
+			clr_country_flag = independence_wave_form48_autonomous_invitation_withheld
+		}
 		independence_wave_formable_clear_founding_invitation_state = yes
 	}
 }
