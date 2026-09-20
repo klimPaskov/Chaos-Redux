@@ -14,6 +14,8 @@ The bounded 2026-09-20 decision/mission audit is `subagent_handoffs/006_event6_d
 
 The bounded 2026-09-20 IW-070 Armenia package audit is `subagent_handoffs/006_event6_iw070_arm_package_audit_2026-09-20.md`. It found no ARM-local source-safe defect across the accepted carrier, anchor, setup, force, lifecycle, decisions, shared focus, vanilla identity, AI, cleanup, and FORM-16 surfaces. Fresh MCP and quantitative AI evidence remain unresolved, so no package or weight promotion follows.
 
+The fresh 2026-09-20 Event MCP continuation is `subagent_handoffs/006_event6_event_mcp_refresh_continuation_2026-09-20.md`. Its bounded `chaosx.nr6.1` lint reports zero blocking diagnostics and zero skipped sources at revision `626a662a56db61a0386081b02132ff95f2a34151083147f5e121798d68a7f7ff`, while helper and lifecycle projections remain deferred. It is structural evidence only and does not widen any runtime, admission, or Join gate.
+
 The completed current weighted-logic receipt is `subagent_handoffs/006_event6_probability_audit_2026-09-20.md`. It preserves the exact bounded outer-allocator and formable-congress fixture results, records the incomplete 126-entry nested package pool and unresolved event, decision, mission, and focus fixtures, and makes no campaign-balance or package-admission claim.
 
 The 2026-09-19 IW-095 package completion audit at `subagent_handoffs/006_iw095_package_completion_2026-09-19.md` supersedes the earlier IW-095 evidence-refresh link for current package status; it confirms package-local alignment but keeps central admission fail-closed.
