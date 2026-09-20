@@ -4,7 +4,7 @@ The long provenance list below preserves dated implementation history. Current r
 
 The 2026-09-02 country-shell consolidation is committed in `2617931b1b730f617ad99c3c363503b4465f38d6`: 85 researched Event 006 tags share seven exact graphical-culture shells, their former per-tag RGB values are preserved in the complete vanilla-compatible `common/countries/colors.txt` override, and the 17 inert reservation tags remain on the unchanged shared reservation shell. This removes 78 country-definition files and saves 44,482 shell bytes without changing country history, admission, allocation, Join, gameplay, localisation, assets, or the no-pre-event contract. Handoff: `subagent_handoffs/006_event6_country_shell_merge_audit_2026-09-02.md`.
 
-## Current authority override (2026-09-19 validation refresh)
+## Current authority override (2026-09-20 validation refresh)
 
 The 2026-09-19 IW-095 package completion audit at `subagent_handoffs/006_iw095_package_completion_2026-09-19.md` supersedes the earlier IW-095 evidence-refresh link for current package status; it confirms package-local alignment but keeps central admission fail-closed.
 
@@ -14,6 +14,8 @@ Resume from `subagent_handoffs/006_event6_current_validation_refresh_2026-09-19.
 The 2026-09-20 FSM lifecycle repair is `subagent_handoffs/006_event6_fsm_setup_receipt_guard_2026-09-20.md`; it adds only the missing IW-179 setup-receipt cancellation guard and leaves FSM adapter-only, fail-closed, and FORM-48 unreachable.
 The 2026-09-20 FIJ lifecycle repair is `subagent_handoffs/006_event6_fij_setup_receipt_guard_2026-09-20.md`; it adds only the missing IW-177 setup-receipt cancellation guard and leaves FIJ adapter-only, fail-closed, and FORM-39 unreachable.
 The 2026-09-20 foundation-mission parity sweep is `subagent_handoffs/006_event6_foundation_mission_setup_receipt_parity_2026-09-20.md`; it adds only matching setup-receipt guards to affected package-local founding cancellation branches and leaves all central admission and formable gates unchanged.
+The 2026-09-20 IW-179 FSM King John Sigra source-gate audit is `subagent_handoffs/006_iw179_fsm_king_john_sigra_source_gate_2026-09-20.md`; it supports only the bounded identity/traditional-role fit, while the exact BM01009 record is restricted/all-rights-reserved, full-resolution source and independent review remain uncleared, and FORM-48 remains unreachable.
+The 2026-09-20 formable state-puzzle GUI worker recheck is `subagent_handoffs/006_event6_formable_gui_worker_recheck_2026-09-20.md`; 1920x1080 and 1280x720 MCP inspections retain unresolved dynamic summary getters and clipping, the render response remains wire-truncated without family-isolated comparison evidence, and the authorized GUI sources remain unchanged.
 
 Resume using the current whole-event status receipt `subagent_handoffs/006_event6_completion_gap_audit_2026-09-19.md`; the 2026-09-13 completion refresh is a dated predecessor, while `subagent_handoffs/006_event6_league_transition_callers_2026-09-13.md` remains the implemented League caller receipt.
 The League caller gap is implemented: consultative proclamation/upgrade, durability, reform, normalization, reunification, dissolution, and restart now have normal-play callers, and the durability gate receives its completion receipt only after the existing timed formal/member/cohesion checks.
