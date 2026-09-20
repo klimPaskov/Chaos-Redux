@@ -4,26 +4,32 @@
 
 The shared zombie model uses a dedicated sourced audio identity for its creature vocalizations, movement, attacks, and deaths.
 
-All twelve zombie sub-unit definitions in `common/units/zombies.txt` use `sprite = zombies`, so the shared `zombies_entity` and its sound events apply consistently to the base and disease-family zombie units.
+Current disposition: runtime WAVs and sound definitions are installed, while sonic clip choice is **needs_user_review**, exact visual/audio contact synchronization is **blocked pending listening and live playback review**, and subunit-specific acknowledgement selection has no verified consumer. The current model lineage is Meshy 7 body task `01a0ba94-9607-729b-92e5-53951c59e8e1` (30 credits) and recovery remesh `01a0ba9f-8b53-77e5-a132-ea513bcd0672` (5 credits); the parent then accepted corrected v2 rig/actions and conservative death v5. The current package handoff is `docs/plans/002_zombie_outbreak_zombies_plans/subagent_handoffs/zombies_3d_pipeline_20260919.md`.
+
+`common/units/zombies.txt` gives the base `zombies` and `wendigo_zombies` sub-units `sprite = zombies`, so those consumers resolve the shared `zombies_entity`. The infected, rabid, parasitic, mutant, undead, necrotic, and demonic families use their own `chaosx_*_zombies` sprite stems and separate entity files; their audio packages have separate evidence and are outside this shared base-zombie contract.
 
 ## Runtime contract
 
 | Surface | Runtime identifier or path | Role |
 | --- | --- | --- |
-| Unit consumer | `common/units/zombies.txt` | Resolves every zombie sub-unit to the shared sprite |
+| Unit consumer | `common/units/zombies.txt` | Resolves `zombies` and `wendigo_zombies` to the shared sprite; specialized families have separate stems |
 | Entity | `zombies_entity` in `gfx/entities/chaosx_zombies.asset` | Receives state-entry sound events |
 | Selection consumer | `ZZZ_infantry_idle` | Country/original-tag infantry selection voice used by `ZZZ` zombie armies |
 | Sound definitions | `sound/chaosx_zombies_sound.asset` | Declares source WAVs and soundeffect wrappers |
-| Runtime audio | `sound/002_zombie_outbreak/zombies/*.wav` | Signed-16 PCM WAV assets (`pcm_s16le`, 44.1 kHz, mono) |
+| Runtime audio | `sound/002_zombie_outbreak/zombies/*.wav` | 24 installed signed-16 PCM WAV assets (`pcm_s16le`, 44.1 kHz, mono); 15 older shared files and nine later sourced derivatives |
 
-The entity keeps the existing custom actions and adds one-shot sound events to the corresponding vanilla land-unit states.
+The entity binds distinct corrected v2 actions for idle, move, attack, defend, support attack, retreat, and training, plus death v5. The following times are implemented in the entity file; audible and contact accuracy still require review.
 
 | State | Soundeffect | Synchronization |
 | --- | --- | --- |
-| `idle` | `chaosx_zombie_idle` | State entry, with low-volume randomized moans |
-| `move` and `retreat` | `chaosx_zombie_move` | State entry, with randomized footstep one-shots matching the shamble loop |
-| `attack`, `defend`, and `support_attack` | `chaosx_zombie_attack` | State entry, with randomized creature attack vocalizations |
-| `death` | `chaosx_zombie_death` | State entry, with randomized death vocalizations |
+| `idle` and `training` | `chaosx_zombie_idle` | One trigger-once event without a numeric offset |
+| `move` and `retreat` | `chaosx_zombie_move` | Events at 0.3333 and 1.0000 in each looping state; boot-contact alignment unverified |
+| `attack` | `chaosx_zombie_attack_vocal`, `chaosx_zombie_attack_impact` | Events at 0.3333 and 0.6667, corresponding to frames 8 and 16 at 24 fps |
+| `defend` | `chaosx_zombie_defend_contact` | Event at 0.5000, corresponding to frame 12 at 24 fps |
+| `support_attack` | `chaosx_zombie_attack_vocal`, `chaosx_zombie_support_attack_contact` | Events at 0.3333 and 0.6667, corresponding to frames 8 and 16 at 24 fps |
+| `death` | `chaosx_zombie_death_vocal`, `chaosx_zombie_death` | Events at 0.5000 and 1.5000 in death v5; the latter uses the older death files |
+
+`chaosx_zombie_hurt` is declared but has no verified entity-state consumer. The older `chaosx_zombie_attack` wrapper remains declared but is no longer invoked by the base zombie entity. Distinct `chaosx_zombie_retreat_step` and per-subunit acknowledgement remain proposals, not runtime bindings.
 
 ## Selection-audio consumer
 
@@ -49,7 +55,7 @@ The entity event shape follows the offline `paradox_wiki/Entity modding - Hearts
 ## Runtime audio format contract
 
 The installed vanilla infantry voice precedent is signed 16-bit PCM (`pcm_s16le`), 44.1 kHz, mono, and the runtime zombie voice files use that same delivery format.
-The source files remain preserved with their original checksums; the runtime copies are license-permitted mechanical derivatives.
+The three older idle originals and the nine later derived originals have preserved hashes and source-to-runtime mappings; twelve older movement/attack/death mappings remain unresolved in the scoped evidence. The mapped runtime copies are mechanically converted from source files whose pages state CC0.
 The deterministic conversion is `ffmpeg -map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`.
 A runtime unit package is not complete until `ffprobe` reports `pcm_s16le,44100,1,16` for every installed WAV, because float WAVs such as `pcm_f32le` are not accepted by the runtime voice contract.
 
@@ -60,7 +66,7 @@ The selection wrapper reuses the three mechanically converted idle one-shots fro
 
 The movement candidates come from [Footsteps](https://opengameart.org/content/footsteps-0) by GboxMikeFozzy, which is marked CC0 and states that no attribution is required.
 
-Additional attack and death candidates come from [Monster Sound Pack, Volume 1](https://opengameart.org/content/monster-sound-pack-volume-1) by Ogrebane, which is marked CC0 and described as containing monster growls, grunts, and death sounds.
+The nine later vocal, impact, and hurt derivatives come from the archived [Zombie / Skeleton / Monster Voice Effects](https://opengameart.org/content/zombie-skeleton-monster-voice-effects) pack by ArcadeParty, the archived [Impact](https://opengameart.org/content/impact) pack by Iwan “qubodup” Gabovitch, and the archived ianzazz pack. `docs/assets/002_zombie_outbreak/models_3d/zombies/evidence/audio/runtime_derivations_20260919.json` gives an exact source path, source hash, conversion command, runtime path, and runtime hash for each of those nine files. The impact page labels the derivative CC0, but its underlying Freesound recordings were not independently audited. An older note named Ogrebane's Monster Sound Pack as an attack/death candidate; no corresponding original or per-file derivation was found in this package, so it is not treated as established provenance for an installed file.
 
 The selection source archive is `https://opengameart.org/sites/default/files/zombienoises.zip`, downloaded for verification on 2026-08-12 with SHA-256 `D2C90AD199AB95396DD7F5D21083B3BB7BE7090A9B4A97CE7173233C6FCC72D6`.
 
@@ -70,9 +76,9 @@ The selection source archive is `https://opengameart.org/sites/default/files/zom
 | `zombienoise2.ogg` | `F9E23D6545F64798D29F2B7AC767DA6208C1DC43B6D0928DC037FAE4BCA13B13` | `zombie_idle_moan_02.wav` | `8F8FAA368A6148914FDBCBA4966BF08AB8A8987481AB4D219BB931860D85DE5B` |
 | `zombienoise3.ogg` | `968B48B14A83A17B387E7373C83D3B9553BF21D2B0E03A67909EAD4FC21F38B1` | `zombie_idle_moan_03.wav` | `4D97968CFE6FFB1DCC3519A697D09402A126B0DE2C0F95CAC062F89E025C6A` |
 
-The derived files reproduce byte-for-byte with FFmpeg using `-map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`; no synthesis, test tones, placeholder audio, or unrelated vanilla sound files were used.
+The three idle/selection derivatives reproduce byte-for-byte with FFmpeg using `-map 0:a:0 -ar 44100 -ac 1 -c:a pcm_s16le -map_metadata -1`. The nine later derivatives have matching source and runtime hashes in `runtime_derivations_20260919.json`. The six installed movement files and six older attack/death files do not yet have an equally durable per-file source-to-runtime mapping in the scoped evidence; a source page or filename alone does not close that gap. No synthesis, test tones, placeholder audio, or unrelated vanilla sound files are recorded in the verified derivations.
 
-The final assets are 44.1 kHz signed 16-bit PCM WAV files in mono, matching the installed vanilla voice delivery format.
+All 24 installed WAV files probed as 44.1 kHz signed 16-bit PCM in mono on 2026-09-19, matching the installed vanilla voice delivery format.
 
 ## Runtime tuning
 
@@ -82,14 +88,14 @@ The durable selection source-to-runtime mapping and checksums are recorded above
 
 ## Validation boundary
 
-Source files, derived WAV format, runtime file references, soundeffect identifiers, entity event identifiers, and all twelve sprite consumers were checked locally.
+The 24 installed WAV formats, runtime source declarations, soundeffect identifiers, entity event identifiers and numeric times, and base/Wendigo shared sprite consumers were checked locally. The nine later WAVs matched their recorded runtime SHA-256 values. The earlier specialized-zombie intake at `docs/plans/002_zombie_outbreak_zombies_plans/subagent_handoffs/specialized_zombie_audio_counter_intake.md` is a dated snapshot with old float-WAV hashes and old entity bindings, not current runtime evidence.
 
-The installed zombie WAVs were additionally probed with `ffprobe` and each reports `pcm_s16le,44100,1,16`.
+Each installed zombie WAV reports `pcm_s16le,44100,1,16` through `ffprobe`.
 
 The `ZZZ_infantry_idle` identifier, `Voices` category membership, three selection candidates, and `ZZZ` original-tag consumer were checked against the installed vanilla voice package.
 
-Live playback in Hearts of Iron IV remains user-owned because the agent does not launch the game.
+Sonic suitability, impact and footstep contact alignment, the older movement/attack/death per-file provenance mapping, and live playback in Hearts of Iron IV remain unresolved. The agent does not launch the game; live playback is user-owned.
 
 ## Future extensions
 
-If the disease families later need distinct audio identities, add separate entity profiles only when the gameplay design requires audible differentiation; otherwise keep the shared package to preserve the one-model and one-sound-family contract.
+Review whether `wendigo_zombies` should continue to share the base zombie sprite and sound package, and preserve the separate entity/audio contracts for specialized families when their distinct models are the intended consumers.

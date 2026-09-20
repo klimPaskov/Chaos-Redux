@@ -1,5 +1,7 @@
 # Specialized zombie audio and counter intake
 
+> Historical intake snapshot: its base-zombie float-WAV inventory, hashes, four-action `.gfx` observation, shared entity event table, and assertion that all seven specialized sub-units still use `sprite = zombies` were superseded by later runtime work. Current `common/units/zombies.txt` gives those seven separate `chaosx_*_zombies` sprite stems, and the corrected shared base package is recorded in `zombies_3d_pipeline_20260919.md` and `docs/systems/3d_model_pipeline/chaosx_zombie_unit_sound_design.md`. Revalidate specialized model/audio routing from current source before using the old rows; its tag-scoped selection limitation remains unresolved.
+
 Status: `intake_complete_runtime_work_pending`.
 
 This is a read-only evidence and routing intake for the seven non-armored specialized zombie sub-units: `infected_zombies`, `rabid_zombies`, `parasitic_zombies`, `mutant_zombies`, `undead_zombies`, `necrotic_zombies`, and `demonic_zombies`.

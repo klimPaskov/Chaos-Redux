@@ -9686,6 +9686,9 @@ def run(req: Dict[str, Any]) -> Dict[str, Any]:
     if operation in {"repair_explicit_skin", "preview_explicit_skin_selection"}:
         import explicit_skin_repair
         return getattr(explicit_skin_repair, operation)(req, globals())
+    if operation == "remove_explicit_duplicate_faces":
+        import duplicate_face_repair
+        return duplicate_face_repair.remove_explicit_duplicate_faces(req, globals())
     if operation in {"edit_explicit_mesh_vertices", "bind_existing_pdx_material"}:
         import mesh_vertex_material_repair
         return getattr(mesh_vertex_material_repair, operation)(req, globals())

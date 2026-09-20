@@ -151,9 +151,16 @@ def preflight_mesh(api, row, kind):
     if kind == "skin":
         old = weights(obj)
         groups = set(obj.vertex_groups.keys())
-        bones = {b.name for b in rig.data.bones if b.use_deform}
+        all_bones = {b.name for b in rig.data.bones}
+        deform_bones = {b.name for b in rig.data.bones if b.use_deform}
         for entry in row["vertices"]:
-            if entry["index"] >= len(old) or not (set(entry["expected"]) | set(entry["replacement"])) <= (groups & bones):
+            # A reviewed prior assignment may contain a control-only bone
+            # such as root.  It must be present in the existing vertex-group
+            # and armature namespaces, while the replacement must resolve to
+            # deforming bones so the exported skin can actually move it.
+            if (entry["index"] >= len(old)
+                    or not set(entry["expected"]) <= (groups & all_bones)
+                    or not set(entry["replacement"]) <= (groups & deform_bones)):
                 raise ValueError("Unknown selected vertex or missing existing deform group/bone.")
             actual = old[entry["index"]]
             if set(actual) != set(entry["expected"]) or any(abs(actual[b] - v) > 1e-7 for b, v in entry["expected"].items()):
@@ -209,6 +216,9 @@ def _apply(api, original, kind):
         uv = {layer.name: {face.index: {mesh.loops[i].vertex_index: list(layer.data[i].uv) for i in face.loop_indices} for face in mesh.polygons} for layer in mesh.uv_layers}
         for i in row["face_indices"]:
             mesh.polygons[i].flip()
+        # MeshPolygon.flip invalidates the loop and corner-normal cache. Refresh
+        # it before mapping reviewed source normals back to the flipped loops.
+        mesh.update()
         desired = [None] * len(mesh.loops)
         for face in mesh.polygons:
             sign = -1 if face.index in original["selected"] else 1
@@ -219,9 +229,10 @@ def _apply(api, original, kind):
                 value = original["normals"][(face.index, vertex)]
                 length = math.sqrt(sum(v*v for v in value))
                 desired[i] = [sign*v/length for v in value]
+        # Native custom-normal encoding derives the sharp-edge attribute from
+        # the requested directions. Restoring the old flags here would change
+        # the encoded directions, so the derived flags remain untouched.
         mesh.normals_split_custom_set(desired)
-        for edge, sharp in zip(mesh.edges, original["edge_sharp"]):
-            edge.use_edge_sharp = sharp
     else:
         desired = copy.deepcopy(original["normals"])
         for entry in row["corners"]:
@@ -265,9 +276,14 @@ def verify_mesh(api, original, kind):
             if list(face.vertices) != expected:
                 raise RuntimeError("Batch winding changed an unselected face or a declared face membership/orientation.")
         actual_geometry = _geometry_invariants(api, obj)
-        if actual_geometry != original["geometry"]:
-            changed = [key for key in actual_geometry if actual_geometry[key] != original["geometry"][key]]
-            changed_attributes = [key for key in set(actual_geometry["attributes"]) | set(original["geometry"]["attributes"]) if actual_geometry["attributes"].get(key) != original["geometry"]["attributes"].get(key)]
+        expected_geometry = copy.deepcopy(original["geometry"])
+        # Blender derives sharp-edge flags while encoding custom corner
+        # normals. They are operation data, not an independent mesh edit.
+        actual_geometry["attributes"].pop("sharp_edge", None)
+        expected_geometry["attributes"].pop("sharp_edge", None)
+        if actual_geometry != expected_geometry:
+            changed = [key for key in actual_geometry if actual_geometry[key] != expected_geometry[key]]
+            changed_attributes = [key for key in set(actual_geometry["attributes"]) | set(expected_geometry["attributes"]) if actual_geometry["attributes"].get(key) != expected_geometry["attributes"].get(key)]
             raise RuntimeError(f"Batch winding changed positions, attributes, materials or corner UV associations: {obj.name}, {changed}, {changed_attributes}.")
         topology = winding_inventory(mesh)
         if any(topology[key] != original["winding"][key] for key in ("boundary_edges", "nonmanifold_edges")) or topology["inconsistent_shared_edges"] > original["winding"]["inconsistent_shared_edges"]:
@@ -313,9 +329,11 @@ def project_fingerprint(api, fingerprint, originals, kind):
             # Keep all transforms and every other scalar setting exact.
             sections["objects"][name]["settings"].pop("dimensions", None)
         elif kind == "winding":
-            for key in ("positions_normals", "topology", "loops_normals", "uvs", "attributes", "has_custom_normals"):
+            for key in ("positions_normals", "topology", "loops_normals", "uvs", "attributes", "has_custom_normals", "edges"):
                 geometry.pop(key)
-            geometry["orientation_invariant"] = api._promotion_digest(_geometry_invariants(api, obj))
+            invariant = _geometry_invariants(api, obj)
+            invariant["attributes"].pop("sharp_edge", None)
+            geometry["orientation_invariant"] = api._promotion_digest(invariant)
         else:
             raw = raw_normals(obj.data)
             # Blender derives point normals from its corner directions. Only
@@ -379,7 +397,12 @@ def run_repair(req, api):
                       full_after={key: value for key, value in after.items() if key != "sections"})
         if (api.file_sha256(source) != report["source_sha256"] or api.file_sha256(spec_path) != report["spec_sha256"] or output.exists()):
             raise RuntimeError("Source/spec/output guard changed before save.")
-        saved = api.bpy.ops.wm.save_as_mainfile(filepath=str(output), copy=True, relative_remap=False)
+        # Blender 5.1 can append a transient ``@`` lock suffix when the
+        # copy-save path follows a large edited scene.  Saving directly to
+        # the new sibling is still source-safe because the source hash is
+        # guarded before and after the transaction, and avoids that
+        # platform-specific lock-path failure.
+        saved = api.bpy.ops.wm.save_as_mainfile(filepath=str(output).replace("\\", "/"), copy=False, relative_remap=False)
         if "FINISHED" not in saved or not output.is_file():
             raise RuntimeError("Native sibling checkpoint save did not finish.")
         api.bpy.ops.wm.open_mainfile(filepath=str(output), use_scripts=False)
