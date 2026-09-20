@@ -8,6 +8,8 @@ The 2026-09-02 country-shell consolidation is committed in `2617931b1b730f617ad9
 
 The bounded 2026-09-20 IW-136 Sindh symbol/provenance re-audit is `subagent_handoffs/006_event6_iw136_sindh_symbol_source_reaudit_2026-09-20.md`. It found no candidate that clears the accepted 1936 identity, period, community, and rights contract, so no flag, emblem, asset, runtime consumer, or package admission was created; IW-136 remains fail-closed.
 
+The bounded 2026-09-20 IW-136 portrait/identity research is `subagent_handoffs/006_event6_iw136_sindh_portrait_identity_research_2026-09-20.md`. Sir Lancelot Graham is a conditional 1 April 1936 Governor of Sind lead, but the only image is below the 156x210 leader canvas and lacks verified archival-original and derivative-rights evidence; no portrait or runtime wiring was created.
+
 The completed current weighted-logic receipt is `subagent_handoffs/006_event6_probability_audit_2026-09-20.md`. It preserves the exact bounded outer-allocator and formable-congress fixture results, records the incomplete 126-entry nested package pool and unresolved event, decision, mission, and focus fixtures, and makes no campaign-balance or package-admission claim.
 
 The 2026-09-19 IW-095 package completion audit at `subagent_handoffs/006_iw095_package_completion_2026-09-19.md` supersedes the earlier IW-095 evidence-refresh link for current package status; it confirms package-local alignment but keeps central admission fail-closed.
