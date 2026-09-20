@@ -42,11 +42,13 @@ There is therefore no DSH agent definition format, no DSH agent map, and no DSH 
 The Codex model names in `.codex/agents/*.toml` do not apply here.
 DSH does not read those files, so a named role does not arrive with the model it names in the TOML.
 A DSH child agent runs on the deployment default from `dsh-agent-default-model`, or on the child options configured in the `dsh-tool-subagent` entry's `agentOptions`.
-Neither is configured for this repository.
+Neither is configured inside this repository, because that profile patch lives outside it.
+The active profile does configure the child options, so a DSH subagent runs on DeepSeek regardless of the model its Codex TOML names.
+No skill or role prompt names a child model, because each runtime decides its own.
 
 The named Chaos Redux roles still apply as routing and ownership contracts.
 The parent writes the role's boundaries into the delegation prompt, which is why every prompt must stay fully explicit and self-contained.
-[`chaos-redux-subagents`](../.agents/skills/chaos-redux-subagents/SKILL.md) is the routing source of truth.
+[`chaos-redux-subagents`](../.agents/skills/chaos-redux-subagents/SKILL.md) is the routing source of truth for roles and ownership, and [`chaosx-deepseek-subagent-routing`](../.agents/skills/chaosx-deepseek-subagent-routing/SKILL.md) is the model-policy source of truth for this runtime only.
 
 ### MCP registration
 
