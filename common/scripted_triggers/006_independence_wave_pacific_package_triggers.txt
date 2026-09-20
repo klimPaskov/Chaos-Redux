@@ -194,6 +194,18 @@ can_pay_independence_wave_pacific_island_strategic_cost = {
 	has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light }
 }
 
+# IW-179 pays the displayed strategic debit directly. Keep its adapter gate
+# inclusive so exact stockpiles can pass without admitting a fifth resource or
+# changing the shared HAW helper's existing contract.
+can_pay_independence_wave_fsm_pacific_island_strategic_cost = {
+	is_independence_wave_fsm_package = yes
+	has_country_flag = independence_wave_iw_179_setup_complete
+	NOT = { has_stability < constant:independence_wave_decision_cost.stability_standard }
+	NOT = { command_power < constant:independence_wave_decision_cost.command_power_standard }
+	NOT = { has_manpower < constant:independence_wave_decision_cost.manpower_light }
+	NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_light } }
+}
+
 can_initialize_independence_wave_iw_184_package = {
 	is_independence_wave_hbx_package = yes
 	# HBX is an Event 006 shell. Refuse to replace a meaningful tree supplied by
