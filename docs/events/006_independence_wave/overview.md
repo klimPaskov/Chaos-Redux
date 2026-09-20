@@ -12,6 +12,8 @@ The 2026-09-12 strict origin-gate repair keeps completed or stale Event 021 comp
 
 The 2026-09-12 catalog audit found no safe workbook wording change and refreshed the export-only CSVs. Focused allocator, country API, strict flag, FORM-16, Statehood Ledger semantic, and SCN-008 matrix validators pass; Event, GUI, probability, rights, package-admission, and live-runtime evidence remain partial where the current handoffs say so.
 
+The current 2026-09-20 read-only focus refresh resolves 184 focuses and 196 connectors with zero crossings and zero node intersections. It records one authored ten-column connector from `independence_wave_adopt_military_archetype_program` to `independence_wave_adopt_reclamation_doctrine`; the source remains unchanged because no isolated coordinate repair is safe for the accepted military-choice cohort. The unrelated vanilla `continuous_restrict_freedom_desc` warning remains outside Event 006 ownership. Evidence: `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_focus_mcp_review_2026-09-20.md`.
+
 ## Current authority override (2026-08-30 after absent-country release-scope repair, standalone host-ledger repair, portrait wiring audit, and super-event 23 rights reconciliation)
 
 Event 006 remains **HOLD / PARTIAL**. The current operational boundary is 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows out of 193 non-overlay rows; IW-013 NAV, IW-015 GLC, IW-043 CHU, IW-058 ASY, IW-093 DOX, IW-098 SOK, IW-177 FIJ, and IW-179 FSM remain adapter-only and fail-closed. The automatic ladder remains `3/4/5/7/10`, World Collapse also targets `10`, and nothing is visible before Event 006 fires.
