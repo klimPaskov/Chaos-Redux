@@ -10,6 +10,8 @@ The bounded 2026-09-20 IW-136 Sindh symbol/provenance re-audit is `subagent_hand
 
 The bounded 2026-09-20 IW-136 portrait/identity research is `subagent_handoffs/006_event6_iw136_sindh_portrait_identity_research_2026-09-20.md`. Sir Lancelot Graham is a conditional 1 April 1936 Governor of Sind lead, but the only image is below the 156x210 leader canvas and lacks verified archival-original and derivative-rights evidence; no portrait or runtime wiring was created.
 
+The bounded 2026-09-20 decision/mission audit is `subagent_handoffs/006_event6_decision_mission_audit_2026-09-20.md`. It found no additional source-safe defect after the Banat tooltip repair, while explicitly leaving the full body-level decision/mission crosswalk and native decision-row rendering unresolved.
+
 The completed current weighted-logic receipt is `subagent_handoffs/006_event6_probability_audit_2026-09-20.md`. It preserves the exact bounded outer-allocator and formable-congress fixture results, records the incomplete 126-entry nested package pool and unresolved event, decision, mission, and focus fixtures, and makes no campaign-balance or package-admission claim.
 
 The 2026-09-19 IW-095 package completion audit at `subagent_handoffs/006_iw095_package_completion_2026-09-19.md` supersedes the earlier IW-095 evidence-refresh link for current package status; it confirms package-local alignment but keeps central admission fail-closed.
