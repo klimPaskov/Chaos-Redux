@@ -6,6 +6,7 @@ This directory contains test-country guidance and dated evidence from live-QA ru
 
 - [`chaosx_test_country.md`](chaosx_test_country.md) describes the reusable test-country setup and related test hooks.
 - [`live_qa/`](live_qa/) contains dated run manifests, reports, coverage records, and retained diagnostic evidence.
+- [`hoi4_agent_tools_profiles/visual_surfaces.md`](hoi4_agent_tools_profiles/visual_surfaces.md) records the focus and technology visual QA selectors, screenshot references, and review limits.
 
 Each dated QA package is evidence for the run it records and does not replace the accepted design in `docs/specs/`, the current implementation record in `docs/events/`, or the working status in `docs/plans/`.
 
