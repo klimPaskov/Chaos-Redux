@@ -269,6 +269,8 @@ Use the artifact template's `?offset=<bytes>&length=<bytes>` reads with small ra
 
 For probability work, `chaosx_ai_probability_auditor` must start with `hoi4.probability_inspect`, name the analyzed surface and scenario ids, state whether the candidate pool and external factors were complete, and distinguish exact, bounded, sampled, score-only, and unresolved results. It must use `hoi4.probability_evaluate`, `hoi4.probability_sweep`, and `hoi4.probability_compare` according to the scenario, with `hoi4.probability_simulate`, `hoi4.probability_sequence`, and `hoi4.probability_render` only under their declared evidence conditions. For technology or doctrine work, list the affected technology, folder, unlock, grant, bonus, or asset ids and include the relevant `hoi4.tech_compare` result when source changed.
 
+The current connected probability adapter accepts only `scenarioSet = { id, scenarios = [{ id, actor: string, state: flat primitive map, flags: string[], scopes: record of { id: string, state: primitive map } }] }`. Unknown `fixture` or variable-declaration records fail validation; scope references require `{ id }` objects, and `scopes` entries require `{ id, state }` objects. Flat primitive state may not bind Clausewitz numeric variables or compound triggers; primitive comparison-string probes can reduce simple comparator unresolved items but are not typed campaign fixtures. Record exact validation errors and artifact URIs, never invent fixture keys or add gameplay flags solely to satisfy the adapter, and never present partial score-only output as balance evidence.
+
 ## Specialist routing
 
 ### Asset routing
