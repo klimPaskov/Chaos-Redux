@@ -96,6 +96,14 @@ No generated grounded likeness was created.
 
 No generic regional image, unnamed person, other island leader, or withdrawn Elias Kihleng portrait was used as a substitute.
 
+## Local archive recheck during continuation
+
+The current FSM-named archive contains only the withdrawn fictional ImageGen master, its processed/review/DDS derivatives, and the associated metadata; that metadata records `source_kind = fictional`, `portrait_provenance = null`, and `status = candidate_requires_visual_approval`, so it is not source-placeholder evidence.
+
+The retained `docs/assets/006_independence_wave/sourced_portrait_replacements_2026_07_22/pacific_asante_sokoto/FSM_tosiwo_nakayama_1970_original.jpg` is a 12,421-byte historical source record with SHA-256 `CBD966FEDAF37E5901F0BF0CCBBF78F5E07A6954B2BD0254A4D9B5ED2C0AEEBC`, but its recorded 1970 date does not satisfy the 1936 opening-year role and image gate.
+
+No new attributable 1936-compatible FSM source lead, durable source master, crop-equality record, provenance manifest, or rights receipt was found, and no portrait or gameplay state was changed.
+
 ## Remaining risks and skipped checks
 
 The 1936 exact-record date versus 1953 search-snippet discrepancy remains a provenance risk until the collection owner confirms it.
