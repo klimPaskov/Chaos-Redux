@@ -1,6 +1,14 @@
 # Event 006 source-of-truth map
 
-## Current authority override (2026-09-19 validation refresh)
+## Current authority override (2026-09-20 validation refresh)
+
+The 2026-09-20 whole-event completion audit at `subagent_handoffs/006_event6_completion_audit_2026-09-20.md` is the current status authority. It confirms that the setup-receipt parity tranche is implemented locally while central admission remains exactly 32 content-attested packages, 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows. It preserves the whole-event **HOLD / PARTIAL** disposition and does not authorize an unconditional gameplay, allocator, Join, or central-attestation patch.
+
+The 2026-09-20 IW-050 Komi portrait research at `subagent_handoffs/006_iw050_komi_portrait_research_2026-09-20.md` is current package evidence: the exact `KOM_pavel_murashev` identity fails the 1936 opening-year role gate, no attributable exact portrait source was found, and no redistribution or derivative-use rights were established. The source-placeholder gate, `independence_wave_iw_050_identity_rights_cleared`, and central admission remain closed; no generic portrait, generated face, or substitute officeholder is authorized.
+
+The 2026-09-20 super-event 23 audio research at `subagent_handoffs/006_event6_super_event_23_audio_research_2026-09-20.md` produced a rights-supported *The Enola Foam March* candidate at `docs/assets/006_independence_wave/super_events/audio/final/super_event_23_enola_foam_march_110s.wav` with SHA-256 `2892F43CD393F2CA7FEED12FB8A841F9C7C6CA8784F28E2A39DC0AD3B9CECBFF`. The candidate remains runtime-unselected and unwired pending parent acceptance of the composition change, CC BY-SA attribution and ShareAlike treatment, musical-tone review, and human audition; the blocked Clarke recording remains untouched.
+
+The direct 2026-09-20 Statehood Ledger GUI recheck is recorded in `subagent_handoffs/006_event6_gui_current_recheck_2026-09-20.md`. `hoi4.gui_inspect` resolved all 48 Event 006 elements with no blocking diagnostics at shared revision `d693e4849f1fb8db6423669415e24dcd4397016f46ed8d61bebec930800a7ec9`; the matching multi-state, three-resolution render returned a linked SVG but exceeded the inline wire budget. The artifacts are current structural and render evidence only: visible state isolation, click-region fidelity, blendframe playback, and matched before/after acceptance remain open.
 
 The 2026-09-19 IW-095 package completion audit at `subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local authority and supersedes the earlier evidence-refresh receipt without widening central admission.
 
