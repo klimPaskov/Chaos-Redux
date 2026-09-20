@@ -3570,9 +3570,10 @@ event021_parent_capture_event6_selected_actor = {
 }
 
 # COUNTRY scope on the released actor. This prepares and validates the Event
-# 006 package in adapter mode. The package setup is shared, but Event 006's
-# origin-history, fired count, active/network arrays, evolution delivery, and
-# league membership are never called.
+# 006 package in adapter mode. The package setup is shared through Event 006's
+# package-only adapter entry, but Event 006's origin-history, fired count,
+# active/network arrays, evolution delivery, and league membership are never
+# opened by this path.
 event021_parent_prepare_event6_adapter_actor = {
 	if = {
 		limit = {
@@ -3642,7 +3643,7 @@ event021_parent_prepare_event6_adapter_actor = {
 		event_target:random_civil_war_global_host_country = { save_event_target_as = independence_wave_setup_former_host }
 		event_target:random_civil_war_event6_selected_anchor = { save_event_target_as = independence_wave_setup_anchor_state }
 		event021_prepare_event6_admission = yes
-		independence_wave_prepare_country_origin = yes
+		independence_wave_prepare_event021_adapter_origin = yes
 		independence_wave_dispatch_package_setup = yes
 		if = {
 			limit = { event021_parent_event6_package_complete = yes }

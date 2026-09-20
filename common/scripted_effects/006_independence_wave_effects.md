@@ -118,3 +118,30 @@ Outputs and side effects:
 The witness-array membership check is generation-safe for the single active
 operation because the array is rebuilt only by the current-generation DM-58
 resolver and is cleared by every operation reset path.
+
+## `independence_wave_prepare_event021_adapter_origin`
+
+Country-scope package-only preparation entry used by Event 021 when it reuses a
+complete human Event 006 country package. It requires the transient
+`random_civil_war_event6_adapter_preparing` and
+`independence_wave_event6_adapter_package_ready` flags, then delegates to the
+shared reversible package-state primitive.
+
+Inputs:
+
+- regular event targets `independence_wave_setup_former_host` and
+  `independence_wave_setup_anchor_state`;
+- the temporary or normal `independence_wave_setup_*` package values;
+- the two explicit Event 021 adapter-window flags.
+
+Outputs and side effects:
+
+- prepares country-local package values, force metadata, identity lifecycle
+  defaults, and the temporary `independence_wave_origin_prepared` receipt;
+- does not record Event 006 origin history or fired state;
+- does not advance the Event 006 generation sequence or evolutions;
+- does not register Event 006 active, network, or league membership;
+- leaves final identity confirmation and Event 021 origin provenance to the
+  Event 021 parent transaction.
+
+The normal Event 006 entry remains `independence_wave_prepare_country_origin`.

@@ -35,6 +35,9 @@ Existing visual reviews remain useful for the exact files inspected, but do not 
   Natural engine annexation, surviving-front settlement obligations, actual external-war continuity, and callback execution remain unproven.
 - Owner treaty rebinding now treats a matching front-host row as a bounded successor witness even when the predecessor is not a signatory, and copies predecessor-local obligation, front, and count receipts when they exist after conflict and duplicate checks.
   The live settlement obligation remains separate, and actual external-war continuity remains unproven.
+- The Event 006 adapter boundary now has a dedicated package-only preparation entry, `independence_wave_prepare_event021_adapter_origin`, so Event 021 reuses the shared reversible package-state primitive without calling Event 006's normal origin initializer.
+  The adapter window still rejects incomplete or actual non-human carriers, and Event 006 origin history, fired state, evolution delivery, active/network registration, and league membership remain outside this path.
+  The current narrow dispatcher lint remains partial because the installed MCP defers workspace-wide helper and lifecycle projection; runtime package reachability is still a testing gate.
 - The parent improvement-loop resolution records the current source repair of the frozen secondary receipt, two-phase scenario confirmation, and same-tag type compatibility, plus the bounded four-row front-plan contract.
   FRT fixture execution, surviving-front settlement, save and reload, probability, performance, and inherited-package evidence remain queued.
 - `on_annex` also recognizes natural ordinary-claimant victory before predecessor cleanup through an explicit host pointer, government role, and matching crisis IDs.

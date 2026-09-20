@@ -690,7 +690,7 @@ independence_wave_reset_current_generation = {
 	clr_country_flag = independence_wave_status_tab_ambitions
 }
 
-# Inputs:
+# Shared package-preparation primitive. Inputs:
 # - regular event targets `independence_wave_setup_former_host` and
 #   `independence_wave_setup_anchor_state`
 # - temporary package, region, depth, territory, force, and archetype values
@@ -698,8 +698,9 @@ independence_wave_reset_current_generation = {
 # This preparation phase writes only reversible country-local generation state.
 # It deliberately does not publish active, network, host, history, evolution, or
 # released-package rows. The frozen-plan executor proves every package before it
-# opens those shared registries.
-independence_wave_prepare_country_origin = {
+# opens those shared registries. The normal Event 006 origin entry and the
+# Event 021 adapter entry below are the only public callers.
+independence_wave_prepare_origin_state = {
 	if = {
 		limit = { has_valid_independence_wave_setup_input = yes }
 		independence_wave_reset_current_generation = yes
@@ -840,6 +841,27 @@ independence_wave_prepare_country_origin = {
 		independence_wave_clamp_country_values = yes
 		independence_wave_refresh_country_state = yes
 		set_country_flag = independence_wave_origin_prepared
+	}
+}
+
+# COUNTRY scope. Normal Event 006 origin initialization entry. Event 021 must
+# use the separate adapter entry below so its package setup cannot be mistaken
+# for a normal Event 006 origin transaction.
+independence_wave_prepare_country_origin = {
+	independence_wave_prepare_origin_state = yes
+}
+
+# COUNTRY scope. Event 021 package-only preparation entry. It shares the
+# reversible package-state primitive but requires the explicit adapter window;
+# it never opens Event 006 history, active/network membership, evolution, or
+# league state.
+independence_wave_prepare_event021_adapter_origin = {
+	if = {
+		limit = {
+			has_country_flag = random_civil_war_event6_adapter_preparing
+			has_country_flag = independence_wave_event6_adapter_package_ready
+		}
+		independence_wave_prepare_origin_state = yes
 	}
 }
 
