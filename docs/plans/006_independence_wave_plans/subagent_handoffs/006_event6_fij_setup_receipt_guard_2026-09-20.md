@@ -8,11 +8,11 @@ The Fiji founding mission now cancels when the IW-177 setup receipt is absent, m
 
 ## Source change
 
-`common/decisions/006_independence_wave_pacific_decisions.txt:450-454` updates `independence_wave_fij_hold_constituent_congress_together` so `cancel_trigger` includes `NOT = { has_country_flag = independence_wave_iw_177_setup_complete }`.
+`common/decisions/006_independence_wave_pacific_decisions.txt:450-454` updates `independence_wave_fij_hold_constituent_congress_together` so `cancel_trigger` includes `NOT = { has_country_flag = independence_wave_iw_177_setup_complete }` and the successful `cancel_effect` branch also requires that receipt.
 
 The receipt is the package-local initialization boundary because `independence_wave_setup_iw_177_fiji` clears it before guarded setup, sets it only after `has_prepared_independence_wave_iw_177_package_setup` succeeds, and `independence_wave_cleanup_iw_177_fiji` clears it during teardown.
 
-The repair prevents a stale or partially torn-down FIJ founding mission from remaining active after the setup contract has disappeared.
+The repair prevents a stale or partially torn-down FIJ founding mission from remaining active after the setup contract has disappeared and prevents a stale stable variable from being promoted to a successful founding result after teardown.
 
 ## Boundary review
 

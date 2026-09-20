@@ -8,11 +8,11 @@ The Micronesia founding mission now cancels when the IW-179 setup receipt is abs
 
 ## Source change
 
-`common/decisions/006_independence_wave_pacific_decisions.txt:292-296` updates `independence_wave_fsm_keep_island_federation_connected` so `cancel_trigger` includes `NOT = { has_country_flag = independence_wave_iw_179_setup_complete }`.
+`common/decisions/006_independence_wave_pacific_decisions.txt:292-296` updates `independence_wave_fsm_keep_island_federation_connected` so `cancel_trigger` includes `NOT = { has_country_flag = independence_wave_iw_179_setup_complete }` and the successful `cancel_effect` branch also requires that receipt.
 
 The receipt is the package-local initialization boundary because `independence_wave_setup_iw_179_micronesia` clears it before guarded setup, sets it only after `has_prepared_independence_wave_iw_179_package_setup` succeeds, and `independence_wave_cleanup_iw_179_micronesia` clears it during teardown.
 
-The repair prevents a stale or partially torn-down FSM founding mission from remaining active after the setup contract has disappeared.
+The repair prevents a stale or partially torn-down FSM founding mission from remaining active after the setup contract has disappeared and prevents a stale stable variable from being promoted to a successful founding result after teardown.
 
 ## Boundary review
 
