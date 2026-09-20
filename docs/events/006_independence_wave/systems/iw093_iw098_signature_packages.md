@@ -108,6 +108,13 @@ transaction ledger records the paid non-PP resources before a timed project
 opens. Cancellation or loss of the anchor closes the ledger without a refund.
 No action creates free units or returns more equipment than it consumed.
 
+The six route-opening conferences are the accepted narrow exception to the
+general dynamic-cost rule: each uses one fixed 100 political-power commitment
+and lasts 70 days. This package-specific commitment is not a political-power
+store and must not be generalized to other major decision families. The
+veterans emergency conference additionally uses its existing command-power
+ledger; the other five route openings do not acquire a new spendable type.
+
 IW-093 actions cover the forest guard, the 70-day route conference, cocoa
 depots, the Kumasi railway, the former-host settlement, and FORM-24 congress
 preparation. Its opening `independence_wave_iw093_unsettled_restoration_idea`

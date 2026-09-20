@@ -874,6 +874,10 @@ The AI should not require the custom interface. It reads the same values and cal
 
 No major family uses one flat political power cost.
 
+Accepted narrow exception: the six IW-093 Asante and IW-098 Sokoto route-conference decisions use a fixed 100 political-power commitment for their single 70-day opening conference. This exception is package-specific, is not a reusable major-family cost pattern, and does not create a political-power store or replace the dynamic costs used by the other decision families.
+
+The exception preserves the accepted IW-093/IW-098 route contract recorded in the signature-package system document and current decision source. Its acceptance basis is the user's explicit 2026-09-20 approval of the pending Event 006 design dispositions, recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw093_iw098_flat_pp_exception_acceptance_2026-09-20.md`.
+
 Costs scale through:
 
 - population and territory
