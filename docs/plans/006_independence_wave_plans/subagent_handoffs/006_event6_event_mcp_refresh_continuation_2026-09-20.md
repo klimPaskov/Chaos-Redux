@@ -34,6 +34,20 @@ The corrected render timed out while awaiting the service's 180-second tool-call
 
 No visual or render acceptance claim follows from this attempt, and no source fallback or GUI change was introduced.
 
+## Bounded option render
+
+A narrower read-only `hoi4.event_render` request used `view = options`, selector `{ kind = event eventId = chaosx.nr6.2 }`, `direction = downstream`, `expandHelpers = no`, `maxDepth = 1`, `maxNodes = 20`, and `refresh = no`.
+
+The request returned `EVENT_RENDERED_PARTIAL` at revision `316825c8445e7868f05adbf83dd97f211030552e30b1ca364eb0c1b0084471fd`, graph hash `0dd8e81476fcc416cf28b005f3cfbbb47673171dd484601e27aa04e981dd309e`, and layout hash `642304747a6f09986be77c2b7543bfc6337755f5249f1238b2d31e14b362deaa`.
+
+The result reports 9,744 events, 15,179 options, 1,160 entries, zero helper projections, 8,770 unresolved nodes, 7,768 terminals, 38,414 edges, 30,541 state accesses, 2,198 aggregate issues, zero blocking diagnostics, zero skipped sources, three selected nodes, and 42,618 omitted nodes.
+
+The returned diagnostics contain only the non-blocking `MCP_INLINE_FILES_TRUNCATED` condition, with 374 total diagnostics and 64 returned inline; no branch render was produced.
+
+The render artifacts are `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b8d925b2ea22705af57bb03dcb81e652e3be6907d8a756009b9659007449922f/f92d1799e6eaaa76ab0f64e5ae6fa01c55ad7295e31bf06ea69796833b3b4292/event-options-316825c8445e-manifest.json`, `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/9ae11d20e16322646d43fd8af82b114668567e35400a6c7a95254f298ac7cc83/563021e2a54a9348e32421f123f9dda1ced479e50ce91072662c148d5b36e51d/event-options-316825c8445e.json`, `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/b1c1f2c62da730fac2fe2bd34ef068767b524938eaa692055559844fd88b26b2/e1faf5ceec2ec663444be8a91b6b24e9d7c9d6b52ebe3f819a4b38cb816709cd/event-options-316825c8445e.svg`, and `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4325a80409081705a2177cc15f820f05a689126633e4398eb552c6c269e5e5f4/92694e9ad8c6e96f6a9aef0c0614f87e1b66a04b872436ec3babc5f9e7333a15/event-options-316825c8445e.png`.
+
+This bounded result adds option-surface render evidence only; the selected-node and omitted-node counts, helper/lifecycle deferral, and absent branch render keep native visual acceptance, runtime execution, save/load, and live validation open.
+
 ## Remaining boundary
 
 The inspection is structural evidence only. Helper expansion, lifecycle projection, typed weighted fixtures, package and rights admission, native decision-row rendering, scripted GUI fidelity, ordinary and joint firing, slot-23 human audition, save/load behavior, and user live validation remain open under the current `HOLD / PARTIAL` authority.
