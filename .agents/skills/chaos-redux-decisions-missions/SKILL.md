@@ -890,6 +890,12 @@ When the crisis, war, target, or country state ends:
 
 Do not leave stale missions active after the system they refer to has ended.
 
+### Setup-receipt lifecycle invariant
+
+For any timed mission whose activation requires a package or setup receipt, mirror that same receipt in both `cancel_trigger` and the successful branch of `cancel_effect`.
+
+Setup and cleanup effects own the receipt lifecycle, and the success branch must not publish a stable or founding result after the receipt has been lost.
+
 ## 18. Localisation requirements
 
 For every decision or mission, provide:
