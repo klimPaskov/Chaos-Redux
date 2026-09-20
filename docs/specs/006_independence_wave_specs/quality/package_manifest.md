@@ -8,6 +8,8 @@ Architecture aligned: 2026-07-15
 
 ## Current reconciliation (2026-09-20)
 
+The 2026-09-20 IW-136 Sindh symbol/provenance re-audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw136_sindh_symbol_source_reaudit_2026-09-20.md` finds no candidate that clears the accepted 1936 identity, source, community, and rights gates. No flag, emblem, processed asset, runtime consumer, or central package admission follows; IW-136 remains fail-closed.
+
 The completed 2026-09-20 probability audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_probability_audit_2026-09-20.md` supersedes only the earlier scenario-specific receipt for current weighted-logic status. It confirms exact bounded declared-pool fixtures but leaves nested package, campaign-facing option, decision, mission, focus, MTTH, and strategy-factor probabilities unresolved or score-only, with no patch or package promotion.
 
 The 2026-09-19 IW-095 package completion audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local authority and does not promote Dahomey into central admission.
