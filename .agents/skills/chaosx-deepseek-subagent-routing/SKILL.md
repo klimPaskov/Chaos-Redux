@@ -1,13 +1,13 @@
 ---
-name: chaosx-subagent-models
-description: Use when spawning a Chaos Redux subagent in DSH and the child model or reasoning effort matters, including applying the standing rule that every subagent runs on deepseek-flash, deciding whether a role should run on the default model, or checking why a subagent ignores a model named in its Codex TOML.
+name: chaosx-deepseek-subagent-routing
+description: Use when spawning, routing, or auditing a Chaos Redux subagent on DSH and its model route matters, including the standing DeepSeek-only rule that every subagent runs on deepseek-official/deepseek-flash, which routes and OpenAI models are forbidden, how reasoning effort is passed on a call, or why a subagent ignores the model named in its Codex TOML.
 ---
 
-# Chaos Redux Subagent Model Policy
+# Chaos Redux DeepSeek Subagent Routing
 
-Use this skill when a Chaos Redux subagent is spawned on DSH and the child's model or reasoning effort is part of the decision.
+Use this skill when a Chaos Redux subagent is spawned on DSH and the child's model route or reasoning effort is part of the decision.
 
-The role, ownership, and routing rules for those subagents live in `chaos-redux-subagents`. This skill covers only which model the child runs on.
+The role, ownership, and routing rules for those subagents live in `chaos-redux-subagents`. This skill covers only the DeepSeek route the child runs on.
 
 ## The default
 
