@@ -1,6 +1,6 @@
 # Event 021 active repair ledger
 
-Status: Needs Testing for the rework catalog state; acceptance remains incomplete and the release gate remains closed.
+Status: Rework implementation complete for test entry. Catalog status is Needs Testing, the runtime test-release gate is open, and acceptance remains incomplete.
 
 This ledger supersedes source-complete claims in the September 1 completion audit and August 31 resume packet wherever they conflict with the source findings below.
 Existing visual reviews remain useful for the exact files inspected, but do not certify the gameplay consumers or reused Event 006 packages.
