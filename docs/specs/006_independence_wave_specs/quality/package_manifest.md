@@ -6,7 +6,7 @@ Architecture aligned: 2026-07-15
 
 ## Current architecture
 
-## Current reconciliation (2026-09-19)
+## Current reconciliation (2026-09-20)
 
 The completed 2026-09-20 probability audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_probability_audit_2026-09-20.md` supersedes only the earlier scenario-specific receipt for current weighted-logic status. It confirms exact bounded declared-pool fixtures but leaves nested package, campaign-facing option, decision, mission, focus, MTTH, and strategy-factor probabilities unresolved or score-only, with no patch or package promotion.
 
