@@ -22,7 +22,11 @@ The focused source assertion resolves all eight ordinary FSM decision IDs and co
 
 `python -B .tools/audit_event6_allocator.py --strict` passes with the unchanged 32/29/40/161 authority boundary and 3/4/5/7/10 ladder. `python -B .tools/audit_event6_scenario_matrix.py` passes all 32 SCN-008 cells and eight edge cases.
 
-The focused Event MCP lint/render should be refreshed against the committed source. Its event/on-action projection does not provide direct semantic coverage for common decision cancellation blocks; any returned partial artifact must be reported with that boundary.
+The focused read-only `hoi4.event_inspect` lint for the committed source returned `EVENT_INSPECTED_PARTIAL` at revision `5d73a0f565b8e820a715982b124b7e4de595a0c6619f59cebf2dca66ed924d1e`, graph hash `3b646fa519df44eaaa1b3525b1988109369902b9eaaec315dc54f2cd3887b585`, zero blocking diagnostics, and zero skipped sources. Artifact: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4c2d6fea2a8e7897e86d7a6b9184b178255cad013066000bf9c50c3e53813e15/1bb02a7dce478c81f4ab24f4b4551afca30f452ddea1b609212952bcf0f0d5ba/event-lint-5d73a0f565b8.json`.
+
+The matching read-only options render returned `EVENT_RENDERED_PARTIAL` at the same revision with layout hash `dc7c6b2fdb9a3143f5ed65837542c0750cbf4453a8736f2c704ed2e8aa231e38`, 24 selected nodes, and 42,772 omitted nodes. Manifest: `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/7208101839ca2721d931108eefbc63618372e552b80d22bd134f87ba6919be06/344b5bee371cd2bd36ac0682f101663d445833a51e9d3390e8e7a8d754c8f335/event-options-5d73a0f565b8-manifest.json`.
+
+These Event MCP results are structural/partial evidence only. The focused event/on-action projection does not provide direct semantic coverage for the changed common decision and scripted-trigger cancellation blocks, so no decision-source semantic comparison or live/save-load claim follows.
 
 ## Scope limits
 
