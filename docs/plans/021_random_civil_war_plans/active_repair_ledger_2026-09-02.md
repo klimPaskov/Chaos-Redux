@@ -227,4 +227,6 @@ Disposition: implemented for the bounded source tranche; runtime save/reload and
 
 The failed-adapter helper now clears those two bridge flags itself, so the parent-owned rollback contract is complete for every current caller. The generic cleanup-side duplicate clears are intentionally retained as idempotent protection for the completed-adapter branch.
 
+The successor external-war continuity investigation is blocked and recorded in `subagent_handoffs/ordinary_successor_external_war_continuity_blocked_2026-09-20.md`. The installed contract lacks a war identifier or a documented post-annex survival guarantee for an `add_to_war` successor; a new `declare_war_on` would be a different war and is not an approved fallback.
+
 The post-centralization helper-expanded `hoi4.event_inspect` rerun returned `EVENT_INSPECTED_PARTIAL` with zero blockers at the same cached graph revision `a8fde3e58546f004e81d855d73d29674ae3c5be8f894a1caf9586621929a6657`; artifact `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/4c89b59160474275a662a4c386be06a679cae6c8f7b073bde835301a258cabf3/4821030893594617e3ada844b7486c6d640f1e2f444269efd0e3c817c4763697/event-lint-a8fde3e58546.json`. Helper and lifecycle projections remained deferred, so runtime and semantic validation remain open.
