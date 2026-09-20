@@ -48,7 +48,7 @@ No skill or role prompt names a child model, because each runtime decides its ow
 
 The named Chaos Redux roles still apply as routing and ownership contracts.
 The parent writes the role's boundaries into the delegation prompt, which is why every prompt must stay fully explicit and self-contained.
-[`chaos-redux-subagents`](../.agents/skills/chaos-redux-subagents/SKILL.md) is the routing source of truth for roles and ownership, and [`chaosx-deepseek-subagent-routing`](../.agents/skills/chaosx-deepseek-subagent-routing/SKILL.md) is the model-policy source of truth for this runtime only.
+[`chaos-redux-subagents`](../.agents/skills/chaos-redux-subagents/SKILL.md) is the source of truth for routing, ownership, and this runtime's child model policy.
 
 ### MCP registration
 
