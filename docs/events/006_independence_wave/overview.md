@@ -1,6 +1,6 @@
 # Event 006: Independence Wave
 
-## Current reconciliation note (2026-09-12)
+## Current reconciliation note (2026-09-20)
 
 The current whole-event disposition remains **HOLD / PARTIAL** at 32 content-attested selectable packages across 29 compatible reservation groups, 40 runtime adapters, and 161 unattested selectable rows. The exact automatic ladder remains `3 / 4 / 5 / 7 / 10`, World Collapse remains at `10`, and the no-pre-event contract remains absolute.
 
@@ -15,6 +15,8 @@ The 2026-09-12 catalog audit found no safe workbook wording change and refreshed
 The current 2026-09-20 read-only focus refresh resolves 184 focuses and 196 connectors with zero crossings and zero node intersections. It records one authored ten-column connector from `independence_wave_adopt_military_archetype_program` to `independence_wave_adopt_reclamation_doctrine`; the source remains unchanged because no isolated coordinate repair is safe for the accepted military-choice cohort. The unrelated vanilla `continuous_restrict_freedom_desc` warning remains outside Event 006 ownership. Evidence: `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_focus_mcp_review_2026-09-20.md`.
 
 The 2026-09-20 probability-source refresh discovers the complete 14-entry outer allocator, an incomplete 126-candidate nested package pool, incomplete decision, mission, focus, and event-option score pools, and no adapter-backed Event 006 AI-strategy or MTTH surface. No weighted source, balance target, or package admission changed; the typed campaign conclusion remains unresolved. Evidence: `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_probability_refresh_2026-09-20.md`.
+
+The 2026-09-20 package-authority refreshes now point the Komi, Udmurtia, and Far Eastern Republic package documentation to their current 2026-09-19 completion tranches. The setup-receipt parity sweep adds no central admission and preserves the same fail-closed identity, asset, host, force, probability, and Join gates. Evidence: `../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_foundation_mission_setup_receipt_parity_2026-09-20.md`, `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw050_kom_completion_tranche_2026-09-19.md`, `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_completion_tranche_2026-09-19.md`, and `../../plans/006_independence_wave_plans/subagent_handoffs/006_iw057_fer_completion_tranche_2026-09-19.md`.
 
 ## Current authority override (2026-08-30 after absent-country release-scope repair, standalone host-ledger repair, portrait wiring audit, and super-event 23 rights reconciliation)
 
