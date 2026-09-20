@@ -8,7 +8,7 @@ The controlling 2026-07-29 acceptance decision uses source and static evidence f
 
 The current slot-23 package uses the user-approved creator-owned *The Enola Foam March* recording under CC BY-SA 4.0, with the production manifest preserving attribution, license-link, edit-notice, and ShareAlike requirements. Its source, runtime derivative, sound wrappers, catalogue row, and durable-league publication are present; human audition and live firing remain unverified. The former London Brass Players recording is excluded rather than treated as a fallback.
 
-## Current evidence reconciliation (2026-09-19)
+## Current evidence reconciliation (2026-09-20)
 
 The bounded 2026-09-20 IW-136 Sindh symbol/provenance re-audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw136_sindh_symbol_source_reaudit_2026-09-20.md` found no period-fit, rights-cleared symbol candidate. The package remains fail-closed, and no fallback, modern flag, generic ideology flag, generated substitute, asset wiring, or admission change was introduced.
 
