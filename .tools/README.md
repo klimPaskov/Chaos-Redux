@@ -22,7 +22,7 @@ Before retiring a tool, search its filename, module name, output signatures, and
 ### Catalog and project packaging
 
 - `export_event_catalog_csv.py` exports the `Events`, `Clusters`, and `Scenarios` sheets from the authoritative `docs/spreadsheets/chaos_redux_events_catalog.xlsx` workbook. Never edit the exported CSV files directly.
-- `package_chatgpt_project_sources.py` builds the curated ChatGPT project-source bundle. `package_chatgpt_project_sources.bat` is the Windows launcher and opens the finished package by default.
+- `package_chatgpt_project_sources.py` builds the curated ChatGPT project-source bundle and places `all-project-sources.zip` beside the loose files in the output folder. `package_chatgpt_project_sources.bat` is the Windows launcher and opens the finished package by default.
 
 Run the catalog exporter after every successful workbook edit:
 

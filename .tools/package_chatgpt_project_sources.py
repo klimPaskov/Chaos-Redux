@@ -15,6 +15,7 @@ from pathlib import Path
 
 
 PACKAGE_NAME = "chaos-redux-chatgpt-project-sources"
+ALL_SOURCES_ARCHIVE = "all-project-sources.zip"
 
 STATIC_FILES = {
 	"AGENTS.md": Path("AGENTS.md"),
@@ -75,6 +76,21 @@ def write_subagents_archive(destination: Path, sources: list[Path]) -> None:
 				raise OSError(f"Subagent archive content verification failed: {source}")
 
 
+def write_all_sources_archive(staging: Path, names: set[str]) -> None:
+	"""Archive and verify every loose file produced by the packager."""
+	destination = staging / ALL_SOURCES_ARCHIVE
+	with zipfile.ZipFile(destination, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+		for name in sorted(names):
+			archive.write(staging / name, arcname=name)
+
+	with zipfile.ZipFile(destination, "r") as archive:
+		if archive.namelist() != sorted(names):
+			raise OSError("Project sources archive entry verification failed")
+		for name in names:
+			if archive.read(name) != (staging / name).read_bytes():
+				raise OSError(f"Project sources archive content verification failed: {name}")
+
+
 def validate_output(output: Path, root: Path, expected_names: set[str]) -> None:
 	resolved = output.resolve()
 	resolved_root = root.resolve()
@@ -120,7 +136,8 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 	files = collect_sources(root)
 	subagents = collect_subagents(root)
 	source_count = len(files) + len(subagents)
-	bundle_file_count = len(files) + 1
+	loose_names = {*files, "subagents.zip"}
+	bundle_file_count = len(loose_names) + 1
 	total_bytes = sum(source.stat().st_size for source in [*files.values(), *subagents])
 
 	if dry_run:
@@ -132,9 +149,10 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 		for destination, source in files.items():
 			print(f"  {destination} <- {source.relative_to(root)}")
 		print(f"  subagents.zip <- {len(subagents)} files from .codex/agents")
+		print(f"  {ALL_SOURCES_ARCHIVE} <- all {len(loose_names)} loose bundle files")
 		return source_count, total_bytes
 
-	validate_output(output, root, {*files, "subagents.zip"})
+	validate_output(output, root, {*loose_names, ALL_SOURCES_ARCHIVE})
 	output.parent.mkdir(parents=True, exist_ok=True)
 	staging = Path(tempfile.mkdtemp(prefix=f".{output.name}.staging-", dir=output.parent))
 
@@ -145,6 +163,7 @@ def build_package(output: Path, root: Path, *, make_zip: bool, dry_run: bool) ->
 			if not filecmp.cmp(source, copied, shallow=False):
 				raise OSError(f"Copied file verification failed: {source}")
 		write_subagents_archive(staging / "subagents.zip", subagents)
+		write_all_sources_archive(staging, loose_names)
 		install_staging_directory(staging, output)
 	except Exception:
 		if staging.exists():
