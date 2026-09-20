@@ -1,6 +1,6 @@
 # IW-054 Khakassia package
 
-IW-054 KHA is a package-local, fail-closed Event 006 implementation for the installed vanilla KHA carrier and state 569. It is not centrally attested, dispatched, exposed to normal or SCN-008 preflight, or included in deterministic Join.
+IW-054 KHA is a package-local, fail-closed Event 006 implementation for the installed vanilla KHA carrier and state 569. Its package blocks live in the consolidated Siberian registries under explicit KHA source markers. It is not centrally attested, dispatched, exposed to normal or SCN-008 preflight, or included in deterministic Join.
 
 ## Runtime contract
 
@@ -20,6 +20,6 @@ No KHA identity or leadership source has been accepted, no neutral 1936 flag has
 
 ## Evidence and follow-up
 
-The current implementation and MCP receipts are recorded in [the KHA core handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_iw054_khakassia_package_core_2026_08_15.md). Map state membership and the state-layer render pass, focus inspection/render, event scan/render, and probability source/evaluation receipts are evidence for bounded source review only; partial workspace diagnostics and incomplete probability pools prevent full completion or balance claims.
+The current implementation and MCP receipts are recorded in [the KHA core handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_iw054_khakassia_package_core_2026_08_15.md). The source-layout merge is recorded in [the Siberian registry merge handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_siberian_package_registry_merge_2026-08-25.md) and [the Siberian decision registry merge handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_siberian_decision_registry_merge_2026-08-25.md). Map state membership and the state-layer render pass, focus inspection/render, event scan/render, and probability source/evaluation receipts are evidence for bounded source review only; partial workspace diagnostics and incomplete probability pools prevent full completion or balance claims.
 
 Future admission requires an independently reviewed KHA identity/leadership source, flag provenance or an explicitly approved route synthesis, parent-owned roster clearance, Event 005 collision/origin review, typed probability fixtures, and central adapter/attestation/preflight/Join changes reviewed as one admission tranche.

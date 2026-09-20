@@ -10,14 +10,13 @@ No KHA leader, portrait, flag, cosmetic tag, vanilla history, central attestatio
 
 ## Source files
 
-- `common/script_constants/006_independence_wave_khakassia_constants.txt` defines KHA-specific cohesion/readiness, duration, cost, and route-politics tuning.
-- `common/scripted_triggers/006_independence_wave_khakassia_package_triggers.txt` binds original tag KHA, state 569, package id `iw_054`, p55 mounted-mobile force mapping, Soviet-Collapse origin separation, identity/roster gates, project readiness, cleanup guards, and the ten project IDs.
-- `common/scripted_effects/006_independence_wave_khakassia_package_effects.txt` provides generation-safe lifecycle, route installers, compact ledgers, five shared-focus helpers, project aliases, setup/final-validation/cleanup wrappers, and an inert roster checkpoint.
-- `common/ideas/006_independence_wave_khakassia_ideas.txt` defines seven KHA-only civil-war-safe ideas behind the identity gate.
-- `common/ai_strategy/006_independence_wave_khakassia.txt` defines four KHA strategy layers behind the identity and setup gates.
-- `common/decisions/categories/006_independence_wave_khakassia_categories.txt` defines the fail-closed frontier-compact category.
-- `common/decisions/006_independence_wave_khakassia_decisions.txt` defines the 420-day founding mission and ten serialized KHA projects with state-control, generation, cost, and cleanup guards.
-- `localisation/english/006_independence_wave_khakassia_l_english.yml` supplies the category, mission, project, idea, party, effect-tooltip, cost, and focus-helper keys with a UTF-8 BOM.
+- `common/script_constants/006_independence_wave_constants_registry.txt:6079` defines KHA-specific cohesion/readiness, duration, cost, and route-politics tuning under the former source marker.
+- `common/scripted_triggers/006_independence_wave_siberian_package_triggers.txt:470` binds original tag KHA, state 569, package id `iw_054`, p54 mounted-mobile force mapping, Soviet-Collapse origin separation, identity/roster gates, project readiness, cleanup guards, and the ten project IDs under the former source marker.
+- `common/scripted_effects/006_independence_wave_siberian_package_effects.txt:914` provides generation-safe lifecycle, route installers, compact ledgers, five shared-focus helpers, project aliases, setup/final-validation/cleanup wrappers, and an inert roster checkpoint under the former source marker.
+- `common/ideas/006_independence_wave_ideas_registry.txt:2852` defines seven KHA-only civil-war-safe ideas behind the identity gate under the former source marker.
+- `common/ai_strategy/006_independence_wave_ai_strategy_registry.txt:1475` defines four KHA strategy layers behind the identity and setup gates under the former source marker.
+- `common/decisions/006_independence_wave_siberian_decisions.txt:1177` defines the fail-closed frontier-compact category, the 420-day founding mission, and ten serialized KHA projects with state-control, generation, cost, and cleanup guards under the former source marker.
+- `localisation/english/006_independence_wave_siberian_l_english.yml:146` supplies the category, mission, project, idea, party, effect-tooltip, cost, and focus-helper keys with a UTF-8 BOM under the former source marker.
 - `common/national_focus/006_independence_wave_focus.txt` adds five KHA-only callbacks at the existing shared anchors, guarded by `original_tag = KHA` and `is_independence_wave_khakassia_package = yes`.
 
 ## Binding and lifecycle
@@ -28,7 +27,7 @@ The package rejects Soviet Collapse origin flags and requires the existing forme
 
 The roster checkpoint does not copy or create a real-person character and only sets the shared roster-ready flag after both parent-owned KHA gates are present.
 
-The package defines no central dispatch list entry, so the local setup/final-validation/cleanup wrappers cannot be reached through normal Event 006 admission while the package remains unadmitted.
+The package defines no central dispatch list entry, so the local setup/final-validation/cleanup wrappers cannot be reached through normal Event 006 admission while the package remains unadmitted. The former standalone KHA parser files were removed by the Siberian registry merge; their executable blocks remain in the receiver files above and no gameplay identifiers were renamed.
 
 ## Evidence
 
