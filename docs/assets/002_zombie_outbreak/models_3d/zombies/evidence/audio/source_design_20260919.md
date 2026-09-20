@@ -1,8 +1,23 @@
 # Base zombie audio source and design evidence, 2026-09-19
 
-Status: **needs_user_review** for sonic clip choice and actual playback; **blocked** for proven frame synchronization and subunit-specific acknowledgement selection. The parent has installed 24 signed-16 PCM runtime WAVs, declared them in `sound/chaosx_zombies_sound.asset`, and wired timed state events in `gfx/entities/chaosx_zombies.asset`. Installation and numeric event times do not establish audible suitability, contact alignment, or live-game acceptance. No sound was synthesized or recorded.
+## Current base-zombie sound state, 2026-09-20
 
-The source research and preview paragraphs below preserve the worker's candidate-stage evidence. For the nine later mechanically converted vocal, impact, and hurt files, `runtime_derivations_20260919.json` records each extracted source path and SHA-256, conversion command, runtime path and SHA-256, and format probe; all nine installed files matched the recorded runtime hashes on 2026-09-19. The other fifteen installed files are the earlier shared zombie package. The three idle/selection files, six movement files, and `zombie_attack_01.wav` now have exact source-to-runtime crosswalks; the remaining five older attack/death files still need an equally durable per-file source-to-runtime crosswalk before their provenance can be treated as independently verified.
+Status: **installed with offline frame synchronization; sonic listening and live HOI4 playback remain unverified**. The current base entity uses 33 declared signed-16 PCM, 44.1 kHz mono runtime WAVs, including nine base-only levelled derivatives documented with source and output hashes in `base_zombie_mix_20260920.json`. Its exported skeletal actions and the exact state event times were audited against 24 fps action lengths in `../../validation/exact_selected_runtime_audit_20260920.json`. No audio was synthesized or recorded; the nine new files are bounded-gain mixes of the preserved CC0 sources. No agent playback claim is made.
+
+| State | Current sound event times in seconds | Reviewed visible phase |
+| --- | --- | --- |
+| Idle | One ambient groan on entry; tag-scoped `ZZZ_infantry_idle` selects a levelled groan | Low, uneven stance and breathing loop |
+| Move | Steps at 0.08 and 1.05 | First and opposite-foot contacts in the 2.0 s stride |
+| Retreat | Steps at 0.08 and 0.88 | Two contacts in the 1.67 s retreat loop |
+| Attack | Vocal at 1.65; flesh contact at 3.60 | Wind-up and forward hand strike in the 4.79 s action |
+| Defend | Hurt at 0.65; contact at 1.10 | Guard rises during a short recoil step |
+| Support attack | Vocal at 0.95; contact at 2.45 | Reach, lunge, and recovery in the 3.5 s action |
+| Training | Vocal at 0.95; one-shot action returns to idle | Practice lunge and return |
+| Death | Vocal at 0.50; body impact at 2.55 | Collapse onto the floor before settled pose |
+
+The `ZZZ_infantry_idle` selection route is tag scoped, matching the inspected vanilla country/class voice pattern. No verified subunit-specific selection selector has been found; one is not claimed. Sonic suitability, the mix in the actual game, and live cue timing remain for the user's live session. The five older shared attack/death files with incomplete source crosswalks belong to specialized zombie-family wrappers and are not consumed by this base entity. The source research and earlier timing table below are historical evidence from the preceding package.
+
+For the nine later mechanically converted vocal, impact, and hurt files, `runtime_derivations_20260919.json` records each extracted source path and SHA-256, conversion command, runtime path and SHA-256, and format probe; all nine installed files matched the recorded runtime hashes on 2026-09-19. The other fifteen files were the earlier shared zombie package before the nine base-only mixes. The three earlier idle/selection files, six movement files, and `zombie_attack_01.wav` have exact source-to-runtime crosswalks; the remaining five older attack/death files still need an equally durable per-file source-to-runtime crosswalk before their provenance can be treated as independently verified.
 
 ## Source pages and immutable downloads
 
@@ -22,7 +37,7 @@ Other examined file hashes and durations: `extracted/zombienoises/zombienoise1.o
 
 Five review-only Opus previews under `previews_20260919/` were mechanically converted from those originals with ffmpeg (`-ac 1 -ar 16000 -c:a libopus -b:a 16k`, maximum four seconds), without sound design or synthesis. They are not game-ready assets: `idle_groan.ogg` `89989D1A7E7BB4712B3FB12202D451E9FF136AF324309AB737A97077C8F993B7`; `attack_vocal.ogg` `E2531B5285786DD52832E57B6C9CB28A3CF61B0201E8DE3C84F07B7BAE350DF4`; `death_vocal.ogg` `4386B077187302B58A0A7B5109F27F37BC5A17AF38778AD4362260F99DEFB084`; `footstep_1.ogg` `FBBEE633DD6E740C2D1A558BBF4ABD311B1AF6DB314ED47825EEBBD2B3451EAE`; `zombie_pack_1.ogg` `0508FD2A1FEF455EBDCD3F8C6FF8F83464E2603C328EB51572AA1634E9067478`. The tool could not return audible preview to this agent, so no clip has passed listening review.
 
-## Intended roles and synchronization handoff
+## Historical intended roles and synchronization handoff
 
 | Role | Candidate source | Intended action phase | Status |
 | --- | --- | --- | --- |
