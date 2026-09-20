@@ -24,7 +24,7 @@ The package-local AI file supplies strategy factors for industrial survival, hos
 
 ## Runtime boundaries
 
-The UDM setup, validation, and cleanup effects are package-local and intentionally are not added to the central adapter dispatcher, content-attestation list, normal/scenario preflight, or deterministic Join sequence. Cleanup is generation-gated and restores the installed vanilla UDM popularity split, but IW-048 remains unadmitted and cannot change the current Event 006 authority counts until a separate package admission packet supplies identity, map, asset, lifecycle, and typed probability evidence.
+The UDM setup, validation, and cleanup effects are package-local and intentionally are not added to the central adapter dispatcher, content-attestation list, normal/scenario preflight, or deterministic Join sequence. Cleanup is generation-gated and restores the installed vanilla UDM popularity split, but IW-048 remains unadmitted and cannot change the current Event 006 authority counts until a separate package admission packet supplies identity, map, asset, lifecycle, and typed probability evidence. The current package-local audit is `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_completion_tranche_2026-09-19.md`, which preserves these gates and records the unresolved identity, force-contract, map/host-retention, and typed-probability findings.
 
 The package has no dedicated Event 006 event branch. It uses the existing shared setup event entry point only when a future owner-approved dispatcher invokes the package-local setup effect.
 
@@ -32,7 +32,7 @@ The package has no dedicated Event 006 event branch. It uses the existing shared
 
 1. Reconcile the package's state-399 anchor and host binding against the current installed-map and reservation evidence.
 2. Review the industrial-breakaway archetype mapping against the registry's industrial-security force label.
-3. Obtain an independent package admission audit covering portrait/flag provenance, the retained provisional-politics design choice, focus hooks, decisions, AI, and central preflight behavior. The force-path and cleanup-generation defects are recorded as repaired in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_package_local_repairs_2026_08_14.md`. The negative portrait search is recorded in `docs/plans/006_independence_wave_plans/subagent_handoffs/006_iw048_udm_boris_berman_portrait_source_search_followup_2026_08_15.md`.
+3. Resolve the parent-owned identity and portrait-rights receipt, the `industrial_security` versus `industrial_breakaway` force-contract mapping, and current state-399/former-host retention evidence. The 2026-09-19 completion tranche records the current package-local disposition and preserves the earlier repair and portrait-search handoffs as dated evidence.
 4. Supply typed, named probability fixtures and a same-scenario compare before making any AI or balance claim.
 5. Add central attestation, preflight, dispatcher, scenario, and Join entries only after the complete packet is accepted.
 
