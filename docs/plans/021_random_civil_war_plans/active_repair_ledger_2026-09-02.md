@@ -210,3 +210,11 @@ Disposition: implemented for the bounded source tranche; runtime certification r
 Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
 
 `event021_parent_scenario_country_eligible` now treats the locked manual-scenario enumeration as sufficient to bypass Event 021 successor grace, including Maximum, while retaining `individual_crisis_load_is_below_cap` as the shared safety definition of an eligible country. This preserves every eligible normal human country in the frozen pool without bypassing cross-event crisis-load protection.
+
+## 2026-09-20 Event 006 adapter abort cleanup
+
+Disposition: implemented for the bounded source tranche; runtime certification remains queued under `Needs Testing`.
+
+The adapter now marks its selected actor with `random_civil_war_event6_adapter_setup_attempted` while the shared Event 006 package-only preparation is open and snapshots a pre-existing Event 021 generation value. Both Event 021 Event 006 abort paths call the documented `independence_wave_reset_current_generation` through the actor cleanup helper before clearing adapter state or annexing a newly released carrier. The helper restores the prior Event 021 generation value and clears Event 021 package, opening, route, and crisis transaction variables. The Event 006 reset dispatches the existing package cleanup and clears generation-local force, decision, focus, origin-idea, registry, and package state without opening Event 006 firing, evolution, or league state. The marker and snapshot are cleared by the common transaction cleanup after a successful opening or rollback.
+
+The implementation handoff is `subagent_handoffs/event006_adapter_abort_cleanup_2026-09-20.md`. The focused Event MCP lint returned `EVENT_INSPECTED_PARTIAL` with zero blocking diagnostics and zero skipped sources at revision `a8fde3e58546f004e81d855d73d29674ae3c5be8f894a1caf9586621929a6657`; helper-expanded lifecycle validation, the 32-package runtime/asset matrix, and live abort/save-reload checks remain open.

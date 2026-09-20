@@ -3844,6 +3844,17 @@ event021_parent_prepare_event6_adapter_actor = {
 			has_event_target = random_civil_war_global_host_country
 		}
 		set_country_flag = random_civil_war_event6_adapter_preparing
+		# The shared Event 006 preparation is reversible, but a failed adapter
+		# attempt still needs its generation-local package state cleared before a
+		# released carrier is annexed or an existing dormant carrier is returned.
+		set_country_flag = random_civil_war_event6_adapter_setup_attempted
+		clr_country_flag = random_civil_war_event6_adapter_previous_generation_saved
+		clear_variable = random_civil_war_event6_adapter_previous_generation
+		if = {
+			limit = { has_variable = random_civil_war_generation }
+			set_variable = { random_civil_war_event6_adapter_previous_generation = random_civil_war_generation }
+			set_country_flag = random_civil_war_event6_adapter_previous_generation_saved
+		}
 		set_country_flag = independence_wave_event6_adapter_package_ready
 		set_variable = { random_civil_war_generation = global.random_civil_war_pending_generation }
 		set_variable = { random_civil_war_opening_severity = global.random_civil_war_pending_severity }
@@ -3924,6 +3935,39 @@ event021_parent_prepare_event6_adapter_actor = {
 	}
 }
 
+# COUNTRY scope on the selected Event 006 carrier. Removes a failed adapter's
+# Event 021 transaction values after the shared Event 006 generation reset has
+# removed package-local state. A dormant carrier's prior Event 021 generation
+# value is restored when one was present; no other historical receipt is
+# manufactured or advanced by this failure path.
+event021_parent_cleanup_failed_event6_adapter_actor = {
+	if = {
+		limit = { has_country_flag = random_civil_war_event6_adapter_setup_attempted }
+		independence_wave_reset_current_generation = yes
+		if = {
+			limit = { has_country_flag = random_civil_war_event6_adapter_previous_generation_saved }
+			set_variable = { random_civil_war_generation = random_civil_war_event6_adapter_previous_generation }
+		}
+		else = { clear_variable = random_civil_war_generation }
+		clear_variable = random_civil_war_event6_adapter_previous_generation
+		clr_country_flag = random_civil_war_event6_adapter_previous_generation_saved
+		clr_country_flag = random_civil_war_event6_adapter_setup_attempted
+		clear_variable = random_civil_war_opening_severity
+		clear_variable = random_civil_war_archetype
+		clear_variable = random_civil_war_front_id
+		clear_variable = random_civil_war_crisis_id
+		clear_variable = random_civil_war_anchor_state
+		clear_variable = random_civil_war_front_goal
+		clear_variable = random_civil_war_opening_state_count
+		clear_variable = random_civil_war_event6_package_id
+		clear_variable = random_civil_war_event6_anchor_state
+		clear_variable = random_civil_war_event6_candidate_region
+		clear_variable = random_civil_war_event6_candidate_depth
+		clear_variable = random_civil_war_event6_candidate_archetype
+		clear_variable = random_civil_war_event6_opening_state_count
+	}
+}
+
 # COUNTRY scope on the original host. A package that cannot prove the complete
 # Event 006 identity contract is rolled back as one transaction. The host's
 # theater/front counters are released, the anchor returns, and a carrier newly
@@ -3940,6 +3984,7 @@ event021_parent_abort_event6_opening = {
 	if = {
 		limit = { has_event_target = random_civil_war_event6_selected_actor has_event_target = random_civil_war_event6_selection_owner event_target:random_civil_war_event6_selection_owner = { has_country_flag = random_civil_war_event6_selected_actor_valid } }
 		event_target:random_civil_war_event6_selected_actor = {
+			event021_parent_cleanup_failed_event6_adapter_actor = yes
 			clr_country_flag = random_civil_war_active
 			clr_country_flag = random_civil_war_opposition_side
 			clr_country_flag = random_civil_war_event6_front_active
@@ -3950,6 +3995,7 @@ event021_parent_abort_event6_opening = {
 			clr_country_flag = random_civil_war_event6_package_admission_ready
 			clr_country_flag = random_civil_war_event6_identity_candidate_ready
 			clr_country_flag = random_civil_war_event6_adapter_preparing
+			clr_country_flag = random_civil_war_event6_adapter_setup_attempted
 			clr_country_flag = independence_wave_event6_adapter_package_ready
 			set_country_flag = random_civil_war_event6_origin_rejected
 			clear_variable = random_civil_war_host_country_scope
@@ -4006,6 +4052,14 @@ event021_parent_abort_event6_opening = {
 # state without touching the ordinary crisis identity, force receipts, or
 # already registered fronts.
 event021_parent_clear_event6_package_transaction = {
+	if = {
+		limit = { has_event_target = random_civil_war_event6_selected_actor }
+		event_target:random_civil_war_event6_selected_actor = {
+			clr_country_flag = random_civil_war_event6_adapter_setup_attempted
+			clear_variable = random_civil_war_event6_adapter_previous_generation
+			clr_country_flag = random_civil_war_event6_adapter_previous_generation_saved
+		}
+	}
 	clr_global_flag = random_civil_war_event6_secondary_search_active
 	clr_global_flag = random_civil_war_event6_secondary_front_pending
 	clr_global_flag = random_civil_war_event6_secondary_front_preplanned
@@ -4062,6 +4116,7 @@ event021_parent_abort_event6_secondary_front = {
 		event_target:random_civil_war_event6_selected_actor = {
 			if = { limit = { has_country_flag = random_civil_war_front_registered } event021_unregister_front = yes }
 			if = { limit = { has_country_flag = random_civil_war_theater_registered } event021_unregister_active_theater = yes }
+			event021_parent_cleanup_failed_event6_adapter_actor = yes
 			clr_country_flag = random_civil_war_active
 			clr_country_flag = random_civil_war_opposition_side
 			clr_country_flag = random_civil_war_opposition_actor
@@ -4072,6 +4127,7 @@ event021_parent_abort_event6_secondary_front = {
 			clr_country_flag = random_civil_war_event6_package_admission_ready
 			clr_country_flag = random_civil_war_event6_identity_candidate_ready
 			clr_country_flag = random_civil_war_event6_adapter_preparing
+			clr_country_flag = random_civil_war_event6_adapter_setup_attempted
 			clr_country_flag = independence_wave_event6_adapter_package_ready
 			set_country_flag = random_civil_war_event6_origin_rejected
 			clear_variable = random_civil_war_host_country_scope
