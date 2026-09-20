@@ -234,7 +234,7 @@ constitutional, and patron-client availability while explicitly excluding
 the emergency-military and radical-sovereignty routes.
 
 After Inter-Island Authority reaches 60, four mutually exclusive timed
-government decisions condense the accepted additive route settlement. The
+government decisions become visible and condense the accepted additive route settlement. The
 Federal Council Compact maps to the shared popular-council route; the other
 choices confirm a traditional leaders' council, adopt an inter-island
 constitution, or accept a protected-ocean patron mandate. Every choice uses
@@ -242,7 +242,8 @@ the shared route-selection helper, publishes the matching shared durable-state
 flag, records an exact FSM settlement proof, applies visible five-value
 outcomes, and serializes against every other Micronesian package project.
 
-The final strategic project publishes
+The final strategic project remains hidden until stable authority and
+recognition, then publishes
 `independence_wave_fsm_pacific_delegation_ready`. Like the Hawaiian flag, it
 is an exact package attestation, not consent and not an annexation trigger.
 
