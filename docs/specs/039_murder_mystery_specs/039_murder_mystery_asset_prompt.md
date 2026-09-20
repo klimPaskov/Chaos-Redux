@@ -4,7 +4,7 @@ Implement the complete visual asset package for Event 039 Murder Mystery. Treat 
 
 ## Required reading
 
-Read `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-comfyui`, the full Event 39 spec package, and the exact matching `assets/vanilla_reference/` categories and contact sheets before production. Read the 3D skill and Event 39 3D prompt for model input art, counters, and unit audio. Inspect the live runtime consumer, GFX or asset definition, native dimensions, frame count, alpha behavior, crop, and local precedent for every asset family.
+Read `AGENTS.md`, `chaos-redux-event-assets` with its portrait-production reference, `chaos-redux-frame-animation`, the full Event 39 spec package, and the exact matching `assets/vanilla_reference/` categories and contact sheets before production. Read the 3D skill and Event 39 3D prompt for model input art, counters, and unit audio. Inspect the live runtime consumer, GFX or asset definition, native dimensions, frame count, alpha behavior, crop, and local precedent for every asset family.
 
 Do not use the explicit-only autonomous debug-playtest skill unless the user separately invokes it.
 

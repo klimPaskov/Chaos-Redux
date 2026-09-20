@@ -1,6 +1,6 @@
 # Event 030 Asset Production Prompt
 
-Produce the accepted Event 030 visual assets through the correct narrow project workers. Read `AGENTS.md`, the complete Event 030 package, `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-comfyui`, `chaos-redux-3d-model-pipeline`, `chaos-redux-super-events`, and the matching vanilla reference catalogs before work.
+Produce the accepted Event 030 visual assets through the correct narrow project workers. Read `AGENTS.md`, the complete Event 030 package, `chaos-redux-event-assets` with its portrait-production reference, `chaos-redux-frame-animation`, `chaos-redux-3d-model-pipeline`, `chaos-redux-super-events`, and the matching vanilla reference catalogs before work.
 
 Split production by owner:
 

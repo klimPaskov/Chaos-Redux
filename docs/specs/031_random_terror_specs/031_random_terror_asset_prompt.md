@@ -14,7 +14,7 @@ Follow:
 
 - `AGENTS.md`
 - `chaos-redux-event-assets`
-- `chaos-redux-comfyui`
+- `.agents/skills/chaos-redux-event-assets/references/portrait-production.md`
 - `chaos-redux-frame-animation` for the authorized entity animation
 - `chaos-redux-super-events` for super-event image coordination
 - `chaos-redux-subagents`

@@ -1,6 +1,6 @@
 ---
 name: chaos-redux-event-assets
-description: Use when creating, sourcing, processing, converting, organizing, wiring, or documenting visual assets for Chaos Redux.
+description: Use when creating, sourcing, processing, converting, organizing, wiring, or documenting visual assets for Chaos Redux, including complete character portrait production for grounded and fictional subjects.
 ---
 
 # Chaos Redux Event Assets
@@ -18,7 +18,7 @@ Never infer an advisor, high-command, officer-corps, dossier-card, or other smal
 Route file production through narrow project subagents. The main agent provides the bounded brief, reviews the output, and performs final wiring:
 
 - `chaosx_asset_source_researcher` for non-portrait real or archival image sourcing, historical flag-design research, historically attested symbols, user-provided source photos, archival decision category pictures, and report/news/super-event images that must depict real photographed material
-- `chaosx_portrait_creator` for every character portrait, including explicitly authorized fictional advisor masters: grounded source research, durable archival storage, crops and placeholders, fictional native ImageGen production, user-supplied styled-result validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs
+- `chaosx_portrait_creator` for every character portrait, including explicitly authorized fictional advisor masters: grounded source research, durable archival storage, crops and placeholders, fictional native ImageGen production, user-supplied styled-result validation, processing, DDS conversion, portrait-specific wiring, manifests, and handoffs, following [references/portrait-production.md](references/portrait-production.md)
 - `chaosx_generated_event_art` for generated non-icon event art, including fictional or alternate-history report images, news images, super-event images, ImageGen-created flat flag designs, faction emblems, UI panels, generated decision category pictures, and progression-state base art. It does not own character portrait masters or finals.
 - `chaosx_icon_artist` for focus, idea, national-spirit, officer-corps, decision, decision-category, mission, achievement, technology, intelligence-agency, intelligence-operation, commander-trait, medal, military-raid, state-modifier, MIO, faction, building, modifier icons, and exact state-piece graphics derived from verified map geometry
 
@@ -617,7 +617,7 @@ Preserve facial geometry, asymmetry, age, expression, hair, pose, and source-vis
 
 Country-leader, commander, operative, and named-officeholder candidates are deterministic `156x210` portraits. Commander references remain full `156x210` even when displayed smaller. Advisor/high-command cards use [Advisor and high-command portrait icons](#advisor-and-high-command-portrait-icons)'s separate native `65x67` workflow after the shared identity gate. Operatives use the full pipeline and cataloged owning sprite.
 
-Every portrait follows `.agents/skills/chaos-redux-comfyui/SKILL.md`: grounded source-placeholder or explicitly requested provider-backed styled-final branch, fictional/impossible native ImageGen branch, and the separate no-advisor-icons authorization boundary in [Advisor and high-command portrait icons](#advisor-and-high-command-portrait-icons).
+Every portrait follows [references/portrait-production.md](references/portrait-production.md): the five-step portrait sequence, the grounded source-placeholder or explicitly requested provider-backed styled-final branch with its `replacement_pending` state, the fictional/impossible native ImageGen branch, and the separate no-advisor-icons authorization boundary in [Advisor and high-command portrait icons](#advisor-and-high-command-portrait-icons).
 
 ### Advisor and high-command portrait icons
 

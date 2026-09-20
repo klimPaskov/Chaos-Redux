@@ -72,7 +72,7 @@ They were not fully read and do not establish current behavior of the complete s
 
 - Required offline wiki pages for Effects, Modifiers, Localisation, Scopes, On actions, Event modding, Decision modding, Idea modding, and AI modding.
 - Applicable offline country, character, national focus, unit/division, equipment, faction, interface, and scripted GUI references beyond the limited opening excerpts listed above.
-- .agents/skills/chaos-redux-comfyui/SKILL.md and the complete portrait support workflow.
+- .agents/skills/chaos-redux-event-assets/references/portrait-production.md and the complete portrait support workflow.
 - Canonical named subagent definitions and applicable runtime configuration.
 - common/mtth/chaosx_mtth_variables.txt, required as an example by the MTTH skill.
 - Complete current source bodies for the six named connected event systems and the shared integration helpers they expose.

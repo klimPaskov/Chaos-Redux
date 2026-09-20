@@ -239,7 +239,7 @@ Use fork_context=false.
 
 Repository root: <MOD_ROOT>
 
-Read AGENTS.md, chaos-redux-comfyui, chaos-redux-event-assets, chaos-redux-frame-animation for the authorized entity animation, docs/specs/031_random_terror_specs/031_random_terror_spec_part_5_territorial_insurgency_and_country_packages.md, Part 11, the asset prompt, the carrier and character manifest, and exact portrait consumers.
+Read AGENTS.md, chaos-redux-event-assets, chaos-redux-frame-animation for the authorized entity animation, docs/specs/031_random_terror_specs/031_random_terror_spec_part_5_territorial_insurgency_and_country_packages.md, Part 11, the asset prompt, the carrier and character manifest, and exact portrait consumers.
 
 Every subject is fictional_high_chaos or fictional institutional. Use native ImageGen. Do not source or imitate real extremist figures or any real person. Produce the accepted minimum pool of 45 leader and council masters unless the verified simultaneous actor limit requires a documented adjustment. Preserve varied age, gender, appearance, pose, role, and regional context without stereotype. Use exact 156x210 leader framing and matching metadata.
 

@@ -13,7 +13,7 @@ Record unavailable references rather than pretending their requirements were sat
 # Asset task
 
 Produce and wire the complete asset set from parts 05, 08, 17, 18, 19 and 20, with the full branch definitions in parts 09 through 12.
-Read `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-scripted-gui`, `chaos-redux-3d-model-pipeline`, `chaos-redux-comfyui` and the assigned profiles in full.
+Read `chaos-redux-event-assets`, `chaos-redux-frame-animation`, `chaos-redux-scripted-gui`, `chaos-redux-3d-model-pipeline`, and the `chaos-redux-event-assets` portrait-production reference in full.
 Inspect actual installed consumers and dimensions before final export.
 
 Use `chaosx_asset_source_researcher` for grounded source and license research, `chaosx_generated_event_art` for original event imagery, `chaosx_icon_artist` for icons and counters, `chaosx_portrait_creator` for every portrait, `chaosx_event_ui_worker` for this event's window only, and `chaosx_3d_model_pipeline` for models.

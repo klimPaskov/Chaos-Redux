@@ -21,7 +21,7 @@ Before editing, read:
 - `chaos-redux-decisions-missions`
 - `chaos-redux-focus-trees`
 - `chaos-redux-event-assets`
-- `chaos-redux-comfyui`
+- `.agents/skills/chaos-redux-event-assets/references/portrait-production.md`
 - `chaos-redux-frame-animation`
 - `chaos-redux-super-events`
 - `chaos-redux-improvement-loop`

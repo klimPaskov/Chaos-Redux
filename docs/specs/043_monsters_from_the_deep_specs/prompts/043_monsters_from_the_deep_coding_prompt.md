@@ -24,7 +24,7 @@ Before editing, read in full:
 - `.agents/skills/chaos-redux-frame-animation/SKILL.md`
 - `.agents/skills/chaos-redux-super-events/SKILL.md`
 - `.agents/skills/chaos-redux-3d-model-pipeline/SKILL.md`
-- `.agents/skills/chaos-redux-comfyui/SKILL.md`
+- `.agents/skills/chaos-redux-event-assets/references/portrait-production.md`
 - current Event 043 source and every call site
 - current event, scenario, world-end, country, unit, threat, Deaths, Migration, Famine, Event Logs, and Event Details registries
 - required offline Paradox wiki pages

@@ -1,6 +1,6 @@
 # Asset production prompt for Event 044 Yakub Returns
 
-Use `chaos-redux-event-assets`, `chaos-redux-frame-animation` only if a later approved animation is added, `chaos-redux-super-events` for super-event coordination, `chaos-redux-comfyui`, and `chaos-redux-subagents`. Route every portrait to `chaosx_portrait_creator`, generated scene art and fictional flags to `chaosx_generated_event_art`, and gameplay icons to `chaosx_icon_artist`.
+Use `chaos-redux-event-assets`, `chaos-redux-frame-animation` only if a later approved animation is added, `chaos-redux-super-events` for super-event coordination, and `chaos-redux-subagents`. Character portraits follow the `chaos-redux-event-assets` portrait-production reference. Route every portrait to `chaosx_portrait_creator`, generated scene art and fictional flags to `chaosx_generated_event_art`, and gameplay icons to `chaosx_icon_artist`.
 
 Read the complete specification package under `docs/specs/044_yakub_returns_specs/`, especially spec part 6, the country package matrix, focus architecture, achievement prompt, and super-event prompt. Inspect the canonical vanilla reference library and every exact consumer before production.
 

@@ -7,7 +7,7 @@ Create complete Event 043 portrait packages with no inherited context.
 Read:
 
 - `AGENTS.md`
-- `.agents/skills/chaos-redux-comfyui/SKILL.md`
+- `.agents/skills/chaos-redux-event-assets/references/portrait-production.md`
 - `.agents/skills/chaos-redux-event-assets/SKILL.md`
 - `.agents/skills/chaos-redux-frame-animation/SKILL.md`
 - complete Event 043 package

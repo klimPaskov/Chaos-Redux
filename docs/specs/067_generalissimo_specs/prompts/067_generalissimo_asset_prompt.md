@@ -10,7 +10,7 @@ Read:
 - every other Event 067 specification part that defines a consumer
 - `AGENTS.md`
 - `chaos-redux-event-assets`
-- `chaos-redux-comfyui`
+- `.agents/skills/chaos-redux-event-assets/references/portrait-production.md`
 - `chaos-redux-frame-animation` to confirm that no final animation is required
 - `chaos-redux-super-events`
 - `chaos-redux-subagents`

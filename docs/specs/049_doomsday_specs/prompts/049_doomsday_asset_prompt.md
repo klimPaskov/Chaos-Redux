@@ -14,7 +14,7 @@ Read the full specification under `docs/specs/049_doomsday_specs/`, with special
 - `prompts/049_doomsday_super_event_prompt.md`
 - `prompts/049_doomsday_achievement_prompt.md`
 
-Follow `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-frame-animation` only when animation is explicitly authorized, `chaos-redux-super-events`, `chaos-redux-comfyui`, and `chaos-redux-subagents`.
+Follow `AGENTS.md`, `chaos-redux-event-assets`, `chaos-redux-frame-animation` only when animation is explicitly authorized, `chaos-redux-super-events`, and `chaos-redux-subagents`. Character portraits follow the `chaos-redux-event-assets` portrait-production reference.
 
 ## Boundaries
 
