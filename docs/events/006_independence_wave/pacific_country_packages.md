@@ -287,7 +287,9 @@ and-command package over 50 days. The traditional settlement consumes a light
 security package over 65 days. The patron mandate uses the island-strategic
 stability, resolve, command, manpower, and convoy package over 90 days. The
 shared government lock makes the four outcomes mutually exclusive for the
-current Event 006 generation.
+current Event 006 generation. All eight timed FSM decisions cancel if the
+package setup receipt disappears, so a partial lifecycle teardown cannot reach
+a paid completion effect.
 
 Each country also receives a 240-day founding mission. The mission resolves
 when its package ledger reaches the stable threshold. Loss of the capital,
