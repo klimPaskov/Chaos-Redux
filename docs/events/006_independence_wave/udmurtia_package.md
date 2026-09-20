@@ -32,7 +32,7 @@ The package has no dedicated Event 006 event branch. It uses the existing shared
 
 1. Reconcile the package's state-399 anchor and host binding against the current installed-map and reservation evidence.
 2. Preserve the resolved industrial-breakaway package-archetype and industrial-security force-profile crosswalk during the later admission review.
-3. Resolve the parent-owned identity and portrait-rights receipt and current state-399/former-host retention evidence. The 2026-09-19 completion tranche and 2026-09-20 crosswalk receipt record the current package-local disposition and preserve the earlier repair and portrait-search handoffs as dated evidence.
+3. Resolve the parent-owned identity and portrait-rights receipt and current state-399/former-host retention evidence. The 2026-09-19 completion tranche, 2026-09-20 crosswalk receipt, and 2026-09-20 targeted map recheck record the current package-local disposition and preserve the earlier repair and portrait-search handoffs as dated evidence; the targeted recheck did not close the host-retention gate.
 4. Supply typed, named probability fixtures and a same-scenario compare before making any AI or balance claim.
 5. Add central attestation, preflight, dispatcher, scenario, and Join entries only after the complete packet is accepted.
 

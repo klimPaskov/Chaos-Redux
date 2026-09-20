@@ -578,7 +578,9 @@ The local mission, ten timed projects, lifecycle cleanup, AI strategy, localisat
 
 Admission remains blocked on vanilla identity/asset acceptance, state-399 host/anchor proof, typed probability fixtures with a same-scenario comparison, whole-event MCP evidence, and central wiring review; the current mission pool is incomplete and no quantitative AI claim is supported.
 
-Use `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md`, `subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md`, and `subagent_handoffs/006_iw048_udm_boris_berman_portrait_source_search_followup_2026_08_15.md` for the bounded UDM receipts, including the negative exact-name portrait search, partial Event MCP, and aggregate focus diagnostics.
+Use `subagent_handoffs/006_iw048_udm_package_local_implementation_2026_08_14.md`, `subagent_handoffs/006_iw048_udm_package_audit_2026_08_14.md`, `subagent_handoffs/006_iw048_udm_boris_berman_portrait_source_search_followup_2026_08_15.md`, `subagent_handoffs/006_iw048_udm_force_crosswalk_resolution_2026-09-20.md`, and `subagent_handoffs/006_iw048_udm_targeted_map_recheck_2026-09-20.md` for the bounded UDM receipts, including the negative exact-name portrait search, resolved force/archetype crosswalk, targeted state-399 map selection, partial Event MCP, and aggregate focus diagnostics.
+
+The targeted map recheck selected one state-399 record but returned no query match and retained global `MAP_DIAGNOSTICS_TRUNCATED` with 2,654 omitted errors and failed map-position/locator validation, so it does not close the former-host retention or reservation-compatibility gate.
 
 Use `subagent_handoffs/006_iw051_sakha_package_core_2026_08_15.md`, `subagent_handoffs/006_iw051_sakha_yak_portrait_source_research_2026_08_15.md`, and `subagent_handoffs/006_iw051_sakha_flag_symbol_provenance_2026_08_15.md` for the package-local YAK core and asset gates. The 574/Yakutsk anchor is an existing installed state; only new-state allocation probes collide. No central adapter, attestation, preflight, scenario, or Join entry is present.
 
