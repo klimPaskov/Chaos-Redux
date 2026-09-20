@@ -151,12 +151,13 @@ independence_wave_decision_pay_form08_administration_strategic = {
 	}
 }
 
-# Landlocked actors spend trains, while actors with a convoy reserve spend
-# convoys. Every caller also pays command attention.
+# Landlocked actors spend trains, while actors with a convoy reserve at least
+# equal to the displayed debit spend convoys. Every caller also pays command
+# attention.
 independence_wave_decision_pay_diplomatic_light = {
 	add_command_power = constant:independence_wave_decision_cost.command_power_light_spend
 	if = {
-		limit = { has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_light } }
+		limit = { NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_light } } }
 		add_equipment_to_stockpile = {
 			type = convoy
 			amount = constant:independence_wave_decision_cost.convoy_light_spend
@@ -199,7 +200,7 @@ independence_wave_decision_refund_rescue_equipment = {
 independence_wave_decision_pay_diplomatic_standard = {
 	add_command_power = constant:independence_wave_decision_cost.command_power_standard_spend
 	if = {
-		limit = { has_equipment = { convoy > constant:independence_wave_decision_cost.convoy_standard } }
+		limit = { NOT = { has_equipment = { convoy < constant:independence_wave_decision_cost.convoy_standard } } }
 		add_equipment_to_stockpile = {
 			type = convoy
 			amount = constant:independence_wave_decision_cost.convoy_standard_spend
