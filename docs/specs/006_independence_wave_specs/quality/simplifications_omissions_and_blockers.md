@@ -6,6 +6,8 @@ This package is the accepted source specification. Implementation status is reco
 
 The controlling 2026-07-29 acceptance decision uses source and static evidence for completion. MCP inspections, transaction/source audits, asset audits, documentation reconciliation, and catalog alignment remain required. Live or in-game execution, save/load behavior, runtime consumer observation, and player-owned evidence are optional future QA and are not completion blockers. Static capacity, package and formable coverage, focus diagnostics, rights, route, AI, asset, and wiring blockers remain unresolved where listed below.
 
+The current slot-23 package uses the user-approved creator-owned *The Enola Foam March* recording under CC BY-SA 4.0, with the production manifest preserving attribution, license-link, edit-notice, and ShareAlike requirements. Its source, runtime derivative, sound wrappers, catalogue row, and durable-league publication are present; human audition and live firing remain unverified. The former London Brass Players recording is excluded rather than treated as a fallback.
+
 ## Current evidence reconciliation (2026-09-19)
 
 The 2026-09-19 IW-095 package completion audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local blocker authority; it confirms alignment without clearing identity, rights, roster, FORM-24, or central-admission gates.

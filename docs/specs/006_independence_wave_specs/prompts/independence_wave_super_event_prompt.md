@@ -51,7 +51,7 @@ Approved package:
 - title: `The League of New States`
 - button: `Small states, one covenant.`
 - quote: the short Woodrow Wilson Point XIV excerpt recorded in the research file
-- audio: Jeremiah Clarke, `A Trumpet Voluntary`, with the accepted London Brass Players recording and segment held behind the documented `23` rights blocker
+- audio: Peet Hudson / Peter Hudson, `The Enola Foam March`, using the creator's own CC BY-SA 4.0 recording and the selected 110-second excerpt wired as audio ID `23`; retain attribution, license-link, edit-notice, and ShareAlike obligations
 
 The final text package can vary by charter if the existing super-event system supports dynamic localisation cleanly. Otherwise select one broad package that reflects the first durable league, then use follow-up events for charter tone.
 
@@ -100,7 +100,7 @@ The text researcher only verifies the selected source pages and confirms UI fit.
 
 ## Audio research requirements
 
-Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow for rights-cleared production. Do not download, process, or wire the accepted `23` London Brass Players recording unless permission or a waiver covering United States redistribution is obtained. Reopening that selection requires explicit user approval. Produce the exact game-ready 44.1 kHz `24` WAV segment from the preserved source, verify duration and checksum, and document title, composer, performer, source, rights, attribution, source path, final path, audio ID, editing steps, and fit.
+Use `chaosx_super_event_audio_researcher` or the equivalent bounded workflow for rights-cleared production. Slot `23` is the user-approved *The Enola Foam March* recording by Peet Hudson / Peter Hudson and is already source-wired under CC BY-SA 4.0; preserve its attribution, source and license links, edit notice, and ShareAlike-compatible redistribution. The former London Brass Players recording is excluded and must not be downloaded, processed, or wired. Any further slot-23 replacement requires a new documented comparison and parent approval. Produce the exact game-ready 44.1 kHz `24` WAV segment from the preserved source, verify duration and checksum, and document title, composer, performer, source, rights, attribution, source path, final path, audio ID, editing steps, and fit.
 
 Suggested final folder pattern:
 

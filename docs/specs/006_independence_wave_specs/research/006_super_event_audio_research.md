@@ -9,7 +9,19 @@ the dangerous package uses ordinary audio ID 24. Display slots and Event Log
 payloads use the matching numbers. Older four-digit references belong to dated
 research evidence only.
 
-Two distinct musical selections remain accepted. Their recording-rights status is not equal. The exact `23` London Brass Players recording is blocked for United States redistribution. The `24` United States Marine Band source is verified on its stated United States federal public-domain basis and preserved locally. No substitute recording has been selected.
+The original 2026-07-14 research baseline preserved two candidate selections with unequal recording-rights status. The exact `23` London Brass Players recording remains excluded because its United States redistribution basis was not verified. The `24` United States Marine Band source is verified on its stated United States federal public-domain basis and preserved locally.
+
+## Current slot-23 selection (2026-09-20)
+
+The user-approved slot-23 recording is **The Enola Foam March** by Peet Hudson / Peter Hudson, using the creator's own recording from Wikimedia Commons under CC BY-SA 4.0.
+
+The source requires creator attribution, a source and license link, an edit notice, and ShareAlike-compatible redistribution of the edited excerpt.
+
+The 110-second PCM WAV, sound definitions, settings wrappers, catalogue row, and first-durable-league publication are wired in the current runtime package.
+
+The production manifest at `../../../assets/006_independence_wave/super_events/audio/production_manifest.md` is the current file and checksum authority.
+
+Human perceptual audition and live-game firing remain unverified, and the former London Brass Players recording is not a runtime fallback.
 
 ## Super-event 1, league formation
 

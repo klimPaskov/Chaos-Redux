@@ -8,7 +8,7 @@ Tag architecture alignment: 2026-07-15
 
 ## Completed scope
 
-The package identity, disposition, historical, and text research gates are closed. The exact audio-23 recording-rights gate remains explicit; Event 006 uses ordinary super-event identifiers 23 and 24.
+The package identity, disposition, historical, and text research gates are closed. Slot 23 uses the user-approved creator-owned *The Enola Foam March* recording under CC BY-SA 4.0 with its attribution and ShareAlike obligations preserved; human audition and live firing remain unverified. Event 006 uses ordinary super-event identifiers 23 and 24.
 
 - All **206** candidate packages have a resolved representation, tag or route policy, automatic-pool disposition, baseline state anchor or explicit no-anchor outcome, reservation group, modern political bridge, leadership rule, symbol rule, sensitivity rule, and source packet.
 - The tag audit resolves **102** packages as custom Event 6 countries, **91** as registered vanilla-tag reuses, and **13** as non-selectable vanilla route overlays. Every custom Event 6 tag is unique, collision-free in the accepted scan universe, and ends in `X`.
@@ -16,7 +16,7 @@ The package identity, disposition, historical, and text research gates are close
 - All ten Level 3 packages have signature dossiers.
 - Broad and community-sensitive packages have explicit automatic, conditional, formable, or scenario dispositions.
 - Both super-event text packages have final titles, descriptions, buttons, short sourced quotes, attribution, and copyright notes.
-- Both super-events have distinct musical selections, segment plans, final path direction, and ordinary audio IDs. The audio-23 London Brass Players recording is blocked for United States redistribution. The audio-24 United States Marine Band source is verified and preserved.
+- Both super-events have distinct musical selections, segment plans, final path direction, and ordinary audio IDs. The audio-23 Enola Foam March source is selected and source-wired under CC BY-SA 4.0, while the former London Brass Players recording remains excluded. The audio-24 United States Marine Band source is verified and preserved.
 
 ## Candidate disposition totals
 

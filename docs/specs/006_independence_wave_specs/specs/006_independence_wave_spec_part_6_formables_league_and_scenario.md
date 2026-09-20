@@ -610,7 +610,7 @@ Final button: **Small states, one covenant.**
 
 Final quote excerpt: **“A general association of nations must be formed under specific covenants…”** Woodrow Wilson, Fourteen Points, Point XIV, 8 January 1918.
 
-Selected music: Jeremiah Clarke, **A Trumpet Voluntary**, London Brass Players recording. The selection and 110-second edit plan remain accepted, but the exact recording is blocked for United States redistribution. Do not process or wire audio ID `23` without permission or a waiver. Reopening recording selection requires explicit user approval.
+Selected music: **The Enola Foam March** by Peet Hudson / Peter Hudson, using the creator's own Wikimedia Commons recording under CC BY-SA 4.0. The selected 110-second excerpt is wired as audio ID `23` and requires attribution, a source and license link, an edit notice, and ShareAlike-compatible redistribution. The former London Brass Players recording remains excluded from runtime use.
 
 ### Image direction
 
