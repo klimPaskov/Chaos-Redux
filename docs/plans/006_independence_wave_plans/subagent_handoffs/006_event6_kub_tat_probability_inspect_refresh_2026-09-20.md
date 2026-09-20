@@ -24,6 +24,8 @@ The exact historical 11-row TAT candidate pool was evaluated under `E006_TAT_EMP
 
 The matching KUB evaluation used its exact 11-row candidate pool under `E006_KUB_EMPTY_FILTERED_RETRY_2026_09_20` with one empty-state scenario. It returned `PROBABILITY_ANALYZED_PARTIAL` with analysis id `probability-f61dc2f0f7abcf8bd906272b`, one scenario, 11 candidates, 307 unresolved items, and 11 diagnostics; the JSON artifact is `hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/44728a494f244926551a3e19b0fd4ae6bb236b367046491f7e1becabb8d73c54/da2c6f113db68fc93acc1eaf17597741bea51422863d7cf90c2c475068d4b1ba/probability-f61dc2f0f7abcf8bd906272b.json`.
 
+A bounded schema probe then tested the fixture shape used by older accepted evidence. The validator rejected `scenarioSet.scenarios[0].fixture` and also rejected a root-level `scenarioSet.fixture` with `MCP error -32602` (`Unrecognized key: "fixture"`); neither probe produced an analysis artifact. The available schema therefore still provides no documented place for the required actor, event-target, variable, ledger, route, resource, or former-host inputs.
+
 ## Evidence boundary
 
 The ten accepted KUB/TAT scenarios remain unexecuted as typed package-state fixtures. The existing blocker receipt `subagent_handoffs/006_event6_kub_tat_probability_retry_2026-09-20.md` remains authoritative for the rejected unsupported state fields and the missing actor, event-target, variable, ledger, route, resource, and former-host state contract.
