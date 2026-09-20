@@ -3047,6 +3047,20 @@ independence_wave_form39_cleanup_frozen_members = {
 			var:independence_wave_formable_member_country_entries^independence_wave_form39_cleanup_member_index = {
 				if = {
 					limit = {
+						OR = { original_tag = PNG original_tag = WPG }
+						ROOT = {
+							check_variable = {
+								independence_wave_formable_profile_family = constant:independence_wave_formable_family.melanesian_federation
+							}
+						}
+					}
+					# FORM-39 member authorization is needed during integration,
+					# but must not survive a failed transaction or runtime cleanup.
+					clr_country_flag = independence_wave_formable_full_integration_authorized
+					clr_country_flag = independence_wave_formable_autonomous_membership_authorized
+				}
+				if = {
+					limit = {
 						has_country_flag = independence_wave_form39_autonomous_member
 						has_variable = independence_wave_form39_autonomous_carrier
 						var:independence_wave_form39_autonomous_carrier = { tag = ROOT }
