@@ -14,6 +14,8 @@ The 2026-09-20 IW-136 portrait/identity research at `../../../plans/006_independ
 
 The bounded 2026-09-20 decision/mission audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_decision_mission_audit_2026-09-20.md` found no additional source-safe decision or mission defect after the Banat tooltip repair, but it did not complete the full body-level crosswalk and does not establish native decision-row or campaign probability evidence.
 
+The bounded 2026-09-20 IW-070 Armenia package audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_iw070_arm_package_audit_2026-09-20.md` found no ARM-local source defect across the accepted carrier, Yerevan anchor, setup, force, lifecycle, decisions, focus, identity, AI, cleanup, and FORM-16 surfaces. Its interrupted fresh MCP refresh and unresolved quantitative AI evidence do not justify a package or weight change.
+
 The completed 2026-09-20 probability audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_probability_audit_2026-09-20.md` supersedes only the earlier scenario-specific receipt for current weighted-logic status. It confirms exact bounded declared-pool fixtures but leaves nested package, campaign-facing option, decision, mission, focus, MTTH, and strategy-factor probabilities unresolved or score-only, with no patch or package promotion.
 
 The 2026-09-19 IW-095 package completion audit at `../../../plans/006_independence_wave_plans/subagent_handoffs/006_iw095_package_completion_2026-09-19.md` is the current package-local authority and does not promote Dahomey into central admission.
