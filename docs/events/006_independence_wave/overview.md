@@ -175,7 +175,7 @@ The dated ordinary-number audio handoff `../../plans/006_independence_wave_plans
 
 The ordinary-number handoff preserves the earlier CC0/public-domain *Defilier-Marsch* / Anker-Orchester candidate as research-only evidence. It is not selected, converted, wired, or treated as a fallback; parent approval, human listening, tonal fit, and composition-jurisdiction review remain required.
 
-Current runtime wording for ordinary slot `23` is authoritative: image/text dispatch is registered, while rights-cleared audio, sound wrappers, and firing remain blocked. The dated audio paragraph above uses “absent from runtime” only for its audio derivative and must not be read as removal of the registered image/text dispatch.
+The dated runtime wording for ordinary slot `23` is superseded by the current authority below: the image/text dispatch, approved audio, six sound wrappers, Event Log payload, and durable-league FIFO publication are source-wired. Human audition and live firing remain unverified. The dated audio paragraph above uses “absent from runtime” only for its historical audio derivative and must not be read as removal of the current slot-23 package.
 
 ## 2026-08-03 dated authority continuation (superseded 2026-08-05): v106, package gates, focus spacing, MNT, FSM, and portrait policy
 
@@ -446,7 +446,7 @@ DM-57's sponsorship transaction uses the existing decision and route art. It int
 
 ## Dangerous milestone super-event
 
-Current runtime authority: ordinary super-event `24` is source-wired with final WAV, base sound, wrappers, slot dispatch, predicates, and queued playback, and its retained 20-package static capacity path is historical evidence rather than an active wave-size target. Reachability remains partial under live host, collision, transaction, and formable gates. Ordinary super-event `23` has registered image/text dispatch, but rights-cleared audio, sound wrappers, and firing remain blocked; the older absent-from-runtime wording below is dated traceability only.
+Current runtime authority: ordinary super-event `24` is source-wired with final WAV, base sound, wrappers, slot dispatch, predicates, and queued playback, and its retained 20-package static capacity path is historical evidence rather than an active wave-size target. Reachability remains partial under live host, collision, transaction, and formable gates. Ordinary super-event `23` is source-wired with registered image/text dispatch, the approved runtime audio, six sound wrappers, Event Log payload, and durable-league FIFO publication; human audition and live firing remain unverified. The older absent-from-runtime wording below is dated traceability only.
 
 `Every Border a Casus Belli` uses display slot 24, audio ID 24, and `GFX_super_event_006_asset_006_revisionist_milestone`. It is a one-shot OR across five factual predicates: a seven-member radical offensive league meeting the 75 common-cause, 60 reserve, and three-action gates; an exact ten-country Totalen Chaos or World Collapse wave that creates at least three distinct verified former-host border claims for armed or radical actors; at least three successful released-country declarations against former hosts in one accepted Maximum scenario batch; a hidden-high-chaos formable carried by the exact leader of a qualifying radical league; or three successfully committed league-backed DM-57 sponsorship contracts.
 
