@@ -1,6 +1,6 @@
 # IW-048 UDM completion tranche handoff — 2026-09-19
 
-Status: unresolved / no-change tranche. No source-safe gameplay patch was justified, no central admission surface was opened, and no file outside this handoff was changed by this tranche. The parent agent owns review and commit.
+Status: package-local / fail-closed. No source-safe gameplay patch was justified, no central admission surface was opened, and no file outside this handoff was changed by this tranche. The force/archetype wording finding is resolved by the parent-owned crosswalk receipt `006_iw048_udm_force_crosswalk_resolution_2026-09-20.md`; the identity, map/host, typed-probability, and admission gates remain open. The parent agent owns review and commit.
 
 ## Scope and authority
 
@@ -26,7 +26,7 @@ The no-pre-event contract remains intact through `common/scripted_triggers/006_i
 
 1. Identity and portrait rights are unresolved. `UDM_boris` is only a vanilla carrier until the parent-owned `independence_wave_iw_048_identity_rights_cleared` receipt exists, and the accepted research row requires a defensible sourced period leader or institution before admission. Setting the flag, changing the character, or wiring a generated portrait would invent or bypass the accepted identity contract.
 
-2. The force contract has an unresolved type mapping. The accepted package resolution names `industrial_security`, while the shared archetype table currently uses `industrial_breakaway` for the local initialization gate and has no separate `industrial_security` archetype token. The discrepancy is documented in `docs/events/006_independence_wave/udmurtia_package.md` and enforced by `common/scripted_triggers/006_independence_wave_udm_package_triggers.txt:174`; changing either side without an owner decision could admit the wrong force package.
+2. The force/archetype wording finding is resolved. The accepted force mapping row assigns `industrial_security` and p48, while the planner and shared setup contract independently assign the economic/package archetype `industrial_breakaway`; the separate enums and consumers are documented in `006_iw048_udm_force_crosswalk_resolution_2026-09-20.md`. No source change is required.
 
 3. Map and host-retention proof is incomplete. The planner reserves state `399` and `RG-399`, but the current `hoi4.map_inspect` run returned a global diagnostic truncation with 2,654 omitted building-position/port errors, the targeted follow-up timed out after 180 seconds, and the package still lacks current runtime proof that the former host retains a valid protected state. No map rewrite or reservation change is justified.
 
@@ -63,7 +63,7 @@ The no-pre-event contract remains intact through `common/scripted_triggers/006_i
 
 ## Exact next owner
 
-The parent Event 006 country-package/admission owner should first close the identity/portrait rights receipt, resolve the `industrial_security` versus `industrial_breakaway` force-contract decision, and obtain current state-399/former-host retention evidence. After those are accepted, the central admission owner may prepare the bounded IW-048 adapter, attestation, preflight, scenario, and Join entries and route the complete UDM mission/focus AI surfaces through the callable `chaosx_ai_probability_auditor` with named scenarios and same-scenario comparison. Until then, keep IW-048 package-local and fail-closed.
+The parent Event 006 country-package/admission owner should first close the identity/portrait rights receipt and obtain current state-399/former-host retention evidence. After those are accepted, the central admission owner may prepare the bounded IW-048 adapter, attestation, preflight, scenario, and Join entries and route the complete UDM mission/focus AI surfaces through the callable `chaosx_ai_probability_auditor` with named scenarios and same-scenario comparison. Until then, keep IW-048 package-local and fail-closed.
 
 ## Simplifications and omissions
 

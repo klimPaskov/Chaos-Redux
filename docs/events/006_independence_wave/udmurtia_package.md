@@ -8,7 +8,7 @@ The carrier remains the vanilla `UDM` tag, vanilla history, vanilla capital 399,
 
 The `UDM_boris` roster consumer requires the parent-owned `independence_wave_iw_048_identity_rights_cleared` flag. The flag has no local setter because the exact identity and 1936 Udmurt office remain unresolved. The 2026-08-15 exact-name source follow-up found no rights-cleared period image; the only exact image remains a fair-use/non-free 272×359 photograph and cannot clear the portrait gate.
 
-The package uses the registry's `industrial_security` force profile and the existing shared `industrial_breakaway` package-archetype constant because the shared archetype table has no separate `industrial_security` archetype token. This mapping is documented for later admission review and does not alter the central registry.
+The package uses the registry's `industrial_security` force profile and the existing shared `industrial_breakaway` package-archetype constant because the force-profile and package-archetype registries are separate contracts. The force profile drives starting-force behavior, while the package archetype drives the industrial opening values; this crosswalk is evidenced by the planner, shared setup effects, and UDM prepared-package trigger and does not alter the central registry.
 
 ## Package mechanics
 
@@ -31,8 +31,8 @@ The package has no dedicated Event 006 event branch. It uses the existing shared
 ## Required follow-up before admission
 
 1. Reconcile the package's state-399 anchor and host binding against the current installed-map and reservation evidence.
-2. Review the industrial-breakaway archetype mapping against the registry's industrial-security force label.
-3. Resolve the parent-owned identity and portrait-rights receipt, the `industrial_security` versus `industrial_breakaway` force-contract mapping, and current state-399/former-host retention evidence. The 2026-09-19 completion tranche records the current package-local disposition and preserves the earlier repair and portrait-search handoffs as dated evidence.
+2. Preserve the resolved industrial-breakaway package-archetype and industrial-security force-profile crosswalk during the later admission review.
+3. Resolve the parent-owned identity and portrait-rights receipt and current state-399/former-host retention evidence. The 2026-09-19 completion tranche and 2026-09-20 crosswalk receipt record the current package-local disposition and preserve the earlier repair and portrait-search handoffs as dated evidence.
 4. Supply typed, named probability fixtures and a same-scenario compare before making any AI or balance claim.
 5. Add central attestation, preflight, dispatcher, scenario, and Join entries only after the complete packet is accepted.
 
