@@ -8,6 +8,8 @@ Tag architecture alignment: 2026-07-15
 
 The 2026-07-10 research baseline passed **258 targeted checks**. These checks cover package coverage, tag policy, baseline map anchoring, source references, research dispositions, the wave ladder, cross-file mirrors, prompt completeness, CSV integrity, and package navigation. The 2026-07-14 implementation reconciliation supersedes the baseline's installed-map and audio-rights assumptions where stated below. The 2026-07-15 tag architecture alignment supersedes the baseline tag totals, representation assertions, dispositions, and selectable-pool totals.
 
+Current slot-23 reconciliation (2026-09-20): the user approved *The Enola Foam March* by Peet Hudson / Peter Hudson, the creator's own [Wikimedia Commons recording](https://commons.wikimedia.org/wiki/File:The_Enola_Foam_March.flac) under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), in place of the still-excluded London Brass Players recording. The edited audio requires creator attribution, source and license links, an edit notice, and ShareAlike-compatible distribution. The runtime WAV, base sound `chaosx_super_event_23_track`, six volume wrappers, catalogue row, and first-durable-league history and FIFO publication are source-wired for slot/audio ID `23`; the [production manifest](../../../assets/006_independence_wave/super_events/audio/production_manifest.md) records the artifact checksums. The 2026-07-10 super-event check and remaining-boundary list below are historical research results, while human perceptual audition, live firing, and whole-event acceptance remain unverified.
+
 ## Coverage totals
 
 - Candidate packages: **206**
@@ -101,7 +103,7 @@ The two reserved OGG paths and IDs are distinct. Both selected edit plans use 11
 - No package-disposition or quote-source placeholder remains. The later `23` recording-rights verification is an explicit blocker, not a hidden source assumption.
 - New research prose avoids em dashes and semicolons.
 
-## Remaining boundary
+## Remaining boundary at the 2026-07-10 research baseline
 
 The remaining tasks are implementation, production, and explicit blocker resolution:
 

@@ -2782,6 +2782,12 @@ independence_wave_mark_league_durable = {
 			array = global.independence_wave_league_member_country_entries
 			independence_wave_refresh_idea_lifecycles = yes
 		}
+		if = {
+			limit = { has_event_target = independence_wave_league_leader_target }
+			event_target:independence_wave_league_leader_target = {
+				independence_wave_publish_league_formation = yes
+			}
+		}
 		independence_wave_evaluate_danger_milestone = yes
 	}
 }
@@ -3823,21 +3829,40 @@ independence_wave_dispatch_package_cleanup = {
 # SOURCE: 006_independence_wave_super_event_effects.txt
 # DANGER MILESTONE SUPER-EVENT QUALIFICATION AND PRESENTATION
 # Consolidated here to keep the Event 006 effect surface compact. Identifiers
-# and executable bodies remain unchanged.
+# remain stable; the first durable-league publisher is wired alongside the
+# existing danger-milestone presentation.
 # ============================================================================
 
 # ============================================================================
-# CHAOS REDUX - EVENT 006 DANGEROUS MILESTONE SUPER-EVENT (SLOT 24)
+# CHAOS REDUX - EVENT 006 SUPER-EVENT PRESENTATION (SLOTS 23 AND 24)
 # ============================================================================
-# Implements the five accepted qualification packages for ordinary super-event
-# slot 24. The reserved league-formation package uses slot 23; it remains
-# blocked until its recording-rights gate is cleared and a firing transaction
-# is implemented.
-# Every witness is transaction-bound and factual: a completed league action,
-# an actual opening claim, a successful war declaration, a committed hidden
-# formable, or a consumed league-sponsorship record. Presentation uses the
-# shared settings-aware FIFO so another active super-event is never replaced.
+# Implements the first durable-league presentation for ordinary super-event slot
+# 23 and the five accepted qualification packages for slot 24. Both packages
+# use the shared settings-aware FIFO so another active super-event is never
+# replaced.
+# The danger qualification witnesses are transaction-bound and factual: a
+# completed league action, an actual opening claim, a successful war
+# declaration, a committed hidden formable, or a consumed league-sponsorship
+# record. Presentation uses the same FIFO for both slots.
 # ============================================================================
+
+# Country scope. Records the first durable formal league in Event 006 history
+# and submits the matching display/audio pair to the shared super-event FIFO.
+independence_wave_publish_league_formation = {
+	set_temp_variable = { independence_wave_history_previous_last_event_id = global.last_fired_event_id }
+	set_temp_variable = { events_log_history_payload_override = constant:independence_wave_league_super_event.history_payload }
+	set_temp_variable = { events_log_history_payload_override_active = constant:independence_wave_plan.loop_increment }
+	set_temp_variable = { events_log_history_actor_override = THIS }
+	set_temp_variable = { events_log_history_actor_override_active = constant:independence_wave_plan.loop_increment }
+	set_temp_variable = { events_log_history_secondary_actor_override_active = constant:independence_wave_value.minimum }
+	set_variable = { global.last_fired_event_id = constant:independence_wave_event.id }
+	record_events_log_history_entry = yes
+	set_variable = { global.last_fired_event_id = independence_wave_history_previous_last_event_id }
+	set_temp_variable = { natural_disaster_super_event_slot = constant:independence_wave_league_super_event.super_event_slot }
+	set_temp_variable = { natural_disaster_super_event_audio_id = constant:independence_wave_league_super_event.audio_id }
+	set_temp_variable = { natural_disaster_super_event_scope_state = constant:independence_wave_value.minimum }
+	natural_disaster_emit_super_event = yes
+}
 
 # Country scope. Publishes a single authoritative league leader as both a
 # scope-valued variable and a durable target/flag pair used by later audits.

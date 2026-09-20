@@ -4,16 +4,16 @@ Identifier policy (2026-08-05): Event 006 uses the ordinary project-wide super-e
 
 Current package cross-reference (2026-08-06): the allocator records 23 content-attested selectable packages across 22 compatible reservation groups, 170 unattested selectable rows out of 193 non-overlay rows, and a 20-package static standalone witness excluding the self-hosting ICE anchor. This super-event research authority does not claim whole-event completion.
 
-Status: dangerous milestone runtime source-wired with a passing static 20-package capacity witness and partial live reachability under factual gates; hidden-formable route wired but dormant; league-formation package blocked
+Status (2026-09-20): both super-events are source-wired. Slot 23 uses the user-approved *The Enola Foam March* recording and has a publication call at the first durable formal league. Live-game execution and human perceptual audition are unverified, while slot 24 retains its factual reachability gates.
 
 ## Runtime allocation
 
 | Package | Display slot | Audio ID | Runtime status |
 | --- | ---: | ---: | --- |
-| The League of New States | 23 | 23 | Image/text dispatch registered; audio, wrappers, and firing blocked |
+| The League of New States | 23 | 23 | Image/text and audio registered; first durable formal league queues presentation; live firing unverified |
 | Every Border a Casus Belli | 24 | 24 | Source-wired; static capacity witness passes; live reachability partial under host, collision, transaction, and formable gates |
 
-Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID 24 is registered only as a zero-random-play super-event cue. Slot 23 and audio ID 23 are reserved; their image and localisation dispatch are registered, but the recording, wrappers, and firing effect remain blocked.
+Slot 24 is exclusive to Event 006's one-shot dangerous milestone. Audio ID 24 is registered only as a zero-random-play super-event cue. Slot 23 and audio ID 23 belong to the first durable formal league, with image and localisation dispatch, the selected runtime recording, six settings wrappers, history payload 23, and the settings-aware FIFO submission wired in source.
 
 Historical package boundary (2026-08-01): the allocator admitted fourteen packages across thirteen compatible reservation groups and fourteen distinct anchors, including IW-018 ARX and IW-173 HAW. FORM-48 has its HBX carrier and HAW member admitted, while IW-179 FSM remains withdrawn; the hidden-formable route therefore remains dormant and no synthetic readiness flag or ordinary formable substitutes for the missing complete carrier/member set. IW-043 CHU and IW-058 ASY remain outside runtime attestation even though Luka Semyonovich Spasov has a v45 visual PASS and parent-owned runtime replacement.
 
@@ -117,9 +117,9 @@ The text package is **approved-ready with no text blocker**. The ASCII `...` omi
 
 The current static fit evidence estimates the Wilson quote with full attribution at four lines and the Hosea quote at three lines within the fixed quote box. Both titles and buttons fit their fixed surfaces. No integrated live render is claimed by this research note.
 
-Slot 24 remains source-wired with its accepted image, text, audio, wrapper, and factual predicate; end-to-end reachability is partial under the Event 006 package and league gates. Slot 23 has its image and text dispatch registered, but audio ID `23`, wrappers, and firing remain absent because the accepted London Brass Players recording lacks verified United States/worldwide redistribution permission.
+Slot 24 remains source-wired with its accepted image, text, audio, wrapper, and factual predicate, with end-to-end reachability partial under the Event 006 package and league gates. Slot 23 has its image, text, audio ID `23`, wrappers, and first-durable-league publication call registered in source following the user's 2026-09-20 selection. The London Brass Players recording remains excluded because United States redistribution rights were not verified.
 
-Do not process or wire the London Brass Players recording. Do not substitute *The Enola Foam March*, *Toujours en Tête*, or any other candidate without explicit parent/user approval, human audition, and a new rights-complete audio note. The audio hold does not authorize changing the Wilson quote, button, title, or description.
+Do not process or wire the London Brass Players recording. The user approved *The Enola Foam March* on 2026-09-20, and no other candidate is selected. The audio selection does not change the Wilson quote, button, title, or description.
 
 ## Every Border a Casus Belli
 
@@ -180,7 +180,15 @@ Wikimedia Commons identifies the composition as public domain and the transcript
 
 The preserved source, exact interval, fades, loudness measurements, and wrapper identifiers are recorded in `docs/assets/006_independence_wave/super_events/audio/production_manifest.md`.
 
-## Blocked league-formation package
+## Slot-23 audio production and rights (current 2026-09-20)
+
+The user approved *The Enola Foam March* by Peet Hudson / Peter Hudson, using the creator's own orchestral recording from <https://commons.wikimedia.org/wiki/File:The_Enola_Foam_March.flac> under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Attribution for redistribution is `Peet Hudson, “The Enola Foam March”; creator's own recording; source: Wikimedia Commons; licensed CC BY-SA 4.0; edited 110-second excerpt by Chaos Redux`; retain the source and license links, identify the edit, and distribute the adapted audio on ShareAlike-compatible terms without added restrictions.
+
+The preserved source is `docs/assets/006_independence_wave/super_events/audio/source/The_Enola_Foam_March.flac` (SHA-256 `34A26DF75C96DCFCE953E400DA9DAD2F4E9B61837EFD87FEF61CBD4B0614D547`), and the final 110-second PCM WAV is `sound/006_independence_wave/super_event_23_enola_foam_march_110s.wav` (SHA-256 `2892F43CD393F2CA7FEED12FB8A841F9C7C6CA8784F28E2A39DC0AD3B9CECBFF`). The base sound is `chaosx_super_event_23_track`, with settings wrappers `chaosx_super_event_23_sound_0_5`, `_1_0`, `_1_5`, `_2_0`, `_2_5`, and `_3_0`. The final slot-23 row is in `music/chaosx_music_track_list.html`. The first durable formal league calls `independence_wave_publish_league_formation`, writes `independence_wave_league_super_event.history_payload` (`23`) to Event Log history, and queues display slot and audio ID `23` through the existing settings-aware FIFO. Event Log title and detail keys are `independence_wave.history.league_formation.title` and `independence_wave.history.league_formation.description`.
+
+The [production manifest](../../assets/006_independence_wave/super_events/audio/production_manifest.md) records conversion and source details, while the [2026-09-20 audio research handoff](../../plans/006_independence_wave_plans/subagent_handoffs/006_event6_super_event_23_audio_research_2026-09-20.md) remains pre-selection candidate evidence. Source wiring does not establish human perceptual audition, live-game execution, or whole-event completion.
+
+## Historical blocked league-formation package (superseded by 2026-09-20 selection)
 
 The accepted 1949 London Brass Players recording for **The League of New States** has no verified permission or waiver covering United States redistribution. No substitute is authorized. Audio ID 23, its sound wrappers, and firing therefore remain absent from runtime until the exact recording is cleared or the user approves a newly researched replacement; image and text dispatch for display slot 23 is registered.
 
