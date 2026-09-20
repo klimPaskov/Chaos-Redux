@@ -83,7 +83,7 @@ Use repo skills as required implementation guidance.
 
 The `hoi4-agent-tools` service is exposed through the `mcp__hoi4_agent_tools__hoi4_*` coding-agent tools for focus trees, event chains, technology trees, weighted logic, scripted GUIs, and maps.
 Tool exposure does not prove service health or the availability of a standalone viewer.
-Use `hoi4.event_inspect` and `hoi4.tech_inspect` with `mode = helper_expansion` for large helper closures. Use `hoi4.job_inspect` and `hoi4.job_cancel` to follow or cancel persistent jobs, and request native MCP tasks when the client negotiates them. Inspect the final tool result and retain continuation URIs, source revisions, coverage, and unresolved findings. Keep domain-specific inspect, render, compare, and scenario evidence.
+Before using `hoi4.event_inspect` or `hoi4.tech_inspect` with `mode = helper_expansion`, `hoi4.job_inspect`, `hoi4.job_cancel`, or native MCP tasks, verify the connected server version and health, live tool schemas, and client task negotiation. Use only confirmed routes; otherwise follow the installed domain tools and record the missing capability. Inspect final tool results and retain continuation URIs, source revisions, coverage, and unresolved findings. Jobs and helper pages are delivery and coverage tools; keep domain-specific inspect, render, compare, and scenario evidence.
 Verify standalone Technology Tree Viewer availability separately from the exposed technology routes documented in the MCP evidence section of `chaos-redux-subagents`.
 Record an absent viewer as a package gap without inventing capabilities. Keep viewer and inspector use read-only.
 
