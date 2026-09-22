@@ -1,6 +1,4 @@
 """Exact reviewed local mesh patches; no inferred filling or geometry reduction."""
-from collections import Counter
-from pathlib import Path
 import math
 
 from mesh_inspection_repair import _open, _finish, digest, name, vector

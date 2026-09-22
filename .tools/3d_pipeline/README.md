@@ -91,7 +91,7 @@ Keep viewer, inspector, renderer, and comparison tools read-only, and record an 
 
 Every paid provider stage is checked against the live balance before its call, and every paid task writes a before/after balance reconciliation.
 
-Textured Meshy 7 image-to-3D generation is estimated at 30 credits, and the remesh of a source above 300,000 triangles is estimated at 5 credits.
+Textured Meshy 7 image-to-3D generation is estimated at 30 credits, the remesh of a source above 300,000 triangles is estimated at 5 credits, a provider rig task is estimated at 5 credits, and each provider animation task is estimated at 3 credits.
 
 The provider's actual `consumed_credits` value supersedes the estimate for later runs.
 
@@ -111,7 +111,7 @@ The adapter exposes these job-root-bounded operations:
 
 The surface publishes 32 job-root-bounded operations, and `routes.blender_hoi4_adapter.version` in the dependency lock is the authoritative adapter version for every run.
 
-`.codex/config.toml` enables a 16-operation subset of this surface for production runs, including all three ingestion operations.
+`.codex/config.toml` enables the full published surface for production runs, including all three ingestion operations.
 
 An operation that would generate a rig, transfer skin weights automatically, or synthesize an action from a declarative spec, a template, or a formula is outside this surface.
 
@@ -119,7 +119,7 @@ An operation that would generate a rig, transfer skin weights automatically, or 
 
 `inspect_animation_source` reads a standalone FBX source's skeleton and action identity in a disposable scene without a target checkpoint.
 
-`import_animation_action` transfers one receipt-verified provider or professional skeletal action onto the target armature by its exact source action id with hash-bound provenance. It requires a new sibling checkpoint, a new target action name, an explicit 64-character `source_sha256`, and a provenance receipt whose `verification_status`, `source_kind`, `source_reference_id`, `source_action_name`, and `source_sha256` all match, with `source_kind` one of `meshy_animate`, `meshy_text_to_motion`, or `professional_source`. It reads the real bone channels from the provider file and leaves the runtime scene with one model and one armature.
+`import_animation_action` transfers one receipt-verified provider or professional skeletal action onto the target armature by its exact source action id with hash-bound provenance. It requires a new sibling checkpoint, a new target action name, an explicit 64-character `source_sha256`, and a provenance receipt whose `verification_status`, `source_kind`, `source_reference_id`, `source_action_name`, and `source_sha256` all match, with `source_kind` one of `meshy_animate`, `meshy_text_to_motion`, or `professional_source`. A Text-to-Motion retarget additionally requires an explicit measured `root_scale_reference` carrying only `source_head_bones` and `target_head_bones` joint-head pairs. It reads the real bone channels from the provider file and leaves the runtime scene with one model and one armature.
 
 `import_bvh_animation_action` native-imports and retargets one receipt-verified BVH action. It requires the verified BVH filename stem, a non-empty `bone_chains` map, `root_motion_policy = in_place_xy_preserve_z`, finite positive `source_fps` and `target_fps` where the declared source rate matches the file header, a `global_scale` between `0.0001` and `1000000`, distinct signed forward and up axes, a `semantic_role` that appears in the target action name, and a provenance receipt recording `source_format = bvh`.
 
@@ -135,9 +135,17 @@ docs/assets/<owner_id>/models_3d/<asset_slug>/
   manifest.md
   history.jsonl
   refs/
+    source/
+      untouched.<ext>
+      provenance.json
+      source_search.md
     original/
       meshy_input.png
       input_manifest.json
+    firearms/<firearm_id>/
+      meshy_input.png
+    equipment/<item_id>/
+      meshy_input.png
     derived/
     briefs/
   provider/
@@ -325,7 +333,7 @@ The parent owns `.asset`, entity, `.gfx`, gameplay wiring, and active runtime co
 
 The user performs live in-game validation and supplies the in-game screenshots, and the parent reviews that evidence.
 
-Runtime source files may be staged under `.tools/3d_pipeline/staging` for parent review, but `docs/assets/...` is evidence and working material, not a runtime source root.
+Runtime source files stay inside the job root for parent review, and `docs/assets/...` is evidence and working material, not a runtime source root.
 
 ## Entrypoints
 

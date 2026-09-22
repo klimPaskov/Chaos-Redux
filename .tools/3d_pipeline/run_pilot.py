@@ -1220,7 +1220,6 @@ PILOT_SPECS: Dict[str, Dict[str, Any]] = {
             "side-profile sheet"
         ],
         "target_height_m": 1.5,
-        "blender_reference_height_m": 2.464908123,
         "blender_effective_runtime_height_m": 4.929816246,
         "runtime_entity_scale": 3.280031,
         "vanilla_scale_reference": {
@@ -1480,7 +1479,12 @@ def main() -> int:
     phase = "full"
     phase_value = None
     if "--phase" in args:
-        phase_value = args[args.index("--phase") + 1]
+        index = args.index("--phase")
+        if index + 1 >= len(args):
+            raise SystemExit("--phase requires a value; the supported value is candidate.")
+        phase_value = args[index + 1]
+        if phase_value not in {"candidate", "full"}:
+            raise SystemExit(f"Unsupported --phase value {phase_value!r}; the supported values are candidate and full.")
         phase = phase_value
     excluded = {"--all", "--phase", phase_value}
     results = []

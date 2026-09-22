@@ -5,7 +5,6 @@ The pure text reader deliberately measures array entries and object/material dep
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import math
 import re

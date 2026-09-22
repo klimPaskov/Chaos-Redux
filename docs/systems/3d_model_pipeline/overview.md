@@ -7,9 +7,9 @@ parent-agent responsibilities after the runtime handoff has been reviewed.
 
 ## Start gate
 
-Every entry point checks `MESHY_API_KEY` before path discovery, image generation,
-balance checks, or local Blender work. If the variable is absent or blank, stop
-and tell the user to run:
+The `MESHY_API_KEY` gate applies to provider-dependent work only: before Meshy route discovery, image generation, and provider balance checks, every entry point verifies the key, and a missing or blank value stops that work.
+Blender-only repair of an existing model and live Blender authoring are not provider-dependent, so they proceed without a Meshy key and make no provider call.
+When the key is absent or blank for that work, stop and tell the user to run:
 
 ```powershell
 [Environment]::SetEnvironmentVariable(

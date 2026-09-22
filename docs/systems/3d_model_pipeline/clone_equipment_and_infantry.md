@@ -64,11 +64,14 @@ Aryan clone counters use `GFX_unit_aryan_clone_infantry_icon_medium` and `GFX_un
 
 The repaired death action is accepted after export and canonical reimport with terminal ground contact within `0.000045` Blender units.
 
-Attack, support-attack, and training use their exact exported actions and have complete runtime references, but combined rifle contact remains visually unaccepted because the locked adapter cannot create a hand locator or preview a second mesh attached to the recovered skeleton.
+Attack, support-attack, and training use their exact exported actions and have complete runtime references, but combined rifle contact remains visually unaccepted because the locked adapter authors one job-owned bone-parented Empty through `author_locator` and does not preview a second mesh attached to the recovered skeleton in the same session.
 
 The runtime entity therefore does not invent an attachment node or register a detached rifle entity.
 
 Source packages, license records, checksums, previews, Blender checkpoints, export proof, and handoffs live under `docs/assets/shared_clone_system/` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/`.
+
+`docs/plans/3d_model_workflow_plans/rig_reauthoring_queue.md` queues the `shared_clone_system/models_3d/clone_infantry` job root, so the rig and action work for this package is queued there for re-authoring in a live Blender session.
+The queue lists the rig, actions, component assembly, and scale of this package, and it keeps the installed runtime package working until a re-authored replacement passes the acceptance rules and the parent wires it.
 
 ## Future extensions
 

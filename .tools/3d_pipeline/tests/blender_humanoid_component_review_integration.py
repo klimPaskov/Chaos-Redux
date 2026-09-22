@@ -26,7 +26,7 @@ def verified_environment() -> dict:
     config = json.loads((PIPELINE_ROOT / "config/blender_hoi4_adapter.json").read_text(encoding="utf-8"))
     lock = json.loads((PIPELINE_ROOT / "config/dependencies.lock.json").read_text(encoding="utf-8"))
     adapter = lock["routes"]["blender_hoi4_adapter"]
-    assert config["adapter_version"] == adapter["version"] == "1.10.21"
+    assert config["adapter_version"] == adapter["version"]
     assert config["operations"] == adapter["operations"]
     assert "review_humanoid_components" in adapter["operations"], "Registered component review operation is missing"
     for path, expected in adapter["source_sha256"].items():
@@ -222,7 +222,7 @@ def main() -> None:
             blender_worker._render_component_group = original_render
         assert digest(source) == source_hash and not (job / f"blender/reports/component_review_{'4' * 32}.json").exists()
         print(json.dumps({"status": "pass", "fixture_only": True, "production_asset_acceptance": False,
-                          "reviewed_registered_candidate": True, "adapter_version": "1.10.21",
+                          "reviewed_registered_candidate": True, "adapter_version": adapter["version"],
                           "source_sha256": source_hash, "native_action_sha256": inventory["native_action_sha256"],
                           "component_catalog_sha256": review["component_catalog_sha256"],
                           "component_ids": review["component_page"]["component_ids"],

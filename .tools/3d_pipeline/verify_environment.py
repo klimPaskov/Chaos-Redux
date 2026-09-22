@@ -27,7 +27,7 @@ PIPELINE_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = PIPELINE_ROOT.parents[1]
 sys.path.insert(0, str(PIPELINE_ROOT))
 
-from lib.paths import file_record, sha256_file, utc_now, write_json  # noqa: E402
+from lib.paths import sha256_file, utc_now, write_json  # noqa: E402
 from meshy_client import _payload  # noqa: E402
 from lib.mcp_stdio import call_stdio  # noqa: E402
 
@@ -161,7 +161,6 @@ def main() -> int:
             str(addon_manifest),
         )
 
-    io_archive = REPO_ROOT / "vendor" / "not-present"
     io_archive = REPO_ROOT / ".tools" / "3d_pipeline" / "vendor" / "io_pdx_mesh" / "blender-io_pdx_mesh.zip"
     check("io_pdx_mesh_archive", io_archive.exists(), str(io_archive))
     if io_archive.exists():

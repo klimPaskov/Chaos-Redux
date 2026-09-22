@@ -1,5 +1,4 @@
 """Exact reviewed source-vertex fan splits and coincident corner aliases; no inferred weld."""
-from collections import Counter
 import math
 from mesh_inspection_repair import _open, digest, name
 from mesh_vertex_material_repair import finish_verified

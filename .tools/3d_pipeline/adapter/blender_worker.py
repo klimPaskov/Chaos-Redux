@@ -25,14 +25,10 @@ if str(ADAPTER_ROOT) not in sys.path:
 import bpy
 import bmesh
 from mathutils import Matrix, Quaternion, Vector
-from mathutils.bvhtree import BVHTree
-from mathutils.kdtree import KDTree
 from normalization_convergence import evaluate_convergence_step
 
 
 PREVIEW_LIGHT_REFERENCE_HEIGHT = 7.3518242835
-CREATURE_GROUND_CONTACT_TOLERANCE_M = 0.01
-CREATURE_GROUND_CONTACT_CLEARANCE_M = 0.001
 LOCATOR_REGISTRY_VERSION = 1
 # Blender's single-precision bone-parent round-trip accumulates ~1.05e-5 of
 # matrix error on the repository's validated 0.0386299416 uniform runtime
@@ -188,29 +184,6 @@ def import_candidate(source: Path) -> List[bpy.types.Object]:
     return imported
 
 
-def import_geometry_candidate(source: Path) -> List[bpy.types.Object]:
-    """Import a bounded geometry source, including an audited local Blend checkpoint.
-
-    Provider animation/model inputs remain limited to FBX and glTF through
-    ``import_candidate``.  A dual-source geometry handoff may additionally use
-    a job-root-local ``.blend`` checkpoint so an already audited runtime mesh
-    can receive weights from a separately licensed source rig without being
-    round-tripped through an untracked interchange export.
-    """
-
-    if source.suffix.lower() != ".blend":
-        return import_candidate(source)
-
-    before = set(bpy.data.objects)
-    with bpy.data.libraries.load(str(source), link=False) as (data_from, data_to):
-        data_to.objects = [name for name in data_from.objects if name]
-    for obj in data_to.objects:
-        if obj is not None:
-            bpy.context.scene.collection.objects.link(obj)
-    imported = [obj for obj in bpy.data.objects if obj not in before]
-    if not imported:
-        raise RuntimeError(f"Blender appended no objects from geometry checkpoint {source}")
-    return imported
 
 
 def import_vanilla_reference(
@@ -1068,45 +1041,6 @@ def evaluated_world_bounds(objects: Iterable[bpy.types.Object]) -> Tuple[Vector,
     return minimum, maximum
 
 
-def evaluated_contact_bounds(
-    objects: Iterable[bpy.types.Object],
-    excluded_bones: Iterable[str],
-) -> Tuple[Vector, Vector]:
-    """Measure evaluated bounds while ignoring vertices dominated by excluded bones."""
-
-    excluded = {str(name) for name in excluded_bones}
-    if not excluded:
-        return evaluated_world_bounds(objects)
-    corners: List[Vector] = []
-    depsgraph = bpy.context.evaluated_depsgraph_get()
-    for obj in objects:
-        if obj.type != "MESH":
-            continue
-        evaluated = obj.evaluated_get(depsgraph)
-        mesh = evaluated.to_mesh()
-        try:
-            if len(mesh.vertices) != len(obj.data.vertices):
-                raise RuntimeError(
-                    f"Contact-filtered grounding requires topology-preserving deformation on {obj.name}."
-                )
-            group_names = {group.index: group.name for group in obj.vertex_groups}
-            for source_vertex, evaluated_vertex in zip(obj.data.vertices, mesh.vertices):
-                weighted_groups = [
-                    (float(assignment.weight), group_names.get(assignment.group, ""))
-                    for assignment in source_vertex.groups
-                    if assignment.weight > 0.0
-                ]
-                dominant_bone = max(weighted_groups, default=(0.0, ""))[1]
-                if dominant_bone in excluded:
-                    continue
-                corners.append(evaluated.matrix_world @ evaluated_vertex.co)
-        finally:
-            evaluated.to_mesh_clear()
-    if not corners:
-        raise RuntimeError("Contact-filtered grounding excluded every working mesh vertex.")
-    minimum = Vector((min(item.x for item in corners), min(item.y for item in corners), min(item.z for item in corners)))
-    maximum = Vector((max(item.x for item in corners), max(item.y for item in corners), max(item.z for item in corners)))
-    return minimum, maximum
 
 
 def root_objects(objects: List[bpy.types.Object]) -> List[bpy.types.Object]:
@@ -1144,35 +1078,6 @@ def normalize_geometry(target_height: float) -> Dict[str, Any]:
     }
 
 
-def verify_saved_normalization(checkpoint: Path, target_height: float) -> Dict[str, Any]:
-    """Reopen a checkpoint and fail if its measured height differs from its report."""
-
-    bpy.ops.wm.open_mainfile(filepath=str(checkpoint))
-    persisted_geometry = geometry_metrics()
-    persisted_height = float(persisted_geometry["dimensions"][2])
-    tolerance = max(1e-5, abs(target_height) * 1e-5)
-    height_delta = persisted_height - target_height
-    if abs(height_delta) > tolerance:
-        raise RuntimeError(
-            "Saved normalization checkpoint does not preserve the requested mesh height: "
-            f"target={target_height}, persisted={persisted_height}, delta={height_delta}."
-        )
-    return {
-        "policy": "save_reopen_and_remeasure_working_world_bounds",
-        "checkpoint": str(checkpoint),
-        "target_height_m": target_height,
-        "persisted_height_m": persisted_height,
-        "height_delta_m": height_delta,
-        "tolerance_m": tolerance,
-        "geometry": persisted_geometry,
-        "armatures": [
-            {
-                "name": rig.name,
-                "world_scale": list(rig.matrix_world.to_scale()),
-            }
-            for rig in armatures()
-        ],
-    }
 
 
 def stabilize_saved_normalization(
@@ -5135,31 +5040,6 @@ def export_animation(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]
     return result
 
 
-WINGED_BIPED_BONE_NAMES = (
-    "root",
-    "pelvis",
-    "spine",
-    "neck",
-    "head",
-    "upper_arm_left",
-    "lower_arm_left",
-    "hand_left",
-    "upper_arm_right",
-    "lower_arm_right",
-    "hand_right",
-    "upper_leg_left",
-    "lower_leg_left",
-    "foot_left",
-    "upper_leg_right",
-    "lower_leg_right",
-    "foot_right",
-    "wing_root_left",
-    "wing_mid_left",
-    "wing_tip_left",
-    "wing_root_right",
-    "wing_mid_right",
-    "wing_tip_right",
-)
 
 
 def reimport_export(req: Dict[str, Any], pdx: Dict[str, Any]) -> Dict[str, Any]:

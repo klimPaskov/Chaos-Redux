@@ -9,11 +9,10 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Optional
 
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -21,7 +20,6 @@ OWNER_ID = "chaos_redux_3d_model_pilots"
 MODEL_ROOT = REPO_ROOT / "docs" / "assets" / OWNER_ID / "models_3d"
 PIPELINE_ROOT = REPO_ROOT / ".tools" / "3d_pipeline"
 CONFIG_ROOT = PIPELINE_ROOT / "config"
-STAGING_ROOT = PIPELINE_ROOT / "staging"
 ADAPTER_CONFIG_PATH = CONFIG_ROOT / "blender_hoi4_adapter.json"
 
 JOB_DIRS = (
@@ -256,14 +254,3 @@ def redact(value: Any) -> Any:
     return value
 
 
-def relative_file_list(root: Path, suffixes: Iterable[str]) -> list[str]:
-    """List evidence files relative to a root, excluding transient caches."""
-
-    wanted = {suffix.lower() for suffix in suffixes}
-    result: list[str] = []
-    for path in root.rglob("*"):
-        if not path.is_file() or "__pycache__" in path.parts:
-            continue
-        if path.suffix.lower() in wanted:
-            result.append(path.relative_to(root).as_posix())
-    return sorted(result)

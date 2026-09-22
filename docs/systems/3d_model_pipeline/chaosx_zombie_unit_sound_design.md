@@ -6,6 +6,9 @@ The shared zombie model uses a dedicated sourced audio identity for its creature
 
 Current disposition: runtime WAVs and sound definitions are installed, while sonic clip choice is **needs_user_review**, exact visual/audio contact synchronization is **blocked pending listening and live playback review**, and subunit-specific acknowledgement selection has no verified consumer. The current model lineage is Meshy 7 body task `01a0ba94-9607-729b-92e5-53951c59e8e1` (30 credits), recovery remesh `01a0ba9f-8b53-77e5-a132-ea513bcd0672` (5 credits), and one rig attempt `01a0be3d-955a-7743-960b-45c494c2cf2b` (5 credits); the rig was rejected at the topology and required-action gates, so the parent accepted the repaired Blender v1 rig/actions and controlled death v9. The current package handoff is `docs/plans/002_zombie_outbreak_zombies_plans/subagent_handoffs/zombies_3d_pipeline_20260919.md`.
 
+`docs/plans/3d_model_workflow_plans/rig_reauthoring_queue.md` queues the `002_zombie_outbreak/models_3d/zombies` job root, so the rig, skin-weight, and action work for the shared zombie model is queued there for re-authoring in a live Blender session.
+The queue keeps the installed rig and actions working until a re-authored replacement passes the acceptance rules and the parent wires it.
+
 `common/units/zombies.txt` gives the base `zombies` and `wendigo_zombies` sub-units `sprite = zombies`, so those consumers resolve the shared `zombies_entity`. The infected, rabid, parasitic, mutant, undead, necrotic, and demonic families use their own `chaosx_*_zombies` sprite stems and separate entity files; their audio packages have separate evidence and are outside this shared base-zombie contract.
 
 ## Runtime contract

@@ -36,6 +36,10 @@ All actions are 24 FPS, in-place, grounded, and reimported through the repositor
 | `resources_found_cave_monster_attack` | 0-32 | no | attack/defend/support attack |
 | `resources_found_cave_monster_death` | 0-36 | no | death |
 
+These four actions bind across the eight entity states, so the `defend` and `support_attack` states play the attack action, `retreat` plays the move action, and `training` plays the idle action.
+The acceptance for those state bindings is recorded in `docs/plans/018_resources_found_plans/cave_monster_current_package_manifest.md`, whose acceptance basis states that the installed four-action set and its `defend`/`support_attack` to attack, `retreat` to move, and `training` to idle bindings are intentional for the accepted current package.
+That is an accepted intentional exception for this package, and the entity consumes only the four actions registered in `gfx/entities/018_resources_found_cave_monster.gfx`.
+
 The final source-to-runtime action hashes and static reimport conclusions are recorded in `docs/plans/018_resources_found_plans/subagent_handoffs/cave_monster_3d_model_handoff.md` and `docs/plans/018_resources_found_plans/018_cave_monster_3d_integration_addendum.md`. Static reimports contain the 17-bone rig and 30,000-polygon mesh with contact ranges within approximately `+/-0.000015 m`.
 
 ## Sound synchronization
