@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Literal, Optional
 
 from lib.mcp_stdio import MCPRouteError, call_stdio
 
@@ -400,4 +400,111 @@ class BlenderAdapterClient:
         return self.call(
             "chaosx_blender_hoi4_save_checkpoint",
             {"job_id": job_id, "blend_rel": blend_rel, "stage": stage},
+        )
+
+    def import_animation_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        source_rel: str,
+        provenance_rel: str,
+        checkpoint_rel: str,
+        source_action_name: str,
+        target_armature_name: str,
+        target_action_name: str,
+        source_kind: Literal["meshy_animate", "professional_source"],
+        source_reference_id: str,
+        source_sha256: str,
+        bone_chains: Optional[Dict[str, list[str]]] = None,
+        promote_audited_target: bool = False,
+        source_armature_name: str = "",
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_import_animation_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "source_rel": source_rel,
+                "provenance_rel": provenance_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "source_action_name": source_action_name,
+                "source_armature_name": source_armature_name,
+                "target_armature_name": target_armature_name,
+                "target_action_name": target_action_name,
+                "source_kind": source_kind,
+                "source_reference_id": source_reference_id,
+                "source_sha256": source_sha256,
+                "bone_chains": bone_chains or {},
+                "promote_audited_target": promote_audited_target,
+            },
+        )
+
+    def import_bvh_animation_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        source_rel: str,
+        provenance_rel: str,
+        checkpoint_rel: str,
+        source_action_name: str,
+        target_armature_name: str,
+        target_action_name: str,
+        semantic_role: str,
+        source_reference_id: str,
+        source_sha256: str,
+        source_fps: float,
+        target_fps: float,
+        bone_chains: Dict[str, list[str]],
+        root_motion_policy: Literal["in_place_xy_preserve_z"],
+        global_scale: float = 1.0,
+        axis_forward: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "-Z",
+        axis_up: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "Y",
+        promote_audited_target: bool = False,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_import_bvh_animation_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "source_rel": source_rel,
+                "provenance_rel": provenance_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "source_action_name": source_action_name,
+                "target_armature_name": target_armature_name,
+                "target_action_name": target_action_name,
+                "semantic_role": semantic_role,
+                "source_reference_id": source_reference_id,
+                "source_sha256": source_sha256,
+                "source_fps": source_fps,
+                "target_fps": target_fps,
+                "bone_chains": bone_chains,
+                "root_motion_policy": root_motion_policy,
+                "global_scale": global_scale,
+                "axis_forward": axis_forward,
+                "axis_up": axis_up,
+                "promote_audited_target": promote_audited_target,
+            },
+        )
+
+    def retime_animation_action(
+        self,
+        job_id: str,
+        blend_rel: str,
+        checkpoint_rel: str,
+        action_name: str,
+        target_armature_name: str,
+        source_fps: float,
+        target_fps: float,
+    ) -> Dict[str, Any]:
+        return self.call(
+            "chaosx_blender_hoi4_retime_animation_action",
+            {
+                "job_id": job_id,
+                "blend_rel": blend_rel,
+                "checkpoint_rel": checkpoint_rel,
+                "action_name": action_name,
+                "target_armature_name": target_armature_name,
+                "source_fps": source_fps,
+                "target_fps": target_fps,
+            },
         )

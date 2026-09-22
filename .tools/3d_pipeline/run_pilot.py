@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import copy
 import json
 import os
 import shutil
+import struct
 import subprocess
 import sys
 from pathlib import Path
@@ -30,7 +32,6 @@ REPO_ROOT = PIPELINE_ROOT.parents[1]
 sys.path.insert(0, str(PIPELINE_ROOT))
 
 from blender_client import BlenderAdapterClient  # noqa: E402
-from init_pilot_jobs import initialize_one  # noqa: E402
 from lib.paths import (  # noqa: E402
     append_history,
     ensure_job_layout,
@@ -58,9 +59,6 @@ from pack_pdx_material import (  # noqa: E402
 
 STATIC_ASSET_KINDS = {"static", "building", "static_building"}
 REFERENCE_CALIBRATED_ASSET_KINDS = {"humanoid", "creature", "building", "static_building"}
-MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE = 30
-MESHY_REMESH_ESTIMATE = 5
-MESHY_TEXTURED_IMAGE_MODEL_IDS = {"meshy-7"}
 
 
 def task_file(job: Path, stage: str) -> Path:
@@ -943,283 +941,452 @@ def continue_static(spec: Dict[str, Any]) -> Dict[str, Any]:
     return {"textures": textures, "export": exported, "reimport": reimport}
 
 
-def _specialized_zombie_spec(slug: str, job_root: Path, job: Dict[str, Any]) -> Dict[str, Any]:
-    """Build a pilot spec from a repository-owned specialized zombie job manifest."""
+def png_dimensions(path: Path) -> Dict[str, int]:
+    with path.open("rb") as handle:
+        header = handle.read(24)
+    if header[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError(f"Expected a PNG reference: {path}")
+    width, height = struct.unpack(">II", header[16:24])
+    return {"width": width, "height": height}
 
-    asset_profiles = read_json(PIPELINE_ROOT / "config" / "asset_profiles.json")["profiles"]
-    job_profile_name = str(job.get("profile") or "humanoid_unit")
-    is_creature = job_profile_name.startswith("nonhumanoid")
-    profile_name = (
-        "nonhumanoid_winged_biped"
-        if job_profile_name in {"nonhumanoid_winged_creature", "nonhumanoid_winged_biped"}
-        else "nonhumanoid_creature"
-        if is_creature
-        else "humanoid_unit"
-    )
-    profile = asset_profiles[profile_name]
-    manifest_path = job_root / "refs" / "original" / "input_manifest.json"
-    manifest = read_json(manifest_path) if manifest_path.exists() else {}
-    brief_path = job_root / "refs" / "briefs" / "meshy_input_prompt.md"
-    brief = brief_path.read_text(encoding="utf-8") if brief_path.exists() else str(job.get("brief", ""))
-    provider_plan = job.get("provider_plan", {})
-    blender_plan = job.get("blender_plan", {})
-    vanilla_plan = blender_plan.get("vanilla_scale_reference", {})
-    vanilla_root = Path("C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV")
-    raw_vanilla_mesh = vanilla_plan.get("mesh") or profile["vanilla_reference"]["mesh"]
-    vanilla_mesh = Path(str(raw_vanilla_mesh))
-    if not vanilla_mesh.is_absolute():
-        vanilla_mesh = vanilla_root / vanilla_mesh
-    raw_vanilla_height = (
-        job.get("vanilla_height")
-        or blender_plan.get("target_height_m")
-        or profile["vanilla_reference"]["mesh_height"]
-    )
-    raw_entity_scale = (
-        job.get("entity_scale")
-        or blender_plan.get("runtime_entity_scale")
-        or profile["vanilla_reference"]["entity_scale"]
-    )
-    reference_path = str(
-        job.get("reference")
-        or job.get("meshy_input_gate", {}).get("image")
-        or "refs/original/meshy_input.png"
-    )
-    try:
-        vanilla_height = float(raw_vanilla_height)
-        entity_scale = float(raw_entity_scale)
-    except (TypeError, ValueError):
-        if not is_creature:
-            raise ValueError(
-                f"{slug} has a non-numeric humanoid scale crosswalk: "
-                f"vanilla_height={raw_vanilla_height!r}, entity_scale={raw_entity_scale!r}"
-            )
-        return {
-            "asset_id": f"chaosx.model.pilot.{slug}",
-            "asset_kind": "creature",
-            "profile": profile_name,
-            "reference_path": reference_path,
-            "reference_generator_output": None,
-            "reference_source_mode": manifest.get("source_mode", "native_imagegen_portrait_reference"),
-            "asset_brief": brief,
-            "runtime_stem": str(
-                job.get("runtime_stem")
-                or blender_plan.get("runtime_stem")
-                or f"chaosx_{slug}"
-            ),
-            "proposed_runtime_identifiers": {
-                "entity": str(
-                    job.get("entity")
-                    or job.get("runtime", {}).get("proposed_identifiers", {}).get("entity")
-                    or f"chaosx_{slug}_entity"
-                ),
-                "consumer": "land-unit entity",
-                "route": "custom creature rig",
-            },
-            "scale_crosswalk": job.get("scale_crosswalk"),
-            "_requires_reference_approval": True,
-            "_route_status": "pending_creature_scale_crosswalk",
-            "_route_blocker": (
-                "The job manifest intentionally has no numeric creature scale crosswalk. "
-                "Measure the approved creature against the installed infantry runtime reference "
-                "before enabling paid generation or export."
-            ),
-            "_job_root": str(job_root),
-        }
-    runtime_stem = str(job.get("runtime_stem") or blender_plan.get("runtime_stem") or f"chaosx_{slug}")
-    entity = str(
-        job.get("entity")
-        or job.get("runtime", {}).get("proposed_identifiers", {}).get("entity")
-        or f"{runtime_stem}_entity"
-    )
-    target_triangles = int(
-        job.get("target_triangles")
-        or provider_plan.get("target_polycount")
-        or profile["triangle_range"]["working_triangle_target"]
-    )
-    rig_source_target_polycount = int(
-        job.get("rig_source_target_polycount")
-        or provider_plan.get("rig_source_target_polycount")
-        or target_triangles
-    )
-    vanilla_reference = {
-        "mesh": str(vanilla_mesh),
-        "entity": profile["vanilla_reference"]["entity"],
-        "mesh_object_names": profile["vanilla_reference"]["mesh_object_names"],
-        "exclude_name_patterns": profile["vanilla_reference"]["exclude_name_patterns"],
-        "forward_axis": profile["vanilla_reference"]["forward_axis"],
-        "up_axis": profile["vanilla_reference"]["up_axis"],
-        "mesh_height": vanilla_height,
-        "entity_scale": entity_scale,
-        "runtime_height": vanilla_height * entity_scale,
-    }
-    creature_rig_family = (
-        str(
-            job.get("creature_rig_family")
-            or ("winged_biped" if job_profile_name in {"nonhumanoid_winged_creature", "nonhumanoid_winged_biped"} else "quadruped")
+
+def job_yaml(job: Dict[str, Any]) -> str:
+    return json.dumps(job, indent=2, sort_keys=True) + "\n"
+
+
+def initialize_one(spec: Dict[str, Any]) -> Dict[str, Any]:
+    """Create or refresh the deterministic job root and reference preflight for one spec."""
+
+    slug = spec["asset_id"].rsplit(".", 1)[-1]
+    job_root = ensure_job_layout(resolve_job_root(slug))
+    reference = job_root / spec["reference_path"]
+    if not reference.exists():
+        raise FileNotFoundError(
+            f"Ready Meshy reference is missing: {reference}. "
+            "The approved image-generation route must create exactly one image before paid work."
         )
-        if is_creature
-        else "humanoid"
+    original_images = sorted(
+        path for path in (job_root / "refs" / "original").iterdir()
+        if path.is_file() and path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"}
     )
-    if is_creature and creature_rig_family != "winged_biped":
-        route_status = "pending_creature_rig_route"
-        route_blocker = (
-            f"The selected creature rig family {creature_rig_family!r} has no enabled generic pilot route."
-        )
-    else:
-        route_status = "ready"
-        route_blocker = None
-    required_components = (
-        [
-            "complete portrait-matched nonhumanoid body",
-            "attached wings and stable digitigrade silhouette",
-            "custom creature rig with rigid semantic components",
-        ]
-        if is_creature
-        else [
-            "complete portrait-matched humanoid body",
-            "distinctive specialized zombie silhouette",
-            "grounded riggable infantry proportions",
-        ]
-    )
-    required_actions = (
-        [
-            {"role": role, "provider_action_id": None, "task_type": "blender_authored_skeletal", "fps": int(job.get("fps", 30)), "loop": role in {"idle", "move"}, "root_policy": "in_place"}
-            for role in ("idle", "move", "attack", "death")
-        ]
-        if is_creature
-        else [
-            {"role": "idle", "provider_action_id": 0, "fps": 24, "loop": True, "root_policy": "in_place"},
-            {"role": "move", "provider_action_id": None, "task_type": "blender_authored_skeletal", "fps": 24, "loop": True, "root_policy": "in_place"},
-            {"role": "attack", "provider_action_id": 4, "fps": 24, "loop": False, "root_policy": "in_place"},
-            {"role": "death", "provider_action_id": 8, "fps": 24, "loop": False, "root_policy": "in_place"},
-        ]
-    )
-    meshy_ai_model = str(job.get("provider_model") or provider_plan.get("ai_model") or "meshy-7")
-    resolved_meshy_ai_model = str(
-        job.get("resolved_provider_model")
-        or provider_plan.get("resolved_ai_model")
-        or meshy_ai_model
-    )
-    if meshy_ai_model.lower() != "meshy-7" or resolved_meshy_ai_model.lower() != "meshy-7":
+    if len(original_images) != 1 or original_images[0].name != reference.name:
         raise RuntimeError(
-            "The Chaos Redux 3D workflow requires explicit Meshy 7 generation. "
-            f"Received provider_model={meshy_ai_model!r}, "
-            f"resolved_provider_model={resolved_meshy_ai_model!r}."
+            f"Meshy input gate requires exactly one image in refs/original; found "
+            f"{[path.name for path in original_images]}"
         )
-    generation_stage = str(job.get("generation_stage") or "generation")
-    image_to_3d_estimate = int(
-        job.get("image_to_3d_estimate_credits") or MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE
-    )
-    if meshy_ai_model.lower() in MESHY_TEXTURED_IMAGE_MODEL_IDS and bool(provider_plan.get("should_texture", True)):
-        # A stale job manifest may still contain a 20-credit no-texture
-        # estimate. Never under-preflight the required textured Meshy 7 route.
-        image_to_3d_estimate = max(image_to_3d_estimate, MESHY_TEXTURED_IMAGE_TO_3D_ESTIMATE)
-    remesh_estimate = int(job.get("remesh_estimate_credits") or MESHY_REMESH_ESTIMATE)
-    rig_estimate = int(job.get("rig_estimate_credits") or 5)
-    animation_estimate = int(job.get("animation_estimate_credits") or 3)
-    planned_total = int(
-        job.get("estimated_credits")
-        or (
-            image_to_3d_estimate
-            if is_creature
-            else image_to_3d_estimate + remesh_estimate + rig_estimate + (3 * animation_estimate)
+
+    reference_record = file_record(reference, relative_to=job_root)
+    dimensions = png_dimensions(reference)
+    status = "preflight"
+    job_file = job_root / "job.yaml"
+    if job_file.exists():
+        existing = read_job_document(job_file)
+        status = existing.get("status", status)
+    job = {
+        "schema_version": "1.0.0",
+        "job_id": f"chaos_redux_3d_model_pilots_{slug}",
+        "owner_id": "chaos_redux_3d_model_pilots",
+        "asset_id": spec["asset_id"],
+        "asset_slug": slug,
+        "status": status,
+        "profile": spec["profile"],
+        "asset_kind": spec["asset_kind"],
+        "scale_crosswalk": spec.get("scale_crosswalk"),
+        "image_to_3d_estimate_credits": spec.get("image_to_3d_estimate_credits"),
+        "remesh_estimate_credits": spec.get("remesh_estimate_credits"),
+        "rig_estimate_credits": spec.get("rig_estimate_credits"),
+        "animation_estimate_credits": spec.get("animation_estimate_credits"),
+        "estimated_credits": spec.get("planned_total_credits"),
+        "generation_stage": spec.get("generation_stage", "generation"),
+        "humanoid_rig_route": spec.get("humanoid_rig_route", ""),
+        "brief": spec["asset_brief"],
+        "required_components": spec["required_components"],
+        "forbidden_additions": spec["forbidden_additions"],
+        "excluded_provider_objects": spec.get("excluded_provider_objects", []),
+        "source": {
+            "mode": spec["reference_source_mode"],
+            "authorization": "User-authorized agent-generated pilot reference.",
+            "generator_output": spec["reference_generator_output"],
+            "reference": reference_record,
+            "dimensions": dimensions,
+        },
+        "meshy_input_gate": {
+            "image_count": 1,
+            "image": str(reference.relative_to(job_root)).replace("\\", "/"),
+            "multi_view_thumbnails": False,
+            "side_profile_sheet": False,
+            "turnaround_board": False,
+        },
+        "provider_plan": {
+            "ai_model": spec["meshy_ai_model"],
+            "resolved_ai_model": spec.get("resolved_meshy_ai_model", spec["meshy_ai_model"]),
+            "model_type": "standard",
+            "pose_mode": spec["meshy_pose_mode"],
+            "topology": "triangle",
+            "target_polycount": spec["target_polycount"],
+            "enable_pbr": True,
+            "should_texture": True,
+            "paid_attempts": spec.get("provider_paid_attempts", 1),
+            "retry_paid_calls": spec.get("provider_retry_paid_calls", False),
+            "estimated_credits": {
+                key: value
+                for key, value in (
+                    ("image_to_3d", spec.get("image_to_3d_estimate_credits")),
+                    ("remesh", spec.get("remesh_estimate_credits")),
+                    ("rig", spec.get("rig_estimate_credits")),
+                    ("animation", spec.get("animation_estimate_credits")),
+                )
+                if value is not None
+            },
+        },
+        "blender_plan": {
+            "provider_height_m": spec["target_height_m"],
+            "target_height_m": spec.get("blender_target_height_m", spec["target_height_m"]),
+            "effective_runtime_height_m": spec.get("blender_effective_runtime_height_m"),
+            "runtime_entity_scale": spec.get("runtime_entity_scale"),
+            "max_runtime_footprint_m": spec.get("max_runtime_footprint_m"),
+            "runtime_footprint_policy": spec.get("runtime_footprint_policy", "reject"),
+            "runtime_diffuse_gamma": spec.get("runtime_diffuse_gamma"),
+            "vanilla_scale_reference": spec.get("vanilla_scale_reference"),
+            "runtime_stem": spec["runtime_stem"],
+            "dependency_lock": ".tools/3d_pipeline/config/dependencies.lock.json",
+        },
+        "required_actions": spec["required_actions"],
+        "runtime": {
+            "proposed_identifiers": spec["proposed_runtime_identifiers"],
+            "actual_registration": None,
+            "live_consumer": None,
+            "in_game_evidence": None,
+        },
+        "handoff": {
+            "runtime_handoff": "runtime/handoff.md",
+            "crosswalk": "runtime/crosswalk.md",
+            "manifest": "manifest.md",
+        },
+        "created_at": utc_now(),
+    }
+    if job_file.exists():
+        existing = read_job_document(job_file)
+        for field in (
+            "created_at",
+            "updated_at",
+            "selected_provider_task",
+            "exports",
+            "runtime",
+            "provider_lineage",
+            "scale_crosswalk",
+            "image_to_3d_estimate_credits",
+            "remesh_estimate_credits",
+            "rig_estimate_credits",
+            "animation_estimate_credits",
+            "estimated_credits",
+            "generation_stage",
+            "humanoid_rig_route",
+            "excluded_provider_objects",
+        ):
+            if field in existing:
+                job[field] = existing[field]
+    job_file.write_text(job_yaml(job), encoding="utf-8")
+
+    brief = f"""# {slug}
+
+## Asset brief
+
+{spec["asset_brief"]}
+
+## Profile and output
+
+- Profile: {spec["profile"]}
+- Meshy/provider character height: {spec["target_height_m"]} m
+- Blender source-mesh calibration height: {spec.get("blender_target_height_m", spec["target_height_m"])} m
+- Blender effective runtime height after entity scale: {spec.get("blender_effective_runtime_height_m", spec.get("blender_target_height_m", spec["target_height_m"]))} m
+- Pilot unit consumer scale: {spec.get("runtime_entity_scale", "not applicable")}
+- Runtime footprint budget: {spec.get("max_runtime_footprint_m", "profile default or not applicable")} m
+- Runtime footprint policy: {spec.get("runtime_footprint_policy", "reject")}
+- Runtime diffuse gamma grade: {spec.get("runtime_diffuse_gamma", "not applied")}
+- Target topology: triangles
+- Meshy model: {spec["meshy_ai_model"]}
+- Meshy reference: {spec["reference_path"]}
+- Meshy input count: exactly one
+- Side-profile or multi-view Meshy input: forbidden
+
+## Required components
+
+{chr(10).join(f"- {item}" for item in spec["required_components"])}
+
+## Forbidden additions
+
+{chr(10).join(f"- {item}" for item in spec["forbidden_additions"])}
+
+## Source authorization
+
+The reference was generated by the approved built-in image-generation route for this user-authorized pilot. Its source output, dimensions, and checksum are recorded in refs/derived/reference_provenance.json.
+"""
+    brief_path = job_root / "refs" / "briefs" / "asset_brief.md"
+    brief_path.write_text(brief, encoding="utf-8")
+
+    provenance = {
+        "schema_version": "1.0.0",
+        "asset_id": spec["asset_id"],
+        "source_mode": spec["reference_source_mode"],
+        "authorization": "User-authorized agent-generated pilot reference.",
+        "generator_output": spec["reference_generator_output"],
+        "generation_prompt_record": spec["asset_brief"],
+        "derived_reference": reference_record,
+        "visual_preflight": {
+            "single_subject": True,
+            "complete_silhouette": True,
+            "component_separation": True,
+            "neutral_background": True,
+            "no_multi_view_board": True,
+            "no_side_profile_sheet": True,
+            "approval": "parent_agent_visual_review",
+        },
+    }
+    write_json(job_root / "refs" / "derived" / "reference_provenance.json", provenance)
+    manifest_path = job_root / "refs" / "original" / "input_manifest.json"
+    existing_manifest: Dict[str, Any] = {}
+    if manifest_path.exists():
+        try:
+            existing_manifest = read_json(manifest_path)
+        except (OSError, json.JSONDecodeError):
+            existing_manifest = {}
+    existing_manifest.update({
+        "image_count": 1,
+        "input": reference_record,
+        "dimensions": dimensions,
+        "sent_to_meshy": False,
+    })
+    write_json(manifest_path, existing_manifest)
+    write_json(job_root / "validation" / "reference_preflight.json", {
+        "status": "passed",
+        "input_count": 1,
+        "input": reference_record,
+        "dimensions": dimensions,
+        "checks": provenance["visual_preflight"],
+    })
+    if not (job_root / "history.jsonl").exists():
+        append_history(
+            job_root,
+            state="preflight",
+            event="job_initialized",
+            actor="chaosx_3d_model_pipeline",
+            details={
+                "reference": reference_record,
+                "input_image_count": 1,
+                "profile": spec["profile"],
+            },
         )
-    )
-    required_minimum = (
-        image_to_3d_estimate
-        if is_creature
-        else image_to_3d_estimate + remesh_estimate + rig_estimate + (3 * animation_estimate)
-    )
+    if not (job_root / "manifest.md").exists():
+        (job_root / "manifest.md").write_text(
+            f"# {slug} model manifest\n\nStatus: preflight\n\n"
+            "This manifest is updated only from recorded provider, Blender, "
+            "export, reimport, runtime, and in-game evidence.\n",
+            encoding="utf-8",
+        )
     return {
-        "asset_id": f"chaosx.model.pilot.{slug}",
-        "asset_kind": "creature" if is_creature else "humanoid",
-        "profile": profile_name,
-        "reference_path": reference_path,
-        "reference_generator_output": None,
-        "reference_source_mode": manifest.get("source_mode", "native_imagegen_portrait_reference"),
-        "asset_brief": brief,
-        "required_components": required_components,
+        "asset_slug": slug,
+        "job_root": str(job_root),
+        "reference": reference_record,
+        "status": status,
+    }
+
+
+# The pilot runner's own asset specifications, keyed by asset slug. The runner
+# creates the job root for these slugs; a parent that owns a different asset
+# creates that root from the specification the parent holds.
+PILOT_SPECS: Dict[str, Dict[str, Any]] = {
+    "anomaly_signal_beacon": {
+        "asset_id": "chaosx.model.pilot.anomaly_signal_beacon",
+        "asset_kind": "static",
+        "profile": "static_prop",
+        "reference_path": "refs/original/meshy_input.png",
+        "reference_generator_output": "C:/Users/klimp/.codex/generated_images/019f89cf-495a-74e0-8bca-702d31bb209b/exec-cd0d3745-c705-4531-870f-97339d0f523a.png",
+        "reference_source_mode": "built_in_imagegen",
+        "asset_brief": "A complete occult field anomaly signal beacon: a compact dark industrial metal and aged brass instrument with a copper induction coil, a cyan-glass anomaly core, a stable lower housing, and a grounded base. Preserve the one-piece silhouette, readable component separation, thin-but-solid coil, and no loose floating parts. Use a single clean three-quarter view on a neutral background.",
+        "required_components": [
+            "grounded lower housing",
+            "brass and dark metal body",
+            "copper induction coil",
+            "cyan anomaly core",
+            "stable base"
+        ],
         "forbidden_additions": [
+            "characters",
             "weapons",
-            "extra characters",
-            "floating disconnected geometry",
+            "text",
+            "floating disconnected parts",
+            "multi-view board",
+            "side-profile sheet"
+        ],
+        "target_height_m": 1.5,
+        "blender_reference_height_m": 2.464908123,
+        "blender_effective_runtime_height_m": 4.929816246,
+        "runtime_entity_scale": 3.280031,
+        "vanilla_scale_reference": {
+            "mesh": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/buildings/TEST_building3.mesh",
+            "entity_scale": 2.0,
+            "mesh_height": 2.464908123,
+            "runtime_height": 4.929816246,
+            "calibration_note": "The custom beacon is scaled to the vanilla special-project facility rendered height."
+        },
+        "target_polycount": 15000,
+        "meshy_ai_model": "meshy-7",
+        "meshy_pose_mode": None,
+        "image_to_3d_estimate_credits": 30,
+        "texture_source_rels": {
+            "diffuse": "provider/downloads/generation_model_textures/base_color.png",
+            "normal": "provider/downloads/generation_model_textures/normal.png",
+            "specular": "provider/downloads/generation_model_textures/metallic_roughness.png"
+        },
+        "required_actions": [],
+        "runtime_stem": "chaosx_anomaly_signal_beacon",
+        "proposed_runtime_identifiers": {
+            "pdxmesh": "chaosx_anomaly_signal_beacon_mesh",
+            "entity": "chaosx_anomaly_signal_beacon_entity",
+            "consumer": "static map/building-style entity"
+        }
+    },
+    "alien_infantry": {
+        "asset_id": "chaosx.event016.alien_infantry",
+        "asset_kind": "humanoid",
+        "profile": "humanoid_unit",
+        "reference_path": "refs/original/meshy_input_tpose_v4.png",
+        "reference_generator_output": "C:/Users/klimp/.codex/generated_images/01a0292b-3849-75e3-b553-b7a54dda2219/exec-d9f67ea3-7a78-422a-b6e0-fbc773773b25.png",
+        "reference_source_mode": "built_in_imagegen_targeted_native_alpha_edit",
+        "asset_brief": "One reusable generic bald green alien infantry soldier generated as a clean weapon-free true T-pose humanoid, plus one separately retained rigid retro-futurist laser rifle attached to the Meshy rig without Blender-authored body motion.",
+        "required_components": [
+            "complete generic humanoid alien body",
+            "bald green head with two large black eyes",
+            "clearly separated arms and legs",
+            "field harness and grounded boots",
+            "weapon-free riggable true T-pose humanoid silhouette",
+            "separate rigid retro-futurist laser rifle with trigger grip, fore-end, shoulder stock, and forward muzzle"
+        ],
+        "forbidden_additions": [
+            "DHR or D'Rhondan markings",
+            "Kruger markings",
+            "country, ideology, event, organization, or provider insignia",
+            "text or watermark",
+            "extra weapons",
+            "floating or disconnected parts",
             "multi-view board",
             "turnaround collage",
-            "text or watermark",
+            "side-profile sheet"
         ],
-        "excluded_provider_objects": list(
-            job.get("excluded_provider_objects")
-            or (["Icosphere"] if not is_creature else [])
-        ),
-        "target_height_m": vanilla_height,
-        "blender_target_height_m": vanilla_height,
-        "blender_effective_runtime_height_m": vanilla_height * entity_scale,
-        "runtime_entity_scale": entity_scale,
-        "runtime_diffuse_gamma": profile.get("runtime_diffuse_gamma"),
-        "vanilla_scale_reference": vanilla_reference,
-        "target_polycount": target_triangles,
-        "rig_source_target_polycount": rig_source_target_polycount,
-        "meshy_ai_model": meshy_ai_model,
-        "resolved_meshy_ai_model": resolved_meshy_ai_model,
-        "meshy_pose_mode": provider_plan.get("pose_mode"),
-        # Textured Meshy 7 generation is billed at 30 credits. Keep this
-        # fallback aligned with the required textured request.
-        "image_to_3d_estimate_credits": image_to_3d_estimate,
-        "remesh_estimate_credits": remesh_estimate,
-        "rig_estimate_credits": rig_estimate,
-        "animation_estimate_credits": animation_estimate,
-        "planned_total_credits": max(planned_total, required_minimum),
-        "generation_stage": generation_stage,
-        "rig_stage": job.get("rig_stage"),
-        "rig_input_mode": str(job.get("rig_input_mode") or "input_task_id"),
-        "humanoid_rig_route": str(job.get("humanoid_rig_route") or ""),
-        "provider_paid_attempts": int(provider_plan.get("paid_attempts") or 1),
-        "provider_retry_paid_calls": bool(provider_plan.get("retry_paid_calls", False)),
-        "texture_source_rels": {
-            "diffuse": f"provider/downloads/{generation_stage}_model_textures/base_color.png",
-            "normal": f"provider/downloads/{generation_stage}_model_textures/normal.png",
-            "specular": f"provider/downloads/{generation_stage}_model_textures/metallic_roughness.png",
+        "target_height_m": 1.7,
+        "blender_target_height_m": 7.3518242835,
+        "blender_effective_runtime_height_m": 5.8814594268,
+        "runtime_entity_scale": 0.8,
+        "vanilla_scale_reference": {
+            "mesh": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/models/units/western_european_infantry.mesh",
+            "entity": "C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV/gfx/entities/units_infantry.asset#infantry_rifle_entity",
+            "mesh_object_names": [
+                "polySurface106"
+            ],
+            "exclude_name_patterns": [
+                "collision"
+            ],
+            "forward_axis": "-Y",
+            "up_axis": "+Z",
+            "mesh_height": 7.3518242835,
+            "entity_scale": 0.8,
+            "runtime_height": 5.8814594268,
+            "measurement": "io_pdx_mesh import of installed western_european_infantry.mesh; polySurface106 measured with collision-only geometry excluded"
         },
-        "required_actions": required_actions,
-        "creature_rig_family": creature_rig_family,
-        "scale_crosswalk": job.get(
-            "scale_crosswalk",
-            "overall_creature_height_matches_western_european_infantry_runtime"
-            if is_creature
-            else None,
-        ),
-        "runtime_stem": runtime_stem,
-        "shared_humanoid_batch": job.get("shared_humanoid_batch"),
-        "shared_humanoid_rig_owner": job.get("shared_humanoid_rig_owner"),
-        "shared_humanoid_role": job.get("shared_humanoid_role"),
+        "target_polycount": 30000,
+        "meshy_ai_model": "meshy-7",
+        "resolved_meshy_ai_model": "meshy-7",
+        "meshy_pose_mode": "t-pose",
+        "generation_stage": "generation_tpose_body_recovery_v4",
+        "image_to_3d_estimate_credits": 30,
+        "remesh_estimate_credits": 5,
+        "rig_estimate_credits": 5,
+        "animation_estimate_credits": 3,
+        "planned_total_credits": 61,
+        "provider_paid_attempts": 1,
+        "provider_retry_paid_calls": False,
+        "humanoid_rig_route": "meshy_standard_humanoid_rig_with_separate_rigid_weapon_attachment",
+        "required_actions": [
+            {
+                "role": "idle",
+                "name": "alien_infantry_idle",
+                "fps": 24,
+                "loop": True,
+                "root_policy": "in_place",
+                "provider_action_id": 89,
+                "authoring_route": "meshy_animate_then_blender_retarget_cleanup"
+            },
+            {
+                "role": "move",
+                "name": "alien_infantry_move",
+                "fps": 24,
+                "loop": True,
+                "root_policy": "in_place",
+                "provider_action_id": 654,
+                "authoring_route": "meshy_animate_then_blender_retarget_cleanup"
+            },
+            {
+                "role": "laser_attack",
+                "name": "alien_infantry_laser_attack",
+                "fps": 24,
+                "loop": False,
+                "root_policy": "in_place",
+                "provider_action_id": 690,
+                "authoring_route": "meshy_animate_weapon_aware_then_blender_retarget_cleanup"
+            },
+            {
+                "role": "defend",
+                "name": "alien_infantry_defend",
+                "fps": 24,
+                "loop": True,
+                "root_policy": "in_place",
+                "provider_action_id": 95,
+                "authoring_route": "meshy_animate_then_blender_retarget_cleanup"
+            },
+            {
+                "role": "support_attack",
+                "name": "alien_infantry_support_attack",
+                "fps": 24,
+                "loop": False,
+                "root_policy": "in_place",
+                "provider_action_id": 680,
+                "authoring_route": "meshy_animate_weapon_aware_then_blender_retarget_cleanup"
+            },
+            {
+                "role": "retreat",
+                "name": "alien_infantry_retreat",
+                "fps": 24,
+                "loop": True,
+                "root_policy": "in_place",
+                "provider_action_id": 685,
+                "authoring_route": "meshy_animate_then_blender_retarget_cleanup"
+            },
+            {
+                "role": "death",
+                "name": "alien_infantry_death",
+                "fps": 24,
+                "loop": False,
+                "root_policy": "in_place",
+                "provider_action_id": 184,
+                "authoring_route": "meshy_animate_then_blender_retarget_cleanup"
+            }
+        ],
+        "runtime_stem": "alien_infantry",
         "proposed_runtime_identifiers": {
-            "pdxmesh": f"{runtime_stem}_mesh",
-            "entity": entity,
-            "consumer": "land-unit entity",
-            "entity_scale": entity_scale,
-        },
-        "_requires_reference_approval": True,
-        "_route_status": route_status,
-        "_route_blocker": route_blocker,
-        "_job_root": str(job_root),
+            "pdxmesh": "alien_infantry_mesh",
+            "entity": "alien_infantry_entity",
+            "consumer": "alien_infantry land-unit entity",
+            "entity_scale": 0.8
+        }
     }
+}
 
 
 def load_pilot_configs() -> Dict[str, Dict[str, Any]]:
-    """Load generic pilots and discover configured specialized zombie jobs."""
+    """Return an independent copy of the runner's own asset specifications."""
 
-    configs = read_json(PIPELINE_ROOT / "config" / "pilot_jobs.json")["pilots"]
-    adapter_config = read_json(PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json")
-    for slug, raw_root in adapter_config.get("job_overrides", {}).items():
-        if slug in {"zombies", "wendigo_zombies"} or not slug.endswith("_zombies"):
-            continue
-        job_root = Path(str(raw_root)).resolve()
-        job_file = job_root / "job.yaml"
-        if not job_file.exists():
-            continue
-        job = read_job_document(job_file)
-        configs[slug] = _specialized_zombie_spec(slug, job_root, job)
-    return configs
+    return copy.deepcopy(PILOT_SPECS)
 
 
 def require_reference_approval(spec: Dict[str, Any]) -> None:
@@ -1250,16 +1417,17 @@ def require_route_ready(spec: Dict[str, Any]) -> None:
 
 
 def require_live_blender_authored_continuation(spec: Dict[str, Any]) -> None:
-    """Refuse a continuation whose rig, weights and actions Python no longer authors."""
+    """Refuse a rigging or animation continuation the pilot runner does not orchestrate."""
 
     if spec["asset_kind"] in STATIC_ASSET_KINDS:
         return
     raise RuntimeError(
-        f"{spec['asset_id']} is a {spec['asset_kind']!r} asset. Rigging, skinning and skeletal "
-        "actions are authored live in Blender through the Blender MCP bridge; repository Python "
-        "no longer creates or edits bones, skin weights or keyframes from declarative specs. Run "
-        "--phase candidate for the provider geometry, then rig and animate that candidate live "
-        "in Blender."
+        f"{spec['asset_id']} is a {spec['asset_kind']!r} asset. The pilot runner does not "
+        "orchestrate rigging or animation: a normal humanoid rig and its actions come from the "
+        "Meshy provider route, and every other skeleton, weight set or action is authored live "
+        "in Blender through the Blender MCP bridge. Run --phase candidate for the provider "
+        "geometry, then take that candidate's rig and actions from the provider route or "
+        "author them live in Blender."
     )
 
 
@@ -1300,11 +1468,12 @@ def main() -> int:
         if index + 1 >= len(args) or args[index + 1].startswith("-"):
             raise RuntimeError("--specialized-zombie-batch requires a configured batch id.")
         raise RuntimeError(
-            "--specialized-zombie-batch is a removed repository-owned batch route. Rigging, "
-            "skinning and skeletal actions are authored live in Blender through the Blender MCP "
-            "bridge; repository Python no longer creates or edits bones, skin weights or "
-            "keyframes from declarative specs. Generate every selected unit with --phase "
-            "candidate, then rig and animate each candidate live in Blender."
+            "--specialized-zombie-batch is not a route of this runner. The pilot runner does "
+            "not orchestrate rigging or animation: a normal humanoid rig and its actions come "
+            "from the Meshy provider route, and every other skeleton, weight set or action is "
+            "authored live in Blender through the Blender MCP bridge. Generate every selected "
+            "unit with --phase candidate, then take its rig and actions from the provider route "
+            "or author them live in Blender."
         )
     all_assets = "--all" in args or not args
     assets = list(configs) if all_assets else [item for item in args if not item.startswith("-")]

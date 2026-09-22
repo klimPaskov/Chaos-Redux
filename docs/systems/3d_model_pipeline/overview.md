@@ -52,13 +52,14 @@ py -3.13 .tools/3d_pipeline/verify_environment.py --probe-meshy
 
 ## Autonomous job lifecycle
 
-`init_pilot_jobs.py` creates deterministic job roots under
-`docs/assets/chaos_redux_3d_model_pilots/models_3d/<asset_slug>/`. A brief-only
-job generates exactly one final Meshy input image at
-`refs/original/meshy_input.png`; a ready reference is preserved and used as-is.
-No side-profile sheet, turnaround board, collage, or multi-view Meshy input is
-created. The one-image count and checksum are recorded in the reference
-preflight and input manifest.
+`run_pilot.py` creates a deterministic job root under `docs/assets/chaos_redux_3d_model_pilots/models_3d/<asset_slug>/` for every asset it runs, and it records the job document, the reference preflight, the input manifest, the provenance record, and the asset brief there before any provider work.
+The runner holds the asset specifications for its own slugs, currently the `anomaly_signal_beacon` pilot and the `alien_infantry` unit.
+An asset the runner holds no specification for gets its job root created directly by the parent that owns it.
+
+Every initialized job holds exactly one reference image for the Meshy input, under `refs/original` and at the path its specification names.
+No side-profile sheet, turnaround board, collage, or multi-view Meshy input is created.
+The one-image count and checksum are recorded in the reference preflight and input manifest.
+There is no separate job generator and no repository pilot job list.
 
 `run_pilot.py` records each paid provider call before waiting, checks balance
 before every paid tranche, downloads successful GLB/FBX results immediately,

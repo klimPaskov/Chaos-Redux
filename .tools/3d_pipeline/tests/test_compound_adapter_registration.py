@@ -60,14 +60,19 @@ REMOVED_OPERATIONS = {
     "correct_action_grounding",
     "ground_existing_action",
     "offset_action_root",
-    "retime_animation_action",
-    "import_animation_action",
-    "import_bvh_animation_action",
     "segment_creature_components",
     "calibrate_creature_scale",
     "attach_rigid_component",
 }
 REMOVED_TOOLS = {f"chaosx_blender_hoi4_{operation}" for operation in REMOVED_OPERATIONS}
+
+# Provider rigging and provider animation are ingested as authored assets, so the
+# transfer, BVH import and retime operations remain part of the registered surface.
+PROVIDER_INGESTION_OPERATIONS = {
+    "import_animation_action",
+    "import_bvh_animation_action",
+    "retime_animation_action",
+}
 
 
 class CompoundAdapterRegistrationTests(unittest.TestCase):
@@ -89,6 +94,15 @@ class CompoundAdapterRegistrationTests(unittest.TestCase):
         enabled = set(config["mcp_servers"]["blender_hoi4"]["enabled_tools"])
         self.assertTrue(set(REGISTERED_TOOLS) <= enabled)
         self.assertFalse(REMOVED_TOOLS & enabled, sorted(REMOVED_TOOLS & enabled))
+        provider_tools = {f"chaosx_blender_hoi4_{name}" for name in PROVIDER_INGESTION_OPERATIONS}
+        self.assertTrue(provider_tools <= enabled, sorted(provider_tools - enabled))
+        operations = set(
+            json.loads(
+                (PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8")
+            )["operations"]
+        )
+        self.assertTrue(PROVIDER_INGESTION_OPERATIONS <= operations)
+        self.assertFalse(REMOVED_OPERATIONS & operations, sorted(REMOVED_OPERATIONS & operations))
 
     def test_live_schemas_are_bounded_and_exact(self) -> None:
         for tool_name, expected_properties in REGISTERED_TOOLS.items():

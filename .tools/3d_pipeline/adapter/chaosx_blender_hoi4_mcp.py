@@ -13,7 +13,7 @@ import subprocess
 import sys
 import uuid
 from pathlib import Path
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Iterable, Literal, Optional
 
 from mcp.server.fastmcp import FastMCP
 
@@ -787,6 +787,126 @@ def chaosx_blender_hoi4_repair_explicit_vertex_remap(job_id: str, blend_rel: str
 def chaosx_blender_hoi4_rotate_existing_assembly_yaw(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, target_armature_name: str, object_names: list[str], action_names: list[str], yaw_degrees: float) -> Dict[str, Any]:
     """Rigid cardinal working-assembly yaw with every requested action frame verified; protected source objects excluded."""
     return _run(job_id,"rotate_existing_assembly_yaw",{"blend_rel":blend_rel,"checkpoint_rel":checkpoint_rel,"expected_source_sha256":expected_source_sha256,"target_armature_name":target_armature_name,"object_names":object_names,"action_names":action_names,"yaw_degrees":yaw_degrees})
+
+
+@mcp.tool()
+def chaosx_blender_hoi4_import_animation_action(
+    job_id: str,
+    blend_rel: str,
+    source_rel: str,
+    provenance_rel: str,
+    checkpoint_rel: str,
+    source_action_name: str,
+    target_armature_name: str,
+    target_action_name: str,
+    source_kind: Literal["meshy_animate", "meshy_text_to_motion", "professional_source"],
+    source_reference_id: str,
+    source_sha256: str,
+    bone_chains: Dict[str, list[str]] | None = None,
+    promote_audited_target: bool = False,
+    source_armature_name: str = "",
+    root_scale_reference: Dict[str, list[str]] | None = None,
+) -> Dict[str, Any]:
+    """Transfer one receipt-verified provider/professional skeletal action by its exact source id.
+
+    Source ids may include balanced parenthetical qualifiers used by ordinary FBX action names.
+    The destination action remains a separately validated safe runtime identifier.
+    """
+
+    return _run(
+        job_id,
+        "import_animation_action",
+        {
+            "blend_rel": blend_rel,
+            "source_rel": source_rel,
+            "provenance_rel": provenance_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "source_action_name": source_action_name,
+            "source_armature_name": source_armature_name,
+            "target_armature_name": target_armature_name,
+            "target_action_name": target_action_name,
+            "source_kind": source_kind,
+            "source_reference_id": source_reference_id,
+            "source_sha256": source_sha256,
+            "bone_chains": bone_chains or {},
+            "root_scale_reference": root_scale_reference,
+            "promote_audited_target": promote_audited_target,
+        },
+    )
+
+@mcp.tool()
+def chaosx_blender_hoi4_import_bvh_animation_action(
+    job_id: str,
+    blend_rel: str,
+    source_rel: str,
+    provenance_rel: str,
+    checkpoint_rel: str,
+    source_action_name: str,
+    target_armature_name: str,
+    target_action_name: str,
+    semantic_role: str,
+    source_reference_id: str,
+    source_sha256: str,
+    source_fps: float,
+    target_fps: float,
+    bone_chains: Dict[str, list[str]],
+    root_motion_policy: Literal["in_place_xy_preserve_z"],
+    global_scale: float = 1.0,
+    axis_forward: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "-Z",
+    axis_up: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "Y",
+    promote_audited_target: bool = False,
+) -> Dict[str, Any]:
+    """Native-import and retarget one receipt-verified professional BVH action."""
+
+    return _run(
+        job_id,
+        "import_bvh_animation_action",
+        {
+            "blend_rel": blend_rel,
+            "source_rel": source_rel,
+            "provenance_rel": provenance_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "source_action_name": source_action_name,
+            "target_armature_name": target_armature_name,
+            "target_action_name": target_action_name,
+            "semantic_role": semantic_role,
+            "source_reference_id": source_reference_id,
+            "source_sha256": source_sha256,
+            "source_fps": source_fps,
+            "target_fps": target_fps,
+            "bone_chains": bone_chains,
+            "root_motion_policy": root_motion_policy,
+            "global_scale": global_scale,
+            "axis_forward": axis_forward,
+            "axis_up": axis_up,
+            "promote_audited_target": promote_audited_target,
+        },
+    )
+
+@mcp.tool()
+def chaosx_blender_hoi4_retime_animation_action(
+    job_id: str,
+    blend_rel: str,
+    checkpoint_rel: str,
+    action_name: str,
+    target_armature_name: str,
+    source_fps: float,
+    target_fps: float,
+) -> Dict[str, Any]:
+    """Retime one verified-source action without changing or replacing its skeletal motion."""
+
+    return _run(
+        job_id,
+        "retime_animation_action",
+        {
+            "blend_rel": blend_rel,
+            "checkpoint_rel": checkpoint_rel,
+            "action_name": action_name,
+            "target_armature_name": target_armature_name,
+            "source_fps": source_fps,
+            "target_fps": target_fps,
+        },
+    )
 
 
 def main() -> None:
