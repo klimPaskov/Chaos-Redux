@@ -1,6 +1,6 @@
 # Package Manifest
 
-This table includes every package file except this manifest itself.
+This is the historical manifest for the original 41-file planning package. Its counts and hashes predate the accepted 2026-09-20 [CBRN overhaul amendment](specs/13_2026_09_20_accepted_cbrn_overhaul.md) and later documentation edits, so they are not current integrity values and this table no longer enumerates every package file. Preserve it as provenance; use current files and the [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) for the live reconciliation.
 
 Files listed: 41
 Lines: 7864

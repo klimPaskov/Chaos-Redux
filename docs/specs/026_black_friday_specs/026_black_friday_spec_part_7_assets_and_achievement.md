@@ -1,5 +1,7 @@
 # Assets and achievement
 
+> **2026-09-20 native-raid boundary:** The accepted CBRN overhaul moves Japan's chemical and biological campaign attacks to native raids with multi-day preparation and engine-reserved payment. No documented raid lifecycle hook has yet proved that reservation during a one-day Black Friday sale can credit this achievement before the later outcome. The five-family design below remains accepted for transactions with a confirmed receipt; Japan native raid eligibility is unresolved, and the retired attack-decision adapter is not evidence for it. See the [CBRN amendment](../chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md) and [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
+
 ## Visual package
 
 Event 26 needs three distinct visual families.

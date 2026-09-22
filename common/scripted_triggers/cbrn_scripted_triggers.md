@@ -183,7 +183,9 @@ Defaults: missing values return false. The continuous ordinary-air route is reco
 
 Outputs: boolean trigger result only. Side effects: none.
 
-`cbrn_chemical_action_static_metadata_is_valid` combines actor, exact target, weapon, agent/class, route eligibility, support status, and severity only. Route adapters use it before debiting payload so invalid metadata cannot consume stock.
+`cbrn_chemical_action_static_content_is_valid` checks actor, exact target, weapon, agent/class, route eligibility, support status, and severity without a policy check. The existing `cbrn_chemical_action_static_metadata_is_valid` adds its country-rooted policy check for its original callers. The native chemical land raid adapter calls the content helper with `cbrn_chemical_land_raid_policy_allows_exact_target`, because its `ROOT` remains a raid instance even after entering the actor country.
+
+`cbrn_chemical_land_raid_policy_allows_exact_target` runs in the native raid's actor-country scope. Inputs are the saved exact actor, target state, and victim event targets, plus the country's three-state policy and any exact retaliation right. It requires that the target state still be controlled by the saved victim, that the victim is distinct from the actor, and that they remain at war. It sets the temporary `cbrn_retaliation_target_id` from the victim, then permits battlefield authorization or a live exact-target retaliation right. It does not debit stock or alter policy. The native land adapter is its only call site.
 
 ## cbrn_chemical_action_metadata_is_valid
 
@@ -209,7 +211,7 @@ All triggers in this section are country scoped, side-effect free, and fail clos
 ### Visibility and emergency context
 
 - `cbrn_protection_program_category_visible`: true for an established program/reserve, Basic Service Respirators, real respirator stock, or confirmed enemy chemical use.
-- `cbrn_civil_defence_category_visible`: combines program visibility with reserve/registration, a public emergency, or existing distributed state stock.
+- `cbrn_civil_defence_category_visible`: requires an actual chemical emergency, enemy chemical capability, or active biological outbreak.
 - `cbrn_country_has_public_chemical_emergency`: true only for confirmed enemy use, an exact scripted raid alert, or actual controlled-state contamination.
 
 These triggers never inspect aircraft presence and cannot qualify idle chemical-capable aircraft.
@@ -284,8 +286,8 @@ Absent `cbrn_civilian_mask_effective_coverage` counts as a gap. The value is wri
 - `cbrn_state_can_receive_priority_masks`: valid ROOT core, priority value, and priority gap.
 - `cbrn_state_can_receive_full_distribution`: valid ROOT core, registered/fitted ROOT population, and full gap.
 - `cbrn_state_has_emergency_context`: an exact alert for this state or real contamination in this state. Country-wide confirmed enemy use does not qualify a clean, unalerted state.
-- `cbrn_state_can_receive_emergency_masks`: ROOT-controlled populated state with emergency context and emergency gap; formal reserve/registration is deliberately not required.
-- `cbrn_state_can_receive_occupied_masks`: valid non-core controlled state with occupied gap.
+- `cbrn_state_can_receive_emergency_masks`: ROOT-controlled populated state with emergency context, an emergency gap, and no surge already used for the current verified alert; formal reserve/registration is deliberately not required.
+- `cbrn_state_can_receive_occupied_masks`: valid non-core controlled state with an exact alert or contamination and an occupied gap.
 - `cbrn_state_can_replace_civilian_filters`: valid state with distributed masks and worn filters.
 
 Example:
@@ -360,8 +362,8 @@ These country-scope, side-effect-free triggers are defined in `cbrn_regimental_s
 
 - `cbrn_country_has_any_chemical_payload_stock`: true when at least one strategic chlorine, phosgene, mustard, lewisite, tabun, sarin, soman, malodor, or behavioral lot has positive real stock. Legacy cylinders remain accepted only during the bounded migration window. This is a production/readiness signal, not use authorization.
 - `cbrn_country_has_protected_template_stock`: requires the full standing bill for one nine-infantry protected target, including infantry equipment, masks, decon, instruments, support equipment, and trucks.
-- `cbrn_country_has_chemical_assault_template_stock`: requires the full standing bill for six infantry, three Chaos Assault Battalions, mask/decon, Hazard Pioneer, and Projector support, including the projector's standing strategic-agent payload load.
-- `cbrn_country_has_armored_delivery_template_stock`: requires the full standing bill for three medium-armor and seven motorized battalions plus mask/decon, recon, and medium armored-delivery support, including the flame-role chassis and standing strategic-agent payload loads.
+- `cbrn_country_has_chemical_assault_template_stock`: requires the full standing bill for six infantry, three Chaos Assault Battalions, mask/decon, Hazard Pioneer, and Projector support. Strategic-agent stock remains a separate country-level readiness gate and is not duplicated in the standing divisional bill.
+- `cbrn_country_has_light_armored_delivery_template_stock`, `cbrn_country_has_medium_armored_delivery_template_stock`, and `cbrn_country_has_heavy_armored_delivery_template_stock`: each requires the full standing bill for its matching three light, medium, or heavy armor battalions and seven motorized battalions plus mask/decon, recon, the matching armored-delivery support, and the matching flame-role chassis. Strategic-agent stock remains a separate country-level readiness gate and exact payload is reserved by the native operation. `cbrn_country_has_armored_delivery_template_stock` remains a medium-variant compatibility alias.
 - `cbrn_country_has_containment_template_stock`: requires the full standing bill for nine infantry plus mask/decon, epidemiology, and medical support.
 
 Inputs: current country equipment stock. Defaults: absent or insufficient stock returns false. Output: boolean only. Side effects: none.
@@ -370,7 +372,7 @@ Inputs: current country equipment stock. Defaults: absent or insufficient stock 
 
 - `cbrn_country_can_field_protected_template`: requires both defensive support unlocks, a complete stock set, and a CBRN program, Chaos Warfare doctrine, or real public emergency.
 - `cbrn_country_can_field_chemical_assault_template`: requires all three unit unlocks, battlefield-use policy, positive chemical payload stock, and a complete standing set.
-- `cbrn_country_can_field_armored_delivery_template`: requires armored-delivery and sealed-crew unlocks, a current medium-tank chassis path, battlefield-use policy, positive chemical payload stock, and a complete standing set.
+- `cbrn_country_can_field_light_armored_delivery_template`, `cbrn_country_can_field_medium_armored_delivery_template`, and `cbrn_country_can_field_heavy_armored_delivery_template`: require the armored-delivery and sealed-crew unlocks, the matching light, medium, or heavy chassis path, battlefield-use policy, positive chemical payload stock, a country-level CBRN programme or war state, and the complete matching standing set. `cbrn_country_can_field_armored_delivery_template` is the compatibility OR across the three variants; native operation release still performs exact target validation.
 - `cbrn_country_can_field_containment_template`: requires epidemiology and mobile-hospital unlocks, a complete standing set, and an actual domestic/neighbor outbreak, public chemical emergency, or controlled contaminated state.
 
 Inputs: technology, policy, actual stock, outbreak, and contamination state. Defaults: false. Output: boolean only. Side effects: none. Offensive eligibility remains distinct from operation eligibility; the later adapter must still select and debit the exact payload before exposure.
@@ -528,18 +530,17 @@ These record gates read the stored responsible-country pointer and exact chemica
 
 These country-scope, side-effect-free triggers are defined in `cbrn_doctrine_triggers.txt`, except for the one explicitly state-scoped cleanup target. Missing doctrine state, stock, variables, flags, technology, formations, or project proof fails closed unless an absent state is named as an accepted adoption route.
 
-### Adoption and establishment
+### Adoption and research capability
 
 - `cbrn_chaos_warfare_has_agent_technology`: true for at least one supported choking, blister, or nerve-agent technology.
 - `cbrn_chaos_warfare_has_completed_chemical_project`: true for one accepted completed chemical special-project flag.
 - `cbrn_chaos_warfare_has_historical_program_profile`: true for a mapped preparedness, military, industrial, or civil-defence starting profile.
 - `cbrn_chaos_warfare_adoption_capable`: accepts Basic Gas Masks plus an agent, a completed chemical project, established CBRN command, mapped historical profile, or explicit scenario override.
 - `cbrn_chaos_warfare_ai_has_viable_program`: adoption capability plus a major, industrial, war, enemy-use, accepted profile, or explicit aggressive-route signal; actual nonhuman countries fail.
-- `cbrn_chaos_warfare_has_establishment_stock`: at least 500 masks, 50 decontamination equipment, and 100 support equipment.
-- `cbrn_chaos_warfare_has_fielded_operations_hq`: positive exact `num_battalions_with_type@cbrn_hq_operations_section`.
-- `cbrn_chaos_warfare_has_fielded_protected_formation`: positive exact `num_battalions_with_type@cbrn_gas_mask_decon_detachment`.
-- `cbrn_chaos_warfare_establishment_requirements_met`: adopted doctrine plus all stock and fielded-formation proofs above.
-- `cbrn_can_begin_hazard_assault_training`: Hazard Assault active, protected formation fielded, no active training mission, 100 masks, and 10 Army Experience.
+- `cbrn_chaos_warfare_research_capable`: adopted Chaos Warfare doctrine plus the existing adoption-capability evidence. Event 027 uses this for post-adoption track research; its pre-adoption gate uses adoption capability directly.
+- `cbrn_chaos_warfare_establishment_requirements_met`: compatibility alias for the remaining Event 027 weighted selectors, now equivalent to research capability. It does not require a retired establishment decision, reserve bill, or fielded formation.
+- `cbrn_chaos_warfare_has_fielded_operations_hq`: positive exact `num_battalions_with_type@cbrn_hq_operations_section` for independent institution milestones.
+- `cbrn_chaos_warfare_has_fielded_protected_formation`: positive exact `num_battalions_with_type@cbrn_gas_mask_decon_detachment` for active fielding proof outside doctrine purchase.
 
 Scope is country; outputs are boolean only; no trigger starts a mission, removes stock, or grants mastery.
 
@@ -617,24 +618,22 @@ These side-effect-free triggers are defined in `cbrn_hq_triggers.txt`. Character
 - `cbrn_hq_force_is_standard`: 100 through 199 affected battalions.
 - `cbrn_hq_force_is_mass`: at least 200 affected battalions.
 - `cbrn_hq_has_operations_section`, `cbrn_hq_has_intelligence_weather_cell`, `cbrn_hq_has_protective_logistics_section`, `cbrn_hq_has_mobile_decontamination_column`, `cbrn_hq_has_medical_countermeasure_directorate`, and `cbrn_hq_has_biological_security_section`: exact `num_battalions_with_type@...` checks for one named HQ-only company.
-- `cbrn_hq_has_strict_overmatch_combination`: Operations plus Protective Logistics plus Mobile Decontamination.
+- `cbrn_hq_has_all_three_sections`: Operations, Protection and Decontamination, and Medical and Biosecurity in one deployed HQ.
 - `cbrn_hq_has_no_preparation_or_active_posture`: no preparation/active trait and no persistent operation code. The operation code deliberately blocks a newer posture until planned cleanup even after early supply failure.
 
 Scope: character. Defaults: missing command/company is false. Outputs: boolean only.
 
 ### Owner context and command-validity gates
 
-The owner-context triggers are `cbrn_hq_owner_has_chemical_operation_context`, `cbrn_hq_owner_has_protective_context`, `cbrn_hq_owner_has_decontamination_context`, `cbrn_hq_owner_has_sealed_area_context`, `cbrn_hq_owner_has_antidote_context`, `cbrn_hq_owner_has_infection_context`, and `cbrn_hq_owner_has_overmatch_context`. They require the accepted policy, readiness, payload, emergency, contamination, outbreak, or capstone state for their operation.
+The owner-context triggers are `cbrn_hq_owner_has_protective_context`, `cbrn_hq_owner_has_decontamination_context`, `cbrn_hq_owner_has_sealed_area_context`, `cbrn_hq_owner_has_antidote_context`, `cbrn_hq_owner_has_infection_context`. They require the active protection program, emergency, contamination, or outbreak state for their operation.
 
-`cbrn_hq_command_is_deployed` requires a non-army-group, non-border-war commander with assigned divisions. The seven composite command-validity triggers add exact company composition and owner context:
+`cbrn_hq_command_is_deployed` requires a non-army-group, non-border-war commander with assigned divisions. The five composite command-validity triggers add exact company composition and owner context:
 
-- `cbrn_hq_prepare_command_is_valid`
 - `cbrn_hq_protective_command_is_valid`
 - `cbrn_hq_decon_command_is_valid`
 - `cbrn_hq_seal_area_command_is_valid`
 - `cbrn_hq_antidote_command_is_valid`
 - `cbrn_hq_infection_command_is_valid`
-- `cbrn_hq_overmatch_command_is_valid`
 
 These are reused at activation, preparation completion, and weekly upkeep so removing a required HQ company or losing the relevant context fails closed.
 
@@ -644,55 +643,45 @@ Each activation trigger branches on the current force band and includes the full
 
 `cbrn_hq_country_has_issued_filter_ledger` is a country-scope, side-effect-free prerequisite requiring a positive military-issued mask ledger and an initialized military filter-condition ledger. Missing values fail closed.
 
-The nine country-scope filter-affordability triggers require that ledger plus enough condition for one exact operation/force-band debit. Each selects the base threshold without `military_filter_standardization` or the exact technology-reduced threshold with it:
+The three country-scope protective-filter affordability triggers require that ledger plus enough condition for one exact operation/force-band debit. Each selects the base threshold without `military_filter_standardization` or the exact technology-reduced threshold with it:
 
-- `cbrn_hq_country_can_pay_prepare_light_filters`
-- `cbrn_hq_country_can_pay_prepare_standard_filters`
-- `cbrn_hq_country_can_pay_prepare_mass_filters`
 - `cbrn_hq_country_can_pay_protective_light_filters`
 - `cbrn_hq_country_can_pay_protective_standard_filters`
 - `cbrn_hq_country_can_pay_protective_mass_filters`
-- `cbrn_hq_country_can_pay_overmatch_light_filters`
-- `cbrn_hq_country_can_pay_overmatch_standard_filters`
-- `cbrn_hq_country_can_pay_overmatch_mass_filters`
 
 Inputs are the persistent military-issued mask count, filter condition, and technology state. Defaults are fail-closed for absent masks, absent condition, or insufficient condition. Outputs are boolean only; there are no side effects.
 
 | Operation | Activation trigger and exact owner resources | Upkeep trigger and exact owner resources |
 | --- | --- | --- |
-| Chemical fire plan | `cbrn_hq_can_pay_prepare_activation`: command power, masks, exact issued-filter condition, instruments, support equipment | `cbrn_hq_can_pay_prepare_upkeep`: masks, instruments, support equipment |
 | Protective posture | `cbrn_hq_can_pay_protective_activation`: command power, masks, exact issued-filter condition, support equipment | `cbrn_hq_can_pay_protective_upkeep`: masks, exact issued-filter condition, support equipment |
 | Decontamination corridor | `cbrn_hq_can_pay_decon_activation`: command power, decontamination equipment, trucks, masks, support equipment, fuel | `cbrn_hq_can_pay_decon_upkeep`: decontamination equipment, trucks, masks, support equipment, fuel |
 | Sealed operational area | `cbrn_hq_can_pay_seal_area_activation`: command power, support equipment, manpower | `cbrn_hq_can_pay_seal_area_upkeep`: support equipment |
 | Antidote response | `cbrn_hq_can_pay_antidote_activation`: command power, support equipment, masks, Medical Capacity | `cbrn_hq_can_pay_antidote_upkeep`: support equipment, masks |
 | Infection corridor | `cbrn_hq_can_pay_infection_activation`: command power, support equipment, decontamination equipment, instruments, masks, manpower, Medical Capacity | `cbrn_hq_can_pay_infection_upkeep`: support equipment, decontamination equipment, instruments, masks |
-| Combined overmatch | `cbrn_hq_can_pay_overmatch_activation`: command power, support equipment, decontamination equipment, instruments, masks, exact issued-filter condition, trucks, fuel, Medical Capacity | `cbrn_hq_can_pay_overmatch_upkeep`: support equipment, decontamination equipment, instruments, masks, exact issued-filter condition, trucks, fuel |
 
 `cbrn_hq_committed_force_is_light`, `cbrn_hq_committed_force_is_standard`, and `cbrn_hq_committed_force_is_mass` read the stored force-band enum. Filter wear is a bounded condition loss, not a fictitious stockpile: every mapped activation or upkeep requires both issued masks and the full exact condition debit before the matching effect can run. Scope is character, `OWNER` supplies the country resource checks, missing or insufficient resources return false, output is boolean only, and these triggers have no side effects.
 
-The seven public ability gates combine command validity, no existing commitment, and full activation resources:
+The five public ability gates combine command validity, no existing commitment, and full activation resources:
 
-- `cbrn_hq_can_activate_prepare_chemical_offensive`
 - `cbrn_hq_can_activate_theater_protective_posture`
 - `cbrn_hq_can_activate_decontamination_corridor`
 - `cbrn_hq_can_activate_seal_operational_area`
 - `cbrn_hq_can_activate_mass_antidote_response`
 - `cbrn_hq_can_activate_seal_infection_corridor`
-- `cbrn_hq_can_activate_combined_overmatch`
 
-Protective Posture and Mass Antidote Response additionally require Protective Foundation; Prepare Chemical Offensive requires Delivery Integration; Decontamination Corridor and Seal Operational Area require Theater Exploitation; Seal Infection Corridor requires Theater Exploitation plus Integrated Command mastery 4; Combined Overmatch requires Terminal CBRN Command.
+Protective Posture and Mass Antidote Response additionally require Protective Foundation; Decontamination Corridor and Seal Operational Area require Theater Exploitation; Seal Infection Corridor requires Theater Exploitation plus Integrated Command mastery 4.
 
 Scope: character. Defaults: insufficient institution or resources return false. Outputs: boolean only. These checks use national reserve stock because current 1.19 script exposes no exact fulfillment query for one named deployed HQ support company; no aggregate-army estimator is retained.
 
 ### Baseline AI HQ template gates
 
-- `cbrn_country_can_field_protected_hq`: Protective Logistics and Medical unlocks plus one complete protected-HQ standing bill.
+- `cbrn_country_can_field_protected_hq`: Protective Logistics unlock plus one complete protected-HQ standing bill; a medical-hospital technology is not required by this template.
 - `cbrn_country_can_field_chemical_fireplan_hq`: Operations/Weather unlocks, operational readiness, battlefield-use policy, positive payload stock, and one complete fire-plan-HQ standing bill.
 - `cbrn_country_can_field_contaminated_theater_hq`: decontamination unlock, actual controlled contamination, and one complete contaminated-theater-HQ standing bill.
 - `cbrn_country_can_field_biological_containment_hq`: Biosecurity/Medical unlocks, an active outbreak, and one complete biological-containment-HQ standing bill.
-- `cbrn_country_can_field_overmatch_hq`: Theater technology, full readiness, battlefield-use policy, positive payload stock, and the complete four-slot capstone-HQ bill.
+- `cbrn_country_can_field_overmatch_hq`: Theater technology, full readiness, battlefield-use policy, positive payload stock, and the complete three-section theater-HQ bill.
 
-Scope: country. The common base bill is 420 infantry equipment: four vanilla infantry battalions at 100 each plus 20 for the mandatory vanilla HQ staff. Defaults: missing unlock, context, or stock returns false. Side effects: none. Stage 10 may differentiate country preferences, but these safety and supply gates remain authoritative.
+Scope: country. The common base bill is 420 infantry equipment: four vanilla infantry battalions at 100 each plus 20 for the mandatory vanilla HQ staff. The five standing bills are, respectively, protected (80 masks, 100 support, 100 decontamination, 60 trucks), fire plan and contaminated theater (110 masks, 180 support, 100 decontamination, 50 instruments, 70 trucks), biological containment (110 masks, 190 support, 140 decontamination, 40 instruments, 85 trucks), and overmatch (140 masks, 270 support, 140 decontamination, 90 instruments, 95 trucks). Defaults: missing unlock, context, or stock returns false. Side effects: none.
 
 Example:
 
@@ -704,14 +693,12 @@ allowed = {
 
 ## Exact-state CBRN battlefield operation triggers
 
-The battlefield trigger family is defined in `cbrn_battlefield_operation_triggers.txt`. It is deliberately CBRN-specific because these inputs are used by route decisions and a shared ground-operation resolver rather than frequently by unrelated event families.
+The battlefield trigger family is defined in `cbrn_battlefield_operation_triggers.txt`. Native chemical land raids use these equipment and exact-state helpers at launch; the raid engine reserves their `essential_equipment` before the shared outcome adapter runs.
 
-The common actor gate `cbrn_battlefield_actor_base_can_prepare` requires a valid war, operational readiness, battlefield-use policy, active HQ chemical operation receipt, selected unlocked agent, military masks, and field decontamination capacity. The four route gates add the route's readiness and Command Power commitment bill plus its essential equipment.
-
-Route equipment checks are model-aware and fail closed when full stock is unavailable. Shortage-ready branches use explicit shortage floors and are surfaced through the condition receipt; Artillery Fire Plan additionally requires and debits `chemical_shell_lot_1`.
+The common equipment checks test military masks, support, decontamination capacity, and instruments. Projector and artillery checks add their route-specific requirements. Full-stock and shortage-ready variants let the native raid definitions distinguish normal release from a limited, explicitly supported release. The raid engine alone reserves the listed equipment; these triggers do not debit stock.
 
 The exact target helpers are `cbrn_battlefield_cylinder_target_state`, `cbrn_battlefield_projector_target_state`, `cbrn_battlefield_artillery_target_state`, and `cbrn_battlefield_armored_target_state`. They require a real state, a real enemy controller, a valid wartime relationship, population, and the route-specific supply, fort, industry, or enemy-division evidence. They never search a neighboring state or infer a combat target.
 
-`cbrn_battlefield_decision_record_is_valid` validates the committed state ledger for timed decisions through the persistent `cbrn_battlefield_active_state` scope variable, not the short-lived setup event target. `cbrn_battlefield_requested_operation_is_valid` and `cbrn_battlefield_requested_target_is_valid` are rechecked immediately before payload and equipment debit. `cbrn_battlefield_cylinder_commit_cost_is_available`, `cbrn_battlefield_projector_commit_cost_is_available`, `cbrn_battlefield_artillery_commit_cost_is_available`, and `cbrn_battlefield_armored_commit_cost_is_available` prevent a commitment with insufficient Chemical Readiness or Command Power.
+The target family checks a real controlled state, a valid wartime relationship, and route-specific population, supply, fort, industry, or enemy-division evidence. Outcome resolution independently rechecks the exact actor, victim, state controller, policy, agent, and route before dispatch; an invalid context never causes a second equipment debit or a release.
 
 No battlefield trigger reads aircraft presence, continuous-air missions, a combat estimator, a global dynamic effect, or an all-country periodic event.

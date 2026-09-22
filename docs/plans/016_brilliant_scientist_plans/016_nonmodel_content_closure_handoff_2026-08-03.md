@@ -6,7 +6,7 @@ Date: 2026-08-03
 
 Status: historical non-model closure handoff, reconciled 2026-09-02. The former Event 016 numeric biological quantity and parallel native-reservation ledger proposal is retired. No gameplay, localisation, GUI, asset, model, or spreadsheet files were changed by this documentation reconciliation.
 
-> Current biological boundary: [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md) and [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) define actual pathogen equipment as authoritative, native biological raid ownership of reservation and outcome lifecycle, and separate Event 016 production, staging, and decision-led deployment receipts. Tranche 4 source review and MCP transaction acceptance remain unresolved.
+> Historical biological boundary, superseded by the 2026-09-20 native-raid amendment: [`016_final_completion_contract.md`](../../specs/016_brilliant_scientist_specs/specs/016_final_completion_contract.md) and [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md) define actual pathogen equipment as authoritative, native biological raid ownership of reservation and outcome lifecycle, and eighteen Event 016 native biological raids in place of former production, staging, and attack decisions. Tranche 4 source review and MCP transaction acceptance remain unresolved.
 
 ## Recommendation
 
@@ -56,7 +56,7 @@ The next useful work is not another content tranche:
 4. Review quantitative project timing, foreign-operation scoring, force production, rebellion, and terminal timing.
 5. Rerun decision/mission, localisation, event-completion, and documentation audits against the final implementation state.
 
-The former KRG biological stockpile and delivery contract is retired as a parallel-ledger proposal. Actual pathogen equipment is authoritative, native biological raids own reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution, and Event 016 production, staging, and decision-led deployments use separate receipts documented in [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md). Tranche 4 source review and MCP transaction acceptance remain unresolved.
+The former KRG biological stockpile and delivery contract is retired as a parallel-ledger proposal. Actual pathogen equipment is authoritative, native biological raids own reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution, and Event 016 uses ordinary equipment production and native biological raids documented in [`biological_operations.md`](../../events/016_brilliant_scientist/systems/biological_operations.md). Tranche 4 source review and MCP transaction acceptance remain unresolved.
 
 No substitute stockpile, scripted delivery fallback, or parallel native-raid payload ledger should be designed.
 

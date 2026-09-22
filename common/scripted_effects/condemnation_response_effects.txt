@@ -13,6 +13,50 @@ condemnation_add_fuel_fraction = {
 	set_fuel_ratio = condemnation_fuel_ratio_after_gain
 }
 
+# Shared payment quote used by response effects. The score is clamped to
+# 0..1000, producing a 1x..3x multiplier. Integer equipment and experience
+# costs use an exact numerator check so positive fractions round up.
+condemnation_scale_integer_cost = {
+	if = {
+		limit = { condemnation_prepare_scaled_integer_cost = yes }
+		set_temp_variable = { condemnation_scaled_cost = condemnation_scaled_cost }
+	}
+}
+
+# Shared fixed-point payment quote. Input and output use the same temporary
+# names as the integer helper so fuel fractions can be substituted directly.
+condemnation_scale_fraction_cost = {
+	if = {
+		limit = { condemnation_prepare_scaled_fraction_cost = yes }
+		set_temp_variable = { condemnation_scaled_cost = condemnation_scaled_cost }
+	}
+}
+
+# The base inspection idea carries the fixed 5% burden. This variable-driven
+# dynamic modifier adds 0..10% and is refreshed by the existing monthly pulse.
+condemnation_refresh_inspection_burden = {
+	if = {
+		limit = { condemnation_prepare_inspection_consumer_goods = yes }
+		set_variable = { condemnation_inspection_consumer_goods_increment = condemnation_inspection_consumer_goods_increment_temp }
+	}
+	if = {
+		limit = { has_country_flag = condemnation_inspections_active }
+		if = {
+			limit = { NOT = { has_dynamic_modifier = { modifier = condemnation_inspection_score_burden } } }
+			add_dynamic_modifier = { modifier = condemnation_inspection_score_burden }
+		}
+		force_update_dynamic_modifier = yes
+	}
+	else_if = {
+		limit = { has_dynamic_modifier = { modifier = condemnation_inspection_score_burden } }
+		remove_dynamic_modifier = { modifier = condemnation_inspection_score_burden }
+	}
+	if = {
+		limit = { NOT = { has_country_flag = condemnation_inspections_active } }
+		clear_variable = condemnation_inspection_consumer_goods_increment
+	}
+}
+
 condemnation_apply_response_duration = {
 	# Inputs: condemnation_response_idea and condemnation_response_days are
 	# consumed by callers through their explicit add_timed_idea effect.
@@ -25,6 +69,7 @@ condemnation_accept_inspections = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.inspection }
 	set_country_flag = { flag = condemnation_inspections_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_inspection_burden days = var:condemnation_response_days }
+	condemnation_refresh_inspection_burden = yes
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.inspection }
 	clamp_variable = { var = condemnation_decay_credit min = 0 max = constant:condemnation_compliance_credit.maximum }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.inspections }
@@ -190,22 +235,29 @@ condemnation_dismantle_restricted_sites = {
 }
 
 condemnation_pay_compensation = {
-	set_temp_variable = { condemnation_compensation_convoys = condemnation_tier }
-	multiply_temp_variable = { condemnation_compensation_convoys = constant:condemnation_cost.compensation_convoys_per_tier }
-	add_to_temp_variable = { condemnation_compensation_convoys = constant:condemnation_cost.compensation_convoys_base }
+	set_temp_variable = { condemnation_unscaled_cost = condemnation_tier }
+	multiply_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_convoys_per_tier }
+	add_to_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_convoys_base }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_compensation_convoys = condemnation_scaled_cost }
 	set_temp_variable = { condemnation_compensation_convoys_remove = condemnation_compensation_convoys }
 	multiply_temp_variable = { condemnation_compensation_convoys_remove = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_compensation_convoys_remove }
-	set_temp_variable = { condemnation_compensation_equipment_remove = constant:condemnation_cost.compensation_infantry_equipment }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_infantry_equipment }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_compensation_equipment = condemnation_scaled_cost }
+	set_temp_variable = { condemnation_compensation_equipment_remove = condemnation_compensation_equipment }
 	multiply_temp_variable = { condemnation_compensation_equipment_remove = -1 }
 	add_equipment_to_stockpile = { type = infantry_equipment amount = condemnation_compensation_equipment_remove }
-	set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.compensation_fuel_fraction }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_fuel_fraction }
+	condemnation_scale_fraction_cost = yes
+	set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 	condemnation_pay_fuel_fraction = yes
 	if = {
 		limit = { var:condemnation_last_victim = { exists = yes } }
 		var:condemnation_last_victim = {
 			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_compensation_convoys }
-			add_equipment_to_stockpile = { type = infantry_equipment amount = constant:condemnation_cost.compensation_infantry_equipment }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = condemnation_compensation_equipment }
 			add_opinion_modifier = { target = ROOT modifier = condemnation_compensation_received }
 		}
 	}
@@ -233,7 +285,9 @@ condemnation_allow_observers = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.observers }
 	set_country_flag = { flag = condemnation_observers_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_observer_access days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_observer_convoy_cost = constant:condemnation_cost.observer_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.observer_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_observer_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_observer_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_observer_convoy_cost }
 	add_to_variable = { condemnation_decay_credit = constant:condemnation_compliance_credit.observers }
@@ -243,13 +297,19 @@ condemnation_allow_observers = {
 }
 
 condemnation_reform_command = {
-	set_temp_variable = { condemnation_xp_cost = constant:condemnation_cost.command_reform_army_xp }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_army_xp }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_xp_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_xp_cost = -1 }
 	army_experience = condemnation_xp_cost
-	set_temp_variable = { condemnation_xp_cost = constant:condemnation_cost.command_reform_air_xp }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_air_xp }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_xp_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_xp_cost = -1 }
 	air_experience = condemnation_xp_cost
-	set_temp_variable = { condemnation_xp_cost = constant:condemnation_cost.command_reform_navy_xp }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_navy_xp }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_xp_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_xp_cost = -1 }
 	navy_experience = condemnation_xp_cost
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.command_reform }
@@ -266,6 +326,8 @@ condemnation_refuse_inspections = {
 	clr_country_flag = condemnation_inspections_active
 	clr_country_flag = condemnation_observers_active
 	remove_ideas = condemnation_inspection_burden
+	if = { limit = { has_dynamic_modifier = { modifier = condemnation_inspection_score_burden } } remove_dynamic_modifier = { modifier = condemnation_inspection_score_burden } }
+	clear_variable = condemnation_inspection_consumer_goods_increment
 	remove_ideas = condemnation_observer_access
 	set_country_flag = { flag = condemnation_refused_inspection days = var:condemnation_response_days }
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
@@ -291,7 +353,9 @@ condemnation_activate_autarky = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
 	set_country_flag = { flag = condemnation_autarky_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_autarky_program days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.autarky_fuel_fraction }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.autarky_fuel_fraction }
+	condemnation_scale_fraction_cost = yes
+	set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 	condemnation_pay_fuel_fraction = yes
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
@@ -335,10 +399,14 @@ condemnation_activate_controlled_shipping = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.defiance_program }
 	set_country_flag = { flag = condemnation_controlled_shipping_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_controlled_shipping days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.controlled_shipping_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.controlled_shipping_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
-	set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.controlled_shipping_fuel_fraction }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.controlled_shipping_fuel_fraction }
+	condemnation_scale_fraction_cost = yes
+	set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 	condemnation_pay_fuel_fraction = yes
 	set_variable = { condemnation_compliance_state = constant:condemnation_compliance_state.defiance }
 	condemnation_apply_response_duration = yes
@@ -366,10 +434,14 @@ condemnation_open_black_market = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_black_market_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_black_market_network days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.black_market_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.black_market_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
-	set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.black_market_fuel_fraction }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.black_market_fuel_fraction }
+	condemnation_scale_fraction_cost = yes
+	set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 	condemnation_pay_fuel_fraction = yes
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:condemnation_cost.black_market_infantry_gain }
 	add_equipment_to_stockpile = { type = support_equipment amount = constant:condemnation_cost.black_market_support_gain }
@@ -381,7 +453,9 @@ condemnation_use_false_manifests = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_false_manifest_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_false_manifests days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.false_manifest_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.false_manifest_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
 	set_temp_variable = { condemnation_evasion_strength = constant:condemnation_route.false_manifest_strength }
@@ -392,7 +466,9 @@ condemnation_use_neutral_intermediaries = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_intermediary_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_neutral_intermediaries days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.intermediary_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.intermediary_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
 	add_equipment_to_stockpile = { type = infantry_equipment amount = constant:condemnation_cost.intermediary_infantry_gain }
@@ -413,7 +489,9 @@ condemnation_open_covert_fuel_route = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_covert_fuel_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_covert_fuel_route days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.covert_fuel_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.covert_fuel_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
 	set_temp_variable = { condemnation_fuel_fraction_gain = constant:condemnation_cost.covert_fuel_gain_fraction }
@@ -426,7 +504,9 @@ condemnation_reflag_shipping = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_reflagging_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_reflagged_shipping days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.reflagging_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.reflagging_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
 	set_temp_variable = { condemnation_evasion_strength = constant:condemnation_route.reflagging_strength }
@@ -437,7 +517,9 @@ condemnation_use_stolen_license = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_stolen_license_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_stolen_license days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.stolen_license_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.stolen_license_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
 	set_temp_variable = { condemnation_evasion_strength = constant:condemnation_route.stolen_license_strength }
@@ -448,10 +530,14 @@ condemnation_open_smuggled_lab = {
 	set_temp_variable = { condemnation_response_days = constant:condemnation_duration_days.evasion_route }
 	set_country_flag = { flag = condemnation_smuggled_lab_active days = var:condemnation_response_days }
 	add_timed_idea = { idea = condemnation_smuggled_laboratory days = var:condemnation_response_days }
-	set_temp_variable = { condemnation_route_convoy_cost = constant:condemnation_cost.smuggled_lab_convoys }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.smuggled_lab_convoys }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_route_convoy_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_route_convoy_cost = -1 }
 	add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_route_convoy_cost }
-	set_temp_variable = { condemnation_lab_equipment_cost = constant:condemnation_cost.smuggled_lab_equipment }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.smuggled_lab_equipment }
+	condemnation_scale_integer_cost = yes
+	set_temp_variable = { condemnation_lab_equipment_cost = condemnation_scaled_cost }
 	multiply_temp_variable = { condemnation_lab_equipment_cost = -1 }
 	add_equipment_to_stockpile = { type = support_equipment amount = condemnation_lab_equipment_cost }
 	set_temp_variable = { condemnation_evasion_strength = constant:condemnation_route.smuggled_lab_strength }

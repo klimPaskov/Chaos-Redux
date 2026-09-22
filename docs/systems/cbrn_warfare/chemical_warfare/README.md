@@ -23,5 +23,5 @@ This directory contains the chemical-delivery, doctrine-module, officer-corps, t
 
 ## Country-specific programs
 
-- [`japan_chemical_campaign_decisions.md`](japan_chemical_campaign_decisions.md) documents the Japanese campaign decisions.
+- [`japan_chemical_campaign_decisions.md`](japan_chemical_campaign_decisions.md) documents the Japanese campaign raids; the filename is retained for existing links.
 - [`us_special_chemical_projects.md`](us_special_chemical_projects.md) documents the United States special-project integration.

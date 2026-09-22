@@ -329,19 +329,9 @@ Suggested sprite:
 
 `GFX_trait_024_video_game_in_sweden_rulebook_commander`
 
-### A17: Field-Validated Planner
+### A17: Retired trait icon
 
-Filename:
-
-`024_video_game_in_sweden_trait_field_validated.dds`
-
-Direction:
-
-Officer profile with compass, terrain contour, and revised map. Show practical correction and adaptability.
-
-Suggested sprite:
-
-`GFX_trait_024_video_game_in_sweden_field_validated`
+The user's explicit 2026-09-20 instruction removes Field-Validated Planner. The former A17 icon request is superseded; no replacement commander-trait art should be produced for field validation.
 
 ## Achievement icon triplets
 

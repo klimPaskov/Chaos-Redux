@@ -1,0 +1,19 @@
+/goal
+
+Implement Parliament of Fear in docs/specs/077_parliament_of_fear_specs/ to its fullest extent. Read all 13 numbered specification parts, supporting material, and the asset, super_event, achievement, decision_mission, and coding prompt files with the 077_parliament_of_fear prefix. Store handoffs in docs/plans/077_parliament_of_fear_plans/.
+
+Fully read AGENTS.md, CHAOS_REDUX_MECHANICS.md, every applicable supplied skill, required offline wiki page, installed vanilla reference, and actual shared-system contract. The planning package did not complete external full reads, subagent execution, MCP validation, GUI rendering, or asset production. Use the offline Paradox Wiki. Resolve the legacy equipment-aid migration and preserve ID 77, filenames 077, namespace chaosx.nr77, and root chaosx.nr77.1.
+
+Deliver the dynamic 100-seat country-local chamber, separate support/evidence/occupancy, persistent original case truth, real character ownership, and government-specific political authority. Keep three public readouts and four action families. Vacancies do not lower the 51-seat majority. Implement meaningful time, staffing, political support and concession costs with one validated quote and debit path. Ensure minority and low-resource recovery remain reachable.
+
+Implement circumstance-driven Paranoia, complete incident families, investigations, protection, targeted and broad removal, appointments, organized plots, and the three 200/400/600 Chaos evolutions under shared timing. Threshold eligibility is not instant activation. Implement the warned, bounded Great Purge, containment between waves, all settlements, persistent losses, and safe repeat instances. Stable closure needs the specified pressure, support, occupancy, threat and consecutive-day conditions. Never reroll guilt on investigation or resurrect the dead.
+
+Integrate Intel Leaked, Random Civil War, Generalissimo, and the verified live identity of The Offensive. Use one owner for armed splits. Deliver coherent successor leadership, flags, states, supply, forces, technology and meaningful inherited political content without asset duplication. Audit all installed tag sources before new tags. Use technology tools for inheritance or grants. Preserve native politics and use certified adapters or temporary deferral for conflicting purges.
+
+Implement every mapped Chaos contribution and reversal, dynamic scale, repeat guard, attribution cap and shared-source overlap. Do not double count generic war, ideology, annexation or deaths. Abstract seats are not death totals. Reuse shared crisis limits, burden, repeatable weights and cluster pacing without duplicate updates.
+
+Produce the approved chamber reference, native element map, all required static assets, genuine frame animation and static fallback, eight achievements and icon triplets, final direction-based localisation, and the material Great Purge super-event. Research final super-event text, quotation, cultural context, unique recording, rights and excerpt. No placeholder art, fabricated sources or guessed engine APIs qualify as final.
+
+Use the supplied subagents through the real runtime with isolated work packets. Spawn chaosx_ai_probability_auditor and inspect complete source pools before the full probability workflow and 18 scenario families. Run event-flow/scope and GUI inspection, rendering and comparison with required states and resolutions. Execute the 93 acceptance scenarios in the appropriate runtime.
+
+Near completion, spawn chaosx_improvement_loop_planner with fork_turns="none", resolve its actual handoff, and complete the independent event completion audit. Edit only authorized workbook cells and regenerate exports through the official process. Keep iterating until implementation satisfies the full specification. Do not claim completion with unimplemented surfaces or unverified mandatory gates. Report exact changes, actual evidence and remaining blockers.

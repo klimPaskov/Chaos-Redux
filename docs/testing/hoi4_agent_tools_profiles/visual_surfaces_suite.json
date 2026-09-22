@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "1.0",
+  "id": "chaos_redux_visual_surfaces",
+  "cases": [
+    {
+      "id": "fury_focus_inventory",
+      "domain": "tool",
+      "tool": "hoi4.focus_inspect",
+      "arguments": { "mode": "national", "relativePath": "common/national_focus/007_fury_focus_tree.txt", "treeId": "fury_focus_tree" },
+      "assertions": [
+        { "id": "tree_count", "path": ["data", "treeCount"], "expected": 1 },
+        { "id": "focus_count", "path": ["data", "trees", "0", "focusCount"], "expected": 52 }
+      ],
+      "views": ["summary", "diagnostics"]
+    },
+    {
+      "id": "holy_realm_focus_inventory",
+      "domain": "tool",
+      "tool": "hoi4.focus_inspect",
+      "arguments": { "mode": "national", "relativePath": "common/national_focus/003_holy_realm.txt", "treeId": "THR_focus" },
+      "assertions": [
+        { "id": "tree_count", "path": ["data", "treeCount"], "expected": 1 },
+        { "id": "focus_count", "path": ["data", "trees", "0", "focusCount"], "expected": 111 }
+      ],
+      "views": ["summary", "diagnostics"]
+    },
+    {
+      "id": "utopia_focus_inventory",
+      "domain": "tool",
+      "tool": "hoi4.focus_inspect",
+      "arguments": { "mode": "national", "relativePath": "common/national_focus/015_utopia_manifesto_focus_tree.txt", "treeId": "utopia_manifesto_tree" },
+      "assertions": [
+        { "id": "tree_count", "path": ["data", "treeCount"], "expected": 1 },
+        { "id": "focus_count", "path": ["data", "trees", "0", "focusCount"], "expected": 124 }
+      ],
+      "views": ["summary", "diagnostics"]
+    },
+    {
+      "id": "fury_focus_render",
+      "domain": "tool",
+      "tool": "hoi4.focus_render",
+      "arguments": { "mode": "national", "relativePath": "common/national_focus/007_fury_focus_tree.txt", "treeId": "fury_focus_tree", "horizontalSpacing": 96, "verticalSpacing": 130 },
+      "assertions": [{ "id": "selected_tree", "path": ["data", "treeId"], "expected": "fury_focus_tree" }],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "holy_realm_focus_render",
+      "domain": "tool",
+      "tool": "hoi4.focus_render",
+      "arguments": { "mode": "national", "relativePath": "common/national_focus/003_holy_realm.txt", "treeId": "THR_focus", "horizontalSpacing": 96, "verticalSpacing": 130 },
+      "assertions": [{ "id": "selected_tree", "path": ["data", "treeId"], "expected": "THR_focus" }],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "utopia_focus_render",
+      "domain": "tool",
+      "tool": "hoi4.focus_render",
+      "arguments": { "mode": "national", "relativePath": "common/national_focus/015_utopia_manifesto_focus_tree.txt", "treeId": "utopia_manifesto_tree", "horizontalSpacing": 96, "verticalSpacing": 130 },
+      "assertions": [{ "id": "selected_tree", "path": ["data", "treeId"], "expected": "utopia_manifesto_tree" }],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "infantry_folder_render",
+      "domain": "tool",
+      "tool": "hoi4.tech_render",
+      "arguments": { "view": "folder", "folderId": "infantry_folder" },
+      "assertions": [
+        { "id": "source_placement", "path": ["data", "sourceAccurate"], "expected": true },
+        { "id": "node_count", "path": ["data", "selectedNodes"], "expected": 43 },
+        { "id": "no_omissions", "path": ["data", "omittedNodes"], "expected": 0 }
+      ],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "chemical_folder_render",
+      "domain": "tool",
+      "tool": "hoi4.tech_render",
+      "arguments": { "view": "folder", "folderId": "chemical_warfare_folder" },
+      "assertions": [
+        { "id": "source_placement", "path": ["data", "sourceAccurate"], "expected": true },
+        { "id": "node_count", "path": ["data", "selectedNodes"], "expected": 22 },
+        { "id": "no_omissions", "path": ["data", "omittedNodes"], "expected": 0 }
+      ],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "biological_folder_render",
+      "domain": "tool",
+      "tool": "hoi4.tech_render",
+      "arguments": { "view": "folder", "folderId": "biowarfare_folder" },
+      "assertions": [
+        { "id": "source_placement", "path": ["data", "sourceAccurate"], "expected": true },
+        { "id": "node_count", "path": ["data", "selectedNodes"], "expected": 12 },
+        { "id": "no_omissions", "path": ["data", "omittedNodes"], "expected": 0 }
+      ],
+      "views": ["summary", "artifacts", "diagnostics"]
+    }
+  ]
+}

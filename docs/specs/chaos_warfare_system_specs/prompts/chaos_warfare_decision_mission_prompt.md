@@ -1,5 +1,7 @@
 # Chaos Warfare Decision and Mission Implementation Prompt
 
+Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger. Older conflicting reward, policy, raid, unit, project, or asset requests are superseded.
+
 ## Task
 
 Implement the decision, mission, and optional scripted-GUI layer for the accepted CBRN rework. Read `chaos-redux-decisions-missions`, the full spec pack, current chemical and biological decisions, current scripted GUI patterns, and verified vanilla 1.19 examples. Use dynamic costs, named targets, AI behavior, cleanup, and custom tooltips. Do not create a political-power store.

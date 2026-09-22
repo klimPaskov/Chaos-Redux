@@ -35,6 +35,8 @@ Political advisors provide strong research, project, production, stability, resi
 Operational effects are conditional on the character occupying the relevant advisor slot.
 They are applied through `common/scripted_effects/cbrn_historical_advisor_effects.txt` and called only from the shared chemical exposure, Chemical Readiness, and biological lifecycle systems.
 
+The accepted combined CBRN balance cap is evaluated by one legally appointable country, not by multiplying every advisor in the roster. `common/characters/cbrn_historical_specialists.txt` restricts Gerhard Schrader's chemical theorist appointment to GER and Grigory Mairanovsky's toxicological director appointment to SOV, so their 1.03 dose and 1.02 contamination factors cannot stack in one country; chemical-readiness generation has at most one 1.20 specialist factor from this pair. JAP's Ishii and Kitano can supply two compatible 1.02 biological potency factors after Kitano's date gate, as can the USA's Baldwin and Olson after Olson's date gate. The doctrine guide records separately legal conditional source scenarios. These are source appointment bounds, not engine or probability evidence.
+
 Chemical specialists increase delivered dose, deaths, contamination, and readiness efficiency.
 Biological specialists increase seed potency, growth, spread, deaths, and medical saturation.
 Defensive specialists reduce deaths and medical saturation or increase outbreak detection.

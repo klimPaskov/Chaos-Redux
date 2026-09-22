@@ -1,0 +1,94 @@
+# ============================================================================
+# CHAOS REDUX - CBRN COMMANDER SERVICE PROGRESSION
+# ============================================================================
+# Overview:
+# - Credits a named commander only after the final successfully paid upkeep
+#   of an eligible active CBRN HQ order.
+# - Credits protected field command from the leader-scoped won-combat action.
+# - Native raid outcomes have no documented participating army-leader pointer;
+#   this file does not assign their country-level results to a random leader.
+# ============================================================================
+
+# Character scope. Called after the last successful HQ upkeep debit while the
+# operation code and active status trait still identify this commander.
+cbrn_commander_record_completed_hq_operation = {
+	if = {
+		limit = { cbrn_commander_hq_completion_is_eligible = yes }
+		set_character_flag = cbrn_hq_command_completion_recorded
+		if = {
+			limit = {
+				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals }
+			}
+			add_to_variable = { cbrn_chemical_operations_completed = constant:cbrn_commander_progression.one }
+			clamp_variable = { var = cbrn_chemical_operations_completed max = constant:cbrn_commander_progression.chemical_operations_for_trait }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.mass_antidote_response compare = equals }
+					check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_infection_corridor compare = equals }
+				}
+			}
+			add_to_variable = { cbrn_biological_operations_completed = constant:cbrn_commander_progression.one }
+			clamp_variable = { var = cbrn_biological_operations_completed max = constant:cbrn_commander_progression.biological_operations_for_trait }
+		}
+		if = {
+			limit = {
+				OR = {
+					check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals }
+					check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_operational_area compare = equals }
+					check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_infection_corridor compare = equals }
+				}
+			}
+			add_to_variable = { cbrn_containment_operations_completed = constant:cbrn_commander_progression.one }
+			clamp_variable = { var = cbrn_containment_operations_completed max = constant:cbrn_commander_progression.containment_operations_for_organizer }
+		}
+		cbrn_commander_refresh_earned_traits = yes
+	}
+}
+
+# Character scope. Called by the leader-specific on_army_leader_won_combat
+# action; the leader must command a protected CBRN detachment at that moment.
+cbrn_commander_record_protected_combat_victory = {
+	if = {
+		limit = {
+			cbrn_commander_commands_protected_formation = yes
+			NOT = {
+				check_variable = {
+					var = cbrn_protected_combat_victories
+					value = constant:cbrn_commander_progression.protected_victories_for_expert
+					compare = greater_than_or_equals
+				}
+			}
+		}
+		add_to_variable = { cbrn_protected_combat_victories = constant:cbrn_commander_progression.one }
+		clamp_variable = { var = cbrn_protected_combat_victories max = constant:cbrn_commander_progression.protected_victories_for_expert }
+	}
+}
+
+# Character scope. Scripted additions bypass the normal assignable-trait
+# purchase path and happen only after exact service counters are satisfied.
+cbrn_commander_refresh_earned_traits = {
+	if = {
+		limit = {
+			cbrn_commander_has_chemical_service = yes
+			NOT = { has_trait = chemical_operations_commander }
+		}
+		add_unit_leader_trait = chemical_operations_commander
+	}
+	if = {
+		limit = {
+			cbrn_commander_has_biological_service = yes
+			NOT = { has_trait = biological_operations_veteran }
+		}
+		add_unit_leader_trait = biological_operations_veteran
+	}
+	if = {
+		limit = {
+			has_trait = chemical_operations_commander
+			has_trait = biological_operations_veteran
+			NOT = { has_trait = hazard_warfare_veteran }
+		}
+		add_unit_leader_trait = hazard_warfare_veteran
+	}
+}

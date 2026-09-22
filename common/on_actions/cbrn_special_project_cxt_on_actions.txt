@@ -1,0 +1,25 @@
+# CBRN special-project CXT extension registration.
+# Startup registers through one existing country. The tag-only fallback marks
+# pending work without granting projects, equipment, or technologies.
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				cbrn_register_special_project_cxt_package = yes
+			}
+		}
+	}
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				cbrn_register_special_project_cxt_package = yes
+				if = {
+					limit = { check_variable = { chaosx_test_country_extension_registration_added > 0 } }
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

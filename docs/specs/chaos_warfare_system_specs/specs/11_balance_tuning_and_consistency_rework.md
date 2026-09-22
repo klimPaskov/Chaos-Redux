@@ -1,5 +1,7 @@
 # Balance, Tuning, and Consistency Rework
 
+> **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older requirements in this file. Use the amendment and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) before treating any role, policy, raid, project, limit, organization, or asset here as current design.
+
 ## Balance philosophy
 
 Chaos Warfare can be stronger than ordinary doctrine in prepared circumstances. It should be weaker when the user lacks payload, protection, headquarters integration, supply, or political tolerance.

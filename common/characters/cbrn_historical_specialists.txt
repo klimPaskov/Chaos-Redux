@@ -4,7 +4,11 @@
 # Overview:
 # - Promotes selected existing named scientists into dual-role static characters.
 # - Reuses their accepted scientist portraits and adds dedicated advisor cards.
-# - Doctrine gates only explicitly aggressive weaponization appointments.
+# - Scientist skill describes demonstrated expertise; advisor availability separately
+#   gates the dated appointment or offensive authorization represented by that card.
+# - Defensive medical and early interwar research roles remain available where the
+#   historical record supports them; no duplicate portrait or fictional appointment
+#   is introduced by the date gates below.
 # ============================================================================
 
 @CBRN_HISTORICAL_ADVISOR_COST = 100
@@ -66,7 +70,12 @@ characters = {
 			idea_token = ENG_paul_fildes
 			ledger = army
 			allowed = { original_tag = ENG }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Porton Down's biological-warfare department was created for the
+				# wartime programme; Fildes remains a scientist before this appointment.
+				date > 1939.01.01
+			}
 			traits = { chaos_warfare_biological_theorist_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -122,7 +131,13 @@ characters = {
 			idea_token = GER_gerhard_schrader
 			ledger = army
 			allowed = { original_tag = GER }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Schrader's tabun discovery belongs to late 1936; the appointment
+				# therefore unlocks after the 1936 bookmark rather than granting a
+				# January 1936 nerve-agent programme.
+				date > 1936.12.31
+			}
 			traits = { chaos_warfare_chemical_theorist_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -150,7 +165,12 @@ characters = {
 			slot = political_advisor
 			idea_token = GER_kurt_blome
 			allowed = { original_tag = GER }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Blome's programme-director role represents the later wartime
+				# biological programme, not the 1936 scientist appointment.
+				date > 1942.01.01
+			}
 			traits = { cbrn_biological_weaponization_director_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -177,6 +197,8 @@ characters = {
 			idea_token = JAP_shiro_ishii
 			ledger = army
 			allowed = { original_tag = JAP }
+			# Ishii's Unit 731 command was already active in the 1936
+			# bookmark; the doctrine remains the offensive authorization gate.
 			available = { has_doctrine = chaos_warfare }
 			traits = { chaos_warfare_weaponization_theorist_trait }
 			ai_will_do = {
@@ -205,7 +227,11 @@ characters = {
 			slot = political_advisor
 			idea_token = JAP_masaji_kitano
 			allowed = { original_tag = JAP }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Kitano's Unit 731 command belongs to the 1942-45 period.
+				date > 1942.01.01
+			}
 			traits = { cbrn_biological_weaponization_director_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -233,7 +259,12 @@ characters = {
 			slot = political_advisor
 			idea_token = POL_franciszek_witaszek
 			allowed = { original_tag = POL }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Witaszek's clandestine CBW role begins after the German
+				# occupation of Poland, not at the 1936 bookmark.
+				date > 1939.09.01
+			}
 			traits = { cbrn_resistance_biological_sabotage_director_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -262,7 +293,12 @@ characters = {
 			slot = political_advisor
 			idea_token = SOV_grigory_mairanovsky
 			allowed = { original_tag = SOV }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Mairanovsky's secret-police toxicology appointment belongs to
+				# the later 1930s, while the scientist identity remains static.
+				date > 1937.01.01
+			}
 			traits = { cbrn_toxicological_weaponization_director_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -289,6 +325,8 @@ characters = {
 			idea_token = SOV_ivan_mikhailovich_velikanov
 			ledger = army
 			allowed = { original_tag = SOV }
+			# Velikanov's Red Army biological-warfare work predates the
+			# bookmark; the doctrine remains the offensive authorization gate.
 			available = { has_doctrine = chaos_warfare }
 			traits = { chaos_warfare_biological_theorist_trait }
 			ai_will_do = {
@@ -318,7 +356,12 @@ characters = {
 			slot = political_advisor
 			idea_token = USA_frank_olson
 			allowed = { original_tag = USA }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# The Camp Detrick Special Operations role is a wartime
+				# appointment and does not exist at the 1936/1939 bookmarks.
+				date > 1943.01.01
+			}
 			traits = { cbrn_biological_program_director_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE
@@ -346,7 +389,12 @@ characters = {
 			idea_token = USA_ira_baldwin
 			ledger = army
 			allowed = { original_tag = USA }
-			available = { has_doctrine = chaos_warfare }
+			available = {
+				has_doctrine = chaos_warfare
+				# Baldwin was assigned to the US biological-warfare programme
+				# in late 1942; his scientist identity is still recruited at start.
+				date > 1942.01.01
+			}
 			traits = { chaos_warfare_biological_theorist_trait }
 			ai_will_do = {
 				base = @CBRN_HISTORICAL_AI_BASE

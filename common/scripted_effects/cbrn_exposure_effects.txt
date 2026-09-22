@@ -39,6 +39,7 @@ cbrn_reset_action_outputs = {
 	set_temp_variable = { cbrn_action_condemnation_base = @CR_SC_CBRN_MATH_ZERO }
 	set_temp_variable = { cbrn_action_friendly_exposure_risk = @CR_SC_CBRN_MATH_ZERO }
 	set_temp_variable = { cbrn_action_vehicle_sealing_applied = constant:cbrn_proof.missing }
+	set_temp_variable = { cbrn_action_armored_advance_receipt = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_source_label = constant:cbrn_source_label.none }
 }
 
@@ -362,6 +363,22 @@ cbrn_calculate_chemical_action_outputs = {
 		clamp_temp_variable = { var = cbrn_action_base_friendly_risk_local min = constant:cbrn_action_input_bounds.friendly_risk_min max = constant:cbrn_action_input_bounds.friendly_risk_max }
 	}
 	set_temp_variable = { cbrn_action_release_efficiency_mult = cbrn_action_release_efficiency_mult_local }
+	set_temp_variable = { cbrn_action_unmitigated_friendly_risk = cbrn_action_base_friendly_risk_local }
+	# The native land raid's actor-country bridge supplies a chain-local armored
+	# route marker and exact target after its essential equipment payment. Payload
+	# proof must also be present before project protection applies.
+	if = {
+		limit = {
+			has_event_target = cbrn_land_bridge_route_armored_delivery
+			has_event_target = cbrn_action_actor
+			has_event_target = cbrn_action_target_state
+			tag = event_target:cbrn_action_actor
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+			check_variable = { var = cbrn_action_target_state_supplied value = constant:cbrn_proof.supplied compare = equals }
+			check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals }
+		}
+		set_temp_variable = { cbrn_action_armored_advance_receipt = constant:cbrn_proof.supplied }
+	}
 	if = {
 		limit = {
 			has_tech = vehicle_overpressure_and_sealed_compartments
@@ -458,6 +475,10 @@ cbrn_calculate_chemical_action_outputs = {
 		multiply_temp_variable = { cbrn_action_dose_mult = constant:cbrn_munitions_designer_effect.stable_choking_dose_mult }
 	}
 	cbrn_apply_historical_actor_chemical_advisor_modifiers = yes
+	# Preserve the issued-mask result (and the attacker's dose) before the
+	# target's additional medical advisor, treatment, and response layers.
+	set_temp_variable = { cbrn_action_military_casualty_before_treatment = cbrn_action_military_casualty_mult }
+	set_temp_variable = { cbrn_action_civilian_casualty_before_treatment = cbrn_action_civilian_casualty_mult }
 	cbrn_apply_historical_target_chemical_advisor_modifiers = yes
 	clamp_temp_variable = { var = cbrn_action_dose_mult min = constant:cbrn_action_input_bounds.dose_mult_min max = constant:cbrn_action_input_bounds.dose_mult_max }
 	clamp_temp_variable = { var = cbrn_action_doctrine_condemnation_mult_local min = constant:cbrn_doctrine_condemnation.minimum_mult max = constant:cbrn_doctrine_condemnation.maximum_mult }
@@ -486,6 +507,10 @@ cbrn_calculate_chemical_action_outputs = {
 		set_temp_variable = { cbrn_action_lethality = cbrn_class_strategic_lethality }
 	}
 
+	set_temp_variable = { cbrn_action_military_death_floor = cbrn_action_lethality }
+	multiply_temp_variable = { cbrn_action_military_death_floor = cbrn_action_dose_mult }
+	multiply_temp_variable = { cbrn_action_military_death_floor = cbrn_action_military_casualty_before_treatment }
+	multiply_temp_variable = { cbrn_action_military_death_floor = constant:cbrn_hazard_budget.residual_floor }
 	set_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_dose_mult }
 	multiply_temp_variable = { cbrn_action_military_death_fraction = cbrn_action_military_casualty_mult }
@@ -508,20 +533,39 @@ cbrn_calculate_chemical_action_outputs = {
 		}
 		multiply_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_medical_designer_effect.antidote_nerve_death_mult }
 	}
+	clamp_temp_variable = { var = cbrn_action_military_death_fraction min = cbrn_action_military_death_floor }
 	clamp_temp_variable = { var = cbrn_action_military_death_fraction min = @CR_SC_CBRN_MATH_ZERO max = constant:cbrn_action_output_bounds.military_death_fraction_max }
 
 	set_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_route_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_action_dose_mult }
+	set_temp_variable = { cbrn_action_civilian_exposed_before_response = cbrn_action_civilian_exposed_fraction }
 	set_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_math.one }
 	if = {
 		limit = { event_target:cbrn_action_target_state = { has_state_flag = cbrn_civilians_moved_to_shelters } }
 		multiply_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_protection_response.shelter_exposed_fraction_mult }
 	}
 	if = {
+		limit = {
+			check_variable = { var = cbrn_action_civilian_protection_proof value = constant:cbrn_proof.supplied compare = equals }
+			event_target:cbrn_action_target_state = {
+				has_state_flag = cbrn_civilians_moved_to_shelters
+				has_dynamic_modifier = cbrn_civilian_shelter_disruption
+				OR = {
+					infrastructure > constant:cbrn_math.zero
+					supply_node > constant:cbrn_math.zero
+				}
+				has_variable = cbrn_civilian_mask_effective_coverage
+				check_variable = { var = cbrn_civilian_mask_effective_coverage value = constant:cbrn_math.zero compare = greater_than }
+				CONTROLLER = { cbrn_project_has_collective_protection = yes }
+			}
+		}
+		multiply_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_project_effect.collective_shelter_exposure_multiplier }
+	}
+	if = {
 		limit = { event_target:cbrn_action_target_state = { has_state_flag = cbrn_industry_ordered_to_continue } }
 		multiply_temp_variable = { cbrn_action_civilian_response_exposure_mult = constant:cbrn_protection_response.industry_exposed_fraction_mult }
 	}
-	multiply_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_action_civilian_response_exposure_mult }
+	set_temp_variable = { cbrn_action_civilian_exposure_benefit_mult = cbrn_action_civilian_response_exposure_mult }
 	if = {
 		limit = {
 			cbrn_designer_has_precision_release = yes
@@ -530,10 +574,20 @@ cbrn_calculate_chemical_action_outputs = {
 				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.strategic_chemical_raid compare = equals }
 			}
 		}
-		multiply_temp_variable = { cbrn_action_civilian_exposed_fraction = constant:cbrn_aerosol_designer_effect.precision_civilian_exposure_mult }
+		multiply_temp_variable = { cbrn_action_civilian_exposure_benefit_mult = constant:cbrn_aerosol_designer_effect.precision_civilian_exposure_mult }
 	}
+	# Shelter, project, and precision-delivery reductions share one legal 50%
+	# exposure budget. Extra protection saturates at this residual-risk floor.
+	clamp_temp_variable = { var = cbrn_action_civilian_exposure_benefit_mult min = constant:cbrn_hazard_budget.residual_floor }
+	multiply_temp_variable = { cbrn_action_civilian_exposed_fraction = cbrn_action_civilian_exposure_benefit_mult }
 	clamp_temp_variable = { var = cbrn_action_civilian_exposed_fraction min = @CR_SC_CBRN_MATH_ZERO max = constant:cbrn_action_output_bounds.civilian_exposed_fraction_max }
 
+	# All additional civilian exposure and medical responses share the death
+	# budget, while the issued-mask casualty multiplier remains the baseline.
+	set_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_civilian_exposed_before_response }
+	multiply_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_lethality }
+	multiply_temp_variable = { cbrn_action_civilian_death_floor = cbrn_action_civilian_casualty_before_treatment }
+	multiply_temp_variable = { cbrn_action_civilian_death_floor = constant:cbrn_hazard_budget.residual_floor }
 	set_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_exposed_fraction }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_lethality }
 	multiply_temp_variable = { cbrn_action_civilian_death_fraction = cbrn_action_civilian_casualty_mult }
@@ -556,6 +610,7 @@ cbrn_calculate_chemical_action_outputs = {
 		}
 		multiply_temp_variable = { cbrn_action_civilian_death_fraction = constant:cbrn_medical_designer_effect.antidote_nerve_death_mult }
 	}
+	clamp_temp_variable = { var = cbrn_action_civilian_death_fraction min = cbrn_action_civilian_death_floor }
 	set_temp_variable = { cbrn_action_death_cap = constant:cbrn_episode_death_cap.tactical_chemical }
 	if = {
 		limit = {
@@ -649,6 +704,11 @@ cbrn_calculate_chemical_action_outputs = {
 	clamp_temp_variable = { var = cbrn_action_contamination_duration_days min = constant:cbrn_scheduler.contamination_minimum_days max = constant:cbrn_action_output_bounds.duration_days_max }
 	round_temp_variable = cbrn_action_contamination_duration_days
 
+	set_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_route_medical_points }
+	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_class_medical_mult }
+	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_action_dose_mult }
+	multiply_temp_variable = { cbrn_action_medical_saturation_floor = cbrn_action_civilian_casualty_before_treatment }
+	multiply_temp_variable = { cbrn_action_medical_saturation_floor = constant:cbrn_hazard_budget.residual_floor }
 	set_temp_variable = { cbrn_action_medical_saturation_points = cbrn_route_medical_points }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_class_medical_mult }
 	multiply_temp_variable = { cbrn_action_medical_saturation_points = cbrn_action_dose_mult }
@@ -667,6 +727,7 @@ cbrn_calculate_chemical_action_outputs = {
 		limit = { event_target:cbrn_action_target_state = { CONTROLLER = { cbrn_designer_has_mobile_casualty_sorting = yes } } }
 		multiply_temp_variable = { cbrn_action_medical_saturation_points = constant:cbrn_medical_designer_effect.mobile_sorting_saturation_mult }
 	}
+	clamp_temp_variable = { var = cbrn_action_medical_saturation_points min = cbrn_action_medical_saturation_floor }
 	clamp_temp_variable = { var = cbrn_action_medical_saturation_points min = @CR_SC_CBRN_MATH_ZERO max = constant:cbrn_action_output_bounds.medical_points_max }
 
 	set_temp_variable = { cbrn_action_evidence_points = cbrn_route_evidence_points }
@@ -739,6 +800,22 @@ cbrn_calculate_chemical_action_outputs = {
 	multiply_temp_variable = { cbrn_action_friendly_exposure_risk = cbrn_action_command_risk_mult }
 	if = {
 		limit = {
+			check_variable = { var = cbrn_action_armored_advance_receipt value = constant:cbrn_proof.supplied compare = equals }
+			cbrn_project_has_protected_mechanized_advance = yes
+		}
+		multiply_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_project_effect.smoke_protected_advance_risk_multiplier }
+	}
+	if = {
+		limit = {
+			check_variable = { var = cbrn_action_armored_advance_receipt value = constant:cbrn_proof.supplied compare = equals }
+			check_variable = { var = cbrn_action_vehicle_sealing_applied value = constant:cbrn_proof.supplied compare = equals }
+			has_tech = sealed_tank_crews
+			cbrn_project_has_collective_protection = yes
+		}
+		multiply_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_project_effect.sealed_crew_friendly_exposure_multiplier }
+	}
+	if = {
+		limit = {
 			cbrn_designer_has_sealed_bomb_bay_interfaces = yes
 			OR = {
 				check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.chemical_air_raid compare = equals }
@@ -747,7 +824,11 @@ cbrn_calculate_chemical_action_outputs = {
 		}
 		multiply_temp_variable = { cbrn_action_friendly_exposure_risk = constant:cbrn_aerosol_designer_effect.sealed_bay_friendly_risk_mult }
 	}
-	clamp_temp_variable = { var = cbrn_action_friendly_exposure_risk min = constant:cbrn_action_input_bounds.friendly_risk_min max = constant:cbrn_action_output_bounds.friendly_risk_max }
+	# The complete vehicle/MIO, forecast, command, project, and sealed-bay stack
+	# may reduce the original bounded risk by at most 50% on any one receipt.
+	set_temp_variable = { cbrn_action_friendly_risk_floor = cbrn_action_unmitigated_friendly_risk }
+	multiply_temp_variable = { cbrn_action_friendly_risk_floor = constant:cbrn_hazard_budget.residual_floor }
+	clamp_temp_variable = { var = cbrn_action_friendly_exposure_risk min = cbrn_action_friendly_risk_floor max = constant:cbrn_action_output_bounds.friendly_risk_max }
 }
 
 cbrn_prepare_chemical_action_record = {

@@ -1,0 +1,187 @@
+# CBRN DELIVERY ENGINEERING
+# Overview: three foundations, exclusive four-trait shell and air branches,
+# and one capstone. Only exact CBRN payload archetypes receive native bonuses.
+# Legacy on-complete hooks keep their tokens. Native MIO bonus fields use
+# file-local constants because script_constants are not parsed there.
+@cbrn_delivery_research = 0.20
+@cbrn_delivery_tasks = 3
+@cbrn_delivery_initial_research = 0.05
+@cbrn_delivery_small_research = 0.03
+@cbrn_delivery_cap_research = 0.04
+@cbrn_delivery_gain = 0.04
+@cbrn_delivery_cap_gain = 0.06
+@cbrn_delivery_quality_low = 0.08
+@cbrn_delivery_quality_medium = 0.10
+@cbrn_delivery_quality_high = 0.12
+@cbrn_delivery_cost_low = 0.02
+@cbrn_delivery_cost_medium = 0.03
+@cbrn_delivery_cost_high = 0.08
+@cbrn_delivery_capacity_low = 0.12
+@cbrn_delivery_capacity_high = 0.18
+@cbrn_delivery_quality_penalty_low = -0.04
+@cbrn_delivery_quality_penalty_medium = -0.05
+@cbrn_delivery_quality_penalty_high = -0.08
+@cbrn_delivery_cost_saving_low = -0.04
+@cbrn_delivery_cost_saving_medium = -0.05
+@cbrn_delivery_task_extra = 1
+@cbrn_delivery_ai_base = 1
+@cbrn_delivery_ai_low = 0.5
+@cbrn_delivery_ai_high = 2
+@cbrn_delivery_ai_zero = 0
+
+cbrn_delivery_engineering_bureau = {
+	icon = GFX_cbrn_aerosol_air_delivery_bureau
+	allowed = { always = yes }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } OR = { cbrn_country_has_program = yes has_tech = chemical_artillery_shells has_tech = chemical_air_interdiction } } }
+	available = { FROM = { OR = { cbrn_country_has_program = yes has_tech = chemical_artillery_shells has_tech = chemical_air_interdiction } } }
+	equipment_type = { chlorine_agent_payload phosgene_agent_payload mustard_agent_payload lewisite_agent_payload tabun_agent_payload sarin_agent_payload soman_agent_payload malodor_agent_payload behavioral_agent_payload chemical_artillery_ammunition choking_chemical_air_payload blister_chemical_air_payload nerve_chemical_air_payload incapacitating_chemical_air_payload }
+	research_categories = { chemical_warfare_tech }
+	research_bonus = @cbrn_delivery_research
+	task_capacity = @cbrn_delivery_tasks
+	ai_will_do = {
+		factor = @cbrn_delivery_ai_base
+		modifier = { factor = @cbrn_delivery_ai_zero FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_delivery_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_delivery_ai_low FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+	}
+	tree_header_text = { text = cbrn_delivery_header_shell x = 2 }
+	tree_header_text = { text = cbrn_delivery_header_air x = 7 }
+	initial_trait = { name = cbrn_delivery_engineering_bureau_initial_trait organization_modifier = { military_industrial_organization_research_bonus = @cbrn_delivery_initial_research } }
+
+	trait = {
+		token = cbrn_munitions_standardized_fuzes
+		name = cbrn_munitions_standardized_fuzes
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 2 y = 0 }
+		limit_to_equipment_type = { chemical_artillery_ammunition }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_low build_cost_ic = @cbrn_delivery_cost_medium }
+		on_complete = { custom_effect_tooltip = cbrn_munitions_standardized_fuzes_tt }
+	}
+	trait = {
+		token = cbrn_aerosol_controlled_dispersal
+		name = cbrn_aerosol_controlled_dispersal
+		icon = GFX_generic_mio_trait_icon_air_ground_attack
+		position = { x = 4 y = 0 }
+		all_parents = { cbrn_munitions_standardized_fuzes }
+		limit_to_equipment_type = { choking_chemical_air_payload blister_chemical_air_payload nerve_chemical_air_payload incapacitating_chemical_air_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_low build_cost_ic = @cbrn_delivery_cost_low }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_controlled_dispersal_tt }
+	}
+	trait = {
+		token = cbrn_delivery_shared_calibration
+		name = cbrn_delivery_shared_calibration
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 6 y = 0 }
+		all_parents = { cbrn_aerosol_controlled_dispersal }
+		production_bonus = { production_efficiency_gain_factor = @cbrn_delivery_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_delivery_small_research }
+	}
+
+	# Shell-lot specialization: stable filling, persistent agents, logistics, and mass output.
+	trait = {
+		token = cbrn_munitions_stable_choking_fill
+		name = cbrn_munitions_stable_choking_fill
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 2 y = 1 }
+		all_parents = { cbrn_delivery_shared_calibration }
+		mutually_exclusive = { cbrn_aerosol_lightweight_payload_assemblies }
+		available = { FROM = { has_tech = chemical_artillery_shells } }
+		limit_to_equipment_type = { chlorine_agent_payload phosgene_agent_payload mustard_agent_payload lewisite_agent_payload tabun_agent_payload sarin_agent_payload soman_agent_payload malodor_agent_payload behavioral_agent_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_low build_cost_ic = @cbrn_delivery_cost_medium }
+		on_complete = { custom_effect_tooltip = cbrn_munitions_stable_choking_fill_tt }
+		ai_will_do = { base = @cbrn_delivery_ai_base modifier = { factor = @cbrn_delivery_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } } }
+	}
+	trait = {
+		token = cbrn_munitions_persistent_agent_formulation
+		name = cbrn_munitions_persistent_agent_formulation
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 1 y = 2 }
+		all_parents = { cbrn_munitions_stable_choking_fill }
+		available = { FROM = { OR = { has_tech = mustard_gas has_tech = lewisite } } }
+		limit_to_equipment_type = { chlorine_agent_payload phosgene_agent_payload mustard_agent_payload lewisite_agent_payload tabun_agent_payload sarin_agent_payload soman_agent_payload malodor_agent_payload behavioral_agent_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_low build_cost_ic = @cbrn_delivery_cost_medium }
+		on_complete = { custom_effect_tooltip = cbrn_munitions_persistent_agent_formulation_tt }
+	}
+	trait = {
+		token = cbrn_munitions_rapid_front_distribution
+		name = cbrn_munitions_rapid_front_distribution
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 3 y = 2 }
+		all_parents = { cbrn_munitions_stable_choking_fill }
+		limit_to_equipment_type = { chemical_artillery_ammunition }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_penalty_medium }
+		production_bonus = { production_capacity_factor = @cbrn_delivery_capacity_low }
+		on_complete = { custom_effect_tooltip = cbrn_munitions_rapid_front_distribution_tt }
+	}
+	trait = {
+		token = cbrn_munitions_high_output_filling_complex
+		name = cbrn_munitions_high_output_filling_complex
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 3 y = 3 }
+		all_parents = { cbrn_munitions_rapid_front_distribution }
+		available = { FROM = { cbrn_country_has_operational_readiness = yes } }
+		limit_to_equipment_type = { chemical_artillery_ammunition }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_penalty_high }
+		production_bonus = { production_capacity_factor = @cbrn_delivery_capacity_high production_cost_factor = @cbrn_delivery_cost_saving_low }
+		on_complete = { custom_effect_tooltip = cbrn_munitions_high_output_filling_complex_tt }
+	}
+
+	# Air specialization: lighter racks, safer bays, reach, and controlled release.
+	trait = {
+		token = cbrn_aerosol_lightweight_payload_assemblies
+		name = cbrn_aerosol_lightweight_payload_assemblies
+		icon = GFX_generic_mio_trait_icon_build_cost_ic
+		position = { x = 7 y = 1 }
+		all_parents = { cbrn_delivery_shared_calibration }
+		mutually_exclusive = { cbrn_munitions_stable_choking_fill }
+		available = { FROM = { has_tech = chemical_air_interdiction } }
+		limit_to_equipment_type = { choking_chemical_air_payload blister_chemical_air_payload nerve_chemical_air_payload incapacitating_chemical_air_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_penalty_low }
+		production_bonus = { production_cost_factor = @cbrn_delivery_cost_saving_medium }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_lightweight_payload_assemblies_tt FROM = { cbrn_unlock_lightweight_aerosol_modules_for_available_agents = yes } }
+		ai_will_do = { base = @cbrn_delivery_ai_low modifier = { factor = @cbrn_delivery_ai_high FROM = { cbrn_policy_allows_strategic_use = yes } } }
+	}
+	trait = {
+		token = cbrn_aerosol_sealed_bomb_bay_interfaces
+		name = cbrn_aerosol_sealed_bomb_bay_interfaces
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 7 y = 2 }
+		all_parents = { cbrn_aerosol_lightweight_payload_assemblies }
+		limit_to_equipment_type = { choking_chemical_air_payload blister_chemical_air_payload nerve_chemical_air_payload incapacitating_chemical_air_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_high build_cost_ic = @cbrn_delivery_cost_high }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_sealed_bomb_bay_interfaces_tt }
+	}
+	trait = {
+		token = cbrn_aerosol_long_range_payload
+		name = cbrn_aerosol_long_range_payload
+		icon = GFX_generic_mio_trait_icon_air_range
+		position = { x = 6 y = 3 }
+		all_parents = { cbrn_aerosol_sealed_bomb_bay_interfaces }
+		available = { FROM = { cbrn_policy_allows_strategic_use = yes } }
+		limit_to_equipment_type = { choking_chemical_air_payload blister_chemical_air_payload nerve_chemical_air_payload incapacitating_chemical_air_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_penalty_medium build_cost_ic = @cbrn_delivery_cost_high }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_long_range_payload_tt FROM = { cbrn_unlock_long_range_aerosol_modules_for_available_agents = yes } }
+	}
+	trait = {
+		token = cbrn_aerosol_precision_release
+		name = cbrn_aerosol_precision_release
+		icon = GFX_generic_mio_trait_icon_air_ground_attack
+		position = { x = 8 y = 3 }
+		all_parents = { cbrn_aerosol_sealed_bomb_bay_interfaces }
+		limit_to_equipment_type = { choking_chemical_air_payload blister_chemical_air_payload nerve_chemical_air_payload incapacitating_chemical_air_payload }
+		equipment_bonus = { reliability = @cbrn_delivery_quality_medium }
+		production_bonus = { production_capacity_factor = @cbrn_delivery_quality_penalty_high }
+		on_complete = { custom_effect_tooltip = cbrn_aerosol_precision_release_tt }
+	}
+	trait = {
+		token = cbrn_delivery_integrated_quality_control
+		name = cbrn_delivery_integrated_quality_control
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 4 y = 4 }
+		any_parent = { cbrn_munitions_high_output_filling_complex cbrn_aerosol_long_range_payload cbrn_aerosol_precision_release }
+		production_bonus = { production_efficiency_cap_factor = @cbrn_delivery_cap_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_delivery_cap_research military_industrial_organization_task_capacity = @cbrn_delivery_task_extra }
+	}
+}

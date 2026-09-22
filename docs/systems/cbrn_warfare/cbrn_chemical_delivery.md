@@ -6,7 +6,7 @@ This system provides the shared logistics and consequence contract used by every
 
 Doctrine may reduce the Condemnation impact of an accepted action. That reduction applies only to Condemnation. It does not reduce payload expenditure, protection failure, disruption, deaths, contamination, medical saturation, mask loss, evidence, attribution, confirmed-use history, treaty response, or first-exposure adaptation. Confirmed strategic and mass-casualty actions retain public-harm floors after doctrine is applied.
 
-The current implementation establishes the shared core, exact chemical-air design eligibility, native payload reservation/outcome accounting, selected-state chemical air and strategic rocket raid adapters, the doomsday batch adapter, and a dedicated no-release attempt path. Ground releases, biological actions, camp escalation, and nerve-agent suppression remain separate exact delivery adapters that enter the shared consequence contract only after their own route gates pass.
+The current source establishes the shared core, exact chemical-air design eligibility, native payload reservation and outcome accounting, selected-state chemical land, air, strategic rocket, and doomsday raids, and a dedicated no-release attempt path. Native raid callbacks enter an immediate actor-country event before calling consequence helpers, because the callback itself has raid-instance scope. The doomsday raid uses a selected-state authorization anchor but dispatches its accepted batch across the exact eligible controlled-state set.
 
 ## Source-of-truth map
 
@@ -18,14 +18,15 @@ The current implementation establishes the shared core, exact chemical-air desig
 | Profile changes, conversion, debit proof, and legacy migration | `common/scripted_effects/cbrn_payload_effects.txt` |
 | Exposure calculation contract | `common/scripted_effects/cbrn_exposure_effects.txt` |
 | Exact-state consequence dispatch | `common/scripted_effects/cbrn_consequence_effects.txt` |
-| Selected-state chemical air and strategic rocket raids | `common/raids/cbrn_chemical_air_raids.txt` and `common/scripted_effects/cbrn_chemical_raid_effects.txt` |
+| Selected-state chemical air and strategic rocket raids | `common/raids/cbrn_chemical_air_raids.txt`, `events/cbrn_chemical_air_bridge_events.txt`, and `common/scripted_effects/cbrn_chemical_raid_effects.txt` |
+| Selected-state chemical land raids | `common/raids/cbrn_chemical_land_raids.txt`, `events/cbrn_land_raid_bridge_events.txt`, and `common/scripted_effects/cbrn_chemical_land_raid_effects.txt` |
 | Military and civilian protection resolution | `common/scripted_effects/cbrn_protection_effects.txt` |
 | Targeted contamination, medical, and evidence recovery | `events/cbrn_chemical_delivery_events.txt` |
 | Canonical chemical state ledger and Air Cleanliness receipts | `common/scripted_effects/cbrn_chemical_state_effects.txt` and `common/scripted_effects/cbrn_biological_air_effects.txt` |
-| Doomsday batch preparation and release | `common/scripted_effects/cbrn_chemical_doomsday_effects.txt` and `common/script_constants/cbrn_chemical_doomsday_constants.txt` |
+| Native doomsday raid and batch resolver | `common/raids/cbrn_doomsday_raids.txt`, `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`, and `common/script_constants/cbrn_chemical_doomsday_constants.txt` |
 | Exact ground, camp, and occupation adapters | `common/scripted_effects/cbrn_battlefield_operation_effects.txt`, `common/scripted_effects/cbrn_camp_effects.txt`, and `common/scripted_effects/cbrn_occupation_effects.txt` |
 | Sanctions stock detection and destruction | `common/scripted_triggers/condemnation_sanctions_triggers.txt` and `common/scripted_effects/condemnation_response_effects.txt` |
-| Chemical payload and air-delivery MIOs | `common/military_industrial_organization/organizations/cbrn_organizations.txt` |
+| Chemical payload, protection, and delivery MIOs | `common/military_industrial_organization/organizations/cbrn_chemical_protection_organizations.txt`, `cbrn_delivery_organizations.txt`, and `cbrn_national_organizations.txt` in the same directory |
 | Completed designer-trait checks and tuning | `common/scripted_triggers/cbrn_designer_triggers.txt` and `common/script_constants/cbrn_designer_constants.txt` |
 | Equipment and adaptation sprites | `interface/cbrn_chemical_delivery.gfx` |
 | Player-facing equipment and adaptation text | `localisation/english/cbrn_chemical_delivery_l_english.yml` |
@@ -98,14 +99,14 @@ These standing needs produce native reinforcement-shortage scaling. They do not 
 
 ## Shared action order
 
-Every chemical delivery adapter must use this order:
+Every chemical delivery adapter follows this consequence order. Native raids use `essential_equipment` and native Command Power at launch as their only payment; scripted non-raid consumers call the exact debit helper instead.
 
 1. Call `cbrn_reset_action_context`.
 2. Save the exact selected state as `cbrn_action_target_state` and set the target-state proof.
 3. Set exact weapon class, agent, agent class, delivery route, severity, and any route-specific authorization proof.
 4. Call `cbrn_set_default_payload_requirement_for_action` or supply an explicitly mapped requirement.
-5. Call `cbrn_try_debit_action_payload`.
-6. Continue only when `cbrn_action_payload_consumed_proof` confirms the exact equipment removal.
+5. Establish `cbrn_action_payload_consumed_proof` from the one verified payment path: native `essential_equipment` for raids or `cbrn_try_debit_action_payload` for a remaining scripted consumer.
+6. Continue only when that proof confirms the exact required equipment payment. Never debit or refund the same native reservation in an outcome helper.
 7. Resolve the target's military and civilian protection with `cbrn_resolve_action_target_protection`.
 8. Record the route's native release efficiency. Add environmental condition proof only when a verified current-version hook supplies it; explicit Chemical raids have no such weather or terrain hook, so those optional modifiers remain absent. Continuous-air activity remains rejected.
 9. Call `cbrn_prepare_chemical_action_record`.
@@ -133,21 +134,21 @@ The figures are gameplay tuning and do not claim a precise historical tonnage co
 
 ## Native chemical-air reservation and outcomes
 
-Each ordinary explicit chemical-air raid reserves 120 units from exactly one class archetype through native `essential_equipment`. Each strategic chemical rocket raid reserves 240 nerve-class units through the same native field. Native collection is the real debit. The shared raid helper then refunds only the unused model and records the resulting net consumption; it never performs a second stock debit.
+Each ordinary explicit chemical-air raid requires 120 units from exactly one class archetype through native `essential_equipment`. Each strategic chemical rocket raid requires 240 nerve-class units through the same native field. Native collection is the real debit; the outcome helper neither removes more equipment nor refunds any portion of it. The documented native raid interface does not establish when canceled raids return reserved equipment, so cancellation refund behavior still needs engine evidence.
 
 The engine exposes four outcome blocks, while the accepted design has five results. The failure block is therefore split evenly between Aborted and Failed. All bands are centralized:
 
-| Result | Net payload consumption | Intended delivered dose |
+| Result | Charged payload | Intended delivered dose |
 | --- | ---: | ---: |
-| Aborted | 10-25% | none |
-| Failed | 40-80% | none |
-| Partial | 70-100% | 35-65% |
-| Success | 100% | 100% |
-| Catastrophic success | 100% | 110-140% |
+| Aborted | Full native reservation | none |
+| Failed | Full native reservation | none |
+| Partial | Full native reservation | 50-80%; 70-85% with Controlled Dispersal |
+| Success | Full native reservation | 100% |
+| Catastrophic success | Full native reservation | 150-200%; 110-120% with Controlled Dispersal |
 
-Consumption and delivered dose are intentionally separate. `cbrn_action_release_efficiency_mult` reconciles them before the shared exposure calculation, so a partial operation does not fabricate a full release merely because most of the reserved payload was lost or expended. Aborted and failed attempts cannot enter exposure because they return no release proof. `cbrn_dispatch_failed_chemical_air_raid_attempt` instead records only exact-state evidence, cumulative attribution, separate attempted-operation history, and Condemnation. A Failed result establishes at least 35 evidence from recovered aircraft or payload wreckage; an Aborted result adds 8 latent evidence. Neither path creates deaths, contamination, medical saturation, mask loss, treaty use, a chemical-use achievement, or confirmed-use history. Doctrine scales only the 2-point Aborted or 8-point Failed Condemnation base.
+Payment and delivered dose are separate. `cbrn_action_release_efficiency_mult` sets the dose of a partial or catastrophic result without changing the native equipment charge. Aborted and failed attempts cannot enter exposure because they return no release proof. `cbrn_dispatch_failed_chemical_air_raid_attempt` instead records only exact-state evidence, cumulative attribution, separate attempted-operation history, and Condemnation. A Failed result establishes at least 35 evidence from recovered aircraft or payload wreckage; an Aborted result adds 8 latent evidence. Neither path creates deaths, contamination, medical saturation, mask loss, treaty use, a chemical-use achievement, or confirmed-use history. Doctrine scales only the 2-point Aborted or 8-point Failed Condemnation base.
 
-The active raid adapter is wired to eleven selected-state identifiers: Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, Behavioral-Agent, Sarin Rocket, and Soman Rocket. Every native outcome preserves `var:target_state`, routes through `cbrn_resolve_chemical_air_raid_outcome`, and dispatches either one exact-state exposure or one exact-state no-release attempt. Ordinary chemical agents share the same native success-factor profile; agent identity changes only the payload class, preparation, protection burden, and downstream exposure profile.
+The active air and rocket definitions cover eleven selected-state identifiers: Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, Behavioral-Agent, Sarin Rocket, and Soman Rocket. Every native outcome carries the actor, selected state, victim, route, agent, and result through chain-local event targets to an immediate actor-country event, then calls `cbrn_resolve_chemical_air_raid_outcome` for one exact-state exposure or no-release attempt. Ordinary chemical agents share the same native success-factor profile; agent identity changes only the payload class, preparation, protection burden, and downstream exposure profile.
 
 The installed raid surface does not expose live target weather or state terrain to the outcome effect. The adapter therefore derives only release efficiency from the native partial, success, or catastrophic result and leaves the optional environmental receipt absent. It does not translate outcome tiers into weather, terrain, density, forecast, command, evidence-control, Condemnation-context, or friendly-risk values. Continuous ordinary-air contamination remains unavailable.
 

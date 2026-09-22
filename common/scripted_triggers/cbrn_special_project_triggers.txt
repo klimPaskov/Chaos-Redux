@@ -1,0 +1,155 @@
+# CBRN special-project discovery and runtime queries. All triggers are COUNTRY scope.
+
+cbrn_project_can_research_smoke = {
+	has_tech = basic_gas_masks
+	has_tech = motorised_infantry
+}
+
+cbrn_project_can_research_collective_protection = {
+	has_tech = improved_gas_masks
+	has_tech = sealed_containment_laboratories
+}
+
+cbrn_project_can_research_renewing_filters = {
+	has_tech = advanced_gas_masks
+	is_special_project_completed = sp:sp_cbrn_collective_protection_systems
+}
+
+cbrn_project_can_discover_phantom_mist = {
+	has_tech = fail_safe_containment_facilities
+	cbrn_policy_allows_extreme_use = yes
+	OR = {
+		is_special_project_completed = sp:sp_cw_sarin_program
+		is_special_project_completed = sp:sp_cw_soman_program
+		is_special_project_completed = sp:sp_cw_malodor_bomb_program
+	}
+}
+
+cbrn_project_can_research_phantom_mist = {
+	cbrn_project_can_discover_phantom_mist = yes
+	has_tech = tabun
+}
+
+cbrn_project_can_research_vaccines = {
+	has_tech = bio_surveillance_networks
+	has_tech = pathogen_handling_protocols
+}
+
+cbrn_project_can_research_field_antibiotics = {
+	has_tech = rapid_outbreak_response
+	has_tech = pathogen_handling_protocols
+}
+
+cbrn_project_can_research_regenerative_serum = {
+	has_tech = fail_safe_containment_facilities
+	is_special_project_completed = sp:sp_cbrn_field_antibiotics
+}
+
+cbrn_project_can_research_antiserum = {
+	has_tech = integrated_epidemic_control
+	is_special_project_completed = sp:sp_cbrn_mass_vaccine_production
+	is_special_project_completed = sp:sp_cbrn_field_antibiotics
+}
+
+cbrn_project_has_medical_foundation = {
+	OR = {
+		is_special_project_completed = sp:sp_cbrn_mass_vaccine_production
+		is_special_project_completed = sp:sp_cbrn_field_antibiotics
+	}
+}
+
+cbrn_project_has_offensive_experience = {
+	OR = {
+		is_special_project_completed = sp:sp_cw_sarin_program
+		is_special_project_completed = sp:sp_cw_soman_program
+		is_special_project_completed = sp:sp_cw_malodor_bomb_program
+		is_special_project_completed = sp:anthrax_bomb
+		is_special_project_completed = sp:plague_bomb
+		is_special_project_completed = sp:tularemia_bomb
+		is_special_project_completed = sp:smallpox_bomb
+	}
+}
+
+cbrn_project_can_discover_biomedical_acceleration = {
+	has_tech = fail_safe_containment_facilities
+	cbrn_project_has_medical_foundation = yes
+}
+
+cbrn_project_can_discover_cloning = {
+	is_special_project_completed = sp:sp_brilliant_scientist_biomedical_acceleration
+	is_special_project_completed = sp:sp_cbrn_regenerative_serum
+}
+
+cbrn_project_can_discover_exotic_biological = {
+	has_tech = fail_safe_containment_facilities
+	cbrn_project_has_offensive_experience = yes
+	cbrn_policy_allows_extreme_use = yes
+}
+
+# Completion and iteration rewards must not reuse research-admission predicates:
+# the Mengele admission triggers reject a project as soon as native completion
+# is recorded. These country-scope predicates use durable story-stage evidence.
+cbrn_project_biomedical_uses_event016_story = {
+	OR = {
+		AND = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = { var = brilliant_scientist_project_stage_entries^5 value = constant:brilliant_scientist_project_stage.theory compare = greater_than_or_equals }
+		}
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_biomedical_theory_completed
+		}
+	}
+}
+
+cbrn_project_cloning_uses_event016_story = {
+	OR = {
+		AND = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = { var = brilliant_scientist_project_stage_entries^7 value = constant:brilliant_scientist_project_stage.theory compare = greater_than_or_equals }
+		}
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_cloning_theory_completed
+		}
+	}
+}
+
+cbrn_project_paleogenetics_uses_event016_story = {
+	OR = {
+		AND = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = { var = brilliant_scientist_project_stage_entries^9 value = constant:brilliant_scientist_project_stage.theory compare = greater_than_or_equals }
+		}
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_paleogenetics_theory_completed
+		}
+	}
+}
+
+cbrn_project_xenobiological_uses_event016_story = {
+	OR = {
+		AND = {
+			brilliant_scientist_is_current_host = yes
+			check_variable = { var = brilliant_scientist_project_stage_entries^10 value = constant:brilliant_scientist_project_stage.theory compare = greater_than_or_equals }
+		}
+		AND = {
+			brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+			has_country_flag = mengele_event016_xenobiological_synthesis_theory_completed
+		}
+	}
+}
+
+cbrn_project_has_protected_mechanized_advance = {
+	has_country_flag = cbrn_project_mechanized_smoke_screens
+	cbrn_country_has_any_mask_stock = yes
+}
+
+cbrn_project_has_collective_protection = { has_country_flag = cbrn_project_collective_protection_systems }
+cbrn_project_has_renewing_filters = { has_country_flag = cbrn_project_self_renewing_filters }
+cbrn_project_has_phantom_mist = { has_country_flag = cbrn_project_phantom_mist }
+cbrn_project_has_vaccines = { has_country_flag = cbrn_project_mass_vaccine_production }
+cbrn_project_has_field_antibiotics = { has_country_flag = cbrn_project_field_antibiotics }
+cbrn_project_has_regenerative_serum = { has_country_flag = cbrn_project_regenerative_serum }
+cbrn_project_has_antiserum = { has_country_flag = cbrn_project_broad_spectrum_antiserum }

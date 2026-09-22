@@ -1,0 +1,53 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE DOOMSDAY RAID COUNTRY-ROOT BRIDGE
+# ============================================================================
+# Native actor_effects have a raid-instance ROOT. These immediate hidden events
+# receive chain-local actor and selected-state event targets, then run the whole
+# guarded catastrophe and news transaction with the raiding country as ROOT.
+# ============================================================================
+
+add_namespace = chaosx_cbrn_doom_raid
+
+country_event = {
+	id = chaosx_cbrn_doom_raid.1
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_event_target = cbrn_doomsday_raid_actor
+					has_event_target = cbrn_doomsday_raid_target
+					event_target:cbrn_doomsday_raid_actor = { tag = ROOT }
+				}
+				cbrn_chemical_doomsday_release = yes
+				if = {
+					limit = { check_variable = { var = cbrn_doomsday_release_status value = constant:cbrn_proof.supplied compare = equals } }
+					news_event = { id = chaosx_cbw_doom.1 }
+				}
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx_cbrn_doom_raid.2
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					has_event_target = bio_doomsday_raid_actor
+					has_event_target = bio_doomsday_raid_target
+					event_target:bio_doomsday_raid_actor = { tag = ROOT }
+				}
+				bio_doomsday_resolve_release = yes
+				if = {
+					limit = { check_variable = { var = bio_doomsday_release_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+					news_event = { id = chaosx_cbw_doom.2 }
+				}
+			}
+		}
+	}
+}

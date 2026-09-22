@@ -1,0 +1,82 @@
+# ============================================================================
+# CHAOS REDUX - CBRN COMMANDER SERVICE TRIGGERS
+# ============================================================================
+# Overview:
+# - Character-scope service checks for earned CBRN traits and the two native
+#   assignable follow-on traits.
+# - A completed HQ receipt requires the named commander, final paid upkeep,
+#   and the matching active status; mere preparation does not satisfy it.
+# ============================================================================
+
+cbrn_commander_has_chemical_service = {
+	check_variable = {
+		var = cbrn_chemical_operations_completed
+		value = constant:cbrn_commander_progression.chemical_operations_for_trait
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_commander_has_biological_service = {
+	check_variable = {
+		var = cbrn_biological_operations_completed
+		value = constant:cbrn_commander_progression.biological_operations_for_trait
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_commander_has_protected_assault_prerequisites = {
+	has_trait = chemical_operations_commander
+	check_variable = {
+		var = cbrn_protected_combat_victories
+		value = constant:cbrn_commander_progression.protected_victories_for_expert
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_commander_has_theatre_containment_prerequisites = {
+	has_trait = hazard_warfare_veteran
+	check_variable = {
+		var = cbrn_containment_operations_completed
+		value = constant:cbrn_commander_progression.containment_operations_for_organizer
+		compare = greater_than_or_equals
+	}
+}
+
+cbrn_commander_commands_protected_formation = {
+	is_army_leader = yes
+	is_field_marshal = no
+	is_assigned = yes
+	num_units > constant:cbrn_commander_progression.zero
+	check_variable = { num_battalions_with_type@cbrn_gas_mask_decon_detachment > constant:cbrn_commander_progression.zero }
+}
+
+cbrn_commander_hq_completion_is_eligible = {
+	is_army_leader = yes
+	is_field_marshal = no
+	is_assigned = yes
+	num_units > constant:cbrn_commander_progression.zero
+	NOT = { has_character_flag = cbrn_hq_command_completion_recorded }
+	check_variable = {
+		var = cbrn_hq_upkeep_ticks_remaining
+		value = constant:cbrn_commander_progression.zero
+		compare = equals
+	}
+	OR = {
+		AND = {
+			check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals }
+			has_trait = cbrn_hq_active_decontamination_corridor
+		}
+		AND = {
+			check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_operational_area compare = equals }
+			has_trait = cbrn_hq_active_sealed_operational_area
+		}
+		AND = {
+			check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.mass_antidote_response compare = equals }
+			has_trait = cbrn_hq_active_antidote_response
+		}
+		AND = {
+			check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.seal_infection_corridor compare = equals }
+			has_trait = cbrn_hq_active_infection_corridor
+		}
+	}
+}

@@ -8,7 +8,23 @@
 #   prepared by the shared exposure pipeline.
 # - No trigger treats aircraft presence, an idle module, or a support-company
 #   flag as proof that chemical payload was expended.
+# - Aggregate readiness checks enumerate all nine strategic lot models;
+#   selected-action checks remain tied to one exact agent lot.
 # ============================================================================
+
+cbrn_has_any_strategic_agent_lot = {
+	OR = {
+		check_variable = { var = num_equipment@chlorine_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@phosgene_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@mustard_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@lewisite_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@tabun_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@sarin_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@soman_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@malodor_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+		check_variable = { var = num_equipment@behavioral_agent_lot_1 value = constant:cbrn_math.zero compare = greater_than }
+	}
+}
 
 cbrn_action_agent_is_unlocked = {
 	OR = {

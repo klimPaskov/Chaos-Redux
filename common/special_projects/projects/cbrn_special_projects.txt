@@ -1,0 +1,223 @@
+# Eight CBRN project choices. Ordinary prerequisites remain visible through
+# available; the offensive exotic project is hidden until discovery.
+# Resource-cost fields are static database values and use file-local constants.
+@CBRN_SP_SMOKE_STEEL = 3
+@CBRN_SP_SMOKE_RUBBER = 2
+@CBRN_SP_COLLECTIVE_STEEL = 3
+@CBRN_SP_COLLECTIVE_RUBBER = 3
+@CBRN_SP_FILTERS_STEEL = 2
+@CBRN_SP_FILTERS_RUBBER = 5
+@CBRN_SP_FILTERS_CHROMIUM = 2
+@CBRN_SP_PHANTOM_STEEL = 3
+@CBRN_SP_PHANTOM_RUBBER = 4
+@CBRN_SP_PHANTOM_CHROMIUM = 3
+@CBRN_SP_VACCINES_STEEL = 2
+@CBRN_SP_VACCINES_RUBBER = 3
+@CBRN_SP_ANTIBIOTICS_STEEL = 2
+@CBRN_SP_ANTIBIOTICS_RUBBER = 2
+@CBRN_SP_REGENERATIVE_STEEL = 3
+@CBRN_SP_REGENERATIVE_RUBBER = 4
+@CBRN_SP_REGENERATIVE_CHROMIUM = 2
+@CBRN_SP_ANTISERUM_STEEL = 3
+@CBRN_SP_ANTISERUM_RUBBER = 4
+@CBRN_SP_ANTISERUM_CHROMIUM = 2
+
+sp_cbrn_mechanized_smoke_screens = {
+	specialization = specialization_land
+	icon = GFX_sp_cbrn_mechanized_smoke_screens
+	available = { FROM = { cbrn_project_can_research_smoke = yes } }
+	breakthrough_cost = { specialization_land = constant:cbrn_project_cost.smoke_breakthrough }
+	prototype_time = sp_time.prototype.short
+	complexity = sp_complexity.small
+	resource_cost = { resources = { steel = @CBRN_SP_SMOKE_STEEL rubber = @CBRN_SP_SMOKE_RUBBER } }
+	ai_will_do = { base = constant:cbrn_project_ai.defensive_base }
+	project_output = {
+		sub_unit_bonus = {
+			mechanized = { breakthrough = constant:cbrn_project_cost.smoke_mechanized_breakthrough }
+		}
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_mechanized_smoke_screens_complete_tt
+			cbrn_complete_mechanized_smoke_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_protection_trial_reward
+		sp_land_generic_reward_scientist_xp_1
+		sp_land_generic_reward_major_progress_1
+		sp_land_generic_reward_test_failure_1
+		sp_land_generic_reward_resource_scarcity
+	}
+}
+
+sp_cbrn_collective_protection_systems = {
+	specialization = specialization_cw
+	icon = GFX_sp_cbrn_collective_protection_systems
+	available = { FROM = { cbrn_project_can_research_collective_protection = yes } }
+	breakthrough_cost = { specialization_cw = constant:cbrn_project_cost.collective_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.medium
+	resource_cost = { resources = { steel = @CBRN_SP_COLLECTIVE_STEEL rubber = @CBRN_SP_COLLECTIVE_RUBBER } }
+	ai_will_do = { base = constant:cbrn_project_ai.defensive_base }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_collective_protection_systems_complete_tt
+			cbrn_complete_collective_protection_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_protection_trial_reward
+		sp_cw_generic_reward_scientist_xp
+		sp_cw_generic_reward_major_progress
+		sp_cw_generic_reward_test_failure
+		sp_cw_generic_reward_resource_scarcity
+	}
+}
+
+sp_cbrn_self_renewing_filters = {
+	specialization = specialization_cw
+	icon = GFX_sp_cbrn_self_renewing_filters
+	available = { FROM = { cbrn_project_can_research_renewing_filters = yes } }
+	breakthrough_cost = { specialization_cw = constant:cbrn_project_cost.filters_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = { resources = { steel = @CBRN_SP_FILTERS_STEEL rubber = @CBRN_SP_FILTERS_RUBBER chromium = @CBRN_SP_FILTERS_CHROMIUM } }
+	ai_will_do = { base = constant:cbrn_project_ai.advanced_base }
+	project_output = {
+		equipment_bonus = {
+			gas_mask_equipment = { build_cost_ic = constant:cbrn_project_cost.filters_mask_ic_increase }
+			instant = yes
+		}
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_self_renewing_filters_complete_tt
+			cbrn_complete_renewing_filters_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_protection_trial_reward
+		sp_cw_generic_reward_scientist_xp
+		sp_cw_generic_reward_major_progress
+		sp_cw_generic_reward_test_failure
+		sp_cw_generic_reward_resource_scarcity
+	}
+}
+
+sp_cbrn_phantom_mist = {
+	specialization = specialization_cw
+	icon = GFX_sp_cbrn_phantom_mist
+	visible = { FROM = { cbrn_project_can_discover_phantom_mist = yes } }
+	available = { FROM = { cbrn_project_can_research_phantom_mist = yes } }
+	breakthrough_cost = { specialization_cw = constant:cbrn_project_cost.phantom_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = { resources = { steel = @CBRN_SP_PHANTOM_STEEL rubber = @CBRN_SP_PHANTOM_RUBBER chromium = @CBRN_SP_PHANTOM_CHROMIUM } }
+	ai_will_do = { base = constant:cbrn_project_ai.offensive_base }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_phantom_mist_complete_tt
+			cbrn_complete_phantom_mist_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_phantom_trial_reward
+		sp_cw_generic_reward_scientist_xp
+		sp_cw_generic_reward_chemistry_insights
+		sp_cw_generic_reward_test_failure
+		sp_cw_generic_reward_resource_scarcity
+	}
+}
+
+sp_cbrn_mass_vaccine_production = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_cbrn_mass_vaccine_production
+	available = { FROM = { cbrn_project_can_research_vaccines = yes } }
+	breakthrough_cost = { specialization_biowarfare = constant:cbrn_project_cost.vaccines_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.medium
+	resource_cost = { resources = { steel = @CBRN_SP_VACCINES_STEEL rubber = @CBRN_SP_VACCINES_RUBBER } }
+	ai_will_do = { base = constant:cbrn_project_ai.defensive_base }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_mass_vaccine_production_complete_tt
+			cbrn_complete_mass_vaccine_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_medical_trial_reward
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+	}
+}
+
+sp_cbrn_field_antibiotics = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_cbrn_field_antibiotics
+	available = { FROM = { cbrn_project_can_research_field_antibiotics = yes } }
+	breakthrough_cost = { specialization_biowarfare = constant:cbrn_project_cost.antibiotics_breakthrough }
+	prototype_time = sp_time.prototype.medium
+	complexity = sp_complexity.medium
+	resource_cost = { resources = { steel = @CBRN_SP_ANTIBIOTICS_STEEL rubber = @CBRN_SP_ANTIBIOTICS_RUBBER } }
+	ai_will_do = { base = constant:cbrn_project_ai.defensive_base }
+	project_output = {
+		sub_unit_bonus = {
+			field_hospital = { casualty_trickleback = constant:cbrn_project_cost.antibiotics_field_hospital_trickleback }
+			cbrn_medical_countermeasure_detachment = { casualty_trickleback = constant:cbrn_project_cost.antibiotics_cbrn_medical_trickleback }
+		}
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_field_antibiotics_complete_tt
+			cbrn_complete_field_antibiotics_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_medical_trial_reward
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+	}
+}
+
+sp_cbrn_regenerative_serum = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_cbrn_regenerative_serum
+	available = { FROM = { cbrn_project_can_research_regenerative_serum = yes } }
+	breakthrough_cost = { specialization_biowarfare = constant:cbrn_project_cost.regenerative_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = { resources = { steel = @CBRN_SP_REGENERATIVE_STEEL rubber = @CBRN_SP_REGENERATIVE_RUBBER chromium = @CBRN_SP_REGENERATIVE_CHROMIUM } }
+	ai_will_do = { base = constant:cbrn_project_ai.advanced_base }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_regenerative_serum_complete_tt
+			cbrn_complete_regenerative_serum_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_medical_trial_reward
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+	}
+}
+
+sp_cbrn_broad_spectrum_antiserum = {
+	specialization = specialization_biowarfare
+	icon = GFX_sp_cbrn_broad_spectrum_antiserum
+	available = { FROM = { cbrn_project_can_research_antiserum = yes } }
+	breakthrough_cost = { specialization_biowarfare = constant:cbrn_project_cost.antiserum_breakthrough }
+	prototype_time = sp_time.prototype.long
+	complexity = sp_complexity.large
+	resource_cost = { resources = { steel = @CBRN_SP_ANTISERUM_STEEL rubber = @CBRN_SP_ANTISERUM_RUBBER chromium = @CBRN_SP_ANTISERUM_CHROMIUM } }
+	ai_will_do = { base = constant:cbrn_project_ai.advanced_base }
+	project_output = {
+		country_effects = {
+			custom_effect_tooltip = sp_cbrn_broad_spectrum_antiserum_complete_tt
+			cbrn_complete_antiserum_project = yes
+		}
+	}
+	generic_prototype_rewards = {
+		sp_cbrn_medical_trial_reward
+		sp_biowarfare_generic_reward_scientist_xp_1
+		sp_biowarfare_generic_reward_major_progress_1
+		sp_biowarfare_generic_reward_test_failure_1
+	}
+}

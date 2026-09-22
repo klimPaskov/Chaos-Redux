@@ -1,5 +1,9 @@
 # Army Headquarters and Regimental Support Integration
 
+> **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older requirements in this file. Use the amendment and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) before treating any role, policy, raid, project, limit, organization, or asset here as current design.
+
+> **Current source disposition:** The core integration owner removed the retired paid Prepare Chemical Offensive and Combined CBRN Overmatch abilities. Native chemical raids own selected-state attacks, and five protective HQ orders remain. The older ability passages below are historical design only. Prepared Army and terminal achievement receipts are source-wired to accepted native chemical land release plus qualifying deployed HQ sections in the actor country; no exact selected-division-to-HQ pointer is exposed by the installed raid API, and engine acceptance remains open.
+
 ## Design rule
 
 Army Headquarters owns theater preparation. Regimental support owns division-level execution and protection. A normal support company can still represent a specialist detachment, but the strongest order-wide effects require an HQ company and a commander ability.

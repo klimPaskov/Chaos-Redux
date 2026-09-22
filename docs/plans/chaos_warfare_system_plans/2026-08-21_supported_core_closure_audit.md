@@ -1,5 +1,7 @@
 # Chaos Warfare and CBRN supported-core closure audit
 
+> **Historical snapshot superseded for the 2026-09-20 CBRN overhaul.** The academy's 50% new-leader/level-up trait roll described below was a source claim in this August audit, not current behavior. Current `common/ideas/cbw_spirits.txt` grants +3% army experience, while `common/scripted_effects/cbrn_commander_progression_effects.txt` awards Chemical Operations Commander after qualifying completed Headquarters service. The accepted design is `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md`, with integration tracked in `docs/plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md`. Other August closure claims, including decisions, unit roles, and old balance totals, are not evidence that the later overhaul is implemented.
+
 Date: 2026-08-21
 
 Status: the supported gameplay core is source-ready for in-game use. Remaining omissions are exact engine-surface blockers, current HOI4 MCP availability, or user-owned live consumer validation. No estimator, proxy receipt, neutral receipt, hidden fallback, or ordinary-air contamination approximation is retained.

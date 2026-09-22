@@ -6,7 +6,7 @@ Chaos Redux provides a static roster of 67 historical scientists for the chemica
 
 Twelve established dual-role characters remain in `common/characters/cbrn_historical_specialists.txt`, while 55 scientist-only characters live in `common/characters/cbrn_historical_scientists.txt`.
 
-The startup compatibility effects recruit each character for the appropriate 1936 country and preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers.
+The startup compatibility effects recruit prewar and established 1939 identities at the appropriate bookmark and date-gate later wartime identities through bounded country callbacks. They preserve the established `chaosx_scientist_*` identity flags used by events and scripted triggers after the corresponding character is recruited.
 
 ## Historical calibration
 
@@ -98,13 +98,23 @@ The inhumane traits describe method and conduct, not greater historical stature;
 
 ## Startup behavior
 
-The established `on_startup` dispatcher continues to call country-scoped grant effects; no world-iteration on action was added.
+The established `on_startup` dispatcher continues to call country-scoped grant effects; no world-iteration on action was added. The dated roster repair uses only `on_daily_ENG`, `on_daily_GER`, `on_daily_JAP`, `on_daily_POL`, `on_daily_SOV`, and `on_daily_USA` in `common/on_actions/cbrn_historical_startup_on_actions.txt`.
 
-Each relevant grant recruits static characters exactly once after confirming that the country exists.
+Each relevant grant recruits the prewar/established characters exactly once after confirming that the country exists. Dated helpers guard every later recruitment with `has_character` and the current date, then write the identity flag after the character exists.
+
+Prewar and established 1939 expertise is available at scenario start, while later wartime identities enter the scientist pool on their documented dates. Scientist availability remains separate from offensive authorization.
+
+The dual-role advisor cards use current-date gates for documented appointments: Paul Fildes after 1 January 1939, Gerhard Schrader after 31 December 1936, Kurt Blome after 1 January 1942, Masaji Kitano after 1 January 1942, Franciszek Witaszek after 1 September 1939, Grigory Mairanovsky after 1 January 1937, Frank Olson after 1 January 1943, and Ira Baldwin after 1 January 1942.
+
+Howard Florey and Alexander Fleming remain available as medical countermeasure advisors, while Shiro Ishii and Ivan Mikhailovich Velikanov remain available for their established pre-war command or research roles.
+
+The 1936 startup marks every country in the starting mask matrix for force-scaled reconciliation: established majors use a 75% military issue target, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve and zero fixed civilian distribution. The startup effect snapshots pre-existing mask models, clears the common fixed military and civilian ledgers, then issues the active band from real stock; ENG uses the shared core helper for the same transaction. The 1939 British startup writes `cbrn_historical_civilian_mask_issue` and `cbrn_uk_1939_mass_respirator_issue`, passes the 40,000-crate civilian respirator assumption to the core CBRN profile owner, and queues ENG-root `cbrn_protection.3` so the inclusive target is reconciled against real stock once.
 
 The nine formerly generated named scientists are now static characters, so the temporary generated-scientist marking helpers and portrait reassignment blocks are no longer needed.
 
-The original identity flags remain on Howard Florey, Paul Fildes, Alexander Fleming, Ernst Chain, Gerhard Schrader, Kurt Blome, Walter Schreiber, Erich Traub, Kurt Gutzeit, Sigmund Rascher, Josef Mengele, Shiro Ishii, Masaji Kitano, Chikahiko Koizumi, Franciszek Witaszek, Grigory Mairanovsky, Ivan Velikanov, Lavrentiy Beria, Frank Olson, Ira Baldwin, and Murray Sanders.
+The original identity flags are written after recruitment for Howard Florey, Paul Fildes, Alexander Fleming, Ernst Chain, Gerhard Schrader, Kurt Blome, Walter Schreiber, Erich Traub, Kurt Gutzeit, Sigmund Rascher, Josef Mengele, Shiro Ishii, Masaji Kitano, Chikahiko Koizumi, Franciszek Witaszek, Grigory Mairanovsky, Ivan Velikanov, Lavrentiy Beria, Frank Olson, Ira Baldwin, and Murray Sanders.
+
+The 1936 startup grants do not complete Britain's anthrax special project or add British or American biological breakthrough progress, and Germany's tabun technology is withheld until after the late-1936 discovery while no tabun stockpile is granted.
 
 ## Localisation
 
@@ -128,6 +138,8 @@ The complete input mapping, hashes, selected alternates, user-corrected anonymou
 
 Calibration used institutional biographies, archival catalogues, official prize biographies, national academies, military-medical histories, and scholarly histories of the relevant wartime programs.
 
+The dated startup decisions are anchored by the [2 February 1939 Hansard respirator statement](https://api.parliament.uk/historic-hansard/commons/1939/feb/02/air-raid-precautions), the [National Archives account of 38 million masks by September 1939](https://www.nationalarchives.gov.uk/education/resources/home-front-1939-1945-part-one/war-gas/), the [US Army history of the 1942 War Research Service and late-1942 Baldwin assignment](https://history.army.mil/portals/143/Images/Publications/catalog/10-1.pdf), the [US Army history of Camp Detrick's 1943 construction](https://history.army.mil/portals/143/Images/Publications/catalog/10-1.pdf), the [US Army history of Schrader's 1936 tabun discovery](https://history.army.mil/portals/143/Images/Publications/catalog/10-2.pdf), the [US State Department record of Italian mustard-gas use in Ethiopia](https://history.state.gov/historicaldocuments/frus1936v03/d85), the [Polish Institute of National Remembrance biography of Rudolf Weigl](https://ipn.gov.pl/pl/historia-z-ipn/224331%2CRudolf-Weigl-18831957.html), and the [Polish Armia Krajowa account of Witaszek's underground laboratories](https://przystanekhistoria.pl/pa2/tematy/armia-krajowa/74750%2CDr-Franciszek-Witaszek.html).
+
 The principal reference families include the Royal Society and Royal College of Physicians for British scientists, Nobel Prize biographies and Oxford institutional histories for penicillin researchers, the Australian Academy of Science and Australian Dictionary of Biography, the French Académie des sciences, the United States National Academies and military-medical histories, Polish scientific and resistance histories, Soviet microbiology and chemical-defence histories, and scholarly documentation of the German and Japanese wartime programs and subsequent trials.
 
 Where a person's historical role was administrative rather than scientific, the profile uses skill 1 and a factual description rather than inferring technical expertise from institutional power.
@@ -138,4 +150,4 @@ The user identified `6925d2612b927.image_00001.dds` as Erich Traub, so it replac
 
 The second anonymous file, `s-l1200_00001.dds`, is intentionally ignored and retained only as `not_needed` archive evidence.
 
-Dates of availability could later be modeled for scientists who died during the scenario period, but the current startup roster intentionally exposes the requested identities from scenario start.
+Prewar identities remain available from scenario start because the roster represents established research capability, while dated wartime recruitment and advisor cards represent later personnel access, appointments, and offensive authorization.

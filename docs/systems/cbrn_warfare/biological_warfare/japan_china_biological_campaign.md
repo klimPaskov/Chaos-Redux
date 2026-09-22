@@ -1,174 +1,36 @@
-# Japan–China Biological Campaign
+# Japan-China Biological Campaign Raids
 
-## Overview
+## Acceptance and current source
 
-The Japan–China biological campaign provides two exact-state decisions for Japan's explicitly authorized Ishii program while preserving native raids as the normal strategic and battlefield delivery systems.
+The user's 2026-09-20 CBRN implementation request accepted exactly two shared raid categories and native delivery. `common/raids/japan_cbrn_campaign_raids.txt` defines Japan's historical China campaign inside the shared `biological_raids` category. The old Japan biological campaign decision category and its two exact-state decisions are retired. This current-source account awaits parent integration and live-game validation.
 
-These decisions represent historically specific theater actions whose fixed selected state and narrow AI route make the historical campaign easier to reproduce without inventing a raid target, launch state, proxy state, or continuous-air estimate.
+The six raid IDs follow `japan_china_biological_<anthrax|plague>_<normal|sale|evolution>_raid`. Each chooses an enemy-controlled Chinese state and a supply-node origin, requires an assigned division and army intelligence, and reserves exact agent bombs plus support equipment through native `essential_equipment`. Anthrax preparation takes 30 days and Plague preparation 45 days. The selected tier is fixed when the raid starts. Both human and AI actors use the same path, with outcome adapter `japan_bio_campaign_resolve_native_raid_outcome` in `common/scripted_effects/japan_biological_campaign_effects.txt`.
 
-Both actions consume real resources and dispatch the exact selected state through the shared ordinary-pathogen lifecycle.
+## Reservation and cost matrix
 
-Weaponized zombies remain separate.
+| Agent and tier | Exact bomb stock | Support equipment | Command Power |
+| --- | ---: | ---: | ---: |
+| Anthrax normal | 8 | 35 | 10 |
+| Anthrax sale | 4 | 18 | 5 |
+| Anthrax evolution | 2 | 9 | 3 |
+| Plague normal | 10 | 45 | 14 |
+| Plague sale | 5 | 23 | 7 |
+| Plague evolution | 3 | 12 | 4 |
 
-## Route and Target Gate
+The matching bomb archetype is `anthrax_bomb_equipment` or `plague_bomb_equipment`. Native reservation is the sole material debit, and Command Power is the native allocation; the old Political Power cost and scripted refund path were removed under the parent-approved native-raid economy simplification. Sale and evolution variants remain within Biological Raids and do not add categories. A Black Friday sale can be chosen at preparation, but a transaction-specific achievement at reservation is not proven by the documented native lifecycle hooks; the one-day sale may expire before a multi-day outcome callback. The owner records this as an open achievement limitation, not a fabricated callback.
 
-The category is limited to the original Japanese country while it is fighting a Chinese country and operating the explicit Pingfang, Ishii program, and Ishii authority route.
+## Exact-state consequence and historical scope
 
-Containment, reform, and prisoner-experiment shutdown routes close the campaign.
+The selected state is passed to `bio_lifecycle_route.japan_china_campaign` and the shared ordinary-pathogen lifecycle. The existing Pingfang, Ishii authority, occupation-linked China target, containment-route exclusions, and pathogen profile gates remain source requirements; the callback cannot substitute another target if the selected state is invalid. Anthrax represents a supply-network release and Plague a vector release. Incubation, detection, spread, treatment, evidence, attribution, deaths, Condemnation, and recovery belong to that shared lifecycle. The campaign does not convert weaponized zombies into ordinary pathogens. The callback brackets its seed with `bio_native_raid_dispatch_in_progress`; the lifecycle owner's Command Power recovery guard for that flag remains pending integration evidence.
 
-The acting country also needs an active CBRN program, Operational Chemical Readiness, strategic biological-use policy, biological security, and attribution-control records.
+The Japanese biological warfare program, Unit 731, plague-vector work, and releases in China are well attested. The 1940 Ningbo plague release is a documented Plague basis; the supply-network Anthrax route is a gameplay abstraction of a documented weapon capability, not a claim about one named historical operation. Background sources retained from the earlier decision design: [historical review](https://pmc.ncbi.nlm.nih.gov/articles/PMC1200679/), [American Experience Ishii biography](https://www.pbs.org/wgbh/americanexperience/features/weapon-biography-shiro-ishii/?flavour=full), and [NOVA history](https://www.pbs.org/wgbh/nova/bioterror/hist_nf.html).
 
-An eligible target is an enemy-controlled Chinese core state in Asia that:
+## Source, presentation, and evidence limits
 
-- remains controlled by an actual Chinese belligerent rather than Japan, a Japanese subject, or a faction partner;
-- is adjacent to a state controlled by Japan or a Japanese subject, which proves the occupation-linked theater route;
-- is inhabited, passable, eligible for the ordinary-pathogen lifecycle, and outside its exact 180-day campaign cooldown;
-- has no active episode of the selected agent; and
-- meets the selected action's target profile.
+The active gameplay path is `common/raids/japan_cbrn_campaign_raids.txt`, `common/scripted_effects/japan_biological_campaign_effects.txt`, and the biological lifecycle effects and triggers. The former `japan_biological_campaign_category` and `japan_bio_campaign_contaminate_supply_network`/`japan_bio_campaign_disperse_plague_vectors` IDs and category art are historical. Biological raids reuse `GFX_raid_type_icon_anthrax_strike` and agent equipment icons; final native raid map presentation, localisation, and DDS consumers require parent and asset review.
 
-The Anthrax action requires a supply node, port, sufficient infrastructure or industry, or an actual division in the selected state.
+The probability adapter reported no weighted raid surface and a cross-adapter comparison returned `PROBABILITY_SURFACE_EMPTY`; neither result proves AI target selection or outcome rates. Event 026 inspection was partial and its render timed out. Native reserved-equipment behavior on cancellation is not proved by installed documentation; this and the sale-achievement transaction remain open engine evidence gaps.
 
-The Plague action requires a capital, city, port, or sufficiently populous selected state.
+## Future depth
 
-No helper searches for an alternate state when the selected state is invalid.
-
-## Actions and Costs
-
-| Decision | Agent | Political Power | Payload | Support Equipment | Command Power | Base national cooldown |
-| --- | --- | ---: | ---: | ---: | ---: | ---: |
-| Contaminate Supply Networks | Anthrax | 35 | 8 Anthrax Bombs | 35 | 10 | 90 days |
-| Disperse Plague Vectors | Plague | 40 | 10 Plague Bombs | 45 | 14 | 90 days |
-
-The custom decision cost validates all four resources and the complete effect revalidates them before making any debit.
-
-Political Power, the exact agent model, Support Equipment, and Command Power are then consumed inside the same committed effect chain.
-
-Theater Contamination doctrine shortens the national cooldown to 60 days and refunds 2 Command Power after a valid lifecycle dispatch.
-
-Terminal Hazard doctrine shortens the national cooldown to 45 days and refunds 4 Command Power after a valid lifecycle dispatch.
-
-Doctrine never refunds Political Power, payload, or Support Equipment.
-
-## Shared Lifecycle
-
-Both decisions use the private `japan_china_campaign` route and call `bio_lifecycle_dispatch_seed` for the exact selected state.
-
-The decision layer has equal deterministic release acceptance for Anthrax and Plague after every route, target, and cost gate passes.
-
-It does not give Plague a better delivery-success roll than Anthrax.
-
-Uncertainty begins inside the shared lifecycle through incubation, detection, spread, response, attribution, and recovery.
-
-The canonical agent profile preserves the accepted weapon hierarchy `Tularemia < Anthrax < Plague < Smallpox`.
-
-Anthrax remains moderate, Plague remains serious, and only Smallpox is severe.
-
-Chaos Warfare doctrine can increase seed potency, growth, spread, deaths, contamination pressure, duration, medical saturation, preparation ease, and aggressive AI willingness through the shared lifecycle.
-
-Condemnation is the only consequence component doctrine may reduce.
-
-Doctrine does not reduce evidence, attribution, physical costs, deaths, contamination, medical saturation, use history, domestic penalties, accident records, or public-harm floors.
-
-## History and Failure Contract
-
-A valid dispatch records the exact actor, victim controller, selected state, agent, date, resource totals, national cooldown, state cooldown, and agent-specific use history.
-
-The ordinary lifecycle separately records incubation, outbreak, death, contamination, evidence, attribution, and Condemnation history.
-
-If the exact committed context fails revalidation, no equipment is consumed and no release is created.
-
-If the shared lifecycle rejects a record after the committed debit, the material remains consumed and the actor receives a diagnostic dispatch-failure history flag.
-
-That failure creates no alternate state, proxy contamination, evidence substitute, payload refund, or inferred use record.
-
-## AI Behavior
-
-AI Japan uses the same route, project, target, stockpile, Command Power, Political Power, and cooldown gates as the player.
-
-Anthrax receives additional target weight for supply nodes and ports.
-
-Plague receives additional target weight for capitals, major cities, ports, and high population.
-
-Theater Contamination and Terminal Hazard doctrine increase willingness because they represent a more aggressive Chaos Warfare route.
-
-An exact state already used by the campaign receives lower weight after its cooldown expires.
-
-High Condemnation combined with high import vulnerability sharply suppresses use without disabling an otherwise authorized human action.
-
-Japan stops selecting either historical campaign action when its own surrender progress reaches the exact near-capitulation threshold. An explicitly authorized doomsday route leaves only the separate doomsday decision as a biological release choice during collapse; without that route, stockpile destruction is preferred.
-
-The AI never receives a fabricated target, inferred frontline, or fallback action.
-
-## Historical Confidence
-
-The Japanese biological warfare program, Unit 731, weaponized plague-vector work, and deliberate plague releases in China are well attested.
-
-The 1940 Ningbo plague release is a particularly well-documented basis for the Plague action.
-
-Japanese work with *Bacillus anthracis* and the program's Anthrax capability are also well attested.
-
-The specific supply-network Anthrax action is a medium-confidence gameplay abstraction of that documented capability rather than a claim that one named historical operation used this exact method.
-
-The route gates, occupation linkage, and differentiated target profiles are gameplay tuning, not quantitative historical estimates.
-
-Sources:
-
-- [Plague as a Biological Weapon and Bioterrorism Threat](https://pmc.ncbi.nlm.nih.gov/articles/PMC7270574/)
-- [Biological Warfare and Bioterrorism: A Historical Review](https://pmc.ncbi.nlm.nih.gov/articles/PMC1200679/)
-- [Shiro Ishii biography, American Experience](https://www.pbs.org/wgbh/americanexperience/features/weapon-biography-shiro-ishii/?flavour=full)
-- [History of Biological Warfare, NOVA](https://www.pbs.org/wgbh/nova/bioterror/hist_nf.html)
-- [Anthrax: A Disease of Biowarfare and Public Health Importance](https://pmc.ncbi.nlm.nih.gov/articles/PMC7106442/)
-
-## Files and Stable Identifiers
-
-Gameplay:
-
-- `common/decisions/categories/japan_biological_campaign_categories.txt`
-- `common/decisions/japan_biological_campaign_decisions.txt`
-- `common/script_constants/japan_biological_campaign_constants.txt`
-- `common/scripted_triggers/japan_biological_campaign_triggers.txt`
-- `common/scripted_effects/japan_biological_campaign_effects.txt`
-- `common/script_constants/biological_lifecycle_constants.txt`
-- `common/scripted_triggers/biological_lifecycle_triggers.txt`
-- `common/scripted_effects/biological_lifecycle_effects.txt`
-
-Player-facing wiring:
-
-- `localisation/english/japan_biological_campaign_l_english.yml`
-- `interface/biological_warfare.gfx`
-
-Stable category and decision identifiers:
-
-- `japan_biological_campaign_category`
-- `japan_bio_campaign_contaminate_supply_network`
-- `japan_bio_campaign_disperse_plague_vectors`
-
-## Assets
-
-The category icon is `gfx/interface/decisions/biowarfare/japan_china/decision_category_japan_biological_campaign.dds`.
-
-It is registered as `GFX_decision_category_japan_biological_campaign` in `interface/biological_warfare.gfx`.
-
-Its generated source, transparent processing evidence, exact 52x40 preview, contact sheet, manifest, and handoff live under `docs/assets/chaos_warfare_cbrn/japan_biological_campaign/`.
-
-The Anthrax and Plague actions reuse their existing exact-agent decision sprites, `GFX_decision_bio_sabotage_anthrax` and `GFX_decision_bio_sabotage_plague`.
-
-No focus icon, idea icon, placeholder, resized cross-type substitute, or raid icon is used for the category.
-
-Every existing asset under `gfx/interface/military_raids/` remains untouched and available to the native biological raids.
-
-## Engine Limits
-
-The state-targeted decision contract exposes the exact selected state as `FROM`, so the implementation can preserve the player or AI target without an estimator.
-
-The shared lifecycle requires a real current victim controller, so these actions target enemy-controlled Chinese states adjacent to a real Japanese or Japanese-subject occupation zone rather than Japanese-occupied states.
-
-The campaign does not infer an active combat province, an alternate target, or a historical operation state when the exact selected state is unavailable.
-
-No daily, weekly, or monthly all-country pulse is added.
-
-## Future Extensions
-
-- Add another historically specific campaign action only when research supports a distinct route, target profile, and agent payload rather than a renamed duplicate.
-- Add player-facing forensic summaries only when they can expose real lifecycle evidence without revealing hidden information.
-- Preserve native raids for ordinary strategic and battlefield deployment while keeping campaign decisions narrow, historical, and exact-state.
+Add historically specific incident summaries only after exact target, native reservation, outcome, and shared lifecycle behavior have current source and live-game evidence.

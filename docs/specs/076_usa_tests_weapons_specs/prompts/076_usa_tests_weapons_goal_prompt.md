@@ -1,0 +1,19 @@
+# Event 076 completion goal
+
+Complete USA Tests Weapons from `docs/specs/076_usa_tests_weapons_specs/`. Read the full design and current mandatory skills before editing. Keep source specs there and actual plans, specialist handoffs and evidence in `docs/plans/076_usa_tests_weapons_plans/`. Preserve unrelated working-tree changes. The planning task read every supplied text but did not run agents, game tools or live tests and did not read every linked external reference. Verify those missing inputs yourself.
+
+Deliver the full repeatable testing program. Keep Event 076, Chaos level 1, Military Preparation / Low, zero-padded paths and namespace `chaosx.nr76`. One shared firing creates one wave of independent delayed tests in multiple valid foreign minors. Preserve strong human-minor priority, geography-aware variety, repeat victims and actual current arsenal eligibility. Do not reduce the dynamic catalogue to a short fixed rotation.
+
+Targets have exactly acceptance or refusal. Acceptance permits the full agreed physical test. Refusal makes USA declare a real war on the refusing country. No PP buyout, token penalty, false war or reversed attacker is allowed. AI USA conducts valid tests and diversifies around real research priorities. Human USA has meaningful generated program choices without free target rerolls.
+
+Implement preparation, commitment, impact, analysis and useful typed rewards. Freeze each accepted target, family and severity. Use persistent job generations and once-only receipts so overlapping waves, reloads, ownership changes and late callbacks cannot repeat or overwrite effects. New evolutions do not rewrite existing tests. Verify delayed evolution timing with the actual MTTH skill and required tools.
+
+Damage real state population, buildings, relevant railway and supply infrastructure, and deployed units and equipment through valid owner contracts. Use exact applied results. Register every real loss once through shared Deaths and keep later disease or contamination attribution. Prove native military aggregation is not double-counted. Respect the shared disabled-ledger setting without misreporting parity. Never substitute country manpower or modifiers for actual civilian deaths.
+
+Complete all evolutions. Heavier conventional trials begin at 200 Chaos. At 400, a real testing-only nuclear prototype works before mature weapons and grants relevant development without a free general stockpile. At 600, chemical, biological and disease trials use their actual owners, including continuing spread and containment. Missing owner capabilities remain blockers, not renamed conventional effects.
+
+Grant delayed useful family-specific XP, research, doctrine, project or production benefits with headroom and stacking limits. No reward scales with civilian deaths. Implement the limited ideas, actual recovery missions, paid useful relief, shared condemnation and treaty reactions. Preserve first-use nuclear presentation, six specified achievements, final localisation and all required assets through their separate prompts.
+
+Use the real supplied specialists with bounded clean-context tasks. Never roleplay unavailable agents. Update the canonical workbook and regenerate exports, preserve the single achievement registry, inspect real templates and verify audio rights. Run required MCP analyses, full-pool AI and MTTH checks, live acceptance cases, multiplayer, visual and audio reviews. A tool call or syntax pass alone is not proof of correct gameplay.
+
+Near completion, run the independent improvement-loop planner and event-completion auditor on the actual implementation and evidence. Fix findings and repeat affected checks. Continue iterating until the full specification is satisfied. Do not claim completion for a conventional demo, placeholder art, fake disease effects, untested casualty accounting or unexecuted audits. Report concrete blockers, exact changes, actual results and evidence paths honestly.

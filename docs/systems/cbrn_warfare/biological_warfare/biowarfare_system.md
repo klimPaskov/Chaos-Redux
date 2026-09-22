@@ -42,7 +42,7 @@ Deliberate battlefield and strategic deployment uses dedicated native raids.
 
 Operative release uses the intelligence-operation route, while food, water, and medical sabotage uses its separate covert route.
 
-The historical Japan-China campaign uses exact-state Anthrax and Plague decisions on its explicit route, and the exceptional doomsday release remains a decision.
+The historical Japan-China campaign uses exact-state Anthrax and Plague operations on its explicit route, and the exceptional doomsday release uses `biological_stockpile_doomsday_raid` under the shared biological raid category.
 
 Those exceptions consume exact payload and enter the same ordinary lifecycle; they do not replace the native raid system for ordinary strategic or battlefield deployment.
 
@@ -148,10 +148,10 @@ Agent-specific route preferences may differ because their strategic effects diff
 
 ## Implementation surfaces and remaining validation
 
-Strategic and battlefield raids, operative release, food-water-medical sabotage, the Japan-China campaign decisions, field testing, stockpile accidents, captured-facility recovery raids, doomsday release, agent-specific incubation and treatment, evidence, attribution, deaths, contamination, spread, and designer integration all enter the ordinary biological lifecycle.
+Strategic and battlefield raids, operative release, food-water-medical sabotage, the Japan-China campaign raids, field testing, stockpile accidents, captured-facility recovery raids, the biological doomsday raid, agent-specific incubation and treatment, evidence, attribution, deaths, contamination, spread, and designer integration all enter the ordinary biological lifecycle.
 
 Captured facilities are secured or destroyed through native land raids and never through a deployment decision.
 
-The doomsday route remains the explicitly authorized decision exception.
+The doomsday route remains an explicitly authorized native raid exception whose selected state authenticates the wider batch release.
 
 Package scenario validation, balance recording, and the mapped specialist completion audits remain part of the wider CBRN completion stages and are not claimed by this guide.

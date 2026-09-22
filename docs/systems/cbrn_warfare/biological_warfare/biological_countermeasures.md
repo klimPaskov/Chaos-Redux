@@ -171,6 +171,18 @@ It reduces Smallpox growth, spread, and deaths and does not alter the effects of
 
 Ending the program takes 30 days and restores the committed 10 Medical Capacity.
 
+## Biological special projects in the ordinary outbreak lifecycle
+
+Completed Mass Vaccine Production uses separate susceptibility factors for Anthrax, Plague, Tularemia, and Smallpox. Each matching factor reduces new exposure, intensity growth, and connected spread in the controlled state. An active Smallpox vaccination program supplies the Smallpox foundation instead of compounding a second project vaccine factor. The project does not clear an existing episode.
+
+Completed Field Antibiotics lowers mortality for the three bacterial agents, Anthrax, Plague, and Tularemia. It has no Smallpox treatment effect. An active agent-specific antibiotic course takes precedence in that state. The project also grants its defined Field Hospital and CBRN medical detachment casualty-trickleback bonuses.
+
+Completed Regenerative Serum improves the Medical Response contribution to intensity decline, exposed-share clearance, and medical-saturation recovery. Its national idea adds an army recovery benefit with a 2% Consumer Goods cost. Recovery still requires the scheduled outbreak lifecycle to work through the state record.
+
+Completed Broad-Spectrum Antiserum lowers mortality only during an active ordinary-agent outbreak with a deployed field hospital, an international medical mission, or positive national Medical Capacity backed by support equipment in stock. It consumes no second shipment when the lifecycle tick runs. The project research costs resources and breakthroughs, while hospital and mission deployment retain their existing equipment and capacity commitments.
+
+Additional growth, mortality, medical-load, and connected-spread protections share one 50% residual hazard budget after agent-specific foundational treatment. Detection improvements also retain at least half of the baseline non-detection chance. This limit prevents stacked response programs from erasing an outbreak through modifiers alone. Quarantine, border closure, response capacity, and exact-state medical commitments retain their normal costs and operational tradeoffs.
+
 ## International medical missions
 
 An international mission targets one controlled state with a detected ordinary outbreak.

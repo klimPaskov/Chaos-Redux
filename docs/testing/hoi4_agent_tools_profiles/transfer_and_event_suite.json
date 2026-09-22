@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "1.0",
+  "id": "chaos_redux_transfer_and_event",
+  "cases": [
+    {
+      "id": "transfer_source_package",
+      "domain": "package",
+      "manifest": {
+        "schemaVersion": "1.0",
+        "id": "civilian_transfer",
+        "definitions": [
+          { "kind": "scripted_effect", "id": "civilian_transfer_preflight" },
+          { "kind": "scripted_effect", "id": "civilian_transfer_civilians_exact" },
+          { "kind": "scripted_effect", "id": "civilian_transfer_finalize" },
+          { "kind": "scripted_effect", "id": "civilian_transfer_rollback_transaction" },
+          { "kind": "scripted_effect", "id": "civilian_transfer_cleanup_request" },
+          { "kind": "scripted_trigger", "id": "civilian_transfer_finalize_request_is_valid" },
+          { "kind": "scripted_effect", "id": "migration_record_transfer_projection" },
+          { "kind": "scripted_effect", "id": "migration_update_cohort_host_after_transfer" }
+        ]
+      },
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "invalid_transfer_preflight",
+      "domain": "mechanic",
+      "test": {
+        "id": "missing_cohort_no_origin_debit",
+        "scenario": {
+          "schemaVersion": "1.0",
+          "id": "missing_cohort",
+          "state": {
+            "state_population_k": 100,
+            "civilian_transfer_people": 500,
+            "migration_cohort_id_request": 0
+          },
+          "closedFlags": true
+        },
+        "steps": [{ "kind": "effect", "source": { "kind": "scripted_effect", "id": "civilian_transfer_preflight" } }],
+        "assertions": [{ "id": "origin_unchanged", "kind": "equals", "path": { "key": "state_population_k" }, "expected": 100 }]
+      },
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "communist_event_trace",
+      "domain": "tool",
+      "tool": "hoi4.event_inspect",
+      "arguments": {
+        "mode": "trace",
+        "selector": { "kind": "event", "eventId": "chaosx.nr1.1" },
+        "direction": "both",
+        "maxDepth": 4,
+        "maxNodes": 240,
+        "maxEdges": 1000
+      },
+      "assertions": [{ "id": "mode", "path": ["data", "mode"], "expected": "trace" }],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "communist_event_options",
+      "domain": "tool",
+      "tool": "hoi4.event_render",
+      "arguments": {
+        "view": "options",
+        "selector": { "kind": "event", "eventId": "chaosx.nr1.1" },
+        "maxDepth": 3,
+        "maxNodes": 120
+      },
+      "assertions": [{ "id": "view", "path": ["data", "view"], "expected": "options" }],
+      "views": ["summary", "artifacts", "diagnostics"]
+    },
+    {
+      "id": "communist_event_neighborhood",
+      "domain": "tool",
+      "tool": "hoi4.event_render",
+      "arguments": {
+        "view": "neighborhood",
+        "selector": { "kind": "event", "eventId": "chaosx.nr1.1" },
+        "direction": "downstream",
+        "maxDepth": 4,
+        "maxNodes": 180
+      },
+      "assertions": [{ "id": "view", "path": ["data", "view"], "expected": "neighborhood" }],
+      "views": ["summary", "artifacts", "diagnostics"]
+    }
+  ]
+}

@@ -20,7 +20,7 @@ Routine civilian mask issue, full distribution, filter replacement, and occupied
 | International response | `cbrn_international_response_category` | Inspections, sanctions, protective aid, retaliation, and stockpile destruction. |
 | Occupation measures | `cbrn_occupation_measures_category` | Coercive Security authorization and exact-state nerve-agent suppression. |
 | Chemical battlefield release | state-targeted decisions plus native chemical raids | Explicit target-state operations. Idle aircraft and continuous missions never call the exposure pipeline. |
-| Biological release | native biological raids, exact covert sabotage surfaces, Japan-China decisions, and the doomsday decision | Route-specific deployment. The four ordinary agents share lifecycle helpers but not delivery success odds. |
+| Biological release | native biological raids, exact covert sabotage surfaces, migrating Japan-China operations, and the doomsday raid | Route-specific deployment. The four ordinary agents share lifecycle helpers but not delivery success odds. |
 
 ## Visible values and tooltip contract
 

@@ -2,9 +2,10 @@
 # CHAOS REDUX - CBRN ARMY HEADQUARTERS AND AIR-COORDINATION TECHNOLOGIES
 # ============================================================================
 # Overview:
-# - Defines doctrine-only Mobile Decontamination Columns, Chemical Air
+# - Defines doctrine-only mobile decontamination certification, Chemical Air
 #   Interdiction, and Theater CBRN Headquarters gates.
-# - These technologies cannot be researched; Operations mastery grants them
+# - Theater certification unlocks the three consolidated Army HQ sections.
+# - These markers cannot be researched; Operations mastery grants them
 #   directly through the centralized doctrine helper.
 # - Chemical Air Interdiction is an eligibility marker for an explicit
 #   selected-state operation. It creates no continuous-air mission effect.
@@ -16,11 +17,6 @@
 @CBRN_MOBILE_DECON_TECH_YEAR = 1939
 @CBRN_CHEMICAL_AIR_TECH_YEAR = 1940
 @CBRN_HQ_TECH_YEAR = 1942
-@CBRN_MOBILE_DECON_TECH_X = 8
-@CBRN_CHEMICAL_AIR_TECH_X = 10
-@CBRN_HQ_TECH_X = 14
-@CBRN_HQ_TECH_Y = 24
-@CBRN_DOCTRINE_COORDINATION_TECH_Y = 25
 @CBRN_HQ_TECH_AI_DISABLED = 0
 
 technologies = {
@@ -30,19 +26,11 @@ technologies = {
 		research_cost = @CBRN_HQ_TECH_COST
 		start_year = @CBRN_MOBILE_DECON_TECH_YEAR
 
-		enable_subunits = {
-			cbrn_hq_mobile_decontamination_column
-		}
-
 		categories = {
 			chemical_warfare_tech
 			decontamination_tech
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_MOBILE_DECON_TECH_X y = @CBRN_DOCTRINE_COORDINATION_TECH_Y }
-		}
 
 		ai_will_do = { factor = @CBRN_HQ_TECH_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
@@ -64,10 +52,6 @@ technologies = {
 			air_equipment
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_CHEMICAL_AIR_TECH_X y = @CBRN_DOCTRINE_COORDINATION_TECH_Y }
-		}
 
 		ai_will_do = { factor = @CBRN_HQ_TECH_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_air }
@@ -79,16 +63,18 @@ technologies = {
 		research_cost = @CBRN_HQ_TECH_COST
 		start_year = @CBRN_HQ_TECH_YEAR
 
+		enable_subunits = {
+			cbrn_hq_operations_section
+			cbrn_hq_protective_logistics_section
+			cbrn_hq_medical_countermeasure_directorate
+		}
+
 		categories = {
 			chemical_warfare_tech
 			cbrn_instruments_tech
 			decontamination_tech
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_HQ_TECH_X y = @CBRN_HQ_TECH_Y }
-		}
 
 		ai_will_do = { factor = @CBRN_HQ_TECH_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_biowarfare }

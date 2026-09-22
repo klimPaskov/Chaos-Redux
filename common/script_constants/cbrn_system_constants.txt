@@ -22,6 +22,17 @@ cbrn_math = {
 	percent_divisor = 100
 }
 
+# Residual lower bound after all authored hazard mitigation on one receipt.
+# Foundational mask coverage is measured separately from this benefit budget.
+cbrn_hazard_budget = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	residual_floor = 0.50
+}
+
 cbrn_proof = {
 	schema = {
 		any_key = yes
@@ -128,11 +139,15 @@ cbrn_use_policy = {
 	}
 
 	unset = 0
+	# The old numeric positions remain reserved for persisted country values.
 	defensive_preparation = 1
 	retaliation_authority = 2
+	retaliation_only = 2
 	limited_battlefield_authority = 3
+	battlefield_authorization = 3
 	strategic_release_authority = 4
 	unrestricted_chaos_warfare = 5
+	unrestricted_authorization = 5
 }
 
 cbrn_readiness_band = {
@@ -245,7 +260,7 @@ cbrn_readiness = {
 	}
 
 	default_value = 0
-	default_cap = 19
+	default_cap = 100
 	limited_threshold = 20
 	operational_threshold = 40
 	integrated_threshold = 60
@@ -732,7 +747,8 @@ cbrn_scheduler = {
 	contamination_maximum_days = 720
 	evidence_expiry_minimum_days = 30
 	evidence_expiry_maximum_days = 730
-	protection_maintenance_days = 365
+	protection_maintenance_days = 30
+	protection_storage_loss_cycles = 12
 	mask_snapshot_refresh_guard_days = 1
 }
 
@@ -1027,7 +1043,7 @@ cbrn_protection_technology_effect = {
 	filter_standardization_consumption_mult = 0.85
 	civil_registration_distribution_cost_mult = 0.85
 	rapid_filter_replacement_cost_mult = 0.70
-	armored_delivery_friendly_risk_mult = 0.60
+	armored_delivery_friendly_risk_mult = 0.85
 }
 
 cbrn_protection_response = {
@@ -1039,11 +1055,11 @@ cbrn_protection_response = {
 	alarm_warning_bonus = 20
 	alarm_local_factories = -0.15
 	alarm_army_speed = -0.05
-	shelter_exposed_fraction_mult = 0.55
+	shelter_exposed_fraction_mult = 0.65
 	shelter_local_factories = -0.25
 	shelter_army_speed = -0.08
 	hospital_medical_bonus = 25
-	hospital_medical_saturation_mult = 0.65
+	hospital_medical_saturation_mult = 0.85
 	hospital_local_supplies = 0.05
 	industry_exposed_fraction_mult = 1.30
 	industry_local_factories = 0.20
@@ -1161,7 +1177,10 @@ cbrn_starting_masks = {
 	# civilian_distribution_target is the share already issued at the 1936
 	# bookmark. It is intentionally distinct from the matrix's eventual
 	# civilian coverage target; undistributed crates remain in national reserve.
-	ENG = { basic = 26000 improved = 19000 military_issue_target = 1.50 civilian_distribution_target = 0.70 registration = 1 }
+	# The 1936 ENG receipt overrides these fixed warehouse crates with a
+	# force-scaled grant. The 1939 bookmark uses the stock profile, then issues
+	# civilians only through its dated mass-respirator receipt.
+	ENG = { basic = 26000 improved = 19000 military_issue_target = 0.75 civilian_distribution_target = 0.0 registration = 1 }
 	FRA = { basic = 16000 improved = 8000 military_issue_target = 1.40 civilian_distribution_target = 0.28 registration = 1 }
 	GER = { basic = 16000 improved = 10000 military_issue_target = 1.50 civilian_distribution_target = 0.20 registration = 0 }
 	SOV = { basic = 24000 improved = 0 military_issue_target = 1.40 civilian_distribution_target = 0.04 registration = 0 }

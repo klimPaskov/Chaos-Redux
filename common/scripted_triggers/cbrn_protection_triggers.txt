@@ -24,15 +24,8 @@ cbrn_civil_defence_category_visible = {
 	NOT = { is_actual_nonhuman_country = yes }
 	OR = {
 		cbrn_country_has_public_chemical_emergency = yes
-		AND = {
-			cbrn_protection_decision_surface_is_unlocked = yes
-			OR = {
-				cbrn_country_has_priority_distribution_work = yes
-				cbrn_country_has_full_distribution_work = yes
-				cbrn_country_has_filter_replacement_work = yes
-				cbrn_country_has_occupied_distribution_work = yes
-			}
-		}
+		cbrn_country_faces_enemy_chemical_capability = yes
+		has_active_biowarfare_outbreak = yes
 	}
 }
 
@@ -148,6 +141,18 @@ cbrn_country_faces_enemy_chemical_capability = {
 			has_tech = sarin
 			has_tech = soman
 		}
+	}
+}
+
+# Routine civilian issue is tied to an actual threat or the pending 1939
+# British historical receipt. The receipt clears its flag after real issue.
+cbrn_country_needs_civilian_mask_issue = {
+	OR = {
+		has_enemy_used_chemical_weapons = yes
+		cbrn_country_faces_enemy_chemical_capability = yes
+		any_controlled_state = { has_state_flag = cbrn_chemical_raid_alert_active }
+		any_controlled_state = { cbrn_state_has_chemical_contamination = yes }
+		has_country_flag = cbrn_historical_civilian_mask_issue
 	}
 }
 
@@ -418,12 +423,14 @@ cbrn_state_can_receive_emergency_masks = {
 	is_controlled_by = ROOT
 	state_population_k > constant:cbrn_math.zero
 	cbrn_state_has_emergency_context = yes
+	NOT = { has_state_flag = cbrn_emergency_distribution_surge_used }
 	cbrn_state_has_emergency_distribution_gap = yes
 }
 
 cbrn_state_can_receive_occupied_masks = {
 	cbrn_state_is_valid_distribution_target = yes
 	NOT = { is_core_of = ROOT }
+	cbrn_state_has_emergency_context = yes
 	cbrn_state_has_occupied_distribution_gap = yes
 }
 

@@ -64,17 +64,9 @@ cbrn_apply_starting_mask_profile = {
 		set_country_flag = cbrn_civil_defence_established
 	}
 
-	set_temp_variable = { cbrn_readiness_delta = constant:cbrn_protection_program_effect.reserve_readiness_gain }
-	if = {
-		limit = {
-			check_variable = {
-				var = cbrn_starting_registration_proof
-				value = constant:cbrn_proof.supplied
-				compare = equals
-			}
-		}
-		add_to_temp_variable = { cbrn_readiness_delta = constant:cbrn_protection_program_effect.registration_readiness_gain }
-	}
+	# Starting readiness is derived by the shared snapshot from real issue,
+	# registration, facilities, and maintenance; no synthetic startup delta is
+	# applied here.
 	cbrn_modify_chemical_readiness = yes
 
 	cbrn_refresh_country_mask_snapshot = yes
@@ -109,6 +101,43 @@ cbrn_apply_starting_imported_mask_profile = {
 	clr_country_flag = cbrn_starting_imported_masks_only
 }
 
+# The 1936 British profile replaces the common fixed warehouse grant with a
+# force-scaled real stock receipt: 75% active issue and 25% replacement reserve.
+# It runs after the common profile, whose ENG branch deliberately grants no
+# fixed crates when the historical 1936 flag is present.
+chaosx_apply_historical_eng_1936_force_scaled_profile = {
+	if = {
+		limit = {
+			tag = ENG
+			has_country_flag = cbrn_historical_1936_force_scaled_protection
+			NOT = { has_country_flag = cbrn_historical_eng_1936_force_scaled_profile_applied }
+			has_variable = cbrn_historical_1936_military_issue_target
+			has_variable = cbrn_historical_1936_replacement_reserve_ratio
+		}
+		cbrn_refresh_country_mask_snapshot = yes
+		set_temp_variable = { cbrn_historical_eng_issue_shortfall = cbrn_military_mask_requirement }
+		multiply_temp_variable = { cbrn_historical_eng_issue_shortfall = cbrn_historical_1936_military_issue_target }
+		subtract_from_temp_variable = { cbrn_historical_eng_issue_shortfall = cbrn_military_mask_crates }
+		clamp_temp_variable = { var = cbrn_historical_eng_issue_shortfall min = constant:cbrn_math.zero }
+		round_temp_variable = cbrn_historical_eng_issue_shortfall
+		set_temp_variable = { cbrn_historical_eng_replacement_reserve = cbrn_military_mask_requirement }
+		multiply_temp_variable = { cbrn_historical_eng_replacement_reserve = cbrn_historical_1936_replacement_reserve_ratio }
+		round_temp_variable = cbrn_historical_eng_replacement_reserve
+		set_temp_variable = { cbrn_historical_eng_grant = cbrn_historical_eng_issue_shortfall }
+		add_to_temp_variable = { cbrn_historical_eng_grant = cbrn_historical_eng_replacement_reserve }
+		subtract_from_temp_variable = { cbrn_historical_eng_grant = cbrn_mask_reserve_crates }
+		clamp_temp_variable = { var = cbrn_historical_eng_grant min = constant:cbrn_math.zero }
+		if = {
+			limit = { check_variable = { cbrn_historical_eng_grant > constant:cbrn_math.zero } }
+			add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_historical_eng_grant }
+		}
+		set_temp_variable = { cbrn_mask_issue_requested_crates = cbrn_historical_eng_issue_shortfall }
+		cbrn_issue_requested_masks_to_military = yes
+		set_country_flag = cbrn_historical_eng_1936_force_scaled_profile_applied
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}
+
 chaosx_apply_starting_cbrn_mask_profiles = {
 	ENG = {
 		if = {
@@ -117,6 +146,13 @@ chaosx_apply_starting_cbrn_mask_profiles = {
 			set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_starting_masks.ENG.improved }
 			set_temp_variable = { cbrn_starting_military_issue_target = constant:cbrn_starting_masks.ENG.military_issue_target }
 			set_temp_variable = { cbrn_starting_civilian_distribution_target = constant:cbrn_starting_masks.ENG.civilian_distribution_target }
+			if = {
+				limit = { has_country_flag = cbrn_historical_1936_force_scaled_protection }
+				set_temp_variable = { cbrn_starting_mask_basic = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_starting_mask_improved = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_starting_military_issue_target = cbrn_historical_1936_military_issue_target }
+				set_temp_variable = { cbrn_starting_civilian_distribution_target = cbrn_historical_1936_civilian_distribution_target }
+			}
 			set_temp_variable = { cbrn_starting_registration_proof = constant:cbrn_starting_masks.ENG.registration }
 			set_temp_variable = { cbrn_starting_program_profile = constant:cbrn_protection_program_profile.mass_civil_defence }
 			cbrn_apply_starting_mask_profile = yes

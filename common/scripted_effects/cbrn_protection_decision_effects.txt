@@ -140,6 +140,7 @@ cbrn_complete_full_state_distribution = {
 
 cbrn_complete_emergency_state_distribution = {
 	cbrn_distribute_emergency_masks_to_state = yes
+	set_state_flag = cbrn_emergency_distribution_surge_used
 	set_temp_variable = { cbrn_emergency_distribution_disruption_duration = constant:cbrn_protection_decision_timing.emergency_distribution_disruption_days }
 	add_dynamic_modifier = {
 		modifier = cbrn_emergency_distribution_disruption
@@ -228,14 +229,32 @@ cbrn_complete_civilian_filter_replacement_program = {
 	}
 }
 
+cbrn_begin_occupied_distribution_program = {
+	every_controlled_state = {
+		limit = { cbrn_state_can_receive_occupied_masks = yes }
+		set_state_flag = cbrn_occupied_distribution_program_target
+	}
+}
+
+cbrn_clear_occupied_distribution_targets = {
+	every_controlled_state = {
+		limit = { has_state_flag = cbrn_occupied_distribution_program_target }
+		clr_state_flag = cbrn_occupied_distribution_program_target
+	}
+}
+
 cbrn_complete_occupied_distribution_program = {
 	every_controlled_state = {
 		limit = {
-			cbrn_state_can_receive_occupied_masks = yes
+			has_state_flag = cbrn_occupied_distribution_program_target
+			cbrn_state_is_valid_distribution_target = yes
+			NOT = { is_core_of = ROOT }
+			cbrn_state_has_occupied_distribution_gap = yes
 			ROOT = { cbrn_country_has_any_mask_stock = yes }
 		}
 		cbrn_complete_occupied_state_distribution = yes
 	}
+	cbrn_clear_occupied_distribution_targets = yes
 }
 
 cbrn_begin_mask_reconditioning = {
@@ -459,6 +478,7 @@ cbrn_register_exact_state_chemical_raid_alert = {
 		clr_state_flag = cbrn_civilians_moved_to_shelters
 		clr_state_flag = cbrn_hospitals_utilities_secured
 		clr_state_flag = cbrn_industry_ordered_to_continue
+		clr_state_flag = cbrn_emergency_distribution_surge_used
 		cbrn_clear_state_raid_dynamic_modifiers = yes
 		set_state_flag = { flag = cbrn_chemical_raid_alert_active days = var:cbrn_alert_duration_local }
 	}

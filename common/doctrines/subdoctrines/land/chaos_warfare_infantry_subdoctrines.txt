@@ -2,8 +2,8 @@
 # CHAOS REDUX - HAZARD ASSAULT FORMATIONS
 # ============================================================================
 # The compatibility ID extermination_columns now represents protected hazard
-# infantry. Rewards retain the current CBRN unlocks and restore the original
-# assault, special-forces, night-fighting, and Chaos Battalion returns.
+# infantry. Rewards retain the CBRN unlocks and concentrate protection and
+# breakthrough on formations that carry dedicated hazard equipment.
 # ============================================================================
 
 # Static doctrine fields use file-local parser values. They mirror the
@@ -14,46 +14,22 @@
 @CBRN_HAZARD_ASSAULT_AI_COMMITTED = 2.00
 @CBRN_HAZARD_ASSAULT_MASTERY_MULT = 12.00
 @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD = 100
-@CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH = 0.15
-@CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_SOFT_ATTACK = 0.15
-@CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_BREAKTHROUGH = 0.15
-@CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_DEFENSE = 0.15
-@CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_MORALE = 0.15
-@CBRN_HAZARD_ASSAULT_ADOPTION_LIGHT_INFANTRY_ORG = 15
-@CBRN_HAZARD_ASSAULT_ADOPTION_LIGHT_INFANTRY_RELIABILITY = 0.20
-@CBRN_HAZARD_ASSAULT_ADOPTION_SPECIAL_FORCES_SOFT_ATTACK = 0.25
-@CBRN_HAZARD_ASSAULT_ADOPTION_SPECIAL_FORCES_BREAKTHROUGH = 0.25
-@CBRN_HAZARD_ASSAULT_M1_RELIABILITY = 0.18
-@CBRN_HAZARD_ASSAULT_M1_INFANTRY_SOFT_ATTACK = 0.25
-@CBRN_HAZARD_ASSAULT_M1_INFANTRY_BREAKTHROUGH = 0.30
-@CBRN_HAZARD_ASSAULT_M1_INFANTRY_DEFENSE = 0.15
-@CBRN_HAZARD_ASSAULT_M1_NIGHT_ATTACK = 0.20
-@CBRN_HAZARD_ASSAULT_M1_ARMY_ORG_FACTOR = 0.15
-@CBRN_HAZARD_ASSAULT_M2_SUPPLY = -0.20
-@CBRN_HAZARD_ASSAULT_M2_INFANTRY_MORALE = 0.25
-@CBRN_HAZARD_ASSAULT_M2_LIGHT_INFANTRY_ORG = 15
-@CBRN_HAZARD_ASSAULT_M2_LIGHT_INFANTRY_RELIABILITY = 0.20
-@CBRN_HAZARD_ASSAULT_M2_REINFORCE_RATE = 0.10
-@CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH = 0.15
-@CBRN_HAZARD_ASSAULT_M4_INFANTRY_SOFT_ATTACK = 0.25
-@CBRN_HAZARD_ASSAULT_M4_INFANTRY_BREAKTHROUGH = 0.25
-@CBRN_HAZARD_ASSAULT_M4_SPECIAL_FORCES_SOFT_ATTACK = 0.50
-@CBRN_HAZARD_ASSAULT_M4_SPECIAL_FORCES_BREAKTHROUGH = 0.50
-@CBRN_HAZARD_ASSAULT_M4_ENEMY_ATTRITION = 0.25
-@CBRN_HAZARD_ASSAULT_M4_ARMY_ATTACK_FACTOR = 0.15
-@CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH = 0.25
-@CBRN_HAZARD_ASSAULT_M5_INFANTRY_SOFT_ATTACK = 0.25
-@CBRN_HAZARD_ASSAULT_M5_INFANTRY_BREAKTHROUGH = 0.25
-@CBRN_HAZARD_ASSAULT_M5_INFANTRY_ORG = 15
-@CBRN_HAZARD_ASSAULT_M5_CHAOS_SOFT_ATTACK = 0.75
-@CBRN_HAZARD_ASSAULT_M5_CHAOS_BREAKTHROUGH = 0.75
-@CBRN_HAZARD_ASSAULT_M5_PLANNING_SPEED = 0.30
-@CBRN_HAZARD_ASSAULT_M5_COORDINATION = 0.20
+@CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH = 0.03
+@CBRN_HAZARD_ASSAULT_M1_RELIABILITY = 0.10
+@CBRN_HAZARD_ASSAULT_M1_NIGHT_ATTACK = 0.05
+@CBRN_HAZARD_ASSAULT_M1_ARMY_ORG_FACTOR = 0.01
+@CBRN_HAZARD_ASSAULT_M2_SUPPLY = -0.05
+@CBRN_HAZARD_ASSAULT_M2_REINFORCE_RATE = 0.01
+@CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH = 0.03
+@CBRN_HAZARD_ASSAULT_M4_ARMY_ATTACK_FACTOR = 0.015
+@CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH = 0.04
+@CBRN_HAZARD_ASSAULT_M5_CHAOS_SOFT_ATTACK = 0.05
+@CBRN_HAZARD_ASSAULT_M5_CHAOS_BREAKTHROUGH = 0.05
 
 extermination_columns = {
 	track = infantry
 	name = SUBDOCTRINE_EXTERMINATION_COLUMNS
-	description = SUBDOCTRINE_EXTERMINATION_COLUMNS_DESC
+	description = CBRN_BALANCED_HAZARD_ASSAULT_DESC
 	icon = GFX_doctrine_extermination_columns_medium
 	reward_gfx = GFX_cbrn_doctrine_hazard_assault_reward_strip
 
@@ -83,28 +59,12 @@ extermination_columns = {
 		sub_units = {
 			cbrn_gas_mask_decon_detachment
 			cbrn_chemical_recon_detachment
-			cbrn_hazard_pioneer_detachment
 			chaos_battalion
 		}
 	}
 
 	category_cbrn_assault_battalions = {
 		breakthrough = @CBRN_HAZARD_ASSAULT_ADOPTION_BREAKTHROUGH
-	}
-
-	category_all_infantry = {
-		soft_attack = @CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_SOFT_ATTACK
-		breakthrough = @CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_BREAKTHROUGH
-		defense = @CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_DEFENSE
-		default_morale = @CBRN_HAZARD_ASSAULT_ADOPTION_INFANTRY_MORALE
-	}
-	category_light_infantry = {
-		max_organisation = @CBRN_HAZARD_ASSAULT_ADOPTION_LIGHT_INFANTRY_ORG
-		reliability = @CBRN_HAZARD_ASSAULT_ADOPTION_LIGHT_INFANTRY_RELIABILITY
-	}
-	category_special_forces = {
-		soft_attack = @CBRN_HAZARD_ASSAULT_ADOPTION_SPECIAL_FORCES_SOFT_ATTACK
-		breakthrough = @CBRN_HAZARD_ASSAULT_ADOPTION_SPECIAL_FORCES_BREAKTHROUGH
 	}
 
 	effect = { cbrn_record_hazard_assault_adoption = yes }
@@ -114,11 +74,6 @@ extermination_columns = {
 			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
 			category_cbrn_primary_protection = {
 				reliability = @CBRN_HAZARD_ASSAULT_M1_RELIABILITY
-			}
-			category_all_infantry = {
-				soft_attack = @CBRN_HAZARD_ASSAULT_M1_INFANTRY_SOFT_ATTACK
-				breakthrough = @CBRN_HAZARD_ASSAULT_M1_INFANTRY_BREAKTHROUGH
-				defense = @CBRN_HAZARD_ASSAULT_M1_INFANTRY_DEFENSE
 			}
 			land_night_attack = @CBRN_HAZARD_ASSAULT_M1_NIGHT_ATTACK
 			army_org_factor = @CBRN_HAZARD_ASSAULT_M1_ARMY_ORG_FACTOR
@@ -132,14 +87,6 @@ extermination_columns = {
 			mastery = @CBRN_HAZARD_ASSAULT_REWARD_THRESHOLD
 			category_cbrn_engineer_support = {
 				supply_consumption = @CBRN_HAZARD_ASSAULT_M2_SUPPLY
-			}
-			category_all_infantry = {
-				supply_consumption = @CBRN_HAZARD_ASSAULT_M2_SUPPLY
-				default_morale = @CBRN_HAZARD_ASSAULT_M2_INFANTRY_MORALE
-			}
-			category_light_infantry = {
-				max_organisation = @CBRN_HAZARD_ASSAULT_M2_LIGHT_INFANTRY_ORG
-				reliability = @CBRN_HAZARD_ASSAULT_M2_LIGHT_INFANTRY_RELIABILITY
 			}
 			land_reinforce_rate = @CBRN_HAZARD_ASSAULT_M2_REINFORCE_RATE
 			effect = {
@@ -161,15 +108,6 @@ extermination_columns = {
 			category_cbrn_assault_battalions = {
 				breakthrough = @CBRN_HAZARD_ASSAULT_M4_BREAKTHROUGH
 			}
-			category_all_infantry = {
-				soft_attack = @CBRN_HAZARD_ASSAULT_M4_INFANTRY_SOFT_ATTACK
-				breakthrough = @CBRN_HAZARD_ASSAULT_M4_INFANTRY_BREAKTHROUGH
-			}
-			category_special_forces = {
-				soft_attack = @CBRN_HAZARD_ASSAULT_M4_SPECIAL_FORCES_SOFT_ATTACK
-				breakthrough = @CBRN_HAZARD_ASSAULT_M4_SPECIAL_FORCES_BREAKTHROUGH
-			}
-			enemy_attrition = @CBRN_HAZARD_ASSAULT_M4_ENEMY_ATTRITION
 			army_attack_factor = @CBRN_HAZARD_ASSAULT_M4_ARMY_ATTACK_FACTOR
 			effect = {
 				set_country_flag = cbrn_shock_exploitation_unlocked
@@ -182,17 +120,10 @@ extermination_columns = {
 			category_cbrn_assault_battalions = {
 				breakthrough = @CBRN_HAZARD_ASSAULT_M5_BREAKTHROUGH
 			}
-			category_all_infantry = {
-				soft_attack = @CBRN_HAZARD_ASSAULT_M5_INFANTRY_SOFT_ATTACK
-				breakthrough = @CBRN_HAZARD_ASSAULT_M5_INFANTRY_BREAKTHROUGH
-				max_organisation = @CBRN_HAZARD_ASSAULT_M5_INFANTRY_ORG
-			}
 			chaos_battalion = {
 				soft_attack = @CBRN_HAZARD_ASSAULT_M5_CHAOS_SOFT_ATTACK
 				breakthrough = @CBRN_HAZARD_ASSAULT_M5_CHAOS_BREAKTHROUGH
 			}
-			planning_speed = @CBRN_HAZARD_ASSAULT_M5_PLANNING_SPEED
-			coordination_bonus = @CBRN_HAZARD_ASSAULT_M5_COORDINATION
 			effect = {
 				set_country_flag = cbrn_terminal_hazard_operation_unlocked
 				cbrn_record_infantry_mastery_five = yes

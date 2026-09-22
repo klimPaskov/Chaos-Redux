@@ -4,14 +4,14 @@
 
 This subsystem preserves the ledger and cleanup contract for the retired generic supply-chain decision family. New covert ordinary-agent deployment uses the four native operative operations, which select one exact state without filling the decision view with one card per eligible state.
 
-It is not battlefield dissemination. Battlefield delivery remains in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons. It is also separate from weaponized-zombie projects, operations, state records, AI, and outcomes. Japan's two accepted China-theater historical actions remain exact decisions in `common/decisions/japan_biological_campaign_decisions.txt`; the doomsday release remains a decision.
+It is not battlefield dissemination. Battlefield delivery remains in `common/raids/biological_battlefield_raids.txt` and reuses the established military-raid icons. It is also separate from weaponized-zombie projects, operations, state records, AI, and outcomes. Japan's China-theater actions are migrating to native raids; the doomsday release uses `biological_stockpile_doomsday_raid`.
 
 ## Active player routes
 
 - Strategic and battlefield deployment use native raid surfaces.
 - Covert ordinary-agent deployment uses the native operative operations.
 - Japan's bounded China-theater actions remain exact-state decisions.
-- Doomsday release remains a decision.
+- Doomsday release is a native raid under `biological_raids`.
 
 The twelve legacy supply-chain decisions cannot list new targets. Their identifiers, exact-state ledger, resolver, and cleanup helpers remain only so an already committed record can end safely.
 
@@ -21,7 +21,7 @@ Overall weapon potency is strictly `Tularemia < Anthrax < Plague < Smallpox`. Tu
 
 All ordinary-agent strategic and battlefield raids use agent-neutral native delivery factors. Agent identity does not make Plague or Smallpox intrinsically easier or harder to deliver. Agent-specific AI preferences and target-fit weights may represent doctrine, history, and route selection, but they do not alter the route result.
 
-The route's critical outcome is an operational delivery band, not a weapon-severity label. It does not make Anthrax or Plague severe. Only the separate Smallpox doomsday decision may submit the severe biological lifecycle result.
+The route's critical outcome is an operational delivery band, not a weapon-severity label. It does not make Anthrax or Plague severe. Only Smallpox in the separate biological doomsday raid may submit the severe biological lifecycle result.
 
 ## Migration tuning
 
@@ -60,13 +60,13 @@ Cleanup preserves permanent attempt, resolution, equipment-consumption, evidence
 
 ## AI behavior
 
-AI cannot select the retired generic decision family. Active raids, operative operations, Japan's historical decisions, and doomsday release retain their own route-aware gates and weights. No target estimator or alternate-state search is retained.
+AI cannot select the retired generic decision family. Active raids, operative operations, Japan's historical campaign raids, and doomsday raids retain their own route-aware gates. No target estimator or alternate-state search is retained; raid AI probability evidence remains pending where the MCP adapter does not expose a raid surface.
 
 ## Files and identifiers
 
 - Migration-only decision identifiers and resolvers: `common/decisions/biological_sabotage_decisions.txt`, `common/scripted_effects/biological_sabotage_effects.txt`, `common/script_constants/biological_sabotage_constants.txt`, and `common/scripted_triggers/biological_sabotage_triggers.txt`
 - Shared lifecycle effects: `common/scripted_effects/biological_lifecycle_effects.txt`
-- Retained historical decisions: `common/decisions/japan_biological_campaign_decisions.txt` and `common/decisions/chemical_warfare_decisions.txt`
+- Historical campaign and doomsday raids: `common/raids/japan_cbrn_campaign_raids.txt` and `common/raids/cbrn_doomsday_raids.txt`
 - Retained migration localisation and Japan icon strings: `localisation/english/biological_sabotage_l_english.yml`
 - Strategic and battlefield raid map icons remain the existing `GFX_raid_type_icon_anthrax_strike`, `GFX_raid_type_icon_plague_strike`, `GFX_raid_type_icon_tularemia_strike`, and `GFX_raid_type_icon_smallpox_strike` definitions
 - Existing decision icons retained for the Japan exceptions and stable migration references: `GFX_decision_bio_sabotage_anthrax`, `GFX_decision_bio_sabotage_plague`, `GFX_decision_bio_sabotage_tularemia`, and `GFX_decision_bio_sabotage_smallpox`

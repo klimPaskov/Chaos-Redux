@@ -1,0 +1,171 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE CHEMICAL LAND RAID TRIGGERS
+# ============================================================================
+# Overview:
+# - Uses a selected native state target and assigned land division for the four
+#   chemical battlefield delivery routes.
+# - The native raid reserves the agent-specific payload during preparation.
+# - Preparation checks route stores; launch checks authority and exact target
+#   without requiring stock already collected by the raid engine.
+# ============================================================================
+
+cbrn_chemical_land_raid_actor_can_launch = {
+	exists = yes
+	has_war = yes
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	cbrn_policy_allows_battlefield_use = yes
+	has_tech = basic_gas_masks
+	has_tech = field_decontamination_kits
+}
+
+cbrn_chemical_land_raid_cylinder_can_prepare = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.cylinder_release compare = greater_than_or_equals }
+	cbrn_battlefield_common_equipment_is_shortage_ready = yes
+}
+
+cbrn_chemical_land_raid_projector_can_prepare = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.projector_barrage compare = greater_than_or_equals }
+	cbrn_battlefield_projector_equipment_is_ready = yes
+}
+
+cbrn_chemical_land_raid_artillery_can_prepare = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.artillery_fire_plan compare = greater_than_or_equals }
+	has_tech = chemical_artillery_shells
+	has_tech = livens_projector_tech
+	cbrn_battlefield_artillery_equipment_is_shortage_ready = yes
+	check_variable = { var = num_equipment@chemical_shell_lot_1 value = constant:cbrn_native_raid_reservation.artillery_total_shells compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_armored_can_prepare = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	cbrn_chemical_land_raid_armored_common_stores_ready = yes
+	cbrn_chemical_land_raid_medium_armored_technology_ready = yes
+	check_variable = { var = num_equipment@medium_tank_flame_chassis value = constant:cbrn_battlefield_operation_cost.armored_medium_chassis_shortage_floor compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_armored_common_stores_ready = {
+	has_tech = armored_agent_delivery
+	has_tech = sealed_tank_crews
+	check_variable = { var = num_equipment@gas_mask_equipment value = constant:cbrn_battlefield_operation_cost.armored_mask_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@decontamination_equipment value = constant:cbrn_battlefield_operation_cost.armored_decontamination_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@cbrn_instrument_equipment value = constant:cbrn_battlefield_operation_cost.armored_instrument_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@support_equipment value = constant:cbrn_battlefield_operation_cost.armored_support_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = num_equipment@motorized_equipment value = constant:cbrn_battlefield_operation_cost.armored_motorized_shortage_floor compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:cbrn_battlefield_operation_cost.armored_fuel_shortage_floor compare = greater_than_or_equals }
+	fuel_ratio > constant:cbrn_battlefield_operation_cost.armored_fuel_ratio_shortage_floor
+}
+
+cbrn_chemical_land_raid_light_armored_technology_ready = {
+	OR = { has_tech = basic_light_tank has_tech = basic_light_tank_chassis }
+}
+
+cbrn_chemical_land_raid_medium_armored_technology_ready = {
+	OR = { has_tech = basic_medium_tank has_tech = basic_medium_tank_chassis }
+}
+
+cbrn_chemical_land_raid_heavy_armored_technology_ready = {
+	OR = { has_tech = basic_heavy_tank has_tech = basic_heavy_tank_chassis }
+}
+
+cbrn_chemical_land_raid_light_armored_can_prepare = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	cbrn_chemical_land_raid_armored_common_stores_ready = yes
+	cbrn_chemical_land_raid_light_armored_technology_ready = yes
+	check_variable = { var = num_equipment@light_tank_flame_chassis value = constant:cbrn_battlefield_operation_cost.armored_medium_chassis_shortage_floor compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_heavy_armored_can_prepare = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	cbrn_chemical_land_raid_armored_common_stores_ready = yes
+	cbrn_chemical_land_raid_heavy_armored_technology_ready = yes
+	check_variable = { var = num_equipment@heavy_tank_flame_chassis value = constant:cbrn_battlefield_operation_cost.armored_medium_chassis_shortage_floor compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_cylinder_can_launch = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.cylinder_release compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_projector_can_launch = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_tech = livens_projector_tech
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.projector_barrage compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_artillery_can_launch = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_tech = chemical_artillery_shells
+	has_tech = livens_projector_tech
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.artillery_fire_plan compare = greater_than_or_equals }
+}
+
+cbrn_chemical_land_raid_armored_can_launch = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_tech = armored_agent_delivery
+	has_tech = sealed_tank_crews
+	cbrn_chemical_land_raid_medium_armored_technology_ready = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:cbrn_battlefield_operation_cost.armored_fuel_shortage_floor compare = greater_than_or_equals }
+	fuel_ratio > constant:cbrn_battlefield_operation_cost.armored_fuel_ratio_shortage_floor
+}
+
+cbrn_chemical_land_raid_light_armored_can_launch = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_tech = armored_agent_delivery
+	has_tech = sealed_tank_crews
+	cbrn_chemical_land_raid_light_armored_technology_ready = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:cbrn_battlefield_operation_cost.armored_fuel_shortage_floor compare = greater_than_or_equals }
+	fuel_ratio > constant:cbrn_battlefield_operation_cost.armored_fuel_ratio_shortage_floor
+}
+
+cbrn_chemical_land_raid_heavy_armored_can_launch = {
+	cbrn_chemical_land_raid_actor_can_launch = yes
+	has_tech = armored_agent_delivery
+	has_tech = sealed_tank_crews
+	cbrn_chemical_land_raid_heavy_armored_technology_ready = yes
+	has_variable = chemical_readiness
+	check_variable = { var = chemical_readiness value = constant:cbrn_battlefield_operation_readiness.armored_delivery compare = greater_than_or_equals }
+	check_variable = { var = fuel_k value = constant:cbrn_battlefield_operation_cost.armored_fuel_shortage_floor compare = greater_than_or_equals }
+	fuel_ratio > constant:cbrn_battlefield_operation_cost.armored_fuel_ratio_shortage_floor
+}
+
+cbrn_chemical_land_raid_target_from_is_valid = {
+	FROM = { exists = yes }
+	has_war_with = FROM
+	NOT = { is_in_faction_with = FROM }
+	NOT = { is_subject_of = FROM }
+	FROM = { NOT = { is_subject_of = PREV } }
+	cbrn_policy_allows_battlefield_use_against_from = yes
+	var:target_state = { is_controlled_by = FROM }
+}
+
+cbrn_chemical_land_raid_ai_may_target_from = {
+	cbrn_chemical_land_raid_target_from_is_valid = yes
+	cbrn_ai_has_stable_protective_base = yes
+	NOT = { cbrn_ai_has_conventional_army_deficit = yes }
+	NOT = { cbrn_ai_is_losing_near_capitulation = yes }
+	OR = {
+		cbrn_ai_has_retaliatory_arsenal_posture = yes
+		cbrn_ai_route_allows_first_use = yes
+		cbrn_ai_route_allows_unrestricted_use = yes
+	}
+}

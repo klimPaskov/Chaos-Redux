@@ -1,5 +1,7 @@
 # Chaos Warfare documentation cleanup handoff
 
+> **Superseded as the latest handoff:** This document records an earlier package tranche. Use [`2026-09-20_documentation_cleanup_handoff.md`](2026-09-20_documentation_cleanup_handoff.md) for the 2026-09-20 accepted-overhaul reconciliation and unresolved validation.
+
 This handoff lists documentation contradictions and stale statements found while closing the CBRN implementation surface.
 
 This reconciliation is bounded to the five user-authorized Markdown surfaces named in the task. Gameplay, localisation, assets, GUI, and spreadsheets are outside the patch scope, and broader system-document cleanup remains queued rather than silently treated as complete.

@@ -2,7 +2,7 @@
 # CHAOS REDUX - CBRN ARMY HEADQUARTERS BOUNDED EVENT CHAINS
 # ============================================================================
 # Overview:
-# - Converts paid commander preparation into one exact active HQ posture.
+# - Converts paid protective commander preparation into one exact active HQ posture.
 # - Debits a finite number of weekly upkeep installments while the order and
 #   required HQ companies remain valid.
 # - Clears operation state and restores committed medical/manpower capacity
@@ -21,28 +21,7 @@ unit_leader_event = {
 
 	immediate = {
 		event_target:cbrn_hq_commander = {
-			if = {
-			limit = {
-				check_variable = {
-					var = cbrn_hq_operation_code
-					value = constant:cbrn_hq_operation.prepare_chemical_offensive
-					compare = equals
-				}
-			}
-			if = {
-				limit = { cbrn_hq_prepare_command_is_valid = yes }
-				remove_unit_leader_trait = cbrn_hq_preparing_operation
-				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.prepare_upkeep_ticks }
-				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.prepare_active }
-				add_timed_unit_leader_trait = {
-					trait = cbrn_hq_active_chemical_offensive
-					days = cbrn_hq_active_days
-				}
-				cbrn_hq_schedule_next_upkeep_tick = yes
-			}
-			else = { cbrn_hq_stop_operation_benefits = yes }
-		}
-		else_if = {
+		if = {
 			limit = {
 				check_variable = {
 					var = cbrn_hq_operation_code
@@ -157,27 +136,7 @@ unit_leader_event = {
 			}
 			else = { cbrn_hq_stop_operation_benefits = yes }
 		}
-		else_if = {
-			limit = {
-				check_variable = {
-					var = cbrn_hq_operation_code
-					value = constant:cbrn_hq_operation.combined_overmatch
-					compare = equals
-				}
-			}
-			if = {
-				limit = { cbrn_hq_overmatch_command_is_valid = yes }
-				remove_unit_leader_trait = cbrn_hq_preparing_operation
-				set_variable = { cbrn_hq_upkeep_ticks_remaining = constant:cbrn_hq_timing.overmatch_upkeep_ticks }
-				set_temp_variable = { cbrn_hq_active_days = constant:cbrn_hq_timing.overmatch_active }
-				add_timed_unit_leader_trait = {
-					trait = cbrn_hq_active_combined_overmatch
-					days = cbrn_hq_active_days
-				}
-				cbrn_hq_schedule_next_upkeep_tick = yes
-			}
-			else = { cbrn_hq_stop_operation_benefits = yes }
-			}
+		else = { cbrn_hq_clear_operation_state = yes }
 		}
 	}
 }
@@ -191,31 +150,7 @@ unit_leader_event = {
 
 	immediate = {
 		event_target:cbrn_hq_commander = {
-			if = {
-			limit = {
-				check_variable = {
-					var = cbrn_hq_upkeep_ticks_remaining
-					value = constant:cbrn_math.zero
-					compare = greater_than
-				}
-				check_variable = {
-					var = cbrn_hq_operation_code
-					value = constant:cbrn_hq_operation.prepare_chemical_offensive
-					compare = equals
-				}
-			}
-			if = {
-				limit = {
-					has_trait = cbrn_hq_active_chemical_offensive
-					cbrn_hq_prepare_command_is_valid = yes
-					cbrn_hq_can_pay_prepare_upkeep = yes
-				}
-				cbrn_hq_debit_prepare_upkeep = yes
-				cbrn_hq_complete_upkeep_tick = yes
-			}
-			else = { cbrn_hq_fail_upkeep = yes }
-		}
-		else_if = {
+		if = {
 			limit = {
 				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
 				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.theater_protective_posture compare = equals }
@@ -231,6 +166,7 @@ unit_leader_event = {
 				}
 				cbrn_hq_debit_protective_upkeep = yes
 				cbrn_hq_complete_upkeep_tick = yes
+				cbrn_commander_record_completed_hq_operation = yes
 			}
 			else = { cbrn_hq_fail_upkeep = yes }
 		}
@@ -247,6 +183,7 @@ unit_leader_event = {
 				}
 				cbrn_hq_debit_decon_upkeep = yes
 				cbrn_hq_complete_upkeep_tick = yes
+				cbrn_commander_record_completed_hq_operation = yes
 			}
 			else = { cbrn_hq_fail_upkeep = yes }
 		}
@@ -263,6 +200,7 @@ unit_leader_event = {
 				}
 				cbrn_hq_debit_seal_area_upkeep = yes
 				cbrn_hq_complete_upkeep_tick = yes
+				cbrn_commander_record_completed_hq_operation = yes
 			}
 			else = { cbrn_hq_fail_upkeep = yes }
 		}
@@ -279,6 +217,7 @@ unit_leader_event = {
 				}
 				cbrn_hq_debit_antidote_upkeep = yes
 				cbrn_hq_complete_upkeep_tick = yes
+				cbrn_commander_record_completed_hq_operation = yes
 			}
 			else = { cbrn_hq_fail_upkeep = yes }
 		}
@@ -295,25 +234,11 @@ unit_leader_event = {
 				}
 				cbrn_hq_debit_infection_upkeep = yes
 				cbrn_hq_complete_upkeep_tick = yes
+				cbrn_commander_record_completed_hq_operation = yes
 			}
 			else = { cbrn_hq_fail_upkeep = yes }
 		}
-		else_if = {
-			limit = {
-				check_variable = { var = cbrn_hq_upkeep_ticks_remaining value = constant:cbrn_math.zero compare = greater_than }
-				check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.combined_overmatch compare = equals }
-			}
-			if = {
-				limit = {
-					has_trait = cbrn_hq_active_combined_overmatch
-					cbrn_hq_overmatch_command_is_valid = yes
-					cbrn_hq_can_pay_overmatch_upkeep = yes
-				}
-				cbrn_hq_debit_overmatch_upkeep = yes
-				cbrn_hq_complete_upkeep_tick = yes
-			}
-			else = { cbrn_hq_fail_upkeep = yes }
-			}
+		else = { cbrn_hq_fail_upkeep = yes }
 		}
 	}
 }

@@ -261,6 +261,6 @@ On any final closure:
 - Remove the current staged idea and any obsolete route ideas.
 - Clear temporary foreign selection targets.
 - Clear incident scheduling flags and cooldowns that no longer matter.
-- Preserve the permanent fired record, evolution history, achievement proof already earned, and any commander trait result intended to survive.
+- Preserve the permanent fired record, evolution history, and achievement proof already earned; remove the temporary Rulebook Commander trait during normal closure. The user's 2026-09-20 instruction retired the former Field-Validated Planner survivor reward.
 - Start only the stated finite aftermath modifier.
 - Prevent re-entry from a later released Sweden or civil-war splinter.

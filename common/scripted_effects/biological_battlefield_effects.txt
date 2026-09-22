@@ -297,7 +297,9 @@ bio_battlefield_dispatch_primary_release_internal = {
 		multiply_temp_variable = { bio_seed_exposed_share_override = constant:bio_battlefield_target.occupied_friendly_exposed_mult }
 	}
 
+	event_target:bio_battlefield_actor = { set_country_flag = bio_native_raid_dispatch_in_progress }
 	event_target:bio_battlefield_target_state = { bio_lifecycle_dispatch_seed = yes }
+	event_target:bio_battlefield_actor = { clr_country_flag = bio_native_raid_dispatch_in_progress }
 	set_temp_variable = { bio_battlefield_dispatch_status = bio_seed_dispatch_status }
 }
 
@@ -394,33 +396,6 @@ bio_battlefield_attempt_friendly_blowback_internal = {
 	}
 }
 
-# Actor country scope after a valid native resolution. Doctrine refunds only
-# Command Power; native payload equipment remains fully consumed.
-bio_battlefield_apply_command_refund_internal = {
-	set_temp_variable = { bio_battlefield_command_refund = constant:bio_lifecycle_math.zero }
-	if = {
-		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
-		set_temp_variable = { bio_battlefield_command_refund = constant:bio_battlefield_command.terminal_refund }
-	}
-	else_if = {
-		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
-		set_temp_variable = { bio_battlefield_command_refund = constant:bio_battlefield_command.theater_refund }
-	}
-	if = {
-		limit = { check_variable = { var = bio_battlefield_command_refund value = bio_battlefield_command_cost compare = greater_than } }
-		set_temp_variable = { bio_battlefield_command_refund = bio_battlefield_command_cost }
-	}
-	if = {
-		limit = { check_variable = { bio_battlefield_command_refund > constant:bio_lifecycle_math.zero } }
-		add_command_power = bio_battlefield_command_refund
-		if = {
-			limit = { NOT = { has_variable = bio_battlefield_command_refund_total } }
-			set_variable = { bio_battlefield_command_refund_total = constant:bio_lifecycle_math.zero }
-		}
-		add_to_variable = { bio_battlefield_command_refund_total = bio_battlefield_command_refund }
-	}
-}
-
 # Actor country scope after a fully accepted reservation and resolution.
 bio_battlefield_record_actor_history_internal = {
 	if = {
@@ -495,17 +470,15 @@ bio_battlefield_record_rejected_reservation_internal = {
 	}
 }
 
-# Native raid outcome entry point. Inputs are the immutable agent code supplied
-# by the raid type and one of the four native engine result codes.
+# Actor-country event entry point. Chain-local event targets carry the exact
+# native actor, victim, and state; this event reconstructs the immutable agent
+# and result before calling the shared lifecycle under actor-country ROOT.
 bio_resolve_battlefield_dissemination = {
 	set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_battlefield_dispatch_status = constant:bio_lifecycle_proof.missing }
-	var:actor_country = { save_event_target_as = bio_battlefield_actor }
-	var:victim_country = { save_event_target_as = bio_battlefield_victim }
-	var:target_state = { save_event_target_as = bio_battlefield_target_state }
 
 	if = {
-		limit = { bio_battlefield_native_context_is_valid = yes }
+		limit = { has_event_target = bio_battlefield_actor tag = event_target:bio_battlefield_actor bio_battlefield_native_context_is_valid = yes }
 		bio_battlefield_set_payload_internal = yes
 		if = {
 			limit = { bio_battlefield_payload_record_is_valid = yes }
@@ -515,7 +488,6 @@ bio_resolve_battlefield_dissemination = {
 				event_target:bio_battlefield_actor = {
 					bio_battlefield_apply_failed_attempt_condemnation_internal = yes
 					bio_battlefield_record_actor_history_internal = yes
-					bio_battlefield_apply_command_refund_internal = yes
 				}
 				set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.supplied }
 			}
@@ -537,7 +509,6 @@ bio_resolve_battlefield_dissemination = {
 					}
 					event_target:bio_battlefield_actor = {
 						bio_battlefield_record_actor_history_internal = yes
-						bio_battlefield_apply_command_refund_internal = yes
 					}
 					set_temp_variable = { bio_battlefield_resolution_status = constant:bio_lifecycle_proof.supplied }
 				}
@@ -550,6 +521,7 @@ bio_resolve_battlefield_dissemination = {
 	else_if = {
 		limit = {
 			has_event_target = bio_battlefield_actor
+			tag = event_target:bio_battlefield_actor
 			bio_battlefield_agent_is_valid = yes
 			bio_battlefield_engine_outcome_is_valid = yes
 		}

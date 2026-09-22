@@ -29,6 +29,24 @@ black_plague_response_decisions_are_visible = {
 # shared disease category, including when another disease is selected there.
 black_plague_strategic_response_category_is_visible = {
 	black_plague_country_can_direct_response = yes
+	OR = {
+		any_state_in = {
+			array = global.black_plague_active_states
+			NOT = { black_plague_state_is_cured = yes }
+			OR = {
+				is_owned_by = ROOT
+				is_controlled_by = ROOT
+			}
+		}
+		AND = {
+			has_global_flag = black_plague_state_was_established
+			OR = {
+				has_country_flag = black_plague_countermeasure_setup_active
+				has_country_flag = black_plague_countermeasure_program_active
+				has_country_flag = black_plague_medical_reserve_batch_active
+			}
+		}
+	}
 }
 
 # STATE scope; ROOT is the responding country.

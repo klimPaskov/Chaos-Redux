@@ -1,0 +1,226 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE DOOMSDAY RAIDS
+# ============================================================================
+# One chemical and one biological last-resort raid use the existing CBRN
+# categories. Native essential_equipment reserves one of each of four agents
+# at preparation. A successful outcome enters one guarded all-state resolver,
+# which consumes only the still-stockpiled balance and accounts for the four
+# reserved lots in the record. Failed outcomes never invoke that resolver.
+# The raid target authenticates the operation; the catastrophe covers the
+# exact domestic and enemy-front state sets defined by each doomsday system.
+# Native raid definitions require static values; the four-lot reservation
+# mirrors the script constants in the corresponding doomsday effect files.
+# ============================================================================
+@CBRN_DOOM_RAID_RESERVED_PER_AGENT = 1
+@CBRN_DOOM_RAID_PREPARE_DAYS = 14
+@CBRN_DOOM_RAID_REENABLE_DAYS = 365
+@CBRN_DOOM_RAID_COMMAND_POWER = 25
+@CBRN_DOOM_RAID_AI_MIN_SUCCESS = 0.35
+@CBRN_DOOM_RAID_SUCCESS_BASE = 0.50
+@CBRN_DOOM_RAID_CRITICAL_BASE = 0.12
+@CBRN_DOOM_RAID_DISASTER_BASE = 0.10
+@CBRN_DOOM_RAID_FAILURE_ORG_DAMAGE = 0.65
+@CBRN_DOOM_RAID_FAILURE_STR_DAMAGE = 0.30
+@CBRN_DOOM_RAID_LIMITED_ORG_DAMAGE = 0.35
+@CBRN_DOOM_RAID_LIMITED_STR_DAMAGE = 0.10
+@CBRN_DOOM_RAID_SUCCESS_ORG_DAMAGE = 0.20
+@CBRN_DOOM_RAID_SUCCESS_STR_DAMAGE = 0.05
+@CBRN_DOOM_RAID_CRITICAL_ORG_DAMAGE = 0.10
+@CBRN_DOOM_RAID_CRITICAL_STR_DAMAGE = 0.02
+@CBRN_DOOM_RAID_FAILURE_XP = 0.05
+@CBRN_DOOM_RAID_LIMITED_XP = 0.10
+@CBRN_DOOM_RAID_SUCCESS_XP = 0.25
+@CBRN_DOOM_RAID_CRITICAL_XP = 0.35
+@CBRN_DOOM_RAID_EXPERIENCE_WEIGHT = 0.25
+@CBRN_DOOM_RAID_EXPERIENCE_START = -0.20
+@CBRN_DOOM_RAID_EXPERIENCE_REFERENCE = 1
+@CBRN_DOOM_RAID_ORGANISATION_WEIGHT = 0.10
+@CBRN_DOOM_RAID_ORGANISATION_START = -0.10
+@CBRN_DOOM_RAID_ORGANISATION_REFERENCE = 100
+@CBRN_DOOM_RAID_STRENGTH_WEIGHT = 0.10
+@CBRN_DOOM_RAID_STRENGTH_START = -0.10
+@CBRN_DOOM_RAID_STRENGTH_REFERENCE = 1
+@CBRN_DOOM_RAID_RECON_WEIGHT = 0.05
+@CBRN_DOOM_RAID_RECON_REFERENCE = 10
+@CBRN_DOOM_RAID_INTEL_WEIGHT = 0.20
+@CBRN_DOOM_RAID_INTEL_REFERENCE = 100
+
+types = {
+	chemical_stockpile_doomsday_raid = {
+		category = chemical_raids
+		days_to_prepare = @CBRN_DOOM_RAID_PREPARE_DAYS
+		days_re_enable = @CBRN_DOOM_RAID_REENABLE_DAYS
+		fire_only_once = yes
+		command_power = @CBRN_DOOM_RAID_COMMAND_POWER
+		ai_min_success_chance = @CBRN_DOOM_RAID_AI_MIN_SUCCESS
+		custom_map_icon = GFX_decision_chaos_doom
+		target_icon = GFX_other_target_icon
+		launch_sound = raid_land_launchable_sound
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:chem_doom_ai.defaults.base
+			modifier = { add = constant:chem_doom_ai.defaults.add_base ROOT = { is_ai = yes } }
+			modifier = { add = constant:chem_doom_ai.defaults.add_high_morale ROOT = { check_variable = { stability > constant:chem_doom_ai.defaults.stability_threshold } check_variable = { war_support > constant:chem_doom_ai.defaults.war_support_threshold } } }
+			modifier = { add = constant:chem_doom_ai.defaults.add_big_stockpile ROOT = { OR = { has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold } has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold } has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold } has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_doom_ai.defaults.stockpile_threshold } } } }
+			modifier = { factor = constant:air_cleanliness_treaty_ai.unconventional_use_factor_member ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+		}
+		visible = { cbrn_chemical_doomsday_native_is_visible = yes }
+		show_target = { var:target_state = { cbrn_chemical_doomsday_state_is_eligible = yes } }
+		available = { cbrn_chemical_doomsday_native_can_prepare = yes var:target_state = { cbrn_chemical_doomsday_state_is_eligible = yes } }
+		launchable = { cbrn_chemical_doomsday_native_can_launch = yes var:target_state = { cbrn_chemical_doomsday_state_is_eligible = yes } }
+		target_type = { state = { cbrn_chemical_doomsday_state_is_eligible = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		essential_equipment = {
+			chemical_chlorine_payload_cylinder = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+			chemical_phosgene_payload_cylinder = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+			chemical_mustard_payload_cylinder = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+			chemical_lewisite_payload_cylinder = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+		}
+		success_factors = {
+			success = {
+				base = @CBRN_DOOM_RAID_SUCCESS_BASE
+				experience = { weight = @CBRN_DOOM_RAID_EXPERIENCE_WEIGHT start_weight = @CBRN_DOOM_RAID_EXPERIENCE_START reference = @CBRN_DOOM_RAID_EXPERIENCE_REFERENCE }
+				organisation = { weight = @CBRN_DOOM_RAID_ORGANISATION_WEIGHT start_weight = @CBRN_DOOM_RAID_ORGANISATION_START reference = @CBRN_DOOM_RAID_ORGANISATION_REFERENCE }
+				strength = { weight = @CBRN_DOOM_RAID_STRENGTH_WEIGHT start_weight = @CBRN_DOOM_RAID_STRENGTH_START reference = @CBRN_DOOM_RAID_STRENGTH_REFERENCE }
+				recon = { weight = @CBRN_DOOM_RAID_RECON_WEIGHT reference = @CBRN_DOOM_RAID_RECON_REFERENCE }
+				intel = { weight = @CBRN_DOOM_RAID_INTEL_WEIGHT reference = @CBRN_DOOM_RAID_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_DOOM_RAID_CRITICAL_BASE }
+			disaster = { base = @CBRN_DOOM_RAID_DISASTER_BASE }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = chemical_doomsday_raid_failure_tt
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_FAILURE_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = chemical_doomsday_raid_limited_tt
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_LIMITED_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = chemical_doomsday_raid_success_tt
+					hidden_effect = { cbrn_chemical_doomsday_native_raid_outcome = yes }
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_SUCCESS_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = chemical_doomsday_raid_critical_tt
+					hidden_effect = { cbrn_chemical_doomsday_native_raid_outcome = yes }
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_CRITICAL_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+		}
+	}
+	biological_stockpile_doomsday_raid = {
+		category = biological_raids
+		days_to_prepare = @CBRN_DOOM_RAID_PREPARE_DAYS
+		days_re_enable = @CBRN_DOOM_RAID_REENABLE_DAYS
+		fire_only_once = yes
+		command_power = @CBRN_DOOM_RAID_COMMAND_POWER
+		ai_min_success_chance = @CBRN_DOOM_RAID_AI_MIN_SUCCESS
+		custom_map_icon = GFX_decision_bio_unleash_stockpiled_pathogens
+		target_icon = GFX_other_target_icon
+		launch_sound = raid_land_launchable_sound
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:bio_doomsday_ai.base
+			modifier = { factor = constant:bio_doomsday_ai.disabled_factor ROOT = { NOT = { cbrn_ai_route_allows_unrestricted_use = yes } } }
+			modifier = { factor = constant:bio_doomsday_ai.high_stockpile_factor ROOT = { bio_doomsday_ai_has_large_arsenal = yes } }
+			modifier = { factor = constant:bio_doomsday_ai.theater_doctrine_factor ROOT = { has_idea = cbrn_theater_contamination_doctrine_spirit } }
+			modifier = { factor = constant:bio_doomsday_ai.terminal_doctrine_factor ROOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit } }
+			modifier = { factor = constant:bio_doomsday_ai.safe_program_factor ROOT = { bio_doomsday_ai_has_minimum_containment = yes } }
+			modifier = { factor = constant:bio_doomsday_ai.unsafe_program_factor ROOT = { NOT = { bio_doomsday_ai_has_minimum_containment = yes } } }
+			modifier = { factor = constant:bio_doomsday_ai.active_domestic_outbreak_factor ROOT = { bio_doomsday_ai_has_active_domestic_outbreak = yes } }
+			modifier = { factor = constant:bio_doomsday_ai.sanction_vulnerability_factor ROOT = { bio_doomsday_ai_is_sanction_vulnerable = yes } }
+			modifier = { factor = constant:bio_doomsday_ai.treaty_factor ROOT = { has_country_flag = air_cleanliness_treaty_member } }
+		}
+		visible = { bio_doomsday_native_is_visible = yes }
+		show_target = { var:target_state = { bio_doomsday_native_target_state_is_eligible = yes } }
+		available = { bio_doomsday_native_can_prepare = yes var:target_state = { bio_doomsday_native_target_state_is_eligible = yes } }
+		launchable = { bio_doomsday_native_can_launch = yes var:target_state = { bio_doomsday_native_target_state_is_eligible = yes } }
+		target_type = { state = { bio_doomsday_native_target_state_is_eligible = yes } }
+		starting_point = { building_types = { supply_node } }
+		unit_requirements = { battalion_types = { infantry = { min = 3 } } }
+		unit_requirements = { battalion_types = { motorized = { min = 3 } } }
+		essential_equipment = {
+			anthrax_bomb_equipment = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+			plague_bomb_equipment = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+			tularemia_bomb_equipment = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+			smallpox_bomb_equipment = @CBRN_DOOM_RAID_RESERVED_PER_AGENT
+		}
+		success_factors = {
+			success = {
+				base = @CBRN_DOOM_RAID_SUCCESS_BASE
+				experience = { weight = @CBRN_DOOM_RAID_EXPERIENCE_WEIGHT start_weight = @CBRN_DOOM_RAID_EXPERIENCE_START reference = @CBRN_DOOM_RAID_EXPERIENCE_REFERENCE }
+				organisation = { weight = @CBRN_DOOM_RAID_ORGANISATION_WEIGHT start_weight = @CBRN_DOOM_RAID_ORGANISATION_START reference = @CBRN_DOOM_RAID_ORGANISATION_REFERENCE }
+				strength = { weight = @CBRN_DOOM_RAID_STRENGTH_WEIGHT start_weight = @CBRN_DOOM_RAID_STRENGTH_START reference = @CBRN_DOOM_RAID_STRENGTH_REFERENCE }
+				recon = { weight = @CBRN_DOOM_RAID_RECON_WEIGHT reference = @CBRN_DOOM_RAID_RECON_REFERENCE }
+				intel = { weight = @CBRN_DOOM_RAID_INTEL_WEIGHT reference = @CBRN_DOOM_RAID_INTEL_REFERENCE }
+			}
+			critical = { base = @CBRN_DOOM_RAID_CRITICAL_BASE }
+			disaster = { base = @CBRN_DOOM_RAID_DISASTER_BASE }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = biological_doomsday_raid_failure_tt
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_FAILURE_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_FAILURE_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_FAILURE_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = biological_doomsday_raid_limited_tt
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_LIMITED_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_LIMITED_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_LIMITED_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = biological_doomsday_raid_success_tt
+					hidden_effect = { bio_doomsday_native_raid_outcome = yes }
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_SUCCESS_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_SUCCESS_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_SUCCESS_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = biological_doomsday_raid_critical_tt
+					hidden_effect = { bio_doomsday_native_raid_outcome = yes }
+					raid_damage_units = { org_damage = @CBRN_DOOM_RAID_CRITICAL_ORG_DAMAGE str_damage = @CBRN_DOOM_RAID_CRITICAL_STR_DAMAGE ratio = yes }
+					raid_add_unit_experience = @CBRN_DOOM_RAID_CRITICAL_XP
+					add_raid_history_entry = yes
+				}
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+		}
+	}
+}

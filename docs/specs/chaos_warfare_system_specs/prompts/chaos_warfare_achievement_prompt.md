@@ -1,5 +1,7 @@
 # Chaos Warfare Achievement Implementation Prompt
 
+Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger. Older conflicting reward, policy, raid, unit, project, or asset requests are superseded.
+
 ## Task
 
 Implement a difficult, route-diverse achievement set for the accepted Chaos Warfare rework. Read the achievement section of the main spec, current achievement registry, localisation, icon pattern, and asset handoff. Use the exact final achievement IDs consistently across script, localisation, GFX, three DDS variants, docs, and tracking.

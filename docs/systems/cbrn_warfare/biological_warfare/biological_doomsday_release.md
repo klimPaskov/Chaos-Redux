@@ -2,11 +2,11 @@
 
 ## Purpose
 
-The biological doomsday decision is the exceptional last-resort release allowed by Spec 06.
+`biological_stockpile_doomsday_raid` is the exceptional last-resort native land raid under the existing `biological_raids` category. Its definition is `common/raids/cbrn_doomsday_raids.txt`, and its successful raid-instance callback is `bio_doomsday_native_raid_outcome`.
 
 It is not an ordinary biological deployment route and does not replace strategic raids, battlefield land raids, intelligence operations, or historically specific exact-state campaign actions.
 
-The route opens only for a country with an explicit unrestricted national route or the unrestricted use policy, at more than 80 percent surrender progress or during a verified world-end condition, with at least one real ordinary-agent payload and at least one exact eligible state.
+The route opens only for a country with an explicit unrestricted national route or the unrestricted use policy, at more than 80 percent surrender progress or during a verified world-end condition, with at least one of each of the four ordinary-agent payload archetypes available for native reservation and at least one exact eligible selected state.
 
 ## Exact target definition
 
@@ -22,15 +22,15 @@ The installed game exposes no exact current-version state trigger for an active 
 
 This definition is not an activity estimator and does not infer a front, launch state, air mission, or substitute target.
 
-The decision separately builds a domestic-state array and prints every eligible controlled state in the warning tooltip before the release.
+The native planner selects one eligible state as an authorization anchor. The country resolver separately builds the full domestic and enemy-border state arrays, so the catastrophe is not confined to the selected raid target.
 
 ## Arsenal debit and allocation
 
-The resolver snapshots the aggregate national stock of `anthrax_bomb_1`, `plague_bomb_1`, `tularemia_bomb_1`, and `smallpox_bomb_1`.
+At raid creation, native `essential_equipment` reserves one each of the Anthrax, Plague, Tularemia, and Smallpox bomb archetypes. The resolver snapshots the remaining aggregate national stock of `anthrax_bomb_1`, `plague_bomb_1`, `tularemia_bomb_1`, and `smallpox_bomb_1` only after a valid success or critical callback, then includes the four reserved lots in its release record.
 
 Negative stockpile effects omit a producer filter so captured and licensed payloads are consumed together with domestically produced payloads.
 
-All four captured counts are removed before state dispatch begins.
+Only the remaining stock is manually removed before state dispatch begins; the four native reserved lots are accounted for without a second debit.
 
 Each agent stock is divided across the exact target array in engine-provided array order.
 
@@ -38,7 +38,7 @@ The allocation rounds the current remaining stock across the current remaining s
 
 If an agent stock is smaller than the target count, only that many states receive one unit of that agent.
 
-No payload is duplicated, fabricated, refunded, reassigned to an alternate state, or retained after a failed dispatch.
+The resolver does not duplicate or fabricate payload, reassign an alternate state, or issue a script-side refund after a failed dispatch. Native cancellation and reserved-lot handling remain a separate engine-evidence gap.
 
 ## Shared biological lifecycle
 
@@ -88,9 +88,9 @@ The batch deliberately does not fabricate a single victim country for a multi-co
 
 ## Failure semantics
 
-The public decision is gated by the same route, crisis, arsenal, and target contract that the resolver rechecks.
+The native raid's preparation and launch gates and the callback resolver check the route, crisis, four-agent arsenal, and selected-state contract. Preparation takes fourteen days, allocates 25 Command Power, begins at a supply node, and requires an assigned division with at least three infantry or three motorized battalions; the shared `biological_raids` category uses army intelligence.
 
-Once the resolver accepts the operation, the complete arsenal is consumed before the first lifecycle dispatch.
+Failure and limited-success raid outcomes do not enter the resolver, set the one-shot flag, debit remaining stock manually, publish news, or create the catastrophe. Once a valid success or critical callback accepts the operation, `bio_doomsday_raid_committed` is set before irreversible dispatch, the remaining arsenal is consumed, and the four reserved lots enter the exact release accounting.
 
 If every state dispatch fails its exact lifecycle validation, the country records a dispatch-failure history flag, receives no fabricated release history, and does not publish the release news event.
 
@@ -100,35 +100,29 @@ If fewer payload units dispatch than were consumed, the country records partial-
 
 Only exact equality between seeded payload and consumed arsenal records full-resolution history.
 
-These branches provide no alternate state, delayed retry, proxy actor, payload refund, or inferred release.
+These branches provide no alternate state, delayed retry, proxy actor, script-side payload refund, or inferred release.
 
 ## AI behavior
 
-AI willingness is multiplied by zero unless `cbrn_ai_route_allows_unrestricted_use` is true, even when a player-facing extreme policy makes the decision visible.
+AI willingness is multiplied by zero unless `cbrn_ai_route_allows_unrestricted_use` is true, even when a player-facing extreme policy makes the raid visible.
 
 Theater Contamination and Terminal Hazard doctrine, a large arsenal, and minimum containment preparation increase willingness.
 
 Unsafe handling, an active domestic outbreak, high Condemnation combined with high import vulnerability, and treaty membership suppress willingness.
 
-The decision’s availability still requires the same last-resort, arsenal, and exact-target gates used by the player.
+The raid's availability still requires the same last-resort, arsenal, and exact-target gates used by the player.
 
-The installed decision analyzer confirms a raw willingness score of 0 without the unrestricted AI route, 0.35 for an unrestricted unsafe baseline, 1.05 for an unrestricted Terminal Hazard country with a large arsenal, and 0.021 for that country when an active domestic outbreak and treaty membership apply.
-
-The analyzer cannot currently resolve script-constant operands inside the two `check_variable` clauses of the sanctions-vulnerability helper.
-
-Source arithmetic applies the additional 0.10 factor only when both accepted thresholds are met, reducing the last scenario to 0.0021.
-
-Decision willingness is a score rather than a click probability, and no categorical probability is claimed.
+The earlier decision-analyzer scores are historical and do not validate the native raid's AI selection. The current raid file has no available raid inspect/render or weighted-probability adapter, so final AI behavior and same-scenario comparison remain open. Native raid willingness is a score rather than a click probability, and no categorical probability is claimed.
 
 ## Assets and wiring
 
-The decision reuses `GFX_decision_bio_unleash_stockpiled_pathogens` from `interface/chaosx_gfx_cleanup.gfx`.
+The native raid reuses `GFX_decision_bio_unleash_stockpiled_pathogens` as its map icon from `interface/chaosx_gfx_cleanup.gfx`.
 
 The sprite points to `gfx/interface/decisions/biowarfare/decision_bio_unleash_stockpiled_pathogens.dds`.
 
 The existing DDS is 4,224 bytes with SHA-256 `4F711064D2A7E0E70631C79538387E9C78A8DF8731D524FCC0AB90D64A1BC1FF`.
 
-No new doomsday asset, placeholder, resized cross-type substitute, or duplicate sprite was introduced.
+The source reuse does not prove final icon presentation in the native raid consumer; that visual check remains with the parent and asset owner.
 
 The existing strategic biological raid sprites and files under `gfx/interface/military_raids/` remain untouched and continue to serve native biological raids.
 
@@ -138,7 +132,7 @@ The engine does not expose an exact current-version active-front state predicate
 
 The engine provides no transactional rollback across several state lifecycle dispatches, so an accepted release debits the arsenal first and records exact partial resolution if a later state rejects the seed.
 
-The decision does not use continuous air missions, aircraft presence, air-region estimates, daily country scans, weekly country scans, monthly country scans, or any broad all-country pulse.
+The native raid does not use continuous air missions, aircraft presence, air-region estimates, daily country scans, weekly country scans, monthly country scans, or any broad all-country pulse. Installed raid documentation does not establish cancellation refunds or the final destruction behavior of reserved essential equipment; those remain engine-evidence and user live-validation limits.
 
 ## Future plans and suggestions
 

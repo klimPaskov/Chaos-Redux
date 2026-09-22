@@ -102,8 +102,12 @@ condemnation_target_response_category = {
 		available = {
 			custom_trigger_tooltip = {
 				tooltip = condemnation_pay_victim_compensation_requirements_tt
-				hidden_trigger = { condemnation_can_pay_compensation = yes }
+				hidden_trigger = {
+					has_variable = condemnation_last_victim
+					var:condemnation_last_victim = { exists = yes }
+				}
 			}
+			condemnation_can_pay_compensation = yes
 		}
 		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_compensation = yes } }
 		custom_cost_text = condemnation_pay_victim_compensation_cost
@@ -176,12 +180,7 @@ condemnation_target_response_category = {
 		icon = GFX_decision_generic_military
 		cost = 0
 		visible = { condemnation_show_compliance_actions = yes condemnation_is_arms_embargo_tier = yes NOT = { has_country_flag = condemnation_command_reformed } }
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = condemnation_reform_unconventional_command_requirements_tt
-				hidden_trigger = { condemnation_can_reform_command = yes }
-			}
-		}
+		available = { condemnation_can_reform_command = yes }
 		custom_cost_trigger = { hidden_trigger = { condemnation_can_reform_command = yes } }
 		custom_cost_text = condemnation_reform_unconventional_command_cost
 		complete_effect = { custom_effect_tooltip = condemnation_reform_unconventional_command_tt hidden_effect = { condemnation_reform_command = yes } }
@@ -244,8 +243,8 @@ condemnation_target_response_category = {
 		icon = GFX_decision_generic_industry
 		cost = 0
 		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_autarky_active } }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { check_variable = { fuel_k > 0 } } }
+		available = { condemnation_can_pay_autarky_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_autarky_cost = yes } }
 		custom_cost_text = condemnation_launch_autarky_program_cost
 		complete_effect = { custom_effect_tooltip = condemnation_launch_autarky_program_tt hidden_effect = { condemnation_activate_autarky = yes } }
 		ai_will_do = {
@@ -322,7 +321,7 @@ condemnation_target_response_category = {
 		icon = GFX_decision_soviet_collapse_foreign_trade
 		cost = 0
 		visible = { condemnation_show_defiance_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_controlled_shipping_active } }
-		available = { always = yes }
+		available = { condemnation_can_pay_controlled_shipping_cost = yes }
 		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_controlled_shipping_cost = yes } }
 		custom_cost_text = condemnation_establish_controlled_shipping_cost
 		complete_effect = { custom_effect_tooltip = condemnation_establish_controlled_shipping_tt hidden_effect = { condemnation_activate_controlled_shipping = yes } }
@@ -358,7 +357,7 @@ condemnation_target_response_category = {
 		icon = GFX_decision_seize_depots
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_arms_embargo_tier = yes NOT = { has_country_flag = condemnation_black_market_active } }
-		available = { always = yes }
+		available = { condemnation_can_pay_black_market_cost = yes }
 		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_black_market_cost = yes } }
 		custom_cost_text = condemnation_black_market_arms_procurement_cost
 		complete_effect = { custom_effect_tooltip = condemnation_black_market_arms_procurement_tt hidden_effect = { condemnation_open_black_market = yes } }
@@ -378,7 +377,7 @@ condemnation_target_response_category = {
 		icon = GFX_decision_generic_intelligence_operation
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_false_manifest_active } }
-		available = { always = yes }
+		available = { condemnation_can_pay_false_manifest_cost = yes }
 		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_false_manifest_cost = yes } }
 		custom_cost_text = condemnation_falsify_shipping_manifests_cost
 		complete_effect = { custom_effect_tooltip = condemnation_falsify_shipping_manifests_tt hidden_effect = { condemnation_use_false_manifests = yes } }
@@ -389,8 +388,8 @@ condemnation_target_response_category = {
 		icon = GFX_decision_soviet_collapse_foreign_trade
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_intermediary_active } }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.intermediary_convoys } } } }
+		available = { condemnation_can_pay_intermediary_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_intermediary_cost = yes } }
 		custom_cost_text = condemnation_hire_neutral_intermediaries_cost
 		complete_effect = { custom_effect_tooltip = condemnation_hire_neutral_intermediaries_tt hidden_effect = { condemnation_use_neutral_intermediaries = yes } }
 		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_elevated has_war = yes } }
@@ -409,8 +408,8 @@ condemnation_target_response_category = {
 		icon = GFX_decision_soviet_collapse_foreign_trade
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_strategic_embargo_tier = yes NOT = { has_country_flag = condemnation_covert_fuel_active } }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.covert_fuel_convoys } } } }
+		available = { condemnation_can_pay_covert_fuel_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_covert_fuel_cost = yes } }
 		custom_cost_text = condemnation_open_covert_fuel_route_cost
 		complete_effect = { custom_effect_tooltip = condemnation_open_covert_fuel_route_tt hidden_effect = { condemnation_open_covert_fuel_route = yes } }
 		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_very_high check_variable = { condemnation_fuel_vulnerability > constant:condemnation_ai.import_vulnerability } } }
@@ -420,8 +419,8 @@ condemnation_target_response_category = {
 		icon = GFX_decision_soviet_collapse_foreign_trade
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_total_embargo_tier = yes NOT = { has_country_flag = condemnation_reflagging_active } }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.reflagging_convoys } } } }
+		available = { condemnation_can_pay_reflagging_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_reflagging_cost = yes } }
 		custom_cost_text = condemnation_reflag_merchant_shipping_cost
 		complete_effect = { custom_effect_tooltip = condemnation_reflag_merchant_shipping_tt hidden_effect = { condemnation_reflag_shipping = yes } }
 		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_medium_high is_major = yes } }
@@ -431,8 +430,8 @@ condemnation_target_response_category = {
 		icon = GFX_decision_generic_research
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_arms_embargo_tier = yes NOT = { has_country_flag = condemnation_stolen_license_active } }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.stolen_license_convoys } } } }
+		available = { condemnation_can_pay_stolen_license_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_stolen_license_cost = yes } }
 		custom_cost_text = condemnation_acquire_stolen_license_cost
 		complete_effect = { custom_effect_tooltip = condemnation_acquire_stolen_license_tt hidden_effect = { condemnation_use_stolen_license = yes } }
 		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_elevated is_major = yes } }
@@ -442,8 +441,8 @@ condemnation_target_response_category = {
 		icon = GFX_decision_generic_research
 		cost = 0
 		visible = { condemnation_show_evasion_actions = yes condemnation_is_total_embargo_tier = yes NOT = { has_country_flag = condemnation_smuggled_lab_active } }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.smuggled_lab_convoys } } NOT = { has_equipment = { support_equipment < constant:condemnation_cost.smuggled_lab_equipment } } } }
+		available = { condemnation_can_pay_smuggled_lab_cost = yes }
+		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_smuggled_lab_cost = yes } }
 		custom_cost_text = condemnation_open_smuggled_laboratory_cost
 		complete_effect = { custom_effect_tooltip = condemnation_open_smuggled_laboratory_tt hidden_effect = { condemnation_open_smuggled_lab = yes } }
 		ai_will_do = { base = constant:condemnation_ai.evasion_base modifier = { factor = constant:condemnation_ai.factor_high is_major = yes } }
@@ -458,8 +457,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_join_arms_embargo_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_enforcement_cost = yes } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_bear_enforcement_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_bear_enforcement_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_join_embargo_cost
 		complete_effect = {
 			hidden_effect = {
@@ -482,8 +489,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_join_strategic_embargo_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_escalation_cost = yes } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_bear_escalation_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_bear_escalation_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_escalate_embargo_cost
 		complete_effect = {
 			hidden_effect = {
@@ -506,8 +521,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_join_total_embargo_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_escalation_cost = yes } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_bear_escalation_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_bear_escalation_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_escalate_embargo_cost
 		complete_effect = {
 			hidden_effect = {
@@ -530,8 +553,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_join_pariah_embargo_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { condemnation_can_bear_escalation_cost = yes } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_bear_escalation_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_bear_escalation_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_escalate_embargo_cost
 		complete_effect = {
 			hidden_effect = {
@@ -566,8 +597,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_add_humanitarian_carveout_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.carveout_convoys } } } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_pay_carveout_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_pay_carveout_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_humanitarian_carveout_cost
 		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_apply_humanitarian_carveout = yes } } custom_effect_tooltip = condemnation_add_humanitarian_carveout_tt }
 		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
@@ -580,8 +619,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_quietly_breach_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_quiet_breach_cost = yes } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_pay_quiet_breach_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_pay_quiet_breach_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_quiet_breach_cost
 		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_apply_quiet_breach = yes } } custom_effect_tooltip = condemnation_quietly_breach_sanctions_tt }
 		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
@@ -594,8 +641,16 @@ condemnation_participant_action_category = {
 		target_root_trigger = { exists = yes }
 		target_trigger = { condemnation_can_tighten_enforcement_against_from = yes }
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.tight_enforcement_convoys } } } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_pay_tight_enforcement_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_pay_tight_enforcement_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_tighten_enforcement_cost
 		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_apply_tight_enforcement = yes } } custom_effect_tooltip = condemnation_tighten_enforcement_tt }
 		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }
@@ -611,8 +666,16 @@ condemnation_participant_action_category = {
 			FROM = { condemnation_is_formally_censured = yes NOT = { is_in_array = { array = condemnation_shielding_participants value = ROOT } } }
 		}
 		visible = { always = yes }
-		available = { always = yes }
-		custom_cost_trigger = { hidden_trigger = { condemnation_can_pay_shield_cost = yes } }
+		available = {
+			condemnation_set_target_cost_score = yes
+			condemnation_can_pay_shield_cost = yes
+		}
+		custom_cost_trigger = {
+			hidden_trigger = {
+				condemnation_set_target_cost_score = yes
+				condemnation_can_pay_shield_cost = yes
+			}
+		}
 		custom_cost_text = condemnation_shield_ally_cost
 		complete_effect = { hidden_effect = { FROM = { set_temp_variable = { condemnation_pair_participant = ROOT } condemnation_record_faction_shield = yes } } custom_effect_tooltip = condemnation_shield_ally_tt }
 		ai_will_do = { base = constant:condemnation_ai.participant_decision_base }

@@ -1,108 +1,73 @@
-# Biological operations and native-raid ownership
+# Event 016 biological raids
 
-Event 016 biological warfare uses the shared CBRN equipment and disease systems. Actual equipment in the national stockpile is the only payload quantity source. No Event 016 numeric stockpile or parallel reservation ledger exists.
+Event 016 attacks use the existing `biological_raids` category and the native raid preparation, equipment reservation, Command Power, cancellation, and history system.
+The equipment stockpile remains authoritative.
+Each raid names its agent and method, so the player chooses the payload in the raid panel without maintaining a selected arsenal, a staging directive, or a separate attack decision.
+The unrelated Event 016 Portal facility raids retain their own category.
 
-## Unlock and selection contract
+## Unlocks and equipment
 
-The compact `brilliant_scientist_biological_operations_category` appears after the country owns at least one authorized agent. Anthrax, plague, tularemia, and smallpox accept either their completed native special project or their grantable delivery technology. Weaponized zombies accept their delivery technology, completion flag, or special project. Black Plague accepts its completed weaponization program or an explicit Kruger authorization receipt.
+Anthrax, Plague, Tularemia, and Smallpox accept either their completed special project or delivery technology.
+Weaponized Zombies accepts its completed project, completion flag, or delivery technology.
+Engineered Black Plague requires its weaponization receipt or explicit Kruger authorization and spends Plague Bomb equipment because the accepted Event 020 program uses the same physical delivery stock.
+The five concrete equipment models are buildable through their delivery technologies, and the common biological AI production strategies cover them, including Zombie Disease Bombs.
+An AI country with the offensive Event 020 Black Plague program maintains a two-bomb Plague reserve under safe stockpile conditions, even without a generic strategic CBRN production posture; generic safe, desperate, and Japan campaign Plague demand takes precedence when active.
+CXT's debug stockpile includes all five models; its player-triggered refill action is deliberately repeatable.
 
-One persistent country variable, `brilliant_scientist_selected_biological_agent`, records the operational agent used by Event 016 production and decision-led deployments. The selection can be changed while no Event 016 biological production or deployment transaction is active. Changing this selection does not modify an active native raid, because native raids already own their selected payload and reservation.
+| Agent | Concrete stock | Battlefield and Portal quantity | Covert quantity |
+| --- | --- | ---: | ---: |
+| Anthrax | `anthrax_bomb_1` | 200 | 400 |
+| Plague | `plague_bomb_1` | 100 | 200 |
+| Tularemia | `tularemia_bomb_1` | 100 | 200 |
+| Smallpox | `smallpox_bomb_1` | 50 | 100 |
+| Weaponized Zombies | `zombie_disease_bomb_1` | 125 | 250 |
+| Engineered Black Plague | `plague_bomb_1` | 1 | 2 |
 
-## Production and staging
+## Raid sequence and outcomes
 
-`brilliant_scientist_produce_single_biological_payload` takes 30 days, uses two civilian factories, 80 Support Equipment, and 250 manpower, and produces one native payload lot of the selected agent. `brilliant_scientist_produce_triple_biological_payload` takes 60 days, uses four civilian factories, 240 Support Equipment, and 750 manpower, and produces three lots. The output is the actual native equipment type: `anthrax_bomb_1`, `plague_bomb_1`, `tularemia_bomb_1`, `smallpox_bomb_1`, or `zombie_disease_bomb_1`. Black Plague uses one plague-bomb item per lot, matching its shared Event 020 delivery contract.
+The battlefield variant targets an enemy-held frontline or operational military state, prepares for seven days, and reserves 25 Command Power plus one agent lot.
+The Portal battlefield variant reaches an enemy-held rear state when the actor has operational portals, with the same seven-day preparation and 25 Command Power plus ten `teleportation_equipment_1` items.
+The covert variant targets an enemy core state containing industry or a strategic installation, prepares for fourteen days, and reserves 50 Command Power plus two agent lots.
+All three use a qualifying land formation, a supply-node starting point, and the native raid instance.
+The native outcome callback performs no equipment or Command Power debit and never makes a refund.
 
-`brilliant_scientist_stage_biological_operations` takes 90 days and uses one civilian factory. It reserves no payload. Completion grants a 180-day readiness window which improves native strategic, battlefield, and zombie raid success calculations and increases AI willingness. It also shifts Event 016 decision-led deployment weights toward success and away from failure or accident.
+The legacy battlefield outcome weights were 70 percent delivery, 25 percent failed delivery, and 5 percent home accident.
+The covert weights were 55 percent delivery, 30 percent failed delivery, and 15 percent home accident.
+The raid formulas use those success and disaster bases, with native failure mapped to the home accident, limited success to failed delivery, and success or critical success to delivery.
+The native engine controls the final calculation, so those bases are source-level parity rather than a claim that the engine's final probabilities are identical under every raid circumstance.
 
-Production and staging check available project factories before selection and use the native timed-decision factory modifier for occupation and release.
-The production callback is private to those decisions, not a free-standing public grant API.
-If authorization disappears during production, its receipt is cleared without producing a payload or refunding already committed support equipment and manpower.
-Cancelling staging clears its active receipt without granting readiness.
-The native raid preparation duration itself remains native-owned; staging is advance preparation that improves the outcome profile rather than an override of that timer.
+Successful ordinary pathogens call `bio_lifecycle_dispatch_seed` with actor, victim, route, payload amount, and deliberate-use proof.
+That dispatcher owns disease progression, attribution, condemnation, and confirmed-use history.
+The Event 016 callback sets `bio_native_raid_dispatch_in_progress` only during a deliberate lifecycle dispatch so the shared lifecycle does not apply an extra Command Power recovery to an engine-paid raid.
+Weaponized Zombies uses its outbreak creator and deliberate strike consequences.
+Engineered Black Plague uses the ordinary plague seed plus `black_plague_apply_weaponized_exposure_runtime`, preserving its stronger exposure and accepted Event 020 provenance.
+A home accident releases the chosen agent near the actor's capital and records the accident and exposure.
+A failed delivery consumes the reserved cargo and records the failed attempt.
+Each settled raid records the last agent, route, attempt count, and relevant Portal history once.
 
-## Independent deployment transaction
+The raid outcome starts in `RAID_INSTANCE` scope, while the inherited disease, Zombie, and Black Plague effects require the actor country as `ROOT`.
+Each of the seventy-two native result callbacks therefore saves its exact actor, selected state, and victim as chain-local event targets and fires one hidden immediate country event for that agent, method, and result.
+The hidden event reconstructs temporary inputs from its own ID, validates the live actor and original hostile state, and dispatches the consequence with actor-country `ROOT`.
+The event targets are private to the effect chain, so concurrent raids never share a pending country or global variable slot; a missing or invalid target leaves the paid raid in its native history without a second debit or a scripted refund.
 
-`brilliant_scientist_battlefield_biological_release` targets an enemy-controlled frontline or operational state. It lasts seven days, spends 25 Command Power, and debits one selected payload lot at start.
+The native `cancel_trigger` aborts preparation if the target, war, release authority, or actor validity disappears.
+There is no scripted refund or second debit; the engine owns the reservation and cancellation accounting.
+The former Event 016 decision receipt, capitulation refund, annexation seizure, selected-agent variable, production decisions, and staging readiness are retired.
+Ordinary military production replaces the former Event 016 thirty-day and sixty-day payload decisions, which had spent 80 or 240 Support Equipment, 250 or 750 manpower, and two or four civilian factories.
 
-Operational Teleportation extends that same decision to other enemy-held states for ten `teleportation_equipment_1` items.
-Conventional targets never pay this extra cost.
-The transport amount is stored alongside the payload receipt, and pending validity reads that committed amount rather than requiring another ten items in the unreserved stockpile.
-Losing conventional access cannot silently convert an unpaid operation into a Portal deployment.
-Cancellation returns both the payload and any committed transport exactly once; every settled Portal attempt records permanent actor and target history without creating a Portal raid or beachhead.
+## Presentation and files
 
-`brilliant_scientist_strategic_covert_biological_release` targets an enemy core industrial or strategic state. It lasts fourteen days, spends 50 Command Power, and debits two selected payload lots at start. Its consequences and exposure risk are stronger.
+The eighteen raid IDs live in `common/raids/016_brilliant_scientist_biological_raids.txt`.
+Their hidden country-scope outcome bridges live in `events/016_brilliant_scientist_biological_raid_events.txt`.
+Their agent names and methods are localized in `localisation/english/016_brilliant_scientist_biological_raids_l_english.yml`.
+The actor and exact-state predicates live in `common/scripted_triggers/016_brilliant_scientist_biological_operations_triggers.txt`, and the guarded outcome dispatcher lives in `common/scripted_effects/016_brilliant_scientist_biological_operations_effects.txt`.
+The four ordinary agent map sprites and the Weaponized Zombie sprite reuse `interface/chaosx_raids.gfx` and its DDS files under `gfx/interface/military_raids/map_icons/`.
+Engineered Black Plague uses `GFX_raid_type_icon_brilliant_scientist_black_plague` in `interface/016_brilliant_scientist_biological_raids.gfx`, currently wired to the existing Event 020 weapon-delivery image at `gfx/interface/decisions/020_black_plague/decision_weapon_delivery.dds`.
+Equipment icons reuse the five definitions in `interface/chaosx_equipment.gfx`.
+No new category artwork or scripted GUI is required.
 
-Both decisions use one Event 016-owned receipt containing the selected agent, route, target state, victim country, and exact debited amount. A target that becomes invalid before execution refunds that receipt exactly once. Success, failure, and accident settle it exactly once. Failure consumes the committed payload; an accident releases it at the actor's capital. These receipts are separate from native raid reservations and can never refund or settle a native raid payload.
+## Validation limit and future plans
 
-The shared world-end flag prevents new releases and invalidates pending releases so their decision cancellation returns the committed equipment.
-Capitulation refunds a pending decision reserve from `on_capitulation_immediate`, before native equipment capture, and clears unfinished production and staging receipts.
-Direct annexation instead transfers any still-reserved payload and Portal transport to the annexing country, then clears the former actor's receipt; native stockpile capture cannot already contain those debited items.
-If capitulation already settled the reserve, annexation and subsequent decision callbacks have nothing left to award.
-Production inputs already consumed remain consumed, and no unfinished production output or staging readiness is awarded.
-Production and staging cannot begin or pay out after capitulation or the shared world-end state.
-Their native timed decisions cancel when the active country or their own receipt becomes invalid, so cleared transactions do not keep factories occupied until the old timer expires.
-
-The target must remain owned and controlled by the original victim throughout the operation.
-Ownership passing to another belligerent cancels the original operation rather than silently changing the victim.
-The start effects recheck the requested route, agent, payload, Command Power, and target before creating a receipt.
-Targets exclude wasteland, zero-population states, and states already controlled by zombies.
-The ordinary-pathogen dispatcher must accept the seed before the operation records successful delivery.
-If the dispatch rejects execution, the attempted operation settles as a consumed-payload failure without delivery-success history or a success-only Directorate Exposure award.
-
-Standard pathogens dispatch into `bio_lifecycle_dispatch_seed` with explicit actor, victim, actual payload debit, and one internal-use history receipt.
-The lifecycle owns subsequent detection, attribution, and condemnation; an operational success is not fabricated public confirmation.
-Weaponized zombies use the existing outbreak creator, and only a deliberate successful release invokes the strike-consequence effect.
-An attacker accident cannot grant the confirmed-offensive-use history.
-Black Plague uses the ordinary plague lifecycle plus `black_plague_apply_weaponized_exposure_runtime`; it does not call the Event 020 public delivery effect and therefore cannot debit the same payload twice.
-The runtime bridge initializes Event 020 only when its shared runtime has never started, applies the accepted weaponized exposure once, and creates or repairs one event-owned seven-day scheduler receipt without inventing a natural origin or recognition report.
-The bridge exports an exact acceptance result, so Event 016 records Black Plague provenance and delivery history only when the shared state machine accepted the selected state.
-
-## Native raid authority
-
-The native strategic, battlefield, and zombie raids remain authoritative for preparation, equipment reservation, cancellation, expiry, outcome selection, refund, history, contamination, condemnation, and confirmed-use attribution. Their visibility accepts API-granted delivery technologies as well as project completion. Warren Kruger's active host or KRG receives aggressive AI weights, but Kruger is not a player-access requirement and does not create a separate raid system.
-
-## Runtime identifiers
-
-- Category: `brilliant_scientist_biological_operations_category`
-- Selection variable: `brilliant_scientist_selected_biological_agent`
-- Query root: `brilliant_scientist_has_any_unlocked_biological_agent`
-- Production effects: `brilliant_scientist_begin_biological_production`, `brilliant_scientist_complete_biological_production`
-- Staging effects: `brilliant_scientist_begin_biological_staging_directive`, `brilliant_scientist_complete_biological_staging_directive`
-- Transaction effects: `brilliant_scientist_begin_biological_deployment`, `brilliant_scientist_refund_biological_deployment`, `brilliant_scientist_resolve_biological_deployment`
-- Transaction flag: `brilliant_scientist_biological_deployment_pending`
-- Native readiness flag: `brilliant_scientist_biological_staging_ready`
-
-## Public stockpile query
-
-The country-scoped pair `brilliant_scientist_calculate_selected_biological_payload_requirement` and `brilliant_scientist_selected_biological_stockpile_is_sufficient` lets another system price the selected operational agent without reserving equipment.
-The calculation reads the persistent selected agent and temporary `brilliant_scientist_biological_payload_multiplier`, then writes temporary `brilliant_scientist_biological_agent_request` and `brilliant_scientist_biological_payload_required`.
-An absent or nonpositive multiplier uses one lot; an invalid agent yields zero, which the stockpile query rejects.
-The query reads the calculated requirement and the actual matching native equipment stockpile, requires the selected agent to remain unlocked, and changes no flags, stockpiles, history, or native raid state.
-Callers must calculate and query in the same effect chain and must not treat a positive result as a reservation.
-
-```txt
-set_temp_variable = { brilliant_scientist_biological_payload_multiplier = 1 }
-brilliant_scientist_calculate_selected_biological_payload_requirement = yes
-# In the immediately following limit/trigger block:
-# brilliant_scientist_selected_biological_stockpile_is_sufficient = yes
-```
-
-Production, staging, and deployment start/finish helpers remain private callbacks of their owning decisions.
-Other events grant access through the technology API and let those decisions own their transactions; they must not call a private production callback to bypass the native factory occupation.
-
-## Black Plague elapsed timing
-
-Black Plague state devastation uses `black_plague_next_devastation_num_days` on the elapsed-day axis `global.num_days`.
-Its event-owned pulse scheduler likewise stores `black_plague_scheduler_due_num_days` on `global.num_days`, keeping the delayed `.900` callback and its validation receipt in the same unit.
-The shared phase-dependent intervals and once-per-pulse application remain authoritative; calendar snapshots used for history are not deadlines.
-
-## Visual assets and sprite wiring
-
-The category is registered in `common/decisions/categories/016_brilliant_scientist_raid_lifecycle_categories.txt` and reuses `GFX_decision_category_brilliant_scientist_krg_exotic_biological` from `interface/016_brilliant_scientist_kruger_state_decisions.gfx`.
-The actions reuse the registered Event 016 Biological Weapons icons in `interface/016_brilliant_scientist_project_icons.gfx`: `GFX_decision_brilliant_scientist_project_biological_weapons_theory`, `GFX_decision_brilliant_scientist_project_biological_weapons_prototype`, `GFX_decision_brilliant_scientist_project_biological_weapons_deployment`, and `GFX_decision_brilliant_scientist_project_biological_weapons_weaponization`.
-Native payload equipment and raid icons remain owned by their shared CBRN and zombie registries.
-These existing generated assets cover the transaction surface without another scripted GUI.
-
-## Future extensions
-
-Future events can authorize one of the native delivery technologies or call the existing custom-technology API, then use the same stockpile and native-raid surfaces. A future operation may add its own transaction only when it owns a distinct decision-led deployment and stores its own exact debit/refund receipt. It must never reuse Event 016's pending flag or intercept a native raid reservation.
+The native land path solver's behavior for a distant or disconnected Portal rear target remains an engine evidence gap; source inspection proves the target predicate and ten-equipment reservation but cannot prove every engine path.
+A future distinct Black Plague raid-map DDS may replace the reused Event 020 image without changing the sprite key.
+Further agent variants should provide one named raid and its equipment, unlock, AI, lifecycle, localisation, and CXT proof without creating a second attack transaction.

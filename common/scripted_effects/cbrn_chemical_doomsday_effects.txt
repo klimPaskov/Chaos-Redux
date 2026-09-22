@@ -2,13 +2,14 @@
 # CHAOS REDUX - CHEMICAL DOOMSDAY RELEASE EFFECTS
 # ============================================================================
 # Overview:
-# - Resolves the explicit chemical doomsday decision through the shared
+# - Resolves the successful native chemical doomsday raid through the shared
 #   cbrn_prepare_chemical_action_record and cbrn_dispatch_chemical_action_record
 #   pipeline for every exact controlled state that receives a real lot.
-# - Captures and removes the four legacy cylinder models exactly once, then
-#   allocates those real lots across the exact target array. No direct state
+# - Accounts for one of each cylinder reserved by the native raid, removes
+#   only the remaining stock once, then allocates the full committed lots
+#   across the exact target array. No direct state
 #   contamination, unit damage, death, or Condemnation formula remains here.
-# - Supplies a terminal decision condition receipt and target-specific
+# - Supplies a terminal raid condition receipt and target-specific
 #   protection resolution. The receipt is a committed release-order profile,
 #   not an aircraft, weather, terrain, or activity estimator.
 # - The batch Condemnation share is attached to the first accepted state record
@@ -22,7 +23,7 @@
 cbrn_chemical_doomsday_collect_target_states = {
 	clear_temp_array = cbrn_doomsday_target_states
 	every_controlled_state = {
-		limit = { cbrn_chemical_doomsday_state_is_eligible = yes }
+		limit = { cbrn_chemical_doomsday_raid_state_is_eligible = yes }
 		add_to_temp_array = { cbrn_doomsday_target_states = THIS }
 	}
 	set_temp_variable = { cbrn_doomsday_target_count = cbrn_doomsday_target_states^num }
@@ -75,8 +76,18 @@ cbrn_chemical_doomsday_capture_and_consume_arsenal = {
 		add_equipment_to_stockpile = { type = chemical_phosgene_payload_cylinder_1 amount = cbrn_doomsday_debit_phosgene }
 		add_equipment_to_stockpile = { type = chemical_mustard_payload_cylinder_1 amount = cbrn_doomsday_debit_mustard }
 		add_equipment_to_stockpile = { type = chemical_lewisite_payload_cylinder_1 amount = cbrn_doomsday_debit_lewisite }
-		set_temp_variable = { cbrn_doomsday_stockpile_debit_proof = constant:cbrn_proof.supplied }
 	}
+	# The native raid already collected one of each of the four cylinder
+	# archetypes. They belong in the release record but are never debited again.
+	add_to_temp_variable = { cbrn_doomsday_stock_chlorine = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	add_to_temp_variable = { cbrn_doomsday_stock_phosgene = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	add_to_temp_variable = { cbrn_doomsday_stock_mustard = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	add_to_temp_variable = { cbrn_doomsday_stock_lewisite = constant:cbrn_chemical_doomsday_raid.reserved_per_agent }
+	set_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_chlorine }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_phosgene }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_mustard }
+	add_to_temp_variable = { cbrn_doomsday_arsenal_consumed_total = cbrn_doomsday_stock_lewisite }
+	set_temp_variable = { cbrn_doomsday_stockpile_debit_proof = constant:cbrn_proof.supplied }
 }
 
 cbrn_chemical_doomsday_set_batch_condemnation = {
@@ -217,7 +228,7 @@ cbrn_chemical_doomsday_dispatch_current_agent = {
 				set_variable = { cbrn_doomsday_state_allocation_receipt = cbrn_doomsday_current_allocation }
 				save_event_target_as = cbrn_doomsday_current_state
 				CONTROLLER = { save_event_target_as = cbrn_doomsday_current_victim }
-				ROOT = {
+				event_target:cbrn_doomsday_raid_actor = {
 					set_temp_variable = { cbrn_doomsday_current_allocation = PREV.cbrn_doomsday_state_allocation_receipt }
 					event_target:cbrn_doomsday_current_state = { save_event_target_as = cbrn_action_target_state }
 					event_target:cbrn_doomsday_current_victim = { save_event_target_as = cbrn_action_victim_country }
@@ -239,9 +250,18 @@ cbrn_chemical_doomsday_release = {
 	if = {
 		limit = {
 			cbrn_policy_allows_extreme_use = yes
-			cbrn_chemical_doomsday_actor_has_target = yes
+			NOT = { has_country_flag = cbrn_chemical_doomsday_raid_committed }
+			has_government = fascism
+			has_war = yes
+			NOT = { has_capitulated = yes }
+			surrender_progress > constant:cbrn_chemical_doomsday_raid.surrender_threshold
+			has_event_target = cbrn_doomsday_raid_target
+			event_target:cbrn_doomsday_raid_target = { cbrn_chemical_doomsday_raid_state_is_eligible = yes }
 			check_variable = { cbrn_doomsday_target_count > constant:cbrn_math.zero }
 		}
+		# Commit the valid callback before any irreversible dispatch. A second
+		# simultaneously prepared raid can never repeat a partial release.
+		set_country_flag = cbrn_chemical_doomsday_raid_committed
 		cbrn_chemical_doomsday_capture_and_consume_arsenal = yes
 		if = {
 			limit = {
@@ -291,8 +311,16 @@ cbrn_chemical_doomsday_release = {
 	}
 }
 
-# Compatibility entry point retained for the public doomsday decision ID.
-# It delegates directly to the canonical exact-state CBRN release adapter.
-chem_unleash_stockpile_doomsday = {
-	cbrn_chemical_doomsday_release = yes
+# Raid-instance scope. The immediate hidden country event restores actor ROOT
+# before any nested policy, exposure, diplomacy, or fallout helper executes.
+cbrn_chemical_doomsday_native_raid_outcome = {
+	var:actor_country = { save_event_target_as = cbrn_doomsday_raid_actor }
+	var:target_state = { save_event_target_as = cbrn_doomsday_raid_target }
+	if = {
+		limit = {
+			has_event_target = cbrn_doomsday_raid_actor
+			has_event_target = cbrn_doomsday_raid_target
+		}
+		var:actor_country = { country_event = { id = chaosx_cbrn_doom_raid.1 } }
+	}
 }

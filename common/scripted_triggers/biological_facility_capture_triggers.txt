@@ -1,8 +1,8 @@
 # ============================================================================
 # CHAOS REDUX - CAPTURED BIOLOGICAL FACILITY SCRIPTED TRIGGERS
 # ============================================================================
-# Inputs: exact state records created by on_state_control_changed, or native
-#   raid variables var:actor_country and var:target_state.
+# Inputs: exact state records from state-control changes, native raid scope,
+#   or exact actor-country raid bridge targets.
 # Outputs: fail-closed capture, controller, payload, raid, hazard, and AI checks.
 # Side effects: none. These triggers never scan for a replacement facility,
 #   deploy a biological weapon, move payload, or schedule a global pulse.
@@ -72,13 +72,15 @@ bio_facility_capture_target_from_is_valid = {
 	}
 }
 
-# Raid-instance scope. The selected exact state must still be controlled by the
-# native actor at outcome time. No alternate target is selected on failure.
+# Actor-country bridge scope. The selected exact state must still be controlled
+# by this native actor at outcome time. No alternate target is selected.
 bio_facility_capture_native_context_is_valid = {
-	var:actor_country = { exists = yes }
-	var:target_state = {
+	has_event_target = bio_facility_bridge_actor
+	has_event_target = bio_facility_bridge_state
+	tag = event_target:bio_facility_bridge_actor
+	event_target:bio_facility_bridge_state = {
 		bio_facility_capture_controller_record_is_current = yes
-		is_controlled_by = var:ROOT.actor_country
+		is_controlled_by = event_target:bio_facility_bridge_actor
 		impassable = no
 		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
 	}

@@ -1,7 +1,7 @@
 # ============================================================================
 # CHAOS REDUX - CAPTURED BIOLOGICAL FACILITY SCRIPTED EFFECTS
 # ============================================================================
-# Inputs: exact state-control event targets or native raid variables.
+# Inputs: exact state-control targets or actor-country native raid bridge targets.
 # Outputs: one state-bound four-agent payload ledger, targeted hazard schedule,
 #   exact transfers/destruction/releases, program evidence, and history records.
 # Side effects: removes/restores national payload equipment exactly once, sends
@@ -648,12 +648,12 @@ bio_facility_capture_resolve_destroyed_facility = {
 	bio_facility_capture_clear_resolved_facility_records = yes
 }
 
-# Raid-instance scope wrappers. All state changes are gated by the exact native
+# Actor-country bridge wrappers. All state changes are gated by the exact native
 # actor/target context; rejected context produces no alternate outcome.
 bio_facility_capture_secure_failure = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_release_fraction = constant:bio_facility_capture_payload.raid_failure_release_fraction }
 			bio_facility_capture_dispatch_accidental_release = yes
 			bio_facility_capture_record_recovery_operation = yes
@@ -664,7 +664,7 @@ bio_facility_capture_secure_failure = {
 bio_facility_capture_secure_limited = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.secure_limited_fraction }
 			bio_facility_capture_transfer_fraction_to_controller = yes
 			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.secure_limited }
@@ -683,7 +683,7 @@ bio_facility_capture_secure_limited = {
 bio_facility_capture_secure_success = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
 			bio_facility_capture_transfer_fraction_to_controller = yes
 			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.secure_success }
@@ -698,7 +698,7 @@ bio_facility_capture_secure_success = {
 bio_facility_capture_secure_critical = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
 			bio_facility_capture_transfer_fraction_to_controller = yes
 			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.secure_critical }
@@ -713,7 +713,7 @@ bio_facility_capture_secure_critical = {
 bio_facility_capture_destroy_failure = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_release_fraction = constant:bio_facility_capture_payload.raid_failure_release_fraction }
 			bio_facility_capture_dispatch_accidental_release = yes
 			bio_facility_capture_record_recovery_operation = yes
@@ -724,7 +724,7 @@ bio_facility_capture_destroy_failure = {
 bio_facility_capture_destroy_limited = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.destroy_limited_fraction }
 			bio_facility_capture_destroy_fraction = yes
 			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.destroy_limited }
@@ -744,7 +744,7 @@ bio_facility_capture_destroy_limited = {
 bio_facility_capture_destroy_success = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
 			bio_facility_capture_destroy_fraction = yes
 			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.destroy_success }
@@ -759,7 +759,7 @@ bio_facility_capture_destroy_success = {
 bio_facility_capture_destroy_critical = {
 	if = {
 		limit = { bio_facility_capture_native_context_is_valid = yes }
-		var:target_state = {
+		event_target:bio_facility_bridge_state = {
 			set_temp_variable = { bio_facility_capture_fraction = constant:bio_facility_capture_payload.full_fraction }
 			bio_facility_capture_destroy_fraction = yes
 			set_temp_variable = { bio_facility_capture_evidence_amount = constant:bio_facility_capture_evidence.destroy_critical }

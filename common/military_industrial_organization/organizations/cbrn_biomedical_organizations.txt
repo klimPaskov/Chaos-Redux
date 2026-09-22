@@ -1,0 +1,186 @@
+# CBRN BIOMEDICAL INDUSTRY
+# Overview: three shared foundations, exclusive four-trait containment and
+# hazardous-agent branches, and one medical-aid capstone.
+# It applies native bonuses only to CBRN instruments and the four ordinary
+# biological payload archetypes. File-local constants tune native MIO bonuses.
+@cbrn_biomedical_research = 0.20
+@cbrn_biomedical_tasks = 3
+@cbrn_biomedical_initial_research = 0.05
+@cbrn_biomedical_initial_cost = -0.05
+@cbrn_biomedical_quality_low = 0.05
+@cbrn_biomedical_quality_medium = 0.08
+@cbrn_biomedical_quality_high = 0.10
+@cbrn_biomedical_cost_medium = 0.05
+@cbrn_biomedical_cost_high = 0.08
+@cbrn_biomedical_capacity_low = 0.10
+@cbrn_biomedical_capacity_high = 0.18
+@cbrn_biomedical_capacity_penalty = -0.06
+@cbrn_biomedical_quality_penalty = -0.10
+@cbrn_biomedical_cap_research = 0.04
+@cbrn_biomedical_cap_gain = 0.06
+@cbrn_biomedical_ai_base = 1
+@cbrn_biomedical_ai_low = 0.5
+@cbrn_biomedical_ai_high = 2
+@cbrn_biomedical_ai_zero = 0
+
+cbrn_biomedical_industry_directorate = {
+	icon = GFX_cbrn_biological_security_directorate
+	allowed = { always = yes }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } OR = { cbrn_country_has_program = yes has_tech = field_epidemiology_teams has_tech = pathogen_handling_protocols } } }
+	available = { FROM = { OR = { cbrn_country_has_program = yes has_tech = field_epidemiology_teams has_tech = pathogen_handling_protocols } } }
+	equipment_type = { cbrn_instrument_equipment anthrax_bomb_equipment plague_bomb_equipment tularemia_bomb_equipment smallpox_bomb_equipment }
+	research_categories = { cbrn_instruments_tech biowarfare_tech }
+	research_bonus = @cbrn_biomedical_research
+	task_capacity = @cbrn_biomedical_tasks
+	ai_will_do = {
+		factor = @cbrn_biomedical_ai_base
+		modifier = { factor = @cbrn_biomedical_ai_zero FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_biomedical_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_biomedical_ai_high FROM = { has_active_biowarfare_outbreak = yes } }
+		modifier = { factor = @cbrn_biomedical_ai_low FROM = { cbrn_ai_route_allows_unrestricted_use = yes } }
+	}
+	tree_header_text = { text = cbrn_biomedical_header_containment x = 2 }
+	tree_header_text = { text = cbrn_biomedical_header_agent x = 7 }
+	initial_trait = {
+		name = cbrn_biomedical_industry_directorate_initial_trait
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		equipment_bonus = { build_cost_ic = @cbrn_biomedical_initial_cost }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_biomedical_initial_research }
+	}
+
+	trait = {
+		token = cbrn_biosecurity_sealed_sample_chain
+		name = cbrn_biosecurity_sealed_sample_chain
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 2 y = 0 }
+		limit_to_equipment_type = { anthrax_bomb_equipment plague_bomb_equipment tularemia_bomb_equipment smallpox_bomb_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_low }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_sealed_sample_chain_tt }
+	}
+	trait = {
+		token = cbrn_medical_respiratory_care
+		name = cbrn_medical_respiratory_care
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 4 y = 0 }
+		all_parents = { cbrn_biosecurity_sealed_sample_chain }
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_low }
+		on_complete = { custom_effect_tooltip = cbrn_medical_respiratory_care_tt }
+	}
+	trait = {
+		token = cbrn_medical_mobile_casualty_sorting
+		name = cbrn_medical_mobile_casualty_sorting
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 6 y = 0 }
+		all_parents = { cbrn_medical_respiratory_care }
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		production_bonus = { production_capacity_factor = @cbrn_biomedical_capacity_low }
+		on_complete = { custom_effect_tooltip = cbrn_medical_mobile_casualty_sorting_tt }
+	}
+
+	# Protective chain: surveillance and containment create durable readiness.
+	trait = {
+		token = cbrn_biosecurity_distributed_surveillance
+		name = cbrn_biosecurity_distributed_surveillance
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 2 y = 1 }
+		all_parents = { cbrn_medical_mobile_casualty_sorting }
+		mutually_exclusive = { cbrn_biosecurity_stable_weaponization }
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_medium }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_distributed_surveillance_tt }
+		ai_will_do = { base = @cbrn_biomedical_ai_base modifier = { factor = @cbrn_biomedical_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } } modifier = { factor = @cbrn_biomedical_ai_high FROM = { has_active_biowarfare_outbreak = yes } } }
+	}
+	trait = {
+		token = cbrn_biosecurity_mobile_containment_team
+		name = cbrn_biosecurity_mobile_containment_team
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 2 y = 2 }
+		all_parents = { cbrn_biosecurity_distributed_surveillance }
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_medium build_cost_ic = @cbrn_biomedical_cost_medium }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_mobile_containment_team_tt }
+	}
+	trait = {
+		token = cbrn_medical_vaccine_scale
+		name = cbrn_medical_vaccine_scale
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 2 y = 3 }
+		all_parents = { cbrn_biosecurity_mobile_containment_team }
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		production_bonus = { production_capacity_factor = @cbrn_biomedical_capacity_low }
+		on_complete = { custom_effect_tooltip = cbrn_medical_vaccine_scale_tt }
+	}
+	trait = {
+		token = cbrn_biosecurity_fail_safe_facilities
+		name = cbrn_biosecurity_fail_safe_facilities
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 2 y = 4 }
+		all_parents = { cbrn_medical_vaccine_scale }
+		available = { FROM = { has_tech = sealed_containment_laboratories } }
+		limit_to_equipment_type = { anthrax_bomb_equipment plague_bomb_equipment tularemia_bomb_equipment smallpox_bomb_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_high build_cost_ic = @cbrn_biomedical_cost_high }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_fail_safe_facilities_tt }
+	}
+
+	# Hazardous-agent line: higher output and more evidence demand antidote capacity.
+	trait = {
+		token = cbrn_biosecurity_stable_weaponization
+		name = cbrn_biosecurity_stable_weaponization
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 7 y = 1 }
+		all_parents = { cbrn_medical_mobile_casualty_sorting }
+		mutually_exclusive = { cbrn_biosecurity_distributed_surveillance }
+		available = { FROM = { has_tech = pathogen_handling_protocols } }
+		limit_to_equipment_type = { anthrax_bomb_equipment plague_bomb_equipment tularemia_bomb_equipment smallpox_bomb_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_high build_cost_ic = @cbrn_biomedical_cost_medium }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_stable_weaponization_tt }
+		ai_will_do = { base = @cbrn_biomedical_ai_low modifier = { factor = @cbrn_biomedical_ai_high FROM = { cbrn_ai_route_allows_first_use = yes } } modifier = { factor = @cbrn_biomedical_ai_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } } }
+	}
+	trait = {
+		token = cbrn_biosecurity_accelerated_cultivation
+		name = cbrn_biosecurity_accelerated_cultivation
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 7 y = 2 }
+		all_parents = { cbrn_biosecurity_stable_weaponization }
+		limit_to_equipment_type = { anthrax_bomb_equipment plague_bomb_equipment tularemia_bomb_equipment smallpox_bomb_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_penalty }
+		production_bonus = { production_capacity_factor = @cbrn_biomedical_capacity_high }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_accelerated_cultivation_tt }
+	}
+	trait = {
+		token = cbrn_medical_antidote_production
+		name = cbrn_medical_antidote_production
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 7 y = 3 }
+		all_parents = { cbrn_biosecurity_accelerated_cultivation }
+		limit_to_equipment_type = { cbrn_instrument_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_medium }
+		production_bonus = { production_capacity_factor = @cbrn_biomedical_capacity_penalty }
+		on_complete = { custom_effect_tooltip = cbrn_medical_antidote_production_tt }
+	}
+	trait = {
+		token = cbrn_biosecurity_strategic_dissemination_program
+		name = cbrn_biosecurity_strategic_dissemination_program
+		icon = GFX_generic_mio_trait_icon_soft_attack
+		special_trait_background = yes
+		position = { x = 7 y = 4 }
+		all_parents = { cbrn_medical_antidote_production }
+		available = { FROM = { bio_strategic_raid_country_has_any_agent_project = yes } }
+		limit_to_equipment_type = { anthrax_bomb_equipment plague_bomb_equipment tularemia_bomb_equipment smallpox_bomb_equipment }
+		equipment_bonus = { reliability = @cbrn_biomedical_quality_medium build_cost_ic = @cbrn_biomedical_cost_high }
+		on_complete = { custom_effect_tooltip = cbrn_biosecurity_strategic_dissemination_program_tt }
+	}
+	trait = {
+		token = cbrn_medical_international_medical_mission
+		name = cbrn_medical_international_medical_mission
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 4 y = 4 }
+		any_parent = { cbrn_biosecurity_fail_safe_facilities cbrn_biosecurity_strategic_dissemination_program }
+		production_bonus = { production_efficiency_gain_factor = @cbrn_biomedical_cap_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_biomedical_cap_research }
+		on_complete = { custom_effect_tooltip = cbrn_medical_international_medical_mission_tt }
+	}
+}

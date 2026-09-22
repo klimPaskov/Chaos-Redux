@@ -2,8 +2,10 @@
 # CHAOS REDUX - STARTUP HISTORY COMPATIBILITY CONSTANTS
 # ============================================================================
 # Tuning values for startup grants that replace copied vanilla history overrides.
-# Keep additive starting equipment, facility levels, event delays, and breakthrough
-# progress here so the scripted effects stay data-driven.
+# Keep additive starting equipment, facility levels, event delays, date-gated
+# programme markers, and breakthrough progress here so the scripted effects stay
+# data-driven. The CBRN mask crate matrix itself remains owned by
+# common/script_constants/cbrn_system_constants.txt.
 # ============================================================================
 
 startup_history_stockpile = {
@@ -40,11 +42,58 @@ startup_history_breakthrough = {
 	}
 
 	australia_biowarfare = 0.1
-	britain_biowarfare = 0.6
+	# Britain had defensive biological research at the early bookmarks, but no
+	# mature offensive breakthrough or completed anthrax project at startup.
+	britain_biowarfare = 0.0
 	germany_biowarfare = 0.8
 	japan_biowarfare = 1.0
 	soviet_biowarfare = 0.8
-	usa_biowarfare = 0.5
+	# The US War Research Service and Camp Detrick programme are wartime
+	# developments; alternate-history routes can still build this progress later.
+	usa_biowarfare = 0.0
+}
+
+startup_history_protection_targets = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	# These are 1936 military issue bands. The core CBRN profile owner maps them
+	# to population/manpower-scaled crates and keeps the 25 percent replacement
+	# reserve separate from active issue.
+	major_military_issue_target_1936 = 0.75
+	italy_active_war_issue_target_1936 = 1.0
+	japan_limited_program_issue_target_1936 = 0.50
+	smaller_defensive_issue_target_1936 = 0.25
+	replacement_reserve_ratio_1936 = 0.25
+	# Britain uses the established-major band at the 1936 bookmark. These
+	# country-specific keys keep the historical package explicit while the core
+	# protection owner converts the band into manpower-scaled real stock.
+	uk_military_issue_target_1936 = 0.75
+	uk_civilian_distribution_target_1936 = 0.0
+	civilian_distribution_target_1936 = 0.0
+}
+
+startup_history_civil_defence = {
+	schema = {
+		any_key = yes
+		data = int
+	}
+
+	# Hansard reported 40,000,000 civilian respirators issued during the
+	# preceding twelve months on 2 February 1939. One mask crate abstracts
+	# approximately one thousand civilian respirators in the CBRN system.
+	uk_1939_civilian_respirator_crates = 40000
+}
+
+startup_history_civil_defence_targets = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	uk_1939_civilian_distribution_target = 1.0
 }
 
 startup_history_event_delay = {

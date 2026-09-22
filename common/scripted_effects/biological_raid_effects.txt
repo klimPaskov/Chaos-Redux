@@ -3,20 +3,20 @@
 # ============================================================================
 # Overview:
 # - Resolves the four native raid engine levels into the six accepted ordinary
-#   biological outcomes from one exact raid-instance contract.
-# - Treats native essential_equipment collection as the payload reservation,
-#   consumes a bounded share, and refunds only the unused matching agent model.
+#   biological outcomes from one actor-country event contract.
+# - Treats native essential_equipment collection as the complete payload debit
+#   and records the full reservation without a script-side refund.
 # - Dispatches every actual release through biological_lifecycle_effects.txt.
 # - Records failed-delivery evidence without seeding contamination and routes an
-#   attacker accident only into the actor's designated staging-complex state.
+#   attacker accident into a bounded actor-owned internal handling state.
 # - Uses state-owned delayed evidence decay. It creates no periodic world pass,
 #   launch-state estimate, aircraft-presence proxy, or ordinary-air hook.
 #
 # Public input contract:
-# - raid-instance scope
+# - actor-country ROOT in the hidden native-raid bridge event
 # - bio_raid_agent: one bio_lifecycle_agent code matching the raid type
 # - bio_raid_engine_outcome: one bio_strategic_raid_engine_outcome code
-# - native var:actor_country, var:victim_country, and var:target_state
+# - exact bio_raid_actor, bio_raid_victim, and bio_raid_target_state targets
 # ============================================================================
 
 bio_strategic_raid_set_reservation_internal = {
@@ -172,113 +172,6 @@ bio_strategic_raid_select_outcome_internal = {
 	else_if = {
 		limit = { check_variable = { var = bio_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.critical_success compare = equals } }
 		set_temp_variable = { bio_raid_outcome = constant:bio_strategic_raid_outcome.successful_outbreak_seed }
-	}
-}
-
-bio_strategic_raid_set_consumption_internal = {
-	set_temp_variable = { bio_raid_consumption_ratio = constant:bio_lifecycle_math.zero }
-	if = {
-		limit = { bio_strategic_raid_outcome_has_no_release = yes }
-		set_temp_variable_to_random = {
-			var = bio_raid_consumption_ratio
-			min = constant:bio_strategic_raid_consumption.failed_min
-			max = constant:bio_strategic_raid_consumption.failed_max
-		}
-	}
-	else_if = {
-		limit = { check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.partial_contamination compare = equals } }
-		set_temp_variable_to_random = {
-			var = bio_raid_consumption_ratio
-			min = constant:bio_strategic_raid_consumption.partial_min
-			max = constant:bio_strategic_raid_consumption.partial_max
-		}
-	}
-	else_if = {
-		limit = { check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.hidden_contamination compare = equals } }
-		set_temp_variable = { bio_raid_consumption_ratio = constant:bio_strategic_raid_consumption.hidden }
-	}
-	else_if = {
-		limit = { check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.detected_outbreak_seed compare = equals } }
-		set_temp_variable = { bio_raid_consumption_ratio = constant:bio_strategic_raid_consumption.detected }
-	}
-	else_if = {
-		limit = { check_variable = { var = bio_raid_outcome value = constant:bio_strategic_raid_outcome.successful_outbreak_seed compare = equals } }
-		set_temp_variable = { bio_raid_consumption_ratio = constant:bio_strategic_raid_consumption.successful }
-	}
-	else_if = {
-		limit = { bio_strategic_raid_outcome_is_attacker_accident = yes }
-		set_temp_variable = { bio_raid_consumption_ratio = constant:bio_strategic_raid_consumption.attacker_accident }
-	}
-
-	set_temp_variable = { bio_raid_payload_consumed = bio_raid_payload_required }
-	multiply_temp_variable = { bio_raid_payload_consumed = bio_raid_consumption_ratio }
-	round_temp_variable = bio_raid_payload_consumed
-	clamp_temp_variable = {
-		var = bio_raid_payload_consumed
-		min = constant:bio_lifecycle_math.one
-		max = bio_raid_payload_required
-	}
-}
-
-# Country scope. The agent enum selects one exact static equipment model.
-bio_strategic_raid_refund_payload_internal = {
-	if = {
-		limit = {
-			check_variable = { bio_raid_payload_refund > constant:bio_lifecycle_math.zero }
-			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
-		}
-		add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = bio_raid_payload_refund }
-	}
-	else_if = {
-		limit = {
-			check_variable = { bio_raid_payload_refund > constant:bio_lifecycle_math.zero }
-			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.plague compare = equals }
-		}
-		add_equipment_to_stockpile = { type = plague_bomb_1 amount = bio_raid_payload_refund }
-	}
-	else_if = {
-		limit = {
-			check_variable = { bio_raid_payload_refund > constant:bio_lifecycle_math.zero }
-			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
-		}
-		add_equipment_to_stockpile = { type = tularemia_bomb_1 amount = bio_raid_payload_refund }
-	}
-	else_if = {
-		limit = {
-			check_variable = { bio_raid_payload_refund > constant:bio_lifecycle_math.zero }
-			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
-		}
-		add_equipment_to_stockpile = { type = smallpox_bomb_1 amount = bio_raid_payload_refund }
-	}
-}
-
-bio_strategic_raid_refund_unused_payload_internal = {
-	set_temp_variable = { bio_raid_payload_refund = bio_raid_payload_required }
-	subtract_from_temp_variable = { bio_raid_payload_refund = bio_raid_payload_consumed }
-	round_temp_variable = bio_raid_payload_refund
-	bio_strategic_raid_refund_payload_internal = yes
-}
-
-bio_strategic_raid_apply_command_refund_internal = {
-	set_temp_variable = { bio_raid_command_refund_share = constant:bio_lifecycle_math.zero }
-	if = {
-		limit = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
-		set_temp_variable = { bio_raid_command_refund_share = constant:bio_strategic_raid_command.terminal_refund_share }
-	}
-	else_if = {
-		limit = { has_idea = cbrn_theater_contamination_doctrine_spirit }
-		set_temp_variable = { bio_raid_command_refund_share = constant:bio_strategic_raid_command.theater_refund_share }
-	}
-	set_temp_variable = { bio_raid_command_refund = bio_raid_command_cost }
-	multiply_temp_variable = { bio_raid_command_refund = bio_raid_command_refund_share }
-	if = {
-		limit = { check_variable = { bio_raid_command_refund > constant:bio_lifecycle_math.zero } }
-		add_command_power = bio_raid_command_refund
-		if = {
-			limit = { NOT = { has_variable = bio_strategic_raid_command_refund_total } }
-			set_variable = { bio_strategic_raid_command_refund_total = constant:bio_lifecycle_math.zero }
-		}
-		add_to_variable = { bio_strategic_raid_command_refund_total = bio_raid_command_refund }
 	}
 }
 
@@ -475,7 +368,9 @@ bio_strategic_raid_dispatch_target_release_internal = {
 		set_temp_variable = { bio_seed_concealment = constant:bio_strategic_raid_outcome_profile.successful_outbreak_seed.concealment }
 	}
 
+	event_target:bio_raid_actor = { set_country_flag = bio_native_raid_dispatch_in_progress }
 	event_target:bio_raid_target_state = { bio_lifecycle_dispatch_seed = yes }
+	event_target:bio_raid_actor = { clr_country_flag = bio_native_raid_dispatch_in_progress }
 	set_temp_variable = { bio_raid_release_dispatch_status = bio_seed_dispatch_status }
 }
 
@@ -611,43 +506,6 @@ bio_strategic_raid_decay_attempt_evidence = {
 	}
 }
 
-# State scope. Called only for the exact state delivered by
-# on_state_control_changed. Losing control clears this state's marker and the
-# former actor's pointer only when that pointer still names this same state.
-bio_strategic_raid_cleanup_staging_after_control_change = {
-	save_event_target_as = bio_strategic_raid_control_changed_state
-	if = {
-		limit = {
-			has_state_flag = bio_strategic_raid_staging_complex
-			OR = {
-				NOT = { has_variable = bio_strategic_raid_staging_actor }
-				var:bio_strategic_raid_staging_actor = { exists = no }
-				NOT = { is_controlled_by = var:bio_strategic_raid_staging_actor }
-			}
-		}
-		if = {
-			limit = {
-				has_variable = bio_strategic_raid_staging_actor
-				var:bio_strategic_raid_staging_actor = { exists = yes }
-			}
-			var:bio_strategic_raid_staging_actor = {
-				if = {
-					limit = {
-						has_variable = bio_strategic_raid_staging_state
-						var:bio_strategic_raid_staging_state = { state = event_target:bio_strategic_raid_control_changed_state }
-					}
-					clear_variable = bio_strategic_raid_staging_state
-					set_country_flag = bio_strategic_raid_staging_lost_history
-					set_variable = { bio_last_strategic_raid_staging_loss_date = global.num_days }
-				}
-			}
-		}
-		clr_state_flag = bio_strategic_raid_staging_complex
-		clear_variable = bio_strategic_raid_staging_actor
-		clear_variable = bio_strategic_raid_staging_designated_date
-	}
-}
-
 # Native essential equipment is collected when the raid is created. A later
 # context failure cannot prove that a payload was unused, so account for its
 # physical loss without fabricating a release, use history, or retaliation trigger.
@@ -679,6 +537,21 @@ bio_strategic_raid_record_rejected_reservation_loss_internal = {
 	}
 }
 
+# Country scope. This internal handling location is used only for attacker
+# accidents and history; the native airbase itself is not exposed to scripts.
+bio_strategic_raid_select_internal_handling_state = {
+	if = {
+		limit = { capital_scope = { bio_strategic_raid_state_is_valid_handling_candidate = yes } }
+		capital_scope = { save_event_target_as = bio_raid_staging_state }
+	}
+	else = {
+		random_owned_controlled_state = {
+			limit = { bio_strategic_raid_state_is_valid_handling_candidate = yes }
+			save_event_target_as = bio_raid_staging_state
+		}
+	}
+}
+
 bio_resolve_strategic_raid_outcome = {
 	set_temp_variable = { bio_raid_resolution_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_raid_reservation_proof = constant:bio_lifecycle_proof.missing }
@@ -688,20 +561,20 @@ bio_resolve_strategic_raid_outcome = {
 	set_temp_variable = { bio_raid_release_dispatch_status = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_raid_attempt_lead_matches_actor = constant:bio_lifecycle_proof.missing }
 	set_temp_variable = { bio_raid_weaponization_mult = constant:bio_strategic_raid_weaponization.below_limited }
-	var:actor_country = { save_event_target_as = bio_raid_actor }
-	var:victim_country = { save_event_target_as = bio_raid_victim }
-	var:target_state = { save_event_target_as = bio_raid_target_state }
+	if = {
+		limit = { has_event_target = bio_raid_actor }
+		event_target:bio_raid_actor = { bio_strategic_raid_select_internal_handling_state = yes }
+	}
 
 	if = {
 		limit = { bio_strategic_raid_native_context_is_valid = yes }
-		event_target:bio_raid_actor = {
-			var:bio_strategic_raid_staging_state = { save_event_target_as = bio_raid_staging_state }
-		}
 		bio_strategic_raid_set_reservation_internal = yes
 		set_temp_variable = { bio_raid_reservation_proof = constant:bio_lifecycle_proof.supplied }
 		event_target:bio_raid_actor = { bio_strategic_raid_prepare_weaponization_internal = yes }
 		bio_strategic_raid_select_outcome_internal = yes
-		bio_strategic_raid_set_consumption_internal = yes
+		# Native essential equipment was reserved at creation. Every completed
+		# outcome consumes the full reservation; there is no script-side refund.
+		set_temp_variable = { bio_raid_payload_consumed = bio_raid_payload_required }
 
 		if = {
 			limit = { bio_strategic_raid_reservation_record_is_valid = yes }
@@ -748,9 +621,7 @@ bio_resolve_strategic_raid_outcome = {
 			if = {
 				limit = { check_variable = { var = bio_raid_resolution_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
 				event_target:bio_raid_actor = {
-					bio_strategic_raid_refund_unused_payload_internal = yes
 					bio_strategic_raid_record_actor_history_internal = yes
-					bio_strategic_raid_apply_command_refund_internal = yes
 				}
 			}
 		}

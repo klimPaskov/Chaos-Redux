@@ -5,6 +5,9 @@
 # Existing-country technologies, stockpiles, static scientists, commander traits,
 # breakthrough progress, special projects, delayed events, and starting facility
 # placement belong here unless they define a new Chaos Redux country package.
+# Static scientist identities are recruited by history/general; this file marks
+# only the identity receipts and date-specific country setup. Scientist skill is
+# independent from offensive authorization supplied by dated advisor cards.
 # ============================================================================
 
 chaosx_apply_startup_history_grants = {
@@ -39,7 +42,55 @@ chaosx_apply_startup_history_grants = {
 		chaosx_startup_grant_tur = yes
 		chaosx_startup_grant_usa = yes
 		chaosx_startup_grant_yug = yes
+		ENG = { chaosx_startup_recruit_dated_eng_cbrn_characters = yes }
+		GER = { chaosx_startup_recruit_dated_ger_cbrn_characters = yes }
+		JAP = { chaosx_startup_recruit_dated_jap_cbrn_characters = yes }
+		POL = { chaosx_startup_recruit_dated_pol_cbrn_characters = yes }
+		SOV = { chaosx_startup_recruit_dated_sov_cbrn_characters = yes }
+		USA = { chaosx_startup_recruit_dated_usa_cbrn_characters = yes }
+		every_country = {
+			limit = { date < 1939.01.01 }
+			chaosx_startup_mark_1936_cbrn_force_scaled_profile = yes
+		}
+		every_country = {
+			limit = {
+				has_country_flag = cbrn_historical_1936_force_scaled_protection
+				NOT = { tag = ENG }
+			}
+			# Preserve every pre-existing gas-mask model before the common
+			# profile's fixed receipt is reconciled into force-scaled real stock.
+			set_variable = { cbrn_historical_1936_preprofile_basic = num_equipment@gas_mask_equipment_1 }
+			set_variable = { cbrn_historical_1936_preprofile_reconditioned = num_equipment@gas_mask_equipment_reconditioned }
+			set_variable = { cbrn_historical_1936_preprofile_improved = num_equipment@gas_mask_equipment_2 }
+			set_variable = { cbrn_historical_1936_preprofile_advanced = num_equipment@gas_mask_equipment_3 }
+			set_variable = { cbrn_historical_1936_preprofile_sealed = num_equipment@gas_mask_equipment_4 }
+			set_country_flag = cbrn_historical_1936_profile_snapshot_ready
+		}
 		chaosx_apply_starting_cbrn_mask_profiles = yes
+		ENG = {
+			if = {
+				limit = { has_country_flag = cbrn_historical_1936_force_scaled_protection }
+				chaosx_apply_historical_eng_1936_force_scaled_profile = yes
+			}
+		}
+		every_country = {
+			limit = {
+				has_country_flag = cbrn_historical_1936_force_scaled_protection
+				NOT = { tag = ENG }
+			}
+			chaosx_apply_historical_1936_force_scaled_profile = yes
+		}
+		# The 1939 British respirator receipt must run in an ENG-root event so
+		# the shared state distributor debits British stock and core states.
+		if = {
+			limit = { date > 1938.12.31 }
+			ENG = {
+				if = {
+					limit = { has_country_flag = cbrn_uk_1939_mass_respirator_issue }
+					country_event = { id = cbrn_protection.3 days = 0 }
+				}
+			}
+		}
 		# One-time achievement eligibility receipts are written after the
 		# accepted starting profiles. They prevent country or profile switching
 		# from manufacturing a starting condition later in the campaign.
@@ -62,7 +113,6 @@ chaosx_apply_startup_history_grants = {
 		}
 		every_country = {
 			limit = { exists = yes }
-			cbrn_initialize_battlefield_operation_selection = yes
 			cbrn_occupation_initialize_action_conditions = yes
 		}
 	}
@@ -95,10 +145,508 @@ chaosx_startup_sync_chemical_technology_unlocks = {
 	}
 }
 
+chaosx_startup_mark_historical_1939_cbrn_setup = {
+	if = {
+		limit = { date > 1938.12.31 }
+		# This receipt distinguishes a historical 1939 setup from a 1936
+		# bookmark. It is intentionally country-scoped so monthly protection
+		# logic can require this setup or a verified live threat.
+		set_country_flag = cbrn_historical_1939_start
+	}
+}
+
+# The 1936 history package uses a force-scaled military receipt instead of the
+# fixed warehouse matrix. The shared matrix still owns the actual profile
+# lifecycle, registration, readiness, and maintenance setup; this marker only
+# supplies the historical band that the startup reconciliation consumes.
+chaosx_startup_mark_1936_cbrn_force_scaled_profile = {
+	if = {
+		limit = {
+			date < 1939.01.01
+			OR = {
+				tag = ENG
+				tag = FRA
+				tag = GER
+				tag = SOV
+				tag = USA
+				tag = ITA
+				tag = JAP
+				tag = POL
+				tag = CZE
+				tag = BEL
+				tag = HOL
+				tag = CAN
+				tag = AST
+				tag = NZL
+				tag = SAF
+				tag = ROM
+				tag = YUG
+				tag = TUR
+				tag = SPR
+				tag = CHI
+				tag = PRC
+				tag = SHX
+				tag = GXC
+				tag = YUN
+				tag = XSM
+				tag = SIK
+				tag = MAN
+				tag = BUL
+				tag = HUN
+				tag = GRE
+				tag = RAJ
+				tag = AUS
+				tag = POR
+				tag = SWE
+				tag = NOR
+				tag = DEN
+				tag = FIN
+				tag = BRA
+				tag = ARG
+				tag = MEX
+				tag = CHL
+			}
+		}
+		set_country_flag = cbrn_historical_1936_force_scaled_protection
+		set_variable = {
+			cbrn_historical_1936_replacement_reserve_ratio = constant:startup_history_protection_targets.replacement_reserve_ratio_1936
+		}
+		set_variable = {
+			cbrn_historical_1936_civilian_distribution_target = constant:startup_history_protection_targets.civilian_distribution_target_1936
+		}
+		if = {
+			limit = {
+				OR = {
+					tag = ENG
+					tag = FRA
+					tag = GER
+					tag = SOV
+					tag = USA
+				}
+			}
+			set_variable = {
+				cbrn_historical_1936_military_issue_target = constant:startup_history_protection_targets.major_military_issue_target_1936
+			}
+		}
+		else_if = {
+			limit = { tag = ITA }
+			set_variable = {
+				cbrn_historical_1936_military_issue_target = constant:startup_history_protection_targets.italy_active_war_issue_target_1936
+			}
+		}
+		else_if = {
+			limit = { tag = JAP }
+			set_variable = {
+				cbrn_historical_1936_military_issue_target = constant:startup_history_protection_targets.japan_limited_program_issue_target_1936
+			}
+		}
+		else = {
+			set_variable = {
+				cbrn_historical_1936_military_issue_target = constant:startup_history_protection_targets.smaller_defensive_issue_target_1936
+			}
+		}
+	}
+}
+
+# Reconcile the common fixed 1936 profile into the historical force-scaled
+# receipt for every marked country except ENG, whose shared core helper owns the
+# same transaction. This preserves pre-existing stock, removes only the common
+# startup receipt's issued/civilian accounting, issues the correct active share
+# from real stock, and leaves the separate replacement reserve in the warehouse.
+chaosx_apply_historical_1936_force_scaled_profile = {
+	if = {
+		limit = {
+			date < 1939.01.01
+			NOT = { tag = ENG }
+			has_country_flag = cbrn_historical_1936_force_scaled_protection
+			has_country_flag = cbrn_historical_1936_profile_snapshot_ready
+			NOT = { has_country_flag = cbrn_historical_1936_force_scaled_profile_applied }
+			has_variable = cbrn_historical_1936_military_issue_target
+			has_variable = cbrn_historical_1936_replacement_reserve_ratio
+		}
+		cbrn_refresh_country_mask_snapshot = yes
+		set_temp_variable = { cbrn_historical_1936_replacement_reserve = cbrn_military_mask_requirement }
+		multiply_temp_variable = {
+			cbrn_historical_1936_replacement_reserve = cbrn_historical_1936_replacement_reserve_ratio
+		}
+		round_temp_variable = cbrn_historical_1936_replacement_reserve
+
+		set_temp_variable = { cbrn_historical_1936_current_basic = num_equipment@gas_mask_equipment_1 }
+		multiply_temp_variable = { cbrn_historical_1936_current_basic = -1 }
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_1
+			amount = cbrn_historical_1936_current_basic
+		}
+		set_temp_variable = { cbrn_historical_1936_current_reconditioned = num_equipment@gas_mask_equipment_reconditioned }
+		multiply_temp_variable = { cbrn_historical_1936_current_reconditioned = -1 }
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_reconditioned
+			amount = cbrn_historical_1936_current_reconditioned
+		}
+		set_temp_variable = { cbrn_historical_1936_current_improved = num_equipment@gas_mask_equipment_2 }
+		multiply_temp_variable = { cbrn_historical_1936_current_improved = -1 }
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_2
+			amount = cbrn_historical_1936_current_improved
+		}
+		set_temp_variable = { cbrn_historical_1936_current_advanced = num_equipment@gas_mask_equipment_3 }
+		multiply_temp_variable = { cbrn_historical_1936_current_advanced = -1 }
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_3
+			amount = cbrn_historical_1936_current_advanced
+		}
+		set_temp_variable = { cbrn_historical_1936_current_sealed = num_equipment@gas_mask_equipment_4 }
+		multiply_temp_variable = { cbrn_historical_1936_current_sealed = -1 }
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_4
+			amount = cbrn_historical_1936_current_sealed
+		}
+
+		set_temp_variable = { cbrn_historical_1936_basic_target = cbrn_historical_1936_preprofile_basic }
+		add_to_temp_variable = {
+			cbrn_historical_1936_basic_target = cbrn_historical_1936_replacement_reserve
+		}
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_1
+			amount = cbrn_historical_1936_basic_target
+		}
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_reconditioned
+			amount = cbrn_historical_1936_preprofile_reconditioned
+		}
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_2
+			amount = cbrn_historical_1936_preprofile_improved
+		}
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_3
+			amount = cbrn_historical_1936_preprofile_advanced
+		}
+		add_equipment_to_stockpile = {
+			type = gas_mask_equipment_4
+			amount = cbrn_historical_1936_preprofile_sealed
+		}
+
+		set_variable = { cbrn_military_issued_mask_basic = constant:cbrn_math.zero }
+		set_variable = { cbrn_military_issued_mask_reconditioned = constant:cbrn_math.zero }
+		set_variable = { cbrn_military_issued_mask_improved = constant:cbrn_math.zero }
+		set_variable = { cbrn_military_issued_mask_advanced = constant:cbrn_math.zero }
+		set_variable = { cbrn_military_issued_mask_sealed = constant:cbrn_math.zero }
+		set_variable = { cbrn_military_mask_filter_condition = constant:cbrn_mask_filters.condition_full }
+		set_variable = { cbrn_mask_replacement_demand = constant:cbrn_math.zero }
+		set_variable = { cbrn_civilian_mask_total_crates = constant:cbrn_math.zero }
+		set_variable = { cbrn_civilian_mask_total_basic = constant:cbrn_math.zero }
+		set_variable = { cbrn_civilian_mask_total_reconditioned = constant:cbrn_math.zero }
+		set_variable = { cbrn_civilian_mask_total_improved = constant:cbrn_math.zero }
+		set_variable = { cbrn_civilian_mask_total_advanced = constant:cbrn_math.zero }
+		set_variable = { cbrn_civilian_mask_total_sealed = constant:cbrn_math.zero }
+		every_owned_state = {
+			limit = {
+				is_controlled_by = PREV
+				is_core_of = PREV
+			}
+			set_variable = { cbrn_civilian_mask_basic_crates = constant:cbrn_math.zero }
+			set_variable = { cbrn_civilian_mask_reconditioned_crates = constant:cbrn_math.zero }
+			set_variable = { cbrn_civilian_mask_improved_crates = constant:cbrn_math.zero }
+			set_variable = { cbrn_civilian_mask_advanced_crates = constant:cbrn_math.zero }
+			set_variable = { cbrn_civilian_mask_sealed_crates = constant:cbrn_math.zero }
+			set_variable = { cbrn_civilian_mask_fit_points = constant:cbrn_math.zero }
+			set_variable = { cbrn_civilian_mask_filter_condition = constant:cbrn_mask_filters.condition_full }
+			set_variable = { cbrn_civilian_mask_replacement_demand = constant:cbrn_math.zero }
+			cbrn_refresh_state_civilian_mask_snapshot = yes
+		}
+
+		cbrn_refresh_country_mask_snapshot = yes
+		set_temp_variable = { cbrn_historical_1936_issue_shortfall = cbrn_military_mask_requirement }
+		multiply_temp_variable = {
+			cbrn_historical_1936_issue_shortfall = cbrn_historical_1936_military_issue_target
+		}
+		subtract_from_temp_variable = { cbrn_historical_1936_issue_shortfall = cbrn_military_mask_crates }
+		clamp_temp_variable = { var = cbrn_historical_1936_issue_shortfall min = constant:cbrn_math.zero }
+		round_temp_variable = cbrn_historical_1936_issue_shortfall
+		set_temp_variable = { cbrn_historical_1936_stock_grant = cbrn_historical_1936_issue_shortfall }
+		add_to_temp_variable = {
+			cbrn_historical_1936_stock_grant = cbrn_historical_1936_replacement_reserve
+		}
+		subtract_from_temp_variable = { cbrn_historical_1936_stock_grant = cbrn_mask_reserve_crates }
+		clamp_temp_variable = { var = cbrn_historical_1936_stock_grant min = constant:cbrn_math.zero }
+		round_temp_variable = cbrn_historical_1936_stock_grant
+		if = {
+			limit = { check_variable = { cbrn_historical_1936_stock_grant > constant:cbrn_math.zero } }
+			add_equipment_to_stockpile = {
+				type = gas_mask_equipment_1
+				amount = cbrn_historical_1936_stock_grant
+			}
+		}
+		set_temp_variable = { cbrn_mask_issue_requested_crates = cbrn_historical_1936_issue_shortfall }
+		cbrn_issue_requested_masks_to_military = yes
+		set_country_flag = cbrn_historical_1936_force_scaled_profile_applied
+		cbrn_refresh_country_mask_snapshot = yes
+	}
+}
+
+# Date-gated historical personnel are recruited here instead of being attached
+# by the static history file. The helper is called at startup and by bounded
+# tag-specific daily hooks, so a 1936 game receives a person on the documented
+# historical date while a 1939 game receives every person whose role already
+# existed at that bookmark. Character flags are written only after recruitment.
+chaosx_startup_recruit_dated_eng_cbrn_characters = {
+	if = {
+		limit = {
+			date > 1938.12.31
+			NOT = { has_character = ENG_paul_fildes }
+		}
+		recruit_character = ENG_paul_fildes
+	}
+	if = {
+		limit = {
+			date > 1939.12.31
+			NOT = { has_character = ENG_david_w_w_henderson }
+		}
+		recruit_character = ENG_david_w_w_henderson
+	}
+	if = {
+		limit = { has_character = ENG_paul_fildes }
+		ENG_paul_fildes = { set_character_flag = chaosx_scientist_eng_paul_fildes }
+	}
+	if = {
+		limit = { has_character = ENG_alexander_fleming }
+		ENG_alexander_fleming = { set_character_flag = chaosx_scientist_eng_alexander_fleming }
+	}
+	if = {
+		limit = { has_character = ENG_ernst_chain }
+		ENG_ernst_chain = { set_character_flag = chaosx_scientist_eng_ernst_chain }
+	}
+}
+
+chaosx_startup_recruit_dated_ger_cbrn_characters = {
+	if = {
+		limit = {
+			date > 1936.12.31
+			NOT = { has_character = GER_gerhard_schrader }
+		}
+		recruit_character = GER_gerhard_schrader
+	}
+	if = {
+		limit = {
+			date > 1942.01.01
+			NOT = { has_character = GER_kurt_blome }
+		}
+		recruit_character = GER_kurt_blome
+	}
+	if = {
+		limit = {
+			date > 1939.08.31
+			NOT = { has_character = GER_kurt_gutzeit }
+		}
+		recruit_character = GER_kurt_gutzeit
+	}
+	if = {
+		limit = {
+			date > 1940.12.31
+			NOT = { has_character = GER_sigmund_rascher }
+		}
+		recruit_character = GER_sigmund_rascher
+	}
+	if = {
+		limit = {
+			date > 1942.12.31
+			NOT = { has_character = GER_josef_mengele }
+		}
+		recruit_character = GER_josef_mengele
+	}
+	if = {
+		limit = {
+			date > 1940.12.31
+			NOT = { has_character = GER_august_hirt }
+		}
+		recruit_character = GER_august_hirt
+	}
+	if = {
+		limit = {
+			date > 1941.12.31
+			NOT = { has_character = GER_otto_bickenbach }
+		}
+		recruit_character = GER_otto_bickenbach
+	}
+	if = {
+		limit = {
+			date > 1939.08.31
+			NOT = { has_character = GER_joachim_mrugowsky }
+		}
+		recruit_character = GER_joachim_mrugowsky
+	}
+	if = {
+		limit = {
+			date > 1939.08.31
+			NOT = { has_character = GER_erwin_ding_schuler }
+		}
+		recruit_character = GER_erwin_ding_schuler
+	}
+	if = {
+		limit = { has_character = GER_gerhard_schrader }
+		GER_gerhard_schrader = { set_character_flag = chaosx_scientist_ger_gerhard_schrader }
+	}
+	if = {
+		limit = { has_character = GER_kurt_blome }
+		GER_kurt_blome = { set_character_flag = chaosx_scientist_ger_kurt_blome }
+	}
+	if = {
+		limit = { has_character = GER_walter_schreiber }
+		GER_walter_schreiber = { set_character_flag = chaosx_scientist_ger_walter_schreiber }
+	}
+	if = {
+		limit = { has_character = GER_erich_traub }
+		GER_erich_traub = { set_character_flag = chaosx_scientist_ger_erich_traub }
+	}
+	if = {
+		limit = { has_character = GER_kurt_gutzeit }
+		GER_kurt_gutzeit = { set_character_flag = chaosx_scientist_ger_kurt_gutzeit }
+	}
+	if = {
+		limit = { has_character = GER_sigmund_rascher }
+		GER_sigmund_rascher = { set_character_flag = chaosx_scientist_ger_sigmund_rascher }
+	}
+	if = {
+		limit = { has_character = GER_josef_mengele }
+		GER_josef_mengele = { set_character_flag = chaosx_scientist_ger_josef_mengele }
+	}
+}
+
+chaosx_startup_recruit_dated_jap_cbrn_characters = {
+	if = {
+		limit = {
+			date > 1942.01.01
+			NOT = { has_character = JAP_masaji_kitano }
+		}
+		recruit_character = JAP_masaji_kitano
+	}
+	if = {
+		limit = { has_character = JAP_shiro_ishii }
+		JAP_shiro_ishii = { set_character_flag = chaosx_scientist_jap_shiro_ishii }
+	}
+	if = {
+		limit = { has_character = JAP_masaji_kitano }
+		JAP_masaji_kitano = { set_character_flag = chaosx_scientist_jap_masaji_kitano }
+	}
+	if = {
+		limit = { has_character = JAP_chikahiko_koizumi }
+		JAP_chikahiko_koizumi = { set_character_flag = chaosx_scientist_jap_chikahiko_koizumi }
+	}
+}
+
+chaosx_startup_recruit_dated_pol_cbrn_characters = {
+	if = {
+		limit = {
+			date > 1939.09.01
+			NOT = { has_character = POL_franciszek_witaszek }
+		}
+		recruit_character = POL_franciszek_witaszek
+	}
+	if = {
+		limit = { has_character = POL_franciszek_witaszek }
+		POL_franciszek_witaszek = { set_character_flag = chaosx_scientist_pol_franciszek_witaszek }
+	}
+}
+
+chaosx_startup_recruit_dated_sov_cbrn_characters = {
+	if = {
+		limit = {
+			date > 1936.12.31
+			NOT = { has_character = SOV_lavrentiy_pavlovich_beria }
+		}
+		recruit_character = SOV_lavrentiy_pavlovich_beria
+	}
+	if = {
+		limit = {
+			date > 1937.01.01
+			NOT = { has_character = SOV_grigory_mairanovsky }
+		}
+		recruit_character = SOV_grigory_mairanovsky
+	}
+	if = {
+		limit = { has_character = SOV_lavrentiy_pavlovich_beria }
+		SOV_lavrentiy_pavlovich_beria = { set_character_flag = chaosx_scientist_sov_lavrentiy_pavlovich_beria }
+	}
+	if = {
+		limit = { has_character = SOV_grigory_mairanovsky }
+		SOV_grigory_mairanovsky = { set_character_flag = chaosx_scientist_sov_grigory_mairanovsky }
+	}
+	if = {
+		limit = { has_character = SOV_ivan_mikhailovich_velikanov }
+		SOV_ivan_mikhailovich_velikanov = { set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov }
+	}
+}
+
+chaosx_startup_recruit_dated_usa_cbrn_characters = {
+	if = {
+		limit = {
+			date > 1943.01.01
+			NOT = { has_character = USA_frank_olson }
+		}
+		recruit_character = USA_frank_olson
+	}
+	if = {
+		limit = {
+			date > 1942.01.01
+			NOT = { has_character = USA_ira_baldwin }
+		}
+		recruit_character = USA_ira_baldwin
+	}
+	if = {
+		limit = {
+			date > 1942.12.31
+			NOT = { has_character = USA_murray_sanders }
+		}
+		recruit_character = USA_murray_sanders
+	}
+	if = {
+		limit = {
+			date > 1941.12.31
+			NOT = { has_character = USA_william_a_hagan }
+		}
+		recruit_character = USA_william_a_hagan
+	}
+	if = {
+		limit = {
+			date > 1942.01.01
+			NOT = { has_character = USA_george_w_merck }
+		}
+		recruit_character = USA_george_w_merck
+	}
+	if = {
+		limit = {
+			date > 1941.12.31
+			NOT = { has_character = USA_cornelius_p_rhoads }
+		}
+		recruit_character = USA_cornelius_p_rhoads
+	}
+	if = {
+		limit = {
+			date > 1939.12.31
+			NOT = { has_character = USA_james_b_conant }
+		}
+		recruit_character = USA_james_b_conant
+	}
+	if = {
+		limit = { has_character = USA_frank_olson }
+		USA_frank_olson = { set_character_flag = chaosx_scientist_usa_frank_olson }
+	}
+	if = {
+		limit = { has_character = USA_ira_baldwin }
+		USA_ira_baldwin = { set_character_flag = chaosx_scientist_usa_ira_baldwin }
+	}
+	if = {
+		limit = { has_character = USA_murray_sanders }
+		USA_murray_sanders = { set_character_flag = chaosx_scientist_usa_murray_sanders }
+	}
+}
+
 chaosx_startup_grant_ast = {
 	AST = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -150,6 +698,7 @@ chaosx_startup_grant_can = {
 	CAN = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -180,6 +729,7 @@ chaosx_startup_grant_eng = {
 	ENG = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -193,15 +743,6 @@ chaosx_startup_grant_eng = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			ENG_paul_fildes = {
-				set_character_flag = chaosx_scientist_eng_paul_fildes
-			}
-			ENG_alexander_fleming = {
-				set_character_flag = chaosx_scientist_eng_alexander_fleming
-			}
-			ENG_ernst_chain = {
-				set_character_flag = chaosx_scientist_eng_ernst_chain
-			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.eng_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.eng_phosgene_agent_lots }
@@ -211,17 +752,44 @@ chaosx_startup_grant_eng = {
 			cbrn_initialize_payload_logistics = yes
 			set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.phosgene }
 			set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.mustard }
-			add_breakthrough_progress = {
-				specialization = specialization_biowarfare
-				value = constant:startup_history_breakthrough.britain_biowarfare
+			# Britain starts with defensive chemical and biological research only.
+			# The offensive biological programme and anthrax project remain
+			# reachable through later doctrine, policy, and project routes.
+			if = {
+				limit = { date > 1938.12.31 }
+				set_country_flag = cbrn_historical_civilian_mask_issue
+				set_country_flag = cbrn_uk_1939_mass_respirator_issue
+				set_variable = {
+					cbrn_startup_uk_1939_civilian_respirator_crates = constant:startup_history_civil_defence.uk_1939_civilian_respirator_crates
+				}
+				set_variable = {
+					cbrn_startup_uk_1939_civilian_distribution_target = constant:startup_history_civil_defence_targets.uk_1939_civilian_distribution_target
+				}
 			}
-			complete_special_project = sp:anthrax_bomb
+			else = {
+				# The 1936 profile is a force-scaled military issue with a
+				# separate replacement reserve; no fixed civilian receipt is
+				# written before the documented 1939 issue.
+				set_country_flag = cbrn_historical_1936_force_scaled_protection
+				set_variable = {
+					cbrn_historical_1936_military_issue_target = constant:startup_history_protection_targets.uk_military_issue_target_1936
+				}
+				set_variable = {
+					cbrn_historical_1936_replacement_reserve_ratio = constant:startup_history_protection_targets.replacement_reserve_ratio_1936
+				}
+				set_variable = {
+					cbrn_historical_1936_civilian_distribution_target = constant:startup_history_protection_targets.uk_civilian_distribution_target_1936
+				}
+			}
 			if = {
 				limit = { 122 = { is_owned_by = ENG } }
 				122 = { chaosx_add_startup_cw_facility_9364 = yes }
 			}
 			if = {
-				limit = { 338 = { is_owned_by = ENG } }
+				limit = {
+					date > 1939.12.31
+					338 = { is_owned_by = ENG }
+				}
 				338 = { chaosx_add_startup_biowarfare_facility_6351 = yes }
 			}
 		}
@@ -232,6 +800,7 @@ chaosx_startup_grant_fra = {
 	FRA = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -265,6 +834,7 @@ chaosx_startup_grant_ger = {
 	GER = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -275,30 +845,18 @@ chaosx_startup_grant_ger = {
 				chlorine_gas = 1
 				phosgene = 1
 				mustard_gas = 1
-				tabun = 1
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			GER_gerhard_schrader = {
-				set_character_flag = chaosx_scientist_ger_gerhard_schrader
-			}
-			GER_kurt_blome = {
-				set_character_flag = chaosx_scientist_ger_kurt_blome
-			}
-			GER_walter_schreiber = {
-				set_character_flag = chaosx_scientist_ger_walter_schreiber
-			}
-			GER_erich_traub = {
-				set_character_flag = chaosx_scientist_ger_erich_traub
-			}
-			GER_kurt_gutzeit = {
-				set_character_flag = chaosx_scientist_ger_kurt_gutzeit
-			}
-			GER_sigmund_rascher = {
-				set_character_flag = chaosx_scientist_ger_sigmund_rascher
-			}
-			GER_josef_mengele = {
-				set_character_flag = chaosx_scientist_ger_josef_mengele
+			# Schrader discovered tabun in late 1936. The 1936 bookmark has
+			# no nerve-agent stockpile or tabun technology; later bookmarks get
+			# the discovery while production remains a separate route.
+			if = {
+				limit = { date > 1936.12.31 }
+				set_technology = {
+					tabun = 1
+					popup = no
+				}
 			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.ger_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
@@ -369,6 +927,7 @@ chaosx_startup_grant_ita = {
 	ITA = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -424,6 +983,7 @@ chaosx_startup_grant_jap = {
 	JAP = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -435,15 +995,6 @@ chaosx_startup_grant_jap = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			JAP_shiro_ishii = {
-				set_character_flag = chaosx_scientist_jap_shiro_ishii
-			}
-			JAP_masaji_kitano = {
-				set_character_flag = chaosx_scientist_jap_masaji_kitano
-			}
-			JAP_chikahiko_koizumi = {
-				set_character_flag = chaosx_scientist_jap_chikahiko_koizumi
-			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.jap_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.jap_mustard_agent_lots }
@@ -521,15 +1072,13 @@ chaosx_startup_grant_pol = {
 	POL = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			POL_franciszek_witaszek = {
-				set_character_flag = chaosx_scientist_pol_franciszek_witaszek
-			}
 			set_temp_variable = { var = startup_history_event_days value = constant:startup_history_event_delay.poland_biowarfare_days }
 			set_temp_variable = { var = startup_history_event_random_days value = constant:startup_history_event_delay.poland_biowarfare_random_days }
 			country_event = { id = biowarfare.3 days = startup_history_event_days random_days = startup_history_event_random_days }
@@ -592,6 +1141,7 @@ chaosx_startup_grant_sov = {
 	SOV = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -604,15 +1154,6 @@ chaosx_startup_grant_sov = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			SOV_lavrentiy_pavlovich_beria = {
-				set_character_flag = chaosx_scientist_sov_lavrentiy_pavlovich_beria
-			}
-			SOV_grigory_mairanovsky = {
-				set_character_flag = chaosx_scientist_sov_grigory_mairanovsky
-			}
-			SOV_ivan_mikhailovich_velikanov = {
-				set_character_flag = chaosx_scientist_sov_ivan_mikhailovich_velikanov
-			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.sov_phosgene_agent_lots }
@@ -678,6 +1219,7 @@ chaosx_startup_grant_usa = {
 	USA = {
 		if = {
 			limit = { exists = yes }
+			chaosx_startup_mark_historical_1939_cbrn_setup = yes
 			set_technology = {
 				basic_gas_masks = 1
 				portable_anemometer = 1
@@ -690,15 +1232,6 @@ chaosx_startup_grant_usa = {
 				popup = no
 			}
 			chaosx_startup_sync_chemical_technology_unlocks = yes
-			USA_frank_olson = {
-				set_character_flag = chaosx_scientist_usa_frank_olson
-			}
-			USA_ira_baldwin = {
-				set_character_flag = chaosx_scientist_usa_ira_baldwin
-			}
-			USA_murray_sanders = {
-				set_character_flag = chaosx_scientist_usa_murray_sanders
-			}
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_chlorine_agent_lots }
 			add_equipment_to_stockpile = { type = chlorine_agent_lot_1 amount = startup_history_stockpile_amount }
 			set_temp_variable = { var = startup_history_stockpile_amount value = constant:startup_history_stockpile.usa_mustard_agent_lots }
@@ -708,16 +1241,15 @@ chaosx_startup_grant_usa = {
 			cbrn_initialize_payload_logistics = yes
 			set_variable = { cbrn_shell_filling_agent = constant:cbrn_agent.lewisite }
 			set_variable = { cbrn_air_payload_agent = constant:cbrn_agent.lewisite }
-			add_breakthrough_progress = {
-				specialization = specialization_biowarfare
-				value = constant:startup_history_breakthrough.usa_biowarfare
-			}
 			if = {
 				limit = { 361 = { is_owned_by = USA } }
 				361 = { chaosx_add_startup_cw_facility_9758 = yes }
 			}
 			if = {
-				limit = { 816 = { is_owned_by = USA } }
+				limit = {
+					date > 1943.01.01
+					816 = { is_owned_by = USA }
+				}
 				816 = { chaosx_add_startup_biowarfare_facility_11888 = yes }
 			}
 		}

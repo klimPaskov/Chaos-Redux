@@ -121,7 +121,7 @@ Rules:
 - Prefer an active field marshal or general with meaningful command experience.
 - Do not create a new character.
 - Skip safely when no eligible commander exists.
-- A successful Reality Audit or repeated field validation can convert the trait into a field-validated planner variant with a smaller benefit and no severe adaptability penalty.
+- A successful Reality Audit or field validation removes the temporary Rulebook Commander trait; the user retired the former Field-Validated Planner conversion in the 2026-09-20 implementation request.
 - The trait should remain a rare route result, not a guaranteed reward.
 
 ### Evolution I decisions

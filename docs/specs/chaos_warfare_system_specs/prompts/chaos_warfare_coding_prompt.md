@@ -1,6 +1,8 @@
 # Chaos Warfare Full Implementation Prompt
 
-Implement the complete Chaos Warfare CBRN rework from this planning package in the Chaos Redux repository. Treat the spec pack as accepted design after user approval. Do not reduce it to a doctrine-stat pass.
+Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger. Older conflicting reward, policy, raid, unit, project, or asset requests are superseded.
+
+Implement the complete Chaos Warfare CBRN rework from this planning package in the Chaos Redux repository. Treat the user's 2026-09-20 amendment as accepted design and keep earlier package proposals subordinate where they conflict. Do not reduce it to a doctrine-stat pass.
 
 Before editing, read `AGENTS.md`, every relevant repo skill, the current chemical and biological docs and implementation, the condemnation impact spec, the offline Paradox wiki pages required by AGENTS.md, and current Hearts of Iron IV 1.19 documentation and vanilla examples. Inspect exact Army Headquarters, regimental support, essential equipment, company-gated ability, `unit_modifiers`, raid, air mission, MIO, AI, unit, equipment, and scripted GUI patterns. If a planned engine surface is unsupported, stop that surface and report the blocker. Do not silently substitute an approximation.
 

@@ -234,8 +234,8 @@ sp_brilliant_scientist_advanced_materials = {
 sp_brilliant_scientist_biomedical_acceleration = {
 	specialization = specialization_biowarfare
 	allowed = { }
-	visible = { FROM = { OR = { brilliant_scientist_can_research_biomedical_prototype = yes brilliant_scientist_can_research_mengele_biomedical_prototype = yes } } }
-	available = { FROM = { OR = { brilliant_scientist_can_research_biomedical_prototype = yes brilliant_scientist_can_research_mengele_biomedical_prototype = yes } } }
+	visible = { FROM = { OR = { brilliant_scientist_can_research_biomedical_prototype = yes brilliant_scientist_can_research_mengele_biomedical_prototype = yes cbrn_project_can_discover_biomedical_acceleration = yes } } }
+	available = { FROM = { OR = { brilliant_scientist_can_research_biomedical_prototype = yes brilliant_scientist_can_research_mengele_biomedical_prototype = yes cbrn_project_can_discover_biomedical_acceleration = yes } } }
 	icon = GFX_sp_brilliant_scientist_biomedical_acceleration
 	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.biomedical_acceleration_breakthrough }
 	prototype_time = sp_time.prototype.medium
@@ -255,9 +255,12 @@ sp_brilliant_scientist_biomedical_acceleration = {
 	}
 	project_output = {
 		country_effects = {
-			custom_effect_tooltip = brilliant_scientist_biomedical_prototype_complete_tt
-			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
-			brilliant_scientist_record_new_project_prototype = yes
+			if = {
+				limit = { cbrn_project_biomedical_uses_event016_story = yes }
+				custom_effect_tooltip = brilliant_scientist_biomedical_prototype_complete_tt
+			}
+			else = { custom_effect_tooltip = cbrn_ordinary_biomedical_acceleration_complete_tt }
+			cbrn_complete_biomedical_acceleration_project = yes
 		}
 	}
 	unique_prototype_rewards = {
@@ -283,21 +286,30 @@ sp_brilliant_scientist_biomedical_acceleration = {
 				token = sp_brilliant_scientist_biomedical_acceleration_reward_unlicensed_trial_risky
 				iteration_output = {
 					country_effects = {
-						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
 						if = {
-							limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
-							set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.biomedical }
-							set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
-							brilliant_scientist_mengele_dispatch_conventional_incident = yes
-							set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
-							set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+							limit = {
+								NOT = { cbrn_project_biomedical_uses_event016_story = yes }
+							}
+							custom_effect_tooltip = cbrn_ordinary_unlicensed_trial_risky_tt
+							cbrn_advance_ordinary_unlicensed_trial = yes
 						}
-						else_if = {
-							limit = { brilliant_scientist_is_current_host = yes }
-							set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
-							set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-							brilliant_scientist_refresh_project_accident_pressure = yes
-							brilliant_scientist_dispatch_project_accident = yes
+						else = {
+							custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+							if = {
+								limit = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes }
+								set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.biomedical }
+								set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.prototype }
+								brilliant_scientist_mengele_dispatch_conventional_incident = yes
+								set_temp_variable = { mengele_event016_project_family = constant:brilliant_scientist_project_family.none }
+								set_temp_variable = { mengele_event016_requested_stage = constant:brilliant_scientist_project_stage.none }
+							}
+							else_if = {
+								limit = { brilliant_scientist_is_current_host = yes }
+								set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
+								set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+								brilliant_scientist_refresh_project_accident_pressure = yes
+								brilliant_scientist_dispatch_project_accident = yes
+							}
 						}
 					}
 				}
@@ -385,8 +397,8 @@ sp_brilliant_scientist_quantum_transit = {
 sp_brilliant_scientist_cloning = {
 	specialization = specialization_biowarfare
 	allowed = { }
-	visible = { FROM = { OR = { brilliant_scientist_can_research_cloning_prototype = yes brilliant_scientist_can_research_mengele_cloning_prototype = yes } } }
-	available = { FROM = { OR = { brilliant_scientist_can_research_cloning_prototype = yes brilliant_scientist_can_research_mengele_cloning_prototype = yes } } }
+	visible = { FROM = { OR = { brilliant_scientist_can_research_cloning_prototype = yes brilliant_scientist_can_research_mengele_cloning_prototype = yes cbrn_project_can_discover_cloning = yes } } }
+	available = { FROM = { OR = { brilliant_scientist_can_research_cloning_prototype = yes brilliant_scientist_can_research_mengele_cloning_prototype = yes cbrn_project_can_discover_cloning = yes } } }
 	icon = GFX_sp_brilliant_scientist_cloning
 	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.cloning_breakthrough }
 	prototype_time = sp_time.prototype.medium
@@ -405,9 +417,12 @@ sp_brilliant_scientist_cloning = {
 	}
 	project_output = {
 		country_effects = {
-			custom_effect_tooltip = brilliant_scientist_cloning_prototype_complete_tt
-			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
-			brilliant_scientist_record_new_project_prototype = yes
+			if = {
+				limit = { cbrn_project_cloning_uses_event016_story = yes }
+				custom_effect_tooltip = brilliant_scientist_cloning_prototype_complete_tt
+			}
+			else = { custom_effect_tooltip = cbrn_ordinary_cloning_complete_tt }
+			cbrn_complete_cloning_project = yes
 		}
 	}
 	unique_prototype_rewards = {
@@ -433,11 +448,20 @@ sp_brilliant_scientist_cloning = {
 				token = sp_brilliant_scientist_cloning_reward_identity_conflict_risky
 				iteration_output = {
 					country_effects = {
-						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
-						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
-						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-						brilliant_scientist_refresh_project_accident_pressure = yes
-						brilliant_scientist_dispatch_project_accident = yes
+						if = {
+							limit = {
+								NOT = { cbrn_project_cloning_uses_event016_story = yes }
+							}
+							custom_effect_tooltip = cbrn_ordinary_unlicensed_trial_risky_tt
+							cbrn_advance_ordinary_unlicensed_trial = yes
+						}
+						else = {
+							custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+							set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
+							set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_refresh_project_accident_pressure = yes
+							brilliant_scientist_dispatch_project_accident = yes
+						}
 					}
 				}
 			}
@@ -524,8 +548,8 @@ sp_brilliant_scientist_autonomous_cognition = {
 sp_brilliant_scientist_paleogenetics = {
 	specialization = specialization_biowarfare
 	allowed = { }
-	visible = { FROM = { OR = { brilliant_scientist_can_research_paleogenetics_prototype = yes brilliant_scientist_can_research_mengele_paleogenetics_prototype = yes } } }
-	available = { FROM = { OR = { brilliant_scientist_can_research_paleogenetics_prototype = yes brilliant_scientist_can_research_mengele_paleogenetics_prototype = yes } } }
+	visible = { FROM = { OR = { brilliant_scientist_can_research_paleogenetics_prototype = yes brilliant_scientist_can_research_mengele_paleogenetics_prototype = yes cbrn_project_can_discover_exotic_biological = yes } } }
+	available = { FROM = { OR = { brilliant_scientist_can_research_paleogenetics_prototype = yes brilliant_scientist_can_research_mengele_paleogenetics_prototype = yes cbrn_project_can_discover_exotic_biological = yes } } }
 	icon = GFX_sp_brilliant_scientist_paleogenetics
 	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.paleogenetics_breakthrough }
 	prototype_time = sp_time.prototype.medium
@@ -545,9 +569,12 @@ sp_brilliant_scientist_paleogenetics = {
 	}
 	project_output = {
 		country_effects = {
-			custom_effect_tooltip = brilliant_scientist_paleogenetics_prototype_complete_tt
-			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
-			brilliant_scientist_record_new_project_prototype = yes
+			if = {
+				limit = { cbrn_project_paleogenetics_uses_event016_story = yes }
+				custom_effect_tooltip = brilliant_scientist_paleogenetics_prototype_complete_tt
+			}
+			else = { custom_effect_tooltip = cbrn_ordinary_paleogenetics_complete_tt }
+			cbrn_complete_paleogenetics_project = yes
 		}
 	}
 	unique_prototype_rewards = {
@@ -573,11 +600,20 @@ sp_brilliant_scientist_paleogenetics = {
 				token = sp_brilliant_scientist_paleogenetics_reward_specimen_escape_risky
 				iteration_output = {
 					country_effects = {
-						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
-						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
-						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-						brilliant_scientist_refresh_project_accident_pressure = yes
-						brilliant_scientist_dispatch_project_accident = yes
+						if = {
+							limit = {
+								NOT = { cbrn_project_paleogenetics_uses_event016_story = yes }
+							}
+							custom_effect_tooltip = cbrn_ordinary_unlicensed_trial_risky_tt
+							cbrn_advance_ordinary_unlicensed_trial = yes
+						}
+						else = {
+							custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+							set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+							set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_refresh_project_accident_pressure = yes
+							brilliant_scientist_dispatch_project_accident = yes
+						}
 					}
 				}
 			}
@@ -594,8 +630,8 @@ sp_brilliant_scientist_paleogenetics = {
 sp_brilliant_scientist_xenobiological_synthesis = {
 	specialization = specialization_biowarfare
 	allowed = { }
-	visible = { FROM = { OR = { brilliant_scientist_can_research_xenobiological_synthesis_prototype = yes brilliant_scientist_can_research_mengele_xenobiological_synthesis_prototype = yes } } }
-	available = { FROM = { OR = { brilliant_scientist_can_research_xenobiological_synthesis_prototype = yes brilliant_scientist_can_research_mengele_xenobiological_synthesis_prototype = yes } } }
+	visible = { FROM = { OR = { brilliant_scientist_can_research_xenobiological_synthesis_prototype = yes brilliant_scientist_can_research_mengele_xenobiological_synthesis_prototype = yes cbrn_project_can_discover_exotic_biological = yes } } }
+	available = { FROM = { OR = { brilliant_scientist_can_research_xenobiological_synthesis_prototype = yes brilliant_scientist_can_research_mengele_xenobiological_synthesis_prototype = yes cbrn_project_can_discover_exotic_biological = yes } } }
 	icon = GFX_sp_brilliant_scientist_xenobiological_synthesis
 	breakthrough_cost = { specialization_biowarfare = constant:brilliant_scientist_project_native.xenobiological_synthesis_breakthrough }
 	prototype_time = sp_time.prototype.long
@@ -615,9 +651,12 @@ sp_brilliant_scientist_xenobiological_synthesis = {
 	}
 	project_output = {
 		country_effects = {
-			custom_effect_tooltip = brilliant_scientist_xenobiological_synthesis_prototype_complete_tt
-			set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
-			brilliant_scientist_record_new_project_prototype = yes
+			if = {
+				limit = { cbrn_project_xenobiological_uses_event016_story = yes }
+				custom_effect_tooltip = brilliant_scientist_xenobiological_synthesis_prototype_complete_tt
+			}
+			else = { custom_effect_tooltip = cbrn_ordinary_xenobiological_complete_tt }
+			cbrn_complete_xenobiological_project = yes
 		}
 	}
 	unique_prototype_rewards = {
@@ -643,11 +682,20 @@ sp_brilliant_scientist_xenobiological_synthesis = {
 				token = sp_brilliant_scientist_xenobiological_synthesis_reward_control_failure_risky
 				iteration_output = {
 					country_effects = {
-						custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
-						set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
-						set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
-						brilliant_scientist_refresh_project_accident_pressure = yes
-						brilliant_scientist_dispatch_project_accident = yes
+						if = {
+							limit = {
+								NOT = { cbrn_project_xenobiological_uses_event016_story = yes }
+							}
+							custom_effect_tooltip = cbrn_ordinary_unlicensed_trial_risky_tt
+							cbrn_advance_ordinary_unlicensed_trial = yes
+						}
+						else = {
+							custom_effect_tooltip = brilliant_scientist_project_reward_risky_tt
+							set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
+							set_temp_variable = { brilliant_scientist_requested_project_stage = constant:brilliant_scientist_project_stage.prototype }
+							brilliant_scientist_refresh_project_accident_pressure = yes
+							brilliant_scientist_dispatch_project_accident = yes
+						}
 					}
 				}
 			}

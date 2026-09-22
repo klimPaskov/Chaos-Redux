@@ -10,7 +10,7 @@ Implement all three named evolutions with their Chaos gates, delayed pacing, rou
 
 Use one normal event-owned decision category with a static picture. Keep three to five primary actions per phase and no more than one active mission. Implement the full decision map, partial outcomes, cleanup, and persistence. Each action may use at most four spendable cost types with correct texticons. Avoid minor reward dust and store-like design.
 
-Give Rulebook Commander to at most one valid Swedish commander, with conversion to Field-Validated Planner or clean removal. Use a bounded foreign-response pool with at most three meaningful countries and copy, study, ban, ridicule, or no-action outcomes. Foreign states do not receive Sweden's full mechanic.
+Give Rulebook Commander to at most one valid Swedish commander and remove that temporary trait after successful field validation, Reality Audit, or event cleanup. The user's explicit 2026-09-20 instruction retires Field-Validated Planner. Use a bounded foreign-response pool with at most three meaningful countries and copy, study, ban, ridicule, or no-action outcomes. Foreign states do not receive Sweden's full mechanic.
 
 Implement route-specific AI for every route and action using the campaign factors defined in the package. Run `chaosx_ai_probability_auditor` with the named scenarios before weighted edits and use `hoi4.probability_compare` after each patch. Near capitulation, broken supply, or severe instability must never favor the maximum-risk route.
 

@@ -259,7 +259,7 @@ At Tier 1, countries in the watch band receive a `-15` monitoring opinion and li
 | Aggregate trade dependency estimate | `dependency x -0.75` |
 | Strategic-resource dependency estimate | `dependency x -0.50` |
 | Participant fatigue | `fatigue x -0.60` |
-| Target compliance credit | `credit x -0.40` |
+| Target recovery progress | `progress x -0.40` |
 
 The trade and strategic-resource dependency inputs are estimates. They combine the participant's aggregate imports and consumption with the target's aggregate export capacity. HOI4 does not expose an exact scripted bilateral trade volume for this calculation. The UI therefore labels the aggregate complementarity value as an estimate.
 
@@ -386,13 +386,13 @@ The defiance relief values are:
 
 ## Participant burden and fatigue
 
-A new participant pair pays `6` convoys and `3%` of current fuel capacity. Its enforcement cost begins as:
+A new participant pair pays `ceil(6 x m)` convoys and `3% x m` of current fuel capacity. Its enforcement cost begins as:
 
 ```text
 (1 + aggregate trade dependency estimate x 0.10) x tier factor
 ```
 
-Tier factors are `1.00` for arms, `1.50` for strategic, `2.25` for total, and `3.00` for pariah enforcement. Escalating an existing pair costs `2` convoys and `1%` of current fuel capacity, then replaces the old continuing burden with the tier-scaled burden. Tight enforcement adds a separately recorded burden that is removed on expiry, withdrawal, annexation, or pair cleanup.
+Tier factors are `1.00` for arms, `1.50` for strategic, `2.25` for total, and `3.00` for pariah enforcement. Escalating an existing pair costs `ceil(2 x m)` convoys and `1% x m` of current fuel capacity, then replaces the old continuing burden with the tier-scaled burden. Tight enforcement adds a separately recorded burden that is removed on expiry, withdrawal, annexation, or pair cleanup.
 
 Total enforcement burden divided by `20`, capped at `1`, scales these maximum penalties on the participant:
 
@@ -402,20 +402,26 @@ Total enforcement burden divided by `20`, capped at `1`, scales these maximum pe
 
 AI participants with active pairs gain fatigue equal to `1 + 25%` of the pair's previous enforcement cost during participant recalculation, capped at `100`. Fatigue divided by `100` scales up to `-6%` stability. Fatigue also reduces future participant score by `0.60` per point. At `75` fatigue, an AI participant whose score is below the `155` lead-enforcement band withdraws. Clearing a pair reduces fatigue by `15`, then refreshes the participant burden. Clearing the final pair resets fatigue to zero.
 
+## Payment scaling and ownership
+
+Every displayed condemnation payment uses the same score multiplier as its debit: `m = 1 + score / 500`, with the score clamped to `0` through `1000`. A score of `0` therefore uses `1x`, a score of `500` uses `2x`, and a score of `1000` uses `3x`. Convoys, equipment, and experience round up to the next whole unit when the scaled result is fractional. Fuel payments remain fixed-point fractions of fuel capacity and the same fraction is subtracted from the fuel ratio. Target response decisions read the acting country's own condemnation total; participant decisions read the selected target's total through `FROM` in the decision, cost row, and payment effect.
+
+The score boundaries are inclusive. A value below `0` is treated as `0`, `0` is exactly `1x`, `500` is exactly `2x`, `1000` is exactly `3x`, and a value above `1000` is treated as `1000` and remains `3x`. This keeps the cost row, affordability trigger, and hidden debit on one quote.
+
 ## Target choices
 
 ### Compliance
 
 | Decision | Concrete cost and duration | Result |
 | --- | --- | --- |
-| Accept inspections | `180` days of `+5%` consumer goods and `-15%` encryption | `+12` decay credit and `10%` hidden-evidence disclosure per targeted pulse |
-| Destroy chemical stockpiles | Removes `75%` of every strategic chemical-agent lot, filled-shell lot, prepared air-payload lot, and each of the seven legacy cylinder stocks, then creates a `365` day chemical-use restriction | `+20` decay credit and stockpile-destruction state |
-| Destroy biological stockpiles | Removes `75%` of anthrax, plague, tularemia, smallpox, and weaponized-zombie bomb stocks and creates a `365` day biological-use restriction | `+25` decay credit and source-specific stockpile-destruction state |
-| Dismantle restricted sites | Clears controlled restricted chemical, Auschwitz or SS experiment, and Japanese biowarfare-atrocity site flags and marks the sites destroyed | `+22` decay credit and site-dismantlement state |
-| Pay compensation | `12 + 4 x current tier` convoys, `500` infantry equipment, `12%` fuel, then `180` days of `+7%` consumer goods and `-4%` factory output | Transfers convoy and equipment compensation to the last victim when valid and adds `+18` decay credit |
-| Issue non-use pledge | `365` days of `-3%` war support | `+10` decay credit. Clean completion grants `180` days of verified non-use and `+25` more credit |
-| Allow observers | `4` convoys and `180` days of `+3%` consumer goods and `-20%` enemy-operative detection | `+14` decay credit and `5%` hidden-evidence disclosure per targeted pulse |
-| Reform unconventional command | `30` army XP, `20` air XP, `20` navy XP, then `270` days of `-6%` army organization and `+15%` training time | `+30` decay credit and persistent command-reform memory |
+| Accept inspections | `180` days of `+5%` Consumer Goods at score `0`, `+10%` at `500`, or `+15%` at `1000`, plus `-15%` encryption | Cooperation helps condemnation ease and each targeted pulse discloses `10%` of remaining hidden evidence |
+| Destroy chemical stockpiles | Removes `75%` of every strategic chemical-agent lot, filled-shell lot, prepared air-payload lot, and each of the seven legacy cylinder stocks, then creates a `365` day chemical-use restriction | Stockpile destruction helps condemnation ease while the restriction holds |
+| Destroy biological stockpiles | Removes `75%` of anthrax, plague, tularemia, smallpox, and weaponized-zombie bomb stocks and creates a `365` day biological-use restriction | Source-specific destruction helps condemnation ease while the restriction holds |
+| Dismantle restricted sites | Clears controlled restricted chemical, Auschwitz or SS experiment, and Japanese biowarfare-atrocity site flags and marks the sites destroyed | Site closure helps condemnation ease |
+| Pay compensation | `ceil((12 + 4 x current tier) x m)` convoys, `ceil(500 x m)` infantry equipment, and `12% x m` fuel, then `180` days of `+7%` consumer goods and `-4%` factory output | Transfers convoy and equipment compensation to the last victim when valid and helps condemnation ease |
+| Issue non-use pledge | `365` days of `-3%` war support | Clean observance helps condemnation ease. Completion grants `180` days of verified non-use |
+| Allow observers | `ceil(4 x m)` convoys and `180` days of `+3%` consumer goods and `-20%` enemy-operative detection | Observer access helps condemnation ease and each targeted pulse discloses `5%` of remaining hidden evidence |
+| Reform unconventional command | `ceil(30 x m)` army XP, `ceil(20 x m)` air XP, and `ceil(20 x m)` navy XP, then `270` days of `-6%` army organization and `+15%` training time | Permanent command-reform memory helps condemnation ease |
 
 ### Defiance
 
@@ -425,12 +431,12 @@ All timed defiance programs last `180` days.
 | --- | --- | --- |
 | Refuse inspections | Adds public coverup condemnation from base `18` at major severity and blocks decay for `180` days | No economic relief |
 | Domestic propaganda campaign | Immediate `-2%` stability, then `180` days of `+8%` war support, `-3%` stability, and `+4%` consumer goods | Adds participant moral pressure and marks an openly defiant line |
-| Emergency autarky | Pays `8%` fuel, then gives `+25%` local resources, `+8%` consumer goods, and `-5%` factory output | `20%` relief |
+| Emergency autarky | Pays `8% x m` fuel, then gives `+25%` local resources, `+8%` consumer goods, and `-5%` factory output | `20%` relief |
 | Forced extraction | Immediate `-4%` stability, then `+35%` local resources and `-10%` production-efficiency gain | `15%` relief |
 | Substitute materials | `+15%` local resources and `-8%` production-efficiency gain | `18%` relief |
 | Military rationing | Military fuel consumption `-18%` and factory output `-4%` | `12%` relief |
 | Pressure subject supply | Requires a subject, applies immediate `-3%` stability, then `+20%` local resources and `-3%` stability factor | `18%` relief |
-| Controlled shipping | `10` convoys and `5%` fuel, then `+12%` convoy escort efficiency and `-3%` factory output | `15%` relief |
+| Controlled shipping | `ceil(10 x m)` convoys and `5% x m` fuel, then `+12%` convoy escort efficiency and `-3%` factory output | `15%` relief |
 | Hardline mobilization | `+5%` war support and `-5%` stability | No direct severity relief |
 
 ### Evasion
@@ -439,14 +445,14 @@ Every evasion route lasts `120` days, adds `10` exposure, and increases evasion 
 
 | Decision | Concrete cost or gain | Evasion pressure and timed effect |
 | --- | --- | --- |
-| Black market arms | `12` convoys and `8%` fuel, then gains `500` infantry equipment and `100` support equipment | `+12` pressure and `-3%` factory output |
-| False manifests | `8` convoys | `+10` pressure and `+10%` convoy escort efficiency |
-| Neutral intermediaries | `6` convoys, then gains `250` infantry equipment | `+8` pressure and `-15%` licence purchase cost |
+| Black market arms | `ceil(12 x m)` convoys and `8% x m` fuel, then gains `500` infantry equipment and `100` support equipment | `+12` pressure and `-3%` factory output |
+| False manifests | `ceil(8 x m)` convoys | `+10` pressure and `+10%` convoy escort efficiency |
+| Neutral intermediaries | `ceil(6 x m)` convoys, then gains `250` infantry equipment | `+8` pressure and `-15%` licence purchase cost |
 | Subject front | Requires a subject and applies `-3%` stability | `+10` pressure and `+12%` local resources |
-| Covert fuel route | `10` convoys, then gains `12%` fuel | `+10` pressure and military fuel consumption `-8%` |
-| Reflag shipping | `6` convoys | `+8` pressure and `+18%` convoy escort efficiency |
-| Stolen licence | `8` convoys | `+8` pressure and `+5%` production-efficiency gain |
-| Smuggled laboratory | `6` convoys and `5` support equipment | `+8` pressure and `+4%` research speed |
+| Covert fuel route | `ceil(10 x m)` convoys, then gains `12%` fuel | `+10` pressure and military fuel consumption `-8%` |
+| Reflag shipping | `ceil(6 x m)` convoys | `+8` pressure and `+18%` convoy escort efficiency |
+| Stolen licence | `ceil(8 x m)` convoys | `+8` pressure and `+5%` production-efficiency gain |
+| Smuggled laboratory | `ceil(6 x m)` convoys and `ceil(5 x m)` support equipment | `+8` pressure and `+4%` research speed |
 
 An exposed target evasion route adds coverup condemnation from base `16` at major severity. An exposed participant quiet breach adds coverup condemnation to the target and the participant, removes the quiet-breach relief, and applies diplomatic damage.
 
@@ -454,11 +460,11 @@ An exposed target evasion route adds coverup condemnation from base `16` at majo
 
 | Decision | Cost and duration | Result |
 | --- | --- | --- |
-| Join arms embargo | New pair pays `6` convoys and `3%` fuel | Creates arms pair and native embargo claim where supported |
-| Escalate strategic, total, or pariah embargo | Requires an existing pair, sufficient target tier, `2` convoys, and `1%` fuel | Raises pair tier and continuing enforcement burden without charging the initial-pair cost again |
+| Join arms embargo | New pair pays `ceil(6 x m)` convoys and `3% x m` fuel | Creates arms pair and native embargo claim where supported |
+| Escalate strategic, total, or pariah embargo | Requires an existing pair, sufficient target tier, `ceil(2 x m)` convoys, and `1% x m` fuel | Raises pair tier and continuing enforcement burden without charging the initial-pair cost again |
 | Abstain | No direct stockpile cost, review lasts `180` days | Records abstention; the last victim and active sanction participants gain negative opinion of the abstainer |
 | Humanitarian carve-out | `5` convoys for `180` days | Reduces effective target pressure through carve-out relief |
-| Quiet breach | `8` convoys, `4%` fuel, and `300` infantry equipment for `120` days | Adds target evasion pressure and exposure while risking discovery. AI use requires estimated dependency of at least `40` after dependency relief and a pair score below `105` |
+| Quiet breach | `ceil(8 x m)` convoys, `4% x m` fuel, and `ceil(300 x m)` infantry equipment for `120` days | Adds target evasion pressure and exposure while risking discovery. AI use requires estimated dependency of at least `40` after dependency relief and a pair score below `105` |
 | Tighten enforcement | `6` convoys for `180` days | Removes quiet-breach status, raises enforcement burden, and reduces target relief |
 | Shield ally | `8` convoys for `180` days | Adds shield relief, supporting opinion, and `1` fatigue |
 | Withdraw sanctions | No direct cost | Clears the condemnation pair and releases only the condemnation native-embargo claim |
@@ -484,7 +490,7 @@ Condemned-target decision AI uses the visible decision conditions:
 - non-democratic industrial majors without an unrestricted route favor denial, partial compliance, and autarky
 - radical high-chaos countries require an explicit unrestricted route before they favor refusal, propaganda, hardline mobilization, black-market procurement, and a more willing allied shield
 - an unrestricted country near victory gains an additional defiance preference only when at least one actual enemy has reached the centralized native surrender-progress threshold
-- a country near capitulation destroys chemical and biological stockpiles when it lacks the explicit doomsday route or extreme-use policy; the separate doomsday decision remains responsible when that authorization exists
+- a country near capitulation destroys chemical and biological stockpiles when it lacks the explicit doomsday route or extreme-use policy; the separate native doomsday raid remains responsible when that authorization exists
 - a severe visible recent source increases both compliance and selected defiance weights, while Tier 5 or Tier 6 adds further compliance pressure
 - high import vulnerability favors autarky and substitute materials
 - high fuel vulnerability favors covert fuel routes
@@ -518,7 +524,7 @@ Decay bonuses are:
 - site dismantlement `+1.00`
 - command reform `+0.75`
 
-Refused inspections subtract `1.00` and any active evasion route subtracts `0.50`. Decay credit converts at `0.10` decay per credit, capped at `2` extra decay in one pulse. Total monthly public-bucket decay is capped at `7`.
+Refused inspections subtract `1.00` and any active evasion route subtracts `0.50`. Stored recovery progress converts at `0.10` decay per progress point, capped at `2` extra decay in one pulse. Total monthly public-bucket decay is capped at `7`.
 
 Decay is set to zero while the target has recent use, refused inspections, a broken pledge, or exposed evasion. When decay is allowed, the five public source buckets decay proportionally to their share of the public total. Hidden evidence does not naturally decay.
 
@@ -674,7 +680,7 @@ These are expected results from the current implementation. They are not a claim
 | 10 | A country reaches Tier 5 with no shielding and high trade dependency | Eligible participants scoring at least `120` can apply total sanctions. The target's import vulnerability magnifies strategic penalties, and isolation-economy penalties scale with weighted severity. |
 | 11 | A neutral trader has high dependency | Dependency strongly reduces participant score. At `40` or more estimated dependency, the AI can record abstention when no sanction applies. |
 | 12 | A neutral trader quietly breaches sanctions and is exposed | An active AI pair can create a `120` day quiet breach when estimated dependency is at least `40` after dependency relief and score is below `105`. Exposure removes the breach, adds coverup condemnation to target and participant, and applies breach opinion damage. |
-| 13 | A condemned country accepts inspections and destroys stockpiles | Inspections add burden and decay credit while exposing `10%` of hidden evidence per pulse. Chemical exposure is reconciled row by row against exact recorded actions and never allocated to a guessed record. Stockpile decisions remove `75%` of the matching stock and add source-specific restriction and further credit. |
+| 13 | A condemned country accepts inspections and destroys stockpiles | Inspections add a score-linked `5%` to `15%` Consumer Goods burden while exposing `10%` of hidden evidence per pulse. Chemical exposure is reconciled row by row against exact recorded actions and never allocated to a guessed record. Stockpile decisions remove `75%` of the matching stock and add source-specific restriction while helping condemnation ease. |
 | 14 | A condemned country breaks a non-use pledge | The pledge clears. The country gains `365` days of broken-pledge memory, `35` coverup, `25` repeat pressure, and zero public decay while the memory flag remains. |
 | 15 | A condemned country repeatedly uses black-market procurement | Each route increases evasion pressure and exposure. Exposure decays by `25%` per pulse, but the monthly discovery chance is exposure plus `5`. Discovery adds public coverup pressure. |
 | 16 | A participant stops sanctions after tier decay or fatigue | AI recalculation clears a pair when the target no longer supports the pair tier, the score no longer supports enforcement, or fatigue reaches `75` while score is below `155`. Pair variables, AI strategies, relation rules, modifiers, opinion support, and the condemnation native-embargo claim are cleaned. Other native owners remain intact. Clearing a pair reduces participant fatigue by `15`, and clearing the final pair resets it to zero. |

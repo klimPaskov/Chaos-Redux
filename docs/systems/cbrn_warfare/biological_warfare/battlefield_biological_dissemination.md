@@ -4,21 +4,21 @@
 
 Battlefield biological dissemination is an Army-led native raid route for Anthrax, Plague, Tularemia, and Smallpox. It attacks an exact enemy-controlled state on the active front and then hands any successful release to the ordinary biological lifecycle. It is not a decision deployment, covert operation, continuous air mission, background pulse, or weaponized-zombie route.
 
-The route is deliberately conditional. A country needs full Chemical Readiness, a policy that allows battlefield use, the matching completed biological-agent project, a current war, Theater CBRN Headquarters technology, and a valid active Combined CBRN Overmatch headquarters command. The selected state must be passable, eligible for an ordinary pathogen episode, controlled by the enemy, and contain either a supply node or at least three enemy divisions. It must border an actor-controlled eligible state containing one of the actor's divisions.
+The route is deliberately conditional. A country needs full Chemical Readiness, a policy that allows battlefield use, the matching completed biological-agent project, a current war, and Theater CBRN Headquarters technology. The selected state must be passable, eligible for an ordinary pathogen episode, controlled by the enemy, and contain either a supply node or at least three enemy divisions. It must border an actor-controlled eligible state containing one of the actor's divisions.
 
-## Native raid and headquarters contract
+## Native raid and theater contract
 
-Combined CBRN Overmatch is the theater authorization and preparation layer. Its headquarters command performs the existing 14–30-day preparation and must remain active and valid. The native raid then performs one day of final release assembly, selects the exact target state, reserves the biological payload, and assigns the delivery formation.
+Theater CBRN Headquarters technology proves the country's theater knowledge, while full Chemical Readiness and battlefield-use policy provide operational authority. The native raid performs the complete 21-day preparation, selects the exact target state, reserves the biological payload, and assigns the delivery formation. An active Combined CBRN Overmatch order is not an attack requirement.
 
 Each raid accepts one assigned formation with at least three infantry, motorized, or mechanized battalions. Its origin is a supply node and its map path is a land arrow. The same target cannot be struck again by this raid type for 180 days.
 
-Current-version raid scripting exposes the exact `var:target_state`, actor, victim, assigned formation, result callback, and native `essential_equipment` reservation. It does not expose a native launch callback or a link between a particular headquarters command and the raid's selected state. Consequently, the supported contract is layered:
+Current-version raid scripting exposes the exact `var:target_state`, actor, victim, assigned formation, result callback, and native `essential_equipment` reservation. It does not expose a native launch callback. The supported contract is:
 
-- the valid active Combined CBRN Overmatch trait and operation code prove current theater authorization;
-- the native raid's selected state, assigned formation, supply-node origin, and essential equipment prove delivery context;
-- resolution fails closed if either layer is no longer valid.
+- Theater CBRN Headquarters technology, full Chemical Readiness, and battlefield-use policy prove operational authority;
+- the native raid's 21-day preparation, selected state, assigned formation, supply-node origin, and essential equipment prove delivery context;
+- resolution fails closed if authority or exact target context is no longer valid.
 
-No state is inferred from the headquarters, no estimator or proxy launch hook is retained, and no alternate state is searched if the exact native context fails. Native payload already reserved by the raid remains lost when context is rejected; no release, evidence substitute, or biological-use record is fabricated.
+No state is inferred from a headquarters order, no estimator or proxy launch hook is retained, and no alternate state is searched if the exact native context fails. A completed operation with rejected context has consumed its native reservation; no release, evidence substitute, or biological-use record is fabricated. The installed raid documentation does not state how native cancellation handles reserved equipment.
 
 ## Agent and cost tuning
 
@@ -52,7 +52,7 @@ The native result callbacks map to the ordinary lifecycle as follows:
 
 The internal `catastrophic` result token represents a critical operational delivery multiplier shared by every agent. It does not classify Tularemia, Anthrax, or Plague as severe weapons.
 
-Every releasing outcome calls `bio_resolve_battlefield_dissemination`, which validates the immutable raid agent, exact actor, victim, selected state, active authorization, native debit authority, and result. It then prepares the private `battlefield_dissemination` seed record and calls `bio_lifecycle_dispatch_seed` in the selected state.
+Every releasing outcome calls `bio_resolve_battlefield_dissemination`, which validates the immutable raid agent, exact actor, victim, selected state, theater knowledge, current battlefield-use authority, native debit authority, and result. It then prepares the private `battlefield_dissemination` seed record and calls `bio_lifecycle_dispatch_seed` in the selected state.
 
 The lifecycle owns incubation, detection, progression, disruption, deaths, contamination, medical saturation, evidence, attribution, Condemnation, Air Cleanliness contribution, spread, treatment, and cleanup. The raid adapter does not calculate a second consequence path. A successful delivery creates an incubation seed; it does not guarantee a detected or sustained outbreak.
 
@@ -68,9 +68,9 @@ Blowback uses the private connected-spread lifecycle route with 35 evidence, 35 
 
 ## Doctrine and AI
 
-Chaos Warfare doctrine is escalation. Existing lifecycle doctrine modifiers can raise potency, growth, spread, deaths, duration, and medical saturation. Battlefield dissemination also makes friendly blowback more likely. Theater Contamination refunds up to 5 Command Power and Terminal Hazard up to 10 after a valid resolution, capped at that agent's native Command Power cost. Neither doctrine refunds payload or reduces evidence, attribution, physical harm, history, accident records, or public-harm floors. Only Condemnation may be reduced through the shared consequence rules.
+Chaos Warfare doctrine is escalation. Existing lifecycle doctrine modifiers can raise potency, growth, spread, deaths, duration, and medical saturation. Battlefield dissemination also makes friendly blowback more likely. Native raid resolution suppresses the legacy lifecycle Command Power recovery, so the raid's listed native allocation remains its net cost. Neither doctrine refunds payload or reduces evidence, attribution, physical harm, history, accident records, or public-harm floors. Only Condemnation may be reduced through the shared consequence rules.
 
-AI must pass the same readiness, policy, project, payload, headquarters, front, and target checks as the player. It avoids battlefield dissemination without the required domestic safety technologies unless it is on an unrestricted desperate route. Retaliation, permitted first use, unrestricted posture, program preparation, supply hubs, forts, and concentrated enemy formations raise willingness. Defensive profiles, active outbreaks in the target, treaty membership, and high Condemnation combined with import vulnerability suppress willingness. An unrestricted actor under formal censure receives a continuation preference only when a current enemy has crossed the exact near-victory surrender threshold. An actor at its own near-capitulation threshold stops selecting ordinary battlefield dissemination; an explicitly authorized doomsday route leaves the separate doomsday decision as the only biological release choice during collapse. AI never targets friendly-owned ground.
+AI must pass the same readiness, policy, project, payload, theater technology, front, and target checks as the player. It avoids battlefield dissemination without the required domestic safety technologies unless it is on an unrestricted desperate route. Retaliation, permitted first use, unrestricted posture, program preparation, supply hubs, forts, and concentrated enemy formations raise willingness. Defensive profiles, active outbreaks in the target, treaty membership, and high Condemnation combined with import vulnerability suppress willingness. An unrestricted actor under formal censure receives a continuation preference only when a current enemy has crossed the exact near-victory surrender threshold. An actor at its own near-capitulation threshold stops selecting ordinary battlefield dissemination; an explicitly authorized doomsday route leaves the separate native doomsday raid as the only biological release choice during collapse. AI never targets friendly-owned ground.
 
 ## Assets and wiring
 

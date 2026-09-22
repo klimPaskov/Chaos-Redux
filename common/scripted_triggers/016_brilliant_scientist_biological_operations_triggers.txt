@@ -1,8 +1,8 @@
 # ============================================================================
-# CHAOS REDUX - EVENT 016 BIOLOGICAL OPERATIONS TRIGGERS
+# CHAOS REDUX - EVENT 016 BIOLOGICAL RAID TRIGGERS
 # ============================================================================
-# Query surface for selected payloads, actual stockpiles, production, staging,
-# and the two independently owned state-deployment transactions.
+# Public agent unlocks and exact native-raid target guards. Each raid chooses
+# its payload by ID. There is no selected arsenal or separate staging receipt.
 # ============================================================================
 
 brilliant_scientist_biological_agent_anthrax_is_unlocked = {
@@ -51,99 +51,13 @@ brilliant_scientist_has_any_unlocked_biological_agent = {
 	}
 }
 
-brilliant_scientist_selected_biological_agent_is_unlocked = {
-	has_variable = brilliant_scientist_selected_biological_agent
-	OR = {
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.anthrax } brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.plague } brilliant_scientist_biological_agent_plague_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.tularemia } brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.smallpox } brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.weaponized_zombies } brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.black_plague } brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
-	}
-}
-
-brilliant_scientist_biological_agent_selection_is_available = {
-	NOT = { has_country_flag = brilliant_scientist_biological_production_active }
-	NOT = { has_country_flag = brilliant_scientist_biological_deployment_pending }
-}
-
-# COUNTRY scope. Validates the temporary request before changing selection.
-brilliant_scientist_requested_biological_agent_is_unlocked = {
-	OR = {
-		AND = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.anthrax } brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.plague } brilliant_scientist_biological_agent_plague_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.tularemia } brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.smallpox } brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.weaponized_zombies } brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
-		AND = { check_variable = { brilliant_scientist_biological_agent_request = constant:brilliant_scientist_biological_agent.black_plague } brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
-	}
-}
-
-# COUNTRY scope. Public query for scripted callers that have already run
-# brilliant_scientist_calculate_selected_biological_payload_requirement. Reads
-# the resulting temporary brilliant_scientist_biological_payload_required.
-brilliant_scientist_selected_biological_stockpile_is_sufficient = {
-	brilliant_scientist_selected_biological_agent_is_unlocked = yes
-	check_variable = { brilliant_scientist_biological_payload_required > constant:brilliant_scientist_value.zero }
-	OR = {
-		AND = {
-			check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.anthrax }
-			check_variable = { var = num_equipment@anthrax_bomb_1 value = brilliant_scientist_biological_payload_required compare = greater_than_or_equals }
-		}
-		AND = {
-			check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.plague }
-			check_variable = { var = num_equipment@plague_bomb_1 value = brilliant_scientist_biological_payload_required compare = greater_than_or_equals }
-		}
-		AND = {
-			check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.tularemia }
-			check_variable = { var = num_equipment@tularemia_bomb_1 value = brilliant_scientist_biological_payload_required compare = greater_than_or_equals }
-		}
-		AND = {
-			check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.smallpox }
-			check_variable = { var = num_equipment@smallpox_bomb_1 value = brilliant_scientist_biological_payload_required compare = greater_than_or_equals }
-		}
-		AND = {
-			check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.weaponized_zombies }
-			check_variable = { var = num_equipment@zombie_disease_bomb_1 value = brilliant_scientist_biological_payload_required compare = greater_than_or_equals }
-		}
-		AND = {
-			check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.black_plague }
-			check_variable = { var = num_equipment@plague_bomb_1 value = brilliant_scientist_biological_payload_required compare = greater_than_or_equals }
-		}
-	}
-}
-
 brilliant_scientist_biological_operations_country_is_active = {
 	exists = yes
 	has_capitulated = no
 	NOT = { has_global_flag = world_end }
 }
 
-brilliant_scientist_can_begin_single_biological_production = {
-	brilliant_scientist_biological_operations_country_is_active = yes
-	brilliant_scientist_selected_biological_agent_is_unlocked = yes
-	brilliant_scientist_biological_agent_selection_is_available = yes
-	has_manpower > constant:brilliant_scientist_biological_production.manpower_floor_single
-	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_biological_production.single_support_equipment compare = greater_than_or_equals }
-}
-
-brilliant_scientist_can_begin_triple_biological_production = {
-	brilliant_scientist_biological_operations_country_is_active = yes
-	brilliant_scientist_selected_biological_agent_is_unlocked = yes
-	brilliant_scientist_biological_agent_selection_is_available = yes
-	has_manpower > constant:brilliant_scientist_biological_production.manpower_floor_triple
-	check_variable = { var = num_equipment@support_equipment value = constant:brilliant_scientist_biological_production.triple_support_equipment compare = greater_than_or_equals }
-}
-
-brilliant_scientist_can_begin_biological_staging = {
-	brilliant_scientist_biological_operations_country_is_active = yes
-	brilliant_scientist_selected_biological_agent_is_unlocked = yes
-	NOT = { has_country_flag = brilliant_scientist_biological_staging_directive_active }
-	NOT = { has_country_flag = brilliant_scientist_biological_staging_ready }
-}
-
-# STATE scope with ROOT = actor country. Conventional access never charges
+# STATE scope with ROOT = acting country. Conventional access never charges
 # transport equipment; the committed method cannot change during preparation.
 brilliant_scientist_biological_conventional_battlefield_target_is_valid = {
 	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
@@ -159,7 +73,7 @@ brilliant_scientist_biological_conventional_battlefield_target_is_valid = {
 	}
 }
 
-# STATE scope with ROOT = actor country. Operational portals reach hostile
+# STATE scope with ROOT = acting country. Operational portals reach hostile
 # rear areas; stockpile affordability belongs to the start-only query below.
 brilliant_scientist_biological_portal_target_is_valid = {
 	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
@@ -168,19 +82,7 @@ brilliant_scientist_biological_portal_target_is_valid = {
 	ROOT = { has_tech = brilliant_scientist_portal_warfare_tech }
 }
 
-brilliant_scientist_biological_battlefield_target_is_valid = {
-	OR = {
-		brilliant_scientist_biological_conventional_battlefield_target_is_valid = yes
-		AND = {
-			brilliant_scientist_biological_portal_target_is_valid = yes
-			ROOT = {
-				check_variable = { var = num_equipment@teleportation_equipment_1 value = constant:brilliant_scientist_biological_deployment.portal_transport_equipment compare = greater_than_or_equals }
-			}
-		}
-	}
-}
-
-# STATE scope with ROOT = actor country.
+# STATE scope with ROOT = acting country.
 brilliant_scientist_biological_covert_target_is_valid = {
 	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
 	OWNER = { exists = yes has_war_with = ROOT }
@@ -202,74 +104,92 @@ brilliant_scientist_biological_covert_target_is_valid = {
 	}
 }
 
-# COUNTRY scope. An in-flight operation cannot silently switch its victim when
-# a target is transferred or occupied by another belligerent.
-brilliant_scientist_biological_deployment_transaction_is_valid = {
-	exists = yes
-	has_capitulated = no
-	NOT = { has_global_flag = world_end }
-	has_country_flag = brilliant_scientist_biological_deployment_pending
-	has_country_flag = brilliant_scientist_biological_deployment_payload_debited
-	has_variable = brilliant_scientist_biological_deployment_target_state
-	has_variable = brilliant_scientist_biological_deployment_victim
-	check_variable = { brilliant_scientist_biological_deployment_payload_amount > constant:brilliant_scientist_value.zero }
-	var:brilliant_scientist_biological_deployment_victim = { exists = yes has_war_with = ROOT }
-	var:brilliant_scientist_biological_deployment_target_state = {
-		OWNER = { tag = var:ROOT.brilliant_scientist_biological_deployment_victim }
-		is_controlled_by = var:ROOT.brilliant_scientist_biological_deployment_victim
-		OR = {
-			AND = {
-				ROOT = { check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.battlefield } }
-				OR = {
-					AND = {
-						ROOT = { check_variable = { brilliant_scientist_biological_deployment_transport_amount > constant:brilliant_scientist_value.zero } }
-						brilliant_scientist_biological_portal_target_is_valid = yes
-					}
-					AND = {
-						ROOT = { NOT = { check_variable = { brilliant_scientist_biological_deployment_transport_amount > constant:brilliant_scientist_value.zero } } }
-						brilliant_scientist_biological_conventional_battlefield_target_is_valid = yes
-					}
-				}
-			}
-			AND = {
-				ROOT = { check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.covert } }
-				brilliant_scientist_biological_covert_target_is_valid = yes
-			}
-		}
-	}
-}
-
-brilliant_scientist_biological_deployment_slot_is_available = {
-	exists = yes
-	has_capitulated = no
-	NOT = { has_global_flag = world_end }
-	NOT = { has_country_flag = brilliant_scientist_biological_deployment_pending }
-	brilliant_scientist_selected_biological_agent_is_unlocked = yes
+# COUNTRY scope. Native raid actor predicates.
+brilliant_scientist_biological_raid_actor_is_ready = {
+	brilliant_scientist_biological_operations_country_is_active = yes
 	bio_kruger_last_resort_authority_is_valid = yes
 }
 
-brilliant_scientist_biological_battlefield_deployment_is_available = {
-	brilliant_scientist_biological_deployment_slot_is_available = yes
-	command_power > constant:brilliant_scientist_biological_deployment.battlefield_command_power_floor
-	OR = {
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.anthrax } check_variable = { var = num_equipment@anthrax_bomb_1 value = constant:brilliant_scientist_biological_payload.anthrax compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.plague } check_variable = { var = num_equipment@plague_bomb_1 value = constant:brilliant_scientist_biological_payload.plague compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.tularemia } check_variable = { var = num_equipment@tularemia_bomb_1 value = constant:brilliant_scientist_biological_payload.tularemia compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.smallpox } check_variable = { var = num_equipment@smallpox_bomb_1 value = constant:brilliant_scientist_biological_payload.smallpox compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.weaponized_zombies } check_variable = { var = num_equipment@zombie_disease_bomb_1 value = constant:brilliant_scientist_biological_payload.weaponized_zombies compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.black_plague } check_variable = { var = num_equipment@plague_bomb_1 value = constant:brilliant_scientist_biological_payload.black_plague compare = greater_than_or_equals } }
+# COUNTRY scope, FROM is victim and var:target_state is the selected raid state.
+brilliant_scientist_biological_raid_battlefield_target_is_valid = {
+	has_war_with = FROM
+	var:target_state = {
+		brilliant_scientist_biological_conventional_battlefield_target_is_valid = yes
 	}
 }
 
-brilliant_scientist_biological_covert_deployment_is_available = {
-	brilliant_scientist_biological_deployment_slot_is_available = yes
-	command_power > constant:brilliant_scientist_biological_deployment.covert_command_power_floor
+brilliant_scientist_biological_raid_portal_target_is_valid = {
+	has_war_with = FROM
+	has_tech = brilliant_scientist_portal_warfare_tech
+	var:target_state = {
+		brilliant_scientist_biological_portal_target_is_valid = yes
+		NOT = { brilliant_scientist_biological_conventional_battlefield_target_is_valid = yes }
+	}
+}
+
+brilliant_scientist_biological_raid_covert_target_is_valid = {
+	has_war_with = FROM
+	var:target_state = {
+		brilliant_scientist_biological_covert_target_is_valid = yes
+	}
+}
+
+# COUNTRY scope after the immediate hidden raid event resets ROOT to the actor.
+# Agent, route, and transport are reconstructed from the static event ID;
+# regular event targets carry the exact raid-instance actor, state, and victim.
+brilliant_scientist_native_biological_raid_receipt_is_valid = {
+	brilliant_scientist_biological_raid_actor_is_ready = yes
+	has_event_target = brilliant_scientist_native_raid_actor
+	has_event_target = brilliant_scientist_native_raid_target_state
+	has_event_target = brilliant_scientist_native_raid_victim
+	tag = event_target:brilliant_scientist_native_raid_actor
 	OR = {
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.anthrax } check_variable = { var = num_equipment@anthrax_bomb_1 value = constant:brilliant_scientist_biological_payload.anthrax_double compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.plague } check_variable = { var = num_equipment@plague_bomb_1 value = constant:brilliant_scientist_biological_payload.plague_double compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.tularemia } check_variable = { var = num_equipment@tularemia_bomb_1 value = constant:brilliant_scientist_biological_payload.tularemia_double compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.smallpox } check_variable = { var = num_equipment@smallpox_bomb_1 value = constant:brilliant_scientist_biological_payload.smallpox_double compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.weaponized_zombies } check_variable = { var = num_equipment@zombie_disease_bomb_1 value = constant:brilliant_scientist_biological_payload.weaponized_zombies_double compare = greater_than_or_equals } }
-		AND = { check_variable = { brilliant_scientist_selected_biological_agent = constant:brilliant_scientist_biological_agent.black_plague } check_variable = { var = num_equipment@plague_bomb_1 value = constant:brilliant_scientist_biological_payload.black_plague_double compare = greater_than_or_equals } }
+		AND = {
+			check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.anthrax }
+			brilliant_scientist_biological_agent_anthrax_is_unlocked = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.plague }
+			brilliant_scientist_biological_agent_plague_is_unlocked = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.tularemia }
+			brilliant_scientist_biological_agent_tularemia_is_unlocked = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.smallpox }
+			brilliant_scientist_biological_agent_smallpox_is_unlocked = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.weaponized_zombies }
+			brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes
+		}
+		AND = {
+			check_variable = { brilliant_scientist_biological_deployment_agent = constant:brilliant_scientist_biological_agent.black_plague }
+			brilliant_scientist_biological_agent_black_plague_is_unlocked = yes
+		}
+	}
+	event_target:brilliant_scientist_native_raid_target_state = {
+		exists = yes
+		OWNER = { tag = event_target:brilliant_scientist_native_raid_victim has_war_with = ROOT }
+		is_controlled_by = OWNER
+		OR = {
+			AND = {
+				check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.battlefield }
+				check_variable = { brilliant_scientist_biological_deployment_transport_amount = constant:brilliant_scientist_value.zero }
+				brilliant_scientist_biological_conventional_battlefield_target_is_valid = yes
+			}
+			AND = {
+				check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.battlefield }
+				check_variable = { brilliant_scientist_biological_deployment_transport_amount = constant:brilliant_scientist_biological_deployment.portal_transport_equipment }
+				brilliant_scientist_biological_portal_target_is_valid = yes
+				NOT = { brilliant_scientist_biological_conventional_battlefield_target_is_valid = yes }
+			}
+			AND = {
+				check_variable = { brilliant_scientist_biological_deployment_route = constant:brilliant_scientist_biological_route.covert }
+				check_variable = { brilliant_scientist_biological_deployment_transport_amount = constant:brilliant_scientist_value.zero }
+				brilliant_scientist_biological_covert_target_is_valid = yes
+			}
+		}
 	}
 }

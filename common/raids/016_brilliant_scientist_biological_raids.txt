@@ -1,0 +1,2272 @@
+# ============================================================================
+# CHAOS REDUX - EVENT 016 BIOLOGICAL NATIVE RAIDS
+# ============================================================================
+# Each raid type names one agent, one method, and a fixed native reservation.
+# There is one engine preparation timer. No decision-side equipment or CP debit.
+# The static raid fields mirror script constants in
+# 016_brilliant_scientist_raid_lifecycle_constants.txt.
+# Failure is the former home-accident outcome; limited success is failed
+# delivery; success and critical success both execute the agent release.
+# ============================================================================
+
+@CR_SC_BIO016_BATTLEFIELD_DAYS = 7
+@CR_SC_BIO016_COVERT_DAYS = 14
+@CR_SC_BIO016_BATTLEFIELD_CP = 25
+@CR_SC_BIO016_COVERT_CP = 50
+@CR_SC_BIO016_PORTAL_TRANSPORT = 10
+@CR_SC_BIO016_COOLDOWN = 0
+@CR_SC_BIO016_AI_MIN_SUCCESS = 0.1
+@CR_SC_BIO016_BATTLEFIELD_SUCCESS = 0.70
+@CR_SC_BIO016_BATTLEFIELD_ACCIDENT = 0.05
+@CR_SC_BIO016_COVERT_SUCCESS = 0.55
+@CR_SC_BIO016_COVERT_ACCIDENT = 0.15
+@CR_SC_BIO016_CRITICAL = 0
+@CR_SC_BIO016_DISABLED_AI = 0
+@CR_SC_BIO016_MIN_BATTALIONS = 3
+@CR_SC_BIO016_ANTHRAX_BATTLEFIELD_PAYLOAD = 200
+@CR_SC_BIO016_ANTHRAX_COVERT_PAYLOAD = 400
+@CR_SC_BIO016_PLAGUE_BATTLEFIELD_PAYLOAD = 100
+@CR_SC_BIO016_PLAGUE_COVERT_PAYLOAD = 200
+@CR_SC_BIO016_TULAREMIA_BATTLEFIELD_PAYLOAD = 100
+@CR_SC_BIO016_TULAREMIA_COVERT_PAYLOAD = 200
+@CR_SC_BIO016_SMALLPOX_BATTLEFIELD_PAYLOAD = 50
+@CR_SC_BIO016_SMALLPOX_COVERT_PAYLOAD = 100
+@CR_SC_BIO016_WEAPONIZED_ZOMBIES_BATTLEFIELD_PAYLOAD = 125
+@CR_SC_BIO016_WEAPONIZED_ZOMBIES_COVERT_PAYLOAD = 250
+@CR_SC_BIO016_BLACK_PLAGUE_BATTLEFIELD_PAYLOAD = 1
+@CR_SC_BIO016_BLACK_PLAGUE_COVERT_PAYLOAD = 2
+
+types = {
+
+	brilliant_scientist_anthrax_battlefield_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.anthrax_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_battlefield_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { anthrax_bomb_equipment = @CR_SC_BIO016_ANTHRAX_BATTLEFIELD_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.950 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.951 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.952 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.953 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_anthrax_portal_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.anthrax_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_portal_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { anthrax_bomb_equipment = @CR_SC_BIO016_ANTHRAX_BATTLEFIELD_PAYLOAD teleportation_equipment = @CR_SC_BIO016_PORTAL_TRANSPORT }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.954 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.955 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.956 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.957 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_anthrax_covert_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_COVERT_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_anthrax_strike
+		equipment_icon = GFX_anthrax_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_COVERT_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.anthrax_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_strategic_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_covert_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_anthrax_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_anthrax_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { anthrax_bomb_equipment = @CR_SC_BIO016_ANTHRAX_COVERT_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_COVERT_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_COVERT_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.958 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.959 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.960 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.961 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_plague_battlefield_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.plague_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_plague_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_battlefield_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_plague_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { plague_bomb_equipment = @CR_SC_BIO016_PLAGUE_BATTLEFIELD_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.962 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.963 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.964 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.965 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_plague_portal_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.plague_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_plague_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_portal_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_plague_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { plague_bomb_equipment = @CR_SC_BIO016_PLAGUE_BATTLEFIELD_PAYLOAD teleportation_equipment = @CR_SC_BIO016_PORTAL_TRANSPORT }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.966 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.967 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.968 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.969 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_plague_covert_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_COVERT_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_plague_strike
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_COVERT_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.plague_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_strategic_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_plague_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_covert_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_plague_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_plague_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { plague_bomb_equipment = @CR_SC_BIO016_PLAGUE_COVERT_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_COVERT_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_COVERT_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.970 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.971 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.972 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.973 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_tularemia_battlefield_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.tularemia_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_battlefield_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { tularemia_bomb_equipment = @CR_SC_BIO016_TULAREMIA_BATTLEFIELD_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.974 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.975 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.976 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.977 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_tularemia_portal_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.tularemia_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_portal_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { tularemia_bomb_equipment = @CR_SC_BIO016_TULAREMIA_BATTLEFIELD_PAYLOAD teleportation_equipment = @CR_SC_BIO016_PORTAL_TRANSPORT }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.978 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.979 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.980 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.981 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_tularemia_covert_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_COVERT_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_tularemia_strike
+		equipment_icon = GFX_tularemia_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_COVERT_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.tularemia_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_strategic_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_covert_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_tularemia_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_tularemia_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { tularemia_bomb_equipment = @CR_SC_BIO016_TULAREMIA_COVERT_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_COVERT_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_COVERT_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.982 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.983 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.984 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.985 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_smallpox_battlefield_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.smallpox_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_battlefield_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { smallpox_bomb_equipment = @CR_SC_BIO016_SMALLPOX_BATTLEFIELD_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.986 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.987 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.988 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.989 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_smallpox_portal_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.smallpox_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_portal_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { smallpox_bomb_equipment = @CR_SC_BIO016_SMALLPOX_BATTLEFIELD_PAYLOAD teleportation_equipment = @CR_SC_BIO016_PORTAL_TRANSPORT }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.990 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.991 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.992 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.993 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_smallpox_covert_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_COVERT_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_smallpox_strike
+		equipment_icon = GFX_smallpox_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_COVERT_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.smallpox_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_strategic_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_covert_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_smallpox_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_smallpox_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { smallpox_bomb_equipment = @CR_SC_BIO016_SMALLPOX_COVERT_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_COVERT_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_COVERT_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.994 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.995 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.996 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.997 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_weaponized_zombies_battlefield_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
+		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.zombie_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_battlefield_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { zombie_disease_bomb_equipment = @CR_SC_BIO016_WEAPONIZED_ZOMBIES_BATTLEFIELD_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.998 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.999 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1000 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1001 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_weaponized_zombies_portal_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
+		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.zombie_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_portal_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { zombie_disease_bomb_equipment = @CR_SC_BIO016_WEAPONIZED_ZOMBIES_BATTLEFIELD_PAYLOAD teleportation_equipment = @CR_SC_BIO016_PORTAL_TRANSPORT }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1002 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1003 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1004 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1005 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_weaponized_zombies_covert_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_COVERT_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_weaponized_zombie_strike
+		equipment_icon = GFX_zombie_disease_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_COVERT_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.zombie_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_strategic_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_covert_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_weaponized_zombies_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { zombie_disease_bomb_equipment = @CR_SC_BIO016_WEAPONIZED_ZOMBIES_COVERT_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_COVERT_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_COVERT_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1006 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1007 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1008 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1009 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_black_plague_battlefield_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_brilliant_scientist_black_plague
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.black_plague_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_battlefield_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_battlefield_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { plague_bomb_equipment = @CR_SC_BIO016_BLACK_PLAGUE_BATTLEFIELD_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1010 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1011 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1012 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1013 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_black_plague_portal_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_BATTLEFIELD_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_brilliant_scientist_black_plague
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_BATTLEFIELD_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.black_plague_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_battlefield_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_portal_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_portal_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { plague_bomb_equipment = @CR_SC_BIO016_BLACK_PLAGUE_BATTLEFIELD_PAYLOAD teleportation_equipment = @CR_SC_BIO016_PORTAL_TRANSPORT }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_BATTLEFIELD_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_BATTLEFIELD_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1014 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1015 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1016 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1017 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+
+	brilliant_scientist_black_plague_covert_biological_raid = {
+		days_to_prepare = @CR_SC_BIO016_COVERT_DAYS
+		days_re_enable = @CR_SC_BIO016_COOLDOWN
+		fire_only_once = no
+		ai_min_success_chance = @CR_SC_BIO016_AI_MIN_SUCCESS
+		category = biological_raids
+		custom_map_icon = GFX_raid_type_icon_brilliant_scientist_black_plague
+		equipment_icon = GFX_plague_bomb_equipment_medium
+		target_icon = GFX_other_target_icon
+		target_loc_key = raid_target_name_brilliant_scientist_biological_state
+		launch_sound = raid_land_launchable_sound
+		command_power = @CR_SC_BIO016_COVERT_CP
+		unit_model = { entity = motorized_vehicle_entity }
+		arrow = { type = land }
+		ai_will_do = {
+			base = constant:brilliant_scientist_biological_deployment.ordinary_ai_base
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.black_plague_raid_ai_factor always = yes }
+			modifier = { factor = @CR_SC_BIO016_DISABLED_AI NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.kruger_ai_factor brilliant_scientist_kruger_raid_ai_is_active = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.retaliation_ai_factor cbrn_ai_has_retaliatory_arsenal_posture = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.intelligence_agency_ai_factor has_intelligence_agency = yes }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.no_intelligence_agency_ai_factor NOT = { has_intelligence_agency = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.unauthorized_posture_ai_factor NOT = { cbrn_ai_has_strategic_program_posture = yes } NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.democratic_ai_factor has_government = democratic NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.neutral_ai_factor has_government = neutrality NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+			modifier = { factor = constant:brilliant_scientist_biological_deployment.high_exposure_ai_factor brilliant_scientist_has_high_exposure = yes NOT = { brilliant_scientist_kruger_raid_ai_is_active = yes } }
+		}
+		visible = { brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
+		show_target = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_covert_target_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		available = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_available_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		launchable = {
+			custom_trigger_tooltip = {
+				tooltip = brilliant_scientist_biological_raid_launch_tt
+				hidden_trigger = { brilliant_scientist_biological_raid_actor_is_ready = yes brilliant_scientist_biological_agent_black_plague_is_unlocked = yes brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		cancel_trigger = {
+			OR = {
+				NOT = { brilliant_scientist_biological_raid_actor_is_ready = yes }
+				NOT = { brilliant_scientist_biological_agent_black_plague_is_unlocked = yes }
+				NOT = { brilliant_scientist_biological_raid_covert_target_is_valid = yes }
+			}
+		}
+		target_type = { state = { bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes } }
+		starting_point = { building_types = { supply_node } allow_faction_buildings = yes }
+		unit_requirements = { battalion_types = { infantry = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { motorized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		unit_requirements = { battalion_types = { mechanized = { min = @CR_SC_BIO016_MIN_BATTALIONS } } }
+		essential_equipment = { plague_bomb_equipment = @CR_SC_BIO016_BLACK_PLAGUE_COVERT_PAYLOAD }
+		success_factors = {
+			success = { base = @CR_SC_BIO016_COVERT_SUCCESS }
+			critical = { base = @CR_SC_BIO016_CRITICAL }
+			disaster = { base = @CR_SC_BIO016_COVERT_ACCIDENT }
+		}
+		success_levels = {
+			failure = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_accident_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1018 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_accident_target_tt } }
+				visual_effect = { entity = "raid_failed_entity" animation = "attack" }
+			}
+			limited_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_failure_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1019 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_failure_target_tt } }
+				visual_effect = { entity = "land_raids_limited_success_entity" animation = "attack" }
+			}
+			success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1020 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_success_entity" animation = "attack" }
+			}
+			critical_success = {
+				actor_effects = {
+					custom_effect_tooltip = brilliant_scientist_biological_raid_success_actor_tt
+					hidden_effect = {
+						var:actor_country = { save_event_target_as = brilliant_scientist_native_raid_actor }
+						var:target_state = { save_event_target_as = brilliant_scientist_native_raid_target_state }
+						var:victim_country = { save_event_target_as = brilliant_scientist_native_raid_victim }
+						var:actor_country = { country_event = { id = chaosx.nr16.1021 } }
+					}
+					add_raid_history_entry = yes
+				}
+				victim_effects = { var:target_state = { custom_effect_tooltip = brilliant_scientist_biological_raid_success_target_tt } }
+				visual_effect = { entity = "land_raids_critical_success_entity" animation = "attack" }
+			}
+		}
+	}
+}

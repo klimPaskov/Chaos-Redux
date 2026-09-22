@@ -176,7 +176,7 @@ The accepted 2026-08-02 addendum is retained as a ten-country implementation sna
 - [ ] Supply, production, manpower, equipment, and resource assumptions are viable.
 - [ ] Actual native pathogen equipment in the national stockpile is the authoritative Event 016 payload quantity source, with no parallel Event 016 numeric stockpile or native-raid reservation ledger.
 - [ ] Native biological raids retain ownership of preparation, equipment reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, retaliation, and confirmed-use attribution without Event 016 duplication or interception.
-- [ ] Event 016 production and staging plus battlefield and strategic decision-led deployments use separate receipts with exact debit, refund, and one-time settlement behavior, as documented in `docs/events/016_brilliant_scientist/systems/biological_operations.md`.
+- [ ] Eighteen Event 016 native biological raids pair six agents with battlefield, Portal battlefield, and covert methods, reserve real equipment through the engine, and dispatch guarded outcomes once, as documented in `docs/events/016_brilliant_scientist/systems/biological_operations.md`; cancellation accounting and distant Portal pathfinding remain unproven.
 - [ ] Biological production and AI stop safely when containment, security, authority, or the relevant delivery boundary is unavailable, and tranche-4 source review and MCP transaction acceptance are resolved.
 - [ ] Country is registered in `is_special_chaos_country`.
 - [ ] Actual nonhuman classification is added only after a real nonhuman transformation.

@@ -1,183 +1,68 @@
 # ============================================================================
-# JAPAN CHEMICAL CAMPAIGN SCRIPTED EFFECTS
+# JAPAN-CHINA NATIVE CHEMICAL CAMPAIGN OUTCOMES
 # ============================================================================
-# State-targeted cylinder operations used by Japan decisions during the China
-# war. The player can rotate the prepared agent for free. Each attack consumes
-# the exact selected legacy cylinder model, resolves protection in the selected
-# state, and enters the canonical chemical exposure dispatcher. Weather and
-# terrain remain absent rather than estimated because condition receipts are an
-# optional enhancement to a proven selected-state release.
+# Each campaign raid reserves its exact agent lot through native
+# essential_equipment. An immediate hidden event restores country ROOT and
+# rebuilds immutable raid parameters from chain-local marker targets.
+# The shared land adapter resolves one selected-state release. Japan's wrapper
+# records campaign history without another debit, refund, or release.
 # ============================================================================
 
 @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS = 24
 @JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS = 8
 
-japan_finalize_targeted_chemical_campaign = {
-	# Stable legacy entry point for older delayed callers.
-	japan_apply_targeted_chemical_campaign_attack = yes
+japan_cbrn_raid_restore_chemical_parameters = {
+	set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.cylinder_release }
+	set_temp_variable = { cbrn_raid_phantom_mist = constant:cbrn_math.zero }
+	if = { limit = { has_event_target = japan_cbrn_raid_price_normal } set_temp_variable = { japan_cbrn_raid_price_tier = constant:japan_cbrn_raid_price.normal } set_temp_variable = { cbrn_raid_payload_reserved = constant:japan_chemical_campaign_raid_payload.normal } }
+	if = { limit = { has_event_target = japan_cbrn_raid_price_sale } set_temp_variable = { japan_cbrn_raid_price_tier = constant:japan_cbrn_raid_price.sale } set_temp_variable = { cbrn_raid_payload_reserved = constant:japan_chemical_campaign_raid_payload.sale } }
+	if = { limit = { has_event_target = japan_cbrn_raid_price_evolution } set_temp_variable = { japan_cbrn_raid_price_tier = constant:japan_cbrn_raid_price.evolution } set_temp_variable = { cbrn_raid_payload_reserved = constant:japan_chemical_campaign_raid_payload.evolution } }
+	if = { limit = { has_event_target = japan_cbrn_raid_agent_chlorine } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.chlorine } }
+	if = { limit = { has_event_target = japan_cbrn_raid_agent_phosgene } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.phosgene } }
+	if = { limit = { has_event_target = japan_cbrn_raid_agent_mustard } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.mustard } }
+	if = { limit = { has_event_target = japan_cbrn_raid_agent_lewisite } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.lewisite } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_failure } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_limited_success } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_success } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_critical_success } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } }
 }
 
-japan_set_default_targeted_chemical_campaign_agent = {
+japan_resolve_chemical_campaign_raid_outcome = {
+	save_event_target_as = cbrn_action_actor
+	event_target:japan_cbrn_raid_victim = { save_event_target_as = cbrn_action_victim_country }
+	event_target:japan_cbrn_raid_state = { save_event_target_as = cbrn_action_target_state }
+	set_temp_variable = { cbrn_raid_release_accepted = constant:cbrn_proof.missing }
+	cbrn_resolve_chemical_land_raid_country_outcome = yes
 	if = {
-		limit = { NOT = { has_variable = japan_chemical_campaign_selected_agent } }
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
-	}
-}
-
-japan_cycle_targeted_chemical_campaign_agent = {
-	japan_set_default_targeted_chemical_campaign_agent = yes
-
-	if = {
-		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard compare = equals } }
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine }
-	}
-	else_if = {
-		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine compare = equals } }
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene }
-	}
-	else_if = {
-		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene compare = equals } }
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite }
-	}
-	else = {
-		set_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.mustard }
-	}
-}
-
-japan_set_targeted_chemical_campaign_action_agent = {
-	set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.mustard }
-	if = {
-		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.chlorine compare = equals } }
-		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.chlorine }
-	}
-	else_if = {
-		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.phosgene compare = equals } }
-		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.phosgene }
-	}
-	else_if = {
-		limit = { check_variable = { var = japan_chemical_campaign_selected_agent value = constant:chem_type.lewisite compare = equals } }
-		set_temp_variable = { cbrn_action_agent = constant:cbrn_agent.lewisite }
-	}
-}
-
-japan_set_targeted_chemical_campaign_action_class = {
-	set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.blister }
-	if = {
-		limit = {
-			OR = {
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.chlorine compare = equals }
-				check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.phosgene compare = equals }
-			}
-		}
-		set_temp_variable = { cbrn_action_agent_class = constant:cbrn_agent_class.choking }
-	}
-}
-
-japan_pay_targeted_chemical_campaign_command_power = {
-	set_temp_variable = { var = japan_campaign_command_power_cost value = constant:chem_japan_campaign_decision.defaults.attack_command_power_cost }
-	if = {
-		limit = { has_idea = chemical_command_reagent_optimization_spirit }
-		set_temp_variable = { var = japan_campaign_command_power_cost value = constant:chem_japan_campaign_decision.defaults.attack_command_power_cost_discounted }
-	}
-	set_temp_variable = { var = japan_campaign_command_power_debit value = japan_campaign_command_power_cost }
-	multiply_temp_variable = { var = japan_campaign_command_power_debit value = constant:cbrn_payload_math.negation_multiplier }
-	add_command_power = japan_campaign_command_power_debit
-}
-
-japan_apply_targeted_chemical_campaign_attack = {
-	japan_set_default_targeted_chemical_campaign_agent = yes
-	set_temp_variable = { japan_campaign_dispatch_status = constant:cbrn_proof.missing }
-	set_temp_variable = { japan_chemical_campaign_payment_ready = constant:cbrn_math.zero }
-	if = {
-		limit = { black_friday_is_active = yes }
-		black_friday_prepare_japan_chemical_campaign_payment = yes
-		if = {
-			limit = {
-				check_variable = {
-					var = black_friday_japan_chemical_payment_ready
-					value = constant:universal_cost_framework.one
-					compare = equals
-				}
-			}
-			set_temp_variable = { japan_chemical_campaign_payment_ready = constant:cbrn_math.one }
-		}
-	}
-	else = {
-		set_temp_variable = { japan_chemical_campaign_payment_ready = constant:cbrn_math.one }
-	}
-
-	if = {
-		limit = {
-			has_event_target = japan_chemical_campaign_target_state
-			check_variable = {
-				var = japan_chemical_campaign_payment_ready
-				value = constant:cbrn_math.one
-				compare = equals
-			}
-		}
-		save_event_target_as = cbrn_action_actor
-		event_target:japan_chemical_campaign_target_state = { save_event_target_as = cbrn_action_target_state }
-		event_target:japan_chemical_campaign_target_state = {
-			CONTROLLER = { save_event_target_as = cbrn_action_victim_country }
-		}
-		cbrn_reset_action_context = yes
-		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
-		set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
-		set_temp_variable = { cbrn_action_delivery_route = constant:cbrn_delivery_route.cylinder_release }
-		set_temp_variable = { cbrn_action_severity = constant:cbrn_operation_severity.prepared }
-		set_temp_variable = { cbrn_action_payload_required = constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption }
-		set_temp_variable = { cbrn_action_legacy_cylinder_source_proof = constant:cbrn_proof.supplied }
-		japan_set_targeted_chemical_campaign_action_agent = yes
-		japan_set_targeted_chemical_campaign_action_class = yes
-		if = {
-			limit = { black_friday_is_active = yes }
-			set_temp_variable = { cbrn_action_payload_consumed = black_friday_japan_chemical_cylinder_paid }
-			set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
-		}
-		else = {
-			cbrn_try_debit_action_payload = yes
-		}
-
-		if = {
-			limit = { check_variable = { var = cbrn_action_payload_consumed_proof value = constant:cbrn_proof.supplied compare = equals } }
-			set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.one }
-			cbrn_resolve_action_target_protection = yes
-			cbrn_prepare_chemical_action_record = yes
+		limit = { has_event_target = cbrn_action_actor }
+		event_target:cbrn_action_actor = {
+			set_country_flag = { flag = japan_chemical_campaign_attack_cooldown days = @JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS }
 			if = {
-				limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+				limit = { check_variable = { var = cbrn_raid_release_accepted value = constant:cbrn_proof.supplied compare = equals } }
+				set_country_flag = japan_chemical_campaign_use_history
+				set_variable = { japan_chemical_campaign_last_agent = cbrn_raid_agent }
+				set_variable = { japan_chemical_campaign_last_use_date = global.num_days }
 				if = {
-					limit = { NOT = { black_friday_is_active = yes } }
-					japan_pay_targeted_chemical_campaign_command_power = yes
-				}
-				set_country_flag = { flag = japan_chemical_campaign_attack_cooldown days = @JAPAN_CHEMICAL_CAMPAIGN_ATTACK_COOLDOWN_DAYS }
-				event_target:cbrn_action_target_state = {
-					set_state_flag = { flag = japan_chemical_campaign_recently_targeted days = @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS }
-				}
-				cbrn_dispatch_chemical_action_record = yes
-				set_temp_variable = { japan_campaign_dispatch_status = constant:cbrn_proof.supplied }
-				if = {
-					limit = { black_friday_is_active = yes }
-					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
-					universal_cost_settle_transaction = yes
-					set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
-					set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
-					set_temp_variable = { black_friday_purchase_ordinary_cost = constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption }
-					set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_japan_chemical_cylinder_paid }
-					black_friday_record_achievement_transaction = yes
+					limit = { has_event_target = cbrn_action_target_state }
+					set_variable = { japan_chemical_campaign_last_target_state = event_target:cbrn_action_target_state }
 				}
 			}
-			else = {
-				if = {
-					limit = { black_friday_is_active = yes }
-					black_friday_refund_japan_chemical_campaign = yes
-				}
+			if = {
+				limit = { check_variable = { var = japan_cbrn_raid_price_tier value = constant:japan_cbrn_raid_price.sale compare = equals } }
+				set_country_flag = japan_chemical_campaign_black_friday_purchase_history
+				set_variable = { japan_chemical_campaign_last_price_tier = japan_cbrn_raid_price_tier }
+			}
+			else_if = {
+				limit = { check_variable = { var = japan_cbrn_raid_price_tier value = constant:japan_cbrn_raid_price.evolution compare = equals } }
+				set_country_flag = japan_chemical_campaign_black_friday_evolution_purchase_history
+				set_variable = { japan_chemical_campaign_last_price_tier = japan_cbrn_raid_price_tier }
 			}
 		}
-		else = {
-			if = {
-				limit = { black_friday_is_active = yes }
-				black_friday_refund_japan_chemical_campaign = yes
-			}
+	}
+	if = {
+		limit = { has_event_target = cbrn_action_target_state }
+		event_target:cbrn_action_target_state = {
+			set_state_flag = { flag = japan_chemical_campaign_recently_targeted days = @JAPAN_CHEMICAL_CAMPAIGN_TARGET_STATE_COOLDOWN_DAYS }
 		}
 	}
 }

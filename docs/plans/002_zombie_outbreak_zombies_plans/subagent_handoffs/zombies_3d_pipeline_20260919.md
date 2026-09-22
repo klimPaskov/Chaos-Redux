@@ -1,6 +1,8 @@
 # Base zombie regeneration: dependency gate handoff (2026-09-19)
 
-## Current documentation disposition: clean final v3, 2026-09-20
+This handoff is historical. The current user-selected Meshy 7 zombie package, 64-credit lineage, runtime files, and acceptance limits are recorded at `docs/assets/002_zombie_outbreak/models_3d/zombies/manifest.md` and `validation/current_runtime_audit_20260920.json`; all "current" and "final" claims below describe earlier candidates.
+
+## Historical documentation disposition: clean final v3, 2026-09-20
 
 Disposition: **implemented as an offline runtime candidate, with validation limits**. This top section records the parent-supplied final evidence; the dated worker and parent continuations below remain historical. It supersedes their claims that the dependency gate, topology, winding, action deformation, death contact, or material preparation are still blocking the current export, and supersedes their older “final” mesh, action, material, runtime hash, and 35-credit claims. It does not constitute live HOI4 or listening acceptance.
 

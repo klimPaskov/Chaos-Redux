@@ -81,12 +81,12 @@ Their different payload reservations, preparation costs, lifecycle profiles, cou
 - `cbrn_ai_has_conventional_army_deficit` pauses offensive expansion before ordinary army supply is sacrificed.
 - Special-project completion grants the exact delivery technology that enables the exact payload model.
 - Ordinary strategic and battlefield deployment remains on the raid surfaces.
-- Ordinary covert deployment uses the four native operative operations. The generic state-target supply-chain decision family is invisible migration code because it would generate one card per eligible state. Strategic and battlefield deployment remain raids, while the two historically scoped Japan-China actions and biological doomsday release remain decisions.
+- Ordinary covert deployment uses the four native operative operations. The generic state-target supply-chain decision family is invisible migration code because it would generate one card per eligible state. Strategic, battlefield, supply-chain, and doomsday deployment use the two accepted native CBRN raid categories; the historically scoped Japan-China actions are being migrated separately.
 - Historically precise Japan-China campaign releases remain targeted decisions.
-- Biological doomsday release remains a decision.
+- Biological doomsday release uses `biological_stockpile_doomsday_raid` under `biological_raids`.
 - An unrestricted actor under formal censure receives a continuation preference only when a current enemy has reached the exact near-victory surrender threshold.
 - An actor at its own near-capitulation threshold stops choosing ordinary strategic raids, battlefield raids, covert sabotage, operative release, and Japan-China campaign actions.
-- An explicitly authorized doomsday route leaves the doomsday decision as the sole biological release choice during collapse.
+- An explicitly authorized doomsday route leaves the doomsday raid as the sole biological release choice during collapse.
 - A collapsing actor without that route strongly prefers exact stockpile destruction instead of continued release.
 
 No daily, weekly, monthly, all-country, or all-state pulse is introduced by this AI layer.

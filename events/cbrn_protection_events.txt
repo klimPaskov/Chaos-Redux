@@ -2,11 +2,10 @@
 # CHAOS REDUX - CBRN PROTECTION MAINTENANCE EVENTS
 # ============================================================================
 # Overview:
-# - Runs one self-scheduled annual maintenance job only for countries that
-#   explicitly establish or inherit a protective program.
-# - Applies reserve storage loss and condition/replacement loss to issued and
-#   distributed equipment without any all-country daily, weekly, or monthly
-#   on-action pulse.
+# - Runs one self-scheduled country maintenance job for countries with mask
+#   technology or real protective stock.
+# - Issues and services masks from the actual stockpile every cycle, and
+#   applies reserve/issued-equipment storage loss every twelfth cycle.
 # - Stops itself when the country has no program and no protected stock.
 # ============================================================================
 
@@ -28,20 +27,7 @@ country_event = {
 					check_variable = { cbrn_civilian_mask_total_crates > constant:cbrn_math.zero }
 				}
 			}
-			cbrn_apply_annual_mask_storage_loss = yes
-			set_temp_variable = { cbrn_mask_loss_fraction = constant:cbrn_math.zero }
-			set_temp_variable = { cbrn_mask_condition_loss = constant:cbrn_mask_filters.standing_issue_condition_loss }
-			cbrn_apply_military_mask_loss = yes
-			every_controlled_state = {
-				limit = {
-					has_variable = cbrn_civilian_mask_crates
-					check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
-				}
-				set_temp_variable = { cbrn_mask_loss_fraction = constant:cbrn_mask_filters.annual_distributed_crate_loss }
-				set_temp_variable = { cbrn_mask_condition_loss = constant:cbrn_mask_filters.standing_issue_condition_loss }
-				cbrn_apply_state_civilian_mask_loss = yes
-			}
-			cbrn_refresh_country_mask_snapshot = yes
+			cbrn_run_protection_maintenance_cycle = yes
 			set_temp_variable = { cbrn_protection_maintenance_delay = constant:cbrn_scheduler.protection_maintenance_days }
 			country_event = { id = cbrn_protection.1 days = cbrn_protection_maintenance_delay }
 		}
@@ -64,4 +50,20 @@ country_event = {
 		hidden_effect = { cbrn_resolve_defective_reconditioned_batch = yes }
 		ai_chance = { base = constant:cbrn_math.percent_divisor }
 	}
+}
+
+# Startup history enters through an on_startup country selector, whose ROOT
+# need not be ENG. This event gives the real-stock distributor an ENG root.
+country_event = {
+	id = cbrn_protection.3
+	hidden = yes
+	is_triggered_only = yes
+
+	trigger = {
+		tag = ENG
+		has_country_flag = cbrn_uk_1939_mass_respirator_issue
+		NOT = { has_country_flag = cbrn_uk_1939_mass_respirator_issue_applied }
+	}
+
+	immediate = { cbrn_apply_historical_uk_1939_civilian_issue = yes }
 }

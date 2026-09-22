@@ -344,6 +344,8 @@ bio_lifecycle_grant_integrated_operations_release_command_recovery = {
 		limit = {
 			check_variable = { var = bio_seed_actor_proof value = constant:bio_lifecycle_proof.supplied compare = equals }
 			has_event_target = bio_seed_actor
+			# Native raid adapters own their command-power economics during dispatch.
+			event_target:bio_seed_actor = { NOT = { has_country_flag = bio_native_raid_dispatch_in_progress } }
 			OR = {
 				check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.deliberate compare = equals }
 				check_variable = { var = bio_seed_source value = constant:bio_lifecycle_source.doomsday compare = equals }
@@ -1165,12 +1167,6 @@ bio_lifecycle_attempt_detection_for_current_agent = {
 		bio_lifecycle_calculate_response_values = yes
 		bio_lifecycle_prepare_environment_and_countermeasure_multipliers = yes
 		set_temp_variable = { bio_detection_chance = bio_agent_base_detection_chance }
-		set_temp_variable = { bio_detection_component = bio_response_surveillance }
-		multiply_temp_variable = { bio_detection_component = constant:bio_lifecycle_response.detection_surveillance_factor }
-		add_to_temp_variable = { bio_detection_chance = bio_detection_component }
-		set_temp_variable = { bio_detection_component = bio_response_medical }
-		multiply_temp_variable = { bio_detection_component = constant:bio_lifecycle_response.detection_medical_factor }
-		add_to_temp_variable = { bio_detection_chance = bio_detection_component }
 		set_temp_variable = { bio_detection_component = bio_current_intensity }
 		multiply_temp_variable = { bio_detection_component = constant:bio_lifecycle_response.detection_intensity_factor }
 		add_to_temp_variable = { bio_detection_chance = bio_detection_component }
@@ -1186,6 +1182,15 @@ bio_lifecycle_attempt_detection_for_current_agent = {
 				subtract_from_temp_variable = { bio_detection_chance = constant:bio_lifecycle_response.wartime_detection_penalty }
 			}
 		}
+		add_to_temp_variable = { bio_detection_chance = bio_detection_environment_add }
+		clamp_temp_variable = { var = bio_detection_chance min = constant:bio_lifecycle_bounds.detection_chance_min max = constant:bio_lifecycle_bounds.detection_chance_max }
+		set_temp_variable = { bio_detection_baseline_chance = bio_detection_chance }
+		set_temp_variable = { bio_detection_component = bio_response_surveillance }
+		multiply_temp_variable = { bio_detection_component = constant:bio_lifecycle_response.detection_surveillance_factor }
+		add_to_temp_variable = { bio_detection_chance = bio_detection_component }
+		set_temp_variable = { bio_detection_component = bio_response_medical }
+		multiply_temp_variable = { bio_detection_component = constant:bio_lifecycle_response.detection_medical_factor }
+		add_to_temp_variable = { bio_detection_chance = bio_detection_component }
 		if = {
 			limit = { check_variable = { var = bio_response_surveillance value = constant:bio_lifecycle_countermeasure.high_response_threshold compare = greater_than_or_equals } }
 			add_to_temp_variable = { bio_detection_chance = constant:bio_lifecycle_countermeasure.surveillance_80_detection_add }
@@ -1198,10 +1203,20 @@ bio_lifecycle_attempt_detection_for_current_agent = {
 			limit = { check_variable = { var = bio_response_medical value = constant:bio_lifecycle_countermeasure.high_response_threshold compare = greater_than_or_equals } }
 			add_to_temp_variable = { bio_detection_chance = constant:bio_lifecycle_countermeasure.medical_80_detection_add }
 		}
-		add_to_temp_variable = { bio_detection_chance = bio_detection_environment_add }
+		add_to_temp_variable = { bio_detection_chance = bio_detection_response_add }
 		if = {
 			limit = { CONTROLLER = { cbrn_designer_has_distributed_surveillance = yes } }
 			multiply_temp_variable = { bio_detection_chance = constant:cbrn_biosecurity_designer_effect.distributed_surveillance_detection_mult }
+		}
+		# Response measures can remove at most half the baseline missed-detection chance.
+		set_temp_variable = { bio_detection_response_cap = constant:bio_lifecycle_math.hundred }
+		subtract_from_temp_variable = { bio_detection_response_cap = bio_detection_baseline_chance }
+		multiply_temp_variable = { bio_detection_response_cap = constant:cbrn_hazard_budget.residual_floor }
+		multiply_temp_variable = { bio_detection_response_cap = constant:bio_lifecycle_math.negation }
+		add_to_temp_variable = { bio_detection_response_cap = constant:bio_lifecycle_math.hundred }
+		if = {
+			limit = { check_variable = { var = bio_detection_chance value = bio_detection_response_cap compare = greater_than } }
+			set_temp_variable = { bio_detection_chance = bio_detection_response_cap }
 		}
 		clamp_temp_variable = { var = bio_detection_chance min = constant:bio_lifecycle_bounds.detection_chance_min max = constant:bio_lifecycle_bounds.detection_chance_max }
 		set_temp_variable = { bio_no_detection_chance = constant:bio_lifecycle_math.hundred }
@@ -1675,10 +1690,13 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 	set_temp_variable = { bio_spread_environment_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_death_environment_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_detection_environment_add = constant:bio_lifecycle_math.zero }
+	set_temp_variable = { bio_detection_response_add = constant:bio_lifecycle_math.zero }
 	set_temp_variable = { bio_growth_countermeasure_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_spread_countermeasure_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_math.one }
 	set_temp_variable = { bio_medical_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_susceptibility_countermeasure_mult = constant:bio_lifecycle_math.one }
+	set_temp_variable = { bio_recovery_countermeasure_mult = constant:bio_lifecycle_math.one }
 
 	if = { limit = { has_state_category = pastoral } multiply_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_environment.pastoral_growth_mult } }
 	else_if = { limit = { has_state_category = rural } multiply_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_environment.rural_growth_mult } }
@@ -1715,10 +1733,7 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 	}
 	if = {
 		limit = { has_state_flag = quarantine_measures_active }
-		multiply_temp_variable = { bio_growth_countermeasure_mult = constant:bio_lifecycle_environment.quarantine_growth_mult }
-		multiply_temp_variable = { bio_spread_countermeasure_mult = constant:bio_lifecycle_environment.quarantine_spread_mult }
-		multiply_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_environment.quarantine_short_term_death_mult }
-		add_to_temp_variable = { bio_detection_environment_add = constant:bio_lifecycle_environment.quarantine_detection_add }
+		add_to_temp_variable = { bio_detection_response_add = constant:bio_lifecycle_environment.quarantine_detection_add }
 	}
 	if = {
 		limit = { check_variable = { var = global.chaos_meter_value value = constant:bio_lifecycle_environment.chaos_terminal_threshold compare = greater_than_or_equals } }
@@ -1753,11 +1768,6 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 		multiply_temp_variable = { bio_growth_environment_mult = constant:bio_lifecycle_environment.high_air_contamination_growth_mult }
 	}
 
-	if = {
-		limit = { has_state_flag = field_hospitals_deployed }
-		multiply_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_countermeasure.field_hospital_death_mult }
-		multiply_temp_variable = { bio_medical_countermeasure_mult = constant:bio_lifecycle_countermeasure.field_hospital_medical_mult }
-	}
 	if = {
 		limit = {
 			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
@@ -1815,6 +1825,23 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 		multiply_temp_variable = { bio_spread_countermeasure_mult = constant:bio_lifecycle_countermeasure.smallpox_vaccination_spread_mult }
 		multiply_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_countermeasure.smallpox_vaccination_death_mult }
 	}
+	# Agent-specific antibiotics and the Smallpox program are the foundational
+	# treatment. Additional responses have one shared benefit budget per output.
+	set_temp_variable = { bio_foundational_growth_mult = bio_growth_countermeasure_mult }
+	set_temp_variable = { bio_foundational_spread_mult = bio_spread_countermeasure_mult }
+	set_temp_variable = { bio_foundational_death_mult = bio_death_countermeasure_mult }
+	set_temp_variable = { bio_foundational_medical_mult = bio_medical_countermeasure_mult }
+	if = {
+		limit = { has_state_flag = quarantine_measures_active }
+		multiply_temp_variable = { bio_growth_countermeasure_mult = constant:bio_lifecycle_environment.quarantine_growth_mult }
+		multiply_temp_variable = { bio_spread_countermeasure_mult = constant:bio_lifecycle_environment.quarantine_spread_mult }
+		multiply_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_environment.quarantine_short_term_death_mult }
+	}
+	if = {
+		limit = { has_state_flag = field_hospitals_deployed }
+		multiply_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_countermeasure.field_hospital_death_mult }
+		multiply_temp_variable = { bio_medical_countermeasure_mult = constant:bio_lifecycle_countermeasure.field_hospital_medical_mult }
+	}
 	if = {
 		limit = {
 			check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
@@ -1823,6 +1850,100 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 		multiply_temp_variable = { bio_growth_countermeasure_mult = constant:cbrn_medical_designer_effect.vaccine_scale_smallpox_harm_mult }
 		multiply_temp_variable = { bio_spread_countermeasure_mult = constant:cbrn_medical_designer_effect.vaccine_scale_smallpox_harm_mult }
 		multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_medical_designer_effect.vaccine_scale_smallpox_harm_mult }
+	}
+	# Completed vaccine production reduces susceptibility to the matching agent.
+	# An active Smallpox vaccination program already represents deployed coverage.
+	if = {
+		limit = { CONTROLLER = { cbrn_project_has_vaccines = yes } }
+		if = {
+			limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
+			set_temp_variable = { bio_susceptibility_countermeasure_mult = constant:cbrn_project_effect.vaccine_anthrax_susceptibility_multiplier }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
+			set_temp_variable = { bio_susceptibility_countermeasure_mult = constant:cbrn_project_effect.vaccine_plague_susceptibility_multiplier }
+		}
+		else_if = {
+			limit = { check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals } }
+			set_temp_variable = { bio_susceptibility_countermeasure_mult = constant:cbrn_project_effect.vaccine_tularemia_susceptibility_multiplier }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+				CONTROLLER = { NOT = { has_idea = smallpox_vaccination_program_idea } }
+			}
+			set_temp_variable = { bio_susceptibility_countermeasure_mult = constant:cbrn_project_effect.vaccine_smallpox_susceptibility_multiplier }
+		}
+		multiply_temp_variable = { bio_growth_countermeasure_mult = bio_susceptibility_countermeasure_mult }
+		multiply_temp_variable = { bio_spread_countermeasure_mult = bio_susceptibility_countermeasure_mult }
+	}
+	# Field antibiotics are a fallback for bacterial outbreaks without an
+	# already active, agent-specific antibiotic course; Smallpox is viral.
+	if = {
+		limit = { CONTROLLER = { cbrn_project_has_field_antibiotics = yes } }
+		if = {
+			limit = {
+				check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+				NOT = {
+					AND = {
+						has_state_flag = bio_anthrax_antibiotics_active
+						CONTROLLER = { has_idea = anthrax_antibiotics_mass_production_idea }
+					}
+				}
+			}
+			multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_project_effect.antibiotic_anthrax_mortality_multiplier }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+				NOT = {
+					AND = {
+						has_state_flag = bio_plague_antibiotics_active
+						CONTROLLER = { has_idea = plague_antibiotics_mass_production_idea }
+					}
+				}
+			}
+			multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_project_effect.antibiotic_plague_mortality_multiplier }
+		}
+		else_if = {
+			limit = {
+				check_variable = { var = bio_active_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+				NOT = {
+					AND = {
+						has_state_flag = bio_tularemia_antibiotics_active
+						CONTROLLER = { has_idea = tularemia_antibiotics_mass_production_idea }
+					}
+				}
+			}
+			multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_project_effect.antibiotic_tularemia_mortality_multiplier }
+		}
+	}
+	if = {
+		limit = { CONTROLLER = { cbrn_project_has_regenerative_serum = yes } }
+		multiply_temp_variable = { bio_recovery_countermeasure_mult = constant:cbrn_project_effect.regenerative_recovery_multiplier }
+	}
+	# Antiserum needs an active outbreak and a deployed or stocked medical response.
+	# This is a mortality reduction, with no cure or extra resource debit here.
+	meta_effect = {
+		text = {
+			if = {
+				limit = {
+					has_state_flag = bio_agent_[BIO_AGENT]_active
+					CONTROLLER = { cbrn_project_has_antiserum = yes }
+					OR = {
+						has_state_flag = field_hospitals_deployed
+						has_state_flag = bio_international_medical_mission_active
+						CONTROLLER = {
+							has_variable = cbrn_medical_capacity
+							check_variable = { cbrn_medical_capacity > constant:bio_lifecycle_math.zero }
+							has_equipment = { support_equipment > constant:bio_lifecycle_math.zero }
+						}
+					}
+				}
+				multiply_temp_variable = { bio_death_countermeasure_mult = constant:cbrn_project_effect.antiserum_emergency_mortality_multiplier }
+			}
+		}
+		BIO_AGENT = "[?bio_active_agent|.0]"
 	}
 
 	if = {
@@ -1844,6 +1965,28 @@ bio_lifecycle_prepare_environment_and_countermeasure_multipliers = {
 		multiply_temp_variable = { bio_death_countermeasure_mult = constant:bio_lifecycle_countermeasure.medical_80_death_mult }
 	}
 	bio_lifecycle_apply_historical_target_advisor_modifiers = yes
+	if = {
+		limit = { CONTROLLER = { cbrn_designer_has_mobile_casualty_sorting = yes } }
+		multiply_temp_variable = { bio_medical_countermeasure_mult = constant:cbrn_medical_designer_effect.mobile_sorting_saturation_mult }
+	}
+	set_temp_variable = { bio_growth_response_floor = bio_foundational_growth_mult }
+	multiply_temp_variable = { bio_growth_response_floor = constant:cbrn_hazard_budget.residual_floor }
+	if = {
+		limit = { check_variable = { var = bio_growth_countermeasure_mult value = bio_growth_response_floor compare = less_than } }
+		set_temp_variable = { bio_growth_countermeasure_mult = bio_growth_response_floor }
+	}
+	set_temp_variable = { bio_death_response_floor = bio_foundational_death_mult }
+	multiply_temp_variable = { bio_death_response_floor = constant:cbrn_hazard_budget.residual_floor }
+	if = {
+		limit = { check_variable = { var = bio_death_countermeasure_mult value = bio_death_response_floor compare = less_than } }
+		set_temp_variable = { bio_death_countermeasure_mult = bio_death_response_floor }
+	}
+	set_temp_variable = { bio_medical_response_floor = bio_foundational_medical_mult }
+	multiply_temp_variable = { bio_medical_response_floor = constant:cbrn_hazard_budget.residual_floor }
+	if = {
+		limit = { check_variable = { var = bio_medical_countermeasure_mult value = bio_medical_response_floor compare = less_than } }
+		set_temp_variable = { bio_medical_countermeasure_mult = bio_medical_response_floor }
+	}
 }
 
 bio_lifecycle_progress_current_agent = {
@@ -1865,6 +2008,7 @@ bio_lifecycle_progress_current_agent = {
 	divide_temp_variable = { bio_tick_response_decline = constant:bio_lifecycle_response.containment_decline_divisor }
 	add_to_temp_variable = { bio_tick_decline = bio_tick_response_decline }
 	set_temp_variable = { bio_tick_response_decline = bio_response_medical }
+	multiply_temp_variable = { bio_tick_response_decline = bio_recovery_countermeasure_mult }
 	divide_temp_variable = { bio_tick_response_decline = constant:bio_lifecycle_response.medical_decline_divisor }
 	add_to_temp_variable = { bio_tick_decline = bio_tick_response_decline }
 	divide_temp_variable = { bio_tick_decline = bio_current_doctrine_duration_mult }
@@ -1879,11 +2023,14 @@ bio_lifecycle_progress_current_agent = {
 		limit = { check_variable = { bio_tick_intensity_delta > constant:bio_lifecycle_math.zero } }
 		set_temp_variable = { bio_exposed_share_delta = bio_current_intensity }
 		multiply_temp_variable = { bio_exposed_share_delta = bio_agent_exposed_growth_per_intensity }
+		multiply_temp_variable = { bio_exposed_share_delta = bio_susceptibility_countermeasure_mult }
 		add_to_temp_variable = { bio_current_exposed_share = bio_exposed_share_delta }
 	}
 	else = {
 		set_temp_variable = { bio_exposed_share_delta = bio_response_containment }
-		add_to_temp_variable = { bio_exposed_share_delta = bio_response_medical }
+		set_temp_variable = { bio_exposed_medical_recovery = bio_response_medical }
+		multiply_temp_variable = { bio_exposed_medical_recovery = bio_recovery_countermeasure_mult }
+		add_to_temp_variable = { bio_exposed_share_delta = bio_exposed_medical_recovery }
 		multiply_temp_variable = { bio_exposed_share_delta = bio_agent_exposed_decline_per_response }
 		subtract_from_temp_variable = { bio_current_exposed_share = bio_exposed_share_delta }
 	}
@@ -1893,11 +2040,8 @@ bio_lifecycle_progress_current_agent = {
 	multiply_temp_variable = { bio_medical_saturation_delta = bio_agent_medical_points_per_intensity }
 	multiply_temp_variable = { bio_medical_saturation_delta = bio_current_doctrine_medical_mult }
 	multiply_temp_variable = { bio_medical_saturation_delta = bio_medical_countermeasure_mult }
-	if = {
-		limit = { CONTROLLER = { cbrn_designer_has_mobile_casualty_sorting = yes } }
-		multiply_temp_variable = { bio_medical_saturation_delta = constant:cbrn_medical_designer_effect.mobile_sorting_saturation_mult }
-	}
 	set_temp_variable = { bio_medical_saturation_recovery = bio_response_medical }
+	multiply_temp_variable = { bio_medical_saturation_recovery = bio_recovery_countermeasure_mult }
 	divide_temp_variable = { bio_medical_saturation_recovery = constant:bio_lifecycle_response.medical_saturation_recovery_divisor }
 	subtract_from_temp_variable = { bio_medical_saturation_delta = bio_medical_saturation_recovery }
 	add_to_temp_variable = { bio_current_medical_saturation = bio_medical_saturation_delta }
@@ -2204,6 +2348,8 @@ bio_lifecycle_calculate_current_agent_spread_chance = {
 	add_to_temp_variable = { bio_spread_chance = bio_spread_intensity_component }
 	multiply_temp_variable = { bio_spread_chance = bio_current_doctrine_spread_mult }
 	multiply_temp_variable = { bio_spread_chance = bio_spread_environment_mult }
+	set_temp_variable = { bio_spread_foundational_chance = bio_spread_chance }
+	multiply_temp_variable = { bio_spread_foundational_chance = bio_foundational_spread_mult }
 	multiply_temp_variable = { bio_spread_chance = bio_spread_countermeasure_mult }
 	if = {
 		limit = {
@@ -2227,6 +2373,7 @@ bio_lifecycle_calculate_current_agent_spread_chance = {
 		add_to_temp_variable = { bio_repeated_seed_spread_mult = constant:bio_lifecycle_math.one }
 		clamp_temp_variable = { var = bio_repeated_seed_spread_mult min = constant:bio_lifecycle_math.one max = constant:bio_lifecycle_environment.repeated_seed_spread_cap }
 		multiply_temp_variable = { bio_spread_chance = bio_repeated_seed_spread_mult }
+		multiply_temp_variable = { bio_spread_foundational_chance = bio_repeated_seed_spread_mult }
 	}
 
 	set_temp_variable = { bio_spread_cross_border_status = constant:bio_lifecycle_proof.missing }
@@ -2253,6 +2400,14 @@ bio_lifecycle_calculate_current_agent_spread_chance = {
 	if = {
 		limit = { event_target:bio_spread_target_state = { has_state_flag = quarantine_measures_active } }
 		multiply_temp_variable = { bio_spread_chance = constant:bio_lifecycle_environment.quarantine_spread_mult }
+	}
+	# Border, source, and target containment cannot remove more than half the
+	# chance remaining after agent-specific vaccination and adverse pressure.
+	set_temp_variable = { bio_spread_response_floor = bio_spread_foundational_chance }
+	multiply_temp_variable = { bio_spread_response_floor = constant:cbrn_hazard_budget.residual_floor }
+	if = {
+		limit = { check_variable = { var = bio_spread_chance value = bio_spread_response_floor compare = less_than } }
+		set_temp_variable = { bio_spread_chance = bio_spread_response_floor }
 	}
 	clamp_temp_variable = { var = bio_spread_chance min = constant:bio_lifecycle_bounds.spread_chance_min max = constant:bio_lifecycle_bounds.spread_chance_max }
 	set_temp_variable = { bio_no_spread_chance = constant:bio_lifecycle_math.hundred }

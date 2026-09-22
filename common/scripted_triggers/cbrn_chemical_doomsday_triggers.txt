@@ -2,7 +2,7 @@
 # CHAOS REDUX - CHEMICAL DOOMSDAY ADAPTER TRIGGERS
 # ============================================================================
 # Overview:
-# - State-scoped eligibility for the explicit chemical doomsday decision.
+# - State-scoped eligibility for the native chemical doomsday raid.
 # - The target is always an exact controlled state with a positive native
 #   population value. Missing or non-controlled state context returns false.
 # - No trigger in this file searches for a target, estimates a mission, or
@@ -15,9 +15,38 @@ cbrn_chemical_doomsday_state_is_eligible = {
 	state_population_k > constant:cbrn_chemical_doomsday_target.minimum_population_k
 }
 
-# Country scope. The decision and resolver use this same exact target gate.
+# Country scope. The raid gate and resolver use this exact target family.
 cbrn_chemical_doomsday_actor_has_target = {
 	any_controlled_state = {
 		cbrn_chemical_doomsday_state_is_eligible = yes
 	}
+}
+
+# Raid outcome uses an explicit actor pointer because ROOT is the native raid
+# instance while the country resolver iterates controlled states.
+cbrn_chemical_doomsday_raid_state_is_eligible = {
+	is_controlled_by = event_target:cbrn_doomsday_raid_actor
+	state_population_k > constant:cbrn_chemical_doomsday_target.minimum_population_k
+}
+
+cbrn_chemical_doomsday_native_is_visible = {
+	has_government = fascism
+	has_war = yes
+	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = cbrn_chemical_doomsday_raid_committed }
+	surrender_progress > constant:cbrn_chemical_doomsday_raid.surrender_threshold
+	cbrn_policy_allows_extreme_use = yes
+}
+
+cbrn_chemical_doomsday_native_can_launch = {
+	cbrn_chemical_doomsday_native_is_visible = yes
+	cbrn_chemical_doomsday_actor_has_target = yes
+}
+
+cbrn_chemical_doomsday_native_can_prepare = {
+	cbrn_chemical_doomsday_native_can_launch = yes
+	has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:cbrn_math.zero }
+	has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:cbrn_math.zero }
+	has_equipment = { chemical_mustard_payload_cylinder_1 > constant:cbrn_math.zero }
+	has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:cbrn_math.zero }
 }

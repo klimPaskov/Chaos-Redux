@@ -2,7 +2,7 @@
 # CHAOS REDUX - CBRN ARMY HEADQUARTERS TUNING
 # ============================================================================
 # Overview:
-# - Centralizes force bands, preparation, active duration, command power,
+# - Centralizes force bands, protective preparation, active duration, command power,
 #   activation stores, weekly upkeep, and temporary capacity commitments.
 # - Costs are gameplay tuning values, not historical stockpile claims.
 # - Payload costs are deliberately absent: Stage 6 owns the exact selected
@@ -29,13 +29,11 @@ cbrn_hq_operation = {
 		data = int
 	}
 
-	prepare_chemical_offensive = 1
 	theater_protective_posture = 2
 	decontamination_corridor = 3
 	seal_operational_area = 4
 	mass_antidote_response = 5
 	seal_infection_corridor = 6
-	combined_overmatch = 7
 }
 
 cbrn_hq_event_id = {
@@ -58,13 +56,10 @@ cbrn_hq_readiness = {
 	limited_threshold = 40
 	integrated_threshold = 60
 	full_threshold = 80
-	high_protection_threshold = 90
 	limited_preparation_mult = 1.50
 	standard_preparation_mult = 1.00
 	integrated_preparation_mult = 0.85
 	full_preparation_mult = 0.75
-	operations_section_preparation_mult = 0.90
-	high_protection_preparation_mult = 0.95
 }
 
 cbrn_hq_timing = {
@@ -73,11 +68,6 @@ cbrn_hq_timing = {
 		data = int
 	}
 
-	prepare_base = 14
-	prepare_min = 7
-	prepare_max = 21
-	prepare_active = 7
-	prepare_upkeep_ticks = 0
 	protective_base = 2
 	protective_min = 1
 	protective_max = 3
@@ -103,11 +93,6 @@ cbrn_hq_timing = {
 	infection_max = 5
 	infection_active = 60
 	infection_upkeep_ticks = 8
-	overmatch_base = 20
-	overmatch_min = 14
-	overmatch_max = 30
-	overmatch_active = 10
-	overmatch_upkeep_ticks = 1
 }
 
 cbrn_hq_command_power = {
@@ -116,10 +101,6 @@ cbrn_hq_command_power = {
 		data = fixed_point
 	}
 
-	prepare_native = 20
-	prepare_light = 20
-	prepare_standard = 40
-	prepare_mass = 60
 	protective_native = 10
 	protective_light = 10
 	protective_standard = 22
@@ -140,10 +121,6 @@ cbrn_hq_command_power = {
 	infection_light = 15
 	infection_standard = 30
 	infection_mass = 45
-	overmatch_native = 50
-	overmatch_light = 50
-	overmatch_standard = 55
-	overmatch_mass = 60
 }
 
 cbrn_hq_commitment = {
@@ -173,51 +150,14 @@ cbrn_hq_filter_cost = {
 	# cbrn_protection_technology_effect.filter_standardization_consumption_mult.
 	# Script constants cannot derive one leaf from another, so both gate values
 	# are centralized here beside their matching debit values.
-	prepare_light = 3
-	prepare_standard = 5
-	prepare_mass = 8
-	prepare_light_standardized = 2.55
-	prepare_standard_standardized = 4.25
-	prepare_mass_standardized = 6.80
 	protective_light = 2
 	protective_standard = 3
 	protective_mass = 4
 	protective_light_standardized = 1.70
 	protective_standard_standardized = 2.55
 	protective_mass_standardized = 3.40
-	overmatch_light = 5
-	overmatch_standard = 8
-	overmatch_mass = 12
-	overmatch_light_standardized = 4.25
-	overmatch_standard_standardized = 6.80
-	overmatch_mass_standardized = 10.20
 }
 
-cbrn_hq_prepare_cost = {
-	schema = {
-		any_key = yes
-		data = int
-	}
-
-	light_masks = 250
-	light_instruments = 10
-	light_support = 15
-	standard_masks = 500
-	standard_instruments = 20
-	standard_support = 30
-	mass_masks = 1000
-	mass_instruments = 30
-	mass_support = 45
-	weekly_light_masks = 100
-	weekly_light_instruments = 2
-	weekly_light_support = 8
-	weekly_standard_masks = 200
-	weekly_standard_instruments = 4
-	weekly_standard_support = 15
-	weekly_mass_masks = 400
-	weekly_mass_instruments = 6
-	weekly_mass_support = 23
-}
 
 cbrn_hq_protective_cost = {
 	schema = {
@@ -357,49 +297,6 @@ cbrn_hq_infection_cost = {
 	weekly_mass_masks = 400
 }
 
-cbrn_hq_overmatch_cost = {
-	schema = {
-		any_key = yes
-		data = int
-	}
-
-	light_support = 120
-	light_decon = 90
-	light_instruments = 60
-	light_masks = 1000
-	light_trucks = 5
-	light_fuel = 750
-	standard_support = 240
-	standard_decon = 180
-	standard_instruments = 120
-	standard_masks = 2000
-	standard_trucks = 10
-	standard_fuel = 1500
-	mass_support = 360
-	mass_decon = 270
-	mass_instruments = 180
-	mass_masks = 4000
-	mass_trucks = 15
-	mass_fuel = 2250
-	weekly_light_support = 60
-	weekly_light_decon = 45
-	weekly_light_instruments = 30
-	weekly_light_masks = 500
-	weekly_light_trucks = 2
-	weekly_light_fuel = 375
-	weekly_standard_support = 120
-	weekly_standard_decon = 90
-	weekly_standard_instruments = 60
-	weekly_standard_masks = 1000
-	weekly_standard_trucks = 4
-	weekly_standard_fuel = 750
-	weekly_mass_support = 180
-	weekly_mass_decon = 135
-	weekly_mass_instruments = 90
-	weekly_mass_masks = 2000
-	weekly_mass_trucks = 6
-	weekly_mass_fuel = 1125
-}
 
 cbrn_hq_template_cost = {
 	schema = {
@@ -408,28 +305,30 @@ cbrn_hq_template_cost = {
 	}
 
 	base_infantry = 420
-	protected_masks = 110
-	protected_support = 150
-	protected_trucks = 55
-	fireplan_masks = 30
+	protected_masks = 80
+	protected_support = 100
+	protected_decon = 100
+	protected_trucks = 60
+	fireplan_masks = 110
 	fireplan_instruments = 50
-	fireplan_support = 110
-	fireplan_trucks = 10
-	contaminated_masks = 70
+	fireplan_support = 180
+	fireplan_decon = 100
+	fireplan_trucks = 70
+	contaminated_masks = 110
 	contaminated_decon = 100
-	contaminated_instruments = 20
-	contaminated_support = 110
-	contaminated_trucks = 60
-	biological_masks = 30
-	biological_decon = 40
+	contaminated_instruments = 50
+	contaminated_support = 180
+	contaminated_trucks = 70
+	biological_masks = 110
+	biological_decon = 140
 	biological_instruments = 40
-	biological_support = 130
-	biological_trucks = 50
-	overmatch_masks = 150
-	overmatch_decon = 100
-	overmatch_instruments = 20
-	overmatch_support = 190
-	overmatch_trucks = 90
+	biological_support = 190
+	biological_trucks = 85
+	overmatch_masks = 140
+	overmatch_decon = 140
+	overmatch_instruments = 90
+	overmatch_support = 270
+	overmatch_trucks = 95
 }
 
 cbrn_hq_ai = {
@@ -440,7 +339,5 @@ cbrn_hq_ai = {
 
 	disabled = -1
 	valid_context_add = 2
-	high_readiness_add = 1
 	urgent_context_add = 2
-	capstone_add = 3
 }

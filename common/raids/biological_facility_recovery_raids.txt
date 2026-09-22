@@ -12,7 +12,7 @@
 # - Equipment reservations represent the additional protective, containment,
 #   evidence-custody, and demolition stores committed to the recovery force.
 # - Outcome helpers consume, transfer, destroy, or accidentally release only
-#   the payload ledger already attached to var:target_state.
+#   the payload ledger at the selected state carried into the bridge event.
 # ============================================================================
 
 @BIO_FACILITY_SECURE_PREPARATION_DAYS = 21
@@ -92,7 +92,7 @@ types = {
 		fire_only_once = no
 		ai_min_success_chance = @BIO_FACILITY_AI_MIN_SUCCESS_CHANCE
 
-		category = biological_facility_recovery_raids
+		category = biological_raids
 		custom_map_icon = GFX_raid_type_icon_bio_facility_secure_preserve
 		equipment_icon = GFX_archetype_cbrn_instrument_equipment_medium
 		target_icon = GFX_other_target_icon
@@ -229,7 +229,7 @@ types = {
 			failure = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_failure_tt }
-					hidden_effect = { bio_facility_capture_secure_failure = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_secure } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_FAILURE_ORG_DAMAGE str_damage = @BIO_FACILITY_FAILURE_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_FAILURE_EXPERIENCE
 					add_raid_history_entry = yes
@@ -239,7 +239,7 @@ types = {
 			limited_success = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_limited_tt }
-					hidden_effect = { bio_facility_capture_secure_limited = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_secure } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_limited country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_LIMITED_ORG_DAMAGE str_damage = @BIO_FACILITY_LIMITED_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_LIMITED_EXPERIENCE
 					add_raid_history_entry = yes
@@ -249,7 +249,7 @@ types = {
 			success = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_success_tt }
-					hidden_effect = { bio_facility_capture_secure_success = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_secure } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_success country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_SUCCESS_ORG_DAMAGE str_damage = @BIO_FACILITY_SUCCESS_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_SUCCESS_EXPERIENCE
 					add_raid_history_entry = yes
@@ -259,7 +259,7 @@ types = {
 			critical_success = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_secure_critical_tt }
-					hidden_effect = { bio_facility_capture_secure_critical = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_secure } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_critical country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_CRITICAL_ORG_DAMAGE str_damage = @BIO_FACILITY_CRITICAL_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_CRITICAL_EXPERIENCE
 					add_raid_history_entry = yes
@@ -276,7 +276,7 @@ types = {
 		fire_only_once = no
 		ai_min_success_chance = @BIO_FACILITY_AI_MIN_SUCCESS_CHANCE
 
-		category = biological_facility_recovery_raids
+		category = biological_raids
 		custom_map_icon = GFX_raid_type_icon_bio_facility_destroy_safely
 		equipment_icon = GFX_archetype_decontamination_equipment_medium
 		target_icon = GFX_other_target_icon
@@ -415,7 +415,7 @@ types = {
 			failure = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_failure_tt }
-					hidden_effect = { bio_facility_capture_destroy_failure = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_destroy } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_FAILURE_ORG_DAMAGE str_damage = @BIO_FACILITY_FAILURE_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_FAILURE_EXPERIENCE
 					add_raid_history_entry = yes
@@ -425,7 +425,7 @@ types = {
 			limited_success = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_limited_tt }
-					hidden_effect = { bio_facility_capture_destroy_limited = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_destroy } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_limited country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_LIMITED_ORG_DAMAGE str_damage = @BIO_FACILITY_LIMITED_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_LIMITED_EXPERIENCE
 					add_raid_history_entry = yes
@@ -435,7 +435,7 @@ types = {
 			success = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_success_tt }
-					hidden_effect = { bio_facility_capture_destroy_success = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_destroy } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_success country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_SUCCESS_ORG_DAMAGE str_damage = @BIO_FACILITY_SUCCESS_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_SUCCESS_EXPERIENCE
 					add_raid_history_entry = yes
@@ -445,7 +445,7 @@ types = {
 			critical_success = {
 				actor_effects = {
 					var:actor_country = { custom_effect_tooltip = bio_facility_capture_destroy_critical_tt }
-					hidden_effect = { bio_facility_capture_destroy_critical = yes }
+					hidden_effect = { var:actor_country = { save_event_target_as = bio_facility_bridge_actor save_event_target_as = bio_facility_bridge_operation_destroy } var:target_state = { save_event_target_as = bio_facility_bridge_state } var:actor_country = { save_event_target_as = bio_facility_bridge_outcome_critical country_event = { id = biological_native_raid_bridge.4 } } }
 					raid_damage_units = { org_damage = @BIO_FACILITY_CRITICAL_ORG_DAMAGE str_damage = @BIO_FACILITY_CRITICAL_STRENGTH_DAMAGE ratio = yes }
 					raid_add_unit_experience = @BIO_FACILITY_CRITICAL_EXPERIENCE
 					add_raid_history_entry = yes

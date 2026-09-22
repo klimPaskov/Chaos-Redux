@@ -1,0 +1,37 @@
+# ============================================================================
+# CHAOS REDUX - CBRN PROJECT EQUIPMENT CXT REGISTRATION HOOKS
+# ============================================================================
+# Overview:
+# - Startup publishes the modifier-free carrier through a bounded existing
+#   country. The CXT-only daily fallback discovers it without granting stock.
+# ============================================================================
+
+on_actions = {
+	on_startup = {
+		effect = {
+			random_country = {
+				limit = { exists = yes }
+				cbrn_project_equipment_register_cxt_content = yes
+			}
+		}
+	}
+
+	on_daily_CXT = {
+		effect = {
+			if = {
+				limit = { has_country_flag = chaosx_test_country_initialized }
+				cbrn_project_equipment_register_cxt_content = yes
+				if = {
+					limit = {
+						check_variable = {
+							var = chaosx_test_country_extension_registration_added
+							value = constant:cbrn_math.zero
+							compare = greater_than
+						}
+					}
+					chaosx_test_country_sync_registered_content = yes
+				}
+			}
+		}
+	}
+}

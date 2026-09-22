@@ -6,8 +6,8 @@
 # ============================================================================
 # Overview:
 # - Validates four native exact-state land raids for ordinary biological agents.
-# - Requires full readiness, battlefield policy, a live Combined CBRN Overmatch
-#   headquarters posture, an enemy-held front, and the exact completed project.
+# - Requires full readiness, battlefield policy, theater headquarters knowledge,
+#   an enemy-held front, and the exact completed project.
 # - Keeps player target eligibility and route-aware AI policy separate.
 # - Contains no decision deployment, inferred state, periodic scan, estimator,
 #   proxy launch hook, or weaponized-zombie authorization.
@@ -95,27 +95,14 @@ bio_battlefield_country_has_any_agent_reserve = {
 	}
 }
 
-# Country scope. This proves a currently active, correctly coded, still-valid
-# Combined CBRN Overmatch command. The engine exposes no exact HQ-to-state link.
-bio_battlefield_country_has_active_overmatch_authorization = {
-	any_army_leader = {
-		has_trait = cbrn_hq_active_combined_overmatch
-		check_variable = {
-			var = cbrn_hq_operation_code
-			value = constant:cbrn_hq_operation.combined_overmatch
-			compare = equals
-		}
-		cbrn_hq_overmatch_command_is_valid = yes
-	}
-}
-
+# Country scope. Theater knowledge and readiness are sufficient for the native
+# preparation timer; a separate active headquarters order is not required.
 bio_battlefield_country_can_operate = {
 	has_war = yes
 	has_tech = theater_cbrn_headquarters
 	cbrn_country_has_full_readiness = yes
 	cbrn_policy_allows_battlefield_use = yes
 	bio_battlefield_country_has_any_agent_project = yes
-	bio_battlefield_country_has_active_overmatch_authorization = yes
 	bio_kruger_last_resort_authority_is_valid = yes
 }
 
@@ -155,7 +142,7 @@ bio_battlefield_can_prepare_against_from = {
 	cbrn_policy_allows_battlefield_use_against_from = yes
 }
 
-# Raid-instance scope after resolver event targets have been saved.
+# Actor-country event scope after the native callback saved exact targets.
 bio_battlefield_native_context_is_valid = {
 	has_event_target = bio_battlefield_actor
 	has_event_target = bio_battlefield_victim

@@ -1,5 +1,7 @@
 # Biological Warfare and Outbreaks
 
+> **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older requirements in this file. Use the amendment and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) before treating any role, policy, raid, project, limit, organization, or asset here as current design.
+
 ## Design role
 
 Biological warfare is a slow, uncertain, and potentially self-propagating weapon system. It is not chemical warfare with a longer state modifier. Its central mechanics are incubation, detection, spread, outbreak intensity, containment, attribution, mutation risk, and public-health capacity.

@@ -73,6 +73,7 @@ Use repo skills as required implementation guidance.
 - Use `chaos-redux-super-events` when a task creates, updates, researches, or wires a super-event.
 - Use `chaos-redux-focus-trees` before editing/viewing national focus trees.
 - Use `chaos-redux-decisions-missions` before editing decisions/missions
+- Use `chaos-redux-native-raids` before implementing or auditing native raid types, callback scope, event bridges, equipment payments, or outcome tooltips.
 - Use `chaos-redux-scripted-gui` for scripted GUI reference images before implementation, native layout, visual and usability review, and mandatory MCP before-and-after evidence.
 - Use `chaosx_event_ui_worker` when a named event specifically introduces a dedicated scripted GUI or mechanic window. It follows the reference-image and layout rules in `chaos-redux-scripted-gui`, and must use the HOI4 MCP GUI inspect, render, and post-change comparison workflow. Never route the shared event log, event-details framework, settings UI, super-event framework, shared registries, or unrelated existing UIs to this worker.
 - Use `chaos-redux-mtth` when MTTH logic or weighted timing would reduce clutter or make AI and release logic clearer.

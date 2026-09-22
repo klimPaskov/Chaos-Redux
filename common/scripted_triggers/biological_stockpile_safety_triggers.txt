@@ -67,8 +67,8 @@ bio_stockpile_safety_incident_is_doomsday_release = {
 }
 
 # Country scope. The pointer is the only accepted arsenal state. The caller
-# must set the designation flag and source after an exact UI selection or an
-# exact special-project facility_state proof. No completed-project lookup is
+# must set the designation flag and source after an exact special-project
+# facility proof or a bounded internal repair. No completed-project lookup is
 # attempted here.
 bio_stockpile_safety_arsenal_pointer_source_is_valid = {
 	has_variable = bio_stockpile_safety_arsenal_pointer_source
@@ -86,8 +86,16 @@ bio_stockpile_safety_arsenal_pointer_source_is_valid = {
 	}
 }
 
-# State scope, called from a state-target decision or exact special-project
-# facility_state_effects. ROOT remains the selecting country.
+# Country scope. A previously verified project may request one bounded repair
+# attempt when its stored arsenal pointer is no longer valid. This trigger does
+# not scan states and never enables a country that has no registration history.
+bio_stockpile_safety_arsenal_reselection_is_needed = {
+	has_country_flag = bio_stockpile_safety_arsenal_designation_history
+	NOT = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
+}
+
+# State scope, called from exact special-project facility effects or the
+# bounded internal reselection helper. ROOT remains the owning country.
 bio_stockpile_safety_state_is_valid_designation_candidate = {
 	scope_exists = yes
 	impassable = no

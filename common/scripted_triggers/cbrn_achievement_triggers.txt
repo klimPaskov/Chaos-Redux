@@ -13,6 +13,29 @@ cbrn_achievement_human_campaign_is_eligible = {
 	has_country_flag = cbrn_achievement_start_country_eligible
 }
 
+# Country scope inside the accepted chemical action record. The bridge keeps
+# route markers only through the exact native raid outcome effect chain.
+cbrn_achievement_action_is_verified_native_land_raid = {
+	OR = {
+		AND = {
+			has_event_target = cbrn_land_bridge_route_cylinder_release
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals }
+		}
+		AND = {
+			has_event_target = cbrn_land_bridge_route_projector_barrage
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals }
+		}
+		AND = {
+			has_event_target = cbrn_land_bridge_route_artillery_fire_plan
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals }
+		}
+		AND = {
+			has_event_target = cbrn_land_bridge_route_armored_delivery
+			check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals }
+		}
+	}
+}
+
 cbrn_achievement_masks_before_guns_is_complete = {
 	cbrn_achievement_human_campaign_is_eligible = yes
 	NOT = { has_country_flag = cbrn_achievement_enemy_confirmed_chemical_use }

@@ -1,5 +1,7 @@
 # Event 020 Dedicated Response Category Correction
 
+> **Presentation disposition:** The 2026-08-21 [dedicated scripted GUI correction](2026-08-21_dedicated_response_scripted_gui.md) supersedes the text-only and “No new scripted GUI is required” instructions below. This document continues to govern the two decision-category ownership boundaries; neither category is a CBRN raid category.
+
 This correction supersedes every earlier Event 020 instruction that forbids a dedicated Black Plague decision category.
 
 Event 020 uses two coordinated decision surfaces:

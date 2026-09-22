@@ -2,11 +2,14 @@
 # CHAOS REDUX - CBRN REGIMENTAL SUPPORT AI TEMPLATES
 # ============================================================================
 # Overview:
-# - Defines protected-line, hazard-assault, chemical-artillery,
-#   armored-delivery, protected-garrison, coercive-suppression, and
+# - Defines protected-line, chemical-assault, chemical-artillery,
+#   light/medium/heavy armored-delivery, protected-garrison, security, and
 #   biosecurity formations without replacing any vanilla template file.
-# - Every target is country-gated by its unlocks, complete standing-equipment
-#   bill and, for offensive roles, current use policy and real payload stock.
+# - Every target is country-gated by its unlocks and complete standing-equipment
+#   bill. Chemical artillery and armored delivery additionally require current
+#   use policy, a country-level CBRN programme or war state, and real strategic
+#   agent-lot and role-specific chassis stock. Native operations still validate
+#   the exact selected target before release.
 # - Native enable and can_upgrade_in_field gates respond to doctrine, threat,
 #   HQ preparation, stock, fuel, resistance, contamination, and outbreak state.
 #   No scripted pulse, destructive template deletion, or inferred operation
@@ -25,7 +28,9 @@
 @CBRN_AI_TEMPLATE_ASSAULT_CHAOS = 3
 @CBRN_AI_TEMPLATE_CHEMICAL_ARTILLERY_INFANTRY = 6
 @CBRN_AI_TEMPLATE_CHEMICAL_ARTILLERY_BATTERIES = 3
+@CBRN_AI_TEMPLATE_ARMORED_LIGHT = 3
 @CBRN_AI_TEMPLATE_ARMORED_MEDIUM = 3
+@CBRN_AI_TEMPLATE_ARMORED_HEAVY = 3
 @CBRN_AI_TEMPLATE_ARMORED_MOTORIZED = 7
 @CBRN_AI_TEMPLATE_GARRISON_INFANTRY = 4
 @CBRN_AI_TEMPLATE_SUPPRESSION_CAVALRY = 9
@@ -76,7 +81,7 @@ cbrn_chemical_assault_templates = {
 		target_template = {
 			regimental_support = {
 				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
-				cbrn_hazard_pioneer_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_chemical_projector_battery = @CBRN_AI_TEMPLATE_INCLUDED
 				cbrn_chemical_recon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
 			}
 
@@ -121,11 +126,31 @@ cbrn_armored_assault_templates = {
 
 	upgrade_prio = { base = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
 
+	cbrn_light_armored_assault_10 = {
+		reinforce_prio = @CBRN_AI_TEMPLATE_ELITE_PRIORITY
+		upgrade_prio = { base = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_light_armored_delivery_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_light_armored_delivery_template_stock = yes }
+
+		target_template = {
+			regimental_support = {
+				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_chemical_recon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_light_armored_delivery_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+			}
+
+			regiments = {
+				light_armor = @CBRN_AI_TEMPLATE_ARMORED_LIGHT
+				motorized = @CBRN_AI_TEMPLATE_ARMORED_MOTORIZED
+			}
+		}
+	}
+
 	cbrn_medium_armored_assault_10 = {
 		reinforce_prio = @CBRN_AI_TEMPLATE_ELITE_PRIORITY
 		upgrade_prio = { base = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
-		enable = { cbrn_country_can_field_armored_delivery_template = yes }
-		can_upgrade_in_field = { cbrn_country_has_armored_delivery_template_stock = yes }
+		enable = { cbrn_country_can_field_medium_armored_delivery_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_medium_armored_delivery_template_stock = yes }
 
 		target_template = {
 			regimental_support = {
@@ -136,6 +161,26 @@ cbrn_armored_assault_templates = {
 
 			regiments = {
 				medium_armor = @CBRN_AI_TEMPLATE_ARMORED_MEDIUM
+				motorized = @CBRN_AI_TEMPLATE_ARMORED_MOTORIZED
+			}
+		}
+	}
+
+	cbrn_heavy_armored_assault_10 = {
+		reinforce_prio = @CBRN_AI_TEMPLATE_ELITE_PRIORITY
+		upgrade_prio = { base = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
+		enable = { cbrn_country_can_field_heavy_armored_delivery_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_heavy_armored_delivery_template_stock = yes }
+
+		target_template = {
+			regimental_support = {
+				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_chemical_recon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_heavy_armored_delivery_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+			}
+
+			regiments = {
+				heavy_armor = @CBRN_AI_TEMPLATE_ARMORED_HEAVY
 				motorized = @CBRN_AI_TEMPLATE_ARMORED_MOTORIZED
 			}
 		}
@@ -163,7 +208,7 @@ cbrn_protected_garrison_templates = {
 		target_template = {
 			regimental_support = {
 				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
-				cbrn_field_epidemiology_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_medical_countermeasure_detachment = @CBRN_AI_TEMPLATE_INCLUDED
 				cbrn_biosecurity_assault_detachment = @CBRN_AI_TEMPLATE_INCLUDED
 			}
 
@@ -182,20 +227,20 @@ cbrn_coercive_suppression_templates = {
 		base = @CBRN_AI_TEMPLATE_ROLE_WEIGHT
 		modifier = {
 			factor = @CBRN_AI_TEMPLATE_ROLE_URGENT_WEIGHT
-			cbrn_country_can_field_nerve_suppression_template = yes
+			cbrn_country_can_field_coercive_security_template = yes
 		}
 	}
 
 	cbrn_coercive_suppression_9 = {
 		reinforce_prio = @CBRN_AI_TEMPLATE_NORMAL_PRIORITY
 		upgrade_prio = { base = @CBRN_AI_TEMPLATE_ROLE_WEIGHT }
-		enable = { cbrn_country_can_field_nerve_suppression_template = yes }
-		can_upgrade_in_field = { cbrn_country_has_nerve_suppression_template_stock = yes }
+		enable = { cbrn_country_can_field_coercive_security_template = yes }
+		can_upgrade_in_field = { cbrn_country_has_coercive_security_template_stock = yes }
 
 		target_template = {
 			regimental_support = {
 				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
-				cbrn_nerve_suppression_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_biosecurity_assault_detachment = @CBRN_AI_TEMPLATE_INCLUDED
 			}
 
 			regiments = {
@@ -226,7 +271,7 @@ cbrn_containment_templates = {
 		target_template = {
 			regimental_support = {
 				cbrn_gas_mask_decon_detachment = @CBRN_AI_TEMPLATE_INCLUDED
-				cbrn_field_epidemiology_detachment = @CBRN_AI_TEMPLATE_INCLUDED
+				cbrn_medical_countermeasure_detachment = @CBRN_AI_TEMPLATE_INCLUDED
 				cbrn_biosecurity_assault_detachment = @CBRN_AI_TEMPLATE_INCLUDED
 			}
 

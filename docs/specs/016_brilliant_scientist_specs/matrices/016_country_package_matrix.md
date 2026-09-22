@@ -78,7 +78,7 @@ Host takeover is an institutional-capture origin and never a territorial fallbac
 | Biological | Medical safety, actual native equipment, and delivery | Containment and production | Foreign samples or facilities | Outbreak and condemnation |
 | Mixed synthesis | Every specialized supply | Project-caste economy | Submission network | Overload and internal conflict |
 
-The biological rows are binding requirements for actual equipment, containment, production, staging, and delivery behavior, not evidence for an Event 016 numeric quantity ledger. The former parallel stockpile and native-reservation ledger proposal is retired. Native raids own reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, and confirmed-use attribution, while Event 016 decision-led deployments use separate receipts documented in [`docs/events/016_brilliant_scientist/systems/biological_operations.md`](../../../events/016_brilliant_scientist/systems/biological_operations.md). Tranche 4 source review and MCP transaction acceptance remain unresolved.
+The biological rows require actual pathogen equipment, containment, ordinary production, and native delivery; they do not authorize a separate Event 016 numeric quantity ledger, staging directive, or attack decision. The [current biological operations guide](../../../events/016_brilliant_scientist/systems/biological_operations.md) records the eighteen native raids and their source-level reservation and outcome boundary. Native cancellation accounting, reserved-stock disposal, distant Portal pathfinding, and complete MCP transaction evidence remain unresolved.
 
 ## Diplomacy matrix
 

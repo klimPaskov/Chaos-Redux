@@ -4,12 +4,10 @@
 # Overview:
 # - Converts the four native raid outcomes into the five accepted chemical-air
 #   outcomes: aborted, failed, partial, success, and catastrophic success.
-# - Treats native essential_equipment collection as the reservation proof,
-#   calculates exact net consumption, and refunds the unused class-specific
-#   model to the actor country.
-# - Keeps payload consumption separate from delivered-dose efficiency so a
-#   partial raid can consume most of its reservation without fabricating a
-#   full target release.
+# - Treats native essential_equipment collection as the sole payload payment;
+#   the full collected quantity is the raid's consumed amount for every result.
+# - Keeps delivered-dose efficiency separate from payload payment so a partial
+#   raid cannot fabricate a full target release.
 # - Records aborted/failed exact-state attempts through a dedicated evidence
 #   and Condemnation path that cannot create target exposure or confirmed-use
 #   history.
@@ -17,9 +15,8 @@
 #   or dispatch exposure. The explicit native-raid adapter below supplies the
 #   selected-state target, protection, and native outcome condition receipt
 #   before calling the shared exposure pipeline.
-# - Country scope is required. Public callers supply cbrn_raid_agent and one
-#   engine-outcome code from a native raid block whose raid type reserves
-#   exactly the matching class archetype.
+# - Actor-country ROOT is required. The hidden raid bridge reconstructs the
+#   agent, route, and engine outcome from regular event targets.
 # ============================================================================
 
 cbrn_chemical_air_raid_set_agent_class_internal = {
@@ -107,32 +104,10 @@ cbrn_chemical_air_raid_select_result_internal = {
 }
 
 cbrn_chemical_air_raid_set_consumption_and_dose_internal = {
-	set_temp_variable = { cbrn_raid_consumption_ratio = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_raid_intended_dose_ratio = constant:cbrn_math.zero }
 
 	if = {
-		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.aborted compare = equals } }
-		set_temp_variable_to_random = {
-			var = cbrn_raid_consumption_ratio
-			min = constant:cbrn_chemical_raid_outcome.aborted_consumption_min
-			max = constant:cbrn_chemical_raid_outcome.aborted_consumption_max
-		}
-	}
-	else_if = {
-		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.failed compare = equals } }
-		set_temp_variable_to_random = {
-			var = cbrn_raid_consumption_ratio
-			min = constant:cbrn_chemical_raid_outcome.failed_consumption_min
-			max = constant:cbrn_chemical_raid_outcome.failed_consumption_max
-		}
-	}
-	else_if = {
 		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.partial compare = equals } }
-		set_temp_variable_to_random = {
-			var = cbrn_raid_consumption_ratio
-			min = constant:cbrn_chemical_raid_outcome.partial_consumption_min
-			max = constant:cbrn_chemical_raid_outcome.partial_consumption_max
-		}
 		if = {
 			limit = { cbrn_designer_has_controlled_dispersal = yes }
 			set_temp_variable_to_random = {
@@ -151,12 +126,10 @@ cbrn_chemical_air_raid_set_consumption_and_dose_internal = {
 	}
 	else_if = {
 		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.success compare = equals } }
-		set_temp_variable = { cbrn_raid_consumption_ratio = constant:cbrn_chemical_raid_outcome.success_consumption }
 		set_temp_variable = { cbrn_raid_intended_dose_ratio = constant:cbrn_chemical_raid_outcome.success_dose }
 	}
 	else_if = {
 		limit = { check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.catastrophic compare = equals } }
-		set_temp_variable = { cbrn_raid_consumption_ratio = constant:cbrn_chemical_raid_outcome.catastrophic_consumption }
 		if = {
 			limit = { cbrn_designer_has_controlled_dispersal = yes }
 			set_temp_variable_to_random = {
@@ -174,61 +147,14 @@ cbrn_chemical_air_raid_set_consumption_and_dose_internal = {
 		}
 	}
 
+	# Native essential_equipment supplies the full route cost; this outcome adds no debit or refund.
 	set_temp_variable = { cbrn_action_payload_consumed = cbrn_action_payload_required }
-	multiply_temp_variable = { cbrn_action_payload_consumed = cbrn_raid_consumption_ratio }
-	round_temp_variable = cbrn_action_payload_consumed
-	clamp_temp_variable = {
-		var = cbrn_action_payload_consumed
-		min = constant:cbrn_math.zero
-		max = cbrn_action_payload_required
-	}
 
 	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
 	if = {
-		limit = {
-			check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero }
-			check_variable = { cbrn_raid_intended_dose_ratio > constant:cbrn_math.zero }
-		}
-		set_temp_variable = { cbrn_raid_payload_ratio = cbrn_action_payload_consumed }
-		divide_temp_variable = { cbrn_raid_payload_ratio = cbrn_action_payload_required }
+		limit = { check_variable = { cbrn_raid_intended_dose_ratio > constant:cbrn_math.zero } }
 		set_temp_variable = { cbrn_action_release_efficiency_mult = cbrn_raid_intended_dose_ratio }
-		divide_temp_variable = { cbrn_action_release_efficiency_mult = cbrn_raid_payload_ratio }
 		set_temp_variable = { cbrn_raid_release_proof = constant:cbrn_proof.supplied }
-	}
-}
-
-cbrn_chemical_air_raid_refund_unused_payload_internal = {
-	set_temp_variable = { cbrn_raid_payload_refund = cbrn_action_payload_required }
-	subtract_from_temp_variable = { cbrn_raid_payload_refund = cbrn_action_payload_consumed }
-	round_temp_variable = cbrn_raid_payload_refund
-
-	if = {
-		limit = {
-			check_variable = { cbrn_raid_payload_refund > constant:cbrn_math.zero }
-			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.choking compare = equals }
-		}
-		add_equipment_to_stockpile = { type = choking_chemical_air_payload_lot_1 amount = cbrn_raid_payload_refund }
-	}
-	else_if = {
-		limit = {
-			check_variable = { cbrn_raid_payload_refund > constant:cbrn_math.zero }
-			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.blister compare = equals }
-		}
-		add_equipment_to_stockpile = { type = blister_chemical_air_payload_lot_1 amount = cbrn_raid_payload_refund }
-	}
-	else_if = {
-		limit = {
-			check_variable = { cbrn_raid_payload_refund > constant:cbrn_math.zero }
-			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
-		}
-		add_equipment_to_stockpile = { type = nerve_chemical_air_payload_lot_1 amount = cbrn_raid_payload_refund }
-	}
-	else_if = {
-		limit = {
-			check_variable = { cbrn_raid_payload_refund > constant:cbrn_math.zero }
-			check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.incapacitating compare = equals }
-		}
-		add_equipment_to_stockpile = { type = incapacitating_chemical_air_payload_lot_1 amount = cbrn_raid_payload_refund }
 	}
 }
 
@@ -252,10 +178,7 @@ cbrn_resolve_chemical_air_raid_reservation = {
 	set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_raid_failure_split_roll = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_raid_consumption_ratio = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_raid_intended_dose_ratio = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_raid_payload_ratio = constant:cbrn_math.zero }
-	set_temp_variable = { cbrn_raid_payload_refund = constant:cbrn_math.zero }
 	set_temp_variable = { cbrn_raid_release_proof = constant:cbrn_proof.missing }
 	set_temp_variable = { cbrn_raid_reservation_proof = constant:cbrn_proof.missing }
 
@@ -268,7 +191,6 @@ cbrn_resolve_chemical_air_raid_reservation = {
 			check_variable = { var = cbrn_raid_result value = constant:cbrn_chemical_raid_result.none compare = not_equals }
 		}
 		cbrn_chemical_air_raid_set_consumption_and_dose_internal = yes
-		cbrn_chemical_air_raid_refund_unused_payload_internal = yes
 		if = {
 			limit = { check_variable = { cbrn_action_payload_consumed > constant:cbrn_math.zero } }
 			set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
@@ -299,9 +221,9 @@ cbrn_chemical_air_raid_convert_rejected_release_to_attempt_internal = {
 }
 
 cbrn_resolve_chemical_air_raid_outcome = {
-	var:actor_country = { save_event_target_as = cbrn_action_actor }
-	var:target_state = { save_event_target_as = cbrn_action_target_state }
-	var:victim_country = { save_event_target_as = cbrn_action_victim_country }
+	event_target:cbrn_chem_air_bridge_actor = { save_event_target_as = cbrn_action_actor }
+	event_target:cbrn_chem_air_bridge_target_state = { save_event_target_as = cbrn_action_target_state }
+	event_target:cbrn_chem_air_bridge_victim_country = { save_event_target_as = cbrn_action_victim_country }
 
 	cbrn_resolve_chemical_air_raid_reservation = yes
 
@@ -310,8 +232,8 @@ cbrn_resolve_chemical_air_raid_outcome = {
 			cbrn_chemical_air_raid_reservation_is_resolved = yes
 			cbrn_chemical_air_raid_result_has_release = yes
 		}
-		var:actor_country = { save_event_target_as = cbrn_action_actor }
-		var:target_state = { save_event_target_as = cbrn_action_target_state }
+		event_target:cbrn_chem_air_bridge_actor = { save_event_target_as = cbrn_action_actor }
+		event_target:cbrn_chem_air_bridge_target_state = { save_event_target_as = cbrn_action_target_state }
 		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
 		cbrn_chemical_air_raid_set_action_metadata_internal = yes
 		cbrn_resolve_action_target_protection = yes
@@ -337,8 +259,8 @@ cbrn_resolve_chemical_air_raid_outcome = {
 			cbrn_chemical_air_raid_reservation_is_resolved = yes
 			cbrn_chemical_air_raid_result_has_no_release = yes
 		}
-		var:actor_country = { save_event_target_as = cbrn_action_actor }
-		var:target_state = { save_event_target_as = cbrn_action_target_state }
+		event_target:cbrn_chem_air_bridge_actor = { save_event_target_as = cbrn_action_actor }
+		event_target:cbrn_chem_air_bridge_target_state = { save_event_target_as = cbrn_action_target_state }
 		set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
 		cbrn_dispatch_failed_chemical_air_raid_attempt = yes
 	}

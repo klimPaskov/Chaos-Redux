@@ -17,24 +17,33 @@ scripted_gui = {
 
 		triggers = {
 			black_plague_response_gui_progress_fill_1_visible = {
+				has_variable = black_plague_countermeasure_progress
 				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.low_band compare = greater_than_or_equals }
 			}
 			black_plague_response_gui_progress_fill_2_visible = {
+				has_variable = black_plague_countermeasure_progress
 				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.medium_band compare = greater_than_or_equals }
 			}
 			black_plague_response_gui_progress_fill_3_visible = {
+				has_variable = black_plague_countermeasure_progress
 				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.high_band compare = greater_than_or_equals }
 			}
 			black_plague_response_gui_progress_fill_4_visible = {
+				has_variable = black_plague_countermeasure_progress
 				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.extreme_band compare = greater_than_or_equals }
 			}
 			black_plague_response_gui_progress_fill_5_visible = {
+				has_variable = black_plague_countermeasure_progress
 				check_variable = { var = black_plague_countermeasure_progress value = constant:black_plague_value.maximum compare = greater_than_or_equals }
 			}
 			black_plague_response_gui_capacity_warning_visible = {
-				OR = {
-					NOT = { has_variable = black_plague_response_capacity_remaining }
-					NOT = { check_variable = { var = black_plague_response_capacity_remaining value = constant:black_plague_value.zero compare = greater_than } }
+				AND = {
+					has_variable = black_plague_response_capacity
+					check_variable = { var = black_plague_response_capacity value = constant:black_plague_value.zero compare = greater_than }
+					OR = {
+						NOT = { has_variable = black_plague_response_capacity_remaining }
+						NOT = { check_variable = { var = black_plague_response_capacity_remaining value = constant:black_plague_value.zero compare = greater_than } }
+					}
 				}
 			}
 		}

@@ -61,13 +61,14 @@ for(const p of [
 }
 const ast=parse(source.gates), definitions=Object.fromEntries(ast.map(x=>[x.k,x.v]));
 const literals=Object.fromEntries(ast.filter(x=>x.k.startsWith("@")).map(x=>[x.k,Number(x.v)]));
-function number(token,state) {
+const cloneDecisionLiterals=Object.fromEntries(parse(source.cloneDecision).filter(x=>x.k.startsWith("@")).map(x=>[x.k,Number(x.v)]));
+function number(token,state,localLiterals=literals) {
   if(token in constants) return constants[token];
-  if(token in literals) return literals[token];
+  if(token in localLiterals) return localLiterals[token];
   if(token==="political_power")return state.pp;
   if(token.endsWith("^num"))return (state.arrays?.[token.slice(0,-4)]||[]).length;
   if(token.includes("^")&&state.arrays?.[token.split("^")[0]]){
-    const [array,index]=token.split("^");return state.arrays[array][number(index,state)]||0;
+    const [array,index]=token.split("^");return state.arrays[array][number(index,state,localLiterals)]||0;
   }
   if(token.startsWith("mengele_event016_active_project_stage_entries^"))
     return state.active[Number(token.split("^")[1])]||0;
@@ -412,7 +413,7 @@ const terminal=block(source.terminalEffects,"brilliant_scientist_cleanup_transie
 const terminalCloneHook=terminal.filter(n=>n.k===clonePrefix+"cleanup_clone_maturation");
 const walk=seq=>seq.flatMap(n=>[n,...(Array.isArray(n.v)?walk(n.v):[])]);
 const wrapperCheck=(label,condition)=>check("maturationWrapper",label,condition),mentions=(seq,k)=>walk(seq).some(n=>n.k===k);
-wrapperCheck("native PP zero, custom row and PP planning65",field("cost")==="0"&&field("custom_cost_text")==="clone_maturation_custom_cost"&&number(field("ai_hint_pp_cost"),{})===65);
+wrapperCheck("native PP zero, custom row and PP planning65",field("cost")==="0"&&field("custom_cost_text")==="clone_maturation_custom_cost"&&number(field("ai_hint_pp_cost"),{},cloneDecisionLiterals)===65);
 wrapperCheck("same inclusive affordability in admission and custom cost",mentions(field("available"),clonePrefix+"clone_maturation_can_pay")&&mentions(field("custom_cost_trigger"),clonePrefix+"clone_maturation_can_pay"));
 const cicToken=field("modifier").find(n=>n.k==="civilian_factory_use").v;
 const cicMirror=source.cloneDecision.match(new RegExp("^"+cicToken+"\\s*=\\s*(\\d+)","m"));

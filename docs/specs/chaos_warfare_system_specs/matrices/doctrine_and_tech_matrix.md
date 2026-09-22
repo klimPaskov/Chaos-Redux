@@ -1,5 +1,7 @@
 # Doctrine and Technology Matrix
 
+> **Historical planning matrix:** The accepted 2026-09-20 CBRN amendment and the final retuned source in `common/doctrines/`, `common/ideas/cbw_spirits.txt`, `common/country_leader/cbrn_high_command_traits.txt`, and `common/technologies/chaosx_technologies.txt` supersede numerical rewards and technology assumptions in the rows below. The current country- and spirit-slot-legal source upper bounds are in `docs/systems/cbrn_warfare/chaos_warfare_doctrine.md` and the CBRN requirement ledger; engine aggregation remains unverified. Do not use this older matrix to authorize new rewards or to claim a combined cap.
+
 ## Grand doctrine
 
 | Item | Requirement | Cost or burden | Unlock | Permanent effect target | Operational effect | Main risk |

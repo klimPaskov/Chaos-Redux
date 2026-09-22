@@ -1,0 +1,177 @@
+# CBRN CHEMICAL AND PROTECTIVE INDUSTRY
+# Overview: three common foundations, exclusive four-trait respirator and
+# decontamination branches, and one shared capstone.
+# Native bonuses stay inside exact mask/decontamination archetypes. File-local
+# constants are required because MIO native bonus fields do not parse constants.
+@cbrn_protection_research = 0.20
+@cbrn_protection_tasks = 3
+@cbrn_protection_initial_cost = -0.04
+@cbrn_protection_initial_research = 0.05
+@cbrn_protection_low_quality = 0.05
+@cbrn_protection_medium_quality = 0.08
+@cbrn_protection_high_quality = 0.10
+@cbrn_protection_low_cost = 0.03
+@cbrn_protection_medium_cost = 0.08
+@cbrn_protection_high_cost = 0.10
+@cbrn_protection_low_capacity = 0.10
+@cbrn_protection_high_capacity = 0.12
+@cbrn_protection_cost_saving = -0.08
+@cbrn_protection_cap_research = 0.04
+@cbrn_protection_cap_gain = 0.06
+@cbrn_protection_ai_base = 1
+@cbrn_protection_ai_low = 0.5
+@cbrn_protection_ai_high = 2
+@cbrn_protection_ai_zero = 0
+
+cbrn_chemical_protection_consortium = {
+	icon = GFX_cbrn_protective_equipment_consortium
+	allowed = { always = yes }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } OR = { cbrn_country_has_program = yes has_tech = basic_gas_masks has_tech = field_decontamination_kits } } }
+	available = { FROM = { OR = { cbrn_country_has_program = yes has_tech = basic_gas_masks has_tech = field_decontamination_kits } } }
+	equipment_type = { gas_mask_equipment decontamination_equipment }
+	research_categories = { gas_masks_tech decontamination_tech }
+	research_bonus = @cbrn_protection_research
+	task_capacity = @cbrn_protection_tasks
+	ai_will_do = {
+		factor = @cbrn_protection_ai_base
+		modifier = { factor = @cbrn_protection_ai_zero FROM = { is_actual_nonhuman_country = yes } }
+		modifier = { factor = @cbrn_protection_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } }
+		modifier = { factor = @cbrn_protection_ai_high FROM = { cbrn_country_controls_chemical_contamination = yes } }
+	}
+	tree_header_text = { text = cbrn_protection_header_military x = 2 }
+	tree_header_text = { text = cbrn_decon_header_field_systems x = 7 }
+	initial_trait = {
+		name = cbrn_chemical_protection_consortium_initial_trait
+		equipment_bonus = { build_cost_ic = @cbrn_protection_initial_cost }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_protection_initial_research }
+	}
+
+	trait = {
+		token = cbrn_chemistry_mask_stock_standard
+		name = cbrn_chemistry_mask_stock_standard
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 2 y = 0 }
+		limit_to_equipment_type = { gas_mask_equipment }
+		equipment_bonus = { reliability = @cbrn_protection_low_quality }
+	}
+	trait = {
+		token = cbrn_protection_mass_civilian_pattern
+		name = cbrn_protection_mass_civilian_pattern
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 4 y = 0 }
+		all_parents = { cbrn_chemistry_mask_stock_standard }
+		limit_to_equipment_type = { gas_mask_equipment }
+		production_bonus = { production_capacity_factor = @cbrn_protection_low_capacity }
+		on_complete = { custom_effect_tooltip = cbrn_protection_mass_civilian_pattern_tt }
+	}
+	trait = {
+		token = cbrn_chemistry_containment_protocols
+		name = cbrn_chemistry_containment_protocols
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 6 y = 0 }
+		all_parents = { cbrn_protection_mass_civilian_pattern }
+		limit_to_equipment_type = { decontamination_equipment }
+		equipment_bonus = { reliability = @cbrn_protection_low_quality }
+	}
+
+	# Field protection: durable kit and sealed uniforms cost more but last longer.
+	trait = {
+		token = cbrn_protection_durable_filter_canisters
+		name = cbrn_protection_durable_filter_canisters
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 2 y = 1 }
+		all_parents = { cbrn_chemistry_containment_protocols }
+		mutually_exclusive = { cbrn_decon_truck_mounted_wash_systems }
+		limit_to_equipment_type = { gas_mask_equipment }
+		equipment_bonus = { reliability = @cbrn_protection_high_quality build_cost_ic = @cbrn_protection_low_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_durable_filter_canisters_tt }
+		ai_will_do = { base = @cbrn_protection_ai_base modifier = { factor = @cbrn_protection_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } } }
+	}
+	trait = {
+		token = cbrn_protection_protective_clothing_sets
+		name = cbrn_protection_protective_clothing_sets
+		icon = GFX_generic_mio_trait_icon_defense
+		position = { x = 2 y = 2 }
+		all_parents = { cbrn_protection_durable_filter_canisters }
+		limit_to_equipment_type = { gas_mask_equipment_3 gas_mask_equipment_4 }
+		equipment_bonus = { build_cost_ic = @cbrn_protection_medium_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_protective_clothing_sets_tt }
+	}
+	trait = {
+		token = cbrn_protection_low_resistance_facepiece
+		name = cbrn_protection_low_resistance_facepiece
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 2 y = 3 }
+		all_parents = { cbrn_protection_protective_clothing_sets }
+		limit_to_equipment_type = { gas_mask_equipment }
+		equipment_bonus = { reliability = @cbrn_protection_low_quality build_cost_ic = @cbrn_protection_low_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_low_resistance_facepiece_tt }
+	}
+	trait = {
+		token = cbrn_protection_sealed_assault_ensemble
+		name = cbrn_protection_sealed_assault_ensemble
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 2 y = 4 }
+		all_parents = { cbrn_protection_low_resistance_facepiece }
+		available = { FROM = { has_tech = sealed_assault_protection } }
+		limit_to_equipment_type = { gas_mask_equipment_4 }
+		equipment_bonus = { reliability = @cbrn_protection_medium_quality build_cost_ic = @cbrn_protection_high_cost }
+		on_complete = { custom_effect_tooltip = cbrn_protection_sealed_assault_ensemble_tt }
+	}
+
+	# Decontamination plant: economical wash gear and reinforced recovery columns.
+	trait = {
+		token = cbrn_decon_truck_mounted_wash_systems
+		name = cbrn_decon_truck_mounted_wash_systems
+		icon = GFX_generic_mio_trait_icon_build_cost_ic
+		position = { x = 7 y = 1 }
+		all_parents = { cbrn_chemistry_containment_protocols }
+		mutually_exclusive = { cbrn_protection_durable_filter_canisters }
+		available = { FROM = { has_tech = field_decontamination_kits } }
+		limit_to_equipment_type = { decontamination_equipment }
+		production_bonus = { production_cost_factor = @cbrn_protection_cost_saving }
+		on_complete = { custom_effect_tooltip = cbrn_decon_truck_mounted_wash_systems_tt }
+		ai_will_do = { base = @cbrn_protection_ai_base modifier = { factor = @cbrn_protection_ai_high FROM = { cbrn_country_controls_chemical_contamination = yes } } modifier = { factor = @cbrn_protection_ai_low FROM = { cbrn_profile_is_mass_civil_defence = yes } } }
+	}
+	trait = {
+		token = cbrn_decon_low_water_process
+		name = cbrn_decon_low_water_process
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 7 y = 2 }
+		all_parents = { cbrn_decon_truck_mounted_wash_systems }
+		limit_to_equipment_type = { decontamination_equipment }
+		equipment_bonus = { reliability = @cbrn_protection_low_quality }
+		on_complete = { custom_effect_tooltip = cbrn_decon_low_water_process_tt }
+	}
+	trait = {
+		token = cbrn_decon_vehicle_recovery_teams
+		name = cbrn_decon_vehicle_recovery_teams
+		icon = GFX_generic_mio_trait_icon_reliability
+		position = { x = 7 y = 3 }
+		all_parents = { cbrn_decon_low_water_process }
+		limit_to_equipment_type = { decontamination_equipment }
+		equipment_bonus = { reliability = @cbrn_protection_high_quality build_cost_ic = @cbrn_protection_low_cost }
+		on_complete = { custom_effect_tooltip = cbrn_decon_vehicle_recovery_teams_tt }
+	}
+	trait = {
+		token = cbrn_decon_rapid_route_clearance
+		name = cbrn_decon_rapid_route_clearance
+		icon = GFX_generic_mio_trait_icon_production_capacity
+		position = { x = 7 y = 4 }
+		all_parents = { cbrn_decon_vehicle_recovery_teams }
+		limit_to_equipment_type = { decontamination_equipment }
+		production_bonus = { production_capacity_factor = @cbrn_protection_high_capacity }
+		on_complete = { custom_effect_tooltip = cbrn_decon_rapid_route_clearance_tt }
+	}
+	trait = {
+		token = cbrn_chemistry_integrated_response
+		name = cbrn_chemistry_integrated_response
+		icon = GFX_generic_mio_department_icon_support_production
+		special_trait_background = yes
+		position = { x = 4 y = 4 }
+		any_parent = { cbrn_protection_sealed_assault_ensemble cbrn_decon_rapid_route_clearance }
+		production_bonus = { production_efficiency_gain_factor = @cbrn_protection_cap_gain }
+		organization_modifier = { military_industrial_organization_research_bonus = @cbrn_protection_cap_research }
+	}
+}

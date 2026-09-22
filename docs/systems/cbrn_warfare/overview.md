@@ -34,18 +34,18 @@ Military mask accounting keeps two native surfaces distinct: protection reads ac
 ### National
 
 - Chemical Readiness, 0 to 100, capped by actual milestones and institutions
-- one use policy: defensive, retaliation, battlefield, strategic, or unrestricted
+- one of three use policies: Retaliation Only, Battlefield Authorization, or Unrestricted Authorization
 - decontamination, medical, biological-security, attribution-control, and command-integration capacities
 - real protective and offensive stockpiles
 - differentiated AI program posture and country profile
 
 ### Army Headquarters
 
-Army Headquarters is the theater layer. Six CBRN companies provide operations planning, intelligence and weather, protective logistics, mobile decontamination, medical direction, and biological security. Their abilities require equipment, preparation, command power, duration, cooldown, AI use, and cleanup.
+Army Headquarters is the theater layer. Three CBRN sections combine Operations and Intelligence, Protection and Decontamination, and Medical and Biosecurity. Their abilities require equipment, preparation, command power, duration, cooldown, AI use, and cleanup. The exact surviving IDs and inactive compatibility definitions are mapped in `cbrn_unit_consolidation.md`.
 
 ### Division
 
-Regimental support is the division layer. Ten role-based detachments replace agent-by-agent unit duplication. Strong scripted benefits scale or disappear with essential-equipment shortages.
+Regimental support is the division layer. Six field roles cover the Protection Company, Field Medical Company, reconnaissance, chemical projectors, ammunition logistics, and biological security assault; the Chaos battalion and three surviving armored chassis provide distinct combat and delivery roles. Nerve suppression is an operation upgrade rather than a standing company. Strong scripted benefits scale or disappear with essential-equipment shortages. The 18 agent-specific tank companies remain inactive compatibility definitions, and `cbrn_unit_consolidation.md` records the exact old-to-new map and the same-country exposure limitation.
 
 ### State
 

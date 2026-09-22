@@ -1,5 +1,7 @@
 # Event 016 Wonder-Technology Actions
 
+> **Biological synergy amendment, 2026-09-20.** The user's approved native-raid migration supersedes the former Teleportation–Biological Weapons battlefield decision receipt described in older plans. The active synergy is a Portal battlefield raid variant within the existing `biological_raids` category; see `docs/events/016_brilliant_scientist/systems/biological_operations.md` for source and engine limits. The conventional weaponization actions elsewhere in this document retain their separate decision contract.
+
 ## Overview
 
 Learned conventional Weaponization packages provide eight paid operational actions in the ordinary `conventional_technology_operations` category, alongside their passive national effects.
@@ -51,12 +53,12 @@ The portfolio table in the source specification describes gameplay directions ra
 | Cloning plus Xenobiology | Designed-caste production, medical fabrication, control-mode choice, escape response, and the corresponding KRG project-force route. |
 | Robotics plus Xenobiology | The mutually exclusive machine-control doctrine, control centers, synthetic coordination, and escape-response countermeasures. |
 | Alien Arms plus High Energy | Strategic-delivery architecture, alien-cohort armament, the exact Singularity component ledger, arming, fail-deadly, disarmament, and terminal paths. |
-| Teleportation plus Biological Weapons | The existing battlefield biological-release decision reaches hostile rear areas by committing ten Teleportation Equipment alongside its own pathogen payload. Its transaction refunds both costs on cancellation and never reuses a native-raid reservation. |
+| Teleportation plus Biological Weapons | The native Portal battlefield biological raid reaches an authorized hostile rear state and reserves ten Teleportation Equipment alongside the fixed agent lot through `essential_equipment`. Its seven-day preparation and 25 Command Power allocation are native; cancellation and disconnected rear-area path behavior remain engine-validation gaps. |
 | Temporal Mechanics plus Cloning | Clone continuity is one exclusive canonical-Kruger survival route; temporal target-use receipts and debt prevent repeated body recovery. |
 | Temporal Mechanics plus Robotics | Machine continuity is one exclusive canonical-Kruger survival route; anchor authentication and temporal debt prevent repeated command restoration. |
 | Public Computation plus Independent Teams | Independent-research reconstruction, archive recovery, assistant amnesty, international inspection, and exact-family foreign counter-program decisions. |
 
-The Teleportation plus Biological Weapons action uses the shared biological-operations category and its own target/method receipt, not an additional Directorate action or a temporary percentage modifier.
+The Teleportation plus Biological Weapons raid uses the shared `biological_raids` category and its own exact agent/method ID, without an additional Directorate action, separate target receipt, or temporary percentage modifier.
 
 ## Tuning and ownership
 

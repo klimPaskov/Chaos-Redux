@@ -1,7 +1,13 @@
-# Static database fields in this file do not accept script-constant tokens.
-# These file-scoped values mirror the authoritative shared constants.
+# CBRN earned traits are credited by completed commander-scoped operations and
+# combat callbacks in cbrn_commander_progression_effects.txt.
+# Static trait costs use file-scoped values because this database field does not
+# accept script-constant tokens.
 @CR_SC_CBRN_DOCTRINE_AI_HIGH_COMMAND_BASE = 1
-@CR_SC_CBRN_DOCTRINE_LEADER_OPERATIONS_COMMANDER_TRAIT_COST = 500
+@CBRN_EARNED_TRAIT_COST = 1000
+@CBRN_GENERAL_TRAIT_COST = 500
+@CBRN_FIELD_MARSHAL_TRAIT_COST = 1000
+@CBRN_PROTECTED_ASSAULT_OUT_OF_SUPPLY_FACTOR = -0.05
+@CBRN_THEATRE_CONTAINMENT_ARMY_GROUP_SIZE = 1
 
 leader_traits = {
 	in_antarctica = {
@@ -14,24 +20,16 @@ leader_traits = {
 		planning_skill = -3
 	}
 
-	# Move vanilla utility traits slightly lower so chemical trait sits between
-	# core general traits and the staffer/delegator branch.
-	skilled_staffer = {
-		gui_row = 16
-	}
-
-	expert_delegator = {
-		gui_row = 16
-	}
-
 	chemical_operations_commander = {
 		type = corps_commander
-		trait_type = assignable_trait
 		override_effect_tooltip = chemical_operations_commander_tt
-		gain_xp = {
-			always = no
-		}
-		cost = @CR_SC_CBRN_DOCTRINE_LEADER_OPERATIONS_COMMANDER_TRAIT_COST
+		gain_xp = { always = no }
+		custom_gain_xp_trigger_tooltip = chemical_operations_commander_earned_tt
+		cost = @CBRN_EARNED_TRAIT_COST
+		slot = high_command
+		specialist_advisor_trait = cbrn_operations_high_command_1
+		expert_advisor_trait = cbrn_operations_high_command_2
+		genius_advisor_trait = cbrn_operations_high_command_3
 		ai_will_do = {
 			factor = @CR_SC_CBRN_DOCTRINE_AI_HIGH_COMMAND_BASE
 			modifier = {
@@ -47,7 +45,47 @@ leader_traits = {
 				FROM = { cbrn_profile_is_military_first = yes }
 			}
 		}
-		gui_row = 15
+		gui_row = 16
+	}
+
+	biological_operations_veteran = {
+		type = corps_commander
+		gain_xp = { always = no }
+		custom_gain_xp_trigger_tooltip = biological_operations_veteran_earned_tt
+		cost = @CBRN_EARNED_TRAIT_COST
+		defense_skill = 1
+		gui_row = 17
+	}
+
+	hazard_warfare_veteran = {
+		type = corps_commander
+		gain_xp = { always = no }
+		custom_gain_xp_trigger_tooltip = hazard_warfare_veteran_earned_tt
+		cost = @CBRN_EARNED_TRAIT_COST
+		logistics_skill = 1
+		gui_row = 18
+	}
+
+	protected_assault_expert = {
+		type = corps_commander
+		trait_type = assignable_trait
+		gain_xp = { always = no }
+		cost = @CBRN_GENERAL_TRAIT_COST
+		prerequisites = { cbrn_commander_has_protected_assault_prerequisites = yes }
+		custom_prerequisite_tooltip = protected_assault_expert_prerequisites_tt
+		modifier = { out_of_supply_factor = @CBRN_PROTECTED_ASSAULT_OUT_OF_SUPPLY_FACTOR }
+		gui_row = 17
+	}
+
+	theatre_containment_organizer = {
+		type = field_marshal
+		trait_type = assignable_trait
+		gain_xp = { always = no }
+		cost = @CBRN_FIELD_MARSHAL_TRAIT_COST
+		prerequisites = { cbrn_commander_has_theatre_containment_prerequisites = yes }
+		custom_prerequisite_tooltip = theatre_containment_organizer_prerequisites_tt
+		field_marshal_modifier = { max_army_group_size = @CBRN_THEATRE_CONTAINMENT_ARMY_GROUP_SIZE }
+		gui_row = 16
 	}
 
 	chemical_cylinder_active = {

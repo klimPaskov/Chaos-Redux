@@ -726,7 +726,7 @@ These state-scope wrappers supply the accepted 50-percent priority, 95-percent f
 
 ### cbrn_complete_priority_distribution_program, cbrn_complete_full_distribution_program, cbrn_complete_civilian_filter_replacement_program, and cbrn_complete_occupied_distribution_program
 
-These country-scope completion effects replace routine per-state decision-card multiplication. Each loops only the deciding country's controlled states, applies the existing exact state transaction to eligible states while real respirator stock remains, and preserves population, fitting, filter, infrastructure, contamination, and occupation scaling. Priority, full-distribution, and filter programs serve the capital first. They do not create a world pulse or infer an incident target.
+These country-scope completion effects replace routine per-state decision-card multiplication. Each loops only the deciding country's controlled states, applies the existing exact state transaction to eligible states while real respirator stock remains, and preserves population, fitting, filter, infrastructure, contamination, and occupation scaling. Priority, full-distribution, and filter programs serve the capital first. The optional occupied program records threatened non-core states at activation, then serves only those same states after its 30-day project even if the warning has expired. Cancellation and control transfer clear the target flags. These effects do not create a world pulse or infer an incident target.
 
 ### cbrn_debit_mask_stockpile_oldest_first
 
@@ -774,9 +774,33 @@ Scope: transferred state. Required regular event targets: `cbrn_old_state_contro
 
 ### cbrn_start_protection_maintenance_job
 
-Starts one self-scheduled annual country maintenance event if no job is active.
+Starts one self-scheduled country maintenance event if no job is active.
 
-Scope: country. Inputs: none. Defaults: repeated calls are idempotent through `cbrn_protection_maintenance_active`. Side effects: schedules `cbrn_protection.1` after the centralized annual interval. It creates no all-country periodic pulse.
+Scope: country. Inputs: none. Defaults: repeated calls are idempotent through `cbrn_protection_maintenance_active`. Side effects: schedules `cbrn_protection.1` after the centralized 30-day interval. It creates no all-country periodic pulse.
+
+### chaosx_apply_historical_eng_1936_force_scaled_profile
+
+Replaces Britain's 1936 fixed-mask grant with a deployed-force-scaled issue and replacement reserve.
+
+Scope: ENG country after `chaosx_apply_starting_cbrn_mask_profiles`. Inputs: the dated historical flag, `cbrn_historical_1936_military_issue_target` and `cbrn_historical_1936_replacement_reserve_ratio`. Defaults: absent inputs or a completed one-time receipt do nothing; the ENG starting-profile branch suppresses the fixed warehouse grant only while the dated flag exists. Outputs: 75% of the current military mask requirement issued, at least 25% of that requirement retained in real warehouse stock, and `cbrn_historical_eng_1936_force_scaled_profile_applied`. Side effects: grants only the calculated basic-mask shortfall after existing stock, then calls the normal stock-debit military issue helper and refreshes the country snapshot. It distributes no civilian masks.
+
+Example:
+
+```txt
+ENG = { chaosx_apply_historical_eng_1936_force_scaled_profile = yes }
+```
+
+### cbrn_apply_historical_uk_1939_civilian_issue
+
+Reconciles the 1939 British civilian respirator target after the ordinary starting profile has issued military masks.
+
+Scope: ENG-root country event `cbrn_protection.3`. Inputs: `cbrn_uk_1939_mass_respirator_issue`, `cbrn_startup_uk_1939_civilian_respirator_crates`, and `cbrn_startup_uk_1939_civilian_distribution_target`. Defaults: absent historical inputs or a completed receipt do nothing. Outputs: a dynamic distribution target based on the historical 40,000-crate target and controlled core population, the actual credited state and country civilian-mask ledgers, and `cbrn_uk_1939_mass_respirator_issue_applied`. Side effects: counts crates already issued by the starting profile, uses remaining warehouse stock first, adds only the bounded logistical shortfall as real basic mask equipment, and calls the ordinary stock-debit distributor for controlled core states. The target is capped by controlled core population and actual distribution feasibility. A later repeat call never duplicates the grant. The country event gives the distributor a stable ENG `ROOT` after the global startup selector.
+
+Example:
+
+```txt
+ENG = { country_event = { id = cbrn_protection.3 days = 0 } }
+```
 
 ## CBRN protection decision effects
 
@@ -1013,9 +1037,10 @@ These effects are defined in `cbrn_hq_effects.txt`. Character-scope effects expe
 | `cbrn_hq_stop_operation_benefits` | Character scope. Removes every CBRN preparation/active status trait but deliberately retains the operation code and commitments until planned cleanup. This prevents a stale delayed event from crossing into a newer operation. |
 | `cbrn_hq_clear_operation_state` | Character scope. Calls the benefit cleanup and clears operation code, committed force band, and remaining upkeep ticks. It is reserved for the planned final event. |
 | `cbrn_hq_calculate_preparation_days` | Character scope. Required temporary inputs: base, minimum, and maximum preparation days. Reads owner Chemical Readiness, applies the centralized readiness multiplier, rounds, and clamps into the accepted range. |
+| `cbrn_hq_enforce_preparation_efficiency_budget` | Character scope, called by all seven HQ start helpers after their last discount and before commitment. Requires `cbrn_hq_preparation_base`, `cbrn_hq_preparation_days`, and their temporary minimum/maximum. Sets a temporary budget floor to the unadjusted base multiplied by `cbrn_hazard_budget.residual_floor`, then clamps and rounds preparation days. It changes only the current receipt, with no country variable or flag side effect. |
 | `cbrn_hq_apply_operations_section_preparation_discount` | Character scope. Inputs: calculated preparation plus the same minimum and maximum temporary bounds. Applies the Operations Section's ten-percent preparation reduction, then reclamps and rounds. Call only for abilities that require that company. |
 | `cbrn_hq_apply_high_protection_preparation_discount` | Character scope. Refreshes the owner's real military-mask snapshot and applies the accepted five-percent preparation reduction only at the high-protection threshold, then reclamps. It does not change exposure protection itself. |
-| `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-independent commander's thirty-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. The trait is manually assignable without the doctrine and can be granted by the active Chemical Operations Academy on leader creation or level-up. |
+| `cbrn_hq_apply_operations_commander_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the doctrine-independent commander's thirty-percent reduction only when the leader has `chemical_operations_commander`, then reclamps and rounds. It changes no cost, duration, cooldown, or exposure output. The earned trait requires completed qualifying headquarters service through `cbrn_commander_record_completed_hq_operation`; Chemical Operations Academy grants +3% army experience gain and does not grant the trait. |
 | `cbrn_hq_apply_offensive_doctrine_preparation_discount` | Character scope. Inputs: calculated preparation plus minimum/maximum bounds. Applies the mutually exclusive Theater Contamination or Terminal Hazard preparation multiplier, reclamps, and rounds. Call only from Prepare Chemical Offensive and Combined CBRN Overmatch; it does not accelerate protective, cleanup, medical, or containment orders and changes no cost, active duration, cooldown, or exposure record. |
 | `cbrn_hq_add_preparing_trait_for_current_duration` | Character scope. Reads the exact rounded `cbrn_hq_preparation_days` value and injects it into the otherwise static timed-trait field through a CBRN-local meta effect. |
 | `cbrn_hq_schedule_current_event` | Character scope. Requires `cbrn_hq_scheduled_event_id` from `cbrn_hq_event_id` and exact rounded `cbrn_hq_scheduled_event_days`. It binds the calling commander as `cbrn_hq_commander` and injects both values into the unit-leader event call because installed documentation does not verify bare dynamic durations for that field. Each event resumes inside that exact commander target before reading variables or changing traits. |
@@ -1034,17 +1059,15 @@ Each setter resets all package fields before selecting the exact light, standard
 
 | Operation | Activation setter | Weekly setter |
 | --- | --- | --- |
-| Chemical fire plan | `cbrn_hq_set_prepare_activation_package` | `cbrn_hq_set_prepare_upkeep_package` |
 | Protective posture | `cbrn_hq_set_protective_activation_package` | `cbrn_hq_set_protective_upkeep_package` |
 | Decontamination corridor | `cbrn_hq_set_decon_activation_package` | `cbrn_hq_set_decon_upkeep_package` |
 | Sealed operational area | `cbrn_hq_set_seal_area_activation_package` | `cbrn_hq_set_seal_area_upkeep_package` |
 | Antidote response | `cbrn_hq_set_antidote_activation_package` | `cbrn_hq_set_antidote_upkeep_package` |
 | Infection corridor | `cbrn_hq_set_infection_activation_package` | `cbrn_hq_set_infection_upkeep_package` |
-| Combined overmatch | `cbrn_hq_set_overmatch_activation_package` | `cbrn_hq_set_overmatch_upkeep_package` |
 
 ### Public ability-start effects
 
-`cbrn_hq_start_prepare_chemical_offensive`, `cbrn_hq_start_theater_protective_posture`, `cbrn_hq_start_decontamination_corridor`, `cbrn_hq_start_seal_operational_area`, `cbrn_hq_start_mass_antidote_response`, `cbrn_hq_start_seal_infection_corridor`, and `cbrn_hq_start_combined_overmatch` are CHARACTER-scope one-time ability adapters. Their matching activation trigger must be checked first. Each stores a stable operation enum, selects the exact force-band package, calculates preparation, commits stock/CP, and schedules `cbrn_hq.1`. The two offensive preparations apply both the Operations Section and high-protection preparation adjustments. None dispatches exposure.
+`cbrn_hq_start_theater_protective_posture`, `cbrn_hq_start_decontamination_corridor`, `cbrn_hq_start_seal_operational_area`, `cbrn_hq_start_mass_antidote_response`, and `cbrn_hq_start_seal_infection_corridor` are CHARACTER-scope one-time ability adapters. Their matching activation trigger must be checked first. Each stores a stable operation enum, selects the exact force-band package, calculates preparation, commits stock/CP, and schedules `cbrn_hq.1`. These protective orders never dispatch exposure; native raids own offensive preparation and delivery.
 
 Example:
 
@@ -1057,30 +1080,21 @@ one_time_effect = {
 
 ### Bounded upkeep effects
 
-`cbrn_hq_debit_prepare_upkeep`, `cbrn_hq_debit_protective_upkeep`, `cbrn_hq_debit_decon_upkeep`, `cbrn_hq_debit_seal_area_upkeep`, `cbrn_hq_debit_antidote_upkeep`, `cbrn_hq_debit_infection_upkeep`, and `cbrn_hq_debit_overmatch_upkeep` select and debit one paid weekly installment from the force band stored at activation. The caller must first pass the corresponding upkeep trigger. Army reorganization after activation cannot reduce that package.
+`cbrn_hq_debit_protective_upkeep`, `cbrn_hq_debit_decon_upkeep`, `cbrn_hq_debit_seal_area_upkeep`, `cbrn_hq_debit_antidote_upkeep`, and `cbrn_hq_debit_infection_upkeep` select and debit one paid weekly installment from the force band stored at activation. The caller must first pass the corresponding upkeep trigger. Army reorganization after activation cannot reduce that package.
 
 `cbrn_hq_schedule_next_upkeep_tick` schedules `cbrn_hq.2` through `cbrn_hq_schedule_current_event` only while the persistent finite tick budget is positive. `cbrn_hq_complete_upkeep_tick` decrements that budget and schedules the next tick when required. `cbrn_hq_fail_upkeep` removes active benefits and the tick budget while retaining the operation commitment until its already scheduled final cleanup. These targeted chains create no periodic country iteration.
 
-## Exact-state CBRN battlefield operation effects
+## Native chemical land raid receipt effects
 
-The four route effects in `cbrn_battlefield_operation_effects.txt` are CBRN-specific and stay outside the generic dynamic effect file. They are called by the state-targeted battlefield decisions and by no broad event pulse.
-
-The begin effect saves the selected state into the country-scoped `cbrn_battlefield_active_state` variable before the timed operation leaves the selection chain. Resolution and cancellation read that persistent state pointer, while the short-lived `cbrn_battlefield_state_target` event target is retained only for the immediate begin-chain validation and cleanup path. This prevents a later decision or bounded event from depending on a regular event target that has already expired.
-
-The installed build does not expose a verified state-scope weather and terrain condition hook for this timed Army Headquarters route. `cbrn_battlefield_current_version_condition_hook_verified` therefore remains `always = no`; the persistent state pointer does not relax that gate and does not act as an estimator or proxy.
+The three retained helpers in `cbrn_battlefield_operation_effects.txt` are called by `cbrn_resolve_chemical_land_raid_outcome` after the native raid supplies a fixed agent, exact target, engine outcome, and reserved equipment. No selected-agent variable, timed-decision ledger, manual payload debit, or refund remains. The raid-instance to actor-country scope bridge and exact policy check are documented in `cbrn_chemical_land_raid_effects.md`.
 
 | Effect | Scope and contract |
 | --- | --- |
-| `cbrn_initialize_battlefield_operation_selection` | Country scope. Initializes the selected chemical agent to an unlocked model and records a rejected last result. |
-| `cbrn_battlefield_cycle_selected_agent` | Country scope. Cycles the explicit agent ladder without changing payload or consequence state. |
-| `cbrn_battlefield_set_route_equipment_costs` | Country scope. Calculates the route-specific full or shortage equipment bill from centralized constants. |
-| `cbrn_battlefield_pay_route_equipment` | Country scope. Debits model-aware masks, decontamination equipment, instruments, support equipment, chemical shell lots, projector chassis, armored chassis, motorized equipment, and fuel. |
-| `cbrn_battlefield_begin_operation` | State-targeted decision scope. Revalidates the exact state, binds the victim, consumes the matching chemical payload, debits readiness and Command Power, and commits the finite operation ledger. |
-| `cbrn_battlefield_resolve_operation` | Country scope with stored state target. Reconstructs the exact action record and sends it to the shared CBRN chemical exposure dispatcher. |
-| `cbrn_battlefield_cancel_operation` | Country scope with stored state target. Records cancellation and clears the bounded ledger without inventing a payload refund. |
-| `cbrn_battlefield_clear_operation_state` | Country scope. Clears state and country operation flags after resolution or cancellation. |
+| `cbrn_battlefield_set_action_agent_class_from_action` | Actor-country scope with scope-less temporary `cbrn_action_agent`; classifies the fixed native agent. |
+| `cbrn_battlefield_set_severity_from_action_route` | Actor-country scope with temporary route; sets the matching bounded operation severity. |
+| `cbrn_battlefield_set_action_conditions_receipt` | Actor-country scope with saved exact target and temporary route; supplies bounded weather, terrain, command, density, friendly-risk, and release receipt values. |
 
-All route effects require the side-effect-free triggers in `cbrn_battlefield_operation_triggers.txt`. No effect selects an alternate state, estimates combat activity, or uses continuous-air activity as a proxy.
+The native raid definition owns launch eligibility and essential-equipment reservation. These helpers never select an alternate state or estimate combat activity.
 
 ## Canonical chemical-state ledger effects
 

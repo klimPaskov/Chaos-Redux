@@ -1,5 +1,7 @@
 # Source of Truth Map
 
+The user's explicit 2026-09-20 implementation request accepts [`specs/13_2026_09_20_accepted_cbrn_overhaul.md`](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) as the controlling amendment for any conflict in the older surface map below. Acceptance applies to the design, while current implementation remains tracked in [`2026-09-20_cbrn_overhaul_requirement_ledger.md`](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) pending source and MCP evidence.
+
 | Surface | Source of truth after acceptance |
 | --- | --- |
 | Core gameplay and values | `specs/01_core_system_and_gameplay_loop.md` |
@@ -21,11 +23,13 @@ Existing repository docs are evidence of current behavior. Once this design is a
 
 ## Current-state documentation authority
 
-Use `docs/plans/chaos_warfare_system_plans/2026-07-13_requirement_traceability_and_migration_ledger.md` for requirement-row status and migration disposition.
+The current native chemical land source `common/raids/cbrn_chemical_land_raids.txt` defines 55 raid types in the single `chemical_raids` category: nine cylinder, nine projector, nine artillery, 27 armored, and one Phantom Mist. This source count supersedes older 36-type inventories but does not prove native AI probability behavior or engine payment results; the accepted two-category rule and unresolved validation remain in the [overhaul ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md).
+
+Use `docs/plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md` for the accepted overhaul's requirement-row status. The 2026-07-13 ledger remains a bounded historical migration record.
 
 Use `docs/plans/chaos_warfare_system_plans/documentation_state.md` for the reconciled current-state map, unresolved plan and handoff dispositions, contradiction register, and stale-document register.
 
-Use `docs/plans/chaos_warfare_system_plans/documentation_cleanup_handoff.md` for the latest documentation-curator handoff; it is not gameplay or runtime completion proof.
+Use `docs/plans/chaos_warfare_system_plans/2026-09-20_documentation_cleanup_handoff.md` for this overhaul's documentation-curator handoff; it is not gameplay or runtime completion proof. The unqualified `documentation_cleanup_handoff.md` remains an earlier snapshot.
 
 The later explicit user constraints recorded on 2026-07-29 supersede older optional-estimator wording: continuous chemical-air contamination remains fail-closed without a verified current-version mission hook, no estimator or other fallback is allowed, selected-state chemical raids must use the shared exposure pipeline, and idle chemical-capable aircraft never contaminate.
 

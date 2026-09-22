@@ -1,18 +1,12 @@
-# Native raid outcome weights require static numbers; aliases mirror
-# brilliant_scientist_biological_staging in 016_brilliant_scientist_raid_lifecycle_constants.txt.
-@CR_STAGING_NATIVE_SUCCESS_BONUS = 0.15
-@CR_STAGING_NATIVE_CRITICAL_BONUS = 0.10
-@CR_STAGING_NATIVE_DISASTER_REDUCTION = -0.08
-
 # ============================================================================
 # CHAOS REDUX - STRATEGIC ORDINARY-PATHOGEN AIR RAIDS
 # ============================================================================
 # Overview:
 # - Defines the Anthrax, Plague, Tularemia, and Smallpox strategic air raids.
 # - Native essential equipment reserves the exact agent model at raid creation.
-# - Every native outcome invokes bio_resolve_strategic_raid_outcome exactly once.
+# - Every native outcome bridges to actor-country ROOT for exact-context resolution.
 # - The shared resolver owns consumption, protection/countermeasure context,
-#   lifecycle seeding, evidence, attribution, Condemnation, history, and refunds.
+#   lifecycle seeding, evidence, attribution, Condemnation, and history.
 # - Native state targeting keeps cooldowns and lifecycle writes on the exact
 #   same var:target_state.
 # - No launch-state estimator, aircraft-presence proxy, ordinary-air mission
@@ -125,10 +119,6 @@ types = {
 			modifier = {
 				factor = constant:brilliant_scientist_raid_ai.kruger_host_factor
 				ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } }
-			}
-			modifier = {
-				factor = constant:brilliant_scientist_biological_staging.native_ai_factor
-				ROOT = { has_country_flag = brilliant_scientist_biological_staging_ready }
 			}
 			modifier = {
 				factor = @BIO_RAID_AI_DISABLED
@@ -320,14 +310,6 @@ types = {
 					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
 				}
-				brilliant_scientist_biological_staging_success = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_SUCCESS_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 			critical = {
 				base = @BIO_RAID_CRITICAL_BASE
@@ -338,14 +320,6 @@ types = {
 				intel = {
 					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
-				}
-				brilliant_scientist_biological_staging_critical = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_CRITICAL_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
 				}
 			}
 			disaster = {
@@ -361,14 +335,6 @@ types = {
 				}
 				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
 				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
-				brilliant_scientist_biological_staging_disaster = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_DISASTER_REDUCTION
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 		}
 
@@ -389,9 +355,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_anthrax }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_ANTHRAX_FAILURE_LOSS
@@ -431,9 +398,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_anthrax }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_ANTHRAX_LIMITED_LOSS
@@ -474,9 +442,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_anthrax }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_ANTHRAX_SUCCESS_LOSS
@@ -517,9 +486,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.anthrax }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_anthrax }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
 				}
@@ -564,10 +534,6 @@ types = {
 			modifier = {
 				factor = constant:brilliant_scientist_raid_ai.kruger_host_factor
 				ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } }
-			}
-			modifier = {
-				factor = constant:brilliant_scientist_biological_staging.native_ai_factor
-				ROOT = { has_country_flag = brilliant_scientist_biological_staging_ready }
 			}
 			modifier = {
 				factor = @BIO_RAID_AI_DISABLED
@@ -759,14 +725,6 @@ types = {
 					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
 				}
-				brilliant_scientist_biological_staging_success = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_SUCCESS_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 			critical = {
 				base = @BIO_RAID_CRITICAL_BASE
@@ -777,14 +735,6 @@ types = {
 				intel = {
 					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
-				}
-				brilliant_scientist_biological_staging_critical = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_CRITICAL_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
 				}
 			}
 			disaster = {
@@ -800,14 +750,6 @@ types = {
 				}
 				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
 				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
-				brilliant_scientist_biological_staging_disaster = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_DISASTER_REDUCTION
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 		}
 
@@ -828,9 +770,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_plague }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_PLAGUE_FAILURE_LOSS
@@ -870,9 +813,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_plague }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_PLAGUE_LIMITED_LOSS
@@ -913,9 +857,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_plague }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_PLAGUE_SUCCESS_LOSS
@@ -956,9 +901,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.plague }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_plague }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
 				}
@@ -1003,10 +949,6 @@ types = {
 			modifier = {
 				factor = constant:brilliant_scientist_raid_ai.kruger_host_factor
 				ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } }
-			}
-			modifier = {
-				factor = constant:brilliant_scientist_biological_staging.native_ai_factor
-				ROOT = { has_country_flag = brilliant_scientist_biological_staging_ready }
 			}
 			modifier = {
 				factor = @BIO_RAID_AI_DISABLED
@@ -1198,14 +1140,6 @@ types = {
 					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
 				}
-				brilliant_scientist_biological_staging_success = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_SUCCESS_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 			critical = {
 				base = @BIO_RAID_CRITICAL_BASE
@@ -1216,14 +1150,6 @@ types = {
 				intel = {
 					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
-				}
-				brilliant_scientist_biological_staging_critical = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_CRITICAL_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
 				}
 			}
 			disaster = {
@@ -1239,14 +1165,6 @@ types = {
 				}
 				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
 				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
-				brilliant_scientist_biological_staging_disaster = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_DISASTER_REDUCTION
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 		}
 
@@ -1267,9 +1185,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_tularemia }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_TULAREMIA_FAILURE_LOSS
@@ -1309,9 +1228,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_tularemia }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_TULAREMIA_LIMITED_LOSS
@@ -1352,9 +1272,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_tularemia }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_TULAREMIA_SUCCESS_LOSS
@@ -1395,9 +1316,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.tularemia }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_tularemia }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_add_unit_experience = @BIO_RAID_XP_CRITICAL
 				}
@@ -1442,10 +1364,6 @@ types = {
 			modifier = {
 				factor = constant:brilliant_scientist_raid_ai.kruger_host_factor
 				ROOT = { brilliant_scientist_kruger_raid_ai_is_active = yes NOT = { brilliant_scientist_is_active_kruger_state = yes } }
-			}
-			modifier = {
-				factor = constant:brilliant_scientist_biological_staging.native_ai_factor
-				ROOT = { has_country_flag = brilliant_scientist_biological_staging_ready }
 			}
 			modifier = {
 				factor = @BIO_RAID_AI_DISABLED
@@ -1637,14 +1555,6 @@ types = {
 					weight = @BIO_RAID_SUCCESS_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
 				}
-				brilliant_scientist_biological_staging_success = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_SUCCESS_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 			critical = {
 				base = @BIO_RAID_CRITICAL_BASE
@@ -1655,14 +1565,6 @@ types = {
 				intel = {
 					weight = @BIO_RAID_CRITICAL_INTEL_WEIGHT
 					reference = @BIO_RAID_INTEL_REFERENCE
-				}
-				brilliant_scientist_biological_staging_critical = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_CRITICAL_BONUS
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
 				}
 			}
 			disaster = {
@@ -1678,14 +1580,6 @@ types = {
 				}
 				anti_air = { weight = @BIO_RAID_DISASTER_ANTI_AIR_WEIGHT }
 				radar = { weight = @BIO_RAID_DISASTER_RADAR_WEIGHT }
-				brilliant_scientist_biological_staging_disaster = {
-					scope = country
-					formula = { base = 0 modifier = { has_country_flag = brilliant_scientist_biological_staging_ready add = 1 } }
-					weight = @CR_STAGING_NATIVE_DISASTER_REDUCTION
-					reference = 1
-					can_actor_affect = yes
-					can_target_affect = no
-				}
 			}
 		}
 
@@ -1706,9 +1600,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_smallpox }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_failure country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_SMALLPOX_FAILURE_LOSS
@@ -1748,9 +1643,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_smallpox }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_limited_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_SMALLPOX_LIMITED_LOSS
@@ -1791,9 +1687,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_smallpox }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_SMALLPOX_SUCCESS_LOSS
@@ -1834,9 +1731,10 @@ types = {
 						}
 					}
 					hidden_effect = {
-						set_temp_variable = { bio_raid_agent = constant:bio_lifecycle_agent.smallpox }
-						set_temp_variable = { bio_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success }
-						bio_resolve_strategic_raid_outcome = yes
+						var:actor_country = { save_event_target_as = bio_raid_actor save_event_target_as = bio_strategic_bridge_agent_smallpox }
+						var:target_state = { save_event_target_as = bio_raid_target_state }
+						var:victim_country = { save_event_target_as = bio_raid_victim }
+						var:actor_country = { save_event_target_as = bio_strategic_bridge_outcome_critical_success country_event = { id = biological_native_raid_bridge.3 } }
 					}
 					raid_damage_units = {
 						plane_loss = @BIO_RAID_SMALLPOX_CRITICAL_LOSS

@@ -1,5 +1,7 @@
 Rework Chaos Warfare, chemical warfare, biological warfare, protective equipment, CBRN command, and consequence systems using this package. Do not implement from this compact file alone.
 
+The user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger supersede conflicting older policy, raid, unit, project, balance, and asset directions in this prompt.
+
 Current accepted correction (2026-07-29): later user constraints supersede any older optional-estimator or doctrine-to-camp wording in this compact prompt. Continuous chemical-air contamination is disabled without a verified current-version mission hook, no estimator or fallback may be retained, and doctrine never creates, reveals, authorizes, or unlocks camp or genocide infrastructure.
 
 Read every other file here. Start with `README.md` and `handoffs/source_of_truth_map.md`. Read all twelve numbered files under `specs/` in order and treat them as the accepted design source. Read every file under `matrices/` for system mappings. Read all files under `research/` for source context.

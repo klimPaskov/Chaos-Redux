@@ -51,19 +51,6 @@ cbrn_doctrine_cost = {
 	track_army_xp = 100
 }
 
-cbrn_doctrine_establishment = {
-	schema = {
-		any_key = yes
-		data = fixed_point
-	}
-
-	mask_reserve = 500
-	decontamination_reserve = 50
-	support_equipment_reserve = 100
-	remediation_pp_cost = 35
-	remediation_command_power_cost = 10
-}
-
 cbrn_doctrine_institution = {
 	schema = {
 		any_key = yes
@@ -73,7 +60,6 @@ cbrn_doctrine_institution = {
 	protective_mask_reserve = 500
 	delivery_payload_reserve = 100
 	theater_decontamination_capacity = 40
-	advanced_policy_floor = 3
 }
 
 cbrn_doctrine_capacity = {
@@ -121,11 +107,24 @@ cbrn_doctrine_policy_command_power_cost = {
 		data = fixed_point
 	}
 
-	defensive_preparation = 0
-	retaliation_authority = 5
-	limited_battlefield_authority = 15
-	strategic_release_authority = 25
-	unrestricted_chaos_warfare = 40
+	retaliation_only = 5
+	battlefield_authorization = 5
+	unrestricted_authorization = 5
+}
+
+# Derived status is recomputed from actual protection, decontamination and
+# training. None of these values is a spendable readiness pool.
+cbrn_readiness_status = {
+	schema = {
+		any_key = yes
+		data = fixed_point
+	}
+
+	military_coverage_weight = 0.55
+	decontamination_capacity_weight = 0.20
+	basic_mask_training = 10
+	improved_mask_training = 10
+	chaos_specialization = 5
 }
 
 cbrn_doctrine_policy_readiness = {
@@ -206,30 +205,30 @@ cbrn_doctrine_modifier = {
 		data = fixed_point
 	}
 
-	grand_planning_speed = 0.15
+	grand_planning_speed = 0.01
 
-	infantry_adoption_breakthrough = 0.15
-	infantry_m1_protection_reliability = 0.18
-	infantry_m2_hazard_supply = -0.20
-	infantry_m4_assault_breakthrough = 0.15
-	infantry_m5_assault_breakthrough = 0.25
+	infantry_adoption_breakthrough = 0.03
+	infantry_m1_protection_reliability = 0.10
+	infantry_m2_hazard_supply = -0.05
+	infantry_m4_assault_breakthrough = 0.03
+	infantry_m5_assault_breakthrough = 0.04
 
-	armor_adoption_breakthrough = 0.25
-	armor_m1_sealed_reliability = 0.15
-	armor_m4_delivery_supply = -0.20
-	armor_m5_coordination = 0.15
+	armor_adoption_breakthrough = 0.02
+	armor_m1_sealed_reliability = 0.05
+	armor_m4_delivery_supply = -0.05
+	armor_m5_coordination = 0.01
 
-	combat_support_adoption_reliability = 0.15
-	combat_support_m1_projector_reliability = 0.20
-	combat_support_m2_coordination = 0.15
-	combat_support_m4_ammunition_reliability = 0.20
+	combat_support_adoption_reliability = 0.05
+	combat_support_m1_projector_reliability = 0.05
+	combat_support_m2_coordination = 0.01
+	combat_support_m4_ammunition_reliability = 0.05
 
-	operations_m1_recon = 0.35
-	operations_m2_reinforce = 0.10
-	operations_m3_hq_supply = -0.20
-	operations_m4_coordination = 0.15
-	operations_m5_army_org = 0.15
-	operations_m5_coordination = 0.15
+	operations_m1_recon = 0.10
+	operations_m2_reinforce = 0.01
+	operations_m3_hq_supply = -0.05
+	operations_m4_coordination = 0.01
+	operations_m5_army_org = 0.01
+	operations_m5_coordination = 0.01
 }
 
 cbrn_doctrine_leader = {
@@ -254,47 +253,45 @@ cbrn_doctrine_spirit = {
 	}
 
 	controlled_retaliation = {
-	army_org_factor = 0.20
+	army_org_factor = 0.01
 	max_command_power = 30
 	military_mask_consumption_mult = 0.85
 	}
 	theater_contamination = {
-		planning_speed = 0.30
-		attrition = -0.20
-		supply_consumption_factor = 0.20
-		delivery_dose_mult = 1.35
-		contamination_points_mult = 1.45
-		contamination_duration_mult = 1.35
-		offensive_preparation_time_mult = 0.75
-		cleanup_output_mult = 1.75
+		planning_speed = 0.03
+		attrition = -0.05
+		supply_consumption_factor = 0.15
+		delivery_dose_mult = 1.05
+		contamination_points_mult = 1.03
+		contamination_duration_mult = 1.10
+		cleanup_output_mult = 1.10
 	}
 	terminal_hazard = {
-		army_attack_factor = 0.35
-		coordination_bonus = 0.25
-		supply_consumption_factor = 0.25
-		operational_effect_mult = 1.35
-		casualty_mult = 1.75
-		contamination_points_mult = 1.60
-		contamination_duration_mult = 1.50
-		medical_saturation_mult = 1.50
-		offensive_preparation_time_mult = 0.60
-		camp_killing_efficiency_mult = 1.75
+		army_attack_factor = 0.025
+		coordination_bonus = 0.005
+		supply_consumption_factor = 0.20
+		operational_effect_mult = 1.05
+		casualty_mult = 1.10
+		contamination_points_mult = 1.03
+		contamination_duration_mult = 1.10
+		medical_saturation_mult = 1.10
+		camp_killing_efficiency_mult = 1.15
 		condemnation_mult = 0.55
 	}
 	mask_discipline = {
-		army_org_factor = 0.20
-		org_loss_when_moving = -0.20
+		army_org_factor = 0.01
+		org_loss_when_moving = -0.05
 		military_mask_consumption_mult = 0.75
 	}
 	hazard_assault_cadres = {
-		special_forces_cap = 0.10
-		experience_gain_army_factor = 0.25
-		unit_attack_factor = 0.30
-		unit_defence_factor = 0.30
+		special_forces_cap = 0.02
+		experience_gain_army_factor = 0.05
+		unit_attack_factor = 0.10
+		unit_defence_factor = 0.10
 	}
 	contaminant_fire_coordination = {
-		army_artillery_attack_factor = 0.35
-		equipment_reliability = 0.25
+		army_artillery_attack_factor = 0
+		equipment_reliability = 0.10
 	}
 }
 
@@ -310,44 +307,7 @@ cbrn_doctrine_cleanup = {
 	catastrophic_points = 3
 }
 
-cbrn_doctrine_advisor = {
-	schema = {
-		any_key = yes
-		data = {
-			{
-				any_key = yes
-				data = fixed_point
-			}
-		}
-	}
 
-	operations_director = {
-		planning_speed = 0.20
-		max_command_power = 20
-	}
-	civil_defence_coordinator = {
-		stability_factor = 0.10
-		consumer_goods_factor = -0.05
-	}
-	chemical_logistics_inspector = {
-		attrition = -0.20
-		supply_consumption_factor = -0.15
-	}
-	biological_security_director = {
-		army_org_factor = 0.20
-		resistance_growth = -0.15
-	}
-}
-
-cbrn_doctrine_advisor_cost = {
-	schema = {
-		any_key = yes
-		data = fixed_point
-	}
-
-	command_cap_increase = 10
-	command_power = 0
-}
 
 cbrn_doctrine_ai = {
 	schema = {
@@ -394,8 +354,6 @@ cbrn_doctrine_ai = {
 	controlled_first_use_factor = 0.10
 	theater_first_use_add = 15
 	terminal_unrestricted_add = 40
-	theater_offensive_hq_add = 1
-	terminal_offensive_hq_add = 2
 }
 
 # Event 019 provider metadata for the CBRN chaos_battalion combat token. The

@@ -5,34 +5,20 @@
 # - Initializes Chaos Warfare as a conditional national CBRN institution.
 # - Records track mastery without periodic polling and grants doctrine-only
 #   technology only after every mapped prerequisite is present.
-# - Owns establishment success/failure/remediation, institutional readiness
-#   caps, use-policy changes, Condemnation-only doctrine mitigation, and
-#   legacy migration cleanup.
+# - Reconciles earned doctrine capabilities without claim or commission cards.
+# - Owns explicit use-policy changes, Condemnation-only doctrine mitigation,
+#   and legacy migration cleanup.
 # - Never consumes payload or dispatches exposure. Delivery adapters retain
 #   exclusive ownership of the shared exposure pipeline.
 # ============================================================================
 
 @CBRN_DOCTRINE_TECHNOLOGY_GRANT_LEVEL = 1
-# Timed flag fields require file-local literals. These mirror
-# cbrn_doctrine_timing.policy_reassessment_days and
-# cbrn_doctrine_timing.theater_cleanup_assignment_days.
-@CBRN_DOCTRINE_POLICY_REASSESSMENT_DAYS = 90
+# Timed flag fields use the variable form of the shared script constant.
+# The cleanup assignment literal is an existing separate route.
 @CBRN_DOCTRINE_THEATER_CLEANUP_ASSIGNMENT_DAYS = 28
 
 cbrn_doctrine_raise_readiness_to_minimum = {
-	cbrn_initialize_country_data = yes
-	if = {
-		limit = {
-			has_variable = cbrn_doctrine_requested_readiness_minimum
-			check_variable = {
-				var = chemical_readiness
-				value = cbrn_doctrine_requested_readiness_minimum
-				compare = less_than
-			}
-		}
-		set_variable = { chemical_readiness = cbrn_doctrine_requested_readiness_minimum }
-		clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
-	}
+	cbrn_refresh_country_mask_snapshot = yes
 }
 
 cbrn_doctrine_raise_decontamination_to_minimum = {
@@ -52,15 +38,7 @@ cbrn_doctrine_raise_decontamination_to_minimum = {
 }
 
 cbrn_doctrine_apply_institutional_band = {
-	if = {
-		limit = { has_variable = cbrn_doctrine_requested_readiness_cap }
-		set_temp_variable = { cbrn_requested_readiness_cap = cbrn_doctrine_requested_readiness_cap }
-		cbrn_set_chemical_readiness_cap = yes
-	}
-	if = {
-		limit = { has_variable = cbrn_doctrine_requested_readiness_minimum }
-		cbrn_doctrine_raise_readiness_to_minimum = yes
-	}
+	cbrn_refresh_country_mask_snapshot = yes
 }
 
 cbrn_doctrine_pay_command_power = {
@@ -77,85 +55,18 @@ cbrn_chaos_warfare_adopt = {
 	set_country_flag = cbrn_program_established
 	set_country_flag = cbrn_command_established
 	set_country_flag = cbrn_chaos_warfare_adopted
-	set_country_flag = cbrn_doctrine_establishment_pending
-	set_country_flag = cbrn_doctrine_offensive_authority_closed
-	clr_country_flag = cbrn_doctrine_establishment_failed
-	clr_country_flag = concentration_occupation_law_unlocked
-	set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.defensive_preparation }
-	cbrn_set_use_policy = yes
-
-	set_variable = { cbrn_doctrine_mask_production_baseline = total_equipment_produced_gas_mask_equipment }
-	set_variable = { cbrn_peak_use_policy = cbrn_use_policy }
-	set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.adoption_cap }
-	set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.adoption_minimum }
-	cbrn_doctrine_apply_institutional_band = yes
-
-	unlock_subunit = cbrn_hq_operations_section
-	unlock_subunit = cbrn_gas_mask_decon_detachment
-
-	if = {
-		limit = { NOT = { has_active_mission = cbrn_chaos_warfare_establishment_mission } }
-		activate_mission = cbrn_chaos_warfare_establishment_mission
-	}
-}
-
-cbrn_complete_chaos_warfare_establishment = {
 	set_country_flag = cbrn_doctrine_establishment_complete
 	clr_country_flag = cbrn_doctrine_establishment_pending
 	clr_country_flag = cbrn_doctrine_establishment_failed
 	clr_country_flag = cbrn_doctrine_offensive_authority_closed
-	set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.establishment_success_minimum }
-	cbrn_doctrine_raise_readiness_to_minimum = yes
-	set_temp_variable = { cbrn_doctrine_requested_decontamination_minimum = constant:cbrn_doctrine_capacity.establishment_decontamination_minimum }
-	cbrn_doctrine_raise_decontamination_to_minimum = yes
-}
+	clr_country_flag = concentration_occupation_law_unlocked
 
-cbrn_fail_chaos_warfare_establishment = {
-	set_country_flag = cbrn_doctrine_establishment_failed
-	set_country_flag = cbrn_doctrine_offensive_authority_closed
-	clr_country_flag = cbrn_doctrine_establishment_pending
-	set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.defensive_preparation }
-	cbrn_set_use_policy = yes
-	if = {
-		limit = {
-			check_variable = {
-				var = chemical_readiness
-				value = constant:cbrn_doctrine_readiness.establishment_failure_maximum
-				compare = greater_than
-			}
-		}
-		set_variable = { chemical_readiness = constant:cbrn_doctrine_readiness.establishment_failure_maximum }
-	}
-}
+	set_variable = { cbrn_doctrine_mask_production_baseline = total_equipment_produced_gas_mask_equipment }
+	set_variable = { cbrn_peak_use_policy = cbrn_use_policy }
 
-cbrn_remediate_chaos_warfare_establishment = {
-	cbrn_complete_chaos_warfare_establishment = yes
-}
-
-cbrn_begin_hazard_assault_training = {
-	set_temp_variable = { cbrn_mask_stock_debit_requested = constant:cbrn_doctrine_training.hazard_assault_mask_cost }
-	cbrn_debit_mask_stockpile_oldest_first = yes
-	add_to_variable = { cbrn_doctrine_training_mask_consumption_total = cbrn_mask_stock_debit_completed }
-
-	set_temp_variable = { cbrn_doctrine_training_army_xp_payment = constant:cbrn_doctrine_training.hazard_assault_army_xp_cost }
-	multiply_temp_variable = { cbrn_doctrine_training_army_xp_payment = constant:cbrn_doctrine_value.negation_multiplier }
-	army_experience = cbrn_doctrine_training_army_xp_payment
-
-	set_temp_variable = { cbrn_doctrine_training_mastery_per_day = constant:cbrn_doctrine_training.hazard_assault_daily_mastery }
-	set_temp_variable = { cbrn_doctrine_training_duration = constant:cbrn_doctrine_timing.hazard_assault_training_days }
-	meta_effect = {
-		text = {
-			add_daily_mastery = {
-				amount = [CBRN_DOCTRINE_TRAINING_MASTERY_PER_DAY]
-				days = [CBRN_DOCTRINE_TRAINING_DURATION]
-				name = cbrn_hazard_assault_training_mastery_source
-				sub_doctrine = extermination_columns
-			}
-		}
-		CBRN_DOCTRINE_TRAINING_MASTERY_PER_DAY = "[?cbrn_doctrine_training_mastery_per_day|.2]"
-		CBRN_DOCTRINE_TRAINING_DURATION = "[?cbrn_doctrine_training_duration|.0]"
-	}
-	activate_mission = cbrn_hazard_assault_training_mission
+	unlock_subunit = cbrn_hq_operations_section
+	unlock_subunit = cbrn_gas_mask_decon_detachment
+	cbrn_reconcile_doctrine_capabilities = yes
 }
 
 cbrn_pay_theater_decontamination_assignment = {
@@ -272,41 +183,45 @@ cbrn_apply_theater_decontamination_assignment_paid = {
 
 cbrn_claim_protective_foundation = {
 	set_country_flag = cbrn_milestone_protective_foundation
-	set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.protective_foundation_cap }
-	set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.protective_foundation_minimum }
-	cbrn_doctrine_apply_institutional_band = yes
 	set_temp_variable = { cbrn_doctrine_requested_decontamination_minimum = constant:cbrn_doctrine_capacity.protective_foundation_decontamination_minimum }
 	cbrn_doctrine_raise_decontamination_to_minimum = yes
-	unlock_subunit = cbrn_hq_intelligence_weather_cell
+	unlock_subunit = cbrn_hq_operations_section
 	unlock_subunit = cbrn_chemical_recon_detachment
-	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_claim_delivery_integration = {
 	set_country_flag = cbrn_milestone_delivery_integration
-	set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.delivery_integration_cap }
-	set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.delivery_integration_minimum }
-	cbrn_doctrine_apply_institutional_band = yes
-	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_claim_theater_exploitation = {
 	set_country_flag = cbrn_milestone_theater_exploitation
-	set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.theater_exploitation_cap }
-	set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.theater_exploitation_minimum }
-	cbrn_doctrine_apply_institutional_band = yes
-	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_claim_terminal_command = {
 	set_country_flag = cbrn_milestone_terminal_command
-	set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.terminal_command_cap }
-	set_temp_variable = { cbrn_doctrine_requested_readiness_minimum = constant:cbrn_doctrine_readiness.terminal_command_minimum }
-	cbrn_doctrine_apply_institutional_band = yes
-	cbrn_grant_available_doctrine_technologies = yes
+}
+
+cbrn_reconcile_doctrine_capabilities = {
+	if = {
+		limit = { cbrn_can_claim_protective_foundation = yes }
+		cbrn_claim_protective_foundation = yes
+	}
+	if = {
+		limit = { cbrn_can_claim_delivery_integration = yes }
+		cbrn_claim_delivery_integration = yes
+	}
+	if = {
+		limit = { cbrn_can_claim_theater_exploitation = yes }
+		cbrn_claim_theater_exploitation = yes
+	}
+	if = {
+		limit = { cbrn_can_claim_terminal_command = yes }
+		cbrn_claim_terminal_command = yes
+	}
 }
 
 cbrn_grant_available_doctrine_technologies = {
+	cbrn_reconcile_doctrine_capabilities = yes
 	if = {
 		limit = { cbrn_can_grant_hazard_pioneer_formation = yes }
 		set_technology = { hazard_pioneer_formation = @CBRN_DOCTRINE_TECHNOLOGY_GRANT_LEVEL popup = no }
@@ -341,12 +256,17 @@ cbrn_grant_available_doctrine_technologies = {
 		limit = { cbrn_can_grant_theater_cbrn_headquarters = yes }
 		set_technology = { theater_cbrn_headquarters = @CBRN_DOCTRINE_TECHNOLOGY_GRANT_LEVEL popup = no }
 	}
+	cbrn_commission_sealed_tank_crews = yes
+	cbrn_commission_persistent_agent_shell_filling = yes
+	cbrn_commission_nerve_agent_suppression = yes
+	cbrn_commission_biological_security_assault = yes
 }
 
 cbrn_commission_sealed_tank_crews = {
 	if = {
 		limit = { cbrn_can_grant_sealed_tank_crews = yes }
 		set_technology = { sealed_tank_crews = @CBRN_DOCTRINE_TECHNOLOGY_GRANT_LEVEL popup = no }
+		cbrn_sync_vanilla_project_integrations = yes
 	}
 }
 
@@ -373,6 +293,7 @@ cbrn_commission_biological_security_assault = {
 
 cbrn_record_hazard_assault_adoption = {
 	set_country_flag = cbrn_infantry_track_active
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_infantry_mastery_one = {
@@ -400,6 +321,7 @@ cbrn_record_infantry_mastery_five = {
 
 cbrn_record_toxic_armored_adoption = {
 	set_country_flag = cbrn_armor_track_active
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_armor_mastery_one = {
@@ -424,11 +346,13 @@ cbrn_record_armor_mastery_four = {
 
 cbrn_record_armor_mastery_five = {
 	set_country_flag = cbrn_armor_mastery_five
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_contaminant_fire_support_adoption = {
 	set_country_flag = cbrn_combat_support_track_active
 	unlock_subunit = cbrn_chemical_ammunition_train
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_combat_support_mastery_one = {
@@ -454,18 +378,20 @@ cbrn_record_combat_support_mastery_four = {
 cbrn_record_combat_support_mastery_five = {
 	set_country_flag = cbrn_combat_support_mastery_five
 	set_country_flag = contaminant_firebases_deep_contamination_fireplans_unlocked
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_integrated_command_adoption = {
 	set_country_flag = cbrn_operations_track_active
 	set_country_flag = integrated_chemical_operations_adopted
 	unlock_subunit = cbrn_hq_operations_section
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_operations_mastery_one = {
 	set_country_flag = cbrn_operations_mastery_one
 	set_country_flag = integrated_chemical_operations_operational_recon_grids_unlocked
-	unlock_subunit = cbrn_hq_intelligence_weather_cell
+	unlock_subunit = cbrn_hq_operations_section
 }
 
 cbrn_record_operations_mastery_two = {
@@ -485,7 +411,7 @@ cbrn_record_operations_mastery_three = {
 cbrn_record_operations_mastery_four = {
 	set_country_flag = cbrn_operations_mastery_four
 	set_country_flag = integrated_chemical_operations_air_surface_chemical_link_unlocked
-	unlock_subunit = cbrn_hq_biological_security_section
+	unlock_subunit = cbrn_hq_medical_countermeasure_directorate
 	cbrn_grant_available_doctrine_technologies = yes
 }
 
@@ -497,18 +423,22 @@ cbrn_record_operations_mastery_five = {
 
 cbrn_record_native_infantry_track_complete = {
 	set_country_flag = cbrn_native_infantry_track_complete
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_native_combat_support_track_complete = {
 	set_country_flag = cbrn_native_combat_support_track_complete
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_native_armor_track_complete = {
 	set_country_flag = cbrn_native_armor_track_complete
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_record_native_operations_track_complete = {
 	set_country_flag = cbrn_native_operations_track_complete
+	cbrn_grant_available_doctrine_technologies = yes
 }
 
 cbrn_change_chaos_warfare_use_policy = {
@@ -517,9 +447,10 @@ cbrn_change_chaos_warfare_use_policy = {
 		limit = { check_variable = { var = cbrn_policy_change_accepted value = constant:cbrn_proof.supplied compare = equals } }
 		set_temp_variable = { cbrn_doctrine_command_power_cost = cbrn_policy_command_power_cost }
 		cbrn_doctrine_pay_command_power = yes
+		set_temp_variable = { cbrn_policy_reassessment_duration = constant:cbrn_doctrine_timing.policy_reassessment_days }
 		set_country_flag = {
 			flag = cbrn_doctrine_policy_reassessment
-			days = @CBRN_DOCTRINE_POLICY_REASSESSMENT_DAYS
+			days = var:cbrn_policy_reassessment_duration
 		}
 		if = {
 			limit = {
@@ -539,11 +470,8 @@ cbrn_change_chaos_warfare_use_policy = {
 			set_country_flag = cbrn_policy_history_limited_battlefield_authority
 		}
 		if = {
-			limit = { check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.strategic_release_authority compare = greater_than_or_equals } }
+			limit = { check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.unrestricted_authorization compare = equals } }
 			set_country_flag = cbrn_policy_history_strategic_release_authority
-		}
-		if = {
-			limit = { check_variable = { var = cbrn_use_policy value = constant:cbrn_use_policy.unrestricted_chaos_warfare compare = equals } }
 			set_country_flag = cbrn_policy_history_unrestricted_chaos_warfare
 		}
 	}
@@ -682,27 +610,6 @@ cbrn_migrate_legacy_chaos_warfare = {
 			cbrn_record_operations_mastery_five = yes
 		}
 
-		if = {
-			limit = { has_country_flag = cbrn_milestone_terminal_command }
-			set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.terminal_command_cap }
-		}
-		else_if = {
-			limit = { has_country_flag = cbrn_milestone_theater_exploitation }
-			set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.theater_exploitation_cap }
-		}
-		else_if = {
-			limit = { has_country_flag = cbrn_milestone_delivery_integration }
-			set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.delivery_integration_cap }
-		}
-		else_if = {
-			limit = { has_country_flag = cbrn_milestone_protective_foundation }
-			set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.protective_foundation_cap }
-		}
-		else = {
-			set_temp_variable = { cbrn_doctrine_requested_readiness_cap = constant:cbrn_doctrine_readiness.adoption_cap }
-		}
-		set_temp_variable = { cbrn_requested_readiness_cap = cbrn_doctrine_requested_readiness_cap }
-		cbrn_set_chemical_readiness_cap = yes
 		cbrn_grant_available_doctrine_technologies = yes
 	}
 }

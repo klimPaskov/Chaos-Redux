@@ -1,5 +1,7 @@
 # Implementation Surface Map
 
+> **Historical file map, superseded in part:** The user's accepted 2026-09-20 [CBRN overhaul amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md) controls the three policies, two raid categories, three HQ roles, two consolidated company roles, technology cost bands, projects, MIOs, and visuals. This earlier map still locates legacy files but does not authorize its six-HQ or larger support-roster proposals. Verify current filenames and source revisions before using any row as an implementation instruction.
+
 ## Source-of-truth location
 
 The accepted design should live under a system spec folder such as:

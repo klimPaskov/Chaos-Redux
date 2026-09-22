@@ -1,5 +1,7 @@
 # Chaos Warfare Doctrine Architecture
 
+> **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older requirements in this file. Use the amendment and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) before treating any role, policy, raid, project, limit, organization, or asset here as current design.
+
 ## Doctrine role
 
 Chaos Warfare remains a land grand doctrine. It is a specialist doctrine for countries willing to devote production, headquarters slots, research, and diplomatic capital to CBRN operations.

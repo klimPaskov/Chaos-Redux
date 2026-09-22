@@ -1,5 +1,9 @@
 # Chaos Warfare Asset Production Prompt
 
+Before reusing this prompt, apply the user's accepted 2026-09-20 CBRN amendment at `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` and its requirement ledger. Older conflicting reward, policy, raid, unit, project, or asset requests are superseded.
+
+The older Prepare Chemical Offensive and Combined CBRN Overmatch icon requests below are superseded by the core integration removal of those paid abilities; five protective HQ orders remain. Check active consumers before creating or wiring any HQ asset.
+
 ## Task
 
 Produce the complete visual asset package for the accepted Chaos Warfare CBRN rework. Read the accepted specification files and the relevant sections of the Chaos Redux event-assets and frame-animation skills. Use the project asset subagent split. Icons belong to `chaosx_icon_artist`. Fictional UI panel art belongs to `chaosx_generated_event_art`. Real company logos, historical symbols, or archival scenes belong to `chaosx_asset_source_researcher` only after the implementation agent confirms they are required.

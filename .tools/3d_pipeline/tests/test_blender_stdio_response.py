@@ -21,13 +21,14 @@ init=json.loads(sys.stdin.readline())
 if mode=='init_error':
     send({'jsonrpc':'2.0','id':1,'error':{'code':-32600,'message':'initialize rejected'}})
     sys.exit(0)
+if mode=='timeout':
+    child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'])
 send({'jsonrpc':'2.0','id':1,'result':{'protocolVersion':'2024-11-05','serverInfo':{'name':'fixture','version':'1'}}})
 notification=json.loads(sys.stdin.readline())
 request=json.loads(sys.stdin.readline())
 assert notification['method']=='notifications/initialized'
 if mode=='eof': sys.exit(0)
 if mode=='timeout':
-    child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'])
     send({'jsonrpc':'2.0','method':'notifications/message','params':{'child_pid':child.pid}})
     time.sleep(60)
 if mode=='delay':
@@ -91,7 +92,7 @@ class AdapterStdioTests(unittest.TestCase):
         with self.assertRaisesRegex(route.MCPRouteError,'initialize rejected'): self.run_fixture('init_error')
 
     def test_timeout_cleans_owned_process_tree(self):
-        with self.assertRaisesRegex(route.MCPRouteError,'timed out'): self.run_fixture('timeout',timeout=1)
+        with self.assertRaisesRegex(route.MCPRouteError,'timed out'): self.run_fixture('timeout',timeout=5)
         if os.name=='nt': self.assertGreaterEqual(len(self.last_receipt['owned_process_ids_at_cleanup']),2)
 
     def test_wrong_response_id_cannot_complete_call(self):

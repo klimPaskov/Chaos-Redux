@@ -219,63 +219,7 @@ is_japan_china_chemical_campaign_war = {
 	has_war_with_chinese_country = yes
 }
 
-has_japan_chemical_campaign_selected_stockpile_attack = {
-	OR = {
-		AND = {
-			NOT = { has_variable = japan_chemical_campaign_selected_agent }
-			has_tech = mustard_gas
-			has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.chlorine
-				compare = equals
-			}
-			has_tech = chlorine_gas
-			has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.phosgene
-				compare = equals
-			}
-			has_tech = phosgene
-			has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.mustard
-				compare = equals
-			}
-			has_tech = mustard_gas
-			has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			check_variable = {
-				var = japan_chemical_campaign_selected_agent
-				value = constant:chem_type.lewisite
-				compare = equals
-			}
-			has_tech = lewisite
-			has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-	}
-}
-
-has_japan_chemical_campaign_attack_command_power = {
-	OR = {
-		command_power > constant:chem_japan_campaign_decision.defaults.attack_command_power_cost_trigger
-		AND = {
-			has_idea = chemical_command_reagent_optimization_spirit
-			command_power > constant:chem_japan_campaign_decision.defaults.attack_command_power_cost_discounted_trigger
-		}
-	}
-}
-
-is_japan_chemical_campaign_target_state = {
+japan_chemical_campaign_state_is_chinese_homeland = {
 	OR = {
 		is_core_of = CHI
 		is_core_of = PRC
@@ -285,6 +229,12 @@ is_japan_chemical_campaign_target_state = {
 		is_core_of = XSM
 		is_core_of = SIK
 	}
+}
+
+# Country ROOT is supplied by native raid show_target, available, and
+# launchable; do not call this helper from raid-instance outcome effects.
+is_japan_chemical_campaign_target_state = {
+	japan_chemical_campaign_state_is_chinese_homeland = yes
 	any_neighbor_state = {
 		is_controlled_by = ROOT
 	}
@@ -314,27 +264,6 @@ mapmode_state_has_legacy_disease_contamination = {
 		has_dynamic_modifier = { modifier = plague_contaminated_state }
 		has_dynamic_modifier = { modifier = tularemia_contaminated_state }
 		has_dynamic_modifier = { modifier = smallpox_contaminated_state }
-	}
-}
-
-has_japan_chemical_campaign_any_stockpile_attack = {
-	OR = {
-		AND = {
-			has_tech = chlorine_gas
-			has_equipment = { chemical_chlorine_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			has_tech = phosgene
-			has_equipment = { chemical_phosgene_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			has_tech = mustard_gas
-			has_equipment = { chemical_mustard_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
-		AND = {
-			has_tech = lewisite
-			has_equipment = { chemical_lewisite_payload_cylinder_1 > constant:chem_japan_campaign_decision.defaults.attack_cylinder_consumption_trigger }
-		}
 	}
 }
 

@@ -1,5 +1,7 @@
 # Event 24: Video Game in Sweden
 
+The user's explicit 2026-09-20 instruction removes the Field-Validated Planner trait and its field-validation reward. This decision supersedes older passages and prompts that promise the trait or its icon; field-validation mission mechanics remain in scope.
+
 This folder is the source specification package for Chaos Redux Event 24.
 
 Intended repository location:

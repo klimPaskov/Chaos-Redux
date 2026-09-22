@@ -1,0 +1,658 @@
+{
+  "status": "design_not_runtime",
+  "working_labels": true,
+  "numeric_values": "initial_tuning_not_playtested",
+  "max_distinct_spendable_cost_types": 4,
+  "actions": [
+    {
+      "id": "D01",
+      "category": "reclamation",
+      "working_label": "Artillery preparation",
+      "mode": "immediate",
+      "costs": {
+        "army_experience": 25,
+        "artillery": 100
+      },
+      "duration_days": 0,
+      "eligibility": "Active recorded attempt, one preparation not already taken",
+      "success": "A bounded offensive preparation benefit in the existing Defense Establishment family",
+      "interruption": "No payment on invalid attempt",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D02",
+      "category": "reclamation",
+      "working_label": "Reserve coordination",
+      "mode": "immediate",
+      "costs": {
+        "army_experience": 25,
+        "support_equipment": 150
+      },
+      "duration_days": 0,
+      "eligibility": "Active attempt, mutually exclusive with D01 for this operation",
+      "success": "A bounded planning and reserve-readiness benefit in the same family",
+      "interruption": "No payment on invalid attempt",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D03",
+      "category": "reclamation",
+      "working_label": "Extend the campaign",
+      "mode": "mission",
+      "costs": {
+        "political_power": 50,
+        "support_equipment": 250
+      },
+      "duration_days": 90,
+      "eligibility": "Day 150 to 179, partial northern control, uncapitulated, at least 5,000 available manpower, unused extension",
+      "success": "Extend the original deadline once to day 270, no new free force",
+      "interruption": "No extension without affordability, no repeat",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D04",
+      "category": "reclamation",
+      "working_label": "Northern defensive supply",
+      "mode": "mission",
+      "costs": {
+        "support_equipment": 150,
+        "trucks": 100
+      },
+      "duration_days": 60,
+      "eligibility": "Human or AI holder in the recorded war, northern worksite valid",
+      "success": "Temporary paid local defensive preparation, no veto on valid settlement",
+      "interruption": "Ends on northern loss or settlement",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D05",
+      "category": "united_ireland",
+      "working_label": "Constitutional settlement",
+      "mode": "mission",
+      "costs": {
+        "political_power": 50
+      },
+      "duration_days": 90,
+      "eligibility": "Victory, constitutional policy selected, not completed",
+      "success": "Commit the selected constitutional guarantees and their Settlement result",
+      "interruption": "Policy reversal cancels incompatible work",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D06",
+      "category": "united_ireland",
+      "working_label": "Belfast reconstruction",
+      "mode": "mission",
+      "costs": {
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 120,
+      "eligibility": "Victory, Irish ownership and control of worksite",
+      "success": "Selected real repair or industrial investment and Settlement +10 once",
+      "interruption": "Occupation pauses, cancellation releases future capacity",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D07",
+      "category": "united_ireland",
+      "working_label": "Public service agreement",
+      "mode": "mission",
+      "costs": {
+        "political_power": 50,
+        "support_equipment": 100
+      },
+      "duration_days": 90,
+      "eligibility": "Constitutional policy and valid northern administration",
+      "success": "Staffed services and Settlement +10 once",
+      "interruption": "Broken accepted guarantee blocks best outcome",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D08",
+      "category": "united_ireland",
+      "working_label": "Northern integration contract",
+      "mode": "mission",
+      "costs": {
+        "political_power": 100,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Settlement >=75, Irish northern ownership and control, core not already present",
+      "success": "Approved northern core after time and investment, never strip an existing core",
+      "interruption": "Ownership/control loss pauses work and resets continuous requirement",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D09",
+      "category": "united_ireland",
+      "working_label": "Constitutional revision",
+      "mode": "mission",
+      "costs": {
+        "political_power": 150,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Incompatible policy exists, once per constitutional change, no concurrent revision",
+      "success": "Replace current policy and settle its explicit guarantee conflict",
+      "interruption": "Old benefit not stacked with new policy",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D10",
+      "category": "united_ireland",
+      "working_label": "Normalize the northern settlement",
+      "mode": "offer",
+      "costs": {
+        "political_power": 50
+      },
+      "duration_days": 30,
+      "eligibility": "Valid former holder, peace, no incompatible immediate attack commitment",
+      "success": "Accepted opinion and trade/access negotiation, no territorial reversal",
+      "interruption": "Refusal costs no transfer and starts cooldown",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D11",
+      "category": "development",
+      "working_label": "Language education",
+      "mode": "mission",
+      "costs": {
+        "political_power": 50,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 90,
+      "eligibility": "G01 available, first milestone missing",
+      "success": "First Gaelic milestone and selected education policy",
+      "interruption": "Work can pause, no repeat milestone reward",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D12",
+      "category": "development",
+      "working_label": "Cultural institutions",
+      "mode": "mission",
+      "costs": {
+        "political_power": 75,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 120,
+      "eligibility": "G02 available, institutional milestone missing",
+      "success": "Second Gaelic milestone and funded institution",
+      "interruption": "Policy conflict requires revision",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D13",
+      "category": "development",
+      "working_label": "Cultural agreement abroad",
+      "mode": "offer",
+      "costs": {
+        "political_power": 50
+      },
+      "duration_days": 30,
+      "eligibility": "Eligible target, concurrency 1 or 2 by tier, no active cooldown",
+      "success": "Accepted cultural relationship and route-specific follow-up",
+      "interruption": "Refusal preserves sovereignty, no automatic success",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D14",
+      "category": "development",
+      "working_label": "Professional retraining",
+      "mode": "mission",
+      "costs": {
+        "army_experience": 50,
+        "support_equipment": 250,
+        "infantry_equipment": 1000
+      },
+      "duration_days": 90,
+      "eligibility": "M04 and eligible ordinary formations, no concurrent same batch",
+      "success": "Paid training improvement and a bounded professional establishment step",
+      "interruption": "Spent preparation not refunded for war losses",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D15",
+      "category": "development",
+      "working_label": "Artillery program",
+      "mode": "mission",
+      "costs": {
+        "army_experience": 25,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 120,
+      "eligibility": "M03 and valid production technology",
+      "success": "Production investment and a specific training/research payoff",
+      "interruption": "Capacity released at end, no invented equipment on failure",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D16",
+      "category": "development",
+      "working_label": "Transport support program",
+      "mode": "mission",
+      "costs": {
+        "army_experience": 25,
+        "trucks": 250,
+        "support_equipment": 150
+      },
+      "duration_days": 90,
+      "eligibility": "M06 and a valid training plan",
+      "success": "Completed logistics preparation for later operations",
+      "interruption": "No repeat before 180-day cooldown",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D17",
+      "category": "development",
+      "working_label": "Marine preparation",
+      "mode": "mission",
+      "costs": {
+        "army_experience": 50,
+        "support_equipment": 250,
+        "trucks": 150,
+        "convoys": 20
+      },
+      "duration_days": 120,
+      "eligibility": "M08, supported special-force capacity and transport plan",
+      "success": "Paid marine and landing training eligibility",
+      "interruption": "Cannot create units above cap or refund lost ships",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D18",
+      "category": "development",
+      "working_label": "Aircraft procurement program",
+      "mode": "offer",
+      "costs": {
+        "political_power": 50,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Valid accepted supplier or disclosed domestic alternative",
+      "success": "Bounded appropriate aircraft delivery or production outcome",
+      "interruption": "No rejected-offer deduction, no future-tech gift",
+      "response_window_days": 30,
+      "project_duration_days": 180,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D19",
+      "category": "empire",
+      "working_label": "Scottish union proposal",
+      "mode": "offer",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 30,
+      "eligibility": "Independent valid Scotland, imperial commitment, explicit sovereignty terms",
+      "success": "Accepted union starts ratification, no instantaneous annexation on sending",
+      "interruption": "Human refusal definitive for this offer",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D20",
+      "category": "empire",
+      "working_label": "Scottish initial administration",
+      "mode": "mission",
+      "costs": {
+        "political_power": 100,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Irish owned controlled approved Scottish set",
+      "success": "Scottish charter and initial administration completed",
+      "interruption": "Occupation pauses, promise breach blocks cooperative payoff",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D21",
+      "category": "empire",
+      "working_label": "Scottish core integration",
+      "mode": "mission",
+      "costs": {
+        "political_power": 150,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Initial administration, Settlement >=75, Strain <50, 365-day control period also required",
+      "success": "Only approved Scottish cores after both time and investment",
+      "interruption": "No blanket cores and no partial stale completion",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D22",
+      "category": "empire",
+      "working_label": "Proclaim Gaelic Empire",
+      "mode": "immediate",
+      "costs": {
+        "political_power": 100
+      },
+      "duration_days": 0,
+      "eligibility": "Complete imperial formation helper",
+      "success": "Identity, flag, staged ideas, route content, once-only presentation",
+      "interruption": "No partial payment or proclamation if any requirement fails",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D23",
+      "category": "empire",
+      "working_label": "Wider imperial relationship",
+      "mode": "offer",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 30,
+      "eligibility": "Valid Welsh or other approved counterpart, active supported proposal",
+      "success": "Accepted client, alliance, or explicit union relationship as stated",
+      "interruption": "Refusal does not annex or secretly create war",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D24",
+      "category": "celtic",
+      "working_label": "Celtic congress",
+      "mode": "offer",
+      "costs": {
+        "political_power": 50,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 30,
+      "eligibility": "Cooperative opening, valid recipients, no duplicate congress",
+      "success": "Accepted bilateral relationships open, capacity reserved only for funded preparation",
+      "interruption": "Each recipient retains its own response",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D25",
+      "category": "celtic",
+      "working_label": "Partner aid package",
+      "mode": "offer",
+      "costs": {
+        "political_power": 25,
+        "infantry_equipment": 1000,
+        "support_equipment": 150,
+        "artillery": 100
+      },
+      "duration_days": 30,
+      "eligibility": "Valid partner, accepted need and available Irish stocks",
+      "success": "Actual transfer once after accepted affordability recheck",
+      "interruption": "No unaccepted stockpile deduction",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D26",
+      "category": "celtic",
+      "working_label": "Create Celtic league",
+      "mode": "immediate",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 0,
+      "eligibility": "Ireland plus one accepted sovereign partner, legal faction transition",
+      "success": "League institutions and diplomacy, not full federation",
+      "interruption": "Cannot forcibly remove a human partner from another faction",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D27",
+      "category": "celtic",
+      "working_label": "Federal charter mission",
+      "mode": "mission",
+      "costs": {
+        "political_power": 100,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 90,
+      "eligibility": "Ireland Scotland Wales individually accepted, territorial and domestic gates valid",
+      "success": "Three funded charters and readiness for federal formation",
+      "interruption": "Essential withdrawal pauses or cancels common mission",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D28",
+      "category": "celtic",
+      "working_label": "Establish federation",
+      "mode": "immediate",
+      "costs": {
+        "political_power": 100
+      },
+      "duration_days": 0,
+      "eligibility": "Complete federal formation helper",
+      "success": "Bloc identity, common institutions and member content, tags retained",
+      "interruption": "No duplicate formation reward after later reconstitution",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D29",
+      "category": "celtic",
+      "working_label": "Common procurement offer",
+      "mode": "offer",
+      "costs": {
+        "political_power": 25,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Valid participating members with accepted contributions",
+      "success": "Bilateral verified equipment or production support contract",
+      "interruption": "Missing contributor suspends only its contract",
+      "response_window_days": 30,
+      "project_duration_days": 180,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D30",
+      "category": "celtic",
+      "working_label": "Federal arbitration",
+      "mode": "mission",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 90,
+      "eligibility": "A concrete unresolved member dispute, no concurrent arbitration",
+      "success": "Settles the named commitment conflict and its recorded Strain contribution",
+      "interruption": "Coercion alternative carries explicit withdrawal risk",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D31",
+      "category": "atlantic",
+      "working_label": "Overseas access proposal",
+      "mode": "offer",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 30,
+      "eligibility": "Valid current holder and supported access candidate",
+      "success": "Accepted access type as offered, no hidden sovereignty transfer",
+      "interruption": "Refusal or territorial invalidation spends no transfer resources",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D32",
+      "category": "atlantic",
+      "working_label": "Port development contract",
+      "mode": "mission",
+      "costs": {
+        "political_power": 50,
+        "civilian_factory_commitment": 2
+      },
+      "duration_days": 180,
+      "eligibility": "Valid owned or accepted treaty worksite and facility capacity",
+      "success": "Real approved port or support development",
+      "interruption": "Treaty loss suspends work and releases future capacity on cancellation",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D33",
+      "category": "atlantic",
+      "working_label": "Expedition preparation",
+      "mode": "mission",
+      "costs": {
+        "army_experience": 50,
+        "trucks": 250,
+        "support_equipment": 250,
+        "convoys": 25
+      },
+      "duration_days": 120,
+      "eligibility": "M09/T06, actual force and transport capacity, Strain <50",
+      "success": "A trained supported expedition entitlement using ordinary units",
+      "interruption": "No teleportation or recreation of destroyed force",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D34",
+      "category": "atlantic",
+      "working_label": "Atlantic operational circuit",
+      "mode": "mission",
+      "costs": {
+        "political_power": 50,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "Valid navy air ports and accepted base or long-range alternative",
+      "success": "Operational qualification for T07 and one concrete capacity payoff",
+      "interruption": "Capacity loss pauses qualification, no fake completed patrol",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D35",
+      "category": "atlantic",
+      "working_label": "Consolidate commitments",
+      "mode": "mission",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 180,
+      "eligibility": "Concrete residual burden, active obligations still accounted, no cooldown",
+      "success": "Reduce only eligible residual political burden by 10",
+      "interruption": "Cannot reduce below active commitment contribution floor",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D36",
+      "category": "development",
+      "working_label": "Strategic reconsideration",
+      "mode": "mission",
+      "costs": {
+        "political_power": 100
+      },
+      "duration_days": 90,
+      "eligibility": "No imperial/federal final formation, not previously reconsidered",
+      "success": "Replace strategic preparation commitment and cancel incompatible offers",
+      "interruption": "Completed rewards not refunded or replayed",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D37",
+      "category": "development",
+      "working_label": "Reserve mobilization",
+      "mode": "mission",
+      "costs": {
+        "manpower": "verified batch template requirement",
+        "infantry_equipment": "verified batch template requirement",
+        "support_equipment": "verified batch template requirement",
+        "artillery": "verified batch template requirement"
+      },
+      "duration_days": 30,
+      "eligibility": "M05, reserve doctrine, one approved batch of ordinary reserve infantry, actual supported recruitment capacity",
+      "success": "Fully funded ordinary reserve formations after training, with no duplicated initial stockpile or personnel",
+      "interruption": "No resource creation through demobilize/remobilize cycles",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once.",
+      "cost_model": "Dynamic from final approved ordinary reserve-infantry template and selected finite batch count. All four costs shown before acceptance. Do not use an estimate in runtime payment."
+    },
+    {
+      "id": "D38",
+      "category": "development",
+      "working_label": "Naval operational exercise",
+      "mode": "mission",
+      "costs": {
+        "navy_experience": 25,
+        "fuel": 5000
+      },
+      "duration_days": 90,
+      "eligibility": "N03 or N04 program, actual suitable fleet and facilities, no duplicate completed program",
+      "success": "Paid qualification for the selected naval program and bounded family improvement",
+      "interruption": "Insufficient fleet capacity pauses qualification, no lost-ship refund",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D39",
+      "category": "development",
+      "working_label": "Integrated air exercise",
+      "mode": "mission",
+      "costs": {
+        "air_experience": 25,
+        "fuel": 5000
+      },
+      "duration_days": 90,
+      "eligibility": "A08 program, actual aircraft and facilities in the selected role",
+      "success": "Operational air qualification and bounded family improvement",
+      "interruption": "No empty-paper-force completion, one payoff per program",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D40",
+      "category": "atlantic",
+      "working_label": "Diaspora investment agreement",
+      "mode": "offer",
+      "costs": {
+        "political_power": 75,
+        "civilian_factory_commitment": 1
+      },
+      "duration_days": 180,
+      "eligibility": "T03, valid accepting overseas counterpart or disclosed domestic-finance alternative",
+      "success": "One approved Irish industrial project or bounded procurement contract, no undefined overseas manpower grant",
+      "interruption": "Rejected offer spends no transfer resources, project begins only after valid acceptance",
+      "response_window_days": 30,
+      "project_duration_days": 180,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D41",
+      "category": "celtic",
+      "working_label": "Negotiate sovereign independence",
+      "mode": "offer",
+      "costs": {
+        "political_power": 75
+      },
+      "duration_days": 30,
+      "eligibility": "A valid current sovereign holder can lawfully release the approved Scottish Welsh or Breton homeland and accepts the terms",
+      "success": "An explicit release or sovereignty agreement with the viable country package and its retained choice of later alignment",
+      "interruption": "Refusal cannot release occupied foreign land or force an unrelated peace",
+      "response_window_days": 30,
+      "project_duration_days": 0,
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    },
+    {
+      "id": "D42",
+      "category": "celtic",
+      "working_label": "Joint defense exercise",
+      "mode": "mission",
+      "costs": {
+        "army_experience": 25,
+        "support_equipment": 250,
+        "fuel": 5000
+      },
+      "duration_days": 90,
+      "eligibility": "C08, real accepted member participation and required supported capacities",
+      "success": "One completed common defense program and its actual shared capability",
+      "interruption": "A missing contribution pauses only the affected program, no control over another human army",
+      "cost_quote_rule": "Freeze the final supported amount before acceptance, then revalidate and debit exactly once."
+    }
+  ]
+}

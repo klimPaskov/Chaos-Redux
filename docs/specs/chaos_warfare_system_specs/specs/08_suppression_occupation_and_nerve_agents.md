@@ -1,5 +1,7 @@
 # Suppression, Occupation, and Nerve Agents
 
+> **2026-09-20 accepted amendment:** Read this design with the [accepted CBRN overhaul](13_2026_09_20_accepted_cbrn_overhaul.md). Its three-policy, consolidated HQ/support, removed agent-tank-company, native raid, and combined-cap requirements supersede incompatible earlier proposals; [implementation evidence](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) remains separate from acceptance.
+
 ## Accepted correction: doctrine-backed camp method
 
 The user's 2026-08-04 correction supersedes the earlier separation and targeted occupation-decision design below. Nerve suppression is the camp killing-efficiency reward of the `zyklon_b_saturation_drills` mastery in the Toxic Armored Warfare subdoctrine. The mastery unlocks the method; its only additional unlock requirement is a researched nerve agent. Runtime use still requires real cylinders because the established camp pipeline debits payload, applies population-scaled deaths and contamination, suppresses resistance, and records evidence and consequences.

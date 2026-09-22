@@ -1,5 +1,7 @@
 # Chaos Warfare Core System and Gameplay Loop
 
+> **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older policy and attack proposals in this file. The accepted national policies are exactly Retaliation Only, Battlefield Authorization, and Unrestricted Authorization; chemical and biological attacks use two native CBRN raid categories. The [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) records source evidence and unresolved validation separately.
+
 ## Design promise
 
 Chaos Warfare is the doctrine for a state that intends to plan, supply, deliver, survive, exploit, and politically absorb unconventional warfare at theater scale.
@@ -275,15 +277,15 @@ The existing Air Cleanliness system should receive a bounded contribution when a
 
 A country can set one national use policy:
 
+The following three-policy table supersedes the earlier five-posture proposal under the user's explicit 2026-09-20 implementation instruction. Policy changes cost 5 Command Power and require a 90-day reassessment; doctrine does not escalate policy automatically.
+
 | Policy | Use permissions | Political effect |
 | --- | --- | --- |
-| Defensive preparation | Protection and cleanup only. | Low international concern. |
-| Retaliation authority | Offensive use after confirmed enemy chemical or biological use. | Easier allied support and lower first-use blame. |
-| Limited battlefield authority | Army HQ can use approved battlefield operations. | Monitoring and treaty tension. |
-| Strategic release authority | Raids and air operations allowed. | High evidence, sanctions risk, domestic strain. |
-| Unrestricted Chaos Warfare | All doctrine actions allowed, including extreme operations. | Severe internal and external consequences. |
+| Retaliation Only | Offensive use after confirmed enemy chemical or biological use. | Retaliatory permission remains subject to evidence and consequence systems. |
+| Battlefield Authorization | Approved battlefield operations through the native raid and command gates. | Monitoring, evidence, and treaty tension remain active. |
+| Unrestricted Authorization | All separately unlocked CBRN operations, including extreme routes. | Severe internal and external consequences remain active. |
 
-Policy changes require political, command, institutional, and stockpile conditions. They are not cheap political-power toggles.
+Policy changes require the stated Command Power payment and reassessment interval alongside the relevant command, institutional, and stockpile conditions.
 
 ## Counterplay
 

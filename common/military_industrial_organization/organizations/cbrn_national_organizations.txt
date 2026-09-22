@@ -1,0 +1,160 @@
+# CBRN NATIONAL AND ADVANCED PROJECT ORGANIZATIONS
+# Overview: six historically attested industrial identities and two fictional
+# advanced project institutions. Includes preserve all twelve family traits.
+# National variants are country-exclusive at game start; Showa Denko becomes
+# visible only after its June 1939 formation. Advanced variants use live paths.
+@cbrn_national_initial_research = 0.05
+@cbrn_national_quality_ici = 0.12
+@cbrn_national_quality_rhone = 0.10
+@cbrn_national_quality_ig = 0.11
+@cbrn_national_quality_dupont = 0.13
+@cbrn_national_cost_ici = 0.04
+@cbrn_national_cost_rhone = 0.05
+@cbrn_national_cost_ig = 0.05
+@cbrn_national_cost_dupont = 0.05
+@cbrn_national_cost_montecatini = -0.10
+@cbrn_national_capacity_montecatini = 0.05
+@cbrn_national_capacity_showa = 0.22
+@cbrn_national_quality_showa = -0.12
+@cbrn_national_cost_showa = -0.05
+@cbrn_advanced_containment_quality = 0.15
+@cbrn_advanced_containment_cost = 0.12
+@cbrn_advanced_precision_quality = 0.14
+@cbrn_advanced_precision_capacity = -0.10
+@cbrn_national_ai_base = 1
+@cbrn_national_ai_high = 2
+
+cbrn_ici_organization = {
+	include = cbrn_chemical_protection_consortium
+	icon = GFX_cbrn_ici_organization
+	allowed = { original_tag = ENG }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	available = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	initial_trait = { name = cbrn_ici_organization_initial_trait }
+	override_trait = {
+		token = cbrn_protection_durable_filter_canisters
+		name = cbrn_ici_durable_filter_canisters
+		equipment_bonus = { reliability = @cbrn_national_quality_ici build_cost_ic = @cbrn_national_cost_ici }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } } }
+}
+
+cbrn_ig_farben_organization = {
+	include = cbrn_delivery_engineering_bureau
+	icon = GFX_cbrn_ig_farben_organization
+	allowed = { original_tag = GER }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	available = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	initial_trait = { name = cbrn_ig_farben_organization_initial_trait }
+	override_trait = {
+		token = cbrn_munitions_stable_choking_fill
+		name = cbrn_ig_farben_stable_choking_fill
+		equipment_bonus = { reliability = @cbrn_national_quality_ig build_cost_ic = @cbrn_national_cost_ig }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } } }
+}
+
+cbrn_dupont_organization = {
+	include = cbrn_chemical_protection_consortium
+	icon = GFX_cbrn_dupont_organization
+	allowed = { original_tag = USA }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	available = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	initial_trait = { name = cbrn_dupont_organization_initial_trait }
+	override_trait = {
+		token = cbrn_protection_durable_filter_canisters
+		name = cbrn_dupont_durable_filter_canisters
+		equipment_bonus = { reliability = @cbrn_national_quality_dupont build_cost_ic = @cbrn_national_cost_dupont }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } } }
+}
+
+cbrn_rhone_poulenc_organization = {
+	include = cbrn_biomedical_industry_directorate
+	icon = GFX_cbrn_rhone_poulenc_organization
+	allowed = { original_tag = FRA }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	available = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	initial_trait = { name = cbrn_rhone_poulenc_organization_initial_trait }
+	override_trait = {
+		token = cbrn_biosecurity_mobile_containment_team
+		name = cbrn_rhone_poulenc_mobile_containment_team
+		equipment_bonus = { reliability = @cbrn_national_quality_rhone build_cost_ic = @cbrn_national_cost_rhone }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_has_defensive_cbrn_profile = yes } } }
+}
+
+cbrn_montecatini_organization = {
+	include = cbrn_chemical_protection_consortium
+	icon = GFX_cbrn_montecatini_organization
+	allowed = { original_tag = ITA }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	available = { FROM = { NOT = { is_actual_nonhuman_country = yes } } }
+	initial_trait = { name = cbrn_montecatini_organization_initial_trait }
+	override_trait = {
+		token = cbrn_decon_truck_mounted_wash_systems
+		name = cbrn_montecatini_truck_mounted_wash_systems
+		production_bonus = { production_cost_factor = @cbrn_national_cost_montecatini production_capacity_factor = @cbrn_national_capacity_montecatini }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } } }
+}
+
+cbrn_showa_denko_organization = {
+	include = cbrn_delivery_engineering_bureau
+	icon = GFX_cbrn_showa_denko_organization
+	allowed = { original_tag = JAP }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } date > 1939.5.31 } }
+	available = { FROM = { NOT = { is_actual_nonhuman_country = yes } date > 1939.5.31 } }
+	initial_trait = { name = cbrn_showa_denko_organization_initial_trait }
+	override_trait = {
+		token = cbrn_munitions_high_output_filling_complex
+		name = cbrn_showa_denko_high_output_filling_complex
+		equipment_bonus = { reliability = @cbrn_national_quality_showa }
+		production_bonus = { production_capacity_factor = @cbrn_national_capacity_showa production_cost_factor = @cbrn_national_cost_showa }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_has_battlefield_cbrn_profile = yes } } }
+}
+
+cbrn_advanced_containment_institute = {
+	include = cbrn_biomedical_industry_directorate
+	icon = GFX_cbrn_advanced_containment_institute
+	allowed = { always = yes }
+	visible = { FROM = { NOT = { is_actual_nonhuman_country = yes } has_tech = sealed_containment_laboratories bio_strategic_raid_country_has_any_agent_project = yes } }
+	available = { FROM = { has_tech = sealed_containment_laboratories bio_strategic_raid_country_has_any_agent_project = yes } }
+	initial_trait = { name = cbrn_advanced_containment_institute_initial_trait organization_modifier = { military_industrial_organization_research_bonus = @cbrn_national_initial_research } }
+	override_trait = {
+		token = cbrn_biosecurity_fail_safe_facilities
+		name = cbrn_advanced_containment_fail_safe_facilities
+		equipment_bonus = { reliability = @cbrn_advanced_containment_quality build_cost_ic = @cbrn_advanced_containment_cost }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { has_active_biowarfare_outbreak = yes } } }
+}
+
+cbrn_strategic_delivery_authority = {
+	include = cbrn_delivery_engineering_bureau
+	icon = GFX_cbrn_strategic_delivery_authority
+	allowed = { always = yes }
+	visible = {
+		FROM = {
+			NOT = { is_actual_nonhuman_country = yes }
+			has_tech = chemical_air_interdiction
+			cbrn_policy_allows_strategic_use = yes
+			OR = { is_special_project_completed = sp:sp_cw_malodor_bomb_program is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program }
+		}
+	}
+	available = {
+		FROM = {
+			has_tech = chemical_air_interdiction
+			cbrn_policy_allows_strategic_use = yes
+			OR = { is_special_project_completed = sp:sp_cw_malodor_bomb_program is_special_project_completed = sp:sp_cw_aphrodisiac_bomb_program }
+		}
+	}
+	initial_trait = { name = cbrn_strategic_delivery_authority_initial_trait organization_modifier = { military_industrial_organization_research_bonus = @cbrn_national_initial_research } }
+	override_trait = {
+		token = cbrn_aerosol_precision_release
+		name = cbrn_strategic_delivery_precision_release
+		equipment_bonus = { reliability = @cbrn_advanced_precision_quality }
+		production_bonus = { production_capacity_factor = @cbrn_advanced_precision_capacity }
+	}
+	ai_will_do = { factor = @cbrn_national_ai_base modifier = { factor = @cbrn_national_ai_high FROM = { cbrn_ai_route_allows_unrestricted_use = yes } } }
+}

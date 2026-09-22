@@ -1,5 +1,7 @@
 # Event 24: Video Game in Sweden
 
+The user's explicit 2026-09-20 instruction retires the Field-Validated Planner trait and reward. Field validation remains a mission with its other outcomes; source and asset cleanup are tracked by the Event 24 owner until the final handoff is reviewed.
+
 ## Identity and purpose
 
 Event 24 is the unclustered Chaos level 1 Minor Fire-Once event `chaosx.nr24.1`.
@@ -138,7 +140,7 @@ Field validation checks the configured Swedish front states, including southern 
 
 The field package requires Stockholm under Swedish control and at least two Swedish divisions in one selected field region, while the full reality audit requires at least two divisions in each of the three named regions.
 
-A full result validates the commander and converts the Rulebook Commander trait to Field-Validated Planner when a valid Swedish commander remains available.
+A full result resolves the field-validation mission and removes the temporary Rulebook Commander trait from a valid Swedish commander.
 
 A partial result preserves a useful but weaker staff method and leaves a temporary field-failure penalty.
 
@@ -255,7 +257,7 @@ The selection prefers an active Swedish field marshal and then an active Swedish
 
 The trait is not created as a new leader.
 
-Successful field validation converts the trait to `video_game_in_sweden_field_validated`.
+Successful field validation removes the temporary trait; it does not award a replacement commander trait.
 
 If no valid commander remains, or if the program is disabled or closed, the trait is removed cleanly.
 
@@ -341,7 +343,6 @@ The following final DDS list is exhaustive for Event24-owned runtime art and con
 | Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_protect_shifts.dds` | `GFX_decision_024_video_game_in_sweden_protect_shifts` | `interface/chaosx_decisions.gfx` |
 | Decision | `gfx/interface/decisions/024_video_game_in_sweden/024_video_game_in_sweden_preparedness_clubs.dds` | `GFX_decision_024_video_game_in_sweden_preparedness_clubs` | `interface/chaosx_decisions.gfx` |
 | Commander trait | `gfx/interface/traits/024_video_game_in_sweden/024_video_game_in_sweden_rulebook_commander.dds` | `GFX_trait_video_game_in_sweden_rulebook_commander` | `interface/chaosx_traits.gfx` |
-| Commander trait | `gfx/interface/traits/024_video_game_in_sweden/024_video_game_in_sweden_field_validated_planner.dds` | `GFX_trait_video_game_in_sweden_field_validated` | `interface/chaosx_traits.gfx` |
 | Achievement | `gfx/achievements/024_video_game_in_sweden_reality_check.dds` | `GFX_achievement_024_video_game_in_sweden_reality_check` | `interface/chaosx_achievements.gfx` |
 | Achievement grey | `gfx/achievements/024_video_game_in_sweden_reality_check_grey.dds` | `GFX_achievement_024_video_game_in_sweden_reality_check_grey` | `interface/chaosx_achievements.gfx` |
 | Achievement not eligible | `gfx/achievements/024_video_game_in_sweden_reality_check_not_eligible.dds` | `GFX_achievement_024_video_game_in_sweden_reality_check_not_eligible` | `interface/chaosx_achievements.gfx` |

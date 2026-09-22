@@ -1,0 +1,49 @@
+# ============================================================================
+# JAPAN-CHINA NATIVE CBRN RAID COUNTRY-ROOT BRIDGE
+# ============================================================================
+# Native raid callbacks have RAID_INSTANCE ROOT. The immediate hidden events
+# restore actor-country ROOT and reconstruct inputs from chain-local markers.
+# Missing or ambiguous markers fail closed without a second debit or refund.
+# ============================================================================
+
+add_namespace = chaosx_japan_cbrn_raid
+
+country_event = {
+	id = chaosx_japan_cbrn_raid.1
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					japan_cbrn_raid_bridge_context_is_valid = yes
+					japan_cbrn_raid_price_marker_is_unique = yes
+					japan_cbrn_raid_outcome_marker_is_unique = yes
+					japan_cbrn_raid_chemical_agent_marker_is_unique = yes
+				}
+				japan_cbrn_raid_restore_chemical_parameters = yes
+				japan_resolve_chemical_campaign_raid_outcome = yes
+			}
+		}
+	}
+}
+
+country_event = {
+	id = chaosx_japan_cbrn_raid.2
+	hidden = yes
+	is_triggered_only = yes
+	immediate = {
+		hidden_effect = {
+			if = {
+				limit = {
+					japan_cbrn_raid_bridge_context_is_valid = yes
+					japan_cbrn_raid_price_marker_is_unique = yes
+					japan_cbrn_raid_outcome_marker_is_unique = yes
+					japan_cbrn_raid_biological_agent_marker_is_unique = yes
+				}
+				japan_cbrn_raid_restore_biological_parameters = yes
+				japan_bio_campaign_resolve_native_raid_outcome = yes
+			}
+		}
+	}
+}

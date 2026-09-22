@@ -12,7 +12,7 @@ The arsenal decision is management only.
 
 It cannot target another country or release an agent.
 
-Ordinary strategic and battlefield deployment remains in the native biological raid routes; the exact-state Japan-China campaign decisions and the exceptional doomsday decision are separately gated routes.
+Ordinary strategic and battlefield deployment remains in the native biological raid routes; the exact-state Japan-China campaign operations and exceptional doomsday raid have separate gates inside the shared biological category.
 
 ## Exact arsenal designation
 
@@ -122,7 +122,7 @@ unchanged.
 
 Captured-facility secure-and-preserve and safe-destruction actions use native land raids with exact capture context, Biosecurity Assault participation, assigned Army Headquarters preparation, state-held payload ledgers, evidence preservation, and ordinary-lifecycle accidental releases.
 
-The doomsday decision consumes the verified four-agent arsenal and dispatches exact allocations to eligible states.
+The doomsday raid reserves one lot of each of four agents during native preparation; a successful or critical result consumes the remaining verified arsenal and dispatches exact allocations to eligible domestic and enemy-border states.
 
 Tularemia, Anthrax, and Plague receive their canonical low, moderate, or serious agent profiles; Smallpox alone receives the severe doomsday result.
 

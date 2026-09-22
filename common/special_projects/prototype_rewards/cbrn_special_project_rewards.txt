@@ -1,0 +1,91 @@
+# Shared CBRN prototype decisions. Each is a one-time tradeoff between a
+# slower controlled trial and a faster trial that spends political credibility.
+@CBRN_SP_REWARD_THRESHOLD_MIN = 20
+@CBRN_SP_REWARD_THRESHOLD_MAX = 100
+@CBRN_SP_REWARD_WEIGHT = 5
+@CBRN_SP_REWARD_STABILITY_GAIN = 0.01
+@CBRN_SP_REWARD_STABILITY_LOSS = -0.01
+@CBRN_SP_REWARD_WAR_SUPPORT_LOSS = -0.01
+
+sp_cbrn_protection_trial_reward = {
+	icon = GFX_sp_cbrn_collective_protection_systems
+	fire_only_once = yes
+	threshold = { min = @CBRN_SP_REWARD_THRESHOLD_MIN max = @CBRN_SP_REWARD_THRESHOLD_MAX }
+	weight = { base = @CBRN_SP_REWARD_WEIGHT }
+	option = {
+		token = sp_cbrn_protection_trial_controlled
+		default = yes
+		iteration_output = {
+			country_effects = {
+				custom_effect_tooltip = sp_cbrn_protection_trial_controlled_tt
+				add_stability = @CBRN_SP_REWARD_STABILITY_GAIN
+				FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+			}
+		}
+	}
+	option = {
+		token = sp_cbrn_protection_trial_rushed
+		iteration_output = {
+			country_effects = {
+				custom_effect_tooltip = sp_cbrn_protection_trial_rushed_tt
+				add_stability = @CBRN_SP_REWARD_STABILITY_LOSS
+				FROM = { add_project_progress_ratio = constant:sp_progress.gain.low }
+			}
+		}
+	}
+}
+
+sp_cbrn_phantom_trial_reward = {
+	icon = GFX_sp_cbrn_phantom_mist
+	fire_only_once = yes
+	threshold = { min = @CBRN_SP_REWARD_THRESHOLD_MIN max = @CBRN_SP_REWARD_THRESHOLD_MAX }
+	weight = { base = @CBRN_SP_REWARD_WEIGHT }
+	option = {
+		token = sp_cbrn_phantom_trial_contained
+		default = yes
+		iteration_output = {
+			country_effects = {
+				custom_effect_tooltip = sp_cbrn_phantom_trial_contained_tt
+				FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+			}
+		}
+	}
+	option = {
+		token = sp_cbrn_phantom_trial_open_air
+		iteration_output = {
+			country_effects = {
+				custom_effect_tooltip = sp_cbrn_phantom_trial_open_air_tt
+				add_war_support = @CBRN_SP_REWARD_WAR_SUPPORT_LOSS
+				FROM = { add_project_progress_ratio = constant:sp_progress.gain.low }
+			}
+		}
+	}
+}
+
+sp_cbrn_medical_trial_reward = {
+	icon = GFX_sp_cbrn_mass_vaccine_production
+	fire_only_once = yes
+	threshold = { min = @CBRN_SP_REWARD_THRESHOLD_MIN max = @CBRN_SP_REWARD_THRESHOLD_MAX }
+	weight = { base = @CBRN_SP_REWARD_WEIGHT }
+	option = {
+		token = sp_cbrn_medical_trial_reviewed
+		default = yes
+		iteration_output = {
+			country_effects = {
+				custom_effect_tooltip = sp_cbrn_medical_trial_reviewed_tt
+				add_stability = @CBRN_SP_REWARD_STABILITY_GAIN
+				FROM = { add_project_progress_ratio = constant:sp_progress.loss.low }
+			}
+		}
+	}
+	option = {
+		token = sp_cbrn_medical_trial_emergency
+		iteration_output = {
+			country_effects = {
+				custom_effect_tooltip = sp_cbrn_medical_trial_emergency_tt
+				add_stability = @CBRN_SP_REWARD_STABILITY_LOSS
+				FROM = { add_project_progress_ratio = constant:sp_progress.gain.low }
+			}
+		}
+	}
+}

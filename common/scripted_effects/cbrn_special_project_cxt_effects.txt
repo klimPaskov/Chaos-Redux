@@ -1,0 +1,41 @@
+# Country-scope CXT registration for the eight CBRN special projects.
+# The carrier is applied by the shared initial setup and player debug decision.
+# The project registry and native completion helper are idempotent.
+
+cbrn_register_special_project_cxt_package = {
+	set_temp_variable = {
+		var = chaosx_test_country_registration_extension_effect
+		value = token:cbrn_special_project_cxt_package
+	}
+	chaosx_test_country_register_extension_effect = yes
+}
+
+cbrn_special_project_cxt_package_apply = {
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_mechanized_smoke_screens }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_collective_protection_systems }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_self_renewing_filters }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_phantom_mist }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_mass_vaccine_production }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_field_antibiotics }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_regenerative_serum }
+	chaosx_test_country_register_special_project = yes
+	set_temp_variable = { var = chaosx_test_country_registration_special_project value = sp:sp_cbrn_broad_spectrum_antiserum }
+	chaosx_test_country_register_special_project = yes
+	# A CXT save may have completed projects before this extension was loaded.
+	# Reconcile durable receipts without replaying native completion bonuses.
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_mechanized_smoke_screens } cbrn_complete_mechanized_smoke_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_collective_protection_systems } cbrn_complete_collective_protection_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_self_renewing_filters } cbrn_complete_renewing_filters_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_phantom_mist } cbrn_complete_phantom_mist_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_mass_vaccine_production } cbrn_complete_mass_vaccine_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_field_antibiotics } cbrn_complete_field_antibiotics_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_regenerative_serum } cbrn_complete_regenerative_serum_project = yes }
+	if = { limit = { is_special_project_completed = sp:sp_cbrn_broad_spectrum_antiserum } cbrn_complete_antiserum_project = yes }
+	cbrn_sync_vanilla_project_integrations = yes
+}

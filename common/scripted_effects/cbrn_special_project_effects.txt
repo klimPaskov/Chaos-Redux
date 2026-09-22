@@ -1,0 +1,126 @@
+# Country-scope CBRN special-project completion adapters. Each is idempotent.
+# The durable flags are consumed by the shared protection, exposure, and
+# biological response calculations; no daily or global country pass is used.
+
+cbrn_complete_mechanized_smoke_project = {
+	set_country_flag = cbrn_project_mechanized_smoke_screens
+}
+
+cbrn_complete_collective_protection_project = {
+	set_country_flag = cbrn_project_collective_protection_systems
+	cbrn_sync_vanilla_project_integrations = yes
+}
+
+cbrn_complete_renewing_filters_project = {
+	set_country_flag = cbrn_project_self_renewing_filters
+}
+
+cbrn_complete_phantom_mist_project = {
+	set_country_flag = cbrn_project_phantom_mist
+}
+
+cbrn_complete_mass_vaccine_project = {
+	set_country_flag = cbrn_project_mass_vaccine_production
+}
+
+cbrn_complete_field_antibiotics_project = {
+	set_country_flag = cbrn_project_field_antibiotics
+}
+
+cbrn_complete_regenerative_serum_project = {
+	set_country_flag = cbrn_project_regenerative_serum
+	if = {
+		limit = { NOT = { has_idea = cbrn_project_regenerative_serum_idea } }
+		add_ideas = cbrn_project_regenerative_serum_idea
+	}
+}
+
+cbrn_complete_antiserum_project = {
+	set_country_flag = cbrn_project_broad_spectrum_antiserum
+}
+
+# COUNTRY scope. Only the neutral discovery route calls this prototype reward.
+# FROM is the project whose iteration receives the progress gain.
+cbrn_advance_ordinary_unlicensed_trial = {
+	add_stability = constant:cbrn_project_cost.ordinary_risky_trial_stability_loss
+	FROM = { add_project_progress_ratio = constant:sp_progress.gain.low }
+}
+
+# This adapter never writes Event 016 project history for an ordinary CBRN
+# discoverer. Event and Mengele owners retain their native stage records.
+cbrn_complete_biomedical_acceleration_project = {
+	if = {
+		limit = { cbrn_project_biomedical_uses_event016_story = yes }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.biomedical }
+		brilliant_scientist_record_new_project_prototype = yes
+	}
+	else = {
+		set_temp_variable = { chaosx_custom_technology_source = constant:cbrn_project_cost.neutral_provenance_source }
+		set_temp_variable = { chaosx_conventional_technology_family = constant:brilliant_scientist_project_family.biomedical }
+		set_temp_variable = { chaosx_conventional_technology_tier = constant:brilliant_scientist_project_stage.deployment }
+		chaosx_grant_conventional_technology_package = yes
+	}
+}
+
+cbrn_complete_cloning_project = {
+	if = {
+		limit = { cbrn_project_cloning_uses_event016_story = yes }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.cloning }
+		brilliant_scientist_record_new_project_prototype = yes
+	}
+	else = {
+		set_temp_variable = { chaosx_custom_technology_source = constant:cbrn_project_cost.neutral_provenance_source }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.clone }
+		chaosx_grant_custom_operational_technology = yes
+	}
+}
+
+cbrn_complete_paleogenetics_project = {
+	if = {
+		limit = { cbrn_project_paleogenetics_uses_event016_story = yes }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.paleogenetics }
+		brilliant_scientist_record_new_project_prototype = yes
+	}
+	else = {
+		set_temp_variable = { chaosx_custom_technology_source = constant:cbrn_project_cost.neutral_provenance_source }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.paleogenetic }
+		chaosx_grant_custom_operational_technology = yes
+	}
+}
+
+cbrn_complete_xenobiological_project = {
+	if = {
+		limit = { cbrn_project_xenobiological_uses_event016_story = yes }
+		set_temp_variable = { brilliant_scientist_project_family = constant:brilliant_scientist_project_family.xenobiological_synthesis }
+		brilliant_scientist_record_new_project_prototype = yes
+	}
+	else = {
+		set_temp_variable = { chaosx_custom_technology_source = constant:cbrn_project_cost.neutral_provenance_source }
+		set_temp_variable = { chaosx_custom_technology_family = constant:chaosx_custom_technology_family.xenobiological }
+		chaosx_grant_custom_operational_technology = yes
+	}
+}
+
+# COUNTRY scope. Called on project completion and on relevant technology
+# completion. Hidden technology definitions own the actual module unlocks.
+cbrn_sync_vanilla_project_integrations = {
+	if = {
+		limit = {
+			has_dlc = "No Step Back"
+			is_special_project_completed = sp:sp_land_flamethrower_tank
+			is_special_project_completed = sp:sp_cbrn_collective_protection_systems
+			has_tech = sealed_tank_crews
+			NOT = { has_tech = cbrn_sealed_flamethrower_crew_integration }
+		}
+		set_technology = { cbrn_sealed_flamethrower_crew_integration = 1 popup = no }
+	}
+	if = {
+		limit = {
+			is_special_project_completed = sp:sp_land_military_engineering_vehicles
+			is_special_project_completed = sp:sp_cbrn_collective_protection_systems
+			has_tech = mobile_wash_columns
+			NOT = { has_tech = cbrn_armored_engineer_decontamination_integration }
+		}
+		set_technology = { cbrn_armored_engineer_decontamination_integration = 1 popup = no }
+	}
+}

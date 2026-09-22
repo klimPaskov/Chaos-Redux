@@ -12,6 +12,8 @@ The tuning values live in `common/script_constants/startup_history_constants.txt
 
 The master effect sets `chaosx_startup_history_grants_applied` so startup setup cannot apply twice.
 
+The historical 1936 mask reconciliation runs after the common profile snapshot. It applies 75% active military issue to ENG, FRA, GER, SOV, and USA, 100% to ITA, 50% to JAP, and 25% to every other starting-mask profile tag, with a separate 25% replacement reserve and no fixed civilian issue. The 1939 British civilian receipt is separate: startup passes the sourced 40,000-crate target to the ENG-root `cbrn_protection.3` event, which debits real warehouse stock once. Core-owned Civil Defence visibility must consume the one-time historical receipt after that event so routine issue returns to threat-driven conditions.
+
 ## What belongs here
 
 Use startup grants for additive existing-country setup:
@@ -20,7 +22,7 @@ Use startup grants for additive existing-country setup:
 - technology-linked tactic unlocks or startup sync effects required by those technologies
 - starting equipment stockpiles
 - starting chemical or biowarfare facilities
-- generated Chaos Redux scientists. For named country-specific scientists, call `generate_scientist_character` from the country startup grant with explicit portrait, gender, skills, and traits when any, then immediately select the newly generated scientist with `random_scientist`, apply `set_character_name`, restore the intended portrait if needed, and set a persistent identity flag for later scripted references.
+- static Chaos Redux scientists. The 67 approved historical identities are recruited by `history/general/chaosx_startup_character_recruitment.txt`; country grants only apply the persistent identity receipts and dated country setup.
 - additive character traits
 - startup-only variables and event targets
 - delayed country events that previously lived in country history
@@ -49,9 +51,10 @@ Current intentional vanilla-history exceptions:
 
 The complete startup API lives in `common/scripted_effects/chaosx_startup_history_effects.txt` rather than the cross-system dynamic-effect registry.
 
+The dated CBRN personnel repair lives in `common/on_actions/cbrn_historical_startup_on_actions.txt` and uses only tag-specific daily callbacks. It does not add a world-wide periodic scan.
+
 - `chaosx_apply_startup_history_grants` is the idempotent startup entry point and dispatches the country-specific additive grants.
-- `chaosx_startup_mark_existing_scientists` marks scientists that existed before one country grant generated its own candidates.
-- `chaosx_startup_clear_generated_scientist_helper_flags` clears the temporary selection markers after a generated scientist has been identified, named, assigned its final portrait, and given its persistent identity flag.
+- The historical scientist helper flags are no longer generated-character selectors; prewar identities retain their stable ids and portraits from history initialization, while dated wartime identities are recruited by `chaosx_startup_recruit_dated_*_cbrn_characters` and their bounded country callbacks.
 
 The scientist helpers are internal to startup generation. Event chains should use their own event-owned character transactions instead of calling these helpers.
 
@@ -59,10 +62,10 @@ The scientist helpers are internal to startup generation. Event chains should us
 
 The startup effect currently replaces copied vanilla overrides for:
 
-- existing-country Chaos Redux technology, stockpile, generated scientist, trait, breakthrough, special-project, and delayed-event grants
-- prepared-country starting chemistry/biology setup is preserved, including Britain's `sp:anthrax_bomb` special-project completion and Germany's starting `tabun` technology
+- existing-country Chaos Redux technology, stockpile, static scientist identity, trait, breakthrough, special-project, and delayed-event grants
+- prepared-country starting chemistry/biology setup is preserved, while Britain's anthrax special project and British/US early biological breakthrough are deferred to later routes; Germany's `tabun` technology opens only after the late-1936 discovery and no startup tabun stockpile is granted
 - chemical warfare facility placement in states 16, 59, 122, 158, 239, 361, and 530
-- biowarfare facility placement in states 247, 282, 328, 338, 440, 609, 816, and 823
+- biowarfare facility placement in states 247, 282, 328, 338, 440, 609, 816, and 823, with the British 338 site gated after 31 December 1939 and the American 816 site gated after 1 January 1943
 - the Australia citizen-army tuning variables
 - the British Raj famine state pointer
 - Liberia's vanilla support-equipment technology required by its startup AI production strategy

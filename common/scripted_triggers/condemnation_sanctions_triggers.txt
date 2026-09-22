@@ -147,7 +147,7 @@ condemnation_pulse_required = {
 
 condemnation_has_chemical_stockpile = {
 	OR = {
-		has_equipment = { chemical_agent_payload > 0 }
+		cbrn_has_any_strategic_agent_lot = yes
 		has_equipment = { chemical_artillery_ammunition > 0 }
 		has_equipment = { choking_chemical_air_payload > 0 }
 		has_equipment = { blister_chemical_air_payload > 0 }
@@ -162,6 +162,78 @@ condemnation_has_chemical_stockpile = {
 		has_equipment = { chemical_sarin_payload_cylinder_1 > 0 }
 		has_equipment = { chemical_soman_payload_cylinder_1 > 0 }
 	}
+}
+
+# Shared score quote for all condemnation response payments. The optional
+# condemnation_cost_score_override temporary value lets a caller quote a
+# target-owned score while retaining the same formula used by the payment
+# effect. Output: condemnation_cost_score and condemnation_cost_factor.
+condemnation_prepare_cost_multiplier = {
+	set_temp_variable = { condemnation_cost_score = constant:condemnation_cost.cost_multiplier_score_minimum }
+	if = {
+		limit = { has_variable = condemnation_cost_score_override }
+		set_temp_variable = { condemnation_cost_score = condemnation_cost_score_override }
+	}
+	else_if = {
+		limit = { has_variable = condemnation_total }
+		set_temp_variable = { condemnation_cost_score = condemnation_total }
+	}
+	clamp_temp_variable = {
+		var = condemnation_cost_score
+		min = constant:condemnation_cost.cost_multiplier_score_minimum
+		max = constant:condemnation_cost.cost_multiplier_score_maximum
+	}
+	set_temp_variable = { condemnation_cost_factor = constant:condemnation_cost.cost_multiplier_base }
+	multiply_temp_variable = { condemnation_cost_factor = constant:condemnation_cost.cost_multiplier_score_divisor }
+	add_to_temp_variable = { condemnation_cost_factor = condemnation_cost_score }
+	always = yes
+}
+
+# Input: condemnation_unscaled_cost. Output: condemnation_scaled_cost. The
+# rounded quotient is compared with its exact numerator so positive integer
+# equipment and experience costs are rounded up, while exact whole multiples
+# remain unchanged.
+condemnation_prepare_scaled_integer_cost = {
+	condemnation_prepare_cost_multiplier = yes
+	set_temp_variable = { condemnation_scaled_cost_numerator = condemnation_unscaled_cost }
+	multiply_temp_variable = { condemnation_scaled_cost_numerator = condemnation_cost_factor }
+	set_temp_variable = { condemnation_scaled_cost = condemnation_scaled_cost_numerator }
+	divide_temp_variable = { condemnation_scaled_cost = constant:condemnation_cost.cost_multiplier_score_divisor }
+	round_temp_variable = condemnation_scaled_cost
+	set_temp_variable = { condemnation_scaled_cost_check = condemnation_scaled_cost }
+	multiply_temp_variable = { condemnation_scaled_cost_check = constant:condemnation_cost.cost_multiplier_score_divisor }
+	if = {
+		limit = { check_variable = { condemnation_scaled_cost_check < condemnation_scaled_cost_numerator } }
+		add_to_temp_variable = { condemnation_scaled_cost = constant:condemnation_cost.cost_integer_step }
+	}
+	always = yes
+}
+
+# Input: condemnation_unscaled_cost. Output: condemnation_scaled_cost. Fuel
+# fractions keep their fixed-point precision; no integer rounding is applied.
+condemnation_prepare_scaled_fraction_cost = {
+	condemnation_prepare_cost_multiplier = yes
+	set_temp_variable = { condemnation_scaled_cost = condemnation_unscaled_cost }
+	multiply_temp_variable = { condemnation_scaled_cost = condemnation_cost_factor }
+	divide_temp_variable = { condemnation_scaled_cost = constant:condemnation_cost.cost_multiplier_score_divisor }
+	always = yes
+}
+
+# Inspection burden is 5% at score 0 and 15% at score 1000. The existing
+# inspection idea supplies the fixed 5% base; this variable supplies the
+# score-driven increment through the inspection pulse.
+condemnation_prepare_inspection_consumer_goods = {
+	condemnation_prepare_cost_multiplier = yes
+	set_temp_variable = { condemnation_inspection_consumer_goods_increment_temp = condemnation_cost_score }
+	multiply_temp_variable = { condemnation_inspection_consumer_goods_increment_temp = constant:condemnation_cost.inspection_consumer_goods_per_score }
+	set_temp_variable = { condemnation_inspection_consumer_goods_total = constant:condemnation_cost.inspection_consumer_goods_minimum }
+	add_to_temp_variable = { condemnation_inspection_consumer_goods_total = condemnation_inspection_consumer_goods_increment_temp }
+	clamp_temp_variable = {
+		var = condemnation_inspection_consumer_goods_total
+		min = constant:condemnation_cost.inspection_consumer_goods_minimum
+		max = constant:condemnation_cost.inspection_consumer_goods_maximum
+	}
+	always = yes
 }
 
 condemnation_has_biological_stockpile = {
@@ -190,38 +262,119 @@ condemnation_has_subject_route = {
 	any_subject_country = { exists = yes }
 }
 
+# Targeted participant decisions run in the acting country scope while their
+# quote and payment belong to FROM. Keep the available and custom-cost checks
+# on the same target score before invoking a concrete payment predicate.
+condemnation_set_target_cost_score = {
+	set_temp_variable = { condemnation_cost_score_override = 0 }
+	if = {
+		limit = { FROM = { has_variable = condemnation_total } }
+		set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total }
+	}
+	always = yes
+}
+
 condemnation_can_pay_compensation = {
 	has_variable = condemnation_last_victim
 	var:condemnation_last_victim = { exists = yes }
-	NOT = { has_equipment = { convoy_1 < condemnation_compensation_convoy_requirement } }
-	NOT = { has_equipment = { infantry_equipment < constant:condemnation_cost.compensation_infantry_equipment } }
-	check_variable = { fuel_k > 0 }
+	set_temp_variable = { condemnation_unscaled_cost = condemnation_tier }
+	multiply_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_convoys_per_tier }
+	add_to_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_convoys_base }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_infantry_equipment }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { infantry_equipment < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
 }
 
 condemnation_can_pay_false_manifest_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.false_manifest_convoys } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.false_manifest_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+}
+
+condemnation_can_pay_autarky_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.autarky_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
+}
+
+condemnation_can_pay_intermediary_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.intermediary_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+}
+
+condemnation_can_pay_covert_fuel_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.covert_fuel_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+}
+
+condemnation_can_pay_reflagging_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.reflagging_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+}
+
+condemnation_can_pay_stolen_license_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.stolen_license_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+}
+
+condemnation_can_pay_smuggled_lab_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.smuggled_lab_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.smuggled_lab_equipment }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { support_equipment < condemnation_scaled_cost } }
 }
 
 condemnation_can_pay_quiet_breach_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.quiet_breach_convoys } }
-	NOT = { has_equipment = { infantry_equipment < constant:condemnation_cost.quiet_breach_equipment } }
-	check_variable = { fuel_k > 0 }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_equipment }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { infantry_equipment < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
 }
 
 condemnation_can_reform_command = {
-	check_variable = { var = army_experience value = constant:condemnation_cost.command_reform_army_xp compare = greater_than_or_equals }
-	check_variable = { var = air_experience value = constant:condemnation_cost.command_reform_air_xp compare = greater_than_or_equals }
-	check_variable = { var = navy_experience value = constant:condemnation_cost.command_reform_navy_xp compare = greater_than_or_equals }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_army_xp }
+	condemnation_prepare_scaled_integer_cost = yes
+	check_variable = { var = army_experience value = condemnation_scaled_cost compare = greater_than_or_equals }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_air_xp }
+	condemnation_prepare_scaled_integer_cost = yes
+	check_variable = { var = air_experience value = condemnation_scaled_cost compare = greater_than_or_equals }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_navy_xp }
+	condemnation_prepare_scaled_integer_cost = yes
+	check_variable = { var = navy_experience value = condemnation_scaled_cost compare = greater_than_or_equals }
 }
 
 condemnation_can_bear_enforcement_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.participant_convoys_base } }
-	check_variable = { fuel_k > 0 }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_convoys_base }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
 }
 
 condemnation_can_bear_escalation_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.participant_escalation_convoys } }
-	check_variable = { fuel_k > 0 }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
 }
 
 condemnation_pair_is_distinct_against_from = {
@@ -232,21 +385,45 @@ condemnation_pair_is_distinct_against_from = {
 }
 
 condemnation_can_pay_observer_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.observer_convoys } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.observer_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
 }
 
 condemnation_can_pay_black_market_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.black_market_convoys } }
-	check_variable = { fuel_k > 0 }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.black_market_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.black_market_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
 }
 
 condemnation_can_pay_controlled_shipping_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.controlled_shipping_convoys } }
-	check_variable = { fuel_k > 0 }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.controlled_shipping_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.controlled_shipping_fuel_fraction }
+	condemnation_prepare_scaled_fraction_cost = yes
+	NOT = { fuel_ratio < condemnation_scaled_cost }
+}
+
+condemnation_can_pay_carveout_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.carveout_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
+}
+
+condemnation_can_pay_tight_enforcement_cost = {
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.tight_enforcement_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
 }
 
 condemnation_can_pay_shield_cost = {
-	NOT = { has_equipment = { convoy_1 < constant:condemnation_cost.shield_convoys } }
+	set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.shield_convoys }
+	condemnation_prepare_scaled_integer_cost = yes
+	NOT = { has_equipment = { convoy_1 < condemnation_scaled_cost } }
 }
 
 condemnation_pair_is_active_against_from = {

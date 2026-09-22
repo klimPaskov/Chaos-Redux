@@ -229,12 +229,9 @@ chaosx_test_country_complete_chaos_warfare = {
 		grand_doctrine = chaos_warfare
 	}
 	cbrn_migrate_legacy_chaos_warfare = yes
-	cbrn_complete_chaos_warfare_establishment = yes
-	remove_mission = cbrn_chaos_warfare_establishment_mission
 
 	cbrn_initialize_country_data = yes
 	cbrn_initialize_payload_logistics = yes
-	cbrn_initialize_battlefield_operation_selection = yes
 	cbrn_occupation_initialize_action_conditions = yes
 	cbrn_reveal_protection_decision_surface = yes
 	cbrn_reveal_operations_decision_surface = yes
@@ -249,13 +246,12 @@ chaosx_test_country_complete_chaos_warfare = {
 	set_country_flag = cbrn_camp_nerve_killing_mastery_unlocked
 	set_country_flag = concentration_occupation_law_unlocked
 	set_variable = { chemical_readiness_cap = constant:cbrn_meter.maximum }
-	set_variable = { chemical_readiness = constant:cbrn_meter.maximum }
 	set_variable = { cbrn_decontamination_capacity = constant:cbrn_meter.maximum }
 	set_variable = { cbrn_medical_capacity = constant:cbrn_meter.maximum }
 	set_variable = { cbrn_biological_security = constant:cbrn_meter.maximum }
 	set_variable = { cbrn_attribution_control = constant:cbrn_meter.maximum }
 	set_variable = { cbrn_command_integration = constant:cbrn_meter.maximum }
-	set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_chaos_warfare }
+	set_temp_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
 	cbrn_set_use_policy = yes
 }
 
@@ -365,6 +361,9 @@ chaosx_test_country_initial_setup = {
 	chaosx_test_country_create_unit_roster = yes
 	chaosx_test_country_sync_registered_content_apply = yes
 	chaosx_test_country_fill_registered_equipment = yes
+	# Readiness is derived from the real mask stockpile and deployed issue ledger
+	# after every setup grant; do not fabricate full coverage in CXT.
+	cbrn_refresh_country_mask_snapshot = yes
 	log = "CXT_SETUP_TRACE initial_setup_complete country=[This.GetTag] date=[?global.date|.3]"
 	clr_country_flag = chaosx_test_country_setup_trace_active
 }

@@ -1,56 +1,76 @@
 # ============================================================================
-# CHAOS REDUX - JAPAN-CHINA BIOLOGICAL CAMPAIGN SCRIPTED EFFECTS
+# JAPAN-CHINA NATIVE BIOLOGICAL CAMPAIGN OUTCOMES
 # ============================================================================
-# Overview:
-# - Debits exact Political Power, Anthrax or Plague payload, support equipment,
-#   and Command Power for the selected Chinese state.
-# - Dispatches the release through the shared ordinary biological lifecycle.
-# - Records exact actor, victim, target, use, cooldown, and doctrine refund
-#   history without a proxy state, alternate target, estimator, or fallback.
+# Anthrax and plague raids reserve their exact agent bomb and support lots
+# through native essential_equipment. Each native outcome enters the distinct
+# Japan-China ordinary lifecycle profile once, then records campaign history.
+# No decision payment, payload debit, refund, or alternate target is used.
 # ============================================================================
 
-japan_bio_campaign_prepare_anthrax_parameters = {
-	set_temp_variable = { japan_bio_campaign_agent = constant:bio_lifecycle_agent.anthrax }
-	set_temp_variable = { japan_bio_campaign_political_power_required = constant:japan_bio_campaign_cost.anthrax_political_power }
-	set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.anthrax_payload }
-	set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.anthrax_support }
-	set_temp_variable = { japan_bio_campaign_command_power_cost = constant:japan_bio_campaign_cost.anthrax_command_power }
-}
-
-japan_bio_campaign_prepare_plague_parameters = {
-	set_temp_variable = { japan_bio_campaign_agent = constant:bio_lifecycle_agent.plague }
-	set_temp_variable = { japan_bio_campaign_political_power_required = constant:japan_bio_campaign_cost.plague_political_power }
-	set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.plague_payload }
-	set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.plague_support }
-	set_temp_variable = { japan_bio_campaign_command_power_cost = constant:japan_bio_campaign_cost.plague_command_power }
+japan_cbrn_raid_restore_biological_parameters = {
+	if = { limit = { has_event_target = japan_cbrn_raid_price_normal } set_temp_variable = { japan_cbrn_raid_price_tier = constant:japan_cbrn_raid_price.normal } }
+	if = { limit = { has_event_target = japan_cbrn_raid_price_sale } set_temp_variable = { japan_cbrn_raid_price_tier = constant:japan_cbrn_raid_price.sale } }
+	if = { limit = { has_event_target = japan_cbrn_raid_price_evolution } set_temp_variable = { japan_cbrn_raid_price_tier = constant:japan_cbrn_raid_price.evolution } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_failure } set_temp_variable = { japan_bio_campaign_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.failure } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_limited_success } set_temp_variable = { japan_bio_campaign_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.limited_success } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_success } set_temp_variable = { japan_bio_campaign_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.success } }
+	if = { limit = { has_event_target = japan_cbrn_raid_outcome_critical_success } set_temp_variable = { japan_bio_campaign_raid_engine_outcome = constant:bio_strategic_raid_engine_outcome.critical_success } }
+	if = {
+		limit = { has_event_target = japan_cbrn_raid_agent_anthrax }
+		set_temp_variable = { japan_bio_campaign_agent = constant:bio_lifecycle_agent.anthrax }
+		if = { limit = { has_event_target = japan_cbrn_raid_price_normal } set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.anthrax_payload } set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.anthrax_support } }
+		if = { limit = { has_event_target = japan_cbrn_raid_price_sale } set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.anthrax_sale_payload } set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.anthrax_sale_support } }
+		if = { limit = { has_event_target = japan_cbrn_raid_price_evolution } set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.anthrax_evolution_payload } set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.anthrax_evolution_support } }
+	}
+	if = {
+		limit = { has_event_target = japan_cbrn_raid_agent_plague }
+		set_temp_variable = { japan_bio_campaign_agent = constant:bio_lifecycle_agent.plague }
+		if = { limit = { has_event_target = japan_cbrn_raid_price_normal } set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.plague_payload } set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.plague_support } }
+		if = { limit = { has_event_target = japan_cbrn_raid_price_sale } set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.plague_sale_payload } set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.plague_sale_support } }
+		if = { limit = { has_event_target = japan_cbrn_raid_price_evolution } set_temp_variable = { japan_bio_campaign_payload_required = constant:japan_bio_campaign_cost.plague_evolution_payload } set_temp_variable = { japan_bio_campaign_support_required = constant:japan_bio_campaign_cost.plague_evolution_support } }
+	}
 }
 
 japan_bio_campaign_prepare_doctrine_parameters = {
 	set_temp_variable = { japan_bio_campaign_actor_cooldown_days = constant:japan_bio_campaign_timing.base_actor_cooldown_days }
-	set_temp_variable = { japan_bio_campaign_command_power_refund = constant:japan_bio_campaign_doctrine.base_command_power_refund }
-
 	if = {
 		limit = { japan_bio_campaign_uses_terminal_doctrine_profile = yes }
 		set_temp_variable = { japan_bio_campaign_actor_cooldown_days = constant:japan_bio_campaign_timing.terminal_actor_cooldown_days }
-		set_temp_variable = { japan_bio_campaign_command_power_refund = constant:japan_bio_campaign_doctrine.terminal_command_power_refund }
 	}
 	else_if = {
 		limit = { japan_bio_campaign_uses_theater_doctrine_profile = yes }
 		set_temp_variable = { japan_bio_campaign_actor_cooldown_days = constant:japan_bio_campaign_timing.theater_actor_cooldown_days }
-		set_temp_variable = { japan_bio_campaign_command_power_refund = constant:japan_bio_campaign_doctrine.theater_command_power_refund }
 	}
 }
 
-# Actor country scope after a successful shared-lifecycle dispatch.
+japan_bio_campaign_select_native_result = {
+	set_temp_variable = { japan_bio_campaign_result = constant:bio_sabotage_result.rejected }
+	if = {
+		limit = { check_variable = { var = japan_bio_campaign_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.failure compare = equals } }
+		set_temp_variable = { japan_bio_campaign_result = constant:bio_sabotage_result.failed }
+	}
+	else_if = {
+		limit = { check_variable = { var = japan_bio_campaign_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.limited_success compare = equals } }
+		set_temp_variable = { japan_bio_campaign_result = constant:bio_sabotage_result.partial }
+	}
+	else_if = {
+		limit = {
+			OR = {
+				check_variable = { var = japan_bio_campaign_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.success compare = equals }
+				check_variable = { var = japan_bio_campaign_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.critical_success compare = equals }
+			}
+		}
+		set_temp_variable = { japan_bio_campaign_result = constant:bio_sabotage_result.success }
+	}
+}
+
+# Actor country scope after a proven release. The shared lifecycle owns all
+# deliberate-use, deaths, spread, attribution, and Condemnation history.
 japan_bio_campaign_record_actor_history_internal = {
 	set_country_flag = japan_bio_campaign_use_history
 	if = {
 		limit = { NOT = { has_variable = japan_bio_campaign_use_count } }
 		set_variable = { japan_bio_campaign_use_count = constant:bio_lifecycle_math.zero }
-	}
-	if = {
-		limit = { NOT = { has_variable = japan_bio_campaign_political_power_spent_total } }
-		set_variable = { japan_bio_campaign_political_power_spent_total = constant:bio_lifecycle_math.zero }
 	}
 	if = {
 		limit = { NOT = { has_variable = japan_bio_campaign_payload_consumed_total } }
@@ -60,25 +80,13 @@ japan_bio_campaign_record_actor_history_internal = {
 		limit = { NOT = { has_variable = japan_bio_campaign_support_consumed_total } }
 		set_variable = { japan_bio_campaign_support_consumed_total = constant:bio_lifecycle_math.zero }
 	}
-	if = {
-		limit = { NOT = { has_variable = japan_bio_campaign_command_power_spent_total } }
-		set_variable = { japan_bio_campaign_command_power_spent_total = constant:bio_lifecycle_math.zero }
-	}
-	if = {
-		limit = { NOT = { has_variable = japan_bio_campaign_command_power_refunded_total } }
-		set_variable = { japan_bio_campaign_command_power_refunded_total = constant:bio_lifecycle_math.zero }
-	}
 	add_to_variable = { japan_bio_campaign_use_count = constant:japan_bio_campaign_history.one_use }
-	add_to_variable = { japan_bio_campaign_political_power_spent_total = japan_bio_campaign_political_power_required }
 	add_to_variable = { japan_bio_campaign_payload_consumed_total = japan_bio_campaign_payload_required }
 	add_to_variable = { japan_bio_campaign_support_consumed_total = japan_bio_campaign_support_required }
-	add_to_variable = { japan_bio_campaign_command_power_spent_total = japan_bio_campaign_command_power_cost }
-	add_to_variable = { japan_bio_campaign_command_power_refunded_total = japan_bio_campaign_command_power_refund }
 	set_variable = { japan_bio_campaign_last_agent = japan_bio_campaign_agent }
 	set_variable = { japan_bio_campaign_last_target_state = event_target:japan_bio_campaign_state_target }
 	set_variable = { japan_bio_campaign_last_victim = event_target:japan_bio_campaign_victim_target }
 	set_variable = { japan_bio_campaign_last_use_date = global.num_days }
-
 	if = {
 		limit = { check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
 		set_country_flag = japan_bio_campaign_anthrax_use_history
@@ -89,16 +97,13 @@ japan_bio_campaign_record_actor_history_internal = {
 	}
 }
 
-# Exact selected-state scope after a successful shared-lifecycle dispatch.
+# Exact selected-state scope after a proven shared-lifecycle dispatch.
 japan_bio_campaign_record_state_history_internal = {
 	set_state_flag = bio_japan_campaign_target_history
 	set_variable = { bio_japan_campaign_last_actor = event_target:japan_bio_campaign_actor_target }
 	set_variable = { bio_japan_campaign_last_victim = event_target:japan_bio_campaign_victim_target }
 	set_variable = { bio_japan_campaign_last_agent = japan_bio_campaign_agent }
 	set_variable = { bio_japan_campaign_last_use_date = global.num_days }
-	set_variable = { bio_japan_campaign_next_allowed_day = global.num_days }
-	add_to_variable = { bio_japan_campaign_next_allowed_day = constant:japan_bio_campaign_timing.state_cooldown_days }
-
 	if = {
 		limit = { check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
 		set_state_flag = bio_japan_campaign_anthrax_target_history
@@ -109,132 +114,112 @@ japan_bio_campaign_record_state_history_internal = {
 	}
 }
 
-# Actor country scope with FROM as the exact selected state. Every political and
-# physical input is revalidated before any resource is consumed.
-japan_bio_campaign_begin_release = {
-	save_event_target_as = japan_bio_campaign_actor_target
-	FROM = {
-		save_event_target_as = japan_bio_campaign_state_target
-		CONTROLLER = { save_event_target_as = japan_bio_campaign_victim_target }
-	}
-	set_temp_variable = { japan_bio_campaign_dispatch_status = constant:bio_lifecycle_proof.missing }
-
-	if = {
-		limit = {
-			has_event_target = japan_bio_campaign_actor_target
-			has_event_target = japan_bio_campaign_state_target
-			has_event_target = japan_bio_campaign_victim_target
-			japan_bio_campaign_actor_can_operate = yes
-			FROM = { japan_bio_campaign_selected_agent_target_is_valid = yes }
-		}
-
-		set_temp_variable = { japan_bio_campaign_payment_ready = constant:bio_lifecycle_math.zero }
+japan_bio_campaign_dispatch_native_release = {
+	event_target:japan_bio_campaign_actor_target = { bio_sabotage_prepare_program_values_internal = yes }
+	event_target:japan_bio_campaign_actor_target = { set_country_flag = bio_native_raid_dispatch_in_progress }
+	event_target:japan_bio_campaign_state_target = {
+		bio_lifecycle_reset_seed_record = yes
+		set_temp_variable = { bio_seed_agent = japan_bio_campaign_agent }
+		set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.japan_china_campaign }
+		set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
+		set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
+		set_temp_variable = { bio_seed_payload_required = japan_bio_campaign_payload_required }
+		set_temp_variable = { bio_seed_payload_consumed = japan_bio_campaign_payload_required }
+		set_temp_variable = { bio_seed_weaponization_mult = bio_sabotage_weaponization_mult }
+		set_temp_variable = { bio_seed_concealment = bio_sabotage_concealment }
+		set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.success }
 		if = {
-			limit = { black_friday_is_active = yes }
-			black_friday_prepare_japan_bio_campaign_payment = yes
-			if = {
-				limit = {
-					check_variable = {
-						var = black_friday_japan_bio_payment_ready
-						value = constant:universal_cost_framework.one
-						compare = equals
-					}
-				}
-				set_temp_variable = { japan_bio_campaign_payment_ready = constant:bio_lifecycle_math.one }
-			}
+			limit = { check_variable = { var = japan_bio_campaign_result value = constant:bio_sabotage_result.partial compare = equals } }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.partial }
 		}
 		else_if = {
-			limit = { japan_bio_campaign_selected_agent_cost_is_available = yes }
-			set_temp_variable = { japan_bio_campaign_payment_ready = constant:bio_lifecycle_math.one }
+			limit = { check_variable = { var = japan_bio_campaign_raid_engine_outcome value = constant:bio_strategic_raid_engine_outcome.critical_success compare = equals } }
+			set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.catastrophic }
 		}
-
+		event_target:japan_bio_campaign_actor_target = { save_event_target_as = bio_seed_actor }
+		event_target:japan_bio_campaign_victim_target = { save_event_target_as = bio_seed_victim }
+		bio_lifecycle_dispatch_seed = yes
+		event_target:japan_bio_campaign_actor_target = { clr_country_flag = bio_native_raid_dispatch_in_progress }
+		set_temp_variable = { japan_bio_campaign_dispatch_status = bio_seed_dispatch_status }
 		if = {
-			limit = {
-				check_variable = {
-					var = japan_bio_campaign_payment_ready
-					value = constant:bio_lifecycle_math.one
-					compare = equals
-				}
+			limit = { check_variable = { var = japan_bio_campaign_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+			japan_bio_campaign_record_state_history_internal = yes
+			event_target:japan_bio_campaign_actor_target = { save_event_target_as = humanitarian_corridor_exact_attacker }
+			humanitarian_corridor_handle_exact_state_attack = yes
+		}
+	}
+	if = {
+		limit = { check_variable = { var = japan_bio_campaign_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
+		event_target:japan_bio_campaign_actor_target = { japan_bio_campaign_record_actor_history_internal = yes }
+	}
+}
+
+# Actor-country event scope. Native equipment reservation is the sole payload and
+# support debit; failed, invalid, and lost-target attempts receive no refund.
+japan_bio_campaign_resolve_native_raid_outcome = {
+	set_temp_variable = { japan_bio_campaign_dispatch_status = constant:bio_lifecycle_proof.missing }
+	save_event_target_as = japan_bio_campaign_actor_target
+	save_event_target_as = bio_sabotage_actor_target
+	event_target:japan_cbrn_raid_victim = {
+		save_event_target_as = japan_bio_campaign_victim_target
+		save_event_target_as = bio_sabotage_victim_target
+	}
+	event_target:japan_cbrn_raid_state = {
+		save_event_target_as = japan_bio_campaign_state_target
+		save_event_target_as = bio_sabotage_state_target
+	}
+	set_temp_variable = { bio_sabotage_agent = japan_bio_campaign_agent }
+	japan_bio_campaign_select_native_result = yes
+	set_temp_variable = { bio_sabotage_result = japan_bio_campaign_result }
+	# Resolve the exact victim id before the policy trigger, independent of
+	# trigger evaluation order inside the outcome gate.
+	if = {
+		limit = { has_event_target = japan_bio_campaign_victim_target }
+		event_target:japan_bio_campaign_victim_target = { set_temp_variable = { cbrn_retaliation_target_id = id } }
+	}
+	if = {
+		limit = { japan_bio_campaign_native_context_is_valid = yes }
+		if = {
+			limit = { check_variable = { var = japan_bio_campaign_result value = constant:bio_sabotage_result.failed compare = equals } }
+			event_target:japan_bio_campaign_state_target = { bio_sabotage_record_failed_attempt_evidence_internal = yes }
+			event_target:japan_bio_campaign_actor_target = { bio_sabotage_apply_failed_attempt_condemnation_internal = yes }
+		}
+		else = { japan_bio_campaign_dispatch_native_release = yes }
+	}
+	if = {
+		limit = { has_event_target = japan_bio_campaign_actor_target }
+		event_target:japan_bio_campaign_actor_target = {
+			japan_bio_campaign_prepare_doctrine_parameters = yes
+			set_variable = { japan_bio_campaign_next_allowed_day = global.num_days }
+			add_to_variable = { japan_bio_campaign_next_allowed_day = japan_bio_campaign_actor_cooldown_days }
+			if = {
+				limit = { check_variable = { var = japan_cbrn_raid_price_tier value = constant:japan_cbrn_raid_price.sale compare = equals } }
+				set_country_flag = japan_bio_campaign_black_friday_purchase_history
+				set_variable = { japan_bio_campaign_last_price_tier = japan_cbrn_raid_price_tier }
+			}
+			else_if = {
+				limit = { check_variable = { var = japan_cbrn_raid_price_tier value = constant:japan_cbrn_raid_price.evolution compare = equals } }
+				set_country_flag = japan_bio_campaign_black_friday_evolution_purchase_history
+				set_variable = { japan_bio_campaign_last_price_tier = japan_cbrn_raid_price_tier }
 			}
 			if = {
-				limit = { NOT = { black_friday_is_active = yes } }
-				set_temp_variable = { japan_bio_campaign_political_power_debit = japan_bio_campaign_political_power_required }
-				multiply_temp_variable = { japan_bio_campaign_political_power_debit = constant:bio_lifecycle_math.negation }
-				set_temp_variable = { japan_bio_campaign_payload_debit = japan_bio_campaign_payload_required }
-				multiply_temp_variable = { japan_bio_campaign_payload_debit = constant:bio_lifecycle_math.negation }
-				set_temp_variable = { japan_bio_campaign_support_debit = japan_bio_campaign_support_required }
-				multiply_temp_variable = { japan_bio_campaign_support_debit = constant:bio_lifecycle_math.negation }
-				set_temp_variable = { japan_bio_campaign_command_debit = japan_bio_campaign_command_power_cost }
-				multiply_temp_variable = { japan_bio_campaign_command_debit = constant:bio_lifecycle_math.negation }
-
-				add_political_power = japan_bio_campaign_political_power_debit
-				if = {
-					limit = { check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals } }
-					add_equipment_to_stockpile = { type = anthrax_bomb_1 amount = japan_bio_campaign_payload_debit }
-				}
-				else_if = {
-					limit = { check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals } }
-					add_equipment_to_stockpile = { type = plague_bomb_1 amount = japan_bio_campaign_payload_debit }
-				}
-				add_equipment_to_stockpile = { type = support_equipment_1 amount = japan_bio_campaign_support_debit }
-				add_command_power = japan_bio_campaign_command_debit
+				limit = { check_variable = { var = japan_bio_campaign_result value = constant:bio_sabotage_result.failed compare = equals } }
+				set_country_flag = japan_bio_campaign_failed_attempt_history
 			}
-
-			FROM = {
-				bio_lifecycle_reset_seed_record = yes
-				set_temp_variable = { bio_seed_agent = japan_bio_campaign_agent }
-				set_temp_variable = { bio_seed_route = constant:bio_lifecycle_route.japan_china_campaign }
-				set_temp_variable = { bio_seed_source = constant:bio_lifecycle_source.deliberate }
-				set_temp_variable = { bio_seed_result = constant:bio_lifecycle_result.success }
-				set_temp_variable = { bio_seed_actor_proof = constant:bio_lifecycle_proof.supplied }
-				set_temp_variable = { bio_seed_victim_proof = constant:bio_lifecycle_proof.supplied }
-				set_temp_variable = { bio_seed_payload_debit_proof = constant:bio_lifecycle_proof.supplied }
-				set_temp_variable = { bio_seed_use_history_proof = constant:bio_lifecycle_proof.supplied }
-				set_temp_variable = { bio_seed_payload_required = japan_bio_campaign_payload_required }
-				if = {
-					limit = { black_friday_is_active = yes }
-					set_temp_variable = { bio_seed_payload_consumed = black_friday_japan_bio_payload_paid }
-				}
-				else = {
-					set_temp_variable = { bio_seed_payload_consumed = japan_bio_campaign_payload_required }
-				}
-				event_target:japan_bio_campaign_actor_target = { save_event_target_as = bio_seed_actor }
-				event_target:japan_bio_campaign_victim_target = { save_event_target_as = bio_seed_victim }
-				bio_lifecycle_dispatch_seed = yes
-				set_temp_variable = { japan_bio_campaign_dispatch_status = bio_seed_dispatch_status }
-				if = {
-					limit = { check_variable = { var = japan_bio_campaign_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
-					japan_bio_campaign_record_state_history_internal = yes
-				}
-			}
-
-			if = {
-				limit = { check_variable = { var = japan_bio_campaign_dispatch_status value = constant:bio_lifecycle_proof.supplied compare = equals } }
-				japan_bio_campaign_record_actor_history_internal = yes
-				set_variable = { japan_bio_campaign_next_allowed_day = global.num_days }
-				add_to_variable = { japan_bio_campaign_next_allowed_day = japan_bio_campaign_actor_cooldown_days }
-				if = {
-					limit = { check_variable = { var = japan_bio_campaign_command_power_refund value = constant:bio_lifecycle_math.zero compare = greater_than } }
-					add_command_power = japan_bio_campaign_command_power_refund
-				}
-				if = {
-					limit = { black_friday_is_active = yes }
-					set_temp_variable = { universal_cost_transaction_id = black_friday_owner_transaction_id }
-					universal_cost_settle_transaction = yes
-					set_temp_variable = { black_friday_purchase_transaction_id = black_friday_owner_transaction_id }
-					set_temp_variable = { black_friday_purchase_family_id = constant:universal_cost_family.equipment }
-					set_temp_variable = { black_friday_purchase_ordinary_cost = japan_bio_campaign_payload_required }
-					set_temp_variable = { black_friday_purchase_actual_paid_cost = black_friday_japan_bio_payload_paid }
-					black_friday_record_achievement_transaction = yes
-				}
-			}
-			else = {
-				if = {
-					limit = { black_friday_is_active = yes }
-					black_friday_refund_japan_bio_campaign = yes
-				}
+			else_if = {
+				limit = { check_variable = { var = japan_bio_campaign_dispatch_status value = constant:bio_lifecycle_proof.missing compare = equals } }
 				set_country_flag = japan_bio_campaign_dispatch_failure_history
 			}
+		}
+	}
+	if = {
+		limit = { has_event_target = japan_bio_campaign_state_target }
+		event_target:japan_bio_campaign_state_target = {
+			set_variable = { bio_japan_campaign_next_allowed_day = global.num_days }
+			add_to_variable = { bio_japan_campaign_next_allowed_day = constant:japan_bio_campaign_timing.state_cooldown_days }
 		}
 	}
 }

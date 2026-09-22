@@ -181,6 +181,34 @@ cbrn_achievement_record_chemical_action = {
 		limit = { NOT = { has_variable = cbrn_achievement_operation_type_count } }
 		set_variable = { cbrn_achievement_operation_type_count = constant:cbrn_achievement_value.zero }
 	}
+	if = {
+		limit = {
+			cbrn_achievement_action_is_verified_native_land_raid = yes
+			cbrn_country_has_deployed_chemical_hq_section = yes
+		}
+		set_country_flag = cbrn_achievement_prepared_chemical_offensive_history
+	}
+	if = {
+		limit = {
+			cbrn_achievement_action_is_verified_native_land_raid = yes
+			has_idea = cbrn_terminal_hazard_doctrine_spirit
+			has_tech = chaos_battalion_1942
+			any_army_leader = {
+				cbrn_hq_command_is_deployed = yes
+				cbrn_hq_has_all_three_sections = yes
+			}
+		}
+		set_country_flag = cbrn_achievement_capstone_used
+		set_country_flag = cbrn_achievement_terminal_capstone_formation_receipt
+		if = {
+			limit = { NOT = { has_variable = cbrn_achievement_capstone_start_day } }
+			set_variable = { cbrn_achievement_capstone_start_day = global.num_days }
+		}
+		if = {
+			limit = { check_variable = { var = cbrn_action_contamination_points value = constant:cbrn_achievement_threshold.minimum_capstone_contamination compare = greater_than_or_equals } }
+			set_country_flag = cbrn_achievement_capstone_contamination_history
+		}
+	}
 
 	if = {
 		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } NOT = { has_country_flag = cbrn_achievement_operation_cylinder_history } }
@@ -371,17 +399,6 @@ cbrn_achievement_record_chemical_episode = {
 				if = { limit = { NOT = { has_variable = cbrn_achievement_own_chemical_air_contribution } } set_variable = { cbrn_achievement_own_chemical_air_contribution = constant:cbrn_math.zero } }
 				add_to_variable = { cbrn_achievement_own_chemical_air_contribution = cbrn_action_contamination_points }
 			}
-			if = {
-				limit = {
-					has_country_flag = cbrn_achievement_capstone_used
-					check_variable = {
-						var = cbrn_action_contamination_points
-						value = constant:cbrn_achievement_threshold.minimum_capstone_contamination
-						compare = greater_than_or_equals
-					}
-				}
-				set_country_flag = cbrn_achievement_capstone_contamination_history
-			}
 		}
 	}
 }
@@ -465,24 +482,12 @@ cbrn_achievement_record_hq_commitment = {
 		}
 	}
 	if = {
-		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.prepare_chemical_offensive compare = equals } }
-		OWNER = { set_country_flag = cbrn_achievement_prepared_chemical_offensive_history }
-	}
-	if = {
 		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.decontamination_corridor compare = equals } }
 		OWNER = { set_country_flag = cbrn_achievement_decon_corridor_prepared_history }
 	}
 	if = {
 		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.mass_antidote_response compare = equals } }
 		OWNER = { set_country_flag = cbrn_achievement_mass_antidote_response_history }
-	}
-	if = {
-		limit = { check_variable = { var = cbrn_hq_operation_code value = constant:cbrn_hq_operation.combined_overmatch compare = equals } }
-		OWNER = {
-			set_country_flag = cbrn_achievement_capstone_used
-			set_country_flag = cbrn_achievement_terminal_capstone_formation_receipt
-			set_variable = { cbrn_achievement_capstone_start_day = global.num_days }
-		}
 	}
 }
 

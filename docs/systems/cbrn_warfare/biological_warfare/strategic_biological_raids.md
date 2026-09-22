@@ -106,7 +106,7 @@ AI use passes one common authorization gate and then applies route-aware weighti
 - An unrestricted actor under formal censure receives a continuation preference only when a current enemy has crossed the exact near-victory surrender threshold.
 - An actor whose own surrender progress reaches the near-capitulation threshold stops selecting ordinary strategic biological raids.
 
-The ordinary safety floor requires Pathogen Handling Protocols and Rapid Outbreak Response. The authorization gate retains a desperate safety waiver for an unrestricted route with extreme-use authority, but Stage 10 AI does not select an ordinary raid during the actor's own near-capitulation state. An explicitly authorized doomsday route leaves the separate doomsday decision as the only biological release choice during collapse. Neither route can create policy authority, projects, payloads, aircraft, or a staging complex.
+The ordinary safety floor requires Pathogen Handling Protocols and Rapid Outbreak Response. The authorization gate retains a desperate safety waiver for an unrestricted route with extreme-use authority, but Stage 10 AI does not select an ordinary raid during the actor's own near-capitulation state. An explicitly authorized doomsday route leaves `biological_stockpile_doomsday_raid` as the only biological release choice during collapse. Neither route can create policy authority, projects, payloads, aircraft, or a staging complex.
 
 ## Engine Limits
 

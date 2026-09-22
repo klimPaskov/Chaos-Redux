@@ -1,0 +1,274 @@
+# ============================================================================
+# CHAOS REDUX - CONDEMNATION RESPONSE COST LOCALISATION
+# ============================================================================
+# Every row calculates the visible payment with the same score multiplier used
+# by the response effects. Integer equipment and experience amounts use the
+# shared rounded-up quote; fuel remains a fixed-point fraction.
+# ============================================================================
+
+defined_text = {
+	name = GetCondemnationCompensationCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_tier = 0 }
+			if = { limit = { has_variable = condemnation_tier } set_temp_variable = { condemnation_cost_tier = condemnation_tier } }
+			set_temp_variable = { condemnation_unscaled_cost = condemnation_cost_tier }
+			multiply_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_convoys_per_tier }
+			add_to_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_convoys_base }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_compensation_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_infantry_equipment }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_compensation_equipment_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.compensation_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_compensation_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.compensation.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationObserverCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.observer_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_observer_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.observer.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationCommandReformCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_army_xp }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_command_army_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_air_xp }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_command_air_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.command_reform_navy_xp }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_command_navy_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.command.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationAutarkyCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.autarky_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_autarky_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.autarky.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationControlledShippingCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.controlled_shipping_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_controlled_shipping_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.controlled_shipping_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_controlled_shipping_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.controlled_shipping.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationBlackMarketCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.black_market_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_black_market_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.black_market_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_black_market_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.black_market.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationFalseManifestCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.false_manifest_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_false_manifest_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.false_manifest.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationIntermediaryCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.intermediary_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_intermediary_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.intermediary.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationCovertFuelCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.covert_fuel_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_covert_fuel_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.covert_fuel.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationReflaggingCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.reflagging_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_reflagging_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.reflagging.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationStolenLicenseCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.stolen_license_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_stolen_license_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.stolen_license.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationSmuggledLabCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.smuggled_lab_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_smuggled_lab_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.smuggled_lab_equipment }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_smuggled_lab_equipment_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.smuggled_lab.row
+	}
+}
+
+# Participant costs quote the condemned target's score through FROM. If the
+# target is not carrying a condemnation score, the shared helper remains at 1x.
+defined_text = {
+	name = GetCondemnationJoinCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			if = { limit = { FROM = { has_variable = condemnation_total } } set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total } }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_convoys_base }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_join_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_join_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.join.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationEscalationCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			if = { limit = { FROM = { has_variable = condemnation_total } } set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total } }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_escalation_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_escalation_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.escalate.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationCarveoutCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			if = { limit = { FROM = { has_variable = condemnation_total } } set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total } }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.carveout_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_carveout_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.carveout.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationQuietBreachCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			if = { limit = { FROM = { has_variable = condemnation_total } } set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total } }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_quiet_breach_convoys_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_equipment }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_quiet_breach_equipment_cost = condemnation_scaled_cost }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_fuel_fraction }
+			condemnation_prepare_scaled_fraction_cost = yes
+			set_temp_variable = { condemnation_quiet_breach_fuel_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.quiet_breach.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationTightEnforcementCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			if = { limit = { FROM = { has_variable = condemnation_total } } set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total } }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.tight_enforcement_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_tight_enforcement_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.tight_enforcement.row
+	}
+}
+
+defined_text = {
+	name = GetCondemnationShieldCost
+	text = {
+		trigger = {
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			if = { limit = { FROM = { has_variable = condemnation_total } } set_temp_variable = { condemnation_cost_score_override = FROM.condemnation_total } }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.shield_convoys }
+			condemnation_prepare_scaled_integer_cost = yes
+			set_temp_variable = { condemnation_shield_convoys_cost = condemnation_scaled_cost }
+		}
+		localization_key = condemnation.cost.shield.row
+	}
+}

@@ -1,5 +1,7 @@
 # Event 020 Dedicated Response Scripted GUI Correction
 
+> **Category boundary:** `black_plague_response_category` is an Event 020 decision category, separate from the accepted CBRN raid categories `chemical_raids` and `biological_raids` in the [2026-09-20 CBRN amendment](../../chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md). Its informational GUI does not add a raid category or payment path.
+
 This correction supersedes the earlier presentation instruction that kept the dedicated Black Plague response category text-only.
 
 `black_plague_response_category` uses one Event 020-owned scripted GUI attachment to present the national response at a glance. The attachment is informational: ordinary decisions remain the only action surface, and the GUI must not duplicate costs, start projects, change disease state, or create a second cure ledger.

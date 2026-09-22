@@ -13,7 +13,21 @@
 # - Profile changes impose a real delay and discard a bounded part of prepared
 #   stock. They never alter evidence, attribution, casualties, contamination,
 #   medical load, Condemnation history, or confirmed-use records.
+# - cbrn_count_strategic_agent_lots returns the nine-model aggregate in a
+#   temporary variable; selected-operation debits still use one exact model.
 # ============================================================================
+
+cbrn_count_strategic_agent_lots = {
+	set_temp_variable = { cbrn_total_strategic_agent_lots = num_equipment@chlorine_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@phosgene_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@mustard_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@lewisite_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@tabun_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@sarin_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@soman_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@malodor_agent_lot_1 }
+	add_to_temp_variable = { var = cbrn_total_strategic_agent_lots value = num_equipment@behavioral_agent_lot_1 }
+}
 
 cbrn_initialize_payload_logistics = {
 	if = {

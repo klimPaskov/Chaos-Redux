@@ -1,0 +1,98 @@
+# ============================================================================
+# CHAOS REDUX - CHEMICAL AIR AND ROCKET RAID COUNTRY-SCOPE BRIDGE
+# ============================================================================
+# Overview:
+# - Native raid outcomes run under RAID_INSTANCE ROOT. Each callback saves the
+#   exact actor, selected state, victim, agent, route, outcome, and payload tier
+#   as chain-local regular event targets before firing this hidden actor event.
+# - The event verifies one marker in each family and the live selected-state
+#   controller, then reconstructs transient inputs under actor-country ROOT.
+# - Native raid equipment collection and command-power allocation are the
+#   only payment path. This event performs no extra debit or refund.
+# ============================================================================
+
+add_namespace = cbrn_chemical_air_bridge
+
+country_event = {
+	id = cbrn_chemical_air_bridge.1
+	hidden = yes
+	is_triggered_only = yes
+
+	immediate = {
+		set_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_chem_air_bridge_route_count = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_chem_air_bridge_outcome_count = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_chem_air_bridge_payload_count = constant:cbrn_math.zero }
+
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_chlorine } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_phosgene } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_mustard } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_lewisite } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_tabun } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_sarin } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_soman } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_malodor } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_behavioral } add_to_temp_variable = { cbrn_chem_air_bridge_agent_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_route_air } add_to_temp_variable = { cbrn_chem_air_bridge_route_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_route_rocket } add_to_temp_variable = { cbrn_chem_air_bridge_route_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_failure } add_to_temp_variable = { cbrn_chem_air_bridge_outcome_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_limited_success } add_to_temp_variable = { cbrn_chem_air_bridge_outcome_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_success } add_to_temp_variable = { cbrn_chem_air_bridge_outcome_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_critical_success } add_to_temp_variable = { cbrn_chem_air_bridge_outcome_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_payload_ordinary } add_to_temp_variable = { cbrn_chem_air_bridge_payload_count = constant:cbrn_math.one } }
+		if = { limit = { has_event_target = cbrn_chem_air_bridge_payload_rocket } add_to_temp_variable = { cbrn_chem_air_bridge_payload_count = constant:cbrn_math.one } }
+
+		if = {
+			limit = {
+				has_event_target = cbrn_chem_air_bridge_actor
+				has_event_target = cbrn_chem_air_bridge_target_state
+				has_event_target = cbrn_chem_air_bridge_victim_country
+				event_target:cbrn_chem_air_bridge_actor = { tag = ROOT }
+				event_target:cbrn_chem_air_bridge_victim_country = { exists = yes NOT = { tag = ROOT } }
+				event_target:cbrn_chem_air_bridge_target_state = {
+					is_controlled_by = event_target:cbrn_chem_air_bridge_victim_country
+				}
+				has_war_with = event_target:cbrn_chem_air_bridge_victim_country
+				check_variable = { var = cbrn_chem_air_bridge_agent_count value = constant:cbrn_math.one compare = equals }
+				check_variable = { var = cbrn_chem_air_bridge_route_count value = constant:cbrn_math.one compare = equals }
+				check_variable = { var = cbrn_chem_air_bridge_outcome_count value = constant:cbrn_math.one compare = equals }
+				check_variable = { var = cbrn_chem_air_bridge_payload_count value = constant:cbrn_math.one compare = equals }
+				OR = {
+					AND = {
+						has_event_target = cbrn_chem_air_bridge_route_air
+						has_event_target = cbrn_chem_air_bridge_payload_ordinary
+					}
+					AND = {
+						has_event_target = cbrn_chem_air_bridge_route_rocket
+						has_event_target = cbrn_chem_air_bridge_payload_rocket
+						OR = {
+							has_event_target = cbrn_chem_air_bridge_agent_sarin
+							has_event_target = cbrn_chem_air_bridge_agent_soman
+						}
+					}
+				}
+			}
+
+			set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.none }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_chlorine } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.chlorine } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_phosgene } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.phosgene } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_mustard } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.mustard } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_lewisite } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.lewisite } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_tabun } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.tabun } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_sarin } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.sarin } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_soman } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.soman } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_malodor } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.malodor } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_agent_behavioral } set_temp_variable = { cbrn_raid_agent = constant:cbrn_agent.behavioral } }
+
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_route_air } set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.chemical_air_raid } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_route_rocket } set_temp_variable = { cbrn_raid_route = constant:cbrn_delivery_route.strategic_chemical_raid } }
+
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_failure } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.failure } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_limited_success } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.limited_success } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_success } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.success } }
+			if = { limit = { has_event_target = cbrn_chem_air_bridge_outcome_critical_success } set_temp_variable = { cbrn_raid_engine_outcome = constant:cbrn_chemical_raid_engine_outcome.critical_success } }
+
+			cbrn_resolve_chemical_air_raid_outcome = yes
+		}
+	}
+}

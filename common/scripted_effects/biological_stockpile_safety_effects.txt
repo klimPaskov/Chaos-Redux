@@ -748,7 +748,7 @@ bio_stockpile_safety_resolve_selected_ordinary_accident = {
 	}
 }
 
-# Country scope. Schedules the private monitor only for a verified designated
+# Country scope. Schedules the private monitor only for a verified registered
 # program. The flag prevents duplicate delayed events from multiple projects.
 bio_stockpile_safety_start_monitor = {
 	cbrn_initialize_country_data = yes
@@ -763,6 +763,36 @@ bio_stockpile_safety_start_monitor = {
 		country_event = {
 			id = cbrn_bio_safety.1
 			days = constant:bio_stockpile_safety_monitor.initial_delay_days
+		}
+	}
+}
+
+# Country scope. Rebinds one invalidated arsenal pointer to a single owned and
+# controlled operational facility after a prior verified project registration.
+# The random state scope is evaluated only when the targeted monitor event is
+# already due; it is never a world-wide periodic scan. If no eligible facility
+# exists, the preceding clear leaves monitoring fail-closed.
+bio_stockpile_safety_reselect_arsenal_if_needed = {
+	if = {
+		limit = { bio_stockpile_safety_arsenal_reselection_is_needed = yes }
+		bio_stockpile_safety_clear_arsenal_designation = yes
+		random_owned_controlled_state = {
+			limit = { bio_stockpile_safety_state_is_valid_designation_candidate = yes }
+			clr_state_flag = bio_stockpile_safety_arsenal_complex
+			clear_variable = bio_stockpile_safety_arsenal_actor
+			clear_variable = bio_stockpile_safety_arsenal_designated_date
+			set_state_flag = bio_stockpile_safety_arsenal_complex
+			set_variable = { bio_stockpile_safety_arsenal_actor = ROOT }
+			set_variable = { bio_stockpile_safety_arsenal_designated_date = global.num_days }
+			set_variable = { ROOT.bio_stockpile_safety_arsenal_state = THIS }
+			set_variable = { ROOT.bio_stockpile_safety_arsenal_pointer_source = constant:bio_stockpile_safety_pointer_source.verified_special_project_facility }
+			set_variable = { ROOT.bio_stockpile_safety_last_designation_date = global.num_days }
+			ROOT = {
+				set_country_flag = bio_stockpile_safety_arsenal_designated
+				set_country_flag = bio_stockpile_safety_arsenal_designation_history
+				bio_stockpile_safety_refresh_risk_band = yes
+				bio_stockpile_safety_start_monitor = yes
+			}
 		}
 	}
 }

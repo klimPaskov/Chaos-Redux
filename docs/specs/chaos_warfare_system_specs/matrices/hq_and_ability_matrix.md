@@ -1,5 +1,7 @@
 # Army HQ Company and Ability Matrix
 
+> **Superseded planning matrix:** The accepted 2026-09-20 CBRN amendment consolidates six HQ roles to Operations and Intelligence, Protection and Decontamination, and Medical and Biosecurity. The core integration owner removed the paid Prepare Chemical Offensive and Combined CBRN Overmatch abilities; native chemical raids perform selected-state attacks, while five protective HQ orders remain. Prepared Army and terminal achievement receipts use a qualifying deployed HQ in the actor country because the installed native raid API does not expose an exact selected-division-to-HQ pointer; engine acceptance is open. The older six-company and seven-ability rows below are historical planning targets, not current source or icon requirements. Current source and validation are tracked in the CBRN requirement ledger and core integration handoff.
+
 ## Headquarters support companies
 
 | HQ company | Manpower target | Essential equipment target | Passive target | Ability unlocked | Shortage behavior | AI role |

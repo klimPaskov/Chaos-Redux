@@ -1,5 +1,7 @@
 # Chaos Warfare Officer Corps Spirits
 
+The source-defined spirit values and accepted combined caps in `docs/specs/chaos_warfare_system_specs/specs/13_2026_09_20_accepted_cbrn_overhaul.md` take precedence over older numeric snapshots below until the parent completes the broader officer-corps balance reconciliation. The academy entry and service-based trait path below reflect the current source.
+
 ## Overview
 The active officer-corps package uses a Chemical Operations Academy, three mutually exclusive army-command postures, and three mutually exclusive division-command postures. The former air identifier remains a hidden compatibility record:
 
@@ -41,8 +43,8 @@ The active officer-corps package uses a Chemical Operations Academy, three mutua
 - Key: `chemical_operations_academy_spirit`
 - Category: `academy_spirit`
 - Availability: active army officer-corps choice with no doctrine prerequisite.
-- Effects: army leaders have a 50 percent chance to gain `chemical_operations_commander` when created or when they level up, provided they do not already have the trait.
-- The commander trait is also manually assignable through its normal experience cost without a doctrine prerequisite.
+- Effects: +3% army experience gain from `experience_gain_army_factor` in `common/ideas/cbw_spirits.txt`; no random trait grant on creation or level-up.
+- `chemical_operations_commander` is earned by a named leader after two qualifying completed CBRN Headquarters operations through `cbrn_commander_record_completed_hq_operation`, independently of academy selection.
 
 ### 4. Compatibility identifier
 - Key: `chemical_air_deep_strike_spirit`
@@ -54,7 +56,7 @@ The active officer-corps package uses a Chemical Operations Academy, three mutua
 ### Tuning and script integration
 - Active officer-corps modifiers use the file-local constants at the top of `common/ideas/cbw_spirits.txt`.
 - CBRN delivery, protection, cleanup, evidence, casualty, and Condemnation multipliers use the shared tables in `common/script_constants/cbrn_doctrine_constants.txt` and `common/script_constants/chemical_warfare_constants.txt`.
-- `common/script_constants/chemical_spirit_constants.txt` centralizes the academy's leader-trait acquisition chance and the retained chemical spirit tuning.
+- `common/ideas/cbw_spirits.txt` holds the academy's file-local +3% army-experience constant; `common/script_constants/cbrn_commander_progression_constants.txt` holds the two-operation trait threshold.
 
 ### Idea definitions
 - File: `common/ideas/cbw_spirits.txt`
@@ -62,7 +64,7 @@ The active officer-corps package uses a Chemical Operations Academy, three mutua
 ### Hook points
 - Doctrine availability and milestone effects: `common/ideas/cbw_spirits.txt`, `common/doctrines/`, and `common/scripted_effects/cbrn_doctrine_effects.txt`.
 - Delivery, protection, cleanup, consequence, and route-specific effects: `common/scripted_effects/cbrn_*.txt` and `common/scripted_effects/chemical_*.txt`.
-- Trait assignment and academy acquisition: `common/unit_leader/chaosx_traits.txt`, `common/on_actions/chaosx_on_actions_chemical_warfare.txt`, and `common/scripted_effects/chemical_warfare_effects.txt`.
+- Service-earned trait assignment: `common/unit_leader/chaosx_traits.txt`, `common/scripted_effects/cbrn_commander_progression_effects.txt`, and `common/scripted_triggers/cbrn_commander_progression_triggers.txt`.
 
 ### Localisation
 - File: `localisation/english/chaosx_ideas_l_english.yml`

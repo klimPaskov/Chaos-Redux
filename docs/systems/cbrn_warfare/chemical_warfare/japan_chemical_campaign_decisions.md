@@ -1,45 +1,27 @@
-# Japan Chemical Campaign Decisions
+# Japan-China Chemical Campaign Raids
 
-## Overview
+## Acceptance and current source
 
-The Japan-only China Theater Chemical Campaign provides an exact-state historical cylinder route during a war with `CHI`, `PRC`, `SHX`, `GXC`, `YUN`, `XSM`, or `SIK`.
+The user's 2026-09-20 CBRN implementation request accepted exactly two shared raid categories and native land delivery. `common/raids/japan_cbrn_campaign_raids.txt` defines Japan's chemical campaign inside `chemical_raids`; the old Japan decision category, agent selector, attack decision, and decision-side cost helpers are retired. This source account awaits parent integration and live-game validation.
 
-The category contains the free `japan_chemical_campaign_cycle_agent` selector and the state-targeted `japan_chemical_campaign_attack` operation.
+The 24 raid IDs follow `japan_china_chemical_<chlorine|phosgene|mustard|lewisite>_<normal|sale|evolution>[_optimized]_raid`. A raid selects one enemy-controlled Chinese state, starts from a supply node, uses an assigned division and army-intelligence category, and has five days of native preparation. It reserves only the matching `<agent>_agent_payload` archetype and native Command Power for the selected variant. Human and AI users enter through the same native path; the campaign outcome adapter is `japan_resolve_chemical_campaign_raid_outcome` in `common/scripted_effects/JAP_chemical_campaign_effects.txt`.
 
-## Operation contract
+## Reservation and cost matrix
 
-1. Japan selects an enemy-controlled Chinese core state adjacent to Japanese-controlled territory.
-2. Operational Chemical Readiness and battlefield-use authority must be active.
-3. The selected Chlorine, Phosgene, Mustard, or Lewisite technology and at least 120 matching legacy agent cylinders are required.
-4. The operation saves the exact selected state, maps the selected agent into the shared chemical taxonomy, and debits exactly 120 matching cylinders through the canonical payload helper.
-5. The committed release supplies positive release efficiency and resolves military and civilian protection for the selected state. No weather, terrain, launch-state, neighboring-state, or aircraft estimate is created.
-6. The shared exposure pipeline calculates disruption, deaths, contamination, medical saturation, evidence, attribution, and Condemnation. Doctrine mastery and designers apply only through that shared pipeline.
-7. Accepted use starts an eight-day national cooldown and a twenty-four-day target-state cooldown.
+| Variant | Exact agent lot | Ordinary Command Power | Optimized Command Power |
+| --- | ---: | ---: | ---: |
+| Normal | 40 | 20 | 16 |
+| Sale | 20 | 10 | 8 |
+| Evolution | 10 | 5 | 4 |
 
-The Controlled Retaliation army spirit reduces the Command Power cost from 20 to 16. It does not alter payload consumption, evidence, attribution, deaths, contamination, or the historical record.
+The selected tier is fixed at raid creation. Native `essential_equipment` supplies the material reservation and debit; the outcome callback must not debit the same lot again. The prior Political Power charge and standalone cylinder-selector economy are removed under the parent-approved native-raid simplification. Sale and evolution variants are separate raid types within the same Chemical Raids category, not additional categories. Eligibility, authority, exact-state validation, cooldown, exposure, evidence, and Condemnation still depend on their current trigger and effect sources; a failed context cannot be replaced with an inferred target.
 
-## AI
+## Presentation and validation boundary
 
-The AI attacks only after the same readiness, policy, research, stock, target, and Command Power gates pass. If its selected agent lacks a valid researched stockpile but another eligible cylinder stockpile exists, it uses the free selector until it reaches a usable agent. Treaty membership sharply reduces attack weight without bypassing the route.
+The raid file and shared category are the active UI contract. The native chemical raid reuses `GFX_decision_japan_chemical_campaign_attack` from `interface/chaosx_gfx_cleanup.gfx`; the old category and cycle-selector sprites are retired decision art. Final raid GFX and DDS consumer review belongs to the asset owner and parent.
 
-## Files
+The raid file's probability adapter reported no weighted surfaces and cross-adapter comparison returned `PROBABILITY_SURFACE_EMPTY`, so no raid success or AI weight comparison is established by that result. Static sale tiers cover the source-defined 50% and 75% price variants but do not include other composed Black Friday modifiers from the old universal quote. Source ID and cost checks remain separate from in-game reservation, cancellation, target, and AI behavior. The native cancellation treatment of reserved equipment is not proven by installed documentation and remains a live-game evidence gap.
 
-- Decisions: `common/decisions/japan_chemical_campaign_decisions.txt`
-- Category: `common/decisions/categories/japan_chemical_campaign_categories.txt`
-- Effects: `common/scripted_effects/JAP_chemical_campaign_effects.txt`
-- Payload accounting: `common/scripted_effects/cbrn_payload_effects.txt`
-- Shared exposure and consequences: `common/scripted_effects/cbrn_exposure_effects.txt`, `common/scripted_effects/cbrn_consequence_effects.txt`
-- Triggers: `common/scripted_triggers/cbw_triggers.txt`, `common/scripted_triggers/cbrn_payload_triggers.txt`
-- Scripted localisation: `common/scripted_localisation/japan_chemical_campaign_scripted_localisation.txt`
-- Localisation: `localisation/english/chaosx_decisions_l_english.yml`
+## Future depth
 
-## Assets
-
-The category uses `GFX_decision_category_japan_chemical_campaign`, defined in `interface/chaosx_gfx_cleanup.gfx` and stored at `gfx/interface/decisions/japan_chemical_campaign/decision_category_japan_chemical_campaign.dds`.
-
-The selector and attack use dedicated 32×32 decision-type art generated against installed-vanilla decision references:
-
-- `GFX_decision_japan_chemical_campaign_cycle_agent` → `gfx/interface/decisions/japan_chemical_campaign/decision_japan_chemical_campaign_cycle_agent.dds`
-- `GFX_decision_japan_chemical_campaign_attack` → `gfx/interface/decisions/japan_chemical_campaign/decision_japan_chemical_campaign_attack.dds`
-
-The generated source, processed PNGs, native-size review enlargements, references, and hashes are retained in `docs/assets/japan_chemical_campaign_decisions/`. The category image was used as subject reference only; it was not resized into either decision icon.
+Historical campaign incidents can receive clearer forensic summaries after the native exact-state outcome, AI selection, and final art are validated; they must continue to use the shared consequence dispatcher.

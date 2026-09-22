@@ -22,6 +22,8 @@
 @BIO_PAYLOAD_SURPLUS_JAPAN_ANTHRAX = 1
 @BIO_PAYLOAD_SURPLUS_JAPAN_PLAGUE = 2
 @BIO_PAYLOAD_SURPLUS_DESPERATE = 5
+@BIO_PAYLOAD_SURPLUS_ZOMBIE = 2
+@BIO_PAYLOAD_SURPLUS_BLACK_PLAGUE = 1
 
 @BIO_PAYLOAD_TARGET_BATTLEFIELD = 120
 @BIO_PAYLOAD_TARGET_RETALIATORY = 160
@@ -30,6 +32,8 @@
 @BIO_PAYLOAD_TARGET_JAPAN_ANTHRAX = 220
 @BIO_PAYLOAD_TARGET_JAPAN_PLAGUE = 300
 @BIO_PAYLOAD_TARGET_DESPERATE = 400
+@BIO_PAYLOAD_TARGET_ZOMBIE = 250
+@BIO_PAYLOAD_TARGET_BLACK_PLAGUE = 2
 
 # A non-Japanese battlefield program keeps Tularemia only while no stronger
 # completed family matches its current route.
@@ -56,6 +60,53 @@ cbrn_bio_tularemia_payload_safe = {
 		type = equipment_production_surplus_management
 		id = tularemia_bomb_1
 		value = @BIO_PAYLOAD_SURPLUS_BATTLEFIELD
+	}
+}
+
+# Zombie delivery technology enables ordinary production of its concrete bomb.
+# Native Event 016 raids reserve this stock directly from the equipment pool.
+cbrn_bio_weaponized_zombie_payload = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_tech = zombie_disease_bomb_delivery_systems
+		cbrn_ai_can_expand_biological_production = yes
+		has_equipment = { zombie_disease_bomb_1 < @BIO_PAYLOAD_TARGET_ZOMBIE }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = zombie_disease_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_ZOMBIE
+	}
+}
+
+# Event 020 grants only one bomb at Black Plague completion. A safe ordinary
+# arsenal keeps the second bomb needed by Event 016's covert native raid even
+# without the shared strategic CBRN production posture.
+cbrn_bio_black_plague_covert_payload = {
+	allowed = { NOT = { is_actual_nonhuman_country = yes } }
+	enable = {
+		has_country_flag = black_plague_weaponization_complete
+		has_tech = plague_bomb_delivery_systems
+		cbrn_ai_has_safe_biological_stockpile_context = yes
+		NOT = {
+			AND = {
+				cbrn_ai_can_expand_safe_biological_production = yes
+				cbrn_ai_has_strategic_program_posture = yes
+				NOT = { has_tech = smallpox_bomb_delivery_systems }
+				NOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+				NOT = { cbrn_ai_has_desperate_release_posture = yes }
+			}
+		}
+		NOT = { cbrn_ai_can_expand_desperate_biological_production = yes }
+		NOT = { cbrn_ai_has_japan_china_biological_campaign_posture = yes }
+		has_equipment = { plague_bomb_1 < @BIO_PAYLOAD_TARGET_BLACK_PLAGUE }
+	}
+	abort_when_not_enabled = yes
+	ai_strategy = {
+		type = equipment_production_surplus_management
+		id = plague_bomb_1
+		value = @BIO_PAYLOAD_SURPLUS_BLACK_PLAGUE
 	}
 }
 

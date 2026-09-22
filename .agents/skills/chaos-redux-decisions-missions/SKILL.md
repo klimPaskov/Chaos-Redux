@@ -232,6 +232,8 @@ If the country cannot pay a cost, show the affected amount and texticon in the b
 
 Custom-cost display is not sufficient evidence that a decision is selectable. Define one shared, inclusive affordability predicate and invoke it from both `available` and `custom_cost_trigger`. Manually debit the custom payment once in `complete_effect`, and set the fixed `ai_hint_pp_cost` amount when political power is included. If the cost row already fully explains payment, the `available` duplicate may use `hidden_trigger` to keep raw requirements out of the visible block. Keep the display, affordability gate, and debit aligned, and document any engine uncertainty rather than inferring behavior.
 
+For upfront payments, draw each spendable cost once in the native or custom cost row. Remove duplicated amounts, debit prose, and affordability prose from the ordinary decision tooltip when the cost row already shows them. Retain tooltip text for meaningful ongoing consequences, duration, risk, cleanup, and non-consumed requirements.
+
 Requirements are separate from costs. A requirement such as `Depot control` can use concise literal text because it is not a spendable value. When a decision has many non-cost requirements, show a short summary such as `Requirements met` or `§RRequirements not met§!` and place the precise requirement list in a concise tooltip. Do not use this pattern to conceal extra spendable costs.
 
 The same rules apply to ordinary decisions, missions with payment actions, scripted GUI buttons, confirmation windows, and any other player-facing action that spends resources.

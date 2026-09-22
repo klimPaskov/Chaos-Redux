@@ -1,5 +1,7 @@
 # Chaos Warfare documentation state
 
+> **Historical pre-overhaul snapshot:** This document predates the user's accepted 2026-09-20 CBRN design. Use [`2026-09-20_cbrn_overhaul_requirement_ledger.md`](2026-09-20_cbrn_overhaul_requirement_ledger.md) for current accepted requirements and open implementation evidence; bounded prior source findings below do not close the overhaul.
+
 This handoff records the implementation surfaces and documentation state for the accepted Chaos Warfare and CBRN package.
 
 ## Authority order

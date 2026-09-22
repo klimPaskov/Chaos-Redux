@@ -1,5 +1,7 @@
 # Gas Masks, Civil Defence, and Population Protection
 
+> **2026-09-20 accepted amendment:** The user's explicit CBRN implementation request in [the accepted overhaul amendment](13_2026_09_20_accepted_cbrn_overhaul.md) supersedes conflicting older requirements in this file. Use the amendment and [requirement ledger](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) before treating any role, policy, raid, project, limit, organization, or asset here as current design.
+
 ## Gameplay promise
 
 Gas masks become a strategic stockpile shared by the military and civil defence. The player must decide how much protection to reserve for frontline formations, headquarters, industry, cities, occupied territory, and emergency replacement.

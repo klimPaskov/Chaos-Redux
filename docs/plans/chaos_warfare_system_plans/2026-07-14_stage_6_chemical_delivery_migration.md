@@ -1,5 +1,7 @@
 # Stage 6: Chemical Delivery, Payload Logistics, and Consequence Dispatch
 
+> **Superseded in part by the 2026-09-20 accepted CBRN overhaul and exact-agent payload migration:** This historical plan's one-shared-`chemical_agent_payload` archetype and MIO target instructions are obsolete. Current `common/units/equipment/cbrn_payload_equipment.txt` defines nine distinct agent archetypes, while the parent must verify final raid reservations and MIO targets before marking the new route implemented. See [`2026-09-20_cbrn_overhaul_requirement_ledger.md`](2026-09-20_cbrn_overhaul_requirement_ledger.md).
+
 Status: in progress; the overall Chaos Warfare goal remains incomplete
 
 Current tranche: the equipment, payload-profile, exact-debit, shared-dispatch, defender-shock, targeted-recovery, sanctions-recognition, exact CAS/tactical chemical-module eligibility, class-specific native raid reservation, five-band raid outcome accounting, selected-state chemical air and strategic rocket raid adapters, no-release attempt consequences, six CBRN designer families, twenty-seven exact agent-and-rack aircraft variants, and matching asset foundations are implemented or under final review. Exact-state ground condition adapters, remaining legacy retirement, route AI, differentiated country assignments, and specialist audits remain open while the overall Chaos Warfare goal remains incomplete.
@@ -53,25 +55,19 @@ The user explicitly confirmed that doctrine may reduce Condemnation impact. The 
 
 ### 4. Exact-state ground operations
 
-- Add an exact-state CBRN Operations decision category and timed preparation missions for cylinder release, projector barrage, artillery fire plan, and armored local delivery.
-- Require an active prepared Chemical Offensive Army Headquarters, policy, readiness, agent/profile selection, payload reserve, route-specific equipment/formation proof, war, and an eligible adjacent enemy-controlled target state.
-- Recheck every gate on completion. Abort or cancel cleanly if the target, headquarters preparation, formation, equipment, policy, readiness, or payload condition is lost.
-- Debit payload before the shared exposure helper is called. A failed debit makes the operation inert and records no exposure.
-- Preserve route identity: cylinder weather sensitivity and blowback, projector range/terrain limits, artillery persistence and shell logistics, and armored protected local delivery.
+- Cylinder release, projector barrage, artillery fire plan, and light, medium, or heavy armored delivery are native land raids in `chemical_raids`, each with its own agent-specific definition.
+- The selected state, supply-node origin, assigned qualifying division, policy, equipment, and war status are checked by the raid surface. Native preparation replaces the old decision missions, arsenal selector, and separate headquarters preparation.
+- `essential_equipment` and native Command Power are the only raid payments. An immediate hidden country event restores actor-country scope and carries the exact actor, selected state, victim, route, agent, and outcome to the consequence helper.
+- The callback fails closed if its exact selected-state or authorization proof is lost. The installed raid documentation does not establish cancellation refund timing, so that behavior remains an engine-evidence gap.
 
 ### 5. Exact-state chemical air raids
 
 - Implemented Chemical Air Interdiction and mapped strategic chemical raid types on the verified CAS/tactical aircraft and strategic rocket surfaces.
-- Reserve Chemical Air Payload Lots as essential raid equipment at creation. Resolve aborted, failed, partial, success, and catastrophic outcomes with centralized payload salvage and dose bands:
-  - aborted: 10–25 percent net payload use, no target exposure, at most trace friendly risk;
-  - failed: 40–80 percent net payload use, no target exposure, possible crash evidence;
-  - partial: 70–100 percent net payload use and 35–65 percent target dose;
-  - success: 100 percent net payload use and full dose;
-  - catastrophic/critical: 100 percent payload use, 110–140 percent dose, extreme evidence and consequences.
+- Require Chemical Air Payload Lots as native essential equipment. The full reservation is the only equipment charge; outcome helpers do not issue a partial refund or a second debit. Aborted and failed outcomes have no target dose; partial outcomes deliver 50–80 percent dose, or 70–85 percent with Controlled Dispersal; success delivers full dose; catastrophic success delivers 150–200 percent dose, or 110–120 percent with Controlled Dispersal.
 - Every exposing result dispatches against `var:target_state`. No result may contaminate an arbitrary state or whole air region.
 - Idle chemical-capable aircraft and ordinary continuous missions never call the exposure system.
 
-Reservation/outcome foundation and selected-state raid activation completed: native `essential_equipment` has one exact archetype per ordinary agent class and a 240-unit nerve reservation for strategic rockets; the shared helper maps four engine outcomes to five accepted results, refunds unused stock, records net consumption, and separates consumed payload from delivered-dose efficiency. The active adapter preserves the native selected state and does not manufacture unavailable environmental inputs.
+Native `essential_equipment` has one exact archetype per ordinary agent class and a 240-unit nerve requirement for strategic rockets. The shared helper maps four engine outcomes to five result bands and separates the full equipment charge from delivered-dose efficiency. An immediate hidden actor-country event preserves the selected state and other exact raid inputs; the adapter does not manufacture unavailable environmental inputs.
 
 Unsupported continuous-air estimator retired: army combat no longer creates `chem_air_ground_ops_heat`; the deployed-aircraft/region estimator and its tuning tables are removed. The stable `chemical_air_bomb.1` event is retained only as a one-shot cleanup endpoint for a previously queued tick and cannot calculate exposure or reschedule itself.
 

@@ -3,12 +3,12 @@
 # ============================================================================
 # Overview:
 # - Owns initialization and clamping for national CBRN capacity values.
-# - Applies readiness changes only inside the current institutional cap.
+# - Derives Chemical Readiness from issued masks, decontamination, and training.
 # - Resolves respiratory, skin, antidote, decontamination, medical, and warning
 #   layers into agent-class-specific casualty, disruption, and contamination
 #   multipliers.
-# - Does not infer equipment coverage. Stage 2 equipment/issue helpers must
-#   supply all six protection layers and then call the calculator.
+# - Reads real equipment and issue ledgers before resolving six protection
+#   layers for each chemical action.
 # ============================================================================
 
 cbrn_initialize_country_data = {
@@ -22,7 +22,61 @@ cbrn_initialize_country_data = {
 	}
 	if = {
 		limit = { NOT = { has_variable = cbrn_use_policy } }
-		set_variable = { cbrn_use_policy = constant:cbrn_use_policy.defensive_preparation }
+		set_variable = { cbrn_use_policy = constant:cbrn_use_policy.retaliation_only }
+	}
+	# Normalize the two retired policy values without discarding persisted history.
+	if = {
+		limit = { check_variable = { cbrn_use_policy < constant:cbrn_use_policy.retaliation_only } }
+		set_variable = { cbrn_use_policy = constant:cbrn_use_policy.retaliation_only }
+	}
+	if = {
+		limit = { check_variable = { cbrn_use_policy = constant:cbrn_use_policy.strategic_release_authority } }
+		set_variable = { cbrn_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
+	}
+	if = {
+		limit = { check_variable = { cbrn_use_policy > constant:cbrn_use_policy.unrestricted_authorization } }
+		set_variable = { cbrn_use_policy = constant:cbrn_use_policy.retaliation_only }
+	}
+	if = {
+		limit = { has_variable = cbrn_peak_use_policy check_variable = { cbrn_peak_use_policy < constant:cbrn_use_policy.retaliation_only } }
+		set_variable = { cbrn_peak_use_policy = constant:cbrn_use_policy.retaliation_only }
+	}
+	if = {
+		limit = { has_variable = cbrn_peak_use_policy check_variable = { cbrn_peak_use_policy = constant:cbrn_use_policy.strategic_release_authority } }
+		set_variable = { cbrn_peak_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
+	}
+	if = {
+		limit = { has_variable = cbrn_peak_use_policy check_variable = { cbrn_peak_use_policy > constant:cbrn_use_policy.unrestricted_authorization } }
+		set_variable = { cbrn_peak_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
+	}
+	# History-granted successor technologies do not run on_research_complete.
+	if = {
+		limit = { has_tech = improved_gas_masks NOT = { has_tech = civil_defence_fitting_and_registration } }
+		set_technology = { civil_defence_fitting_and_registration = 1 popup = no }
+	}
+	if = {
+		limit = { has_tech = improved_gas_masks NOT = { has_tech = military_filter_standardization } }
+		set_technology = { military_filter_standardization = 1 popup = no }
+	}
+	if = {
+		limit = { has_tech = advanced_gas_masks NOT = { has_tech = rapid_filter_replacement } }
+		set_technology = { rapid_filter_replacement = 1 popup = no }
+	}
+	if = {
+		limit = { has_tech = sealed_assault_protection NOT = { has_tech = vehicle_overpressure_and_sealed_compartments } }
+		set_technology = { vehicle_overpressure_and_sealed_compartments = 1 popup = no }
+	}
+	if = {
+		limit = { has_tech = chemical_detection_paper NOT = { has_tech = portable_anemometer } }
+		set_technology = { portable_anemometer = 1 popup = no }
+	}
+	if = {
+		limit = { has_tech = mobile_sampling_laboratories NOT = { has_tech = meteorological_stations } }
+		set_technology = { meteorological_stations = 1 popup = no }
+	}
+	if = {
+		limit = { has_tech = theater_cbrn_command_set NOT = { has_tech = upper_air_soundings } }
+		set_technology = { upper_air_soundings = 1 popup = no }
 	}
 	if = {
 		limit = { NOT = { has_variable = cbrn_decontamination_capacity } }
@@ -142,6 +196,16 @@ cbrn_initialize_country_data = {
 	clamp_variable = { var = cbrn_civilian_mask_total_sealed min = constant:cbrn_math.zero }
 	clamp_variable = { var = cbrn_protective_aid_exported_crates min = constant:cbrn_math.zero }
 	clamp_variable = { var = cbrn_protective_aid_received_crates min = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			NOT = { has_country_flag = cbrn_protection_maintenance_active }
+			OR = {
+				has_tech = basic_gas_masks
+				has_equipment = { gas_mask_equipment > constant:cbrn_math.zero }
+			}
+		}
+		cbrn_start_protection_maintenance_job = yes
+	}
 }
 
 cbrn_set_use_policy = {
@@ -149,15 +213,10 @@ cbrn_set_use_policy = {
 	if = {
 		limit = {
 			has_variable = cbrn_requested_use_policy
-			check_variable = {
-				var = cbrn_requested_use_policy
-				value = constant:cbrn_use_policy.defensive_preparation
-				compare = greater_than_or_equals
-			}
-			check_variable = {
-				var = cbrn_requested_use_policy
-				value = constant:cbrn_use_policy.unrestricted_chaos_warfare
-				compare = less_than_or_equals
+			OR = {
+				check_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.retaliation_only }
+				check_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.battlefield_authorization }
+				check_variable = { cbrn_requested_use_policy = constant:cbrn_use_policy.unrestricted_authorization }
 			}
 		}
 		set_variable = { cbrn_use_policy = cbrn_requested_use_policy }
@@ -167,23 +226,34 @@ cbrn_set_use_policy = {
 
 cbrn_set_chemical_readiness_cap = {
 	cbrn_initialize_country_data = yes
-	if = {
-		limit = { has_variable = cbrn_requested_readiness_cap }
-		set_variable = { chemical_readiness_cap = cbrn_requested_readiness_cap }
-		clamp_variable = { var = chemical_readiness_cap min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
-		clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
-	}
+	set_variable = { chemical_readiness_cap = constant:cbrn_readiness.full_cap }
 }
 
 cbrn_modify_chemical_readiness = {
-	cbrn_initialize_country_data = yes
+	# Compatibility entry point for old rewards: readiness is an observation.
+	cbrn_refresh_country_mask_snapshot = yes
+}
+
+cbrn_refresh_country_readiness_status = {
+	set_variable = { chemical_readiness_cap = constant:cbrn_readiness.full_cap }
+	set_variable = { chemical_readiness = cbrn_military_mask_coverage }
+	multiply_variable = { chemical_readiness = constant:cbrn_readiness_status.military_coverage_weight }
+	set_temp_variable = { cbrn_readiness_decontamination_component = cbrn_decontamination_capacity }
+	multiply_temp_variable = { cbrn_readiness_decontamination_component = constant:cbrn_readiness_status.decontamination_capacity_weight }
+	add_to_variable = { chemical_readiness = cbrn_readiness_decontamination_component }
 	if = {
-		limit = { has_variable = cbrn_readiness_delta }
-		set_temp_variable = { cbrn_readiness_delta_local = cbrn_readiness_delta }
-		cbrn_apply_historical_readiness_advisor_modifiers = yes
-		add_to_variable = { chemical_readiness = cbrn_readiness_delta_local }
-		clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = chemical_readiness_cap }
+		limit = { has_tech = basic_gas_masks }
+		add_to_variable = { chemical_readiness = constant:cbrn_readiness_status.basic_mask_training }
 	}
+	if = {
+		limit = { has_tech = improved_gas_masks }
+		add_to_variable = { chemical_readiness = constant:cbrn_readiness_status.improved_mask_training }
+	}
+	if = {
+		limit = { has_doctrine = chaos_warfare }
+		add_to_variable = { chemical_readiness = constant:cbrn_readiness_status.chaos_specialization }
+	}
+	clamp_variable = { var = chemical_readiness min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
 }
 
 cbrn_reset_protection_outputs = {
@@ -522,6 +592,9 @@ cbrn_refresh_country_mask_snapshot = {
 	set_variable = { cbrn_military_mask_requirement = deployed_army_manpower_k }
 	multiply_variable = { cbrn_military_mask_requirement = constant:cbrn_mask_scale.military_crates_per_manpower_k }
 	clamp_variable = { var = cbrn_military_mask_requirement min = constant:cbrn_math.zero }
+	set_variable = { cbrn_military_mask_shortage_crates = cbrn_military_mask_requirement }
+	subtract_from_variable = { cbrn_military_mask_shortage_crates = cbrn_military_mask_crates }
+	clamp_variable = { var = cbrn_military_mask_shortage_crates min = constant:cbrn_math.zero }
 	set_variable = { cbrn_ai_military_mask_coverage_target = constant:cbrn_protection_ai_target.default.military_coverage }
 	set_temp_variable = { cbrn_ai_mask_reserve_ratio = constant:cbrn_protection_ai_target.default.reserve_ratio }
 	if = {
@@ -689,6 +762,7 @@ cbrn_refresh_country_mask_snapshot = {
 	set_variable = { cbrn_mask_total_accounted = cbrn_mask_reserve_crates }
 	add_to_variable = { cbrn_mask_total_accounted = cbrn_military_mask_crates }
 	add_to_variable = { cbrn_mask_total_accounted = cbrn_civilian_mask_total_crates }
+	cbrn_refresh_country_readiness_status = yes
 	cbrn_achievement_record_country_protection_snapshot = yes
 }
 
@@ -995,6 +1069,23 @@ cbrn_issue_masks_to_field_army = {
 	subtract_from_temp_variable = { cbrn_mask_issue_uncovered_need = cbrn_military_mask_crates }
 	clamp_temp_variable = { var = cbrn_mask_issue_uncovered_need min = constant:cbrn_math.zero }
 	clamp_temp_variable = { var = cbrn_mask_issue_requested_crates min = constant:cbrn_math.zero max = cbrn_mask_issue_uncovered_need }
+	# In an unthreatened 1936 British profile, routine issue preserves the
+	# separately supplied quarter-force replacement reserve. A live chemical
+	# threat releases that reserve to the field army before civilian issue.
+	if = {
+		limit = {
+			has_country_flag = cbrn_historical_1936_force_scaled_protection
+			has_variable = cbrn_historical_1936_replacement_reserve_ratio
+			NOT = { cbrn_country_has_public_chemical_emergency = yes }
+			NOT = { cbrn_country_faces_enemy_chemical_capability = yes }
+		}
+		set_temp_variable = { cbrn_historical_eng_replacement_reserve = cbrn_military_mask_requirement }
+		multiply_temp_variable = { cbrn_historical_eng_replacement_reserve = cbrn_historical_1936_replacement_reserve_ratio }
+		set_temp_variable = { cbrn_historical_eng_issue_available = cbrn_mask_reserve_crates }
+		subtract_from_temp_variable = { cbrn_historical_eng_issue_available = cbrn_historical_eng_replacement_reserve }
+		clamp_temp_variable = { var = cbrn_historical_eng_issue_available min = constant:cbrn_math.zero }
+		clamp_temp_variable = { var = cbrn_mask_issue_requested_crates max = cbrn_historical_eng_issue_available }
+	}
 	cbrn_issue_requested_masks_to_military = yes
 }
 
@@ -1524,6 +1615,11 @@ cbrn_apply_military_mask_loss = {
 		multiply_temp_variable = { cbrn_mask_loss_fraction_local = constant:cbrn_protection_designer_effect.durable_filter_loss_mult }
 		multiply_temp_variable = { cbrn_mask_condition_loss_local = constant:cbrn_protection_designer_effect.durable_filter_loss_mult }
 	}
+	if = {
+		limit = { cbrn_project_has_renewing_filters = yes }
+		multiply_temp_variable = { cbrn_mask_loss_fraction_local = constant:cbrn_project_effect.filter_replacement_multiplier }
+		multiply_temp_variable = { cbrn_mask_condition_loss_local = constant:cbrn_project_effect.filter_replacement_multiplier }
+	}
 	set_temp_variable = { cbrn_mask_loss_total = constant:cbrn_math.zero }
 
 	set_temp_variable = { cbrn_mask_model_loss = cbrn_military_issued_mask_reconditioned }
@@ -1568,6 +1664,11 @@ cbrn_apply_state_civilian_mask_loss = {
 		limit = { controller = { cbrn_designer_has_durable_filter_canisters = yes } }
 		multiply_temp_variable = { cbrn_mask_loss_fraction_local = constant:cbrn_protection_designer_effect.durable_filter_loss_mult }
 		multiply_temp_variable = { cbrn_mask_condition_loss_local = constant:cbrn_protection_designer_effect.durable_filter_loss_mult }
+	}
+	if = {
+		limit = { controller = { cbrn_project_has_renewing_filters = yes } }
+		multiply_temp_variable = { cbrn_mask_loss_fraction_local = constant:cbrn_project_effect.filter_replacement_multiplier }
+		multiply_temp_variable = { cbrn_mask_condition_loss_local = constant:cbrn_project_effect.filter_replacement_multiplier }
 	}
 	set_temp_variable = { cbrn_mask_loss_total = constant:cbrn_math.zero }
 
@@ -1756,6 +1857,8 @@ cbrn_clear_state_raid_dynamic_modifiers = {
 cbrn_transfer_state_civilian_mask_ledger = {
 	clr_state_flag = cbrn_protection_project_active
 	clr_state_flag = cbrn_chemical_raid_alert_active
+	clr_state_flag = cbrn_emergency_distribution_surge_used
+	clr_state_flag = cbrn_occupied_distribution_program_target
 	clr_state_flag = cbrn_chemical_alarm_sounded
 	clr_state_flag = cbrn_civilians_moved_to_shelters
 	clr_state_flag = cbrn_hospitals_utilities_secured
@@ -1813,11 +1916,146 @@ cbrn_transfer_state_civilian_mask_ledger = {
 	}
 }
 
+cbrn_run_protection_maintenance_cycle = {
+	cbrn_refresh_country_mask_snapshot = yes
+	if = {
+		limit = { cbrn_country_has_any_mask_stock = yes }
+		set_country_flag = cbrn_national_respirator_reserve
+		set_country_flag = cbrn_population_registered_and_fitted
+		set_country_flag = cbrn_civil_defence_established
+		if = {
+			limit = { check_variable = { cbrn_military_mask_filter_condition < constant:cbrn_mask_filters.condition_full } }
+			cbrn_replace_military_mask_filters = yes
+		}
+		if = {
+			limit = { cbrn_country_has_filter_replacement_work = yes }
+			cbrn_complete_civilian_filter_replacement_program = yes
+		}
+		if = {
+			limit = { check_variable = { cbrn_military_mask_shortage_crates > constant:cbrn_math.zero } }
+			cbrn_issue_masks_to_field_army = yes
+		}
+		if = {
+			limit = { cbrn_country_needs_civilian_mask_issue = yes }
+			cbrn_complete_priority_distribution_program = yes
+		}
+	}
+	add_to_variable = { cbrn_protection_maintenance_cycle = constant:cbrn_math.one }
+	if = {
+		limit = {
+			check_variable = {
+				var = cbrn_protection_maintenance_cycle
+				value = constant:cbrn_scheduler.protection_storage_loss_cycles
+				compare = greater_than_or_equals
+			}
+		}
+		set_variable = { cbrn_protection_maintenance_cycle = constant:cbrn_math.zero }
+		cbrn_apply_annual_mask_storage_loss = yes
+		set_temp_variable = { cbrn_mask_loss_fraction = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_mask_condition_loss = constant:cbrn_mask_filters.standing_issue_condition_loss }
+		cbrn_apply_military_mask_loss = yes
+		every_controlled_state = {
+			limit = {
+				has_variable = cbrn_civilian_mask_crates
+				check_variable = { cbrn_civilian_mask_crates > constant:cbrn_math.zero }
+			}
+			set_temp_variable = { cbrn_mask_loss_fraction = constant:cbrn_mask_filters.annual_distributed_crate_loss }
+			set_temp_variable = { cbrn_mask_condition_loss = constant:cbrn_mask_filters.standing_issue_condition_loss }
+			cbrn_apply_state_civilian_mask_loss = yes
+		}
+	}
+	cbrn_refresh_country_mask_snapshot = yes
+}
+
 cbrn_start_protection_maintenance_job = {
 	if = {
 		limit = { NOT = { has_country_flag = cbrn_protection_maintenance_active } }
 		set_country_flag = cbrn_protection_maintenance_active
 		set_temp_variable = { cbrn_protection_maintenance_delay = constant:cbrn_scheduler.protection_maintenance_days }
 		country_event = { id = cbrn_protection.1 days = cbrn_protection_maintenance_delay }
+	}
+}
+
+# The historical 1939 British receipt is a target for civilian masks already
+# issued. Reconcile it after the common starting profile, which has issued
+# military masks and may have issued civilian masks from its own stock. Only the remaining
+# civilian requirement may add historically supplied masks to the warehouse;
+# the normal state distributor then debits real stock and credits state ledgers.
+cbrn_apply_historical_uk_1939_civilian_issue = {
+	if = {
+		limit = {
+			has_country_flag = cbrn_uk_1939_mass_respirator_issue
+			NOT = { has_country_flag = cbrn_uk_1939_mass_respirator_issue_applied }
+			has_variable = cbrn_startup_uk_1939_civilian_respirator_crates
+			has_variable = cbrn_startup_uk_1939_civilian_distribution_target
+		}
+		cbrn_refresh_country_mask_snapshot = yes
+		set_temp_variable = { cbrn_uk_civilian_issue_target = cbrn_startup_uk_1939_civilian_respirator_crates }
+		clamp_temp_variable = { var = cbrn_uk_civilian_issue_target min = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_uk_civilian_requirement = constant:cbrn_math.zero }
+		every_owned_state = {
+			limit = {
+				is_controlled_by = PREV
+				is_core_of = PREV
+				state_population_k > constant:cbrn_math.zero
+			}
+			cbrn_refresh_state_civilian_mask_snapshot = yes
+			add_to_temp_variable = { cbrn_uk_civilian_requirement = cbrn_civilian_mask_requirement }
+		}
+		clamp_temp_variable = { var = cbrn_uk_civilian_issue_target max = cbrn_uk_civilian_requirement }
+		if = {
+			limit = {
+				check_variable = { cbrn_uk_civilian_requirement > constant:cbrn_math.zero }
+				check_variable = {
+					var = cbrn_civilian_mask_total_crates
+					value = cbrn_uk_civilian_issue_target
+					compare = less_than
+				}
+			}
+			set_temp_variable = { cbrn_distribution_target_fraction = cbrn_uk_civilian_issue_target }
+			divide_temp_variable = { cbrn_distribution_target_fraction = cbrn_uk_civilian_requirement }
+			clamp_temp_variable = {
+				var = cbrn_distribution_target_fraction
+				min = constant:cbrn_math.zero
+				max = cbrn_startup_uk_1939_civilian_distribution_target
+			}
+			set_temp_variable = { cbrn_uk_civilian_issue_shortfall = cbrn_uk_civilian_issue_target }
+			subtract_from_temp_variable = { cbrn_uk_civilian_issue_shortfall = cbrn_civilian_mask_total_crates }
+			clamp_temp_variable = { var = cbrn_uk_civilian_issue_shortfall min = constant:cbrn_math.zero }
+			set_temp_variable = { cbrn_uk_civilian_stock_need = cbrn_uk_civilian_issue_shortfall }
+			multiply_temp_variable = { cbrn_uk_civilian_stock_need = constant:cbrn_mask_distribution.urban_or_capital_cost_mult }
+			multiply_temp_variable = { cbrn_uk_civilian_stock_need = constant:cbrn_mask_distribution.low_infrastructure_cost_mult }
+			subtract_from_temp_variable = { cbrn_uk_civilian_stock_need = cbrn_mask_reserve_crates }
+			clamp_temp_variable = { var = cbrn_uk_civilian_stock_need min = constant:cbrn_math.zero }
+			round_temp_variable = cbrn_uk_civilian_stock_need
+			if = {
+				limit = { check_variable = { cbrn_uk_civilian_stock_need > constant:cbrn_math.zero } }
+				add_equipment_to_stockpile = {
+					type = gas_mask_equipment_1
+					amount = cbrn_uk_civilian_stock_need
+				}
+			}
+			set_temp_variable = { cbrn_distribution_base_cost_mult = constant:cbrn_math.one }
+			set_temp_variable = { cbrn_distribution_effectiveness_mult = constant:cbrn_math.one }
+			set_temp_variable = { cbrn_distribution_new_filter_condition = constant:cbrn_mask_filters.condition_full }
+			capital_scope = {
+				if = {
+					limit = { is_controlled_by = PREV is_core_of = PREV state_population_k > constant:cbrn_math.zero }
+					cbrn_distribute_requested_masks_to_state = yes
+				}
+			}
+			every_owned_state = {
+				limit = {
+					NOT = { is_capital = yes }
+					is_controlled_by = PREV
+					is_core_of = PREV
+					state_population_k > constant:cbrn_math.zero
+				}
+				cbrn_distribute_requested_masks_to_state = yes
+			}
+		}
+		set_country_flag = cbrn_uk_1939_mass_respirator_issue_applied
+		clr_country_flag = cbrn_historical_civilian_mask_issue
+		cbrn_refresh_country_mask_snapshot = yes
 	}
 }

@@ -1,5 +1,7 @@
 # Country Program and Designer Matrix
 
+The six-family designer trait sketch below is superseded by the three exact twelve-node MIO families accepted in the 2026-09-20 CBRN overhaul amendment. The parent accepted one biomedical foundation node, `cbrn_medical_respiratory_care`, displayed as Respiratory and Burn Care; the separate Burn Treatment node proposed below is not part of the accepted tree. Current source maps both treatment checks to that trait in `common/scripted_triggers/cbrn_designer_triggers.txt`, with 0.85 choking and continuing-blister death multipliers in `common/script_constants/cbrn_designer_constants.txt`. Country program rows remain planning context, not proof of current starting equipment or AI behavior; see the accepted amendment and current source-backed `docs/systems/cbrn_warfare/cbrn_designers.md`.
+
 ## Major country programs
 
 | Country | Starting protective profile | Offensive profile | Preferred doctrine tracks | AI use policy | Unique designer direction | Main balance weakness |
@@ -102,8 +104,7 @@ Index 100 is a program scale anchor, not 100 equipment units. Exact equipment to
 
 | Trait | Effect target |
 | --- | --- |
-| Respiratory Care | choking death reduction |
-| Burn Treatment | blister continuing-death reduction |
+| Respiratory and Burn Care | One accepted foundation node supports choking and continuing-blister death reduction; the separate Burn Treatment trait is superseded |
 | Antidote Production | nerve death reduction |
 | Vaccine Scale | smallpox and relevant outbreak protection |
 | Mobile Casualty Sorting | lower medical saturation |

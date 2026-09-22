@@ -1,5 +1,7 @@
 # Event 016 final completion contract
 
+> **2026-09-20 biological-route amendment.** The user's approved CBRN native-raid simplification supersedes this contract's former Event 016 biological selection, production, staging, decision-deployment, separate decision-receipt, and Portal transport-refund requirements. The replacement is eighteen native raid types in the existing `biological_raids` category, with concrete equipment production and native reservation; `docs/events/016_brilliant_scientist/systems/biological_operations.md` and `docs/plans/016_brilliant_scientist_plans/subagent_handoffs/016_biological_native_raid_migration_2026_09_20.md` give current source evidence and remaining engine limits. All other Event 016 closure requirements keep their prior acceptance and unresolved-evidence boundaries.
+
 ## Authority and purpose
 
 This contract records the accepted Event 016 closure plan and supersedes earlier statements that treated major Event 016 content as optional, deferred, or complete without current evidence.
@@ -42,7 +44,7 @@ The completed identities are:
 - Robotics makes `autonomous_robot` a zero-human-manpower armored-infantry and tank hybrid whose scaling constraints are equipment, fuel, power infrastructure, and production.
 - Paleogenetics uses generic `paleogenetic_creature` identifiers and creates fast shock formations with rough-terrain, intimidation, reconnaissance, and suppression strengths. Feed, handlers, transport, air attack, and containment remain its vulnerabilities.
 - Xenobiology uses generic `xenobiological_assault_organism` identifiers and creates fort-breaking, tunnelling, adaptive shock formations. Chemical, neural, machine, and researched control are mutually exclusive operational doctrines with different bonuses, failures, infrastructure needs, and countermeasures.
-- Biological Weapons unlocks every mapped native pathogen, including zombies and Black Plague, with production, defensive benefits, native raids, and decision-led deployments.
+- Biological Weapons unlocks every mapped native pathogen, including zombies and Black Plague, with ordinary equipment production, defensive benefits, and native raids.
 - Alien Arms preserves generic `alien_infantry`, laser equipment, envoy craft, Antarctic recovery, D'Rhondan contact, predictive tactics, UFO landings, and DHR consequences. Alien formations remain untrainable, use zero human manpower, and require 200 laser guns per battalion.
 - Temporal Mechanics uses generic `temporal_guard` and adds bounded casualty and equipment recovery, command continuity, and emergency reinforcement governed by synchronization capacity, temporal debt, target-use receipts, anchor control, and stabilization windows.
 - Strategic Singularity preserves all six components. Preparation may begin early. Arming requires the complete causal chain. Detonation raises Chaos above the shared threshold before entering Fallout. Laboratory World and Singularity are mutually exclusive commitments.
@@ -138,28 +140,16 @@ Free or event-spawned formations may use hard caps. Normally trainable custom un
 
 Actual pathogen equipment stockpiles are authoritative. The former Event 016 numeric biological quantity ledger is retired.
 
-Native raids remain authoritative for raid preparation, equipment reservation, cancellation, expiry, outcome, refund, history, contamination, condemnation, and confirmed-use attribution. Event 016 does not duplicate or intercept that transaction.
+Native raids remain authoritative for raid preparation, equipment reservation, cancellation, expiry, outcome, history, contamination, condemnation, and confirmed-use attribution. Event 016 does not duplicate or intercept that transaction. Installed documentation does not prove the reserved-equipment cancellation refund or final outcome destruction behavior, so those engine effects remain open.
 Weaponized Black Plague exposure initializes its existing shared runtime once when required and starts one accepted-state scheduler anchor if no valid outstanding shared pulse exists.
 Existing active anchors, runtime generation, outstanding tickets, eradication history, and scenario pulse suppression remain authoritative; a release does not invoke the natural outbreak root or debit the public delivery transaction a second time.
 The shared pulse deadline uses elapsed days, and only an accepted shared Black Plague exposure may create or repair its scheduling receipt.
 
-Decision-led biological deployments own a separate transaction. One selected operational agent covers every unlocked payload. Single-payload production lasts 30 days. Three-payload production lasts 60 days. Both use concrete factories, support equipment, manpower, and the selected native equipment type. A 90-day staging directive improves raid preparation, outcome weights, and Kruger AI willingness without reserving payload.
+The eighteen Event 016 biological raid IDs pair Anthrax, Plague, Tularemia, Smallpox, Weaponized Zombies, and Engineered Black Plague with battlefield, Portal battlefield, and covert methods. Each ID fixes the agent and method; the player chooses the raid rather than a selected-agent variable or a separate attack decision. Its real equipment model is produced through ordinary industry and reserved as `essential_equipment` at raid creation. There is no Event 016 production decision, ninety-day staging directive, or parallel payload receipt.
 
-Battlefield release lasts seven days, consumes one selected payload, costs 25 Command Power, and requires a frontline or operational military target. Strategic covert release lasts fourteen days, consumes two selected payloads, costs 50 Command Power, and requires an enemy core industrial or strategic target.
+Battlefield and Portal battlefield raids prepare for seven days and allocate 25 Command Power plus one fixed agent lot. The Portal form additionally reserves ten Teleportation Equipment and can reach an authorized hostile rear target. Covert raids prepare for fourteen days and allocate 50 Command Power plus two fixed lots. All require a qualifying land division and supply-node origin, use native outcome levels, and dispatch their shared pathogen, Zombie, or Black Plague consequences once through the guarded Event 016 callback.
 
-The accepted Teleportation–Biological Weapons synergy is a variant of the existing battlefield action, not a third deployment decision.
-Operational portal technology permits a rear-area target that otherwise lacks frontline or military-target eligibility, provided ten Teleportation Equipment can be committed with the payload.
-That transport equipment has its own exact amount in the decision transaction, is returned together with the payload on pre-execution cancellation, and is consumed on settlement.
-Ordinary frontline and military targets do not pay the transport cost, and neither variant reads or changes a native raid reservation.
-
-Decision deployment debits payload at start, stores one receipt, refunds exactly once if the target becomes invalid before execution, and settles exactly once on success, failure, or accident. Native raid and decision receipts never share ownership.
-
-A capitulating actor returns its independent decision-deployment payload and any committed Portal transport before the native capitulation equipment transfer.
-A directly annexed actor transfers any still-reserved payload and transport exactly once to the annexing country, because those items were already removed from the stockpile and cannot be captured by the native stockpile transfer.
-Both paths clear active production and staging receipts without creating their uncompleted output or refunding consumed production inputs.
-Their native timed decisions also cancel when the country capitulates, the shared world-end state begins, or their own active receipt is cleared, releasing occupied factories without awarding completion.
-Production and staging may start or complete only while the operating country exists, has not capitulated, and the shared world-end state is absent.
-These participant-only hooks never touch native raid reservations or another country's deployment receipt.
+The approved migration removes decision-side payload and transport refunds, capitulation and annexation receipt transfers, and separate production/staging cleanup. Native cancellation and target-loss handling are engine-owned; source inspection proves neither cancellation refund nor distant Portal pathfinding, so both remain engine evidence gaps. The original Portal facility raid system retains its separate category and ownership.
 
 ## Portal beachhead contract
 

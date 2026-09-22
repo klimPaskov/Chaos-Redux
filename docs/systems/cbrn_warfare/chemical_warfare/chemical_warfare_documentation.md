@@ -10,7 +10,7 @@ Chaos Warfare makes this route substantially faster, more lethal, and more persi
 
 - Selected-state chemical air raids cover Chlorine, Phosgene, Mustard, Lewisite, Tabun, Sarin, Soman, Malodor, and Behavioral Agent payloads. Sarin and Soman also have strategic-rocket variants. Every native outcome reserves exact class equipment; only partial, successful, and catastrophic releases enter exposure. Aborted and failed attempts record bounded evidence and Condemnation without fabricating toxic effects.
 - Japan's China campaign provides a visible agent selector and an exact selected-state attack decision. It consumes 120 matching legacy cylinders, pays 20 command power or 16 with Reagent Optimization, and dispatches through the canonical exposure pipeline.
-- The chemical doomsday decision consumes the real national legacy-cylinder arsenal once, allocates each supported agent across exact eligible controlled states, and dispatches every accepted state through the same pipeline.
+- `chemical_stockpile_doomsday_raid` under the existing chemical category reserves one of each four legacy cylinder archetypes during native preparation. A successful or critical callback debits the remaining national arsenal once, counts the reserved lots, allocates each supported agent across exact eligible controlled states, and dispatches accepted states through the same pipeline; the selected raid state is an authorization anchor, not the full consequence area.
 - The restricted-site nerve route consumes researched Sarin or Soman stock inside an already authorized extermination, gulag, or experiment site. Nerve-agent doctrine mastery increases camp killing efficiency and chemical consequences; it does not create or authorize camp infrastructure and does not conceal the result.
 - Special Malodor and Behavioral-Agent raids use distinct payloads and state modifiers focused on disruption. They retain evidence and Condemnation through the common consequence contract.
 
@@ -55,8 +55,8 @@ AI adoption and escalation are profile-aware. Prepared, military-first, industri
 
 - Payload and exposure: `common/scripted_effects/cbrn_payload_effects.txt`, `common/scripted_effects/cbrn_exposure_effects.txt`, and `common/scripted_effects/cbrn_consequence_effects.txt`
 - Air raids: `common/raids/cbrn_chemical_air_raids.txt` and `common/scripted_effects/cbrn_chemical_raid_effects.txt`
-- Japan campaign: `common/decisions/japan_chemical_campaign_decisions.txt` and `common/scripted_effects/JAP_chemical_campaign_effects.txt`
-- Doomsday: `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`
+- Japan campaign: `common/raids/japan_cbrn_campaign_raids.txt` and `common/scripted_effects/JAP_chemical_campaign_effects.txt`
+- Doomsday raid and resolver: `common/raids/cbrn_doomsday_raids.txt` and `common/scripted_effects/cbrn_chemical_doomsday_effects.txt`
 - Restricted sites: `common/scripted_effects/cbrn_camp_effects.txt`
 - Protection and state recovery: `common/scripted_effects/cbrn_protection_effects.txt`, `common/scripted_effects/cbrn_chemical_state_effects.txt`, and `events/cbrn_chemical_delivery_events.txt`
 - Doctrine and officer corps: `common/doctrines/grand_doctrines/chaos_warfare_grand_doctrine.txt`, `common/doctrines/subdoctrines/land/chaos_warfare_*_subdoctrines.txt`, and `common/ideas/cbw_spirits.txt`

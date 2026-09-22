@@ -385,12 +385,10 @@ condemnation_start_targeted_pulse_apply = {
 	}
 }
 
-# Input: condemnation_fuel_fraction_cost (temporary fixed-point value).
+# Input: condemnation_fuel_fraction_cost (temporary fixed-point share of fuel capacity).
 condemnation_pay_fuel_fraction = {
 	set_temp_variable = { condemnation_fuel_ratio_after_cost = fuel_ratio }
-	set_temp_variable = { condemnation_fuel_ratio_cost = condemnation_fuel_ratio_after_cost }
-	multiply_temp_variable = { condemnation_fuel_ratio_cost = condemnation_fuel_fraction_cost }
-	subtract_from_temp_variable = { condemnation_fuel_ratio_after_cost = condemnation_fuel_ratio_cost }
+	subtract_from_temp_variable = { condemnation_fuel_ratio_after_cost = condemnation_fuel_fraction_cost }
 	clamp_temp_variable = { var = condemnation_fuel_ratio_after_cost min = 0 max = 1 }
 	set_fuel_ratio = condemnation_fuel_ratio_after_cost
 }
@@ -987,10 +985,21 @@ condemnation_write_pair_record = {
 			}
 			add_to_variable = { condemnation_active_pair_count = 1 }
 			add_to_variable = { condemnation_enforcement_burden_total = condemnation_pair_enforcement_cost }
-			set_temp_variable = { condemnation_enforcement_convoy_cost = constant:condemnation_cost.participant_convoys_base }
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { has_variable = condemnation_total }
+					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+				}
+			}
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_convoys_base }
+			condemnation_scale_integer_cost = yes
+			set_temp_variable = { condemnation_enforcement_convoy_cost = condemnation_scaled_cost }
 			multiply_temp_variable = { condemnation_enforcement_convoy_cost = -1 }
 			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_enforcement_convoy_cost }
-			set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.participant_fuel_fraction }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_fuel_fraction }
+			condemnation_scale_fraction_cost = yes
+			set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 			condemnation_pay_fuel_fraction = yes
 			meta_effect = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_started_date = condemnation_pair_started_date } }
@@ -1412,10 +1421,21 @@ condemnation_apply_sanction_pair = {
 						check_variable = { condemnation_pair_old_tier > constant:condemnation_tier.normal }
 						check_variable = { var = condemnation_pair_tier value = condemnation_pair_old_tier compare = greater_than }
 					}
-					set_temp_variable = { condemnation_escalation_convoy_cost = constant:condemnation_cost.participant_escalation_convoys }
+					set_temp_variable = { condemnation_cost_score_override = 0 }
+					var:condemnation_pair_target = {
+						if = {
+							limit = { has_variable = condemnation_total }
+							set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+						}
+					}
+					set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_convoys }
+					condemnation_scale_integer_cost = yes
+					set_temp_variable = { condemnation_escalation_convoy_cost = condemnation_scaled_cost }
 					multiply_temp_variable = { condemnation_escalation_convoy_cost = -1 }
 					add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_escalation_convoy_cost }
-					set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.participant_escalation_fuel_fraction }
+					set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.participant_escalation_fuel_fraction }
+					condemnation_scale_fraction_cost = yes
+					set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 					condemnation_pay_fuel_fraction = yes
 				}
 				set_temp_variable = { condemnation_pair_previous_tier = constant:condemnation_tier.normal }
@@ -1573,7 +1593,16 @@ condemnation_record_faction_shield = {
 					text = { set_variable = { condemnation_pair_[TARGET_ID]_shield_expires = condemnation_status_expires } }
 					TARGET_ID = "[?condemnation_pair_target_id|.0]"
 				}
-				set_temp_variable = { condemnation_shield_convoy_cost = constant:condemnation_cost.shield_convoys }
+				set_temp_variable = { condemnation_cost_score_override = 0 }
+				var:condemnation_pair_target = {
+					if = {
+						limit = { has_variable = condemnation_total }
+						set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+					}
+				}
+				set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.shield_convoys }
+				condemnation_scale_integer_cost = yes
+				set_temp_variable = { condemnation_shield_convoy_cost = condemnation_scaled_cost }
 				multiply_temp_variable = { condemnation_shield_convoy_cost = -1 }
 				add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_shield_convoy_cost }
 				add_to_variable = { condemnation_sanction_fatigue = constant:condemnation_pair.fatigue_monthly }
@@ -1601,7 +1630,16 @@ condemnation_apply_humanitarian_carveout = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_carveout_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_carveout_convoy_cost = constant:condemnation_cost.carveout_convoys }
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { has_variable = condemnation_total }
+					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+				}
+			}
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.carveout_convoys }
+			condemnation_scale_integer_cost = yes
+			set_temp_variable = { condemnation_carveout_convoy_cost = condemnation_scaled_cost }
 			multiply_temp_variable = { condemnation_carveout_convoy_cost = -1 }
 			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_carveout_convoy_cost }
 		}
@@ -1627,13 +1665,26 @@ condemnation_apply_quiet_breach = {
 				text = { set_variable = { condemnation_pair_[TARGET_ID]_quiet_breach_expires = condemnation_status_expires } }
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_breach_convoy_cost = constant:condemnation_cost.quiet_breach_convoys }
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { has_variable = condemnation_total }
+					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+				}
+			}
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_convoys }
+			condemnation_scale_integer_cost = yes
+			set_temp_variable = { condemnation_breach_convoy_cost = condemnation_scaled_cost }
 			multiply_temp_variable = { condemnation_breach_convoy_cost = -1 }
 			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_breach_convoy_cost }
-			set_temp_variable = { condemnation_breach_equipment_cost = constant:condemnation_cost.quiet_breach_equipment }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_equipment }
+			condemnation_scale_integer_cost = yes
+			set_temp_variable = { condemnation_breach_equipment_cost = condemnation_scaled_cost }
 			multiply_temp_variable = { condemnation_breach_equipment_cost = -1 }
 			add_equipment_to_stockpile = { type = infantry_equipment amount = condemnation_breach_equipment_cost }
-			set_temp_variable = { condemnation_fuel_fraction_cost = constant:condemnation_cost.quiet_breach_fuel_fraction }
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.quiet_breach_fuel_fraction }
+			condemnation_scale_fraction_cost = yes
+			set_temp_variable = { condemnation_fuel_fraction_cost = condemnation_scaled_cost }
 			condemnation_pay_fuel_fraction = yes
 		}
 		condemnation_refresh_target_modifiers = yes
@@ -1663,7 +1714,16 @@ condemnation_apply_tight_enforcement = {
 				}
 				TARGET_ID = "[?condemnation_pair_target_id|.0]"
 			}
-			set_temp_variable = { condemnation_enforcement_convoy_cost = constant:condemnation_cost.tight_enforcement_convoys }
+			set_temp_variable = { condemnation_cost_score_override = 0 }
+			var:condemnation_pair_target = {
+				if = {
+					limit = { has_variable = condemnation_total }
+					set_temp_variable = { condemnation_cost_score_override = condemnation_total }
+				}
+			}
+			set_temp_variable = { condemnation_unscaled_cost = constant:condemnation_cost.tight_enforcement_convoys }
+			condemnation_scale_integer_cost = yes
+			set_temp_variable = { condemnation_enforcement_convoy_cost = condemnation_scaled_cost }
 			multiply_temp_variable = { condemnation_enforcement_convoy_cost = -1 }
 			add_equipment_to_stockpile = { type = convoy_1 amount = condemnation_enforcement_convoy_cost }
 			add_to_variable = { condemnation_enforcement_burden_total = constant:condemnation_pair.enforcement_cost_base }
@@ -2325,6 +2385,7 @@ condemnation_refresh_compliance_state = {
 condemnation_monthly_pulse = {
 	condemnation_initialize_country = yes
 	condemnation_cleanup_participant_arrays = yes
+	condemnation_refresh_inspection_burden = yes
 	if = {
 		limit = {
 			has_country_flag = condemnation_inspections_active

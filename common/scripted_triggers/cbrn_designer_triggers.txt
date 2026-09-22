@@ -4,7 +4,7 @@
 # Overview:
 # - Exposes completed CBRN MIO traits to country-scope logistics, exposure,
 #   consequence, and AI logic.
-# - Uses the installed 1.19 country-to-MIO iterator and exact organization and
+# - Uses the installed 1.19 country-to-MIO iterator and exact organization-family and
 #   trait tokens; merely owning an uncompleted trait never grants its effect.
 # - Invisible organizations remain eligible after completion so later route or
 #   policy changes cannot silently remove an earned institutional capability.
@@ -12,10 +12,37 @@
 #   completed trait is absent.
 # ============================================================================
 
+# Family membership helpers run in the military-industrial-organization scope.
+cbrn_designer_is_delivery_family = {
+	OR = {
+		is_military_industrial_organization = cbrn_delivery_engineering_bureau
+		is_military_industrial_organization = cbrn_ig_farben_organization
+		is_military_industrial_organization = cbrn_showa_denko_organization
+		is_military_industrial_organization = cbrn_strategic_delivery_authority
+	}
+}
+
+cbrn_designer_is_chemical_protection_family = {
+	OR = {
+		is_military_industrial_organization = cbrn_chemical_protection_consortium
+		is_military_industrial_organization = cbrn_ici_organization
+		is_military_industrial_organization = cbrn_dupont_organization
+		is_military_industrial_organization = cbrn_montecatini_organization
+	}
+}
+
+cbrn_designer_is_biomedical_family = {
+	OR = {
+		is_military_industrial_organization = cbrn_biomedical_industry_directorate
+		is_military_industrial_organization = cbrn_rhone_poulenc_organization
+		is_military_industrial_organization = cbrn_advanced_containment_institute
+	}
+}
+
 cbrn_designer_has_stable_choking_fill = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_chemical_munitions_combine
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_munitions_stable_choking_fill
 	}
 }
@@ -23,7 +50,7 @@ cbrn_designer_has_stable_choking_fill = {
 cbrn_designer_has_persistent_agent_formulation = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_chemical_munitions_combine
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_munitions_persistent_agent_formulation
 	}
 }
@@ -31,7 +58,7 @@ cbrn_designer_has_persistent_agent_formulation = {
 cbrn_designer_has_rapid_front_distribution = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_chemical_munitions_combine
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_munitions_rapid_front_distribution
 	}
 }
@@ -39,7 +66,7 @@ cbrn_designer_has_rapid_front_distribution = {
 cbrn_designer_has_standardized_fuzes = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_chemical_munitions_combine
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_munitions_standardized_fuzes
 	}
 }
@@ -47,7 +74,7 @@ cbrn_designer_has_standardized_fuzes = {
 cbrn_designer_has_high_output_filling_complex = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_chemical_munitions_combine
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_munitions_high_output_filling_complex
 	}
 }
@@ -55,7 +82,7 @@ cbrn_designer_has_high_output_filling_complex = {
 cbrn_designer_has_lightweight_payload_assemblies = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_aerosol_air_delivery_bureau
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_aerosol_lightweight_payload_assemblies
 	}
 }
@@ -63,7 +90,7 @@ cbrn_designer_has_lightweight_payload_assemblies = {
 cbrn_designer_has_sealed_bomb_bay_interfaces = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_aerosol_air_delivery_bureau
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_aerosol_sealed_bomb_bay_interfaces
 	}
 }
@@ -71,7 +98,7 @@ cbrn_designer_has_sealed_bomb_bay_interfaces = {
 cbrn_designer_has_controlled_dispersal = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_aerosol_air_delivery_bureau
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_aerosol_controlled_dispersal
 	}
 }
@@ -79,7 +106,7 @@ cbrn_designer_has_controlled_dispersal = {
 cbrn_designer_has_long_range_payload = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_aerosol_air_delivery_bureau
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_aerosol_long_range_payload
 	}
 }
@@ -87,7 +114,7 @@ cbrn_designer_has_long_range_payload = {
 cbrn_designer_has_precision_release = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_aerosol_air_delivery_bureau
+		cbrn_designer_is_delivery_family = yes
 		is_mio_trait_completed = cbrn_aerosol_precision_release
 	}
 }
@@ -95,7 +122,7 @@ cbrn_designer_has_precision_release = {
 cbrn_designer_has_durable_filter_canisters = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_protective_equipment_consortium
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_protection_durable_filter_canisters
 	}
 }
@@ -103,7 +130,7 @@ cbrn_designer_has_durable_filter_canisters = {
 cbrn_designer_has_mass_civilian_pattern = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_protective_equipment_consortium
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_protection_mass_civilian_pattern
 	}
 }
@@ -111,7 +138,7 @@ cbrn_designer_has_mass_civilian_pattern = {
 cbrn_designer_has_protective_clothing_sets = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_protective_equipment_consortium
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_protection_protective_clothing_sets
 	}
 }
@@ -119,7 +146,7 @@ cbrn_designer_has_protective_clothing_sets = {
 cbrn_designer_has_low_resistance_facepiece = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_protective_equipment_consortium
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_protection_low_resistance_facepiece
 	}
 }
@@ -127,7 +154,7 @@ cbrn_designer_has_low_resistance_facepiece = {
 cbrn_designer_has_sealed_assault_ensemble = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_protective_equipment_consortium
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_protection_sealed_assault_ensemble
 	}
 }
@@ -135,7 +162,7 @@ cbrn_designer_has_sealed_assault_ensemble = {
 cbrn_designer_has_truck_mounted_wash_systems = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_mobile_decontamination_works
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_decon_truck_mounted_wash_systems
 	}
 }
@@ -143,7 +170,7 @@ cbrn_designer_has_truck_mounted_wash_systems = {
 cbrn_designer_has_low_water_process = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_mobile_decontamination_works
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_decon_low_water_process
 	}
 }
@@ -151,7 +178,7 @@ cbrn_designer_has_low_water_process = {
 cbrn_designer_has_vehicle_recovery_teams = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_mobile_decontamination_works
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_decon_vehicle_recovery_teams
 	}
 }
@@ -159,7 +186,7 @@ cbrn_designer_has_vehicle_recovery_teams = {
 cbrn_designer_has_rapid_route_clearance = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_mobile_decontamination_works
+		cbrn_designer_is_chemical_protection_family = yes
 		is_mio_trait_completed = cbrn_decon_rapid_route_clearance
 	}
 }
@@ -167,7 +194,7 @@ cbrn_designer_has_rapid_route_clearance = {
 cbrn_designer_has_sealed_sample_chain = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_sealed_sample_chain
 	}
 }
@@ -175,7 +202,7 @@ cbrn_designer_has_sealed_sample_chain = {
 cbrn_designer_has_distributed_surveillance = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_distributed_surveillance
 	}
 }
@@ -183,7 +210,7 @@ cbrn_designer_has_distributed_surveillance = {
 cbrn_designer_has_mobile_containment_team = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_mobile_containment_team
 	}
 }
@@ -191,7 +218,7 @@ cbrn_designer_has_mobile_containment_team = {
 cbrn_designer_has_stable_weaponization = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_stable_weaponization
 	}
 }
@@ -199,7 +226,7 @@ cbrn_designer_has_stable_weaponization = {
 cbrn_designer_has_accelerated_cultivation = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_accelerated_cultivation
 	}
 }
@@ -207,7 +234,7 @@ cbrn_designer_has_accelerated_cultivation = {
 cbrn_designer_has_fail_safe_facilities = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_fail_safe_facilities
 	}
 }
@@ -215,7 +242,7 @@ cbrn_designer_has_fail_safe_facilities = {
 cbrn_designer_has_strategic_dissemination_program = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_biological_security_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_biosecurity_strategic_dissemination_program
 	}
 }
@@ -223,23 +250,25 @@ cbrn_designer_has_strategic_dissemination_program = {
 cbrn_designer_has_respiratory_care = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_medical_countermeasure_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_medical_respiratory_care
 	}
 }
 
 cbrn_designer_has_burn_treatment = {
+	# Respiratory and Burn Care is one shared foundation in the twelve-node
+	# biomedical tree. Keep the distinct treatment trigger for callers.
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_medical_countermeasure_directorate
-		is_mio_trait_completed = cbrn_medical_burn_treatment
+		cbrn_designer_is_biomedical_family = yes
+		is_mio_trait_completed = cbrn_medical_respiratory_care
 	}
 }
 
 cbrn_designer_has_antidote_production = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_medical_countermeasure_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_medical_antidote_production
 	}
 }
@@ -247,7 +276,7 @@ cbrn_designer_has_antidote_production = {
 cbrn_designer_has_vaccine_scale = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_medical_countermeasure_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_medical_vaccine_scale
 	}
 }
@@ -255,7 +284,7 @@ cbrn_designer_has_vaccine_scale = {
 cbrn_designer_has_mobile_casualty_sorting = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_medical_countermeasure_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_medical_mobile_casualty_sorting
 	}
 }
@@ -263,7 +292,7 @@ cbrn_designer_has_mobile_casualty_sorting = {
 cbrn_designer_has_international_medical_mission = {
 	any_military_industrial_organization = {
 		include_invisible = yes
-		is_military_industrial_organization = cbrn_medical_countermeasure_directorate
+		cbrn_designer_is_biomedical_family = yes
 		is_mio_trait_completed = cbrn_medical_international_medical_mission
 	}
 }

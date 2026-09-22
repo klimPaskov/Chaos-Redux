@@ -2,7 +2,7 @@
 # CHAOS REDUX - BIOLOGICAL DOOMSDAY RELEASE TRIGGERS
 # ============================================================================
 # Overview:
-# - Gates the exceptional decision behind an explicit unrestricted route or
+# - Gates the exceptional raid behind an explicit unrestricted route or
 #   extreme use policy and a genuine last-resort condition.
 # - Defines exact eligible domestic and adjacent enemy-front state scopes.
 # - Keeps AI use route-locked and exposes no alternate target, proxy, estimator,
@@ -37,15 +37,6 @@ bio_doomsday_actor_is_in_last_resort_condition = {
 	}
 }
 
-bio_doomsday_actor_has_arsenal = {
-	OR = {
-		has_equipment = { anthrax_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
-		has_equipment = { plague_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
-		has_equipment = { tularemia_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
-		has_equipment = { smallpox_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
-	}
-}
-
 # State scope with the releasing country as ROOT.
 bio_doomsday_domestic_state_is_eligible = {
 	is_controlled_by = ROOT
@@ -63,6 +54,44 @@ bio_doomsday_front_state_is_eligible = {
 	}
 }
 
+# State target for native raid UI, where ROOT is the raiding country.
+bio_doomsday_native_target_state_is_eligible = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	OR = {
+		is_controlled_by = ROOT
+		AND = {
+			CONTROLLER = { exists = yes has_war_with = ROOT }
+			any_neighbor_state = { is_controlled_by = ROOT }
+		}
+	}
+}
+
+# The outcome root is a raid instance. These predicates bind to the captured
+# country scope while the batch walks domestic and enemy-front states.
+bio_doomsday_raid_domestic_state_is_eligible = {
+	is_controlled_by = event_target:bio_doomsday_actor
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+}
+
+bio_doomsday_raid_front_state_is_eligible = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	CONTROLLER = {
+		exists = yes
+		has_war_with = event_target:bio_doomsday_actor
+	}
+}
+
+bio_doomsday_raid_state_is_eligible = {
+	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+	OR = {
+		is_controlled_by = event_target:bio_doomsday_raid_actor
+		AND = {
+			CONTROLLER = { exists = yes has_war_with = event_target:bio_doomsday_raid_actor }
+			any_neighbor_state = { is_controlled_by = event_target:bio_doomsday_raid_actor }
+		}
+	}
+}
+
 bio_doomsday_actor_has_target = {
 	OR = {
 		any_controlled_state = { bio_doomsday_domestic_state_is_eligible = yes }
@@ -72,17 +101,25 @@ bio_doomsday_actor_has_target = {
 	}
 }
 
-bio_doomsday_category_is_visible = {
+bio_doomsday_native_is_visible = {
 	exists = yes
 	NOT = { has_capitulated = yes }
+	NOT = { has_country_flag = bio_doomsday_raid_committed }
 	bio_doomsday_actor_has_explicit_route_or_extreme_policy = yes
 	bio_doomsday_actor_is_in_last_resort_condition = yes
-	bio_doomsday_actor_has_arsenal = yes
 }
 
-bio_doomsday_actor_can_release = {
-	bio_doomsday_category_is_visible = yes
+bio_doomsday_native_can_launch = {
+	bio_doomsday_native_is_visible = yes
 	bio_doomsday_actor_has_target = yes
+}
+
+bio_doomsday_native_can_prepare = {
+	bio_doomsday_native_can_launch = yes
+	has_equipment = { anthrax_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+	has_equipment = { plague_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+	has_equipment = { tularemia_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
+	has_equipment = { smallpox_bomb_1 > constant:bio_doomsday_gate.positive_stockpile_floor }
 }
 
 bio_doomsday_ai_has_minimum_containment = {

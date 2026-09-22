@@ -1,5 +1,7 @@
 # Chemical Operations Academy Spirit and Chemical Tactic Weighting
 
+The academy and commander-progression account below follows the 2026-09-20 accepted CBRN amendment and current source. Other older tactic-tuning notes are historical source snapshots until reviewed against the final balance pass.
+
 ## Overview
 The chemical warfare officer-corps package uses an active Chemical Operations Academy alongside the current Chaos Warfare command structure:
 
@@ -12,9 +14,9 @@ The chemical warfare officer-corps package uses an active Chemical Operations Ac
 - Spirit key: `chemical_operations_academy_spirit`
 - Definition file: `common/ideas/cbw_spirits.txt`
 - The spirit is available as an army officer-corps choice and has no doctrine prerequisite.
-- With the spirit active, `on_unit_leader_created` and `on_unit_leader_level_up` call `chem_try_grant_chemical_operations_trait_from_academy_spirit` for army leaders who do not already have the trait.
-- The centralized `constant:chem_chaos_warfare_spirit.academy.chemical_operations_trait_gain_chance` value is 50, giving each eligible creation or level-up a 50 percent roll.
-- The trait remains manually assignable through its normal 500 experience cost without a doctrine prerequisite.
+- The spirit grants +3% army experience gain through `experience_gain_army_factor = @CR_SC_CBRN_ACADEMY_EXPERIENCE_GAIN_ARMY_FACTOR` in `common/ideas/cbw_spirits.txt`.
+- The academy has no creation or level-up trait roll. `chemical_operations_commander` is earned through two qualifying completed CBRN Headquarters operations by the named leader under `cbrn_commander_record_completed_hq_operation` and the progression threshold constant.
+- Trait service credit is independent of academy selection; no 500-experience manual-acquisition path is promised by the current trait definition.
 
 ### 2. Division Command Cell preferred tactic boost
 - Spirit: `chemical_division_contamination_command_spirit`
@@ -47,7 +49,7 @@ The chemical warfare officer-corps package uses an active Chemical Operations Ac
   - `chemical_operations_academy_spirit`
   - `chemical_operations_academy_spirit_desc`
   - `chemical_operations_academy_spirit_tt`
-- The commander trait localisation no longer advertises a doctrine prerequisite.
+- The academy text describes army-experience training, while the commander trait text describes earned Headquarters service.
 
 ## Icons Needed
 No new sprite is required for this update.
@@ -58,6 +60,6 @@ No new sprite is required for this update.
   - Suggested sprite key: `GFX_idea_chemical_operations_academy_spirit`
 
 ## Future Plans / Suggestions
-1. Add separate chance tiers for newly assigned leaders and level-up events if the current unified chance proves too flat.
+1. Show the named leader's qualifying Headquarters service progress when the current UI can expose that exact record.
 2. Add AI spirit weighting that also checks whether the country has enough chemical stockpile depth to justify the spirit once condemnation escalation has happened.
 3. Add a doctrine-agnostic defensive counter-spirit that improves gas-mask counter quality without reintroducing proactive gas-mask tactic picks.

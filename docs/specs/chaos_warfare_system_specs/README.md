@@ -8,6 +8,8 @@ The design integrates the existing Chaos Redux chemical warfare, biological warf
 
 ## Package map
 
+The user's explicit 2026-09-20 implementation request is recorded in [`specs/13_2026_09_20_accepted_cbrn_overhaul.md`](specs/13_2026_09_20_accepted_cbrn_overhaul.md). That accepted amendment takes precedence over conflicting older proposals, and its [requirement ledger](../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) keeps implementation evidence separate from design acceptance.
+
 ### Specifications
 
 1. `specs/01_core_system_and_gameplay_loop.md`
@@ -22,6 +24,7 @@ The design integrates the existing Chaos Redux chemical warfare, biological warf
 10. `specs/10_ai_country_programs_and_designers.md`
 11. `specs/11_balance_tuning_and_consistency_rework.md`
 12. `specs/12_ui_localisation_assets_achievements.md`
+13. `specs/13_2026_09_20_accepted_cbrn_overhaul.md`
 
 ### Matrices
 

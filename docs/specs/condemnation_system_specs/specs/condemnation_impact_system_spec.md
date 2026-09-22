@@ -1,5 +1,9 @@
 # Condemnation Impact System Spec
 
+## Accepted 2026-09-20 tuning amendment
+
+The user explicitly requested implementation of a 0–1000 Condemnation range, an equipment requirement multiplier of `1 + Condemnation / 500` rounded up to whole equipment, and an inspection burden of 5–15% consumer goods for 180 days. This accepted direction supersedes conflicting older tuning proposals in this document. Implementation remains pending final source, interface, and scenario evidence; the amendment is not a completion claim.
+
 ## Purpose
 
 Condemnation should become a practical diplomatic, economic, and military pressure system. A high condemnation score must change play. It should affect trade, resource access, foreign aid, volunteers, attachés, license production, research sharing, faction trust, and the way neutral countries treat the offender.

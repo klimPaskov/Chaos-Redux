@@ -50,9 +50,11 @@ The Event 26 country ideas provide native country-level factor modifiers for the
 
 The installed schema exposes intelligence-operation fields as flat absolute values rather than relative factors, so operation payment remains an explicit engine-inaccessible registry row until an exact confirmation adapter or complete static variants exist.
 
-Bounded source adapters cover 104 logical components across the five Communist-spread logical actions, seventeen reachable Fury decisions, the Japan chemical campaign attack, biological medical-capacity expansion, CBRN civilian-shelter movement, two Japan biological campaign agents, four Germany Mengele command-power actions, the D'Rhondan landing reserve, all ten Random Faction paid actions, and the Africa Elephant logistics contract. Each preserves ordinary requirements and non-cost effects while routing its registered components through the shared quote, affordability, payment, receipt, settlement, and primary-family contract. The final registry must still close every other custom cost owner and every engine-inaccessible field listed in `docs/plans/026_black_friday_plans/event26_cost_surface_registry.md` before the event can be enabled.
+The earlier 104-component adapter inventory is a historical source checkpoint covering Communist-spread, Fury, medical capacity, civilian shelter, Mengele, D'Rhondan, Random Faction, Africa Elephant, and retired Japan chemical and biological decision payments. The Japan attack decisions were replaced by native chemical and biological raids with engine-reserved equipment and native Command Power prices; the old Japan registry rows do not prove current shared-quote payment, receipt, refund, or achievement coverage. Other bounded adapters retain their individual source claims, subject to current owner review. The final registry must still close every other custom cost owner and every engine-inaccessible field listed in `docs/plans/026_black_friday_plans/event26_cost_surface_registry.md` before the event can be enabled.
 
 ## Achievement
+
+Japan's native campaign raids have sale-priced variants, but the engine reservation occurs before a multi-day preparation resolves. A Black Friday achievement credit at reservation time has no documented callback proof, so these raids are not counted as verified achievement transactions in this document. The removed Japan attack decisions and their former registry rows are historical evidence only.
 
 `026_black_friday_five_departments` uses the shared transaction receipt and final registry family IDs.
 

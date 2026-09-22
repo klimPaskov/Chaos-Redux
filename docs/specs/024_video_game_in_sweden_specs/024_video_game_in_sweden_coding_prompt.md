@@ -46,7 +46,7 @@ Implement one event-owned decision category using normal decisions, scripted loc
 
 Use varied and bounded costs that fit each action. Any one action may consume at most four spendable cost types. Use correct texticons for every displayed cost. Keep requirements separate from costs. Do not turn the category into a political-power store or fill it with minor modifier dust.
 
-Implement the field-validation objective and Reality Audit mission with success, partial success, failure, cleanup, and save persistence. Implement Rulebook Commander as a mixed trait for at most one eligible Swedish commander. Implement the correction route to Field-Validated Planner or clean removal as specified. Never assign the trait to an invalid, dead, foreign, or duplicate target.
+Implement the field-validation objective and Reality Audit mission with success, partial success, failure, cleanup, and save persistence. Implement Rulebook Commander as a mixed temporary trait for at most one eligible Swedish commander. Remove it on the successful correction route or cleanup without awarding a replacement trait; the user's explicit 2026-09-20 instruction retires Field-Validated Planner. Never assign the trait to an invalid, dead, foreign, or duplicate target.
 
 Foreign reactions must use a bounded pool of at most three meaningful countries. Support copy, study, ban, ridicule, or no-action outcomes according to relations, ideology, military interest, threat, and access. Do not create foreign copies of Sweden's full decision category. Validate targets before selection and record exhausted-pool behavior.
 

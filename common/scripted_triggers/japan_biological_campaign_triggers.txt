@@ -3,8 +3,8 @@
 # ============================================================================
 # Overview:
 # - Keeps every helper private to Japan's historically specific China campaign.
-# - Validates the explicit offensive program route, real agent stock, shared
-#   CBRN authorization, exact Chinese enemy state, and occupation-linked reach.
+# - Validates the explicit offensive program route, shared CBRN authorization,
+#   exact Chinese enemy state, and occupation-linked native raid reach.
 # - No helper infers a state, substitutes another target, or creates a fallback.
 # ============================================================================
 
@@ -42,35 +42,6 @@ japan_bio_campaign_actor_can_operate = {
 	japan_bio_campaign_actor_cooldown_is_ready = yes
 }
 
-japan_bio_campaign_actor_has_anthrax_cost = {
-	is_special_project_completed = sp:anthrax_bomb
-	has_political_power > constant:japan_bio_campaign_cost.anthrax_political_power_floor
-	has_equipment = { anthrax_bomb_1 > constant:japan_bio_campaign_cost.anthrax_payload_floor }
-	has_equipment = { support_equipment > constant:japan_bio_campaign_cost.anthrax_support_floor }
-	command_power > constant:japan_bio_campaign_cost.anthrax_command_power_floor
-}
-
-japan_bio_campaign_actor_has_plague_cost = {
-	is_special_project_completed = sp:plague_bomb
-	has_political_power > constant:japan_bio_campaign_cost.plague_political_power_floor
-	has_equipment = { plague_bomb_1 > constant:japan_bio_campaign_cost.plague_payload_floor }
-	has_equipment = { support_equipment > constant:japan_bio_campaign_cost.plague_support_floor }
-	command_power > constant:japan_bio_campaign_cost.plague_command_power_floor
-}
-
-japan_bio_campaign_selected_agent_cost_is_available = {
-	OR = {
-		AND = {
-			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
-			japan_bio_campaign_actor_has_anthrax_cost = yes
-		}
-		AND = {
-			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals }
-			japan_bio_campaign_actor_has_plague_cost = yes
-		}
-	}
-}
-
 japan_bio_campaign_state_cooldown_is_ready = {
 	OR = {
 		NOT = { has_variable = bio_japan_campaign_next_allowed_day }
@@ -106,8 +77,9 @@ japan_bio_campaign_country_is_recognized_chinese_belligerent = {
 	}
 }
 
-# State scope with the acting country as ROOT. The target must remain under an
-# actual Chinese belligerent's control and cannot belong to Japan's alliance.
+# State scope from native show_target, available, or launchable, where ROOT is
+# the acting country. Do not use this in raid-instance outcome effects.
+# The target must remain under a Chinese belligerent's control.
 japan_bio_campaign_state_relationship_is_valid = {
 	CONTROLLER = {
 		exists = yes
@@ -122,8 +94,8 @@ japan_bio_campaign_state_relationship_is_valid = {
 	}
 }
 
-# State scope with the acting country as ROOT. A neighboring Japanese or
-# Japanese-subject occupation zone supplies the verified theater link.
+# State scope from native pre-raid triggers, where ROOT is the acting country.
+# A neighboring Japanese or Japanese-subject occupation zone supplies the link.
 japan_bio_campaign_state_has_occupation_link = {
 	any_neighbor_state = {
 		CONTROLLER = {
@@ -172,19 +144,6 @@ japan_bio_campaign_plague_target_state = {
 	}
 }
 
-japan_bio_campaign_selected_agent_target_is_valid = {
-	OR = {
-		AND = {
-			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
-			japan_bio_campaign_anthrax_target_state = yes
-		}
-		AND = {
-			check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals }
-			japan_bio_campaign_plague_target_state = yes
-		}
-	}
-}
-
 japan_bio_campaign_uses_theater_doctrine_profile = {
 	has_idea = cbrn_theater_contamination_doctrine_spirit
 	NOT = { has_idea = cbrn_terminal_hazard_doctrine_spirit }
@@ -192,4 +151,139 @@ japan_bio_campaign_uses_theater_doctrine_profile = {
 
 japan_bio_campaign_uses_terminal_doctrine_profile = {
 	has_idea = cbrn_terminal_hazard_doctrine_spirit
+}
+
+# Actor-country hidden-event scope. The callback saved the exact target and
+# belligerents as chain-local event targets before entering this scope.
+japan_bio_campaign_native_context_is_valid = {
+	has_event_target = japan_bio_campaign_actor_target
+	has_event_target = japan_bio_campaign_victim_target
+	has_event_target = japan_bio_campaign_state_target
+	event_target:japan_bio_campaign_actor_target = {
+		japan_bio_campaign_route_is_open = yes
+		has_war_with = event_target:japan_bio_campaign_victim_target
+		cbrn_policy_allows_strategic_use_against_target_id = yes
+		OR = {
+			AND = {
+				check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+				is_special_project_completed = sp:anthrax_bomb
+			}
+			AND = {
+				check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+				is_special_project_completed = sp:plague_bomb
+			}
+		}
+	}
+	event_target:japan_bio_campaign_victim_target = {
+		exists = yes
+		japan_bio_campaign_country_is_recognized_chinese_belligerent = yes
+	}
+	event_target:japan_bio_campaign_state_target = {
+		is_controlled_by = event_target:japan_bio_campaign_victim_target
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		impassable = no
+		japan_bio_campaign_state_is_chinese_homeland = yes
+		japan_bio_campaign_state_cooldown_is_ready = yes
+		state_population_k > constant:japan_bio_campaign_target.minimum_population_k
+		any_neighbor_state = {
+			CONTROLLER = {
+				OR = {
+					tag = event_target:japan_bio_campaign_actor_target
+					is_subject_of = event_target:japan_bio_campaign_actor_target
+				}
+			}
+		}
+		OR = {
+			AND = {
+				check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+				NOT = { bio_lifecycle_state_has_anthrax_episode = yes }
+				OR = {
+					supply_node > constant:japan_bio_campaign_target.building_floor
+					naval_base > constant:japan_bio_campaign_target.building_floor
+					industrial_complex > constant:japan_bio_campaign_target.anthrax_industry_threshold
+					arms_factory > constant:japan_bio_campaign_target.anthrax_industry_threshold
+					infrastructure > constant:japan_bio_campaign_target.anthrax_infrastructure_threshold
+					any_state_division = { always = yes }
+				}
+			}
+			AND = {
+				check_variable = { var = japan_bio_campaign_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+				NOT = { bio_lifecycle_state_has_plague_episode = yes }
+				OR = {
+					is_capital = yes
+					has_state_category = city
+					has_state_category = large_city
+					has_state_category = metropolis
+					has_state_category = megalopolis
+					state_population_k > constant:japan_bio_campaign_target.plague_population_threshold_k
+					naval_base > constant:japan_bio_campaign_target.building_floor
+				}
+			}
+		}
+	}
+}
+
+japan_cbrn_raid_price_is_normal = {
+	NOT = { black_friday_is_active = yes }
+}
+
+japan_cbrn_raid_price_is_sale = {
+	black_friday_is_active = yes
+	check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.baseline_payment_ratio compare = equals }
+}
+
+japan_cbrn_raid_price_is_evolution = {
+	black_friday_is_active = yes
+	check_variable = { var = global.black_friday_discount_ratio value = constant:black_friday_event.evolution_payment_ratio compare = equals }
+}
+
+# These marker targets are saved in the native RAID_INSTANCE callback and
+# carried only into the immediate hidden country event. Each family must
+# contain exactly one marker before event-local temporary inputs are rebuilt.
+japan_cbrn_raid_bridge_context_is_valid = {
+	has_event_target = japan_cbrn_raid_actor
+	has_event_target = japan_cbrn_raid_victim
+	has_event_target = japan_cbrn_raid_state
+	event_target:japan_cbrn_raid_actor = { tag = ROOT }
+	event_target:japan_cbrn_raid_victim = { exists = yes }
+	event_target:japan_cbrn_raid_state = { is_controlled_by = event_target:japan_cbrn_raid_victim }
+}
+
+japan_cbrn_raid_price_marker_is_unique = {
+	OR = {
+		AND = { has_event_target = japan_cbrn_raid_price_normal NOT = { has_event_target = japan_cbrn_raid_price_sale } NOT = { has_event_target = japan_cbrn_raid_price_evolution } }
+		AND = { has_event_target = japan_cbrn_raid_price_sale NOT = { has_event_target = japan_cbrn_raid_price_normal } NOT = { has_event_target = japan_cbrn_raid_price_evolution } }
+		AND = { has_event_target = japan_cbrn_raid_price_evolution NOT = { has_event_target = japan_cbrn_raid_price_normal } NOT = { has_event_target = japan_cbrn_raid_price_sale } }
+	}
+}
+
+japan_cbrn_raid_outcome_marker_is_unique = {
+	OR = {
+		AND = { has_event_target = japan_cbrn_raid_outcome_failure NOT = { has_event_target = japan_cbrn_raid_outcome_limited_success } NOT = { has_event_target = japan_cbrn_raid_outcome_success } NOT = { has_event_target = japan_cbrn_raid_outcome_critical_success } }
+		AND = { has_event_target = japan_cbrn_raid_outcome_limited_success NOT = { has_event_target = japan_cbrn_raid_outcome_failure } NOT = { has_event_target = japan_cbrn_raid_outcome_success } NOT = { has_event_target = japan_cbrn_raid_outcome_critical_success } }
+		AND = { has_event_target = japan_cbrn_raid_outcome_success NOT = { has_event_target = japan_cbrn_raid_outcome_failure } NOT = { has_event_target = japan_cbrn_raid_outcome_limited_success } NOT = { has_event_target = japan_cbrn_raid_outcome_critical_success } }
+		AND = { has_event_target = japan_cbrn_raid_outcome_critical_success NOT = { has_event_target = japan_cbrn_raid_outcome_failure } NOT = { has_event_target = japan_cbrn_raid_outcome_limited_success } NOT = { has_event_target = japan_cbrn_raid_outcome_success } }
+	}
+}
+
+japan_cbrn_raid_chemical_agent_marker_is_unique = {
+	OR = {
+		AND = { has_event_target = japan_cbrn_raid_agent_chlorine NOT = { has_event_target = japan_cbrn_raid_agent_phosgene } NOT = { has_event_target = japan_cbrn_raid_agent_mustard } NOT = { has_event_target = japan_cbrn_raid_agent_lewisite } }
+		AND = { has_event_target = japan_cbrn_raid_agent_phosgene NOT = { has_event_target = japan_cbrn_raid_agent_chlorine } NOT = { has_event_target = japan_cbrn_raid_agent_mustard } NOT = { has_event_target = japan_cbrn_raid_agent_lewisite } }
+		AND = { has_event_target = japan_cbrn_raid_agent_mustard NOT = { has_event_target = japan_cbrn_raid_agent_chlorine } NOT = { has_event_target = japan_cbrn_raid_agent_phosgene } NOT = { has_event_target = japan_cbrn_raid_agent_lewisite } }
+		AND = { has_event_target = japan_cbrn_raid_agent_lewisite NOT = { has_event_target = japan_cbrn_raid_agent_chlorine } NOT = { has_event_target = japan_cbrn_raid_agent_phosgene } NOT = { has_event_target = japan_cbrn_raid_agent_mustard } }
+	}
+	NOT = { has_event_target = japan_cbrn_raid_agent_anthrax }
+	NOT = { has_event_target = japan_cbrn_raid_agent_plague }
+}
+
+japan_cbrn_raid_biological_agent_marker_is_unique = {
+	OR = {
+		AND = { has_event_target = japan_cbrn_raid_agent_anthrax NOT = { has_event_target = japan_cbrn_raid_agent_plague } }
+		AND = { has_event_target = japan_cbrn_raid_agent_plague NOT = { has_event_target = japan_cbrn_raid_agent_anthrax } }
+	}
+	NOT = { has_event_target = japan_cbrn_raid_agent_chlorine }
+	NOT = { has_event_target = japan_cbrn_raid_agent_phosgene }
+	NOT = { has_event_target = japan_cbrn_raid_agent_mustard }
+	NOT = { has_event_target = japan_cbrn_raid_agent_lewisite }
 }

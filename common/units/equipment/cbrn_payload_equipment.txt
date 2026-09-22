@@ -4,8 +4,8 @@
 # Overview:
 # - Defines producible strategic agent lots, filled chemical shell lots, and
 #   class-specific air payload lots.
-# - Strategic lots share one archetype so offensive support formations can
-#   reinforce from any selected agent without agent-by-agent unit duplication.
+# - Each strategic agent lot has its own archetype so a native raid can reserve
+#   exactly the selected agent without drawing another agent's stock.
 # - Agent models remain distinct stockpile entries. Scripted operations debit
 #   the exact selected agent or class lot before exposure can be dispatched.
 # - Reliability represents handling and storage integrity, not toxic potency.
@@ -57,7 +57,7 @@
 @CBRN_RESOURCE_HIGH = 3
 
 equipments = {
-	chemical_agent_payload = {
+	chlorine_agent_payload = {
 		year = @CBRN_PAYLOAD_YEAR_1918
 		is_archetype = yes
 		picture = archetype_chemical_agent_payload
@@ -77,7 +77,7 @@ equipments = {
 
 	chlorine_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1918
-		archetype = chemical_agent_payload
+		archetype = chlorine_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
 		active = no
 		is_buildable = yes
@@ -87,10 +87,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW }
 	}
 
+	phosgene_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1918
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_PHOSGENE_LOT_IC
+		reliability = @CBRN_PHOSGENE_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	phosgene_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1918
-		archetype = chemical_agent_payload
-		parent = chlorine_agent_lot_1
+		archetype = phosgene_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
 		active = no
 		is_buildable = yes
@@ -100,9 +115,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW }
 	}
 
+	mustard_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1918
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_MUSTARD_LOT_IC
+		reliability = @CBRN_MUSTARD_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	mustard_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1918
-		archetype = chemical_agent_payload
+		archetype = mustard_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
 		active = no
 		is_buildable = yes
@@ -112,10 +143,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW tungsten = @CBRN_RESOURCE_LOW }
 	}
 
+	lewisite_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_LEWISITE_LOT_IC
+		reliability = @CBRN_LEWISITE_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	lewisite_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1937
-		archetype = chemical_agent_payload
-		parent = mustard_agent_lot_1
+		archetype = lewisite_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
 		active = no
 		is_buildable = yes
@@ -125,9 +171,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW tungsten = @CBRN_RESOURCE_MEDIUM }
 	}
 
+	tabun_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_TABUN_LOT_IC
+		reliability = @CBRN_TABUN_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	tabun_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1937
-		archetype = chemical_agent_payload
+		archetype = tabun_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
 		active = no
 		is_buildable = yes
@@ -137,10 +199,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_MEDIUM tungsten = @CBRN_RESOURCE_MEDIUM }
 	}
 
+	sarin_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1939
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_SARIN_LOT_IC
+		reliability = @CBRN_SARIN_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	sarin_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1939
-		archetype = chemical_agent_payload
-		parent = tabun_agent_lot_1
+		archetype = sarin_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
 		active = no
 		is_buildable = yes
@@ -150,10 +227,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_HIGH tungsten = @CBRN_RESOURCE_MEDIUM }
 	}
 
+	soman_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1941
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_SOMAN_LOT_IC
+		reliability = @CBRN_SOMAN_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	soman_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1941
-		archetype = chemical_agent_payload
-		parent = sarin_agent_lot_1
+		archetype = soman_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_2
 		active = no
 		is_buildable = yes
@@ -163,9 +255,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_HIGH tungsten = @CBRN_RESOURCE_HIGH chromium = @CBRN_RESOURCE_LOW }
 	}
 
+	malodor_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1937
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_MALODOR_LOT_IC
+		reliability = @CBRN_MALODOR_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	malodor_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1937
-		archetype = chemical_agent_payload
+		archetype = malodor_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_0
 		active = no
 		is_buildable = yes
@@ -175,10 +283,25 @@ equipments = {
 		resources = { steel = @CBRN_RESOURCE_LOW rubber = @CBRN_RESOURCE_LOW }
 	}
 
+	behavioral_agent_payload = {
+		year = @CBRN_PAYLOAD_YEAR_1939
+		is_archetype = yes
+		picture = archetype_chemical_agent_payload
+		is_buildable = no
+		type = { support }
+		interface_category = interface_category_land
+		group_by = archetype
+		priority = @CBRN_PAYLOAD_PRIORITY
+		lend_lease_cost = @CBRN_PAYLOAD_LEND_LEASE_COST
+		build_cost_ic = @CBRN_BEHAVIORAL_LOT_IC
+		reliability = @CBRN_BEHAVIORAL_LOT_RELIABILITY
+		can_license = no
+		can_be_lend_leased = { always = no }
+	}
+
 	behavioral_agent_lot_1 = {
 		year = @CBRN_PAYLOAD_YEAR_1939
-		archetype = chemical_agent_payload
-		parent = malodor_agent_lot_1
+		archetype = behavioral_agent_payload
 		visual_level = @CBRN_PAYLOAD_VISUAL_LEVEL_1
 		active = no
 		is_buildable = yes

@@ -1,0 +1,113 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE BIOLOGICAL SUPPLY-CHAIN RAID TRIGGERS
+# ============================================================================
+# Overview:
+# - Gates the four exact-state pathogen target profiles for native land raids.
+# - Native equipment reservation replaces the retired decision debit ledger.
+# - Resolution rechecks actor, victim, and selected-state identity without
+#   requiring the target's original building profile to remain unchanged.
+# ============================================================================
+
+bio_sabotage_raid_actor_can_operate = {
+	exists = yes
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	bio_kruger_last_resort_authority_is_valid = yes
+	has_variable = chemical_readiness
+	has_variable = cbrn_biological_security
+	has_variable = cbrn_attribution_control
+	NOT = { has_country_flag = bio_sabotage_operation_in_progress }
+	bio_sabotage_actor_cooldown_is_ready = yes
+}
+
+bio_sabotage_raid_actor_can_launch = {
+	exists = yes
+	cbrn_country_has_program = yes
+	cbrn_country_has_operational_readiness = yes
+	bio_kruger_last_resort_authority_is_valid = yes
+	has_variable = chemical_readiness
+	has_variable = cbrn_biological_security
+	has_variable = cbrn_attribution_control
+}
+
+# Country scope with FROM as the native raid's victim and var:target_state as
+# the selected state. The state trigger contains the exact policy check.
+bio_sabotage_raid_target_from_is_valid = {
+	FROM = { exists = yes }
+	var:target_state = {
+		is_controlled_by = FROM
+		bio_sabotage_common_target_state = yes
+	}
+}
+
+bio_sabotage_raid_can_prepare_against_from = {
+	bio_sabotage_raid_actor_can_operate = yes
+	bio_sabotage_raid_target_from_is_valid = yes
+}
+
+bio_sabotage_raid_can_launch_against_from = {
+	bio_sabotage_raid_actor_can_launch = yes
+	bio_sabotage_raid_target_from_is_valid = yes
+}
+
+# Actor-country event scope after the native callback saved actor, victim,
+# and selected state as regular event targets.
+bio_sabotage_raid_native_context_is_valid = {
+	has_event_target = bio_sabotage_actor_target
+	has_event_target = bio_sabotage_victim_target
+	has_event_target = bio_sabotage_state_target
+	bio_strategic_raid_agent_is_valid = yes
+	bio_strategic_raid_engine_outcome_is_valid = yes
+	event_target:bio_sabotage_actor_target = {
+		exists = yes
+		cbrn_country_has_program = yes
+		cbrn_country_has_operational_readiness = yes
+		bio_kruger_last_resort_authority_is_valid = yes
+		has_variable = chemical_readiness
+		has_variable = cbrn_biological_security
+		has_variable = cbrn_attribution_control
+		bio_strategic_raid_actor_has_agent_project = yes
+		NOT = { is_in_faction_with = event_target:bio_sabotage_victim_target }
+		NOT = { is_subject_of = event_target:bio_sabotage_victim_target }
+		event_target:bio_sabotage_victim_target = { set_temp_variable = { cbrn_retaliation_target_id = id } }
+		OR = {
+			AND = {
+				has_war_with = event_target:bio_sabotage_victim_target
+				cbrn_policy_allows_strategic_use_against_target_id = yes
+			}
+			AND = {
+				NOT = { has_war_with = event_target:bio_sabotage_victim_target }
+				cbrn_policy_allows_extreme_use = yes
+			}
+		}
+	}
+	event_target:bio_sabotage_victim_target = {
+		exists = yes
+		NOT = { is_subject_of = event_target:bio_sabotage_actor_target }
+	}
+	event_target:bio_sabotage_state_target = {
+		bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
+		is_controlled_by = event_target:bio_sabotage_victim_target
+	}
+}
+
+bio_sabotage_raid_target_agent_is_uninfected = {
+	OR = {
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.anthrax compare = equals }
+			event_target:bio_sabotage_state_target = { NOT = { bio_lifecycle_state_has_anthrax_episode = yes } }
+		}
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.plague compare = equals }
+			event_target:bio_sabotage_state_target = { NOT = { bio_lifecycle_state_has_plague_episode = yes } }
+		}
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.tularemia compare = equals }
+			event_target:bio_sabotage_state_target = { NOT = { bio_lifecycle_state_has_tularemia_episode = yes } }
+		}
+		AND = {
+			check_variable = { var = bio_raid_agent value = constant:bio_lifecycle_agent.smallpox compare = equals }
+			event_target:bio_sabotage_state_target = { NOT = { bio_lifecycle_state_has_smallpox_episode = yes } }
+		}
+	}
+}

@@ -2,15 +2,16 @@
 # CHAOS REDUX - CBRN REGIMENTAL SUPPORT TECHNOLOGIES
 # ============================================================================
 # Overview:
-# - Owns the specialist and doctrine-only technologies that unlock consolidated
-#   CBRN regimental support.
-# - Doctrine-only entries cannot be researched directly; Stage 5 grants them
-#   after the mapped doctrine and project prerequisites are satisfied.
+# - Owns protection progression, field medical research, and hidden CBRN
+#   delivery markers for the consolidated regimental unit roster.
+# - Hidden markers remain grantable by mapped doctrine and projects but cannot
+#   be researched or unlock retired support companies.
 # - Field Epidemiology Teams and Mobile CBRN Hospitals are ordinary research
-#   technologies and give defensive AI a complete support unlock path.
+#   technologies with a complete defensive AI path.
 # ============================================================================
 
 @CBRN_REGIMENTAL_TECH_COST = 1
+@CBRN_REGIMENTAL_TECH_COST_NORMAL = 0.75
 @CBRN_REGIMENTAL_PATH_COST = 1
 @CBRN_REGIMENTAL_AI_DISABLED = 0
 @CBRN_REGIMENTAL_AI_BASE = 0.75
@@ -18,32 +19,35 @@
 @CBRN_REGIMENTAL_AI_CONTAMINATION_FACTOR = 3
 @CBRN_REGIMENTAL_AI_PROGRAM_FACTOR = 1.50
 @CBRN_REGIMENTAL_AI_OUTBREAK_FACTOR = 4
-@CBRN_REGIMENTAL_TECH_1936 = 1936
 @CBRN_REGIMENTAL_TECH_1937 = 1937
 @CBRN_REGIMENTAL_TECH_1938 = 1938
 @CBRN_REGIMENTAL_TECH_1940 = 1940
 @CBRN_REGIMENTAL_TECH_1941 = 1941
-@CBRN_REGIMENTAL_CW_X_1936 = 3
-@CBRN_REGIMENTAL_CW_X_1937 = 4
-@CBRN_REGIMENTAL_CW_X_1938 = 5
-@CBRN_REGIMENTAL_CW_X_1940 = 8
-@CBRN_REGIMENTAL_CW_X_1941 = 11
-@CBRN_REGIMENTAL_BW_X_1940 = 8
-@CBRN_REGIMENTAL_BW_X_1941 = 11
-@CBRN_REGIMENTAL_INFANTRY_ROW = 20
-@CBRN_REGIMENTAL_ARMOR_ROW = 22
-@CBRN_REGIMENTAL_OPERATIONS_ROW = 24
+@CBRN_REGIMENTAL_BW_X_1940 = 6
+@CBRN_REGIMENTAL_BW_X_1941 = 7
 @CBRN_REGIMENTAL_BIO_ROW = 6
+@CBRN_REGIMENTAL_BIO_MEDICAL_ROW = 8
+@CBRN_PIONEER_FORT_ATTACK = 0.10
+@CBRN_PIONEER_FORT_MOVEMENT = 0.05
+@CBRN_PIONEER_URBAN_ATTACK = 0.05
+@CBRN_HOSPITAL_TRICKLEBACK_BONUS = 0.10
+@CBRN_HOSPITAL_EXPERIENCE_LOSS_BONUS = -0.10
 
 technologies = {
 	hazard_pioneer_formation = {
 		force_use_small_tech_layout = yes
 		allow = { always = no }
 		research_cost = @CBRN_REGIMENTAL_TECH_COST
-		start_year = @CBRN_REGIMENTAL_TECH_1936
+		start_year = @CBRN_REGIMENTAL_TECH_1938
 
-		enable_subunits = {
-			cbrn_hazard_pioneer_detachment
+		dependencies = {
+			field_decontamination_kits = @CBRN_REGIMENTAL_PATH_COST
+			improved_gas_masks = @CBRN_REGIMENTAL_PATH_COST
+		}
+
+		category_cbrn_primary_protection = {
+			fort = { attack = @CBRN_PIONEER_FORT_ATTACK movement = @CBRN_PIONEER_FORT_MOVEMENT }
+			urban = { attack = @CBRN_PIONEER_URBAN_ATTACK }
 		}
 
 		categories = {
@@ -51,12 +55,6 @@ technologies = {
 			decontamination_tech
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1936 y = @CBRN_REGIMENTAL_INFANTRY_ROW }
-		}
-
-		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
 	}
 
@@ -74,19 +72,11 @@ technologies = {
 			chemical_shell_lot_1
 		}
 
-		path = {
-			leads_to_tech = persistent_agent_shell_filling
-			research_cost_coeff = @CBRN_REGIMENTAL_PATH_COST
-		}
 
 		categories = {
 			chemical_warfare_tech
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1937 y = @CBRN_REGIMENTAL_INFANTRY_ROW }
-		}
 
 		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
@@ -111,10 +101,6 @@ technologies = {
 			blister_agents_tech
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1940 y = @CBRN_REGIMENTAL_INFANTRY_ROW }
-		}
 
 		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
@@ -132,20 +118,12 @@ technologies = {
 			cbrn_heavy_armored_delivery_detachment
 		}
 
-		path = {
-			leads_to_tech = nerve_agent_suppression_formation
-			research_cost_coeff = @CBRN_REGIMENTAL_PATH_COST
-		}
 
 		categories = {
 			chemical_warfare_tech
 			armor
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1938 y = @CBRN_REGIMENTAL_ARMOR_ROW }
-		}
 
 		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
@@ -160,6 +138,7 @@ technologies = {
 		dependencies = {
 			improved_gas_masks = @CBRN_REGIMENTAL_PATH_COST
 		}
+		on_research_complete = { cbrn_sync_vanilla_project_integrations = yes }
 
 		# The armored-delivery adapter uses this technology to reduce friendly
 		# crew exposure while enforcing the sealed-operation equipment burden.
@@ -171,10 +150,6 @@ technologies = {
 			armor
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1937 y = @CBRN_REGIMENTAL_ARMOR_ROW }
-		}
 
 		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
@@ -191,19 +166,14 @@ technologies = {
 			tabun = @CBRN_REGIMENTAL_PATH_COST
 		}
 
-		enable_subunits = {
-			cbrn_nerve_suppression_detachment
-		}
+		# The nerve occupation operation checks this offensive-delivery
+		# certification; it does not field a separate suppression company.
 
 		categories = {
 			chemical_warfare_tech
 			nerve_agents_tech
 		}
 
-		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1940 y = @CBRN_REGIMENTAL_ARMOR_ROW }
-		}
 
 		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_cw specialization_land }
@@ -211,7 +181,7 @@ technologies = {
 
 	field_epidemiology_teams = {
 		force_use_small_tech_layout = yes
-		research_cost = @CBRN_REGIMENTAL_TECH_COST
+		research_cost = @CBRN_REGIMENTAL_TECH_COST_NORMAL
 		start_year = @CBRN_REGIMENTAL_TECH_1940
 
 		on_research_complete = {
@@ -224,7 +194,7 @@ technologies = {
 		}
 
 		enable_subunits = {
-			cbrn_field_epidemiology_detachment
+			cbrn_medical_countermeasure_detachment
 		}
 
 		path = {
@@ -261,9 +231,9 @@ technologies = {
 			mobile_wash_columns = @CBRN_REGIMENTAL_PATH_COST
 		}
 
-		enable_subunits = {
-			cbrn_medical_countermeasure_detachment
-			cbrn_hq_medical_countermeasure_directorate
+		category_cbrn_medical_support = {
+			casualty_trickleback = @CBRN_HOSPITAL_TRICKLEBACK_BONUS
+			experience_loss_factor = @CBRN_HOSPITAL_EXPERIENCE_LOSS_BONUS
 		}
 
 		categories = {
@@ -273,8 +243,8 @@ technologies = {
 		}
 
 		folder = {
-			name = chemical_warfare_folder
-			position = { x = @CBRN_REGIMENTAL_CW_X_1941 y = @CBRN_REGIMENTAL_OPERATIONS_ROW }
+			name = biowarfare_folder
+			position = { x = @CBRN_REGIMENTAL_BW_X_1941 y = @CBRN_REGIMENTAL_BIO_MEDICAL_ROW }
 		}
 
 		ai_will_do = {
@@ -305,10 +275,6 @@ technologies = {
 			biowarfare_tech
 		}
 
-		folder = {
-			name = biowarfare_folder
-			position = { x = @CBRN_REGIMENTAL_BW_X_1941 y = @CBRN_REGIMENTAL_BIO_ROW }
-		}
 
 		ai_will_do = { factor = @CBRN_REGIMENTAL_AI_DISABLED }
 		special_project_specialization = { specialization_biowarfare specialization_land }

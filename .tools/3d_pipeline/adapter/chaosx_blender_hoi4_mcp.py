@@ -935,6 +935,12 @@ def chaosx_blender_hoi4_repair_explicit_skin(job_id: str, blend_rel: str, checkp
 
 
 @mcp.tool()
+def chaosx_blender_hoi4_remove_explicit_duplicate_faces(job_id: str, blend_rel: str, checkpoint_rel: str, expected_source_sha256: str, mesh_name: str, face_groups: list[list[int]]) -> Dict[str, Any]:
+    """Remove only complete reviewed isolated duplicate face groups in a new hash-bound sibling checkpoint."""
+    return _run(job_id, "remove_explicit_duplicate_faces", {"blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel, "expected_source_sha256": expected_source_sha256, "mesh_name": mesh_name, "face_groups": face_groups})
+
+
+@mcp.tool()
 def chaosx_blender_hoi4_preview_explicit_skin_selection(job_id: str, blend_rel: str, expected_source_sha256: str, selection_spec_rel: str, expected_selection_spec_sha256: str) -> Dict[str, Any]:
     """Read-only exact source-index rest-mesh highlight; red full faces, cyan mixed boundary."""
     return _run(job_id, "preview_explicit_skin_selection", {"blend_rel": blend_rel, "expected_source_sha256": expected_source_sha256, "selection_spec_rel": selection_spec_rel, "expected_selection_spec_sha256": expected_selection_spec_sha256})

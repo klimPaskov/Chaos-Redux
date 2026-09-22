@@ -12,6 +12,7 @@ cbrn_country_has_program = {
 	OR = {
 		has_country_flag = cbrn_program_established
 		has_doctrine = chaos_warfare
+		has_tech = basic_gas_masks
 	}
 }
 
@@ -52,17 +53,14 @@ cbrn_country_has_full_readiness = {
 }
 
 cbrn_policy_is_defensive_preparation = {
-	check_variable = {
-		var = cbrn_use_policy
-		value = constant:cbrn_use_policy.defensive_preparation
-		compare = equals
-	}
+	# Legacy compatibility only; initialization migrates this value.
+	check_variable = { cbrn_use_policy = constant:cbrn_use_policy.defensive_preparation }
 }
 
 cbrn_policy_is_retaliation_authority = {
 	check_variable = {
 		var = cbrn_use_policy
-		value = constant:cbrn_use_policy.retaliation_authority
+			value = constant:cbrn_use_policy.retaliation_only
 		compare = equals
 	}
 }
@@ -71,7 +69,7 @@ cbrn_policy_allows_battlefield_use = {
 	OR = {
 		check_variable = {
 			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.limited_battlefield_authority
+			value = constant:cbrn_use_policy.battlefield_authorization
 			compare = greater_than_or_equals
 		}
 		AND = {
@@ -85,7 +83,7 @@ cbrn_policy_allows_strategic_use = {
 	OR = {
 		check_variable = {
 			var = cbrn_use_policy
-			value = constant:cbrn_use_policy.strategic_release_authority
+			value = constant:cbrn_use_policy.unrestricted_authorization
 			compare = greater_than_or_equals
 		}
 		AND = {
@@ -98,7 +96,7 @@ cbrn_policy_allows_strategic_use = {
 cbrn_policy_allows_extreme_use = {
 	check_variable = {
 		var = cbrn_use_policy
-		value = constant:cbrn_use_policy.unrestricted_chaos_warfare
+		value = constant:cbrn_use_policy.unrestricted_authorization
 		compare = equals
 	}
 }
@@ -407,9 +405,15 @@ cbrn_action_conditions_are_resolved = {
 }
 
 cbrn_chemical_action_static_metadata_is_valid = {
+	cbrn_chemical_action_static_content_is_valid = yes
+	cbrn_chemical_action_policy_allows_exact_target = yes
+}
+
+# Shared chemical metadata independent of the caller's ROOT scope. Native
+# raid instances use their exact actor/victim policy gate alongside this.
+cbrn_chemical_action_static_content_is_valid = {
 	cbrn_action_actor_is_valid = yes
 	cbrn_action_target_state_is_valid = yes
-	cbrn_chemical_action_policy_allows_exact_target = yes
 	cbrn_action_weapon_class_is_chemical = yes
 	cbrn_action_agent_class_is_chemical = yes
 	cbrn_action_agent_is_valid_chemical = yes

@@ -5,13 +5,14 @@
 # - Runs one delayed monitor only for a country with an exact verified arsenal.
 # - Reads live equipment counts and exact facility condition at each check.
 # - Resolves ordinary accidents through the shared biological lifecycle.
-# - Contains no biological delivery action and no all-country periodic pulse.
+# - Repairs one lost pointer inside the targeted event when an owned
+#   operational facility remains; there is no all-country periodic pulse.
 # ============================================================================
 
 add_namespace = cbrn_bio_safety
 
 # Private targeted monitor. This event is scheduled only by an exact project
-# facility designation or the explicit arsenal-management decision.
+# facility registration or the bounded internal repair helper.
 country_event = {
 	id = cbrn_bio_safety.1
 	hidden = yes
@@ -28,6 +29,7 @@ country_event = {
 				}
 			}
 			clr_country_flag = bio_stockpile_safety_monitor_scheduled
+			bio_stockpile_safety_reselect_arsenal_if_needed = yes
 			if = {
 				limit = { bio_stockpile_safety_arsenal_pointer_is_valid = yes }
 				clr_country_flag = bio_stockpile_safety_monitor_suspended

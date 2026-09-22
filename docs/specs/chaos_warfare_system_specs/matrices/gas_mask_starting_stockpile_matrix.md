@@ -1,5 +1,20 @@
 # Gas-Mask Starting Stockpile Matrix
 
+> **1936 historical source disposition, 2026-09-20:** The original fixed crate rows below are retained as archival calibration proposals. The implemented 1936 startup contract is force-scaled for every profile tag: established majors receive 75% active military issue, Italy 100%, Japan 50%, and all remaining profile tags 25%, with a separate 25% replacement reserve and zero fixed civilian issue. `chaosx_apply_historical_eng_1936_force_scaled_profile` owns the ENG transaction in `common/scripted_effects/cbrn_starting_protection_effects.txt`; `chaosx_apply_historical_1936_force_scaled_profile` reconciles the other profile tags in `common/scripted_effects/chaosx_startup_history_effects.txt`. The dated 1939 helper `cbrn_apply_historical_uk_1939_civilian_issue` issues British civilians from real warehouse stock and grants only its measured shortfall toward a 40,000-crate target. These are bounded source findings under the user's accepted historical-start requirement in the [CBRN amendment](../specs/13_2026_09_20_accepted_cbrn_overhaul.md), with runtime and MCP validation unresolved.
+
+## Implemented 1936 startup bands
+
+The live startup reconciliation applies the following approved gameplay bands to the 41 countries present in the common starting-mask profile. The values are deployed-force ratios, not fixed archival crate totals; the helper restores any pre-existing mask stock before adding only the active-issue and replacement-reserve shortfall.
+
+| Profile band | Countries | Active military issue | Replacement reserve | Civilian issue at 1936 start |
+| --- | --- | ---: | ---: | ---: |
+| Established major | ENG, FRA, GER, SOV, USA | 75% | 25% | 0% |
+| Active war | ITA | 100% | 25% | 0% |
+| Limited programme | JAP | 50% | 25% | 0% |
+| Smaller defensive | POL, CZE, BEL, HOL, CAN, AST, NZL, SAF, ROM, YUG, TUR, SPR, CHI, PRC, SHX, GXC, YUN, XSM, SIK, MAN, BUL, HUN, GRE, RAJ, AUS, POR, SWE, NOR, DEN, FIN, BRA, ARG, MEX, CHL | 25% | 25% | 0% |
+
+The 1939 British civilian issue is a separate dated real-equipment transaction and is not included in the 1936 civilian column.
+
 ## Equipment unit
 
 One unit is one protective-equipment crate. It represents about one thousand civilian respirators or about one hundred military full-issue sets with filters, training, spares, and carrying equipment.
@@ -28,7 +43,7 @@ Exact values require current 1936 core population and OOB data. Bands below are 
 
 | Country or profile | Civilian coverage target | Military issue target | Starting crates target | Starting tech | Program identity | Confidence |
 | --- | ---: | ---: | ---: | --- | --- | --- |
-| Britain | 65 to 85% | 150% of fielded need | 35,000 to 50,000 | basic and improved where compatible | mass civilian distribution, strong registration | high relative, medium exact |
+| Britain, 1936 source profile | No civilian mass issue | 75% of deployed military need issued, 25% retained for replacement | Force-scaled real stock; no fixed warehouse grant | basic masks | Military issue and replacement reserve; dated 1939 real-stock civilian issue is separate | source-defined, runtime unverified |
 | France | 35 to 55% | 140% | 18,000 to 30,000 | basic and improved | fortified-front and urban reserve | medium |
 | Germany | 35 to 55% | 150% | 20,000 to 32,000 | basic and improved | military and urban reserve | medium |
 | Soviet Union | 15 to 30% | 140% | 18,000 to 30,000 | basic | huge military reserve, uneven civilian issue | medium-low exact |
@@ -60,7 +75,7 @@ Starting crates do not mean all civilians are protected. Country history can beg
 - registered population bonus
 - military issue reserve
 
-Britain should begin with the largest distributed share. Other countries can begin with reserve that requires decisions to issue.
+The 1936 Britain source profile begins with military issue and a real replacement reserve, without mass civilian distribution. The separate 1939 bookmark performs its dated civilian issue from real equipment. Other country rows retain their prior proposal status until their current sources and historical basis are reconciled.
 
 ## Production target after alert
 

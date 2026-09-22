@@ -3,7 +3,7 @@
 # ============================================================================
 # Overview:
 # - Validates the exact native raid actor, victim, selected target state, agent,
-#   use policy, and designated staging state.
+#   use policy, and an internally selected attacker handling state.
 # - Keeps reservation, release, failed-attempt, and attacker-accident records
 #   distinct so only a proven release can enter the biological lifecycle.
 # - Contains no launch-state inference, aircraft-presence proxy, estimator, or
@@ -69,30 +69,37 @@ bio_strategic_raid_ai_has_retaliation_right_against_from = {
 	cbrn_country_has_active_retaliation_right_against_target_id = yes
 }
 
-# State scope with the acting country as PREV. ROOT may remain a raid instance
-# when this helper is reached through the actor's stored staging-state scope.
-bio_strategic_raid_state_is_valid_staging_candidate = {
+# State scope with the acting country as PREV. This is a handling location for
+# an attacker accident, not the native raid engine's selected airbase.
+bio_strategic_raid_state_is_valid_handling_candidate = {
+	is_owned_by = PREV
 	is_controlled_by = PREV
 	impassable = no
-	air_base > constant:bio_strategic_raid_staging.air_base_trigger_floor
+	OR = {
+		air_base > constant:bio_strategic_raid_staging.air_base_trigger_floor
+		supply_node > constant:bio_strategic_raid_staging.air_base_trigger_floor
+	}
 	infrastructure > constant:bio_strategic_raid_staging.infrastructure_trigger_floor
 	bio_lifecycle_state_is_eligible_ordinary_pathogen_target = yes
 }
 
-# Country scope. The stored scope is the only accepted attacker-accident state.
-bio_strategic_raid_actor_has_valid_staging_state = {
-	has_variable = bio_strategic_raid_staging_state
-	var:bio_strategic_raid_staging_state = {
-		bio_strategic_raid_state_is_valid_staging_candidate = yes
+# Country scope. A bounded internal handling state must still exist.
+bio_strategic_raid_actor_has_valid_handling_state = {
+	OR = {
+		capital_scope = { bio_strategic_raid_state_is_valid_handling_candidate = yes }
+		any_owned_state = {
+			bio_strategic_raid_state_is_valid_handling_candidate = yes
+		}
 	}
 }
 
-# Raid-instance scope after the native actor, victim, and target state have been
-# saved as regular event targets by the resolver.
+# Actor-country event scope after the native callback saved the actor, victim,
+# and target state as regular event targets.
 bio_strategic_raid_native_context_is_valid = {
 	has_event_target = bio_raid_actor
 	has_event_target = bio_raid_victim
 	has_event_target = bio_raid_target_state
+	has_event_target = bio_raid_staging_state
 	bio_strategic_raid_agent_is_valid = yes
 	bio_strategic_raid_engine_outcome_is_valid = yes
 	event_target:bio_raid_actor = {
@@ -101,7 +108,7 @@ bio_strategic_raid_native_context_is_valid = {
 		NOT = { is_in_faction_with = event_target:bio_raid_victim }
 		NOT = { is_subject_of = event_target:bio_raid_victim }
 		bio_strategic_raid_actor_has_agent_project = yes
-		bio_strategic_raid_actor_has_valid_staging_state = yes
+		bio_strategic_raid_actor_has_valid_handling_state = yes
 		event_target:bio_raid_victim = {
 			set_temp_variable = { cbrn_retaliation_target_id = id }
 		}
@@ -130,7 +137,7 @@ bio_strategic_raid_native_tooltip_context_is_valid = {
 		has_war_with = var:ROOT.victim_country
 		NOT = { is_in_faction_with = var:ROOT.victim_country }
 		NOT = { is_subject_of = var:ROOT.victim_country }
-		bio_strategic_raid_actor_has_valid_staging_state = yes
+		bio_strategic_raid_actor_has_valid_handling_state = yes
 		var:ROOT.victim_country = {
 			set_temp_variable = { cbrn_retaliation_target_id = id }
 		}
@@ -203,7 +210,7 @@ bio_strategic_raid_target_from_is_valid = {
 
 bio_strategic_raid_can_prepare_against_from = {
 	bio_strategic_raid_target_from_is_valid = yes
-	bio_strategic_raid_actor_has_valid_staging_state = yes
+	bio_strategic_raid_actor_has_valid_handling_state = yes
 	cbrn_policy_allows_strategic_use_against_from = yes
 	bio_kruger_last_resort_authority_is_valid = yes
 }

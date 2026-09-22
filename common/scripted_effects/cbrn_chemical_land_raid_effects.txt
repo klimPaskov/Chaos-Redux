@@ -1,0 +1,133 @@
+# ============================================================================
+# CHAOS REDUX - NATIVE CHEMICAL LAND RAID OUTCOME ADAPTER
+# ============================================================================
+# A hidden immediate country event supplies actor-country ROOT, exact actor,
+# state and victim event targets, agent, route, engine outcome, and the Phantom
+# Mist variant signal. Native essential_equipment is the sole payload debit.
+# This adapter never spends or refunds stock.
+# ============================================================================
+
+cbrn_land_raid_set_payload_requirement = {
+	set_temp_variable = { cbrn_action_payload_required = constant:cbrn_math.zero }
+	if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.cylinder_release compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.cylinder_release }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.projector_barrage compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.projector_barrage }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.artillery_fire_plan compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.artillery_fire_plan }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_action_delivery_route value = constant:cbrn_delivery_route.armored_delivery compare = equals } }
+		set_temp_variable = { cbrn_action_payload_required = constant:cbrn_payload_route_cost.armored_delivery }
+	}
+}
+
+cbrn_land_raid_apply_engine_outcome = {
+	if = {
+		limit = { check_variable = { var = cbrn_raid_engine_outcome value = constant:cbrn_chemical_raid_engine_outcome.limited_success compare = equals } }
+		multiply_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_chemical_raid_outcome.partial_dose_max }
+	}
+	else_if = {
+		limit = { check_variable = { var = cbrn_raid_engine_outcome value = constant:cbrn_chemical_raid_engine_outcome.critical_success compare = equals } }
+		multiply_temp_variable = { cbrn_action_release_efficiency_mult = constant:cbrn_chemical_raid_outcome.catastrophic_dose_min }
+	}
+}
+
+cbrn_land_raid_apply_phantom_mist_result = {
+	if = {
+		limit = {
+			check_variable = { var = cbrn_raid_phantom_mist value = constant:cbrn_math.one compare = equals }
+			check_variable = { var = cbrn_action_agent value = constant:cbrn_agent.malodor compare = equals }
+			cbrn_project_has_phantom_mist = yes
+		}
+		multiply_temp_variable = { cbrn_action_military_death_fraction = constant:cbrn_project_effect.phantom_mist_casualty_multiplier }
+		multiply_temp_variable = { cbrn_action_civilian_death_fraction = constant:cbrn_project_effect.phantom_mist_casualty_multiplier }
+		multiply_temp_variable = { cbrn_action_disruption = constant:cbrn_project_effect.phantom_mist_disruption_multiplier }
+		clamp_temp_variable = { var = cbrn_action_disruption min = constant:cbrn_math.zero max = constant:cbrn_action_output_bounds.disruption_max }
+	}
+}
+
+cbrn_resolve_chemical_land_raid_country_outcome = {
+	set_temp_variable = { cbrn_raid_release_accepted = constant:cbrn_proof.missing }
+	# A hidden immediate country event supplies actor-country ROOT and the three
+	# exact event targets. No raid-instance temporary value crosses that event.
+	if = {
+		limit = {
+			has_event_target = cbrn_action_actor
+			tag = event_target:cbrn_action_actor
+		}
+		cbrn_reset_action_context = yes
+		if = {
+			limit = {
+				has_event_target = cbrn_action_actor
+				has_event_target = cbrn_action_target_state
+				has_event_target = cbrn_action_victim_country
+				has_variable = cbrn_raid_route
+				has_variable = cbrn_raid_agent
+				has_variable = cbrn_raid_engine_outcome
+				OR = {
+					NOT = { check_variable = { var = cbrn_raid_phantom_mist value = constant:cbrn_math.one compare = equals } }
+					AND = {
+						check_variable = { var = cbrn_raid_agent value = constant:cbrn_agent.malodor compare = equals }
+						cbrn_policy_allows_extreme_use = yes
+						cbrn_project_has_phantom_mist = yes
+					}
+				}
+				OR = {
+					check_variable = { var = cbrn_raid_engine_outcome value = constant:cbrn_chemical_raid_engine_outcome.limited_success compare = equals }
+					check_variable = { var = cbrn_raid_engine_outcome value = constant:cbrn_chemical_raid_engine_outcome.success compare = equals }
+					check_variable = { var = cbrn_raid_engine_outcome value = constant:cbrn_chemical_raid_engine_outcome.critical_success compare = equals }
+				}
+			}
+			set_temp_variable = { cbrn_action_target_state_supplied = constant:cbrn_proof.supplied }
+			set_temp_variable = { cbrn_action_weapon_class = constant:cbrn_weapon_class.chemical }
+			set_temp_variable = { cbrn_action_delivery_route = cbrn_raid_route }
+			set_temp_variable = { cbrn_action_agent = cbrn_raid_agent }
+			cbrn_battlefield_set_action_agent_class_from_action = yes
+			cbrn_battlefield_set_severity_from_action_route = yes
+			cbrn_land_raid_set_payload_requirement = yes
+			if = {
+				limit = {
+					has_variable = cbrn_raid_payload_reserved
+					check_variable = { cbrn_raid_payload_reserved > constant:cbrn_math.zero }
+				}
+				set_temp_variable = { cbrn_action_payload_required = cbrn_raid_payload_reserved }
+			}
+			if = {
+				limit = {
+					check_variable = { var = cbrn_action_agent_class value = constant:cbrn_agent_class.nerve compare = equals }
+					has_tech = nerve_agent_suppression_formation
+				}
+				set_temp_variable = { cbrn_action_late_agent_route_authorized = constant:cbrn_proof.supplied }
+			}
+			if = {
+				limit = {
+					cbrn_chemical_land_raid_policy_allows_exact_target = yes
+					cbrn_chemical_action_static_content_is_valid = yes
+					check_variable = { cbrn_action_payload_required > constant:cbrn_math.zero }
+				}
+				set_temp_variable = { cbrn_action_payload_consumed = cbrn_action_payload_required }
+				set_temp_variable = { cbrn_action_payload_consumed_proof = constant:cbrn_proof.supplied }
+				cbrn_resolve_action_target_protection = yes
+				cbrn_battlefield_set_action_conditions_receipt = yes
+				cbrn_land_raid_apply_engine_outcome = yes
+				cbrn_set_doctrine_condemnation_mult_from_country = yes
+				cbrn_prepare_chemical_action_record = yes
+				if = {
+					limit = { check_variable = { var = cbrn_action_result value = constant:cbrn_action_result.accepted compare = equals } }
+					cbrn_land_raid_apply_phantom_mist_result = yes
+					cbrn_dispatch_chemical_action_record = yes
+					if = {
+						limit = { check_variable = { var = cbrn_action_dispatch_proof value = constant:cbrn_proof.supplied compare = equals } }
+						set_temp_variable = { cbrn_raid_release_accepted = constant:cbrn_proof.supplied }
+					}
+				}
+			}
+		}
+	}
+}

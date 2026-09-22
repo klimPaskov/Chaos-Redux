@@ -180,7 +180,7 @@ Each family stage applies a cumulative persistent modifier while the country rem
 | Robotics | Extreme industrial automation and a zero-human-manpower armored-infantry package constrained by robot equipment, fuel, power infrastructure, and production. |
 | Paleogenetics | A fast reconnaissance and intimidation shock package with high breakthrough and terrain utility, plus real feed, handler, transport, air-defense, and containment burdens. |
 | Xenobiological Synthesis | A fort-breaking adaptive assault package whose chemical, neural, machine, and researched control doctrines are mutually exclusive and mechanically distinct. |
-| Biological Weapons | Every mapped native pathogen project and raid, production and defensive integration, and the separately owned decision-deployment transactions documented by the biological-warfare closure contract. |
+| Biological Weapons | Every mapped native pathogen project and raid, production and defensive integration, and the eighteen native biological raids documented by the biological-warfare closure contract. |
 | Alien Arms | Alien laser production, the envoy craft, D'Rhondan contact, predictive tactics, exact paid UFO landings, zero-human-manpower Alien Infantry, and the DHR consequence chain. |
 | Temporal | A resilient Temporal Guard package plus bounded recovery, continuity, synchronization, temporal-debt, anchor-control, and stabilization actions. |
 | Strategic Singularity | Six causal components, command nodes, power links, certification, guarded arming, threshold-forcing detonation, and exclusive transition into the shared Fallout pipeline. |

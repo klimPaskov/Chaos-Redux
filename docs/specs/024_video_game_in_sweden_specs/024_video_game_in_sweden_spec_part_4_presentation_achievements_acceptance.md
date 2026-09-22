@@ -206,7 +206,8 @@ Implementation may reuse an existing vanilla icon only when the icon is an exact
 ### Commander trait icons
 
 - Rulebook Commander working role.
-- Field-Validated Planner working role.
+
+The previously proposed Field-Validated Planner icon is superseded by the user's explicit 2026-09-20 removal instruction; no replacement trait icon is required.
 
 ### Achievement icons
 

@@ -1,5 +1,7 @@
 # Condemnation, Deaths, Air Cleanliness, and Diplomacy
 
+> **2026-09-20 accepted amendment:** The [accepted CBRN overhaul](13_2026_09_20_accepted_cbrn_overhaul.md) fixes Condemnation at 0–1000, the equipment multiplier at `1 + Condemnation / 500` with whole requirements rounded up, and inspection at 5–15% consumer goods for 180 days. This file provides the consequence design where consistent; [source and validation status](../../../plans/chaos_warfare_system_plans/2026-09-20_cbrn_overhaul_requirement_ledger.md) must be checked independently.
+
 ## Shared consequence rule
 
 Chaos Warfare does not create new global consequence counters. Chemical and biological actions feed the existing shared systems:
