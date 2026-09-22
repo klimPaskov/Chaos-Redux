@@ -207,45 +207,15 @@ separate explicit invitation and frozen consent ledger.
 
 ### IW-179 Micronesia
 
-Micronesia preserves its registered tag and history. Vanilla `FSM` exposes only
-the non-meaningful `generic_focus` tree, so the package loads the shared Event
-006 generic tree rather than replacing a meaningful existing country tree.
-Its Scattered Island Authority crisis uses an Inter-Island Authority ledger.
-An inter-island revenue congress, patrol relay network, and former-
-administration settlement raise the ledger from 25 toward the stable threshold
-of 60 and swap in the Federal Patrol Compact. The first two paid projects are
-sufficient to reach that threshold if the former host ceases to exist.
+Micronesia preserves its registered tag and history. Vanilla `FSM` exposes only the non-meaningful `generic_focus` tree, so the package loads the shared Event 006 generic tree rather than replacing a meaningful existing country tree. Its Scattered Island Authority crisis uses an Inter-Island Authority ledger. An inter-island revenue congress, patrol relay network, and former-administration settlement raise the ledger from 25 toward the stable threshold of 60 and swap in the Federal Patrol Compact. The first two paid projects are sufficient to reach that threshold if the former host ceases to exist.
 
-Vanilla `FSM - Micronesia.txt` defines politics but no usable named political
-leader. The retained Elias Kihleng character and portrait are fictional
-evidence only; the explicit `independence_wave_fsm_sourced_identity_ready`
-gate prevents exact IW-179 setup from recruiting or promoting him. Prepared and
-final validation therefore remain outside the runtime attestation set until a
-named adult male Micronesian source clears identity, era, role, and rights
-review. Once that gate is cleared, parent-owned wiring will replace the
-evidence role without changing FSM's vanilla democratic politics or touching
-any non-Event-006 Micronesia, and cleanup will retire only the Event-006 role.
+Vanilla `FSM - Micronesia.txt` defines politics but no usable named political leader. The retained Elias Kihleng character and portrait are withdrawn fictional evidence only; the explicit `independence_wave_fsm_sourced_identity_ready` gate prevents exact IW-179 setup from recruiting or promoting him. Prepared and final validation therefore remain outside the runtime attestation set until a named adult male Micronesian source clears identity, era, role, rights, and independent portrait review. Once that gate is cleared, parent-owned wiring will replace the evidence role without changing FSM's vanilla democratic politics or touching any non-Event-006 Micronesia, and cleanup will retire only the Event-006 role.
 
-The accepted Micronesian route contract is federal council, traditional,
-constitutional, and patron client. In the shared Event 006 route vocabulary,
-the federal-council route is represented by the popular-council flag. Exact
-IW-179 setup therefore publishes popular-council, traditional,
-constitutional, and patron-client availability while explicitly excluding
-the emergency-military and radical-sovereignty routes.
+The accepted Micronesian route contract is federal council, traditional, constitutional, and patron client. In the shared Event 006 route vocabulary, the federal-council route is represented by the popular-council flag. Exact IW-179 setup therefore publishes popular-council, traditional, constitutional, and patron-client availability while explicitly excluding the emergency-military and radical-sovereignty routes.
 
-After Inter-Island Authority reaches 60, four mutually exclusive timed
-government decisions become visible and condense the accepted additive route settlement. The
-Federal Council Compact maps to the shared popular-council route; the other
-choices confirm a traditional leaders' council, adopt an inter-island
-constitution, or accept a protected-ocean patron mandate. Every choice uses
-the shared route-selection helper, publishes the matching shared durable-state
-flag, records an exact FSM settlement proof, applies visible five-value
-outcomes, and serializes against every other Micronesian package project.
+After Inter-Island Authority reaches 60, four mutually exclusive timed government decisions become visible and condense the accepted additive route settlement. The Federal Council Compact maps to the shared popular-council route; the other choices confirm a traditional leaders' council, adopt an inter-island constitution, or accept a protected-ocean patron mandate. Every choice uses the shared route-selection helper, publishes the matching shared durable-state flag, records an exact FSM settlement proof, applies visible five-value outcomes, and serializes against every other Micronesian package project.
 
-The final strategic project remains hidden until stable authority and
-recognition, then publishes
-`independence_wave_fsm_pacific_delegation_ready`. Like the Hawaiian flag, it
-is an exact package attestation, not consent and not an annexation trigger.
+The final strategic project remains hidden until stable authority and recognition, then publishes `independence_wave_fsm_pacific_delegation_ready`. Like the Hawaiian flag, it is an exact package attestation, not consent and not an annexation trigger.
 
 ## Forces and command
 
@@ -282,14 +252,7 @@ impossible factory reservation. The former-host projects update the same
 bilateral claim, hostility, obligation, property, border, pressure, and
 reconquest-fear ledger used by the rest of Event 006.
 
-Micronesia's federal and constitutional settlements consume a light convoy-
-and-command package over 50 days. The traditional settlement consumes a light
-security package over 65 days. The patron mandate uses the island-strategic
-stability, resolve, command, manpower, and convoy package over 90 days. The
-shared government lock makes the four outcomes mutually exclusive for the
-current Event 006 generation. All eight timed FSM decisions cancel if the
-package setup receipt disappears, so a partial lifecycle teardown cannot reach
-a paid completion effect.
+Micronesia's federal and constitutional settlements consume a light convoy-and-command package over 50 days. The traditional settlement consumes a light security package over 65 days. The patron mandate uses the island-strategic stability, resolve, command, manpower, and convoy package over 90 days. The shared government lock makes the four outcomes mutually exclusive for the current Event 006 generation. All eight timed FSM decisions cancel if the package setup receipt disappears, so a partial lifecycle teardown cannot reach a paid completion effect.
 
 Each country also receives a 240-day founding mission. The mission resolves
 when its package ledger reaches the stable threshold. Loss of the capital,
