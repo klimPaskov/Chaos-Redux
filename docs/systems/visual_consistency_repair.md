@@ -16,6 +16,10 @@ Decision-category `picture` fields use category-panel artwork rather than a port
 
 Normal decision `icon` fields remain decision-scale artwork and are not replaced by category icons.
 
+National focus `icon` fields use focus-scale artwork at a native 94x86 canvas with native transparency, which is the dominant size in `gfx/interface/goals/` and the size the Chaos Redux focus trees are authored against.
+
+A focus icon is registered twice: the base sprite and a `_shine` sprite that reuses the icon's own DDS as the animation mask and `gfx/interface/goals/shine_overlay.dds` as the scrolling overlay, following the vanilla `interface/goals_shine.gfx` pattern.
+
 Dynamic picture selectors used by country events must resolve to report-family artwork unless the selector is explicitly used for a country-leader portrait.
 
 ## Event repairs
@@ -133,6 +137,25 @@ Category pictures live under `gfx/interface/decisions/visual_consistency_repair/
 Each category picture is authored at the 114x101 category-panel scale.
 
 The source prompts, processed PNGs, DDS round-trip evidence, hashes, and handoff notes are kept in `docs/assets/visual_consistency_repair/category_icons/`, `docs/assets/visual_consistency_repair/category_icons_expanded/`, and `docs/assets/visual_consistency_repair/category_pictures/`.
+
+## Chaos identity focus icons
+
+`interface/chaos_focus_icons.gfx` carries the shared chaos identity focus icon family that is not owned by a single event package.
+
+Icons live under `gfx/interface/goals/chaos/` and use the following code names and runtime files.
+
+| Code name | Runtime DDS |
+| --- | --- |
+| `GFX_goal_chaos_the_unmaking` | `goal_chaos_the_unmaking.dds` |
+| `GFX_goal_chaos_the_unmaking_shine` | `goal_chaos_the_unmaking.dds` |
+
+The icon is authored at the native 94x86 focus scale with native transparency, a 4px transparent margin, and a subject centre within 0.5px of the canvas centre.
+
+The house style for this family is read from the live chaos focus trees rather than from generic icon art: a dark heraldic medallion, a laurel or chain ring, one bold central emblem, a small shield or plaque, a desaturated storm field, and a single hot accent colour.
+
+Source art, the processed candidate, the rejection record, the round-trip contact sheet, and the reference sheets taken from `gfx/interface/goals/010_death/` and `gfx/interface/goals/005_soviet_collapse/` are kept in `docs/assets/chaos_focus_icon/`.
+
+The sprite has no focus consumer yet; binding it to a focus id, its localisation, and any AI weighting remain separate implementation work.
 
 ## Identifier and localisation repairs
 
