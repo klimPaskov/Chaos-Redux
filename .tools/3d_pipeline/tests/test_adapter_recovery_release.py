@@ -21,7 +21,7 @@ sys.path.insert(0, str(ADAPTER))
 import assembly_yaw
 import animation_root_export
 import explicit_vertex_remap
-import manual_creature_rig
+import mesh_inspection_repair
 import mesh_winding_repair
 
 
@@ -65,11 +65,11 @@ class NormalAndTextureRegressions(unittest.TestCase):
                          0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000)
         size = 128 + 2048*2048*4
         with self.assertRaises(ValueError):
-            manual_creature_rig.validate_component_dds(header, size)
-        self.assertEqual(manual_creature_rig.validate_component_dds(
+            mesh_inspection_repair.validate_component_dds(header, size)
+        self.assertEqual(mesh_inspection_repair.validate_component_dds(
             header, size, max_dimension=2048), (2048, 2048))
         with self.assertRaises(ValueError):
-            manual_creature_rig.validate_component_dds(header, size-1, max_dimension=2048)
+            mesh_inspection_repair.validate_component_dds(header, size-1, max_dimension=2048)
 
 
 class ExactRemapRegressions(unittest.TestCase):
@@ -202,7 +202,7 @@ class ReleaseConsistency(unittest.TestCase):
         self.config = json.loads((ROOT / self.route['config']).read_text())
 
     def test_imported_modules_are_live(self):
-        for module in (assembly_yaw, animation_root_export, explicit_vertex_remap, manual_creature_rig, mesh_winding_repair):
+        for module in (assembly_yaw, animation_root_export, explicit_vertex_remap, mesh_inspection_repair, mesh_winding_repair):
             self.assertEqual(Path(module.__file__).resolve().parent, ADAPTER)
 
     def test_version_and_exact_operation_list(self):

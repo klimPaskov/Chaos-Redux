@@ -1,6 +1,6 @@
 """Explicit rigid world-Z assembly yaw with all-frame skeletal deformation proof."""
 import math
-from manual_creature_rig import _open,name
+from mesh_inspection_repair import _open,name
 from mesh_vertex_material_repair import finish_verified
 
 

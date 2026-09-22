@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -19,23 +18,22 @@ from lib.mcp_stdio import call_stdio  # noqa: E402
 
 
 TOOLS = {
-    "chaosx_blender_hoi4_import_animation_action": {
-        "job_id", "blend_rel", "source_rel", "provenance_rel", "checkpoint_rel",
-        "source_action_name", "target_armature_name", "target_action_name",
-        "source_kind", "source_reference_id", "source_sha256", "bone_chains",
-        "promote_audited_target", "source_armature_name",
-    },
-    "chaosx_blender_hoi4_retime_animation_action": {
-        "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
-        "source_fps", "target_fps",
-    },
-    "chaosx_blender_hoi4_correct_action_grounding": {
-        "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
-        "grounding_policy", "root_bone", "excluded_contact_bones",
-    },
     "chaosx_blender_hoi4_prepare_export_coordinate_checkpoint": {
         "job_id", "blend_rel", "checkpoint_rel", "action_name", "target_armature_name",
     },
+}
+
+# Bounded candidate preparation inputs consumed by the pilot orchestrator.
+CANDIDATE_INPUTS = {
+    "source_rel", "asset_kind", "target_height_m", "runtime_entity_scale", "runtime_stem",
+    "target_triangles", "vanilla_reference", "texture_source_rels",
+    "max_runtime_footprint_m", "runtime_footprint_policy",
+}
+
+# Repository Python no longer binds provider geometry to a rig, so these payload
+# keys must not come back: rigs and skin weights are authored live in Blender.
+REMOVED_CANDIDATE_INPUTS = {
+    "rig_mesh", "source_armature_name", "geometry_weight_mode", "dual_source_base_rig",
 }
 
 
@@ -54,32 +52,16 @@ class AnimationProcessingToolTests(unittest.TestCase):
             schema = live[name]["inputSchema"]
             self.assertEqual(set(schema["properties"]), expected_properties)
             self.assertFalse({"python", "code", "shell", "url", "absolute_path"} & set(schema["properties"]))
-        import_schema = live["chaosx_blender_hoi4_import_animation_action"]["inputSchema"]
-        self.assertEqual(import_schema["properties"]["source_kind"]["enum"], ["meshy_animate", "professional_source"])
-        self.assertIn(
-            "balanced parenthetical qualifiers",
-            live["chaosx_blender_hoi4_import_animation_action"]["description"],
-        )
-        grounding_schema = live["chaosx_blender_hoi4_correct_action_grounding"]["inputSchema"]
-        self.assertEqual(
-            grounding_schema["properties"]["grounding_policy"]["const"],
-            "per_frame_root_contact_zero_clearance",
-        )
-        prepare_properties = live["chaosx_blender_hoi4_prepare_candidate"]["inputSchema"]["properties"]
-        self.assertIn("geometry_object_name", prepare_properties)
-        self.assertIn("dual_source_base_rig", prepare_properties)
-        self.assertEqual(
-            prepare_properties["geometry_weight_mode"]["enum"],
-            ["four_nearest", "nearest_face_interpolated", "automatic_bone_heat", "bone_distance"],
-        )
+        prepare_properties = set(live["chaosx_blender_hoi4_prepare_candidate"]["inputSchema"]["properties"])
+        self.assertTrue(CANDIDATE_INPUTS <= prepare_properties)
+        self.assertFalse(REMOVED_CANDIDATE_INPUTS & prepare_properties)
         self.assertNotIn("geometry_object_names", prepare_properties)
 
     def test_config_and_lock_match_version_and_operations(self) -> None:
         config = json.loads((PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8"))
         route = json.loads((PIPELINE_ROOT / "config" / "dependencies.lock.json").read_text(encoding="utf-8"))["routes"]["blender_hoi4_adapter"]
-        self.assertEqual(config["adapter_version"], "1.10.15")
-        self.assertEqual(route["version"], "1.10.15")
-        for operation in ("import_animation_action", "retime_animation_action", "correct_action_grounding", "prepare_export_coordinate_checkpoint"):
+        self.assertEqual(config["adapter_version"], route["version"])
+        for operation in ("prepare_candidate", "prepare_export_coordinate_checkpoint"):
             self.assertIn(operation, config["operations"])
             self.assertIn(operation, route["operations"])
 
@@ -87,28 +69,11 @@ class AnimationProcessingToolTests(unittest.TestCase):
         client = BlenderAdapterClient.__new__(BlenderAdapterClient)
         calls: list[tuple[str, dict[str, object]]] = []
         client.call = lambda tool, arguments: calls.append((tool, arguments)) or {"status": "pass"}  # type: ignore[method-assign]
-        client.import_animation_action(
-            "unit", "target.blend", "source.glb", "provenance.json", "imported.blend",
-            "KayKit Animated Character|Shoot(2h)Bow", "Armature", "runtime_action", "meshy_animate", "task-123", "A" * 64,
-            source_armature_name="ProviderRig",
-        )
-        client.retime_animation_action("unit", "imported.blend", "retimed.blend", "runtime_action", "Armature", 30.0, 24.0)
-        client.correct_action_grounding(
-            "unit", "retimed.blend", "grounded.blend", "runtime_action", "Armature",
-            "per_frame_root_contact_zero_clearance",
-            excluded_contact_bones=["Tail1", "Tail2"],
-        )
         client.prepare_export_coordinate_checkpoint(
             "unit", "grounded.blend", "export_coordinates.blend", "runtime_action", "Armature",
         )
         self.assertEqual([name for name, _ in calls], list(TOOLS))
-        self.assertEqual(calls[0][1]["provenance_rel"], "provenance.json")
-        self.assertEqual(calls[0][1]["source_action_name"], "KayKit Animated Character|Shoot(2h)Bow")
-        self.assertEqual(calls[0][1]["source_armature_name"], "ProviderRig")
-        self.assertEqual(calls[1][1]["target_fps"], 24.0)
-        self.assertEqual(calls[2][1]["grounding_policy"], "per_frame_root_contact_zero_clearance")
-        self.assertEqual(calls[2][1]["excluded_contact_bones"], ["Tail1", "Tail2"])
-        self.assertEqual(calls[3][1]["checkpoint_rel"], "export_coordinates.blend")
+        self.assertEqual(calls[0][1]["checkpoint_rel"], "export_coordinates.blend")
 
     def test_export_coordinate_checkpoint_is_drift_guarded(self) -> None:
         source = (PIPELINE_ROOT / "adapter" / "blender_worker.py").read_text(encoding="utf-8")
@@ -118,49 +83,31 @@ class AnimationProcessingToolTests(unittest.TestCase):
         self.assertIn("material/image binding drift", source)
         self.assertIn("action_provenance(reopened_action) != action_source", source)
 
-    def test_prepare_candidate_forwards_topology_preservation(self) -> None:
+    def test_prepare_candidate_forwards_bounded_candidate_inputs(self) -> None:
         client = BlenderAdapterClient.__new__(BlenderAdapterClient)
         calls: list[tuple[str, dict[str, object]]] = []
         client.call = lambda tool, arguments: calls.append((tool, arguments)) or {"status": "pass"}  # type: ignore[method-assign]
         client.prepare_candidate(
             "unit",
-            source_rel="source.fbx",
-            geometry_source_rel="audited.blend",
-            geometry_object_name="ApprovedGeometry.001",
-            dual_source_base_rig=True,
-            geometry_weight_mode="bone_distance",
-            source_armature_name="Rig",
-            source_mesh_names=["Body", "Head"],
-            asset_kind="nonhumanoid_creature",
-            target_height_m=7.0,
-            runtime_stem="creature",
-            preserve_geometry_topology=True,
+            source_rel="source.glb",
+            asset_kind="static",
+            target_height_m=1.5,
+            runtime_entity_scale=2.0,
+            runtime_stem="beacon",
+            target_triangles=15000,
+            vanilla_reference={"mesh": "reference.mesh"},
+            texture_source_rels={"diffuse": "provider/downloads/base_color.png"},
+            max_runtime_footprint_m=4.0,
+            runtime_footprint_policy="reject",
         )
         self.assertEqual(calls[0][0], "chaosx_blender_hoi4_prepare_candidate")
-        self.assertTrue(calls[0][1]["preserve_geometry_topology"])
-        self.assertEqual(calls[0][1]["geometry_object_name"], "ApprovedGeometry.001")
-        self.assertTrue(calls[0][1]["dual_source_base_rig"])
-        self.assertEqual(calls[0][1]["geometry_weight_mode"], "bone_distance")
-        self.assertEqual(calls[0][1]["source_armature_name"], "Rig")
-        self.assertEqual(calls[0][1]["source_mesh_names"], ["Body", "Head"])
-
-    def test_worker_requires_one_safe_local_geometry_mesh(self) -> None:
-        source = (PIPELINE_ROOT / "adapter" / "blender_worker.py").read_text(encoding="utf-8")
-        self.assertIn('dual_source_base_rig requires geometry_source_rel', source)
-        self.assertIn('geometry_object_name requires geometry_source_rel', source)
-        self.assertIn('explicit_safe_name(\n            payload.get("geometry_object_name")', source)
-        self.assertIn('obj.name == requested_geometry_object', source)
-        self.assertIn('selected_geometry.library is not None', source)
-        self.assertIn('selected_geometry.data.library is not None', source)
-
-    def test_dual_source_base_rig_contract_clears_bind_clip_and_sanitizes_weights(self) -> None:
-        source = (PIPELINE_ROOT / "adapter" / "blender_worker.py").read_text(encoding="utf-8")
-        self.assertIn("target_armature.animation_data_clear()", source)
-        self.assertIn("pose_bone.matrix_basis = Matrix.Identity(4)", source)
-        self.assertIn('"working_actions": []', source)
-        self.assertIn("base_weight_sanitization = sanitize_working_weights()", source)
-        self.assertIn("stabilize_saved_normalization(pre_export, target_height)", source)
-        self.assertIn('obj["chaosx_working"] = False', source)
+        payload = calls[0][1]
+        self.assertTrue(CANDIDATE_INPUTS <= set(payload))
+        self.assertEqual(payload["asset_kind"], "static")
+        self.assertEqual(payload["target_triangles"], 15000)
+        self.assertEqual(payload["texture_source_rels"], {"diffuse": "provider/downloads/base_color.png"})
+        self.assertEqual(payload["runtime_footprint_policy"], "reject")
+        self.assertFalse(REMOVED_CANDIDATE_INPUTS & set(payload))
 
     def test_normalization_convergence_accepts_and_corrects(self) -> None:
         accepted = evaluate_convergence_step(
@@ -195,41 +142,6 @@ class AnimationProcessingToolTests(unittest.TestCase):
                 target=8.0, persisted=8.001, tolerance=0.00001,
                 previous_delta=0.002, corrections_applied=8, max_corrections=8,
             )
-
-    def test_dual_source_base_survives_clean_save_and_reopen(self) -> None:
-        config = json.loads(
-            (PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8")
-        )
-        integration = PIPELINE_ROOT / "tests" / "blender_dual_source_base_regression.py"
-        completed = subprocess.run(
-            [config["blender_executable"], "--background", "--factory-startup", "--python", str(integration)],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            timeout=180,
-            check=False,
-        )
-        output = completed.stdout + completed.stderr
-        self.assertEqual(completed.returncode, 0, output)
-        self.assertIn('"status": "pass"', output)
-
-    def test_nearest_face_weight_transfer_is_complete_normalized_and_audited(self) -> None:
-        config = json.loads(
-            (PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8")
-        )
-        integration = PIPELINE_ROOT / "tests" / "blender_nearest_face_weight_transfer_integration.py"
-        completed = subprocess.run(
-            [config["blender_executable"], "--background", "--factory-startup", "--python", str(integration)],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            timeout=180,
-            check=False,
-        )
-        output = completed.stdout + completed.stderr
-        self.assertEqual(completed.returncode, 0, output)
-        self.assertIn('"status": "pass"', output)
-        self.assertIn('"failed_vertices": 0', output)
 
 
 if __name__ == "__main__":

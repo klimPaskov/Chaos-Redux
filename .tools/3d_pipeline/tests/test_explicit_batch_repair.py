@@ -15,9 +15,7 @@ batch = importlib.import_module('explicit_batch_repair')
 class BatchContracts(unittest.TestCase):
     def row(self, kind):
         row = dict(mesh='Mesh', rig='Rig', topology_sha256='A'*64, selection_sha256='B'*64, review_evidence='Reviewed exact source selection.')
-        if kind == 'skin':
-            row['vertices'] = [dict(index=3, expected={'Bone':1.0}, replacement={'Bone':.5,'Other':.5})]
-        elif kind == 'winding':
+        if kind == 'winding':
             row.update(face_indices=[4,8], angular_tolerance_degrees=.5)
         else:
             row['corners'] = [dict(face_index=4, corner_index=2, vertex_index=3, expected_before=[0,0,1], requested_after=[1,0,0])]
@@ -26,7 +24,7 @@ class BatchContracts(unittest.TestCase):
     def validate(self, kind, rows=None):
         return batch.validate_specs({'meshes':rows or [self.row(kind)]}, kind)
 
-    def test_three_disjoint_operations(self):
+    def test_disjoint_registered_operations(self):
         for kind in batch.OPERATIONS.values():
             self.assertEqual(len(self.validate(kind)),1)
             row = self.row(kind)
@@ -55,17 +53,6 @@ class BatchContracts(unittest.TestCase):
             row = self.row('winding'); row['face_indices']=value
             with self.assertRaises(ValueError): self.validate('winding',[row])
 
-    def test_skin_positive_normalized_existing_contract(self):
-        for value in ({'Bone':0,'Other':1},{'Bone':1e-49,'Other':1},{'Bone':.8},{'Bone':float('nan')},{'A':.2,'B':.2,'C':.2,'D':.2,'E':.2}):
-            row=self.row('skin'); row['vertices'][0]['replacement']=value
-            with self.assertRaises(ValueError): self.validate('skin',[row])
-
-    def test_skin_no_noops_or_duplicate_vertices(self):
-        row=self.row('skin'); row['vertices'][0]['replacement']={'Bone':1}
-        with self.assertRaises(ValueError): self.validate('skin',[row])
-        row=self.row('skin'); row['vertices']*=2
-        with self.assertRaises(ValueError): self.validate('skin',[row])
-
     def test_corner_explicit_unit_vectors_only(self):
         for value in ([0,0,0],[0,0,2],[0,0,float('nan')],[True,0,0],[0,0,1]):
             row=self.row('normals'); row['corners'][0]['requested_after']=value
@@ -87,7 +74,7 @@ class BatchContracts(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
             source=root/'source.blend'; source.write_bytes(b'immutable')
-            spec=root/'spec.json'; spec.write_text(json.dumps({'meshes':[self.row('skin')]}))
+            spec=root/'spec.json'; spec.write_text(json.dumps({'meshes':[self.row('winding')]}))
             sha=lambda p: hashlib.sha256(p.read_bytes()).hexdigest().upper()
             def path(job,relative,suffix,missing=False):
                 resolved=(job/relative).resolve()
@@ -100,8 +87,8 @@ class BatchContracts(unittest.TestCase):
                     result[key]=value
                 return result
             api=types.SimpleNamespace(_promotion_path=path,file_sha256=sha,_promotion_unique_pairs=pairs,_promotion_digest=lambda v:json.dumps(v,allow_nan=False))
-            req=dict(operation='repair_explicit_skin_batch',job_root=str(root),payload=dict(blend_rel='source.blend',checkpoint_rel='output.blend',expected_source_sha256=sha(source),repair_spec_rel='spec.json',expected_repair_spec_sha256=sha(spec)))
-            self.assertEqual(batch.inputs(req,api)[0],'skin')
+            req=dict(operation='repair_explicit_mesh_winding_batch',job_root=str(root),payload=dict(blend_rel='source.blend',checkpoint_rel='output.blend',expected_source_sha256=sha(source),repair_spec_rel='spec.json',expected_repair_spec_sha256=sha(spec)))
+            self.assertEqual(batch.inputs(req,api)[0],'winding')
             for key in ('expected_source_sha256','expected_repair_spec_sha256'):
                 bad=copy.deepcopy(req);bad['payload'][key]='0'*64
                 with self.assertRaises(ValueError): batch.inputs(bad,api)

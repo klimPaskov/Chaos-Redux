@@ -19,12 +19,6 @@ def run():
             create_fixture(job)
             body = bpy.data.objects['FixtureBody']
             body.vertex_groups.new(name=ROOT_BONE)
-            if kind == 'skin':
-                body.vertex_groups[ROOT_BONE].add([1], .4, 'REPLACE')
-                body.vertex_groups[PARENT_BONE].add([1], .6, 'REPLACE')
-                bpy.data.objects[RIG_NAME].pose.bones[PARENT_BONE].location.x = 1.0
-                bpy.data.objects[RIG_NAME].pose.bones[PARENT_BONE].keyframe_insert(data_path='location',frame=6)
-                bpy.context.view_layer.update()
             second = body.copy()
             second.data = body.data.copy()
             second.name = 'FixtureSecond'
@@ -45,9 +39,7 @@ def run():
             for name in ('FixtureBody', 'FixtureSecond'):
                 obj = bpy.data.objects[name]
                 row = dict(mesh=name, rig=RIG_NAME, topology_sha256=api._mesh_region_topology(obj.data), selection_sha256='0'*64, review_evidence='Disposable explicit two-mesh regression selection.')
-                if kind == 'skin':
-                    row['vertices'] = [dict(index=1, expected=batch.weights(obj)[1], replacement={PARENT_BONE: 1.0})]
-                elif kind == 'winding':
+                if kind == 'winding':
                     row.update(face_indices=[0], angular_tolerance_degrees=0.5)
                 else:
                     face = obj.data.polygons[0]
@@ -78,8 +70,6 @@ def run():
             finally:
                 api._promotion_fingerprint = native_snapshot
             assert len(captures) == 3, 'Exactly one full before/after/reopened fingerprint per transaction'
-            if kind == 'skin':
-                assert captures[0]['sections']['objects']['FixtureBody']['settings']['dimensions'] != captures[1]['sections']['objects']['FixtureBody']['settings']['dimensions'], 'Fixture must exercise derived dimension changes in both serialization locations'
             assert results[kind]['source_immutable'] and results[kind]['reopen_comparison']['accepted']
             cached_stats, uncached_stats = {}, {}
             cached = api._promotion_fingerprint(job, (), include_sections=True, image_cache_stats=cached_stats)
@@ -159,7 +149,7 @@ def run():
                 batch._apply = applied
             assert calls == [] and not (job / (kind+'_bad.blend')).exists()
             results[kind]['negative_cases'] = failures
-        from manual_creature_rig import inspect_mesh_landmarks
+        from mesh_inspection_repair import inspect_mesh_landmarks
         landmark_req={'job_root':str(job),'payload':{'blend_rel':source.name,'expected_source_sha256':api.file_sha256(source),'mesh_names':['FixtureBody','FixtureSecond'],'report_rel':'evidence/landmarks.json'}}
         landmarks=inspect_mesh_landmarks(landmark_req,api.__dict__)
         inventory=json.loads((job/landmarks['report']).read_text())

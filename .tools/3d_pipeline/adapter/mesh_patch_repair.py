@@ -3,7 +3,7 @@ from collections import Counter
 from pathlib import Path
 import math
 
-from manual_creature_rig import _open, _finish, digest, name, vector
+from mesh_inspection_repair import _open, _finish, digest, name, vector
 
 
 def validate_patch(spec, vertices, faces, materials, uv_names, bones):

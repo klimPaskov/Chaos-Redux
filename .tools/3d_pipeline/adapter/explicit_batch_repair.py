@@ -1,4 +1,4 @@
-"""Source-bound batch winding/skin and isolated explicit corner-normal transactions.
+"""Source-bound batch winding and isolated explicit corner-normal transactions.
 
 Selections and prior values come from hash-bound reviewed JSON, never inference.
 Each operation loads once, fingerprints each stage once, saves one new sibling,
@@ -11,16 +11,14 @@ import json
 import math
 from pathlib import Path
 import re
-import struct
 
-from explicit_skin_repair import validate_spec as validate_skin, weights
 from mesh_winding_repair import _corner_normals, _geometry_invariants, _verify_normal_signs
-from manual_creature_rig import winding_inventory
+from mesh_inspection_repair import winding_inventory
 
 
-OPERATIONS = {"repair_explicit_mesh_winding_batch": "winding", "repair_explicit_skin_batch": "skin", "replace_explicit_corner_normals": "normals"}
+OPERATIONS = {"repair_explicit_mesh_winding_batch": "winding", "replace_explicit_corner_normals": "normals"}
 MAX_MESHES = 512
-MAX_ITEMS = {"winding": 200000, "skin": 200000, "normals": 4096}
+MAX_ITEMS = {"winding": 200000, "normals": 4096}
 SPEC_BYTE_LIMIT = 64 * 1024 * 1024
 
 
@@ -50,7 +48,7 @@ def validate_specs(spec, kind):
         raise ValueError("Repair spec requires 1-512 explicitly named mesh records.")
     seen, count = set(), 0
     common = {"mesh", "rig", "topology_sha256", "selection_sha256", "review_evidence"}
-    extra = {"winding": {"face_indices", "angular_tolerance_degrees"}, "skin": {"vertices"}, "normals": {"corners"}}[kind]
+    extra = {"winding": {"face_indices", "angular_tolerance_degrees"}, "normals": {"corners"}}[kind]
     for row in spec["meshes"]:
         if not isinstance(row, dict) or set(row) != common | extra:
             raise ValueError("Unexpected or missing per-mesh repair fields.")
@@ -61,13 +59,7 @@ def validate_specs(spec, kind):
             _hash(row[key], key)
         if not isinstance(row["review_evidence"], str) or not 10 <= len(row["review_evidence"]) <= 4096:
             raise ValueError("Require explicit reviewed selection evidence.")
-        if kind == "skin":
-            validate_skin({key: value for key, value in row.items() if key != "selection_sha256"})
-            for entry in row["vertices"]:
-                if any(struct.unpack("<f", struct.pack("<f", value))[0] <= 0 for key in ("expected", "replacement") for value in entry[key].values()):
-                    raise ValueError("Explicit skin weight underflows native float32 to zero; supply a reviewed representable map.")
-            count += len(row["vertices"])
-        elif kind == "winding":
+        if kind == "winding":
             ids, tolerance = row["face_indices"], row["angular_tolerance_degrees"]
             if (not isinstance(ids, list) or not 1 <= len(ids) <= 100000
                     or any(type(i) is not int or not 0 <= i < 1000000 for i in ids) or len(set(ids)) != len(ids)):
@@ -104,9 +96,6 @@ def selection_records(obj, kind, row):
     if kind == "winding":
         return [{"face": i, "vertices": list(mesh.polygons[i].vertices),
                  "normals": [list(mesh.corner_normals[j].vector) for j in mesh.polygons[i].loop_indices]} for i in sorted(row["face_indices"])]
-    if kind == "skin":
-        actual = weights(obj)
-        return [{"index": entry["index"], "weights": sorted(actual[entry["index"]].items())} for entry in sorted(row["vertices"], key=lambda value: value["index"])]
     result = []
     for entry in sorted(row["corners"], key=lambda value: (value["face_index"], value["corner_index"])):
         face = mesh.polygons[entry["face_index"]]
@@ -148,25 +137,7 @@ def preflight_mesh(api, row, kind):
     obj, rig = _target(api, row)
     mesh = obj.data
     original = {"spec": row, "topology_before": row["topology_sha256"].upper()}
-    if kind == "skin":
-        old = weights(obj)
-        groups = set(obj.vertex_groups.keys())
-        all_bones = {b.name for b in rig.data.bones}
-        deform_bones = {b.name for b in rig.data.bones if b.use_deform}
-        for entry in row["vertices"]:
-            # A reviewed prior assignment may contain a control-only bone
-            # such as root.  It must be present in the existing vertex-group
-            # and armature namespaces, while the replacement must resolve to
-            # deforming bones so the exported skin can actually move it.
-            if (entry["index"] >= len(old)
-                    or not set(entry["expected"]) <= (groups & all_bones)
-                    or not set(entry["replacement"]) <= (groups & deform_bones)):
-                raise ValueError("Unknown selected vertex or missing existing deform group/bone.")
-            actual = old[entry["index"]]
-            if set(actual) != set(entry["expected"]) or any(abs(actual[b] - v) > 1e-7 for b, v in entry["expected"].items()):
-                raise ValueError("Selected skin prior values differ from the reviewed expectations.")
-        original.update(weights=old, selected={entry["index"] for entry in row["vertices"]})
-    elif kind == "winding":
+    if kind == "winding":
         if max(row["face_indices"]) >= len(mesh.polygons) or any(len(face.vertices) != 3 for face in mesh.polygons):
             raise ValueError("Winding requires existing selected faces and triangular topology.")
         normals = _corner_normals(mesh)
@@ -204,15 +175,7 @@ def _apply(api, original, kind):
     row = original["spec"]
     obj = api.bpy.data.objects[row["mesh"]]
     mesh = obj.data
-    if kind == "skin":
-        for entry in row["vertices"]:
-            index = entry["index"]
-            source_groups = [group.group for group in mesh.vertices[index].groups]
-            for group_index in source_groups:
-                obj.vertex_groups[group_index].remove([index])
-            for bone, value in entry["replacement"].items():
-                obj.vertex_groups[bone].add([index], value, "REPLACE")
-    elif kind == "winding":
+    if kind == "winding":
         uv = {layer.name: {face.index: {mesh.loops[i].vertex_index: list(layer.data[i].uv) for i in face.loop_indices} for face in mesh.polygons} for layer in mesh.uv_layers}
         for i in row["face_indices"]:
             mesh.polygons[i].flip()
@@ -257,20 +220,7 @@ def verify_mesh(api, original, kind):
     mesh = obj.data
     proof = {"mesh": row["mesh"], "selection_sha256": row["selection_sha256"].upper(),
              "topology_before": original["topology_before"], "topology_after": api._mesh_region_topology(mesh)}
-    if kind == "skin":
-        actual = weights(obj)
-        if any(actual[i] != value for i, value in enumerate(original["weights"]) if i not in original["selected"]):
-            raise RuntimeError("Batch skin changed an unselected weight.")
-        for entry in row["vertices"]:
-            current = actual[entry["index"]]
-            if (set(current) != set(entry["replacement"]) or not 1 <= len(current) <= 4
-                    or any(not math.isfinite(v) or v <= 0 for v in current.values()) or abs(sum(current.values())-1) > 1e-6
-                    or any(abs(current[b]-v) > 1e-7 for b, v in entry["replacement"].items())):
-                raise RuntimeError(f"Explicit selected replacement weights failed native verification: {obj.name} vertex {entry['index']}; requested={entry['replacement']}; actual={current}.")
-        proof.update(changed_vertices=len(original["selected"]), prior_weights_sha256=api._promotion_digest(original["weights"]),
-            replacement_weights_sha256=api._promotion_digest([actual[i] for i in sorted(original["selected"])]),
-            untouched_weights_sha256=api._promotion_digest([value for i, value in enumerate(actual) if i not in original["selected"]]))
-    elif kind == "winding":
+    if kind == "winding":
         for face, vertices in zip(mesh.polygons, original["faces"]):
             expected = vertices[:1] + list(reversed(vertices[1:])) if face.index in original["selected"] else vertices
             if list(face.vertices) != expected:
@@ -321,14 +271,7 @@ def project_fingerprint(api, fingerprint, originals, kind):
         name = original["spec"]["mesh"]
         obj, selected = api.bpy.data.objects[name], original["selected"]
         geometry = sections["geometry"][name]
-        if kind == "skin":
-            geometry["weights"] = api._promotion_digest([None if i in selected else value for i, value in enumerate(weights(obj))])
-            for key in ("bounds", "dimensions"):
-                sections["objects"][name].pop(key, None)
-            # The same derived dimension vector is also serialized through RNA.
-            # Keep all transforms and every other scalar setting exact.
-            sections["objects"][name]["settings"].pop("dimensions", None)
-        elif kind == "winding":
+        if kind == "winding":
             for key in ("positions_normals", "topology", "loops_normals", "uvs", "attributes", "has_custom_normals", "edges"):
                 geometry.pop(key)
             invariant = _geometry_invariants(api, obj)

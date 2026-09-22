@@ -1,4 +1,4 @@
-"""Registration contract for sourced-animation compound creature processing."""
+"""Registration contract for bounded source-preserving mesh and runtime operations."""
 
 from __future__ import annotations
 
@@ -29,64 +29,6 @@ REGISTERED_TOOLS = {
         "component_limit",
         "preview_view_names",
     },
-    "chaosx_blender_hoi4_import_animation_action": {
-        "job_id",
-        "blend_rel",
-        "source_rel",
-        "provenance_rel",
-        "checkpoint_rel",
-        "source_action_name",
-        "target_armature_name",
-        "target_action_name",
-        "source_kind",
-        "source_reference_id",
-        "source_sha256",
-        "source_armature_name",
-        "bone_chains",
-        "promote_audited_target",
-    },
-    "chaosx_blender_hoi4_retime_animation_action": {
-        "job_id",
-        "blend_rel",
-        "checkpoint_rel",
-        "action_name",
-        "target_armature_name",
-        "source_fps",
-        "target_fps",
-    },
-    "chaosx_blender_hoi4_segment_creature_components": {
-        "job_id",
-        "blend_rel",
-        "checkpoint_rel",
-        "region_mode",
-        "rider_z_min_fraction",
-        "rider_z_max_fraction",
-        "rider_x_center_fraction",
-        "rider_x_half_fraction",
-        "rider_y_center_fraction",
-        "rider_y_half_fraction",
-        "rider_object_name",
-        "body_object_name",
-        "component_prefix",
-    },
-    "chaosx_blender_hoi4_calibrate_creature_scale": {
-        "job_id",
-        "blend_rel",
-        "checkpoint_rel",
-        "rider_component_names",
-        "target_rider_runtime_height_m",
-        "runtime_entity_scale",
-    },
-    "chaosx_blender_hoi4_correct_action_grounding": {
-        "job_id",
-        "blend_rel",
-        "checkpoint_rel",
-        "action_name",
-        "target_armature_name",
-        "grounding_policy",
-        "root_bone",
-        "excluded_contact_bones",
-    },
     "chaosx_blender_hoi4_sanitize_runtime_candidate": {
         "job_id",
         "blend_rel",
@@ -96,6 +38,36 @@ REGISTERED_TOOLS = {
         "max_influences_per_vertex",
     },
 }
+
+# Rig, skin-weight and keyframe authoring now belongs to live Blender sessions
+# through the MCP bridge, so no repository Python route may expose these again.
+REMOVED_OPERATIONS = {
+    "author_humanoid_rig",
+    "author_humanoid_actions",
+    "author_locomotion_action",
+    "patch_existing_humanoid_action_phases",
+    "author_creature_rig",
+    "author_creature_action",
+    "author_measured_creature_rig",
+    "author_measured_creature_action",
+    "inspect_fitted_humanoid_source",
+    "author_fitted_humanoid_rig",
+    "author_fitted_humanoid_action",
+    "repair_explicit_skin",
+    "preview_explicit_skin_selection",
+    "repair_explicit_skin_batch",
+    "collapse_identity_leaf_joints",
+    "correct_action_grounding",
+    "ground_existing_action",
+    "offset_action_root",
+    "retime_animation_action",
+    "import_animation_action",
+    "import_bvh_animation_action",
+    "segment_creature_components",
+    "calibrate_creature_scale",
+    "attach_rigid_component",
+}
+REMOVED_TOOLS = {f"chaosx_blender_hoi4_{operation}" for operation in REMOVED_OPERATIONS}
 
 
 class CompoundAdapterRegistrationTests(unittest.TestCase):
@@ -112,12 +84,11 @@ class CompoundAdapterRegistrationTests(unittest.TestCase):
         )
         cls.live = {tool["name"]: tool for tool in response["tools"]}
 
-    def test_production_registration_exposes_only_source_preserving_compound_operations(self) -> None:
+    def test_production_registration_exposes_only_source_preserving_operations(self) -> None:
         config = tomllib.loads((REPO_ROOT / ".codex" / "config.toml").read_text(encoding="utf-8"))
         enabled = set(config["mcp_servers"]["blender_hoi4"]["enabled_tools"])
         self.assertTrue(set(REGISTERED_TOOLS) <= enabled)
-        self.assertNotIn("chaosx_blender_hoi4_author_creature_action", enabled)
-        self.assertNotIn("chaosx_blender_hoi4_offset_action_root", enabled)
+        self.assertFalse(REMOVED_TOOLS & enabled, sorted(REMOVED_TOOLS & enabled))
 
     def test_live_schemas_are_bounded_and_exact(self) -> None:
         for tool_name, expected_properties in REGISTERED_TOOLS.items():
@@ -128,32 +99,24 @@ class CompoundAdapterRegistrationTests(unittest.TestCase):
                 {"python", "code", "shell", "url", "absolute_path"} & set(properties)
             )
 
-    def test_external_action_and_compound_policies_are_fail_closed(self) -> None:
-        import_schema = self.live["chaosx_blender_hoi4_import_animation_action"]["inputSchema"]
-        self.assertEqual(
-            import_schema["properties"]["source_kind"]["enum"],
-            ["meshy_animate", "professional_source"],
-        )
-        grounding_schema = self.live["chaosx_blender_hoi4_correct_action_grounding"]["inputSchema"]
-        self.assertEqual(
-            grounding_schema["properties"]["grounding_policy"]["const"],
-            "per_frame_root_contact_zero_clearance",
-        )
+    def test_adapter_config_registers_kept_operations_only(self) -> None:
         adapter_config = json.loads(
             (PIPELINE_ROOT / "config" / "blender_hoi4_adapter.json").read_text(encoding="utf-8")
         )
         operations = set(adapter_config["operations"])
         self.assertTrue(
             {
-                "import_animation_action",
-                "retime_animation_action",
-                "segment_creature_components",
-                "calibrate_creature_scale",
-                "correct_action_grounding",
+                "review_humanoid_components",
                 "sanitize_runtime_candidate",
+                "prepare_candidate",
+                "prepare_export_coordinate_checkpoint",
+                "process_textures",
+                "export_mesh",
+                "reimport_export",
             }
             <= operations
         )
+        self.assertFalse(REMOVED_OPERATIONS & operations, sorted(REMOVED_OPERATIONS & operations))
 
 
 if __name__ == "__main__":

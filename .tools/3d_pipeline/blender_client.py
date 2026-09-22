@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, Literal, Optional
+from typing import Any, Dict, Optional
 
 from lib.mcp_stdio import MCPRouteError, call_stdio
 
@@ -39,7 +39,7 @@ class BlenderAdapterClient:
     def call(self, tool: str, arguments: Dict[str, Any]) -> Dict[str, Any]:
         command = ["cmd.exe", "/d", "/c", "call", str(self.wrapper)]
         result: Optional[Dict[str, Any]] = None
-        read_only_tools = {"chaosx_blender_hoi4_health", "chaosx_blender_hoi4_inspect_scene", "chaosx_blender_hoi4_inspect_mesh_landmarks", "chaosx_blender_hoi4_inspect_mesh_winding", "chaosx_blender_hoi4_inspect_fitted_humanoid_source", "chaosx_blender_hoi4_review_humanoid_components"}
+        read_only_tools = {"chaosx_blender_hoi4_health", "chaosx_blender_hoi4_inspect_scene", "chaosx_blender_hoi4_inspect_mesh_landmarks", "chaosx_blender_hoi4_inspect_mesh_winding", "chaosx_blender_hoi4_review_humanoid_components"}
         attempt_limit = 3 if tool in read_only_tools else 1
         for attempt in range(attempt_limit):
             try:
@@ -104,17 +104,6 @@ class BlenderAdapterClient:
         excluded_provider_objects: Optional[list[str]] = None,
         vanilla_reference: Optional[Dict[str, Any]] = None,
         texture_source_rels: Optional[Dict[str, str]] = None,
-        geometry_source_rel: Optional[str] = None,
-        geometry_object_name: str = "",
-        dual_source_base_rig: bool = False,
-        geometry_weight_mode: Literal[
-            "four_nearest",
-            "nearest_face_interpolated",
-            "automatic_bone_heat",
-            "bone_distance",
-        ] = "four_nearest",
-        source_armature_name: str = "",
-        source_mesh_names: Optional[list[str]] = None,
         preserve_geometry_topology: bool = False,
         repair_before_reduction: bool = False,
         topology_weld_distance: float = 1e-5,
@@ -134,12 +123,6 @@ class BlenderAdapterClient:
                 "excluded_provider_objects": excluded_provider_objects or [],
                 "vanilla_reference": vanilla_reference or {},
                 "texture_source_rels": texture_source_rels or {},
-                "geometry_source_rel": geometry_source_rel or "",
-                "geometry_object_name": geometry_object_name,
-                "dual_source_base_rig": dual_source_base_rig,
-                "geometry_weight_mode": geometry_weight_mode,
-                "source_armature_name": source_armature_name,
-                "source_mesh_names": source_mesh_names or [],
                 "preserve_geometry_topology": preserve_geometry_topology,
                 "repair_before_reduction": repair_before_reduction,
                 "topology_weld_distance": topology_weld_distance,
@@ -245,80 +228,6 @@ class BlenderAdapterClient:
             },
         )
 
-    def author_locomotion_action(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        action_name: str = "Armature|Move|baselayer_WORKING",
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_author_locomotion_action",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "action_name": action_name,
-            },
-        )
-
-    def author_humanoid_rig(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        rig_name: str = "",
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_author_humanoid_rig",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "rig_name": rig_name,
-            },
-        )
-
-    def patch_existing_humanoid_action_phases(
-        self, job_id: str, blend_rel: str, checkpoint_rel: str,
-        expected_source_sha256: str, expected_action_sha256: str,
-        target_armature_name: str, source_action_name: str, target_action_name: str,
-        semantic_role: str, source_fps: int, source_fps_base: float,
-        frame_start: int, frame_end: int, phase_frames: Dict[str, int],
-        allowed_bones: list[str], motion_bone_chain: list[str], bone_patches: Dict[str, Any],
-    ) -> Dict[str, Any]:
-        return self.call("chaosx_blender_hoi4_patch_existing_humanoid_action_phases", {
-            "job_id": job_id, "blend_rel": blend_rel, "checkpoint_rel": checkpoint_rel,
-            "expected_source_sha256": expected_source_sha256, "expected_action_sha256": expected_action_sha256,
-            "target_armature_name": target_armature_name, "source_action_name": source_action_name, "target_action_name": target_action_name,
-            "semantic_role": semantic_role, "source_fps": source_fps, "source_fps_base": source_fps_base,
-            "frame_start": frame_start, "frame_end": frame_end, "phase_frames": phase_frames,
-            "allowed_bones": allowed_bones, "motion_bone_chain": motion_bone_chain, "bone_patches": bone_patches,
-        })
-
-    def author_humanoid_actions(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        action_names: Optional[Dict[str, str]] = None,
-        fps: int = 24,
-        fused_weapon_grip: bool = False,
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_author_humanoid_actions",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "action_names": action_names or {},
-                "fps": fps,
-                "fused_weapon_grip": fused_weapon_grip,
-            },
-        )
-
-
-
 
     def bake_static_mesh_transforms(
         self,
@@ -372,237 +281,6 @@ class BlenderAdapterClient:
             },
         )
 
-    def import_animation_action(
-        self,
-        job_id: str,
-        blend_rel: str,
-        source_rel: str,
-        provenance_rel: str,
-        checkpoint_rel: str,
-        source_action_name: str,
-        target_armature_name: str,
-        target_action_name: str,
-        source_kind: Literal["meshy_animate", "professional_source"],
-        source_reference_id: str,
-        source_sha256: str,
-        bone_chains: Optional[Dict[str, list[str]]] = None,
-        promote_audited_target: bool = False,
-        source_armature_name: str = "",
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_import_animation_action",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "source_rel": source_rel,
-                "provenance_rel": provenance_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "source_action_name": source_action_name,
-                "source_armature_name": source_armature_name,
-                "target_armature_name": target_armature_name,
-                "target_action_name": target_action_name,
-                "source_kind": source_kind,
-                "source_reference_id": source_reference_id,
-                "source_sha256": source_sha256,
-                "bone_chains": bone_chains or {},
-                "promote_audited_target": promote_audited_target,
-            },
-        )
-
-    def retime_animation_action(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        action_name: str,
-        target_armature_name: str,
-        source_fps: float,
-        target_fps: float,
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_retime_animation_action",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "action_name": action_name,
-                "target_armature_name": target_armature_name,
-                "source_fps": source_fps,
-                "target_fps": target_fps,
-            },
-        )
-
-    def segment_creature_components(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        region_mode: str = "loose",
-        rider_z_min_fraction: float = 0.72,
-        rider_z_max_fraction: float = 1.0,
-        rider_x_center_fraction: float = 0.5,
-        rider_x_half_fraction: float = 0.38,
-        rider_y_center_fraction: float = 0.5,
-        rider_y_half_fraction: float = 0.42,
-        rider_object_name: str = "elephant_rider_region",
-        body_object_name: str = "elephant_body_region",
-        component_prefix: str = "elephant_component",
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_segment_creature_components",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "region_mode": region_mode,
-                "rider_z_min_fraction": rider_z_min_fraction,
-                "rider_z_max_fraction": rider_z_max_fraction,
-                "rider_x_center_fraction": rider_x_center_fraction,
-                "rider_x_half_fraction": rider_x_half_fraction,
-                "rider_y_center_fraction": rider_y_center_fraction,
-                "rider_y_half_fraction": rider_y_half_fraction,
-                "rider_object_name": rider_object_name,
-                "body_object_name": body_object_name,
-                "component_prefix": component_prefix,
-            },
-        )
-
-    def calibrate_creature_scale(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        rider_component_names: list[str],
-        target_rider_runtime_height_m: float,
-        runtime_entity_scale: float = 0.8,
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_calibrate_creature_scale",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "rider_component_names": rider_component_names,
-                "target_rider_runtime_height_m": target_rider_runtime_height_m,
-                "runtime_entity_scale": runtime_entity_scale,
-            },
-        )
-
-    def author_creature_rig(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        rider_component_names: Optional[list[str]] = None,
-        weight_mode: str = "semantic",
-        rig_name: str = "",
-        creature_rig_family: str = "elephant",
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_author_creature_rig",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "rider_component_names": rider_component_names or [],
-                "weight_mode": weight_mode,
-                "rig_name": rig_name,
-                "creature_rig_family": creature_rig_family,
-            },
-        )
-
-    def author_creature_action(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        action_role: str,
-        action_name: str,
-        creature_rig_family: str = "elephant",
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_author_creature_action",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "action_role": action_role,
-                "action_name": action_name,
-                "creature_rig_family": creature_rig_family,
-            },
-        )
-
-    def correct_action_grounding(
-        self,
-        job_id: str,
-        blend_rel: str,
-        checkpoint_rel: str,
-        action_name: str,
-        target_armature_name: str,
-        grounding_policy: Literal["per_frame_root_contact_zero_clearance"],
-        root_bone: str = "Hips",
-        excluded_contact_bones: Optional[list[str]] = None,
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_correct_action_grounding",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "action_name": action_name,
-                "target_armature_name": target_armature_name,
-                "grounding_policy": grounding_policy,
-                "root_bone": root_bone,
-                "excluded_contact_bones": excluded_contact_bones or [],
-            },
-        )
-
-    def import_bvh_animation_action(
-        self,
-        job_id: str,
-        blend_rel: str,
-        source_rel: str,
-        provenance_rel: str,
-        checkpoint_rel: str,
-        source_action_name: str,
-        target_armature_name: str,
-        target_action_name: str,
-        semantic_role: str,
-        source_reference_id: str,
-        source_sha256: str,
-        source_fps: float,
-        target_fps: float,
-        bone_chains: Dict[str, list[str]],
-        root_motion_policy: Literal["in_place_xy_preserve_z"],
-        global_scale: float = 1.0,
-        axis_forward: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "-Z",
-        axis_up: Literal["X", "Y", "Z", "-X", "-Y", "-Z"] = "Y",
-        promote_audited_target: bool = False,
-    ) -> Dict[str, Any]:
-        return self.call(
-            "chaosx_blender_hoi4_import_bvh_animation_action",
-            {
-                "job_id": job_id,
-                "blend_rel": blend_rel,
-                "source_rel": source_rel,
-                "provenance_rel": provenance_rel,
-                "checkpoint_rel": checkpoint_rel,
-                "source_action_name": source_action_name,
-                "target_armature_name": target_armature_name,
-                "target_action_name": target_action_name,
-                "semantic_role": semantic_role,
-                "source_reference_id": source_reference_id,
-                "source_sha256": source_sha256,
-                "source_fps": source_fps,
-                "target_fps": target_fps,
-                "bone_chains": bone_chains,
-                "root_motion_policy": root_motion_policy,
-                "global_scale": global_scale,
-                "axis_forward": axis_forward,
-                "axis_up": axis_up,
-                "promote_audited_target": promote_audited_target,
-            },
-        )
 
     def prepare_export_coordinate_checkpoint(
         self,

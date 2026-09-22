@@ -2,7 +2,7 @@
 import math
 import json
 
-from manual_creature_rig import _open, _finish, _component_material, digest, name, vector
+from mesh_inspection_repair import _open, _finish, _component_material, digest, name, vector
 
 
 def verify_requested_vertex(row, world_position, weights):

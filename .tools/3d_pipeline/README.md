@@ -7,7 +7,8 @@ one approved reference image
   -> verified Meshy MCP route and balance gate
   -> image-to-3D and immediate GLB/FBX download with lineage
   -> repository-owned allowlisted Blender HOI4 adapter
-  -> Blender checkpoints, PDX material processing, and texture QA
+  -> candidate preparation, mesh geometry repair, PDX material processing, and texture QA
+  -> live skeleton, skinning, and skeletal action authoring in Blender through the MCP bridge
   -> checksum-locked io_pdx_mesh .mesh/.anim export
   -> sourced unit-audio package and licensing evidence when the asset is a unit
   -> reimport proof, validation evidence, and parent runtime handoff
@@ -33,6 +34,20 @@ If Meshy work requires a key and it is missing or blank, print this exact PowerS
 
 The key gate precedes Meshy route discovery, balance checks, and provider calls. Blender-only repairs verify their job boundary, Blender adapter, and export stack without a provider dependency.
 
+## Skeleton, skinning, and action policy
+
+No repository Python script and no adapter operation may create or edit bones, skin weights, or keyframes.
+
+Rigging, skinning, and every skeletal action are authored live in Blender by the model agent through the Blender MCP bridge, iteratively and with visual and deformation review.
+
+A pipeline operation that would generate a rig, transfer skin weights automatically, or synthesize an action is not permitted and must not be reintroduced.
+
+A body that needs skinning is skinned live in Blender.
+
+Repository Python keeps provider generation and download planning, candidate import and preparation of provider geometry, texture and material processing, mesh geometry repair, static transform baking and export partitioning, mesh and action export, reimport proof, accepted-reimport promotion, locator authoring, inspection and render QA, and health and checkpoint plumbing.
+
+The accepted authoring result is saved as a job checkpoint inside the job root, and the locked exporter writes the `.mesh` and `.anim` files from that checkpoint.
+
 ## Lock and route gate
 
 From the repository root, verify the selected Meshy MCP route, the pinned official Meshy server, the narrow Blender HOI4 adapter route, Blender, and checksum-locked `io_pdx_mesh` before any balance or paid/provider work.
@@ -49,6 +64,8 @@ The current verified Meshy tool names are `meshy_check_balance`, `meshy_image_to
 
 Use only names and arguments returned by the verified live route.
 
+Provider work in this package uses that route for balance preflight, geometry generation, task status, download, and remesh, and provider geometry never supplies a skeleton, skin weights, or an action.
+
 ### Meshy runtime recovery
 
 Lock the official `@meshy-ai/meshy-mcp-server` and its transitive `@modelcontextprotocol/sdk` by exact version, package integrity, and git head in `config/dependencies.lock.json`. Keep a versioned compatibility runtime keyed by those versions, verify both `dist/esm/server/index.js` and `dist/esm/server/streamableHttp.js`, and serialize install and patch work with a named interprocess mutex. Apply the patch once per runtime file and record matching patched-file checksums or sizes across the consecutive probes to prove idempotence.
@@ -59,11 +76,38 @@ The existing unattended Meshy route is `wrappers/run_meshy_mcp.cmd`, and the exi
 
 A running Blender process is not bridge evidence. Probe `127.0.0.1:<socket_port>` using `blender_mcp_addon.socket_port` from the dependency lock; when the endpoint is absent, start the lock-selected Blender executable hidden with `--background --online-mode --command blender_mcp --host 127.0.0.1 --port <socket_port>`, then reprobe and record the listening process before using the adapter.
 
-The adapter's `correct_action_grounding` operation is narrowly restricted to an existing attack action and the `Hips` root bone. It inserts measured integer-frame Hips-Z keys, corrects only the root contact offset, records before/after evaluated bounds, and rejects the checkpoint if any frame remains outside the contact tolerance. It does not author a replacement action, alter geometry, create a new rig, or call a provider.
+Bones, skin weights, and keyframes are created and edited only inside that live bridge session, where the model agent works on the approved working checkpoint, reviews the deformation and the motion visually, and saves the accepted result as a job checkpoint.
 
-Use the Blender Lab MCP route only for isolated development inspection after verifying its locked version and live interface.
+Verify the locked Blender Lab MCP version and live interface before using the bridge session for authoring or for isolated development inspection.
 
 Keep viewer, inspector, renderer, and comparison tools read-only, and record an absent capability such as a Technology Tree Viewer instead of inventing one.
+
+### Provider credit preflight
+
+Every paid provider stage is checked against the live balance before its call, and every paid task writes a before/after balance reconciliation.
+
+Textured Meshy 7 image-to-3D generation is estimated at 30 credits, and the remesh of a source above 300,000 triangles is estimated at 5 credits.
+
+The provider's actual `consumed_credits` value supersedes the estimate for later runs.
+
+## Supported adapter operations
+
+The adapter exposes these job-root-bounded operations:
+
+- Health and checkpoint plumbing: `health`, `save_checkpoint`.
+- Candidate preparation: `prepare_candidate`.
+- Inspection and QA: `inspect_scene`, `review_humanoid_components`, `inspect_mesh_winding`, `inspect_mesh_landmarks`, `inspect_animation_source`.
+- Texture and material processing: `process_textures`, `bind_existing_pdx_material`.
+- Mesh geometry repair: `repair_mesh_winding`, `repair_explicit_mesh_winding`, `repair_explicit_mesh_winding_batch`, `remove_explicit_duplicate_faces`, `repair_explicit_mesh_patch`, `edit_explicit_mesh_vertices`, `repair_explicit_vertex_remap`, `replace_explicit_corner_normals`.
+- Working assembly: `rotate_existing_assembly_yaw`, `author_locator`.
+- Static baking and export partitioning: `bake_static_mesh_transforms`, `partition_static_mesh_export_batches`, `partition_skeletal_mesh_export_batches`.
+- Export, reimport, and promotion: `prepare_export_coordinate_checkpoint`, `export_mesh`, `export_animation`, `reimport_export`, `promote_accepted_reimport`, `sanitize_runtime_candidate`.
+
+An operation that would generate a rig, transfer skin weights automatically, or synthesize an action is outside this surface.
+
+`author_locator` creates or updates one job-owned bone-parented Empty and never geometry or motion.
+
+`inspect_animation_source` reads a standalone FBX source's skeleton and action identity in a disposable scene without a target checkpoint.
 
 ## Deterministic job layout
 
@@ -113,6 +157,22 @@ Pass job-relative paths to provider and adapter calls after root-containment che
 
 Keep history, manifest state, checksums, dependency records, and copy provenance inside the job root, and never archive secrets.
 
+## Candidate preparation
+
+`prepare_candidate` prepares provider geometry inside the job root, and its payload uses `source_rel`, `asset_kind`, `target_height_m`, `runtime_stem`, `runtime_entity_scale`, `target_triangles`, `excluded_provider_objects`, `vanilla_reference`, `texture_source_rels`, `preserve_geometry_topology`, `repair_before_reduction`, `topology_weld_distance`, `max_runtime_footprint_m`, `runtime_footprint_policy`, and `output_namespace_rel`.
+
+Preparation keeps provider geometry, applies the calibrated height and scale exactly once, and never creates a skeleton, binds geometry to a rig, or produces skin weights.
+
+A body that needs skinning is skinned live in Blender.
+
+### Runtime weight sanitization
+
+`sanitize_runtime_candidate` creates a runtime checkpoint, and its `weight_only` mode preserves geometry, the rig, weapons, and materials.
+
+Weight sanitation enforces engine limits such as the maximum influence count: it removes invalid and zero-weight influences, keeps the strongest influences within that count, renormalizes the remaining weights, and reports the result per mesh.
+
+An unweighted vertex is a rigging defect that the report surfaces for real authoring in Blender, and the pipeline never pins it to the root bone.
+
 ## Reference and material rules
 
 Meshy receives exactly one clean final image at `refs/original/meshy_input.png`.
@@ -133,7 +193,7 @@ Keep model textures within the verified runtime dimension budget, which is `1024
 
 If the provider diffuse is too dark, derive a documented deterministic grade from the immutable provider base and rebuild the derivative from that base instead of compounding edits.
 
-## Humanoid animation and export rules
+## Humanoid calibration and action rules
 
 For humanoids, read-only import the installed vanilla infantry mesh and its entity, measure the source mesh, and record source geometry height, entity scale, effective runtime height, axes, and ground contact.
 
@@ -141,71 +201,65 @@ Match custom geometry to the calibrated vanilla source height and apply entity s
 
 Keep source geometry height distinct from effective runtime height, and never guess `1.8m` or compensate with arbitrary scale.
 
-Clean, retarget, and bake humanoid animation candidates, normalize armature transforms, scale keyed location channels deliberately exactly once when units differ, define in-place or root-motion policy, check foot and ground contacts, and validate real idle, move, attack, and death actions when required.
+Each required role is a real skeletal action authored live in Blender, and the accepted action is checkpointed in the PDX export coordinate system before export.
+
+Every role declares its in-place or root-motion policy, keeps foot and ground contact, and is reviewed as real idle, move, attack, and death motion where required.
 
 Never substitute a static still for a requested skeletal action.
 
-### Skeletal animation source gate
+### Action authoring and validation
 
-Use Blender for manual rigging, weighting, and skeletal animation.
-Try Meshy rigging once per model and each required animation once on a usable supported rig; accept only outputs that pass visual, deformation, contact, and semantic-role review.
-After the first failure, unusable result, or unsupported stage, proceed directly to manual Blender authoring without renewed approval or paid rig/animation retries.
-Polling or downloading the same task does not consume another attempt, and regenerating geometry does not reset the limit.
-Retain valid Meshy rigs and actions; repair existing missing or faulty rigs/actions directly in Blender without new provider calls.
-Blender-only repairs do not require a Meshy API key or balance check; verify the locked Blender adapter and export stack.
+Bones, skin weights, and keyframes are created and edited only in the live Blender session, and repository Python works on the checkpoint that session saves.
 
-Author real role-specific bone motion through verified adapter operations and retain editable rig, weights, keys, constraints, baked actions, and checkpoint evidence.
-Whole-rig transforms alone, static-pose aliases, and semantic reuse of one action for another role are not final animation.
-Attack/fire roles require aim, discharge, recoil, and recovery where applicable; death requires articulated collapse, impact, and settling.
+Role-specific bone motion must be real, and whole-rig transforms alone, static-pose aliases, and semantic reuse of one action for another role are not final animation.
+
+Attack and fire roles require aim, discharge, recoil, and recovery where applicable, and death requires articulated collapse, impact, and settling.
+
 Preserve the existing contact, loop, root-motion, scale, preview, export, and reimport acceptance requirements.
-Record the first Meshy task outcome or unsupported-stage reason, Blender repair reason, authoring model, action source, and proof paths.
-If a required authoring operation is unavailable, report the exact capability gap rather than substituting mock motion.
-Other external animation sources still require their separate approval.
 
-External FBX action selection preserves the exact receipt-verified source identifier and accepts ordinary balanced parenthetical qualifiers such as `KayKit Animated Character|Shoot(2h)Bow`; destination action names remain separately constrained to safe runtime identifiers. Native BVH preflight accepts finite positive leading-decimal frame times such as `Frame Time: .0083333` and continues to reject malformed, non-finite, zero, and negative values.
+Record the authoring session, the accepted checkpoint, the action source, and the proof paths for every action.
+
+If a required authoring capability is unavailable, report the exact capability gap rather than substituting mock motion.
+
+An external animation source still requires its separate approval.
 
 ### Firearm body generation and Blender assembly
 
 Every current firearm-bearing unit must receive a newly generated weapon-free Meshy 7 body, even when its armed predecessor was considered complete.
+
 Prepare exactly one body-only reference with firearms removed, clear anatomy and neutral hands in a suitable A/T pose; keep the firearm design as separate reconstruction evidence.
-Rig and animate the new body directly in Blender and model/add the firearms and other required held objects there.
-Do not spend Meshy rigging or animation credits for this route; it takes precedence over the general one-attempt provider route.
+
+The provider route supplies this body's geometry only, while the skeleton, the skin weights, and the actions for it are authored live in Blender together with the firearms and other held objects modeled there.
+
 Keep the firearm rigid and separately controlled, validate both hand contacts and shoulder/stock relationship when applicable, and retain a measured muzzle locator, aim/discharge/recoil/recovery phases, and synchronized effects and sourced audio.
+
 A fused provider firearm is historical evidence, not the final replacement route.
 
 Add all missing required model elements in Blender without asking again, including melee tools, weapons, held objects, and equipment.
+
 Preserve the intended unit identity and document component design, dimensions, materials, attachment, and editable source geometry.
+
 Budget the complete model including props against its calibrated ceiling; perform only the bounded body reduction needed for required additions and compare the silhouette/materials/deformation.
-Use verified structured adapter operations and source-preserving working copies; add a narrow validated operation when the required component or rig is unsupported rather than omitting it.
-Keep previous runtime assets intact until the complete replacement passes visual, deformation, and actual-byte export/reimport review.
+
+Use verified structured adapter operations and source-preserving working copies; add a narrow validated mesh operation when the required component is unsupported rather than omitting it.
+
+Keep the current runtime assets intact until the complete replacement passes visual, deformation, and actual-byte export/reimport review.
 
 Death validation measures the evaluated silhouette rather than requiring every frame to decrease monotonically. Require a substantial final centre drop while bounding any preparatory rise and terminal settling; record the exact peak-rise, final-drop, and rebound metrics and pair them with start/mid/end visual evidence from the approved articulated source. Do not add a whole-rig transform or accept an upright or rebounding final pose.
 
-### Credit-aware humanoid family batches
+## Nonhumanoid calibration
 
-When several custom units use the same verified standard humanoid skeleton, a job family may declare `shared_humanoid_batch`, `shared_humanoid_rig_owner`, and `shared_humanoid_role` in its job manifest. Run:
+A nonhumanoid job declares a measured, numeric scale crosswalk against the installed vanilla runtime reference, and a missing, pending, or non-numeric crosswalk is a hard blocker rather than a value to coerce or infer.
 
-~~~powershell
-python .tools/3d_pipeline/run_pilot.py --specialized-zombie-batch <configured_batch_id>
-~~~
+A nonhumanoid skeleton, its skin weights, and its actions are authored live in Blender like every other skeleton in this package.
 
-The batch creates one distinct Meshy image-to-3D geometry candidate per unit, pays for the owner rig and role-specific provider actions once, copies those immutable provider artifacts with checksums, and binds every recipient's own geometry to that shared standard skeleton through the locked dual-source Blender operation. Every recipient exports its own `.mesh`, role-specific `.anim` files, textures, and reimport proofs. Sharing a skeleton or approved source action never permits reused geometry, action-role aliasing, a static-only package, or skipped action validation. Creature jobs in the batch continue through their dedicated source-action processing route.
-
-The specialized zombie manifests use the verified textured Meshy 7 estimate of 30 credits for image-to-3D, 5 for a required over-300,000-triangle remesh when the source exceeds the rig limit, 5 for rigging, and 3 per provider animation. The shared seven-unit route therefore preflights every unit's geometry plus the owner's conditional rig/remesh/action stages; planned paid work is still checked against the live balance before calls, every paid task writes a before/after balance reconciliation, and the provider's actual `consumed_credits` value supersedes the estimate for later runs.
+## Export and reimport proof
 
 Export `.mesh` and `.anim` only with the locked `io_pdx_mesh` setup, then reimport or parse the actual exported bytes and save proof with output checksums.
 
-## Nonhumanoid creature route
+Reimport proof is required for every output, and a viewport, a provider preview, a file that merely exists, or a plausible filename is not reimport evidence.
 
-Creature jobs must declare a numeric, measured scale crosswalk against the installed vanilla runtime reference and a dedicated `creature_rig_family` before the pilot runner will check balance, call Meshy, or export anything.
-
-Winged or digitigrade bipeds use the `winged_biped` route, which creates separate wing-root, wing-mid, wing-tip, arm, hand, leg, foot, spine, neck, head, pelvis, and root bones with spatial semantic weights and processes approved idle, move, attack, and death source actions.
-
-Do not route winged, digitigrade, or quadrupedal silhouettes through `humanoid_unit`; a pending or non-numeric creature crosswalk is a hard preflight blocker rather than a value to coerce or infer.
-
-The creature continuation stages loose components, writes a custom-rig checkpoint, preserves the complete action set across checkpoints, exports the mesh and four skeletal animations, and reimports each animation against the exported mesh before the parent can wire a runtime entity.
-
-Ground each approved source action by measuring from the uncorrected pose at every frame and applying only the allowed contact or root correction. Root-bone-only offsets are not sufficient when the creature mesh is parented to the armature object, and any action that fails the ground-contact gate must stop the continuation before export.
+`promote_accepted_reimport` promotes one hash-bound accepted reimport proof.
 
 ## Custom-unit sound-design handoff
 
@@ -221,7 +275,21 @@ Before runtime handoff, probe each installed WAV against the inspected consumer 
 
 The parent must enumerate every `common/units` sub-unit that resolves the custom `sprite` token before claiming family-wide audio coverage. A sound event attached to one entity reaches only the unit consumers that resolve that entity, so deliberate exclusions must be documented and every intended family member must share the sprite binding.
 
-The parent owns final `sound/*.asset` definitions, runtime WAV copies, entity-state wiring, selection-consumer wiring, and live playback validation. The worker handoff must leave exact sound and soundeffect identifiers, selection binding scope, state synchronization points, source evidence, and remaining parent checks.
+The parent owns final `sound/*.asset` definitions, runtime WAV copies, entity-state wiring, and selection-consumer wiring, and reviews the live playback evidence supplied by the user. The worker handoff must leave exact sound and soundeffect identifiers, selection binding scope, state synchronization points, source evidence, and remaining parent checks.
+
+## Custom-unit counter handoff
+
+Every custom unit also requires new counter art for every counter surface it uses.
+
+The counter must be original to that unit, use the exact vanilla green counter palette sampled from an inspected reference, and follow the installed consumer's canvas, frame order, and alpha treatment.
+
+Inspecting the closest matching installed vanilla counter definition and DDS plus the matching skill-local counter reference family is a hard gate, and a reused, renamed, generic, or uninspected counter cannot satisfy completion.
+
+Route counter production through `chaos-redux-event-assets` and `chaosx_icon_artist`.
+
+The worker handoff records each runtime counter consumer and token, the required states and sizes, the inspected installed vanilla definition and DDS paths, the matching skill-local counter reference family, the original counter-art paths, the final DDS paths, and the sampled green evidence.
+
+The parent owns final GFX and gameplay wiring and reviews the counter contact sheet.
 
 ## Runtime handoff and ownership
 
@@ -231,7 +299,9 @@ Active runtime files can be stale or can be overwritten by an older mapped textu
 
 Record source and destination paths, both SHA-256 hashes, copy provenance, and the final synchronization result, then compare destination hashes after the copy.
 
-The parent owns `.asset`, entity, `.gfx`, gameplay wiring, active runtime consumers, and in-game screenshots.
+The parent owns `.asset`, entity, `.gfx`, gameplay wiring, and active runtime consumers.
+
+The user performs live in-game validation and supplies the in-game screenshots, and the parent reviews that evidence.
 
 Runtime source files may be staged under `.tools/3d_pipeline/staging` for parent review, but `docs/assets/...` is evidence and working material, not a runtime source root.
 
@@ -241,13 +311,15 @@ Run these commands from the repository root after the start and dependency gates
 
 ~~~powershell
 python .tools/3d_pipeline/verify_environment.py --probe-meshy
-python .tools/3d_pipeline/run_pilot.py --asset anomaly_signal_beacon
+python .tools/3d_pipeline/run_pilot.py anomaly_signal_beacon
 python .tools/3d_pipeline/run_pilot.py --all
 ~~~
 
+The pilot runner is a provider-generation, static-mesh, and export orchestrator, and it is not an authoring route: skeletons, skin weights, and skeletal actions are produced only by the live Blender bridge session.
+
 This workflow supports both skeletal 3D `.mesh`/`.anim` production and static HOI4 map-building `.mesh` production.
 
-The pilot runner routes `building` and `static_building` jobs through the static mesh path, requires their named installed vanilla scale reference, and never attempts humanoid rigging or animation for them.
+The pilot runner routes `building` and `static_building` jobs through the static mesh path, requires their named installed vanilla scale reference, and schedules no skeleton, skinning, or action work for them.
 
 ## Static map-building contract
 

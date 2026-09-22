@@ -1,7 +1,7 @@
 """Exact reviewed source-vertex fan splits and coincident corner aliases; no inferred weld."""
 from collections import Counter
 import math
-from manual_creature_rig import _open, digest, name
+from mesh_inspection_repair import _open, digest, name
 from mesh_vertex_material_repair import finish_verified
 
 
