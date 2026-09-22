@@ -147,7 +147,7 @@ Never substitute a static still for a requested skeletal action.
 
 ### Skeletal animation source gate
 
-Use GPT-6-astra for manual Blender rigging, weighting, and skeletal animation.
+Use Blender for manual rigging, weighting, and skeletal animation.
 Try Meshy rigging once per model and each required animation once on a usable supported rig; accept only outputs that pass visual, deformation, contact, and semantic-role review.
 After the first failure, unusable result, or unsupported stage, proceed directly to manual Blender authoring without renewed approval or paid rig/animation retries.
 Polling or downloading the same task does not consume another attempt, and regenerating geometry does not reset the limit.
@@ -168,7 +168,7 @@ External FBX action selection preserves the exact receipt-verified source identi
 
 Every current firearm-bearing unit must receive a newly generated weapon-free Meshy 7 body, even when its armed predecessor was considered complete.
 Prepare exactly one body-only reference with firearms removed, clear anatomy and neutral hands in a suitable A/T pose; keep the firearm design as separate reconstruction evidence.
-Rig and animate the new body directly in Blender with GPT-6-astra and model/add the firearms and other required held objects there.
+Rig and animate the new body directly in Blender and model/add the firearms and other required held objects there.
 Do not spend Meshy rigging or animation credits for this route; it takes precedence over the general one-attempt provider route.
 Keep the firearm rigid and separately controlled, validate both hand contacts and shoulder/stock relationship when applicable, and retain a measured muzzle locator, aim/discharge/recoil/recovery phases, and synchronized effects and sourced audio.
 A fused provider firearm is historical evidence, not the final replacement route.
