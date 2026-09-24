@@ -385,7 +385,7 @@ Core files to check:
 - `common/scripted_effects/chaosx_logic_effects.txt`
 - `common/scripted_effects/chaosx_events_log_effects.txt`
 - `localisation/english/chaosx_event_names_l_english.yml`
-- `localisation/english/chaosx_events_l_english.yml`
+- `localisation/english/_chaosx_events_l_english.yml`
 - `common/scripted_localisation/chaosx_scripted_localisation_debug.txt`
 - `common/scripted_localisation/chaosx_scripted_localisation_events_log.txt`
 
@@ -582,9 +582,9 @@ Known sensitive fields:
 - `set_global_flag = { days = ... }`
 - any other timed field that throws `Malformed token` for either `constant:category.key` or a variable token
 
-For those fields, use a file-scoped `@NAME = literal` constant in the same script file and pass `days = @NAME`. Keep the value mirrored with the matching `common/script_constants/` tuning entry, and update both in the same change.
+Fields in the list above are the ones that reject variable tokens as well, so they take a file-scoped `@NAME = literal` constant in the same script file passed as `days = @NAME`. Keep the value mirrored with the matching `common/script_constants/` tuning entry, and update both in the same change.
 
-Do not work around this by setting a temp variable and passing `days = temp_name`. those fields can reject variable tokens too. In which case, a `meta_effect` must be used if possible.
+For any other duration field that rejects `constant:category.key`, assign the constant to a normal or temporary variable first and pass that variable to `days =`. A `meta_effect` must be used when the field accepts neither form.
 
 Scripted effects and scripted triggers do not expand `$PARAMETER$` placeholders or accept named argument blocks as a parameter API in HOI4.
 Pass inputs through documented variables or tokens and invoke the helper with `= yes`.

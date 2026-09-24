@@ -8,7 +8,7 @@ Chaos Redux keeps Codex as the primary authoring workflow:
   * Claude Code runtime : .claude/agents/*.md     (GENERATED, do not hand-edit)
 
 Claude Code reads neither `AGENTS.md` nor `.agents/skills/`, so this generator
-also produces the three Claude Code entry points that need it:
+also produces the four Claude Code entry points that need it:
 
   1. `.claude/agents/<kebab-name>.md` — the project subagents.
   2. `.claude/skills/<name>`          — one junction (or copy) per repo skill,
@@ -17,6 +17,10 @@ also produces the three Claude Code entry points that need it:
                                         and has no "point at this folder"
                                         config option.
   3. `.mcp.json` at the repo root     — the project-scoped MCP servers.
+  4. `CLAUDE.md` at the repo root     — a byte-identical copy of `AGENTS.md`,
+                                        written only by this generator and
+                                        gitignored. `AGENTS.md` stays canonical,
+                                        so edit it and rerun this command.
 
 Run it whenever a `.codex/agents/*.toml` definition or a `.agents/skills/` skill
 changes:
@@ -98,6 +102,8 @@ CLAUDE_AGENTS = CLAUDE_DIR / "agents"
 CLAUDE_SKILLS = CLAUDE_DIR / "skills"
 CLAUDE_AGENT_MAP = CLAUDE_DIR / "agent-map.md"
 CLAUDE_MCP = MOD_ROOT / ".mcp.json"
+CLAUDE_INSTRUCTIONS = MOD_ROOT / "CLAUDE.md"
+CLAUDE_INSTRUCTIONS_SOURCE = MOD_ROOT / "AGENTS.md"
 
 # Runtime-neutral substitutions applied to developer_instructions. The first
 # two replace the Codex-only spawn mechanics with the Claude Code statement of
@@ -299,6 +305,18 @@ def write_if_changed(path, content):
     return True
 
 
+def copy_if_changed(source, target):
+    """Write a byte-identical copy of source at target; report whether it changed."""
+    if not source.is_file():
+        sys.exit("ERROR: canonical source not found: {}".format(source))
+    content = source.read_bytes()
+    if target.is_file() and target.read_bytes() == content:
+        return False
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_bytes(content)
+    return True
+
+
 def is_junction(path):
     """A Windows junction, or any directory symlink, presents as a reparse point."""
     if not path.is_dir():
@@ -451,6 +469,8 @@ def main():
 
     mcp_changed = write_if_changed(CLAUDE_MCP, render_mcp_config())
 
+    instructions_changed = copy_if_changed(CLAUDE_INSTRUCTIONS_SOURCE, CLAUDE_INSTRUCTIONS)
+
     stale_agents = sorted(
         p.name for p in CLAUDE_AGENTS.glob("*.md") if p.name not in expected_files
     )
@@ -487,6 +507,11 @@ def main():
         print("  updated: {}".format(", ".join(updated)))
     if unmapped:
         print("  WARNING: no authority mapping: {}".format(", ".join(unmapped)))
+    print(
+        "CLAUDE.md copy of AGENTS.md: {}.".format(
+            "updated" if instructions_changed else "unchanged"
+        )
+    )
     if stale_agents:
         print(
             "  WARNING: stale agent file(s) without a TOML source (not deleted): {}".format(

@@ -43,15 +43,19 @@ The default package output is outside the repository under the current user's Do
 
 - `sync/sync_qoder_agents.py` generates Qoder agent definitions from canonical `.codex/agents/*.toml` files.
 - `sync/sync_cursor_agents.py` generates Cursor agent definitions and the Cursor agent map from the same canonical TOML files.
+- `sync/sync_opencode_agents.py` generates opencode agent definitions and the opencode agent map from the same canonical TOML files.
+- `sync/sync_claude_agents.py` generates Claude Code agent definitions, the Claude Code agent map, the skill junctions under `.claude/skills/`, the repo-root `.mcp.json`, and the repo-root `CLAUDE.md` as a byte-identical copy of `AGENTS.md`.
 
-Run both after changing a Codex subagent definition:
+Run all four after changing a Codex subagent definition, after changing a skill, or after changing `AGENTS.md`:
 
 ```powershell
 python .tools/sync/sync_qoder_agents.py
 python .tools/sync/sync_cursor_agents.py
+python .tools/sync/sync_opencode_agents.py
+python .tools/sync/sync_claude_agents.py
 ```
 
-Do not hand-edit generated Qoder or Cursor agent files.
+Do not hand-edit generated Qoder, Cursor, opencode, or Claude Code agent files, and do not commit the generated `CLAUDE.md`; `AGENTS.md` stays canonical.
 
 ### Universal formable-state tooling
 

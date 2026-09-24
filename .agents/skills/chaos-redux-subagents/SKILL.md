@@ -35,7 +35,7 @@ The goal is to keep subagents narrow, reproducible, and grounded in explicit inp
 
 ## Available project subagents
 
-Identifiers below are the canonical snake_case Codex names. The Qoder, Cursor, opencode, and Claude Code runtimes use the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`). Qoder mappings live in `.qoder/agents/README.md` and regenerate with `python .tools/sync/sync_qoder_agents.py`. Cursor mappings live in `.cursor/agent-map.md` and regenerate with `python .tools/sync/sync_cursor_agents.py`. opencode mappings live in `.opencode/agent-map.md` and regenerate with `python .tools/sync/sync_opencode_agents.py`. Claude Code mappings live in `.claude/agent-map.md` and regenerate with `python .tools/sync/sync_claude_agents.py`, which also mirrors each repo skill into `.claude/skills/` because Claude Code cannot be pointed at `.agents/skills/` directly. Cursor agent files must stay Task-tool compatible, and Claude Code agent files must stay `Agent`-tool compatible: one Markdown file per agent in the runtime's `agents/` folder, YAML frontmatter, then the prompt body, with no non-agent Markdown in that folder.
+Identifiers below are the canonical snake_case Codex names. The Qoder, Cursor, opencode, and Claude Code runtimes use the generated hyphen-case equivalents (for example `chaosx_repo_explorer` becomes `chaosx-repo-explorer`). Qoder mappings are written by `python .tools/sync/sync_qoder_agents.py` to the generated `.qoder/agents/README.md`. Cursor mappings are written by `python .tools/sync/sync_cursor_agents.py` to the generated `.cursor/agent-map.md`. opencode mappings are written by `python .tools/sync/sync_opencode_agents.py` to the generated `.opencode/agent-map.md`. Claude Code mappings are written by `python .tools/sync/sync_claude_agents.py` to the generated `.claude/agent-map.md`, and that same command mirrors each repo skill into `.claude/skills/` because Claude Code cannot be pointed at `.agents/skills/` directly. Every generated map file appears only after its command runs, and the generated runtime directories are gitignored, so a reader in a clean checkout has this section as the canonical mapping. Cursor agent files must stay Task-tool compatible, and Claude Code agent files must stay `Agent`-tool compatible: one Markdown file per agent in the runtime's `agents/` folder, YAML frontmatter, then the prompt body, with no non-agent Markdown in that folder.
 
 DSH composes subagents at runtime through its delegation tool and loads no agent definition files, so there is no DSH agent map and no DSH generator. DSH also does not read `.codex/agents/*.toml`, so a named role does not arrive with the model its TOML names. Treat the canonical snake_case identifiers below as the named roles a DSH parent instantiates by writing the role boundaries into a fully explicit, self-contained delegation prompt.
 
@@ -78,6 +78,8 @@ Use `chaosx_event_completion_auditor` for read-only spec-versus-implementation a
 Use `chaosx_ai_probability_auditor` for read-only audits of AI weights, MTTH, event `ai_chance`, random lists, focus and research selection, decision and mission scores, AI strategy factors, and declared custom weighted pools. It must use the HOI4 MCP probability workflow and return scenario-specific evidence; do not treat a focus, decision, country, or completion audit as a substitute for this specialized pass.
 
 Use `chaosx_spreadsheet_doc_worker` only for the event catalog workbook at `docs/spreadsheets/chaos_redux_events_catalog.xlsx`. It uses the xlsx/spreadsheet skill, keeps the workbook player-facing, and matches event log, event detail, evolution detail, and cluster detail fields to the in-game wording.
+
+Use `chaosx_skill_maintainer` for skill creation, skill cleanup, routing updates, and multi-skill consistency work when a task reveals a reusable workflow, repeated mistake, repo-specific convention, validation pattern, asset or prompt pattern, or implementation rule that belongs in a repo skill. The role is runtime-neutral: it owns the skill files themselves, so it behaves the same in every runtime and is spawned by the same canonical snake_case identifier that the Qoder, Cursor, opencode, and Claude Code runtimes map to their hyphen-case equivalents.
 
 Do not route new work to `chaosx_mechanic_expander`. Its role is merged into `chaosx_improvement_loop_planner` and the `chaos-redux-improvement-loop` skill.
 
@@ -150,6 +152,14 @@ Use it after long implementation tranches, after several subagent handoffs, befo
 
 It must not edit gameplay files, localisation, scripted localisation, GUI, GFX, events, focuses, decisions, ideas, scripted effects, scripted triggers, on_actions, country setup, history, AI files, assets, audio, binary files, or the event catalog workbook. It does not replace `chaosx_event_completion_auditor`, `chaosx_localisation_auditor`, `chaosx_spreadsheet_doc_worker`, or `chaosx_repo_explorer`.
 
+### Skill maintenance agents
+
+`chaosx_skill_maintainer` is patch-capable for repo skills and skill assets and for the routing references that point at them.
+
+It creates a skill under `.agents/skills/<skill-name>/SKILL.md` when the workflow is reusable and not already covered, updates an existing skill when the workflow belongs there, audits skills for overlap, unclear instructions, stale paths, event-specific leakage, and missing reusable guidance, and keeps several skills consistent when one routing rule or convention spans them. It updates skill-local reference material and the routing references that name skills, including the canonical subagent entries in this skill and the runtime agent or skill registrations that mirror them. Its edits stay reusable and non-event-specific, and each skill stays focused on one reusable workflow.
+
+It must not edit gameplay files, localisation, events, focuses, decisions, ideas, scripted effects, scripted triggers, on_actions, country setup, history, AI files, GUI, GFX, assets, audio, binaries, spreadsheets, or docs and specs outside an explicitly granted documentation scope, and it must not hand-edit another runtime's generated agent or skill definition files.
+
 ### Asset-production agents
 
 Asset subagents create source files, processed previews, final DDS outputs, contact sheets, manifests, and asset handoffs. During active work, event-scoped evidence belongs under the temporary `docs/assets/<event_id>_<event_slug>/` workspace. They do not wire gameplay, localisation, GFX, GUI, events, focuses, decisions, or spreadsheets unless the parent gives a narrow exception.
@@ -178,6 +188,9 @@ These agents are patch-capable by default inside the current task scope:
 - `chaosx_country_package_auditor`
 - `chaosx_localisation_auditor`
 - `chaosx_event_ui_worker` for an accepted event-owned UI only
+- `chaosx_skill_maintainer` for skills and skill assets only
+- `chaosx_documentation_curator` for documentation surfaces only
+- `chaosx_spreadsheet_doc_worker` for the event catalog workbook and its exports only
 
 They do not need a separate permission prompt to fix small, local issues that are clearly connected to the current event, mechanic, country, focus tree, decision category, GUI surface, or localisation surface.
 
@@ -195,6 +208,7 @@ Active small patches include:
 - adding a narrow scripted helper plus a few direct call sites when repeated logic is already present
 - fixing an existing formable decision check, reveal condition, or state-control requirement
 - correcting country package references such as focus loading, party names, leader ids, tag setup, localisation, and simple starting setup
+- correcting a stale path, an unclear instruction, or a missing reusable rule inside a skill that already owns the workflow
 
 Any patch to an AI weight, probability-bearing modifier, MTTH-backed score, random-selection weight, strategy factor, or weighted target check requires an audit-patch-compare cycle. Run `chaosx_ai_probability_auditor` first to establish named baseline scenarios, let the owning patch-capable agent or parent apply the bounded change, then run the auditor again with `hoi4.probability_compare` against the same scenarios. The probability auditor remains read-only, does not choose the intended balance target, and does not patch source.
 

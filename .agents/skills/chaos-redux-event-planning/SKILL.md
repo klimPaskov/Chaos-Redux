@@ -43,9 +43,9 @@ docs/specs/<event_id>_<event_slug>_specs/
 Examples:
 
 ```text
-docs/specs/006_independence_wave_specs/006_independence_wave_spec.md
-docs/specs/006_independence_wave_specs/006_independence_wave_focus_trees.md
-docs/specs/006_independence_wave_specs/006_independence_wave_country_packages.md
+docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_1_core.md
+docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_4_focus_tree_architecture.md
+docs/specs/006_independence_wave_specs/specs/006_independence_wave_spec_part_5_country_packages_and_regional_overlays.md
 ```
 
 Use `docs/plans/<event_id>_<event_slug>_plans/` for subagent plans, improvement addenda, audit follow-up notes, blocked reports, and implementation handoffs. Plans can become source design later, but the main agent should promote or merge them into `docs/specs/` when they are accepted as part of the final event design.

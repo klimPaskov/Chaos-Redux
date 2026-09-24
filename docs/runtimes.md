@@ -10,7 +10,7 @@ DSH needs no generated artifacts, because it reads this repository's canonical f
 
 | Surface | Path |
 | --- | --- |
-| Project instructions | `AGENTS.md`, `CLAUDE.md`, plus `AGENTS.local.md` and `CLAUDE.local.md` overlays |
+| Project instructions | `AGENTS.md`, plus `CLAUDE.md` as the generated copy of it when `sync_claude_agents.py` has written one, and `AGENTS.local.md` and `CLAUDE.local.md` overlays |
 | Project skills | `.agents/skills/<name>/SKILL.md` |
 
 `dsh-agent-instructions` loads the instruction chain from the project root down to the working directory.
@@ -44,7 +44,8 @@ DSH does not read those files, so a named role does not arrive with the model it
 A DSH child agent runs on the deployment default from `dsh-agent-default-model`, or on the child options configured in the `dsh-tool-subagent` entry's `agentOptions`.
 Neither is configured inside this repository, because that profile patch lives outside it.
 The active profile does configure the child options, so a DSH subagent runs on DeepSeek regardless of the model its Codex TOML names.
-No skill or role prompt names a child model, because each runtime decides its own.
+No skill or role prompt chooses a child model: the runtime decides, and the parent therefore specifies none.
+Where a runtime fixes its own child route, [`chaos-redux-subagents`](../.agents/skills/chaos-redux-subagents/SKILL.md) records that route.
 
 The named Chaos Redux roles still apply as routing and ownership contracts.
 The parent writes the role's boundaries into the delegation prompt, which is why every prompt must stay fully explicit and self-contained.

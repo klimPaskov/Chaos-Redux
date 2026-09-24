@@ -138,7 +138,7 @@ Start with:
 - library rules and contact sheets: `assets/vanilla_reference/README.md`
 - exact source provenance and dimensions: `assets/vanilla_reference/CATALOG.md`
 
-Unless a path below begins with `assets/`, interpret it relative to `assets/vanilla_reference/`.
+Unless a path below begins with `assets/`, interpret it relative to `assets/vanilla_reference/`, except the `scripted_guis/` layout paths, which are relative to the skill-local `assets/` root.
 
 Every semantic reference directory contains its own `contact_sheet.png`, there is no shared `contact_sheets/` directory. Contact sheets are labeled with filenames and native dimensions, and are review aids rather than reference examples themselves. Common icon families (focus, ideas, decisions, decision categories, technologies, and achievement states) have at least 15 references, while other tracked texture and icon families have at least 5. The interface library covers complex vanilla scripted GUIs and other native interfaces, with meaningful functional compositions for each distinct layout family. Crop MCP renders to useful UI bounds; full-window images dominated by empty space are unsuitable reference examples. Retain full-render source, source window/files, original resolution and UI scale, and crop bounds in provenance so each crop can be traced back to its native layout.
 
@@ -149,7 +149,7 @@ Every semantic reference directory contains its own `contact_sheet.png`, there i
 - operatives: `assets/vanilla_reference/portraits/operatives/`
 - advisors and high-command dossier cards: `assets/vanilla_reference/portraits/advisors/`
 
-The explicit user-facing leader reference shelf is also mirrored at `assets/leader_portraits/`. It is a review-only compatibility path for agents that need a direct portrait folder, keep it byte-aligned with the canonical `assets/vanilla_reference/portraits/leaders/` shelf and use its `REFERENCE_MANIFEST.md` for the current file list. Do not wire either reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet, do not substitute full leader, commander, or operative portraits for this family.
+The leader reference shelf at `assets/vanilla_reference/portraits/leaders/` is the direct portrait folder for agents that need one, it holds byte-aligned copies of the curated leader references from `assets/vanilla_reference/portraits/`, and it uses `vanilla_reference/REFERENCE_MANIFEST.md` for the current file list. Do not wire any reference shelf into runtime GFX, and do not infer advisor assets from it. Country leaders, commanders, and operatives are full `156x210` portrait textures. For portrait work, inspect the canonical role-specific contact sheet. Advisor and high-command dossier references are native `65x67` cards and use their own canonical contact sheet, do not substitute full leader, commander, or operative portraits for this family.
 
 #### Canonical flag and event-art paths
 
@@ -160,12 +160,12 @@ The explicit user-facing leader reference shelf is also mirrored at `assets/lead
 
 #### Canonical interface layout paths
 
-- pressure meters: `interface/meters_and_pressure/`
-- institutional boards: `interface/institutional_boards/`
-- faction relations: `interface/faction_relations/`
-- regional investment: `interface/regional_investment/`
-- campaign progress: `interface/campaign_progress/`
-- escalation status: `interface/escalation_status/`
+- pressure meters: `scripted_guis/meters_and_pressure/`
+- institutional boards: `scripted_guis/institutional_boards/`
+- faction relations: `scripted_guis/faction_relations/`
+- regional investment: `scripted_guis/regional_investment/`
+- campaign progress: `scripted_guis/campaign_progress/`
+- escalation status: `scripted_guis/escalation_status/`
 
 Read `interface/README.md`, inspect the root and category contact sheets, then inspect the paired installed vanilla `.gui` and `common/scripted_guis` sources before creating a scripted GUI reference. These MCP-derived functional crops provide native layout precedents; they do not replace the new or redesigned window's required Sunburst compositional reference.
 
@@ -223,7 +223,7 @@ The semantic tree is not a bank of interchangeable pictures. Use the folder for 
 
 The reusable achievement creation inputs live under `icons/achievements/template/`. The actual supplied filenames are `achievement_template.png` (completed background), `achievement_template_grey.png` (grey and not-eligible background), and `overlay.png` (unchanged red-cross not-eligible overlay). They are workflow inputs rather than reference examples, so they are excluded from the achievement contact sheet and coverage count. Preserve these supplied files byte-for-byte and at their exact native alignment.
 
-Do not add new reference images outside the skill-local `assets/` root. Add semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. The explicit `assets/leader_portraits/` compatibility shelf is the one allowed mirrored exception: it must contain only byte-aligned copies of the curated leader references plus its own manifest/contact sheet, and it is never a new source of truth or a runtime asset folder.
+Do not add new reference images outside the skill-local `assets/` root. Add semantic references under `assets/vanilla_reference/` with exact provenance, dimensions, and contact-sheet coverage recorded in its catalog. The `assets/vanilla_reference/portraits/leaders/` shelf is the direct-reference portrait folder: it holds only byte-aligned copies of the curated leader references, and it is never a separate source of truth or a runtime asset folder.
 
 Before generating, sourcing, processing, or wiring an asset, read the library rules, inspect the matching category and contact sheet, and follow the vanilla source path in the catalog to its owning `.gfx`, `.gui`, `.asset`, or `.mesh` definition when engine behavior matters. Reference PNGs are never final assets: do not wire, recolor, trace, or ship them. If no category matches, inspect the closest canonical category plus a direct vanilla or established Chaos Redux precedent before choosing a style.
 
