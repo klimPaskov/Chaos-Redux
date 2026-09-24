@@ -59,7 +59,7 @@ Resolved in current routing:
 Still open:
 
 - Identity/portrait/rights, flags/provenance, country admissions, typed probability/compare, GUI fidelity/click regions, Event MCP helper/lifecycle coverage, runtime/save-load, FORM-06 through FORM-47, human audition, and live execution remain unresolved exactly as recorded by current handoffs.
-- `docs/events/006_independence_wave/super_events.md` and `docs/events/006_independence_wave/audio_handoff.md`, named in the parent prompt, are absent from the current repository. Their absence was recorded rather than replaced with invented documents; durable slot-23 authority remains in the overview, specification quality ledger, source-of-truth map, resume packet, and dated audio handoffs.
+- At the time of this curator pass, `docs/events/006_independence_wave/super_events.md` and `docs/events/006_independence_wave/audio_handoff.md`, named in the parent prompt, were absent from the repository. The parent follow-up created both permanent documents without changing gameplay or inventing an asset or firing claim.
 
 No duplicate document was deleted. Historical audio and focus receipts remain for provenance, with current overrides naming their disposition.
 
@@ -76,9 +76,13 @@ Accidental mid-sentence hard wraps were corrected in the touched IW-179 authorit
 - Targeted repository searches were used to locate current versus historical 195/196 connector claims, slot-23 blocked/unwired claims, IW-179 visibility and receipt-cancel evidence, and current HOLD/PARTIAL boundaries.
 - Git history confirmed the 2026-09-20 FSM visibility, receipt-cancel, decision/mission crosswalk, and slot-23 wiring documentation commits used as implementation evidence.
 - The read-only HOI4 MCP tool names for Event, focus, GUI, map, and probability routes are exposed in the client. A batched Event/focus/GUI/map refresh produced no result after approximately 52 seconds and was terminated in response to the user's instruction not to wait on slow external work. Therefore this pass does not claim connected-service health, a fresh source revision, or fresh MCP artifacts; the dated current handoffs remain the evidence authority.
-- A context-isolated `chaosx_ai_probability_auditor` was started for a fresh weighted-logic receipt but was shut down without a result when the user directed immediate completion. No new probability claim follows, and the existing scenario-specific 2026-09-20 handoffs remain authoritative.
+- A context-isolated `chaosx_ai_probability_auditor` was started during the broader continuation. Its completed 2026-09-22 IW-179 handoff is now recorded separately at `006_event6_iw179_fsm_probability_audit_2026-09-22.md`; it extends the evidence boundary with partial score-only results and does not add a balance target or source patch.
 - Human audio audition, live firing, live gameplay, runtime consumer observation, save/load, native decision-row rendering, dynamic GUI interaction, click-region fidelity, and full helper/lifecycle expansion were not run and remain unverified.
 
 ## Parent decisions and remaining risk
 
 No new design decision is requested. The parent should preserve the current 184/196 focus authority, approved Enola source wiring, FSM visibility and receipt-cancel repairs, and all fail-closed boundaries. The parent must review the documentation diff, decide whether a later dedicated reflow should clean untouched historical hard wraps, and create the commit if the reconciliation is accepted.
+
+## Parent follow-up
+
+On 2026-09-22 the parent created `docs/events/006_independence_wave/super_events.md` and `docs/events/006_independence_wave/audio_handoff.md` as permanent source-wired documentation. The parent also recorded the completed IW-179 probability handoff separately. These follow-ups preserve the HOLD / PARTIAL boundary and do not claim live or perceptual validation.

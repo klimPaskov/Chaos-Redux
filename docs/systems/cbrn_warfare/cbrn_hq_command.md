@@ -2,122 +2,78 @@
 
 ## Purpose
 
-Army Headquarters is the theater layer of the CBRN system. Six HQ-only support companies expose seven paid commander abilities for chemical planning, protection, decontamination, cordons, medical response, biological containment, and a doctrine capstone. Regimental CBRN companies remain the division layer.
+Army Headquarters is the theater command layer for CBRN protection and response. Three HQ-only support sections provide Operations and Intelligence, Protection and Decontamination, and Medical and Biosecurity functions. Five paid commander orders cover protection, decontamination, cordons, medical response, and outbreak containment.
 
-This layer prepares and sustains an order. It does not select a state, choose an agent, release a payload, create contamination or an outbreak, record deaths or evidence, or change Condemnation by itself. Exact delivery and selected-state adapters remain owned by the shared exposure, biological, and consequence stages.
+Chemical and biological attacks use native raids. Headquarters orders do not select a weapon, stage an attack, release a payload, create contamination or an outbreak, record casualties or evidence, or change Condemnation.
 
-Doctrine may reduce the Condemnation impact of an operation. That mitigation does not erase evidence, attribution, casualties, contamination, medical saturation, confirmed-use history, or the strategic and mass-casualty floors.
+## Headquarters sections
 
-## Headquarters companies
+| Section | Runtime identifier | Standing role |
+| --- | --- | --- |
+| Operations and Intelligence | `cbrn_hq_operations_section` | Planning, reconnaissance, weather assessment, and command coordination |
+| Protection and Decontamination | `cbrn_hq_protective_logistics_section` | Protective issue, corridor opening, sealed-area work, and mobile decontamination |
+| Medical and Biosecurity | `cbrn_hq_medical_countermeasure_directorate` | Countermeasures, casualty response, outbreak control, and biological security |
 
-All six companies are `group = support`, Army-HQ-only, zero-width, non-regimental subunits using the current 1.19 `Thunder at Our Gates` HQ surface. Matching `essential` and `need` tables make their native statistics scale with real reinforcement shortages.
+The old Intelligence and Weather Cell, Mobile Decontamination Column, and Biological Security Section identifiers survive only as trigger aliases to their consolidated section. They are not separate subunits, technology cards, CXT grants, or player-menu entries.
 
-| Company | Standing manpower and equipment | Unlock | Ability |
-| --- | --- | --- | --- |
-| CBRN Operations Section | 350 manpower; 60 support, 30 masks, 20 instruments | adopt Integrated Chemical Operations | Prepare Chemical Offensive; Combined CBRN Overmatch visibility |
-| Chemical Intelligence and Weather Cell | 275 manpower; 50 support, 30 instruments, 10 trucks | Operational Recon Grids | Seal Operational Area |
-| Protective Logistics Section | 400 manpower; 80 support, 80 masks, 30 trucks | Signal Intelligence Fusion | Theater Protective Posture |
-| Mobile Decontamination Column | 550 manpower; 100 decon, 60 trucks, 40 masks, 50 support | Counter-Contamination Routing | Decontamination Corridor |
-| Medical Countermeasure Directorate | 400 manpower; 70 support, 25 trucks, 30 masks | Mobile CBRN Hospitals | Mass Antidote and Casualty Response |
-| Biological Security Section | 450 manpower; 60 support, 40 instruments, 40 decon, 25 trucks | Air-Surface Chemical Link | Seal Operational Area; Seal Infection Corridor |
+All three sections are Army-HQ-only, zero-width support subunits. Their native statistics depend on their real equipment needs, so shortages reduce their performance. Their protection and response effects are also checked against the country’s real CBRN stock and derived readiness state.
 
-Protective Logistics and Mobile Decontamination do not receive generic organization, attack, or all-terrain attrition substitutes. Their CBRN-specific results belong to the protection and exact-state adapters.
+## Commander orders
 
-## Ability lifecycle
+| Order | Required section | Purpose |
+| --- | --- | --- |
+| Theater Protective Posture | Protection and Decontamination | Sustains issued protection across a threatened command |
+| Decontamination Corridor | Protection and Decontamination | Opens and maintains a cleanup route |
+| Seal Operational Area | Operations and Intelligence plus Medical and Biosecurity | Restricts access to an exposed operational area |
+| Mass Antidote and Casualty Response | Medical and Biosecurity | Commits medical capacity to a chemical emergency |
+| Seal Infection Corridor | Medical and Biosecurity | Commits medical and cordon resources to outbreak containment |
 
-1. The ability checks a deployed Army HQ, exact required company composition, current policy/context, no existing CBRN HQ commitment, full force-band command power, and a complete real operating package.
-2. The native ability charge pays the light-band minimum. Its one-time effect pays the exact standard/mass remainder, debits real stores, stores an operation identity, calculates readiness-scaled preparation, applies a timed preparation status, and schedules bounded hidden events.
-3. Preparation completion rechecks the deployed command, exact company, and current context. A failed recheck removes benefits but retains the commitment lock until its planned end, preventing stale delayed events from colliding with another operation.
-4. A valid operation applies one timed active status. A finite persistent tick budget schedules only the weekly installments that occur before the exact active end date.
-5. Each installment rechecks active status, company, context, and the full weekly package for the force band stored at activation. Reorganizing the army therefore cannot lower a commitment after it is placed. A failed payment removes benefits and stops the chain. Medical or manpower committed at activation remains unavailable until the planned recovery date.
-6. One targeted final leader event clears the operation identity and status. Targeted country events restore the exact committed medical or manpower amount. There is no daily, weekly, monthly, or other all-country pulse.
+Each order checks a deployed Army HQ, the exact consolidated section, relevant threat or response context, no conflicting HQ commitment, Command Power, and a complete real operating package. Activation stores the force band, debits the package once, applies a bounded preparation status, and schedules only the targeted completion, upkeep, and cleanup events required by that order.
 
-The temporary HQ status packages are intentionally strong and are paid for by the active order and its upkeep. Chemical Offensive grants +20 percent planning speed, +20 percent maximum planning, and a 25 percent supply-consumption burden. Theater Protective Posture imposes -15 percent army speed, -10 percent army attack, -15 percent organization loss while moving, -25 percent wounded chance, and +20 percent supply consumption; its reduced-resistance posture uses -10, -7, -10, and +12 percent respectively. Decontamination Corridor and Sealed Operational Area impose -10 and -15 percent army speed with +15 percent supply consumption. Mass Antidote Response grants -40 percent wounded and sickness chance with +20 percent supply consumption, while Seal Infection Corridor grants -50 percent sickness chance with -15 percent army speed and +25 percent supply consumption. Combined CBRN Overmatch grants +30 percent planning speed, +20 percent maximum planning, -10 percent army speed, -30 percent wounded and sickness chance, and +35 percent supply consumption.
+Preparation completion rechecks the command, section, and context. Weekly upkeep exists only for the finite active duration. If upkeep fails, the benefit ends and the already scheduled cleanup releases the remaining commitment. No daily, weekly, monthly, or other all-country pulse is used.
 
-## Force bands, preparation, and costs
+The `chemical_operations_commander` trait reduces preparation time by 30 percent for these five protective orders. It is earned from qualifying completed service; starting an order, canceling it, or repeatedly preparing it gives no credit.
 
-The commander’s exact `num_battalions` selects the band:
+## Force bands and derived readiness
 
-- light: fewer than 100 battalions;
-- standard: 100 through 199;
-- mass: 200 or more.
+The commander’s exact battalion count selects light, standard, or mass operating packages. The thresholds and packages are centralized in `common/script_constants/cbrn_hq_constants.txt`.
 
-Chemical Readiness modifies preparation: below 40 takes 150 percent, 40–59 is baseline, 60–79 takes 85 percent, and 80–100 takes 75 percent. The Operations Section shortens Prepare Chemical Offensive and Combined CBRN Overmatch by ten percent, and those two preparations receive a further five-percent reduction at 90 or more military respiratory protection. Theater Contamination Doctrine then multiplies only those two offensive preparation times by 0.75; Terminal Hazard Doctrine multiplies them by 0.60. Every result is rounded and clamped to the ability range.
+Chemical Readiness is a derived status refreshed from issued military masks, filter condition, decontamination capacity, instruments, and training. It changes preparation time but is not a separate resource that the player buys. Equipment debits use real stock, and filter consumption passes through the shared military-mask loss helper.
 
-| Ability | Preparation | Active | Cooldown | Full command power by band |
-| --- | ---: | ---: | ---: | ---: |
-| Prepare Chemical Offensive | 7–21 days | 7 days | 90 days | 20 / 40 / 60 |
-| Theater Protective Posture | 1–3 days | 28 days | 14 days | 10 / 22 / 35 |
-| Decontamination Corridor | 3–7 days | 28 days | 30 days | 10 / 28 / 45 |
-| Seal Operational Area | 2–7 days | 30 days | 30 days | 10 / 22 / 35 |
-| Mass Antidote Response | 1 day | 14 days | 30 days | 10 / 25 / 40 |
-| Seal Infection Corridor | 2–5 days | 60 days | 45 days | 15 / 30 / 45 |
-| Combined CBRN Overmatch | 14–30 days | 10 days | 180 days | 50 / 55 / 60 |
+## Native offensive operations
 
-Operating packages are centralized in `common/script_constants/cbrn_hq_constants.txt`. Gas masks, decontamination models, and instrument models are removed oldest-first. Chemical preparation, protective posture, and overmatch require a positive military-issued mask ledger and enough real military filter condition for the entire force-band debit before activation or upkeep. The shared mask-loss helper then consumes that condition, including the exact reduction from filter-standardization technology, and records the amount actually paid. Support equipment, trucks, fuel, Medical Capacity, and reserved cordon manpower use exact typed debits. Seal Infection Corridor commits both medical capacity and force-band cordon manpower for its planned duration. All amounts are gameplay tuning rather than historical inventory claims.
+Cylinder releases, projector barrages, artillery delivery, armored delivery, strategic air delivery, and biological operations are native raid definitions. Each raid owns its weapon, state target, origin requirements, assigned formation, intelligence source, preparation timer, equipment reservation, and success factors.
 
-Prepare Chemical Offensive and Combined CBRN Overmatch require a positive supported chemical-payload stock signal, but they do not remove an arbitrary generic payload. The delivery adapter must reserve and consume the player-selected agent before calling the shared exposure pipeline.
+The retired `cbrn_prepare_chemical_offensive` and `cbrn_combined_overmatch` abilities have no gameplay definition, sprite registration, runtime DDS, cost, status trait, event branch, trigger, or localisation. Native raid preparation is the only offensive preparation path.
 
-The doctrine-independent `chemical_operations_commander` trait reduces preparation for all seven CBRN HQ abilities by ten percent after the normal readiness, Operations Section, and high-protection adjustments. The active Chemical Operations Academy can grant the trait to army leaders on creation or level-up, and commanders can still assign it through the normal paid trait path. The mutually exclusive offensive doctrine multiplier applies after that commander adjustment and only to Prepare Chemical Offensive and Combined CBRN Overmatch. Neither effect grants release authority or reduces equipment, Command Power, upkeep, duration, or cooldown.
+A successful native chemical land release may record the headquarters-dependent achievement receipt when the actor country has a qualifying deployed Operations section or all three sections. Installed raid scope does not expose the assigned division’s exact Army-HQ pointer to the actor-country outcome recorder. The receipt therefore proves a qualifying deployed HQ in the actor country, not that the selected raid division belonged to that specific HQ.
 
-## Doctrine and technology wiring
-
-Integrated CBRN Command owns the five doctrine companies. Each mastery reward unlocks its mapped company. Counter-Contamination Routing grants the non-researchable `mobile_decontamination_columns` technology, Air-Surface CBRN Link grants the `chemical_air_interdiction` eligibility marker, and Theater Intelligence Overmatch qualifies the non-researchable `theater_cbrn_headquarters` technology. Mobile CBRN Hospitals owns the medical directorate.
-
-Delivery Integration's protected-order history is recorded only when Theater Protective Posture completes preparation successfully. Starting the ability, paying its activation package, or later failing preparation does not satisfy the institutional proof.
-
-Combined CBRN Overmatch follows the stricter matrix composition: Theater CBRN Headquarters plus Operations, Protective Logistics, and Mobile Decontamination. This occupies the mandatory HQ staff slot plus three CBRN support slots and fits the verified four-slot Army HQ.
-
-## Exact-state decontamination assignment
-
-While at least one commander has an active Decontamination Corridor and Theater Exploitation is established, `cbrn_assign_decontamination_corridor` can target one controlled state with actual chemical contamination. The assignment removes 10 points from Trace/Local contamination, 8 from Serious, 5 from Severe, or 3 from Catastrophic, records the amount actually removed through the state ledger, and applies a 28-day state and national assignment lock. Theater Contamination Doctrine multiplies cleanup output by 1.75.
-
-The assignment never clears evidence, attribution, deaths, Condemnation, or confirmed-use history. The national lock is the conservative current-version binding: commander abilities do not expose a stable selected-state pointer, so no unsupported random-state, capital-state, or multi-state substitute is used.
+Captured biological-facility recovery raids use the consolidated Medical and Biosecurity section through the stable `cbrn_hq_has_biological_security_section` compatibility trigger. The selected division must also contain the Biosecurity Assault Detachment.
 
 ## AI behavior
 
-The baseline AI extends vanilla `hq_role` with five targets rather than replacing the generic HQ:
+The AI templates use the same three sections and real standing equipment bills as the player. Defensive profiles prioritize protection and medical coverage, contaminated theaters prioritize the protection section, outbreak response prioritizes the medical section, and offensive native raids retain their own exact payload, policy, target, formation, and success gates.
 
-- protected HQ: HQ staff, Protective Logistics, Medical Countermeasure;
-- chemical fire-plan HQ: HQ staff, Operations, Intelligence/Weather;
-- contaminated-theater HQ: HQ staff, Operations, Mobile Decontamination;
-- biological-containment HQ: HQ staff, Biosecurity, Medical Countermeasure;
-- overmatch HQ: HQ staff, Operations, Protective Logistics, Mobile Decontamination.
-
-Every target requires exact unlocks, relevant policy/context, and a complete standing bill. The common infantry-equipment bill is 420: four vanilla infantry battalions at 100 each plus 20 for the mandatory HQ staff. Native `upgrade_prio` arbitration gives protected and chemical-fire-plan targets a factor of 3 in their valid posture, contaminated-theater and biological-containment targets an urgent factor of 6 during their exact emergencies, and the capstone overmatch target a factor of 4 under strategic or desperate posture. Response headquarters therefore outrank offensive overmatch when both are valid. Ability AI is disabled by default and gains positive weight only when the full player-equivalent activation trigger passes. Theater Contamination and Terminal Hazard add offensive-preparation weight only after that trigger succeeds. Offensive AI cannot prepare under defensive-only policy or without supported payload stock. Country-profile differentiation remains a later AI stage; these safety and supply gates remain authoritative.
-
-## Verified engine limits
-
-- Current 1.19 script can query exact HQ company presence but cannot query the fulfillment percentage of one named support company inside the deployed HQ. Native `essential`/`need` scaling handles company statistics, while abilities use exact national reserve gates and real debits. No aggregate-army fill estimator is retained.
-- A commander ability exposes no selected-state target. Decontamination therefore uses the separate player-selected assignment above; cordon resistance, spread, evidence, and containment changes still require their own later exact-state adapters. No random, capital-state, every-state, or country-wide substitute is used.
-- The Army HQ surface is DLC-owned. No non-HQ fallback company or hidden ordinary-division substitute is provided.
-- Ordinary continuously assigned chemical-capable aircraft receive no contamination hook here. Only a verified eligible-activity hook may add that behavior later; idle aircraft can never contaminate a region.
+Removed HQ sections and the eighteen obsolete agent-specific chemical tank companies are absent from active AI templates. Light, medium, and heavy armored delivery roles remain the supported chassis variants.
 
 ## Assets and wiring
 
-The asset package under `docs/assets/chaos_warfare_system/stage_4_hq_command/` retains source frames, independent large/small compositions, processed PNGs, contact sheets, manifest, and handoff.
+The active section sprites are registered in `interface/chaosx_subuniticons.gfx`. The five commander-order sprites are registered in `interface/chaosx_ability.gfx` and use the matching files under `gfx/interface/abilitylist/`. Technology and doctrine artwork remain registered in their dedicated technology and doctrine GFX files.
 
-Runtime wiring:
+The current package manifest and review sheets are under `docs/assets/chaos_warfare_cbrn/icon_package/`. Retired offensive ability icons are listed as removals in that manifest.
 
-- six two-frame `152x42` HQ counter sheets in `gfx/interface/counters/divisions_large/`;
-- six independently composed two-frame `60x12` map-counter sheets in `gfx/interface/counters/divisions_small/`;
-- seven dedicated `34x33` ability icons in the runtime ability icon folder;
-- one dedicated `64x64` Theater CBRN Headquarters technology icon in `gfx/interface/technologies/`;
-- company sprites in `interface/chaosx_subuniticons.gfx`;
-- ability sprites in `interface/chaosx_ability.gfx`;
-- technology sprite in `interface/chaosx_techtree.gfx`.
+## Main files
 
-No runtime asset may be a placeholder or a resized cross-type substitute.
+- `common/units/cbrn_hq_support.txt`
+- `common/abilities/cbrn_hq_abilities.txt`
+- `common/unit_leader/cbrn_hq_traits.txt`
+- `common/script_constants/cbrn_hq_constants.txt`
+- `common/scripted_triggers/cbrn_hq_triggers.txt`
+- `common/scripted_effects/cbrn_hq_effects.txt`
+- `events/cbrn_hq_events.txt`
+- `interface/chaosx_ability.gfx`
+- `localisation/english/cbrn_hq_l_english.yml`
 
-## Future integration and suggestions
+## Validation limits
 
-Required later-stage integration:
-
-- reserve and debit the exact selected chemical agent and delivery lot before a prepared order can dispatch exposure;
-- attach cordon, resistance, spread, evidence, and containment benefits to exact selected-state decisions/adapters while retaining the implemented decontamination assignment;
-- attach Biosecurity and Infection Corridor to distinct-agent detection, incubation, spread, containment, and treatment;
-- extend route-aware country AI profiles while preserving hard safety gates;
-- migrate legacy ability and company identifiers without losing active or unlocked state;
-- run live Army HQ designer, shortage, force-band, preparation, upkeep-failure, AI-use, and cleanup scenarios.
-
-Possible depth after the accepted package is complete: commander history entries for major CBRN commitments, theater-specific after-action reports, and designer UI summaries of the selected operating package. These suggestions must not bypass exact payload/state selection or introduce a global periodic pulse.
+Source review proves three active HQ sections, five active commander orders, finite targeted event chains, real stock debits, and removal of the separate offensive-preparation path. MCP event traces cover bounded HQ and protection chains but the full workspace event graph still reports unresolved diagnostics. Exact native reservation behavior on cancellation and the assigned-division-to-HQ association remain outside the documented script interface and require consumer evidence.

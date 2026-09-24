@@ -5,7 +5,7 @@ The Chemical Operations Commander, Biological Operations Veteran, and Hazard War
 The additions leave vanilla rows unchanged.
 
 After the final successful paid upkeep tick of a bounded CBRN Headquarters order, the exact commander receives one service receipt.
-Decontamination Corridor and Combined CBRN Overmatch count as chemical service; Mass Antidote Response, Seal Infection Corridor, and Combined CBRN Overmatch count as biological service; Decontamination Corridor, Seal Operational Area, and Seal Infection Corridor count as containment service.
+Decontamination Corridor counts as chemical service; Mass Antidote Response and Seal Infection Corridor count as biological service; Decontamination Corridor, Seal Operational Area, and Seal Infection Corridor count as containment service.
 Two chemical receipts earn Chemical Operations Commander, two biological receipts earn Biological Operations Veteran, and a commander with both earns Hazard Warfare Veteran.
 Preparations, canceled orders, and failed upkeep do not count.
 One completed order is credited at most once, and later completed orders can count after the next valid commitment clears the receipt guard.
@@ -16,7 +16,7 @@ The battle callback proves that the named commander won combat and had a protect
 Protected Assault Expert reduces the commanded army's out-of-supply penalty by five percent; Theatre Containment Organizer adds one army-group command slot.
 
 The native Chemical Operations Commander trait also offers a native High Command officer role with specialist, expert, and genius ranks.
-Its planning-speed values are one, three, and five percent, respectively; the former generic CBRN Operations Director office is retired.
+Its planning-speed values are one, three, and four percent, respectively; the former generic CBRN Operations Director office is retired.
 Civil Defence Coordinator, Chemical Logistics Inspector, and Biological Security Director remain distinct institutional High Command options.
 The native officer role uses that commander's existing portrait.
 

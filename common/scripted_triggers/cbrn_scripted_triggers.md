@@ -589,12 +589,10 @@ The following country-scope triggers return true only when the named non-researc
 
 ### Policy and AI gates
 
-- `cbrn_doctrine_policy_change_is_available`: Chaos Warfare adopted and no active 90-day reassessment lock.
-- `cbrn_can_set_defensive_preparation_policy`: policy-change gate and not already defensive.
-- `cbrn_can_set_retaliation_authority_policy`: policy-change gate, not already retaliation, 5 Command Power, and readiness 10.
-- `cbrn_can_set_limited_battlefield_policy`: Delivery Integration, 15 Command Power, readiness 40, operational payload reserve, and not already limited.
-- `cbrn_can_set_strategic_release_policy`: Theater Exploitation, 25 Command Power, readiness 65, strategic payload reserve, and not already strategic.
-- `cbrn_can_set_unrestricted_policy`: Terminal CBRN Command, 40 Command Power, readiness 85, terminal payload reserve, and not already at extreme-use policy.
+- `cbrn_doctrine_policy_change_is_available`: a CBRN program exists, five Command Power is available, and no 90-day reassessment lock is active.
+- `cbrn_can_set_retaliation_authority_policy`: policy-change gate and not already at Retaliation Only.
+- `cbrn_can_set_limited_battlefield_policy`: policy-change gate and not already at Battlefield Authorization. The retained internal name is a compatibility identifier for the direct three-policy model.
+- `cbrn_can_set_unrestricted_policy`: policy-change gate, Terminal CBRN Command, and not already at Unrestricted Authorization.
 - `cbrn_ai_route_allows_first_use`: explicit first-use/unrestricted route, high-chaos Soviet successor, or mapped Japan-China chemical campaign context.
 - `cbrn_ai_route_allows_unrestricted_use`: explicit unrestricted route or high-chaos Soviet successor.
 - `cbrn_ai_has_defensive_cbrn_profile`: mass civil defence, prepared power, civil-defence network, or an ordinary democratic country without an accepted first-use route.
@@ -617,7 +615,8 @@ These side-effect-free triggers are defined in `cbrn_hq_triggers.txt`. Character
 - `cbrn_hq_force_is_light`: fewer than 100 affected battalions.
 - `cbrn_hq_force_is_standard`: 100 through 199 affected battalions.
 - `cbrn_hq_force_is_mass`: at least 200 affected battalions.
-- `cbrn_hq_has_operations_section`, `cbrn_hq_has_intelligence_weather_cell`, `cbrn_hq_has_protective_logistics_section`, `cbrn_hq_has_mobile_decontamination_column`, `cbrn_hq_has_medical_countermeasure_directorate`, and `cbrn_hq_has_biological_security_section`: exact `num_battalions_with_type@...` checks for one named HQ-only company.
+- `cbrn_hq_has_operations_section`, `cbrn_hq_has_protective_logistics_section`, and `cbrn_hq_has_medical_countermeasure_directorate`: exact `num_battalions_with_type@...` checks for the three active HQ-only sections.
+- `cbrn_hq_has_intelligence_weather_cell`, `cbrn_hq_has_mobile_decontamination_column`, and `cbrn_hq_has_biological_security_section`: compatibility aliases to the corresponding consolidated section, retained for existing raid and response consumers.
 - `cbrn_hq_has_all_three_sections`: Operations, Protection and Decontamination, and Medical and Biosecurity in one deployed HQ.
 - `cbrn_hq_has_no_preparation_or_active_posture`: no preparation/active trait and no persistent operation code. The operation code deliberately blocks a newer posture until planned cleanup even after early supply failure.
 

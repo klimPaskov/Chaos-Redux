@@ -5,10 +5,10 @@ It requires `cbrn_hq_upkeep_ticks_remaining = 0`, the matching persistent `cbrn_
 The shared HQ starter must clear that flag when a new operation is validly committed.
 The effect sets the flag before crediting service, so an accidental duplicate callback cannot credit the same operation twice.
 
-Decontamination Corridor and Combined CBRN Overmatch credit `cbrn_chemical_operations_completed`.
-Mass Antidote Response, Seal Infection Corridor, and Combined CBRN Overmatch credit `cbrn_biological_operations_completed`.
+Decontamination Corridor credits `cbrn_chemical_operations_completed`.
+Mass Antidote Response and Seal Infection Corridor credit `cbrn_biological_operations_completed`.
 Decontamination Corridor, Seal Operational Area, and Seal Infection Corridor credit `cbrn_containment_operations_completed`.
-Prepare Chemical Offensive grants no service credit because it only prepares an offensive posture; failed upkeep, cancellation, and preparation completion also grant none.
+Failed upkeep, cancellation, and preparation completion grant no service credit.
 The thresholds live in `common/script_constants/cbrn_commander_progression_constants.txt` and counts stop at those thresholds.
 
 `cbrn_commander_record_protected_combat_victory` runs in the winning army leader's character scope from `on_army_leader_won_combat`.

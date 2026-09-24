@@ -2,7 +2,7 @@
 
 ## Overview
 
-Captured biological arsenals are resolved through native land raids. There is no decision-based deployment path. The controller must assign a division containing a Biosecurity Assault Detachment to an Army Headquarters with a Biological Security Section, reserve a route-specific package of protective and containment equipment, and prepare either a secure-and-preserve raid or a safe-destruction raid.
+Captured biological arsenals are resolved through native land raids. There is no decision-based deployment path. The controller must assign a division containing a Biosecurity Assault Detachment to an Army Headquarters with a Medical and Biosecurity section, reserve a route-specific package of protective and containment equipment, and prepare either a secure-and-preserve raid or a safe-destruction raid.
 
 The system tracks one exact designated national arsenal state. Hearts of Iron IV stores equipment nationally rather than inside states, so the first hostile capture of that designated arsenal moves the former custodian's currently unallocated Anthrax, Plague, Tularemia, and Smallpox payloads into an exact state ledger. Payload already reserved by a native raid is not part of the national stockpile snapshot and is therefore not counted twice. This is a declared gameplay representation of a centralized arsenal, not a claim that every national payload was historically stored in one building.
 
@@ -25,7 +25,7 @@ No daily, weekly, monthly, or all-country sampling pulse is used.
 
 - Preparation: 21 days.
 - Command Power: 25.
-- Required formation: one selected division containing `cbrn_biosecurity_assault_detachment`, assigned to an Army Headquarters containing `cbrn_hq_biological_security_section`.
+- Required formation: one selected division containing `cbrn_biosecurity_assault_detachment`, assigned to an Army Headquarters containing `cbrn_hq_medical_countermeasure_directorate`.
 - Additional reserved stores: 80 gas masks, 50 decontamination sets, 40 CBRN instrument sets, 60 support equipment, and 30 motorized equipment.
 - Limited success transfers 40 percent of every surviving captured agent to the controller and leaves the remainder in the exact state ledger.
 - Success and critical success transfer every surviving captured payload and resolve the facility hazard.
@@ -35,7 +35,7 @@ No daily, weekly, monthly, or all-country sampling pulse is used.
 
 - Preparation: 14 days.
 - Command Power: 20.
-- Required formation: one selected division containing `cbrn_biosecurity_assault_detachment`, assigned to an Army Headquarters containing `cbrn_hq_biological_security_section`.
+- Required formation: one selected division containing `cbrn_biosecurity_assault_detachment`, assigned to an Army Headquarters containing `cbrn_hq_medical_countermeasure_directorate`.
 - Additional reserved stores: 80 gas masks, 70 decontamination sets, 30 CBRN instrument sets, 70 support equipment, and 30 motorized equipment.
 - Limited success destroys 50 percent of every surviving captured agent and leaves the remainder in the exact state ledger.
 - Success and critical success destroy every surviving payload, resolve the hazard, and remove one level of `biowarfare_facility` from the exact state.
@@ -44,7 +44,7 @@ Both raids use native preparation, formation selection, equipment reservation, s
 
 ## Headquarters and division layers
 
-The Biosecurity Assault Detachment is the mandatory division layer. Character-scoped raid success modifiers check the selected division's own unit leader for `cbrn_hq_has_biological_security_section`. A missing section applies a fail-closed `-10` success weight, making the operation unable to succeed; the exact assigned section then provides the intended `+0.25` recovery bonus. A different headquarters elsewhere in the country cannot satisfy either check.
+The Biosecurity Assault Detachment is the mandatory division layer. Character-scoped raid success modifiers check the selected division's own unit leader for `cbrn_hq_has_biological_security_section`, the stable compatibility trigger for the consolidated Medical and Biosecurity section. A missing section applies a fail-closed `-10` success weight, making the operation unable to succeed; the exact assigned section then provides the intended `+0.25` recovery bonus. A different headquarters elsewhere in the country cannot satisfy either check.
 
 The current raid API restricts `unit_requirements` to battalion and equipment checks. It does not expose a character trigger that can hide an otherwise eligible division in the unit-selection list. The required character-scoped success factor is therefore displayed in native unit selection and enforces the requirement at resolution without inventing a national-HQ proxy. AI also rejects the zero-chance formation through `ai_min_success_chance`. A player can still select an invalid formation, but that formation cannot produce a successful recovery outcome; no alternate effect or refund is supplied.
 
@@ -75,7 +75,7 @@ Existing exact-state genocide discovery remains authoritative for experimentatio
 - Unrestricted Chaos Warfare routes prefer safe destruction over preservation.
 - Exceptional state-ledger hazard increases destruction priority and reduces preservation priority.
 - Countries lacking advanced handling or response technology receive an additional safe-destruction preference.
-- Native unit and equipment requirements remain hard gates for AI as well as players. The AI success threshold also rejects a formation missing its assigned Biological Security Section.
+- Native unit and equipment requirements remain hard gates for AI as well as players. The AI success threshold also rejects a formation missing its assigned Medical and Biosecurity section.
 
 ## Assets and wiring
 
@@ -83,7 +83,7 @@ Existing exact-state genocide discovery remains authoritative for experimentatio
 |---|---|---|---|
 | Secure/preserve raid type | `GFX_raid_type_icon_bio_facility_secure_preserve` | `gfx/interface/raids/stage_7_biological_warfare/raid_type_icon_bio_facility_secure_preserve.dds` | `interface/chaosx_raids.gfx` |
 | Destroy-safely raid type | `GFX_raid_type_icon_bio_facility_destroy_safely` | `gfx/interface/raids/stage_7_biological_warfare/raid_type_icon_bio_facility_destroy_safely.dds` | `interface/chaosx_raids.gfx` |
-| Recovery raid category and unit marker | `GFX_raid_category_small_biological_facility_recovery_raids`, `GFX_raid_unit_icon_biological_facility_recovery_raids` | Existing `gfx/interface/military_raids/map_icons/raid_unit_icon_biological_raids.dds` | `interface/chaosx_raids.gfx` |
+| Shared Biological Raids category and unit marker | `GFX_raid_category_small_biological_raids`, `GFX_raid_unit_icon_biological_raids` | `gfx/interface/military_raids/map_icons/raid_unit_icon_biological_raids.dds` | `interface/chaosx_raids.gfx` |
 | Capture and breach reports | `GFX_report_event_generic_bioweapon` | Existing same-type biological-weapon report art | Existing `interface/chaosx_pictures.gfx` definition |
 
 The two raid-type icons are independent generated assets with source PNGs, processed transparent previews, contact sheet, validation notes, and hashes under `docs/assets/chaos_warfare_system/stage_7_biological_warfare/captured_facility_raid_icons/`. The existing biological raid category icon and generic biological-weapon report image are intentionally reused on matching asset surfaces; neither has been overwritten or resized.
