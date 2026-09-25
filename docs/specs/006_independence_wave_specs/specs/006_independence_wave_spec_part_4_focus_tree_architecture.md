@@ -664,6 +664,22 @@ Every regional overlay changes at least the following:
 
 The detailed regional matrix is in `matrices/006_regional_overlay_matrix.csv`.
 
+### Accepted REG-03 country-specific groups (2026-09-25)
+
+Acceptance basis: the user approved Event 006 implementation broadly on 2026-09-25 and selected the recommended path to retain the root-level shared-focus design while recording the current MCP render limitation. This acceptance applies to the bounded IW-023/TRA, IW-029/BOS, and IW-026/MAC groups below; it does not authorize a new country tree or duplicated carrier definitions.
+
+Each group has five shared-focus IDs in a four-focus route: a 5-day administrative root, a 5-day transport or logistics step, one selected 7-day branch from a mutually exclusive pair, and a 7-day capstone. The selected sequence costs 24 focus units (168 days at normal speed), while each package's existing 420-day founding crisis and paid-project requirements remain in force. The root and descendants use exact package gates and the currently selected full-framework or reviewed additive-carrier contract. TRA and BOS are imported into the full tree and the retained Austro-Hungarian carrier; MAC is imported into the full tree.
+
+| Package | Root and logistics step | Mutually exclusive branch choices | Capstone |
+| --- | --- | --- | --- |
+| IW-023 / TRA | `independence_wave_tra_register_district_authorities` → `independence_wave_tra_account_for_rails_and_mines` | `independence_wave_tra_seat_the_district_assembly` or `independence_wave_tra_mandate_the_frontier_guard` | `independence_wave_tra_publish_border_arbitration_docket` |
+| IW-029 / BOS | `independence_wave_bos_convene_sarajevo_service_board` → `independence_wave_bos_map_drina_passes_and_depots` | `independence_wave_bos_bind_cantonal_guarantees` or `independence_wave_bos_commission_mountain_veterans` | `independence_wave_bos_publish_drina_corridor_docket` |
+| IW-026 / MAC | `independence_wave_mac_register_vardar_municipal_offices` → `independence_wave_mac_survey_vardar_rail_and_grain` | `independence_wave_mac_ratify_village_appeals` or `independence_wave_mac_screen_mountain_veterans` | `independence_wave_mac_publish_vardar_arbitration_docket` |
+
+Opening and logistics focuses grant `minor_gain` to one package ledger. Each branch grants `standard_gain` to its favored ledger and `minor_loss` to the other. The matching paid council or screening action contributes one further `minor_gain` only after its cost is paid successfully, whether its receipt predates or follows the branch focus. The capstone requires either that paid receipt and grants `minor_gain` to both ledgers. All changes use the existing package ledger helpers, clamps, and lifecycle refresh; they never set a paid-project receipt, resolve a mission, settle former-host ledgers, open a network, transfer territory, grant a core, or supply FORM-08 consent. Existing icons are reused and each focus receives matching title, description, and effect tooltip localisation.
+
+The shared-focus inspector currently counts only direct `focus = {}` definitions and omits imported root-level `shared_focus` definitions. Its renders therefore cannot prove this attachment or layout. The user approved retaining the shared design and recording that MCP layout evidence as blocked; source inspection does not substitute for the required MCP evidence. The AI numeric-weight portion remains behind a complete typed baseline and a same-scenario probability comparison.
+
 ## Country ambition modules
 
 Selected candidates receive one gated ambition module inside the shared generic tree. Other candidates use a regional ambition family with package-specific states and names inside that same tree. This is module-level variation, not a separate bespoke country focus tree.
