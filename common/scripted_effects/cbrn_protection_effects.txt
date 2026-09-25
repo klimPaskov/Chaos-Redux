@@ -1109,6 +1109,222 @@ cbrn_apply_distribution_source_modifiers = {
 	}
 }
 
+# Selection-time stock debit. State scope; ROOT is the donor country, and
+# cbrn_mask_escrow_requested / cbrn_mask_escrow_external are temporary inputs.
+# External 0 is the occupied program; external 1 is aid. The five persistent
+# state model receipts are the sole source for reserved completion.
+cbrn_reserve_requested_masks_to_state = {
+	set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			check_variable = { cbrn_mask_escrow_requested > constant:cbrn_math.zero }
+			OR = {
+				AND = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } NOT = { has_state_flag = cbrn_occupied_mask_escrow_active } }
+				AND = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one } NOT = { has_state_flag = cbrn_external_mask_escrow_active } }
+			}
+		}
+		set_temp_variable = { cbrn_mask_escrow_remaining = cbrn_mask_escrow_requested }
+		clamp_temp_variable = { var = cbrn_mask_escrow_remaining min = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_mask_escrow_taken_reconditioned = constant:cbrn_math.zero }
+		ROOT = { set_temp_variable = { cbrn_mask_escrow_available = num_equipment@gas_mask_equipment_reconditioned } }
+		set_temp_variable = { cbrn_mask_escrow_taken_reconditioned = cbrn_mask_escrow_remaining }
+		clamp_temp_variable = { var = cbrn_mask_escrow_taken_reconditioned min = constant:cbrn_math.zero max = cbrn_mask_escrow_available }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_taken_reconditioned > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_mask_escrow_debit = cbrn_mask_escrow_taken_reconditioned }
+			multiply_temp_variable = { cbrn_mask_escrow_debit = constant:cbrn_math.negation_multiplier }
+			ROOT = { add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_escrow_debit } }
+			add_to_temp_variable = { cbrn_mask_escrow_completed = cbrn_mask_escrow_taken_reconditioned }
+			subtract_from_temp_variable = { cbrn_mask_escrow_remaining = cbrn_mask_escrow_taken_reconditioned }
+		}
+		set_temp_variable = { cbrn_mask_escrow_taken_basic = constant:cbrn_math.zero }
+		ROOT = { set_temp_variable = { cbrn_mask_escrow_available = num_equipment@gas_mask_equipment_1 } }
+		set_temp_variable = { cbrn_mask_escrow_taken_basic = cbrn_mask_escrow_remaining }
+		clamp_temp_variable = { var = cbrn_mask_escrow_taken_basic min = constant:cbrn_math.zero max = cbrn_mask_escrow_available }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_taken_basic > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_mask_escrow_debit = cbrn_mask_escrow_taken_basic }
+			multiply_temp_variable = { cbrn_mask_escrow_debit = constant:cbrn_math.negation_multiplier }
+			ROOT = { add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_escrow_debit } }
+			add_to_temp_variable = { cbrn_mask_escrow_completed = cbrn_mask_escrow_taken_basic }
+			subtract_from_temp_variable = { cbrn_mask_escrow_remaining = cbrn_mask_escrow_taken_basic }
+		}
+		set_temp_variable = { cbrn_mask_escrow_taken_improved = constant:cbrn_math.zero }
+		ROOT = { set_temp_variable = { cbrn_mask_escrow_available = num_equipment@gas_mask_equipment_2 } }
+		set_temp_variable = { cbrn_mask_escrow_taken_improved = cbrn_mask_escrow_remaining }
+		clamp_temp_variable = { var = cbrn_mask_escrow_taken_improved min = constant:cbrn_math.zero max = cbrn_mask_escrow_available }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_taken_improved > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_mask_escrow_debit = cbrn_mask_escrow_taken_improved }
+			multiply_temp_variable = { cbrn_mask_escrow_debit = constant:cbrn_math.negation_multiplier }
+			ROOT = { add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_escrow_debit } }
+			add_to_temp_variable = { cbrn_mask_escrow_completed = cbrn_mask_escrow_taken_improved }
+			subtract_from_temp_variable = { cbrn_mask_escrow_remaining = cbrn_mask_escrow_taken_improved }
+		}
+		set_temp_variable = { cbrn_mask_escrow_taken_advanced = constant:cbrn_math.zero }
+		ROOT = { set_temp_variable = { cbrn_mask_escrow_available = num_equipment@gas_mask_equipment_3 } }
+		set_temp_variable = { cbrn_mask_escrow_taken_advanced = cbrn_mask_escrow_remaining }
+		clamp_temp_variable = { var = cbrn_mask_escrow_taken_advanced min = constant:cbrn_math.zero max = cbrn_mask_escrow_available }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_taken_advanced > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_mask_escrow_debit = cbrn_mask_escrow_taken_advanced }
+			multiply_temp_variable = { cbrn_mask_escrow_debit = constant:cbrn_math.negation_multiplier }
+			ROOT = { add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_escrow_debit } }
+			add_to_temp_variable = { cbrn_mask_escrow_completed = cbrn_mask_escrow_taken_advanced }
+			subtract_from_temp_variable = { cbrn_mask_escrow_remaining = cbrn_mask_escrow_taken_advanced }
+		}
+		set_temp_variable = { cbrn_mask_escrow_taken_sealed = constant:cbrn_math.zero }
+		ROOT = { set_temp_variable = { cbrn_mask_escrow_available = num_equipment@gas_mask_equipment_4 } }
+		set_temp_variable = { cbrn_mask_escrow_taken_sealed = cbrn_mask_escrow_remaining }
+		clamp_temp_variable = { var = cbrn_mask_escrow_taken_sealed min = constant:cbrn_math.zero max = cbrn_mask_escrow_available }
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_taken_sealed > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_mask_escrow_debit = cbrn_mask_escrow_taken_sealed }
+			multiply_temp_variable = { cbrn_mask_escrow_debit = constant:cbrn_math.negation_multiplier }
+			ROOT = { add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_escrow_debit } }
+			add_to_temp_variable = { cbrn_mask_escrow_completed = cbrn_mask_escrow_taken_sealed }
+			subtract_from_temp_variable = { cbrn_mask_escrow_remaining = cbrn_mask_escrow_taken_sealed }
+		}
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+			if = {
+				limit = { check_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero } }
+				set_variable = { cbrn_occupied_mask_escrow_reconditioned = cbrn_mask_escrow_taken_reconditioned }
+				set_variable = { cbrn_occupied_mask_escrow_basic = cbrn_mask_escrow_taken_basic }
+				set_variable = { cbrn_occupied_mask_escrow_improved = cbrn_mask_escrow_taken_improved }
+				set_variable = { cbrn_occupied_mask_escrow_advanced = cbrn_mask_escrow_taken_advanced }
+				set_variable = { cbrn_occupied_mask_escrow_sealed = cbrn_mask_escrow_taken_sealed }
+				set_variable = { cbrn_occupied_mask_escrow_donor = ROOT }
+				set_state_flag = cbrn_occupied_mask_escrow_active
+			}
+			else = {
+				set_variable = { cbrn_external_mask_escrow_reconditioned = cbrn_mask_escrow_taken_reconditioned }
+				set_variable = { cbrn_external_mask_escrow_basic = cbrn_mask_escrow_taken_basic }
+				set_variable = { cbrn_external_mask_escrow_improved = cbrn_mask_escrow_taken_improved }
+				set_variable = { cbrn_external_mask_escrow_advanced = cbrn_mask_escrow_taken_advanced }
+				set_variable = { cbrn_external_mask_escrow_sealed = cbrn_mask_escrow_taken_sealed }
+				set_variable = { cbrn_external_mask_escrow_donor = ROOT }
+				set_state_flag = cbrn_external_mask_escrow_active
+			}
+			ROOT = { cbrn_refresh_country_mask_snapshot = yes }
+		}
+	}
+}
+
+
+# State-scope idempotent refund for the occupied timed project.
+cbrn_refund_occupied_state_mask_reservation = {
+	set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+	if = {
+		limit = { has_state_flag = cbrn_occupied_mask_escrow_active has_variable = cbrn_occupied_mask_escrow_donor var:cbrn_occupied_mask_escrow_donor = { exists = yes } }
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_occupied_mask_escrow_reconditioned }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_occupied_mask_escrow_reconditioned
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_occupied_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_occupied_mask_escrow_basic }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_occupied_mask_escrow_basic
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_occupied_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_occupied_mask_escrow_improved }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_occupied_mask_escrow_improved
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_occupied_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_occupied_mask_escrow_advanced }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_occupied_mask_escrow_advanced
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_occupied_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_occupied_mask_escrow_sealed }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_occupied_mask_escrow_sealed
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_occupied_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		var:cbrn_occupied_mask_escrow_donor = { cbrn_refresh_country_mask_snapshot = yes }
+		clear_variable = cbrn_occupied_mask_escrow_donor
+		clr_state_flag = cbrn_occupied_mask_escrow_active
+	}
+	else_if = {
+		limit = { has_state_flag = cbrn_occupied_mask_escrow_active }
+		set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.one }
+	}
+}
+
+# State-scope idempotent refund for the external timed project.
+cbrn_refund_external_state_mask_reservation = {
+	set_temp_variable = { cbrn_mask_escrow_refunded = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.zero }
+	if = {
+		limit = { has_state_flag = cbrn_external_mask_escrow_active has_variable = cbrn_external_mask_escrow_donor var:cbrn_external_mask_escrow_donor = { exists = yes } }
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_external_mask_escrow_reconditioned }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_external_mask_escrow_reconditioned
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_external_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_external_mask_escrow_basic }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_external_mask_escrow_basic
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_external_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_external_mask_escrow_improved }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_external_mask_escrow_improved
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_external_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_external_mask_escrow_advanced }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_external_mask_escrow_advanced
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_external_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		set_temp_variable = { cbrn_mask_escrow_refund_model = cbrn_external_mask_escrow_sealed }
+		clamp_temp_variable = { var = cbrn_mask_escrow_refund_model min = constant:cbrn_math.zero }
+		clear_variable = cbrn_external_mask_escrow_sealed
+		if = {
+			limit = { check_variable = { cbrn_mask_escrow_refund_model > constant:cbrn_math.zero } }
+			var:cbrn_external_mask_escrow_donor = { add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_escrow_refund_model } }
+			add_to_temp_variable = { cbrn_mask_escrow_refunded = cbrn_mask_escrow_refund_model }
+		}
+		var:cbrn_external_mask_escrow_donor = { cbrn_refresh_country_mask_snapshot = yes }
+		clear_variable = cbrn_external_mask_escrow_donor
+		clr_state_flag = cbrn_external_mask_escrow_active
+	}
+	else_if = {
+		limit = { has_state_flag = cbrn_external_mask_escrow_active }
+		set_temp_variable = { cbrn_mask_escrow_refund_blocked = constant:cbrn_math.one }
+	}
+}
+
+
 cbrn_distribute_requested_masks_to_state_internal = {
 	cbrn_initialize_state_protection = yes
 	cbrn_refresh_state_civilian_mask_snapshot = yes
@@ -1194,25 +1410,35 @@ cbrn_distribute_requested_masks_to_state_internal = {
 	multiply_temp_variable = { cbrn_distribution_old_filter_points = cbrn_civilian_mask_filter_condition }
 
 	if = {
-		limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-		event_target:cbrn_distribution_external_supplier = {
-			set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_reconditioned }
-		}
+		limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+		if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_model_available = cbrn_external_mask_escrow_reconditioned } }
+		else = { set_temp_variable = { cbrn_mask_model_available = cbrn_occupied_mask_escrow_reconditioned } }
 	}
-	else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_reconditioned } } }
+	else = {
+		if = {
+			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+			event_target:cbrn_distribution_external_supplier = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_reconditioned } }
+		}
+		else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_reconditioned } } }
+	}
 	set_temp_variable = { cbrn_mask_model_take = cbrn_distribution_stock_remaining }
 	clamp_temp_variable = { var = cbrn_mask_model_take min = constant:cbrn_math.zero max = cbrn_mask_model_available }
 	if = {
 		limit = { check_variable = { var = cbrn_mask_model_take value = constant:cbrn_math.zero compare = greater_than } }
-		set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
-		multiply_temp_variable = { cbrn_mask_model_debit = -1 }
 		if = {
-			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-			event_target:cbrn_distribution_external_supplier = {
-				add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_model_debit }
-			}
+			limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+			if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } subtract_from_variable = { cbrn_external_mask_escrow_reconditioned = cbrn_mask_model_take } }
+			else = { subtract_from_variable = { cbrn_occupied_mask_escrow_reconditioned = cbrn_mask_model_take } }
 		}
-		else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_model_debit } } }
+		else = {
+			set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
+			multiply_temp_variable = { cbrn_mask_model_debit = constant:cbrn_math.negation_multiplier }
+			if = {
+				limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+				event_target:cbrn_distribution_external_supplier = { add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_model_debit } }
+			}
+			else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_reconditioned amount = cbrn_mask_model_debit } } }
+		}
 		set_temp_variable = { cbrn_mask_model_usable = cbrn_mask_model_take }
 		divide_temp_variable = { cbrn_mask_model_usable = cbrn_distribution_cost_local }
 		add_to_variable = { cbrn_civilian_mask_reconditioned_crates = cbrn_mask_model_usable }
@@ -1228,25 +1454,35 @@ cbrn_distribute_requested_masks_to_state_internal = {
 	}
 
 	if = {
-		limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-		event_target:cbrn_distribution_external_supplier = {
-			set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_1 }
-		}
+		limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+		if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_model_available = cbrn_external_mask_escrow_basic } }
+		else = { set_temp_variable = { cbrn_mask_model_available = cbrn_occupied_mask_escrow_basic } }
 	}
-	else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_1 } } }
+	else = {
+		if = {
+			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+			event_target:cbrn_distribution_external_supplier = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_1 } }
+		}
+		else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_1 } } }
+	}
 	set_temp_variable = { cbrn_mask_model_take = cbrn_distribution_stock_remaining }
 	clamp_temp_variable = { var = cbrn_mask_model_take min = constant:cbrn_math.zero max = cbrn_mask_model_available }
 	if = {
 		limit = { check_variable = { var = cbrn_mask_model_take value = constant:cbrn_math.zero compare = greater_than } }
-		set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
-		multiply_temp_variable = { cbrn_mask_model_debit = -1 }
 		if = {
-			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-			event_target:cbrn_distribution_external_supplier = {
-				add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_model_debit }
-			}
+			limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+			if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } subtract_from_variable = { cbrn_external_mask_escrow_basic = cbrn_mask_model_take } }
+			else = { subtract_from_variable = { cbrn_occupied_mask_escrow_basic = cbrn_mask_model_take } }
 		}
-		else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_model_debit } } }
+		else = {
+			set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
+			multiply_temp_variable = { cbrn_mask_model_debit = constant:cbrn_math.negation_multiplier }
+			if = {
+				limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+				event_target:cbrn_distribution_external_supplier = { add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_model_debit } }
+			}
+			else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_1 amount = cbrn_mask_model_debit } } }
+		}
 		set_temp_variable = { cbrn_mask_model_usable = cbrn_mask_model_take }
 		divide_temp_variable = { cbrn_mask_model_usable = cbrn_distribution_cost_local }
 		add_to_variable = { cbrn_civilian_mask_basic_crates = cbrn_mask_model_usable }
@@ -1262,25 +1498,35 @@ cbrn_distribute_requested_masks_to_state_internal = {
 	}
 
 	if = {
-		limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-		event_target:cbrn_distribution_external_supplier = {
-			set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_2 }
-		}
+		limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+		if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_model_available = cbrn_external_mask_escrow_improved } }
+		else = { set_temp_variable = { cbrn_mask_model_available = cbrn_occupied_mask_escrow_improved } }
 	}
-	else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_2 } } }
+	else = {
+		if = {
+			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+			event_target:cbrn_distribution_external_supplier = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_2 } }
+		}
+		else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_2 } } }
+	}
 	set_temp_variable = { cbrn_mask_model_take = cbrn_distribution_stock_remaining }
 	clamp_temp_variable = { var = cbrn_mask_model_take min = constant:cbrn_math.zero max = cbrn_mask_model_available }
 	if = {
 		limit = { check_variable = { var = cbrn_mask_model_take value = constant:cbrn_math.zero compare = greater_than } }
-		set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
-		multiply_temp_variable = { cbrn_mask_model_debit = -1 }
 		if = {
-			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-			event_target:cbrn_distribution_external_supplier = {
-				add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_model_debit }
-			}
+			limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+			if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } subtract_from_variable = { cbrn_external_mask_escrow_improved = cbrn_mask_model_take } }
+			else = { subtract_from_variable = { cbrn_occupied_mask_escrow_improved = cbrn_mask_model_take } }
 		}
-		else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_model_debit } } }
+		else = {
+			set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
+			multiply_temp_variable = { cbrn_mask_model_debit = constant:cbrn_math.negation_multiplier }
+			if = {
+				limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+				event_target:cbrn_distribution_external_supplier = { add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_model_debit } }
+			}
+			else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_2 amount = cbrn_mask_model_debit } } }
+		}
 		set_temp_variable = { cbrn_mask_model_usable = cbrn_mask_model_take }
 		divide_temp_variable = { cbrn_mask_model_usable = cbrn_distribution_cost_local }
 		add_to_variable = { cbrn_civilian_mask_improved_crates = cbrn_mask_model_usable }
@@ -1296,25 +1542,35 @@ cbrn_distribute_requested_masks_to_state_internal = {
 	}
 
 	if = {
-		limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-		event_target:cbrn_distribution_external_supplier = {
-			set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_3 }
-		}
+		limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+		if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_model_available = cbrn_external_mask_escrow_advanced } }
+		else = { set_temp_variable = { cbrn_mask_model_available = cbrn_occupied_mask_escrow_advanced } }
 	}
-	else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_3 } } }
+	else = {
+		if = {
+			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+			event_target:cbrn_distribution_external_supplier = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_3 } }
+		}
+		else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_3 } } }
+	}
 	set_temp_variable = { cbrn_mask_model_take = cbrn_distribution_stock_remaining }
 	clamp_temp_variable = { var = cbrn_mask_model_take min = constant:cbrn_math.zero max = cbrn_mask_model_available }
 	if = {
 		limit = { check_variable = { var = cbrn_mask_model_take value = constant:cbrn_math.zero compare = greater_than } }
-		set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
-		multiply_temp_variable = { cbrn_mask_model_debit = -1 }
 		if = {
-			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-			event_target:cbrn_distribution_external_supplier = {
-				add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_model_debit }
-			}
+			limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+			if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } subtract_from_variable = { cbrn_external_mask_escrow_advanced = cbrn_mask_model_take } }
+			else = { subtract_from_variable = { cbrn_occupied_mask_escrow_advanced = cbrn_mask_model_take } }
 		}
-		else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_model_debit } } }
+		else = {
+			set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
+			multiply_temp_variable = { cbrn_mask_model_debit = constant:cbrn_math.negation_multiplier }
+			if = {
+				limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+				event_target:cbrn_distribution_external_supplier = { add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_model_debit } }
+			}
+			else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_3 amount = cbrn_mask_model_debit } } }
+		}
 		set_temp_variable = { cbrn_mask_model_usable = cbrn_mask_model_take }
 		divide_temp_variable = { cbrn_mask_model_usable = cbrn_distribution_cost_local }
 		add_to_variable = { cbrn_civilian_mask_advanced_crates = cbrn_mask_model_usable }
@@ -1330,25 +1586,35 @@ cbrn_distribute_requested_masks_to_state_internal = {
 	}
 
 	if = {
-		limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-		event_target:cbrn_distribution_external_supplier = {
-			set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_4 }
-		}
+		limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+		if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } set_temp_variable = { cbrn_mask_model_available = cbrn_external_mask_escrow_sealed } }
+		else = { set_temp_variable = { cbrn_mask_model_available = cbrn_occupied_mask_escrow_sealed } }
 	}
-	else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_4 } } }
+	else = {
+		if = {
+			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+			event_target:cbrn_distribution_external_supplier = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_4 } }
+		}
+		else = { controller = { set_temp_variable = { cbrn_mask_model_available = num_equipment@gas_mask_equipment_4 } } }
+	}
 	set_temp_variable = { cbrn_mask_model_take = cbrn_distribution_stock_remaining }
 	clamp_temp_variable = { var = cbrn_mask_model_take min = constant:cbrn_math.zero max = cbrn_mask_model_available }
 	if = {
 		limit = { check_variable = { var = cbrn_mask_model_take value = constant:cbrn_math.zero compare = greater_than } }
-		set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
-		multiply_temp_variable = { cbrn_mask_model_debit = -1 }
 		if = {
-			limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
-			event_target:cbrn_distribution_external_supplier = {
-				add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_model_debit }
-			}
+			limit = { check_variable = { cbrn_distribution_uses_escrow > constant:cbrn_math.zero } }
+			if = { limit = { check_variable = { cbrn_distribution_escrow_external > constant:cbrn_math.zero } } subtract_from_variable = { cbrn_external_mask_escrow_sealed = cbrn_mask_model_take } }
+			else = { subtract_from_variable = { cbrn_occupied_mask_escrow_sealed = cbrn_mask_model_take } }
 		}
-		else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_model_debit } } }
+		else = {
+			set_temp_variable = { cbrn_mask_model_debit = cbrn_mask_model_take }
+			multiply_temp_variable = { cbrn_mask_model_debit = constant:cbrn_math.negation_multiplier }
+			if = {
+				limit = { check_variable = { cbrn_distribution_uses_external_source > constant:cbrn_math.zero } }
+				event_target:cbrn_distribution_external_supplier = { add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_model_debit } }
+			}
+			else = { controller = { add_equipment_to_stockpile = { type = gas_mask_equipment_4 amount = cbrn_mask_model_debit } } }
+		}
 		set_temp_variable = { cbrn_mask_model_usable = cbrn_mask_model_take }
 		divide_temp_variable = { cbrn_mask_model_usable = cbrn_distribution_cost_local }
 		add_to_variable = { cbrn_civilian_mask_sealed_crates = cbrn_mask_model_usable }
@@ -1387,6 +1653,7 @@ cbrn_distribute_requested_masks_to_state_internal = {
 
 cbrn_distribute_requested_masks_to_state = {
 	set_temp_variable = { cbrn_distribution_uses_external_source = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_distribution_uses_escrow = constant:cbrn_math.zero }
 	cbrn_distribute_requested_masks_to_state_internal = yes
 }
 
@@ -1399,12 +1666,58 @@ cbrn_distribute_requested_external_masks_to_state = {
 			controller = { exists = yes }
 		}
 		set_temp_variable = { cbrn_distribution_uses_external_source = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_distribution_uses_escrow = constant:cbrn_math.zero }
 		cbrn_distribute_requested_masks_to_state_internal = yes
 		if = {
 			limit = { check_variable = { cbrn_distribution_usable_crates > constant:cbrn_math.zero } }
 			set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.supplied }
 			cbrn_achievement_record_external_mask_aid = yes
 		}
+	}
+}
+
+# State scope. An occupied-program receipt has already removed these models
+# from ROOT's stockpile. The common distributor consumes only receipt balances.
+cbrn_distribute_reserved_occupied_masks_to_state = {
+	set_temp_variable = { cbrn_reserved_distribution_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			has_state_flag = cbrn_occupied_mask_escrow_active
+			has_variable = cbrn_occupied_mask_escrow_donor
+			var:cbrn_occupied_mask_escrow_donor = { tag = ROOT }
+			is_controlled_by = ROOT
+		}
+		set_temp_variable = { cbrn_distribution_uses_external_source = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_distribution_uses_escrow = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_distribution_escrow_external = constant:cbrn_math.zero }
+		cbrn_distribute_requested_masks_to_state_internal = yes
+		if = { limit = { check_variable = { cbrn_distribution_usable_crates > constant:cbrn_math.zero } } set_temp_variable = { cbrn_reserved_distribution_proof = constant:cbrn_proof.supplied } }
+		cbrn_refund_occupied_state_mask_reservation = yes
+	}
+}
+
+# State scope. The state receipt stores the original donor independently of
+# later control, so simultaneous aid targets do not share a country balance.
+cbrn_distribute_reserved_external_masks_to_state = {
+	set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.missing }
+	if = {
+		limit = {
+			has_state_flag = cbrn_external_mask_escrow_active
+			has_variable = cbrn_external_mask_escrow_donor
+			var:cbrn_external_mask_escrow_donor = { exists = yes }
+			controller = { exists = yes }
+		}
+		var:cbrn_external_mask_escrow_donor = { save_event_target_as = cbrn_distribution_external_supplier }
+		set_temp_variable = { cbrn_distribution_uses_external_source = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_distribution_uses_escrow = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_distribution_escrow_external = constant:cbrn_math.one }
+		cbrn_distribute_requested_masks_to_state_internal = yes
+		if = {
+			limit = { check_variable = { cbrn_distribution_usable_crates > constant:cbrn_math.zero } }
+			set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.supplied }
+			cbrn_achievement_record_external_mask_aid = yes
+		}
+		cbrn_refund_external_state_mask_reservation = yes
 	}
 }
 

@@ -1,6 +1,7 @@
 # Some fields in this file reject script-constant tokens.
 # These file-scoped values mirror the authoritative shared constants.
 @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_FACTORIES = 2
+@CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT = 25
 # ============================================================================
 # CHAOS REDUX - CBRN OCCUPATION DECISIONS
 # ============================================================================
@@ -309,7 +310,7 @@ cbrn_occupation_measures_category = {
 		icon = GFX_decision_cbrn_deploy_protective_aid
 		state_target = any
 		on_map_mode = map_and_decisions_view
-		cost = constant:cbrn_occupation_decision_cost.protective_aid_pp
+		ai_hint_pp_cost = @CR_SC_CBRN_OCCUPATION_DECISION_COST_PROTECTIVE_AID_PP_AI_HINT
 		days_remove = constant:cbrn_occupation_timing.protective_aid_days
 		days_re_enable = constant:cbrn_occupation_timing.protective_aid_reenable_days
 		modifier = {
@@ -317,37 +318,63 @@ cbrn_occupation_measures_category = {
 		}
 
 		target_root_trigger = {
-			cbrn_occupation_country_can_supply_external_protective_aid = yes
+			OR = {
+				cbrn_occupation_country_can_supply_external_protective_aid = yes
+				check_variable = { cbrn_external_aid_active_reservations_count > constant:cbrn_math.zero }
+			}
 		}
 
 		target_trigger = {
-			FROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }
-		}
-
-		visible = {
-			cbrn_occupation_country_can_supply_external_protective_aid = yes
-		}
-
-		available = {
-			custom_trigger_tooltip = {
-				tooltip = cbrn_deploy_protective_aid_requirements_tt
-				hidden_trigger = {
-					cbrn_occupation_country_can_supply_external_protective_aid = yes
-					FROM = { cbrn_occupation_state_can_receive_external_protective_aid = yes }
+			FROM = {
+				OR = {
+					cbrn_occupation_state_can_receive_external_protective_aid = yes
+					cbrn_occupation_state_has_donor_external_aid_reservation = yes
 				}
 			}
 		}
+
+		visible = {
+			OR = {
+				cbrn_occupation_country_can_supply_external_protective_aid = yes
+				FROM = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }
+			}
+		}
+
+		available = {
+			hidden_trigger = { cbrn_occupation_external_aid_payment_ready = yes }
+		}
+		custom_cost_trigger = { hidden_trigger = { cbrn_occupation_external_aid_payment_ready = yes } }
+		custom_cost_text = cbrn_deploy_protective_aid_cost
 
 		complete_effect = {
 			custom_effect_tooltip = cbrn_deploy_protective_aid_begin_tt
 			hidden_effect = {
 				FROM = {
-					set_temp_variable = {
-						cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days
-					}
-					set_state_flag = {
-						flag = cbrn_occupation_external_aid_project_active
-						days = var:cbrn_occupation_external_aid_days
+					set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+					if = {
+						limit = {
+							ROOT = {
+								cbrn_occupation_country_can_supply_external_protective_aid = yes
+								NOT = { has_political_power < constant:cbrn_occupation_decision_cost.protective_aid_pp }
+							}
+							cbrn_occupation_state_can_receive_external_protective_aid = yes
+							cbrn_quote_external_state_mask_reservation = yes
+							check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+						}
+						set_temp_variable = { cbrn_mask_escrow_requested = cbrn_mask_reservation_quote }
+						set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.one }
+						set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+						cbrn_reserve_requested_masks_to_state = yes
+						if = {
+							limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+							cbrn_occupation_register_external_aid_reservation = yes
+							set_temp_variable = { cbrn_occupation_external_aid_days = constant:cbrn_occupation_timing.protective_aid_days }
+							set_state_flag = { flag = cbrn_occupation_external_aid_project_active days = var:cbrn_occupation_external_aid_days }
+							ROOT = {
+								set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_occupation_decision_cost.protective_aid_pp }
+								cbrn_debit_protection_political_power = yes
+							}
+						}
 					}
 				}
 			}
@@ -357,6 +384,7 @@ cbrn_occupation_measures_category = {
 			custom_effect_tooltip = cbrn_deploy_protective_aid_complete_tt
 			hidden_effect = {
 				FROM = {
+					cbrn_occupation_close_external_aid_reservation = yes
 					clr_state_flag = cbrn_occupation_external_aid_project_active
 					save_event_target_as = cbrn_occupation_target_state
 				}
@@ -366,12 +394,11 @@ cbrn_occupation_measures_category = {
 
 		cancel_trigger = {
 			OR = {
-				NOT = { cbrn_occupation_country_can_supply_external_protective_aid = yes }
+				NOT = { cbrn_occupation_country_can_continue_external_protective_aid = yes }
 				FROM = {
 					OR = {
-						NOT = { state_population_k > constant:cbrn_math.zero }
-						is_core_of = controller
-						is_controlled_by = ROOT
+						NOT = { cbrn_occupation_state_has_donor_external_aid_reservation = yes }
+						NOT = { cbrn_occupation_state_remains_external_protective_aid_target = yes }
 					}
 				}
 			}
@@ -379,7 +406,11 @@ cbrn_occupation_measures_category = {
 
 		cancel_effect = {
 			hidden_effect = {
-				FROM = { clr_state_flag = cbrn_occupation_external_aid_project_active }
+				FROM = {
+					cbrn_occupation_close_external_aid_reservation = yes
+					cbrn_refund_external_state_mask_reservation = yes
+					clr_state_flag = cbrn_occupation_external_aid_project_active
+				}
 			}
 		}
 

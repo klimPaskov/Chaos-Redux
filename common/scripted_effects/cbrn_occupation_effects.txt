@@ -99,6 +99,36 @@ cbrn_occupation_clear_state_policy = {
 	clear_variable = cbrn_occupation_policy_state
 }
 
+# State-scoped UI lifetime count for independently targeted aid projects.
+# The receipt flag prevents a second close from decrementing the donor twice.
+cbrn_occupation_register_external_aid_reservation = {
+	if = {
+		limit = {
+			has_state_flag = cbrn_external_mask_escrow_active
+			NOT = { has_state_flag = cbrn_external_aid_reservation_counted }
+		}
+		set_state_flag = cbrn_external_aid_reservation_counted
+		ROOT = {
+			if = { limit = { NOT = { has_variable = cbrn_external_aid_active_reservations_count } } set_variable = { cbrn_external_aid_active_reservations_count = constant:cbrn_math.zero } }
+			add_to_variable = { cbrn_external_aid_active_reservations_count = constant:cbrn_math.one }
+		}
+	}
+}
+
+cbrn_occupation_close_external_aid_reservation = {
+	if = {
+		limit = { has_state_flag = cbrn_external_aid_reservation_counted }
+		if = {
+			limit = { has_variable = cbrn_external_mask_escrow_donor var:cbrn_external_mask_escrow_donor = { exists = yes } }
+			var:cbrn_external_mask_escrow_donor = {
+				subtract_from_variable = { cbrn_external_aid_active_reservations_count = constant:cbrn_math.one }
+				clamp_variable = { var = cbrn_external_aid_active_reservations_count min = constant:cbrn_math.zero }
+			}
+		}
+		clr_state_flag = cbrn_external_aid_reservation_counted
+	}
+}
+
 cbrn_occupation_deliver_external_protective_aid_to_state = {
 	set_temp_variable = { cbrn_occupation_protective_aid_proof = constant:cbrn_proof.missing }
 	if = {
@@ -106,9 +136,10 @@ cbrn_occupation_deliver_external_protective_aid_to_state = {
 			has_event_target = cbrn_distribution_external_supplier
 			event_target:cbrn_distribution_external_supplier = {
 				exists = yes
-				cbrn_occupation_country_can_supply_external_protective_aid = yes
+				cbrn_occupation_country_can_continue_external_protective_aid = yes
 			}
-			cbrn_occupation_state_can_receive_external_protective_aid = yes
+			cbrn_occupation_state_has_donor_external_aid_reservation = yes
+			cbrn_occupation_state_remains_external_protective_aid_target = yes
 		}
 		set_temp_variable = {
 			cbrn_distribution_target_fraction = constant:cbrn_protection_program_effect.occupied_distribution_target
@@ -118,7 +149,10 @@ cbrn_occupation_deliver_external_protective_aid_to_state = {
 		}
 		set_temp_variable = { cbrn_distribution_effectiveness_mult = constant:cbrn_math.one }
 		set_temp_variable = { cbrn_distribution_new_filter_condition = constant:cbrn_mask_filters.condition_full }
-		cbrn_distribute_requested_external_masks_to_state = yes
+		set_temp_variable = { cbrn_external_distribution_proof = constant:cbrn_proof.missing }
+		set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
+		set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+		cbrn_distribute_reserved_external_masks_to_state = yes
 		if = {
 			limit = {
 				check_variable = {
@@ -167,9 +201,10 @@ cbrn_occupation_execute_external_protective_aid = {
 	if = {
 		limit = {
 			has_event_target = cbrn_occupation_target_state
-			cbrn_occupation_country_can_supply_external_protective_aid = yes
+			cbrn_occupation_country_can_continue_external_protective_aid = yes
 			event_target:cbrn_occupation_target_state = {
-				cbrn_occupation_state_can_receive_external_protective_aid = yes
+				cbrn_occupation_state_has_donor_external_aid_reservation = yes
+				cbrn_occupation_state_remains_external_protective_aid_target = yes
 			}
 		}
 		save_event_target_as = cbrn_distribution_external_supplier
@@ -191,6 +226,10 @@ cbrn_occupation_execute_external_protective_aid = {
 			add_to_variable = { cbrn_occupation_external_aid_action_count = constant:cbrn_math.one }
 			set_variable = { cbrn_occupation_last_external_aid_date = global.num_days }
 		}
+	}
+	else_if = {
+		limit = { has_event_target = cbrn_occupation_target_state }
+		event_target:cbrn_occupation_target_state = { cbrn_refund_external_state_mask_reservation = yes }
 	}
 }
 

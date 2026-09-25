@@ -469,7 +469,174 @@ cbrn_country_has_filter_replacement_work = {
 
 cbrn_country_has_occupied_distribution_work = {
 	has_country_flag = cbrn_national_respirator_reserve
-	any_controlled_state = { cbrn_state_can_receive_occupied_masks = yes }
+	any_controlled_state = { cbrn_state_can_reserve_occupied_masks = yes }
+}
+
+# Pure state-scope quote for the two timed occupied-population distributors.
+# ROOT is the paying country. Temporary output is the rounded state need;
+# callers sum state needs and cap the total against real model stock.
+cbrn_quote_occupied_state_mask_reservation = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	cbrn_quote_state_mask_reservation_internal = yes
+}
+
+cbrn_quote_external_state_mask_reservation = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	cbrn_quote_state_mask_reservation_internal = yes
+	ROOT = { cbrn_quote_available_mask_stock_for_reservation = yes }
+	set_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
+	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+}
+
+# Country-scope stock count. The five concrete models match the distributor;
+# num_equipment@gas_mask_equipment as an archetype is not used as the receipt.
+cbrn_quote_available_mask_stock_for_reservation = {
+	set_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_reconditioned }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_1 }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_2 }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_3 }
+	add_to_temp_variable = { cbrn_mask_reservation_available_stock = num_equipment@gas_mask_equipment_4 }
+	clamp_temp_variable = { var = cbrn_mask_reservation_available_stock min = constant:cbrn_math.zero }
+	always = yes
+}
+
+# Country scope; caller initializes cbrn_mask_reservation_quote before invoking
+# this scripted trigger so its temporary output survives the helper boundary.
+cbrn_quote_occupied_program_mask_reservation = {
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_mask_reservation_available_stock = constant:cbrn_math.zero }
+	all_controlled_state = {
+		if = {
+			limit = {
+				cbrn_state_is_valid_distribution_target = yes
+				NOT = { is_core_of = ROOT }
+				cbrn_state_has_emergency_context = yes
+			}
+			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+			cbrn_quote_occupied_state_mask_reservation = yes
+			add_to_temp_variable = { cbrn_mask_reservation_quote = cbrn_reservation_quote_state_need }
+		}
+	}
+	cbrn_quote_available_mask_stock_for_reservation = yes
+	clamp_temp_variable = { var = cbrn_mask_reservation_quote min = constant:cbrn_math.zero max = cbrn_mask_reservation_available_stock }
+	always = yes
+}
+
+cbrn_country_can_start_occupied_mask_reservation = {
+	cbrn_country_has_public_chemical_emergency = yes
+	cbrn_country_has_occupied_distribution_work = yes
+	NOT = { has_country_flag = cbrn_civilian_distribution_program_active }
+	NOT = { has_political_power < constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+	NOT = { num_of_civilian_factories_available_for_projects < constant:cbrn_protection_decision_cost.occupied_distribution_factories }
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	cbrn_quote_occupied_program_mask_reservation = yes
+	check_variable = { cbrn_mask_reservation_quote > constant:cbrn_math.zero }
+}
+
+# Start-only occupied target predicate based on current state ledgers rather
+# than a potentially stale effective-coverage snapshot. It must not be used
+# after the target marker is set if that marker's own lifecycle is being tested.
+cbrn_state_can_reserve_occupied_masks = {
+	cbrn_state_is_valid_distribution_target = yes
+	NOT = { is_core_of = ROOT }
+	cbrn_state_has_emergency_context = yes
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	cbrn_quote_occupied_state_mask_reservation = yes
+	check_variable = { cbrn_reservation_quote_state_need > constant:cbrn_math.zero }
+}
+
+cbrn_quote_state_mask_reservation_internal = {
+	set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_requirement = state_population_k }
+	multiply_temp_variable = { cbrn_reservation_quote_requirement = constant:cbrn_mask_scale.civilian_crates_per_population_k }
+	set_temp_variable = { cbrn_reservation_quote_existing_crates = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_basic_crates }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_reconditioned_crates }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_improved_crates }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_advanced_crates }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_model = cbrn_civilian_mask_sealed_crates }
+	clamp_temp_variable = { var = cbrn_reservation_quote_model min = constant:cbrn_math.zero }
+	add_to_temp_variable = { cbrn_reservation_quote_existing_crates = cbrn_reservation_quote_model }
+	set_temp_variable = { cbrn_reservation_quote_existing_coverage = constant:cbrn_math.zero }
+	if = {
+		limit = {
+			check_variable = { cbrn_reservation_quote_requirement > constant:cbrn_math.zero }
+			check_variable = { cbrn_reservation_quote_existing_crates > constant:cbrn_math.zero }
+		}
+		set_temp_variable = { cbrn_reservation_quote_fit = cbrn_civilian_mask_fit_points }
+		divide_temp_variable = { cbrn_reservation_quote_fit = cbrn_reservation_quote_existing_crates }
+		clamp_temp_variable = { var = cbrn_reservation_quote_fit min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+		set_temp_variable = { cbrn_reservation_quote_filter = constant:cbrn_mask_filters.condition_full }
+		if = { limit = { has_variable = cbrn_civilian_mask_filter_condition } set_temp_variable = { cbrn_reservation_quote_filter = cbrn_civilian_mask_filter_condition } }
+		clamp_temp_variable = { var = cbrn_reservation_quote_filter min = constant:cbrn_mask_filters.condition_minimum max = constant:cbrn_mask_filters.condition_maximum }
+		divide_temp_variable = { cbrn_reservation_quote_filter = constant:cbrn_math.percent_divisor }
+		set_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_existing_crates }
+		multiply_temp_variable = { cbrn_reservation_quote_existing_coverage = constant:cbrn_mask_scale.percent_multiplier }
+		divide_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_requirement }
+		multiply_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_fit }
+		multiply_temp_variable = { cbrn_reservation_quote_existing_coverage = cbrn_reservation_quote_filter }
+		clamp_temp_variable = { var = cbrn_reservation_quote_existing_coverage min = constant:cbrn_meter.minimum max = constant:cbrn_meter.maximum }
+	}
+
+	set_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.occupied_distribution_cost_mult }
+	set_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_reservation_quote_new_filter = constant:cbrn_mask_filters.condition_full }
+	clamp_temp_variable = { var = cbrn_reservation_quote_cost min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
+	clamp_temp_variable = { var = cbrn_reservation_quote_effectiveness min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+	clamp_temp_variable = { var = cbrn_reservation_quote_new_filter min = constant:cbrn_mask_filters.condition_minimum max = constant:cbrn_mask_filters.condition_maximum }
+	if = { limit = { OR = { is_capital = yes has_state_category = city has_state_category = large_city has_state_category = metropolis has_state_category = megalopolis } } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.urban_or_capital_cost_mult } }
+	if = { limit = { infrastructure < 4 } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.low_infrastructure_cost_mult } }
+	if = { limit = { has_state_flag = cbrn_active_distribution_disruption } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.active_combat_cost_mult } }
+	if = { limit = { NOT = { is_core_of = ROOT } } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.occupied_non_core_cost_mult } }
+	ROOT = {
+		if = { limit = { has_country_flag = cbrn_civil_defence_established } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.civil_defence_cost_mult } }
+		if = { limit = { has_country_flag = cbrn_population_registered_and_fitted } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_mask_distribution.registration_cost_mult } }
+		if = { limit = { has_tech = civil_defence_fitting_and_registration } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_technology_effect.civil_registration_distribution_cost_mult } }
+		if = { limit = { has_country_flag = cbrn_national_respirator_reserve } multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.reserve_distribution_cost_mult } }
+		if = {
+			limit = { has_country_flag = cbrn_simplified_filter_program_active }
+			multiply_temp_variable = { cbrn_reservation_quote_cost = constant:cbrn_protection_program_effect.simplified_distribution_cost_mult }
+			multiply_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_protection_program_effect.simplified_distribution_effectiveness_mult }
+			clamp_temp_variable = { var = cbrn_reservation_quote_new_filter max = constant:cbrn_protection_program_effect.simplified_filter_condition }
+		}
+		if = {
+			limit = { cbrn_designer_has_mass_civilian_pattern = yes }
+			multiply_temp_variable = { cbrn_reservation_quote_effectiveness = constant:cbrn_protection_designer_effect.mass_civilian_distribution_efficiency_mult }
+			clamp_temp_variable = { var = cbrn_reservation_quote_effectiveness min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+		}
+	}
+	clamp_temp_variable = { var = cbrn_reservation_quote_cost min = constant:cbrn_action_input_bounds.condition_mult_min max = constant:cbrn_action_input_bounds.condition_mult_max }
+	set_temp_variable = { cbrn_reservation_quote_target = constant:cbrn_protection_program_effect.occupied_distribution_target }
+	clamp_temp_variable = { var = cbrn_reservation_quote_target min = constant:cbrn_math.zero max = constant:cbrn_math.one }
+	set_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_requirement }
+	multiply_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_target }
+	set_temp_variable = { cbrn_reservation_quote_existing_effective = cbrn_reservation_quote_requirement }
+	multiply_temp_variable = { cbrn_reservation_quote_existing_effective = cbrn_reservation_quote_existing_coverage }
+	divide_temp_variable = { cbrn_reservation_quote_existing_effective = constant:cbrn_math.percent_divisor }
+	subtract_from_temp_variable = { cbrn_reservation_quote_effective_needed = cbrn_reservation_quote_existing_effective }
+	clamp_temp_variable = { var = cbrn_reservation_quote_effective_needed min = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_reservation_quote_new_effective_fraction = cbrn_reservation_quote_new_filter }
+	divide_temp_variable = { cbrn_reservation_quote_new_effective_fraction = constant:cbrn_math.percent_divisor }
+	multiply_temp_variable = { cbrn_reservation_quote_new_effective_fraction = cbrn_reservation_quote_effectiveness }
+	if = {
+		limit = { check_variable = { cbrn_reservation_quote_new_effective_fraction > constant:cbrn_math.zero } }
+		set_temp_variable = { cbrn_reservation_quote_state_need = cbrn_reservation_quote_effective_needed }
+		divide_temp_variable = { cbrn_reservation_quote_state_need = cbrn_reservation_quote_new_effective_fraction }
+		multiply_temp_variable = { cbrn_reservation_quote_state_need = cbrn_reservation_quote_cost }
+		round_temp_variable = cbrn_reservation_quote_state_need
+		clamp_temp_variable = { var = cbrn_reservation_quote_state_need min = constant:cbrn_math.zero }
+	}
+	always = yes
 }
 
 cbrn_state_has_exact_chemical_raid_alert = {

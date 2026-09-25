@@ -158,7 +158,9 @@ cbrn_complete_occupied_state_distribution = {
 	set_temp_variable = { cbrn_distribution_base_cost_mult = constant:cbrn_protection_program_effect.occupied_distribution_cost_mult }
 	set_temp_variable = { cbrn_distribution_effectiveness_mult = constant:cbrn_math.one }
 	set_temp_variable = { cbrn_distribution_new_filter_condition = constant:cbrn_mask_filters.condition_full }
-	cbrn_distribute_requested_masks_to_state = yes
+	set_temp_variable = { cbrn_distribution_consumed_crates = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_distribution_usable_crates = constant:cbrn_math.zero }
+	cbrn_distribute_reserved_occupied_masks_to_state = yes
 	if = {
 		limit = { check_variable = { cbrn_distribution_usable_crates > constant:cbrn_math.zero } }
 		add_resistance = constant:cbrn_protection_program_effect.occupied_resistance_change
@@ -234,15 +236,44 @@ cbrn_complete_civilian_filter_replacement_program = {
 }
 
 cbrn_begin_occupied_distribution_program = {
-	every_controlled_state = {
-		limit = { cbrn_state_can_receive_occupied_masks = yes }
-		set_state_flag = cbrn_occupied_distribution_program_target
+	set_temp_variable = { cbrn_mask_reservation_quote = constant:cbrn_math.zero }
+	set_temp_variable = { cbrn_occupied_program_reserved = constant:cbrn_math.zero }
+	if = {
+		limit = { cbrn_country_can_start_occupied_mask_reservation = yes }
+		every_controlled_state = {
+			limit = { cbrn_state_can_reserve_occupied_masks = yes }
+			set_temp_variable = { cbrn_reservation_quote_state_need = constant:cbrn_math.zero }
+			if = {
+				limit = { cbrn_quote_occupied_state_mask_reservation = yes }
+				set_temp_variable = { cbrn_mask_escrow_requested = cbrn_reservation_quote_state_need }
+				set_temp_variable = { cbrn_mask_escrow_external = constant:cbrn_math.zero }
+				set_temp_variable = { cbrn_mask_escrow_completed = constant:cbrn_math.zero }
+				cbrn_reserve_requested_masks_to_state = yes
+				if = {
+					limit = { check_variable = { cbrn_mask_escrow_completed > constant:cbrn_math.zero } }
+					set_state_flag = cbrn_occupied_distribution_program_target
+					add_to_temp_variable = { cbrn_occupied_program_reserved = cbrn_mask_escrow_completed }
+				}
+			}
+		}
+		if = {
+			limit = { check_variable = { cbrn_occupied_program_reserved > constant:cbrn_math.zero } }
+			set_country_flag = cbrn_civilian_distribution_program_active
+			set_temp_variable = { cbrn_protection_pp_debit_requested = constant:cbrn_protection_decision_cost.occupied_distribution_pp }
+			cbrn_debit_protection_political_power = yes
+		}
 	}
 }
 
 cbrn_clear_occupied_distribution_targets = {
 	every_controlled_state = {
-		limit = { has_state_flag = cbrn_occupied_distribution_program_target }
+		limit = {
+			OR = {
+				has_state_flag = cbrn_occupied_distribution_program_target
+				has_state_flag = cbrn_occupied_mask_escrow_active
+			}
+		}
+		cbrn_refund_occupied_state_mask_reservation = yes
 		clr_state_flag = cbrn_occupied_distribution_program_target
 	}
 }
@@ -250,15 +281,21 @@ cbrn_clear_occupied_distribution_targets = {
 cbrn_complete_occupied_distribution_program = {
 	every_controlled_state = {
 		limit = {
-			has_state_flag = cbrn_occupied_distribution_program_target
-			cbrn_state_is_valid_distribution_target = yes
-			NOT = { is_core_of = ROOT }
-			cbrn_state_has_occupied_distribution_gap = yes
-			ROOT = { cbrn_country_has_any_mask_stock = yes }
+			OR = {
+				has_state_flag = cbrn_occupied_distribution_program_target
+				has_state_flag = cbrn_occupied_mask_escrow_active
+			}
 		}
-		cbrn_complete_occupied_state_distribution = yes
+		if = {
+			limit = {
+				has_state_flag = cbrn_occupied_mask_escrow_active
+				cbrn_state_can_reserve_occupied_masks = yes
+			}
+			cbrn_complete_occupied_state_distribution = yes
+		}
+		else = { cbrn_refund_occupied_state_mask_reservation = yes }
+		clr_state_flag = cbrn_occupied_distribution_program_target
 	}
-	cbrn_clear_occupied_distribution_targets = yes
 }
 
 cbrn_begin_mask_reconditioning = {
