@@ -1,6 +1,6 @@
 # Base Zombie Reference Preparation Evidence
 
-Candidate 02 is the selected reference candidate for parent/user review; user approval is still required before any Meshy submission.
+Candidate 02 is the user-approved single Meshy input; its approval does not establish model or action acceptance.
 
 ## Candidate lineage and selection
 
@@ -24,6 +24,7 @@ Candidate 02 is the selected reference candidate for parent/user review; user ap
 ## Provenance and approval boundary
 
 - Source mode is `source_free_user_authorized`. No historical or modern image, existing art, mesh, or screenshot was used as an artistic source; source search and source-to-refinement comparison do not apply.
-- User authorization covers creation of the source-free reference. User review of candidate 02 and approval of the 64-credit Meshy ceiling remain pending before provider submission.
-- No Meshy key/route/balance check, Meshy task, Blender route, rigging, animation, or paid provider operation was invoked. Meshy credits estimated and consumed are both 0.
-- Provider use status is `needs_user_review`.
+- The user approved the exact candidate 02 Meshy input, SHA-256 `3723991B3EFC92D573CA1CB94CDC6177EB1D501EE5F207DB1613D4E50C3EB3BB`, and a maximum spend of 64 Meshy credits on 2026-09-25.
+- The body, one remesh, one rig attempt, one rejected Frankenstein walk, and seven paid action clips consumed 64 of 64 credits; the clip downloads passed receipt hash checks but remain source candidates.
+- The included Meshy walk and paid Frankenstein walk were rejected for `move_shamble`; approval of the optional CC0 Quaternius zombie walk remains pending.
+- Provider use status is `approved_input_and_budget_exhausted`; model status remains incomplete pending topology, manual rig/action, texture, export/reimport, visual, and runtime evidence.

@@ -1,10 +1,10 @@
 # Base Zombie Reference Handoff
 
-Status: `needs_user_review` before any Meshy submission.
+Status: Exact input approved by the user on 2026-09-25; model production remains incomplete.
 
 ## Scope completed
 
-Created candidate 02 as a source-free original and promoted its unchanged PNG bytes to the proposed single `refs/original/meshy_input.png` path after decoded-alpha and checkerboard review. User approval of the exact image and the 64-credit Meshy ceiling is still required.
+Created candidate 02 as a source-free original and promoted its unchanged PNG bytes to the single `refs/original/meshy_input.png` path after decoded-alpha and checkerboard review. The user approved the exact image hash and a maximum of 64 Meshy credits on 2026-09-25. All 64 credits have been spent on the body, one remesh, one rig attempt, the rejected Frankenstein walk, and seven paid action clips. The paid clips are hash-verified source candidates, not accepted runtime actions.
 
 ## Files
 
@@ -21,6 +21,6 @@ Created candidate 02 as a source-free original and promoted its unchanged PNG by
 
 Candidate 02 reads unmistakably undead through its gaunt face, dark eye sockets, cloudy eyes, visible teeth, mottled gray-green skin, and thin clawlike hands. It retains complete conventional biped anatomy, the symmetric A-pose, empty separated hands, distinct legs, both shoes, and muted 1936–1945 civilian clothing. The checkerboard preview shows genuine transparency and the parent approved the reference stage.
 
-## Remaining gate
+## Current production boundary
 
-The user must approve this exact image and the 64-credit ceiling before any Meshy operation. No Meshy route, key, balance check, task, or credit was used. Two preceding candidate 01 edit requests were blocked by ImageGen’s violence safety filter and produced no output; their request ids are in `refs/original/input_manifest.json`. No Blender, rigging, animation, runtime, gameplay, GFX, sound, or counter work was performed here.
+The reference approval gate is satisfied, and no Meshy credits remain under the approved ceiling. The included Meshy walk and the separately paid Frankenstein walk were rejected for the required zombie movement role; use of an optional CC0 Quaternius zombie walk still awaits approval. The 90k candidate is isolated with topology review unresolved. Manual rig and action authoring capability, texture binding, final action review, `.mesh`/`.anim` exports and reimport proof, and base entity runtime wiring remain unresolved or blocked. Two earlier candidate 01 edit requests were blocked by ImageGen’s violence safety filter and produced no output; their request ids remain in `refs/original/input_manifest.json`.

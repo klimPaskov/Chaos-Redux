@@ -1,0 +1,86 @@
+job_id: zombies
+asset_id: base_zombie
+asset_slug: zombies
+owner_id: 002_zombie_outbreak
+profile: humanoid_unit
+asset_kind: humanoid
+status: blocked
+status_detail: incomplete; 90k candidate topology and full visual review, manual rig and action authoring, PDX texture binding, export/reimport proof, and parent runtime wiring remain open
+source:
+  mode: source_free_user_authorized
+  meshy_input: refs/original/meshy_input.png
+  sha256: 3723991B3EFC92D573CA1CB94CDC6177EB1D501EE5F207DB1613D4E50C3EB3BB
+  user_approval_date: 2026-09-25
+  candidate_01: rejected
+  rejected_candidate_01_sha256: 843CDC9D40F0E8FF442517EB8A0E700D9E0BD6C772EC37B98D8D32C5AE830A19
+calibration:
+  vanilla_mesh: gfx/models/units/western_european_infantry.mesh
+  vanilla_entity_file: gfx/entities/units_infantry.asset
+  vanilla_entity: infantry_entity
+  profile_reference_entity: infantry_rifle_entity
+  source_mesh_height: 7.3518242835
+  entity_scale: 0.8
+  effective_runtime_height: 5.8814594268
+  forward_axis: -Y
+  up_axis: +Z
+  ground_contact: z_min from read_only_io_pdx_mesh_import
+  main_mesh_object: polySurface106
+  excluded_geometry: collision-only objects
+  status: existing_profile_baseline; per-job adapter remeasurement required before export
+component_inventory:
+  body: required
+  weapons: none
+  held_items: none
+  equipment: civilian shirt, trousers, shoes
+  fires_in_combat: false
+skeleton:
+  route: one_meshy_rig_attempt_then_no_paid_retry
+  body_reference_pose: a_pose
+  runtime_entity_scale: 0.8
+actions:
+  required_roles: [idle, move_shamble, attack_unarmed, defend, support_attack, retreat, training, death]
+  runtime_states: [idle, move, attack, defend, support_attack, retreat, training, death]
+  root_motion_policy: in_place; confirm against vanilla action samples before authoring/acceptance
+  loops: idle and move; verify state-specific loop policy against vanilla
+  aliases_or_static_placeholders: forbidden
+sound:
+  source_only: true
+  existing_consumer: sound/chaosx_zombies_sound.asset
+  required_roles: [selection, idle, movement, unarmed_attack_contact, impact, special_action, death]
+  provenance: inspect exact source/runtime crosswalks; obtain licensed sources for unresolved roles
+  definitions_and_runtime_wiring: parent_owned
+counter:
+  consumers: [GFX_unit_zombies_icon_medium, GFX_unit_zombies_icon_medium_white, GFX_unit_zombies_icon_small]
+  surfaces: [large_division_2_frames, small_onmap_2_frames, texticon]
+  art_owner: chaosx_icon_artist
+  handoff: counter_handoff.md
+  parent_owns_art_routing_and_runtime_wiring: true
+authorization:
+  paid_credit_ceiling: 64
+  paid_credits_consumed: 64
+  paid_credits_remaining_under_ceiling: 0
+  paid_action_receipt_manifest: provider/downloads/meshy_animation_download_manifest.json
+  body_task_id: 01a0d867-77fa-77c6-8978-54811dc54881
+  remesh_task_id: 01a0d87a-2242-722b-a67f-e8caabc60527
+  rig_task_id: 01a0d8ab-75d5-73b0-9861-44b202bf341a
+  rejected_frankenstein_walk_task_id: 01a0d8e5-fc14-7142-ac18-1358d38fcb77
+  paid_source_action_tasks: [01a0d901-756e-74cf-92f0-5e81b0628a65, 01a0d901-df3b-75f3-9f5a-94c16fcf3a28, 01a0d901-ce9a-7161-aa19-aba0cefbd0b2, 01a0d901-d24e-7637-b96e-7b9d75da6c34, 01a0d901-d56b-7426-9c5d-5d7bfc5473ad, 01a0d901-d925-7661-83b1-079545900a76, 01a0d901-dc85-7472-a71a-6beae45c2d9e]
+  planned_image_to_3d_credits: 30
+  planned_rig_attempts: 1
+  planned_preset_action_attempts_max: 8
+  planned_action_credits_max: 24
+  planned_remesh_attempts_max: 1
+  remesh_estimate_credits: 5
+  planned_remesh_credits_max: 5
+  repeated_paid_rig_or_animation_attempts: forbidden
+  budget_must_not_be_exceeded: true
+runtime_proposal:
+  model_stem: chaosx_zombies
+  mesh: gfx/models/units/chaosx_zombies/chaosx_zombies.mesh
+  entity_token: chaosx_zombies
+  current_unit_sprite: infantry
+  parent_switches_sprite_after_accepted_export: true
+  active_runtime_copy_and_entity_wiring: parent_owned
+  accepted_model_and_actions: false
+  exported_mesh_and_actions_reimport_proven: false
+  optional_quaternius_zombie_walk_approval: pending
