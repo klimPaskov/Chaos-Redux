@@ -293,13 +293,13 @@ The shared-focus MCP artifact from 2026-08-29 is sufficient to preserve geometry
 
 Super-event slot 23 audio rights do not authorize a substitute.
 
-The League mechanics may be audited independently, but a final whole-event presentation claim remains blocked while that accepted super-event consumer lacks its approved audio rights and firing evidence.
+The League mechanics may be audited independently, but a final whole-event presentation claim remains blocked while the approved super-event consumer lacks human audition and live firing evidence.
 
 ## Blocked P0 evidence gate: AI and balance
 
 No AI weight, probability-bearing modifier, MTTH entry, random list, focus score, decision score, strategy factor, or target pool is approved for change by this addendum.
 
-The current checkout contains five uncommitted eligibility changes in:
+The current checkout contains five committed but still-provisional eligibility changes, included in commit `3098ed9d2`, in:
 
 - `common/scripted_triggers/006_independence_wave_komi_package_triggers.txt`;
 - `common/scripted_triggers/006_independence_wave_kosovo_package_triggers.txt`;
@@ -327,15 +327,11 @@ If the route remains unavailable, the balance conclusion stays unresolved and th
 
 ## Mandatory MCP evidence and current exact blockers
 
-The current planner runtime exposed no `hoi4_agent_tools` event, map, GUI, or probability callables.
+Historical 2026-08-29 route note: that session exposed only two Blender HOI4 adapter tools, and the routed `chaosx_ai_probability_auditor` recorded its first call failing with `TypeError: tools.mcp__hoi4_agent_tools__hoi4_probability_inspect is not a function` at `exec_main.mjs:13:30`; no artifact, revision, scenario hash, or comparison id was returned.
 
-Tool discovery returned only two Blender HOI4 adapter tools, so this pass could not call `hoi4.event_inspect`, `hoi4.event_render`, `hoi4.event_compare`, `hoi4.map_inspect`, `hoi4.map_render`, `hoi4.gui_inspect`, `hoi4.gui_render`, `hoi4.probability_inspect`, or `hoi4.probability_compare`.
+Current 2026-09-25 route note: the active session exposes the HOI4 event, map, GUI, and probability callables, and direct DM45 `hoi4.probability_inspect`, same-scenario evaluations, and `hoi4.probability_compare` completed with partial coverage; see `subagent_handoffs/006_event6_league_retry_repair_2026-09-25.md` for receipts and exact limits.
 
-The routed `chaosx_ai_probability_auditor` handoff records the mandatory first call as `TypeError: tools.mcp__hoi4_agent_tools__hoi4_probability_inspect is not a function` at `exec_main.mjs:13:30`.
-
-It returned no artifact URI, revision, scenario hash, or comparison id and accepted no balance change.
-
-These are exact route-exposure blockers.
+Route exposure is no longer the current blocker for this session, but the broad scenario families in this addendum remain unaudited and the DM45 adapter left 17 inputs unresolved; these source and MCP results are not complete probability, lifecycle, or runtime evidence.
 
 Source inspection and static validators are not equivalent engine evidence.
 
@@ -343,7 +339,7 @@ Affected conclusions remain unresolved:
 
 | Surface | Current evidence | Unresolved proof |
 | --- | --- | --- |
-| Shared focus tree | 2026-08-29 `FOCUS_INSPECTED` artifact; 184 nodes, 195 connectors, zero crossings/intersections/long connectors/too-close pairs | Post-change route selection and package callback behavior; no focus change is proposed here |
+| Shared focus tree | Historical 2026-08-29 `FOCUS_INSPECTED` artifact; 184 nodes, 195 connectors, zero crossings/intersections/long connectors/too-close pairs; current authority is 184 focuses and 196 connectors per the source-of-truth map | Post-change route selection and package callback behavior; no focus change is proposed here |
 | SCN-008 events | Source call-site evidence and 32-cell static validator | Success/failure render, `.1 -> .2 -> .80` order, rollback, compare artifact |
 | State 684 map | Installed-map binding and state/history source | Current province/state/port/supply/host-remnant inspect and render artifact |
 | Statehood and formable GUIs | Semantic validators and historical handoffs | Current 1920x1080 and 2560x1440 state, click-region, clipping, and overflow renders; the retained Statehood `GUI_TAB_STATE_CONFLICT` and formable aggregate/truncation findings remain unresolved |
