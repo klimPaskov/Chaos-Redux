@@ -1,0 +1,124 @@
+# Event 016 Mengele Robotics decision gates, COUNTRY scope.
+# Family ID 9 owns private receipt array index 8. The native Prototype
+# presentation is authoritative with Götterdämmerung; the paid decision
+# Prototype exists only without it. No trigger reads Kruger board receipts.
+
+brilliant_scientist_mengele_robotics_decision_receipt_is_empty = {
+	OR = {
+		NOT = { has_country_flag = mengele_event016_provider_receipts_initialized }
+		AND = {
+			has_country_flag = mengele_event016_provider_receipts_initialized
+			check_variable = { var = mengele_event016_active_project_stage_entries^8 value = constant:brilliant_scientist_project_stage.none compare = equals }
+		}
+	}
+}
+
+brilliant_scientist_mengele_robotics_theory_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_robotics_decision_receipt_is_empty = yes
+	NOT = { has_country_flag = mengele_event016_robotics_theory_completed }
+}
+brilliant_scientist_mengele_robotics_prototype_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_robotics_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_robotics_theory_completed
+	NOT = { has_country_flag = mengele_event016_robotics_prototype_completed }
+	NOT = { has_dlc = "Gotterdammerung" }
+	NOT = { is_special_project_completed = sp:sp_brilliant_scientist_autonomous_cognition }
+}
+brilliant_scientist_mengele_robotics_deployment_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_robotics_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_robotics_prototype_completed
+	NOT = { has_country_flag = mengele_event016_robotics_deployment_completed }
+}
+brilliant_scientist_mengele_robotics_weaponization_decision_visible = {
+	brilliant_scientist_mengele_project_stage_provider_is_valid = yes
+	brilliant_scientist_mengele_robotics_decision_receipt_is_empty = yes
+	has_country_flag = mengele_event016_robotics_deployment_completed
+	NOT = { has_country_flag = mengele_event016_robotics_weaponization_completed }
+}
+
+# Keep predecessor/route requirements separate from inclusive affordability.
+brilliant_scientist_mengele_robotics_theory_decision_requirements = {
+	brilliant_scientist_mengele_robotics_theory_decision_visible = yes
+}
+brilliant_scientist_mengele_robotics_prototype_decision_requirements = {
+	brilliant_scientist_mengele_robotics_prototype_decision_visible = yes
+}
+brilliant_scientist_mengele_robotics_deployment_decision_requirements = {
+	brilliant_scientist_mengele_robotics_deployment_decision_visible = yes
+}
+brilliant_scientist_mengele_robotics_weaponization_decision_requirements = {
+	brilliant_scientist_mengele_robotics_weaponization_decision_visible = yes
+}
+
+brilliant_scientist_mengele_robotics_theory_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.robotics_theory_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.robotics_theory_support_equipment } }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.robotics_theory_political_power compare = greater_than_or_equals }
+}
+brilliant_scientist_mengele_robotics_prototype_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_fallback_prototype.robotics_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_fallback_prototype.robotics_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_fallback_prototype.robotics_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_fallback_prototype.robotics_political_power compare = greater_than_or_equals }
+}
+brilliant_scientist_mengele_robotics_deployment_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.robotics_deployment_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.robotics_deployment_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.robotics_deployment_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.robotics_deployment_political_power compare = greater_than_or_equals }
+}
+brilliant_scientist_mengele_robotics_weaponization_decision_can_pay = {
+	NOT = { num_of_civilian_factories_available_for_projects < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_civilian_factories }
+	NOT = { has_equipment = { support_equipment < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_support_equipment } }
+	NOT = { has_fuel < constant:brilliant_scientist_project_stage_cost.robotics_weaponization_fuel }
+	check_variable = { var = political_power value = constant:brilliant_scientist_project_stage_cost.robotics_weaponization_political_power compare = greater_than_or_equals }
+}
+
+# Fixed callbacks cancel only if the exact private stage receipt disappears
+# or the provider loses authority. Resource depletion after payment is safe.
+brilliant_scientist_mengele_robotics_theory_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^8 value = constant:brilliant_scientist_project_stage.theory compare = equals }
+}
+brilliant_scientist_mengele_robotics_prototype_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^8 value = constant:brilliant_scientist_project_stage.prototype compare = equals }
+}
+brilliant_scientist_mengele_robotics_deployment_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^8 value = constant:brilliant_scientist_project_stage.deployment compare = equals }
+}
+brilliant_scientist_mengele_robotics_weaponization_decision_receipt_matches = {
+	has_country_flag = mengele_event016_provider_receipts_initialized
+	check_variable = { var = mengele_event016_active_project_stage_entries^8 value = constant:brilliant_scientist_project_stage.weaponization compare = equals }
+}
+
+brilliant_scientist_mengele_robotics_theory_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_robotics_theory_decision_receipt_matches = yes } }
+}
+brilliant_scientist_mengele_robotics_prototype_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_robotics_prototype_decision_receipt_matches = yes } }
+}
+brilliant_scientist_mengele_robotics_deployment_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_robotics_deployment_decision_receipt_matches = yes } }
+}
+brilliant_scientist_mengele_robotics_weaponization_decision_cancel_trigger = {
+	OR = { NOT = { brilliant_scientist_mengele_project_stage_provider_is_valid = yes } NOT = { brilliant_scientist_mengele_robotics_weaponization_decision_receipt_matches = yes } }
+}
+
+# Country scope. Reduce AI priority when only a narrow project factory margin remains.
+brilliant_scientist_mengele_robotics_theory_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_stage_cost.robotics_theory_civilian_factories }
+}
+brilliant_scientist_mengele_robotics_prototype_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_fallback_prototype.robotics_civilian_factories }
+}
+brilliant_scientist_mengele_robotics_deployment_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_stage_cost.robotics_deployment_civilian_factories }
+}
+brilliant_scientist_mengele_robotics_weaponization_low_factory_margin = {
+	NOT = { num_of_civilian_factories_available_for_projects > constant:brilliant_scientist_project_stage_cost.robotics_weaponization_civilian_factories }
+}
