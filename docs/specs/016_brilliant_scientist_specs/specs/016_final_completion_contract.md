@@ -261,7 +261,7 @@ Durable-settlement certification revalidates its disarmament and nonterminal con
 
 ## Existing-model runtime contract
 
-**Current user decision, 2026-09-25:** The Portal Raider, alien, and autonomous robot units already have good models. Do not do anything to those models, and do not create any models. This supersedes the model-production directions below for the current Event 016 task. The older directions remain here as historical design context, not an instruction to regenerate, edit, rig, animate, export, or otherwise touch existing 3D packages. Continue non-model gameplay, UI, documentation, and audit work without treating new model production as authorized. No model acceptance or runtime proof is inferred from this scope correction.
+**Current user decision, 2026-09-25:** The Portal Raider, alien, and autonomous robot units already have good models. Do not do anything to those models, and do not create any models. The user's statement is the model-quality approval for these existing assets. This supersedes the model-production directions below for the current Event 016 task. The older directions remain here as historical design context, not an instruction to regenerate, edit, rig, animate, export, inspect, or otherwise touch existing 3D packages. Continue non-model gameplay, UI, documentation, and audit work without treating new model production as authorized. This approval does not establish separate sound, counter, effect, asset-wiring, or live-consumer acceptance.
 
 ### Historical model direction, superseded for this task
 
