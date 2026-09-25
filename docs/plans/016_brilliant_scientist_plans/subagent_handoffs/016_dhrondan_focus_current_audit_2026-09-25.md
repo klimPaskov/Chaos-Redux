@@ -12,7 +12,7 @@ The current focus MCP evidence is tied to source/data revision `56eb420d0b101059
 
 `hoi4.focus_inspect` returned `FOCUS_INSPECTED`, status `ok`: 88 focuses, 88 resolved title keys, 102 connectors, and no DHR blocking diagnostics, connector crossings, node intersections, or long connectors. It reported x=2..40, y=0..22; maximum horizontal span 7, vertical span 3, Manhattan span 9. Its source/reference/layout validation passed.
 
-`hoi4.focus_render` returned `FOCUS_RENDERED`, status `ok`, for the same tree and layout hash. It produced a 6992x2788 HTML render and SVG, JSON, source-map, and plan artifacts. No additional MCP calls were made after the user asked to stop.
+`hoi4.focus_render` returned `FOCUS_RENDERED`, status `ok`, for the same tree and layout hash. It produced a 6992x2788 HTML render and SVG, JSON, source-map, and plan artifacts. No additional MCP calls were made after the parent requested a prompt handoff. The user's separate instruction prohibited model work.
 
 Useful MCP artifacts:
 
