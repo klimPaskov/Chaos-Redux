@@ -10,6 +10,9 @@
 # independent from offensive authorization supplied by dated advisor cards.
 # ============================================================================
 
+@eng_1939_respirator_factories = 1
+@eng_1939_respirator_efficiency = 100
+
 chaosx_apply_startup_history_grants = {
 	if = {
 		limit = {
@@ -752,6 +755,17 @@ chaosx_startup_grant_eng = {
 			# reachable through later doctrine, policy, and project routes.
 			if = {
 				limit = { date > 1938.12.31 }
+				# The prewar civilian issue came from an operating procurement
+				# programme. One factory is a bounded gameplay allocation, not a
+				# claim about the number of historical assembly plants.
+				add_equipment_production = {
+					equipment = {
+						type = gas_mask_equipment_1
+						creator = ENG
+					}
+					requested_factories = @eng_1939_respirator_factories
+					efficiency = @eng_1939_respirator_efficiency
+				}
 				set_country_flag = cbrn_historical_civilian_mask_issue
 				set_country_flag = cbrn_uk_1939_mass_respirator_issue
 				set_variable = {
