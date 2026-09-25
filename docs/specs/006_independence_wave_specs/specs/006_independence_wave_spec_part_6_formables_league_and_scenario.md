@@ -886,3 +886,11 @@ After setup, the scenario summary records:
 - force package level
 
 The player should be able to inspect why a registry candidate could not appear.
+
+### Committed publication boundary and delayed result
+
+For a successful committed run, publish the frozen released and blocked rows through `chaosx.triggerable_scenarios.80`, after the `chaosx.nr6.2` Event 006 log dispatch. Set `independence_wave_scenario_result_pending` before scheduling the one-day-delayed report, and keep the SCN-008 launch transaction barrier closed until the report option makes the ledger visible and clears the pending flag. The transaction-busy status must explain this temporary lock, and summary reset must clear any stale pending flag.
+
+A failed or rolled-back run does not dispatch `chaosx.nr6.2` or `chaosx.triggerable_scenarios.80`, and it does not expose the Event 006 scenario ledger. Clear provisional summary diagnostics when the failed generation returns. This success-only boundary was accepted by the parent on 2026-09-25 within the user's approval of the Event 006 completion scope (“i approve everything”); it preserves the requirement that public rows describe a committed world state.
+
+Implementation evidence: `common/scripted_effects/006_independence_wave_scenario_effects.txt`, `common/scripted_triggers/006_independence_wave_triggers.txt`, `common/scripted_localisation/chaosx_scripted_localisation_scenarios.txt`, `events/006_independence_wave.txt`, and `.tools/audit_event6_scenario_matrix.py`. The source audit checks the single pending setter, acknowledgement and reset cleanup, launch-barrier blocking, busy-status text, and absence of failed-branch report/log dispatches.

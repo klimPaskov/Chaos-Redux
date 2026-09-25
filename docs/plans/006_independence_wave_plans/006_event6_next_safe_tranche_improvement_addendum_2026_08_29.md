@@ -399,7 +399,7 @@ Keep this addendum in `docs/plans/006_independence_wave_plans/` while any accept
 
 After implementation, fold only the stable contracts into `docs/specs/006_independence_wave_specs/`:
 
-- the strict SCN-008 success/failure publication boundary;
+- the strict SCN-008 success/failure publication boundary, promoted into `006_independence_wave_spec_part_6_formables_league_and_scenario.md` on 2026-09-25;
 - the final source-cleared FSM institutional identity and exact state 684 package contract;
 - the accepted FORM-48 readiness and transaction contract if it becomes reachable;
 - stable League and scenario acceptance scenarios that future audits must preserve.
