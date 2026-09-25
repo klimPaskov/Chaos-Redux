@@ -22,7 +22,7 @@ The existing decision source is in HEAD (blob 987de7c337cbc23b3646425adda6fbe5bd
 
 Used the mission_ai_will_do adapter. probability_inspect was called first for each weighted source. The initial Prototype inspect used the wrong input key source.relativePath and was rejected with: MCP error -32602: Input validation error: Invalid arguments for tool hoi4.probability_inspect: Unrecognized key: "relativePath" at source. Retrying with source.path succeeded.
 
-The shared scenario set is e016_no_dlc_conventional_prototypes_2026-09-25, actor GER, hash be66eba906540f5ec4af6bbff78143dbb23214893f7db28c68bd65a367074ca5.
+The shared scenario set is e016_no_dlc_conventional_prototypes_2026-09-25, actor GER, hash be66eba906540f5ec4af6bbff78143dbb23214893f7db28c68bd65a367074ca5. The audit followed the repository’s subagent and decisions/missions skills, all 11 required offline core wiki pages plus AI/Decision Modding, and the relevant vanilla trigger documentation and timed-decision precedent.
 
 | Scenario ID | has_war | has_dlc | available civilian factories |
 |---|---:|---:|---:|
@@ -44,13 +44,13 @@ Evaluated mengele_event016_electronics_prototype, mengele_event016_rocketry_prot
 - Each decision uses constant:brilliant_scientist_project_board.ai_high = 10.
 - In war, constant:brilliant_scientist_project_ai.preferred_factor = 2 applies, tracing 10 to 20; in peace it does not apply.
 - Each decision has the cautious factor 0.50 behind its low-factory-margin helper. That comparator remains unresolved at ordinary and exact-margin values, so the final combined score is unresolved where this branch matters. The war value 20 is only the trace before that unresolved branch.
-- The three decisions share this pre-caution policy. This audit selects no replacement tuning value.
+- The three decisions share this pre-caution policy. Compared with the Kruger fallback policy recorded in the parent handoff, the traced policy uses the same ai_high base, preferred-war factor, and cautious low-margin factor. Capacity, receipt, and complete route-state parity against Kruger were not evaluated in these primitive scenarios. This audit selects no replacement tuning value.
 
 The source helpers visibly check no Götterdämmerung, provider/project state, and resources. The low-margin helper negates “available factories greater than quoted factories,” so source intent includes equality at the quoted margin; MCP did not establish runtime truth at equality.
 
 ## Existing Deployment and Weaponization candidates
 
-The inspected stage source contains 15 Theory, Deployment, and Weaponization candidates across Biomedical, Electronics, Materials, Rocketry, and High Energy. The affected set is the ten Deployment/Weaponization decisions across those five families. Evaluation covered the 15 candidates × six scenarios (90 observations): result PROBABILITY_ANALYZED_PARTIAL; analysis ID probability-5743ff2bcc25b9aff0eec677; evaluation source revision 770e0c95ab5eeef1f4ff5104a63eed159b4feedb00aebdcbf62d8bc8a48aed2e; aggregate source hash 97f3a918d63122e548b8cc2405ddf09d7e083570cb88b9a212c709cfeb0020a0; same scenario hash. Eligibility for the ten later-stage candidates remains unresolved because their compound tooltip requirements are not represented.
+The inspected stage source contains 15 Theory, Deployment, and Weaponization candidates across Biomedical, Electronics, Materials, Rocketry, and High Energy. The affected set is mengele_event016_biomedical_deployment, mengele_event016_biomedical_weaponization, mengele_event016_electronics_deployment, mengele_event016_electronics_weaponization, mengele_event016_materials_deployment, mengele_event016_materials_weaponization, mengele_event016_rocketry_deployment, mengele_event016_rocketry_weaponization, mengele_event016_high_energy_deployment, and mengele_event016_high_energy_weaponization. Evaluation covered the 15 candidates × six scenarios (90 observations): result PROBABILITY_ANALYZED_PARTIAL; analysis ID probability-5743ff2bcc25b9aff0eec677; evaluation source revision 770e0c95ab5eeef1f4ff5104a63eed159b4feedb00aebdcbf62d8bc8a48aed2e; aggregate source hash 97f3a918d63122e548b8cc2405ddf09d7e083570cb88b9a212c709cfeb0020a0; same scenario hash. Eligibility for the ten later-stage candidates remains unresolved because their compound tooltip requirements are not represented.
 
 Within the supplied source candidates, Biomedical, Electronics, Materials, and Rocketry Deployment/Weaponization use ai_high = 10; High Energy Deployment/Weaponization use ai_medium = 5. The preferred-war factor is false in peace and doubles the traced values in war to 20 and 10. These are score-only traces in an incomplete pool; they do not establish candidate availability, actual choice, or selection odds.
 
@@ -71,6 +71,8 @@ Stage inspect: hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/629b
 Prototype evaluation: hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/8b0d722889d1369119f5ff58893eaa12ff79f055798c65a8555a8d9e00aec23b/71d7fdf96f64aec39f12b47147e3c75a6c5508470d892711eca91f3614a86e6c/probability-4690e318daa2b21f2f4e6934.json
 
 Stage evaluation: hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/80b799527b3dad332c3ee2d67e3937aa6ebddf0e510b33ca808c0faae027e9f2/00654b07764d90ea9f318988745e48cec173af6ab50e9b08a79906ce77a64dc0/probability-5743ff2bcc25b9aff0eec677.json
+
+No continuation URI was returned with the completed inspect/evaluate artifacts.
 
 Prototype generated ranking, matrix, and unresolved views:
 - hoi4-agent://workspace/mod_chaos_redux_ea3b2d67c2c0/artifact/ea6fa7ccc5cd6c1c22996d3f2da69645ac00add68f8f3aee19ed2e9f90e842bb/aa4a0fe816e2694aa481f522243442dbc1125fe7852bd22fc7b022a9e5226e3e/probability-probability-4690e318daa2b21f2f4e6934-ranking.svg
