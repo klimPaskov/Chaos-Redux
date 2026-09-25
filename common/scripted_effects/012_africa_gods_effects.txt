@@ -304,6 +304,7 @@ gods_of_africa_initialize_world_order_history = {
 gods_of_africa_register_participant = {
 	if = {
 		limit = { gods_of_africa_participant_can_register = yes }
+		gods_of_africa_withdraw_protection_package = yes
 		set_country_flag = gods_of_africa_participant
 		clr_country_flag = gods_of_africa_leniency_used
 		clr_country_flag = gods_of_africa_escalation_used
@@ -363,6 +364,7 @@ gods_of_africa_try_register_participant = {
 # COUNTRY scope on a stale participant. History is retained for settlement and
 # audit, while live contract state is removed from the active registry.
 gods_of_africa_archive_invalid_participant = {
+	gods_of_africa_withdraw_protection_package = yes
 	remove_mission = gods_of_africa_demand_mission
 	remove_mission = gods_of_africa_reconciliation_mission
 	if = {
@@ -2496,6 +2498,7 @@ gods_of_africa_declare_defiance = {
 	if = {
 		limit = { gods_of_africa_participant_can_defy = yes }
 		set_country_flag = gods_of_africa_defiant
+		gods_of_africa_withdraw_protection_package = yes
 		clr_country_flag = gods_of_africa_punishment_applied
 		set_variable = { gods_of_africa_defiance_day = global.num_days }
 		set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.defiance_magnitude }
@@ -2693,6 +2696,7 @@ gods_of_africa_grant_settlement_reward = {
 # COUNTRY scope on a participant. History and the final settlement are kept;
 # all active contract state and registry identity are removed idempotently.
 gods_of_africa_clean_participant = {
+	gods_of_africa_withdraw_protection_package = yes
 	remove_mission = gods_of_africa_demand_mission
 	remove_mission = gods_of_africa_reconciliation_mission
 	if = {
@@ -2786,6 +2790,7 @@ gods_of_africa_clean_participant = {
 # shown after the host ledger has stopped ordinary demands. The acknowledgement
 # helper below clears the presentation flag without erasing hidden history.
 gods_of_africa_finalize_participant = {
+	gods_of_africa_withdraw_protection_package = yes
 	if = {
 		limit = { has_country_flag = gods_of_africa_demand_active }
 		remove_mission = gods_of_africa_demand_mission
@@ -2929,6 +2934,7 @@ gods_of_africa_cancel_on_unifier_loss = {
 }
 
 gods_of_africa_cancel_participant = {
+	gods_of_africa_withdraw_protection_package = yes
 	if = { limit = { has_country_flag = gods_of_africa_demand_active } remove_mission = gods_of_africa_demand_mission }
 	remove_mission = gods_of_africa_reconciliation_mission
 	if = {
@@ -3346,6 +3352,255 @@ gods_of_africa_choose_strategic_ambiguity = {
 	if = { limit = { gods_of_africa_active_host_is_valid = yes } set_variable = { gods_of_africa_doctrine = constant:gods_of_africa_doctrine.strategic_ambiguity } }
 }
 
+gods_of_africa_withdraw_owned_protection_relations = {
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_protection_guarantee_created
+			has_variable = gods_of_africa_protection_guarantee_host
+		}
+		var:gods_of_africa_protection_guarantee_host = {
+			if = {
+				limit = { exists = yes has_guaranteed = PREV }
+				diplomatic_relation = {
+					country = PREV
+					relation = guarantee
+					active = no
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_protection_military_access_created
+			has_variable = gods_of_africa_protection_military_access_host
+		}
+		var:gods_of_africa_protection_military_access_host = {
+			if = {
+				limit = {
+					exists = yes
+					PREV = { has_military_access_to = THIS }
+				}
+				diplomatic_relation = {
+					country = PREV
+					relation = military_access
+					active = no
+				}
+			}
+		}
+	}
+	if = {
+		limit = {
+			has_country_flag = gods_of_africa_protection_market_access_created
+			has_variable = gods_of_africa_protection_market_access_host
+		}
+		var:gods_of_africa_protection_market_access_host = {
+			if = {
+				limit = { exists = yes has_market_access_with = PREV }
+				diplomatic_relation = {
+					country = PREV
+					relation = market_access_rights
+					active = no
+				}
+			}
+		}
+	}
+	clr_country_flag = gods_of_africa_protection_guarantee_created
+	clr_country_flag = gods_of_africa_protection_military_access_created
+	clr_country_flag = gods_of_africa_protection_market_access_created
+	clear_variable = gods_of_africa_protection_guarantee_host
+	clear_variable = gods_of_africa_protection_military_access_host
+	clear_variable = gods_of_africa_protection_market_access_host
+}
+
+gods_of_africa_withdraw_protection_package = {
+	gods_of_africa_withdraw_owned_protection_relations = yes
+	if = {
+		limit = { has_country_flag = gods_of_africa_protection_reception_created }
+		migration_clear_gods_of_africa_reception_service = yes
+		clr_country_flag = gods_of_africa_protection_reception_created
+	}
+	clr_country_flag = gods_of_africa_protected
+}
+
+gods_of_africa_grant_owned_protection_relations = {
+	if = {
+		limit = {
+			gods_of_africa_participant_generation_is_current = yes
+			gods_of_africa_participant_is_registered = yes
+			has_country_flag = gods_of_africa_participant
+			NOT = { has_country_flag = gods_of_africa_defiant }
+			NOT = { has_war_with = event_target:africa_host }
+			has_event_target = africa_host
+			event_target:africa_host = {
+				gods_of_africa_active_host_is_valid = yes
+			}
+		}
+		save_event_target_as = gods_of_africa_protected_participant
+		if = {
+			limit = {
+				event_target:africa_host = {
+					has_country_flag = gods_of_africa_focus_sanctuary_unlocked
+					NOT = { has_guaranteed = event_target:gods_of_africa_protected_participant }
+				}
+			}
+			event_target:africa_host = { give_guarantee = event_target:gods_of_africa_protected_participant }
+			if = {
+				limit = {
+					event_target:africa_host = {
+						has_guaranteed = event_target:gods_of_africa_protected_participant
+					}
+				}
+				set_country_flag = gods_of_africa_protection_guarantee_created
+				set_variable = { gods_of_africa_protection_guarantee_host = event_target:africa_host }
+			}
+		}
+		if = {
+			limit = {
+				event_target:africa_host = { has_country_flag = gods_of_africa_focus_security_unlocked }
+				NOT = { has_military_access_to = event_target:africa_host }
+			}
+			event_target:africa_host = { give_military_access = event_target:gods_of_africa_protected_participant }
+			if = {
+				limit = { has_military_access_to = event_target:africa_host }
+				set_country_flag = gods_of_africa_protection_military_access_created
+				set_variable = { gods_of_africa_protection_military_access_host = event_target:africa_host }
+			}
+		}
+		if = {
+			limit = {
+				has_dlc = "Arms Against Tyranny"
+				NOT = { has_war_with = event_target:africa_host }
+				NOT = { has_market_access_with = event_target:africa_host }
+				event_target:africa_host = { has_country_flag = gods_of_africa_focus_sanctuary_unlocked }
+			}
+			event_target:africa_host = { give_market_access = event_target:gods_of_africa_protected_participant }
+			if = {
+				limit = { has_market_access_with = event_target:africa_host }
+				set_country_flag = gods_of_africa_protection_market_access_created
+				set_variable = { gods_of_africa_protection_market_access_host = event_target:africa_host }
+			}
+		}
+	}
+}
+
+gods_of_africa_share_enemy_intelligence = {
+	if = {
+		limit = {
+			gods_of_africa_participant_generation_is_current = yes
+			has_country_flag = gods_of_africa_participant
+			NOT = { has_country_flag = gods_of_africa_defiant }
+			has_dlc = "La Resistance"
+			has_intelligence_agency = yes
+			NOT = { has_war_with = event_target:africa_host }
+			event_target:africa_host = {
+				gods_of_africa_active_host_is_valid = yes
+				has_country_flag = gods_of_africa_focus_security_unlocked
+				has_intelligence_agency = yes
+				has_war = yes
+			}
+		}
+		save_event_target_as = gods_of_africa_protected_participant
+		event_target:africa_host = {
+			every_enemy_country = {
+				limit = {
+					exists = yes
+					NOT = { has_capitulated = yes }
+					event_target:gods_of_africa_protected_participant = {
+						NOT = { has_war_with = PREV }
+					}
+				}
+				save_event_target_as = gods_of_africa_protection_enemy
+				event_target:gods_of_africa_protected_participant = {
+					add_intel = {
+						target = event_target:gods_of_africa_protection_enemy
+						civilian_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+						army_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+						navy_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+						airforce_intel = constant:gods_of_africa_transaction.protection_intelligence_amount
+					}
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a selected participant. The shipment is an actual equipment
+# transfer, limited to the maintained protection target and the host's reserve.
+gods_of_africa_deliver_protection_transport = {
+	if = {
+		limit = {
+			event_target:africa_host = {
+				has_country_flag = gods_of_africa_focus_logistics_support_unlocked
+			}
+		}
+		event_target:africa_host = {
+			set_temp_variable = { gods_of_africa_protection_transport_minimum = constant:gods_of_africa_protection.transport_host_stockpile_minimum }
+			add_to_temp_variable = { gods_of_africa_protection_transport_minimum = constant:gods_of_africa_transaction.transport_amount }
+		}
+		if = {
+			limit = {
+				has_equipment = { convoy_1 < constant:gods_of_africa_transaction.transport_amount }
+				event_target:africa_host = {
+					has_equipment = { convoy_1 > gods_of_africa_protection_transport_minimum }
+				}
+			}
+			event_target:africa_host = {
+				set_temp_variable = { equipment_stockpile_removal_amount = constant:gods_of_africa_transaction.transport_amount }
+				remove_convoys_from_stockpile = yes
+			}
+			event_target:gods_of_africa_protected_participant = {
+				add_equipment_to_stockpile = {
+					type = convoy_1
+					amount = constant:gods_of_africa_transaction.transport_amount
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				has_equipment = { train_equipment < constant:gods_of_africa_transaction.transport_amount }
+				event_target:africa_host = {
+					has_equipment = { train_equipment > gods_of_africa_protection_transport_minimum }
+				}
+			}
+			event_target:africa_host = {
+				set_temp_variable = { equipment_stockpile_removal_amount = constant:gods_of_africa_transaction.transport_amount }
+				remove_trains_from_stockpile = yes
+			}
+			event_target:gods_of_africa_protected_participant = {
+				add_equipment_to_stockpile = {
+					type = train_equipment
+					amount = constant:gods_of_africa_transaction.transport_amount
+				}
+			}
+		}
+	}
+}
+
+# COUNTRY scope on a selected participant. One capital infrastructure level is
+# built only while the relief route is open and the participant controls its
+# capital; the effect never scans or modifies unrelated states.
+gods_of_africa_rebuild_protected_partner_capital = {
+	if = {
+		limit = {
+			event_target:africa_host = {
+				has_country_flag = gods_of_africa_focus_relief_unlocked
+			}
+			capital_scope = {
+				is_owned_and_controlled_by = event_target:gods_of_africa_protected_participant
+				infrastructure < constant:gods_of_africa_protection.reconstruction_infrastructure_cap
+			}
+		}
+		capital_scope = {
+			set_temp_variable = { gods_of_africa_reconstruction_levels = constant:gods_of_africa_protection.reconstruction_infrastructure_levels }
+			add_building_construction = {
+				type = infrastructure
+				level = gods_of_africa_reconstruction_levels
+				instant_build = yes
+			}
+		}
+	}
+}
+
 gods_of_africa_protect_partner = {
 	if = {
 		limit = { gods_of_africa_protection_package_is_affordable = yes }
@@ -3358,6 +3613,7 @@ gods_of_africa_protect_partner = {
 			set_temp_variable = { gods_of_africa_protection_pp_negative = constant:gods_of_africa_transaction.protection_pp_cost }
 			multiply_temp_variable = { gods_of_africa_protection_pp_negative = -1 }
 			add_political_power = var:gods_of_africa_protection_pp_negative
+			# This ledger tracks part of the same infantry stockpile; mirror the physical transfer without charging a second equipment payment.
 			subtract_from_variable = { africa_common_defence_stockpile = constant:gods_of_africa_transaction.protection_infantry_equipment }
 		}
 		add_equipment_to_stockpile = { type = infantry_equipment amount = constant:gods_of_africa_transaction.protection_infantry_equipment }
@@ -3377,14 +3633,21 @@ gods_of_africa_protect_partner = {
 			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_expedition_unlocked } }
 			add_war_support = constant:gods_of_africa_defensive_effect.defensive_war_support_gain
 		}
+		gods_of_africa_deliver_protection_transport = yes
+		gods_of_africa_rebuild_protected_partner_capital = yes
 		if = {
-			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_sanctuary_unlocked } }
-			event_target:africa_host = { give_guarantee = ROOT }
+			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_shelter_unlocked } }
+			migration_install_gods_of_africa_reception_service = yes
+			if = {
+				limit = {
+					check_variable = { var = migration_gods_reception_install_result value = constant:migration_capacity.one compare = equals }
+					has_country_flag = migration_gods_reception_service_active
+				}
+				set_country_flag = gods_of_africa_protection_reception_created
+			}
 		}
-		if = {
-			limit = { event_target:africa_host = { has_country_flag = gods_of_africa_focus_security_unlocked } }
-			event_target:africa_host = { give_military_access = ROOT }
-		}
+		gods_of_africa_grant_owned_protection_relations = yes
+		gods_of_africa_share_enemy_intelligence = yes
 		set_variable = { gods_of_africa_wrath_request = constant:gods_of_africa_wrath.protection_magnitude }
 		set_variable = { gods_of_africa_wrath_direction = constant:gods_of_africa_wrath.direction_decrease }
 		gods_of_africa_apply_wrath = yes

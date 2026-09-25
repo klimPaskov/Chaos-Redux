@@ -975,3 +975,15 @@ Part 8 is the controlling detail layer for the six grounded constitutions, the h
 The architecture in this file remains the tree-wide map. Part 8 prevents the implementation from treating each political route as a different capstone attached to the same generic support branches. Where the two files differ in detail, preserve the lane structure here and use the deeper governing rules in part 8.
 
 The focus-route payoff matrix converts part 8 into implementation roles. A matrix row can become one focus, a short focus group, a decision family, or an event-backed crisis. It must not be discarded because it is not represented by a single node.
+
+## 2026-09-25 accepted design decisions: Event 012 Gods protection tranche
+
+Acceptance basis: the user explicitly selected Arms Against Tyranny market access plus enemy intelligence, directed that Event 013 relief be split into its own choice, and clarified that the four-cost-type cap applies only to Event 012 while Event 013 retains its existing price.
+
+For the reserve-counter classification below, the user delegated the decision to parent judgment. The following is therefore an accepted parent interpretation, not a direct user specification.
+
+Accepted scope: Event 012 protection must remain at or below four spendable cost types. Event 013 relief is selected separately through Foreign Disaster Relief and keeps its existing full material price, stability and war-support losses, and temporary construction burden. The accepted trade/intelligence services are Arms Against Tyranny mutual market access and gated enemy intelligence; separate resource-rights or population-transfer proposals require their own acceptance.
+
+Current implementation evidence, not a separate price approval: the protection transaction uses infantry equipment, fuel, and political power, and may add at most one shortage-checked convoy or train shipment. The matching `africa_common_defence_stockpile` decrement is bookkeeping for that same physical infantry-equipment transfer, not a second spendable payment or cost type. The reserve must still cover the transfer, and its amount remains disclosed. The optional transport shipment remains at most the fourth spendable type. The separate Event 013 choice is not invoked or charged by the protection click.
+
+This acceptance resolves only the named transaction and service choices. It does not promote the older focus-route promises elsewhere in this package; their scope remains unresolved pending the user's separate direction.
